@@ -56,6 +56,7 @@ class Application extends BaseApplication
         }
 
         // Load more plugins here
+        Configure::write('Users.Registration.active', false);
         $this->addPlugin(\CakeDC\Users\Plugin::class);
     }
 
