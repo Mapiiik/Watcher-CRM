@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "78f0813d2e19252372610ff0834d4122",
+    "content-hash": "26d36b8b6acd881f6176b477f3224d25",
     "packages": [
         {
             "name": "aura/intl",
@@ -53,17 +53,277 @@
             "time": "2017-01-20T05:00:11+00:00"
         },
         {
-            "name": "cakephp/cakephp",
-            "version": "4.0.2",
+            "name": "cakedc/auth",
+            "version": "6.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "a5e8c076c54343e47cd47c7888705ad9818f5e0f"
+                "url": "https://github.com/CakeDC/auth.git",
+                "reference": "d22a52a20abf2955ca5c4ab39c3b9f420b451636"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/a5e8c076c54343e47cd47c7888705ad9818f5e0f",
-                "reference": "a5e8c076c54343e47cd47c7888705ad9818f5e0f",
+                "url": "https://api.github.com/repos/CakeDC/auth/zipball/d22a52a20abf2955ca5c4ab39c3b9f420b451636",
+                "reference": "d22a52a20abf2955ca5c4ab39c3b9f420b451636",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "^4.0.0",
+                "php": ">=7.2.0"
+            },
+            "require-dev": {
+                "cakephp/authentication": "^2.0",
+                "cakephp/authorization": "^2.0",
+                "cakephp/cakephp-codesniffer": "^4.0",
+                "google/recaptcha": "@stable",
+                "league/oauth1-client": "^1.7",
+                "league/oauth2-facebook": "@stable",
+                "league/oauth2-google": "@stable",
+                "league/oauth2-instagram": "@stable",
+                "league/oauth2-linkedin": "@stable",
+                "luchianenco/oauth2-amazon": "^1.1",
+                "phpunit/phpunit": "^8.0",
+                "robthree/twofactorauth": "^1.6",
+                "satooshi/php-coveralls": "^2.0",
+                "yubico/u2flib-server": "^1.0"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "CakeDC\\Auth\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "CakeDC",
+                    "homepage": "https://www.cakedc.com",
+                    "role": "Author"
+                },
+                {
+                    "name": "Others",
+                    "homepage": "https://github.com/CakeDC/auth/graphs/contributors"
+                }
+            ],
+            "description": "Auth objects for CakePHP",
+            "homepage": "https://github.com/CakeDC/auth",
+            "keywords": [
+                "Authentication",
+                "auth",
+                "cakedc",
+                "cakephp"
+            ],
+            "time": "2019-12-21T16:38:58+00:00"
+        },
+        {
+            "name": "cakedc/users",
+            "version": "9.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/CakeDC/users.git",
+                "reference": "f67fbd5ef2e97c2a04f765e7b3d32c039c62fb25"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/CakeDC/users/zipball/f67fbd5ef2e97c2a04f765e7b3d32c039c62fb25",
+                "reference": "f67fbd5ef2e97c2a04f765e7b3d32c039c62fb25",
+                "shasum": ""
+            },
+            "require": {
+                "cakedc/auth": "^6.0.0",
+                "cakephp/authentication": "^2.0.0",
+                "cakephp/authorization": "^2.0.0",
+                "cakephp/cakephp": "^4.0.0",
+                "php": ">=7.2.0"
+            },
+            "require-dev": {
+                "cakephp/cakephp-codesniffer": "dev-next",
+                "google/recaptcha": "@stable",
+                "league/oauth1-client": "^1.7",
+                "league/oauth2-facebook": "@stable",
+                "league/oauth2-google": "@stable",
+                "league/oauth2-instagram": "@stable",
+                "league/oauth2-linkedin": "@stable",
+                "luchianenco/oauth2-amazon": "^1.1",
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpunit/phpunit": "^8.0",
+                "robthree/twofactorauth": "^1.6",
+                "yubico/u2flib-server": "^1.0"
+            },
+            "suggest": {
+                "cakephp/authorization": "Provide authorization for users",
+                "google/recaptcha": "Provides reCAPTCHA validation for registration form",
+                "league/oauth1-client": "Provides Social Authentication with Twitter",
+                "league/oauth2-facebook": "Provides Social Authentication with Facebook",
+                "league/oauth2-google": "Provides Social Authentication with Google+",
+                "league/oauth2-instagram": "Provides Social Authentication with Instagram",
+                "league/oauth2-linkedin": "Provides Social Authentication with LinkedIn",
+                "luchianenco/oauth2-amazon": "Provides Social Authentication with Amazon",
+                "robthree/twofactorauth": "Provides Google Authenticator functionality"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "CakeDC\\Users\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "CakeDC",
+                    "homepage": "http://www.cakedc.com",
+                    "role": "Author"
+                },
+                {
+                    "name": "Others",
+                    "homepage": "https://github.com/CakeDC/users/graphs/contributors"
+                }
+            ],
+            "description": "Users Plugin for CakePHP",
+            "homepage": "https://github.com/CakeDC/users",
+            "keywords": [
+                "Authentication",
+                "auth",
+                "cakedc",
+                "cakephp",
+                "oauth2"
+            ],
+            "time": "2019-12-21T16:50:45+00:00"
+        },
+        {
+            "name": "cakephp/authentication",
+            "version": "2.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cakephp/authentication.git",
+                "reference": "085062845776ab553a926c58cb9b4af7be1eedc1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cakephp/authentication/zipball/085062845776ab553a926c58cb9b4af7be1eedc1",
+                "reference": "085062845776ab553a926c58cb9b4af7be1eedc1",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/core": "^4.0",
+                "psr/http-client": "^1.0",
+                "psr/http-message": "^1.0",
+                "psr/http-server-handler": "^1.0",
+                "psr/http-server-middleware": "^1.0",
+                "zendframework/zend-diactoros": "^2.0"
+            },
+            "require-dev": {
+                "cakephp/cakephp": "^4.0",
+                "cakephp/cakephp-codesniffer": "^4.0",
+                "firebase/php-jwt": "^5.0",
+                "phpunit/phpunit": "^8.0"
+            },
+            "suggest": {
+                "cakephp/cakephp": "Install full core to use \"CookieAuthenticator\".",
+                "cakephp/orm": "To use \"OrmResolver\" (Not needed separately if using full CakePHP framework).",
+                "cakephp/utility": "Provides CakePHP security methods. Required for the JWT adapter and Legacy password hasher.",
+                "ext-ldap": "Make sure this php extension is installed and enabled on your system if you want to use the built-in LDAP adapter for \"LdapIdentifier\".",
+                "firebase/php-jwt": "If you want to use the JWT adapter add this dependency"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "Authentication\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "CakePHP Community",
+                    "homepage": "https://github.com/cakephp/authentication/graphs/contributors"
+                }
+            ],
+            "description": "Authentication plugin for CakePHP",
+            "homepage": "https://cakephp.org",
+            "keywords": [
+                "Authentication",
+                "auth",
+                "cakephp",
+                "middleware"
+            ],
+            "time": "2020-01-25T02:43:55+00:00"
+        },
+        {
+            "name": "cakephp/authorization",
+            "version": "2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cakephp/authorization.git",
+                "reference": "6fefa13d79d56b1ca15d0154261837ca8d44db0f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cakephp/authorization/zipball/6fefa13d79d56b1ca15d0154261837ca8d44db0f",
+                "reference": "6fefa13d79d56b1ca15d0154261837ca8d44db0f",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "^4.0",
+                "php": ">=7.2",
+                "psr/http-client": "^1.0",
+                "psr/http-message": "^1.0",
+                "psr/http-server-handler": "^1.0",
+                "psr/http-server-middleware": "^1.0"
+            },
+            "require-dev": {
+                "cakephp/authentication": "^2.0",
+                "cakephp/bake": "^2.0",
+                "cakephp/cakephp-codesniffer": "^4.0",
+                "phpunit/phpunit": "^8.0"
+            },
+            "suggest": {
+                "cakephp/orm": "To use \"OrmResolver\" (Not needed separately if using full CakePHP framework)."
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "Authorization\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "CakePHP Community",
+                    "homepage": "https://github.com/cakephp/authorization/graphs/contributors"
+                }
+            ],
+            "description": "Authorization abstraction layer plugin for CakePHP",
+            "keywords": [
+                "access",
+                "auth",
+                "authorization",
+                "cakephp"
+            ],
+            "time": "2020-01-25T02:58:04+00:00"
+        },
+        {
+            "name": "cakephp/cakephp",
+            "version": "4.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cakephp/cakephp.git",
+                "reference": "94435ab211196ce92014a83ec7bab4e385bf8ba3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/94435ab211196ce92014a83ec7bab4e385bf8ba3",
+                "reference": "94435ab211196ce92014a83ec7bab4e385bf8ba3",
                 "shasum": ""
             },
             "require": {
@@ -145,7 +405,7 @@
                 "rapid-development",
                 "validation"
             ],
-            "time": "2020-01-12T02:53:20+00:00"
+            "time": "2020-01-26T02:19:21+00:00"
         },
         {
             "name": "cakephp/chronos",
@@ -351,6 +611,53 @@
                 "tls"
             ],
             "time": "2020-01-13T10:02:55+00:00"
+        },
+        {
+            "name": "google/recaptcha",
+            "version": "1.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/google/recaptcha.git",
+                "reference": "98c4a6573b27e8b0990ea8789c74ea378795134c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/google/recaptcha/zipball/98c4a6573b27e8b0990ea8789c74ea378795134c",
+                "reference": "98c4a6573b27e8b0990ea8789c74ea378795134c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.2.20|^2.15",
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpunit/phpunit": "^4.8.36|^5.7.27|^6.59|^7.5.11"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ReCaptcha\\": "src/ReCaptcha"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Client library for reCAPTCHA, a free service that protects websites from spam and abuse.",
+            "homepage": "https://www.google.com/recaptcha/",
+            "keywords": [
+                "Abuse",
+                "captcha",
+                "recaptcha",
+                "spam"
+            ],
+            "time": "2019-08-16T15:48:25+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",
@@ -1077,16 +1384,16 @@
         },
         {
             "name": "symfony/config",
-            "version": "v5.0.2",
+            "version": "v5.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "7f930484966350906185ba0a604728f7898b7ba0"
+                "reference": "7640c6704f56bf64045066bc5d93fd9d664baa63"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/7f930484966350906185ba0a604728f7898b7ba0",
-                "reference": "7f930484966350906185ba0a604728f7898b7ba0",
+                "url": "https://api.github.com/repos/symfony/config/zipball/7640c6704f56bf64045066bc5d93fd9d664baa63",
+                "reference": "7640c6704f56bf64045066bc5d93fd9d664baa63",
                 "shasum": ""
             },
             "require": {
@@ -1137,45 +1444,45 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "https://symfony.com",
-            "time": "2019-12-18T13:50:31+00:00"
+            "time": "2020-01-04T14:08:26+00:00"
         },
         {
             "name": "symfony/console",
-            "version": "v5.0.2",
+            "version": "v4.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "fe6e3cd889ca64172d7a742a2eb058541404ef47"
+                "reference": "e9ee09d087e2c88eaf6e5fc0f5c574f64d100e4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/fe6e3cd889ca64172d7a742a2eb058541404ef47",
-                "reference": "fe6e3cd889ca64172d7a742a2eb058541404ef47",
+                "url": "https://api.github.com/repos/symfony/console/zipball/e9ee09d087e2c88eaf6e5fc0f5c574f64d100e4f",
+                "reference": "e9ee09d087e2c88eaf6e5fc0f5c574f64d100e4f",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2.5",
+                "php": "^7.1.3",
                 "symfony/polyfill-mbstring": "~1.0",
                 "symfony/polyfill-php73": "^1.8",
                 "symfony/service-contracts": "^1.1|^2"
             },
             "conflict": {
-                "symfony/dependency-injection": "<4.4",
-                "symfony/event-dispatcher": "<4.4",
+                "symfony/dependency-injection": "<3.4",
+                "symfony/event-dispatcher": "<4.3|>=5",
                 "symfony/lock": "<4.4",
-                "symfony/process": "<4.4"
+                "symfony/process": "<3.3"
             },
             "provide": {
                 "psr/log-implementation": "1.0"
             },
             "require-dev": {
                 "psr/log": "~1.0",
-                "symfony/config": "^4.4|^5.0",
-                "symfony/dependency-injection": "^4.4|^5.0",
-                "symfony/event-dispatcher": "^4.4|^5.0",
+                "symfony/config": "^3.4|^4.0|^5.0",
+                "symfony/dependency-injection": "^3.4|^4.0|^5.0",
+                "symfony/event-dispatcher": "^4.3",
                 "symfony/lock": "^4.4|^5.0",
-                "symfony/process": "^4.4|^5.0",
-                "symfony/var-dumper": "^4.4|^5.0"
+                "symfony/process": "^3.4|^4.0|^5.0",
+                "symfony/var-dumper": "^4.3|^5.0"
             },
             "suggest": {
                 "psr/log": "For using the console logger",
@@ -1186,7 +1493,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.0-dev"
+                    "dev-master": "4.4-dev"
                 }
             },
             "autoload": {
@@ -1213,30 +1520,30 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2019-12-17T13:20:22+00:00"
+            "time": "2020-01-10T21:54:01+00:00"
         },
         {
             "name": "symfony/filesystem",
-            "version": "v5.0.2",
+            "version": "v4.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "1d71f670bc5a07b9ccc97dc44f932177a322d4e6"
+                "reference": "266c9540b475f26122b61ef8b23dd9198f5d1cfd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/1d71f670bc5a07b9ccc97dc44f932177a322d4e6",
-                "reference": "1d71f670bc5a07b9ccc97dc44f932177a322d4e6",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/266c9540b475f26122b61ef8b23dd9198f5d1cfd",
+                "reference": "266c9540b475f26122b61ef8b23dd9198f5d1cfd",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2.5",
+                "php": "^7.1.3",
                 "symfony/polyfill-ctype": "~1.8"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.0-dev"
+                    "dev-master": "4.4-dev"
                 }
             },
             "autoload": {
@@ -1263,7 +1570,7 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
-            "time": "2019-11-26T23:25:11+00:00"
+            "time": "2020-01-21T08:20:44+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -1500,16 +1807,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v5.0.2",
+            "version": "v5.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "847661e77afa48d99ecfa508e8b60f0b029a19c0"
+                "reference": "69b44e3b8f90949aee2eb3aa9b86ceeb01cbf62a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/847661e77afa48d99ecfa508e8b60f0b029a19c0",
-                "reference": "847661e77afa48d99ecfa508e8b60f0b029a19c0",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/69b44e3b8f90949aee2eb3aa9b86ceeb01cbf62a",
+                "reference": "69b44e3b8f90949aee2eb3aa9b86ceeb01cbf62a",
                 "shasum": ""
             },
             "require": {
@@ -1555,7 +1862,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2019-12-10T11:06:55+00:00"
+            "time": "2020-01-21T11:12:28+00:00"
         }
     ],
     "packages-dev": [
@@ -1609,21 +1916,21 @@
         },
         {
             "name": "cakephp/cakephp-codesniffer",
-            "version": "4.0.0",
+            "version": "4.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp-codesniffer.git",
-                "reference": "47ba4cb9776302cc258afcbbf08ba61dfc1559d5"
+                "reference": "637e424134e6fc7c6c3ecddd750ef743eb7869fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp-codesniffer/zipball/47ba4cb9776302cc258afcbbf08ba61dfc1559d5",
-                "reference": "47ba4cb9776302cc258afcbbf08ba61dfc1559d5",
+                "url": "https://api.github.com/repos/cakephp/cakephp-codesniffer/zipball/637e424134e6fc7c6c3ecddd750ef743eb7869fc",
+                "reference": "637e424134e6fc7c6c3ecddd750ef743eb7869fc",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1",
-                "slevomat/coding-standard": "^5.0",
+                "slevomat/coding-standard": "^6.0",
                 "squizlabs/php_codesniffer": "~3.5.0"
             },
             "require-dev": {
@@ -1651,7 +1958,7 @@
                 "codesniffer",
                 "framework"
             ],
-            "time": "2019-12-16T07:06:24+00:00"
+            "time": "2020-01-13T22:00:38+00:00"
         },
         {
             "name": "cakephp/debug_kit",
@@ -1715,16 +2022,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "dev-master",
+            "version": "1.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "dbcf592ea22553d90cf27e81501fe279345473f6"
+                "reference": "7a04aa0201ddaa0b3cf64d41022bd8cdcd7fafeb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/dbcf592ea22553d90cf27e81501fe279345473f6",
-                "reference": "dbcf592ea22553d90cf27e81501fe279345473f6",
+                "url": "https://api.github.com/repos/composer/composer/zipball/7a04aa0201ddaa0b3cf64d41022bd8cdcd7fafeb",
+                "reference": "7a04aa0201ddaa0b3cf64d41022bd8cdcd7fafeb",
                 "shasum": ""
             },
             "require": {
@@ -1737,10 +2044,10 @@
                 "psr/log": "^1.0",
                 "seld/jsonlint": "^1.4",
                 "seld/phar-utils": "^1.0",
-                "symfony/console": "^2.7 || ^3.0 || ^4.0 || ^5.0",
-                "symfony/filesystem": "^2.7 || ^3.0 || ^4.0 || ^5.0",
-                "symfony/finder": "^2.7 || ^3.0 || ^4.0 || ^5.0",
-                "symfony/process": "^2.7 || ^3.0 || ^4.0 || ^5.0"
+                "symfony/console": "^2.7 || ^3.0 || ^4.0",
+                "symfony/filesystem": "^2.7 || ^3.0 || ^4.0",
+                "symfony/finder": "^2.7 || ^3.0 || ^4.0",
+                "symfony/process": "^2.7 || ^3.0 || ^4.0"
             },
             "conflict": {
                 "symfony/console": "2.8.38"
@@ -1760,7 +2067,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.10-dev"
+                    "dev-master": "1.9-dev"
                 }
             },
             "autoload": {
@@ -1791,7 +2098,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2020-01-14T15:33:39+00:00"
+            "time": "2020-01-14T15:30:32+00:00"
         },
         {
             "name": "composer/semver",
@@ -2424,16 +2731,16 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.9.4",
+            "version": "1.9.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "579bb7356d91f9456ccd505f24ca8b667966a0a7"
+                "reference": "b2c28789e80a97badd14145fda39b545d83ca3ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/579bb7356d91f9456ccd505f24ca8b667966a0a7",
-                "reference": "579bb7356d91f9456ccd505f24ca8b667966a0a7",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/b2c28789e80a97badd14145fda39b545d83ca3ef",
+                "reference": "b2c28789e80a97badd14145fda39b545d83ca3ef",
                 "shasum": ""
             },
             "require": {
@@ -2468,7 +2775,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2019-12-15T19:12:40+00:00"
+            "time": "2020-01-17T21:11:47+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -2777,24 +3084,24 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "1.10.1",
+            "version": "v1.10.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "cbe1df668b3fe136bcc909126a0f529a78d4cbbc"
+                "reference": "b4400efc9d206e83138e2bb97ed7f5b14b831cd9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/cbe1df668b3fe136bcc909126a0f529a78d4cbbc",
-                "reference": "cbe1df668b3fe136bcc909126a0f529a78d4cbbc",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/b4400efc9d206e83138e2bb97ed7f5b14b831cd9",
+                "reference": "b4400efc9d206e83138e2bb97ed7f5b14b831cd9",
                 "shasum": ""
             },
             "require": {
                 "doctrine/instantiator": "^1.0.2",
                 "php": "^5.3|^7.0",
                 "phpdocumentor/reflection-docblock": "^2.0|^3.0.2|^4.0|^5.0",
-                "sebastian/comparator": "^1.2.3|^2.0|^3.0",
-                "sebastian/recursion-context": "^1.0|^2.0|^3.0"
+                "sebastian/comparator": "^1.2.3|^2.0|^3.0|^4.0",
+                "sebastian/recursion-context": "^1.0|^2.0|^3.0|^4.0"
             },
             "require-dev": {
                 "phpspec/phpspec": "^2.5 || ^3.2",
@@ -2836,20 +3143,20 @@
                 "spy",
                 "stub"
             ],
-            "time": "2019-12-22T21:05:45+00:00"
+            "time": "2020-01-20T15:57:02+00:00"
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "0.3.5",
+            "version": "0.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "8c4ef2aefd9788238897b678a985e1d5c8df6db4"
+                "reference": "a6d13524641bb780efc821d9e0a1e1bfb23cbd0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/8c4ef2aefd9788238897b678a985e1d5c8df6db4",
-                "reference": "8c4ef2aefd9788238897b678a985e1d5c8df6db4",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/a6d13524641bb780efc821d9e0a1e1bfb23cbd0e",
+                "reference": "a6d13524641bb780efc821d9e0a1e1bfb23cbd0e",
                 "shasum": ""
             },
             "require": {
@@ -2859,16 +3166,17 @@
                 "consistence/coding-standard": "^3.5",
                 "jakub-onderka/php-parallel-lint": "^0.9.2",
                 "phing/phing": "^2.16.0",
-                "phpstan/phpstan": "^0.10",
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan-strict-rules": "^0.12",
                 "phpunit/phpunit": "^6.3",
                 "slevomat/coding-standard": "^4.7.2",
-                "squizlabs/php_codesniffer": "^3.3.2",
-                "symfony/process": "^3.4 || ^4.0"
+                "symfony/process": "^4.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.3-dev"
+                    "dev-master": "0.4-dev"
                 }
             },
             "autoload": {
@@ -2883,7 +3191,7 @@
                 "MIT"
             ],
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
-            "time": "2019-06-07T19:13:52+00:00"
+            "time": "2019-12-13T12:03:22+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -4004,30 +4312,31 @@
         },
         {
             "name": "slevomat/coding-standard",
-            "version": "5.0.4",
+            "version": "6.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slevomat/coding-standard.git",
-                "reference": "287ac3347c47918c0bf5e10335e36197ea10894c"
+                "reference": "0a7934d7ecdfe402079027513daa3b7e881f315d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/287ac3347c47918c0bf5e10335e36197ea10894c",
-                "reference": "287ac3347c47918c0bf5e10335e36197ea10894c",
+                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/0a7934d7ecdfe402079027513daa3b7e881f315d",
+                "reference": "0a7934d7ecdfe402079027513daa3b7e881f315d",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1",
-                "phpstan/phpdoc-parser": "^0.3.1",
-                "squizlabs/php_codesniffer": "^3.4.1"
+                "phpstan/phpdoc-parser": "0.3.5 - 0.4.2",
+                "squizlabs/php_codesniffer": "^3.5.3"
             },
             "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "0.5.0",
                 "jakub-onderka/php-parallel-lint": "1.0.0",
-                "phing/phing": "2.16.1",
-                "phpstan/phpstan": "0.11.4",
-                "phpstan/phpstan-phpunit": "0.11",
-                "phpstan/phpstan-strict-rules": "0.11",
-                "phpunit/phpunit": "8.0.5"
+                "phing/phing": "2.16.2",
+                "phpstan/phpstan": "0.11.19|0.12.5",
+                "phpstan/phpstan-phpunit": "0.11.2|0.12.6",
+                "phpstan/phpstan-strict-rules": "0.11.1|0.12.1",
+                "phpunit/phpunit": "7.5.18|8.5.2"
             },
             "type": "phpcodesniffer-standard",
             "autoload": {
@@ -4040,7 +4349,7 @@
                 "MIT"
             ],
             "description": "Slevomat Coding Standard for PHP_CodeSniffer complements Consistence Coding Standard by providing sniffs with additional checks.",
-            "time": "2019-03-22T19:10:53+00:00"
+            "time": "2020-01-23T15:37:30+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -4095,25 +4404,25 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v5.0.2",
+            "version": "v4.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "17874dd8ab9a19422028ad56172fb294287a701b"
+                "reference": "3a50be43515590faf812fbd7708200aabc327ec3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/17874dd8ab9a19422028ad56172fb294287a701b",
-                "reference": "17874dd8ab9a19422028ad56172fb294287a701b",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/3a50be43515590faf812fbd7708200aabc327ec3",
+                "reference": "3a50be43515590faf812fbd7708200aabc327ec3",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2.5"
+                "php": "^7.1.3"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.0-dev"
+                    "dev-master": "4.4-dev"
                 }
             },
             "autoload": {
@@ -4140,29 +4449,29 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2019-11-18T17:27:11+00:00"
+            "time": "2020-01-04T13:00:46+00:00"
         },
         {
             "name": "symfony/process",
-            "version": "v5.0.2",
+            "version": "v4.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "ea2dc31b59d63abd9bc2356ac72eb7b3f3469f0e"
+                "reference": "f5697ab4cb14a5deed7473819e63141bf5352c36"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/ea2dc31b59d63abd9bc2356ac72eb7b3f3469f0e",
-                "reference": "ea2dc31b59d63abd9bc2356ac72eb7b3f3469f0e",
+                "url": "https://api.github.com/repos/symfony/process/zipball/f5697ab4cb14a5deed7473819e63141bf5352c36",
+                "reference": "f5697ab4cb14a5deed7473819e63141bf5352c36",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2.5"
+                "php": "^7.1.3"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.0-dev"
+                    "dev-master": "4.4-dev"
                 }
             },
             "autoload": {
@@ -4189,20 +4498,20 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2019-12-10T11:06:55+00:00"
+            "time": "2020-01-09T09:50:08+00:00"
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v5.0.2",
+            "version": "v5.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "d7bc61d5d335fa9b1b91e14bb16861e8ca50f53a"
+                "reference": "ccb1be566ae15f790020f917f06d1da0b04fe47b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/d7bc61d5d335fa9b1b91e14bb16861e8ca50f53a",
-                "reference": "d7bc61d5d335fa9b1b91e14bb16861e8ca50f53a",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/ccb1be566ae15f790020f917f06d1da0b04fe47b",
+                "reference": "ccb1be566ae15f790020f917f06d1da0b04fe47b",
                 "shasum": ""
             },
             "require": {
@@ -4264,7 +4573,7 @@
                 "debug",
                 "dump"
             ],
-            "time": "2019-12-18T13:50:31+00:00"
+            "time": "2020-01-04T14:08:26+00:00"
         },
         {
             "name": "theseer/tokenizer",
@@ -4533,6 +4842,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "google/recaptcha": 0,
         "psy/psysh": 0
     },
     "prefer-stable": true,
