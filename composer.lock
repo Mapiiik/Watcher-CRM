@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "26d36b8b6acd881f6176b477f3224d25",
+    "content-hash": "4fe9b1ac88310430cabba0628f4435ab",
     "packages": [
         {
             "name": "aura/intl",
@@ -613,53 +613,6 @@
             "time": "2020-01-13T10:02:55+00:00"
         },
         {
-            "name": "google/recaptcha",
-            "version": "1.2.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/google/recaptcha.git",
-                "reference": "98c4a6573b27e8b0990ea8789c74ea378795134c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/google/recaptcha/zipball/98c4a6573b27e8b0990ea8789c74ea378795134c",
-                "reference": "98c4a6573b27e8b0990ea8789c74ea378795134c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.2.20|^2.15",
-                "php-coveralls/php-coveralls": "^2.1",
-                "phpunit/phpunit": "^4.8.36|^5.7.27|^6.59|^7.5.11"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.2.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "ReCaptcha\\": "src/ReCaptcha"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "Client library for reCAPTCHA, a free service that protects websites from spam and abuse.",
-            "homepage": "https://www.google.com/recaptcha/",
-            "keywords": [
-                "Abuse",
-                "captcha",
-                "recaptcha",
-                "spam"
-            ],
-            "time": "2019-08-16T15:48:25+00:00"
-        },
-        {
             "name": "laminas/laminas-diactoros",
             "version": "2.2.2",
             "source": {
@@ -853,6 +806,57 @@
                 "zf"
             ],
             "time": "2020-01-07T22:58:31+00:00"
+        },
+        {
+            "name": "maiconpinto/cakephp-adminlte-theme",
+            "version": "dev-cakephp4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yKanazawa/cakephp-adminlte-theme.git",
+                "reference": "a46ca578cc5ce7d92ff1aaa5aa930b27e29888bf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yKanazawa/cakephp-adminlte-theme/zipball/a46ca578cc5ce7d92ff1aaa5aa930b27e29888bf",
+                "reference": "a46ca578cc5ce7d92ff1aaa5aa930b27e29888bf",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "^4.0",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~8.0"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "AdminLTE\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maicon Pinto",
+                    "email": "maiconsilva.pinto@gmail.com",
+                    "homepage": "https://www.maiconpinto.com.br/",
+                    "role": "Author"
+                }
+            ],
+            "description": "CakePHP 4.x AdminLTE Theme.",
+            "homepage": "https://github.com/maiconpinto/cakephp-adminlte-theme",
+            "keywords": [
+                "cakephp",
+                "plugin",
+                "templates"
+            ],
+            "support": {
+                "issues": "https://github.com/maiconpinto/cakephp-adminlte-theme/issues",
+                "source": "https://github.com/maiconpinto/cakephp-adminlte-theme"
+            },
+            "time": "2019-12-25T12:07:41+00:00"
         },
         {
             "name": "mobiledetect/mobiledetectlib",
@@ -4842,7 +4846,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "google/recaptcha": 0,
+        "maiconpinto/cakephp-adminlte-theme": 20,
         "psy/psysh": 0
     },
     "prefer-stable": true,

@@ -51,13 +51,18 @@ class Application extends BaseApplication
          * Debug Kit should not be installed on a production system
          */
         if (Configure::read('debug')) {
-            Configure::write('DebugKit.forceEnable', true);
             $this->addPlugin('DebugKit');
+            //Configure::write('DebugKit.forceEnable', true);
         }
 
         // Load more plugins here
-        Configure::write('Users.Registration.active', false);
+        
+        // CakeDC/users
         $this->addPlugin(\CakeDC\Users\Plugin::class);
+        Configure::write('Users.config', ['users']);
+        
+        // AdminLTE
+        $this->addPlugin('AdminLTE');
     }
 
     /**

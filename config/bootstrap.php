@@ -213,3 +213,8 @@ ServerRequest::addDetector('tablet', function ($request) {
 //Inflector::rules('irregular', ['red' => 'redlings']);
 //Inflector::rules('uninflected', ['dontinflectme']);
 //Inflector::rules('transliteration', ['/å/' => 'aa']);
+
+// AdminLTE
+if (file_exists(CONFIG . 'adminlte.php')) {
+    Configure::load('adminlte', 'default');
+}
