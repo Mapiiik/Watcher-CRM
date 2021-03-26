@@ -17,7 +17,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Controller\Controller;
-use Cake\Event\EventInterface;
 
 /**
  * Application Controller
@@ -51,12 +50,4 @@ class AppController extends Controller
          */
         //$this->loadComponent('FormProtection');
     }
-    
-    public function beforeRender(EventInterface $event)
-    {
-        parent::beforeFilter($event);
-        
-        // AdminLTE
-        $this->viewBuilder()->setTheme('AdminLTE');
-    }    
 }
