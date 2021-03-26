@@ -5,7 +5,7 @@
 /logs/*
 /tmp/*
 /vendor/*
-/webroot/netair/*
+/webroot/legacy/*
 
 # OS generated files #
 ######################
