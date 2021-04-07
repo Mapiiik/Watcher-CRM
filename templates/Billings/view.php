@@ -1,0 +1,92 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\Billing $billing
+ */
+?>
+<div class="row">
+    <aside class="column">
+        <div class="side-nav">
+            <h4 class="heading"><?= __('Actions') ?></h4>
+            <?= $this->Html->link(__('Edit Billing'), ['action' => 'edit', $billing->id], ['class' => 'side-nav-item']) ?>
+            <?= $this->Form->postLink(__('Delete Billing'), ['action' => 'delete', $billing->id], ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('List Billings'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('New Billing'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+        </div>
+    </aside>
+    <div class="column-responsive column-80">
+        <div class="billings view content">
+            <h3><?= h($billing->id) ?></h3>
+            <table>
+                <tr>
+                    <th><?= __('Customer') ?></th>
+                    <td><?= $billing->has('customer') ? $this->Html->link($billing->customer->title, ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]) : '' ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Service') ?></th>
+                    <td><?= $billing->has('service') ? $this->Html->link($billing->service->name, ['controller' => 'Services', 'action' => 'view', $billing->service->id]) : '' ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Contract') ?></th>
+                    <td><?= $billing->has('contract') ? $this->Html->link($billing->contract->id, ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]) : '' ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Id') ?></th>
+                    <td><?= $this->Number->format($billing->id) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Price') ?></th>
+                    <td><?= $this->Number->format($billing->price) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Active') ?></th>
+                    <td><?= $this->Number->format($billing->active) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified By') ?></th>
+                    <td><?= $this->Number->format($billing->modified_by) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Created By') ?></th>
+                    <td><?= $this->Number->format($billing->created_by) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Separate') ?></th>
+                    <td><?= $this->Number->format($billing->separate) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Quantity') ?></th>
+                    <td><?= $this->Number->format($billing->quantity) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Billing From') ?></th>
+                    <td><?= h($billing->billing_from) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified') ?></th>
+                    <td><?= h($billing->modified) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Created') ?></th>
+                    <td><?= h($billing->created) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Billing Until') ?></th>
+                    <td><?= h($billing->billing_until) ?></td>
+                </tr>
+            </table>
+            <div class="text">
+                <strong><?= __('Text') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($billing->text)); ?>
+                </blockquote>
+            </div>
+            <div class="text">
+                <strong><?= __('Note') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($billing->note)); ?>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,68 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\Billing[]|\Cake\Collection\CollectionInterface $billings
+ */
+?>
+<div class="billings index content">
+    <?= $this->Html->link(__('New Billing'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <h3><?= __('Billings') ?></h3>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th><?= $this->Paginator->sort('id') ?></th>
+                    <th><?= $this->Paginator->sort('customer_id') ?></th>
+                    <th><?= $this->Paginator->sort('price') ?></th>
+                    <th><?= $this->Paginator->sort('billing_from') ?></th>
+                    <th><?= $this->Paginator->sort('active') ?></th>
+                    <th><?= $this->Paginator->sort('modified_by') ?></th>
+                    <th><?= $this->Paginator->sort('modified') ?></th>
+                    <th><?= $this->Paginator->sort('created_by') ?></th>
+                    <th><?= $this->Paginator->sort('created') ?></th>
+                    <th><?= $this->Paginator->sort('billing_until') ?></th>
+                    <th><?= $this->Paginator->sort('separate') ?></th>
+                    <th><?= $this->Paginator->sort('service_id') ?></th>
+                    <th><?= $this->Paginator->sort('quantity') ?></th>
+                    <th><?= $this->Paginator->sort('contract_id') ?></th>
+                    <th class="actions"><?= __('Actions') ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($billings as $billing): ?>
+                <tr>
+                    <td><?= $this->Number->format($billing->id) ?></td>
+                    <td><?= $billing->has('customer') ? $this->Html->link($billing->customer->title, ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]) : '' ?></td>
+                    <td><?= $this->Number->format($billing->price) ?></td>
+                    <td><?= h($billing->billing_from) ?></td>
+                    <td><?= $this->Number->format($billing->active) ?></td>
+                    <td><?= $this->Number->format($billing->modified_by) ?></td>
+                    <td><?= h($billing->modified) ?></td>
+                    <td><?= $this->Number->format($billing->created_by) ?></td>
+                    <td><?= h($billing->created) ?></td>
+                    <td><?= h($billing->billing_until) ?></td>
+                    <td><?= $this->Number->format($billing->separate) ?></td>
+                    <td><?= $billing->has('service') ? $this->Html->link($billing->service->name, ['controller' => 'Services', 'action' => 'view', $billing->service->id]) : '' ?></td>
+                    <td><?= $this->Number->format($billing->quantity) ?></td>
+                    <td><?= $billing->has('contract') ? $this->Html->link($billing->contract->id, ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]) : '' ?></td>
+                    <td class="actions">
+                        <?= $this->Html->link(__('View'), ['action' => 'view', $billing->id]) ?>
+                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $billing->id]) ?>
+                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $billing->id], ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id)]) ?>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <div class="paginator">
+        <ul class="pagination">
+            <?= $this->Paginator->first('<< ' . __('first')) ?>
+            <?= $this->Paginator->prev('< ' . __('previous')) ?>
+            <?= $this->Paginator->numbers() ?>
+            <?= $this->Paginator->next(__('next') . ' >') ?>
+            <?= $this->Paginator->last(__('last') . ' >>') ?>
+        </ul>
+        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+    </div>
+</div>
