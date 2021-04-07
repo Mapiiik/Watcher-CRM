@@ -17,6 +17,9 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+use Cake\Event\EventInterface;
+use Cake\I18n\I18n;
+use Cake\Http\Exception\NotFoundException;
 
 /**
  * Application Controller
@@ -48,6 +51,51 @@ class AppController extends Controller
          * Enable the following component for recommended CakePHP form protection settings.
          * see https://book.cakephp.org/4/en/controllers/components/form-protection.html
          */
-        //$this->loadComponent('FormProtection');
+        $this->loadComponent('FormProtection');
     }
+
+    # App > paginate
+    public function paginate($object = null, $settings = array()) {
+        try
+        {
+            $this->paginate['maxLimit'] = 1000;
+            return parent::paginate($object, $settings);
+        }
+        catch (NotFoundException $e)
+        {
+            $this->Flash->error(__('Unable to find results on page {0}. Redirect to page 1.', $this->request->getQuery('page')));
+            $this->redirect(['page' => 1] + $this->request->getQueryParams());
+            return;
+        }
+    }
+    
+    # App > beforeFilter
+    public function beforeFilter(EventInterface $event) {
+        # We check if we have a language set
+        if ($this->request->getQuery('language')) {
+            $this->request->getSession()->write('Config.language', $this->request->getQuery('language'));
+        }
+        
+        if ($language = $this->request->getSession()->read('Config.language', I18n::getDefaultLocale())) {
+            I18n::setLocale($language);
+        }
+        
+        # Disable SecurityComponent POST validation for CakeDC/Users
+        if ($this->request->getParam('plugin') === 'CakeDC/Users') {
+            $this->Security->setConfig('validatePost', false);
+        }
+        
+        require_once('../webroot/legacy/class/access.class.php');
+        require_once('../webroot/legacy/cfg/paths.cfg.php');
+
+        // Errors
+        define('ERR_NOT_LOGGED', 'Nejste přihlášeni, přihlašte se prosím');
+        define('ERR_NOT_ENOUGH_RIGHTS', 'Nedostatek práv !!!');
+        
+        // Init security
+        $session = new \Session();
+        $session->accessCheck(true);
+        
+        parent::beforeFilter($event);
+  }        
 }
