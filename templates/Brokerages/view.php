@@ -19,16 +19,14 @@
             <h3><?= h($brokerage->name) ?></h3>
             <table>
                 <tr>
+                    <th><?= __('Name') ?></th>
+                    <td><?= h($brokerage->name) ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Id') ?></th>
                     <td><?= $this->Number->format($brokerage->id) ?></td>
                 </tr>
             </table>
-            <div class="text">
-                <strong><?= __('Name') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($brokerage->name)); ?>
-                </blockquote>
-            </div>
             <div class="related">
                 <h4><?= __('Related Brokerage Dealers') ?></h4>
                 <?php if (!empty($brokerage->brokerage_dealers)) : ?>
@@ -50,9 +48,9 @@
                             <td><?= h($brokerageDealers->percentage) ?></td>
                             <td><?= h($brokerageDealers->id) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'BrokerageDealers', 'action' => 'view', $brokerageDealers->]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'BrokerageDealers', 'action' => 'edit', $brokerageDealers->]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'BrokerageDealers', 'action' => 'delete', $brokerageDealers->], ['confirm' => __('Are you sure you want to delete # {0}?', $brokerageDealers->)]) ?>
+                                <?= $this->Html->link(__('View'), ['controller' => 'BrokerageDealers', 'action' => 'view', $brokerageDealers->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'BrokerageDealers', 'action' => 'edit', $brokerageDealers->id]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'BrokerageDealers', 'action' => 'delete', $brokerageDealers->id], ['confirm' => __('Are you sure you want to delete # {0}?', $brokerageDealers->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -129,21 +127,7 @@
                         <tr>
                             <th><?= __('Ip') ?></th>
                             <th><?= __('Customer Id') ?></th>
-                            <th><?= __('Queue Id') ?></th>
-                            <th><?= __('Device Id') ?></th>
-                            <th><?= __('Mac') ?></th>
-                            <th><?= __('Comment') ?></th>
-                            <th><?= __('Cost') ?></th>
-                            <th><?= __('Dealer Id') ?></th>
-                            <th><?= __('Installation Date') ?></th>
-                            <th><?= __('Brokerage Id') ?></th>
-                            <th><?= __('Billing From') ?></th>
                             <th><?= __('Note') ?></th>
-                            <th><?= __('Vip') ?></th>
-                            <th><?= __('Bond') ?></th>
-                            <th><?= __('Active Until') ?></th>
-                            <th><?= __('Router Id') ?></th>
-                            <th><?= __('Access Description') ?></th>
                             <th><?= __('Contract Id') ?></th>
                             <th><?= __('Id') ?></th>
                             <th><?= __('Created') ?></th>
@@ -156,21 +140,7 @@
                         <tr>
                             <td><?= h($ips->ip) ?></td>
                             <td><?= h($ips->customer_id) ?></td>
-                            <td><?= h($ips->queue_id) ?></td>
-                            <td><?= h($ips->device_id) ?></td>
-                            <td><?= h($ips->mac) ?></td>
-                            <td><?= h($ips->comment) ?></td>
-                            <td><?= h($ips->cost) ?></td>
-                            <td><?= h($ips->dealer_id) ?></td>
-                            <td><?= h($ips->installation_date) ?></td>
-                            <td><?= h($ips->brokerage_id) ?></td>
-                            <td><?= h($ips->billing_from) ?></td>
                             <td><?= h($ips->note) ?></td>
-                            <td><?= h($ips->vip) ?></td>
-                            <td><?= h($ips->bond) ?></td>
-                            <td><?= h($ips->active_until) ?></td>
-                            <td><?= h($ips->router_id) ?></td>
-                            <td><?= h($ips->access_description) ?></td>
                             <td><?= h($ips->contract_id) ?></td>
                             <td><?= h($ips->id) ?></td>
                             <td><?= h($ips->created) ?></td>
@@ -199,20 +169,7 @@
                             <th><?= __('Removed') ?></th>
                             <th><?= __('Ip') ?></th>
                             <th><?= __('Customer Id') ?></th>
-                            <th><?= __('Queue Id') ?></th>
-                            <th><?= __('Device Id') ?></th>
-                            <th><?= __('Mac') ?></th>
-                            <th><?= __('Comment') ?></th>
-                            <th><?= __('Cost') ?></th>
-                            <th><?= __('Dealer Id') ?></th>
-                            <th><?= __('Installation Date') ?></th>
-                            <th><?= __('Brokerage Id') ?></th>
-                            <th><?= __('Billing From') ?></th>
                             <th><?= __('Note') ?></th>
-                            <th><?= __('Vip') ?></th>
-                            <th><?= __('Bond') ?></th>
-                            <th><?= __('Active Until') ?></th>
-                            <th><?= __('Access Description') ?></th>
                             <th><?= __('Contract Id') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
@@ -223,25 +180,12 @@
                             <td><?= h($removedIps->removed) ?></td>
                             <td><?= h($removedIps->ip) ?></td>
                             <td><?= h($removedIps->customer_id) ?></td>
-                            <td><?= h($removedIps->queue_id) ?></td>
-                            <td><?= h($removedIps->device_id) ?></td>
-                            <td><?= h($removedIps->mac) ?></td>
-                            <td><?= h($removedIps->comment) ?></td>
-                            <td><?= h($removedIps->cost) ?></td>
-                            <td><?= h($removedIps->dealer_id) ?></td>
-                            <td><?= h($removedIps->installation_date) ?></td>
-                            <td><?= h($removedIps->brokerage_id) ?></td>
-                            <td><?= h($removedIps->billing_from) ?></td>
                             <td><?= h($removedIps->note) ?></td>
-                            <td><?= h($removedIps->vip) ?></td>
-                            <td><?= h($removedIps->bond) ?></td>
-                            <td><?= h($removedIps->active_until) ?></td>
-                            <td><?= h($removedIps->access_description) ?></td>
                             <td><?= h($removedIps->contract_id) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'RemovedIps', 'action' => 'view', $removedIps->]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'RemovedIps', 'action' => 'edit', $removedIps->]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'RemovedIps', 'action' => 'delete', $removedIps->], ['confirm' => __('Are you sure you want to delete # {0}?', $removedIps->)]) ?>
+                                <?= $this->Html->link(__('View'), ['controller' => 'RemovedIps', 'action' => 'view', $removedIps->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'RemovedIps', 'action' => 'edit', $removedIps->id]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'RemovedIps', 'action' => 'delete', $removedIps->id], ['confirm' => __('Are you sure you want to delete # {0}?', $removedIps->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

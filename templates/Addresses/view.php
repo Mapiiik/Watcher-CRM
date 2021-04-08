@@ -23,8 +23,44 @@
                     <td><?= $address->has('customer') ? $this->Html->link($address->customer->title, ['controller' => 'Customers', 'action' => 'view', $address->customer->id]) : '' ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('Title') ?></th>
+                    <td><?= h($address->title) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('First Name') ?></th>
+                    <td><?= h($address->first_name) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Last Name') ?></th>
+                    <td><?= h($address->last_name) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Suffix') ?></th>
+                    <td><?= h($address->suffix) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Company') ?></th>
+                    <td><?= h($address->company) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Street') ?></th>
+                    <td><?= h($address->street) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Number') ?></th>
+                    <td><?= h($address->number) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('City') ?></th>
+                    <td><?= h($address->city) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Zip') ?></th>
+                    <td><?= h($address->zip) ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Country') ?></th>
-                    <td><?= $address->has('country') ? $this->Html->link($address->country->name, ['controller' => 'Countries', 'action' => 'view', $address->country->]) : '' ?></td>
+                    <td><?= $address->has('country') ? $this->Html->link($address->country->name, ['controller' => 'Countries', 'action' => 'view', $address->country->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>
@@ -63,60 +99,6 @@
                     <td><?= h($address->modified) ?></td>
                 </tr>
             </table>
-            <div class="text">
-                <strong><?= __('Title') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($address->title)); ?>
-                </blockquote>
-            </div>
-            <div class="text">
-                <strong><?= __('First Name') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($address->first_name)); ?>
-                </blockquote>
-            </div>
-            <div class="text">
-                <strong><?= __('Last Name') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($address->last_name)); ?>
-                </blockquote>
-            </div>
-            <div class="text">
-                <strong><?= __('Suffix') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($address->suffix)); ?>
-                </blockquote>
-            </div>
-            <div class="text">
-                <strong><?= __('Company') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($address->company)); ?>
-                </blockquote>
-            </div>
-            <div class="text">
-                <strong><?= __('Street') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($address->street)); ?>
-                </blockquote>
-            </div>
-            <div class="text">
-                <strong><?= __('Number') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($address->number)); ?>
-                </blockquote>
-            </div>
-            <div class="text">
-                <strong><?= __('City') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($address->city)); ?>
-                </blockquote>
-            </div>
-            <div class="text">
-                <strong><?= __('Zip') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($address->zip)); ?>
-                </blockquote>
-            </div>
         </div>
     </div>
 </div>

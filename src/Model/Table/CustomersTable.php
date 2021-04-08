@@ -22,7 +22,6 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\LoginsTable&\Cake\ORM\Association\HasMany $Logins
  * @property \App\Model\Table\PhonesTable&\Cake\ORM\Association\HasMany $Phones
  * @property \App\Model\Table\RemovedIpsTable&\Cake\ORM\Association\HasMany $RemovedIps
- * @property \App\Model\Table\RouterContactsTable&\Cake\ORM\Association\HasMany $RouterContacts
  * @property \App\Model\Table\SoldEquipmentsTable&\Cake\ORM\Association\HasMany $SoldEquipments
  * @property \App\Model\Table\TasksTable&\Cake\ORM\Association\HasMany $Tasks
  *
@@ -94,9 +93,6 @@ class CustomersTable extends Table
         $this->hasMany('RemovedIps', [
             'foreignKey' => 'customer_id',
         ]);
-        $this->hasMany('RouterContacts', [
-            'foreignKey' => 'customer_id',
-        ]);
         $this->hasMany('SoldEquipments', [
             'foreignKey' => 'customer_id',
         ]);
@@ -122,7 +118,6 @@ class CustomersTable extends Table
 
         $validator
             ->scalar('title')
-            ->maxLength('title', 16)
             ->allowEmptyString('title');
 
         $validator

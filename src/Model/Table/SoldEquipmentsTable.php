@@ -77,7 +77,6 @@ class SoldEquipmentsTable extends Table
 
         $validator
             ->scalar('serial_number')
-            ->maxLength('serial_number', 40)
             ->allowEmptyString('serial_number');
 
         $validator

@@ -36,7 +36,7 @@ class CustomersController extends AppController
     public function view($id = null)
     {
         $customer = $this->Customers->get($id, [
-            'contain' => ['Taxes', 'Addresses', 'Billings', 'BorrowedEquipments', 'Contracts', 'Emails', 'Ips', 'LabelCustomers', 'Logins', 'Phones', 'RemovedIps', 'RouterContacts', 'SoldEquipments', 'Tasks'],
+            'contain' => ['Taxes', 'Addresses', 'Billings', 'BorrowedEquipments', 'Contracts', 'Emails', 'Ips', 'LabelCustomers', 'Logins', 'Phones', 'RemovedIps', 'SoldEquipments', 'Tasks'],
         ]);
 
         $this->set(compact('customer'));

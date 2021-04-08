@@ -114,6 +114,8 @@
                             <th><?= __('Overlimit Fragment') ?></th>
                             <th><?= __('Overlimit Cost') ?></th>
                             <th><?= __('Service Type Id') ?></th>
+                            <th><?= __('Speed Up') ?></th>
+                            <th><?= __('Speed Down') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($serviceType->queues as $queues) : ?>
@@ -126,6 +128,8 @@
                             <td><?= h($queues->overlimit_fragment) ?></td>
                             <td><?= h($queues->overlimit_cost) ?></td>
                             <td><?= h($queues->service_type_id) ?></td>
+                            <td><?= h($queues->speed_up) ?></td>
+                            <td><?= h($queues->speed_down) ?></td>
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'Queues', 'action' => 'view', $queues->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'Queues', 'action' => 'edit', $queues->id]) ?>

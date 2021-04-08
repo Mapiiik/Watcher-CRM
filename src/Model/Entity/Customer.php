@@ -48,7 +48,6 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Login[] $logins
  * @property \App\Model\Entity\Phone[] $phones
  * @property \App\Model\Entity\RemovedIp[] $removed_ips
- * @property \App\Model\Entity\RouterContact[] $router_contacts
  * @property \App\Model\Entity\SoldEquipment[] $sold_equipments
  * @property \App\Model\Entity\Task[] $tasks
  */
@@ -102,7 +101,6 @@ class Customer extends Entity
         'logins' => true,
         'phones' => true,
         'removed_ips' => true,
-        'router_contacts' => true,
         'sold_equipments' => true,
         'tasks' => true,
     ];

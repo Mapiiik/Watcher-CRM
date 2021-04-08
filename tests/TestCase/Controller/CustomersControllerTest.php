@@ -34,7 +34,6 @@ class CustomersControllerTest extends TestCase
         'app.Logins',
         'app.Phones',
         'app.RemovedIps',
-        'app.RouterContacts',
         'app.SoldEquipments',
         'app.Tasks',
     ];

@@ -23,6 +23,10 @@
                     <td><?= $billing->has('customer') ? $this->Html->link($billing->customer->title, ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]) : '' ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('Text') ?></th>
+                    <td><?= h($billing->text) ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Service') ?></th>
                     <td><?= $billing->has('service') ? $this->Html->link($billing->service->name, ['controller' => 'Services', 'action' => 'view', $billing->service->id]) : '' ?></td>
                 </tr>
@@ -75,12 +79,6 @@
                     <td><?= h($billing->billing_until) ?></td>
                 </tr>
             </table>
-            <div class="text">
-                <strong><?= __('Text') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($billing->text)); ?>
-                </blockquote>
-            </div>
             <div class="text">
                 <strong><?= __('Note') ?></strong>
                 <blockquote>

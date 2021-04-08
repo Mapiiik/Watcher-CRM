@@ -13,8 +13,6 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\BrokerageDealersTable&\Cake\ORM\Association\HasMany $BrokerageDealers
  * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\HasMany $Contracts
- * @property \App\Model\Table\IpsTable&\Cake\ORM\Association\HasMany $Ips
- * @property \App\Model\Table\RemovedIpsTable&\Cake\ORM\Association\HasMany $RemovedIps
  *
  * @method \App\Model\Entity\Brokerage newEmptyEntity()
  * @method \App\Model\Entity\Brokerage newEntity(array $data, array $options = [])
@@ -50,12 +48,6 @@ class BrokeragesTable extends Table
             'foreignKey' => 'brokerage_id',
         ]);
         $this->hasMany('Contracts', [
-            'foreignKey' => 'brokerage_id',
-        ]);
-        $this->hasMany('Ips', [
-            'foreignKey' => 'brokerage_id',
-        ]);
-        $this->hasMany('RemovedIps', [
             'foreignKey' => 'brokerage_id',
         ]);
     }

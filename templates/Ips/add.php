@@ -18,21 +18,7 @@
                 <legend><?= __('Add Ip') ?></legend>
                 <?php
                     echo $this->Form->control('customer_id', ['options' => $customers]);
-                    echo $this->Form->control('queue_id', ['options' => $queues]);
-                    echo $this->Form->control('device_id', ['options' => $devices]);
-                    echo $this->Form->control('mac');
-                    echo $this->Form->control('comment');
-                    echo $this->Form->control('cost');
-                    echo $this->Form->control('dealer_id');
-                    echo $this->Form->control('installation_date', ['empty' => true]);
-                    echo $this->Form->control('brokerage_id', ['options' => $brokerages, 'empty' => true]);
-                    echo $this->Form->control('billing_from', ['empty' => true]);
                     echo $this->Form->control('note');
-                    echo $this->Form->control('vip');
-                    echo $this->Form->control('bond', ['empty' => true]);
-                    echo $this->Form->control('active_until', ['empty' => true]);
-                    echo $this->Form->control('router_id', ['options' => $routers, 'empty' => true]);
-                    echo $this->Form->control('access_description');
                     echo $this->Form->control('contract_id', ['options' => $contracts]);
                     echo $this->Form->control('id');
                     echo $this->Form->control('created_by');

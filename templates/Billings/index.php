@@ -13,6 +13,7 @@
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
+                    <th><?= $this->Paginator->sort('text') ?></th>
                     <th><?= $this->Paginator->sort('price') ?></th>
                     <th><?= $this->Paginator->sort('billing_from') ?></th>
                     <th><?= $this->Paginator->sort('active') ?></th>
@@ -33,6 +34,7 @@
                 <tr>
                     <td><?= $this->Number->format($billing->id) ?></td>
                     <td><?= $billing->has('customer') ? $this->Html->link($billing->customer->title, ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]) : '' ?></td>
+                    <td><?= h($billing->text) ?></td>
                     <td><?= $this->Number->format($billing->price) ?></td>
                     <td><?= h($billing->billing_from) ?></td>
                     <td><?= $this->Number->format($billing->active) ?></td>

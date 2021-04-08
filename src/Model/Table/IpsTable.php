@@ -12,11 +12,6 @@ use Cake\Validation\Validator;
  * Ips Model
  *
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
- * @property \App\Model\Table\QueuesTable&\Cake\ORM\Association\BelongsTo $Queues
- * @property \App\Model\Table\DevicesTable&\Cake\ORM\Association\BelongsTo $Devices
- * @property \App\Model\Table\DealersTable&\Cake\ORM\Association\BelongsTo $Dealers
- * @property \App\Model\Table\BrokeragesTable&\Cake\ORM\Association\BelongsTo $Brokerages
- * @property \App\Model\Table\RoutersTable&\Cake\ORM\Association\BelongsTo $Routers
  * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
  *
  * @method \App\Model\Entity\Ip newEmptyEntity()
@@ -57,23 +52,6 @@ class IpsTable extends Table
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsTo('Queues', [
-            'foreignKey' => 'queue_id',
-            'joinType' => 'INNER',
-        ]);
-        $this->belongsTo('Devices', [
-            'foreignKey' => 'device_id',
-            'joinType' => 'INNER',
-        ]);
-        $this->belongsTo('Dealers', [
-            'foreignKey' => 'dealer_id',
-        ]);
-        $this->belongsTo('Brokerages', [
-            'foreignKey' => 'brokerage_id',
-        ]);
-        $this->belongsTo('Routers', [
-            'foreignKey' => 'router_id',
-        ]);
         $this->belongsTo('Contracts', [
             'foreignKey' => 'contract_id',
             'joinType' => 'INNER',
@@ -94,44 +72,8 @@ class IpsTable extends Table
             ->allowEmptyString('ip', null, 'create');
 
         $validator
-            ->scalar('mac')
-            ->allowEmptyString('mac');
-
-        $validator
-            ->scalar('comment')
-            ->allowEmptyString('comment');
-
-        $validator
-            ->integer('cost')
-            ->allowEmptyString('cost');
-
-        $validator
-            ->date('installation_date')
-            ->allowEmptyDate('installation_date');
-
-        $validator
-            ->date('billing_from')
-            ->allowEmptyDate('billing_from');
-
-        $validator
             ->scalar('note')
             ->allowEmptyString('note');
-
-        $validator
-            ->boolean('vip')
-            ->notEmptyString('vip');
-
-        $validator
-            ->date('bond')
-            ->allowEmptyDate('bond');
-
-        $validator
-            ->date('active_until')
-            ->allowEmptyDate('active_until');
-
-        $validator
-            ->scalar('access_description')
-            ->allowEmptyString('access_description');
 
         $validator
             ->integer('id')
@@ -161,11 +103,6 @@ class IpsTable extends Table
     {
         $rules->add($rules->isUnique(['id']), ['errorField' => 'id']);
         $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
-        $rules->add($rules->existsIn(['queue_id'], 'Queues'), ['errorField' => 'queue_id']);
-        $rules->add($rules->existsIn(['device_id'], 'Devices'), ['errorField' => 'device_id']);
-        $rules->add($rules->existsIn(['dealer_id'], 'Dealers'), ['errorField' => 'dealer_id']);
-        $rules->add($rules->existsIn(['brokerage_id'], 'Brokerages'), ['errorField' => 'brokerage_id']);
-        $rules->add($rules->existsIn(['router_id'], 'Routers'), ['errorField' => 'router_id']);
         $rules->add($rules->existsIn(['contract_id'], 'Contracts'), ['errorField' => 'contract_id']);
 
         return $rules;

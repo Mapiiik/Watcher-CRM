@@ -27,36 +27,8 @@
                     <td><?= $ip->has('customer') ? $this->Html->link($ip->customer->title, ['controller' => 'Customers', 'action' => 'view', $ip->customer->id]) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Queue') ?></th>
-                    <td><?= $ip->has('queue') ? $this->Html->link($ip->queue->name, ['controller' => 'Queues', 'action' => 'view', $ip->queue->id]) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Device') ?></th>
-                    <td><?= $ip->has('device') ? $this->Html->link($ip->device->name, ['controller' => 'Devices', 'action' => 'view', $ip->device->id]) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Mac') ?></th>
-                    <td><?= h($ip->mac) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Brokerage') ?></th>
-                    <td><?= $ip->has('brokerage') ? $this->Html->link($ip->brokerage->name, ['controller' => 'Brokerages', 'action' => 'view', $ip->brokerage->id]) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Router') ?></th>
-                    <td><?= $ip->has('router') ? $this->Html->link($ip->router->name, ['controller' => 'Routers', 'action' => 'view', $ip->router->id]) : '' ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Contract') ?></th>
                     <td><?= $ip->has('contract') ? $this->Html->link($ip->contract->id, ['controller' => 'Contracts', 'action' => 'view', $ip->contract->id]) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Cost') ?></th>
-                    <td><?= $this->Number->format($ip->cost) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Dealer Id') ?></th>
-                    <td><?= $this->Number->format($ip->dealer_id) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>
@@ -71,22 +43,6 @@
                     <td><?= $this->Number->format($ip->modified_by) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Installation Date') ?></th>
-                    <td><?= h($ip->installation_date) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Billing From') ?></th>
-                    <td><?= h($ip->billing_from) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Bond') ?></th>
-                    <td><?= h($ip->bond) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Active Until') ?></th>
-                    <td><?= h($ip->active_until) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Created') ?></th>
                     <td><?= h($ip->created) ?></td>
                 </tr>
@@ -94,27 +50,11 @@
                     <th><?= __('Modified') ?></th>
                     <td><?= h($ip->modified) ?></td>
                 </tr>
-                <tr>
-                    <th><?= __('Vip') ?></th>
-                    <td><?= $ip->vip ? __('Yes') : __('No'); ?></td>
-                </tr>
             </table>
-            <div class="text">
-                <strong><?= __('Comment') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($ip->comment)); ?>
-                </blockquote>
-            </div>
             <div class="text">
                 <strong><?= __('Note') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($ip->note)); ?>
-                </blockquote>
-            </div>
-            <div class="text">
-                <strong><?= __('Access Description') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($ip->access_description)); ?>
                 </blockquote>
             </div>
         </div>

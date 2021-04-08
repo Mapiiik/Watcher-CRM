@@ -23,8 +23,32 @@
                     <td><?= h($customer->title) ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('First Name') ?></th>
+                    <td><?= h($customer->first_name) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Last Name') ?></th>
+                    <td><?= h($customer->last_name) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Suffix') ?></th>
+                    <td><?= h($customer->suffix) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Company') ?></th>
+                    <td><?= h($customer->company) ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Tax') ?></th>
                     <td><?= $customer->has('tax') ? $this->Html->link($customer->tax->name, ['controller' => 'Taxes', 'action' => 'view', $customer->tax->id]) : '' ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Bank Name') ?></th>
+                    <td><?= h($customer->bank_name) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Bank Account') ?></th>
+                    <td><?= h($customer->bank_account) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Bank Code') ?></th>
@@ -37,6 +61,10 @@
                 <tr>
                     <th><?= __('Dic') ?></th>
                     <td><?= h($customer->dic) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Www') ?></th>
+                    <td><?= h($customer->www) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Identity Card Number') ?></th>
@@ -95,48 +123,6 @@
                     <td><?= $customer->agree_mailing_billing ? __('Yes') : __('No'); ?></td>
                 </tr>
             </table>
-            <div class="text">
-                <strong><?= __('First Name') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($customer->first_name)); ?>
-                </blockquote>
-            </div>
-            <div class="text">
-                <strong><?= __('Last Name') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($customer->last_name)); ?>
-                </blockquote>
-            </div>
-            <div class="text">
-                <strong><?= __('Suffix') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($customer->suffix)); ?>
-                </blockquote>
-            </div>
-            <div class="text">
-                <strong><?= __('Company') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($customer->company)); ?>
-                </blockquote>
-            </div>
-            <div class="text">
-                <strong><?= __('Bank Name') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($customer->bank_name)); ?>
-                </blockquote>
-            </div>
-            <div class="text">
-                <strong><?= __('Bank Account') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($customer->bank_account)); ?>
-                </blockquote>
-            </div>
-            <div class="text">
-                <strong><?= __('Www') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($customer->www)); ?>
-                </blockquote>
-            </div>
             <div class="text">
                 <strong><?= __('Internal Note') ?></strong>
                 <blockquote>
@@ -404,21 +390,7 @@
                         <tr>
                             <th><?= __('Ip') ?></th>
                             <th><?= __('Customer Id') ?></th>
-                            <th><?= __('Queue Id') ?></th>
-                            <th><?= __('Device Id') ?></th>
-                            <th><?= __('Mac') ?></th>
-                            <th><?= __('Comment') ?></th>
-                            <th><?= __('Cost') ?></th>
-                            <th><?= __('Dealer Id') ?></th>
-                            <th><?= __('Installation Date') ?></th>
-                            <th><?= __('Brokerage Id') ?></th>
-                            <th><?= __('Billing From') ?></th>
                             <th><?= __('Note') ?></th>
-                            <th><?= __('Vip') ?></th>
-                            <th><?= __('Bond') ?></th>
-                            <th><?= __('Active Until') ?></th>
-                            <th><?= __('Router Id') ?></th>
-                            <th><?= __('Access Description') ?></th>
                             <th><?= __('Contract Id') ?></th>
                             <th><?= __('Id') ?></th>
                             <th><?= __('Created') ?></th>
@@ -431,21 +403,7 @@
                         <tr>
                             <td><?= h($ips->ip) ?></td>
                             <td><?= h($ips->customer_id) ?></td>
-                            <td><?= h($ips->queue_id) ?></td>
-                            <td><?= h($ips->device_id) ?></td>
-                            <td><?= h($ips->mac) ?></td>
-                            <td><?= h($ips->comment) ?></td>
-                            <td><?= h($ips->cost) ?></td>
-                            <td><?= h($ips->dealer_id) ?></td>
-                            <td><?= h($ips->installation_date) ?></td>
-                            <td><?= h($ips->brokerage_id) ?></td>
-                            <td><?= h($ips->billing_from) ?></td>
                             <td><?= h($ips->note) ?></td>
-                            <td><?= h($ips->vip) ?></td>
-                            <td><?= h($ips->bond) ?></td>
-                            <td><?= h($ips->active_until) ?></td>
-                            <td><?= h($ips->router_id) ?></td>
-                            <td><?= h($ips->access_description) ?></td>
                             <td><?= h($ips->contract_id) ?></td>
                             <td><?= h($ips->id) ?></td>
                             <td><?= h($ips->created) ?></td>
@@ -486,9 +444,9 @@
                             <td><?= h($labelCustomers->id) ?></td>
                             <td><?= h($labelCustomers->created_by) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'LabelCustomers', 'action' => 'view', $labelCustomers->]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'LabelCustomers', 'action' => 'edit', $labelCustomers->]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'LabelCustomers', 'action' => 'delete', $labelCustomers->], ['confirm' => __('Are you sure you want to delete # {0}?', $labelCustomers->)]) ?>
+                                <?= $this->Html->link(__('View'), ['controller' => 'LabelCustomers', 'action' => 'view', $labelCustomers->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'LabelCustomers', 'action' => 'edit', $labelCustomers->id]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'LabelCustomers', 'action' => 'delete', $labelCustomers->id], ['confirm' => __('Are you sure you want to delete # {0}?', $labelCustomers->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -583,20 +541,7 @@
                             <th><?= __('Removed') ?></th>
                             <th><?= __('Ip') ?></th>
                             <th><?= __('Customer Id') ?></th>
-                            <th><?= __('Queue Id') ?></th>
-                            <th><?= __('Device Id') ?></th>
-                            <th><?= __('Mac') ?></th>
-                            <th><?= __('Comment') ?></th>
-                            <th><?= __('Cost') ?></th>
-                            <th><?= __('Dealer Id') ?></th>
-                            <th><?= __('Installation Date') ?></th>
-                            <th><?= __('Brokerage Id') ?></th>
-                            <th><?= __('Billing From') ?></th>
                             <th><?= __('Note') ?></th>
-                            <th><?= __('Vip') ?></th>
-                            <th><?= __('Bond') ?></th>
-                            <th><?= __('Active Until') ?></th>
-                            <th><?= __('Access Description') ?></th>
                             <th><?= __('Contract Id') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
@@ -607,50 +552,12 @@
                             <td><?= h($removedIps->removed) ?></td>
                             <td><?= h($removedIps->ip) ?></td>
                             <td><?= h($removedIps->customer_id) ?></td>
-                            <td><?= h($removedIps->queue_id) ?></td>
-                            <td><?= h($removedIps->device_id) ?></td>
-                            <td><?= h($removedIps->mac) ?></td>
-                            <td><?= h($removedIps->comment) ?></td>
-                            <td><?= h($removedIps->cost) ?></td>
-                            <td><?= h($removedIps->dealer_id) ?></td>
-                            <td><?= h($removedIps->installation_date) ?></td>
-                            <td><?= h($removedIps->brokerage_id) ?></td>
-                            <td><?= h($removedIps->billing_from) ?></td>
                             <td><?= h($removedIps->note) ?></td>
-                            <td><?= h($removedIps->vip) ?></td>
-                            <td><?= h($removedIps->bond) ?></td>
-                            <td><?= h($removedIps->active_until) ?></td>
-                            <td><?= h($removedIps->access_description) ?></td>
                             <td><?= h($removedIps->contract_id) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'RemovedIps', 'action' => 'view', $removedIps->]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'RemovedIps', 'action' => 'edit', $removedIps->]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'RemovedIps', 'action' => 'delete', $removedIps->], ['confirm' => __('Are you sure you want to delete # {0}?', $removedIps->)]) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
-                <?php endif; ?>
-            </div>
-            <div class="related">
-                <h4><?= __('Related Router Contacts') ?></h4>
-                <?php if (!empty($customer->router_contacts)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __('Router Id') ?></th>
-                            <th><?= __('Customer Id') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                        <?php foreach ($customer->router_contacts as $routerContacts) : ?>
-                        <tr>
-                            <td><?= h($routerContacts->router_id) ?></td>
-                            <td><?= h($routerContacts->customer_id) ?></td>
-                            <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'RouterContacts', 'action' => 'view', $routerContacts->]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'RouterContacts', 'action' => 'edit', $routerContacts->]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'RouterContacts', 'action' => 'delete', $routerContacts->], ['confirm' => __('Are you sure you want to delete # {0}?', $routerContacts->)]) ?>
+                                <?= $this->Html->link(__('View'), ['controller' => 'RemovedIps', 'action' => 'view', $removedIps->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'RemovedIps', 'action' => 'edit', $removedIps->id]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'RemovedIps', 'action' => 'delete', $removedIps->id], ['confirm' => __('Are you sure you want to delete # {0}?', $removedIps->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -717,10 +624,10 @@
                             <th><?= __('Email') ?></th>
                             <th><?= __('Phone') ?></th>
                             <th><?= __('Task State Id') ?></th>
-                            <th><?= __('FinishDate') ?></th>
-                            <th><?= __('StartDate') ?></th>
-                            <th><?= __('EstimatedDate') ?></th>
-                            <th><?= __('CriticalDate') ?></th>
+                            <th><?= __('Finish Date') ?></th>
+                            <th><?= __('Start Date') ?></th>
+                            <th><?= __('Estimated Date') ?></th>
+                            <th><?= __('Critical Date') ?></th>
                             <th><?= __('Router Id') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
@@ -740,15 +647,15 @@
                             <td><?= h($tasks->email) ?></td>
                             <td><?= h($tasks->phone) ?></td>
                             <td><?= h($tasks->task_state_id) ?></td>
-                            <td><?= h($tasks->finishDate) ?></td>
-                            <td><?= h($tasks->startDate) ?></td>
-                            <td><?= h($tasks->estimatedDate) ?></td>
-                            <td><?= h($tasks->criticalDate) ?></td>
+                            <td><?= h($tasks->finish_date) ?></td>
+                            <td><?= h($tasks->start_date) ?></td>
+                            <td><?= h($tasks->estimated_date) ?></td>
+                            <td><?= h($tasks->critical_date) ?></td>
                             <td><?= h($tasks->router_id) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Tasks', 'action' => 'view', $tasks->]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Tasks', 'action' => 'edit', $tasks->]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Tasks', 'action' => 'delete', $tasks->], ['confirm' => __('Are you sure you want to delete # {0}?', $tasks->)]) ?>
+                                <?= $this->Html->link(__('View'), ['controller' => 'Tasks', 'action' => 'view', $tasks->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'Tasks', 'action' => 'edit', $tasks->id]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Tasks', 'action' => 'delete', $tasks->id], ['confirm' => __('Are you sure you want to delete # {0}?', $tasks->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
