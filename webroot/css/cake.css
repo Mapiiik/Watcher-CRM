@@ -1,7 +1,6 @@
 /* Miligram overrides */
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-weight: 400;
 }
 
 .top-nav-links,
@@ -11,7 +10,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-weight: 400;
     color: #363637;
 }
 
@@ -32,6 +30,7 @@ a:active  {
 .side-nav a,
 th a,
 .actions a {
+    font-family: "Raleway", sans-serif;
     color: #606c76;
 }
 
@@ -44,8 +43,18 @@ th a,
 
 /* Labels */
 label {
+    font-family: "Raleway", sans-serif;
+    font-weight: 500;
     margin-bottom: 0.3rem;
     font-size: 1.5rem;
+}
+
+/* Legend */
+legend {
+    font-family: "Raleway", sans-serif;
+    font-weight: 500;
+    color: #363637;
+    letter-spacing: -.08rem;
 }
 
 /* Full width */
