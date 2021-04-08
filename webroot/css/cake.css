@@ -241,6 +241,7 @@ th {
 }
 
 .button {
+    font-family: "Raleway", sans-serif;
     margin-left: 0.5rem;
     padding:0 1.5rem;
     width: auto;
