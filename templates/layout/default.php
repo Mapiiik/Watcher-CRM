@@ -38,7 +38,7 @@ $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
     <?= $this->fetch('script') ?>
 </head>
 <body>
-<?php if (strpos($_SERVER['HTTP_REFERER'], '/legacy/administration/') === false): ?>
+<?php if (!isset($_SERVER['HTTP_REFERER']) || (strpos($_SERVER['HTTP_REFERER'], '/legacy/administration/') === false)): ?>
     <nav class="top-nav">
         <div class="top-nav-title">
             <a href="<?= $this->Url->build('/') ?>"><span>Watcher</span> CRM</a>
