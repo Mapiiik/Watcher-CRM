@@ -54,7 +54,7 @@ class CustomersTable extends Table
         parent::initialize($config);
 
         $this->setTable('customers');
-        $this->setDisplayField('title');
+        $this->setDisplayField('list_name');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');

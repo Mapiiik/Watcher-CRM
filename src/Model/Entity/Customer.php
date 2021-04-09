@@ -104,4 +104,41 @@ class Customer extends Entity
         'sold_equipments' => true,
         'tasks' => true,
     ];
+
+    protected function _getName()
+    {
+        $name = '';
+	
+	if (isset($this->title)) {
+            if ($name <> '') $name .= " ";
+            $name .= $this->title;
+        }
+        if (isset($this->first_name)) {
+            if ($name <> '') $name .= " ";
+            $name .= $this->first_name;
+        }
+        if (isset($this->last_name)) {
+            if ($name <> '') $name .= " ";
+            $name .= $this->last_name;
+        }
+	if (isset($this->suffix)) {
+            if ($name <> '') $name .= " ";
+            $name .= $this->suffix;
+        }
+
+        return $name;
+    }
+    
+    protected function _getListName()
+    {
+        $list_name = '';
+	
+        if (isset($this->company)) $list_name .= "[" . $this->company . "]";
+        if ($this->name <> '') {
+            if ($list_name <> '') $list_name .= " ";
+            $list_name .= $this->name;
+        }
+
+        return $list_name;
+    }
 }
