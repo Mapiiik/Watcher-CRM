@@ -59,11 +59,11 @@ class TasksController extends AppController
             }
             $this->Flash->error(__('The task could not be saved. Please, try again.'));
         }
-        $taskTypes = $this->Tasks->TaskTypes->find('list', ['limit' => 200]);
-        $customers = $this->Tasks->Customers->find('list', ['limit' => 200]);
-        $dealers = $this->Tasks->Dealers->find('list', ['limit' => 200]);
-        $taskStates = $this->Tasks->TaskStates->find('list', ['limit' => 200]);
-        $routers = $this->Tasks->Routers->find('list', ['limit' => 200]);
+        $taskTypes = $this->Tasks->TaskTypes->find('list', ['order' => 'name']);
+        $customers = $this->Tasks->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $dealers = $this->Tasks->Dealers->find('list', ['order' => 'name']);
+        $taskStates = $this->Tasks->TaskStates->find('list', ['order' => 'name']);
+        $routers = $this->Tasks->Routers->find('list', ['order' => 'name']);
         $this->set(compact('task', 'taskTypes', 'customers', 'dealers', 'taskStates', 'routers'));
     }
 
@@ -88,11 +88,11 @@ class TasksController extends AppController
             }
             $this->Flash->error(__('The task could not be saved. Please, try again.'));
         }
-        $taskTypes = $this->Tasks->TaskTypes->find('list', ['limit' => 200]);
-        $customers = $this->Tasks->Customers->find('list', ['limit' => 200]);
-        $dealers = $this->Tasks->Dealers->find('list', ['limit' => 200]);
-        $taskStates = $this->Tasks->TaskStates->find('list', ['limit' => 200]);
-        $routers = $this->Tasks->Routers->find('list', ['limit' => 200]);
+        $taskTypes = $this->Tasks->TaskTypes->find('list', ['order' => 'name']);
+        $customers = $this->Tasks->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $dealers = $this->Tasks->Dealers->find('list', ['order' => 'name']);
+        $taskStates = $this->Tasks->TaskStates->find('list', ['order' => 'name']);
+        $routers = $this->Tasks->Routers->find('list', ['order' => 'name']);
         $this->set(compact('task', 'taskTypes', 'customers', 'dealers', 'taskStates', 'routers'));
     }
 

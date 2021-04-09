@@ -59,8 +59,8 @@ class ServicesController extends AppController
             }
             $this->Flash->error(__('The service could not be saved. Please, try again.'));
         }
-        $serviceTypes = $this->Services->ServiceTypes->find('list', ['limit' => 200]);
-        $queues = $this->Services->Queues->find('list', ['limit' => 200]);
+        $serviceTypes = $this->Services->ServiceTypes->find('list', ['order' => 'name']);
+        $queues = $this->Services->Queues->find('list', ['order' => 'name']);
         $this->set(compact('service', 'serviceTypes', 'queues'));
     }
 
@@ -85,8 +85,8 @@ class ServicesController extends AppController
             }
             $this->Flash->error(__('The service could not be saved. Please, try again.'));
         }
-        $serviceTypes = $this->Services->ServiceTypes->find('list', ['limit' => 200]);
-        $queues = $this->Services->Queues->find('list', ['limit' => 200]);
+        $serviceTypes = $this->Services->ServiceTypes->find('list', ['order' => 'name']);
+        $queues = $this->Services->Queues->find('list', ['order' => 'name']);
         $this->set(compact('service', 'serviceTypes', 'queues'));
     }
 

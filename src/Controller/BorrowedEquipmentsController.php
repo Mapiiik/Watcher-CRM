@@ -59,9 +59,9 @@ class BorrowedEquipmentsController extends AppController
             }
             $this->Flash->error(__('The borrowed equipment could not be saved. Please, try again.'));
         }
-        $customers = $this->BorrowedEquipments->Customers->find('list', ['limit' => 200]);
-        $contracts = $this->BorrowedEquipments->Contracts->find('list', ['limit' => 200]);
-        $equipmentTypes = $this->BorrowedEquipments->EquipmentTypes->find('list', ['limit' => 200]);
+        $customers = $this->BorrowedEquipments->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $contracts = $this->BorrowedEquipments->Contracts->find('list', ['order' => 'name']);
+        $equipmentTypes = $this->BorrowedEquipments->EquipmentTypes->find('list', ['order' => 'name']);
         $this->set(compact('borrowedEquipment', 'customers', 'contracts', 'equipmentTypes'));
     }
 
@@ -86,9 +86,9 @@ class BorrowedEquipmentsController extends AppController
             }
             $this->Flash->error(__('The borrowed equipment could not be saved. Please, try again.'));
         }
-        $customers = $this->BorrowedEquipments->Customers->find('list', ['limit' => 200]);
-        $contracts = $this->BorrowedEquipments->Contracts->find('list', ['limit' => 200]);
-        $equipmentTypes = $this->BorrowedEquipments->EquipmentTypes->find('list', ['limit' => 200]);
+        $customers = $this->BorrowedEquipments->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $contracts = $this->BorrowedEquipments->Contracts->find('list', ['order' => 'name']);
+        $equipmentTypes = $this->BorrowedEquipments->EquipmentTypes->find('list', ['order' => 'name']);
         $this->set(compact('borrowedEquipment', 'customers', 'contracts', 'equipmentTypes'));
     }
 

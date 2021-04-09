@@ -59,7 +59,7 @@ class PhonesController extends AppController
             }
             $this->Flash->error(__('The phone could not be saved. Please, try again.'));
         }
-        $customers = $this->Phones->Customers->find('list', ['limit' => 200]);
+        $customers = $this->Phones->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $this->set(compact('phone', 'customers'));
     }
 
@@ -84,7 +84,7 @@ class PhonesController extends AppController
             }
             $this->Flash->error(__('The phone could not be saved. Please, try again.'));
         }
-        $customers = $this->Phones->Customers->find('list', ['limit' => 200]);
+        $customers = $this->Phones->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $this->set(compact('phone', 'customers'));
     }
 

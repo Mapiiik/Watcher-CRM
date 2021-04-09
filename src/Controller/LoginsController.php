@@ -59,7 +59,7 @@ class LoginsController extends AppController
             }
             $this->Flash->error(__('The login could not be saved. Please, try again.'));
         }
-        $customers = $this->Logins->Customers->find('list', ['limit' => 200]);
+        $customers = $this->Logins->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $this->set(compact('login', 'customers'));
     }
 
@@ -84,7 +84,7 @@ class LoginsController extends AppController
             }
             $this->Flash->error(__('The login could not be saved. Please, try again.'));
         }
-        $customers = $this->Logins->Customers->find('list', ['limit' => 200]);
+        $customers = $this->Logins->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $this->set(compact('login', 'customers'));
     }
 

@@ -59,8 +59,8 @@ class AddressesController extends AppController
             }
             $this->Flash->error(__('The address could not be saved. Please, try again.'));
         }
-        $customers = $this->Addresses->Customers->find('list', ['limit' => 200]);
-        $countries = $this->Addresses->Countries->find('list', ['limit' => 200]);
+        $customers = $this->Addresses->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $countries = $this->Addresses->Countries->find('list', ['order' => 'name']);
         $this->set(compact('address', 'customers', 'countries'));
     }
 
@@ -85,8 +85,8 @@ class AddressesController extends AppController
             }
             $this->Flash->error(__('The address could not be saved. Please, try again.'));
         }
-        $customers = $this->Addresses->Customers->find('list', ['limit' => 200]);
-        $countries = $this->Addresses->Countries->find('list', ['limit' => 200]);
+        $customers = $this->Addresses->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $countries = $this->Addresses->Countries->find('list', ['order' => 'name']);
         $this->set(compact('address', 'customers', 'countries'));
     }
 

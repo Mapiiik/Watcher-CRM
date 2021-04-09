@@ -59,13 +59,13 @@ class IpsController extends AppController
             }
             $this->Flash->error(__('The ip could not be saved. Please, try again.'));
         }
-        $customers = $this->Ips->Customers->find('list', ['limit' => 200]);
-        $queues = $this->Ips->Queues->find('list', ['limit' => 200]);
-        $devices = $this->Ips->Devices->find('list', ['limit' => 200]);
-        $dealers = $this->Ips->Dealers->find('list', ['limit' => 200]);
-        $brokerages = $this->Ips->Brokerages->find('list', ['limit' => 200]);
-        $routers = $this->Ips->Routers->find('list', ['limit' => 200]);
-        $contracts = $this->Ips->Contracts->find('list', ['limit' => 200]);
+        $customers = $this->Ips->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $queues = $this->Ips->Queues->find('list', ['order' => 'name']);
+        $devices = $this->Ips->Devices->find('list', ['order' => 'name']);
+        $dealers = $this->Ips->Dealers->find('list', ['order' => 'name']);
+        $brokerages = $this->Ips->Brokerages->find('list', ['order' => 'name']);
+        $routers = $this->Ips->Routers->find('list', ['order' => 'name']);
+        $contracts = $this->Ips->Contracts->find('list', ['order' => 'name']);
         $this->set(compact('ip', 'customers', 'queues', 'devices', 'dealers', 'brokerages', 'routers', 'contracts'));
     }
 
@@ -90,13 +90,13 @@ class IpsController extends AppController
             }
             $this->Flash->error(__('The ip could not be saved. Please, try again.'));
         }
-        $customers = $this->Ips->Customers->find('list', ['limit' => 200]);
-        $queues = $this->Ips->Queues->find('list', ['limit' => 200]);
-        $devices = $this->Ips->Devices->find('list', ['limit' => 200]);
-        $dealers = $this->Ips->Dealers->find('list', ['limit' => 200]);
-        $brokerages = $this->Ips->Brokerages->find('list', ['limit' => 200]);
-        $routers = $this->Ips->Routers->find('list', ['limit' => 200]);
-        $contracts = $this->Ips->Contracts->find('list', ['limit' => 200]);
+        $customers = $this->Ips->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $queues = $this->Ips->Queues->find('list', ['order' => 'name']);
+        $devices = $this->Ips->Devices->find('list', ['order' => 'name']);
+        $dealers = $this->Ips->Dealers->find('list', ['order' => 'name']);
+        $brokerages = $this->Ips->Brokerages->find('list', ['order' => 'name']);
+        $routers = $this->Ips->Routers->find('list', ['order' => 'name']);
+        $contracts = $this->Ips->Contracts->find('list', ['order' => 'name']);
         $this->set(compact('ip', 'customers', 'queues', 'devices', 'dealers', 'brokerages', 'routers', 'contracts'));
     }
 

@@ -59,9 +59,9 @@ class BillingsController extends AppController
             }
             $this->Flash->error(__('The billing could not be saved. Please, try again.'));
         }
-        $customers = $this->Billings->Customers->find('list', ['limit' => 200]);
-        $services = $this->Billings->Services->find('list', ['limit' => 200]);
-        $contracts = $this->Billings->Contracts->find('list', ['limit' => 200]);
+        $customers = $this->Billings->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $services = $this->Billings->Services->find('list', ['order' => 'name']);
+        $contracts = $this->Billings->Contracts->find('list', ['order' => 'name']);
         $this->set(compact('billing', 'customers', 'services', 'contracts'));
     }
 
@@ -86,9 +86,9 @@ class BillingsController extends AppController
             }
             $this->Flash->error(__('The billing could not be saved. Please, try again.'));
         }
-        $customers = $this->Billings->Customers->find('list', ['limit' => 200]);
-        $services = $this->Billings->Services->find('list', ['limit' => 200]);
-        $contracts = $this->Billings->Contracts->find('list', ['limit' => 200]);
+        $customers = $this->Billings->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $services = $this->Billings->Services->find('list', ['order' => 'name']);
+        $contracts = $this->Billings->Contracts->find('list', ['order' => 'name']);
         $this->set(compact('billing', 'customers', 'services', 'contracts'));
     }
 

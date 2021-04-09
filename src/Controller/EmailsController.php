@@ -59,7 +59,7 @@ class EmailsController extends AppController
             }
             $this->Flash->error(__('The email could not be saved. Please, try again.'));
         }
-        $customers = $this->Emails->Customers->find('list', ['limit' => 200]);
+        $customers = $this->Emails->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $this->set(compact('email', 'customers'));
     }
 
@@ -84,7 +84,7 @@ class EmailsController extends AppController
             }
             $this->Flash->error(__('The email could not be saved. Please, try again.'));
         }
-        $customers = $this->Emails->Customers->find('list', ['limit' => 200]);
+        $customers = $this->Emails->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $this->set(compact('email', 'customers'));
     }
 

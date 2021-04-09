@@ -59,11 +59,11 @@ class ContractsController extends AppController
             }
             $this->Flash->error(__('The contract could not be saved. Please, try again.'));
         }
-        $customers = $this->Contracts->Customers->find('list', ['limit' => 200]);
-        $installationAddresses = $this->Contracts->InstallationAddresses->find('list', ['limit' => 200]);
-        $serviceTypes = $this->Contracts->ServiceTypes->find('list', ['limit' => 200]);
-        $installationTechnicians = $this->Contracts->InstallationTechnicians->find('list', ['limit' => 200]);
-        $brokerages = $this->Contracts->Brokerages->find('list', ['limit' => 200]);
+        $customers = $this->Contracts->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $installationAddresses = $this->Contracts->InstallationAddresses->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $serviceTypes = $this->Contracts->ServiceTypes->find('list', ['order' => 'name']);
+        $installationTechnicians = $this->Contracts->InstallationTechnicians->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $brokerages = $this->Contracts->Brokerages->find('list', ['order' => 'name']);
         $this->set(compact('contract', 'customers', 'installationAddresses', 'serviceTypes', 'installationTechnicians', 'brokerages'));
     }
 
@@ -88,11 +88,11 @@ class ContractsController extends AppController
             }
             $this->Flash->error(__('The contract could not be saved. Please, try again.'));
         }
-        $customers = $this->Contracts->Customers->find('list', ['limit' => 200]);
-        $installationAddresses = $this->Contracts->InstallationAddresses->find('list', ['limit' => 200]);
-        $serviceTypes = $this->Contracts->ServiceTypes->find('list', ['limit' => 200]);
-        $installationTechnicians = $this->Contracts->InstallationTechnicians->find('list', ['limit' => 200]);
-        $brokerages = $this->Contracts->Brokerages->find('list', ['limit' => 200]);
+        $customers = $this->Contracts->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $installationAddresses = $this->Contracts->InstallationAddresses->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $serviceTypes = $this->Contracts->ServiceTypes->find('list', ['order' => 'name']);
+        $installationTechnicians = $this->Contracts->InstallationTechnicians->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $brokerages = $this->Contracts->Brokerages->find('list', ['order' => 'name']);
         $this->set(compact('contract', 'customers', 'installationAddresses', 'serviceTypes', 'installationTechnicians', 'brokerages'));
     }
 

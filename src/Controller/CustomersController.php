@@ -59,7 +59,7 @@ class CustomersController extends AppController
             }
             $this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
-        $taxes = $this->Customers->Taxes->find('list', ['limit' => 200]);
+        $taxes = $this->Customers->Taxes->find('list', ['order' => 'name']);
         $this->set(compact('customer', 'taxes'));
     }
 
@@ -84,7 +84,7 @@ class CustomersController extends AppController
             }
             $this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
-        $taxes = $this->Customers->Taxes->find('list', ['limit' => 200]);
+        $taxes = $this->Customers->Taxes->find('list', ['order' => 'name']);
         $this->set(compact('customer', 'taxes'));
     }
 

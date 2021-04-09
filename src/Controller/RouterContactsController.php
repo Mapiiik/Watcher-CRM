@@ -59,8 +59,8 @@ class RouterContactsController extends AppController
             }
             $this->Flash->error(__('The router contact could not be saved. Please, try again.'));
         }
-        $routers = $this->RouterContacts->Routers->find('list', ['limit' => 200]);
-        $customers = $this->RouterContacts->Customers->find('list', ['limit' => 200]);
+        $routers = $this->RouterContacts->Routers->find('list', ['order' => 'name']);
+        $customers = $this->RouterContacts->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $this->set(compact('routerContact', 'routers', 'customers'));
     }
 
@@ -85,8 +85,8 @@ class RouterContactsController extends AppController
             }
             $this->Flash->error(__('The router contact could not be saved. Please, try again.'));
         }
-        $routers = $this->RouterContacts->Routers->find('list', ['limit' => 200]);
-        $customers = $this->RouterContacts->Customers->find('list', ['limit' => 200]);
+        $routers = $this->RouterContacts->Routers->find('list', ['order' => 'name']);
+        $customers = $this->RouterContacts->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $this->set(compact('routerContact', 'routers', 'customers'));
     }
 
