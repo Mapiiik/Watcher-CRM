@@ -43,7 +43,7 @@ class AddressesTable extends Table
         parent::initialize($config);
 
         $this->setTable('addresses');
-        $this->setDisplayField('title');
+        $this->setDisplayField('address');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');

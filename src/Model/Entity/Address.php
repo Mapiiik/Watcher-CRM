@@ -66,4 +66,69 @@ class Address extends Entity
         'customer' => true,
         'country' => true,
     ];
+
+    protected function _getFullName()
+    {
+        $full_name = '';
+	
+	if (isset($this->title)) {
+            if ($full_name <> '') $full_name .= " ";
+            $full_name .= $this->title;
+        }
+        if (isset($this->first_name)) {
+            if ($full_name <> '') $full_name .= " ";
+            $full_name .= $this->first_name;
+        }
+        if (isset($this->last_name)) {
+            if ($full_name <> '') $full_name .= " ";
+            $full_name .= $this->last_name;
+        }
+	if (isset($this->suffix)) {
+            if ($full_name <> '') $full_name .= " ";
+            $full_name .= $this->suffix;
+        }
+
+        return $full_name;
+    }
+    
+    protected function _getName()
+    {
+        $name = '';
+	
+        if (isset($this->company)) $name .= "[" . $this->company . "]";
+        if ($this->full_name <> '') {
+            if ($name <> '') $name .= " ";
+            $name .= $this->full_name;
+        }
+
+        return $name;
+    }
+    
+    protected function _getAddress()
+    {
+        $address = '';
+        
+        $address .= $this->name;
+        
+        if (isset($this->street))
+        {
+                $address .= ", " . $this->street . " " . $this->number;
+        }
+        else
+        {
+                $address .= ", " . "č.p. " . $this->number;
+        };
+
+        if (isset($this->zip))
+        {
+            $address .= ", " . substr($this->zip, 0, 3) . ' ' . substr($this->zip, 3, 2);
+        }
+
+        if (isset($this->zip))
+        {
+            $address .= " " . $this->city;
+        }
+        
+        return $address;
+    }
 }
