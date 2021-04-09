@@ -105,7 +105,7 @@ class Customer extends Entity
         'tasks' => true,
     ];
 
-    protected function _getName()
+    protected function _getFullName()
     {
         $name = '';
 	
@@ -129,16 +129,16 @@ class Customer extends Entity
         return $name;
     }
     
-    protected function _getListName()
+    protected function _getName()
     {
-        $list_name = '';
+        $name = '';
 	
-        if (isset($this->company)) $list_name .= "[" . $this->company . "]";
-        if ($this->name <> '') {
-            if ($list_name <> '') $list_name .= " ";
-            $list_name .= $this->name;
+        if (isset($this->company)) $name .= "[" . $this->company . "]";
+        if ($this->full_name <> '') {
+            if ($name <> '') $name .= " ";
+            $name .= $this->full_name;
         }
 
-        return $list_name;
+        return $name;
     }
 }
