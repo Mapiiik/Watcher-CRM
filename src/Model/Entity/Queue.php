@@ -20,8 +20,6 @@ use Cake\ORM\Entity;
  * @property int|null $speed_down
  *
  * @property \App\Model\Entity\ServiceType $service_type
- * @property \App\Model\Entity\Ip[] $ips
- * @property \App\Model\Entity\RemovedIp[] $removed_ips
  * @property \App\Model\Entity\Service[] $services
  */
 class Queue extends Entity
@@ -46,8 +44,6 @@ class Queue extends Entity
         'speed_up' => true,
         'speed_down' => true,
         'service_type' => true,
-        'ips' => true,
-        'removed_ips' => true,
         'services' => true,
     ];
 }

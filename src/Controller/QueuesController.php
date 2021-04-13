@@ -36,7 +36,7 @@ class QueuesController extends AppController
     public function view($id = null)
     {
         $queue = $this->Queues->get($id, [
-            'contain' => ['ServiceTypes', 'Ips', 'RemovedIps', 'Services'],
+            'contain' => ['ServiceTypes', 'Services'],
         ]);
 
         $this->set(compact('queue'));

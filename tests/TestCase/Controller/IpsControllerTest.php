@@ -24,11 +24,6 @@ class IpsControllerTest extends TestCase
     protected $fixtures = [
         'app.Ips',
         'app.Customers',
-        'app.Queues',
-        'app.Devices',
-        'app.Dealers',
-        'app.Brokerages',
-        'app.Routers',
         'app.Contracts',
     ];
 

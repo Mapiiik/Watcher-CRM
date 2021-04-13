@@ -19,7 +19,7 @@ class IpsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Customers', 'Queues', 'Devices', 'Dealers', 'Brokerages', 'Routers', 'Contracts'],
+            'contain' => ['Customers', 'Contracts'],
         ];
         $ips = $this->paginate($this->Ips);
 
@@ -36,7 +36,7 @@ class IpsController extends AppController
     public function view($id = null)
     {
         $ip = $this->Ips->get($id, [
-            'contain' => ['Customers', 'Queues', 'Devices', 'Dealers', 'Brokerages', 'Routers', 'Contracts'],
+            'contain' => ['Customers', 'Contracts'],
         ]);
 
         $this->set(compact('ip'));
@@ -60,13 +60,8 @@ class IpsController extends AppController
             $this->Flash->error(__('The ip could not be saved. Please, try again.'));
         }
         $customers = $this->Ips->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $queues = $this->Ips->Queues->find('list', ['order' => 'name']);
-        $devices = $this->Ips->Devices->find('list', ['order' => 'name']);
-        $dealers = $this->Ips->Dealers->find('list', ['order' => 'name']);
-        $brokerages = $this->Ips->Brokerages->find('list', ['order' => 'name']);
-        $routers = $this->Ips->Routers->find('list', ['order' => 'name']);
         $contracts = $this->Ips->Contracts->find('list', ['order' => 'name']);
-        $this->set(compact('ip', 'customers', 'queues', 'devices', 'dealers', 'brokerages', 'routers', 'contracts'));
+        $this->set(compact('ip', 'customers', 'contracts'));
     }
 
     /**
@@ -91,13 +86,8 @@ class IpsController extends AppController
             $this->Flash->error(__('The ip could not be saved. Please, try again.'));
         }
         $customers = $this->Ips->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $queues = $this->Ips->Queues->find('list', ['order' => 'name']);
-        $devices = $this->Ips->Devices->find('list', ['order' => 'name']);
-        $dealers = $this->Ips->Dealers->find('list', ['order' => 'name']);
-        $brokerages = $this->Ips->Brokerages->find('list', ['order' => 'name']);
-        $routers = $this->Ips->Routers->find('list', ['order' => 'name']);
         $contracts = $this->Ips->Contracts->find('list', ['order' => 'name']);
-        $this->set(compact('ip', 'customers', 'queues', 'devices', 'dealers', 'brokerages', 'routers', 'contracts'));
+        $this->set(compact('ip', 'customers', 'contracts'));
     }
 
     /**

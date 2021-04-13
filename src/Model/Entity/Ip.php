@@ -19,11 +19,6 @@ use Cake\ORM\Entity;
  * @property int|null $modified_by
  *
  * @property \App\Model\Entity\Customer $customer
- * @property \App\Model\Entity\Queue $queue
- * @property \App\Model\Entity\Device $device
- * @property \App\Model\Entity\Dealer $dealer
- * @property \App\Model\Entity\Brokerage $brokerage
- * @property \App\Model\Entity\Router $router
  * @property \App\Model\Entity\Contract $contract
  */
 class Ip extends Entity
@@ -47,11 +42,6 @@ class Ip extends Entity
         'modified' => true,
         'modified_by' => true,
         'customer' => true,
-        'queue' => true,
-        'device' => true,
-        'dealer' => true,
-        'brokerage' => true,
-        'router' => true,
         'contract' => true,
     ];
 }
