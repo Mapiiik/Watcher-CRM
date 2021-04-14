@@ -36,8 +36,8 @@
                 <?php foreach ($contracts as $contract): ?>
                 <tr>
                     <td><?= $this->Number->format($contract->id) ?></td>
-                    <td><?= $contract->has('customer') ? $this->Html->link($contract->customer->title, ['controller' => 'Customers', 'action' => 'view', $contract->customer->id]) : '' ?></td>
-                    <td><?= $contract->has('installation_address') ? $this->Html->link($contract->installation_address->title, ['controller' => 'Addresses', 'action' => 'view', $contract->installation_address->id]) : '' ?></td>
+                    <td><?= $contract->has('customer') ? $this->Html->link($contract->customer->name, ['controller' => 'Customers', 'action' => 'view', $contract->customer->id]) : '' ?></td>
+                    <td><?= $contract->has('installation_address') ? $this->Html->link($contract->installation_address->address, ['controller' => 'Addresses', 'action' => 'view', $contract->installation_address->id]) : '' ?></td>
                     <td><?= h($contract->number) ?></td>
                     <td><?= $contract->has('service_type') ? $this->Html->link($contract->service_type->name, ['controller' => 'ServiceTypes', 'action' => 'view', $contract->service_type->id]) : '' ?></td>
                     <td><?= h($contract->created) ?></td>
@@ -46,7 +46,7 @@
                     <td><?= $this->Number->format($contract->modified_by) ?></td>
                     <td><?= h($contract->obligation_until) ?></td>
                     <td><?= h($contract->vip) ?></td>
-                    <td><?= $contract->has('installation_technician') ? $this->Html->link($contract->installation_technician->title, ['controller' => 'Customers', 'action' => 'view', $contract->installation_technician->id]) : '' ?></td>
+                    <td><?= $contract->has('installation_technician') ? $this->Html->link($contract->installation_technician->name, ['controller' => 'Customers', 'action' => 'view', $contract->installation_technician->id]) : '' ?></td>
                     <td><?= $contract->has('brokerage') ? $this->Html->link($contract->brokerage->name, ['controller' => 'Brokerages', 'action' => 'view', $contract->brokerage->id]) : '' ?></td>
                     <td><?= h($contract->installation_date) ?></td>
                     <td><?= h($contract->valid_from) ?></td>

@@ -74,7 +74,7 @@ class Address extends Entity
 	if (isset($this->title)) {
             if ($full_name <> '') $full_name .= " ";
             $full_name .= $this->title;
-        }
+}
         if (isset($this->first_name)) {
             if ($full_name <> '') $full_name .= " ";
             $full_name .= $this->first_name;

@@ -20,11 +20,11 @@
             <table>
                 <tr>
                     <th><?= __('Customer') ?></th>
-                    <td><?= $contract->has('customer') ? $this->Html->link($contract->customer->title, ['controller' => 'Customers', 'action' => 'view', $contract->customer->id]) : '' ?></td>
+                    <td><?= $contract->has('customer') ? $this->Html->link($contract->customer->name, ['controller' => 'Customers', 'action' => 'view', $contract->customer->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Installation Address') ?></th>
-                    <td><?= $contract->has('installation_address') ? $this->Html->link($contract->installation_address->title, ['controller' => 'Addresses', 'action' => 'view', $contract->installation_address->id]) : '' ?></td>
+                    <td><?= $contract->has('installation_address') ? $this->Html->link($contract->installation_address->address, ['controller' => 'Addresses', 'action' => 'view', $contract->installation_address->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Number') ?></th>
@@ -36,7 +36,7 @@
                 </tr>
                 <tr>
                     <th><?= __('Installation Technician') ?></th>
-                    <td><?= $contract->has('installation_technician') ? $this->Html->link($contract->installation_technician->title, ['controller' => 'Customers', 'action' => 'view', $contract->installation_technician->id]) : '' ?></td>
+                    <td><?= $contract->has('installation_technician') ? $this->Html->link($contract->installation_technician->name, ['controller' => 'Customers', 'action' => 'view', $contract->installation_technician->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Brokerage') ?></th>

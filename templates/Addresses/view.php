@@ -16,11 +16,11 @@
     </aside>
     <div class="column-responsive column-80">
         <div class="addresses view content">
-            <h3><?= h($address->title) ?></h3>
+            <h3><?= h($address->address) ?></h3>
             <table>
                 <tr>
                     <th><?= __('Customer') ?></th>
-                    <td><?= $address->has('customer') ? $this->Html->link($address->customer->title, ['controller' => 'Customers', 'action' => 'view', $address->customer->id]) : '' ?></td>
+                    <td><?= $address->has('customer') ? $this->Html->link($address->customer->name, ['controller' => 'Customers', 'action' => 'view', $address->customer->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Title') ?></th>

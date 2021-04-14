@@ -39,7 +39,7 @@
                 <tr>
                     <td><?= $this->Number->format($address->id) ?></td>
                     <td><?= $this->Number->format($address->type) ?></td>
-                    <td><?= $address->has('customer') ? $this->Html->link($address->customer->title, ['controller' => 'Customers', 'action' => 'view', $address->customer->id]) : '' ?></td>
+                    <td><?= $address->has('customer') ? $this->Html->link($address->customer->name, ['controller' => 'Customers', 'action' => 'view', $address->customer->id]) : '' ?></td>
                     <td><?= h($address->title) ?></td>
                     <td><?= h($address->first_name) ?></td>
                     <td><?= h($address->last_name) ?></td>
