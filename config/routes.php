@@ -44,6 +44,24 @@ use Cake\Routing\RouteBuilder;
 /** @var \Cake\Routing\RouteBuilder $routes */
 $routes->setRouteClass(DashedRoute::class);
 
+$routes->scope('/admin/', function (RouteBuilder $builder) {    
+    $builder->connect('/customers', 'Customers::index');
+    $builder->connect('/customers/add', 'Customers::add');
+    $builder->connect('/customers/:customer_id', 'Customers::view')->setPass(['customer_id']);
+    $builder->connect('/customers/:customer_id/edit', 'Customers::edit')->setPass(['customer_id']);
+
+    $builder->connect('/customers/:customer_id/contracts', 'Contracts::index');
+    $builder->connect('/customers/:customer_id/contracts/add', 'Contracts::add')->setPass(['customer_id']);
+    $builder->connect('/customers/:customer_id/contracts/:contract_id', 'Contracts::view')->setPass(['contract_id', 'customer_id']);
+    $builder->connect('/customers/:customer_id/contracts/:contract_id/edit', 'Contracts::edit')->setPass(['contract_id', 'customer_id']);
+
+    $builder->connect('/customers/:customer_id/:controller', ['action' => 'index']);
+    $builder->connect('/customers/:customer_id/:controller/add', ['action' => 'add']);
+    $builder->connect('/customers/:customer_id/:controller/:action/*', []);
+    
+    $builder->fallbacks();
+});
+
 $routes->scope('/', function (RouteBuilder $builder) {
     /*
      * Here, we are connecting '/' (base path) to a controller called 'Pages',
@@ -70,7 +88,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
      * You can remove these routes once you've connected the
      * routes you want in your application.
      */
-    $builder->fallbacks();
+//    $builder->fallbacks();
 });
 
 /*
