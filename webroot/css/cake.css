@@ -44,9 +44,9 @@ th a,
 /* Labels */
 label {
     font-family: "Raleway", sans-serif;
+    font-size: 1.35rem;
     font-weight: 500;
     margin-bottom: 0.3rem;
-    font-size: 1.5rem;
 }
 
 /* Legend */
@@ -55,6 +55,30 @@ legend {
     font-weight: 500;
     color: #363637;
     letter-spacing: -.08rem;
+}
+
+/* Input */
+input[type='email'],
+input[type='number'],
+input[type='password'],
+input[type='search'],
+input[type='tel'],
+input[type='text'],
+input[type='url'],
+input[type='color'],
+input[type='date'],
+input[type='month'],
+input[type='week'],
+input[type='datetime'],
+input[type='datetime-local'],
+input:not([type]),
+textarea,
+select {
+    height: 3.0rem;
+}
+
+fieldset, input, select, textarea {
+    margin-bottom: 1.0rem;
 }
 
 /* Full width */
