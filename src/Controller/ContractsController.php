@@ -16,10 +16,19 @@ class ContractsController extends AppController
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
-    public function index()
+    public function index($customer_id = null)
     {
+        $conditions = [];
+        if (isset($customer_id)) {
+            $conditions = ['Contracts.customer_id' => $customer_id];
+            $this->set('customer_id', $customer_id);
+        } else {
+            $this->set('customer_id', null);
+        }
+
         $this->paginate = [
             'contain' => ['Customers', 'InstallationAddresses', 'ServiceTypes', 'InstallationTechnicians', 'Brokerages'],
+            'conditions' => $conditions,
         ];
         $contracts = $this->paginate($this->Contracts);
 
@@ -33,11 +42,17 @@ class ContractsController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($id = null, $customer_id = null)
     {
         $contract = $this->Contracts->get($id, [
             'contain' => ['Customers', 'InstallationAddresses', 'ServiceTypes', 'InstallationTechnicians', 'Brokerages', 'Billings', 'BorrowedEquipments', 'Ips', 'RemovedIps', 'SoldEquipments'],
         ]);
+
+        if (isset($customer_id)) {
+            $this->set('customer_id', $customer_id);
+        } else {
+            $this->set('customer_id', null);
+        }
 
         $this->set(compact('contract'));
     }
@@ -47,21 +62,33 @@ class ContractsController extends AppController
      *
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add($customer_id = null)
     {
         $contract = $this->Contracts->newEmptyEntity();
+
+        $conditions = [];
+        if (isset($customer_id)) {
+            $contract = $this->Contracts->patchEntity($contract, ['customer_id' => $customer_id]);
+            $conditions = ['customer_id' => $customer_id];
+            $this->set('customer_id', $customer_id);
+        } else {
+            $this->set('customer_id', null);
+        }
+        
         if ($this->request->is('post')) {
             $contract = $this->Contracts->patchEntity($contract, $this->request->getData());
             if ($this->Contracts->save($contract)) {
                 $this->Flash->success(__('The contract has been saved.'));
+                
+                $this->updateNumber($contract->id);
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'index', 'customer_id' => $customer_id]);
             }
             $this->Flash->error(__('The contract could not be saved. Please, try again.'));
         }
         $customers = $this->Contracts->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $installationAddresses = $this->Contracts->InstallationAddresses->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $serviceTypes = $this->Contracts->ServiceTypes->find('list', ['order' => 'name']);
+        $installationAddresses = $this->Contracts->InstallationAddresses->find('list', ['order' => ['company', 'first_name', 'last_name'], 'conditions' => $conditions]);
+        $serviceTypes = $this->Contracts->ServiceTypes->find('list', ['order' => 'id']);
         $installationTechnicians = $this->Contracts->InstallationTechnicians->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $brokerages = $this->Contracts->Brokerages->find('list', ['order' => 'name']);
         $this->set(compact('contract', 'customers', 'installationAddresses', 'serviceTypes', 'installationTechnicians', 'brokerages'));
@@ -74,23 +101,32 @@ class ContractsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($id = null, $customer_id = null)
     {
         $contract = $this->Contracts->get($id, [
             'contain' => [],
         ]);
+
+        $conditions = [];
+        if (isset($customer_id)) {
+            $conditions = ['customer_id' => $customer_id];
+            $this->set('customer_id', $customer_id);
+        } else {
+            $this->set('customer_id', null);
+        }
+        
         if ($this->request->is(['patch', 'post', 'put'])) {
             $contract = $this->Contracts->patchEntity($contract, $this->request->getData());
             if ($this->Contracts->save($contract)) {
                 $this->Flash->success(__('The contract has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'index', 'customer_id' => $customer_id]);
             }
             $this->Flash->error(__('The contract could not be saved. Please, try again.'));
         }
         $customers = $this->Contracts->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $installationAddresses = $this->Contracts->InstallationAddresses->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $serviceTypes = $this->Contracts->ServiceTypes->find('list', ['order' => 'name']);
+        $installationAddresses = $this->Contracts->InstallationAddresses->find('list', ['order' => ['company', 'first_name', 'last_name'], 'conditions' => $conditions]);
+        $serviceTypes = $this->Contracts->ServiceTypes->find('list', ['order' => 'id']);
         $installationTechnicians = $this->Contracts->InstallationTechnicians->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $brokerages = $this->Contracts->Brokerages->find('list', ['order' => 'name']);
         $this->set(compact('contract', 'customers', 'installationAddresses', 'serviceTypes', 'installationTechnicians', 'brokerages'));
@@ -103,8 +139,14 @@ class ContractsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($id = null, $customer_id = null)
     {
+        if (isset($customer_id)) {
+            $this->set('customer_id', $customer_id);
+        } else {
+            $this->set('customer_id', null);
+        }
+        
         $this->request->allowMethod(['post', 'delete']);
         $contract = $this->Contracts->get($id);
         if ($this->Contracts->delete($contract)) {
@@ -113,6 +155,23 @@ class ContractsController extends AppController
             $this->Flash->error(__('The contract could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'index', 'customer_id' => $customer_id]);
+    }
+    
+    private function updateNumber($id = null)
+    {
+        $contract = $this->Contracts->get($id);
+        $service_type = $this->Contracts->ServiceTypes->get($contract->service_type_id);
+        
+        $query = $this->Contracts->query();
+        $query->update()
+            ->set(['number = (' . $service_type->contract_number_format . ')'])
+            ->where(['id' => $contract->id]);
+        
+        if ($query->execute()) {
+            $this->Flash->success(__('The contract number has been updated.'));
+        } else {
+            $this->Flash->error(__('The contract number could not be updated. Please, try again.'));
+        }
     }
 }
