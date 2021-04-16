@@ -16,14 +16,14 @@ class ContractsController extends AppController
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
-    public function index($customer_id = null)
+    public function index()
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+        
         $conditions = [];
         if (isset($customer_id)) {
             $conditions = ['Contracts.customer_id' => $customer_id];
-            $this->set('customer_id', $customer_id);
-        } else {
-            $this->set('customer_id', null);
         }
 
         $this->paginate = [
@@ -42,17 +42,14 @@ class ContractsController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null, $customer_id = null)
+    public function view($id = null)
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+
         $contract = $this->Contracts->get($id, [
             'contain' => ['Customers', 'InstallationAddresses', 'ServiceTypes', 'InstallationTechnicians', 'Brokerages', 'Billings', 'BorrowedEquipments', 'Ips', 'RemovedIps', 'SoldEquipments'],
         ]);
-
-        if (isset($customer_id)) {
-            $this->set('customer_id', $customer_id);
-        } else {
-            $this->set('customer_id', null);
-        }
 
         $this->set(compact('contract'));
     }
@@ -62,17 +59,17 @@ class ContractsController extends AppController
      *
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
      */
-    public function add($customer_id = null)
+    public function add()
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+
         $contract = $this->Contracts->newEmptyEntity();
 
         $conditions = [];
         if (isset($customer_id)) {
             $contract = $this->Contracts->patchEntity($contract, ['customer_id' => $customer_id]);
             $conditions = ['customer_id' => $customer_id];
-            $this->set('customer_id', $customer_id);
-        } else {
-            $this->set('customer_id', null);
         }
         
         if ($this->request->is('post')) {
@@ -101,8 +98,11 @@ class ContractsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null, $customer_id = null)
+    public function edit($id = null)
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+
         $contract = $this->Contracts->get($id, [
             'contain' => [],
         ]);
@@ -110,9 +110,6 @@ class ContractsController extends AppController
         $conditions = [];
         if (isset($customer_id)) {
             $conditions = ['customer_id' => $customer_id];
-            $this->set('customer_id', $customer_id);
-        } else {
-            $this->set('customer_id', null);
         }
         
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -139,13 +136,10 @@ class ContractsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null, $customer_id = null)
+    public function delete($id = null)
     {
-        if (isset($customer_id)) {
-            $this->set('customer_id', $customer_id);
-        } else {
-            $this->set('customer_id', null);
-        }
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
         
         $this->request->allowMethod(['post', 'delete']);
         $contract = $this->Contracts->get($id);
