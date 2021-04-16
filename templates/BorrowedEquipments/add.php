@@ -11,7 +11,8 @@
 <!--
             <?= $this->Html->link(__('List Borrowed Equipments'), ['action' => 'index', 'customer_id' => $customer_id, 'contract_id' => $contract_id], ['class' => 'side-nav-item']) ?>
 -->
-            <?= $this->Html->link(__('List Borrowed Equipments'), ['action' => 'index', 'customer_id' => $customer_id], ['class' => 'side-nav-item']) ?>        </div>
+            <?= $this->Html->link(__('List Borrowed Equipments'), ['action' => 'index', 'customer_id' => $customer_id], ['class' => 'side-nav-item']) ?>
+        </div>
     </aside>
     <div class="column-responsive column-80">
         <div class="borrowedEquipments form content">

@@ -46,9 +46,9 @@
                     <td><?= $contract->has('installation_technician') ? $this->Html->link($contract->installation_technician->name, ['controller' => 'Customers', 'action' => 'view', $contract->installation_technician->id]) : '' ?></td>
                     <td><?= $contract->has('brokerage') ? $this->Html->link($contract->brokerage->name, ['controller' => 'Brokerages', 'action' => 'view', $contract->brokerage->id]) : '' ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', 'customer_id' => $customer_id, $contract->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', 'customer_id' => $customer_id, $contract->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', 'customer_id' => $customer_id, $contract->id], ['confirm' => __('Are you sure you want to delete # {0}?', $contract->id)]) ?>
+                        <?= $this->Html->link(__('View'), ['action' => 'view', 'customer_id' => $contract->customer_id, $contract->id]) ?>
+                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', 'customer_id' => $contract->customer_id, $contract->id]) ?>
+                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', 'customer_id' => $contract->customer_id, $contract->id], ['confirm' => __('Are you sure you want to delete # {0}?', $contract->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

@@ -5,7 +5,7 @@
  */
 ?>
 <div class="soldEquipments index content">
-    <?= $this->Html->link(__('New Sold Equipment'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->Html->link(__('New Sold Equipment'), ['action' => 'add', 'customer_id' => $customer_id, 'contract_id' => $contract_id], ['class' => 'button float-right']) ?>
     <h3><?= __('Sold Equipments') ?></h3>
     <div class="table-responsive">
         <table>
@@ -16,10 +16,6 @@
                     <th><?= $this->Paginator->sort('contract_id') ?></th>
                     <th><?= $this->Paginator->sort('equipment_type_id') ?></th>
                     <th><?= $this->Paginator->sort('serial_number') ?></th>
-                    <th><?= $this->Paginator->sort('created') ?></th>
-                    <th><?= $this->Paginator->sort('created_by') ?></th>
-                    <th><?= $this->Paginator->sort('modified') ?></th>
-                    <th><?= $this->Paginator->sort('modified_by') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -28,17 +24,13 @@
                 <tr>
                     <td><?= $this->Number->format($soldEquipment->id) ?></td>
                     <td><?= $soldEquipment->has('customer') ? $this->Html->link($soldEquipment->customer->title, ['controller' => 'Customers', 'action' => 'view', $soldEquipment->customer->id]) : '' ?></td>
-                    <td><?= $soldEquipment->has('contract') ? $this->Html->link($soldEquipment->contract->id, ['controller' => 'Contracts', 'action' => 'view', $soldEquipment->contract->id]) : '' ?></td>
+                    <td><?= $soldEquipment->has('contract') ? $this->Html->link($soldEquipment->contract->number, ['controller' => 'Contracts', 'action' => 'view', $soldEquipment->contract->id]) : '' ?></td>
                     <td><?= $soldEquipment->has('equipment_type') ? $this->Html->link($soldEquipment->equipment_type->name, ['controller' => 'EquipmentTypes', 'action' => 'view', $soldEquipment->equipment_type->id]) : '' ?></td>
                     <td><?= h($soldEquipment->serial_number) ?></td>
-                    <td><?= h($soldEquipment->created) ?></td>
-                    <td><?= $this->Number->format($soldEquipment->created_by) ?></td>
-                    <td><?= h($soldEquipment->modified) ?></td>
-                    <td><?= $this->Number->format($soldEquipment->modified_by) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $soldEquipment->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $soldEquipment->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $soldEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id)]) ?>
+                        <?= $this->Html->link(__('View'), ['action' => 'view', 'customer_id' => $soldEquipment->customer_id, 'contract_id' => $soldEquipment->contract_id, $soldEquipment->id]) ?>
+                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', 'customer_id' => $soldEquipment->customer_id, 'contract_id' => $soldEquipment->contract_id, $soldEquipment->id]) ?>
+                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', 'customer_id' => $soldEquipment->customer_id, 'contract_id' => $soldEquipment->contract_id, $soldEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
