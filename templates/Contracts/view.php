@@ -23,56 +23,24 @@
                     <td><?= $contract->has('customer') ? $this->Html->link($contract->customer->name, ['controller' => 'Customers', 'action' => 'view', $contract->customer->id]) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Installation Address') ?></th>
-                    <td><?= $contract->has('installation_address') ? $this->Html->link($contract->installation_address->address, ['controller' => 'Addresses', 'action' => 'view', $contract->installation_address->id]) : '' ?></td>
+                    <th><?= __('Service Type') ?></th>
+                    <td><?= $contract->has('service_type') ? $this->Html->link($contract->service_type->name, ['controller' => 'ServiceTypes', 'action' => 'view', $contract->service_type->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Number') ?></th>
                     <td><?= h($contract->number) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Service Type') ?></th>
-                    <td><?= $contract->has('service_type') ? $this->Html->link($contract->service_type->name, ['controller' => 'ServiceTypes', 'action' => 'view', $contract->service_type->id]) : '' ?></td>
+                    <th><?= __('Installation Address') ?></th>
+                    <td><?= $contract->has('installation_address') ? $this->Html->link($contract->installation_address->address, ['controller' => 'Addresses', 'action' => 'view', $contract->installation_address->id]) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Installation Technician') ?></th>
-                    <td><?= $contract->has('installation_technician') ? $this->Html->link($contract->installation_technician->name, ['controller' => 'Customers', 'action' => 'view', $contract->installation_technician->id]) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Brokerage') ?></th>
-                    <td><?= $contract->has('brokerage') ? $this->Html->link($contract->brokerage->name, ['controller' => 'Brokerages', 'action' => 'view', $contract->brokerage->id]) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($contract->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created By') ?></th>
-                    <td><?= $this->Number->format($contract->created_by) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified By') ?></th>
-                    <td><?= $this->Number->format($contract->modified_by) ?></td>
+                    <th><?= __('Conclusion Date') ?></th>
+                    <td><?= h($contract->conclusion_date) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Number Of Amendments') ?></th>
                     <td><?= $this->Number->format($contract->number_of_amendments) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($contract->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($contract->modified) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Obligation Until') ?></th>
-                    <td><?= h($contract->obligation_until) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Installation Date') ?></th>
-                    <td><?= h($contract->installation_date) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Valid From') ?></th>
@@ -83,24 +51,56 @@
                     <td><?= h($contract->valid_until) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Conclusion Date') ?></th>
-                    <td><?= h($contract->conclusion_date) ?></td>
+                    <th><?= __('Obligation Until') ?></th>
+                    <td><?= h($contract->obligation_until) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Installation Date') ?></th>
+                    <td><?= h($contract->installation_date) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Installation Technician') ?></th>
+                    <td><?= $contract->has('installation_technician') ? $this->Html->link($contract->installation_technician->name, ['controller' => 'Customers', 'action' => 'view', $contract->installation_technician->id]) : '' ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Brokerage') ?></th>
+                    <td><?= $contract->has('brokerage') ? $this->Html->link($contract->brokerage->name, ['controller' => 'Brokerages', 'action' => 'view', $contract->brokerage->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Vip') ?></th>
                     <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
                 </tr>
+                <tr>
+                    <th><?= __('Id') ?></th>
+                    <td><?= $this->Number->format($contract->id) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Created') ?></th>
+                    <td><?= h($contract->created) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Created By') ?></th>
+                    <td><?= $this->Number->format($contract->created_by) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified') ?></th>
+                    <td><?= h($contract->modified) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified By') ?></th>
+                    <td><?= $this->Number->format($contract->modified_by) ?></td>
+                </tr>
             </table>
-            <div class="text">
-                <strong><?= __('Note') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($contract->note)); ?>
-                </blockquote>
-            </div>
             <div class="text">
                 <strong><?= __('Access Description') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($contract->access_description)); ?>
+                </blockquote>
+            </div>
+            <div class="text">
+                <strong><?= __('Note') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($contract->note)); ?>
                 </blockquote>
             </div>
             <div class="related">

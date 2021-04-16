@@ -25,10 +25,6 @@
                     <th><?= $this->Paginator->sort('installation_date') ?></th>
                     <th><?= $this->Paginator->sort('installation_technician_id') ?></th>
                     <th><?= $this->Paginator->sort('brokerage_id') ?></th>
-                    <th><?= $this->Paginator->sort('created') ?></th>
-                    <th><?= $this->Paginator->sort('created_by') ?></th>
-                    <th><?= $this->Paginator->sort('modified') ?></th>
-                    <th><?= $this->Paginator->sort('modified_by') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -49,10 +45,6 @@
                     <td><?= h($contract->installation_date) ?></td>
                     <td><?= $contract->has('installation_technician') ? $this->Html->link($contract->installation_technician->name, ['controller' => 'Customers', 'action' => 'view', $contract->installation_technician->id]) : '' ?></td>
                     <td><?= $contract->has('brokerage') ? $this->Html->link($contract->brokerage->name, ['controller' => 'Brokerages', 'action' => 'view', $contract->brokerage->id]) : '' ?></td>
-                    <td><?= h($contract->created) ?></td>
-                    <td><?= $this->Number->format($contract->created_by) ?></td>
-                    <td><?= h($contract->modified) ?></td>
-                    <td><?= $this->Number->format($contract->modified_by) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', 'customer_id' => $customer_id, $contract->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', 'customer_id' => $customer_id, $contract->id]) ?>
