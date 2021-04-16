@@ -1,0 +1,1976 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2021-04-16 09:29+0200\n"
+"PO-Revision-Date: 2021-04-16 09:48+0200\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Language: cs_CZ\n"
+"X-Generator: Poedit 2.4.2\n"
+
+#: Controller/AddressesController.php:56 Controller/AddressesController.php:82
+msgid "The address has been saved."
+msgstr ""
+
+#: Controller/AddressesController.php:60 Controller/AddressesController.php:86
+msgid "The address could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/AddressesController.php:105
+msgid "The address has been deleted."
+msgstr ""
+
+#: Controller/AddressesController.php:107
+msgid "The address could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/AppController.php:66
+msgid "Unable to find results on page {0}. Redirect to page 1."
+msgstr ""
+
+#: Controller/BillingsController.php:56 Controller/BillingsController.php:83
+msgid "The billing has been saved."
+msgstr ""
+
+#: Controller/BillingsController.php:60 Controller/BillingsController.php:87
+msgid "The billing could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/BillingsController.php:107
+msgid "The billing has been deleted."
+msgstr ""
+
+#: Controller/BillingsController.php:109
+msgid "The billing could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/BorrowedEquipmentsController.php:56
+#: Controller/BorrowedEquipmentsController.php:83
+msgid "The borrowed equipment has been saved."
+msgstr ""
+
+#: Controller/BorrowedEquipmentsController.php:60
+#: Controller/BorrowedEquipmentsController.php:87
+msgid "The borrowed equipment could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/BorrowedEquipmentsController.php:107
+msgid "The borrowed equipment has been deleted."
+msgstr ""
+
+#: Controller/BorrowedEquipmentsController.php:109
+msgid "The borrowed equipment could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/BrokerageDealersController.php:56
+#: Controller/BrokerageDealersController.php:82
+msgid "The brokerage dealer has been saved."
+msgstr ""
+
+#: Controller/BrokerageDealersController.php:60
+#: Controller/BrokerageDealersController.php:86
+msgid "The brokerage dealer could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/BrokerageDealersController.php:105
+msgid "The brokerage dealer has been deleted."
+msgstr ""
+
+#: Controller/BrokerageDealersController.php:107
+msgid "The brokerage dealer could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/BrokeragesController.php:53
+#: Controller/BrokeragesController.php:77
+msgid "The brokerage has been saved."
+msgstr ""
+
+#: Controller/BrokeragesController.php:57
+#: Controller/BrokeragesController.php:81
+msgid "The brokerage could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/BrokeragesController.php:98
+msgid "The brokerage has been deleted."
+msgstr ""
+
+#: Controller/BrokeragesController.php:100
+msgid "The brokerage could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/ContractsController.php:81 Controller/ContractsController.php:121
+msgid "The contract has been saved."
+msgstr "Smlouva byla uložena."
+
+#: Controller/ContractsController.php:87 Controller/ContractsController.php:125
+msgid "The contract could not be saved. Please, try again."
+msgstr "Smlouvu nelze uložit. Opakujte akci."
+
+#: Controller/ContractsController.php:153
+msgid "The contract has been deleted."
+msgstr "Smlouva byla odstraněna."
+
+#: Controller/ContractsController.php:155
+msgid "The contract could not be deleted. Please, try again."
+msgstr "Smlouvu nelze odstranit. Opakujte akci."
+
+#: Controller/ContractsController.php:172
+msgid "The contract number has been updated."
+msgstr "Číslo smlouvy bylo aktualizováno."
+
+#: Controller/ContractsController.php:174
+msgid "The contract number could not be updated. Please, try again."
+msgstr "Číslo smlouvy nelze aktualizovat. Opakujte akci."
+
+#: Controller/CountriesController.php:53 Controller/CountriesController.php:77
+msgid "The country has been saved."
+msgstr ""
+
+#: Controller/CountriesController.php:57 Controller/CountriesController.php:81
+msgid "The country could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/CountriesController.php:98
+msgid "The country has been deleted."
+msgstr ""
+
+#: Controller/CountriesController.php:100
+msgid "The country could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/CustomersController.php:56 Controller/CustomersController.php:81
+msgid "The customer has been saved."
+msgstr ""
+
+#: Controller/CustomersController.php:60 Controller/CustomersController.php:85
+msgid "The customer could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/CustomersController.php:103
+msgid "The customer has been deleted."
+msgstr ""
+
+#: Controller/CustomersController.php:105
+msgid "The customer could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/EmailsController.php:56 Controller/EmailsController.php:81
+msgid "The email has been saved."
+msgstr ""
+
+#: Controller/EmailsController.php:60 Controller/EmailsController.php:85
+msgid "The email could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/EmailsController.php:103
+msgid "The email has been deleted."
+msgstr ""
+
+#: Controller/EmailsController.php:105
+msgid "The email could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/EquipmentTypesController.php:53
+#: Controller/EquipmentTypesController.php:77
+msgid "The equipment type has been saved."
+msgstr ""
+
+#: Controller/EquipmentTypesController.php:57
+#: Controller/EquipmentTypesController.php:81
+msgid "The equipment type could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/EquipmentTypesController.php:98
+msgid "The equipment type has been deleted."
+msgstr ""
+
+#: Controller/EquipmentTypesController.php:100
+msgid "The equipment type could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/IpsController.php:56 Controller/IpsController.php:82
+msgid "The ip has been saved."
+msgstr ""
+
+#: Controller/IpsController.php:60 Controller/IpsController.php:86
+msgid "The ip could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/IpsController.php:105
+msgid "The ip has been deleted."
+msgstr ""
+
+#: Controller/IpsController.php:107
+msgid "The ip could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/LabelCustomersController.php:56
+#: Controller/LabelCustomersController.php:82
+msgid "The label customer has been saved."
+msgstr ""
+
+#: Controller/LabelCustomersController.php:60
+#: Controller/LabelCustomersController.php:86
+msgid "The label customer could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/LabelCustomersController.php:105
+msgid "The label customer has been deleted."
+msgstr ""
+
+#: Controller/LabelCustomersController.php:107
+msgid "The label customer could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/LabelsController.php:53 Controller/LabelsController.php:77
+msgid "The label has been saved."
+msgstr ""
+
+#: Controller/LabelsController.php:57 Controller/LabelsController.php:81
+msgid "The label could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/LabelsController.php:98
+msgid "The label has been deleted."
+msgstr ""
+
+#: Controller/LabelsController.php:100
+msgid "The label could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/LoginsController.php:56 Controller/LoginsController.php:81
+msgid "The login has been saved."
+msgstr ""
+
+#: Controller/LoginsController.php:60 Controller/LoginsController.php:85
+msgid "The login could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/LoginsController.php:103
+msgid "The login has been deleted."
+msgstr ""
+
+#: Controller/LoginsController.php:105
+msgid "The login could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/PhonesController.php:56 Controller/PhonesController.php:81
+msgid "The phone has been saved."
+msgstr ""
+
+#: Controller/PhonesController.php:60 Controller/PhonesController.php:85
+msgid "The phone could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/PhonesController.php:103
+msgid "The phone has been deleted."
+msgstr ""
+
+#: Controller/PhonesController.php:105
+msgid "The phone could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/QueuesController.php:56 Controller/QueuesController.php:81
+msgid "The queue has been saved."
+msgstr ""
+
+#: Controller/QueuesController.php:60 Controller/QueuesController.php:85
+msgid "The queue could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/QueuesController.php:103
+msgid "The queue has been deleted."
+msgstr ""
+
+#: Controller/QueuesController.php:105
+msgid "The queue could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/RemovedIpsController.php:56
+#: Controller/RemovedIpsController.php:86
+msgid "The removed ip has been saved."
+msgstr ""
+
+#: Controller/RemovedIpsController.php:60
+#: Controller/RemovedIpsController.php:90
+msgid "The removed ip could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/RemovedIpsController.php:113
+msgid "The removed ip has been deleted."
+msgstr ""
+
+#: Controller/RemovedIpsController.php:115
+msgid "The removed ip could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/RouterContactsController.php:56
+#: Controller/RouterContactsController.php:82
+msgid "The router contact has been saved."
+msgstr ""
+
+#: Controller/RouterContactsController.php:60
+#: Controller/RouterContactsController.php:86
+msgid "The router contact could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/RouterContactsController.php:105
+msgid "The router contact has been deleted."
+msgstr ""
+
+#: Controller/RouterContactsController.php:107
+msgid "The router contact could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/ServiceTypesController.php:53
+#: Controller/ServiceTypesController.php:77
+msgid "The service type has been saved."
+msgstr ""
+
+#: Controller/ServiceTypesController.php:57
+#: Controller/ServiceTypesController.php:81
+msgid "The service type could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/ServiceTypesController.php:98
+msgid "The service type has been deleted."
+msgstr ""
+
+#: Controller/ServiceTypesController.php:100
+msgid "The service type could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/ServicesController.php:56 Controller/ServicesController.php:82
+msgid "The service has been saved."
+msgstr ""
+
+#: Controller/ServicesController.php:60 Controller/ServicesController.php:86
+msgid "The service could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/ServicesController.php:105
+msgid "The service has been deleted."
+msgstr ""
+
+#: Controller/ServicesController.php:107
+msgid "The service could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/SoldEquipmentsController.php:56
+#: Controller/SoldEquipmentsController.php:83
+msgid "The sold equipment has been saved."
+msgstr ""
+
+#: Controller/SoldEquipmentsController.php:60
+#: Controller/SoldEquipmentsController.php:87
+msgid "The sold equipment could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/SoldEquipmentsController.php:107
+msgid "The sold equipment has been deleted."
+msgstr ""
+
+#: Controller/SoldEquipmentsController.php:109
+msgid "The sold equipment could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/TaskStatesController.php:53
+#: Controller/TaskStatesController.php:77
+msgid "The task state has been saved."
+msgstr ""
+
+#: Controller/TaskStatesController.php:57
+#: Controller/TaskStatesController.php:81
+msgid "The task state could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/TaskStatesController.php:98
+msgid "The task state has been deleted."
+msgstr ""
+
+#: Controller/TaskStatesController.php:100
+msgid "The task state could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/TaskTypesController.php:53 Controller/TaskTypesController.php:77
+msgid "The task type has been saved."
+msgstr ""
+
+#: Controller/TaskTypesController.php:57 Controller/TaskTypesController.php:81
+msgid "The task type could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/TaskTypesController.php:98
+msgid "The task type has been deleted."
+msgstr ""
+
+#: Controller/TaskTypesController.php:100
+msgid "The task type could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/TasksController.php:56 Controller/TasksController.php:85
+msgid "The task has been saved."
+msgstr ""
+
+#: Controller/TasksController.php:60 Controller/TasksController.php:89
+msgid "The task could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/TasksController.php:111
+msgid "The task has been deleted."
+msgstr ""
+
+#: Controller/TasksController.php:113
+msgid "The task could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/TaxesController.php:53 Controller/TaxesController.php:77
+msgid "The tax has been saved."
+msgstr ""
+
+#: Controller/TaxesController.php:57 Controller/TaxesController.php:81
+msgid "The tax could not be saved. Please, try again."
+msgstr ""
+
+#: Controller/TaxesController.php:98
+msgid "The tax has been deleted."
+msgstr ""
+
+#: Controller/TaxesController.php:100
+msgid "The tax could not be deleted. Please, try again."
+msgstr ""
+
+#: Addresses/add.php:10 Addresses/edit.php:10 Addresses/index.php:34
+#: Addresses/view.php:10 Billings/add.php:10 Billings/edit.php:10
+#: Billings/index.php:29 Billings/view.php:10 BorrowedEquipments/add.php:10
+#: BorrowedEquipments/edit.php:10 BorrowedEquipments/index.php:23
+#: BorrowedEquipments/view.php:10 BrokerageDealers/add.php:10
+#: BrokerageDealers/edit.php:10 BrokerageDealers/index.php:19
+#: BrokerageDealers/view.php:10 Brokerages/add.php:10 Brokerages/edit.php:10
+#: Brokerages/index.php:16 Brokerages/view.php:10 Brokerages/view.php:41
+#: Brokerages/view.php:87 Brokerages/view.php:137 Brokerages/view.php:174
+#: Contracts/add.php:10 Contracts/edit.php:10 Contracts/index.php:32
+#: Contracts/view.php:10 Contracts/view.php:128 Contracts/view.php:174
+#: Contracts/view.php:213 Contracts/view.php:250 Contracts/view.php:287
+#: Countries/add.php:10 Countries/edit.php:10 Countries/index.php:16
+#: Countries/view.php:10 Countries/view.php:56 Customers/add.php:10
+#: Customers/edit.php:10 Customers/index.php:40 Customers/view.php:10
+#: Customers/view.php:164 Customers/view.php:221 Customers/view.php:267
+#: Customers/view.php:317 Customers/view.php:364 Customers/view.php:400
+#: Customers/view.php:436 Customers/view.php:477 Customers/view.php:515
+#: Customers/view.php:546 Customers/view.php:583 Customers/view.php:632
+#: Emails/add.php:10 Emails/edit.php:10 Emails/index.php:20 Emails/view.php:10
+#: EquipmentTypes/add.php:10 EquipmentTypes/edit.php:10
+#: EquipmentTypes/index.php:17 EquipmentTypes/view.php:10
+#: EquipmentTypes/view.php:49 EquipmentTypes/view.php:88 Ips/add.php:10
+#: Ips/edit.php:10 Ips/index.php:22 Ips/view.php:10 LabelCustomers/add.php:10
+#: LabelCustomers/edit.php:10 LabelCustomers/index.php:19
+#: LabelCustomers/view.php:10 Labels/add.php:10 Labels/edit.php:10
+#: Labels/index.php:20 Labels/view.php:10 Labels/view.php:64 Logins/add.php:10
+#: Logins/edit.php:10 Logins/index.php:28 Logins/view.php:10 Phones/add.php:10
+#: Phones/edit.php:10 Phones/index.php:17 Phones/view.php:10 Queues/add.php:10
+#: Queues/edit.php:10 Queues/index.php:24 Queues/view.php:10 Queues/view.php:75
+#: RemovedIps/add.php:10 RemovedIps/edit.php:10 RemovedIps/index.php:20
+#: RemovedIps/view.php:10 RouterContacts/add.php:10 RouterContacts/edit.php:10
+#: RouterContacts/index.php:17 RouterContacts/view.php:10
+#: ServiceTypes/add.php:10 ServiceTypes/edit.php:10 ServiceTypes/index.php:19
+#: ServiceTypes/view.php:10 ServiceTypes/view.php:68 ServiceTypes/view.php:119
+#: ServiceTypes/view.php:157 Services/add.php:10 Services/edit.php:10
+#: Services/index.php:21 Services/view.php:10 Services/view.php:72
+#: SoldEquipments/add.php:10 SoldEquipments/edit.php:10
+#: SoldEquipments/index.php:23 SoldEquipments/view.php:10 TaskStates/add.php:10
+#: TaskStates/edit.php:10 TaskStates/index.php:15 TaskStates/view.php:10
+#: TaskStates/view.php:57 TaskTypes/add.php:10 TaskTypes/edit.php:10
+#: TaskTypes/index.php:15 TaskTypes/view.php:10 TaskTypes/view.php:57
+#: Tasks/add.php:10 Tasks/edit.php:10 Tasks/index.php:29 Tasks/view.php:10
+#: Taxes/add.php:10 Taxes/edit.php:10 Taxes/index.php:16 Taxes/view.php:10
+msgid "Actions"
+msgstr "Akce"
+
+#: Addresses/add.php:11 Addresses/edit.php:16 Addresses/view.php:13
+msgid "List Addresses"
+msgstr ""
+
+#: Addresses/add.php:18
+msgid "Add Address"
+msgstr ""
+
+#: Addresses/add.php:39 Addresses/edit.php:44 Billings/add.php:35
+#: Billings/edit.php:40 BorrowedEquipments/add.php:28
+#: BorrowedEquipments/edit.php:33 BrokerageDealers/add.php:26
+#: BrokerageDealers/edit.php:31 Brokerages/add.php:23 Brokerages/edit.php:28
+#: Contracts/add.php:29 Contracts/edit.php:50 Countries/add.php:23
+#: Countries/edit.php:28 Customers/add.php:47 Customers/edit.php:52
+#: Emails/add.php:27 Emails/edit.php:32 EquipmentTypes/add.php:24
+#: EquipmentTypes/edit.php:29 Ips/add.php:28 Ips/edit.php:33
+#: LabelCustomers/add.php:26 LabelCustomers/edit.php:31 Labels/add.php:28
+#: Labels/edit.php:33 Logins/add.php:33 Logins/edit.php:38 Phones/add.php:24
+#: Phones/edit.php:29 Queues/add.php:31 Queues/edit.php:36
+#: RemovedIps/add.php:28 RemovedIps/edit.php:33 RouterContacts/add.php:24
+#: RouterContacts/edit.php:29 ServiceTypes/add.php:24 ServiceTypes/edit.php:29
+#: Services/add.php:26 Services/edit.php:31 SoldEquipments/add.php:28
+#: SoldEquipments/edit.php:33 TaskStates/add.php:23 TaskStates/edit.php:28
+#: TaskTypes/add.php:23 TaskTypes/edit.php:28 Tasks/add.php:38
+#: Tasks/edit.php:43 Taxes/add.php:23 Taxes/edit.php:28
+msgid "Submit"
+msgstr ""
+
+#: Addresses/edit.php:12 Addresses/index.php:63 Billings/edit.php:12
+#: Billings/index.php:53 BorrowedEquipments/edit.php:12
+#: BorrowedEquipments/index.php:41 BrokerageDealers/edit.php:12
+#: BrokerageDealers/index.php:33 Brokerages/edit.php:12 Brokerages/index.php:27
+#: Brokerages/view.php:53 Brokerages/view.php:114 Brokerages/view.php:153
+#: Brokerages/view.php:188 Contracts/edit.php:12 Contracts/index.php:59
+#: Contracts/view.php:151 Contracts/view.php:190 Contracts/view.php:229
+#: Contracts/view.php:264 Contracts/view.php:303 Countries/edit.php:12
+#: Countries/index.php:27 Countries/view.php:83 Customers/edit.php:12
+#: Customers/index.php:75 Customers/view.php:191 Customers/view.php:244
+#: Customers/view.php:283 Customers/view.php:344 Customers/view.php:377
+#: Customers/view.php:416 Customers/view.php:449 Customers/view.php:498
+#: Customers/view.php:525 Customers/view.php:560 Customers/view.php:599
+#: Customers/view.php:658 Emails/edit.php:12 Emails/index.php:35
+#: EquipmentTypes/edit.php:12 EquipmentTypes/index.php:29
+#: EquipmentTypes/view.php:65 EquipmentTypes/view.php:104 Ips/edit.php:12
+#: Ips/index.php:39 LabelCustomers/edit.php:12 LabelCustomers/index.php:33
+#: Labels/edit.php:12 Labels/index.php:35 Labels/view.php:77 Logins/edit.php:12
+#: Logins/index.php:51 Phones/edit.php:12 Phones/index.php:29
+#: Queues/edit.php:12 Queues/index.php:43 Queues/view.php:89
+#: RemovedIps/edit.php:12 RemovedIps/index.php:35 RouterContacts/edit.php:12
+#: RouterContacts/index.php:29 ServiceTypes/edit.php:12
+#: ServiceTypes/index.php:33 ServiceTypes/view.php:95 ServiceTypes/view.php:136
+#: ServiceTypes/view.php:171 Services/edit.php:12 Services/index.php:37
+#: Services/view.php:95 SoldEquipments/edit.php:12 SoldEquipments/index.php:41
+#: TaskStates/edit.php:12 TaskStates/index.php:25 TaskStates/view.php:83
+#: TaskTypes/edit.php:12 TaskTypes/index.php:25 TaskTypes/view.php:83
+#: Tasks/edit.php:12 Tasks/index.php:53 Taxes/edit.php:12 Taxes/index.php:27
+msgid "Delete"
+msgstr "Odstranit"
+
+#: Addresses/edit.php:14 Addresses/index.php:63 Addresses/view.php:12
+#: Billings/edit.php:14 Billings/index.php:53 Billings/view.php:12
+#: BorrowedEquipments/edit.php:14 BorrowedEquipments/index.php:41
+#: BorrowedEquipments/view.php:12 BrokerageDealers/edit.php:14
+#: BrokerageDealers/index.php:33 BrokerageDealers/view.php:12
+#: Brokerages/edit.php:14 Brokerages/index.php:27 Brokerages/view.php:12
+#: Brokerages/view.php:53 Brokerages/view.php:114 Brokerages/view.php:153
+#: Brokerages/view.php:188 Contracts/edit.php:14 Contracts/index.php:59
+#: Contracts/view.php:12 Contracts/view.php:151 Contracts/view.php:190
+#: Contracts/view.php:229 Contracts/view.php:264 Contracts/view.php:303
+#: Countries/edit.php:14 Countries/index.php:27 Countries/view.php:12
+#: Countries/view.php:83 Customers/edit.php:14 Customers/index.php:75
+#: Customers/view.php:12 Customers/view.php:191 Customers/view.php:244
+#: Customers/view.php:283 Customers/view.php:344 Customers/view.php:377
+#: Customers/view.php:416 Customers/view.php:449 Customers/view.php:498
+#: Customers/view.php:525 Customers/view.php:560 Customers/view.php:599
+#: Customers/view.php:658 Emails/edit.php:14 Emails/index.php:35
+#: Emails/view.php:12 EquipmentTypes/edit.php:14 EquipmentTypes/index.php:29
+#: EquipmentTypes/view.php:12 EquipmentTypes/view.php:65
+#: EquipmentTypes/view.php:104 Ips/edit.php:14 Ips/index.php:39 Ips/view.php:12
+#: LabelCustomers/edit.php:14 LabelCustomers/index.php:33
+#: LabelCustomers/view.php:12 Labels/edit.php:14 Labels/index.php:35
+#: Labels/view.php:12 Labels/view.php:77 Logins/edit.php:14 Logins/index.php:51
+#: Logins/view.php:12 Phones/edit.php:14 Phones/index.php:29 Phones/view.php:12
+#: Queues/edit.php:14 Queues/index.php:43 Queues/view.php:12 Queues/view.php:89
+#: RemovedIps/edit.php:14 RemovedIps/index.php:35 RemovedIps/view.php:12
+#: RouterContacts/edit.php:14 RouterContacts/index.php:29
+#: RouterContacts/view.php:12 ServiceTypes/edit.php:14
+#: ServiceTypes/index.php:33 ServiceTypes/view.php:12 ServiceTypes/view.php:95
+#: ServiceTypes/view.php:136 ServiceTypes/view.php:171 Services/edit.php:14
+#: Services/index.php:37 Services/view.php:12 Services/view.php:95
+#: SoldEquipments/edit.php:14 SoldEquipments/index.php:41
+#: SoldEquipments/view.php:12 TaskStates/edit.php:14 TaskStates/index.php:25
+#: TaskStates/view.php:12 TaskStates/view.php:83 TaskTypes/edit.php:14
+#: TaskTypes/index.php:25 TaskTypes/view.php:12 TaskTypes/view.php:83
+#: Tasks/edit.php:14 Tasks/index.php:53 Tasks/view.php:12 Taxes/edit.php:14
+#: Taxes/index.php:27 Taxes/view.php:12
+msgid "Are you sure you want to delete # {0}?"
+msgstr "Opravdu chcete odstranit # {0}?"
+
+#: Addresses/edit.php:23 Addresses/view.php:11
+msgid "Edit Address"
+msgstr ""
+
+#: Addresses/index.php:8 Addresses/view.php:14
+msgid "New Address"
+msgstr ""
+
+#: Addresses/index.php:9
+msgid "Addresses"
+msgstr ""
+
+#: Addresses/index.php:61 Billings/index.php:51 BorrowedEquipments/index.php:39
+#: BrokerageDealers/index.php:31 Brokerages/index.php:25 Brokerages/view.php:51
+#: Brokerages/view.php:112 Brokerages/view.php:151 Brokerages/view.php:186
+#: Contracts/index.php:57 Contracts/view.php:149 Contracts/view.php:188
+#: Contracts/view.php:227 Contracts/view.php:262 Contracts/view.php:301
+#: Countries/index.php:25 Countries/view.php:81 Customers/index.php:73
+#: Customers/view.php:189 Customers/view.php:242 Customers/view.php:281
+#: Customers/view.php:342 Customers/view.php:375 Customers/view.php:414
+#: Customers/view.php:447 Customers/view.php:496 Customers/view.php:523
+#: Customers/view.php:558 Customers/view.php:597 Customers/view.php:656
+#: Emails/index.php:33 EquipmentTypes/index.php:27 EquipmentTypes/view.php:63
+#: EquipmentTypes/view.php:102 Ips/index.php:37 LabelCustomers/index.php:31
+#: Labels/index.php:33 Labels/view.php:75 Logins/index.php:49
+#: Phones/index.php:27 Queues/index.php:41 Queues/view.php:87
+#: RemovedIps/index.php:33 RouterContacts/index.php:27
+#: ServiceTypes/index.php:31 ServiceTypes/view.php:93 ServiceTypes/view.php:134
+#: ServiceTypes/view.php:169 Services/index.php:35 Services/view.php:93
+#: SoldEquipments/index.php:39 TaskStates/index.php:23 TaskStates/view.php:81
+#: TaskTypes/index.php:23 TaskTypes/view.php:81 Tasks/index.php:51
+#: Taxes/index.php:25
+msgid "View"
+msgstr "Zobrazit"
+
+#: Addresses/index.php:62 Billings/index.php:52 BorrowedEquipments/index.php:40
+#: BrokerageDealers/index.php:32 Brokerages/index.php:26 Brokerages/view.php:52
+#: Brokerages/view.php:113 Brokerages/view.php:152 Brokerages/view.php:187
+#: Contracts/index.php:58 Contracts/view.php:150 Contracts/view.php:189
+#: Contracts/view.php:228 Contracts/view.php:263 Contracts/view.php:302
+#: Countries/index.php:26 Countries/view.php:82 Customers/index.php:74
+#: Customers/view.php:190 Customers/view.php:243 Customers/view.php:282
+#: Customers/view.php:343 Customers/view.php:376 Customers/view.php:415
+#: Customers/view.php:448 Customers/view.php:497 Customers/view.php:524
+#: Customers/view.php:559 Customers/view.php:598 Customers/view.php:657
+#: Emails/index.php:34 EquipmentTypes/index.php:28 EquipmentTypes/view.php:64
+#: EquipmentTypes/view.php:103 Ips/index.php:38 LabelCustomers/index.php:32
+#: Labels/index.php:34 Labels/view.php:76 Logins/index.php:50
+#: Phones/index.php:28 Queues/index.php:42 Queues/view.php:88
+#: RemovedIps/index.php:34 RouterContacts/index.php:28
+#: ServiceTypes/index.php:32 ServiceTypes/view.php:94 ServiceTypes/view.php:135
+#: ServiceTypes/view.php:170 Services/index.php:36 Services/view.php:94
+#: SoldEquipments/index.php:40 TaskStates/index.php:24 TaskStates/view.php:82
+#: TaskTypes/index.php:24 TaskTypes/view.php:82 Tasks/index.php:52
+#: Taxes/index.php:26
+msgid "Edit"
+msgstr "Upravit"
+
+#: Addresses/index.php:72 Billings/index.php:62 BorrowedEquipments/index.php:50
+#: BrokerageDealers/index.php:42 Brokerages/index.php:36 Contracts/index.php:68
+#: Countries/index.php:36 Customers/index.php:84 Emails/index.php:44
+#: EquipmentTypes/index.php:38 Ips/index.php:48 LabelCustomers/index.php:42
+#: Labels/index.php:44 Logins/index.php:60 Phones/index.php:38
+#: Queues/index.php:52 RemovedIps/index.php:44 RouterContacts/index.php:38
+#: ServiceTypes/index.php:42 Services/index.php:46 SoldEquipments/index.php:50
+#: TaskStates/index.php:34 TaskTypes/index.php:34 Tasks/index.php:62
+#: Taxes/index.php:36
+msgid "first"
+msgstr "první"
+
+#: Addresses/index.php:73 Billings/index.php:63 BorrowedEquipments/index.php:51
+#: BrokerageDealers/index.php:43 Brokerages/index.php:37 Contracts/index.php:69
+#: Countries/index.php:37 Customers/index.php:85 Emails/index.php:45
+#: EquipmentTypes/index.php:39 Ips/index.php:49 LabelCustomers/index.php:43
+#: Labels/index.php:45 Logins/index.php:61 Phones/index.php:39
+#: Queues/index.php:53 RemovedIps/index.php:45 RouterContacts/index.php:39
+#: ServiceTypes/index.php:43 Services/index.php:47 SoldEquipments/index.php:51
+#: TaskStates/index.php:35 TaskTypes/index.php:35 Tasks/index.php:63
+#: Taxes/index.php:37
+msgid "previous"
+msgstr "předchozí"
+
+#: Addresses/index.php:75 Billings/index.php:65 BorrowedEquipments/index.php:53
+#: BrokerageDealers/index.php:45 Brokerages/index.php:39 Contracts/index.php:71
+#: Countries/index.php:39 Customers/index.php:87 Emails/index.php:47
+#: EquipmentTypes/index.php:41 Ips/index.php:51 LabelCustomers/index.php:45
+#: Labels/index.php:47 Logins/index.php:63 Phones/index.php:41
+#: Queues/index.php:55 RemovedIps/index.php:47 RouterContacts/index.php:41
+#: ServiceTypes/index.php:45 Services/index.php:49 SoldEquipments/index.php:53
+#: TaskStates/index.php:37 TaskTypes/index.php:37 Tasks/index.php:65
+#: Taxes/index.php:39
+msgid "next"
+msgstr "další"
+
+#: Addresses/index.php:76 Billings/index.php:66 BorrowedEquipments/index.php:54
+#: BrokerageDealers/index.php:46 Brokerages/index.php:40 Contracts/index.php:72
+#: Countries/index.php:40 Customers/index.php:88 Emails/index.php:48
+#: EquipmentTypes/index.php:42 Ips/index.php:52 LabelCustomers/index.php:46
+#: Labels/index.php:48 Logins/index.php:64 Phones/index.php:42
+#: Queues/index.php:56 RemovedIps/index.php:48 RouterContacts/index.php:42
+#: ServiceTypes/index.php:46 Services/index.php:50 SoldEquipments/index.php:54
+#: TaskStates/index.php:38 TaskTypes/index.php:38 Tasks/index.php:66
+#: Taxes/index.php:40
+msgid "last"
+msgstr "poslední"
+
+#: Addresses/index.php:78 Billings/index.php:68 BorrowedEquipments/index.php:56
+#: BrokerageDealers/index.php:48 Brokerages/index.php:42 Contracts/index.php:74
+#: Countries/index.php:42 Customers/index.php:90 Emails/index.php:50
+#: EquipmentTypes/index.php:44 Ips/index.php:54 LabelCustomers/index.php:48
+#: Labels/index.php:50 Logins/index.php:66 Phones/index.php:44
+#: Queues/index.php:58 RemovedIps/index.php:50 RouterContacts/index.php:44
+#: ServiceTypes/index.php:48 Services/index.php:52 SoldEquipments/index.php:56
+#: TaskStates/index.php:40 TaskTypes/index.php:40 Tasks/index.php:68
+#: Taxes/index.php:42
+msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
+msgstr "Stránka {{page}} z {{pages}}, zobrazující {{current}} záznamů z celkového počtu {{count}}"
+
+#: Addresses/view.php:12
+msgid "Delete Address"
+msgstr ""
+
+#: Addresses/view.php:22 Billings/view.php:22 BorrowedEquipments/view.php:22
+#: Contracts/view.php:22 Emails/view.php:22 Ips/view.php:26
+#: LabelCustomers/view.php:26 Logins/view.php:22 Phones/view.php:22
+#: RemovedIps/view.php:26 RouterContacts/view.php:26 SoldEquipments/view.php:22
+#: Tasks/view.php:26
+msgid "Customer"
+msgstr "Zákazník"
+
+#: Addresses/view.php:26 Countries/view.php:39 Customers/view.php:22
+#: Customers/view.php:147
+msgid "Title"
+msgstr ""
+
+#: Addresses/view.php:30 Countries/view.php:40 Customers/view.php:26
+#: Customers/view.php:148
+msgid "First Name"
+msgstr ""
+
+#: Addresses/view.php:34 Countries/view.php:41 Customers/view.php:30
+#: Customers/view.php:149
+msgid "Last Name"
+msgstr ""
+
+#: Addresses/view.php:38 Countries/view.php:42 Customers/view.php:34
+#: Customers/view.php:150
+msgid "Suffix"
+msgstr ""
+
+#: Addresses/view.php:42 Countries/view.php:43 Customers/view.php:38
+#: Customers/view.php:151
+msgid "Company"
+msgstr ""
+
+#: Addresses/view.php:46 Countries/view.php:44 Customers/view.php:152
+msgid "Street"
+msgstr ""
+
+#: Addresses/view.php:50 Brokerages/view.php:70 Contracts/view.php:30
+#: Countries/view.php:45 Customers/view.php:153 Customers/view.php:300
+#: ServiceTypes/view.php:51
+msgid "Number"
+msgstr "Číslo"
+
+#: Addresses/view.php:54 Countries/view.php:46 Customers/view.php:154
+msgid "City"
+msgstr ""
+
+#: Addresses/view.php:58 Countries/view.php:47 Customers/view.php:155
+msgid "Zip"
+msgstr ""
+
+#: Addresses/view.php:62
+msgid "Country"
+msgstr ""
+
+#: Addresses/view.php:66 Billings/view.php:38 BorrowedEquipments/view.php:38
+#: BrokerageDealers/view.php:38 Brokerages/view.php:26 Brokerages/view.php:40
+#: Brokerages/view.php:67 Brokerages/view.php:132 Brokerages/view.php:167
+#: Contracts/view.php:46 Contracts/view.php:112 Contracts/view.php:165
+#: Contracts/view.php:208 Contracts/view.php:243 Contracts/view.php:278
+#: Countries/view.php:26 Countries/view.php:36 Customers/view.php:74
+#: Customers/view.php:144 Customers/view.php:205 Customers/view.php:258
+#: Customers/view.php:297 Customers/view.php:358 Customers/view.php:395
+#: Customers/view.php:434 Customers/view.php:463 Customers/view.php:512
+#: Customers/view.php:539 Customers/view.php:574 Customers/view.php:613
+#: Emails/view.php:30 EquipmentTypes/view.php:26 EquipmentTypes/view.php:40
+#: EquipmentTypes/view.php:79 Ips/view.php:34 LabelCustomers/view.php:30
+#: Labels/view.php:34 Labels/view.php:62 Logins/view.php:42 Phones/view.php:30
+#: Queues/view.php:34 Queues/view.php:68 RemovedIps/view.php:34
+#: RouterContacts/view.php:30 ServiceTypes/view.php:30 ServiceTypes/view.php:48
+#: ServiceTypes/view.php:109 ServiceTypes/view.php:150 Services/view.php:34
+#: Services/view.php:56 SoldEquipments/view.php:38 TaskStates/view.php:22
+#: TaskStates/view.php:38 TaskTypes/view.php:22 TaskTypes/view.php:38
+#: Tasks/view.php:38 Taxes/view.php:26
+msgid "Id"
+msgstr ""
+
+#: Addresses/view.php:70 Countries/view.php:37 Customers/view.php:145
+msgid "Type"
+msgstr ""
+
+#: Addresses/view.php:74 Billings/view.php:54 BorrowedEquipments/view.php:42
+#: Brokerages/view.php:73 Brokerages/view.php:134 Contracts/view.php:50
+#: Contracts/view.php:121 Contracts/view.php:171 Contracts/view.php:210
+#: Contracts/view.php:284 Countries/view.php:49 Customers/view.php:86
+#: Customers/view.php:157 Customers/view.php:214 Customers/view.php:264
+#: Customers/view.php:303 Customers/view.php:397 Customers/view.php:435
+#: Customers/view.php:475 Customers/view.php:580 Customers/view.php:622
+#: EquipmentTypes/view.php:46 EquipmentTypes/view.php:85 Ips/view.php:38
+#: LabelCustomers/view.php:34 Labels/view.php:63 Logins/view.php:58
+#: ServiceTypes/view.php:54 Services/view.php:65 SoldEquipments/view.php:42
+#: TaskStates/view.php:47 TaskTypes/view.php:47 Tasks/view.php:54
+msgid "Created By"
+msgstr ""
+
+#: Addresses/view.php:78 Billings/view.php:50 BorrowedEquipments/view.php:46
+#: Brokerages/view.php:75 Brokerages/view.php:136 Contracts/view.php:54
+#: Contracts/view.php:119 Contracts/view.php:173 Contracts/view.php:212
+#: Contracts/view.php:286 Countries/view.php:51 Customers/view.php:82
+#: Customers/view.php:159 Customers/view.php:212 Customers/view.php:266
+#: Customers/view.php:305 Customers/view.php:399 Customers/view.php:473
+#: Customers/view.php:582 Customers/view.php:620 EquipmentTypes/view.php:48
+#: EquipmentTypes/view.php:87 Ips/view.php:42 Logins/view.php:54
+#: ServiceTypes/view.php:56 Services/view.php:63 SoldEquipments/view.php:46
+#: TaskStates/view.php:45 TaskTypes/view.php:45 Tasks/view.php:50
+msgid "Modified By"
+msgstr ""
+
+#: Addresses/view.php:82 Countries/view.php:53 Customers/view.php:161
+msgid "Ruian Gid"
+msgstr ""
+
+#: Addresses/view.php:86 Countries/view.php:54 Customers/view.php:162
+msgid "Gpsx"
+msgstr ""
+
+#: Addresses/view.php:90 Countries/view.php:55 Customers/view.php:163
+msgid "Gpsy"
+msgstr ""
+
+#: Addresses/view.php:94 Billings/view.php:74 BorrowedEquipments/view.php:50
+#: Brokerages/view.php:72 Brokerages/view.php:133 Contracts/view.php:62
+#: Contracts/view.php:122 Contracts/view.php:170 Contracts/view.php:209
+#: Contracts/view.php:283 Countries/view.php:50 Customers/view.php:98
+#: Customers/view.php:158 Customers/view.php:215 Customers/view.php:263
+#: Customers/view.php:302 Customers/view.php:396 Customers/view.php:432
+#: Customers/view.php:476 Customers/view.php:579 Customers/view.php:623
+#: EquipmentTypes/view.php:45 EquipmentTypes/view.php:84 Ips/view.php:46
+#: LabelCustomers/view.php:38 Labels/view.php:60 Logins/view.php:74
+#: Queues/view.php:69 ServiceTypes/view.php:34 ServiceTypes/view.php:53
+#: ServiceTypes/view.php:151 Services/view.php:42 Services/view.php:66
+#: SoldEquipments/view.php:50 TaskStates/view.php:48 TaskTypes/view.php:48
+#: Tasks/view.php:62
+msgid "Created"
+msgstr "Vytvořeno"
+
+#: Addresses/view.php:98 Billings/view.php:70 BorrowedEquipments/view.php:54
+#: Brokerages/view.php:74 Brokerages/view.php:135 Contracts/view.php:66
+#: Contracts/view.php:120 Contracts/view.php:172 Contracts/view.php:211
+#: Contracts/view.php:285 Countries/view.php:52 Customers/view.php:94
+#: Customers/view.php:160 Customers/view.php:213 Customers/view.php:265
+#: Customers/view.php:304 Customers/view.php:398 Customers/view.php:474
+#: Customers/view.php:581 Customers/view.php:621 EquipmentTypes/view.php:47
+#: EquipmentTypes/view.php:86 Ips/view.php:50 Logins/view.php:70
+#: Queues/view.php:70 ServiceTypes/view.php:38 ServiceTypes/view.php:55
+#: ServiceTypes/view.php:152 Services/view.php:46 Services/view.php:64
+#: SoldEquipments/view.php:54 TaskStates/view.php:46 TaskTypes/view.php:46
+#: Tasks/view.php:58
+msgid "Modified"
+msgstr "Upraveno"
+
+#: Billings/add.php:11 Billings/edit.php:16 Billings/view.php:13
+msgid "List Billings"
+msgstr ""
+
+#: Billings/add.php:18
+msgid "Add Billing"
+msgstr ""
+
+#: Billings/edit.php:23 Billings/view.php:11
+msgid "Edit Billing"
+msgstr ""
+
+#: Billings/index.php:8 Billings/view.php:14
+msgid "New Billing"
+msgstr ""
+
+#: Billings/index.php:9
+msgid "Billings"
+msgstr ""
+
+#: Billings/view.php:12
+msgid "Delete Billing"
+msgstr ""
+
+#: Billings/view.php:26 Contracts/view.php:114 Customers/view.php:207
+#: Customers/view.php:616 Services/view.php:58 TaskStates/view.php:41
+#: TaskTypes/view.php:41 Tasks/view.php:89
+msgid "Text"
+msgstr ""
+
+#: Billings/view.php:30
+msgid "Service"
+msgstr ""
+
+#: Billings/view.php:34 BorrowedEquipments/view.php:26 Ips/view.php:30
+#: RemovedIps/view.php:30 SoldEquipments/view.php:26
+msgid "Contract"
+msgstr "Smlouva"
+
+#: Billings/view.php:42 Contracts/view.php:115 Customers/view.php:208
+#: EquipmentTypes/view.php:30 Queues/view.php:72 ServiceTypes/view.php:154
+#: Services/view.php:38 Services/view.php:59
+msgid "Price"
+msgstr ""
+
+#: Billings/view.php:46 Contracts/view.php:118 Customers/view.php:211
+#: Services/view.php:62
+msgid "Active"
+msgstr ""
+
+#: Billings/view.php:58 Contracts/view.php:124 Customers/view.php:217
+#: Services/view.php:68
+msgid "Separate"
+msgstr ""
+
+#: Billings/view.php:62 Contracts/view.php:126 Customers/view.php:219
+#: Services/view.php:70
+msgid "Quantity"
+msgstr ""
+
+#: Billings/view.php:66 Contracts/view.php:116 Customers/view.php:209
+#: Services/view.php:60
+msgid "Billing From"
+msgstr ""
+
+#: Billings/view.php:78 Contracts/view.php:123 Customers/view.php:216
+#: Services/view.php:67
+msgid "Billing Until"
+msgstr ""
+
+#: Billings/view.php:83 Brokerages/view.php:76 Brokerages/view.php:130
+#: Brokerages/view.php:172 Contracts/view.php:95 Contracts/view.php:117
+#: Contracts/view.php:206 Contracts/view.php:248 Customers/view.php:133
+#: Customers/view.php:210 Customers/view.php:306 Customers/view.php:393
+#: Customers/view.php:433 Customers/view.php:544 Ips/view.php:55
+#: LabelCustomers/view.php:43 Labels/view.php:61 RemovedIps/view.php:47
+#: ServiceTypes/view.php:57 Services/view.php:61
+msgid "Note"
+msgstr "Poznámka"
+
+#: BorrowedEquipments/add.php:11 BorrowedEquipments/edit.php:16
+#: BorrowedEquipments/view.php:13
+msgid "List Borrowed Equipments"
+msgstr ""
+
+#: BorrowedEquipments/add.php:18
+msgid "Add Borrowed Equipment"
+msgstr ""
+
+#: BorrowedEquipments/edit.php:23 BorrowedEquipments/view.php:11
+msgid "Edit Borrowed Equipment"
+msgstr ""
+
+#: BorrowedEquipments/index.php:8 BorrowedEquipments/view.php:14
+msgid "New Borrowed Equipment"
+msgstr ""
+
+#: BorrowedEquipments/index.php:9
+msgid "Borrowed Equipments"
+msgstr ""
+
+#: BorrowedEquipments/view.php:12
+msgid "Delete Borrowed Equipment"
+msgstr ""
+
+#: BorrowedEquipments/view.php:30 SoldEquipments/view.php:30
+msgid "Equipment Type"
+msgstr ""
+
+#: BorrowedEquipments/view.php:34 Contracts/view.php:169 Contracts/view.php:282
+#: Customers/view.php:262 Customers/view.php:578 EquipmentTypes/view.php:44
+#: EquipmentTypes/view.php:83 SoldEquipments/view.php:34
+msgid "Serial Number"
+msgstr ""
+
+#: BrokerageDealers/add.php:11 BrokerageDealers/edit.php:16
+#: BrokerageDealers/view.php:13
+msgid "List Brokerage Dealers"
+msgstr ""
+
+#: BrokerageDealers/add.php:18
+msgid "Add Brokerage Dealer"
+msgstr ""
+
+#: BrokerageDealers/edit.php:23 BrokerageDealers/view.php:11
+msgid "Edit Brokerage Dealer"
+msgstr ""
+
+#: BrokerageDealers/index.php:8 BrokerageDealers/view.php:14
+msgid "New Brokerage Dealer"
+msgstr ""
+
+#: BrokerageDealers/index.php:9
+msgid "Brokerage Dealers"
+msgstr ""
+
+#: BrokerageDealers/view.php:12
+msgid "Delete Brokerage Dealer"
+msgstr ""
+
+#: BrokerageDealers/view.php:22 Contracts/view.php:42
+msgid "Brokerage"
+msgstr "Provize"
+
+#: BrokerageDealers/view.php:26 Brokerages/view.php:36 Customers/view.php:619
+#: TaskStates/view.php:44 TaskTypes/view.php:44 Tasks/view.php:46
+msgid "Dealer Id"
+msgstr ""
+
+#: BrokerageDealers/view.php:30 Brokerages/view.php:38
+msgid "Fixed"
+msgstr ""
+
+#: BrokerageDealers/view.php:34 Brokerages/view.php:39
+msgid "Percentage"
+msgstr ""
+
+#: Brokerages/add.php:11 Brokerages/edit.php:16 Brokerages/view.php:13
+msgid "List Brokerages"
+msgstr ""
+
+#: Brokerages/add.php:18
+msgid "Add Brokerage"
+msgstr ""
+
+#: Brokerages/edit.php:23 Brokerages/view.php:11
+msgid "Edit Brokerage"
+msgstr ""
+
+#: Brokerages/index.php:8 Brokerages/view.php:14
+msgid "New Brokerage"
+msgstr ""
+
+#: Brokerages/index.php:9
+msgid "Brokerages"
+msgstr ""
+
+#: Brokerages/view.php:12
+msgid "Delete Brokerage"
+msgstr ""
+
+#: Brokerages/view.php:22 Countries/view.php:22 EquipmentTypes/view.php:22
+#: Labels/view.php:22 Queues/view.php:22 Queues/view.php:71
+#: ServiceTypes/view.php:22 ServiceTypes/view.php:110 ServiceTypes/view.php:153
+#: Services/view.php:22 TaskStates/view.php:27 TaskTypes/view.php:27
+#: Taxes/view.php:22
+msgid "Name"
+msgstr ""
+
+#: Brokerages/view.php:31
+msgid "Related Brokerage Dealers"
+msgstr ""
+
+#: Brokerages/view.php:37 Brokerages/view.php:80 Customers/view.php:310
+#: ServiceTypes/view.php:61
+msgid "Brokerage Id"
+msgstr ""
+
+#: Brokerages/view.php:62 Customers/view.php:292 ServiceTypes/view.php:43
+msgid "Related Contracts"
+msgstr ""
+
+#: Brokerages/view.php:68 Brokerages/view.php:129 Brokerages/view.php:171
+#: Contracts/view.php:113 Contracts/view.php:166 Contracts/view.php:205
+#: Contracts/view.php:247 Contracts/view.php:279 Countries/view.php:38
+#: Customers/view.php:146 Customers/view.php:206 Customers/view.php:259
+#: Customers/view.php:298 Customers/view.php:359 Customers/view.php:392
+#: Customers/view.php:431 Customers/view.php:464 Customers/view.php:513
+#: Customers/view.php:543 Customers/view.php:575 Customers/view.php:618
+#: EquipmentTypes/view.php:41 EquipmentTypes/view.php:80 Labels/view.php:59
+#: ServiceTypes/view.php:49 Services/view.php:57 TaskStates/view.php:43
+#: TaskTypes/view.php:43
+msgid "Customer Id"
+msgstr ""
+
+#: Brokerages/view.php:69 Customers/view.php:299 ServiceTypes/view.php:50
+msgid "Installation Address Id"
+msgstr ""
+
+#: Brokerages/view.php:71 Customers/view.php:301 Queues/view.php:73
+#: ServiceTypes/view.php:52 ServiceTypes/view.php:116 ServiceTypes/view.php:155
+msgid "Service Type Id"
+msgstr ""
+
+#: Brokerages/view.php:77 Contracts/view.php:70 Customers/view.php:307
+#: ServiceTypes/view.php:58
+msgid "Obligation Until"
+msgstr "Závazek do"
+
+#: Brokerages/view.php:78 Contracts/view.php:90 Customers/view.php:308
+#: ServiceTypes/view.php:59
+msgid "Vip"
+msgstr ""
+
+#: Brokerages/view.php:79 Customers/view.php:309 ServiceTypes/view.php:60
+msgid "Installation Technician Id"
+msgstr ""
+
+#: Brokerages/view.php:81 Contracts/view.php:74 Customers/view.php:311
+#: ServiceTypes/view.php:62
+msgid "Installation Date"
+msgstr "Datum instalace"
+
+#: Brokerages/view.php:82 Contracts/view.php:101 Customers/view.php:312
+#: ServiceTypes/view.php:63
+msgid "Access Description"
+msgstr "Popis přístupu"
+
+#: Brokerages/view.php:83 Contracts/view.php:78 Customers/view.php:313
+#: ServiceTypes/view.php:64
+msgid "Valid From"
+msgstr "Platnost od"
+
+#: Brokerages/view.php:84 Contracts/view.php:82 Customers/view.php:314
+#: ServiceTypes/view.php:65
+msgid "Valid Until"
+msgstr "Platnost do"
+
+#: Brokerages/view.php:85 Contracts/view.php:86 Customers/view.php:315
+#: ServiceTypes/view.php:66
+msgid "Conclusion Date"
+msgstr "Datum uzavření"
+
+#: Brokerages/view.php:86 Contracts/view.php:58 Customers/view.php:316
+#: ServiceTypes/view.php:67
+msgid "Number Of Amendments"
+msgstr "Počet dodatků"
+
+#: Brokerages/view.php:123 Contracts/view.php:199 Customers/view.php:386
+msgid "Related Ips"
+msgstr ""
+
+#: Brokerages/view.php:128 Brokerages/view.php:170 Contracts/view.php:204
+#: Contracts/view.php:246 Customers/view.php:391 Customers/view.php:542
+#: Ips/view.php:22 RemovedIps/view.php:22
+msgid "Ip"
+msgstr ""
+
+#: Brokerages/view.php:131 Brokerages/view.php:173 Contracts/view.php:127
+#: Contracts/view.php:167 Contracts/view.php:207 Contracts/view.php:249
+#: Contracts/view.php:280 Customers/view.php:220 Customers/view.php:260
+#: Customers/view.php:394 Customers/view.php:545 Customers/view.php:576
+#: EquipmentTypes/view.php:42 EquipmentTypes/view.php:81 Services/view.php:71
+msgid "Contract Id"
+msgstr ""
+
+#: Brokerages/view.php:162 Contracts/view.php:238 Customers/view.php:534
+msgid "Related Removed Ips"
+msgstr ""
+
+#: Brokerages/view.php:168 Contracts/view.php:244 Customers/view.php:540
+#: RemovedIps/view.php:38
+msgid "Removed By"
+msgstr ""
+
+#: Brokerages/view.php:169 Contracts/view.php:245 Customers/view.php:541
+#: RemovedIps/view.php:42
+msgid "Removed"
+msgstr "Odstraněno"
+
+#: Contracts/add.php:11 Contracts/edit.php:16 Contracts/view.php:13
+msgid "List Contracts"
+msgstr "Seznam smluv"
+
+#: Contracts/add.php:18
+msgid "Add Contract"
+msgstr "Přidat smlouvu"
+
+#: Contracts/edit.php:23 Contracts/view.php:11
+msgid "Edit Contract"
+msgstr "Upravit smlouvu"
+
+#: Contracts/index.php:8 Contracts/view.php:14
+msgid "New Contract"
+msgstr "Nová smlouva"
+
+#: Contracts/index.php:9
+msgid "Contracts"
+msgstr "Smlouvy"
+
+#: Contracts/view.php:12
+msgid "Delete Contract"
+msgstr "Odstranit smlouvu"
+
+#: Contracts/view.php:26
+msgid "Installation Address"
+msgstr "Adresa instalace"
+
+#: Contracts/view.php:34 Queues/view.php:30 Services/view.php:26
+msgid "Service Type"
+msgstr "Typ služby"
+
+#: Contracts/view.php:38
+msgid "Installation Technician"
+msgstr "Instalační technik"
+
+#: Contracts/view.php:91 Customers/view.php:111 Customers/view.php:115
+#: Customers/view.php:119 Customers/view.php:123 Emails/view.php:35
+#: Emails/view.php:39 Emails/view.php:43 Labels/view.php:43
+msgid "Yes"
+msgstr "Ano"
+
+#: Contracts/view.php:91 Customers/view.php:111 Customers/view.php:115
+#: Customers/view.php:119 Customers/view.php:123 Emails/view.php:35
+#: Emails/view.php:39 Emails/view.php:43 Labels/view.php:43
+msgid "No"
+msgstr "Ne"
+
+#: Contracts/view.php:107 Customers/view.php:200 Services/view.php:51
+msgid "Related Billings"
+msgstr ""
+
+#: Contracts/view.php:125 Customers/view.php:218 Services/view.php:69
+msgid "Service Id"
+msgstr ""
+
+#: Contracts/view.php:160 Customers/view.php:253 EquipmentTypes/view.php:35
+msgid "Related Borrowed Equipments"
+msgstr ""
+
+#: Contracts/view.php:168 Contracts/view.php:281 Customers/view.php:261
+#: Customers/view.php:577 EquipmentTypes/view.php:43 EquipmentTypes/view.php:82
+msgid "Equipment Type Id"
+msgstr ""
+
+#: Contracts/view.php:273 Customers/view.php:569 EquipmentTypes/view.php:74
+msgid "Related Sold Equipments"
+msgstr ""
+
+#: Countries/add.php:11 Countries/edit.php:16 Countries/view.php:13
+msgid "List Countries"
+msgstr ""
+
+#: Countries/add.php:18
+msgid "Add Country"
+msgstr ""
+
+#: Countries/edit.php:23 Countries/view.php:11
+msgid "Edit Country"
+msgstr ""
+
+#: Countries/index.php:8 Countries/view.php:14
+msgid "New Country"
+msgstr ""
+
+#: Countries/index.php:9
+msgid "Countries"
+msgstr ""
+
+#: Countries/view.php:12
+msgid "Delete Country"
+msgstr ""
+
+#: Countries/view.php:31 Customers/view.php:139
+msgid "Related Addresses"
+msgstr ""
+
+#: Countries/view.php:48 Customers/view.php:156
+msgid "Country Id"
+msgstr ""
+
+#: Customers/add.php:11 Customers/edit.php:16 Customers/view.php:13
+msgid "List Customers"
+msgstr ""
+
+#: Customers/add.php:18
+msgid "Add Customer"
+msgstr ""
+
+#: Customers/edit.php:23 Customers/view.php:11
+msgid "Edit Customer"
+msgstr ""
+
+#: Customers/index.php:8 Customers/view.php:14
+msgid "New Customer"
+msgstr ""
+
+#: Customers/index.php:9
+msgid "Customers"
+msgstr ""
+
+#: Customers/view.php:12
+msgid "Delete Customer"
+msgstr ""
+
+#: Customers/view.php:42
+msgid "Tax"
+msgstr ""
+
+#: Customers/view.php:46
+msgid "Bank Name"
+msgstr ""
+
+#: Customers/view.php:50
+msgid "Bank Account"
+msgstr ""
+
+#: Customers/view.php:54
+msgid "Bank Code"
+msgstr ""
+
+#: Customers/view.php:58
+msgid "Ic"
+msgstr ""
+
+#: Customers/view.php:62
+msgid "Dic"
+msgstr ""
+
+#: Customers/view.php:66
+msgid "Www"
+msgstr ""
+
+#: Customers/view.php:70
+msgid "Identity Card Number"
+msgstr ""
+
+#: Customers/view.php:78
+msgid "Dealer"
+msgstr ""
+
+#: Customers/view.php:90
+msgid "Invoice Delivery"
+msgstr ""
+
+#: Customers/view.php:102
+msgid "Date Of Birth"
+msgstr ""
+
+#: Customers/view.php:106
+msgid "Termination Date"
+msgstr ""
+
+#: Customers/view.php:110
+msgid "Agree Gdpr"
+msgstr ""
+
+#: Customers/view.php:114
+msgid "Agree Mailing Outages"
+msgstr ""
+
+#: Customers/view.php:118
+msgid "Agree Mailing Commercial"
+msgstr ""
+
+#: Customers/view.php:122
+msgid "Agree Mailing Billing"
+msgstr ""
+
+#: Customers/view.php:127
+msgid "Internal Note"
+msgstr ""
+
+#: Customers/view.php:353
+msgid "Related Emails"
+msgstr ""
+
+#: Customers/view.php:360 Customers/view.php:624 Emails/view.php:26
+#: TaskStates/view.php:49 TaskTypes/view.php:49 Tasks/view.php:95
+msgid "Email"
+msgstr ""
+
+#: Customers/view.php:361 Emails/view.php:34
+msgid "Use For Billing"
+msgstr ""
+
+#: Customers/view.php:362 Emails/view.php:38
+msgid "Use For Outages"
+msgstr ""
+
+#: Customers/view.php:363 Emails/view.php:42
+msgid "Use For Commercial"
+msgstr ""
+
+#: Customers/view.php:425 Labels/view.php:53
+msgid "Related Label Customers"
+msgstr ""
+
+#: Customers/view.php:430 Labels/view.php:58
+msgid "Label Id"
+msgstr ""
+
+#: Customers/view.php:458
+msgid "Related Logins"
+msgstr ""
+
+#: Customers/view.php:465 Logins/view.php:26
+msgid "Login"
+msgstr ""
+
+#: Customers/view.php:466 Logins/view.php:30
+msgid "Password"
+msgstr ""
+
+#: Customers/view.php:467 Logins/view.php:46
+msgid "Rights"
+msgstr ""
+
+#: Customers/view.php:468 Logins/view.php:50
+msgid "Locked"
+msgstr ""
+
+#: Customers/view.php:469 Logins/view.php:62
+msgid "Last Granted"
+msgstr ""
+
+#: Customers/view.php:470 Logins/view.php:34
+msgid "Last Granted Ip"
+msgstr ""
+
+#: Customers/view.php:471 Logins/view.php:66
+msgid "Last Denied"
+msgstr ""
+
+#: Customers/view.php:472 Logins/view.php:38
+msgid "Last Denied Ip"
+msgstr ""
+
+#: Customers/view.php:507
+msgid "Related Phones"
+msgstr ""
+
+#: Customers/view.php:514 Customers/view.php:625 Phones/view.php:26
+#: TaskStates/view.php:50 TaskTypes/view.php:50 Tasks/view.php:101
+msgid "Phone"
+msgstr ""
+
+#: Customers/view.php:608 TaskStates/view.php:33 TaskTypes/view.php:33
+msgid "Related Tasks"
+msgstr ""
+
+#: Customers/view.php:614 TaskStates/view.php:39 TaskTypes/view.php:39
+msgid "Task Type Id"
+msgstr ""
+
+#: Customers/view.php:615 TaskStates/view.php:40 TaskTypes/view.php:40
+#: Tasks/view.php:83
+msgid "Subject"
+msgstr ""
+
+#: Customers/view.php:617 TaskStates/view.php:42 TaskTypes/view.php:42
+#: Tasks/view.php:42
+msgid "Priority"
+msgstr ""
+
+#: Customers/view.php:626 TaskStates/view.php:51 TaskTypes/view.php:51
+msgid "Task State Id"
+msgstr ""
+
+#: Customers/view.php:627 TaskStates/view.php:52 TaskTypes/view.php:52
+#: Tasks/view.php:66
+msgid "Finish Date"
+msgstr ""
+
+#: Customers/view.php:628 TaskStates/view.php:53 TaskTypes/view.php:53
+#: Tasks/view.php:70
+msgid "Start Date"
+msgstr ""
+
+#: Customers/view.php:629 TaskStates/view.php:54 TaskTypes/view.php:54
+#: Tasks/view.php:74
+msgid "Estimated Date"
+msgstr ""
+
+#: Customers/view.php:630 TaskStates/view.php:55 TaskTypes/view.php:55
+#: Tasks/view.php:78
+msgid "Critical Date"
+msgstr ""
+
+#: Customers/view.php:631 TaskStates/view.php:56 TaskTypes/view.php:56
+msgid "Router Id"
+msgstr ""
+
+#: Emails/add.php:11 Emails/edit.php:16 Emails/view.php:13
+msgid "List Emails"
+msgstr ""
+
+#: Emails/add.php:18
+msgid "Add Email"
+msgstr ""
+
+#: Emails/edit.php:23 Emails/view.php:11
+msgid "Edit Email"
+msgstr ""
+
+#: Emails/index.php:8 Emails/view.php:14
+msgid "New Email"
+msgstr ""
+
+#: Emails/index.php:9
+msgid "Emails"
+msgstr ""
+
+#: Emails/view.php:12
+msgid "Delete Email"
+msgstr ""
+
+#: EquipmentTypes/add.php:11 EquipmentTypes/edit.php:16
+#: EquipmentTypes/view.php:13
+msgid "List Equipment Types"
+msgstr ""
+
+#: EquipmentTypes/add.php:18
+msgid "Add Equipment Type"
+msgstr ""
+
+#: EquipmentTypes/edit.php:23 EquipmentTypes/view.php:11
+msgid "Edit Equipment Type"
+msgstr ""
+
+#: EquipmentTypes/index.php:8 EquipmentTypes/view.php:14
+msgid "New Equipment Type"
+msgstr ""
+
+#: EquipmentTypes/index.php:9
+msgid "Equipment Types"
+msgstr ""
+
+#: EquipmentTypes/view.php:12
+msgid "Delete Equipment Type"
+msgstr ""
+
+#: Ips/add.php:11 Ips/edit.php:16 Ips/view.php:13
+msgid "List Ips"
+msgstr ""
+
+#: Ips/add.php:18
+msgid "Add Ip"
+msgstr ""
+
+#: Ips/edit.php:23 Ips/view.php:11
+msgid "Edit Ip"
+msgstr ""
+
+#: Ips/index.php:8 Ips/view.php:14
+msgid "New Ip"
+msgstr ""
+
+#: Ips/index.php:9
+msgid "Ips"
+msgstr ""
+
+#: Ips/view.php:12
+msgid "Delete Ip"
+msgstr ""
+
+#: LabelCustomers/add.php:11 LabelCustomers/edit.php:16
+#: LabelCustomers/view.php:13
+msgid "List Label Customers"
+msgstr ""
+
+#: LabelCustomers/add.php:18
+msgid "Add Label Customer"
+msgstr ""
+
+#: LabelCustomers/edit.php:23 LabelCustomers/view.php:11
+msgid "Edit Label Customer"
+msgstr ""
+
+#: LabelCustomers/index.php:8 LabelCustomers/view.php:14
+msgid "New Label Customer"
+msgstr ""
+
+#: LabelCustomers/index.php:9
+msgid "Label Customers"
+msgstr ""
+
+#: LabelCustomers/view.php:12
+msgid "Delete Label Customer"
+msgstr ""
+
+#: LabelCustomers/view.php:22
+msgid "Label"
+msgstr ""
+
+#: Labels/add.php:11 Labels/edit.php:16 Labels/view.php:13
+msgid "List Labels"
+msgstr ""
+
+#: Labels/add.php:18
+msgid "Add Label"
+msgstr ""
+
+#: Labels/edit.php:23 Labels/view.php:11
+msgid "Edit Label"
+msgstr ""
+
+#: Labels/index.php:8 Labels/view.php:14
+msgid "New Label"
+msgstr ""
+
+#: Labels/index.php:9
+msgid "Labels"
+msgstr ""
+
+#: Labels/view.php:12
+msgid "Delete Label"
+msgstr ""
+
+#: Labels/view.php:26 Queues/view.php:26 ServiceTypes/view.php:111
+msgid "Caption"
+msgstr ""
+
+#: Labels/view.php:30
+msgid "Color"
+msgstr ""
+
+#: Labels/view.php:38
+msgid "Validity"
+msgstr ""
+
+#: Labels/view.php:42
+msgid "Dynamic"
+msgstr ""
+
+#: Labels/view.php:47
+msgid "Dynamic Sql"
+msgstr ""
+
+#: Logins/add.php:11 Logins/edit.php:16 Logins/view.php:13
+msgid "List Logins"
+msgstr ""
+
+#: Logins/add.php:18
+msgid "Add Login"
+msgstr ""
+
+#: Logins/edit.php:23 Logins/view.php:11
+msgid "Edit Login"
+msgstr ""
+
+#: Logins/index.php:8 Logins/view.php:14
+msgid "New Login"
+msgstr ""
+
+#: Logins/index.php:9
+msgid "Logins"
+msgstr ""
+
+#: Logins/view.php:12
+msgid "Delete Login"
+msgstr ""
+
+#: Phones/add.php:11 Phones/edit.php:16 Phones/view.php:13
+msgid "List Phones"
+msgstr ""
+
+#: Phones/add.php:18
+msgid "Add Phone"
+msgstr ""
+
+#: Phones/edit.php:23 Phones/view.php:11
+msgid "Edit Phone"
+msgstr ""
+
+#: Phones/index.php:8 Phones/view.php:14
+msgid "New Phone"
+msgstr ""
+
+#: Phones/index.php:9
+msgid "Phones"
+msgstr ""
+
+#: Phones/view.php:12
+msgid "Delete Phone"
+msgstr ""
+
+#: Queues/add.php:11 Queues/edit.php:16 Queues/view.php:13
+msgid "List Queues"
+msgstr ""
+
+#: Queues/add.php:18
+msgid "Add Queue"
+msgstr ""
+
+#: Queues/edit.php:23 Queues/view.php:11
+msgid "Edit Queue"
+msgstr ""
+
+#: Queues/index.php:8 Queues/view.php:14
+msgid "New Queue"
+msgstr ""
+
+#: Queues/index.php:9
+msgid "Queues"
+msgstr ""
+
+#: Queues/view.php:12
+msgid "Delete Queue"
+msgstr ""
+
+#: Queues/view.php:38 ServiceTypes/view.php:112
+msgid "Fup"
+msgstr ""
+
+#: Queues/view.php:42 ServiceTypes/view.php:113
+msgid "Limit"
+msgstr ""
+
+#: Queues/view.php:46 ServiceTypes/view.php:114
+msgid "Overlimit Fragment"
+msgstr ""
+
+#: Queues/view.php:50 ServiceTypes/view.php:115
+msgid "Overlimit Cost"
+msgstr ""
+
+#: Queues/view.php:54 ServiceTypes/view.php:117
+msgid "Speed Up"
+msgstr ""
+
+#: Queues/view.php:58 ServiceTypes/view.php:118
+msgid "Speed Down"
+msgstr ""
+
+#: Queues/view.php:63 ServiceTypes/view.php:145
+msgid "Related Services"
+msgstr ""
+
+#: Queues/view.php:74 ServiceTypes/view.php:156
+msgid "Queue Id"
+msgstr ""
+
+#: RemovedIps/add.php:11 RemovedIps/edit.php:16 RemovedIps/view.php:13
+msgid "List Removed Ips"
+msgstr ""
+
+#: RemovedIps/add.php:18
+msgid "Add Removed Ip"
+msgstr ""
+
+#: RemovedIps/edit.php:23 RemovedIps/view.php:11
+msgid "Edit Removed Ip"
+msgstr ""
+
+#: RemovedIps/index.php:8 RemovedIps/view.php:14
+msgid "New Removed Ip"
+msgstr ""
+
+#: RemovedIps/index.php:9
+msgid "Removed Ips"
+msgstr ""
+
+#: RemovedIps/view.php:12
+msgid "Delete Removed Ip"
+msgstr ""
+
+#: RouterContacts/add.php:11 RouterContacts/edit.php:16
+#: RouterContacts/view.php:13
+msgid "List Router Contacts"
+msgstr ""
+
+#: RouterContacts/add.php:18
+msgid "Add Router Contact"
+msgstr ""
+
+#: RouterContacts/edit.php:23 RouterContacts/view.php:11
+msgid "Edit Router Contact"
+msgstr ""
+
+#: RouterContacts/index.php:8 RouterContacts/view.php:14
+msgid "New Router Contact"
+msgstr ""
+
+#: RouterContacts/index.php:9
+msgid "Router Contacts"
+msgstr ""
+
+#: RouterContacts/view.php:12
+msgid "Delete Router Contact"
+msgstr ""
+
+#: RouterContacts/view.php:22 Tasks/view.php:34
+msgid "Router"
+msgstr ""
+
+#: ServiceTypes/add.php:11 ServiceTypes/edit.php:16 ServiceTypes/view.php:13
+msgid "List Service Types"
+msgstr ""
+
+#: ServiceTypes/add.php:18
+msgid "Add Service Type"
+msgstr ""
+
+#: ServiceTypes/edit.php:23 ServiceTypes/view.php:11
+msgid "Edit Service Type"
+msgstr ""
+
+#: ServiceTypes/index.php:8 ServiceTypes/view.php:14
+msgid "New Service Type"
+msgstr ""
+
+#: ServiceTypes/index.php:9
+msgid "Service Types"
+msgstr ""
+
+#: ServiceTypes/view.php:12
+msgid "Delete Service Type"
+msgstr ""
+
+#: ServiceTypes/view.php:26
+msgid "Contract Number Format"
+msgstr ""
+
+#: ServiceTypes/view.php:104
+msgid "Related Queues"
+msgstr ""
+
+#: Services/add.php:11 Services/edit.php:16 Services/view.php:13
+msgid "List Services"
+msgstr ""
+
+#: Services/add.php:18
+msgid "Add Service"
+msgstr ""
+
+#: Services/edit.php:23 Services/view.php:11
+msgid "Edit Service"
+msgstr ""
+
+#: Services/index.php:8 Services/view.php:14
+msgid "New Service"
+msgstr ""
+
+#: Services/index.php:9
+msgid "Services"
+msgstr ""
+
+#: Services/view.php:12
+msgid "Delete Service"
+msgstr ""
+
+#: Services/view.php:30
+msgid "Queue"
+msgstr ""
+
+#: SoldEquipments/add.php:11 SoldEquipments/edit.php:16
+#: SoldEquipments/view.php:13
+msgid "List Sold Equipments"
+msgstr ""
+
+#: SoldEquipments/add.php:18
+msgid "Add Sold Equipment"
+msgstr ""
+
+#: SoldEquipments/edit.php:23 SoldEquipments/view.php:11
+msgid "Edit Sold Equipment"
+msgstr ""
+
+#: SoldEquipments/index.php:8 SoldEquipments/view.php:14
+msgid "New Sold Equipment"
+msgstr ""
+
+#: SoldEquipments/index.php:9
+msgid "Sold Equipments"
+msgstr ""
+
+#: SoldEquipments/view.php:12
+msgid "Delete Sold Equipment"
+msgstr ""
+
+#: TaskStates/add.php:11 TaskStates/edit.php:16 TaskStates/view.php:13
+msgid "List Task States"
+msgstr ""
+
+#: TaskStates/add.php:18
+msgid "Add Task State"
+msgstr ""
+
+#: TaskStates/edit.php:23 TaskStates/view.php:11
+msgid "Edit Task State"
+msgstr ""
+
+#: TaskStates/index.php:8 TaskStates/view.php:14
+msgid "New Task State"
+msgstr ""
+
+#: TaskStates/index.php:9
+msgid "Task States"
+msgstr ""
+
+#: TaskStates/view.php:12
+msgid "Delete Task State"
+msgstr ""
+
+#: TaskTypes/add.php:11 TaskTypes/edit.php:16 TaskTypes/view.php:13
+msgid "List Task Types"
+msgstr ""
+
+#: TaskTypes/add.php:18
+msgid "Add Task Type"
+msgstr ""
+
+#: TaskTypes/edit.php:23 TaskTypes/view.php:11
+msgid "Edit Task Type"
+msgstr ""
+
+#: TaskTypes/index.php:8 TaskTypes/view.php:14
+msgid "New Task Type"
+msgstr ""
+
+#: TaskTypes/index.php:9
+msgid "Task Types"
+msgstr ""
+
+#: TaskTypes/view.php:12
+msgid "Delete Task Type"
+msgstr ""
+
+#: Tasks/add.php:11 Tasks/edit.php:16 Tasks/view.php:13
+msgid "List Tasks"
+msgstr ""
+
+#: Tasks/add.php:18
+msgid "Add Task"
+msgstr ""
+
+#: Tasks/edit.php:23 Tasks/view.php:11
+msgid "Edit Task"
+msgstr ""
+
+#: Tasks/index.php:8 Tasks/view.php:14
+msgid "New Task"
+msgstr ""
+
+#: Tasks/index.php:9
+msgid "Tasks"
+msgstr ""
+
+#: Tasks/view.php:12
+msgid "Delete Task"
+msgstr ""
+
+#: Tasks/view.php:22
+msgid "Task Type"
+msgstr ""
+
+#: Tasks/view.php:30
+msgid "Task State"
+msgstr ""
+
+#: Taxes/add.php:11 Taxes/edit.php:16 Taxes/view.php:13
+msgid "List Taxes"
+msgstr ""
+
+#: Taxes/add.php:18
+msgid "Add Tax"
+msgstr ""
+
+#: Taxes/edit.php:23 Taxes/view.php:11
+msgid "Edit Tax"
+msgstr ""
+
+#: Taxes/index.php:8 Taxes/view.php:14
+msgid "New Tax"
+msgstr ""
+
+#: Taxes/index.php:9
+msgid "Taxes"
+msgstr ""
+
+#: Taxes/view.php:12
+msgid "Delete Tax"
+msgstr ""
+
+#: layout/error.php:38
+msgid "Back"
+msgstr ""
