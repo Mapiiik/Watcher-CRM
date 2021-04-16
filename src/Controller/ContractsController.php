@@ -79,7 +79,7 @@ class ContractsController extends AppController
                 
                 $this->updateNumber($contract->id);
 
-                return $this->redirect(['action' => 'index', 'customer_id' => $customer_id]);
+                return $this->redirect(['action' => 'index', 'customer_id' => $contract->customer_id]);
             }
             $this->Flash->error(__('The contract could not be saved. Please, try again.'));
         }
@@ -117,7 +117,7 @@ class ContractsController extends AppController
             if ($this->Contracts->save($contract)) {
                 $this->Flash->success(__('The contract has been saved.'));
 
-                return $this->redirect(['action' => 'index', 'customer_id' => $customer_id]);
+                return $this->redirect(['action' => 'index', 'customer_id' => $contract->customer_id]);
             }
             $this->Flash->error(__('The contract could not be saved. Please, try again.'));
         }
@@ -149,7 +149,7 @@ class ContractsController extends AppController
             $this->Flash->error(__('The contract could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index', 'customer_id' => $customer_id]);
+        return $this->redirect(['action' => 'index', 'customer_id' => $contract->customer_id]);
     }
     
     private function updateNumber($id = null)
