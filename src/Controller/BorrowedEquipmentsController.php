@@ -18,8 +18,23 @@ class BorrowedEquipmentsController extends AppController
      */
     public function index()
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+        
+        $contract_id = $this->request->getParam('contract_id');
+        $this->set('contract_id', $contract_id);
+
+        $conditions = [];
+        if (isset($customer_id)) {
+            $conditions += ['BorrowedEquipments.customer_id' => $customer_id];
+        }
+        if (isset($contract_id)) {
+            $conditions += ['BorrowedEquipments.contract_id' => $contract_id];
+        }
+        
         $this->paginate = [
             'contain' => ['Customers', 'Contracts', 'EquipmentTypes'],
+            'conditions' => $conditions,
         ];
         $borrowedEquipments = $this->paginate($this->BorrowedEquipments);
 
@@ -35,6 +50,12 @@ class BorrowedEquipmentsController extends AppController
      */
     public function view($id = null)
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+        
+        $contract_id = $this->request->getParam('contract_id');
+        $this->set('contract_id', $contract_id);
+
         $borrowedEquipment = $this->BorrowedEquipments->get($id, [
             'contain' => ['Customers', 'Contracts', 'EquipmentTypes'],
         ]);
@@ -49,18 +70,34 @@ class BorrowedEquipmentsController extends AppController
      */
     public function add()
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+        
+        $contract_id = $this->request->getParam('contract_id');
+        $this->set('contract_id', $contract_id);
+
         $borrowedEquipment = $this->BorrowedEquipments->newEmptyEntity();
+        
+        $conditions = [];
+        if (isset($customer_id)) {
+            $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, ['customer_id' => $customer_id]);
+            $conditions += ['customer_id' => $customer_id];
+        }
+        if (isset($contract_id)) {
+            $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, ['contract_id' => $contract_id]);
+        }
+        
         if ($this->request->is('post')) {
             $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, $this->request->getData());
             if ($this->BorrowedEquipments->save($borrowedEquipment)) {
                 $this->Flash->success(__('The borrowed equipment has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'index', 'customer_id' => $borrowedEquipment->customer_id, 'contract_id' => $borrowedEquipment->contract_id]);
             }
             $this->Flash->error(__('The borrowed equipment could not be saved. Please, try again.'));
         }
         $customers = $this->BorrowedEquipments->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->BorrowedEquipments->Contracts->find('list', ['order' => 'name']);
+        $contracts = $this->BorrowedEquipments->Contracts->find('list', ['order' => 'number', 'conditions' => $conditions]);
         $equipmentTypes = $this->BorrowedEquipments->EquipmentTypes->find('list', ['order' => 'name']);
         $this->set(compact('borrowedEquipment', 'customers', 'contracts', 'equipmentTypes'));
     }
@@ -74,20 +111,32 @@ class BorrowedEquipmentsController extends AppController
      */
     public function edit($id = null)
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+        
+        $contract_id = $this->request->getParam('contract_id');
+        $this->set('contract_id', $contract_id);
+
         $borrowedEquipment = $this->BorrowedEquipments->get($id, [
             'contain' => [],
         ]);
+
+        $conditions = [];
+        if (isset($customer_id)) {
+            $conditions += ['customer_id' => $customer_id];
+        }
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, $this->request->getData());
             if ($this->BorrowedEquipments->save($borrowedEquipment)) {
                 $this->Flash->success(__('The borrowed equipment has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'index', 'customer_id' => $borrowedEquipment->customer_id, 'contract_id' => $borrowedEquipment->contract_id]);
             }
             $this->Flash->error(__('The borrowed equipment could not be saved. Please, try again.'));
         }
         $customers = $this->BorrowedEquipments->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->BorrowedEquipments->Contracts->find('list', ['order' => 'name']);
+        $contracts = $this->BorrowedEquipments->Contracts->find('list', ['order' => 'number', 'conditions' => $conditions]);
         $equipmentTypes = $this->BorrowedEquipments->EquipmentTypes->find('list', ['order' => 'name']);
         $this->set(compact('borrowedEquipment', 'customers', 'contracts', 'equipmentTypes'));
     }
@@ -101,6 +150,12 @@ class BorrowedEquipmentsController extends AppController
      */
     public function delete($id = null)
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+        
+        $contract_id = $this->request->getParam('contract_id');
+        $this->set('contract_id', $contract_id);
+
         $this->request->allowMethod(['post', 'delete']);
         $borrowedEquipment = $this->BorrowedEquipments->get($id);
         if ($this->BorrowedEquipments->delete($borrowedEquipment)) {
@@ -109,6 +164,6 @@ class BorrowedEquipmentsController extends AppController
             $this->Flash->error(__('The borrowed equipment could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'index', 'customer_id' => $borrowedEquipment->customer_id, 'contract_id' => $borrowedEquipment->contract_id]);
     }
 }

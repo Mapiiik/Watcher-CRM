@@ -5,7 +5,7 @@
  */
 ?>
 <div class="borrowedEquipments index content">
-    <?= $this->Html->link(__('New Borrowed Equipment'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->Html->link(__('New Borrowed Equipment'), ['action' => 'add', 'customer_id' => $customer_id, 'contract_id' => $contract_id], ['class' => 'button float-right']) ?>
     <h3><?= __('Borrowed Equipments') ?></h3>
     <div class="table-responsive">
         <table>
@@ -16,10 +16,8 @@
                     <th><?= $this->Paginator->sort('contract_id') ?></th>
                     <th><?= $this->Paginator->sort('equipment_type_id') ?></th>
                     <th><?= $this->Paginator->sort('serial_number') ?></th>
-                    <th><?= $this->Paginator->sort('created') ?></th>
-                    <th><?= $this->Paginator->sort('created_by') ?></th>
-                    <th><?= $this->Paginator->sort('modified') ?></th>
-                    <th><?= $this->Paginator->sort('modified_by') ?></th>
+                    <th><?= $this->Paginator->sort('borrowed_from') ?></th>
+                    <th><?= $this->Paginator->sort('borrowed_until') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -27,18 +25,16 @@
                 <?php foreach ($borrowedEquipments as $borrowedEquipment): ?>
                 <tr>
                     <td><?= $this->Number->format($borrowedEquipment->id) ?></td>
-                    <td><?= $borrowedEquipment->has('customer') ? $this->Html->link($borrowedEquipment->customer->title, ['controller' => 'Customers', 'action' => 'view', $borrowedEquipment->customer->id]) : '' ?></td>
-                    <td><?= $borrowedEquipment->has('contract') ? $this->Html->link($borrowedEquipment->contract->id, ['controller' => 'Contracts', 'action' => 'view', $borrowedEquipment->contract->id]) : '' ?></td>
+                    <td><?= $borrowedEquipment->has('customer') ? $this->Html->link($borrowedEquipment->customer->name, ['controller' => 'Customers', 'action' => 'view', $borrowedEquipment->customer->id]) : '' ?></td>
+                    <td><?= $borrowedEquipment->has('contract') ? $this->Html->link($borrowedEquipment->contract->number, ['controller' => 'Contracts', 'action' => 'view', $borrowedEquipment->contract->id]) : '' ?></td>
                     <td><?= $borrowedEquipment->has('equipment_type') ? $this->Html->link($borrowedEquipment->equipment_type->name, ['controller' => 'EquipmentTypes', 'action' => 'view', $borrowedEquipment->equipment_type->id]) : '' ?></td>
                     <td><?= h($borrowedEquipment->serial_number) ?></td>
-                    <td><?= h($borrowedEquipment->created) ?></td>
-                    <td><?= $this->Number->format($borrowedEquipment->created_by) ?></td>
-                    <td><?= h($borrowedEquipment->modified) ?></td>
-                    <td><?= $this->Number->format($borrowedEquipment->modified_by) ?></td>
+                    <td><?= h($borrowedEquipment->borrowed_from) ?></td>
+                    <td><?= h($borrowedEquipment->borrowed_until) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $borrowedEquipment->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $borrowedEquipment->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $borrowedEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id)]) ?>
+                        <?= $this->Html->link(__('View'), ['action' => 'view', 'customer_id' => $customer_id, 'contract_id' => $contract_id, $borrowedEquipment->id]) ?>
+                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', 'customer_id' => $customer_id, 'contract_id' => $contract_id, $borrowedEquipment->id]) ?>
+                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', 'customer_id' => $customer_id, 'contract_id' => $contract_id, $borrowedEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

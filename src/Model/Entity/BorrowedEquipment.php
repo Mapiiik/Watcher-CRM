@@ -17,6 +17,8 @@ use Cake\ORM\Entity;
  * @property int $created_by
  * @property \Cake\I18n\FrozenTime|null $modified
  * @property int|null $modified_by
+ * @property \Cake\I18n\FrozenDate|null $borrowed_from
+ * @property \Cake\I18n\FrozenDate|null $borrowed_until
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Contract $contract
@@ -42,6 +44,8 @@ class BorrowedEquipment extends Entity
         'created_by' => true,
         'modified' => true,
         'modified_by' => true,
+        'borrowed_from' => true,
+        'borrowed_until' => true,
         'customer' => true,
         'contract' => true,
         'equipment_type' => true,

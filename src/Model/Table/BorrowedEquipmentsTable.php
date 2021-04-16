@@ -87,6 +87,14 @@ class BorrowedEquipmentsTable extends Table
             ->integer('modified_by')
             ->allowEmptyString('modified_by');
 
+        $validator
+            ->date('borrowed_from')
+            ->allowEmptyDate('borrowed_from');
+
+        $validator
+            ->date('borrowed_until')
+            ->allowEmptyDate('borrowed_until');
+
         return $validator;
     }
 
