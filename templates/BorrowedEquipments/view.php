@@ -8,12 +8,13 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Borrowed Equipment'), ['action' => 'edit', 'customer_id' => $customer_id, 'contract_id' => $contract_id, $borrowedEquipment->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Borrowed Equipment'), ['action' => 'delete', 'customer_id' => $customer_id, 'contract_id' => $contract_id, $borrowedEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Borrowed Equipments'), ['action' => 'index', 'customer_id' => $customer_id, 'contract_id' => $contract_id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Borrowed Equipment'), ['action' => 'add', 'customer_id' => $customer_id, 'contract_id' => $contract_id], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('Edit Borrowed Equipment'), ['action' => 'edit', $borrowedEquipment->id], ['class' => 'side-nav-item']) ?>
+            <?= $this->Form->postLink(__('Delete Borrowed Equipment'), ['action' => 'delete', $borrowedEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('List Borrowed Equipments'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('New Borrowed Equipment'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
+    <?php debug($this->request); ?>
     <div class="column-responsive column-80">
         <div class="borrowedEquipments view content">
             <h3><?= h($borrowedEquipment->id) ?></h3>

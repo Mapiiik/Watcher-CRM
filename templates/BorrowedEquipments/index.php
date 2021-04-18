@@ -5,7 +5,7 @@
  */
 ?>
 <div class="borrowedEquipments index content">
-    <?= $this->Html->link(__('New Borrowed Equipment'), ['action' => 'add', 'customer_id' => $customer_id, 'contract_id' => $contract_id], ['class' => 'button float-right']) ?>
+    <?= $this->Html->link(__('New Borrowed Equipment'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Borrowed Equipments') ?></h3>
     <div class="table-responsive">
         <table>
