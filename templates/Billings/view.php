@@ -20,11 +20,11 @@
             <table>
                 <tr>
                     <th><?= __('Customer') ?></th>
-                    <td><?= $billing->has('customer') ? $this->Html->link($billing->customer->title, ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]) : '' ?></td>
+                    <td><?= $billing->has('customer') ? $this->Html->link($billing->customer->name, ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Contract') ?></th>
-                    <td><?= $billing->has('contract') ? $this->Html->link($billing->contract->id, ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]) : '' ?></td>
+                    <td><?= $billing->has('contract') ? $this->Html->link($billing->contract->number, ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Service') ?></th>
@@ -52,11 +52,11 @@
                 </tr>
                 <tr>
                     <th><?= __('Active') ?></th>
-                    <td><?= $this->Number->format($billing->active) ?></td>
+                    <td><?= $billing->active ? __('Yes') : __('No'); ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Separate') ?></th>
-                    <td><?= $this->Number->format($billing->separate) ?></td>
+                    <td><?= $billing->separate ? __('Yes') : __('No'); ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>

@@ -14,13 +14,13 @@ use Cake\ORM\Entity;
  * @property int|null $price
  * @property \Cake\I18n\FrozenDate|null $billing_from
  * @property string|null $note
- * @property int $active
+ * @property bool $active
  * @property int|null $modified_by
  * @property \Cake\I18n\FrozenTime|null $modified
  * @property int|null $created_by
  * @property \Cake\I18n\FrozenTime|null $created
  * @property \Cake\I18n\FrozenDate|null $billing_until
- * @property int $separate
+ * @property bool $separate
  * @property int|null $service_id
  * @property int $quantity
  * @property int $contract_id

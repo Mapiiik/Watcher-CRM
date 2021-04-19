@@ -90,6 +90,7 @@ class BillingsTable extends Table
             ->allowEmptyString('note');
 
         $validator
+            ->boolean('active')
             ->notEmptyString('active');
 
         $validator
@@ -105,6 +106,7 @@ class BillingsTable extends Table
             ->allowEmptyDate('billing_until');
 
         $validator
+            ->boolean('separate')
             ->notEmptyString('separate');
 
         $validator
