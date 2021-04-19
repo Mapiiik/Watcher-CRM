@@ -28,9 +28,9 @@
                     <td><?= $soldEquipment->has('equipment_type') ? $this->Html->link($soldEquipment->equipment_type->name, ['controller' => 'EquipmentTypes', 'action' => 'view', $soldEquipment->equipment_type->id]) : '' ?></td>
                     <td><?= h($soldEquipment->serial_number) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', 'customer_id' => $soldEquipment->customer_id, 'contract_id' => $soldEquipment->contract_id, $soldEquipment->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', 'customer_id' => $soldEquipment->customer_id, 'contract_id' => $soldEquipment->contract_id, $soldEquipment->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', 'customer_id' => $soldEquipment->customer_id, 'contract_id' => $soldEquipment->contract_id, $soldEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id)]) ?>
+                        <?= $this->Html->link(__('View'), ['action' => 'view', $soldEquipment->id]) ?>
+                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $soldEquipment->id]) ?>
+                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $soldEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

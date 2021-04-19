@@ -32,9 +32,9 @@
                     <td><?= h($borrowedEquipment->borrowed_from) ?></td>
                     <td><?= h($borrowedEquipment->borrowed_until) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', 'customer_id' => $borrowedEquipment->customer_id, 'contract_id' => $borrowedEquipment->contract_id, $borrowedEquipment->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', 'customer_id' => $borrowedEquipment->customer_id, 'contract_id' => $borrowedEquipment->contract_id, $borrowedEquipment->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', 'customer_id' => $borrowedEquipment->customer_id, 'contract_id' => $borrowedEquipment->contract_id, $borrowedEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id)]) ?>
+                        <?= $this->Html->link(__('View'), ['action' => 'view', $borrowedEquipment->id]) ?>
+                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $borrowedEquipment->id]) ?>
+                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $borrowedEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

@@ -92,7 +92,7 @@ class SoldEquipmentsController extends AppController
             if ($this->SoldEquipments->save($soldEquipment)) {
                 $this->Flash->success(__('The sold equipment has been saved.'));
 
-                return $this->redirect(['action' => 'index', 'customer_id' => $soldEquipment->customer_id, 'contract_id' => $soldEquipment->contract_id]);
+                return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The sold equipment could not be saved. Please, try again.'));
         }
@@ -131,7 +131,7 @@ class SoldEquipmentsController extends AppController
             if ($this->SoldEquipments->save($soldEquipment)) {
                 $this->Flash->success(__('The sold equipment has been saved.'));
 
-                return $this->redirect(['action' => 'index', 'customer_id' => $soldEquipment->customer_id, 'contract_id' => $soldEquipment->contract_id]);
+                return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The sold equipment could not be saved. Please, try again.'));
         }
@@ -164,6 +164,6 @@ class SoldEquipmentsController extends AppController
             $this->Flash->error(__('The sold equipment could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index', 'customer_id' => $soldEquipment->customer_id, 'contract_id' => $soldEquipment->contract_id]);
+        return $this->redirect(['action' => 'index']);
     }
 }
