@@ -13,19 +13,15 @@
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
+                    <th><?= $this->Paginator->sort('contract_id') ?></th>
+                    <th><?= $this->Paginator->sort('service_id') ?></th>
                     <th><?= $this->Paginator->sort('text') ?></th>
+                    <th><?= $this->Paginator->sort('quantity') ?></th>
                     <th><?= $this->Paginator->sort('price') ?></th>
                     <th><?= $this->Paginator->sort('billing_from') ?></th>
-                    <th><?= $this->Paginator->sort('active') ?></th>
-                    <th><?= $this->Paginator->sort('modified_by') ?></th>
-                    <th><?= $this->Paginator->sort('modified') ?></th>
-                    <th><?= $this->Paginator->sort('created_by') ?></th>
-                    <th><?= $this->Paginator->sort('created') ?></th>
                     <th><?= $this->Paginator->sort('billing_until') ?></th>
+                    <th><?= $this->Paginator->sort('active') ?></th>
                     <th><?= $this->Paginator->sort('separate') ?></th>
-                    <th><?= $this->Paginator->sort('service_id') ?></th>
-                    <th><?= $this->Paginator->sort('quantity') ?></th>
-                    <th><?= $this->Paginator->sort('contract_id') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -33,20 +29,16 @@
                 <?php foreach ($billings as $billing): ?>
                 <tr>
                     <td><?= $this->Number->format($billing->id) ?></td>
-                    <td><?= $billing->has('customer') ? $this->Html->link($billing->customer->title, ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]) : '' ?></td>
+                    <td><?= $billing->has('customer') ? $this->Html->link($billing->customer->name, ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]) : '' ?></td>
+                    <td><?= $billing->has('contract') ? $this->Html->link($billing->contract->number, ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]) : '' ?></td>
+                    <td><?= $billing->has('service') ? $this->Html->link($billing->service->name, ['controller' => 'Services', 'action' => 'view', $billing->service->id]) : '' ?></td>
                     <td><?= h($billing->text) ?></td>
+                    <td><?= $this->Number->format($billing->quantity) ?></td>
                     <td><?= $this->Number->format($billing->price) ?></td>
                     <td><?= h($billing->billing_from) ?></td>
-                    <td><?= $this->Number->format($billing->active) ?></td>
-                    <td><?= $this->Number->format($billing->modified_by) ?></td>
-                    <td><?= h($billing->modified) ?></td>
-                    <td><?= $this->Number->format($billing->created_by) ?></td>
-                    <td><?= h($billing->created) ?></td>
                     <td><?= h($billing->billing_until) ?></td>
+                    <td><?= $this->Number->format($billing->active) ?></td>
                     <td><?= $this->Number->format($billing->separate) ?></td>
-                    <td><?= $billing->has('service') ? $this->Html->link($billing->service->name, ['controller' => 'Services', 'action' => 'view', $billing->service->id]) : '' ?></td>
-                    <td><?= $this->Number->format($billing->quantity) ?></td>
-                    <td><?= $billing->has('contract') ? $this->Html->link($billing->contract->id, ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]) : '' ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $billing->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $billing->id]) ?>

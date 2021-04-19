@@ -17,19 +17,17 @@
             <fieldset>
                 <legend><?= __('Add Billing') ?></legend>
                 <?php
-                    echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
+                    if (!isset($customer_id)) echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
+                    if (!isset($contract_id)) echo $this->Form->control('contract_id', ['options' => $contracts]);
+                    echo $this->Form->control('service_id', ['options' => $services, 'empty' => true]);
                     echo $this->Form->control('text');
+                    echo $this->Form->control('quantity');
                     echo $this->Form->control('price');
                     echo $this->Form->control('billing_from', ['empty' => true]);
-                    echo $this->Form->control('note');
-                    echo $this->Form->control('active');
-                    echo $this->Form->control('modified_by');
-                    echo $this->Form->control('created_by');
                     echo $this->Form->control('billing_until', ['empty' => true]);
+                    echo $this->Form->control('active');
                     echo $this->Form->control('separate');
-                    echo $this->Form->control('service_id', ['options' => $services, 'empty' => true]);
-                    echo $this->Form->control('quantity');
-                    echo $this->Form->control('contract_id', ['options' => $contracts]);
+                    echo $this->Form->control('note');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

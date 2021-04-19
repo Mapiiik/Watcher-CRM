@@ -23,60 +23,60 @@
                     <td><?= $billing->has('customer') ? $this->Html->link($billing->customer->title, ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Text') ?></th>
-                    <td><?= h($billing->text) ?></td>
+                    <th><?= __('Contract') ?></th>
+                    <td><?= $billing->has('contract') ? $this->Html->link($billing->contract->id, ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Service') ?></th>
                     <td><?= $billing->has('service') ? $this->Html->link($billing->service->name, ['controller' => 'Services', 'action' => 'view', $billing->service->id]) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Contract') ?></th>
-                    <td><?= $billing->has('contract') ? $this->Html->link($billing->contract->id, ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($billing->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Price') ?></th>
-                    <td><?= $this->Number->format($billing->price) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Active') ?></th>
-                    <td><?= $this->Number->format($billing->active) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified By') ?></th>
-                    <td><?= $this->Number->format($billing->modified_by) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created By') ?></th>
-                    <td><?= $this->Number->format($billing->created_by) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Separate') ?></th>
-                    <td><?= $this->Number->format($billing->separate) ?></td>
+                    <th><?= __('Text') ?></th>
+                    <td><?= h($billing->text) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Quantity') ?></th>
                     <td><?= $this->Number->format($billing->quantity) ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('Price') ?></th>
+                    <td><?= $this->Number->format($billing->price) ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Billing From') ?></th>
                     <td><?= h($billing->billing_from) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($billing->modified) ?></td>
+                    <th><?= __('Billing Until') ?></th>
+                    <td><?= h($billing->billing_until) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Active') ?></th>
+                    <td><?= $this->Number->format($billing->active) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Separate') ?></th>
+                    <td><?= $this->Number->format($billing->separate) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Id') ?></th>
+                    <td><?= $this->Number->format($billing->id) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Created') ?></th>
                     <td><?= h($billing->created) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Billing Until') ?></th>
-                    <td><?= h($billing->billing_until) ?></td>
+                    <th><?= __('Created By') ?></th>
+                    <td><?= $this->Number->format($billing->created_by) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified') ?></th>
+                    <td><?= h($billing->modified) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified By') ?></th>
+                    <td><?= $this->Number->format($billing->modified_by) ?></td>
                 </tr>
             </table>
             <div class="text">

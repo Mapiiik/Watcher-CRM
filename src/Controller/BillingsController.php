@@ -18,8 +18,23 @@ class BillingsController extends AppController
      */
     public function index()
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+        
+        $contract_id = $this->request->getParam('contract_id');
+        $this->set('contract_id', $contract_id);
+
+        $conditions = [];
+        if (isset($customer_id)) {
+            $conditions += ['Billings.customer_id' => $customer_id];
+        }
+        if (isset($contract_id)) {
+            $conditions += ['Billings.contract_id' => $contract_id];
+        }
+        
         $this->paginate = [
             'contain' => ['Customers', 'Services', 'Contracts'],
+            'conditions' => $conditions,
         ];
         $billings = $this->paginate($this->Billings);
 
@@ -49,9 +64,30 @@ class BillingsController extends AppController
      */
     public function add()
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+        
+        $contract_id = $this->request->getParam('contract_id');
+        $this->set('contract_id', $contract_id);
+
         $billing = $this->Billings->newEmptyEntity();
+
+        $conditions = [];
+        if (isset($customer_id)) {
+            $billing = $this->Billings->patchEntity($billing, ['customer_id' => $customer_id]);
+            $conditions += ['customer_id' => $customer_id];
+        }
+        if (isset($contract_id)) {
+            $billing = $this->Billings->patchEntity($billing, ['contract_id' => $contract_id]);
+        }
+        
         if ($this->request->is('post')) {
-            $billing = $this->Billings->patchEntity($billing, $this->request->getData());
+            //patch data
+            $data = $this->request->getData();
+            if ($data['text'] == '') $data['text'] = null;
+            if ($data['note'] == '') $data['note'] = null;
+            
+            $billing = $this->Billings->patchEntity($billing, $data);
             if ($this->Billings->save($billing)) {
                 $this->Flash->success(__('The billing has been saved.'));
 
@@ -60,8 +96,8 @@ class BillingsController extends AppController
             $this->Flash->error(__('The billing could not be saved. Please, try again.'));
         }
         $customers = $this->Billings->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $contracts = $this->Billings->Contracts->find('list', ['order' => 'number', 'conditions' => $conditions]);
         $services = $this->Billings->Services->find('list', ['order' => 'name']);
-        $contracts = $this->Billings->Contracts->find('list', ['order' => 'name']);
         $this->set(compact('billing', 'customers', 'services', 'contracts'));
     }
 
@@ -74,11 +110,28 @@ class BillingsController extends AppController
      */
     public function edit($id = null)
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+        
+        $contract_id = $this->request->getParam('contract_id');
+        $this->set('contract_id', $contract_id);
+        
         $billing = $this->Billings->get($id, [
             'contain' => [],
         ]);
+
+        $conditions = [];
+        if (isset($customer_id)) {
+            $conditions += ['customer_id' => $customer_id];
+        }
+
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $billing = $this->Billings->patchEntity($billing, $this->request->getData());
+            //patch data
+            $data = $this->request->getData();
+            if ($data['text'] == '') $data['text'] = null;
+            if ($data['note'] == '') $data['note'] = null;
+            
+            $billing = $this->Billings->patchEntity($billing, $data);
             if ($this->Billings->save($billing)) {
                 $this->Flash->success(__('The billing has been saved.'));
 
@@ -87,8 +140,8 @@ class BillingsController extends AppController
             $this->Flash->error(__('The billing could not be saved. Please, try again.'));
         }
         $customers = $this->Billings->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $contracts = $this->Billings->Contracts->find('list', ['order' => 'number', 'conditions' => $conditions]);
         $services = $this->Billings->Services->find('list', ['order' => 'name']);
-        $contracts = $this->Billings->Contracts->find('list', ['order' => 'name']);
         $this->set(compact('billing', 'customers', 'services', 'contracts'));
     }
 
