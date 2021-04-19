@@ -82,8 +82,7 @@ class BillingsTable extends Table
             ->allowEmptyString('price');
 
         $validator
-            ->date('billing_from')
-            ->allowEmptyDate('billing_from');
+            ->date('billing_from');
 
         $validator
             ->scalar('note')
