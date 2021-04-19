@@ -14,7 +14,6 @@
             <?= $this->Html->link(__('New Borrowed Equipment'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <?php debug($this->request); ?>
     <div class="column-responsive column-80">
         <div class="borrowedEquipments view content">
             <h3><?= h($borrowedEquipment->id) ?></h3>
