@@ -44,7 +44,7 @@ class IpsTable extends Table
 
         $this->setTable('ips');
         $this->setDisplayField('ip');
-        $this->setPrimaryKey('ip');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
 
