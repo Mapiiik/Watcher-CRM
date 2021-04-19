@@ -19,7 +19,7 @@ class RemovedIpsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Customers', 'Queues', 'Devices', 'Dealers', 'Brokerages', 'Contracts'],
+            'contain' => ['Customers', 'Contracts'],
         ];
         $removedIps = $this->paginate($this->RemovedIps);
 
@@ -36,7 +36,7 @@ class RemovedIpsController extends AppController
     public function view($id = null)
     {
         $removedIp = $this->RemovedIps->get($id, [
-            'contain' => ['Customers', 'Queues', 'Devices', 'Dealers', 'Brokerages', 'Contracts'],
+            'contain' => ['Customers', 'Contracts'],
         ]);
 
         $this->set(compact('removedIp'));
@@ -60,12 +60,8 @@ class RemovedIpsController extends AppController
             $this->Flash->error(__('The removed ip could not be saved. Please, try again.'));
         }
         $customers = $this->RemovedIps->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $queues = $this->RemovedIps->Queues->find('list', ['order' => 'name']);
-        $devices = $this->RemovedIps->Devices->find('list', ['order' => 'name']);
-        $dealers = $this->RemovedIps->Dealers->find('list', ['order' => 'name']);
-        $brokerages = $this->RemovedIps->Brokerages->find('list', ['order' => 'name']);
         $contracts = $this->RemovedIps->Contracts->find('list', ['order' => 'name']);
-        $this->set(compact('removedIp', 'customers', 'queues', 'devices', 'dealers', 'brokerages', 'contracts'));
+        $this->set(compact('removedIp', 'customers', 'contracts'));
     }
 
     /**
@@ -90,12 +86,8 @@ class RemovedIpsController extends AppController
             $this->Flash->error(__('The removed ip could not be saved. Please, try again.'));
         }
         $customers = $this->RemovedIps->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $queues = $this->RemovedIps->Queues->find('list', ['order' => 'name']);
-        $devices = $this->RemovedIps->Devices->find('list', ['order' => 'name']);
-        $dealers = $this->RemovedIps->Dealers->find('list', ['order' => 'name']);
-        $brokerages = $this->RemovedIps->Brokerages->find('list', ['order' => 'name']);
         $contracts = $this->RemovedIps->Contracts->find('list', ['order' => 'name']);
-        $this->set(compact('removedIp', 'customers', 'queues', 'devices', 'dealers', 'brokerages', 'contracts'));
+        $this->set(compact('removedIp', 'customers', 'contracts'));
     }
 
     /**

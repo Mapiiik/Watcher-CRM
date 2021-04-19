@@ -26,10 +26,6 @@ class RemovedIpsTableTest extends TestCase
     protected $fixtures = [
         'app.RemovedIps',
         'app.Customers',
-        'app.Queues',
-        'app.Devices',
-        'app.Dealers',
-        'app.Brokerages',
         'app.Contracts',
     ];
 

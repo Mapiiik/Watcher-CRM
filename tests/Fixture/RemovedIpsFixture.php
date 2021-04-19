@@ -26,7 +26,6 @@ class RemovedIpsFixture extends TestFixture
         'contract_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-            'ipdelete_id_pkey' => ['type' => 'unique', 'columns' => ['id'], 'length' => []],
         ],
     ];
     // phpcs:enable
@@ -41,7 +40,7 @@ class RemovedIpsFixture extends TestFixture
             [
                 'id' => 1,
                 'removed_by' => 1,
-                'removed' => 1617875381,
+                'removed' => 1618841033,
                 'ip' => 'Lorem ipsum dolor sit amet',
                 'customer_id' => 1,
                 'note' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',

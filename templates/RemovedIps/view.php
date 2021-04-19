@@ -24,11 +24,11 @@
                 </tr>
                 <tr>
                     <th><?= __('Customer') ?></th>
-                    <td><?= $removedIp->has('customer') ? $this->Html->link($removedIp->customer->title, ['controller' => 'Customers', 'action' => 'view', $removedIp->customer->id]) : '' ?></td>
+                    <td><?= $removedIp->has('customer') ? $this->Html->link($removedIp->customer->name, ['controller' => 'Customers', 'action' => 'view', $removedIp->customer->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Contract') ?></th>
-                    <td><?= $removedIp->has('contract') ? $this->Html->link($removedIp->contract->id, ['controller' => 'Contracts', 'action' => 'view', $removedIp->contract->id]) : '' ?></td>
+                    <td><?= $removedIp->has('contract') ? $this->Html->link($removedIp->contract->number, ['controller' => 'Contracts', 'action' => 'view', $removedIp->contract->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>

@@ -17,10 +17,6 @@ use Cake\ORM\Entity;
  * @property int|null $contract_id
  *
  * @property \App\Model\Entity\Customer $customer
- * @property \App\Model\Entity\Queue $queue
- * @property \App\Model\Entity\Device $device
- * @property \App\Model\Entity\Dealer $dealer
- * @property \App\Model\Entity\Brokerage $brokerage
  * @property \App\Model\Entity\Contract $contract
  */
 class RemovedIp extends Entity
@@ -42,10 +38,6 @@ class RemovedIp extends Entity
         'note' => true,
         'contract_id' => true,
         'customer' => true,
-        'queue' => true,
-        'device' => true,
-        'dealer' => true,
-        'brokerage' => true,
         'contract' => true,
     ];
 }

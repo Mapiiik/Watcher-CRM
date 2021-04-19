@@ -11,7 +11,7 @@
             <?= $this->Form->postLink(
                 __('Delete'),
                 ['action' => 'delete', $ip->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $ip->ip), 'class' => 'side-nav-item']
+                ['confirm' => __('Are you sure you want to delete # {0}?', $ip->id), 'class' => 'side-nav-item']
             ) ?>
             <?= $this->Html->link(__('List Ips'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
@@ -22,10 +22,10 @@
             <fieldset>
                 <legend><?= __('Edit Ip') ?></legend>
                 <?php
+                    echo $this->Form->control('ip');
                     echo $this->Form->control('customer_id', ['options' => $customers]);
                     echo $this->Form->control('note');
                     echo $this->Form->control('contract_id', ['options' => $contracts]);
-                    echo $this->Form->control('id');
                     echo $this->Form->control('created_by');
                     echo $this->Form->control('modified_by');
                 ?>

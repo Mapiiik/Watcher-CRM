@@ -17,10 +17,10 @@
             <fieldset>
                 <legend><?= __('Add Ip') ?></legend>
                 <?php
+                    echo $this->Form->control('ip');
                     echo $this->Form->control('customer_id', ['options' => $customers]);
                     echo $this->Form->control('note');
                     echo $this->Form->control('contract_id', ['options' => $contracts]);
-                    echo $this->Form->control('id');
                     echo $this->Form->control('created_by');
                     echo $this->Form->control('modified_by');
                 ?>

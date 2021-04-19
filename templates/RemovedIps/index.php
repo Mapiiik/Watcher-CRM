@@ -27,8 +27,8 @@
                     <td><?= $this->Number->format($removedIp->removed_by) ?></td>
                     <td><?= h($removedIp->removed) ?></td>
                     <td><?= h($removedIp->ip) ?></td>
-                    <td><?= $removedIp->has('customer') ? $this->Html->link($removedIp->customer->title, ['controller' => 'Customers', 'action' => 'view', $removedIp->customer->id]) : '' ?></td>
-                    <td><?= $removedIp->has('contract') ? $this->Html->link($removedIp->contract->id, ['controller' => 'Contracts', 'action' => 'view', $removedIp->contract->id]) : '' ?></td>
+                    <td><?= $removedIp->has('customer') ? $this->Html->link($removedIp->customer->name, ['controller' => 'Customers', 'action' => 'view', $removedIp->customer->id]) : '' ?></td>
+                    <td><?= $removedIp->has('contract') ? $this->Html->link($removedIp->contract->number, ['controller' => 'Contracts', 'action' => 'view', $removedIp->contract->id]) : '' ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $removedIp->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $removedIp->id]) ?>
