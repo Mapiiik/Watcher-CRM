@@ -33,10 +33,10 @@ class Ip extends Entity
      * @var array
      */
     protected $_accessible = [
+        'ip' => true,
         'customer_id' => true,
         'note' => true,
         'contract_id' => true,
-        'id' => true,
         'created' => true,
         'created_by' => true,
         'modified' => true,

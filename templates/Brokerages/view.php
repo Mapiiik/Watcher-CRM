@@ -148,9 +148,9 @@
                             <td><?= h($ips->modified) ?></td>
                             <td><?= h($ips->modified_by) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Ips', 'action' => 'view', $ips->ip]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Ips', 'action' => 'edit', $ips->ip]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Ips', 'action' => 'delete', $ips->ip], ['confirm' => __('Are you sure you want to delete # {0}?', $ips->ip)]) ?>
+                                <?= $this->Html->link(__('View'), ['controller' => 'Ips', 'action' => 'view', $ips->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'Ips', 'action' => 'edit', $ips->id]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Ips', 'action' => 'delete', $ips->id], ['confirm' => __('Are you sure you want to delete # {0}?', $ips->ip)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

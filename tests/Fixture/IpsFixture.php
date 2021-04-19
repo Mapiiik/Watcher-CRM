@@ -27,8 +27,8 @@ class IpsFixture extends TestFixture
         'modified' => ['type' => 'timestampfractional', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => 6],
         'modified_by' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         '_constraints' => [
-            'primary' => ['type' => 'primary', 'columns' => ['ip'], 'length' => []],
-            'ip_id' => ['type' => 'unique', 'columns' => ['id'], 'length' => []],
+            'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
+            'ips_ip' => ['type' => 'unique', 'columns' => ['ip'], 'length' => []],
         ],
     ];
     // phpcs:enable
@@ -41,14 +41,14 @@ class IpsFixture extends TestFixture
     {
         $this->records = [
             [
-                'ip' => 'b8109e77-0da0-40e9-b2df-a6be88c3bb49',
+                'ip' => 'Lorem ipsum dolor sit amet',
                 'customer_id' => 1,
                 'note' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
                 'contract_id' => 1,
                 'id' => 1,
-                'created' => 1618297552,
+                'created' => 1618820613,
                 'created_by' => 1,
-                'modified' => 1618297552,
+                'modified' => 1618820613,
                 'modified_by' => 1,
             ],
         ];

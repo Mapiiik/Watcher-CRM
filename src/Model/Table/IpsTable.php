@@ -69,7 +69,9 @@ class IpsTable extends Table
         $validator
             ->scalar('ip')
             ->maxLength('ip', 39)
-            ->allowEmptyString('ip', null, 'create');
+            ->requirePresence('ip', 'create')
+            ->notEmptyString('ip')
+            ->add('ip', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
             ->scalar('note')
@@ -77,9 +79,7 @@ class IpsTable extends Table
 
         $validator
             ->integer('id')
-            ->requirePresence('id', 'create')
-            ->notEmptyString('id')
-            ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->allowEmptyString('id', null, 'create');
 
         $validator
             ->integer('created_by')
@@ -101,7 +101,7 @@ class IpsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->isUnique(['id']), ['errorField' => 'id']);
+        $rules->add($rules->isUnique(['ip']), ['errorField' => 'ip']);
         $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
         $rules->add($rules->existsIn(['contract_id'], 'Contracts'), ['errorField' => 'contract_id']);
 

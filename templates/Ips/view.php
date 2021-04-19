@@ -28,7 +28,7 @@
                 </tr>
                 <tr>
                     <th><?= __('Contract') ?></th>
-                    <td><?= $ip->has('contract') ? $this->Html->link($ip->contract->id, ['controller' => 'Contracts', 'action' => 'view', $ip->contract->id]) : '' ?></td>
+                    <td><?= $ip->has('contract') ? $this->Html->link($ip->contract->number, ['controller' => 'Contracts', 'action' => 'view', $ip->contract->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>

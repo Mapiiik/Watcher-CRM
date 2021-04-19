@@ -27,7 +27,7 @@
                 <tr>
                     <td><?= h($ip->ip) ?></td>
                     <td><?= $ip->has('customer') ? $this->Html->link($ip->customer->name, ['controller' => 'Customers', 'action' => 'view', $ip->customer->id]) : '' ?></td>
-                    <td><?= $ip->has('contract') ? $this->Html->link($ip->contract->id, ['controller' => 'Contracts', 'action' => 'view', $ip->contract->id]) : '' ?></td>
+                    <td><?= $ip->has('contract') ? $this->Html->link($ip->contract->number, ['controller' => 'Contracts', 'action' => 'view', $ip->contract->id]) : '' ?></td>
                     <td><?= $this->Number->format($ip->id) ?></td>
                     <td><?= h($ip->created) ?></td>
                     <td><?= $this->Number->format($ip->created_by) ?></td>

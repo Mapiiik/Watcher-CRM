@@ -60,7 +60,7 @@ class IpsController extends AppController
             $this->Flash->error(__('The ip could not be saved. Please, try again.'));
         }
         $customers = $this->Ips->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->Ips->Contracts->find('list', ['order' => 'name']);
+        $contracts = $this->Ips->Contracts->find('list', ['order' => 'number']);
         $this->set(compact('ip', 'customers', 'contracts'));
     }
 
@@ -86,7 +86,7 @@ class IpsController extends AppController
             $this->Flash->error(__('The ip could not be saved. Please, try again.'));
         }
         $customers = $this->Ips->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->Ips->Contracts->find('list', ['order' => 'name']);
+        $contracts = $this->Ips->Contracts->find('list', ['order' => 'number']);
         $this->set(compact('ip', 'customers', 'contracts'));
     }
 
