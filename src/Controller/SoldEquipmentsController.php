@@ -50,12 +50,6 @@ class SoldEquipmentsController extends AppController
      */
     public function view($id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-        
-        $contract_id = $this->request->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         $soldEquipment = $this->SoldEquipments->get($id, [
             'contain' => ['Customers', 'Contracts', 'EquipmentTypes'],
         ]);
@@ -150,12 +144,6 @@ class SoldEquipmentsController extends AppController
      */
     public function delete($id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-        
-        $contract_id = $this->request->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         $this->request->allowMethod(['post', 'delete']);
         $soldEquipment = $this->SoldEquipments->get($id);
         if ($this->SoldEquipments->delete($soldEquipment)) {

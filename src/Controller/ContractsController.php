@@ -44,9 +44,6 @@ class ContractsController extends AppController
      */
     public function view($id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
         $contract = $this->Contracts->get($id, [
             'contain' => ['Customers', 'InstallationAddresses', 'ServiceTypes', 'InstallationTechnicians', 'Brokerages', 'Billings', 'BorrowedEquipments', 'Ips', 'RemovedIps', 'SoldEquipments'],
         ]);
@@ -138,9 +135,6 @@ class ContractsController extends AppController
      */
     public function delete($id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-        
         $this->request->allowMethod(['post', 'delete']);
         $contract = $this->Contracts->get($id);
         if ($this->Contracts->delete($contract)) {
