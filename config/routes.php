@@ -72,7 +72,7 @@ $routes->scope('/admin/', function (RouteBuilder $builder) {
     $builder->connect('/{controller}/{id}', ['action' => 'view'])->setPatterns(['id' => '[0-9]+'])->setPass(['id']);
     $builder->connect('/{controller}/{id}/{action}/*', [])->setPatterns(['id' => '[0-9]+'])->setPass(['id']);
 
-    $builder->fallbacks();
+//    $builder->fallbacks();
 });
 
 $routes->scope('/', function (RouteBuilder $builder) {
