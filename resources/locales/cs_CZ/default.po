@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2021-04-16 09:29+0200\n"
-"PO-Revision-Date: 2021-04-16 09:48+0200\n"
+"PO-Revision-Date: 2021-04-19 15:45+0200\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -54,20 +54,20 @@ msgstr ""
 #: Controller/BorrowedEquipmentsController.php:56
 #: Controller/BorrowedEquipmentsController.php:83
 msgid "The borrowed equipment has been saved."
-msgstr ""
+msgstr "Zapůjčené zařízení bylo uloženo."
 
 #: Controller/BorrowedEquipmentsController.php:60
 #: Controller/BorrowedEquipmentsController.php:87
 msgid "The borrowed equipment could not be saved. Please, try again."
-msgstr ""
+msgstr "Zapůjčené zařízení nelze uložit. Opakujte akci."
 
 #: Controller/BorrowedEquipmentsController.php:107
 msgid "The borrowed equipment has been deleted."
-msgstr ""
+msgstr "Zapůjčené zařízení bylo odstraněno."
 
 #: Controller/BorrowedEquipmentsController.php:109
 msgid "The borrowed equipment could not be deleted. Please, try again."
-msgstr ""
+msgstr "Zapůjčené zařízení nelze odstranit. Opakujte akci."
 
 #: Controller/BrokerageDealersController.php:56
 #: Controller/BrokerageDealersController.php:82
@@ -366,20 +366,20 @@ msgstr ""
 #: Controller/SoldEquipmentsController.php:56
 #: Controller/SoldEquipmentsController.php:83
 msgid "The sold equipment has been saved."
-msgstr ""
+msgstr "Prodané zařízení bylo uloženo."
 
 #: Controller/SoldEquipmentsController.php:60
 #: Controller/SoldEquipmentsController.php:87
 msgid "The sold equipment could not be saved. Please, try again."
-msgstr ""
+msgstr "Prodané zařízení nelze uložit. Opakujte akci."
 
 #: Controller/SoldEquipmentsController.php:107
 msgid "The sold equipment has been deleted."
-msgstr ""
+msgstr "Prodané zařízení bylo odstraněno."
 
 #: Controller/SoldEquipmentsController.php:109
 msgid "The sold equipment could not be deleted. Please, try again."
-msgstr ""
+msgstr "Prodané zařízení nelze odstranit. Opakujte akci."
 
 #: Controller/TaskStatesController.php:53
 #: Controller/TaskStatesController.php:77
@@ -949,37 +949,37 @@ msgstr "Poznámka"
 #: BorrowedEquipments/add.php:11 BorrowedEquipments/edit.php:16
 #: BorrowedEquipments/view.php:13
 msgid "List Borrowed Equipments"
-msgstr ""
+msgstr "Seznam zapůjčených zařízení"
 
 #: BorrowedEquipments/add.php:18
 msgid "Add Borrowed Equipment"
-msgstr ""
+msgstr "Přidat zapůjčené zařízení"
 
 #: BorrowedEquipments/edit.php:23 BorrowedEquipments/view.php:11
 msgid "Edit Borrowed Equipment"
-msgstr ""
+msgstr "Upravit zapůjčené zařízení"
 
 #: BorrowedEquipments/index.php:8 BorrowedEquipments/view.php:14
 msgid "New Borrowed Equipment"
-msgstr ""
+msgstr "Nové zapůjčené zařízení"
 
 #: BorrowedEquipments/index.php:9
 msgid "Borrowed Equipments"
-msgstr ""
+msgstr "Zapůjčená zařízení"
 
 #: BorrowedEquipments/view.php:12
 msgid "Delete Borrowed Equipment"
-msgstr ""
+msgstr "Odstranit zapůjčené zařízení"
 
 #: BorrowedEquipments/view.php:30 SoldEquipments/view.php:30
 msgid "Equipment Type"
-msgstr ""
+msgstr "Typ zařízení"
 
 #: BorrowedEquipments/view.php:34 Contracts/view.php:169 Contracts/view.php:282
 #: Customers/view.php:262 Customers/view.php:578 EquipmentTypes/view.php:44
 #: EquipmentTypes/view.php:83 SoldEquipments/view.php:34
 msgid "Serial Number"
-msgstr ""
+msgstr "Sériové číslo"
 
 #: BrokerageDealers/add.php:11 BrokerageDealers/edit.php:16
 #: BrokerageDealers/view.php:13
@@ -1845,27 +1845,27 @@ msgstr ""
 #: SoldEquipments/add.php:11 SoldEquipments/edit.php:16
 #: SoldEquipments/view.php:13
 msgid "List Sold Equipments"
-msgstr ""
+msgstr "Seznam prodaných zařízení"
 
 #: SoldEquipments/add.php:18
 msgid "Add Sold Equipment"
-msgstr ""
+msgstr "Přidat prodané zařízení"
 
 #: SoldEquipments/edit.php:23 SoldEquipments/view.php:11
 msgid "Edit Sold Equipment"
-msgstr ""
+msgstr "Upravit prodané zařízení"
 
 #: SoldEquipments/index.php:8 SoldEquipments/view.php:14
 msgid "New Sold Equipment"
-msgstr ""
+msgstr "Nové prodané zařízení"
 
 #: SoldEquipments/index.php:9
 msgid "Sold Equipments"
-msgstr ""
+msgstr "Prodaná zařízení"
 
 #: SoldEquipments/view.php:12
 msgid "Delete Sold Equipment"
-msgstr ""
+msgstr "Odstranit prodané zařízení"
 
 #: TaskStates/add.php:11 TaskStates/edit.php:16 TaskStates/view.php:13
 msgid "List Task States"
