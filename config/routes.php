@@ -48,6 +48,7 @@ $routes->scope('/admin/', function (RouteBuilder $builder) {
 
     $builder->setRouteClass(DashedRoute::class);
 
+    $builder->connect('/customers/{customer_id}/contracts/{contract_id}', 'Contracts::view')->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+'])->setPass(['contract_id']);
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}/edit', 'Contracts::edit')->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+'])->setPass(['contract_id']);
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}/delete', 'Contracts::delete')->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+'])->setPass(['contract_id']);
 
@@ -56,7 +57,7 @@ $routes->scope('/admin/', function (RouteBuilder $builder) {
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/{id}', ['action' => 'view'])->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+', 'id' => '[0-9]+'])->setPass(['id']);
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/{id}/{action}/*', [])->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+', 'id' => '[0-9]+'])->setPass(['id']);
 
-
+    $builder->connect('/customers/{customer_id}', 'Customers::view')->setPatterns(['customer_id' => '[0-9]+'])->setPass(['customer_id']);
     $builder->connect('/customers/{customer_id}/edit', 'Customers::edit')->setPatterns(['customer_id' => '[0-9]+'])->setPass(['customer_id']);
     $builder->connect('/customers/{customer_id}/delete', 'Customers::delete')->setPatterns(['customer_id' => '[0-9]+'])->setPass(['customer_id']);
     
@@ -124,13 +125,20 @@ use Cake\Http\ServerRequest;
 
 Router::addUrlFilter(function (array $params, ServerRequest $request) {
     //inject customer_id
-    if ($request->getParam('customer_id') && !isset($params['customer_id']) && ($request->getParam('controller') <> 'Customers')) {
+    if ($request->getParam('customer_id') && !isset($params['customer_id'])) {
         $params['customer_id'] = $request->getParam('customer_id');
     }
     //inject contract_id
-    if ($request->getParam('contract_id') && !isset($params['contract_id']) && ($request->getParam('controller') <> 'Contracts')) {
+    if ($request->getParam('contract_id') && !isset($params['contract_id'])) {
         $params['contract_id'] = $request->getParam('contract_id');
     }
     
+    //remove for self (because of duplicating nesting)
+    if (isset($params['controller']) && $params['controller'] == 'Customers') unset ($params['customer_id']);
+    if (!isset($params['controller']) && $request->getParam('controller') == 'Customers') unset ($params['customer_id']);
+
+    if (isset($params['controller']) && $params['controller'] == 'Contracts') unset ($params['contract_id']);
+    if (!isset($params['controller']) && $request->getParam('controller') == 'Contracts') unset ($params['contract_id']);
+
     return $params;
 });
