@@ -124,11 +124,11 @@ use Cake\Http\ServerRequest;
 
 Router::addUrlFilter(function (array $params, ServerRequest $request) {
     //inject customer_id
-    if ($request->getParam('customer_id') && !isset($params['customer_id'])) {
+    if ($request->getParam('customer_id') && !isset($params['customer_id']) && ($request->getParam('controller') <> 'Customers')) {
         $params['customer_id'] = $request->getParam('customer_id');
     }
     //inject contract_id
-    if ($request->getParam('contract_id') && !isset($params['contract_id'])) {
+    if ($request->getParam('contract_id') && !isset($params['contract_id']) && ($request->getParam('controller') <> 'Contracts')) {
         $params['contract_id'] = $request->getParam('contract_id');
     }
     
