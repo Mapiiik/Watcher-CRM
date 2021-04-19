@@ -34,9 +34,9 @@
                     <td><?= h($ip->modified) ?></td>
                     <td><?= $this->Number->format($ip->modified_by) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $ip->ip]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $ip->ip]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $ip->ip], ['confirm' => __('Are you sure you want to delete # {0}?', $ip->ip)]) ?>
+                        <?= $this->Html->link(__('View'), ['action' => 'view', $ip->id]) ?>
+                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $ip->id]) ?>
+                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $ip->id], ['confirm' => __('Are you sure you want to delete # {0}?', $ip->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
