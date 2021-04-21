@@ -70,13 +70,7 @@ class ContractsController extends AppController
         }
         
         if ($this->request->is('post')) {
-            //patch data
-            $data = $this->request->getData();
-            if ($data['number'] == '') $data['number'] = null;
-            if ($data['access_description'] == '') $data['access_description'] = null;
-            if ($data['note'] == '') $data['note'] = null;
-
-            $contract = $this->Contracts->patchEntity($contract, $data);
+            $contract = $this->Contracts->patchEntity($contract, $this->request->getData());
             if ($this->Contracts->save($contract)) {
                 $this->Flash->success(__('The contract has been saved.'));
                 
@@ -116,13 +110,7 @@ class ContractsController extends AppController
         }
         
         if ($this->request->is(['patch', 'post', 'put'])) {
-            //patch data
-            $data = $this->request->getData();
-            if ($data['number'] == '') $data['number'] = null;
-            if ($data['access_description'] == '') $data['access_description'] = null;
-            if ($data['note'] == '') $data['note'] = null;
-
-            $contract = $this->Contracts->patchEntity($contract, $data);
+            $contract = $this->Contracts->patchEntity($contract, $this->request->getData());
             if ($this->Contracts->save($contract)) {
                 $this->Flash->success(__('The contract has been saved.'));
 

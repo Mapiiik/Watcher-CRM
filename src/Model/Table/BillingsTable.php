@@ -48,6 +48,7 @@ class BillingsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('StringModifications');
 
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',

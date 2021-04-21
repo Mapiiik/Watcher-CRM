@@ -82,12 +82,7 @@ class BillingsController extends AppController
         }
         
         if ($this->request->is('post')) {
-            //patch data
-            $data = $this->request->getData();
-            if ($data['text'] == '') $data['text'] = null;
-            if ($data['note'] == '') $data['note'] = null;
-            
-            $billing = $this->Billings->patchEntity($billing, $data);
+            $billing = $this->Billings->patchEntity($billing, $this->request->getData());
             if ($this->Billings->save($billing)) {
                 $this->Flash->success(__('The billing has been saved.'));
 
@@ -126,12 +121,7 @@ class BillingsController extends AppController
         }
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            //patch data
-            $data = $this->request->getData();
-            if ($data['text'] == '') $data['text'] = null;
-            if ($data['note'] == '') $data['note'] = null;
-            
-            $billing = $this->Billings->patchEntity($billing, $data);
+            $billing = $this->Billings->patchEntity($billing, $this->request->getData());
             if ($this->Billings->save($billing)) {
                 $this->Flash->success(__('The billing has been saved.'));
 

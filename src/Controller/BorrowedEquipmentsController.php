@@ -82,11 +82,7 @@ class BorrowedEquipmentsController extends AppController
         }
         
         if ($this->request->is('post')) {
-            //patch data
-            $data = $this->request->getData();
-            if ($data['serial_number'] == '') $data['serial_number'] = null;
-
-            $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, $data);
+            $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, $this->request->getData());
             if ($this->BorrowedEquipments->save($borrowedEquipment)) {
                 $this->Flash->success(__('The borrowed equipment has been saved.'));
 
@@ -125,11 +121,7 @@ class BorrowedEquipmentsController extends AppController
         }
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            //patch data
-            $data = $this->request->getData();
-            if ($data['serial_number'] == '') $data['serial_number'] = null;
-
-            $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, $data);
+            $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, $this->request->getData());
             if ($this->BorrowedEquipments->save($borrowedEquipment)) {
                 $this->Flash->success(__('The borrowed equipment has been saved.'));
 
