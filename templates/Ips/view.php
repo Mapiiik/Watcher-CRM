@@ -19,10 +19,6 @@
             <h3><?= h($ip->ip) ?></h3>
             <table>
                 <tr>
-                    <th><?= __('Ip') ?></th>
-                    <td><?= h($ip->ip) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Customer') ?></th>
                     <td><?= $ip->has('customer') ? $this->Html->link($ip->customer->name, ['controller' => 'Customers', 'action' => 'view', $ip->customer->id]) : '' ?></td>
                 </tr>
@@ -31,24 +27,28 @@
                     <td><?= $ip->has('contract') ? $this->Html->link($ip->contract->number, ['controller' => 'Contracts', 'action' => 'view', $ip->contract->id]) : '' ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('Ip') ?></th>
+                    <td><?= h($ip->ip) ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Id') ?></th>
                     <td><?= $this->Number->format($ip->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created By') ?></th>
-                    <td><?= $this->Number->format($ip->created_by) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified By') ?></th>
-                    <td><?= $this->Number->format($ip->modified_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Created') ?></th>
                     <td><?= h($ip->created) ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('Created By') ?></th>
+                    <td><?= $this->Number->format($ip->created_by) ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Modified') ?></th>
                     <td><?= h($ip->modified) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified By') ?></th>
+                    <td><?= $this->Number->format($ip->modified_by) ?></td>
                 </tr>
             </table>
             <div class="text">

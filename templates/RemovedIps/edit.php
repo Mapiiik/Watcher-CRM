@@ -22,12 +22,10 @@
             <fieldset>
                 <legend><?= __('Edit Removed Ip') ?></legend>
                 <?php
-                    echo $this->Form->control('removed_by');
-                    echo $this->Form->control('removed');
-                    echo $this->Form->control('ip');
-                    echo $this->Form->control('customer_id', ['options' => $customers]);
+                    if (!isset($customer_id)) echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
+                    if (!isset($contract_id)) echo $this->Form->control('contract_id', ['options' => $contracts, 'empty' => true]);
+                    echo $this->Form->control('ip', ['disabled' => true]);
                     echo $this->Form->control('note');
-                    echo $this->Form->control('contract_id', ['options' => $contracts, 'empty' => true]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

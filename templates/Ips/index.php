@@ -11,10 +11,10 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('ip') ?></th>
+                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('contract_id') ?></th>
-                    <th><?= $this->Paginator->sort('id') ?></th>
+                    <th><?= $this->Paginator->sort('ip') ?></th>
                     <th><?= $this->Paginator->sort('created') ?></th>
                     <th><?= $this->Paginator->sort('created_by') ?></th>
                     <th><?= $this->Paginator->sort('modified') ?></th>
@@ -25,10 +25,10 @@
             <tbody>
                 <?php foreach ($ips as $ip): ?>
                 <tr>
-                    <td><?= h($ip->ip) ?></td>
+                    <td><?= $this->Number->format($ip->id) ?></td>
                     <td><?= $ip->has('customer') ? $this->Html->link($ip->customer->name, ['controller' => 'Customers', 'action' => 'view', $ip->customer->id]) : '' ?></td>
                     <td><?= $ip->has('contract') ? $this->Html->link($ip->contract->number, ['controller' => 'Contracts', 'action' => 'view', $ip->contract->id]) : '' ?></td>
-                    <td><?= $this->Number->format($ip->id) ?></td>
+                    <td><?= h($ip->ip) ?></td>
                     <td><?= h($ip->created) ?></td>
                     <td><?= $this->Number->format($ip->created_by) ?></td>
                     <td><?= h($ip->modified) ?></td>

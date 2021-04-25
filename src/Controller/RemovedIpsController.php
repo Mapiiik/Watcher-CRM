@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\I18n\FrozenTime;
+
 /**
  * RemovedIps Controller
  *
@@ -18,8 +20,23 @@ class RemovedIpsController extends AppController
      */
     public function index()
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+        
+        $contract_id = $this->request->getParam('contract_id');
+        $this->set('contract_id', $contract_id);
+
+        $conditions = [];
+        if (isset($customer_id)) {
+            $conditions += ['RemovedIps.customer_id' => $customer_id];
+        }
+        if (isset($contract_id)) {
+            $conditions += ['RemovedIps.contract_id' => $contract_id];
+        }
+
         $this->paginate = [
             'contain' => ['Customers', 'Contracts'],
+            'conditions' => $conditions,
         ];
         $removedIps = $this->paginate($this->RemovedIps);
 
@@ -49,9 +66,30 @@ class RemovedIpsController extends AppController
      */
     public function add()
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+        
+        $contract_id = $this->request->getParam('contract_id');
+        $this->set('contract_id', $contract_id);
+
         $removedIp = $this->RemovedIps->newEmptyEntity();
+
+        $conditions = [];
+        if (isset($customer_id)) {
+            $ip = $this->RemovedIps->patchEntity($removedIp, ['customer_id' => $customer_id]);
+            $conditions += ['customer_id' => $customer_id];
+        }
+        if (isset($contract_id)) {
+            $ip = $this->RemovedIps->patchEntity($removedIp, ['contract_id' => $contract_id]);
+        }
+
         if ($this->request->is('post')) {
             $removedIp = $this->RemovedIps->patchEntity($removedIp, $this->request->getData());
+
+            // TODO - add who and when deleted this
+            $removedIp->removed = FrozenTime::now();
+            $removedIp->removed_by = $_SESSION['login_id'];
+            
             if ($this->RemovedIps->save($removedIp)) {
                 $this->Flash->success(__('The removed ip has been saved.'));
 
@@ -60,7 +98,7 @@ class RemovedIpsController extends AppController
             $this->Flash->error(__('The removed ip could not be saved. Please, try again.'));
         }
         $customers = $this->RemovedIps->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->RemovedIps->Contracts->find('list', ['order' => 'name']);
+        $contracts = $this->RemovedIps->Contracts->find('list', ['order' => 'number', 'conditions' => $conditions]);
         $this->set(compact('removedIp', 'customers', 'contracts'));
     }
 
@@ -73,9 +111,21 @@ class RemovedIpsController extends AppController
      */
     public function edit($id = null)
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+        
+        $contract_id = $this->request->getParam('contract_id');
+        $this->set('contract_id', $contract_id);
+
         $removedIp = $this->RemovedIps->get($id, [
             'contain' => [],
         ]);
+
+        $conditions = [];
+        if (isset($customer_id)) {
+            $conditions += ['customer_id' => $customer_id];
+        }
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $removedIp = $this->RemovedIps->patchEntity($removedIp, $this->request->getData());
             if ($this->RemovedIps->save($removedIp)) {
@@ -86,7 +136,7 @@ class RemovedIpsController extends AppController
             $this->Flash->error(__('The removed ip could not be saved. Please, try again.'));
         }
         $customers = $this->RemovedIps->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->RemovedIps->Contracts->find('list', ['order' => 'name']);
+        $contracts = $this->RemovedIps->Contracts->find('list', ['order' => 'number', 'conditions' => $conditions]);
         $this->set(compact('removedIp', 'customers', 'contracts'));
     }
 

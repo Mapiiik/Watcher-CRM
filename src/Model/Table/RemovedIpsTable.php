@@ -41,9 +41,11 @@ class RemovedIpsTable extends Table
         parent::initialize($config);
 
         $this->setTable('removed_ips');
-        $this->setDisplayField('id');
+        $this->setDisplayField('ip');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('StringModifications');
+        
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER',
