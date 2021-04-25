@@ -16,7 +16,6 @@
                     <th><?= $this->Paginator->sort('contract_id') ?></th>
                     <th><?= $this->Paginator->sort('ip') ?></th>
                     <th><?= $this->Paginator->sort('removed') ?></th>
-                    <th><?= $this->Paginator->sort('removed_by') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -28,7 +27,6 @@
                     <td><?= $removedIp->has('contract') ? $this->Html->link($removedIp->contract->number, ['controller' => 'Contracts', 'action' => 'view', $removedIp->contract->id]) : '' ?></td>
                     <td><?= h($removedIp->ip) ?></td>
                     <td><?= h($removedIp->removed) ?></td>
-                    <td><?= $this->Number->format($removedIp->removed_by) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $removedIp->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $removedIp->id]) ?>

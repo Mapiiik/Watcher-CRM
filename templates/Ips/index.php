@@ -15,10 +15,6 @@
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('contract_id') ?></th>
                     <th><?= $this->Paginator->sort('ip') ?></th>
-                    <th><?= $this->Paginator->sort('created') ?></th>
-                    <th><?= $this->Paginator->sort('created_by') ?></th>
-                    <th><?= $this->Paginator->sort('modified') ?></th>
-                    <th><?= $this->Paginator->sort('modified_by') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -29,10 +25,6 @@
                     <td><?= $ip->has('customer') ? $this->Html->link($ip->customer->name, ['controller' => 'Customers', 'action' => 'view', $ip->customer->id]) : '' ?></td>
                     <td><?= $ip->has('contract') ? $this->Html->link($ip->contract->number, ['controller' => 'Contracts', 'action' => 'view', $ip->contract->id]) : '' ?></td>
                     <td><?= h($ip->ip) ?></td>
-                    <td><?= h($ip->created) ?></td>
-                    <td><?= $this->Number->format($ip->created_by) ?></td>
-                    <td><?= h($ip->modified) ?></td>
-                    <td><?= $this->Number->format($ip->modified_by) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $ip->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $ip->id]) ?>
