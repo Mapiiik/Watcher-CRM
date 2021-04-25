@@ -77,6 +77,11 @@ select {
     height: 3.0rem;
 }
 
+/* Tables */
+th, td {
+    padding: 0.6rem 1.0rem;
+}
+
 fieldset, input, select, textarea {
     margin-bottom: 1.0rem;
 }
@@ -118,7 +123,7 @@ body {
     padding: 0 0.4rem;
 }
 th {
-    white-space: nowrap;
+/*    white-space: nowrap; */
 }
 
 /* Nav bar */
