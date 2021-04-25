@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2021-04-19 15:48+0200\n"
-"PO-Revision-Date: 2021-04-19 15:58+0200\n"
+"PO-Revision-Date: 2021-04-25 19:27+0200\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 2.3.1\n"
 
 #: Controller/AddressesController.php:56 Controller/AddressesController.php:82
 msgid "The address has been saved."
@@ -197,19 +197,19 @@ msgstr ""
 
 #: Controller/IpsController.php:56 Controller/IpsController.php:82
 msgid "The ip has been saved."
-msgstr ""
+msgstr "IP adresa byla uložena."
 
 #: Controller/IpsController.php:60 Controller/IpsController.php:86
 msgid "The ip could not be saved. Please, try again."
-msgstr ""
+msgstr "IP adresu nelze uložit. Opakujte akci."
 
 #: Controller/IpsController.php:105
 msgid "The ip has been deleted."
-msgstr ""
+msgstr "IP adresa byla odstraněna."
 
 #: Controller/IpsController.php:107
 msgid "The ip could not be deleted. Please, try again."
-msgstr ""
+msgstr "IP adresu nelze odstranit. Opakujte akci."
 
 #: Controller/LabelCustomersController.php:56
 #: Controller/LabelCustomersController.php:82
@@ -296,20 +296,20 @@ msgstr ""
 #: Controller/RemovedIpsController.php:56
 #: Controller/RemovedIpsController.php:86
 msgid "The removed ip has been saved."
-msgstr ""
+msgstr "Odebraná IP adresa byla uložena."
 
 #: Controller/RemovedIpsController.php:60
 #: Controller/RemovedIpsController.php:90
 msgid "The removed ip could not be saved. Please, try again."
-msgstr ""
+msgstr "Odebranou IP adresu nelze uložit. Opakujte akci."
 
 #: Controller/RemovedIpsController.php:113
 msgid "The removed ip has been deleted."
-msgstr ""
+msgstr "Odebraná IP adresa byla odstraněna."
 
 #: Controller/RemovedIpsController.php:115
 msgid "The removed ip could not be deleted. Please, try again."
-msgstr ""
+msgstr "Odebranou IP adresu nelze odstranit. Opakujte akci."
 
 #: Controller/RouterContactsController.php:56
 #: Controller/RouterContactsController.php:82
@@ -812,7 +812,7 @@ msgstr ""
 #: ServiceTypes/view.php:54 Services/view.php:65 SoldEquipments/view.php:42
 #: TaskStates/view.php:47 TaskTypes/view.php:47 Tasks/view.php:54
 msgid "Created By"
-msgstr ""
+msgstr "Vytvořil"
 
 #: Addresses/view.php:78 Billings/view.php:78 BorrowedEquipments/view.php:62
 #: Brokerages/view.php:75 Brokerages/view.php:136 Contracts/view.php:90
@@ -825,7 +825,7 @@ msgstr ""
 #: ServiceTypes/view.php:56 Services/view.php:63 SoldEquipments/view.php:46
 #: TaskStates/view.php:45 TaskTypes/view.php:45 Tasks/view.php:50
 msgid "Modified By"
-msgstr ""
+msgstr "Upravil"
 
 #: Addresses/view.php:82 Countries/view.php:53 Customers/view.php:161
 msgid "Ruian Gid"
@@ -1185,7 +1185,7 @@ msgstr ""
 #: Brokerages/view.php:168 Contracts/view.php:244 Customers/view.php:540
 #: RemovedIps/view.php:38
 msgid "Removed By"
-msgstr ""
+msgstr "Odstranil"
 
 #: Brokerages/view.php:169 Contracts/view.php:245 Customers/view.php:541
 #: RemovedIps/view.php:42
@@ -1544,27 +1544,27 @@ msgstr ""
 
 #: Ips/add.php:11 Ips/edit.php:16 Ips/view.php:13
 msgid "List Ips"
-msgstr ""
+msgstr "Seznam IP adres"
 
 #: Ips/add.php:18
 msgid "Add Ip"
-msgstr ""
+msgstr "Přidat IP adresu"
 
 #: Ips/edit.php:23 Ips/view.php:11
 msgid "Edit Ip"
-msgstr ""
+msgstr "Upravit IP adresu"
 
 #: Ips/index.php:8 Ips/view.php:14
 msgid "New Ip"
-msgstr ""
+msgstr "Nová IP adresa"
 
 #: Ips/index.php:9
 msgid "Ips"
-msgstr ""
+msgstr "IP adresy"
 
 #: Ips/view.php:12
 msgid "Delete Ip"
-msgstr ""
+msgstr "Odstranit IP adresu"
 
 #: LabelCustomers/add.php:11 LabelCustomers/edit.php:16
 #: LabelCustomers/view.php:13
@@ -1745,27 +1745,27 @@ msgstr ""
 
 #: RemovedIps/add.php:11 RemovedIps/edit.php:16 RemovedIps/view.php:13
 msgid "List Removed Ips"
-msgstr ""
+msgstr "Seznam odebraných IP adres"
 
 #: RemovedIps/add.php:18
 msgid "Add Removed Ip"
-msgstr ""
+msgstr "Přidat odebranou IP adresu"
 
 #: RemovedIps/edit.php:23 RemovedIps/view.php:11
 msgid "Edit Removed Ip"
-msgstr ""
+msgstr "Upravit odebranou IP adresu"
 
 #: RemovedIps/index.php:8 RemovedIps/view.php:14
 msgid "New Removed Ip"
-msgstr ""
+msgstr "Nová odebraná IP adresa"
 
 #: RemovedIps/index.php:9
 msgid "Removed Ips"
-msgstr ""
+msgstr "Odebrané IP adresy"
 
 #: RemovedIps/view.php:12
 msgid "Delete Removed Ip"
-msgstr ""
+msgstr "Odstranit odebranou IP adresu"
 
 #: RouterContacts/add.php:11 RouterContacts/edit.php:16
 #: RouterContacts/view.php:13
