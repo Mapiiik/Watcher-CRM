@@ -158,8 +158,10 @@ class ContractsController extends AppController
         
         if ($query->execute()) {
             $this->Flash->success(__('The contract number has been updated.'));
-        } else {
-            $this->Flash->error(__('The contract number could not be updated. Please, try again.'));
+            return true;
         }
+
+        $this->Flash->error(__('The contract number could not be updated. Please, try again.'));
+        return false;
     }
 }
