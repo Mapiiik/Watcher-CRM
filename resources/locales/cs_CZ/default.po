@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2021-04-19 15:48+0200\n"
-"PO-Revision-Date: 2021-04-25 19:27+0200\n"
+"PO-Revision-Date: 2021-04-26 15:04+0200\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"X-Generator: Poedit 2.3.1\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #: Controller/AddressesController.php:56 Controller/AddressesController.php:82
 msgid "The address has been saved."
@@ -1092,7 +1092,7 @@ msgstr ""
 
 #: Brokerages/view.php:62 Customers/view.php:292 ServiceTypes/view.php:43
 msgid "Related Contracts"
-msgstr ""
+msgstr "Související smlouvy"
 
 #: Brokerages/view.php:68 Brokerages/view.php:129 Brokerages/view.php:171
 #: Contracts/view.php:113 Contracts/view.php:166 Contracts/view.php:205
@@ -1162,7 +1162,7 @@ msgstr "Počet dodatků"
 
 #: Brokerages/view.php:123 Contracts/view.php:199 Customers/view.php:386
 msgid "Related Ips"
-msgstr ""
+msgstr "Související IP adresy"
 
 #: Brokerages/view.php:128 Brokerages/view.php:170 Contracts/view.php:204
 #: Contracts/view.php:246 Customers/view.php:391 Customers/view.php:542
@@ -1180,7 +1180,7 @@ msgstr ""
 
 #: Brokerages/view.php:162 Contracts/view.php:238 Customers/view.php:534
 msgid "Related Removed Ips"
-msgstr ""
+msgstr "Související odebrané IP adresy"
 
 #: Brokerages/view.php:168 Contracts/view.php:244 Customers/view.php:540
 #: RemovedIps/view.php:38
@@ -1230,7 +1230,7 @@ msgstr "Instalační technik"
 
 #: Contracts/view.php:107 Customers/view.php:200 Services/view.php:51
 msgid "Related Billings"
-msgstr ""
+msgstr "Související fakturace"
 
 #: Contracts/view.php:125 Customers/view.php:218 Services/view.php:69
 msgid "Service Id"
@@ -1238,7 +1238,7 @@ msgstr ""
 
 #: Contracts/view.php:160 Customers/view.php:253 EquipmentTypes/view.php:35
 msgid "Related Borrowed Equipments"
-msgstr ""
+msgstr "Související zapůjčená zařízení"
 
 #: Contracts/view.php:168 Contracts/view.php:281 Customers/view.php:261
 #: Customers/view.php:577 EquipmentTypes/view.php:43 EquipmentTypes/view.php:82
@@ -1247,7 +1247,7 @@ msgstr ""
 
 #: Contracts/view.php:273 Customers/view.php:569 EquipmentTypes/view.php:74
 msgid "Related Sold Equipments"
-msgstr ""
+msgstr "Související prodaná zařízení"
 
 #: Countries/add.php:11 Countries/edit.php:16 Countries/view.php:13
 msgid "List Countries"
@@ -1275,7 +1275,7 @@ msgstr ""
 
 #: Countries/view.php:31 Customers/view.php:139
 msgid "Related Addresses"
-msgstr ""
+msgstr "Související adresy"
 
 #: Countries/view.php:48 Customers/view.php:156
 msgid "Country Id"
@@ -1375,7 +1375,7 @@ msgstr ""
 
 #: Customers/view.php:353
 msgid "Related Emails"
-msgstr ""
+msgstr "Související e-maily"
 
 #: Customers/view.php:360 Customers/view.php:624 Emails/view.php:26
 #: TaskStates/view.php:49 TaskTypes/view.php:49 Tasks/view.php:95
@@ -1404,7 +1404,7 @@ msgstr ""
 
 #: Customers/view.php:458
 msgid "Related Logins"
-msgstr ""
+msgstr "Související přihlášení"
 
 #: Customers/view.php:465 Logins/view.php:26
 msgid "Login"
@@ -1440,7 +1440,7 @@ msgstr ""
 
 #: Customers/view.php:507
 msgid "Related Phones"
-msgstr ""
+msgstr "Související telefony"
 
 #: Customers/view.php:514 Customers/view.php:625 Phones/view.php:26
 #: TaskStates/view.php:50 TaskTypes/view.php:50 Tasks/view.php:101
@@ -1449,7 +1449,7 @@ msgstr ""
 
 #: Customers/view.php:608 TaskStates/view.php:33 TaskTypes/view.php:33
 msgid "Related Tasks"
-msgstr ""
+msgstr "Související úkoly"
 
 #: Customers/view.php:614 TaskStates/view.php:39 TaskTypes/view.php:39
 msgid "Task Type Id"
@@ -1737,7 +1737,7 @@ msgstr ""
 
 #: Queues/view.php:63 ServiceTypes/view.php:145
 msgid "Related Services"
-msgstr ""
+msgstr "Související služby"
 
 #: Queues/view.php:74 ServiceTypes/view.php:156
 msgid "Queue Id"
@@ -1987,4 +1987,4 @@ msgstr ""
 
 #: layout/error.php:38
 msgid "Back"
-msgstr ""
+msgstr "Zpět"
