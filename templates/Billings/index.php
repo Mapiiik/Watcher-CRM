@@ -37,8 +37,8 @@
                     <td><?= $this->Number->format($billing->price) ?></td>
                     <td><?= h($billing->billing_from) ?></td>
                     <td><?= h($billing->billing_until) ?></td>
-                    <td><?= $this->Number->format($billing->active) ?></td>
-                    <td><?= $this->Number->format($billing->separate) ?></td>
+                    <td><?= $billing->active ? __('Yes') : __('No'); ?></td>
+                    <td><?= $billing->separate ? __('Yes') : __('No'); ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $billing->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $billing->id]) ?>
