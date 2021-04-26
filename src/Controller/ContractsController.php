@@ -63,11 +63,7 @@ class ContractsController extends AppController
 
         $contract = $this->Contracts->newEmptyEntity();
 
-        $conditions = [];
-        if (isset($customer_id)) {
-            $contract = $this->Contracts->patchEntity($contract, ['customer_id' => $customer_id]);
-            $conditions = ['customer_id' => $customer_id];
-        }
+        if (isset($customer_id)) $contract = $this->Contracts->patchEntity($contract, ['customer_id' => $customer_id]);
         
         if ($this->request->is('post')) {
             $contract = $this->Contracts->patchEntity($contract, $this->request->getData());
@@ -81,10 +77,16 @@ class ContractsController extends AppController
             $this->Flash->error(__('The contract could not be saved. Please, try again.'));
         }
         $customers = $this->Contracts->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $installationAddresses = $this->Contracts->InstallationAddresses->find('list', ['order' => ['company', 'first_name', 'last_name'], 'conditions' => $conditions]);
+        $installationAddresses = $this->Contracts->InstallationAddresses->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $serviceTypes = $this->Contracts->ServiceTypes->find('list', ['order' => 'id']);
         $installationTechnicians = $this->Contracts->InstallationTechnicians->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $brokerages = $this->Contracts->Brokerages->find('list', ['order' => 'name']);
+
+        if (isset($customer_id)) {
+            $customers->where(['id' => $customer_id]);
+            $installationAddresses->where([['customer_id' => $customer_id]]);
+        }
+
         $this->set(compact('contract', 'customers', 'installationAddresses', 'serviceTypes', 'installationTechnicians', 'brokerages'));
     }
 
@@ -104,11 +106,6 @@ class ContractsController extends AppController
             'contain' => [],
         ]);
 
-        $conditions = [];
-        if (isset($customer_id)) {
-            $conditions = ['customer_id' => $customer_id];
-        }
-        
         if ($this->request->is(['patch', 'post', 'put'])) {
             $contract = $this->Contracts->patchEntity($contract, $this->request->getData());
             if ($this->Contracts->save($contract)) {
@@ -119,10 +116,16 @@ class ContractsController extends AppController
             $this->Flash->error(__('The contract could not be saved. Please, try again.'));
         }
         $customers = $this->Contracts->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $installationAddresses = $this->Contracts->InstallationAddresses->find('list', ['order' => ['company', 'first_name', 'last_name'], 'conditions' => $conditions]);
+        $installationAddresses = $this->Contracts->InstallationAddresses->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $serviceTypes = $this->Contracts->ServiceTypes->find('list', ['order' => 'id']);
         $installationTechnicians = $this->Contracts->InstallationTechnicians->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $brokerages = $this->Contracts->Brokerages->find('list', ['order' => 'name']);
+
+        if (isset($customer_id)) {
+            $customers->where(['id' => $customer_id]);
+            $installationAddresses->where([['customer_id' => $customer_id]]);
+        }
+
         $this->set(compact('contract', 'customers', 'installationAddresses', 'serviceTypes', 'installationTechnicians', 'brokerages'));
     }
 

@@ -129,7 +129,7 @@ class BillingsController extends AppController
             $this->Flash->error(__('The billing could not be saved. Please, try again.'));
         }
         $customers = $this->Billings->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->Billings->Contracts->find('list', ['order' => 'number', 'conditions']);
+        $contracts = $this->Billings->Contracts->find('list', ['order' => 'number']);
         $services = $this->Billings->Services->find('list', ['order' => 'name']);
         
         if (isset($customer_id)) {

@@ -72,14 +72,8 @@ class BorrowedEquipmentsController extends AppController
 
         $borrowedEquipment = $this->BorrowedEquipments->newEmptyEntity();
         
-        $conditions = [];
-        if (isset($customer_id)) {
-            $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, ['customer_id' => $customer_id]);
-            $conditions += ['customer_id' => $customer_id];
-        }
-        if (isset($contract_id)) {
-            $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, ['contract_id' => $contract_id]);
-        }
+        if (isset($customer_id)) $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, ['customer_id' => $customer_id]);
+        if (isset($contract_id)) $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, ['contract_id' => $contract_id]);
         
         if ($this->request->is('post')) {
             $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, $this->request->getData());
@@ -91,8 +85,17 @@ class BorrowedEquipmentsController extends AppController
             $this->Flash->error(__('The borrowed equipment could not be saved. Please, try again.'));
         }
         $customers = $this->BorrowedEquipments->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->BorrowedEquipments->Contracts->find('list', ['order' => 'number', 'conditions' => $conditions]);
+        $contracts = $this->BorrowedEquipments->Contracts->find('list', ['order' => 'number']);
         $equipmentTypes = $this->BorrowedEquipments->EquipmentTypes->find('list', ['order' => 'name']);
+
+        if (isset($customer_id)) {
+            $customers->where(['id' => $customer_id]);
+            $contracts->where(['customer_id' => $customer_id]);
+        }
+        if (isset($contract_id)) {
+            $contracts->where(['id' => $contract_id]);
+        }
+
         $this->set(compact('borrowedEquipment', 'customers', 'contracts', 'equipmentTypes'));
     }
 
@@ -115,11 +118,6 @@ class BorrowedEquipmentsController extends AppController
             'contain' => [],
         ]);
 
-        $conditions = [];
-        if (isset($customer_id)) {
-            $conditions += ['customer_id' => $customer_id];
-        }
-
         if ($this->request->is(['patch', 'post', 'put'])) {
             $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, $this->request->getData());
             if ($this->BorrowedEquipments->save($borrowedEquipment)) {
@@ -130,8 +128,17 @@ class BorrowedEquipmentsController extends AppController
             $this->Flash->error(__('The borrowed equipment could not be saved. Please, try again.'));
         }
         $customers = $this->BorrowedEquipments->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->BorrowedEquipments->Contracts->find('list', ['order' => 'number', 'conditions' => $conditions]);
+        $contracts = $this->BorrowedEquipments->Contracts->find('list', ['order' => 'number']);
         $equipmentTypes = $this->BorrowedEquipments->EquipmentTypes->find('list', ['order' => 'name']);
+
+        if (isset($customer_id)) {
+            $customers->where(['id' => $customer_id]);
+            $contracts->where(['customer_id' => $customer_id]);
+        }
+        if (isset($contract_id)) {
+            $contracts->where(['id' => $contract_id]);
+        }
+
         $this->set(compact('borrowedEquipment', 'customers', 'contracts', 'equipmentTypes'));
     }
 

@@ -72,14 +72,8 @@ class SoldEquipmentsController extends AppController
 
         $soldEquipment = $this->SoldEquipments->newEmptyEntity();
 
-        $conditions = [];
-        if (isset($customer_id)) {
-            $soldEquipment = $this->SoldEquipments->patchEntity($soldEquipment, ['customer_id' => $customer_id]);
-            $conditions += ['customer_id' => $customer_id];
-        }
-        if (isset($contract_id)) {
-            $soldEquipment = $this->SoldEquipments->patchEntity($soldEquipment, ['contract_id' => $contract_id]);
-        }
+        if (isset($customer_id)) $soldEquipment = $this->SoldEquipments->patchEntity($soldEquipment, ['customer_id' => $customer_id]);
+        if (isset($contract_id)) $soldEquipment = $this->SoldEquipments->patchEntity($soldEquipment, ['contract_id' => $contract_id]);
         
         if ($this->request->is('post')) {
             $soldEquipment = $this->SoldEquipments->patchEntity($soldEquipment, $this->request->getData());
@@ -91,8 +85,17 @@ class SoldEquipmentsController extends AppController
             $this->Flash->error(__('The sold equipment could not be saved. Please, try again.'));
         }
         $customers = $this->SoldEquipments->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->SoldEquipments->Contracts->find('list', ['order' => 'number', 'conditions' => $conditions]);
+        $contracts = $this->SoldEquipments->Contracts->find('list', ['order' => 'number']);
         $equipmentTypes = $this->SoldEquipments->EquipmentTypes->find('list', ['order' => 'name']);
+
+        if (isset($customer_id)) {
+            $customers->where(['id' => $customer_id]);
+            $contracts->where(['customer_id' => $customer_id]);
+        }
+        if (isset($contract_id)) {
+            $contracts->where(['id' => $contract_id]);
+        }
+
         $this->set(compact('soldEquipment', 'customers', 'contracts', 'equipmentTypes'));
     }
 
@@ -115,11 +118,6 @@ class SoldEquipmentsController extends AppController
             'contain' => [],
         ]);
 
-        $conditions = [];
-        if (isset($customer_id)) {
-            $conditions += ['customer_id' => $customer_id];
-        }
-
         if ($this->request->is(['patch', 'post', 'put'])) {
             $soldEquipment = $this->SoldEquipments->patchEntity($soldEquipment, $this->request->getData());
             if ($this->SoldEquipments->save($soldEquipment)) {
@@ -130,8 +128,17 @@ class SoldEquipmentsController extends AppController
             $this->Flash->error(__('The sold equipment could not be saved. Please, try again.'));
         }
         $customers = $this->SoldEquipments->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->SoldEquipments->Contracts->find('list', ['order' => 'number', 'conditions' => $conditions]);
+        $contracts = $this->SoldEquipments->Contracts->find('list', ['order' => 'number']);
         $equipmentTypes = $this->SoldEquipments->EquipmentTypes->find('list', ['order' => 'name']);
+
+        if (isset($customer_id)) {
+            $customers->where(['id' => $customer_id]);
+            $contracts->where(['customer_id' => $customer_id]);
+        }
+        if (isset($contract_id)) {
+            $contracts->where(['id' => $contract_id]);
+        }
+
         $this->set(compact('soldEquipment', 'customers', 'contracts', 'equipmentTypes'));
     }
 

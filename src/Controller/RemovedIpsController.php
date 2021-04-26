@@ -74,14 +74,8 @@ class RemovedIpsController extends AppController
 
         $removedIp = $this->RemovedIps->newEmptyEntity();
 
-        $conditions = [];
-        if (isset($customer_id)) {
-            $ip = $this->RemovedIps->patchEntity($removedIp, ['customer_id' => $customer_id]);
-            $conditions += ['customer_id' => $customer_id];
-        }
-        if (isset($contract_id)) {
-            $ip = $this->RemovedIps->patchEntity($removedIp, ['contract_id' => $contract_id]);
-        }
+        if (isset($customer_id)) $removedIp = $this->RemovedIps->patchEntity($removedIp, ['customer_id' => $customer_id]);
+        if (isset($contract_id)) $removedIp = $this->RemovedIps->patchEntity($removedIp, ['contract_id' => $contract_id]);
 
         if ($this->request->is('post')) {
             $removedIp = $this->RemovedIps->patchEntity($removedIp, $this->request->getData());
@@ -98,7 +92,16 @@ class RemovedIpsController extends AppController
             $this->Flash->error(__('The removed ip could not be saved. Please, try again.'));
         }
         $customers = $this->RemovedIps->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->RemovedIps->Contracts->find('list', ['order' => 'number', 'conditions' => $conditions]);
+        $contracts = $this->RemovedIps->Contracts->find('list', ['order' => 'number']);
+
+        if (isset($customer_id)) {
+            $customers->where(['id' => $customer_id]);
+            $contracts->where(['customer_id' => $customer_id]);
+        }
+        if (isset($contract_id)) {
+            $contracts->where(['id' => $contract_id]);
+        }
+
         $this->set(compact('removedIp', 'customers', 'contracts'));
     }
 
@@ -121,11 +124,6 @@ class RemovedIpsController extends AppController
             'contain' => [],
         ]);
 
-        $conditions = [];
-        if (isset($customer_id)) {
-            $conditions += ['customer_id' => $customer_id];
-        }
-
         if ($this->request->is(['patch', 'post', 'put'])) {
             $removedIp = $this->RemovedIps->patchEntity($removedIp, $this->request->getData());
             if ($this->RemovedIps->save($removedIp)) {
@@ -136,7 +134,16 @@ class RemovedIpsController extends AppController
             $this->Flash->error(__('The removed ip could not be saved. Please, try again.'));
         }
         $customers = $this->RemovedIps->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->RemovedIps->Contracts->find('list', ['order' => 'number', 'conditions' => $conditions]);
+        $contracts = $this->RemovedIps->Contracts->find('list', ['order' => 'number']);
+
+        if (isset($customer_id)) {
+            $customers->where(['id' => $customer_id]);
+            $contracts->where(['customer_id' => $customer_id]);
+        }
+        if (isset($contract_id)) {
+            $contracts->where(['id' => $contract_id]);
+        }
+
         $this->set(compact('removedIp', 'customers', 'contracts'));
     }
 

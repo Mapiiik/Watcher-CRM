@@ -74,14 +74,8 @@ class IpsController extends AppController
 
         $ip = $this->Ips->newEmptyEntity();
 
-        $conditions = [];
-        if (isset($customer_id)) {
-            $ip = $this->Ips->patchEntity($ip, ['customer_id' => $customer_id]);
-            $conditions += ['customer_id' => $customer_id];
-        }
-        if (isset($contract_id)) {
-            $ip = $this->Ips->patchEntity($ip, ['contract_id' => $contract_id]);
-        }
+        if (isset($customer_id)) $ip = $this->Ips->patchEntity($ip, ['customer_id' => $customer_id]);
+        if (isset($contract_id)) $ip = $this->Ips->patchEntity($ip, ['contract_id' => $contract_id]);
 
         if ($this->request->is('post')) {
             $ip = $this->Ips->patchEntity($ip, $this->request->getData());
@@ -93,7 +87,16 @@ class IpsController extends AppController
             $this->Flash->error(__('The ip could not be saved. Please, try again.'));
         }
         $customers = $this->Ips->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->Ips->Contracts->find('list', ['order' => 'number', 'conditions' => $conditions]);
+        $contracts = $this->Ips->Contracts->find('list', ['order' => 'number']);
+
+        if (isset($customer_id)) {
+            $customers->where(['id' => $customer_id]);
+            $contracts->where(['customer_id' => $customer_id]);
+        }
+        if (isset($contract_id)) {
+            $contracts->where(['id' => $contract_id]);
+        }
+
         $this->set(compact('ip', 'customers', 'contracts'));
     }
 
@@ -116,11 +119,6 @@ class IpsController extends AppController
             'contain' => [],
         ]);
 
-        $conditions = [];
-        if (isset($customer_id)) {
-            $conditions += ['customer_id' => $customer_id];
-        }
-        
         if ($this->request->is(['patch', 'post', 'put'])) {
             $ip = $this->Ips->patchEntity($ip, $this->request->getData());
             if ($this->Ips->save($ip)) {
@@ -131,7 +129,16 @@ class IpsController extends AppController
             $this->Flash->error(__('The ip could not be saved. Please, try again.'));
         }
         $customers = $this->Ips->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->Ips->Contracts->find('list', ['order' => 'number', 'conditions' => $conditions]);
+        $contracts = $this->Ips->Contracts->find('list', ['order' => 'number']);
+
+        if (isset($customer_id)) {
+            $customers->where(['id' => $customer_id]);
+            $contracts->where(['customer_id' => $customer_id]);
+        }
+        if (isset($contract_id)) {
+            $contracts->where(['id' => $contract_id]);
+        }
+
         $this->set(compact('ip', 'customers', 'contracts'));
     }
 
