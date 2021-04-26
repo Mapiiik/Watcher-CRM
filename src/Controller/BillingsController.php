@@ -72,14 +72,8 @@ class BillingsController extends AppController
 
         $billing = $this->Billings->newEmptyEntity();
 
-        $conditions = [];
-        if (isset($customer_id)) {
-            $billing = $this->Billings->patchEntity($billing, ['customer_id' => $customer_id]);
-            $conditions += ['customer_id' => $customer_id];
-        }
-        if (isset($contract_id)) {
-            $billing = $this->Billings->patchEntity($billing, ['contract_id' => $contract_id]);
-        }
+        if (isset($customer_id)) $billing = $this->Billings->patchEntity($billing, ['customer_id' => $customer_id]);
+        if (isset($contract_id)) $billing = $this->Billings->patchEntity($billing, ['contract_id' => $contract_id]);
         
         if ($this->request->is('post')) {
             $billing = $this->Billings->patchEntity($billing, $this->request->getData());
@@ -91,8 +85,18 @@ class BillingsController extends AppController
             $this->Flash->error(__('The billing could not be saved. Please, try again.'));
         }
         $customers = $this->Billings->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->Billings->Contracts->find('list', ['order' => 'number', 'conditions' => $conditions]);
+        $contracts = $this->Billings->Contracts->find('list', ['order' => 'number']);
         $services = $this->Billings->Services->find('list', ['order' => 'name']);
+        
+        if (isset($customer_id)) {
+            $customers->where(['id' => $customer_id]);
+            $contracts->where(['customer_id' => $customer_id]);
+        }
+        if (isset($contract_id)) {
+            $contracts->where(['id' => $contract_id]);
+            $services->where(['service_type_id' => $this->Billings->Contracts->get($contract_id)->service_type_id]);
+        }
+        
         $this->set(compact('billing', 'customers', 'services', 'contracts'));
     }
 
@@ -115,11 +119,6 @@ class BillingsController extends AppController
             'contain' => [],
         ]);
 
-        $conditions = [];
-        if (isset($customer_id)) {
-            $conditions += ['customer_id' => $customer_id];
-        }
-
         if ($this->request->is(['patch', 'post', 'put'])) {
             $billing = $this->Billings->patchEntity($billing, $this->request->getData());
             if ($this->Billings->save($billing)) {
@@ -130,8 +129,18 @@ class BillingsController extends AppController
             $this->Flash->error(__('The billing could not be saved. Please, try again.'));
         }
         $customers = $this->Billings->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->Billings->Contracts->find('list', ['order' => 'number', 'conditions' => $conditions]);
+        $contracts = $this->Billings->Contracts->find('list', ['order' => 'number', 'conditions']);
         $services = $this->Billings->Services->find('list', ['order' => 'name']);
+        
+        if (isset($customer_id)) {
+            $customers->where(['id' => $customer_id]);
+            $contracts->where(['customer_id' => $customer_id]);
+        }
+        if (isset($contract_id)) {
+            $contracts->where(['id' => $contract_id]);
+            $services->where(['service_type_id' => $this->Billings->Contracts->get($contract_id)->service_type_id]);
+        }
+        
         $this->set(compact('billing', 'customers', 'services', 'contracts'));
     }
 
