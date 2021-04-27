@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2021-04-19 15:48+0200\n"
-"PO-Revision-Date: 2021-04-26 15:04+0200\n"
+"PO-Revision-Date: 2021-04-27 15:23+0200\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -730,31 +730,31 @@ msgstr "Zákazník"
 #: Addresses/view.php:26 Countries/view.php:39 Customers/view.php:22
 #: Customers/view.php:147
 msgid "Title"
-msgstr ""
+msgstr "Titul"
 
 #: Addresses/view.php:30 Countries/view.php:40 Customers/view.php:26
 #: Customers/view.php:148
 msgid "First Name"
-msgstr ""
+msgstr "Jméno"
 
 #: Addresses/view.php:34 Countries/view.php:41 Customers/view.php:30
 #: Customers/view.php:149
 msgid "Last Name"
-msgstr ""
+msgstr "Příjmení"
 
 #: Addresses/view.php:38 Countries/view.php:42 Customers/view.php:34
 #: Customers/view.php:150
 msgid "Suffix"
-msgstr ""
+msgstr "Přípona"
 
 #: Addresses/view.php:42 Countries/view.php:43 Customers/view.php:38
 #: Customers/view.php:151
 msgid "Company"
-msgstr ""
+msgstr "Společnost"
 
 #: Addresses/view.php:46 Countries/view.php:44 Customers/view.php:152
 msgid "Street"
-msgstr ""
+msgstr "Ulice"
 
 #: Addresses/view.php:50 Brokerages/view.php:70 Contracts/view.php:30
 #: Countries/view.php:45 Customers/view.php:153 Customers/view.php:300
@@ -764,15 +764,15 @@ msgstr "Číslo"
 
 #: Addresses/view.php:54 Countries/view.php:46 Customers/view.php:154
 msgid "City"
-msgstr ""
+msgstr "Město"
 
 #: Addresses/view.php:58 Countries/view.php:47 Customers/view.php:155
 msgid "Zip"
-msgstr ""
+msgstr "PSČ"
 
 #: Addresses/view.php:62
 msgid "Country"
-msgstr ""
+msgstr "Země"
 
 #: Addresses/view.php:66 Billings/view.php:62 BorrowedEquipments/view.php:46
 #: BrokerageDealers/view.php:38 Brokerages/view.php:26 Brokerages/view.php:40
@@ -794,11 +794,11 @@ msgstr ""
 #: TaskStates/view.php:38 TaskTypes/view.php:22 TaskTypes/view.php:38
 #: Tasks/view.php:38 Taxes/view.php:26
 msgid "Id"
-msgstr ""
+msgstr "ID"
 
 #: Addresses/view.php:70 Countries/view.php:37 Customers/view.php:145
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: Addresses/view.php:74 Billings/view.php:70 BorrowedEquipments/view.php:54
 #: Brokerages/view.php:73 Brokerages/view.php:134 Contracts/view.php:82
@@ -1124,11 +1124,11 @@ msgstr "Závazek do"
 #: Brokerages/view.php:78 Contracts/view.php:70 Customers/view.php:308
 #: ServiceTypes/view.php:59
 msgid "Vip"
-msgstr ""
+msgstr "VIP"
 
 #: Brokerages/view.php:79 Customers/view.php:309 ServiceTypes/view.php:60
 msgid "Installation Technician Id"
-msgstr ""
+msgstr "ID instalačního technika"
 
 #: Brokerages/view.php:81 Contracts/view.php:58 Customers/view.php:311
 #: ServiceTypes/view.php:62
@@ -1168,7 +1168,7 @@ msgstr "Související IP adresy"
 #: Contracts/view.php:246 Customers/view.php:391 Customers/view.php:542
 #: Ips/view.php:22 RemovedIps/view.php:22
 msgid "Ip"
-msgstr ""
+msgstr "IP"
 
 #: Brokerages/view.php:131 Brokerages/view.php:173 Contracts/view.php:127
 #: Contracts/view.php:167 Contracts/view.php:207 Contracts/view.php:249
@@ -1176,7 +1176,7 @@ msgstr ""
 #: Customers/view.php:394 Customers/view.php:545 Customers/view.php:576
 #: EquipmentTypes/view.php:42 EquipmentTypes/view.php:81 Services/view.php:71
 msgid "Contract Id"
-msgstr ""
+msgstr "ID smlouvy"
 
 #: Brokerages/view.php:162 Contracts/view.php:238 Customers/view.php:534
 msgid "Related Removed Ips"
@@ -1234,7 +1234,7 @@ msgstr "Související fakturace"
 
 #: Contracts/view.php:125 Customers/view.php:218 Services/view.php:69
 msgid "Service Id"
-msgstr ""
+msgstr "ID služby"
 
 #: Contracts/view.php:160 Customers/view.php:253 EquipmentTypes/view.php:35
 msgid "Related Borrowed Equipments"
@@ -1243,7 +1243,7 @@ msgstr "Související zapůjčená zařízení"
 #: Contracts/view.php:168 Contracts/view.php:281 Customers/view.php:261
 #: Customers/view.php:577 EquipmentTypes/view.php:43 EquipmentTypes/view.php:82
 msgid "Equipment Type Id"
-msgstr ""
+msgstr "ID typu zařízení"
 
 #: Contracts/view.php:273 Customers/view.php:569 EquipmentTypes/view.php:74
 msgid "Related Sold Equipments"
