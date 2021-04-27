@@ -36,6 +36,33 @@
                             <th><?= __('Installation Address') ?></th>
                             <td><?= $contract->has('installation_address') ? $this->Html->link($contract->installation_address->address, ['controller' => 'Addresses', 'action' => 'view', $contract->installation_address->id]) : '' ?></td>
                         </tr>
+                    </table>
+                </div>
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Installation Date') ?></th>
+                            <td><?= h($contract->installation_date) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Installation Technician') ?></th>
+                            <td><?= $contract->has('installation_technician') ? $this->Html->link($contract->installation_technician->name, ['controller' => 'Customers', 'action' => 'view', $contract->installation_technician->id]) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Brokerage') ?></th>
+                            <td><?= $contract->has('brokerage') ? $this->Html->link($contract->brokerage->name, ['controller' => 'Brokerages', 'action' => 'view', $contract->brokerage->id]) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Vip') ?></th>
+                            <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="column-responsive">
+                    <table>
                         <tr>
                             <th><?= __('Conclusion Date') ?></th>
                             <td><?= h($contract->conclusion_date) ?></td>
@@ -60,22 +87,6 @@
                 </div>
                 <div class="column-responsive">
                     <table>
-                        <tr>
-                            <th><?= __('Installation Date') ?></th>
-                            <td><?= h($contract->installation_date) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Installation Technician') ?></th>
-                            <td><?= $contract->has('installation_technician') ? $this->Html->link($contract->installation_technician->name, ['controller' => 'Customers', 'action' => 'view', $contract->installation_technician->id]) : '' ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Brokerage') ?></th>
-                            <td><?= $contract->has('brokerage') ? $this->Html->link($contract->brokerage->name, ['controller' => 'Brokerages', 'action' => 'view', $contract->brokerage->id]) : '' ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Vip') ?></th>
-                            <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
-                        </tr>
                         <tr>
                             <th><?= __('Id') ?></th>
                             <td><?= $this->Number->format($contract->id) ?></td>
