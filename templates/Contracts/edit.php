@@ -23,27 +23,27 @@
                 <legend><?= __('Edit Contract') ?></legend>
                 <div class="row">
                     <div class="column-responsive">
-                <?php
-                    if (!isset($customer_id)) echo $this->Form->control('customer_id', ['options' => $customers]);
-                    echo $this->Form->control('service_type_id', ['options' => $serviceTypes, 'disabled' => true]);
-                    echo $this->Form->control('number');
-                    echo $this->Form->control('installation_address_id', ['options' => $installationAddresses, 'empty' => true]);
-                    echo $this->Form->control('conclusion_date', ['empty' => true]);
-                    echo $this->Form->control('number_of_amendments');
-                    echo $this->Form->control('valid_from', ['empty' => true]);
-                    echo $this->Form->control('valid_until', ['empty' => true]);
-                    echo $this->Form->control('obligation_until', ['empty' => true]);
-                ?>
+                    <?php
+                        if (!isset($customer_id)) echo $this->Form->control('customer_id', ['options' => $customers]);
+                        echo $this->Form->control('service_type_id', ['options' => $serviceTypes, 'disabled' => true]);
+                        echo $this->Form->control('number');
+                        echo $this->Form->control('installation_address_id', ['options' => $installationAddresses, 'empty' => true]);
+                        echo $this->Form->control('conclusion_date', ['empty' => true]);
+                        echo $this->Form->control('number_of_amendments');
+                        echo $this->Form->control('valid_from', ['empty' => true]);
+                        echo $this->Form->control('valid_until', ['empty' => true]);
+                        echo $this->Form->control('obligation_until', ['empty' => true]);
+                    ?>
                     </div>
                     <div class="column-responsive">
-                <?php
-                    echo $this->Form->control('installation_date', ['empty' => true]);
-                    echo $this->Form->control('installation_technician_id', ['options' => $installationTechnicians, 'empty' => true]);
-                    echo $this->Form->control('access_description');
-                    echo $this->Form->control('brokerage_id', ['options' => $brokerages, 'empty' => true]);
-                    echo $this->Form->control('vip');
-                    echo $this->Form->control('note');
-                ?>
+                    <?php
+                        echo $this->Form->control('installation_date', ['empty' => true]);
+                        echo $this->Form->control('installation_technician_id', ['options' => $installationTechnicians, 'empty' => true]);
+                        echo $this->Form->control('access_description');
+                        echo $this->Form->control('brokerage_id', ['options' => $brokerages, 'empty' => true]);
+                        echo $this->Form->control('vip');
+                        echo $this->Form->control('note');
+                    ?>
                     </div>
                 </div>
             </fieldset>
