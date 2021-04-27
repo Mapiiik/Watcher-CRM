@@ -47,6 +47,8 @@ class LabelCustomersTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('Footprint');
+        $this->addBehavior('StringModifications');
 
         $this->belongsTo('Labels', [
             'foreignKey' => 'label_id',

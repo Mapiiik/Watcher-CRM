@@ -46,6 +46,8 @@ class LoginsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('Footprint');
+        $this->addBehavior('StringModifications');
 
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
