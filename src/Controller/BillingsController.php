@@ -94,7 +94,10 @@ class BillingsController extends AppController
         }
         if (isset($contract_id)) {
             $contracts->where(['id' => $contract_id]);
-            $services->where(['service_type_id' => $this->Billings->Contracts->get($contract_id)->service_type_id]);
+            $services->where(['OR' => [
+                'service_type_id' => $this->Billings->Contracts->get($contract_id)->service_type_id,
+                'service_type_id IS NULL',
+            ]]);
         }
         
         $this->set(compact('billing', 'customers', 'services', 'contracts'));
@@ -138,7 +141,10 @@ class BillingsController extends AppController
         }
         if (isset($contract_id)) {
             $contracts->where(['id' => $contract_id]);
-            $services->where(['service_type_id' => $this->Billings->Contracts->get($contract_id)->service_type_id]);
+            $services->where(['OR' => [
+                'service_type_id' => $this->Billings->Contracts->get($contract_id)->service_type_id,
+                'service_type_id IS NULL',
+            ]]);
         }
         
         $this->set(compact('billing', 'customers', 'services', 'contracts'));
