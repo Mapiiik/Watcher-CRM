@@ -25,7 +25,7 @@
                     <div class="column-responsive">
                     <?php
                         if (!isset($customer_id)) echo $this->Form->control('customer_id', ['options' => $customers]);
-                        echo $this->Form->control('type', ['empty' => true]);
+                        echo $this->Form->control('type', ['disabled' => true]);
                         echo $this->Form->control('company');
                         echo $this->Form->control('title');
                         echo $this->Form->control('first_name');
