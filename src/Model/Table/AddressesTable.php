@@ -41,6 +41,13 @@ class AddressesTable extends Table
     public function initialize(array $config): void
     {
         parent::initialize($config);
+        
+        $this->types = [
+            '0' => __('Installation Address'),
+            '1' => __('Billing Address'),
+            '2' => __('Delivery Address'),
+            '3' => __('Permanent Address'),
+        ];
 
         $this->setTable('addresses');
         $this->setDisplayField('address');

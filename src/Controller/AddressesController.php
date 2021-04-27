@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Core\Configure;
+
 /**
  * Addresses Controller
  *
@@ -18,12 +20,24 @@ class AddressesController extends AppController
      */
     public function index()
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+        
+        $conditions = [];
+        if (isset($customer_id)) {
+            $conditions = ['Addresses.customer_id' => $customer_id];
+        }
+
         $this->paginate = [
             'contain' => ['Customers', 'Countries'],
+            'conditions' => $conditions,
         ];
-        $addresses = $this->paginate($this->Addresses);
 
-        $this->set(compact('addresses'));
+        $addresses = $this->paginate($this->Addresses);
+        
+        $types = $this->Addresses->types;
+
+        $this->set(compact('addresses', 'types'));
     }
 
     /**
@@ -39,7 +53,9 @@ class AddressesController extends AppController
             'contain' => ['Customers', 'Countries'],
         ]);
 
-        $this->set(compact('address'));
+        $types = $this->Addresses->types;
+
+        $this->set(compact('address', 'types'));
     }
 
     /**
@@ -49,7 +65,13 @@ class AddressesController extends AppController
      */
     public function add()
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+
         $address = $this->Addresses->newEmptyEntity();
+
+        if (isset($customer_id)) $address = $this->Addresses->patchEntity($address, ['customer_id' => $customer_id]);
+        
         if ($this->request->is('post')) {
             $address = $this->Addresses->patchEntity($address, $this->request->getData());
             if ($this->Addresses->save($address)) {
@@ -61,7 +83,14 @@ class AddressesController extends AppController
         }
         $customers = $this->Addresses->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $countries = $this->Addresses->Countries->find('list', ['order' => 'name']);
-        $this->set(compact('address', 'customers', 'countries'));
+
+        if (isset($customer_id)) {
+            $customers->where(['id' => $customer_id]);
+        }
+        
+        $types = $this->Addresses->types;
+
+        $this->set(compact('address', 'customers', 'countries', 'types'));
     }
 
     /**
@@ -73,6 +102,9 @@ class AddressesController extends AppController
      */
     public function edit($id = null)
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+
         $address = $this->Addresses->get($id, [
             'contain' => [],
         ]);
@@ -87,7 +119,14 @@ class AddressesController extends AppController
         }
         $customers = $this->Addresses->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $countries = $this->Addresses->Countries->find('list', ['order' => 'name']);
-        $this->set(compact('address', 'customers', 'countries'));
+
+        if (isset($customer_id)) {
+            $customers->where(['id' => $customer_id]);
+        }
+
+        $types = $this->Addresses->types;
+
+        $this->set(compact('address', 'customers', 'countries', 'types'));
     }
 
     /**
