@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-04-19 15:48+0200\n"
+"POT-Creation-Date: 2021-04-29 07:52+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,21 +14,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: Controller/AddressesController.php:56
-#: Controller/AddressesController.php:82
+#: Controller/AddressesController.php:78
+#: Controller/AddressesController.php:114
 msgid "The address has been saved."
 msgstr ""
 
-#: Controller/AddressesController.php:60
-#: Controller/AddressesController.php:86
+#: Controller/AddressesController.php:82
+#: Controller/AddressesController.php:118
 msgid "The address could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/AddressesController.php:105
+#: Controller/AddressesController.php:144
 msgid "The address has been deleted."
 msgstr ""
 
-#: Controller/AddressesController.php:107
+#: Controller/AddressesController.php:146
 msgid "The address could not be deleted. Please, try again."
 msgstr ""
 
@@ -36,39 +36,39 @@ msgstr ""
 msgid "Unable to find results on page {0}. Redirect to page 1."
 msgstr ""
 
-#: Controller/BillingsController.php:92
-#: Controller/BillingsController.php:136
+#: Controller/BillingsController.php:81
+#: Controller/BillingsController.php:128
 msgid "The billing has been saved."
 msgstr ""
 
-#: Controller/BillingsController.php:96
-#: Controller/BillingsController.php:140
+#: Controller/BillingsController.php:85
+#: Controller/BillingsController.php:132
 msgid "The billing could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/BillingsController.php:160
+#: Controller/BillingsController.php:165
 msgid "The billing has been deleted."
 msgstr ""
 
-#: Controller/BillingsController.php:162
+#: Controller/BillingsController.php:167
 msgid "The billing could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/BorrowedEquipmentsController.php:91
-#: Controller/BorrowedEquipmentsController.php:134
+#: Controller/BorrowedEquipmentsController.php:81
+#: Controller/BorrowedEquipmentsController.php:124
 msgid "The borrowed equipment has been saved."
 msgstr ""
 
-#: Controller/BorrowedEquipmentsController.php:95
-#: Controller/BorrowedEquipmentsController.php:138
+#: Controller/BorrowedEquipmentsController.php:85
+#: Controller/BorrowedEquipmentsController.php:128
 msgid "The borrowed equipment could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/BorrowedEquipmentsController.php:158
+#: Controller/BorrowedEquipmentsController.php:157
 msgid "The borrowed equipment has been deleted."
 msgstr ""
 
-#: Controller/BorrowedEquipmentsController.php:160
+#: Controller/BorrowedEquipmentsController.php:159
 msgid "The borrowed equipment could not be deleted. Please, try again."
 msgstr ""
 
@@ -108,29 +108,29 @@ msgstr ""
 msgid "The brokerage could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/ContractsController.php:81
-#: Controller/ContractsController.php:127
+#: Controller/ContractsController.php:71
+#: Controller/ContractsController.php:112
 msgid "The contract has been saved."
 msgstr ""
 
-#: Controller/ContractsController.php:87
-#: Controller/ContractsController.php:131
+#: Controller/ContractsController.php:77
+#: Controller/ContractsController.php:116
 msgid "The contract could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/ContractsController.php:153
+#: Controller/ContractsController.php:144
 msgid "The contract has been deleted."
 msgstr ""
 
-#: Controller/ContractsController.php:155
+#: Controller/ContractsController.php:146
 msgid "The contract could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/ContractsController.php:172
+#: Controller/ContractsController.php:163
 msgid "The contract number has been updated."
 msgstr ""
 
-#: Controller/ContractsController.php:174
+#: Controller/ContractsController.php:167
 msgid "The contract number could not be updated. Please, try again."
 msgstr ""
 
@@ -206,22 +206,34 @@ msgstr ""
 msgid "The equipment type could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/IpsController.php:56
-#: Controller/IpsController.php:82
+#: Controller/IpsController.php:83
+#: Controller/IpsController.php:125
 msgid "The ip has been saved."
 msgstr ""
 
-#: Controller/IpsController.php:60
-#: Controller/IpsController.php:86
+#: Controller/IpsController.php:87
+#: Controller/IpsController.php:129
 msgid "The ip could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/IpsController.php:105
+#: Controller/IpsController.php:160
 msgid "The ip has been deleted."
 msgstr ""
 
-#: Controller/IpsController.php:107
+#: Controller/IpsController.php:162
 msgid "The ip could not be deleted. Please, try again."
+msgstr ""
+
+#: Controller/IpsController.php:183
+#: Controller/RemovedIpsController.php:88
+#: Controller/RemovedIpsController.php:130
+msgid "The removed ip has been saved."
+msgstr ""
+
+#: Controller/IpsController.php:189
+#: Controller/RemovedIpsController.php:92
+#: Controller/RemovedIpsController.php:134
+msgid "The removed ip could not be saved. Please, try again."
 msgstr ""
 
 #: Controller/LabelCustomersController.php:56
@@ -314,21 +326,11 @@ msgstr ""
 msgid "The queue could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/RemovedIpsController.php:56
-#: Controller/RemovedIpsController.php:86
-msgid "The removed ip has been saved."
-msgstr ""
-
-#: Controller/RemovedIpsController.php:60
-#: Controller/RemovedIpsController.php:90
-msgid "The removed ip could not be saved. Please, try again."
-msgstr ""
-
-#: Controller/RemovedIpsController.php:113
+#: Controller/RemovedIpsController.php:162
 msgid "The removed ip has been deleted."
 msgstr ""
 
-#: Controller/RemovedIpsController.php:115
+#: Controller/RemovedIpsController.php:164
 msgid "The removed ip could not be deleted. Please, try again."
 msgstr ""
 
@@ -386,21 +388,21 @@ msgstr ""
 msgid "The service could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/SoldEquipmentsController.php:91
-#: Controller/SoldEquipmentsController.php:134
+#: Controller/SoldEquipmentsController.php:81
+#: Controller/SoldEquipmentsController.php:124
 msgid "The sold equipment has been saved."
 msgstr ""
 
-#: Controller/SoldEquipmentsController.php:95
-#: Controller/SoldEquipmentsController.php:138
+#: Controller/SoldEquipmentsController.php:85
+#: Controller/SoldEquipmentsController.php:128
 msgid "The sold equipment could not be saved. Please, try again."
 msgstr ""
 
-#: Controller/SoldEquipmentsController.php:158
+#: Controller/SoldEquipmentsController.php:157
 msgid "The sold equipment has been deleted."
 msgstr ""
 
-#: Controller/SoldEquipmentsController.php:160
+#: Controller/SoldEquipmentsController.php:159
 msgid "The sold equipment could not be deleted. Please, try again."
 msgstr ""
 
@@ -476,9 +478,26 @@ msgstr ""
 msgid "The tax could not be deleted. Please, try again."
 msgstr ""
 
+#: Model/Table/AddressesTable.php:46
+#: Contracts/view.php:36
+msgid "Installation Address"
+msgstr ""
+
+#: Model/Table/AddressesTable.php:47
+msgid "Billing Address"
+msgstr ""
+
+#: Model/Table/AddressesTable.php:48
+msgid "Delivery Address"
+msgstr ""
+
+#: Model/Table/AddressesTable.php:49
+msgid "Permanent Address"
+msgstr ""
+
 #: Addresses/add.php:10
 #: Addresses/edit.php:10
-#: Addresses/index.php:34
+#: Addresses/index.php:27
 #: Addresses/view.php:10
 #: Billings/add.php:10
 #: Billings/edit.php:10
@@ -504,11 +523,11 @@ msgstr ""
 #: Contracts/edit.php:10
 #: Contracts/index.php:28
 #: Contracts/view.php:10
-#: Contracts/view.php:128
-#: Contracts/view.php:174
-#: Contracts/view.php:213
-#: Contracts/view.php:250
-#: Contracts/view.php:287
+#: Contracts/view.php:142
+#: Contracts/view.php:179
+#: Contracts/view.php:209
+#: Contracts/view.php:237
+#: Contracts/view.php:266
 #: Countries/add.php:10
 #: Countries/edit.php:10
 #: Countries/index.php:16
@@ -542,7 +561,7 @@ msgstr ""
 #: EquipmentTypes/view.php:88
 #: Ips/add.php:10
 #: Ips/edit.php:10
-#: Ips/index.php:22
+#: Ips/index.php:18
 #: Ips/view.php:10
 #: LabelCustomers/add.php:10
 #: LabelCustomers/edit.php:10
@@ -568,7 +587,7 @@ msgstr ""
 #: Queues/view.php:75
 #: RemovedIps/add.php:10
 #: RemovedIps/edit.php:10
-#: RemovedIps/index.php:20
+#: RemovedIps/index.php:19
 #: RemovedIps/view.php:10
 #: RouterContacts/add.php:10
 #: RouterContacts/edit.php:10
@@ -621,8 +640,8 @@ msgstr ""
 msgid "Add Address"
 msgstr ""
 
-#: Addresses/add.php:39
-#: Addresses/edit.php:44
+#: Addresses/add.php:42
+#: Addresses/edit.php:47
 #: Billings/add.php:33
 #: Billings/edit.php:38
 #: BorrowedEquipments/add.php:28
@@ -641,8 +660,8 @@ msgstr ""
 #: Emails/edit.php:32
 #: EquipmentTypes/add.php:24
 #: EquipmentTypes/edit.php:29
-#: Ips/add.php:28
-#: Ips/edit.php:33
+#: Ips/add.php:26
+#: Ips/edit.php:31
 #: LabelCustomers/add.php:26
 #: LabelCustomers/edit.php:31
 #: Labels/add.php:28
@@ -653,8 +672,8 @@ msgstr ""
 #: Phones/edit.php:29
 #: Queues/add.php:31
 #: Queues/edit.php:36
-#: RemovedIps/add.php:28
-#: RemovedIps/edit.php:33
+#: RemovedIps/add.php:26
+#: RemovedIps/edit.php:31
 #: RouterContacts/add.php:24
 #: RouterContacts/edit.php:29
 #: ServiceTypes/add.php:24
@@ -675,7 +694,7 @@ msgid "Submit"
 msgstr ""
 
 #: Addresses/edit.php:12
-#: Addresses/index.php:63
+#: Addresses/index.php:49
 #: Billings/edit.php:12
 #: Billings/index.php:45
 #: BorrowedEquipments/edit.php:12
@@ -690,11 +709,11 @@ msgstr ""
 #: Brokerages/view.php:188
 #: Contracts/edit.php:12
 #: Contracts/index.php:51
-#: Contracts/view.php:151
-#: Contracts/view.php:190
-#: Contracts/view.php:229
-#: Contracts/view.php:264
-#: Contracts/view.php:303
+#: Contracts/view.php:159
+#: Contracts/view.php:191
+#: Contracts/view.php:219
+#: Contracts/view.php:247
+#: Contracts/view.php:277
 #: Countries/edit.php:12
 #: Countries/index.php:27
 #: Countries/view.php:83
@@ -719,7 +738,7 @@ msgstr ""
 #: EquipmentTypes/view.php:65
 #: EquipmentTypes/view.php:104
 #: Ips/edit.php:12
-#: Ips/index.php:39
+#: Ips/index.php:31
 #: LabelCustomers/edit.php:12
 #: LabelCustomers/index.php:33
 #: Labels/edit.php:12
@@ -733,7 +752,7 @@ msgstr ""
 #: Queues/index.php:43
 #: Queues/view.php:89
 #: RemovedIps/edit.php:12
-#: RemovedIps/index.php:35
+#: RemovedIps/index.php:33
 #: RouterContacts/edit.php:12
 #: RouterContacts/index.php:29
 #: ServiceTypes/edit.php:12
@@ -760,7 +779,7 @@ msgid "Delete"
 msgstr ""
 
 #: Addresses/edit.php:14
-#: Addresses/index.php:63
+#: Addresses/index.php:49
 #: Addresses/view.php:12
 #: Billings/edit.php:14
 #: Billings/index.php:45
@@ -781,11 +800,11 @@ msgstr ""
 #: Contracts/edit.php:14
 #: Contracts/index.php:51
 #: Contracts/view.php:12
-#: Contracts/view.php:151
-#: Contracts/view.php:190
-#: Contracts/view.php:229
-#: Contracts/view.php:264
-#: Contracts/view.php:303
+#: Contracts/view.php:159
+#: Contracts/view.php:191
+#: Contracts/view.php:219
+#: Contracts/view.php:247
+#: Contracts/view.php:277
 #: Countries/edit.php:14
 #: Countries/index.php:27
 #: Countries/view.php:12
@@ -814,7 +833,7 @@ msgstr ""
 #: EquipmentTypes/view.php:65
 #: EquipmentTypes/view.php:104
 #: Ips/edit.php:14
-#: Ips/index.php:39
+#: Ips/index.php:31
 #: Ips/view.php:12
 #: LabelCustomers/edit.php:14
 #: LabelCustomers/index.php:33
@@ -834,7 +853,7 @@ msgstr ""
 #: Queues/view.php:12
 #: Queues/view.php:89
 #: RemovedIps/edit.php:14
-#: RemovedIps/index.php:35
+#: RemovedIps/index.php:33
 #: RemovedIps/view.php:12
 #: RouterContacts/edit.php:14
 #: RouterContacts/index.php:29
@@ -883,7 +902,7 @@ msgstr ""
 msgid "Addresses"
 msgstr ""
 
-#: Addresses/index.php:61
+#: Addresses/index.php:47
 #: Billings/index.php:43
 #: BorrowedEquipments/index.php:35
 #: BrokerageDealers/index.php:31
@@ -893,11 +912,11 @@ msgstr ""
 #: Brokerages/view.php:151
 #: Brokerages/view.php:186
 #: Contracts/index.php:49
-#: Contracts/view.php:149
-#: Contracts/view.php:188
-#: Contracts/view.php:227
-#: Contracts/view.php:262
-#: Contracts/view.php:301
+#: Contracts/view.php:157
+#: Contracts/view.php:189
+#: Contracts/view.php:217
+#: Contracts/view.php:245
+#: Contracts/view.php:275
 #: Countries/index.php:25
 #: Countries/view.php:81
 #: Customers/index.php:73
@@ -917,7 +936,7 @@ msgstr ""
 #: EquipmentTypes/index.php:27
 #: EquipmentTypes/view.php:63
 #: EquipmentTypes/view.php:102
-#: Ips/index.php:37
+#: Ips/index.php:29
 #: LabelCustomers/index.php:31
 #: Labels/index.php:33
 #: Labels/view.php:75
@@ -925,7 +944,7 @@ msgstr ""
 #: Phones/index.php:27
 #: Queues/index.php:41
 #: Queues/view.php:87
-#: RemovedIps/index.php:33
+#: RemovedIps/index.php:31
 #: RouterContacts/index.php:27
 #: ServiceTypes/index.php:31
 #: ServiceTypes/view.php:93
@@ -944,7 +963,7 @@ msgstr ""
 msgid "View"
 msgstr ""
 
-#: Addresses/index.php:62
+#: Addresses/index.php:48
 #: Billings/index.php:44
 #: BorrowedEquipments/index.php:36
 #: BrokerageDealers/index.php:32
@@ -954,11 +973,11 @@ msgstr ""
 #: Brokerages/view.php:152
 #: Brokerages/view.php:187
 #: Contracts/index.php:50
-#: Contracts/view.php:150
-#: Contracts/view.php:189
-#: Contracts/view.php:228
-#: Contracts/view.php:263
-#: Contracts/view.php:302
+#: Contracts/view.php:158
+#: Contracts/view.php:190
+#: Contracts/view.php:218
+#: Contracts/view.php:246
+#: Contracts/view.php:276
 #: Countries/index.php:26
 #: Countries/view.php:82
 #: Customers/index.php:74
@@ -978,7 +997,7 @@ msgstr ""
 #: EquipmentTypes/index.php:28
 #: EquipmentTypes/view.php:64
 #: EquipmentTypes/view.php:103
-#: Ips/index.php:38
+#: Ips/index.php:30
 #: LabelCustomers/index.php:32
 #: Labels/index.php:34
 #: Labels/view.php:76
@@ -986,7 +1005,7 @@ msgstr ""
 #: Phones/index.php:28
 #: Queues/index.php:42
 #: Queues/view.php:88
-#: RemovedIps/index.php:34
+#: RemovedIps/index.php:32
 #: RouterContacts/index.php:28
 #: ServiceTypes/index.php:32
 #: ServiceTypes/view.php:94
@@ -1004,7 +1023,7 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: Addresses/index.php:72
+#: Addresses/index.php:58
 #: Billings/index.php:54
 #: BorrowedEquipments/index.php:46
 #: BrokerageDealers/index.php:42
@@ -1014,13 +1033,13 @@ msgstr ""
 #: Customers/index.php:84
 #: Emails/index.php:44
 #: EquipmentTypes/index.php:38
-#: Ips/index.php:48
+#: Ips/index.php:40
 #: LabelCustomers/index.php:42
 #: Labels/index.php:44
 #: Logins/index.php:60
 #: Phones/index.php:38
 #: Queues/index.php:52
-#: RemovedIps/index.php:44
+#: RemovedIps/index.php:42
 #: RouterContacts/index.php:38
 #: ServiceTypes/index.php:42
 #: Services/index.php:46
@@ -1032,7 +1051,7 @@ msgstr ""
 msgid "first"
 msgstr ""
 
-#: Addresses/index.php:73
+#: Addresses/index.php:59
 #: Billings/index.php:55
 #: BorrowedEquipments/index.php:47
 #: BrokerageDealers/index.php:43
@@ -1042,13 +1061,13 @@ msgstr ""
 #: Customers/index.php:85
 #: Emails/index.php:45
 #: EquipmentTypes/index.php:39
-#: Ips/index.php:49
+#: Ips/index.php:41
 #: LabelCustomers/index.php:43
 #: Labels/index.php:45
 #: Logins/index.php:61
 #: Phones/index.php:39
 #: Queues/index.php:53
-#: RemovedIps/index.php:45
+#: RemovedIps/index.php:43
 #: RouterContacts/index.php:39
 #: ServiceTypes/index.php:43
 #: Services/index.php:47
@@ -1060,7 +1079,7 @@ msgstr ""
 msgid "previous"
 msgstr ""
 
-#: Addresses/index.php:75
+#: Addresses/index.php:61
 #: Billings/index.php:57
 #: BorrowedEquipments/index.php:49
 #: BrokerageDealers/index.php:45
@@ -1070,13 +1089,13 @@ msgstr ""
 #: Customers/index.php:87
 #: Emails/index.php:47
 #: EquipmentTypes/index.php:41
-#: Ips/index.php:51
+#: Ips/index.php:43
 #: LabelCustomers/index.php:45
 #: Labels/index.php:47
 #: Logins/index.php:63
 #: Phones/index.php:41
 #: Queues/index.php:55
-#: RemovedIps/index.php:47
+#: RemovedIps/index.php:45
 #: RouterContacts/index.php:41
 #: ServiceTypes/index.php:45
 #: Services/index.php:49
@@ -1088,7 +1107,7 @@ msgstr ""
 msgid "next"
 msgstr ""
 
-#: Addresses/index.php:76
+#: Addresses/index.php:62
 #: Billings/index.php:58
 #: BorrowedEquipments/index.php:50
 #: BrokerageDealers/index.php:46
@@ -1098,13 +1117,13 @@ msgstr ""
 #: Customers/index.php:88
 #: Emails/index.php:48
 #: EquipmentTypes/index.php:42
-#: Ips/index.php:52
+#: Ips/index.php:44
 #: LabelCustomers/index.php:46
 #: Labels/index.php:48
 #: Logins/index.php:64
 #: Phones/index.php:42
 #: Queues/index.php:56
-#: RemovedIps/index.php:48
+#: RemovedIps/index.php:46
 #: RouterContacts/index.php:42
 #: ServiceTypes/index.php:46
 #: Services/index.php:50
@@ -1116,7 +1135,7 @@ msgstr ""
 msgid "last"
 msgstr ""
 
-#: Addresses/index.php:78
+#: Addresses/index.php:64
 #: Billings/index.php:60
 #: BorrowedEquipments/index.php:52
 #: BrokerageDealers/index.php:48
@@ -1126,13 +1145,13 @@ msgstr ""
 #: Customers/index.php:90
 #: Emails/index.php:50
 #: EquipmentTypes/index.php:44
-#: Ips/index.php:54
+#: Ips/index.php:46
 #: LabelCustomers/index.php:48
 #: Labels/index.php:50
 #: Logins/index.php:66
 #: Phones/index.php:44
 #: Queues/index.php:58
-#: RemovedIps/index.php:50
+#: RemovedIps/index.php:48
 #: RouterContacts/index.php:44
 #: ServiceTypes/index.php:48
 #: Services/index.php:52
@@ -1148,66 +1167,72 @@ msgstr ""
 msgid "Delete Address"
 msgstr ""
 
-#: Addresses/view.php:22
+#: Addresses/view.php:24
 #: Billings/view.php:22
 #: BorrowedEquipments/view.php:22
-#: Contracts/view.php:22
+#: Contracts/view.php:24
 #: Emails/view.php:22
-#: Ips/view.php:26
+#: Ips/view.php:22
 #: LabelCustomers/view.php:26
 #: Logins/view.php:22
 #: Phones/view.php:22
-#: RemovedIps/view.php:26
+#: RemovedIps/view.php:22
 #: RouterContacts/view.php:26
 #: SoldEquipments/view.php:22
 #: Tasks/view.php:26
 msgid "Customer"
 msgstr ""
 
-#: Addresses/view.php:26
-#: Countries/view.php:39
-#: Customers/view.php:22
-#: Customers/view.php:147
-msgid "Title"
+#: Addresses/view.php:28
+#: Countries/view.php:37
+#: Customers/view.php:145
+msgid "Type"
 msgstr ""
 
-#: Addresses/view.php:30
-#: Countries/view.php:40
-#: Customers/view.php:26
-#: Customers/view.php:148
-msgid "First Name"
-msgstr ""
-
-#: Addresses/view.php:34
-#: Countries/view.php:41
-#: Customers/view.php:30
-#: Customers/view.php:149
-msgid "Last Name"
-msgstr ""
-
-#: Addresses/view.php:38
-#: Countries/view.php:42
-#: Customers/view.php:34
-#: Customers/view.php:150
-msgid "Suffix"
-msgstr ""
-
-#: Addresses/view.php:42
+#: Addresses/view.php:32
 #: Countries/view.php:43
 #: Customers/view.php:38
 #: Customers/view.php:151
 msgid "Company"
 msgstr ""
 
-#: Addresses/view.php:46
+#: Addresses/view.php:36
+#: Countries/view.php:39
+#: Customers/view.php:22
+#: Customers/view.php:147
+msgid "Title"
+msgstr ""
+
+#: Addresses/view.php:40
+#: Countries/view.php:40
+#: Customers/view.php:26
+#: Customers/view.php:148
+msgid "First Name"
+msgstr ""
+
+#: Addresses/view.php:44
+#: Countries/view.php:41
+#: Customers/view.php:30
+#: Customers/view.php:149
+msgid "Last Name"
+msgstr ""
+
+#: Addresses/view.php:48
+#: Countries/view.php:42
+#: Customers/view.php:34
+#: Customers/view.php:150
+msgid "Suffix"
+msgstr ""
+
+#: Addresses/view.php:56
 #: Countries/view.php:44
 #: Customers/view.php:152
 msgid "Street"
 msgstr ""
 
-#: Addresses/view.php:50
+#: Addresses/view.php:60
 #: Brokerages/view.php:70
-#: Contracts/view.php:30
+#: Contracts/view.php:32
 #: Countries/view.php:45
 #: Customers/view.php:153
 #: Customers/view.php:300
@@ -1215,23 +1240,41 @@ msgstr ""
 msgid "Number"
 msgstr ""
 
-#: Addresses/view.php:54
+#: Addresses/view.php:64
 #: Countries/view.php:46
 #: Customers/view.php:154
 msgid "City"
 msgstr ""
 
-#: Addresses/view.php:58
+#: Addresses/view.php:68
 #: Countries/view.php:47
 #: Customers/view.php:155
 msgid "Zip"
 msgstr ""
 
-#: Addresses/view.php:62
+#: Addresses/view.php:72
 msgid "Country"
 msgstr ""
 
-#: Addresses/view.php:66
+#: Addresses/view.php:83
+#: Countries/view.php:53
+#: Customers/view.php:161
+msgid "Ruian Gid"
+msgstr ""
+
+#: Addresses/view.php:87
+#: Countries/view.php:54
+#: Customers/view.php:162
+msgid "Gpsx"
+msgstr ""
+
+#: Addresses/view.php:91
+#: Countries/view.php:55
+#: Customers/view.php:163
+msgid "Gpsy"
+msgstr ""
+
+#: Addresses/view.php:99
 #: Billings/view.php:62
 #: BorrowedEquipments/view.php:46
 #: BrokerageDealers/view.php:38
@@ -1240,12 +1283,12 @@ msgstr ""
 #: Brokerages/view.php:67
 #: Brokerages/view.php:132
 #: Brokerages/view.php:167
-#: Contracts/view.php:74
-#: Contracts/view.php:112
-#: Contracts/view.php:165
-#: Contracts/view.php:208
-#: Contracts/view.php:243
-#: Contracts/view.php:278
+#: Contracts/view.php:91
+#: Contracts/view.php:132
+#: Contracts/view.php:174
+#: Contracts/view.php:206
+#: Contracts/view.php:234
+#: Contracts/view.php:262
 #: Countries/view.php:26
 #: Countries/view.php:36
 #: Customers/view.php:74
@@ -1291,109 +1334,12 @@ msgstr ""
 msgid "Id"
 msgstr ""
 
-#: Addresses/view.php:70
-#: Countries/view.php:37
-#: Customers/view.php:145
-msgid "Type"
-msgstr ""
-
-#: Addresses/view.php:74
-#: Billings/view.php:70
-#: BorrowedEquipments/view.php:54
-#: Brokerages/view.php:73
-#: Brokerages/view.php:134
-#: Contracts/view.php:82
-#: Contracts/view.php:121
-#: Contracts/view.php:171
-#: Contracts/view.php:210
-#: Contracts/view.php:284
-#: Countries/view.php:49
-#: Customers/view.php:86
-#: Customers/view.php:157
-#: Customers/view.php:214
-#: Customers/view.php:264
-#: Customers/view.php:303
-#: Customers/view.php:397
-#: Customers/view.php:435
-#: Customers/view.php:475
-#: Customers/view.php:580
-#: Customers/view.php:622
-#: EquipmentTypes/view.php:46
-#: EquipmentTypes/view.php:85
-#: Ips/view.php:38
-#: LabelCustomers/view.php:34
-#: Labels/view.php:63
-#: Logins/view.php:58
-#: ServiceTypes/view.php:54
-#: Services/view.php:65
-#: SoldEquipments/view.php:42
-#: TaskStates/view.php:47
-#: TaskTypes/view.php:47
-#: Tasks/view.php:54
-msgid "Created By"
-msgstr ""
-
-#: Addresses/view.php:78
-#: Billings/view.php:78
-#: BorrowedEquipments/view.php:62
-#: Brokerages/view.php:75
-#: Brokerages/view.php:136
-#: Contracts/view.php:90
-#: Contracts/view.php:119
-#: Contracts/view.php:173
-#: Contracts/view.php:212
-#: Contracts/view.php:286
-#: Countries/view.php:51
-#: Customers/view.php:82
-#: Customers/view.php:159
-#: Customers/view.php:212
-#: Customers/view.php:266
-#: Customers/view.php:305
-#: Customers/view.php:399
-#: Customers/view.php:473
-#: Customers/view.php:582
-#: Customers/view.php:620
-#: EquipmentTypes/view.php:48
-#: EquipmentTypes/view.php:87
-#: Ips/view.php:42
-#: Logins/view.php:54
-#: ServiceTypes/view.php:56
-#: Services/view.php:63
-#: SoldEquipments/view.php:46
-#: TaskStates/view.php:45
-#: TaskTypes/view.php:45
-#: Tasks/view.php:50
-msgid "Modified By"
-msgstr ""
-
-#: Addresses/view.php:82
-#: Countries/view.php:53
-#: Customers/view.php:161
-msgid "Ruian Gid"
-msgstr ""
-
-#: Addresses/view.php:86
-#: Countries/view.php:54
-#: Customers/view.php:162
-msgid "Gpsx"
-msgstr ""
-
-#: Addresses/view.php:90
-#: Countries/view.php:55
-#: Customers/view.php:163
-msgid "Gpsy"
-msgstr ""
-
-#: Addresses/view.php:94
+#: Addresses/view.php:103
 #: Billings/view.php:66
 #: BorrowedEquipments/view.php:50
 #: Brokerages/view.php:72
 #: Brokerages/view.php:133
-#: Contracts/view.php:78
-#: Contracts/view.php:122
-#: Contracts/view.php:170
-#: Contracts/view.php:209
-#: Contracts/view.php:283
+#: Contracts/view.php:95
 #: Countries/view.php:50
 #: Customers/view.php:98
 #: Customers/view.php:158
@@ -1407,7 +1353,7 @@ msgstr ""
 #: Customers/view.php:623
 #: EquipmentTypes/view.php:45
 #: EquipmentTypes/view.php:84
-#: Ips/view.php:46
+#: Ips/view.php:38
 #: LabelCustomers/view.php:38
 #: Labels/view.php:60
 #: Logins/view.php:74
@@ -1424,16 +1370,44 @@ msgstr ""
 msgid "Created"
 msgstr ""
 
-#: Addresses/view.php:98
+#: Addresses/view.php:107
+#: Billings/view.php:70
+#: BorrowedEquipments/view.php:54
+#: Brokerages/view.php:73
+#: Brokerages/view.php:134
+#: Contracts/view.php:99
+#: Countries/view.php:49
+#: Customers/view.php:86
+#: Customers/view.php:157
+#: Customers/view.php:214
+#: Customers/view.php:264
+#: Customers/view.php:303
+#: Customers/view.php:397
+#: Customers/view.php:435
+#: Customers/view.php:475
+#: Customers/view.php:580
+#: Customers/view.php:622
+#: EquipmentTypes/view.php:46
+#: EquipmentTypes/view.php:85
+#: Ips/view.php:42
+#: LabelCustomers/view.php:34
+#: Labels/view.php:63
+#: Logins/view.php:58
+#: ServiceTypes/view.php:54
+#: Services/view.php:65
+#: SoldEquipments/view.php:42
+#: TaskStates/view.php:47
+#: TaskTypes/view.php:47
+#: Tasks/view.php:54
+msgid "Created By"
+msgstr ""
+
+#: Addresses/view.php:111
 #: Billings/view.php:74
 #: BorrowedEquipments/view.php:58
 #: Brokerages/view.php:74
 #: Brokerages/view.php:135
-#: Contracts/view.php:86
-#: Contracts/view.php:120
-#: Contracts/view.php:172
-#: Contracts/view.php:211
-#: Contracts/view.php:285
+#: Contracts/view.php:103
 #: Countries/view.php:52
 #: Customers/view.php:94
 #: Customers/view.php:160
@@ -1446,7 +1420,7 @@ msgstr ""
 #: Customers/view.php:621
 #: EquipmentTypes/view.php:47
 #: EquipmentTypes/view.php:86
-#: Ips/view.php:50
+#: Ips/view.php:46
 #: Logins/view.php:70
 #: Queues/view.php:70
 #: ServiceTypes/view.php:38
@@ -1459,6 +1433,35 @@ msgstr ""
 #: TaskTypes/view.php:46
 #: Tasks/view.php:58
 msgid "Modified"
+msgstr ""
+
+#: Addresses/view.php:115
+#: Billings/view.php:78
+#: BorrowedEquipments/view.php:62
+#: Brokerages/view.php:75
+#: Brokerages/view.php:136
+#: Contracts/view.php:107
+#: Countries/view.php:51
+#: Customers/view.php:82
+#: Customers/view.php:159
+#: Customers/view.php:212
+#: Customers/view.php:266
+#: Customers/view.php:305
+#: Customers/view.php:399
+#: Customers/view.php:473
+#: Customers/view.php:582
+#: Customers/view.php:620
+#: EquipmentTypes/view.php:48
+#: EquipmentTypes/view.php:87
+#: Ips/view.php:50
+#: Logins/view.php:54
+#: ServiceTypes/view.php:56
+#: Services/view.php:63
+#: SoldEquipments/view.php:46
+#: TaskStates/view.php:45
+#: TaskTypes/view.php:45
+#: Tasks/view.php:50
+msgid "Modified By"
 msgstr ""
 
 #: Billings/add.php:11
@@ -1478,6 +1481,7 @@ msgstr ""
 
 #: Billings/index.php:8
 #: Billings/view.php:14
+#: Contracts/view.php:126
 msgid "New Billing"
 msgstr ""
 
@@ -1485,75 +1489,13 @@ msgstr ""
 msgid "Billings"
 msgstr ""
 
-#: Billings/view.php:12
-msgid "Delete Billing"
-msgstr ""
-
-#: Billings/view.php:26
-#: BorrowedEquipments/view.php:26
-#: Ips/view.php:30
-#: RemovedIps/view.php:30
-#: SoldEquipments/view.php:26
-msgid "Contract"
-msgstr ""
-
-#: Billings/view.php:30
-msgid "Service"
-msgstr ""
-
-#: Billings/view.php:34
-#: Contracts/view.php:114
-#: Customers/view.php:207
-#: Customers/view.php:616
-#: Services/view.php:58
-#: TaskStates/view.php:41
-#: TaskTypes/view.php:41
-#: Tasks/view.php:89
-msgid "Text"
-msgstr ""
-
-#: Billings/view.php:38
-#: Contracts/view.php:126
-#: Customers/view.php:219
-#: Services/view.php:70
-msgid "Quantity"
-msgstr ""
-
-#: Billings/view.php:42
-#: Contracts/view.php:115
-#: Customers/view.php:208
-#: EquipmentTypes/view.php:30
-#: Queues/view.php:72
-#: ServiceTypes/view.php:154
-#: Services/view.php:38
-#: Services/view.php:59
-msgid "Price"
-msgstr ""
-
-#: Billings/view.php:46
-#: Contracts/view.php:116
-#: Customers/view.php:209
-#: Services/view.php:60
-msgid "Billing From"
-msgstr ""
-
-#: Billings/view.php:50
-#: Contracts/view.php:123
-#: Customers/view.php:216
-#: Services/view.php:67
-msgid "Billing Until"
-msgstr ""
-
-#: Billings/view.php:54
-#: Contracts/view.php:118
-#: Customers/view.php:211
-#: Services/view.php:62
-msgid "Active"
-msgstr ""
-
+#: Billings/index.php:40
+#: Billings/index.php:41
 #: Billings/view.php:55
 #: Billings/view.php:59
-#: Contracts/view.php:71
+#: Contracts/view.php:57
+#: Contracts/view.php:153
+#: Contracts/view.php:154
 #: Customers/view.php:111
 #: Customers/view.php:115
 #: Customers/view.php:119
@@ -1565,9 +1507,13 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
+#: Billings/index.php:40
+#: Billings/index.php:41
 #: Billings/view.php:55
 #: Billings/view.php:59
-#: Contracts/view.php:71
+#: Contracts/view.php:57
+#: Contracts/view.php:153
+#: Contracts/view.php:154
 #: Customers/view.php:111
 #: Customers/view.php:115
 #: Customers/view.php:119
@@ -1579,8 +1525,75 @@ msgstr ""
 msgid "No"
 msgstr ""
 
+#: Billings/view.php:12
+msgid "Delete Billing"
+msgstr ""
+
+#: Billings/view.php:26
+#: BorrowedEquipments/view.php:26
+#: Ips/view.php:26
+#: RemovedIps/view.php:26
+#: SoldEquipments/view.php:26
+msgid "Contract"
+msgstr ""
+
+#: Billings/view.php:30
+#: Contracts/view.php:133
+msgid "Service"
+msgstr ""
+
+#: Billings/view.php:34
+#: Contracts/view.php:134
+#: Customers/view.php:207
+#: Customers/view.php:616
+#: Services/view.php:58
+#: TaskStates/view.php:41
+#: TaskTypes/view.php:41
+#: Tasks/view.php:89
+msgid "Text"
+msgstr ""
+
+#: Billings/view.php:38
+#: Contracts/view.php:135
+#: Customers/view.php:219
+#: Services/view.php:70
+msgid "Quantity"
+msgstr ""
+
+#: Billings/view.php:42
+#: Contracts/view.php:136
+#: Customers/view.php:208
+#: EquipmentTypes/view.php:30
+#: Queues/view.php:72
+#: ServiceTypes/view.php:154
+#: Services/view.php:38
+#: Services/view.php:59
+msgid "Price"
+msgstr ""
+
+#: Billings/view.php:46
+#: Contracts/view.php:137
+#: Customers/view.php:209
+#: Services/view.php:60
+msgid "Billing From"
+msgstr ""
+
+#: Billings/view.php:50
+#: Contracts/view.php:138
+#: Customers/view.php:216
+#: Services/view.php:67
+msgid "Billing Until"
+msgstr ""
+
+#: Billings/view.php:54
+#: Contracts/view.php:139
+#: Customers/view.php:211
+#: Services/view.php:62
+msgid "Active"
+msgstr ""
+
 #: Billings/view.php:58
-#: Contracts/view.php:124
+#: Contracts/view.php:140
 #: Customers/view.php:217
 #: Services/view.php:68
 msgid "Separate"
@@ -1590,10 +1603,10 @@ msgstr ""
 #: Brokerages/view.php:76
 #: Brokerages/view.php:130
 #: Brokerages/view.php:172
-#: Contracts/view.php:101
-#: Contracts/view.php:117
-#: Contracts/view.php:206
-#: Contracts/view.php:248
+#: Contracts/view.php:120
+#: Contracts/view.php:141
+#: Contracts/view.php:236
+#: Contracts/view.php:264
 #: Customers/view.php:133
 #: Customers/view.php:210
 #: Customers/view.php:306
@@ -1626,6 +1639,7 @@ msgstr ""
 
 #: BorrowedEquipments/index.php:8
 #: BorrowedEquipments/view.php:14
+#: Contracts/view.php:168
 msgid "New Borrowed Equipment"
 msgstr ""
 
@@ -1638,13 +1652,15 @@ msgid "Delete Borrowed Equipment"
 msgstr ""
 
 #: BorrowedEquipments/view.php:30
+#: Contracts/view.php:175
+#: Contracts/view.php:207
 #: SoldEquipments/view.php:30
 msgid "Equipment Type"
 msgstr ""
 
 #: BorrowedEquipments/view.php:34
-#: Contracts/view.php:169
-#: Contracts/view.php:282
+#: Contracts/view.php:176
+#: Contracts/view.php:208
 #: Customers/view.php:262
 #: Customers/view.php:578
 #: EquipmentTypes/view.php:44
@@ -1654,10 +1670,12 @@ msgid "Serial Number"
 msgstr ""
 
 #: BorrowedEquipments/view.php:38
+#: Contracts/view.php:177
 msgid "Borrowed From"
 msgstr ""
 
 #: BorrowedEquipments/view.php:42
+#: Contracts/view.php:178
 msgid "Borrowed Until"
 msgstr ""
 
@@ -1690,7 +1708,7 @@ msgid "Delete Brokerage Dealer"
 msgstr ""
 
 #: BrokerageDealers/view.php:22
-#: Contracts/view.php:66
+#: Contracts/view.php:52
 msgid "Brokerage"
 msgstr ""
 
@@ -1777,11 +1795,6 @@ msgstr ""
 #: Brokerages/view.php:68
 #: Brokerages/view.php:129
 #: Brokerages/view.php:171
-#: Contracts/view.php:113
-#: Contracts/view.php:166
-#: Contracts/view.php:205
-#: Contracts/view.php:247
-#: Contracts/view.php:279
 #: Countries/view.php:38
 #: Customers/view.php:146
 #: Customers/view.php:206
@@ -1821,14 +1834,14 @@ msgid "Service Type Id"
 msgstr ""
 
 #: Brokerages/view.php:77
-#: Contracts/view.php:54
+#: Contracts/view.php:83
 #: Customers/view.php:307
 #: ServiceTypes/view.php:58
 msgid "Obligation Until"
 msgstr ""
 
 #: Brokerages/view.php:78
-#: Contracts/view.php:70
+#: Contracts/view.php:56
 #: Customers/view.php:308
 #: ServiceTypes/view.php:59
 msgid "Vip"
@@ -1841,71 +1854,66 @@ msgid "Installation Technician Id"
 msgstr ""
 
 #: Brokerages/view.php:81
-#: Contracts/view.php:58
+#: Contracts/view.php:44
 #: Customers/view.php:311
 #: ServiceTypes/view.php:62
 msgid "Installation Date"
 msgstr ""
 
 #: Brokerages/view.php:82
-#: Contracts/view.php:95
+#: Contracts/view.php:114
 #: Customers/view.php:312
 #: ServiceTypes/view.php:63
 msgid "Access Description"
 msgstr ""
 
 #: Brokerages/view.php:83
-#: Contracts/view.php:46
+#: Contracts/view.php:75
 #: Customers/view.php:313
 #: ServiceTypes/view.php:64
 msgid "Valid From"
 msgstr ""
 
 #: Brokerages/view.php:84
-#: Contracts/view.php:50
+#: Contracts/view.php:79
 #: Customers/view.php:314
 #: ServiceTypes/view.php:65
 msgid "Valid Until"
 msgstr ""
 
 #: Brokerages/view.php:85
-#: Contracts/view.php:38
+#: Contracts/view.php:67
 #: Customers/view.php:315
 #: ServiceTypes/view.php:66
 msgid "Conclusion Date"
 msgstr ""
 
 #: Brokerages/view.php:86
-#: Contracts/view.php:42
+#: Contracts/view.php:71
 #: Customers/view.php:316
 #: ServiceTypes/view.php:67
 msgid "Number Of Amendments"
 msgstr ""
 
 #: Brokerages/view.php:123
-#: Contracts/view.php:199
+#: Contracts/view.php:229
 #: Customers/view.php:386
 msgid "Related Ips"
 msgstr ""
 
 #: Brokerages/view.php:128
 #: Brokerages/view.php:170
-#: Contracts/view.php:204
-#: Contracts/view.php:246
+#: Contracts/view.php:235
+#: Contracts/view.php:263
 #: Customers/view.php:391
 #: Customers/view.php:542
-#: Ips/view.php:22
-#: RemovedIps/view.php:22
+#: Ips/view.php:30
+#: RemovedIps/view.php:30
 msgid "Ip"
 msgstr ""
 
 #: Brokerages/view.php:131
 #: Brokerages/view.php:173
-#: Contracts/view.php:127
-#: Contracts/view.php:167
-#: Contracts/view.php:207
-#: Contracts/view.php:249
-#: Contracts/view.php:280
 #: Customers/view.php:220
 #: Customers/view.php:260
 #: Customers/view.php:394
@@ -1918,22 +1926,21 @@ msgid "Contract Id"
 msgstr ""
 
 #: Brokerages/view.php:162
-#: Contracts/view.php:238
+#: Contracts/view.php:257
 #: Customers/view.php:534
 msgid "Related Removed Ips"
 msgstr ""
 
 #: Brokerages/view.php:168
-#: Contracts/view.php:244
 #: Customers/view.php:540
-#: RemovedIps/view.php:38
+#: RemovedIps/view.php:42
 msgid "Removed By"
 msgstr ""
 
 #: Brokerages/view.php:169
-#: Contracts/view.php:245
+#: Contracts/view.php:265
 #: Customers/view.php:541
-#: RemovedIps/view.php:42
+#: RemovedIps/view.php:38
 msgid "Removed"
 msgstr ""
 
@@ -1965,51 +1972,50 @@ msgstr ""
 msgid "Delete Contract"
 msgstr ""
 
-#: Contracts/view.php:26
+#: Contracts/view.php:28
 #: Queues/view.php:30
 #: Services/view.php:26
 msgid "Service Type"
 msgstr ""
 
-#: Contracts/view.php:34
-msgid "Installation Address"
-msgstr ""
-
-#: Contracts/view.php:62
+#: Contracts/view.php:48
 msgid "Installation Technician"
 msgstr ""
 
-#: Contracts/view.php:107
+#: Contracts/view.php:127
 #: Customers/view.php:200
 #: Services/view.php:51
 msgid "Related Billings"
 msgstr ""
 
-#: Contracts/view.php:125
-#: Customers/view.php:218
-#: Services/view.php:69
-msgid "Service Id"
-msgstr ""
-
-#: Contracts/view.php:160
+#: Contracts/view.php:169
 #: Customers/view.php:253
 #: EquipmentTypes/view.php:35
 msgid "Related Borrowed Equipments"
 msgstr ""
 
-#: Contracts/view.php:168
-#: Contracts/view.php:281
-#: Customers/view.php:261
-#: Customers/view.php:577
-#: EquipmentTypes/view.php:43
-#: EquipmentTypes/view.php:82
-msgid "Equipment Type Id"
+#: Contracts/view.php:200
+#: SoldEquipments/index.php:8
+#: SoldEquipments/view.php:14
+msgid "New Sold Equipment"
 msgstr ""
 
-#: Contracts/view.php:273
+#: Contracts/view.php:201
 #: Customers/view.php:569
 #: EquipmentTypes/view.php:74
 msgid "Related Sold Equipments"
+msgstr ""
+
+#: Contracts/view.php:228
+#: Ips/index.php:8
+#: Ips/view.php:14
+msgid "New Ip"
+msgstr ""
+
+#: Contracts/view.php:256
+#: RemovedIps/index.php:8
+#: RemovedIps/view.php:14
+msgid "New Removed Ip"
 msgstr ""
 
 #: Countries/add.php:11
@@ -2144,6 +2150,18 @@ msgstr ""
 
 #: Customers/view.php:127
 msgid "Internal Note"
+msgstr ""
+
+#: Customers/view.php:218
+#: Services/view.php:69
+msgid "Service Id"
+msgstr ""
+
+#: Customers/view.php:261
+#: Customers/view.php:577
+#: EquipmentTypes/view.php:43
+#: EquipmentTypes/view.php:82
+msgid "Equipment Type Id"
 msgstr ""
 
 #: Customers/view.php:353
@@ -2378,11 +2396,6 @@ msgstr ""
 msgid "Edit Ip"
 msgstr ""
 
-#: Ips/index.php:8
-#: Ips/view.php:14
-msgid "New Ip"
-msgstr ""
-
 #: Ips/index.php:9
 msgid "Ips"
 msgstr ""
@@ -2612,11 +2625,6 @@ msgstr ""
 msgid "Edit Removed Ip"
 msgstr ""
 
-#: RemovedIps/index.php:8
-#: RemovedIps/view.php:14
-msgid "New Removed Ip"
-msgstr ""
-
 #: RemovedIps/index.php:9
 msgid "Removed Ips"
 msgstr ""
@@ -2739,11 +2747,6 @@ msgstr ""
 #: SoldEquipments/edit.php:23
 #: SoldEquipments/view.php:11
 msgid "Edit Sold Equipment"
-msgstr ""
-
-#: SoldEquipments/index.php:8
-#: SoldEquipments/view.php:14
-msgid "New Sold Equipment"
 msgstr ""
 
 #: SoldEquipments/index.php:9

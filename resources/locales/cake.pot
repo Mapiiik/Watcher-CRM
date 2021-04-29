@@ -4,8 +4,8 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: CakePHP 4.2.4\n"
-"POT-Creation-Date: 2021-04-19 15:48+0200\n"
+"Project-Id-Version: CakePHP 4.2.5\n"
+"POT-Creation-Date: 2021-04-29 07:52+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -251,7 +251,7 @@ msgstr ""
 msgid "The count does not match {0}{1}"
 msgstr ""
 
-#: Utility/Text.php:920
+#: Utility/Text.php:924
 msgid "and"
 msgstr ""
 
