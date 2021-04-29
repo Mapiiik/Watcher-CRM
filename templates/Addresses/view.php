@@ -26,7 +26,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Type') ?></th>
-                            <td><?= __($types[$address->type]) ?></td>
+                            <td><?= h($types[$address->type]) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Company') ?></th>
