@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Cake\Core\Configure;
+use Cake\ORM\Locator\LocatorAwareTrait;
 
 /**
  * Addresses Controller
@@ -74,9 +74,13 @@ class AddressesController extends AppController
         
         if ($this->request->is('post')) {
             $address = $this->Addresses->patchEntity($address, $this->request->getData());
+
+            // update RUIAN data
+            $address->set($this->findRuianData($address));
+
             if ($this->Addresses->save($address)) {
                 $this->Flash->success(__('The address has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The address could not be saved. Please, try again.'));
@@ -110,6 +114,10 @@ class AddressesController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $address = $this->Addresses->patchEntity($address, $this->request->getData());
+
+            // update RUIAN data
+            $address->set($this->findRuianData($address));
+
             if ($this->Addresses->save($address)) {
                 $this->Flash->success(__('The address has been saved.'));
 
@@ -147,5 +155,83 @@ class AddressesController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    private function findRuianData(\App\Model\Entity\Address $address)
+    {
+        $this->RuianAddresses = $this->getTableLocator()->get('Ruian.Addresses');
+        
+        $conditionsForSearches = [
+            // search in RUIAN
+            0 => [
+                'ulice_nazev' => $address->street,
+                'typ_so' => 'č.p.',
+                'cislo_domovni' => (int)$address->number,
+                'obec_nazev' => $address->city,
+                'psc' => $address->zip,
+            ],
+            // search in RUIAN with city as MOP
+            1 => [
+                'ulice_nazev' => $address->street,
+                'typ_so' => 'č.p.',
+                'cislo_domovni' => (int)$address->number,
+                'mop_nazev' => $address->city,
+                'psc' => $address->zip,
+            ],
+            // search in RUIAN with city as MOMC
+            2 => [
+                'ulice_nazev' => $address->street,
+                'typ_so' => 'č.p.',
+                'cislo_domovni' => (int)$address->number,
+                'momc_nazev' => $address->city,
+                'psc' => $address->zip,
+            ],
+            // search in RUIAN with city as city part
+            3 => [
+                'ulice_nazev' => $address->street,
+                'typ_so' => 'č.p.',
+                'cislo_domovni' => (int)$address->number,
+                'cast_obce_nazev' => $address->city,
+                'psc' => $address->zip,
+            ],
+            // search in RUIAN with street as city part
+            4 => [
+                'ulice_nazev' => '',
+                'cast_obce_nazev' => $address->street,
+                'typ_so' => 'č.p.',
+                'cislo_domovni' => (int)$address->number,
+                'obec_nazev' => $address->city,
+                'psc' => $address->zip,
+            ],
+        ];
+
+        // search for all options
+        foreach ($conditionsForSearches as $conditions) {
+            $ruianAddresses = $this->RuianAddresses->find('all', [
+                'conditions' => $conditions,
+            ]);
+
+            $ruianAddresses->select([
+                'ruian_gid' => 'kod_adm',
+                'gpsy' => 'ST_Y(geometry)',
+                'gpsx' => 'ST_X(geometry)',
+            ]);
+            
+            if ($ruianAddresses->count() > 1) $this->Flash->default(__('Multiple ({0}) RUIAN addresses found.', count($ruianAddresses->count())));
+
+            if ($ruianAddresses->count() == 1) {
+                $this->Flash->default(__('Address found in RUIAN.'));
+                return $ruianAddresses->first()->toArray();
+            }
+            
+            unset($ruianAddresses);
+        }
+
+        $this->Flash->error(__('Address could not be found in RUIAN.'));
+        return [
+            'ruian_gid' => null,
+            'gpsy' => null,
+            'gpsx' => null
+        ];
     }
 }
