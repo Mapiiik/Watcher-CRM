@@ -70,7 +70,12 @@ class AddressesController extends AppController
 
         $address = $this->Addresses->newEmptyEntity();
 
-        if (isset($customer_id)) $address = $this->Addresses->patchEntity($address, ['customer_id' => $customer_id]);
+        if (isset($customer_id)) {
+            $customer = $this->Addresses->Customers->get($customer_id);
+            $address = $this->Addresses->patchEntity($address, $customer->toArray());
+            
+            $address = $this->Addresses->patchEntity($address, ['customer_id' => $customer_id]);
+        }
         
         if ($this->request->is('post')) {
             $address = $this->Addresses->patchEntity($address, $this->request->getData());
@@ -164,44 +169,44 @@ class AddressesController extends AppController
         $conditionsForSearches = [
             // search in RUIAN
             0 => [
-                'ulice_nazev' => $address->street,
+                'ulice_nazev IS' => $address->street,
                 'typ_so' => 'č.p.',
                 'cislo_domovni' => (int)$address->number,
-                'obec_nazev' => $address->city,
-                'psc' => $address->zip,
+                'obec_nazev IS' => $address->city,
+                'psc IS' => $address->zip,
             ],
             // search in RUIAN with city as MOP
             1 => [
-                'ulice_nazev' => $address->street,
+                'ulice_nazev IS' => $address->street,
                 'typ_so' => 'č.p.',
                 'cislo_domovni' => (int)$address->number,
-                'mop_nazev' => $address->city,
-                'psc' => $address->zip,
+                'mop_nazev IS' => $address->city,
+                'psc IS' => $address->zip,
             ],
             // search in RUIAN with city as MOMC
             2 => [
-                'ulice_nazev' => $address->street,
+                'ulice_nazev IS' => $address->street,
                 'typ_so' => 'č.p.',
                 'cislo_domovni' => (int)$address->number,
-                'momc_nazev' => $address->city,
-                'psc' => $address->zip,
+                'momc_nazev IS' => $address->city,
+                'psc IS' => $address->zip,
             ],
             // search in RUIAN with city as city part
             3 => [
-                'ulice_nazev' => $address->street,
+                'ulice_nazev IS' => $address->street,
                 'typ_so' => 'č.p.',
                 'cislo_domovni' => (int)$address->number,
-                'cast_obce_nazev' => $address->city,
-                'psc' => $address->zip,
+                'cast_obce_nazev IS' => $address->city,
+                'psc IS' => $address->zip,
             ],
             // search in RUIAN with street as city part
             4 => [
                 'ulice_nazev' => '',
-                'cast_obce_nazev' => $address->street,
+                'cast_obce_nazev IS' => $address->street,
                 'typ_so' => 'č.p.',
                 'cislo_domovni' => (int)$address->number,
-                'obec_nazev' => $address->city,
-                'psc' => $address->zip,
+                'obec_nazev IS' => $address->city,
+                'psc IS' => $address->zip,
             ],
         ];
 
