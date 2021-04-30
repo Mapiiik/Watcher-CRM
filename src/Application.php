@@ -44,6 +44,8 @@ class Application extends BaseApplication
      */
     public function bootstrap(): void
     {
+        $this->addPlugin('Ruian');
+
         // Call parent to load bootstrap from files.
         parent::bootstrap();
 
