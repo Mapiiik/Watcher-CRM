@@ -23,7 +23,7 @@
                 <?php foreach ($labelCustomers as $labelCustomer): ?>
                 <tr>
                     <td><?= $labelCustomer->has('label') ? $this->Html->link($labelCustomer->label->name, ['controller' => 'Labels', 'action' => 'view', $labelCustomer->label->id]) : '' ?></td>
-                    <td><?= $labelCustomer->has('customer') ? $this->Html->link($labelCustomer->customer->title, ['controller' => 'Customers', 'action' => 'view', $labelCustomer->customer->id]) : '' ?></td>
+                    <td><?= $labelCustomer->has('customer') ? $this->Html->link($labelCustomer->customer->name, ['controller' => 'Customers', 'action' => 'view', $labelCustomer->customer->id]) : '' ?></td>
                     <td><?= h($labelCustomer->created) ?></td>
                     <td><?= $this->Number->format($labelCustomer->id) ?></td>
                     <td><?= $this->Number->format($labelCustomer->created_by) ?></td>

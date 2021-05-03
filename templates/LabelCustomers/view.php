@@ -24,7 +24,7 @@
                 </tr>
                 <tr>
                     <th><?= __('Customer') ?></th>
-                    <td><?= $labelCustomer->has('customer') ? $this->Html->link($labelCustomer->customer->title, ['controller' => 'Customers', 'action' => 'view', $labelCustomer->customer->id]) : '' ?></td>
+                    <td><?= $labelCustomer->has('customer') ? $this->Html->link($labelCustomer->customer->name, ['controller' => 'Customers', 'action' => 'view', $labelCustomer->customer->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>

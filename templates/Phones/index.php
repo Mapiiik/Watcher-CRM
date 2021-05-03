@@ -21,7 +21,7 @@
                 <?php foreach ($phones as $phone): ?>
                 <tr>
                     <td><?= $this->Number->format($phone->id) ?></td>
-                    <td><?= $phone->has('customer') ? $this->Html->link($phone->customer->title, ['controller' => 'Customers', 'action' => 'view', $phone->customer->id]) : '' ?></td>
+                    <td><?= $phone->has('customer') ? $this->Html->link($phone->customer->name, ['controller' => 'Customers', 'action' => 'view', $phone->customer->id]) : '' ?></td>
                     <td><?= h($phone->phone) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $phone->id]) ?>

@@ -24,7 +24,7 @@
                 <?php foreach ($emails as $email): ?>
                 <tr>
                     <td><?= $this->Number->format($email->id) ?></td>
-                    <td><?= $email->has('customer') ? $this->Html->link($email->customer->title, ['controller' => 'Customers', 'action' => 'view', $email->customer->id]) : '' ?></td>
+                    <td><?= $email->has('customer') ? $this->Html->link($email->customer->name, ['controller' => 'Customers', 'action' => 'view', $email->customer->id]) : '' ?></td>
                     <td><?= h($email->email) ?></td>
                     <td><?= h($email->use_for_billing) ?></td>
                     <td><?= h($email->use_for_outages) ?></td>

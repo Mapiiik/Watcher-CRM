@@ -20,7 +20,7 @@
             <table>
                 <tr>
                     <th><?= __('Customer') ?></th>
-                    <td><?= $login->has('customer') ? $this->Html->link($login->customer->title, ['controller' => 'Customers', 'action' => 'view', $login->customer->id]) : '' ?></td>
+                    <td><?= $login->has('customer') ? $this->Html->link($login->customer->name, ['controller' => 'Customers', 'action' => 'view', $login->customer->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Login') ?></th>

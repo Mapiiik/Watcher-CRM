@@ -24,7 +24,7 @@
                 </tr>
                 <tr>
                     <th><?= __('Customer') ?></th>
-                    <td><?= $task->has('customer') ? $this->Html->link($task->customer->title, ['controller' => 'Customers', 'action' => 'view', $task->customer->id]) : '' ?></td>
+                    <td><?= $task->has('customer') ? $this->Html->link($task->customer->name, ['controller' => 'Customers', 'action' => 'view', $task->customer->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Task State') ?></th>

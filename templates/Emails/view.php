@@ -20,7 +20,7 @@
             <table>
                 <tr>
                     <th><?= __('Customer') ?></th>
-                    <td><?= $email->has('customer') ? $this->Html->link($email->customer->title, ['controller' => 'Customers', 'action' => 'view', $email->customer->id]) : '' ?></td>
+                    <td><?= $email->has('customer') ? $this->Html->link($email->customer->name, ['controller' => 'Customers', 'action' => 'view', $email->customer->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Email') ?></th>

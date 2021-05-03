@@ -24,7 +24,7 @@
                 </tr>
                 <tr>
                     <th><?= __('Customer') ?></th>
-                    <td><?= $routerContact->has('customer') ? $this->Html->link($routerContact->customer->title, ['controller' => 'Customers', 'action' => 'view', $routerContact->customer->id]) : '' ?></td>
+                    <td><?= $routerContact->has('customer') ? $this->Html->link($routerContact->customer->name, ['controller' => 'Customers', 'action' => 'view', $routerContact->customer->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>

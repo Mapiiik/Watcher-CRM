@@ -35,7 +35,7 @@
                     <td><?= $this->Number->format($task->id) ?></td>
                     <td><?= $task->has('task_type') ? $this->Html->link($task->task_type->name, ['controller' => 'TaskTypes', 'action' => 'view', $task->task_type->id]) : '' ?></td>
                     <td><?= $this->Number->format($task->priority) ?></td>
-                    <td><?= $task->has('customer') ? $this->Html->link($task->customer->title, ['controller' => 'Customers', 'action' => 'view', $task->customer->id]) : '' ?></td>
+                    <td><?= $task->has('customer') ? $this->Html->link($task->customer->name, ['controller' => 'Customers', 'action' => 'view', $task->customer->id]) : '' ?></td>
                     <td><?= $this->Number->format($task->dealer_id) ?></td>
                     <td><?= $this->Number->format($task->modified_by) ?></td>
                     <td><?= h($task->modified) ?></td>

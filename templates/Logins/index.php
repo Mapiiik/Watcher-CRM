@@ -32,7 +32,7 @@
                 <?php foreach ($logins as $login): ?>
                 <tr>
                     <td><?= $this->Number->format($login->id) ?></td>
-                    <td><?= $login->has('customer') ? $this->Html->link($login->customer->title, ['controller' => 'Customers', 'action' => 'view', $login->customer->id]) : '' ?></td>
+                    <td><?= $login->has('customer') ? $this->Html->link($login->customer->name, ['controller' => 'Customers', 'action' => 'view', $login->customer->id]) : '' ?></td>
                     <td><?= h($login->login) ?></td>
                     <td><?= h($login->password) ?></td>
                     <td><?= $this->Number->format($login->rights) ?></td>

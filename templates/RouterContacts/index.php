@@ -21,7 +21,7 @@
                 <?php foreach ($routerContacts as $routerContact): ?>
                 <tr>
                     <td><?= $routerContact->has('router') ? $this->Html->link($routerContact->router->name, ['controller' => 'Routers', 'action' => 'view', $routerContact->router->id]) : '' ?></td>
-                    <td><?= $routerContact->has('customer') ? $this->Html->link($routerContact->customer->title, ['controller' => 'Customers', 'action' => 'view', $routerContact->customer->id]) : '' ?></td>
+                    <td><?= $routerContact->has('customer') ? $this->Html->link($routerContact->customer->name, ['controller' => 'Customers', 'action' => 'view', $routerContact->customer->id]) : '' ?></td>
                     <td><?= $this->Number->format($routerContact->id) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $routerContact->id]) ?>
