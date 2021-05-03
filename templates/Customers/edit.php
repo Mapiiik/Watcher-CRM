@@ -21,32 +21,40 @@
             <?= $this->Form->create($customer) ?>
             <fieldset>
                 <legend><?= __('Edit Customer') ?></legend>
+                <div class="row">
+                    <div class="column-responsive">
+                    <?php
+                        echo $this->Form->control('company');
+                        echo $this->Form->control('title');
+                        echo $this->Form->control('first_name');
+                        echo $this->Form->control('last_name');
+                        echo $this->Form->control('suffix');
+                        echo $this->Form->control('date_of_birth', ['empty' => true]);
+                        echo $this->Form->control('identity_card_number');
+                        echo $this->Form->control('ic');
+                        echo $this->Form->control('dic');
+                        echo $this->Form->control('www');
+                    ?>
+                    </div>
+                    <div class="column-responsive">
+                    <?php
+                        echo $this->Form->control('bank_account');
+                        echo $this->Form->control('bank_code');
+                        echo $this->Form->control('bank_name');
+                        echo $this->Form->control('taxe_id', ['options' => $taxes]);
+                        echo $this->Form->control('termination_date', ['empty' => true]);
+                        echo $this->Form->control('dealer');
+                        echo $this->Form->control('invoice_delivery');
+                        echo $this->Form->control('agree_gdpr');
+                        echo $this->Form->control('agree_mailing_billing');
+                        echo $this->Form->control('agree_mailing_outages');
+                        echo $this->Form->control('agree_mailing_commercial');
+                    ?>
+                    </div>
+                </div>
                 <?php
-                    echo $this->Form->control('dealer');
-                    echo $this->Form->control('title');
-                    echo $this->Form->control('first_name');
-                    echo $this->Form->control('last_name');
-                    echo $this->Form->control('suffix');
-                    echo $this->Form->control('company');
-                    echo $this->Form->control('taxe_id', ['options' => $taxes]);
-                    echo $this->Form->control('bank_name');
-                    echo $this->Form->control('bank_account');
-                    echo $this->Form->control('bank_code');
-                    echo $this->Form->control('modified_by');
-                    echo $this->Form->control('created_by');
-                    echo $this->Form->control('ic');
-                    echo $this->Form->control('dic');
-                    echo $this->Form->control('www');
-                    echo $this->Form->control('internal_note');
-                    echo $this->Form->control('invoice_delivery');
                     echo $this->Form->control('note');
-                    echo $this->Form->control('identity_card_number');
-                    echo $this->Form->control('date_of_birth', ['empty' => true]);
-                    echo $this->Form->control('termination_date', ['empty' => true]);
-                    echo $this->Form->control('agree_gdpr');
-                    echo $this->Form->control('agree_mailing_outages');
-                    echo $this->Form->control('agree_mailing_commercial');
-                    echo $this->Form->control('agree_mailing_billing');
+                    echo $this->Form->control('internal_note');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

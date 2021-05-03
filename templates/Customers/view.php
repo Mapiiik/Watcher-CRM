@@ -57,6 +57,10 @@
                             <td><?= h($customer->dic) ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Www') ?></th>
+                            <td><?= h($customer->www) ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Bank Account') ?></th>
                             <td><?= h($customer->bank_account) ?></td>
                         </tr>
@@ -67,10 +71,6 @@
                         <tr>
                             <th><?= __('Bank Name') ?></th>
                             <td><?= h($customer->bank_name) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Www') ?></th>
-                            <td><?= h($customer->www) ?></td>
                         </tr>
                     </table>
                 </div>
