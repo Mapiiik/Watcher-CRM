@@ -16,124 +16,188 @@
     </aside>
     <div class="column-responsive column-80">
         <div class="customers view content">
-            <h3><?= h($customer->title) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __('Title') ?></th>
-                    <td><?= h($customer->title) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('First Name') ?></th>
-                    <td><?= h($customer->first_name) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Last Name') ?></th>
-                    <td><?= h($customer->last_name) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Suffix') ?></th>
-                    <td><?= h($customer->suffix) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Company') ?></th>
-                    <td><?= h($customer->company) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Tax') ?></th>
-                    <td><?= $customer->has('tax') ? $this->Html->link($customer->tax->name, ['controller' => 'Taxes', 'action' => 'view', $customer->tax->id]) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Bank Name') ?></th>
-                    <td><?= h($customer->bank_name) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Bank Account') ?></th>
-                    <td><?= h($customer->bank_account) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Bank Code') ?></th>
-                    <td><?= h($customer->bank_code) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Ic') ?></th>
-                    <td><?= h($customer->ic) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Dic') ?></th>
-                    <td><?= h($customer->dic) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Www') ?></th>
-                    <td><?= h($customer->www) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Identity Card Number') ?></th>
-                    <td><?= h($customer->identity_card_number) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($customer->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Dealer') ?></th>
-                    <td><?= $this->Number->format($customer->dealer) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified By') ?></th>
-                    <td><?= $this->Number->format($customer->modified_by) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created By') ?></th>
-                    <td><?= $this->Number->format($customer->created_by) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Invoice Delivery') ?></th>
-                    <td><?= $this->Number->format($customer->invoice_delivery) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($customer->modified) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($customer->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Date Of Birth') ?></th>
-                    <td><?= h($customer->date_of_birth) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Termination Date') ?></th>
-                    <td><?= h($customer->termination_date) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Agree Gdpr') ?></th>
-                    <td><?= $customer->agree_gdpr ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Agree Mailing Outages') ?></th>
-                    <td><?= $customer->agree_mailing_outages ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Agree Mailing Commercial') ?></th>
-                    <td><?= $customer->agree_mailing_commercial ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Agree Mailing Billing') ?></th>
-                    <td><?= $customer->agree_mailing_billing ? __('Yes') : __('No'); ?></td>
-                </tr>
-            </table>
-            <div class="text">
-                <strong><?= __('Internal Note') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($customer->internal_note)); ?>
-                </blockquote>
+            <h3><?= h($customer->name) ?></h3>
+            <div class="row">
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Company') ?></th>
+                            <td><?= h($customer->company) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Title') ?></th>
+                            <td><?= h($customer->title) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('First Name') ?></th>
+                            <td><?= h($customer->first_name) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Last Name') ?></th>
+                            <td><?= h($customer->last_name) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Suffix') ?></th>
+                            <td><?= h($customer->suffix) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Date Of Birth') ?></th>
+                            <td><?= h($customer->date_of_birth) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Identity Card Number') ?></th>
+                            <td><?= h($customer->identity_card_number) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Ic') ?></th>
+                            <td><?= h($customer->ic) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Dic') ?></th>
+                            <td><?= h($customer->dic) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Bank Account') ?></th>
+                            <td><?= h($customer->bank_account) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Bank Code') ?></th>
+                            <td><?= h($customer->bank_code) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Bank Name') ?></th>
+                            <td><?= h($customer->bank_name) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Www') ?></th>
+                            <td><?= h($customer->www) ?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Tax') ?></th>
+                            <td><?= $customer->has('tax') ? $this->Html->link($customer->tax->name, ['controller' => 'Taxes', 'action' => 'view', $customer->tax->id]) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Termination Date') ?></th>
+                            <td><?= h($customer->termination_date) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Dealer') ?></th>
+                            <td><?= $this->Number->format($customer->dealer) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Invoice Delivery') ?></th>
+                            <td><?= $this->Number->format($customer->invoice_delivery) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Agree Gdpr') ?></th>
+                            <td><?= $customer->agree_gdpr ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Agree Mailing Billing') ?></th>
+                            <td><?= $customer->agree_mailing_billing ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Agree Mailing Outages') ?></th>
+                            <td><?= $customer->agree_mailing_outages ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Agree Mailing Commercial') ?></th>
+                            <td><?= $customer->agree_mailing_commercial ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Id') ?></th>
+                            <td><?= $this->Number->format($customer->id) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created') ?></th>
+                            <td><?= h($customer->created) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created By') ?></th>
+                            <td><?= $this->Number->format($customer->created_by) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified') ?></th>
+                            <td><?= h($customer->modified) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified By') ?></th>
+                            <td><?= $this->Number->format($customer->modified_by) ?></td>
+                        </tr>
+                    </table>
+                </div>
             </div>
             <div class="text">
                 <strong><?= __('Note') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($customer->note)); ?>
                 </blockquote>
+            </div>
+            <div class="text">
+                <strong><?= __('Internal Note') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($customer->internal_note)); ?>
+                </blockquote>
+            </div>
+            <div class="related">
+                <h4><?= __('Related Emails') ?></h4>
+                <?php if (!empty($customer->emails)) : ?>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Id') ?></th>
+                            <th><?= __('Email') ?></th>
+                            <th><?= __('Use For Billing') ?></th>
+                            <th><?= __('Use For Outages') ?></th>
+                            <th><?= __('Use For Commercial') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                        <?php foreach ($customer->emails as $emails) : ?>
+                        <tr>
+                            <td><?= h($emails->id) ?></td>
+                            <td><?= h($emails->email) ?></td>
+                            <td><?= h($emails->use_for_billing) ?></td>
+                            <td><?= h($emails->use_for_outages) ?></td>
+                            <td><?= h($emails->use_for_commercial) ?></td>
+                            <td class="actions">
+                                <?= $this->Html->link(__('View'), ['controller' => 'Emails', 'action' => 'view', $emails->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'Emails', 'action' => 'edit', $emails->id]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Emails', 'action' => 'delete', $emails->id], ['confirm' => __('Are you sure you want to delete # {0}?', $emails->id)]) ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+                <?php endif; ?>
+            </div>
+            <div class="related">
+                <h4><?= __('Related Phones') ?></h4>
+                <?php if (!empty($customer->phones)) : ?>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Id') ?></th>
+                            <th><?= __('Phone') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                        <?php foreach ($customer->phones as $phones) : ?>
+                        <tr>
+                            <td><?= h($phones->id) ?></td>
+                            <td><?= h($phones->phone) ?></td>
+                            <td class="actions">
+                                <?= $this->Html->link(__('View'), ['controller' => 'Phones', 'action' => 'view', $phones->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'Phones', 'action' => 'edit', $phones->id]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Phones', 'action' => 'delete', $phones->id], ['confirm' => __('Are you sure you want to delete # {0}?', $phones->id)]) ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+                <?php endif; ?>
             </div>
             <div class="related">
                 <h4><?= __('Related Addresses') ?></h4>
@@ -143,21 +207,16 @@
                         <tr>
                             <th><?= __('Id') ?></th>
                             <th><?= __('Type') ?></th>
-                            <th><?= __('Customer Id') ?></th>
+                            <th><?= __('Company') ?></th>
                             <th><?= __('Title') ?></th>
                             <th><?= __('First Name') ?></th>
                             <th><?= __('Last Name') ?></th>
                             <th><?= __('Suffix') ?></th>
-                            <th><?= __('Company') ?></th>
                             <th><?= __('Street') ?></th>
                             <th><?= __('Number') ?></th>
                             <th><?= __('City') ?></th>
                             <th><?= __('Zip') ?></th>
                             <th><?= __('Country Id') ?></th>
-                            <th><?= __('Created By') ?></th>
-                            <th><?= __('Created') ?></th>
-                            <th><?= __('Modified By') ?></th>
-                            <th><?= __('Modified') ?></th>
                             <th><?= __('Ruian Gid') ?></th>
                             <th><?= __('Gpsx') ?></th>
                             <th><?= __('Gpsy') ?></th>
@@ -167,21 +226,16 @@
                         <tr>
                             <td><?= h($addresses->id) ?></td>
                             <td><?= h($addresses->type) ?></td>
-                            <td><?= h($addresses->customer_id) ?></td>
+                            <td><?= h($addresses->company) ?></td>
                             <td><?= h($addresses->title) ?></td>
                             <td><?= h($addresses->first_name) ?></td>
                             <td><?= h($addresses->last_name) ?></td>
                             <td><?= h($addresses->suffix) ?></td>
-                            <td><?= h($addresses->company) ?></td>
                             <td><?= h($addresses->street) ?></td>
                             <td><?= h($addresses->number) ?></td>
                             <td><?= h($addresses->city) ?></td>
                             <td><?= h($addresses->zip) ?></td>
                             <td><?= h($addresses->country_id) ?></td>
-                            <td><?= h($addresses->created_by) ?></td>
-                            <td><?= h($addresses->created) ?></td>
-                            <td><?= h($addresses->modified_by) ?></td>
-                            <td><?= h($addresses->modified) ?></td>
                             <td><?= h($addresses->ruian_gid) ?></td>
                             <td><?= h($addresses->gpsx) ?></td>
                             <td><?= h($addresses->gpsy) ?></td>
@@ -350,39 +404,6 @@
                 <?php endif; ?>
             </div>
             <div class="related">
-                <h4><?= __('Related Emails') ?></h4>
-                <?php if (!empty($customer->emails)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __('Id') ?></th>
-                            <th><?= __('Customer Id') ?></th>
-                            <th><?= __('Email') ?></th>
-                            <th><?= __('Use For Billing') ?></th>
-                            <th><?= __('Use For Outages') ?></th>
-                            <th><?= __('Use For Commercial') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                        <?php foreach ($customer->emails as $emails) : ?>
-                        <tr>
-                            <td><?= h($emails->id) ?></td>
-                            <td><?= h($emails->customer_id) ?></td>
-                            <td><?= h($emails->email) ?></td>
-                            <td><?= h($emails->use_for_billing) ?></td>
-                            <td><?= h($emails->use_for_outages) ?></td>
-                            <td><?= h($emails->use_for_commercial) ?></td>
-                            <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Emails', 'action' => 'view', $emails->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Emails', 'action' => 'edit', $emails->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Emails', 'action' => 'delete', $emails->id], ['confirm' => __('Are you sure you want to delete # {0}?', $emails->id)]) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
-                <?php endif; ?>
-            </div>
-            <div class="related">
                 <h4><?= __('Related Ips') ?></h4>
                 <?php if (!empty($customer->ips)) : ?>
                 <div class="table-responsive">
@@ -496,33 +517,6 @@
                                 <?= $this->Html->link(__('View'), ['controller' => 'Logins', 'action' => 'view', $logins->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'Logins', 'action' => 'edit', $logins->id]) ?>
                                 <?= $this->Form->postLink(__('Delete'), ['controller' => 'Logins', 'action' => 'delete', $logins->id], ['confirm' => __('Are you sure you want to delete # {0}?', $logins->id)]) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
-                <?php endif; ?>
-            </div>
-            <div class="related">
-                <h4><?= __('Related Phones') ?></h4>
-                <?php if (!empty($customer->phones)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __('Id') ?></th>
-                            <th><?= __('Customer Id') ?></th>
-                            <th><?= __('Phone') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                        <?php foreach ($customer->phones as $phones) : ?>
-                        <tr>
-                            <td><?= h($phones->id) ?></td>
-                            <td><?= h($phones->customer_id) ?></td>
-                            <td><?= h($phones->phone) ?></td>
-                            <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Phones', 'action' => 'view', $phones->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Phones', 'action' => 'edit', $phones->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Phones', 'action' => 'delete', $phones->id], ['confirm' => __('Are you sure you want to delete # {0}?', $phones->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
