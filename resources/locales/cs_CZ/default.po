@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2021-04-29 07:52+0200\n"
-"PO-Revision-Date: 2021-04-29 08:31+0200\n"
+"PO-Revision-Date: 2021-05-03 15:23+0200\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -131,35 +131,35 @@ msgstr "Číslo smlouvy nelze aktualizovat. Opakujte akci."
 
 #: Controller/CountriesController.php:53 Controller/CountriesController.php:77
 msgid "The country has been saved."
-msgstr ""
+msgstr "Země byla uložena."
 
 #: Controller/CountriesController.php:57 Controller/CountriesController.php:81
 msgid "The country could not be saved. Please, try again."
-msgstr ""
+msgstr "Zemi nelze uložit. Opakujte akci."
 
 #: Controller/CountriesController.php:98
 msgid "The country has been deleted."
-msgstr ""
+msgstr "Země byla odstraněna."
 
 #: Controller/CountriesController.php:100
 msgid "The country could not be deleted. Please, try again."
-msgstr ""
+msgstr "Zemi nelze odstranit. Opakujte akci."
 
 #: Controller/CustomersController.php:56 Controller/CustomersController.php:81
 msgid "The customer has been saved."
-msgstr ""
+msgstr "Zákazník byl uložen."
 
 #: Controller/CustomersController.php:60 Controller/CustomersController.php:85
 msgid "The customer could not be saved. Please, try again."
-msgstr ""
+msgstr "Zákazníka nelze uložit. Opakujte akci."
 
 #: Controller/CustomersController.php:103
 msgid "The customer has been deleted."
-msgstr ""
+msgstr "Zákazník byl odstraněn."
 
 #: Controller/CustomersController.php:105
 msgid "The customer could not be deleted. Please, try again."
-msgstr ""
+msgstr "Zákazníka nelze odstranit. Opakujte akci."
 
 #: Controller/EmailsController.php:56 Controller/EmailsController.php:81
 msgid "The email has been saved."
@@ -180,20 +180,20 @@ msgstr "E-mail nelze odstranit. Opakujte akci."
 #: Controller/EquipmentTypesController.php:53
 #: Controller/EquipmentTypesController.php:77
 msgid "The equipment type has been saved."
-msgstr ""
+msgstr "Typ zařízení byl uložen."
 
 #: Controller/EquipmentTypesController.php:57
 #: Controller/EquipmentTypesController.php:81
 msgid "The equipment type could not be saved. Please, try again."
-msgstr ""
+msgstr "Typ zařízení nelze uložit. Opakujte akci."
 
 #: Controller/EquipmentTypesController.php:98
 msgid "The equipment type has been deleted."
-msgstr ""
+msgstr "Typ zařízení byl odstraněn."
 
 #: Controller/EquipmentTypesController.php:100
 msgid "The equipment type could not be deleted. Please, try again."
-msgstr ""
+msgstr "Typ zařízení nelze odstranit. Opakujte akci."
 
 #: Controller/IpsController.php:83 Controller/IpsController.php:125
 msgid "The ip has been saved."
@@ -273,19 +273,19 @@ msgstr ""
 
 #: Controller/PhonesController.php:56 Controller/PhonesController.php:81
 msgid "The phone has been saved."
-msgstr ""
+msgstr "Telefon byl uložen."
 
 #: Controller/PhonesController.php:60 Controller/PhonesController.php:85
 msgid "The phone could not be saved. Please, try again."
-msgstr ""
+msgstr "Telefon nelze uložit. Opakujte akci."
 
 #: Controller/PhonesController.php:103
 msgid "The phone has been deleted."
-msgstr ""
+msgstr "Telefon byl odstraněn."
 
 #: Controller/PhonesController.php:105
 msgid "The phone could not be deleted. Please, try again."
-msgstr ""
+msgstr "Telefon nelze odstranit. Opakujte akci."
 
 #: Controller/QueuesController.php:56 Controller/QueuesController.php:81
 msgid "The queue has been saved."
@@ -332,36 +332,36 @@ msgstr ""
 #: Controller/ServiceTypesController.php:53
 #: Controller/ServiceTypesController.php:77
 msgid "The service type has been saved."
-msgstr ""
+msgstr "Typ služby byl uložen."
 
 #: Controller/ServiceTypesController.php:57
 #: Controller/ServiceTypesController.php:81
 msgid "The service type could not be saved. Please, try again."
-msgstr ""
+msgstr "Typ služby nelze uložit. Opakujte akci."
 
 #: Controller/ServiceTypesController.php:98
 msgid "The service type has been deleted."
-msgstr ""
+msgstr "Typ služby byl odstraněn."
 
 #: Controller/ServiceTypesController.php:100
 msgid "The service type could not be deleted. Please, try again."
-msgstr ""
+msgstr "Typ služby nelze odstranit. Opakujte akci."
 
 #: Controller/ServicesController.php:56 Controller/ServicesController.php:82
 msgid "The service has been saved."
-msgstr ""
+msgstr "Služba byla uložena."
 
 #: Controller/ServicesController.php:60 Controller/ServicesController.php:86
 msgid "The service could not be saved. Please, try again."
-msgstr ""
+msgstr "Službu nelze uložit. Opakujte akci."
 
 #: Controller/ServicesController.php:105
 msgid "The service has been deleted."
-msgstr ""
+msgstr "Služba byla odstraněna."
 
 #: Controller/ServicesController.php:107
 msgid "The service could not be deleted. Please, try again."
-msgstr ""
+msgstr "Službu nelze odstranit. Opakujte akci."
 
 #: Controller/SoldEquipmentsController.php:81
 #: Controller/SoldEquipmentsController.php:124
@@ -1260,27 +1260,27 @@ msgstr "Nová odebraná IP adresa"
 
 #: Countries/add.php:11 Countries/edit.php:16 Countries/view.php:13
 msgid "List Countries"
-msgstr ""
+msgstr "Seznam zemí"
 
 #: Countries/add.php:18
 msgid "Add Country"
-msgstr ""
+msgstr "Přidat zemi"
 
 #: Countries/edit.php:23 Countries/view.php:11
 msgid "Edit Country"
-msgstr ""
+msgstr "Upravit zemi"
 
 #: Countries/index.php:8 Countries/view.php:14
 msgid "New Country"
-msgstr ""
+msgstr "Nová země"
 
 #: Countries/index.php:9
 msgid "Countries"
-msgstr ""
+msgstr "Země"
 
 #: Countries/view.php:12
 msgid "Delete Country"
-msgstr ""
+msgstr "Odstranit zemi"
 
 #: Countries/view.php:31 Customers/view.php:139
 msgid "Related Addresses"
@@ -1288,7 +1288,7 @@ msgstr "Související adresy"
 
 #: Countries/view.php:48 Customers/view.php:156
 msgid "Country Id"
-msgstr ""
+msgstr "ID země"
 
 #: Customers/add.php:11 Customers/edit.php:16 Customers/view.php:13
 msgid "List Customers"
@@ -1320,31 +1320,31 @@ msgstr ""
 
 #: Customers/view.php:46
 msgid "Bank Name"
-msgstr ""
+msgstr "Název banky"
 
 #: Customers/view.php:50
 msgid "Bank Account"
-msgstr ""
+msgstr "Bankovní účet"
 
 #: Customers/view.php:54
 msgid "Bank Code"
-msgstr ""
+msgstr "Kód banky"
 
 #: Customers/view.php:58
 msgid "Ic"
-msgstr ""
+msgstr "IČ"
 
 #: Customers/view.php:62
 msgid "Dic"
-msgstr ""
+msgstr "DIČ"
 
 #: Customers/view.php:66
 msgid "Www"
-msgstr ""
+msgstr "WWW"
 
 #: Customers/view.php:70
 msgid "Identity Card Number"
-msgstr ""
+msgstr "Číslo občanského průkazu"
 
 #: Customers/view.php:78
 msgid "Dealer"
@@ -1356,7 +1356,7 @@ msgstr ""
 
 #: Customers/view.php:102
 msgid "Date Of Birth"
-msgstr ""
+msgstr "Datum narození"
 
 #: Customers/view.php:106
 msgid "Termination Date"
@@ -1364,23 +1364,24 @@ msgstr ""
 
 #: Customers/view.php:110
 msgid "Agree Gdpr"
-msgstr ""
+msgstr "Souhlasí se zpracováním osobních údajů"
 
 #: Customers/view.php:114
 msgid "Agree Mailing Outages"
-msgstr ""
+msgstr "Souhlasí se zasíláním informací o odstávkách a poruchách"
 
 #: Customers/view.php:118
 msgid "Agree Mailing Commercial"
-msgstr ""
+msgstr "Souhlasí se zasíláním obchodních sdělení"
 
 #: Customers/view.php:122
 msgid "Agree Mailing Billing"
 msgstr ""
+"Souhlasí se zasíláním veškeré korespondence spojené s měsíčním vyúčtováním"
 
 #: Customers/view.php:127
 msgid "Internal Note"
-msgstr ""
+msgstr "Interní poznámka"
 
 #: Customers/view.php:218 Services/view.php:69
 msgid "Service Id"
@@ -1398,7 +1399,7 @@ msgstr "Související e-maily"
 #: Customers/view.php:360 Customers/view.php:624 Emails/view.php:26
 #: TaskStates/view.php:49 TaskTypes/view.php:49 Tasks/view.php:95
 msgid "Email"
-msgstr ""
+msgstr "E-mail"
 
 #: Customers/view.php:361 Emails/view.php:34
 msgid "Use For Billing"
