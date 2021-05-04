@@ -39,7 +39,7 @@
                         echo $this->Form->control('taxe_id', ['options' => $taxes]);
                         echo $this->Form->control('termination_date', ['empty' => true]);
                         echo $this->Form->control('dealer');
-                        echo $this->Form->control('invoice_delivery');
+                        echo $this->Form->control('invoice_delivery_type', ['options' => $invoice_delivery_types]);
                         echo $this->Form->control('agree_gdpr');
                         echo $this->Form->control('agree_mailing_billing');
                         echo $this->Form->control('agree_mailing_outages');

@@ -23,7 +23,9 @@ class CustomersController extends AppController
         ];
         $customers = $this->paginate($this->Customers);
 
-        $this->set(compact('customers'));
+        $invoice_delivery_types = $this->Customers->invoice_delivery_types;
+        
+        $this->set(compact('customers', 'invoice_delivery_types'));
     }
 
     /**
@@ -39,7 +41,9 @@ class CustomersController extends AppController
             'contain' => ['Taxes', 'Addresses', 'Billings', 'BorrowedEquipments', 'Contracts', 'Emails', 'Ips', 'LabelCustomers', 'Logins', 'Phones', 'RemovedIps', 'SoldEquipments', 'Tasks'],
         ]);
 
-        $this->set(compact('customer'));
+        $invoice_delivery_types = $this->Customers->invoice_delivery_types;
+
+        $this->set(compact('customer', 'invoice_delivery_types'));
     }
 
     /**
@@ -60,7 +64,10 @@ class CustomersController extends AppController
             $this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
         $taxes = $this->Customers->Taxes->find('list', ['order' => 'name']);
-        $this->set(compact('customer', 'taxes'));
+
+        $invoice_delivery_types = $this->Customers->invoice_delivery_types;
+
+        $this->set(compact('customer', 'taxes', 'invoice_delivery_types'));
     }
 
     /**
@@ -85,7 +92,10 @@ class CustomersController extends AppController
             $this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
         $taxes = $this->Customers->Taxes->find('list', ['order' => 'name']);
-        $this->set(compact('customer', 'taxes'));
+
+        $invoice_delivery_types = $this->Customers->invoice_delivery_types;
+
+        $this->set(compact('customer', 'taxes', 'invoice_delivery_types'));
     }
 
     /**

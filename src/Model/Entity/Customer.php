@@ -27,7 +27,7 @@ use Cake\ORM\Entity;
  * @property string|null $dic
  * @property string|null $www
  * @property string|null $internal_note
- * @property int $invoice_delivery
+ * @property bool|null $invoice_delivery_type
  * @property string|null $note
  * @property string|null $identity_card_number
  * @property \Cake\I18n\FrozenDate|null $date_of_birth
@@ -81,7 +81,7 @@ class Customer extends Entity
         'dic' => true,
         'www' => true,
         'internal_note' => true,
-        'invoice_delivery' => true,
+        'invoice_delivery_type' => true,
         'note' => true,
         'identity_card_number' => true,
         'date_of_birth' => true,

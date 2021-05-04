@@ -86,11 +86,11 @@
                         </tr>
                         <tr>
                             <th><?= __('Dealer') ?></th>
-                            <td><?= $this->Number->format($customer->dealer) ?></td>
+                            <td><?= $customer->dealer ? __('Yes') : __('No'); ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Invoice Delivery') ?></th>
-                            <td><?= $this->Number->format($customer->invoice_delivery) ?></td>
+                            <th><?= __('Invoice Delivery Type') ?></th>
+                            <td><?= h($invoice_delivery_types[$customer->invoice_delivery_type]) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Agree Gdpr') ?></th>

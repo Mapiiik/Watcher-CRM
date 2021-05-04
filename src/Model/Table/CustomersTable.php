@@ -53,6 +53,11 @@ class CustomersTable extends Table
     {
         parent::initialize($config);
 
+        $this->invoice_delivery_types = [
+            '0' => __('Do not send'),
+            '1' => __('Send by email'),
+        ];
+        
         $this->setTable('customers');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
@@ -116,7 +121,8 @@ class CustomersTable extends Table
             ->allowEmptyString('id', null, 'create');
 
         $validator
-            ->notEmptyString('dealer');
+            ->boolean('dealer')
+            ->allowEmptyString('dealer');
 
         $validator
             ->scalar('title')
@@ -178,7 +184,7 @@ class CustomersTable extends Table
             ->allowEmptyString('internal_note');
 
         $validator
-            ->notEmptyString('invoice_delivery');
+            ->notEmptyString('invoice_delivery_type');
 
         $validator
             ->scalar('note')
