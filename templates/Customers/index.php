@@ -29,7 +29,8 @@ echo $this->Form->end();
                     <th><?= $this->Paginator->sort('date_of_birth') ?></th>
                     <th><?= $this->Paginator->sort('ic') ?></th>
                     <th><?= $this->Paginator->sort('dic') ?></th>
-                    <th><?= $this->Paginator->sort('termination_date') ?></th>
+                    <th><?= __('Contracts') ?></th>
+                    <th><?= __('Ips') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -47,7 +48,8 @@ echo $this->Form->end();
                     <td><?= h($customer->date_of_birth) ?></td>
                     <td><?= h($customer->ic) ?></td>
                     <td><?= h($customer->dic) ?></td>
-                    <td><?= h($customer->termination_date) ?></td>
+                    <td><?php foreach ($customer->contracts as $contract) echo h($contract->number) . '<br />'; ?></td>
+                    <td><?php foreach ($customer->ips as $ip) echo h($ip->ip) . '<br />'; ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $customer->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $customer->id]) ?>

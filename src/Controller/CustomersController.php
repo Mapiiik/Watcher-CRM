@@ -21,7 +21,7 @@ class CustomersController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Taxes', 'Addresses'],
+            'contain' => ['Taxes', 'Contracts', 'Ips'],
         ];
 
         $search = new SearchForm();
@@ -86,7 +86,7 @@ class CustomersController extends AppController
             if ($this->Customers->save($customer)) {
                 $this->Flash->success(__('The customer has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $customer->id]);
             }
             $this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
@@ -114,7 +114,7 @@ class CustomersController extends AppController
             if ($this->Customers->save($customer)) {
                 $this->Flash->success(__('The customer has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $customer->id]);
             }
             $this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
