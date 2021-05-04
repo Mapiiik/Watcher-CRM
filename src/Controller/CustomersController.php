@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Form\SearchForm;
+
 /**
  * Customers Controller
  *
@@ -19,8 +21,31 @@ class CustomersController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Taxes'],
+            'contain' => ['Taxes', 'Addresses'],
         ];
+
+        $search = new SearchForm();
+        if ($this->request->is(['get']) && ($this->request->getQuery('search')) !== null) {
+            if ($search->execute(['search' => $this->request->getQuery('search')])) {
+                $this->Flash->success(__('Search Set.'));
+            } else {
+                $this->Flash->error(__('There was a problem setting search.'));
+            }
+        }
+        $this->set('search', $search);
+
+        if ($search->getData('search') <> '')
+        {
+            $filter = "to_tsvector(Customers.id || ' ' || Customers.id + 110000 || ' ' || COALESCE(Customers.first_name, '') || ' ' || COALESCE(Customers.last_name, '') || ' ' || COALESCE(Customers.company, '')  || COALESCE(Addresses.first_name, '') || ' ' || COALESCE(Addresses.last_name, '') || ' ' || COALESCE(Addresses.company, '') || ' ' || COALESCE(Addresses.street, '') || ' ' || COALESCE(Addresses.number, '') || ' ' || COALESCE(Addresses.city, '') || ' ' || COALESCE(Addresses.zip, '') || ' ' || COALESCE(Emails.email, '') || ' ' || COALESCE(Phones.phone, '') || ' ' || COALESCE(Customers.ic, '') || ' ' || COALESCE(Customers.dic, '') || ' ' || COALESCE(Ips.ip, '0.0.0.0'::inet)) @@ to_tsquery('" . mb_ereg_replace('\s{1,}', '&', \trim($search->getData('search'))) . "')";
+            $filter = "(SELECT customers.id FROM customers LEFT JOIN emails ON (customers.id = customer_id) LEFT JOIN phones ON (customers.id = phones.customer_id) LEFT JOIN addresses ON (customers.id = addresses.customer_id) LEFT JOIN ips ON (customers.id = ips.customer_id) WHERE $filter GROUP BY customers.id)";
+            $this->paginate['conditions']['OR'] = [
+                'Customers.company ILIKE' => '%' . \trim($search->getData('search')) . '%',
+                'Customers.first_name ILIKE' => '%' . \trim($search->getData('search')) . '%',
+                'Customers.last_name ILIKE' => '%' . \trim($search->getData('search')) . '%',
+                'Customers.id IN ' . $filter,
+            ];
+        }
+        
         $customers = $this->paginate($this->Customers);
 
         $invoice_delivery_types = $this->Customers->invoice_delivery_types;

@@ -4,6 +4,13 @@
  * @var \App\Model\Entity\Customer[]|\Cake\Collection\CollectionInterface $customers
  */
 ?>
+<?php
+echo $this->Form->create($search, ['type' => 'get']);
+if ($this->request->getQuery('limit')) echo $this->Form->hidden('limit', ['value' => $this->request->getQuery('limit')]);
+echo $this->Form->control('search', ['label' => __('Search')]);
+echo $this->Form->end();
+?>
+
 <div class="customers index content">
     <?= $this->Html->link(__('New Customer'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Customers') ?></h3>
