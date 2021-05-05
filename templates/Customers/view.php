@@ -144,6 +144,7 @@
                 </blockquote>
             </div>
             <div class="related">
+                <?= $this->Html->link(__('New Email'), ['controller' => 'Emails', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
                 <h4><?= __('Related Emails') ?></h4>
                 <?php if (!empty($customer->emails)) : ?>
                 <div class="table-responsive">
@@ -175,6 +176,7 @@
                 <?php endif; ?>
             </div>
             <div class="related">
+                <?= $this->Html->link(__('New Phone'), ['controller' => 'Phones', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
                 <h4><?= __('Related Phones') ?></h4>
                 <?php if (!empty($customer->phones)) : ?>
                 <div class="table-responsive">
@@ -200,6 +202,7 @@
                 <?php endif; ?>
             </div>
             <div class="related">
+                <?= $this->Html->link(__('New Address'), ['controller' => 'Addresses', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
                 <h4><?= __('Related Addresses') ?></h4>
                 <?php if (!empty($customer->addresses)) : ?>
                 <div class="table-responsive">
@@ -251,6 +254,7 @@
                 <?php endif; ?>
             </div>
             <div class="related">
+                <?= $this->Html->link(__('New Login'), ['controller' => 'Logins', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
                 <h4><?= __('Related Logins') ?></h4>
                 <?php if (!empty($customer->logins)) : ?>
                 <div class="table-responsive">
@@ -298,6 +302,7 @@
                 <?php endif; ?>
             </div>
             <div class="related">
+                <?= $this->Html->link(__('New Task'), ['controller' => 'Tasks', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
                 <h4><?= __('Related Tasks') ?></h4>
                 <?php if (!empty($customer->tasks)) : ?>
                 <div class="table-responsive">
@@ -343,6 +348,7 @@
                 <?php endif; ?>
             </div>
             <div class="related">
+                <?= $this->Html->link(__('New Contract'), ['controller' => 'Contracts', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
                 <h4><?= __('Related Contracts') ?></h4>
                 <?php if (!empty($customer->contracts)) : ?>
                 <div class="table-responsive">
