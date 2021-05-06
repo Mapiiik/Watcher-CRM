@@ -6,9 +6,11 @@
     "license": "MIT",
     "require": {
         "php": ">=7.2",
+        "cakedc/users": "^9.2",
         "cakephp/cakephp": "~4.2.0",
         "cakephp/migrations": "^3.0",
         "cakephp/plugin-installer": "^1.3",
+        "league/oauth2-google": "@stable",
         "mobiledetect/mobiledetectlib": "^2.8"
     },
     "require-dev": {
