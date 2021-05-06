@@ -62,7 +62,7 @@ $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
                 <option <?php if ($language == 'en_US') echo 'selected="selected"'; ?> value="<?php echo $this->Url->build(['?' => ['language' => 'en_US'] + $this->request->getQueryParams()] + $this->request->getParam('pass')); ?>">English</option>
             </select>
 
-            <?php if (!is_null($this->request->getSession()->read('Auth.id'))) echo $this->AuthLink->link(__('Logout'), ['controller' => 'Users', 'action' => 'logout', 'plugin' => null], ['class' => 'button button-small button-outline']) ?>
+            <?php if (!is_null($this->request->getSession()->read('Auth.id'))) echo $this->AuthLink->link(__('Logout'), ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout'], ['class' => 'button button-small button-outline']) ?>
         </div>
 
     </nav>

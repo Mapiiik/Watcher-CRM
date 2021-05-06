@@ -85,17 +85,6 @@ class AppController extends Controller
             $this->Security->setConfig('validatePost', false);
         }
         
-        require_once('../webroot/legacy/class/access.class.php');
-        require_once('../webroot/legacy/cfg/paths.cfg.php');
-
-        // Errors
-        define('ERR_NOT_LOGGED', 'Nejste přihlášeni, přihlašte se prosím');
-        define('ERR_NOT_ENOUGH_RIGHTS', 'Nedostatek práv !!!');
-        
-        // Init security
-        $session = new \Session();
-        $session->accessCheck(true);
-        
         parent::beforeFilter($event);
   }        
 }

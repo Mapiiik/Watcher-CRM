@@ -37,5 +37,8 @@ class AppView extends View
      */
     public function initialize(): void
     {
+        parent::initialize();
+        $this->loadHelper('CakeDC/Users.User');
+        $this->loadHelper('CakeDC/Users.AuthLink');
     }
 }
