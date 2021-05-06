@@ -235,7 +235,7 @@
                             <td><?= h($addresses->number) ?></td>
                             <td><?= h($addresses->city) ?></td>
                             <td><?= h($addresses->zip) ?></td>
-                            <td><?= $addresses->has('country') ? $this->Html->link($addresses->country->name, ['controller' => 'Countries', 'action' => 'view', $addresses->country->id]) : '' ?></td>
+                            <td><?= $addresses->has('country') ? h($addresses->country->name) : '' ?></td>
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'Addresses', 'action' => 'view', $addresses->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'Addresses', 'action' => 'edit', $addresses->id]) ?>
