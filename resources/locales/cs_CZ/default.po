@@ -5,14 +5,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2021-05-04 15:06+0200\n"
-"PO-Revision-Date: 2021-05-06 10:08+0200\n"
-"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2021-05-06 15:36+0200\n"
+"Last-Translator: \n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 "X-Generator: Poedit 2.4.3\n"
 
 #: Controller/AddressesController.php:87 Controller/AddressesController.php:127
@@ -1713,27 +1713,27 @@ msgstr ""
 
 #: Phones/add.php:11 Phones/edit.php:16 Phones/view.php:13
 msgid "List Phones"
-msgstr ""
+msgstr "Seznam telefonů"
 
 #: Phones/add.php:18
 msgid "Add Phone"
-msgstr ""
+msgstr "Přidat telefon"
 
 #: Phones/edit.php:23 Phones/view.php:11
 msgid "Edit Phone"
-msgstr ""
+msgstr "Upravit telefon"
 
 #: Phones/index.php:8 Phones/view.php:14
 msgid "New Phone"
-msgstr ""
+msgstr "Nový telefon"
 
 #: Phones/index.php:9
 msgid "Phones"
-msgstr ""
+msgstr "Telefony"
 
 #: Phones/view.php:12
 msgid "Delete Phone"
-msgstr ""
+msgstr "Odstranit telefon"
 
 #: Queues/add.php:11 Queues/edit.php:16 Queues/view.php:13
 msgid "List Queues"
