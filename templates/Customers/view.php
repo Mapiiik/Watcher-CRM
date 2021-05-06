@@ -161,9 +161,9 @@
                         <tr>
                             <td><?= h($emails->id) ?></td>
                             <td><?= h($emails->email) ?></td>
-                            <td><?= h($emails->use_for_billing) ?></td>
-                            <td><?= h($emails->use_for_outages) ?></td>
-                            <td><?= h($emails->use_for_commercial) ?></td>
+                            <td><?= $emails->use_for_billing ? __('Yes') : __('No'); ?></td>
+                            <td><?= $emails->use_for_outages ? __('Yes') : __('No'); ?></td>
+                            <td><?= $emails->use_for_commercial ? __('Yes') : __('No'); ?></td>
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'Emails', 'action' => 'view', $emails->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'Emails', 'action' => 'edit', $emails->id]) ?>
@@ -219,16 +219,13 @@
                             <th><?= __('Number') ?></th>
                             <th><?= __('City') ?></th>
                             <th><?= __('Zip') ?></th>
-                            <th><?= __('Country Id') ?></th>
-                            <th><?= __('Ruian Gid') ?></th>
-                            <th><?= __('Gpsx') ?></th>
-                            <th><?= __('Gpsy') ?></th>
+                            <th><?= __('Country') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($customer->addresses as $addresses) : ?>
                         <tr>
                             <td><?= h($addresses->id) ?></td>
-                            <td><?= h($addresses->type) ?></td>
+                            <td><?= h($address_types[$addresses->type]) ?></td>
                             <td><?= h($addresses->company) ?></td>
                             <td><?= h($addresses->title) ?></td>
                             <td><?= h($addresses->first_name) ?></td>
@@ -238,10 +235,7 @@
                             <td><?= h($addresses->number) ?></td>
                             <td><?= h($addresses->city) ?></td>
                             <td><?= h($addresses->zip) ?></td>
-                            <td><?= h($addresses->country_id) ?></td>
-                            <td><?= h($addresses->ruian_gid) ?></td>
-                            <td><?= h($addresses->gpsx) ?></td>
-                            <td><?= h($addresses->gpsy) ?></td>
+                            <td><?= $addresses->has('country') ? $this->Html->link($addresses->country->name, ['controller' => 'Countries', 'action' => 'view', $addresses->country->id]) : '' ?></td>
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'Addresses', 'action' => 'view', $addresses->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'Addresses', 'action' => 'edit', $addresses->id]) ?>

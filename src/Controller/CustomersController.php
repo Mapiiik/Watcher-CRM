@@ -65,12 +65,13 @@ class CustomersController extends AppController
     public function view($id = null)
     {
         $customer = $this->Customers->get($id, [
-            'contain' => ['Taxes', 'Addresses', 'Billings', 'BorrowedEquipments', 'Contracts', 'Emails', 'Ips', 'LabelCustomers', 'Logins', 'Phones', 'RemovedIps', 'SoldEquipments', 'Tasks'],
+            'contain' => ['Taxes', 'Addresses' => ['Countries'], 'Billings', 'BorrowedEquipments', 'Contracts', 'Emails', 'Ips', 'LabelCustomers', 'Logins', 'Phones', 'RemovedIps', 'SoldEquipments', 'Tasks'],
         ]);
 
         $invoice_delivery_types = $this->Customers->invoice_delivery_types;
+        $address_types = $this->Customers->Addresses->types;
 
-        $this->set(compact('customer', 'invoice_delivery_types'));
+        $this->set(compact('customer', 'invoice_delivery_types', 'address_types'));
     }
 
     /**
