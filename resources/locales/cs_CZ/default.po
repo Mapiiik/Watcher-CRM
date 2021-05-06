@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2021-05-04 15:06+0200\n"
-"PO-Revision-Date: 2021-05-04 15:27+0200\n"
+"PO-Revision-Date: 2021-05-06 10:08+0200\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -1547,52 +1547,52 @@ msgstr ""
 
 #: Emails/add.php:11 Emails/edit.php:16 Emails/view.php:13
 msgid "List Emails"
-msgstr ""
+msgstr "Seznam e-mailů"
 
 #: Emails/add.php:18
 msgid "Add Email"
-msgstr ""
+msgstr "Přidat e-mail"
 
 #: Emails/edit.php:23 Emails/view.php:11
 msgid "Edit Email"
-msgstr ""
+msgstr "Upravit e-mail"
 
 #: Emails/index.php:8 Emails/view.php:14
 msgid "New Email"
-msgstr ""
+msgstr "Nový e-mail"
 
 #: Emails/index.php:9
 msgid "Emails"
-msgstr ""
+msgstr "E-maily"
 
 #: Emails/view.php:12
 msgid "Delete Email"
-msgstr ""
+msgstr "Odstranit e-mail"
 
 #: EquipmentTypes/add.php:11 EquipmentTypes/edit.php:16
 #: EquipmentTypes/view.php:13
 msgid "List Equipment Types"
-msgstr ""
+msgstr "Seznam typů zařízení"
 
 #: EquipmentTypes/add.php:18
 msgid "Add Equipment Type"
-msgstr ""
+msgstr "Přidat typ zařízení"
 
 #: EquipmentTypes/edit.php:23 EquipmentTypes/view.php:11
 msgid "Edit Equipment Type"
-msgstr ""
+msgstr "Upravit typ zařízení"
 
 #: EquipmentTypes/index.php:8 EquipmentTypes/view.php:14
 msgid "New Equipment Type"
-msgstr ""
+msgstr "Nový typ zařízení"
 
 #: EquipmentTypes/index.php:9
 msgid "Equipment Types"
-msgstr ""
+msgstr "Typy zařízení"
 
 #: EquipmentTypes/view.php:12
 msgid "Delete Equipment Type"
-msgstr ""
+msgstr "Odstranit typ zařízení"
 
 #: Ips/add.php:11 Ips/edit.php:16 Ips/view.php:13
 msgid "List Ips"
@@ -1649,43 +1649,43 @@ msgstr ""
 
 #: Labels/add.php:18
 msgid "Add Label"
-msgstr ""
+msgstr "Přidat štítek"
 
 #: Labels/edit.php:23 Labels/view.php:11
 msgid "Edit Label"
-msgstr ""
+msgstr "Upravit štítek"
 
 #: Labels/index.php:8 Labels/view.php:14
 msgid "New Label"
-msgstr ""
+msgstr "Nový štítek"
 
 #: Labels/index.php:9
 msgid "Labels"
-msgstr ""
+msgstr "Štítky"
 
 #: Labels/view.php:12
 msgid "Delete Label"
-msgstr ""
+msgstr "Odstranit štítek"
 
 #: Labels/view.php:26 Queues/view.php:26 ServiceTypes/view.php:111
 msgid "Caption"
-msgstr ""
+msgstr "Rozšířený popis"
 
 #: Labels/view.php:30
 msgid "Color"
-msgstr ""
+msgstr "Barva"
 
 #: Labels/view.php:38
 msgid "Validity"
-msgstr ""
+msgstr "Platnost"
 
 #: Labels/view.php:42
 msgid "Dynamic"
-msgstr ""
+msgstr "Dynamický"
 
 #: Labels/view.php:47
 msgid "Dynamic Sql"
-msgstr ""
+msgstr "Dynamické SQL"
 
 #: Logins/add.php:11 Logins/edit.php:16 Logins/view.php:13
 msgid "List Logins"
