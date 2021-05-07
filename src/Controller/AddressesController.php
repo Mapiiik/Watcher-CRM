@@ -162,7 +162,7 @@ class AddressesController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-    private function findRuianData(\App\Model\Entity\Address $address)
+    private function findRuianData(\App\Model\Entity\Address $address): array
     {
         $this->RuianAddresses = $this->getTableLocator()->get('Ruian.Addresses');
         
