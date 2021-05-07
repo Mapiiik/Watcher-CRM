@@ -45,6 +45,23 @@ $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
         </div>
 
         <div class="top-nav-links">
+            <?php
+            $controller = $this->name;
+            $action = $this->request->getParam('action');
+            $buttonSelected = function ($haystack = []) use ($controller, $action)
+            {
+                if (in_array($controller, $haystack))
+                    return ' button-selected';
+                else if (in_array($action, $haystack))
+                    return ' button-selected';
+                else                    
+                    return '';
+            };
+            ?>
+            <?= $this->AuthLink->link(__('Customers'), ['plugin' => null, 'controller' => 'Customers', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Customers'])]) ?>
+            <?= $this->AuthLink->link(__('Tasks'), ['plugin' => null, 'controller' => 'Tasks', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Tasks'])]) ?>
+            <?= $this->AuthLink->link(__('Users'), ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Users'])]) ?>
+
             <?php if ($this->request->getParam('action') == 'index'): ?>
             <select name="limit" class="button button-small button-outline" onchange="location = this.value;">
                 <option <?php if ($this->request->getQuery('limit') == 20) echo 'selected="selected"'; ?> value="<?php echo $this->Url->build(['?' => ['limit' => 20] + $this->request->getQueryParams()] + $this->request->getParam('pass')); ?>">20</option>
