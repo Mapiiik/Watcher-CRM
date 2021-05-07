@@ -50,6 +50,9 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\RemovedIp[] $removed_ips
  * @property \App\Model\Entity\SoldEquipment[] $sold_equipments
  * @property \App\Model\Entity\Task[] $tasks
+ *
+ * @property string $full_name
+ * @property string $name
  */
 class Customer extends Entity
 {
@@ -105,7 +108,7 @@ class Customer extends Entity
         'tasks' => true,
     ];
 
-    protected function _getFullName()
+    protected function _getFullName(): string
     {
         $name = '';
 	
@@ -129,7 +132,7 @@ class Customer extends Entity
         return $name;
     }
     
-    protected function _getName()
+    protected function _getName(): string
     {
         $name = '';
 	

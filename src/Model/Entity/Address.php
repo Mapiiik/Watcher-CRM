@@ -31,6 +31,10 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Country $country
+ *
+ * @property string $full_name
+ * @property string $name
+ * @property string $address
  */
 class Address extends Entity
 {
