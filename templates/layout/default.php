@@ -61,6 +61,8 @@ $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
             <?= $this->AuthLink->link(__('Customers'), ['plugin' => null, 'controller' => 'Customers', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Customers'])]) ?>
             <?= $this->AuthLink->link(__('Tasks'), ['plugin' => null, 'controller' => 'Tasks', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Tasks'])]) ?>
             <?= $this->AuthLink->link(__('Users'), ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Users'])]) ?>
+            
+            <?= $this->Html->link(__('Legacy'), '/legacy', ['class' => 'button button-small']); ?>
 
             <?php if ($this->request->getParam('action') == 'index'): ?>
             <select name="limit" class="button button-small button-outline" onchange="location = this.value;">
