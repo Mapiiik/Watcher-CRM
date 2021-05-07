@@ -27,7 +27,7 @@ class FootprintBehavior extends Behavior
         'column_modifier' => 'modified_by',
     ];
     
-    private function fieldsExist(EventInterface $event): boolean {
+    private function fieldsExist(EventInterface $event): bool {
         // Make sure the table actually has proper fields
         $table = $event->getSubject();
         return ($table->hasField($this->_config['column_creator']) && $table->hasField($this->_config['column_modifier']));
