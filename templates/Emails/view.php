@@ -16,7 +16,7 @@
     </aside>
     <div class="column-responsive column-80">
         <div class="emails view content">
-            <h3><?= h($email->id) ?></h3>
+            <h3><?= h($email->email) ?></h3>
             <table>
                 <tr>
                     <th><?= __('Customer') ?></th>
@@ -25,10 +25,6 @@
                 <tr>
                     <th><?= __('Email') ?></th>
                     <td><?= h($email->email) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($email->id) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Use For Billing') ?></th>
@@ -41,6 +37,10 @@
                 <tr>
                     <th><?= __('Use For Commercial') ?></th>
                     <td><?= $email->use_for_commercial ? __('Yes') : __('No'); ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Id') ?></th>
+                    <td><?= $this->Number->format($email->id) ?></td>
                 </tr>
             </table>
         </div>

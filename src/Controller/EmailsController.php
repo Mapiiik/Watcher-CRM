@@ -18,8 +18,17 @@ class EmailsController extends AppController
      */
     public function index()
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+        
+        $conditions = [];
+        if (isset($customer_id)) {
+            $conditions = ['Emails.customer_id' => $customer_id];
+        }
+
         $this->paginate = [
             'contain' => ['Customers'],
+            'conditions' => $conditions,
         ];
         $emails = $this->paginate($this->Emails);
 
@@ -49,7 +58,15 @@ class EmailsController extends AppController
      */
     public function add()
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+
         $email = $this->Emails->newEmptyEntity();
+
+        if (isset($customer_id)) {
+            $email = $this->Emails->patchEntity($email, ['customer_id' => $customer_id]);
+        }
+
         if ($this->request->is('post')) {
             $email = $this->Emails->patchEntity($email, $this->request->getData());
             if ($this->Emails->save($email)) {
@@ -60,6 +77,11 @@ class EmailsController extends AppController
             $this->Flash->error(__('The email could not be saved. Please, try again.'));
         }
         $customers = $this->Emails->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+
+        if (isset($customer_id)) {
+            $customers->where(['id' => $customer_id]);
+        }
+
         $this->set(compact('email', 'customers'));
     }
 
@@ -72,6 +94,9 @@ class EmailsController extends AppController
      */
     public function edit($id = null)
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+
         $email = $this->Emails->get($id, [
             'contain' => [],
         ]);
@@ -85,6 +110,11 @@ class EmailsController extends AppController
             $this->Flash->error(__('The email could not be saved. Please, try again.'));
         }
         $customers = $this->Emails->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+
+        if (isset($customer_id)) {
+            $customers->where(['id' => $customer_id]);
+        }
+
         $this->set(compact('email', 'customers'));
     }
 

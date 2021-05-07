@@ -22,7 +22,7 @@
             <fieldset>
                 <legend><?= __('Edit Phone') ?></legend>
                 <?php
-                    echo $this->Form->control('customer_id', ['options' => $customers]);
+                    if (!isset($customer_id)) echo $this->Form->control('customer_id', ['options' => $customers]);
                     echo $this->Form->control('phone');
                 ?>
             </fieldset>

@@ -18,8 +18,17 @@ class PhonesController extends AppController
      */
     public function index()
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+        
+        $conditions = [];
+        if (isset($customer_id)) {
+            $conditions = ['Phones.customer_id' => $customer_id];
+        }
+
         $this->paginate = [
             'contain' => ['Customers'],
+            'conditions' => $conditions,
         ];
         $phones = $this->paginate($this->Phones);
 
@@ -49,7 +58,15 @@ class PhonesController extends AppController
      */
     public function add()
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+
         $phone = $this->Phones->newEmptyEntity();
+
+        if (isset($customer_id)) {
+            $phone = $this->Phones->patchEntity($phone, ['customer_id' => $customer_id]);
+        }
+
         if ($this->request->is('post')) {
             $phone = $this->Phones->patchEntity($phone, $this->request->getData());
             if ($this->Phones->save($phone)) {
@@ -60,6 +77,11 @@ class PhonesController extends AppController
             $this->Flash->error(__('The phone could not be saved. Please, try again.'));
         }
         $customers = $this->Phones->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+
+        if (isset($customer_id)) {
+            $customers->where(['id' => $customer_id]);
+        }
+
         $this->set(compact('phone', 'customers'));
     }
 
@@ -72,6 +94,9 @@ class PhonesController extends AppController
      */
     public function edit($id = null)
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+
         $phone = $this->Phones->get($id, [
             'contain' => [],
         ]);
@@ -85,6 +110,11 @@ class PhonesController extends AppController
             $this->Flash->error(__('The phone could not be saved. Please, try again.'));
         }
         $customers = $this->Phones->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+
+        if (isset($customer_id)) {
+            $customers->where(['id' => $customer_id]);
+        }
+
         $this->set(compact('phone', 'customers'));
     }
 

@@ -40,7 +40,7 @@ class EmailsTable extends Table
         parent::initialize($config);
 
         $this->setTable('emails');
-        $this->setDisplayField('id');
+        $this->setDisplayField('email');
         $this->setPrimaryKey('id');
 
         $this->belongsTo('Customers', [

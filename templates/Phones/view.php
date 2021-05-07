@@ -16,7 +16,7 @@
     </aside>
     <div class="column-responsive column-80">
         <div class="phones view content">
-            <h3><?= h($phone->id) ?></h3>
+            <h3><?= h($phone->phone) ?></h3>
             <table>
                 <tr>
                     <th><?= __('Customer') ?></th>

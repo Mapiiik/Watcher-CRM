@@ -26,9 +26,9 @@
                     <td><?= $this->Number->format($email->id) ?></td>
                     <td><?= $email->has('customer') ? $this->Html->link($email->customer->name, ['controller' => 'Customers', 'action' => 'view', $email->customer->id]) : '' ?></td>
                     <td><?= h($email->email) ?></td>
-                    <td><?= h($email->use_for_billing) ?></td>
-                    <td><?= h($email->use_for_outages) ?></td>
-                    <td><?= h($email->use_for_commercial) ?></td>
+                    <td><?= $email->use_for_billing ? __('Yes') : __('No'); ?></td>
+                    <td><?= $email->use_for_outages ? __('Yes') : __('No'); ?></td>
+                    <td><?= $email->use_for_commercial ? __('Yes') : __('No'); ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $email->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $email->id]) ?>

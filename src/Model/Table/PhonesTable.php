@@ -40,7 +40,7 @@ class PhonesTable extends Table
         parent::initialize($config);
 
         $this->setTable('phones');
-        $this->setDisplayField('id');
+        $this->setDisplayField('phone');
         $this->setPrimaryKey('id');
 
         $this->belongsTo('Customers', [
