@@ -41,7 +41,7 @@
                     <td><?= h($contract->valid_from) ?></td>
                     <td><?= h($contract->valid_until) ?></td>
                     <td><?= h($contract->obligation_until) ?></td>
-                    <td><?= h($contract->vip) ?></td>
+                    <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
                     <td><?= h($contract->installation_date) ?></td>
                     <td><?= $contract->has('installation_technician') ? $this->Html->link($contract->installation_technician->name, ['controller' => 'Customers', 'action' => 'view', $contract->installation_technician->id]) : '' ?></td>
                     <td><?= $contract->has('brokerage') ? $this->Html->link($contract->brokerage->name, ['controller' => 'Brokerages', 'action' => 'view', $contract->brokerage->id]) : '' ?></td>

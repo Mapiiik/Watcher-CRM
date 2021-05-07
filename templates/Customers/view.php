@@ -145,12 +145,11 @@
             </div>
             <div class="related">
                 <?= $this->Html->link(__('New Email'), ['controller' => 'Emails', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
-                <h4><?= __('Related Emails') ?></h4>
+                <h4><?= __('Emails') ?></h4>
                 <?php if (!empty($customer->emails)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Email') ?></th>
                             <th><?= __('Use For Billing') ?></th>
                             <th><?= __('Use For Outages') ?></th>
@@ -159,7 +158,6 @@
                         </tr>
                         <?php foreach ($customer->emails as $emails) : ?>
                         <tr>
-                            <td><?= h($emails->id) ?></td>
                             <td><?= h($emails->email) ?></td>
                             <td><?= $emails->use_for_billing ? __('Yes') : __('No'); ?></td>
                             <td><?= $emails->use_for_outages ? __('Yes') : __('No'); ?></td>
@@ -177,18 +175,16 @@
             </div>
             <div class="related">
                 <?= $this->Html->link(__('New Phone'), ['controller' => 'Phones', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
-                <h4><?= __('Related Phones') ?></h4>
+                <h4><?= __('Phones') ?></h4>
                 <?php if (!empty($customer->phones)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Phone') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($customer->phones as $phones) : ?>
                         <tr>
-                            <td><?= h($phones->id) ?></td>
                             <td><?= h($phones->phone) ?></td>
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'Phones', 'action' => 'view', $phones->id]) ?>
@@ -203,12 +199,11 @@
             </div>
             <div class="related">
                 <?= $this->Html->link(__('New Address'), ['controller' => 'Addresses', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
-                <h4><?= __('Related Addresses') ?></h4>
+                <h4><?= __('Addresses') ?></h4>
                 <?php if (!empty($customer->addresses)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Type') ?></th>
                             <th><?= __('Company') ?></th>
                             <th><?= __('Title') ?></th>
@@ -224,7 +219,6 @@
                         </tr>
                         <?php foreach ($customer->addresses as $addresses) : ?>
                         <tr>
-                            <td><?= h($addresses->id) ?></td>
                             <td><?= h($address_types[$addresses->type]) ?></td>
                             <td><?= h($addresses->company) ?></td>
                             <td><?= h($addresses->title) ?></td>
@@ -249,41 +243,29 @@
             </div>
             <div class="related">
                 <?= $this->Html->link(__('New Login'), ['controller' => 'Logins', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
-                <h4><?= __('Related Logins') ?></h4>
+                <h4><?= __('Logins') ?></h4>
                 <?php if (!empty($customer->logins)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Login') ?></th>
-                            <th><?= __('Password') ?></th>
                             <th><?= __('Rights') ?></th>
                             <th><?= __('Locked') ?></th>
                             <th><?= __('Last Granted') ?></th>
                             <th><?= __('Last Granted Ip') ?></th>
                             <th><?= __('Last Denied') ?></th>
                             <th><?= __('Last Denied Ip') ?></th>
-                            <th><?= __('Created') ?></th>
-                            <th><?= __('Created By') ?></th>
-                            <th><?= __('Modified') ?></th>
-                            <th><?= __('Modified By') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($customer->logins as $logins) : ?>
                         <tr>
-                            <td><?= h($logins->id) ?></td>
                             <td><?= h($logins->login) ?></td>
-                            <td><?= h($logins->password) ?></td>
                             <td><?= h($logins->rights) ?></td>
                             <td><?= h($logins->locked) ?></td>
                             <td><?= h($logins->last_granted) ?></td>
                             <td><?= h($logins->last_granted_ip) ?></td>
                             <td><?= h($logins->last_denied) ?></td>
                             <td><?= h($logins->last_denied_ip) ?></td>
-                            <td><?= h($logins->created) ?></td>
-                            <td><?= h($logins->created_by) ?></td>
-                            <td><?= h($logins->modified) ?></td>
-                            <td><?= h($logins->modified_by) ?></td>
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'Logins', 'action' => 'view', $logins->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'Logins', 'action' => 'edit', $logins->id]) ?>
@@ -297,15 +279,14 @@
             </div>
             <div class="related">
                 <?= $this->Html->link(__('New Contract'), ['controller' => 'Contracts', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
-                <h4><?= __('Related Contracts') ?></h4>
+                <h4><?= __('Contracts') ?></h4>
                 <?php if (!empty($customer->contracts)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
-                            <th><?= __('Service Type Id') ?></th>
+                            <th><?= __('Service Type') ?></th>
                             <th><?= __('Number') ?></th>
-                            <th><?= __('Installation Address Id') ?></th>
+                            <th><?= __('Installation Address') ?></th>
                             <th><?= __('Conclusion Date') ?></th>
                             <th><?= __('Number Of Amendments') ?></th>
                             <th><?= __('Valid From') ?></th>
@@ -313,37 +294,22 @@
                             <th><?= __('Obligation Until') ?></th>
                             <th><?= __('Vip') ?></th>
                             <th><?= __('Installation Date') ?></th>
-                            <th><?= __('Installation Technician Id') ?></th>
-                            <th><?= __('Access Description') ?></th>
-                            <th><?= __('Brokerage Id') ?></th>
                             <th><?= __('Note') ?></th>
-                            <th><?= __('Created') ?></th>
-                            <th><?= __('Created By') ?></th>
-                            <th><?= __('Modified') ?></th>
-                            <th><?= __('Modified By') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($customer->contracts as $contracts) : ?>
                         <tr>
-                            <td><?= h($contracts->id) ?></td>
-                            <td><?= h($contracts->service_type_id) ?></td>
+                            <td><?= $contracts->has('service_type') ? h($contracts->service_type->name) : '' ?></td>
                             <td><?= h($contracts->number) ?></td>
-                            <td><?= h($contracts->installation_address_id) ?></td>
+                            <td><?= $contracts->has('installation_address') ? h($contracts->installation_address->address) : '' ?></td>
                             <td><?= h($contracts->conclusion_date) ?></td>
                             <td><?= h($contracts->number_of_amendments) ?></td>
                             <td><?= h($contracts->valid_from) ?></td>
                             <td><?= h($contracts->valid_until) ?></td>
                             <td><?= h($contracts->obligation_until) ?></td>
-                            <td><?= h($contracts->vip) ?></td>
+                            <td><?= $contracts->vip ? __('Yes') : __('No'); ?></td>
                             <td><?= h($contracts->installation_date) ?></td>
-                            <td><?= h($contracts->installation_technician_id) ?></td>
-                            <td><?= h($contracts->access_description) ?></td>
-                            <td><?= h($contracts->brokerage_id) ?></td>
                             <td><?= h($contracts->note) ?></td>
-                            <td><?= h($contracts->created) ?></td>
-                            <td><?= h($contracts->created_by) ?></td>
-                            <td><?= h($contracts->modified) ?></td>
-                            <td><?= h($contracts->modified_by) ?></td>
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'Contracts', 'action' => 'view', $contracts->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'Contracts', 'action' => 'edit', $contracts->id]) ?>
@@ -362,7 +328,6 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Task Type Id') ?></th>
                             <th><?= __('Task State Id') ?></th>
                             <th><?= __('Priority') ?></th>
@@ -370,15 +335,10 @@
                             <th><?= __('Text') ?></th>
                             <th><?= __('Dealer Id') ?></th>
                             <th><?= __('Router Id') ?></th>
-                            <th><?= __('Created') ?></th>
-                            <th><?= __('Created By') ?></th>
-                            <th><?= __('Modified') ?></th>
-                            <th><?= __('Modified By') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($customer->tasks as $tasks) : ?>
                         <tr>
-                            <td><?= h($tasks->id) ?></td>
                             <td><?= h($tasks->task_type_id) ?></td>
                             <td><?= h($tasks->task_state_id) ?></td>
                             <td><?= h($tasks->priority) ?></td>
@@ -386,10 +346,6 @@
                             <td><?= nl2br($tasks->text) ?></td>
                             <td><?= h($tasks->dealer_id) ?></td>
                             <td><?= h($tasks->router_id) ?></td>
-                            <td><?= h($tasks->created) ?></td>
-                            <td><?= h($tasks->created_by) ?></td>
-                            <td><?= h($tasks->modified) ?></td>
-                            <td><?= h($tasks->modified_by) ?></td>
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'Tasks', 'action' => 'view', $tasks->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'Tasks', 'action' => 'edit', $tasks->id]) ?>
@@ -407,7 +363,6 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Contract Id') ?></th>
                             <th><?= __('Service Id') ?></th>
                             <th><?= __('Text') ?></th>
@@ -418,15 +373,10 @@
                             <th><?= __('Active') ?></th>
                             <th><?= __('Separate') ?></th>
                             <th><?= __('Note') ?></th>
-                            <th><?= __('Created') ?></th>
-                            <th><?= __('Created By') ?></th>
-                            <th><?= __('Modified') ?></th>
-                            <th><?= __('Modified By') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($customer->billings as $billings) : ?>
                         <tr>
-                            <td><?= h($billings->id) ?></td>
                             <td><?= h($billings->contract_id) ?></td>
                             <td><?= h($billings->service_id) ?></td>
                             <td><?= h($billings->text) ?></td>
@@ -437,10 +387,6 @@
                             <td><?= h($billings->active) ?></td>
                             <td><?= h($billings->separate) ?></td>
                             <td><?= h($billings->note) ?></td>
-                            <td><?= h($billings->created) ?></td>
-                            <td><?= h($billings->created_by) ?></td>
-                            <td><?= h($billings->modified) ?></td>
-                            <td><?= h($billings->modified_by) ?></td>
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'Billings', 'action' => 'view', $billings->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'Billings', 'action' => 'edit', $billings->id]) ?>
@@ -458,30 +404,20 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Contract Id') ?></th>
                             <th><?= __('Equipment Type Id') ?></th>
                             <th><?= __('Serial Number') ?></th>
                             <th><?= __('Borrowed From') ?></th>
                             <th><?= __('Borrowed Until') ?></th>
-                            <th><?= __('Created') ?></th>
-                            <th><?= __('Created By') ?></th>
-                            <th><?= __('Modified') ?></th>
-                            <th><?= __('Modified By') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($customer->borrowed_equipments as $borrowedEquipments) : ?>
                         <tr>
-                            <td><?= h($borrowedEquipments->id) ?></td>
                             <td><?= h($borrowedEquipments->contract_id) ?></td>
                             <td><?= h($borrowedEquipments->equipment_type_id) ?></td>
                             <td><?= h($borrowedEquipments->serial_number) ?></td>
                             <td><?= h($borrowedEquipments->borrowed_from) ?></td>
                             <td><?= h($borrowedEquipments->borrowed_until) ?></td>
-                            <td><?= h($borrowedEquipments->created) ?></td>
-                            <td><?= h($borrowedEquipments->created_by) ?></td>
-                            <td><?= h($borrowedEquipments->modified) ?></td>
-                            <td><?= h($borrowedEquipments->modified_by) ?></td>
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'BorrowedEquipments', 'action' => 'view', $borrowedEquipments->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'BorrowedEquipments', 'action' => 'edit', $borrowedEquipments->id]) ?>
@@ -499,26 +435,16 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Contract Id') ?></th>
                             <th><?= __('Equipment Type Id') ?></th>
                             <th><?= __('Serial Number') ?></th>
-                            <th><?= __('Created') ?></th>
-                            <th><?= __('Created By') ?></th>
-                            <th><?= __('Modified') ?></th>
-                            <th><?= __('Modified By') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($customer->sold_equipments as $soldEquipments) : ?>
                         <tr>
-                            <td><?= h($soldEquipments->id) ?></td>
                             <td><?= h($soldEquipments->contract_id) ?></td>
                             <td><?= h($soldEquipments->equipment_type_id) ?></td>
                             <td><?= h($soldEquipments->serial_number) ?></td>
-                            <td><?= h($soldEquipments->created) ?></td>
-                            <td><?= h($soldEquipments->created_by) ?></td>
-                            <td><?= h($soldEquipments->modified) ?></td>
-                            <td><?= h($soldEquipments->modified_by) ?></td>
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'SoldEquipments', 'action' => 'view', $soldEquipments->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'SoldEquipments', 'action' => 'edit', $soldEquipments->id]) ?>
@@ -536,26 +462,20 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Contract Id') ?></th>
                             <th><?= __('Ip') ?></th>
                             <th><?= __('Note') ?></th>
                             <th><?= __('Created') ?></th>
                             <th><?= __('Created By') ?></th>
-                            <th><?= __('Modified') ?></th>
-                            <th><?= __('Modified By') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($customer->ips as $ips) : ?>
                         <tr>
-                            <td><?= h($ips->id) ?></td>
                             <td><?= h($ips->contract_id) ?></td>
                             <td><?= h($ips->ip) ?></td>
                             <td><?= h($ips->note) ?></td>
                             <td><?= h($ips->created) ?></td>
                             <td><?= h($ips->created_by) ?></td>
-                            <td><?= h($ips->modified) ?></td>
-                            <td><?= h($ips->modified_by) ?></td>
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'Ips', 'action' => 'view', $ips->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'Ips', 'action' => 'edit', $ips->id]) ?>
@@ -573,7 +493,6 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Contract Id') ?></th>
                             <th><?= __('Ip') ?></th>
                             <th><?= __('Note') ?></th>
@@ -583,7 +502,6 @@
                         </tr>
                         <?php foreach ($customer->removed_ips as $removedIps) : ?>
                         <tr>
-                            <td><?= h($removedIps->id) ?></td>
                             <td><?= h($removedIps->contract_id) ?></td>
                             <td><?= h($removedIps->ip) ?></td>
                             <td><?= h($removedIps->note) ?></td>
