@@ -71,7 +71,7 @@ class Address extends Entity
         'country' => true,
     ];
 
-    protected function _getFullName()
+    protected function _getFullName(): string
     {
         $full_name = '';
 	
@@ -95,7 +95,7 @@ class Address extends Entity
         return $full_name;
     }
     
-    protected function _getName()
+    protected function _getName(): string
     {
         $name = '';
 	
@@ -108,7 +108,7 @@ class Address extends Entity
         return $name;
     }
     
-    protected function _getAddress()
+    protected function _getAddress(): string
     {
         $address = '';
         
