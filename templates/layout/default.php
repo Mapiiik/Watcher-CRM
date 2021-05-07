@@ -22,7 +22,7 @@ $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>
-        <?= $cakeDescription ?>:
+        <?= $cakeDescription ?> |
         <?= $this->fetch('title') ?>
     </title>
     <?= $this->Html->meta('icon') ?>
