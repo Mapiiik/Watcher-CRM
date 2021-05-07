@@ -13,6 +13,7 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
  * @property \App\Model\Table\CountriesTable&\Cake\ORM\Association\BelongsTo $Countries
+ * @property array $types
  *
  * @method \App\Model\Entity\Address newEmptyEntity()
  * @method \App\Model\Entity\Address newEntity(array $data, array $options = [])
