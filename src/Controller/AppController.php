@@ -65,7 +65,6 @@ class AppController extends Controller
         {
             $this->Flash->error(__('Unable to find results on page {0}. Redirect to page 1.', $this->request->getQuery('page')));
             $this->redirect(['page' => 1] + $this->request->getQueryParams());
-            return;
         }
     }
     
