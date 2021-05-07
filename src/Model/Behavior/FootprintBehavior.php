@@ -27,13 +27,13 @@ class FootprintBehavior extends Behavior
         'column_modifier' => 'modified_by',
     ];
     
-    private function fieldsExist(EventInterface $event) {
+    private function fieldsExist(EventInterface $event): boolean {
         // Make sure the table actually has proper fields
         $table = $event->getSubject();
         return ($table->hasField($this->_config['column_creator']) && $table->hasField($this->_config['column_modifier']));
     }  
 
-    public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options)
+    public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
         $session = Router::getRequest()->getSession();
         

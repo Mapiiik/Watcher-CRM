@@ -24,7 +24,7 @@ class StringModificationsBehavior extends Behavior
         'emptyAsNull' => true,
     ];
     
-    public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options)
+    public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
         foreach ($data as $key => $value) {
             if (is_string($value)) {
