@@ -8,6 +8,7 @@ use Cake\ORM\Table;
 
 use Cake\Event\EventInterface;
 use Cake\Datasource\EntityInterface;
+use Cake\Routing\Router;
 use ArrayObject;
 
 /**
@@ -21,7 +22,7 @@ class FootprintBehavior extends Behavior
      * @var array
      */
     protected $_defaultConfig = [
-        'session_key' => 'login_id',
+        'session_key' => 'Auth.id',
         'column_creator' => 'created_by',
         'column_modifier' => 'modified_by',
     ];
@@ -34,12 +35,14 @@ class FootprintBehavior extends Behavior
 
     public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options)
     {
+        $session = Router::getRequest()->getSession();
+        
         if ($this->fieldsExist($event)) {
             if ($entity->isNew()) {
-                $entity->set($this->_config['column_creator'], $_SESSION[$this->_config['session_key']]);
-                $entity->set($this->_config['column_modifier'], $_SESSION[$this->_config['session_key']]);
+                $entity->set($this->_config['column_creator'], $session->read($this->_config['session_key']));
+                $entity->set($this->_config['column_modifier'], $session->read($this->_config['session_key']));
             } else {
-                $entity->set($this->_config['column_modifier'], $_SESSION[$this->_config['session_key']]);
+                $entity->set($this->_config['column_modifier'], $session->read($this->_config['session_key']));
             }
         }
     } 
