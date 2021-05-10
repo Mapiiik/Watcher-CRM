@@ -18,12 +18,24 @@ class LoginsController extends AppController
      */
     public function index()
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+        
+        $conditions = [];
+        if (isset($customer_id)) {
+            $conditions = ['Logins.customer_id' => $customer_id];
+        }
+
         $this->paginate = [
             'contain' => ['Customers'],
+            'conditions' => $conditions,
         ];
         $logins = $this->paginate($this->Logins);
 
         $this->set(compact('logins'));
+
+        // rights
+        $this->set('rights', $this->Logins->rights);
     }
 
     /**
@@ -40,6 +52,9 @@ class LoginsController extends AppController
         ]);
 
         $this->set(compact('login'));
+
+        // rights
+        $this->set('rights', $this->Logins->rights);
     }
 
     /**
@@ -49,18 +64,57 @@ class LoginsController extends AppController
      */
     public function add()
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+
         $login = $this->Logins->newEmptyEntity();
+
+        if (isset($customer_id)) {
+            $login = $this->Logins->patchEntity($login, ['customer_id' => $customer_id]);
+        }
+
         if ($this->request->is('post')) {
             $login = $this->Logins->patchEntity($login, $this->request->getData());
             if ($this->Logins->save($login)) {
                 $this->Flash->success(__('The login has been saved.'));
 
+                if (isset($customer_id)) return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The login could not be saved. Please, try again.'));
         }
         $customers = $this->Logins->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+
+        if (isset($customer_id)) {
+            $customers->where(['id' => $customer_id]);
+
+            // START find free login
+            $customer = $this->Logins->Customers->get($customer_id);
+            $new_login = strtolower($this->squashCharacters($customer->last_name . '.' . $customer->first_name));
+
+            $i = 1;
+            $test_login = $new_login;
+            while ($this->Logins->exists(['login' => $test_login]))
+            {
+                $i++;
+                $test_login = $new_login . '.' . $i;
+            }
+            $new_login = $test_login;
+            unset($test_login);
+            unset($i);
+            // END find free login
+        }
+
         $this->set(compact('login', 'customers'));
+
+        // new available login
+        $this->set('new_login', $new_login);
+
+        // generate new password
+        $this->set('new_password', $this->generatePassword(8));
+        
+        // rights
+        $this->set('rights', $this->Logins->rights);
     }
 
     /**
@@ -72,21 +126,36 @@ class LoginsController extends AppController
      */
     public function edit($id = null)
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+
         $login = $this->Logins->get($id, [
             'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
+            // change password if is set new
+            if (strlen($this->request->getData()['new_password']) > 0) $login->password = $this->request->getData()['new_password'];
+            
             $login = $this->Logins->patchEntity($login, $this->request->getData());
             if ($this->Logins->save($login)) {
                 $this->Flash->success(__('The login has been saved.'));
-
+                
+                if (isset($customer_id)) return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The login could not be saved. Please, try again.'));
         }
         $customers = $this->Logins->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+
+        if (isset($customer_id)) {
+            $customers->where(['id' => $customer_id]);
+        }
+
         $this->set(compact('login', 'customers'));
-    }
+
+        // rights
+        $this->set('rights', $this->Logins->rights);
+        }
 
     /**
      * Delete method

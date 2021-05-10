@@ -22,17 +22,10 @@
             <fieldset>
                 <legend><?= __('Edit Login') ?></legend>
                 <?php
-                    echo $this->Form->control('customer_id', ['options' => $customers]);
+                    if (!isset($customer_id)) echo $this->Form->control('customer_id', ['options' => $customers]);
                     echo $this->Form->control('login');
-                    echo $this->Form->control('password');
-                    echo $this->Form->control('rights');
+                    echo $this->Form->control('new_password', ['label' => __('New Password')]);
                     echo $this->Form->control('locked');
-                    echo $this->Form->control('last_granted');
-                    echo $this->Form->control('last_granted_ip');
-                    echo $this->Form->control('last_denied');
-                    echo $this->Form->control('last_denied_ip');
-                    echo $this->Form->control('modified_by');
-                    echo $this->Form->control('created_by');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

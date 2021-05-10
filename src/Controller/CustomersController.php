@@ -70,8 +70,9 @@ class CustomersController extends AppController
 
         $invoice_delivery_types = $this->Customers->invoice_delivery_types;
         $address_types = $this->Customers->Addresses->types;
+        $login_rights = $this->Customers->Logins->rights;
 
-        $this->set(compact('customer', 'invoice_delivery_types', 'address_types'));
+        $this->set(compact('customer', 'invoice_delivery_types', 'address_types', 'login_rights'));
     }
 
     /**

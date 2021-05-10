@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\Utility\Security;
 
 /**
  * Login Entity
@@ -61,4 +62,12 @@ class Login extends Entity
     protected $_hidden = [
         'password',
     ];
+
+    // SHA1 for password if value is set
+    protected function _setPassword(string $password) : ?string
+    {
+        if (strlen($password) > 0) {
+            return Security::hash($password, 'sha1');
+        }
+    }
 }

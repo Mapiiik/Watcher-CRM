@@ -260,8 +260,8 @@
                         <?php foreach ($customer->logins as $logins) : ?>
                         <tr>
                             <td><?= h($logins->login) ?></td>
-                            <td><?= h($logins->rights) ?></td>
-                            <td><?= h($logins->locked) ?></td>
+                            <td><?= $login_rights[$logins->rights] ?></td>
+                            <td><?= $logins->locked ? __('Yes') : __('No'); ?></td>
                             <td><?= h($logins->last_granted) ?></td>
                             <td><?= h($logins->last_granted_ip) ?></td>
                             <td><?= h($logins->last_denied) ?></td>

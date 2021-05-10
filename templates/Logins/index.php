@@ -14,17 +14,12 @@
                     <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('login') ?></th>
-                    <th><?= $this->Paginator->sort('password') ?></th>
                     <th><?= $this->Paginator->sort('rights') ?></th>
                     <th><?= $this->Paginator->sort('locked') ?></th>
                     <th><?= $this->Paginator->sort('last_granted') ?></th>
                     <th><?= $this->Paginator->sort('last_granted_ip') ?></th>
                     <th><?= $this->Paginator->sort('last_denied') ?></th>
                     <th><?= $this->Paginator->sort('last_denied_ip') ?></th>
-                    <th><?= $this->Paginator->sort('modified_by') ?></th>
-                    <th><?= $this->Paginator->sort('modified') ?></th>
-                    <th><?= $this->Paginator->sort('created_by') ?></th>
-                    <th><?= $this->Paginator->sort('created') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -34,17 +29,12 @@
                     <td><?= $this->Number->format($login->id) ?></td>
                     <td><?= $login->has('customer') ? $this->Html->link($login->customer->name, ['controller' => 'Customers', 'action' => 'view', $login->customer->id]) : '' ?></td>
                     <td><?= h($login->login) ?></td>
-                    <td><?= h($login->password) ?></td>
-                    <td><?= $this->Number->format($login->rights) ?></td>
-                    <td><?= $this->Number->format($login->locked) ?></td>
+                    <td><?= $rights[$login->rights] ?></td>
+                    <td><?= $login->locked ? __('Yes') : __('No'); ?></td>
                     <td><?= h($login->last_granted) ?></td>
                     <td><?= h($login->last_granted_ip) ?></td>
                     <td><?= h($login->last_denied) ?></td>
                     <td><?= h($login->last_denied_ip) ?></td>
-                    <td><?= $this->Number->format($login->modified_by) ?></td>
-                    <td><?= h($login->modified) ?></td>
-                    <td><?= $this->Number->format($login->created_by) ?></td>
-                    <td><?= h($login->created) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $login->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $login->id]) ?>

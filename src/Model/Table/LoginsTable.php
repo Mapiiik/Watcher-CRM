@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  * Logins Model
  *
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
+ * @property array $types
  *
  * @method \App\Model\Entity\Login newEmptyEntity()
  * @method \App\Model\Entity\Login newEntity(array $data, array $options = [])
@@ -40,6 +41,14 @@ class LoginsTable extends Table
     public function initialize(array $config): void
     {
         parent::initialize($config);
+
+        $this->rights = [
+            '0' => __('Guest'),
+            '1' => __('User'),
+            '2' => __('Technician'),
+            '3' => __('Administrator'),
+            '4' => __('Specialist'),
+        ];
 
         $this->setTable('logins');
         $this->setDisplayField('id');
