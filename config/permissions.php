@@ -130,7 +130,13 @@ return [
         ],
         //users access
         [
-            'role' => ['technician'],
+            'role' => ['user', 'technician'],
+            'plugin' => null,
+            'controller' => ['Customers'],
+            'action' => ['index'],
+        ],
+        [
+            'role' => ['user', 'technician'],
             'plugin' => null,
             'controller' => ['Customers', 'Contracts'],
             'action' => ['view'],
