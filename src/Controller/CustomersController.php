@@ -33,19 +33,33 @@ class CustomersController extends AppController
             }
         }
         $this->set('search', $search);
+        
+        if (in_array($this->request->getSession()->read('Auth.role'), ['admin'])) {
+            if ($search->getData('search') <> '')
+            {
+                $filter = "to_tsvector(Customers.id || ' ' || Customers.id + 110000 || ' ' || COALESCE(Customers.first_name, '') || ' ' || COALESCE(Customers.last_name, '') || ' ' || COALESCE(Customers.company, '')  || COALESCE(Addresses.first_name, '') || ' ' || COALESCE(Addresses.last_name, '') || ' ' || COALESCE(Addresses.company, '') || ' ' || COALESCE(Addresses.street, '') || ' ' || COALESCE(Addresses.number, '') || ' ' || COALESCE(Addresses.city, '') || ' ' || COALESCE(Addresses.zip, '') || ' ' || COALESCE(Emails.email, '') || ' ' || COALESCE(Phones.phone, '') || ' ' || COALESCE(Customers.ic, '') || ' ' || COALESCE(Customers.dic, '') || ' ' || COALESCE(Ips.ip, '0.0.0.0'::inet)) @@ to_tsquery('" . mb_ereg_replace('\s{1,}', '&', \trim($search->getData('search'))) . "')";
+                $filter = "(SELECT customers.id FROM customers LEFT JOIN emails ON (customers.id = customer_id) LEFT JOIN phones ON (customers.id = phones.customer_id) LEFT JOIN addresses ON (customers.id = addresses.customer_id) LEFT JOIN ips ON (customers.id = ips.customer_id) WHERE $filter GROUP BY customers.id)";
 
-        if ($search->getData('search') <> '')
+                $this->paginate['conditions']['OR'] = [
+                    'Customers.company ILIKE' => '%' . \trim($search->getData('search')) . '%',
+                    'Customers.first_name ILIKE' => '%' . \trim($search->getData('search')) . '%',
+                    'Customers.last_name ILIKE' => '%' . \trim($search->getData('search')) . '%',
+                    'Customers.id IN ' . $filter,
+                ];
+                unset($filter);
+            }
+        }
+        else
         {
-            $filter = "to_tsvector(Customers.id || ' ' || Customers.id + 110000 || ' ' || COALESCE(Customers.first_name, '') || ' ' || COALESCE(Customers.last_name, '') || ' ' || COALESCE(Customers.company, '')  || COALESCE(Addresses.first_name, '') || ' ' || COALESCE(Addresses.last_name, '') || ' ' || COALESCE(Addresses.company, '') || ' ' || COALESCE(Addresses.street, '') || ' ' || COALESCE(Addresses.number, '') || ' ' || COALESCE(Addresses.city, '') || ' ' || COALESCE(Addresses.zip, '') || ' ' || COALESCE(Emails.email, '') || ' ' || COALESCE(Phones.phone, '') || ' ' || COALESCE(Customers.ic, '') || ' ' || COALESCE(Customers.dic, '') || ' ' || COALESCE(Ips.ip, '0.0.0.0'::inet)) @@ to_tsquery('" . mb_ereg_replace('\s{1,}', '&', \trim($search->getData('search'))) . "')";
-            $filter = "(SELECT customers.id FROM customers LEFT JOIN emails ON (customers.id = customer_id) LEFT JOIN phones ON (customers.id = phones.customer_id) LEFT JOIN addresses ON (customers.id = addresses.customer_id) LEFT JOIN ips ON (customers.id = ips.customer_id) WHERE $filter GROUP BY customers.id)";
-            
-            $this->paginate['conditions']['OR'] = [
-                'Customers.company ILIKE' => '%' . \trim($search->getData('search')) . '%',
-                'Customers.first_name ILIKE' => '%' . \trim($search->getData('search')) . '%',
-                'Customers.last_name ILIKE' => '%' . \trim($search->getData('search')) . '%',
-                'Customers.id IN ' . $filter,
-            ];
-            unset($filter);
+            if (is_numeric($search->getData('search'))) {
+                $this->paginate['conditions']['OR'] = [
+                    'Customers.id' => (int)$search->getData('search'),
+                    '(Customers.id + 110000) =' => (int)$search->getData('search'),
+                ];
+            } else {
+                $this->Flash->default(__('Please use the customer number in the search.'));
+                $this->paginate['conditions'] = ['false'];
+            }
         }
         
         $customers = $this->paginate($this->Customers);
