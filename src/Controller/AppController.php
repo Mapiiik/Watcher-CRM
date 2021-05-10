@@ -85,5 +85,73 @@ class AppController extends Controller
         }
         
         parent::beforeFilter($event);
-  }        
+    }
+
+    /**
+     * Normalize non-ASCII characters to ASCII counterparts where possible.
+     *
+     * @param string $str
+     * @return string
+     */
+    public function squashCharacters($str): string
+    {
+        static $normalizeChars = null;
+        if ($normalizeChars === null) {
+            $normalizeChars = array(
+                'Á'=>'A', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'Ae',
+                'Č'=>'C', 'Ç'=>'C',
+                'Ě'=>'E', 'È'=>'E', 'É'=>'E', 'Ê'=>'E', 'Ë'=>'E',
+                'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I',
+                'Ð'=>'Dj',
+                'Ñ'=>'N',
+                'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O',
+                'Ř'=>'R',
+                'Ů'=>'U', 'Ù'=>'U', 'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U',
+                'Ý'=>'Y',
+                'Þ'=>'B',
+                'ß'=>'Ss',
+                'á'=>'a', 'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'ae',
+                'č'=>'c','ç'=>'c',
+                'ě'=>'e', 'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e',
+                'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i',
+                'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o',
+                'ů'=>'u', 'ù'=>'u', 'ú'=>'u', 'û'=>'u',
+                'ý'=>'y',
+                'þ'=>'b',
+                'ÿ'=>'y',
+                'Š'=>'S', 'š'=>'s', 'ś' => 's',
+                'Ž'=>'Z', 'ž'=>'z',
+                'ƒ'=>'f'
+            );
+        }
+        return strtr($str, $normalizeChars);
+    }
+    
+    /**
+     * Generate password.
+     *
+     * @param integer $length
+     * @return string
+     */
+    public function generatePassword ($length = 8, $possible = "123456789ABCDEFGHJKLMNPQRSTUVWXabcdefghjkmnopqrstuvwx"): string
+    {
+        // start with a blank password
+        $password = "";
+
+        // set up a counter
+        $i = 0; 
+
+        // add random characters to $password until $length is reached
+        while ($i < $length) { 
+            // pick a random character from the possible ones
+            $char = substr($possible, mt_rand(0, strlen($possible)-1), 1);
+            // we don't want this character if it's already in the password
+            if (!strstr($password, $char)) { 
+              $password .= $char;
+              $i++;
+            }
+        }
+        // done!
+        return $password;
+    }
 }
