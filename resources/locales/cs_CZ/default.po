@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2021-05-12 16:35+0200\n"
-"PO-Revision-Date: 2021-05-12 17:04+0200\n"
+"PO-Revision-Date: 2021-05-13 08:58+0200\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -1772,27 +1772,27 @@ msgstr "Odstranit odebranou IP adresu"
 
 #: ServiceTypes/add.php:11 ServiceTypes/edit.php:16 ServiceTypes/view.php:13
 msgid "List Service Types"
-msgstr ""
+msgstr "Seznam typů služeb"
 
 #: ServiceTypes/add.php:18
 msgid "Add Service Type"
-msgstr ""
+msgstr "Přidat typ služby"
 
 #: ServiceTypes/edit.php:23 ServiceTypes/view.php:11
 msgid "Edit Service Type"
-msgstr ""
+msgstr "Upravit typ služby"
 
 #: ServiceTypes/index.php:8 ServiceTypes/view.php:14
 msgid "New Service Type"
-msgstr ""
+msgstr "Nový typ služby"
 
 #: ServiceTypes/index.php:9
 msgid "Service Types"
-msgstr ""
+msgstr "Typy služeb"
 
 #: ServiceTypes/view.php:12
 msgid "Delete Service Type"
-msgstr ""
+msgstr "Odstranit typ služby"
 
 #: ServiceTypes/view.php:26
 msgid "Contract Number Format"
@@ -1877,19 +1877,19 @@ msgstr "Odstranit stav úkolu"
 
 #: TaskStates/view.php:52 TaskTypes/view.php:52 Tasks/view.php:66
 msgid "Finish Date"
-msgstr ""
+msgstr "Datum vyřízení"
 
 #: TaskStates/view.php:53 TaskTypes/view.php:53 Tasks/view.php:70
 msgid "Start Date"
-msgstr ""
+msgstr "Datum přijetí"
 
 #: TaskStates/view.php:54 TaskTypes/view.php:54 Tasks/view.php:74
 msgid "Estimated Date"
-msgstr ""
+msgstr "Přepokládaný datum řešení"
 
 #: TaskStates/view.php:55 TaskTypes/view.php:55 Tasks/view.php:78
 msgid "Critical Date"
-msgstr ""
+msgstr "Nutné dořešit do"
 
 #: TaskTypes/add.php:11 TaskTypes/edit.php:16 TaskTypes/view.php:13
 msgid "List Task Types"
@@ -1945,7 +1945,7 @@ msgstr "Stav úkolu"
 
 #: Tasks/view.php:34
 msgid "Router"
-msgstr ""
+msgstr "Router"
 
 #: Taxes/add.php:11 Taxes/edit.php:16 Taxes/view.php:13
 msgid "List Taxes"
