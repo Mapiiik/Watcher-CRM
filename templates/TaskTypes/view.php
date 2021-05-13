@@ -56,31 +56,31 @@
                             <th><?= __('Router Id') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($taskType->tasks as $tasks) : ?>
+                        <?php foreach ($taskType->tasks as $task) : ?>
                         <tr>
-                            <td><?= h($tasks->id) ?></td>
-                            <td><?= h($tasks->task_type_id) ?></td>
-                            <td><?= h($tasks->subject) ?></td>
-                            <td><?= h($tasks->text) ?></td>
-                            <td><?= h($tasks->priority) ?></td>
-                            <td><?= h($tasks->customer_id) ?></td>
-                            <td><?= h($tasks->dealer_id) ?></td>
-                            <td><?= h($tasks->modified_by) ?></td>
-                            <td><?= h($tasks->modified) ?></td>
-                            <td><?= h($tasks->created_by) ?></td>
-                            <td><?= h($tasks->created) ?></td>
-                            <td><?= h($tasks->email) ?></td>
-                            <td><?= h($tasks->phone) ?></td>
-                            <td><?= h($tasks->task_state_id) ?></td>
-                            <td><?= h($tasks->finish_date) ?></td>
-                            <td><?= h($tasks->start_date) ?></td>
-                            <td><?= h($tasks->estimated_date) ?></td>
-                            <td><?= h($tasks->critical_date) ?></td>
-                            <td><?= h($tasks->router_id) ?></td>
+                            <td><?= h($task->id) ?></td>
+                            <td><?= h($task->task_type_id) ?></td>
+                            <td><?= h($task->subject) ?></td>
+                            <td><?= h($task->text) ?></td>
+                            <td><?= h($task->priority) ?></td>
+                            <td><?= h($task->customer_id) ?></td>
+                            <td><?= h($task->dealer_id) ?></td>
+                            <td><?= h($task->modified_by) ?></td>
+                            <td><?= h($task->modified) ?></td>
+                            <td><?= h($task->created_by) ?></td>
+                            <td><?= h($task->created) ?></td>
+                            <td><?= h($task->email) ?></td>
+                            <td><?= h($task->phone) ?></td>
+                            <td><?= h($task->task_state_id) ?></td>
+                            <td><?= h($task->finish_date) ?></td>
+                            <td><?= h($task->start_date) ?></td>
+                            <td><?= h($task->estimated_date) ?></td>
+                            <td><?= h($task->critical_date) ?></td>
+                            <td><?= h($task->router_id) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Tasks', 'action' => 'view', $tasks->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Tasks', 'action' => 'edit', $tasks->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Tasks', 'action' => 'delete', $tasks->id], ['confirm' => __('Are you sure you want to delete # {0}?', $tasks->id)]) ?>
+                                <?= $this->Html->link(__('View'), ['controller' => 'Tasks', 'action' => 'view', $task->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'Tasks', 'action' => 'edit', $task->id]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Tasks', 'action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

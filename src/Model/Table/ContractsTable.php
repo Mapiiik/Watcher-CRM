@@ -65,7 +65,6 @@ class ContractsTable extends Table
         $this->belongsTo('InstallationAddresses', [
             'className' => 'Addresses',
             'foreignKey' => 'installation_address_id',
-//            'propertyName' => 'installation_address',
             'conditions' => ['InstallationAddresses.type' => 0],
         ]);
         $this->belongsTo('ServiceTypes', [
@@ -75,7 +74,6 @@ class ContractsTable extends Table
         $this->belongsTo('InstallationTechnicians', [
             'className' => 'Customers',
             'foreignKey' => 'installation_technician_id',
-//            'propertyName' => 'installation_technician',
             'conditions' => ['InstallationTechnicians.dealer' => 1],
         ]);
         $this->belongsTo('Brokerages', [

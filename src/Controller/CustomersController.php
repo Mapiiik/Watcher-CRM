@@ -79,7 +79,7 @@ class CustomersController extends AppController
     public function view($id = null)
     {
         $customer = $this->Customers->get($id, [
-            'contain' => ['Taxes', 'Addresses' => ['Countries'], 'Billings', 'BorrowedEquipments', 'Contracts' => ['ServiceTypes', 'InstallationAddresses'], 'Emails', 'Ips', 'LabelCustomers', 'Logins', 'Phones', 'RemovedIps', 'SoldEquipments', 'Tasks'],
+            'contain' => ['Taxes', 'Addresses' => ['Countries'], 'Billings' => ['Contracts', 'Services'], 'BorrowedEquipments' => ['Contracts', 'EquipmentTypes'], 'Contracts' => ['ServiceTypes', 'InstallationAddresses'], 'Emails', 'Ips' => ['Contracts'], 'LabelCustomers', 'Logins', 'Phones', 'RemovedIps' => ['Contracts'], 'SoldEquipments' => ['Contracts', 'EquipmentTypes'], 'Tasks' => ['TaskTypes', 'TaskStates', 'Dealers']],
         ]);
 
         $invoice_delivery_types = $this->Customers->invoice_delivery_types;

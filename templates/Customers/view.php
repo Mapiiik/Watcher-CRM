@@ -198,6 +198,42 @@
                 <?php endif; ?>
             </div>
             <div class="related">
+                <?= $this->Html->link(__('New Login'), ['controller' => 'Logins', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
+                <h4><?= __('Logins') ?></h4>
+                <?php if (!empty($customer->logins)) : ?>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Login') ?></th>
+                            <th><?= __('Rights') ?></th>
+                            <th><?= __('Locked') ?></th>
+                            <th><?= __('Last Granted') ?></th>
+                            <th><?= __('Last Granted Ip') ?></th>
+                            <th><?= __('Last Denied') ?></th>
+                            <th><?= __('Last Denied Ip') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                        <?php foreach ($customer->logins as $logins) : ?>
+                        <tr>
+                            <td><?= h($logins->login) ?></td>
+                            <td><?= $login_rights[$logins->rights] ?></td>
+                            <td><?= $logins->locked ? __('Yes') : __('No'); ?></td>
+                            <td><?= h($logins->last_granted) ?></td>
+                            <td><?= h($logins->last_granted_ip) ?></td>
+                            <td><?= h($logins->last_denied) ?></td>
+                            <td><?= h($logins->last_denied_ip) ?></td>
+                            <td class="actions">
+                                <?= $this->Html->link(__('View'), ['controller' => 'Logins', 'action' => 'view', $logins->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'Logins', 'action' => 'edit', $logins->id]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Logins', 'action' => 'delete', $logins->id], ['confirm' => __('Are you sure you want to delete # {0}?', $logins->id)]) ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+                <?php endif; ?>
+            </div>
+            <div class="related">
                 <?= $this->Html->link(__('New Address'), ['controller' => 'Addresses', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
                 <h4><?= __('Addresses') ?></h4>
                 <?php if (!empty($customer->addresses)) : ?>
@@ -234,42 +270,6 @@
                                 <?= $this->Html->link(__('View'), ['controller' => 'Addresses', 'action' => 'view', $addresses->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'Addresses', 'action' => 'edit', $addresses->id]) ?>
                                 <?= $this->Form->postLink(__('Delete'), ['controller' => 'Addresses', 'action' => 'delete', $addresses->id], ['confirm' => __('Are you sure you want to delete # {0}?', $addresses->id)]) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
-                <?php endif; ?>
-            </div>
-            <div class="related">
-                <?= $this->Html->link(__('New Login'), ['controller' => 'Logins', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
-                <h4><?= __('Logins') ?></h4>
-                <?php if (!empty($customer->logins)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __('Login') ?></th>
-                            <th><?= __('Rights') ?></th>
-                            <th><?= __('Locked') ?></th>
-                            <th><?= __('Last Granted') ?></th>
-                            <th><?= __('Last Granted Ip') ?></th>
-                            <th><?= __('Last Denied') ?></th>
-                            <th><?= __('Last Denied Ip') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                        <?php foreach ($customer->logins as $logins) : ?>
-                        <tr>
-                            <td><?= h($logins->login) ?></td>
-                            <td><?= $login_rights[$logins->rights] ?></td>
-                            <td><?= $logins->locked ? __('Yes') : __('No'); ?></td>
-                            <td><?= h($logins->last_granted) ?></td>
-                            <td><?= h($logins->last_granted_ip) ?></td>
-                            <td><?= h($logins->last_denied) ?></td>
-                            <td><?= h($logins->last_denied_ip) ?></td>
-                            <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Logins', 'action' => 'view', $logins->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Logins', 'action' => 'edit', $logins->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Logins', 'action' => 'delete', $logins->id], ['confirm' => __('Are you sure you want to delete # {0}?', $logins->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -328,28 +328,24 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Task Type Id') ?></th>
-                            <th><?= __('Task State Id') ?></th>
-                            <th><?= __('Priority') ?></th>
+                            <th><?= __('Task Type') ?></th>
+                            <th><?= __('Task State') ?></th>
                             <th><?= __('Subject') ?></th>
                             <th><?= __('Text') ?></th>
-                            <th><?= __('Dealer Id') ?></th>
-                            <th><?= __('Router Id') ?></th>
+                            <th><?= __('Dealer') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($customer->tasks as $tasks) : ?>
+                        <?php foreach ($customer->tasks as $task) : ?>
                         <tr>
-                            <td><?= h($tasks->task_type_id) ?></td>
-                            <td><?= h($tasks->task_state_id) ?></td>
-                            <td><?= h($tasks->priority) ?></td>
-                            <td><?= h($tasks->subject) ?></td>
-                            <td><?= nl2br($tasks->text) ?></td>
-                            <td><?= h($tasks->dealer_id) ?></td>
-                            <td><?= h($tasks->router_id) ?></td>
+                            <td><?= $task->has('task_type') ? h($task->task_type->name) : '' ?></td>
+                            <td><?= $task->has('task_state') ? h($task->task_state->name) : '' ?></td>
+                            <td><?= h($task->subject) ?></td>
+                            <td><?= nl2br($task->text) ?></td>
+                            <td><?= $task->has('dealer') ? h($task->dealer->name) : '' ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Tasks', 'action' => 'view', $tasks->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Tasks', 'action' => 'edit', $tasks->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Tasks', 'action' => 'delete', $tasks->id], ['confirm' => __('Are you sure you want to delete # {0}?', $tasks->id)]) ?>
+                                <?= $this->Html->link(__('View'), ['controller' => 'Tasks', 'action' => 'view', $task->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'Tasks', 'action' => 'edit', $task->id]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Tasks', 'action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -363,8 +359,8 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Contract Id') ?></th>
-                            <th><?= __('Service Id') ?></th>
+                            <th><?= __('Contract') ?></th>
+                            <th><?= __('Service') ?></th>
                             <th><?= __('Text') ?></th>
                             <th><?= __('Quantity') ?></th>
                             <th><?= __('Price') ?></th>
@@ -375,22 +371,22 @@
                             <th><?= __('Note') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($customer->billings as $billings) : ?>
+                        <?php foreach ($customer->billings as $billing) : ?>
                         <tr>
-                            <td><?= h($billings->contract_id) ?></td>
-                            <td><?= h($billings->service_id) ?></td>
-                            <td><?= h($billings->text) ?></td>
-                            <td><?= h($billings->quantity) ?></td>
-                            <td><?= h($billings->price) ?></td>
-                            <td><?= h($billings->billing_from) ?></td>
-                            <td><?= h($billings->billing_until) ?></td>
-                            <td><?= h($billings->active) ?></td>
-                            <td><?= h($billings->separate) ?></td>
-                            <td><?= h($billings->note) ?></td>
+                            <td><?= $billing->has('contract') ? $this->Html->link($billing->contract->number, ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]) : '' ?></td>
+                            <td><?= $billing->has('service') ? $this->Html->link($billing->service->name, ['controller' => 'Services', 'action' => 'view', $billing->service->id]) : '' ?></td>
+                            <td><?= h($billing->text) ?></td>
+                            <td><?= $this->Number->format($billing->quantity) ?></td>
+                            <td><?= $this->Number->format($billing->price) ?></td>
+                            <td><?= h($billing->billing_from) ?></td>
+                            <td><?= h($billing->billing_until) ?></td>
+                            <td><?= $billing->active ? __('Yes') : __('No'); ?></td>
+                            <td><?= $billing->separate ? __('Yes') : __('No'); ?></td>
+                            <td><?= h($billing->note) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Billings', 'action' => 'view', $billings->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Billings', 'action' => 'edit', $billings->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Billings', 'action' => 'delete', $billings->id], ['confirm' => __('Are you sure you want to delete # {0}?', $billings->id)]) ?>
+                                <?= $this->Html->link(__('View'), ['controller' => 'Billings', 'action' => 'view', $billing->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'Billings', 'action' => 'edit', $billing->id]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Billings', 'action' => 'delete', $billing->id], ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -404,24 +400,24 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Contract Id') ?></th>
-                            <th><?= __('Equipment Type Id') ?></th>
+                            <th><?= __('Contract') ?></th>
+                            <th><?= __('Equipment Type') ?></th>
                             <th><?= __('Serial Number') ?></th>
                             <th><?= __('Borrowed From') ?></th>
                             <th><?= __('Borrowed Until') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($customer->borrowed_equipments as $borrowedEquipments) : ?>
+                        <?php foreach ($customer->borrowed_equipments as $borrowedEquipment) : ?>
                         <tr>
-                            <td><?= h($borrowedEquipments->contract_id) ?></td>
-                            <td><?= h($borrowedEquipments->equipment_type_id) ?></td>
-                            <td><?= h($borrowedEquipments->serial_number) ?></td>
-                            <td><?= h($borrowedEquipments->borrowed_from) ?></td>
-                            <td><?= h($borrowedEquipments->borrowed_until) ?></td>
+                            <td><?= $borrowedEquipment->has('contract') ? $this->Html->link($borrowedEquipment->contract->number, ['controller' => 'Contracts', 'action' => 'view', $borrowedEquipment->contract->id]) : '' ?></td>
+                            <td><?= $borrowedEquipment->has('equipment_type') ? $this->Html->link($borrowedEquipment->equipment_type->name, ['controller' => 'EquipmentTypes', 'action' => 'view', $borrowedEquipment->equipment_type->id]) : '' ?></td>
+                            <td><?= h($borrowedEquipment->serial_number) ?></td>
+                            <td><?= h($borrowedEquipment->borrowed_from) ?></td>
+                            <td><?= h($borrowedEquipment->borrowed_until) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'BorrowedEquipments', 'action' => 'view', $borrowedEquipments->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'BorrowedEquipments', 'action' => 'edit', $borrowedEquipments->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'BorrowedEquipments', 'action' => 'delete', $borrowedEquipments->id], ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipments->id)]) ?>
+                                <?= $this->Html->link(__('View'), ['controller' => 'BorrowedEquipments', 'action' => 'view', $borrowedEquipment->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'BorrowedEquipments', 'action' => 'edit', $borrowedEquipment->id]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'BorrowedEquipments', 'action' => 'delete', $borrowedEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -435,20 +431,20 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Contract Id') ?></th>
-                            <th><?= __('Equipment Type Id') ?></th>
+                            <th><?= __('Contract') ?></th>
+                            <th><?= __('Equipment Type') ?></th>
                             <th><?= __('Serial Number') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($customer->sold_equipments as $soldEquipments) : ?>
+                        <?php foreach ($customer->sold_equipments as $soldEquipment) : ?>
                         <tr>
-                            <td><?= h($soldEquipments->contract_id) ?></td>
-                            <td><?= h($soldEquipments->equipment_type_id) ?></td>
-                            <td><?= h($soldEquipments->serial_number) ?></td>
+                            <td><?= $soldEquipment->has('contract') ? $this->Html->link($soldEquipment->contract->number, ['controller' => 'Contracts', 'action' => 'view', $soldEquipment->contract->id]) : '' ?></td>
+                            <td><?= $soldEquipment->has('equipment_type') ? $this->Html->link($soldEquipment->equipment_type->name, ['controller' => 'EquipmentTypes', 'action' => 'view', $soldEquipment->equipment_type->id]) : '' ?></td>
+                            <td><?= h($soldEquipment->serial_number) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'SoldEquipments', 'action' => 'view', $soldEquipments->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'SoldEquipments', 'action' => 'edit', $soldEquipments->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'SoldEquipments', 'action' => 'delete', $soldEquipments->id], ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipments->id)]) ?>
+                                <?= $this->Html->link(__('View'), ['controller' => 'SoldEquipments', 'action' => 'view', $soldEquipment->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'SoldEquipments', 'action' => 'edit', $soldEquipment->id]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'SoldEquipments', 'action' => 'delete', $soldEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -462,24 +458,24 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Contract Id') ?></th>
+                            <th><?= __('Contract') ?></th>
                             <th><?= __('Ip') ?></th>
                             <th><?= __('Note') ?></th>
                             <th><?= __('Created') ?></th>
                             <th><?= __('Created By') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($customer->ips as $ips) : ?>
+                        <?php foreach ($customer->ips as $ip) : ?>
                         <tr>
-                            <td><?= h($ips->contract_id) ?></td>
-                            <td><?= h($ips->ip) ?></td>
-                            <td><?= h($ips->note) ?></td>
-                            <td><?= h($ips->created) ?></td>
-                            <td><?= h($ips->created_by) ?></td>
+                            <td><?= $ip->has('contract') ? $this->Html->link($ip->contract->number, ['controller' => 'Contracts', 'action' => 'view', $ip->contract->id]) : '' ?></td>
+                            <td><?= h($ip->ip) ?></td>
+                            <td><?= h($ip->note) ?></td>
+                            <td><?= h($ip->created) ?></td>
+                            <td><?= h($ip->created_by) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Ips', 'action' => 'view', $ips->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Ips', 'action' => 'edit', $ips->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Ips', 'action' => 'delete', $ips->id], ['confirm' => __('Are you sure you want to delete # {0}?', $ips->ip)]) ?>
+                                <?= $this->Html->link(__('View'), ['controller' => 'Ips', 'action' => 'view', $ip->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'Ips', 'action' => 'edit', $ip->id]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Ips', 'action' => 'delete', $ip->id], ['confirm' => __('Are you sure you want to delete # {0}?', $ip->ip)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -493,24 +489,24 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Contract Id') ?></th>
+                            <th><?= __('Contract') ?></th>
                             <th><?= __('Ip') ?></th>
                             <th><?= __('Note') ?></th>
                             <th><?= __('Removed') ?></th>
                             <th><?= __('Removed By') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($customer->removed_ips as $removedIps) : ?>
+                        <?php foreach ($customer->removed_ips as $removedIp) : ?>
                         <tr>
-                            <td><?= h($removedIps->contract_id) ?></td>
-                            <td><?= h($removedIps->ip) ?></td>
-                            <td><?= h($removedIps->note) ?></td>
-                            <td><?= h($removedIps->removed) ?></td>
-                            <td><?= h($removedIps->removed_by) ?></td>
+                            <td><?= $removedIp->has('contract') ? $this->Html->link($removedIp->contract->number, ['controller' => 'Contracts', 'action' => 'view', $removedIp->contract->id]) : '' ?></td>
+                            <td><?= h($removedIp->ip) ?></td>
+                            <td><?= h($removedIp->note) ?></td>
+                            <td><?= h($removedIp->removed) ?></td>
+                            <td><?= h($removedIp->removed_by) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'RemovedIps', 'action' => 'view', $removedIps->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'RemovedIps', 'action' => 'edit', $removedIps->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'RemovedIps', 'action' => 'delete', $removedIps->id], ['confirm' => __('Are you sure you want to delete # {0}?', $removedIps->id)]) ?>
+                                <?= $this->Html->link(__('View'), ['controller' => 'RemovedIps', 'action' => 'view', $removedIp->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'RemovedIps', 'action' => 'edit', $removedIp->id]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'RemovedIps', 'action' => 'delete', $removedIp->id], ['confirm' => __('Are you sure you want to delete # {0}?', $removedIp->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

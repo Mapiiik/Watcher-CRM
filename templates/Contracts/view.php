@@ -236,15 +236,15 @@
                             <th><?= __('Note') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($contract->ips as $ips) : ?>
+                        <?php foreach ($contract->ips as $ip) : ?>
                         <tr>
-                            <td><?= h($ips->id) ?></td>
-                            <td><?= h($ips->ip) ?></td>
-                            <td><?= h($ips->note) ?></td>
+                            <td><?= h($ip->id) ?></td>
+                            <td><?= h($ip->ip) ?></td>
+                            <td><?= h($ip->note) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Ips', 'action' => 'view', $ips->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Ips', 'action' => 'edit', $ips->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Ips', 'action' => 'delete', $ips->id], ['confirm' => __('Are you sure you want to delete # {0}?', $ips->ip)]) ?>
+                                <?= $this->Html->link(__('View'), ['controller' => 'Ips', 'action' => 'view', $ip->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'Ips', 'action' => 'edit', $ip->id]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Ips', 'action' => 'delete', $ip->id], ['confirm' => __('Are you sure you want to delete # {0}?', $ip->ip)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -265,16 +265,16 @@
                             <th><?= __('Removed') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($contract->removed_ips as $removedIps) : ?>
+                        <?php foreach ($contract->removed_ips as $removedIp) : ?>
                         <tr>
-                            <td><?= h($removedIps->id) ?></td>
-                            <td><?= h($removedIps->ip) ?></td>
-                            <td><?= h($removedIps->note) ?></td>
-                            <td><?= h($removedIps->removed) ?></td>
+                            <td><?= h($removedIp->id) ?></td>
+                            <td><?= h($removedIp->ip) ?></td>
+                            <td><?= h($removedIp->note) ?></td>
+                            <td><?= h($removedIp->removed) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'RemovedIps', 'action' => 'view', $removedIps->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'RemovedIps', 'action' => 'edit', $removedIps->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'RemovedIps', 'action' => 'delete', $removedIps->id], ['confirm' => __('Are you sure you want to delete # {0}?', $removedIps->id)]) ?>
+                                <?= $this->Html->link(__('View'), ['controller' => 'RemovedIps', 'action' => 'view', $removedIp->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'RemovedIps', 'action' => 'edit', $removedIp->id]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'RemovedIps', 'action' => 'delete', $removedIp->id], ['confirm' => __('Are you sure you want to delete # {0}?', $removedIp->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

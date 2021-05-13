@@ -13,8 +13,6 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\BrokerageDealer[] $brokerage_dealers
  * @property \App\Model\Entity\Contract[] $contracts
- * @property \App\Model\Entity\Ip[] $ips
- * @property \App\Model\Entity\RemovedIp[] $removed_ips
  */
 class Brokerage extends Entity
 {
@@ -31,7 +29,5 @@ class Brokerage extends Entity
         'name' => true,
         'brokerage_dealers' => true,
         'contracts' => true,
-        'ips' => true,
-        'removed_ips' => true,
     ];
 }

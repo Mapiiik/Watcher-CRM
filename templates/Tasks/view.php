@@ -23,8 +23,24 @@
                     <td><?= $task->has('task_type') ? $this->Html->link($task->task_type->name, ['controller' => 'TaskTypes', 'action' => 'view', $task->task_type->id]) : '' ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('Subject') ?></th>
+                    <td><?= h($task->subject) ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Customer') ?></th>
                     <td><?= $task->has('customer') ? $this->Html->link($task->customer->name, ['controller' => 'Customers', 'action' => 'view', $task->customer->id]) : '' ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Dealer') ?></th>
+                    <td><?= $task->has('dealer') ? $this->Html->link($task->dealer->name, ['controller' => 'Customers', 'action' => 'view', $task->dealer->id]) : '' ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Email') ?></th>
+                    <td><?= h($task->email) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Phone') ?></th>
+                    <td><?= h($task->phone) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Task State') ?></th>
@@ -41,10 +57,6 @@
                 <tr>
                     <th><?= __('Priority') ?></th>
                     <td><?= $this->Number->format($task->priority) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Dealer Id') ?></th>
-                    <td><?= $this->Number->format($task->dealer_id) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified By') ?></th>
@@ -80,27 +92,9 @@
                 </tr>
             </table>
             <div class="text">
-                <strong><?= __('Subject') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($task->subject)); ?>
-                </blockquote>
-            </div>
-            <div class="text">
                 <strong><?= __('Text') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($task->text)); ?>
-                </blockquote>
-            </div>
-            <div class="text">
-                <strong><?= __('Email') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($task->email)); ?>
-                </blockquote>
-            </div>
-            <div class="text">
-                <strong><?= __('Phone') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($task->phone)); ?>
                 </blockquote>
             </div>
         </div>

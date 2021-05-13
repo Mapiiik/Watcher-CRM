@@ -33,7 +33,7 @@ class BrokeragesController extends AppController
     public function view($id = null)
     {
         $brokerage = $this->Brokerages->get($id, [
-            'contain' => ['BrokerageDealers', 'Contracts', 'Ips', 'RemovedIps'],
+            'contain' => ['BrokerageDealers', 'Contracts'],
         ]);
 
         $this->set(compact('brokerage'));

@@ -61,7 +61,7 @@ class TasksController extends AppController
         }
         $taskTypes = $this->Tasks->TaskTypes->find('list', ['order' => 'name']);
         $customers = $this->Tasks->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $dealers = $this->Tasks->Dealers->find('list', ['order' => 'name']);
+        $dealers = $this->Tasks->Dealers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $taskStates = $this->Tasks->TaskStates->find('list', ['order' => 'name']);
         $routers = $this->Tasks->Routers->find('list', ['order' => 'name']);
         $this->set(compact('task', 'taskTypes', 'customers', 'dealers', 'taskStates', 'routers'));
@@ -90,7 +90,7 @@ class TasksController extends AppController
         }
         $taskTypes = $this->Tasks->TaskTypes->find('list', ['order' => 'name']);
         $customers = $this->Tasks->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $dealers = $this->Tasks->Dealers->find('list', ['order' => 'name']);
+        $dealers = $this->Tasks->Dealers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $taskStates = $this->Tasks->TaskStates->find('list', ['order' => 'name']);
         $routers = $this->Tasks->Routers->find('list', ['order' => 'name']);
         $this->set(compact('task', 'taskTypes', 'customers', 'dealers', 'taskStates', 'routers'));

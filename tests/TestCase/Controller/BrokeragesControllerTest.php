@@ -25,8 +25,6 @@ class BrokeragesControllerTest extends TestCase
         'app.Brokerages',
         'app.BrokerageDealers',
         'app.Contracts',
-        'app.Ips',
-        'app.RemovedIps',
     ];
 
     /**

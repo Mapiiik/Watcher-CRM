@@ -27,16 +27,16 @@
                     echo $this->Form->control('text');
                     echo $this->Form->control('priority');
                     echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
-                    echo $this->Form->control('dealer_id');
+                    echo $this->Form->control('dealer_id', ['options' => $dealers, 'empty' => true]);
                     echo $this->Form->control('modified_by');
                     echo $this->Form->control('created_by');
                     echo $this->Form->control('email');
                     echo $this->Form->control('phone');
                     echo $this->Form->control('task_state_id', ['options' => $taskStates]);
-                    echo $this->Form->control('finish_date');
-                    echo $this->Form->control('start_date');
-                    echo $this->Form->control('estimated_date');
-                    echo $this->Form->control('critical_date');
+                    echo $this->Form->control('finish_date', ['empty' => true]);
+                    echo $this->Form->control('start_date', ['empty' => true]);
+                    echo $this->Form->control('estimated_date', ['empty' => true]);
+                    echo $this->Form->control('critical_date', ['empty' => true]);
                     echo $this->Form->control('router_id', ['options' => $routers, 'empty' => true]);
                 ?>
             </fieldset>

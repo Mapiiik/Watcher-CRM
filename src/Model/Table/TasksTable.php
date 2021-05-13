@@ -61,7 +61,9 @@ class TasksTable extends Table
             'foreignKey' => 'customer_id',
         ]);
         $this->belongsTo('Dealers', [
+            'className' => 'Customers',
             'foreignKey' => 'dealer_id',
+            'conditions' => ['Dealers.dealer' => 1],
         ]);
         $this->belongsTo('TaskStates', [
             'foreignKey' => 'task_state_id',

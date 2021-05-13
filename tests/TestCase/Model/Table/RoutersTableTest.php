@@ -3,20 +3,20 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\BrokeragesTable;
+use App\Model\Table\RoutersTable;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\BrokeragesTable Test Case
+ * App\Model\Table\RoutersTable Test Case
  */
-class BrokeragesTableTest extends TestCase
+class RoutersTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \App\Model\Table\BrokeragesTable
+     * @var \App\Model\Table\RoutersTable
      */
-    protected $Brokerages;
+    protected $Routers;
 
     /**
      * Fixtures
@@ -24,9 +24,9 @@ class BrokeragesTableTest extends TestCase
      * @var array
      */
     protected $fixtures = [
-        'app.Brokerages',
-        'app.BrokerageDealers',
-        'app.Contracts',
+        'app.Routers',
+        'app.Ranges',
+        'app.Tasks',
     ];
 
     /**
@@ -37,8 +37,8 @@ class BrokeragesTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Brokerages') ? [] : ['className' => BrokeragesTable::class];
-        $this->Brokerages = $this->getTableLocator()->get('Brokerages', $config);
+        $config = $this->getTableLocator()->exists('Routers') ? [] : ['className' => RoutersTable::class];
+        $this->Routers = $this->getTableLocator()->get('Routers', $config);
     }
 
     /**
@@ -48,7 +48,7 @@ class BrokeragesTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Brokerages);
+        unset($this->Routers);
 
         parent::tearDown();
     }
