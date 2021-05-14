@@ -11,7 +11,7 @@
             <?= $this->Html->link(__('List Task States'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-80">
+    <div class="column-responsive column-90">
         <div class="taskStates form content">
             <?= $this->Form->create($taskState) ?>
             <fieldset>

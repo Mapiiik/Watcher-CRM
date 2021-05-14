@@ -16,7 +16,7 @@
             <?= $this->Html->link(__('List Emails'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-80">
+    <div class="column-responsive column-90">
         <div class="emails form content">
             <?= $this->Form->create($email) ?>
             <fieldset>

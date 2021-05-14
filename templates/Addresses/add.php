@@ -11,7 +11,7 @@
             <?= $this->Html->link(__('List Addresses'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-80">
+    <div class="column-responsive column-90">
         <div class="addresses form content">
             <?= $this->Form->create($address) ?>
             <fieldset>

@@ -16,7 +16,7 @@
             <?= $this->Html->link(__('List Logins'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-80">
+    <div class="column-responsive column-90">
         <div class="logins form content">
             <?= $this->Form->create($login) ?>
             <fieldset>

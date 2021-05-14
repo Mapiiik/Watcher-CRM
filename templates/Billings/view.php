@@ -14,7 +14,7 @@
             <?= $this->Html->link(__('New Billing'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-80">
+    <div class="column-responsive column-90">
         <div class="billings view content">
             <h3><?= h($billing->id) ?></h3>
             <table>

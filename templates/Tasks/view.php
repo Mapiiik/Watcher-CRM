@@ -14,7 +14,7 @@
             <?= $this->Html->link(__('New Task'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-80">
+    <div class="column-responsive column-90">
         <div class="tasks view content">
             <h3><?= h($task->id) ?></h3>
             <div class="row">

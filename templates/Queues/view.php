@@ -14,7 +14,7 @@
             <?= $this->Html->link(__('New Queue'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-80">
+    <div class="column-responsive column-90">
         <div class="queues view content">
             <h3><?= h($queue->name) ?></h3>
             <table>

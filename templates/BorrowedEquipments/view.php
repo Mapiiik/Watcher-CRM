@@ -14,7 +14,7 @@
             <?= $this->Html->link(__('New Borrowed Equipment'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-80">
+    <div class="column-responsive column-90">
         <div class="borrowedEquipments view content">
             <h3><?= h($borrowedEquipment->id) ?></h3>
             <table>

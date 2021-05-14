@@ -14,7 +14,7 @@
             <?= $this->Html->link(__('New Ip'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-80">
+    <div class="column-responsive column-90">
         <div class="ips view content">
             <h3><?= h($ip->ip) ?></h3>
             <table>

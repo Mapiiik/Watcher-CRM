@@ -14,7 +14,7 @@
             <?= $this->Html->link(__('New Contract'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-80">
+    <div class="column-responsive column-90">
         <div class="contracts view content">
             <h3><?= h($contract->number) ?></h3>
             <div class="row">

@@ -14,7 +14,7 @@
             <?= $this->Html->link(__('New Country'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-80">
+    <div class="column-responsive column-90">
         <div class="countries view content">
             <h3><?= h($country->name) ?></h3>
             <table>

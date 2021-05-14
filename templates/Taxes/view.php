@@ -14,7 +14,7 @@
             <?= $this->Html->link(__('New Tax'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-80">
+    <div class="column-responsive column-90">
         <div class="taxes view content">
             <h3><?= h($tax->name) ?></h3>
             <table>
