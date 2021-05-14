@@ -80,11 +80,27 @@ input:not([type]),
 textarea,
 select {
     height: 3.0rem;
+    background-color: #ffffff;
 }
 
 /* Tables */
+table {
+        border-collapse:collapse;
+        margin-bottom: 6px;
+        margin-right: 6px;
+        background-color: #ffffff;
+
+        border-radius: 0.4rem;
+        box-shadow: 0 3px 6px 0 rgba(60, 66, 87, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.05);
+}
 th, td {
+    border: 0.1rem solid #aaaaaa;
+    vertical-align: baseline;
     padding: 0.7rem 1.0rem;
+}
+td:first-child,
+th:first-child {
+    padding-left: 0.7rem;
 }
 
 fieldset, input, select, textarea {
@@ -111,13 +127,13 @@ fieldset, input, select, textarea {
 
 /* Main */
 body {
-    background: #f5f7fa;
+    background: #f0f2f5;
     font-size: 1.3em;
     line-height: 1.0;
 }
 .content {
     padding: 2rem;
-    background: #ffffff;
+    background: #fbfcff;
     border-radius: 0.4rem;
     /* Thanks Stripe */
     box-shadow: 0 7px 14px 0 rgba(60, 66, 87, 0.1),
