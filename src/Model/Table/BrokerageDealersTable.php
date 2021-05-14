@@ -45,7 +45,9 @@ class BrokerageDealersTable extends Table
         $this->setPrimaryKey('id');
 
         $this->belongsTo('Dealers', [
+            'className' => 'Customers',
             'foreignKey' => 'dealer_id',
+            'conditions' => ['Dealers.dealer' => 1],
         ]);
         $this->belongsTo('Brokerages', [
             'foreignKey' => 'brokerage_id',

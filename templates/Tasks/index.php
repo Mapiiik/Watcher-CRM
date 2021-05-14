@@ -16,9 +16,9 @@
                     <th><?= $this->Paginator->sort('priority') ?></th>
                     <th><?= $this->Paginator->sort('task_state_id') ?></th>
                     <th><?= $this->Paginator->sort('subject') ?></th>
-                    <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('email') ?></th>
                     <th><?= $this->Paginator->sort('phone') ?></th>
+                    <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('dealer_id') ?></th>
                     <th><?= $this->Paginator->sort('router_id') ?></th>
                     <th><?= $this->Paginator->sort('start_date') ?></th>
@@ -36,9 +36,9 @@
                     <td><?= $this->Number->format($task->priority) ?></td>
                     <td><?= $task->has('task_state') ? $this->Html->link($task->task_state->name, ['controller' => 'TaskStates', 'action' => 'view', $task->task_state->id]) : '' ?></td>
                     <td><?= h($task->subject) ?></td>
-                    <td><?= $task->has('customer') ? $this->Html->link($task->customer->name, ['controller' => 'Customers', 'action' => 'view', $task->customer->id]) : '' ?></td>
                     <td><?= h($task->email) ?></td>
                     <td><?= h($task->phone) ?></td>
+                    <td><?= $task->has('customer') ? $this->Html->link($task->customer->name, ['controller' => 'Customers', 'action' => 'view', $task->customer->id]) : '' ?></td>
                     <td><?= $task->has('dealer') ? $this->Html->link($task->dealer->name, ['controller' => 'Customers', 'action' => 'view', $task->dealer->id]) : '' ?></td>
                     <td><?= $task->has('router') ? $this->Html->link($task->router->name, ['controller' => 'Routers', 'action' => 'view', $task->router->id]) : '' ?></td>
                     <td><?= h($task->start_date) ?></td>

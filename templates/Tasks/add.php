@@ -18,21 +18,19 @@
                 <legend><?= __('Add Task') ?></legend>
                 <?php
                     echo $this->Form->control('task_type_id', ['options' => $taskTypes]);
-                    echo $this->Form->control('subject');
-                    echo $this->Form->control('text');
                     echo $this->Form->control('priority');
-                    echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
-                    echo $this->Form->control('dealer_id', ['options' => $dealers, 'empty' => true]);
-                    echo $this->Form->control('modified_by');
-                    echo $this->Form->control('created_by');
+                    echo $this->Form->control('task_state_id', ['options' => $taskStates]);
+                    echo $this->Form->control('subject');
+                    echo $this->Form->control('text', ['style' => 'height: 30.0rem']);
                     echo $this->Form->control('email');
                     echo $this->Form->control('phone');
-                    echo $this->Form->control('task_state_id', ['options' => $taskStates]);
-                    echo $this->Form->control('finish_date', ['empty' => true]);
+                    echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
+                    echo $this->Form->control('dealer_id', ['options' => $dealers, 'empty' => true]);
+                    echo $this->Form->control('router_id', ['options' => $routers, 'empty' => true]);
                     echo $this->Form->control('start_date', ['empty' => true]);
                     echo $this->Form->control('estimated_date', ['empty' => true]);
                     echo $this->Form->control('critical_date', ['empty' => true]);
-                    echo $this->Form->control('router_id', ['options' => $routers, 'empty' => true]);
+                    echo $this->Form->control('finish_date', ['empty' => true]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

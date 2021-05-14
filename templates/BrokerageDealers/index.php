@@ -22,7 +22,7 @@
             <tbody>
                 <?php foreach ($brokerageDealers as $brokerageDealer): ?>
                 <tr>
-                    <td><?= $this->Number->format($brokerageDealer->dealer_id) ?></td>
+                    <td><?= $brokerageDealer->has('dealer') ? $this->Html->link($brokerageDealer->dealer->name, ['controller' => 'Customers', 'action' => 'view', $brokerageDealer->dealer->id]) : '' ?></td>
                     <td><?= $brokerageDealer->has('brokerage') ? $this->Html->link($brokerageDealer->brokerage->name, ['controller' => 'Brokerages', 'action' => 'view', $brokerageDealer->brokerage->id]) : '' ?></td>
                     <td><?= $this->Number->format($brokerageDealer->fixed) ?></td>
                     <td><?= $this->Number->format($brokerageDealer->percentage) ?></td>

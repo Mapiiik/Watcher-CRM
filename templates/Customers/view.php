@@ -323,7 +323,7 @@
             </div>
             <div class="related">
                 <?= $this->Html->link(__('New Task'), ['controller' => 'Tasks', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
-                <h4><?= __('Related Tasks') ?></h4>
+                <h4><?= __('Tasks') ?></h4>
                 <?php if (!empty($customer->tasks)) : ?>
                 <div class="table-responsive">
                     <table>

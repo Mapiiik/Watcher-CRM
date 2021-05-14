@@ -18,9 +18,19 @@ class TasksController extends AppController
      */
     public function index()
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+        
+        $conditions = [];
+        if (isset($customer_id)) {
+            $conditions = ['Tasks.customer_id' => $customer_id];
+        }
+        
         $this->paginate = [
             'contain' => ['TaskTypes', 'Customers', 'Dealers', 'TaskStates', 'Routers'],
+            'conditions' => $conditions,
         ];
+
         $tasks = $this->paginate($this->Tasks);
 
         $this->set(compact('tasks'));
@@ -49,7 +59,15 @@ class TasksController extends AppController
      */
     public function add()
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+
         $task = $this->Tasks->newEmptyEntity();
+
+        if (isset($customer_id)) {
+            $task = $this->Tasks->patchEntity($task, ['customer_id' => $customer_id]);
+        }
+
         if ($this->request->is('post')) {
             $task = $this->Tasks->patchEntity($task, $this->request->getData());
             if ($this->Tasks->save($task)) {
@@ -64,6 +82,11 @@ class TasksController extends AppController
         $dealers = $this->Tasks->Dealers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $taskStates = $this->Tasks->TaskStates->find('list', ['order' => 'name']);
         $routers = $this->Tasks->Routers->find('list', ['order' => 'name']);
+
+        if (isset($customer_id)) {
+            $customers->where(['id' => $customer_id]);
+        }
+
         $this->set(compact('task', 'taskTypes', 'customers', 'dealers', 'taskStates', 'routers'));
     }
 
@@ -76,6 +99,9 @@ class TasksController extends AppController
      */
     public function edit($id = null)
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+
         $task = $this->Tasks->get($id, [
             'contain' => [],
         ]);
@@ -93,6 +119,11 @@ class TasksController extends AppController
         $dealers = $this->Tasks->Dealers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $taskStates = $this->Tasks->TaskStates->find('list', ['order' => 'name']);
         $routers = $this->Tasks->Routers->find('list', ['order' => 'name']);
+
+        if (isset($customer_id)) {
+            $customers->where(['id' => $customer_id]);
+        }
+
         $this->set(compact('task', 'taskTypes', 'customers', 'dealers', 'taskStates', 'routers'));
     }
 

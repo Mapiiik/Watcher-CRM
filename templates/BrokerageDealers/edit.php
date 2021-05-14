@@ -22,7 +22,7 @@
             <fieldset>
                 <legend><?= __('Edit Brokerage Dealer') ?></legend>
                 <?php
-                    echo $this->Form->control('dealer_id');
+                    echo $this->Form->control('dealer_id', ['options' => $dealers, 'empty' => true]);
                     echo $this->Form->control('brokerage_id', ['options' => $brokerages, 'empty' => true]);
                     echo $this->Form->control('fixed');
                     echo $this->Form->control('percentage');

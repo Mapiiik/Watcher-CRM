@@ -19,12 +19,12 @@
             <h3><?= h($brokerageDealer->id) ?></h3>
             <table>
                 <tr>
-                    <th><?= __('Brokerage') ?></th>
-                    <td><?= $brokerageDealer->has('brokerage') ? $this->Html->link($brokerageDealer->brokerage->name, ['controller' => 'Brokerages', 'action' => 'view', $brokerageDealer->brokerage->id]) : '' ?></td>
+                    <th><?= __('Dealer') ?></th>
+                    <td><?= $brokerageDealer->has('dealer') ? $this->Html->link($brokerageDealer->dealer->name, ['controller' => 'Customers', 'action' => 'view', $brokerageDealer->dealer->id]) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Dealer Id') ?></th>
-                    <td><?= $this->Number->format($brokerageDealer->dealer_id) ?></td>
+                    <th><?= __('Brokerage') ?></th>
+                    <td><?= $brokerageDealer->has('brokerage') ? $this->Html->link($brokerageDealer->brokerage->name, ['controller' => 'Brokerages', 'action' => 'view', $brokerageDealer->brokerage->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Fixed') ?></th>

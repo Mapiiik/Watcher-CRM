@@ -14,7 +14,7 @@ use Cake\ORM\Entity;
  * @property float|null $percentage
  * @property int $id
  *
- * @property \App\Model\Entity\Dealer $dealer
+ * @property \App\Model\Entity\Customer $dealer
  * @property \App\Model\Entity\Brokerage $brokerage
  */
 class BrokerageDealer extends Entity

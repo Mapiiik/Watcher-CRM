@@ -59,8 +59,8 @@ class BrokerageDealersController extends AppController
             }
             $this->Flash->error(__('The brokerage dealer could not be saved. Please, try again.'));
         }
-        $dealers = $this->BrokerageDealers->Dealers->find('list', ['order' => 'name']);
-        $brokerages = $this->BrokerageDealers->Brokerages->find('list', ['order' => 'name']);
+        $dealers = $this->BrokerageDealers->Dealers->find('list', ['limit' => 200]);
+        $brokerages = $this->BrokerageDealers->Brokerages->find('list', ['limit' => 200]);
         $this->set(compact('brokerageDealer', 'dealers', 'brokerages'));
     }
 
@@ -85,8 +85,8 @@ class BrokerageDealersController extends AppController
             }
             $this->Flash->error(__('The brokerage dealer could not be saved. Please, try again.'));
         }
-        $dealers = $this->BrokerageDealers->Dealers->find('list', ['order' => 'name']);
-        $brokerages = $this->BrokerageDealers->Brokerages->find('list', ['order' => 'name']);
+        $dealers = $this->BrokerageDealers->Dealers->find('list', ['limit' => 200]);
+        $brokerages = $this->BrokerageDealers->Brokerages->find('list', ['limit' => 200]);
         $this->set(compact('brokerageDealer', 'dealers', 'brokerages'));
     }
 
