@@ -145,6 +145,7 @@ body {
 }
 th {
 /*    white-space: nowrap; */
+    background: #ddf0ff;
 }
 
 /* Nav bar */
