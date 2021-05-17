@@ -124,12 +124,11 @@
             </div>
             <div class="related">
                 <?= $this->Html->link(__('New Billing'), ['controller' => 'Billings', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
-                <h4><?= __('Related Billings') ?></h4>
+                <h4><?= __('Billings') ?></h4>
                 <?php if (!empty($contract->billings)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Service') ?></th>
                             <th><?= __('Text') ?></th>
                             <th><?= __('Quantity') ?></th>
@@ -143,7 +142,6 @@
                         </tr>
                         <?php foreach ($contract->billings as $billings) : ?>
                         <tr>
-                            <td><?= h($billings->id) ?></td>
                             <td><?= h($billings->service->name) ?></td>
                             <td><?= h($billings->text) ?></td>
                             <td><?= h($billings->quantity) ?></td>
@@ -166,12 +164,11 @@
             </div>
             <div class="related">
                 <?= $this->Html->link(__('New Borrowed Equipment'), ['controller' => 'BorrowedEquipments', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
-                <h4><?= __('Related Borrowed Equipments') ?></h4>
+                <h4><?= __('Borrowed Equipments') ?></h4>
                 <?php if (!empty($contract->borrowed_equipments)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Equipment Type') ?></th>
                             <th><?= __('Serial Number') ?></th>
                             <th><?= __('Borrowed From') ?></th>
@@ -180,7 +177,6 @@
                         </tr>
                         <?php foreach ($contract->borrowed_equipments as $borrowedEquipments) : ?>
                         <tr>
-                            <td><?= h($borrowedEquipments->id) ?></td>
                             <td><?= h($borrowedEquipments->equipment_type->name) ?></td>
                             <td><?= h($borrowedEquipments->serial_number) ?></td>
                             <td><?= h($borrowedEquipments->borrowed_from) ?></td>
@@ -198,19 +194,17 @@
             </div>
             <div class="related">
                 <?= $this->Html->link(__('New Sold Equipment'), ['controller' => 'SoldEquipments', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
-                <h4><?= __('Related Sold Equipments') ?></h4>
+                <h4><?= __('Sold Equipments') ?></h4>
                 <?php if (!empty($contract->sold_equipments)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Equipment Type') ?></th>
                             <th><?= __('Serial Number') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($contract->sold_equipments as $soldEquipments) : ?>
                         <tr>
-                            <td><?= h($soldEquipments->id) ?></td>
                             <td><?= h($soldEquipments->equipment_type->name) ?></td>
                             <td><?= h($soldEquipments->serial_number) ?></td>
                             <td class="actions">
@@ -226,19 +220,17 @@
             </div>
             <div class="related">
                 <?= $this->Html->link(__('New Ip'), ['controller' => 'Ips', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
-                <h4><?= __('Related Ips') ?></h4>
+                <h4><?= __('Ips') ?></h4>
                 <?php if (!empty($contract->ips)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Ip') ?></th>
                             <th><?= __('Note') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($contract->ips as $ip) : ?>
                         <tr>
-                            <td><?= h($ip->id) ?></td>
                             <td><?= h($ip->ip) ?></td>
                             <td><?= h($ip->note) ?></td>
                             <td class="actions">
@@ -254,12 +246,11 @@
             </div>
             <div class="related">
                 <?= $this->Html->link(__('New Removed Ip'), ['controller' => 'RemovedIps', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
-                <h4><?= __('Related Removed Ips') ?></h4>
+                <h4><?= __('Removed Ips') ?></h4>
                 <?php if (!empty($contract->removed_ips)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Ip') ?></th>
                             <th><?= __('Note') ?></th>
                             <th><?= __('Removed') ?></th>
@@ -267,7 +258,6 @@
                         </tr>
                         <?php foreach ($contract->removed_ips as $removedIp) : ?>
                         <tr>
-                            <td><?= h($removedIp->id) ?></td>
                             <td><?= h($removedIp->ip) ?></td>
                             <td><?= h($removedIp->note) ?></td>
                             <td><?= h($removedIp->removed) ?></td>
