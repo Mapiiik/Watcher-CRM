@@ -118,7 +118,7 @@ class Address extends Entity
         {
                 $address .= ", " . $this->street . " " . $this->number;
         }
-        else
+        else if (isset($this->number))
         {
                 $address .= ", " . "č.p. " . $this->number;
         };
