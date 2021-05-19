@@ -7,6 +7,8 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\EventInterface;
+use ArrayObject;
 
 /**
  * Phones Model
@@ -63,7 +65,8 @@ class PhonesTable extends Table
 
         $validator
             ->scalar('phone')
-            ->allowEmptyString('phone');
+            ->requirePresence('phone', 'create')
+            ->notEmptyString('phone');
 
         return $validator;
     }
@@ -81,4 +84,34 @@ class PhonesTable extends Table
 
         return $rules;
     }
+
+    public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
+    {
+        if (isset($data['phone']) && is_string($data['phone']) && (strlen($data['phone']) > 0)) {
+            $phone = $data['phone'];
+            $old = array('+','-',' ');
+            $new = array('','','');
+
+            $phone = trim(str_replace(['+', '-', ' '], ['', '', ''], $phone));
+
+            switch (strlen($phone))
+            {
+                    case 9:
+                            $phone = "420" . $phone;
+                            break;
+                    case 12:
+                            $phone = $phone;
+                            break;
+                    case 11: //some other countries, Netherlands etc.
+                            $phone = $phone;
+                            break;
+                    default:
+                            $data['phone'] = null;
+                            return;
+            }
+
+            $phone = substr($phone, 0, 3) . " " . substr($phone, 3);
+            $data['phone'] = "+" . $phone;
+        }
+    }        
 }
