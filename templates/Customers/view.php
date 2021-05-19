@@ -50,7 +50,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Ic') ?></th>
-                            <td><?= h($customer->ic) ?></td>
+                            <td><?= $customer->has('ic') ? h($customer->ic) . ' (' . ($customer->ic_verified ?  __('OK') : __('Invalid')) . ')' : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Dic') ?></th>
