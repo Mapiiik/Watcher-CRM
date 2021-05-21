@@ -30,6 +30,8 @@
                     echo $this->Form->control('price');
                     echo $this->Form->control('billing_from', ['empty' => true]);
                     echo $this->Form->control('billing_until', ['empty' => true]);
+                    echo $this->Form->control('fixed_discount');
+                    echo $this->Form->control('percentage_discount');
                     echo $this->Form->control('active');
                     echo $this->Form->control('separate');
                     echo $this->Form->control('note');

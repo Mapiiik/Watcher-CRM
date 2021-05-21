@@ -40,7 +40,7 @@
                 </tr>
                 <tr>
                     <th><?= __('Price') ?></th>
-                    <td><?= $this->Number->format($billing->price) ?><?= $billing->has('service') ? ' (' . h($billing->service->price) . ')' : '' ?></td>
+                    <td><?= h($billing->price) ?><?= $billing->has('service') ? ' (' . h($billing->service->price) . ')' : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Billing From') ?></th>
@@ -49,6 +49,14 @@
                 <tr>
                     <th><?= __('Billing Until') ?></th>
                     <td><?= h($billing->billing_until) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Fixed Discount') ?></th>
+                    <td><?= h($billing->fixed_discount) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Percentage Discount') ?></th>
+                    <td><?= h($billing->percentage_discount) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Active') ?></th>

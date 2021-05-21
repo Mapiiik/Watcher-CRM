@@ -135,6 +135,8 @@
                             <th><?= __('Price') ?></th>
                             <th><?= __('Billing From') ?></th>
                             <th><?= __('Billing Until') ?></th>
+                            <th><?= __('Fixed Discount') ?></th>
+                            <th><?= __('Percentage Discount') ?></th>
                             <th><?= __('Active') ?></th>
                             <th><?= __('Separate') ?></th>
                             <th><?= __('Note') ?></th>
@@ -148,6 +150,8 @@
                             <td><?= h($billings->price) ?><?= $billings->has('service') ? ' (' . h($billings->service->price) . ')' : '' ?></td>
                             <td><?= h($billings->billing_from) ?></td>
                             <td><?= h($billings->billing_until) ?></td>
+                            <td><?= h($billings->fixed_discount) ?></td>
+                            <td><?= h($billings->percentage_discount) ?></td>
                             <td><?= $billings->active ? __('Yes') : __('No'); ?></td>
                             <td><?= $billings->separate ? __('Yes') : __('No'); ?></td>
                             <td><?= h($billings->note) ?></td>
