@@ -40,7 +40,7 @@
                 </tr>
                 <tr>
                     <th><?= __('Price') ?></th>
-                    <td><?= $this->Number->format($billing->price) ?></td>
+                    <td><?= $this->Number->format($billing->price) ?><?= $billing->has('service') ? ' (' . h($billing->service->price) . ')' : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Billing From') ?></th>
