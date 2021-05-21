@@ -142,10 +142,10 @@
                         </tr>
                         <?php foreach ($contract->billings as $billings) : ?>
                         <tr>
-                            <td><?= h($billings->service->name) ?></td>
+                            <td><?= $billings->has('service') ? h($billings->service->name) : '' ?></td>
                             <td><?= h($billings->text) ?></td>
                             <td><?= h($billings->quantity) ?></td>
-                            <td><?= h($billings->price) ?> (<?= h($billings->service->price) ?>)</td>
+                            <td><?= h($billings->price) ?><?= $billings->has('service') ? ' (' . h($billings->service->price) . ')' : '' ?></td>
                             <td><?= h($billings->billing_from) ?></td>
                             <td><?= h($billings->billing_until) ?></td>
                             <td><?= $billings->active ? __('Yes') : __('No'); ?></td>
