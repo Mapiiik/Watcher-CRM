@@ -27,12 +27,24 @@
                     <td><?= h($login->login) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Password') ?></th>
-                    <td><?= h($login->password) ?></td>
+                    <th><?= __('Rights') ?></th>
+                    <td><?= $rights[$login->rights] ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Locked') ?></th>
+                    <td><?= $login->locked ? __('Yes') : __('No'); ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Last Granted') ?></th>
+                    <td><?= h($login->last_granted) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Last Granted Ip') ?></th>
                     <td><?= h($login->last_granted_ip) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Last Denied') ?></th>
+                    <td><?= h($login->last_denied) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Last Denied Ip') ?></th>
@@ -43,36 +55,20 @@
                     <td><?= $this->Number->format($login->id) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Rights') ?></th>
-                    <td><?= $this->Number->format($login->rights) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Locked') ?></th>
-                    <td><?= $this->Number->format($login->locked) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified By') ?></th>
-                    <td><?= $this->Number->format($login->modified_by) ?></td>
+                    <th><?= __('Created') ?></th>
+                    <td><?= h($login->created) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Created By') ?></th>
                     <td><?= $this->Number->format($login->created_by) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Last Granted') ?></th>
-                    <td><?= h($login->last_granted) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Last Denied') ?></th>
-                    <td><?= h($login->last_denied) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Modified') ?></th>
                     <td><?= h($login->modified) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($login->created) ?></td>
+                    <th><?= __('Modified By') ?></th>
+                    <td><?= $this->Number->format($login->modified_by) ?></td>
                 </tr>
             </table>
         </div>
