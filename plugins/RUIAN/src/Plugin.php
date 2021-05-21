@@ -39,7 +39,7 @@ class Plugin extends BasePlugin
     {
         $routes->plugin(
             'RUIAN',
-            ['path' => '/r-u-i-a-n'],
+            ['path' => '/ruian'],
             function (RouteBuilder $builder) {
                 // Add custom routes here
 

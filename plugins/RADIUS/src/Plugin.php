@@ -39,7 +39,7 @@ class Plugin extends BasePlugin
     {
         $routes->plugin(
             'RADIUS',
-            ['path' => '/r-a-d-i-u-s'],
+            ['path' => '/radius'],
             function (RouteBuilder $builder) {
                 // Add custom routes here
 
