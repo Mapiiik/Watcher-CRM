@@ -34,7 +34,7 @@
                     <td><?= $billing->has('service') ? $this->Html->link($billing->service->name, ['controller' => 'Services', 'action' => 'view', $billing->service->id]) : '' ?></td>
                     <td><?= h($billing->text) ?></td>
                     <td><?= $this->Number->format($billing->quantity) ?></td>
-                    <td><?= $this->Number->format($billing->price) ?></td>
+                    <td><?= $this->Number->format($billing->price) ?><?= $billing->has('service') ? ' (' . h($billing->service->price) . ')' : '' ?></td>
                     <td><?= h($billing->billing_from) ?></td>
                     <td><?= h($billing->billing_until) ?></td>
                     <td><?= $billing->active ? __('Yes') : __('No'); ?></td>
