@@ -164,7 +164,7 @@ class AddressesController extends AppController
 
     private function findRuianData(\App\Model\Entity\Address $address): array
     {
-        $this->RuianAddresses = $this->getTableLocator()->get('Ruian.Addresses');
+        $this->RuianAddresses = $this->getTableLocator()->get('RUIAN.Addresses');
         
         $conditionsForSearches = [
             // search in RUIAN
