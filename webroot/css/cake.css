@@ -154,7 +154,7 @@ th {
     align-items: center;
     justify-content: space-between;
     padding: 2rem;
-    margin: 0 auto 2rem;
+    margin: 0 auto 0rem;
 }
 .top-nav-title a {
     font-size: 2.4rem;
@@ -303,6 +303,11 @@ th {
     line-height: 2.8rem;
     padding: 0 1.5rem;
 }
+.button-auto {
+    height: auto;
+    line-height: 2.0rem;
+    padding: 0 1.5rem;
+}
 .button-selected {
     background-color: #606c76;
     border-color: #606c76;
@@ -310,4 +315,14 @@ th {
 
 .active {
     font-weight: bold;
+}
+
+.nav-container {
+    padding-left: 0px;
+}
+
+.nav-content {
+    padding-top: 1rem;
+    padding-bottom: 0rem;
+    padding-left: 1rem;
 }

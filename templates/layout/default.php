@@ -85,6 +85,9 @@ $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
         </div>
 
     </nav>
+
+    <?= $this->request->getParam('customer_id') ? $this->cell('Customer') : ''; ?>
+
 <?php endif; ?>
     <main class="main">
         <div class="container">

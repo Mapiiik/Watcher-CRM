@@ -112,15 +112,13 @@ class Address extends Entity
     {
         $address = '';
         
-        $address .= $this->name;
-        
         if (isset($this->street))
         {
-                $address .= ", " . $this->street . " " . $this->number;
+                $address .= $this->street . " " . $this->number;
         }
         else if (isset($this->number))
         {
-                $address .= ", " . "č.p. " . $this->number;
+                $address .= "č.p. " . $this->number;
         };
 
         if (isset($this->zip))
@@ -128,10 +126,21 @@ class Address extends Entity
             $address .= ", " . substr($this->zip, 0, 3) . ' ' . substr($this->zip, 3, 2);
         }
 
-        if (isset($this->zip))
+        if (isset($this->city))
         {
             $address .= " " . $this->city;
         }
+        
+        return $address;
+    }
+
+    protected function _getFullAddress(): string
+    {
+        $address = '';
+        
+        $address .= $this->name;
+        $address .= ", ";
+        $address .= $this->address;
         
         return $address;
     }

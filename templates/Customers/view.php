@@ -301,7 +301,7 @@
                         <tr>
                             <td><?= $contracts->has('service_type') ? h($contracts->service_type->name) : '' ?></td>
                             <td><?= h($contracts->number) ?></td>
-                            <td><?= $contracts->has('installation_address') ? h($contracts->installation_address->address) : '' ?></td>
+                            <td><?= $contracts->has('installation_address') ? h($contracts->installation_address->full_address) : '' ?></td>
                             <td><?= h($contracts->conclusion_date) ?></td>
                             <td><?= h($contracts->number_of_amendments) ?></td>
                             <td><?= h($contracts->valid_from) ?></td>

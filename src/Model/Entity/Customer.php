@@ -145,6 +145,13 @@ class Customer extends Entity
         return $name;
     }
 
+    protected function _getNumber(): string
+    {
+        $number = strval($this->id + env('CUSTOMER_SERIES', 0));
+	
+        return $number;
+    }
+    
     function _getIcVerified()
     {
         $ic = $this->ic;

@@ -34,7 +34,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Installation Address') ?></th>
-                            <td><?= $contract->has('installation_address') ? $this->Html->link($contract->installation_address->address, ['controller' => 'Addresses', 'action' => 'view', $contract->installation_address->id]) : '' ?></td>
+                            <td><?= $contract->has('installation_address') ? $this->Html->link($contract->installation_address->full_address, ['controller' => 'Addresses', 'action' => 'view', $contract->installation_address->id]) : '' ?></td>
                         </tr>
                     </table>
                 </div>
