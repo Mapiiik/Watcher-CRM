@@ -26,12 +26,11 @@
                     echo $this->Form->control('attribute');
                     echo $this->Form->control('op');
                     echo $this->Form->control('value');
-                    echo $this->Form->control('customer_connection_id');
                     echo $this->Form->control('modified_by');
                     echo $this->Form->control('created_by');
                     echo $this->Form->control('type');
-                    echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
-                    echo $this->Form->control('contract_id', ['options' => $contracts, 'empty' => true]);
+                    echo $this->Form->control('customer_id', ['options' => $customers]);
+                    echo $this->Form->control('contract_id', ['options' => $contracts]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

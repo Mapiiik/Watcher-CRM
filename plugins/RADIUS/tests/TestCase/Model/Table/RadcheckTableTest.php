@@ -25,9 +25,12 @@ class RadcheckTableTest extends TestCase
      */
     protected $fixtures = [
         'plugin.RADIUS.Radcheck',
-        'plugin.RADIUS.CustomerConnections',
         'plugin.RADIUS.Customers',
         'plugin.RADIUS.Contracts',
+        'plugin.RADIUS.Radreply',
+        'plugin.RADIUS.Radusergroup',
+        'plugin.RADIUS.Radpostauth',
+        'plugin.RADIUS.Radacct',
     ];
 
     /**

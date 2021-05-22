@@ -13,18 +13,20 @@ use Cake\ORM\Entity;
  * @property string $attribute
  * @property string $op
  * @property string $value
- * @property int $customer_connection_id
- * @property int $modified_by
+ * @property int|null $modified_by
  * @property \Cake\I18n\FrozenTime|null $modified
  * @property int $created_by
  * @property \Cake\I18n\FrozenTime $created
  * @property int $type
- * @property int|null $customer_id
- * @property int|null $contract_id
+ * @property int $customer_id
+ * @property int $contract_id
  *
- * @property \RADIUS\Model\Entity\CustomerConnection $customer_connection
- * @property \RADIUS\Model\Entity\Customer $customer
- * @property \RADIUS\Model\Entity\Contract $contract
+ * @property \App\Model\Entity\Customer $customer
+ * @property \App\Model\Entity\Contract $contract
+ * @property \RADIUS\Model\Entity\Radreply[] $radreply
+ * @property \RADIUS\Model\Entity\Radusergroup[] $radusergroup
+ * @property \RADIUS\Model\Entity\Radpostauth[] $radpostauth
+ * @property \RADIUS\Model\Entity\Radacct[] $radacct
  */
 class Radcheck extends Entity
 {
@@ -42,7 +44,6 @@ class Radcheck extends Entity
         'attribute' => true,
         'op' => true,
         'value' => true,
-        'customer_connection_id' => true,
         'modified_by' => true,
         'modified' => true,
         'created_by' => true,
@@ -50,8 +51,11 @@ class Radcheck extends Entity
         'type' => true,
         'customer_id' => true,
         'contract_id' => true,
-        'customer_connection' => true,
         'customer' => true,
         'contract' => true,
+        'radreply' => true,
+        'radusergroup' => true,
+        'radpostauth' => true,
+        'radacct' => true,
     ];
 }

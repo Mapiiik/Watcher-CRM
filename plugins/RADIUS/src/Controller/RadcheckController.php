@@ -21,7 +21,7 @@ class RadcheckController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['CustomerConnections', 'Customers', 'Contracts'],
+            'contain' => ['Customers', 'Contracts'],
         ];
         $radcheck = $this->paginate($this->Radcheck);
 
@@ -38,7 +38,7 @@ class RadcheckController extends AppController
     public function view($id = null)
     {
         $radcheck = $this->Radcheck->get($id, [
-            'contain' => ['CustomerConnections', 'Customers', 'Contracts'],
+            'contain' => ['Customers', 'Contracts', 'Radreply', 'Radusergroup', 'Radpostauth', 'Radacct'],
         ]);
 
         $this->set(compact('radcheck'));
@@ -61,10 +61,9 @@ class RadcheckController extends AppController
             }
             $this->Flash->error(__('The radcheck could not be saved. Please, try again.'));
         }
-        $customerConnections = $this->Radcheck->CustomerConnections->find('list', ['limit' => 200]);
         $customers = $this->Radcheck->Customers->find('list', ['limit' => 200]);
         $contracts = $this->Radcheck->Contracts->find('list', ['limit' => 200]);
-        $this->set(compact('radcheck', 'customerConnections', 'customers', 'contracts'));
+        $this->set(compact('radcheck', 'customers', 'contracts'));
     }
 
     /**
@@ -88,10 +87,9 @@ class RadcheckController extends AppController
             }
             $this->Flash->error(__('The radcheck could not be saved. Please, try again.'));
         }
-        $customerConnections = $this->Radcheck->CustomerConnections->find('list', ['limit' => 200]);
         $customers = $this->Radcheck->Customers->find('list', ['limit' => 200]);
         $contracts = $this->Radcheck->Contracts->find('list', ['limit' => 200]);
-        $this->set(compact('radcheck', 'customerConnections', 'customers', 'contracts'));
+        $this->set(compact('radcheck', 'customers', 'contracts'));
     }
 
     /**

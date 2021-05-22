@@ -16,7 +16,6 @@
                     <th><?= $this->Paginator->sort('attribute') ?></th>
                     <th><?= $this->Paginator->sort('op') ?></th>
                     <th><?= $this->Paginator->sort('value') ?></th>
-                    <th><?= $this->Paginator->sort('customer_connection_id') ?></th>
                     <th><?= $this->Paginator->sort('modified_by') ?></th>
                     <th><?= $this->Paginator->sort('modified') ?></th>
                     <th><?= $this->Paginator->sort('created_by') ?></th>
@@ -35,14 +34,13 @@
                     <td><?= h($radcheck->attribute) ?></td>
                     <td><?= h($radcheck->op) ?></td>
                     <td><?= h($radcheck->value) ?></td>
-                    <td><?= $this->Number->format($radcheck->customer_connection_id) ?></td>
                     <td><?= $this->Number->format($radcheck->modified_by) ?></td>
                     <td><?= h($radcheck->modified) ?></td>
                     <td><?= $this->Number->format($radcheck->created_by) ?></td>
                     <td><?= h($radcheck->created) ?></td>
                     <td><?= $this->Number->format($radcheck->type) ?></td>
-                    <td><?= $radcheck->has('customer') ? $this->Html->link($radcheck->customer->title, ['controller' => 'Customers', 'action' => 'view', $radcheck->customer->id]) : '' ?></td>
-                    <td><?= $radcheck->has('contract') ? $this->Html->link($radcheck->contract->id, ['controller' => 'Contracts', 'action' => 'view', $radcheck->contract->id]) : '' ?></td>
+                    <td><?= $radcheck->has('customer') ? $this->Html->link($radcheck->customer->name, ['controller' => 'Customers', 'action' => 'view', $radcheck->customer->id]) : '' ?></td>
+                    <td><?= $radcheck->has('contract') ? $this->Html->link($radcheck->contract->number, ['controller' => 'Contracts', 'action' => 'view', $radcheck->contract->id]) : '' ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $radcheck->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $radcheck->id]) ?>

@@ -11,9 +11,8 @@ use Cake\Validation\Validator;
 /**
  * Radcheck Model
  *
- * @property \RADIUS\Model\Table\CustomerConnectionsTable&\Cake\ORM\Association\BelongsTo $CustomerConnections
- * @property \RADIUS\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
- * @property \RADIUS\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
+ * @property \Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
+ * @property \Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
  *
  * @method \RADIUS\Model\Entity\Radcheck newEmptyEntity()
  * @method \RADIUS\Model\Entity\Radcheck newEntity(array $data, array $options = [])
@@ -49,19 +48,30 @@ class RadcheckTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('CustomerConnections', [
-            'foreignKey' => 'customer_connection_id',
-            'joinType' => 'INNER',
-            'className' => 'RADIUS.CustomerConnections',
-        ]);
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
-            'className' => 'RADIUS.Customers',
+            'strategy' => 'select',
         ]);
         $this->belongsTo('Contracts', [
             'foreignKey' => 'contract_id',
-            'className' => 'RADIUS.Contracts',
+            'strategy' => 'select',
         ]);
+        $this->hasMany('RADIUS.Radreply', [
+            'foreignKey' => 'username',
+            'bindingKey' => 'username',
+        ]);        
+        $this->HasMany('RADIUS.Radusergroup', [
+            'foreignKey' => 'username',
+            'bindingKey' => 'username',
+        ]);
+        $this->hasMany('RADIUS.Radpostauth', [
+            'foreignKey' => 'username',
+            'bindingKey' => 'username',
+        ]);        
+        $this->hasMany('RADIUS.Radacct', [
+            'foreignKey' => 'username',
+            'bindingKey' => 'username',
+        ]);        
     }
 
     /**
@@ -121,7 +131,6 @@ class RadcheckTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->isUnique(['username']), ['errorField' => 'username']);
-        $rules->add($rules->existsIn(['customer_connection_id'], 'CustomerConnections'), ['errorField' => 'customer_connection_id']);
         $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
         $rules->add($rules->existsIn(['contract_id'], 'Contracts'), ['errorField' => 'contract_id']);
 

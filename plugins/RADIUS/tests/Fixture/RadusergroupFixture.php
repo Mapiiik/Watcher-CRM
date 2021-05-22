@@ -43,7 +43,7 @@ class RadusergroupFixture extends TestFixture
     {
         $this->records = [
             [
-                'username' => '3e3d8820-1339-454d-9f0c-fffcbea40ea6',
+                'username' => '1e29d002-c406-4f9b-909d-84199461d08e',
                 'groupname' => 'Lorem ipsum dolor sit amet',
                 'priority' => 1,
             ],

@@ -36,19 +36,15 @@
                 </tr>
                 <tr>
                     <th><?= __('Customer') ?></th>
-                    <td><?= $radcheck->has('customer') ? $this->Html->link($radcheck->customer->title, ['controller' => 'Customers', 'action' => 'view', $radcheck->customer->id]) : '' ?></td>
+                    <td><?= $radcheck->has('customer') ? $this->Html->link($radcheck->customer->name, ['controller' => 'Customers', 'action' => 'view', $radcheck->customer->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Contract') ?></th>
-                    <td><?= $radcheck->has('contract') ? $this->Html->link($radcheck->contract->id, ['controller' => 'Contracts', 'action' => 'view', $radcheck->contract->id]) : '' ?></td>
+                    <td><?= $radcheck->has('contract') ? $this->Html->link($radcheck->contract->number, ['controller' => 'Contracts', 'action' => 'view', $radcheck->contract->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>
                     <td><?= $this->Number->format($radcheck->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Customer Connection Id') ?></th>
-                    <td><?= $this->Number->format($radcheck->customer_connection_id) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified By') ?></th>
@@ -71,6 +67,172 @@
                     <td><?= h($radcheck->created) ?></td>
                 </tr>
             </table>
+            <div class="related">
+                <h4><?= __('Related Radreply') ?></h4>
+                <?php if (!empty($radcheck->radreply)) : ?>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Id') ?></th>
+                            <th><?= __('Username') ?></th>
+                            <th><?= __('Attribute') ?></th>
+                            <th><?= __('Op') ?></th>
+                            <th><?= __('Value') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                        <?php foreach ($radcheck->radreply as $radreply) : ?>
+                        <tr>
+                            <td><?= h($radreply->id) ?></td>
+                            <td><?= h($radreply->username) ?></td>
+                            <td><?= h($radreply->attribute) ?></td>
+                            <td><?= h($radreply->op) ?></td>
+                            <td><?= h($radreply->value) ?></td>
+                            <td class="actions">
+                                <?= $this->Html->link(__('View'), ['controller' => 'Radreply', 'action' => 'view', $radreply->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'Radreply', 'action' => 'edit', $radreply->id]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Radreply', 'action' => 'delete', $radreply->id], ['confirm' => __('Are you sure you want to delete # {0}?', $radreply->id)]) ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+                <?php endif; ?>
+            </div>
+            <div class="related">
+                <h4><?= __('Related Radusergroup') ?></h4>
+                <?php if (!empty($radcheck->radusergroup)) : ?>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Username') ?></th>
+                            <th><?= __('Groupname') ?></th>
+                            <th><?= __('Priority') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                        <?php foreach ($radcheck->radusergroup as $radusergroup) : ?>
+                        <tr>
+                            <td><?= h($radusergroup->username) ?></td>
+                            <td><?= h($radusergroup->groupname) ?></td>
+                            <td><?= h($radusergroup->priority) ?></td>
+                            <td class="actions">
+                                <?= $this->Html->link(__('View'), ['controller' => 'Radusergroup', 'action' => 'view', $radusergroup->username]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'Radusergroup', 'action' => 'edit', $radusergroup->username]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Radusergroup', 'action' => 'delete', $radusergroup->username], ['confirm' => __('Are you sure you want to delete # {0}?', $radusergroup->username)]) ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+                <?php endif; ?>
+            </div>
+            <div class="related">
+                <h4><?= __('Related Radpostauth') ?></h4>
+                <?php if (!empty($radcheck->radpostauth)) : ?>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Id') ?></th>
+                            <th><?= __('Username') ?></th>
+                            <th><?= __('Pass') ?></th>
+                            <th><?= __('Reply') ?></th>
+                            <th><?= __('Calledstationid') ?></th>
+                            <th><?= __('Callingstationid') ?></th>
+                            <th><?= __('Authdate') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                        <?php foreach ($radcheck->radpostauth as $radpostauth) : ?>
+                        <tr>
+                            <td><?= h($radpostauth->id) ?></td>
+                            <td><?= h($radpostauth->username) ?></td>
+                            <td><?= h($radpostauth->pass) ?></td>
+                            <td><?= h($radpostauth->reply) ?></td>
+                            <td><?= h($radpostauth->calledstationid) ?></td>
+                            <td><?= h($radpostauth->callingstationid) ?></td>
+                            <td><?= h($radpostauth->authdate) ?></td>
+                            <td class="actions">
+                                <?= $this->Html->link(__('View'), ['controller' => 'Radpostauth', 'action' => 'view', $radpostauth->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'Radpostauth', 'action' => 'edit', $radpostauth->id]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Radpostauth', 'action' => 'delete', $radpostauth->id], ['confirm' => __('Are you sure you want to delete # {0}?', $radpostauth->id)]) ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+                <?php endif; ?>
+            </div>
+            <div class="related">
+                <h4><?= __('Related Radacct') ?></h4>
+                <?php if (!empty($radcheck->radacct)) : ?>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Radacctid') ?></th>
+                            <th><?= __('Acctsessionid') ?></th>
+                            <th><?= __('Acctuniqueid') ?></th>
+                            <th><?= __('Username') ?></th>
+                            <th><?= __('Realm') ?></th>
+                            <th><?= __('Nasipaddress') ?></th>
+                            <th><?= __('Nasportid') ?></th>
+                            <th><?= __('Nasporttype') ?></th>
+                            <th><?= __('Acctstarttime') ?></th>
+                            <th><?= __('Acctstoptime') ?></th>
+                            <th><?= __('Acctsessiontime') ?></th>
+                            <th><?= __('Acctauthentic') ?></th>
+                            <th><?= __('Connectinfo Start') ?></th>
+                            <th><?= __('Connectinfo Stop') ?></th>
+                            <th><?= __('Acctinputoctets') ?></th>
+                            <th><?= __('Acctoutputoctets') ?></th>
+                            <th><?= __('Calledstationid') ?></th>
+                            <th><?= __('Callingstationid') ?></th>
+                            <th><?= __('Acctterminatecause') ?></th>
+                            <th><?= __('Servicetype') ?></th>
+                            <th><?= __('Framedprotocol') ?></th>
+                            <th><?= __('Framedipaddress') ?></th>
+                            <th><?= __('Acctstartdelay') ?></th>
+                            <th><?= __('Acctstopdelay') ?></th>
+                            <th><?= __('Groupname') ?></th>
+                            <th><?= __('Xascendsessionsvrkey') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                        <?php foreach ($radcheck->radacct as $radacct) : ?>
+                        <tr>
+                            <td><?= h($radacct->radacctid) ?></td>
+                            <td><?= h($radacct->acctsessionid) ?></td>
+                            <td><?= h($radacct->acctuniqueid) ?></td>
+                            <td><?= h($radacct->username) ?></td>
+                            <td><?= h($radacct->realm) ?></td>
+                            <td><?= h($radacct->nasipaddress) ?></td>
+                            <td><?= h($radacct->nasportid) ?></td>
+                            <td><?= h($radacct->nasporttype) ?></td>
+                            <td><?= h($radacct->acctstarttime) ?></td>
+                            <td><?= h($radacct->acctstoptime) ?></td>
+                            <td><?= h($radacct->acctsessiontime) ?></td>
+                            <td><?= h($radacct->acctauthentic) ?></td>
+                            <td><?= h($radacct->connectinfo_start) ?></td>
+                            <td><?= h($radacct->connectinfo_stop) ?></td>
+                            <td><?= h($radacct->acctinputoctets) ?></td>
+                            <td><?= h($radacct->acctoutputoctets) ?></td>
+                            <td><?= h($radacct->calledstationid) ?></td>
+                            <td><?= h($radacct->callingstationid) ?></td>
+                            <td><?= h($radacct->acctterminatecause) ?></td>
+                            <td><?= h($radacct->servicetype) ?></td>
+                            <td><?= h($radacct->framedprotocol) ?></td>
+                            <td><?= h($radacct->framedipaddress) ?></td>
+                            <td><?= h($radacct->acctstartdelay) ?></td>
+                            <td><?= h($radacct->acctstopdelay) ?></td>
+                            <td><?= h($radacct->groupname) ?></td>
+                            <td><?= h($radacct->xascendsessionsvrkey) ?></td>
+                            <td class="actions">
+                                <?= $this->Html->link(__('View'), ['controller' => 'Radacct', 'action' => 'view', $radacct->radacctid]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'Radacct', 'action' => 'edit', $radacct->radacctid]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Radacct', 'action' => 'delete', $radacct->radacctid], ['confirm' => __('Are you sure you want to delete # {0}?', $radacct->radacctid)]) ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 </div>

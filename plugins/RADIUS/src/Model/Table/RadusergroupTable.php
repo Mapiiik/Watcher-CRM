@@ -40,6 +40,19 @@ class RadusergroupTable extends Table
         $this->setTable('radusergroup');
         $this->setDisplayField('username');
         $this->setPrimaryKey('username');
+
+        $this->hasMany('RADIUS.Radgroupcheck', [
+            'foreignKey' => 'groupname',
+            'bindingKey' => 'groupname',
+        ]);
+        $this->hasMany('RADIUS.Radgroupreply', [
+            'foreignKey' => 'groupname',
+            'bindingKey' => 'groupname',
+        ]);
+        $this->belongsTo('RADIUS.Radcheck', [
+            'foreignKey' => 'username',
+            'bindingKey' => 'username',
+        ]);
     }
 
     /**
