@@ -80,6 +80,8 @@ class BorrowedEquipmentsController extends AppController
             if ($this->BorrowedEquipments->save($borrowedEquipment)) {
                 $this->Flash->success(__('The borrowed equipment has been saved.'));
 
+                if (isset($contract_id)) return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+                
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The borrowed equipment could not be saved. Please, try again.'));
@@ -123,6 +125,8 @@ class BorrowedEquipmentsController extends AppController
             if ($this->BorrowedEquipments->save($borrowedEquipment)) {
                 $this->Flash->success(__('The borrowed equipment has been saved.'));
 
+                if (isset($contract_id)) return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+                
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The borrowed equipment could not be saved. Please, try again.'));
@@ -151,6 +155,9 @@ class BorrowedEquipmentsController extends AppController
      */
     public function delete($id = null)
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $contract_id = $this->request->getParam('contract_id');
+
         $this->request->allowMethod(['post', 'delete']);
         $borrowedEquipment = $this->BorrowedEquipments->get($id);
         if ($this->BorrowedEquipments->delete($borrowedEquipment)) {
@@ -159,6 +166,8 @@ class BorrowedEquipmentsController extends AppController
             $this->Flash->error(__('The borrowed equipment could not be deleted. Please, try again.'));
         }
 
+        if (isset($contract_id)) return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+                
         return $this->redirect(['action' => 'index']);
     }
 }

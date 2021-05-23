@@ -79,6 +79,7 @@ class LoginsController extends AppController
                 $this->Flash->success(__('The login has been saved.'));
 
                 if (isset($customer_id)) return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+                
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The login could not be saved. Please, try again.'));
@@ -141,6 +142,7 @@ class LoginsController extends AppController
                 $this->Flash->success(__('The login has been saved.'));
                 
                 if (isset($customer_id)) return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+                
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The login could not be saved. Please, try again.'));
@@ -166,6 +168,8 @@ class LoginsController extends AppController
      */
     public function delete($id = null)
     {
+        $customer_id = $this->request->getParam('customer_id');
+
         $this->request->allowMethod(['post', 'delete']);
         $login = $this->Logins->get($id);
         if ($this->Logins->delete($login)) {
@@ -174,6 +178,8 @@ class LoginsController extends AppController
             $this->Flash->error(__('The login could not be deleted. Please, try again.'));
         }
 
+        if (isset($customer_id)) return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+        
         return $this->redirect(['action' => 'index']);
     }
 }

@@ -87,6 +87,8 @@ class RemovedIpsController extends AppController
             if ($this->RemovedIps->save($removedIp)) {
                 $this->Flash->success(__('The removed ip has been saved.'));
 
+                if (isset($contract_id)) return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+                
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The removed ip could not be saved. Please, try again.'));
@@ -129,6 +131,8 @@ class RemovedIpsController extends AppController
             if ($this->RemovedIps->save($removedIp)) {
                 $this->Flash->success(__('The removed ip has been saved.'));
 
+                if (isset($contract_id)) return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+                
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The removed ip could not be saved. Please, try again.'));
@@ -156,6 +160,9 @@ class RemovedIpsController extends AppController
      */
     public function delete($id = null)
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $contract_id = $this->request->getParam('contract_id');
+
         $this->request->allowMethod(['post', 'delete']);
         $removedIp = $this->RemovedIps->get($id);
         if ($this->RemovedIps->delete($removedIp)) {
@@ -164,6 +171,8 @@ class RemovedIpsController extends AppController
             $this->Flash->error(__('The removed ip could not be deleted. Please, try again.'));
         }
 
+        if (isset($contract_id)) return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+                
         return $this->redirect(['action' => 'index']);
     }
 }

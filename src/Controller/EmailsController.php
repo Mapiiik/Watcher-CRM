@@ -72,6 +72,8 @@ class EmailsController extends AppController
             if ($this->Emails->save($email)) {
                 $this->Flash->success(__('The email has been saved.'));
 
+                if (isset($customer_id)) return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+                    
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The email could not be saved. Please, try again.'));
@@ -105,6 +107,8 @@ class EmailsController extends AppController
             if ($this->Emails->save($email)) {
                 $this->Flash->success(__('The email has been saved.'));
 
+                if (isset($customer_id)) return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+                
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The email could not be saved. Please, try again.'));
@@ -127,6 +131,8 @@ class EmailsController extends AppController
      */
     public function delete($id = null)
     {
+        $customer_id = $this->request->getParam('customer_id');
+
         $this->request->allowMethod(['post', 'delete']);
         $email = $this->Emails->get($id);
         if ($this->Emails->delete($email)) {
@@ -135,6 +141,8 @@ class EmailsController extends AppController
             $this->Flash->error(__('The email could not be deleted. Please, try again.'));
         }
 
+        if (isset($customer_id)) return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+        
         return $this->redirect(['action' => 'index']);
     }
 }
