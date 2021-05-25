@@ -43,6 +43,10 @@ class LabelsTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('Timestamp');
+        $this->addBehavior('Footprint');
+        $this->addBehavior('StringModifications');
+        
         $this->hasMany('LabelCustomers', [
             'foreignKey' => 'label_id',
         ]);

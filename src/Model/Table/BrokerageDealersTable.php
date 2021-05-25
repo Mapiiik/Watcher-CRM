@@ -44,6 +44,10 @@ class BrokerageDealersTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('Timestamp');
+        $this->addBehavior('Footprint');
+        $this->addBehavior('StringModifications');
+
         $this->belongsTo('Dealers', [
             'className' => 'Customers',
             'foreignKey' => 'dealer_id',

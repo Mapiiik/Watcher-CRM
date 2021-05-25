@@ -44,6 +44,10 @@ class BrokeragesTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('Timestamp');
+        $this->addBehavior('Footprint');
+        $this->addBehavior('StringModifications');
+        
         $this->hasMany('BrokerageDealers', [
             'foreignKey' => 'brokerage_id',
         ]);

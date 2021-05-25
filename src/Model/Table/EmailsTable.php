@@ -43,6 +43,10 @@ class EmailsTable extends Table
         $this->setDisplayField('email');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('Timestamp');
+        $this->addBehavior('Footprint');
+        $this->addBehavior('StringModifications');
+
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER',

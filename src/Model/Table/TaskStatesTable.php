@@ -43,6 +43,10 @@ class TaskStatesTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('Timestamp');
+        $this->addBehavior('Footprint');
+        $this->addBehavior('StringModifications');
+        
         $this->hasMany('Tasks', [
             'foreignKey' => 'task_state_id',
         ]);

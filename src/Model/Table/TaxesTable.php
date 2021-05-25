@@ -40,6 +40,10 @@ class TaxesTable extends Table
         $this->setTable('taxes');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
+        
+        $this->addBehavior('Timestamp');
+        $this->addBehavior('Footprint');
+        $this->addBehavior('StringModifications');
     }
 
     /**
