@@ -40,6 +40,10 @@ class NassTable extends Table
         $this->setTable('nas');
         $this->setDisplayField('nasname');
         $this->setPrimaryKey('id');
+
+        $this->addBehavior('Timestamp');
+        $this->addBehavior('Footprint');
+        $this->addBehavior('StringModifications');
     }
 
     /**

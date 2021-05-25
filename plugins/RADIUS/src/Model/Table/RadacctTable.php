@@ -41,6 +41,10 @@ class RadacctTable extends Table
         $this->setDisplayField('radacctid');
         $this->setPrimaryKey('radacctid');
 
+        $this->addBehavior('Timestamp');
+        $this->addBehavior('Footprint');
+        $this->addBehavior('StringModifications');
+
         $this->belongsTo('RADIUS.Radcheck', [
             'foreignKey' => 'username',
             'bindingKey' => 'username',

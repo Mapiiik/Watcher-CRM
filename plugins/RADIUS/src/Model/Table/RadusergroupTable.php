@@ -41,6 +41,10 @@ class RadusergroupTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('Timestamp');
+        $this->addBehavior('Footprint');
+        $this->addBehavior('StringModifications');
+
         $this->hasMany('RADIUS.Radgroupcheck', [
             'foreignKey' => 'groupname',
             'bindingKey' => 'groupname',

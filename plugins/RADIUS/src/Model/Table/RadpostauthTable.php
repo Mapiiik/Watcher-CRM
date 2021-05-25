@@ -41,6 +41,10 @@ class RadpostauthTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
         
+        $this->addBehavior('Timestamp');
+        $this->addBehavior('Footprint');
+        $this->addBehavior('StringModifications');
+
         $this->belongsTo('RADIUS.Radcheck', [
             'foreignKey' => 'username',
             'bindingKey' => 'username',
