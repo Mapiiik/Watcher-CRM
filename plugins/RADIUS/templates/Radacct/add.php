@@ -11,7 +11,7 @@
             <?= $this->Html->link(__('List Radacct'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-80">
+    <div class="column-responsive column-90">
         <div class="radacct form content">
             <?= $this->Form->create($radacct) ?>
             <fieldset>

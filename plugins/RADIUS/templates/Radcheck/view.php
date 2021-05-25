@@ -14,7 +14,7 @@
             <?= $this->Html->link(__('New Radcheck'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-80">
+    <div class="column-responsive column-90">
         <div class="radcheck view content">
             <h3><?= h($radcheck->username) ?></h3>
             <table>

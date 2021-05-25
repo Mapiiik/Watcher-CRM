@@ -14,7 +14,7 @@
             <?= $this->Html->link(__('New Radreply'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-80">
+    <div class="column-responsive column-90">
         <div class="radreply view content">
             <h3><?= h($radreply->id) ?></h3>
             <table>

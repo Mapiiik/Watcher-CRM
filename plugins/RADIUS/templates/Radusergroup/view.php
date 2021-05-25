@@ -14,7 +14,7 @@
             <?= $this->Html->link(__('New Radusergroup'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-80">
+    <div class="column-responsive column-90">
         <div class="radusergroup view content">
             <h3><?= h($radusergroup->id) ?></h3>
             <table>
