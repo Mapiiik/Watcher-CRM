@@ -61,7 +61,7 @@ class RadpostauthController extends AppController
             }
             $this->Flash->error(__('The radpostauth could not be saved. Please, try again.'));
         }
-        $radcheck = $this->Radpostauth->Radcheck->find('list', ['limit' => 200]);
+        $radcheck = $this->Radpostauth->Radcheck->find('list', ['keyField' => 'username', 'order' => 'username']);
         $this->set(compact('radpostauth', 'radcheck'));
     }
 
@@ -86,7 +86,7 @@ class RadpostauthController extends AppController
             }
             $this->Flash->error(__('The radpostauth could not be saved. Please, try again.'));
         }
-        $radcheck = $this->Radpostauth->Radcheck->find('list', ['limit' => 200]);
+        $radcheck = $this->Radpostauth->Radcheck->find('list', ['keyField' => 'username', 'order' => 'username']);
         $this->set(compact('radpostauth', 'radcheck'));
     }
 

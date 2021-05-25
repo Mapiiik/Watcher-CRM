@@ -61,7 +61,7 @@ class RadusergroupController extends AppController
             }
             $this->Flash->error(__('The radusergroup could not be saved. Please, try again.'));
         }
-        $radcheck = $this->Radusergroup->Radcheck->find('list', ['limit' => 200]);
+        $radcheck = $this->Radusergroup->Radcheck->find('list', ['keyField' => 'username', 'order' => 'username']);
         $this->set(compact('radusergroup', 'radcheck'));
     }
 
@@ -86,7 +86,7 @@ class RadusergroupController extends AppController
             }
             $this->Flash->error(__('The radusergroup could not be saved. Please, try again.'));
         }
-        $radcheck = $this->Radusergroup->Radcheck->find('list', ['limit' => 200]);
+        $radcheck = $this->Radusergroup->Radcheck->find('list', ['keyField' => 'username', 'order' => 'username']);
         $this->set(compact('radusergroup', 'radcheck'));
     }
 

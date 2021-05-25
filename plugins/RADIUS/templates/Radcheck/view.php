@@ -20,11 +20,11 @@
             <table>
                 <tr>
                     <th><?= __('Customer') ?></th>
-                    <td><?= $radcheck->has('customer') ? $this->Html->link($radcheck->customer->name, ['controller' => 'Customers', 'action' => 'view', $radcheck->customer->id]) : '' ?></td>
+                    <td><?= $radcheck->has('customer') ? $this->Html->link($radcheck->customer->name, ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $radcheck->customer->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Contract') ?></th>
-                    <td><?= $radcheck->has('contract') ? $this->Html->link($radcheck->contract->number, ['controller' => 'Contracts', 'action' => 'view', $radcheck->contract->id]) : '' ?></td>
+                    <td><?= $radcheck->has('contract') ? $this->Html->link($radcheck->contract->number, ['plugin' => null, 'controller' => 'Contracts', 'action' => 'view', 'customer_id' => $radcheck->customer_id, $radcheck->contract->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Username') ?></th>

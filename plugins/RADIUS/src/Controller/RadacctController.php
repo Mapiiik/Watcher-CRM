@@ -61,7 +61,7 @@ class RadacctController extends AppController
             }
             $this->Flash->error(__('The radacct could not be saved. Please, try again.'));
         }
-        $radcheck = $this->Radacct->Radcheck->find('list', ['limit' => 200]);
+        $radcheck = $this->Radacct->Radcheck->find('list', ['keyField' => 'username', 'order' => 'username']);
         $this->set(compact('radacct', 'radcheck'));
     }
 
@@ -86,7 +86,7 @@ class RadacctController extends AppController
             }
             $this->Flash->error(__('The radacct could not be saved. Please, try again.'));
         }
-        $radcheck = $this->Radacct->Radcheck->find('list', ['limit' => 200]);
+        $radcheck = $this->Radacct->Radcheck->find('list', ['keyField' => 'username', 'order' => 'username']);
         $this->set(compact('radacct', 'radcheck'));
     }
 

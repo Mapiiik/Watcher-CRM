@@ -61,7 +61,7 @@ class RadreplyController extends AppController
             }
             $this->Flash->error(__('The radreply could not be saved. Please, try again.'));
         }
-        $radcheck = $this->Radreply->Radcheck->find('list', ['limit' => 200]);
+        $radcheck = $this->Radreply->Radcheck->find('list', ['keyField' => 'username', 'order' => 'username']);
         $this->set(compact('radreply', 'radcheck'));
     }
 
@@ -86,7 +86,7 @@ class RadreplyController extends AppController
             }
             $this->Flash->error(__('The radreply could not be saved. Please, try again.'));
         }
-        $radcheck = $this->Radreply->Radcheck->find('list', ['limit' => 200]);
+        $radcheck = $this->Radreply->Radcheck->find('list', ['keyField' => 'username', 'order' => 'username']);
         $this->set(compact('radreply', 'radcheck'));
     }
 

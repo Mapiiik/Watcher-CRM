@@ -61,8 +61,8 @@ class RadcheckController extends AppController
             }
             $this->Flash->error(__('The radcheck could not be saved. Please, try again.'));
         }
-        $customers = $this->Radcheck->Customers->find('list', ['limit' => 200]);
-        $contracts = $this->Radcheck->Contracts->find('list', ['limit' => 200]);
+        $customers = $this->Radcheck->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $contracts = $this->Radcheck->Contracts->find('list', ['order' => 'number']);
         $this->set(compact('radcheck', 'customers', 'contracts'));
     }
 
@@ -87,8 +87,8 @@ class RadcheckController extends AppController
             }
             $this->Flash->error(__('The radcheck could not be saved. Please, try again.'));
         }
-        $customers = $this->Radcheck->Customers->find('list', ['limit' => 200]);
-        $contracts = $this->Radcheck->Contracts->find('list', ['limit' => 200]);
+        $customers = $this->Radcheck->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $contracts = $this->Radcheck->Contracts->find('list', ['order' => 'number']);
         $this->set(compact('radcheck', 'customers', 'contracts'));
     }
 

@@ -31,7 +31,7 @@
                 <tr>
                     <td><?= $this->Number->format($radcheck->id) ?></td>
                     <td><?= $radcheck->has('customer') ? $this->Html->link($radcheck->customer->name, ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $radcheck->customer->id]) : '' ?></td>
-                    <td><?= $radcheck->has('contract') ? $this->Html->link($radcheck->contract->number, ['plugin' => null, 'controller' => 'Contracts', 'action' => 'view', $radcheck->contract->id]) : '' ?></td>
+                    <td><?= $radcheck->has('contract') ? $this->Html->link($radcheck->contract->number, ['plugin' => null, 'controller' => 'Contracts', 'action' => 'view', 'customer_id' => $radcheck->customer_id, $radcheck->contract->id]) : '' ?></td>
                     <td><?= h($radcheck->username) ?></td>
                     <td><?= h($radcheck->attribute) ?></td>
                     <td><?= h($radcheck->op) ?></td>
