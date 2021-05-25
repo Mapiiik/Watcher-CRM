@@ -17,7 +17,9 @@ use Cake\ORM\Entity;
  * @property string|null $nasportid
  * @property string|null $nasporttype
  * @property \Cake\I18n\FrozenTime|null $acctstarttime
+ * @property \Cake\I18n\FrozenTime|null $acctupdatetime
  * @property \Cake\I18n\FrozenTime|null $acctstoptime
+ * @property int|null $acctinterval
  * @property int|null $acctsessiontime
  * @property string|null $acctauthentic
  * @property string|null $connectinfo_start
@@ -30,10 +32,12 @@ use Cake\ORM\Entity;
  * @property string|null $servicetype
  * @property string|null $framedprotocol
  * @property string|null $framedipaddress
- * @property int|null $acctstartdelay
- * @property int|null $acctstopdelay
- * @property string|null $groupname
- * @property string|null $xascendsessionsvrkey
+ * @property string|null $framedipv6address
+ * @property string|null $framedipv6prefix
+ * @property string|null $framedinterfaceid
+ * @property string|null $delegatedipv6prefix
+ *
+ * @property \RADIUS\Model\Entity\Radcheck $radcheck
  */
 class Radacct extends Entity
 {
@@ -55,7 +59,9 @@ class Radacct extends Entity
         'nasportid' => true,
         'nasporttype' => true,
         'acctstarttime' => true,
+        'acctupdatetime' => true,
         'acctstoptime' => true,
+        'acctinterval' => true,
         'acctsessiontime' => true,
         'acctauthentic' => true,
         'connectinfo_start' => true,
@@ -68,9 +74,10 @@ class Radacct extends Entity
         'servicetype' => true,
         'framedprotocol' => true,
         'framedipaddress' => true,
-        'acctstartdelay' => true,
-        'acctstopdelay' => true,
-        'groupname' => true,
-        'xascendsessionsvrkey' => true,
+        'framedipv6address' => true,
+        'framedipv6prefix' => true,
+        'framedinterfaceid' => true,
+        'delegatedipv6prefix' => true,
+        'radcheck' => true,
     ];
 }

@@ -35,7 +35,7 @@ class RadgroupcheckController extends AppController
     public function view($id = null)
     {
         $radgroupcheck = $this->Radgroupcheck->get($id, [
-            'contain' => [],
+            'contain' => ['Radusergroup'],
         ]);
 
         $this->set(compact('radgroupcheck'));

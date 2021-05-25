@@ -40,6 +40,11 @@ class RadreplyTable extends Table
         $this->setTable('radreply');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
+        
+        $this->belongsTo('RADIUS.Radcheck', [
+            'foreignKey' => 'username',
+            'bindingKey' => 'username',
+        ]);
     }
 
     /**
@@ -56,12 +61,10 @@ class RadreplyTable extends Table
 
         $validator
             ->scalar('username')
-            ->maxLength('username', 64)
             ->notEmptyString('username');
 
         $validator
             ->scalar('attribute')
-            ->maxLength('attribute', 64)
             ->notEmptyString('attribute');
 
         $validator
@@ -71,7 +74,6 @@ class RadreplyTable extends Table
 
         $validator
             ->scalar('value')
-            ->maxLength('value', 253)
             ->notEmptyString('value');
 
         return $validator;

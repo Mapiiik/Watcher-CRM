@@ -20,6 +20,9 @@ class RadpostauthController extends AppController
      */
     public function index()
     {
+        $this->paginate = [
+            'contain' => ['Radcheck'],
+        ];
         $radpostauth = $this->paginate($this->Radpostauth);
 
         $this->set(compact('radpostauth'));
@@ -35,7 +38,7 @@ class RadpostauthController extends AppController
     public function view($id = null)
     {
         $radpostauth = $this->Radpostauth->get($id, [
-            'contain' => [],
+            'contain' => ['Radcheck'],
         ]);
 
         $this->set(compact('radpostauth'));
@@ -58,7 +61,8 @@ class RadpostauthController extends AppController
             }
             $this->Flash->error(__('The radpostauth could not be saved. Please, try again.'));
         }
-        $this->set(compact('radpostauth'));
+        $radcheck = $this->Radpostauth->Radcheck->find('list', ['limit' => 200]);
+        $this->set(compact('radpostauth', 'radcheck'));
     }
 
     /**
@@ -82,7 +86,8 @@ class RadpostauthController extends AppController
             }
             $this->Flash->error(__('The radpostauth could not be saved. Please, try again.'));
         }
-        $this->set(compact('radpostauth'));
+        $radcheck = $this->Radpostauth->Radcheck->find('list', ['limit' => 200]);
+        $this->set(compact('radpostauth', 'radcheck'));
     }
 
     /**

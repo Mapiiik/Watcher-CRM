@@ -13,6 +13,8 @@ use Cake\ORM\Entity;
  * @property string $attribute
  * @property string $op
  * @property string $value
+ *
+ * @property \RADIUS\Model\Entity\Radcheck $radcheck
  */
 class Radreply extends Entity
 {
@@ -30,5 +32,6 @@ class Radreply extends Entity
         'attribute' => true,
         'op' => true,
         'value' => true,
+        'radcheck' => true,
     ];
 }

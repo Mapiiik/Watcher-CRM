@@ -19,80 +19,36 @@
             <h3><?= h($radacct->radacctid) ?></h3>
             <table>
                 <tr>
-                    <th><?= __('Acctsessionid') ?></th>
-                    <td><?= h($radacct->acctsessionid) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Acctuniqueid') ?></th>
-                    <td><?= h($radacct->acctuniqueid) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Username') ?></th>
-                    <td><?= h($radacct->username) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Realm') ?></th>
-                    <td><?= h($radacct->realm) ?></td>
+                    <th><?= __('Radcheck') ?></th>
+                    <td><?= $radacct->has('radcheck') ? $this->Html->link($radacct->radcheck->username, ['controller' => 'Radcheck', 'action' => 'view', $radacct->radcheck->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Nasipaddress') ?></th>
                     <td><?= h($radacct->nasipaddress) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Nasportid') ?></th>
-                    <td><?= h($radacct->nasportid) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Nasporttype') ?></th>
-                    <td><?= h($radacct->nasporttype) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Acctauthentic') ?></th>
-                    <td><?= h($radacct->acctauthentic) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Connectinfo Start') ?></th>
-                    <td><?= h($radacct->connectinfo_start) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Connectinfo Stop') ?></th>
-                    <td><?= h($radacct->connectinfo_stop) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Calledstationid') ?></th>
-                    <td><?= h($radacct->calledstationid) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Callingstationid') ?></th>
-                    <td><?= h($radacct->callingstationid) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Acctterminatecause') ?></th>
-                    <td><?= h($radacct->acctterminatecause) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Servicetype') ?></th>
-                    <td><?= h($radacct->servicetype) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Framedprotocol') ?></th>
-                    <td><?= h($radacct->framedprotocol) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Framedipaddress') ?></th>
                     <td><?= h($radacct->framedipaddress) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Groupname') ?></th>
-                    <td><?= h($radacct->groupname) ?></td>
+                    <th><?= __('Framedipv6address') ?></th>
+                    <td><?= h($radacct->framedipv6address) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Xascendsessionsvrkey') ?></th>
-                    <td><?= h($radacct->xascendsessionsvrkey) ?></td>
+                    <th><?= __('Framedipv6prefix') ?></th>
+                    <td><?= h($radacct->framedipv6prefix) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Delegatedipv6prefix') ?></th>
+                    <td><?= h($radacct->delegatedipv6prefix) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Radacctid') ?></th>
                     <td><?= $this->Number->format($radacct->radacctid) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Acctinterval') ?></th>
+                    <td><?= $this->Number->format($radacct->acctinterval) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Acctsessiontime') ?></th>
@@ -107,22 +63,102 @@
                     <td><?= $this->Number->format($radacct->acctoutputoctets) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Acctstartdelay') ?></th>
-                    <td><?= $this->Number->format($radacct->acctstartdelay) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Acctstopdelay') ?></th>
-                    <td><?= $this->Number->format($radacct->acctstopdelay) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Acctstarttime') ?></th>
                     <td><?= h($radacct->acctstarttime) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Acctupdatetime') ?></th>
+                    <td><?= h($radacct->acctupdatetime) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Acctstoptime') ?></th>
                     <td><?= h($radacct->acctstoptime) ?></td>
                 </tr>
             </table>
+            <div class="text">
+                <strong><?= __('Acctsessionid') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($radacct->acctsessionid)); ?>
+                </blockquote>
+            </div>
+            <div class="text">
+                <strong><?= __('Acctuniqueid') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($radacct->acctuniqueid)); ?>
+                </blockquote>
+            </div>
+            <div class="text">
+                <strong><?= __('Realm') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($radacct->realm)); ?>
+                </blockquote>
+            </div>
+            <div class="text">
+                <strong><?= __('Nasportid') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($radacct->nasportid)); ?>
+                </blockquote>
+            </div>
+            <div class="text">
+                <strong><?= __('Nasporttype') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($radacct->nasporttype)); ?>
+                </blockquote>
+            </div>
+            <div class="text">
+                <strong><?= __('Acctauthentic') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($radacct->acctauthentic)); ?>
+                </blockquote>
+            </div>
+            <div class="text">
+                <strong><?= __('Connectinfo Start') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($radacct->connectinfo_start)); ?>
+                </blockquote>
+            </div>
+            <div class="text">
+                <strong><?= __('Connectinfo Stop') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($radacct->connectinfo_stop)); ?>
+                </blockquote>
+            </div>
+            <div class="text">
+                <strong><?= __('Calledstationid') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($radacct->calledstationid)); ?>
+                </blockquote>
+            </div>
+            <div class="text">
+                <strong><?= __('Callingstationid') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($radacct->callingstationid)); ?>
+                </blockquote>
+            </div>
+            <div class="text">
+                <strong><?= __('Acctterminatecause') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($radacct->acctterminatecause)); ?>
+                </blockquote>
+            </div>
+            <div class="text">
+                <strong><?= __('Servicetype') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($radacct->servicetype)); ?>
+                </blockquote>
+            </div>
+            <div class="text">
+                <strong><?= __('Framedprotocol') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($radacct->framedprotocol)); ?>
+                </blockquote>
+            </div>
+            <div class="text">
+                <strong><?= __('Framedinterfaceid') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($radacct->framedinterfaceid)); ?>
+                </blockquote>
+            </div>
         </div>
     </div>
 </div>

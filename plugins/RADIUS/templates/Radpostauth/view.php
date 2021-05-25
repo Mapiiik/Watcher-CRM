@@ -19,24 +19,8 @@
             <h3><?= h($radpostauth->id) ?></h3>
             <table>
                 <tr>
-                    <th><?= __('Username') ?></th>
-                    <td><?= h($radpostauth->username) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Pass') ?></th>
-                    <td><?= h($radpostauth->pass) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Reply') ?></th>
-                    <td><?= h($radpostauth->reply) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Calledstationid') ?></th>
-                    <td><?= h($radpostauth->calledstationid) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Callingstationid') ?></th>
-                    <td><?= h($radpostauth->callingstationid) ?></td>
+                    <th><?= __('Radcheck') ?></th>
+                    <td><?= $radpostauth->has('radcheck') ? $this->Html->link($radpostauth->radcheck->username, ['controller' => 'Radcheck', 'action' => 'view', $radpostauth->radcheck->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>
@@ -47,6 +31,30 @@
                     <td><?= h($radpostauth->authdate) ?></td>
                 </tr>
             </table>
+            <div class="text">
+                <strong><?= __('Pass') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($radpostauth->pass)); ?>
+                </blockquote>
+            </div>
+            <div class="text">
+                <strong><?= __('Reply') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($radpostauth->reply)); ?>
+                </blockquote>
+            </div>
+            <div class="text">
+                <strong><?= __('Calledstationid') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($radpostauth->calledstationid)); ?>
+                </blockquote>
+            </div>
+            <div class="text">
+                <strong><?= __('Callingstationid') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($radpostauth->callingstationid)); ?>
+                </blockquote>
+            </div>
         </div>
     </div>
 </div>

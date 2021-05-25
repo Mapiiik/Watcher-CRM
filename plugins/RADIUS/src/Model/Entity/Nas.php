@@ -6,17 +6,19 @@ namespace RADIUS\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Radgroupreply Entity
+ * Nas Entity
  *
  * @property int $id
- * @property string $groupname
- * @property string $attribute
- * @property string $op
- * @property string $value
- *
- * @property \RADIUS\Model\Entity\Radusergroup[] $radusergroup
+ * @property string $nasname
+ * @property string $shortname
+ * @property string $type
+ * @property int|null $ports
+ * @property string $secret
+ * @property string|null $server
+ * @property string|null $community
+ * @property string|null $description
  */
-class Radgroupreply extends Entity
+class Nas extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -28,10 +30,13 @@ class Radgroupreply extends Entity
      * @var array
      */
     protected $_accessible = [
-        'groupname' => true,
-        'attribute' => true,
-        'op' => true,
-        'value' => true,
-        'radusergroup' => true,
+        'nasname' => true,
+        'shortname' => true,
+        'type' => true,
+        'ports' => true,
+        'secret' => true,
+        'server' => true,
+        'community' => true,
+        'description' => true,
     ];
 }

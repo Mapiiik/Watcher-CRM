@@ -17,15 +17,13 @@
             <fieldset>
                 <legend><?= __('Add Radcheck') ?></legend>
                 <?php
+                    echo $this->Form->control('customer_id', ['options' => $customers]);
+                    echo $this->Form->control('contract_id', ['options' => $contracts]);
                     echo $this->Form->control('username');
                     echo $this->Form->control('attribute');
                     echo $this->Form->control('op');
                     echo $this->Form->control('value');
-                    echo $this->Form->control('modified_by');
-                    echo $this->Form->control('created_by');
                     echo $this->Form->control('type');
-                    echo $this->Form->control('customer_id', ['options' => $customers]);
-                    echo $this->Form->control('contract_id', ['options' => $contracts]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

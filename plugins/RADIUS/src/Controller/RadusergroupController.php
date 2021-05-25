@@ -20,6 +20,9 @@ class RadusergroupController extends AppController
      */
     public function index()
     {
+        $this->paginate = [
+            'contain' => ['Radcheck'],
+        ];
         $radusergroup = $this->paginate($this->Radusergroup);
 
         $this->set(compact('radusergroup'));
@@ -35,7 +38,7 @@ class RadusergroupController extends AppController
     public function view($id = null)
     {
         $radusergroup = $this->Radusergroup->get($id, [
-            'contain' => [],
+            'contain' => ['Radcheck', 'Radgroupcheck', 'Radgroupreply'],
         ]);
 
         $this->set(compact('radusergroup'));
@@ -58,7 +61,8 @@ class RadusergroupController extends AppController
             }
             $this->Flash->error(__('The radusergroup could not be saved. Please, try again.'));
         }
-        $this->set(compact('radusergroup'));
+        $radcheck = $this->Radusergroup->Radcheck->find('list', ['limit' => 200]);
+        $this->set(compact('radusergroup', 'radcheck'));
     }
 
     /**
@@ -82,7 +86,8 @@ class RadusergroupController extends AppController
             }
             $this->Flash->error(__('The radusergroup could not be saved. Please, try again.'));
         }
-        $this->set(compact('radusergroup'));
+        $radcheck = $this->Radusergroup->Radcheck->find('list', ['limit' => 200]);
+        $this->set(compact('radusergroup', 'radcheck'));
     }
 
     /**

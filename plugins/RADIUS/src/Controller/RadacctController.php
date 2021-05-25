@@ -20,6 +20,9 @@ class RadacctController extends AppController
      */
     public function index()
     {
+        $this->paginate = [
+            'contain' => ['Radcheck'],
+        ];
         $radacct = $this->paginate($this->Radacct);
 
         $this->set(compact('radacct'));
@@ -35,7 +38,7 @@ class RadacctController extends AppController
     public function view($id = null)
     {
         $radacct = $this->Radacct->get($id, [
-            'contain' => [],
+            'contain' => ['Radcheck'],
         ]);
 
         $this->set(compact('radacct'));
@@ -58,7 +61,8 @@ class RadacctController extends AppController
             }
             $this->Flash->error(__('The radacct could not be saved. Please, try again.'));
         }
-        $this->set(compact('radacct'));
+        $radcheck = $this->Radacct->Radcheck->find('list', ['limit' => 200]);
+        $this->set(compact('radacct', 'radcheck'));
     }
 
     /**
@@ -82,7 +86,8 @@ class RadacctController extends AppController
             }
             $this->Flash->error(__('The radacct could not be saved. Please, try again.'));
         }
-        $this->set(compact('radacct'));
+        $radcheck = $this->Radacct->Radcheck->find('list', ['limit' => 200]);
+        $this->set(compact('radacct', 'radcheck'));
     }
 
     /**

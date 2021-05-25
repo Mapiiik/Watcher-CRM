@@ -8,9 +8,14 @@ use Cake\ORM\Entity;
 /**
  * Radusergroup Entity
  *
+ * @property int $id
  * @property string $username
  * @property string $groupname
  * @property int $priority
+ *
+ * @property \RADIUS\Model\Entity\Radgroupcheck[] $radgroupcheck
+ * @property \RADIUS\Model\Entity\Radgroupreply[] $radgroupreply
+ * @property \RADIUS\Model\Entity\Radcheck $radcheck
  */
 class Radusergroup extends Entity
 {
@@ -24,7 +29,11 @@ class Radusergroup extends Entity
      * @var array
      */
     protected $_accessible = [
+        'username' => true,
         'groupname' => true,
         'priority' => true,
+        'radgroupcheck' => true,
+        'radgroupreply' => true,
+        'radcheck' => true,
     ];
 }

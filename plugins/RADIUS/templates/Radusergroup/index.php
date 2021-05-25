@@ -11,6 +11,7 @@
         <table>
             <thead>
                 <tr>
+                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('username') ?></th>
                     <th><?= $this->Paginator->sort('groupname') ?></th>
                     <th><?= $this->Paginator->sort('priority') ?></th>
@@ -20,13 +21,14 @@
             <tbody>
                 <?php foreach ($radusergroup as $radusergroup): ?>
                 <tr>
+                    <td><?= $this->Number->format($radusergroup->id) ?></td>
                     <td><?= h($radusergroup->username) ?></td>
                     <td><?= h($radusergroup->groupname) ?></td>
                     <td><?= $this->Number->format($radusergroup->priority) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $radusergroup->username]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $radusergroup->username]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $radusergroup->username], ['confirm' => __('Are you sure you want to delete # {0}?', $radusergroup->username)]) ?>
+                        <?= $this->Html->link(__('View'), ['action' => 'view', $radusergroup->id]) ?>
+                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $radusergroup->id]) ?>
+                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $radusergroup->id], ['confirm' => __('Are you sure you want to delete # {0}?', $radusergroup->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

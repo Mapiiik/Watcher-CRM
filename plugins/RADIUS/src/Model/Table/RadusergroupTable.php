@@ -38,8 +38,8 @@ class RadusergroupTable extends Table
         parent::initialize($config);
 
         $this->setTable('radusergroup');
-        $this->setDisplayField('username');
-        $this->setPrimaryKey('username');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
 
         $this->hasMany('RADIUS.Radgroupcheck', [
             'foreignKey' => 'groupname',
@@ -64,13 +64,15 @@ class RadusergroupTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
+            ->integer('id')
+            ->allowEmptyString('id', null, 'create');
+
+        $validator
             ->scalar('username')
-            ->maxLength('username', 64)
-            ->allowEmptyString('username', null, 'create');
+            ->notEmptyString('username');
 
         $validator
             ->scalar('groupname')
-            ->maxLength('groupname', 64)
             ->notEmptyString('groupname');
 
         $validator

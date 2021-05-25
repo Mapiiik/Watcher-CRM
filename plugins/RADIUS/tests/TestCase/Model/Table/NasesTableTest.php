@@ -4,19 +4,19 @@ declare(strict_types=1);
 namespace RADIUS\Test\TestCase\Model\Table;
 
 use Cake\TestSuite\TestCase;
-use RADIUS\Model\Table\RadacctTable;
+use RADIUS\Model\Table\NasesTable;
 
 /**
- * RADIUS\Model\Table\RadacctTable Test Case
+ * RADIUS\Model\Table\NasesTable Test Case
  */
-class RadacctTableTest extends TestCase
+class NasesTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \RADIUS\Model\Table\RadacctTable
+     * @var \RADIUS\Model\Table\NasesTable
      */
-    protected $Radacct;
+    protected $Nases;
 
     /**
      * Fixtures
@@ -24,8 +24,7 @@ class RadacctTableTest extends TestCase
      * @var array
      */
     protected $fixtures = [
-        'plugin.RADIUS.Radacct',
-        'plugin.RADIUS.Radcheck',
+        'plugin.RADIUS.Nases',
     ];
 
     /**
@@ -36,8 +35,8 @@ class RadacctTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Radacct') ? [] : ['className' => RadacctTable::class];
-        $this->Radacct = $this->getTableLocator()->get('Radacct', $config);
+        $config = $this->getTableLocator()->exists('Nases') ? [] : ['className' => NasesTable::class];
+        $this->Nases = $this->getTableLocator()->get('Nases', $config);
     }
 
     /**
@@ -47,7 +46,7 @@ class RadacctTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Radacct);
+        unset($this->Nases);
 
         parent::tearDown();
     }
@@ -58,16 +57,6 @@ class RadacctTableTest extends TestCase
      * @return void
      */
     public function testValidationDefault(): void
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test buildRules method
-     *
-     * @return void
-     */
-    public function testBuildRules(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

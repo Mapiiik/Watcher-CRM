@@ -15,6 +15,8 @@ use Cake\ORM\Entity;
  * @property string|null $calledstationid
  * @property string|null $callingstationid
  * @property \Cake\I18n\FrozenTime $authdate
+ *
+ * @property \RADIUS\Model\Entity\Radcheck $radcheck
  */
 class Radpostauth extends Entity
 {
@@ -34,5 +36,6 @@ class Radpostauth extends Entity
         'calledstationid' => true,
         'callingstationid' => true,
         'authdate' => true,
+        'radcheck' => true,
     ];
 }

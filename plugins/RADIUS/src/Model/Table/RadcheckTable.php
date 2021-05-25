@@ -11,8 +11,8 @@ use Cake\Validation\Validator;
 /**
  * Radcheck Model
  *
- * @property \Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
- * @property \Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
+ * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
+ * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
  *
  * @method \RADIUS\Model\Entity\Radcheck newEmptyEntity()
  * @method \RADIUS\Model\Entity\Radcheck newEntity(array $data, array $options = [])
@@ -43,7 +43,7 @@ class RadcheckTable extends Table
         parent::initialize($config);
 
         $this->setTable('radcheck');
-        $this->setDisplayField('id');
+        $this->setDisplayField('username');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
@@ -59,10 +59,14 @@ class RadcheckTable extends Table
         $this->hasMany('RADIUS.Radreply', [
             'foreignKey' => 'username',
             'bindingKey' => 'username',
-        ]);        
+            'dependent' => true,
+            'saveStrategy' => 'replace',
+        ]);
         $this->HasMany('RADIUS.Radusergroup', [
             'foreignKey' => 'username',
             'bindingKey' => 'username',
+            'dependent' => true,
+            'saveStrategy' => 'replace',
         ]);
         $this->hasMany('RADIUS.Radpostauth', [
             'foreignKey' => 'username',
@@ -88,12 +92,10 @@ class RadcheckTable extends Table
 
         $validator
             ->scalar('username')
-            ->maxLength('username', 64)
             ->notEmptyString('username');
 
         $validator
             ->scalar('attribute')
-            ->maxLength('attribute', 64)
             ->notEmptyString('attribute');
 
         $validator
@@ -103,20 +105,19 @@ class RadcheckTable extends Table
 
         $validator
             ->scalar('value')
-            ->maxLength('value', 253)
             ->notEmptyString('value');
 
         $validator
-            ->integer('modified_by')
-            ->notEmptyString('modified_by');
+            ->integer('type')
+            ->notEmptyString('type');
 
         $validator
             ->integer('created_by')
             ->notEmptyString('created_by');
 
         $validator
-            ->integer('type')
-            ->notEmptyString('type');
+            ->integer('modified_by')
+            ->allowEmptyString('modified_by');
 
         return $validator;
     }

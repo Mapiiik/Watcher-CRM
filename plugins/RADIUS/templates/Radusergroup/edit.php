@@ -10,8 +10,8 @@
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->Form->postLink(
                 __('Delete'),
-                ['action' => 'delete', $radusergroup->username],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $radusergroup->username), 'class' => 'side-nav-item']
+                ['action' => 'delete', $radusergroup->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $radusergroup->id), 'class' => 'side-nav-item']
             ) ?>
             <?= $this->Html->link(__('List Radusergroup'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
@@ -22,6 +22,7 @@
             <fieldset>
                 <legend><?= __('Edit Radusergroup') ?></legend>
                 <?php
+                    echo $this->Form->control('username', ['options' => $radcheck]);
                     echo $this->Form->control('groupname');
                     echo $this->Form->control('priority');
                 ?>

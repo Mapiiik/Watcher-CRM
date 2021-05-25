@@ -19,13 +19,15 @@
                 <?php
                     echo $this->Form->control('acctsessionid');
                     echo $this->Form->control('acctuniqueid');
-                    echo $this->Form->control('username');
+                    echo $this->Form->control('username', ['options' => $radcheck, 'empty' => true]);
                     echo $this->Form->control('realm');
                     echo $this->Form->control('nasipaddress');
                     echo $this->Form->control('nasportid');
                     echo $this->Form->control('nasporttype');
                     echo $this->Form->control('acctstarttime');
+                    echo $this->Form->control('acctupdatetime');
                     echo $this->Form->control('acctstoptime');
+                    echo $this->Form->control('acctinterval');
                     echo $this->Form->control('acctsessiontime');
                     echo $this->Form->control('acctauthentic');
                     echo $this->Form->control('connectinfo_start');
@@ -38,10 +40,10 @@
                     echo $this->Form->control('servicetype');
                     echo $this->Form->control('framedprotocol');
                     echo $this->Form->control('framedipaddress');
-                    echo $this->Form->control('acctstartdelay');
-                    echo $this->Form->control('acctstopdelay');
-                    echo $this->Form->control('groupname');
-                    echo $this->Form->control('xascendsessionsvrkey');
+                    echo $this->Form->control('framedipv6address');
+                    echo $this->Form->control('framedipv6prefix');
+                    echo $this->Form->control('framedinterfaceid');
+                    echo $this->Form->control('delegatedipv6prefix');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

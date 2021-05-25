@@ -35,7 +35,7 @@ class RadgroupreplyController extends AppController
     public function view($id = null)
     {
         $radgroupreply = $this->Radgroupreply->get($id, [
-            'contain' => [],
+            'contain' => ['Radusergroup'],
         ]);
 
         $this->set(compact('radgroupreply'));

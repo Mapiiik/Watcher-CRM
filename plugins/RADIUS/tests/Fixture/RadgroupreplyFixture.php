@@ -24,10 +24,10 @@ class RadgroupreplyFixture extends TestFixture
     // phpcs:disable
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 10, 'autoIncrement' => true, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null],
-        'groupname' => ['type' => 'string', 'length' => 64, 'default' => '', 'null' => false, 'collate' => null, 'comment' => null, 'precision' => null],
-        'attribute' => ['type' => 'string', 'length' => 64, 'default' => '', 'null' => false, 'collate' => null, 'comment' => null, 'precision' => null],
+        'groupname' => ['type' => 'text', 'length' => null, 'default' => '', 'null' => false, 'collate' => null, 'comment' => null, 'precision' => null],
+        'attribute' => ['type' => 'text', 'length' => null, 'default' => '', 'null' => false, 'collate' => null, 'comment' => null, 'precision' => null],
         'op' => ['type' => 'string', 'length' => 2, 'default' => '=', 'null' => false, 'collate' => null, 'comment' => null, 'precision' => null],
-        'value' => ['type' => 'string', 'length' => 253, 'default' => '', 'null' => false, 'collate' => null, 'comment' => null, 'precision' => null],
+        'value' => ['type' => 'text', 'length' => null, 'default' => '', 'null' => false, 'collate' => null, 'comment' => null, 'precision' => null],
         '_indexes' => [
             'radgroupreply_groupname' => ['type' => 'index', 'columns' => ['groupname', 'attribute'], 'length' => []],
         ],
@@ -46,10 +46,10 @@ class RadgroupreplyFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'groupname' => 'Lorem ipsum dolor sit amet',
-                'attribute' => 'Lorem ipsum dolor sit amet',
+                'groupname' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
+                'attribute' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
                 'op' => 'Lo',
-                'value' => 'Lorem ipsum dolor sit amet',
+                'value' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
             ],
         ];
         parent::init();

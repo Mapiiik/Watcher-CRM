@@ -39,6 +39,35 @@
                     <td><?= $this->Number->format($radgroupcheck->id) ?></td>
                 </tr>
             </table>
+            <div class="related">
+                <h4><?= __('Related Radusergroup') ?></h4>
+                <?php if (!empty($radgroupcheck->radusergroup)) : ?>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Id') ?></th>
+                            <th><?= __('Username') ?></th>
+                            <th><?= __('Groupname') ?></th>
+                            <th><?= __('Priority') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                        <?php foreach ($radgroupcheck->radusergroup as $radusergroup) : ?>
+                        <tr>
+                            <td><?= h($radusergroup->id) ?></td>
+                            <td><?= h($radusergroup->username) ?></td>
+                            <td><?= h($radusergroup->groupname) ?></td>
+                            <td><?= h($radusergroup->priority) ?></td>
+                            <td class="actions">
+                                <?= $this->Html->link(__('View'), ['controller' => 'Radusergroup', 'action' => 'view', $radusergroup->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'Radusergroup', 'action' => 'edit', $radusergroup->id]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Radusergroup', 'action' => 'delete', $radusergroup->id], ['confirm' => __('Are you sure you want to delete # {0}?', $radusergroup->id)]) ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 </div>

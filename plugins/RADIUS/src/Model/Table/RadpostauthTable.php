@@ -40,6 +40,11 @@ class RadpostauthTable extends Table
         $this->setTable('radpostauth');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
+        
+        $this->belongsTo('RADIUS.Radcheck', [
+            'foreignKey' => 'username',
+            'bindingKey' => 'username',
+        ]);
     }
 
     /**
@@ -55,28 +60,23 @@ class RadpostauthTable extends Table
 
         $validator
             ->scalar('username')
-            ->maxLength('username', 253)
             ->requirePresence('username', 'create')
             ->notEmptyString('username');
 
         $validator
             ->scalar('pass')
-            ->maxLength('pass', 128)
             ->allowEmptyString('pass');
 
         $validator
             ->scalar('reply')
-            ->maxLength('reply', 32)
             ->allowEmptyString('reply');
 
         $validator
             ->scalar('calledstationid')
-            ->maxLength('calledstationid', 50)
             ->allowEmptyString('calledstationid');
 
         $validator
             ->scalar('callingstationid')
-            ->maxLength('callingstationid', 50)
             ->allowEmptyString('callingstationid');
 
         $validator

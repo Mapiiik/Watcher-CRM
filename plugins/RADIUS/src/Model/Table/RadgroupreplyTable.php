@@ -40,6 +40,11 @@ class RadgroupreplyTable extends Table
         $this->setTable('radgroupreply');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
+
+        $this->hasMany('RADIUS.Radusergroup', [
+            'foreignKey' => 'groupname',
+            'bindingKey' => 'groupname',
+        ]);
     }
 
     /**
@@ -56,12 +61,10 @@ class RadgroupreplyTable extends Table
 
         $validator
             ->scalar('groupname')
-            ->maxLength('groupname', 64)
             ->notEmptyString('groupname');
 
         $validator
             ->scalar('attribute')
-            ->maxLength('attribute', 64)
             ->notEmptyString('attribute');
 
         $validator
@@ -71,7 +74,6 @@ class RadgroupreplyTable extends Table
 
         $validator
             ->scalar('value')
-            ->maxLength('value', 253)
             ->notEmptyString('value');
 
         return $validator;

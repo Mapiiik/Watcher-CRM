@@ -20,6 +20,9 @@ class RadreplyController extends AppController
      */
     public function index()
     {
+        $this->paginate = [
+            'contain' => ['Radcheck'],
+        ];
         $radreply = $this->paginate($this->Radreply);
 
         $this->set(compact('radreply'));
@@ -35,7 +38,7 @@ class RadreplyController extends AppController
     public function view($id = null)
     {
         $radreply = $this->Radreply->get($id, [
-            'contain' => [],
+            'contain' => ['Radcheck'],
         ]);
 
         $this->set(compact('radreply'));
@@ -58,7 +61,8 @@ class RadreplyController extends AppController
             }
             $this->Flash->error(__('The radreply could not be saved. Please, try again.'));
         }
-        $this->set(compact('radreply'));
+        $radcheck = $this->Radreply->Radcheck->find('list', ['limit' => 200]);
+        $this->set(compact('radreply', 'radcheck'));
     }
 
     /**
@@ -82,7 +86,8 @@ class RadreplyController extends AppController
             }
             $this->Flash->error(__('The radreply could not be saved. Please, try again.'));
         }
-        $this->set(compact('radreply'));
+        $radcheck = $this->Radreply->Radcheck->find('list', ['limit' => 200]);
+        $this->set(compact('radreply', 'radcheck'));
     }
 
     /**

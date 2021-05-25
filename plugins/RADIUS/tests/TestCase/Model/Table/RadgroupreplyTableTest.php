@@ -25,6 +25,7 @@ class RadgroupreplyTableTest extends TestCase
      */
     protected $fixtures = [
         'plugin.RADIUS.Radgroupreply',
+        'plugin.RADIUS.Radusergroup',
     ];
 
     /**

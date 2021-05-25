@@ -40,6 +40,11 @@ class RadacctTable extends Table
         $this->setTable('radacct');
         $this->setDisplayField('radacctid');
         $this->setPrimaryKey('radacctid');
+
+        $this->belongsTo('RADIUS.Radcheck', [
+            'foreignKey' => 'username',
+            'bindingKey' => 'username',
+        ]);
     }
 
     /**
@@ -55,24 +60,21 @@ class RadacctTable extends Table
 
         $validator
             ->scalar('acctsessionid')
-            ->maxLength('acctsessionid', 32)
             ->requirePresence('acctsessionid', 'create')
             ->notEmptyString('acctsessionid');
 
         $validator
             ->scalar('acctuniqueid')
-            ->maxLength('acctuniqueid', 32)
             ->requirePresence('acctuniqueid', 'create')
-            ->notEmptyString('acctuniqueid');
+            ->notEmptyString('acctuniqueid')
+            ->add('acctuniqueid', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
             ->scalar('username')
-            ->maxLength('username', 253)
             ->allowEmptyString('username');
 
         $validator
             ->scalar('realm')
-            ->maxLength('realm', 64)
             ->allowEmptyString('realm');
 
         $validator
@@ -83,12 +85,10 @@ class RadacctTable extends Table
 
         $validator
             ->scalar('nasportid')
-            ->maxLength('nasportid', 15)
             ->allowEmptyString('nasportid');
 
         $validator
             ->scalar('nasporttype')
-            ->maxLength('nasporttype', 32)
             ->allowEmptyString('nasporttype');
 
         $validator
@@ -96,25 +96,29 @@ class RadacctTable extends Table
             ->allowEmptyDateTime('acctstarttime');
 
         $validator
+            ->dateTime('acctupdatetime')
+            ->allowEmptyDateTime('acctupdatetime');
+
+        $validator
             ->dateTime('acctstoptime')
             ->allowEmptyDateTime('acctstoptime');
+
+        $validator
+            ->allowEmptyString('acctinterval');
 
         $validator
             ->allowEmptyString('acctsessiontime');
 
         $validator
             ->scalar('acctauthentic')
-            ->maxLength('acctauthentic', 32)
             ->allowEmptyString('acctauthentic');
 
         $validator
             ->scalar('connectinfo_start')
-            ->maxLength('connectinfo_start', 50)
             ->allowEmptyString('connectinfo_start');
 
         $validator
             ->scalar('connectinfo_stop')
-            ->maxLength('connectinfo_stop', 50)
             ->allowEmptyString('connectinfo_stop');
 
         $validator
@@ -125,27 +129,22 @@ class RadacctTable extends Table
 
         $validator
             ->scalar('calledstationid')
-            ->maxLength('calledstationid', 50)
             ->allowEmptyString('calledstationid');
 
         $validator
             ->scalar('callingstationid')
-            ->maxLength('callingstationid', 50)
             ->allowEmptyString('callingstationid');
 
         $validator
             ->scalar('acctterminatecause')
-            ->maxLength('acctterminatecause', 32)
             ->allowEmptyString('acctterminatecause');
 
         $validator
             ->scalar('servicetype')
-            ->maxLength('servicetype', 32)
             ->allowEmptyString('servicetype');
 
         $validator
             ->scalar('framedprotocol')
-            ->maxLength('framedprotocol', 32)
             ->allowEmptyString('framedprotocol');
 
         $validator
@@ -154,20 +153,23 @@ class RadacctTable extends Table
             ->allowEmptyString('framedipaddress');
 
         $validator
-            ->allowEmptyString('acctstartdelay');
+            ->scalar('framedipv6address')
+            ->maxLength('framedipv6address', 39)
+            ->allowEmptyString('framedipv6address');
 
         $validator
-            ->allowEmptyString('acctstopdelay');
+            ->scalar('framedipv6prefix')
+            ->maxLength('framedipv6prefix', 39)
+            ->allowEmptyString('framedipv6prefix');
 
         $validator
-            ->scalar('groupname')
-            ->maxLength('groupname', 253)
-            ->allowEmptyString('groupname');
+            ->scalar('framedinterfaceid')
+            ->allowEmptyString('framedinterfaceid');
 
         $validator
-            ->scalar('xascendsessionsvrkey')
-            ->maxLength('xascendsessionsvrkey', 10)
-            ->allowEmptyString('xascendsessionsvrkey');
+            ->scalar('delegatedipv6prefix')
+            ->maxLength('delegatedipv6prefix', 39)
+            ->allowEmptyString('delegatedipv6prefix');
 
         return $validator;
     }
@@ -182,6 +184,7 @@ class RadacctTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->isUnique(['username']), ['errorField' => 'username']);
+        $rules->add($rules->isUnique(['acctuniqueid']), ['errorField' => 'acctuniqueid']);
 
         return $rules;
     }

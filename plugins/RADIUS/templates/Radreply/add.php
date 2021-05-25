@@ -17,7 +17,7 @@
             <fieldset>
                 <legend><?= __('Add Radreply') ?></legend>
                 <?php
-                    echo $this->Form->control('username');
+                    echo $this->Form->control('username', ['options' => $radcheck]);
                     echo $this->Form->control('attribute');
                     echo $this->Form->control('op');
                     echo $this->Form->control('value');
