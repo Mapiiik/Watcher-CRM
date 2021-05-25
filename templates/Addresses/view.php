@@ -79,6 +79,16 @@
             <div class="row">
                 <div class="column-responsive">
                     <table>
+                        <?php if ($address->has('ruian_gid')): ?>
+                        <tr>
+                            <th><?= __('Maps') ?></th>
+                            <td>
+                                <?= $this->Html->link(__('Google Maps'), 'https://maps.google.com/maps?q=' . h("{$address->gpsy},{$address->gpsx}"), ['target' => '_blank']) ?>
+                                ,
+                                <?= $this->Html->link(__('Mapy.cz'), 'https://mapy.cz/zakladni?source=coor&id=' . h("{$address->gpsx},{$address->gpsy}"), ['target' => '_blank']) ?>
+                            </td>
+                        </tr>
+                        <?php endif; ?>
                         <tr>
                             <th><?= __('Ruian Gid') ?></th>
                             <td><?= $this->Number->format($address->ruian_gid) ?></td>

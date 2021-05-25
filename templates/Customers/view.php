@@ -251,6 +251,7 @@
                             <th><?= __('City') ?></th>
                             <th><?= __('Zip') ?></th>
                             <th><?= __('Country') ?></th>
+                            <th class="actions"><?= __('Maps') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($customer->addresses as $addresses) : ?>
@@ -266,6 +267,10 @@
                             <td><?= h($addresses->city) ?></td>
                             <td><?= h($addresses->zip) ?></td>
                             <td><?= $addresses->has('country') ? h($addresses->country->name) : '' ?></td>
+                            <td class="actions">
+                                <?= $addresses->has('ruian_gid') ? $this->Html->link(__('Google Maps'), 'https://maps.google.com/maps?q=' . h("{$addresses->gpsy},{$addresses->gpsx}"), ['target' => '_blank']) : '' ?>
+                                <?= $addresses->has('ruian_gid') ? $this->Html->link(__('Mapy.cz'), 'https://mapy.cz/zakladni?source=coor&id=' . h("{$addresses->gpsx},{$addresses->gpsy}"), ['target' => '_blank']) : ''?>
+                            </td>
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'Addresses', 'action' => 'view', $addresses->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'Addresses', 'action' => 'edit', $addresses->id]) ?>

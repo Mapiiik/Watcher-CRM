@@ -24,6 +24,7 @@
                     <th><?= $this->Paginator->sort('city') ?></th>
                     <th><?= $this->Paginator->sort('zip') ?></th>
                     <th><?= $this->Paginator->sort('country_id') ?></th>
+                    <th class="actions"><?= __('Maps') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -43,6 +44,10 @@
                     <td><?= h($address->city) ?></td>
                     <td><?= h($address->zip) ?></td>
                     <td><?= $address->has('country') ? $this->Html->link($address->country->name, ['controller' => 'Countries', 'action' => 'view', $address->country->id]) : '' ?></td>
+                    <td class="actions">
+                        <?= $address->has('ruian_gid') ? $this->Html->link(__('Google Maps'), 'https://maps.google.com/maps?q=' . h("{$address->gpsy},{$address->gpsx}"), ['target' => '_blank']) : '' ?>
+                        <?= $address->has('ruian_gid') ? $this->Html->link(__('Mapy.cz'), 'https://mapy.cz/zakladni?source=coor&id=' . h("{$address->gpsx},{$address->gpsy}"), ['target' => '_blank']) : ''?>
+                    </td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $address->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $address->id]) ?>
