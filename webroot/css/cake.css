@@ -326,3 +326,7 @@ th {
     padding-bottom: 0rem;
     padding-left: 1rem;
 }
+
+.nav-content-right {
+    text-align: right;
+}
