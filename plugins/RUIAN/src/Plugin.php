@@ -41,7 +41,7 @@ class Plugin extends BasePlugin
             'RUIAN',
             ['path' => '/ruian'],
             function (RouteBuilder $builder) {
-                // Add custom routes here
+                $builder->connect('/', ['controller' => 'Addresses', 'action' => 'index']);
 
                 $builder->fallbacks();
             }

@@ -41,7 +41,7 @@ class Plugin extends BasePlugin
             'RADIUS',
             ['path' => '/radius'],
             function (RouteBuilder $builder) {
-                // Add custom routes here
+                $builder->connect('/', ['controller' => 'Radcheck', 'action' => 'index']);
 
                 $builder->fallbacks();
             }

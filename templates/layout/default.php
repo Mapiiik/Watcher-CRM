@@ -60,6 +60,8 @@ $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
             ?>
             <?= $this->AuthLink->link(__('Customers'), ['plugin' => null, 'controller' => 'Customers', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Customers'])]) ?>
             <?= $this->AuthLink->link(__('Tasks'), ['plugin' => null, 'controller' => 'Tasks', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Tasks'])]) ?>
+            <?= $this->AuthLink->link(__('RADIUS'), ['plugin' => 'RADIUS', 'controller' => 'Radcheck', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Nass', 'Radacct', 'Radcheck', 'Radgroupcheck', 'Radgroupreply', 'Radpostauth', 'Radreply', 'Radusergroup'])]) ?>
+            <?= $this->AuthLink->link(__('RUIAN'), ['plugin' => 'RUIAN', 'controller' => 'Addresses', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Addresses'])]) ?>
             <?= $this->AuthLink->link(__('Users'), ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Users'])]) ?>
             
             <?php if (!is_null($this->request->getSession()->read('Auth.id'))) echo $this->Html->link(__('Legacy'), '/legacy', ['class' => 'button button-small']); ?>
