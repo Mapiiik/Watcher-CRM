@@ -35,12 +35,6 @@
                     <td><?= $this->Number->format($radusergroup->id) ?></td>
                 </tr>
             </table>
-            <div class="text">
-                <strong><?= __('Groupname') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($radusergroup->groupname)); ?>
-                </blockquote>
-            </div>
             <div class="related">
                 <h4><?= __('Related Radgroupcheck') ?></h4>
                 <?php if (!empty($radusergroup->radgroupcheck)) : ?>
