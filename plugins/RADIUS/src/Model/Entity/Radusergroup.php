@@ -13,9 +13,9 @@ use Cake\ORM\Entity;
  * @property string $groupname
  * @property int $priority
  *
+ * @property \RADIUS\Model\Entity\User $user
  * @property \RADIUS\Model\Entity\Radgroupcheck[] $radgroupcheck
  * @property \RADIUS\Model\Entity\Radgroupreply[] $radgroupreply
- * @property \RADIUS\Model\Entity\Radcheck $radcheck
  */
 class Radusergroup extends Entity
 {
@@ -32,8 +32,8 @@ class Radusergroup extends Entity
         'username' => true,
         'groupname' => true,
         'priority' => true,
+        'user' => true,
         'radgroupcheck' => true,
         'radgroupreply' => true,
-        'radcheck' => true,
     ];
 }

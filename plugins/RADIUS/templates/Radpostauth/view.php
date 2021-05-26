@@ -19,8 +19,8 @@
             <h3><?= h($radpostauth->id) ?></h3>
             <table>
                 <tr>
-                    <th><?= __('Radcheck') ?></th>
-                    <td><?= $radpostauth->has('radcheck') ? $this->Html->link($radpostauth->radcheck->username, ['controller' => 'Radcheck', 'action' => 'view', $radpostauth->radcheck->id]) : '' ?></td>
+                    <th><?= __('Username') ?></th>
+                    <td><?= $radpostauth->has('user') ? $this->Html->link($radpostauth->user->username, ['controller' => 'Users', 'action' => 'view', $radpostauth->user->id]) : $radpostauth->username ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>

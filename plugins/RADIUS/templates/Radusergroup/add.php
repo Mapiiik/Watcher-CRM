@@ -17,7 +17,7 @@
             <fieldset>
                 <legend><?= __('Add Radusergroup') ?></legend>
                 <?php
-                    echo $this->Form->control('username', ['options' => $radcheck]);
+                    echo $this->Form->control('username', ['options' => $users]);
                     echo $this->Form->control('groupname');
                     echo $this->Form->control('priority');
                 ?>

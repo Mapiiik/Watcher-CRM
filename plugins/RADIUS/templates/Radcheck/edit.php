@@ -22,13 +22,10 @@
             <fieldset>
                 <legend><?= __('Edit Radcheck') ?></legend>
                 <?php
-                    echo $this->Form->control('customer_id', ['options' => $customers]);
-                    echo $this->Form->control('contract_id', ['options' => $contracts]);
-                    echo $this->Form->control('username', ['disabled' => true]);
+                    echo $this->Form->control('username', ['options' => $users]);
                     echo $this->Form->control('attribute');
                     echo $this->Form->control('op');
                     echo $this->Form->control('value');
-                    echo $this->Form->control('type');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

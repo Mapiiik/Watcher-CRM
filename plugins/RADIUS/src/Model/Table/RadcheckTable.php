@@ -11,9 +11,6 @@ use Cake\Validation\Validator;
 /**
  * Radcheck Model
  *
- * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
- * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
- *
  * @method \RADIUS\Model\Entity\Radcheck newEmptyEntity()
  * @method \RADIUS\Model\Entity\Radcheck newEntity(array $data, array $options = [])
  * @method \RADIUS\Model\Entity\Radcheck[] newEntities(array $data, array $options = [])
@@ -27,8 +24,6 @@ use Cake\Validation\Validator;
  * @method \RADIUS\Model\Entity\Radcheck[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
  * @method \RADIUS\Model\Entity\Radcheck[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \RADIUS\Model\Entity\Radcheck[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
- *
- * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class RadcheckTable extends Table
 {
@@ -49,32 +44,8 @@ class RadcheckTable extends Table
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
-
-        $this->belongsTo('Customers', [
-            'foreignKey' => 'customer_id',
-            'strategy' => 'select',
-        ]);
-        $this->belongsTo('Contracts', [
-            'foreignKey' => 'contract_id',
-            'strategy' => 'select',
-        ]);
-        $this->hasMany('RADIUS.Radreply', [
-            'foreignKey' => 'username',
-            'bindingKey' => 'username',
-            'dependent' => true,
-            'saveStrategy' => 'replace',
-        ]);
-        $this->HasMany('RADIUS.Radusergroup', [
-            'foreignKey' => 'username',
-            'bindingKey' => 'username',
-            'dependent' => true,
-            'saveStrategy' => 'replace',
-        ]);
-        $this->hasMany('RADIUS.Radpostauth', [
-            'foreignKey' => 'username',
-            'bindingKey' => 'username',
-        ]);        
-        $this->hasMany('RADIUS.Radacct', [
+        
+        $this->belongsTo('RADIUS.Users', [
             'foreignKey' => 'username',
             'bindingKey' => 'username',
         ]);        
@@ -109,18 +80,6 @@ class RadcheckTable extends Table
             ->scalar('value')
             ->notEmptyString('value');
 
-        $validator
-            ->integer('type')
-            ->notEmptyString('type');
-
-        $validator
-            ->integer('created_by')
-            ->notEmptyString('created_by');
-
-        $validator
-            ->integer('modified_by')
-            ->allowEmptyString('modified_by');
-
         return $validator;
     }
 
@@ -134,8 +93,6 @@ class RadcheckTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->isUnique(['username']), ['errorField' => 'username']);
-        $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
-        $rules->add($rules->existsIn(['contract_id'], 'Contracts'), ['errorField' => 'contract_id']);
 
         return $rules;
     }

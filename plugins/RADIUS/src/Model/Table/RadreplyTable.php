@@ -45,7 +45,7 @@ class RadreplyTable extends Table
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
 
-        $this->belongsTo('RADIUS.Radcheck', [
+        $this->belongsTo('RADIUS.Users', [
             'foreignKey' => 'username',
             'bindingKey' => 'username',
         ]);

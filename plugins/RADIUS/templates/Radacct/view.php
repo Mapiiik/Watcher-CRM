@@ -19,8 +19,8 @@
             <h3><?= h($radacct->radacctid) ?></h3>
             <table>
                 <tr>
-                    <th><?= __('Radcheck') ?></th>
-                    <td><?= $radacct->has('radcheck') ? $this->Html->link($radacct->radcheck->username, ['controller' => 'Radcheck', 'action' => 'view', $radacct->radcheck->id]) : '' ?></td>
+                    <th><?= __('Username') ?></th>
+                    <td><?= $radacct->has('user') ? $this->Html->link($radacct->user->username, ['controller' => 'Users', 'action' => 'view', $radacct->user->id]) : h($radacct->username) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Nasipaddress') ?></th>

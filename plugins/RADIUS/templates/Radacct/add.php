@@ -19,7 +19,7 @@
                 <?php
                     echo $this->Form->control('acctsessionid');
                     echo $this->Form->control('acctuniqueid');
-                    echo $this->Form->control('username', ['options' => $radcheck, 'empty' => true]);
+                    echo $this->Form->control('username', ['options' => $users, 'empty' => true]);
                     echo $this->Form->control('realm');
                     echo $this->Form->control('nasipaddress');
                     echo $this->Form->control('nasportid');

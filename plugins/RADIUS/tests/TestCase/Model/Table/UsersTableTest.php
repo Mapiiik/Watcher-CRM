@@ -4,19 +4,19 @@ declare(strict_types=1);
 namespace RADIUS\Test\TestCase\Model\Table;
 
 use Cake\TestSuite\TestCase;
-use RADIUS\Model\Table\RadusergroupTable;
+use RADIUS\Model\Table\UsersTable;
 
 /**
- * RADIUS\Model\Table\RadusergroupTable Test Case
+ * RADIUS\Model\Table\UsersTable Test Case
  */
-class RadusergroupTableTest extends TestCase
+class UsersTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \RADIUS\Model\Table\RadusergroupTable
+     * @var \RADIUS\Model\Table\UsersTable
      */
-    protected $Radusergroup;
+    protected $Users;
 
     /**
      * Fixtures
@@ -24,10 +24,14 @@ class RadusergroupTableTest extends TestCase
      * @var array
      */
     protected $fixtures = [
-        'plugin.RADIUS.Radusergroup',
         'plugin.RADIUS.Users',
-        'plugin.RADIUS.Radgroupcheck',
-        'plugin.RADIUS.Radgroupreply',
+        'plugin.RADIUS.Customers',
+        'plugin.RADIUS.Contracts',
+        'plugin.RADIUS.Radcheck',
+        'plugin.RADIUS.Radreply',
+        'plugin.RADIUS.Radusergroup',
+        'plugin.RADIUS.Radpostauth',
+        'plugin.RADIUS.Radacct',
     ];
 
     /**
@@ -38,8 +42,8 @@ class RadusergroupTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Radusergroup') ? [] : ['className' => RadusergroupTable::class];
-        $this->Radusergroup = $this->getTableLocator()->get('Radusergroup', $config);
+        $config = $this->getTableLocator()->exists('Users') ? [] : ['className' => UsersTable::class];
+        $this->Users = $this->getTableLocator()->get('Users', $config);
     }
 
     /**
@@ -49,7 +53,7 @@ class RadusergroupTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Radusergroup);
+        unset($this->Users);
 
         parent::tearDown();
     }

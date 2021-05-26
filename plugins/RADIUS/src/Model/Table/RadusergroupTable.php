@@ -45,6 +45,10 @@ class RadusergroupTable extends Table
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
 
+        $this->belongsTo('RADIUS.Users', [
+            'foreignKey' => 'username',
+            'bindingKey' => 'username',
+        ]);
         $this->hasMany('RADIUS.Radgroupcheck', [
             'foreignKey' => 'groupname',
             'bindingKey' => 'groupname',
@@ -52,10 +56,6 @@ class RadusergroupTable extends Table
         $this->hasMany('RADIUS.Radgroupreply', [
             'foreignKey' => 'groupname',
             'bindingKey' => 'groupname',
-        ]);
-        $this->belongsTo('RADIUS.Radcheck', [
-            'foreignKey' => 'username',
-            'bindingKey' => 'username',
         ]);
     }
 

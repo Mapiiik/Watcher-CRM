@@ -20,7 +20,7 @@
             <table>
                 <tr>
                     <th><?= __('Username') ?></th>
-                    <td><?= $radusergroup->has('radcheck') ? $this->Html->link($radusergroup->radcheck->username, ['controller' => 'Radcheck', 'action' => 'view', $radusergroup->radcheck->id]) : '' ?></td>
+                    <td><?= $radusergroup->has('user') ? $this->Html->link($radusergroup->user->username, ['controller' => 'Users', 'action' => 'view', $radusergroup->user->id]) : $radusergroup->username ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Groupname') ?></th>

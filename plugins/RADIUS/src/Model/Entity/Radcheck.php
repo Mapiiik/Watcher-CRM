@@ -13,20 +13,8 @@ use Cake\ORM\Entity;
  * @property string $attribute
  * @property string $op
  * @property string $value
- * @property int $type
- * @property int $customer_id
- * @property int $contract_id
- * @property \Cake\I18n\FrozenTime $created
- * @property int $created_by
- * @property \Cake\I18n\FrozenTime|null $modified
- * @property int|null $modified_by
  *
- * @property \App\Model\Entity\Customer $customer
- * @property \App\Model\Entity\Contract $contract
- * @property \RADIUS\Model\Entity\Radreply[] $radreply
- * @property \RADIUS\Model\Entity\Radusergroup[] $radusergroup
- * @property \RADIUS\Model\Entity\Radpostauth[] $radpostauth
- * @property \RADIUS\Model\Entity\Radacct[] $radacct
+ * @property \RADIUS\Model\Entity\User $user
  */
 class Radcheck extends Entity
 {
@@ -44,18 +32,6 @@ class Radcheck extends Entity
         'attribute' => true,
         'op' => true,
         'value' => true,
-        'type' => true,
-        'customer_id' => true,
-        'contract_id' => true,
-        'created' => true,
-        'created_by' => true,
-        'modified' => true,
-        'modified_by' => true,
-        'customer' => true,
-        'contract' => true,
-        'radreply' => true,
-        'radusergroup' => true,
-        'radpostauth' => true,
-        'radacct' => true,
+        'user' => true,
     ];
 }
