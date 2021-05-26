@@ -5,14 +5,14 @@ namespace RADIUS\Test\TestCase\Controller;
 
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
-use RADIUS\Controller\NassController;
+use RADIUS\Controller\NasController;
 
 /**
- * RADIUS\Controller\NassController Test Case
+ * RADIUS\Controller\NasController Test Case
  *
- * @uses \RADIUS\Controller\NassController
+ * @uses \RADIUS\Controller\NasController
  */
-class NassControllerTest extends TestCase
+class NasControllerTest extends TestCase
 {
     use IntegrationTestTrait;
 
@@ -22,7 +22,7 @@ class NassControllerTest extends TestCase
      * @var array
      */
     protected $fixtures = [
-        'plugin.RADIUS.Nass',
+        'plugin.RADIUS.Nas',
     ];
 
     /**

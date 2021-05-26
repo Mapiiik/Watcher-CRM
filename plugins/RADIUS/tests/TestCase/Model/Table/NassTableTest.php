@@ -4,19 +4,19 @@ declare(strict_types=1);
 namespace RADIUS\Test\TestCase\Model\Table;
 
 use Cake\TestSuite\TestCase;
-use RADIUS\Model\Table\NassTable;
+use RADIUS\Model\Table\NasTable;
 
 /**
- * RADIUS\Model\Table\NassTable Test Case
+ * RADIUS\Model\Table\NasTable Test Case
  */
-class NassTableTest extends TestCase
+class NasTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \RADIUS\Model\Table\NassTable
+     * @var \RADIUS\Model\Table\NasTable
      */
-    protected $Nass;
+    protected $Nas;
 
     /**
      * Fixtures
@@ -24,7 +24,7 @@ class NassTableTest extends TestCase
      * @var array
      */
     protected $fixtures = [
-        'plugin.RADIUS.Nass',
+        'plugin.RADIUS.Nas',
     ];
 
     /**
@@ -35,8 +35,8 @@ class NassTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Nass') ? [] : ['className' => NassTable::class];
-        $this->Nass = $this->getTableLocator()->get('Nass', $config);
+        $config = $this->getTableLocator()->exists('Nas') ? [] : ['className' => NasTable::class];
+        $this->Nas = $this->getTableLocator()->get('Nas', $config);
     }
 
     /**
@@ -46,7 +46,7 @@ class NassTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Nass);
+        unset($this->Nas);
 
         parent::tearDown();
     }

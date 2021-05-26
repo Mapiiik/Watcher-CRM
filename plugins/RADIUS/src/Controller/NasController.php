@@ -6,12 +6,12 @@ namespace RADIUS\Controller;
 use RADIUS\Controller\AppController;
 
 /**
- * Nass Controller
+ * Nas Controller
  *
- * @property \RADIUS\Model\Table\NassTable $Nass
+ * @property \RADIUS\Model\Table\NasTable $Nas
  * @method \RADIUS\Model\Entity\Nas[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class NassController extends AppController
+class NasController extends AppController
 {
     /**
      * Index method
@@ -20,9 +20,9 @@ class NassController extends AppController
      */
     public function index()
     {
-        $nass = $this->paginate($this->Nass);
+        $Nas = $this->paginate($this->Nas);
 
-        $this->set(compact('nass'));
+        $this->set(compact('Nas'));
     }
 
     /**
@@ -34,7 +34,7 @@ class NassController extends AppController
      */
     public function view($id = null)
     {
-        $nas = $this->Nass->get($id, [
+        $nas = $this->Nas->get($id, [
             'contain' => [],
         ]);
 
@@ -48,10 +48,10 @@ class NassController extends AppController
      */
     public function add()
     {
-        $nas = $this->Nass->newEmptyEntity();
+        $nas = $this->Nas->newEmptyEntity();
         if ($this->request->is('post')) {
-            $nas = $this->Nass->patchEntity($nas, $this->request->getData());
-            if ($this->Nass->save($nas)) {
+            $nas = $this->Nas->patchEntity($nas, $this->request->getData());
+            if ($this->Nas->save($nas)) {
                 $this->Flash->success(__('The nas has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -70,12 +70,12 @@ class NassController extends AppController
      */
     public function edit($id = null)
     {
-        $nas = $this->Nass->get($id, [
+        $nas = $this->Nas->get($id, [
             'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $nas = $this->Nass->patchEntity($nas, $this->request->getData());
-            if ($this->Nass->save($nas)) {
+            $nas = $this->Nas->patchEntity($nas, $this->request->getData());
+            if ($this->Nas->save($nas)) {
                 $this->Flash->success(__('The nas has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -95,8 +95,8 @@ class NassController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $nas = $this->Nass->get($id);
-        if ($this->Nass->delete($nas)) {
+        $nas = $this->Nas->get($id);
+        if ($this->Nas->delete($nas)) {
             $this->Flash->success(__('The nas has been deleted.'));
         } else {
             $this->Flash->error(__('The nas could not be deleted. Please, try again.'));

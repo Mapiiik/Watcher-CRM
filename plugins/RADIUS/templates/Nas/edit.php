@@ -8,14 +8,19 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('List Nass'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Form->postLink(
+                __('Delete'),
+                ['action' => 'delete', $nas->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $nas->id), 'class' => 'side-nav-item']
+            ) ?>
+            <?= $this->Html->link(__('List Nas'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
-        <div class="nass form content">
+        <div class="Nas form content">
             <?= $this->Form->create($nas) ?>
             <fieldset>
-                <legend><?= __('Add Nas') ?></legend>
+                <legend><?= __('Edit Nas') ?></legend>
                 <?php
                     echo $this->Form->control('nasname');
                     echo $this->Form->control('shortname');

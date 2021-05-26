@@ -9,7 +9,7 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * Nass Model
+ * Nas Model
  *
  * @method \RADIUS\Model\Entity\Nas newEmptyEntity()
  * @method \RADIUS\Model\Entity\Nas newEntity(array $data, array $options = [])
@@ -25,7 +25,7 @@ use Cake\Validation\Validator;
  * @method \RADIUS\Model\Entity\Nas[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \RADIUS\Model\Entity\Nas[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
-class NassTable extends Table
+class NasTable extends Table
 {
     /**
      * Initialize method

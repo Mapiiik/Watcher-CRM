@@ -6,9 +6,9 @@ namespace RADIUS\Test\Fixture;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
- * NassFixture
+ * NasFixture
  */
-class NassFixture extends TestFixture
+class NasFixture extends TestFixture
 {
     /**
      * Table name

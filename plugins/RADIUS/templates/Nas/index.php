@@ -1,12 +1,12 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface[]|\Cake\Collection\CollectionInterface $nass
+ * @var \Cake\Datasource\EntityInterface[]|\Cake\Collection\CollectionInterface $Nas
  */
 ?>
-<div class="nass index content">
+<div class="Nas index content">
     <?= $this->Html->link(__('New Nas'), ['action' => 'add'], ['class' => 'button float-right']) ?>
-    <h3><?= __('Nass') ?></h3>
+    <h3><?= __('Nas') ?></h3>
     <div class="table-responsive">
         <table>
             <thead>
@@ -24,7 +24,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($nass as $nas): ?>
+                <?php foreach ($Nas as $nas): ?>
                 <tr>
                     <td><?= $this->Number->format($nas->id) ?></td>
                     <td><?= h($nas->nasname) ?></td>
