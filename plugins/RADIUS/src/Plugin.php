@@ -41,7 +41,11 @@ class Plugin extends BasePlugin
             'RADIUS',
             ['path' => '/radius'],
             function (RouteBuilder $builder) {
-                $builder->connect('/', ['controller' => 'Radcheck', 'action' => 'index']);
+                $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}', ['action' => 'index'])->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+']);
+                $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/{action}/*', [])->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+']);
+                
+                $builder->connect('/customers/{customer_id}/{controller}', ['action' => 'index'])->setPatterns(['customer_id' => '[0-9]+']);
+                $builder->connect('/customers/{customer_id}/{controller}/{action}/*', [])->setPatterns(['customer_id' => '[0-9]+', 'id' => '[0-9]+']);
 
                 $builder->fallbacks();
             }
