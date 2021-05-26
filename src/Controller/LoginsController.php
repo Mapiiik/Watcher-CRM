@@ -86,6 +86,7 @@ class LoginsController extends AppController
         }
         $customers = $this->Logins->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
 
+        $new_login = '';
         if (isset($customer_id)) {
             $customers->where(['id' => $customer_id]);
 
