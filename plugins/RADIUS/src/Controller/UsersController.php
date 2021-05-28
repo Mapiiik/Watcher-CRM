@@ -89,7 +89,7 @@ class UsersController extends AppController
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $user->id]);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
