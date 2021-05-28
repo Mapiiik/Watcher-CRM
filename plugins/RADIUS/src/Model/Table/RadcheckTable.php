@@ -92,7 +92,7 @@ class RadcheckTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->isUnique(['username']), ['errorField' => 'username']);
+        //$rules->add($rules->isUnique(['username', 'attribute']), ['errorField' => 'username']);
 
         return $rules;
     }

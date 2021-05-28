@@ -79,6 +79,13 @@ class UsersController extends AppController
         
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
+
+            // autogenerate related radcheck recors
+            $user = $this->Users->patchEntity($user, ['radcheck' => $this->autoRadcheckData($user)]);
+
+            // autogenerate related radreply recors
+            $user = $this->Users->patchEntity($user, ['radreply' => $this->autoRadreplyData($user)]);
+            
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
 
@@ -89,8 +96,8 @@ class UsersController extends AppController
         $customers = $this->Users->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $contracts = $this->Users->Contracts->find('list', ['order' => 'number']);
 
-            $new_username = '';
-            if (isset($customer_id)) {
+        $new_username = '';
+        if (isset($customer_id)) {
             $customers->where(['id' => $customer_id]);
             $contracts->where(['customer_id' => $customer_id]);
 
@@ -139,15 +146,20 @@ class UsersController extends AppController
         $this->set('contract_id', $contract_id);
 
         $user = $this->Users->get($id, [
-            'contain' => [],
+            'contain' => ['Radcheck'],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
+
+            // autogenerate related radcheck recors
+            $user = $this->Users->patchEntity($user, ['radcheck' => $this->autoRadcheckData($user)]);
+            
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $user->id]);
             }
+            debug($user);
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
         $customers = $this->Users->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
@@ -182,5 +194,96 @@ class UsersController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+    
+    private function autoRadcheckData(\RADIUS\Model\Entity\User $user): array
+    {
+        $radcheck = [];
+        $radcheck[] = $this->getTableLocator()->get('RADIUS.Radcheck')
+            ->findOrCreate([
+                'username' => $user->username,
+                'attribute' => 'Cleartext-Password',
+                'op' => ':=',
+                'value' => $user->password,
+            ])
+            ->toArray();
+        if (!$user->active) {
+            $radcheck[] = $this->getTableLocator()->get('RADIUS.Radcheck')
+            ->findOrCreate([
+                'username' => $user->username,
+                'attribute' => 'Auth-Type',
+                'op' => ':=',
+                'value' => 'Reject',
+            ])
+            ->toArray();
+        }
+        
+        return $radcheck;
+    }
+
+    private function autoRadreplyData(\RADIUS\Model\Entity\User $user): array
+    {
+        $contract = $this->getTableLocator()->get('Contracts')->get($user->contract_id, [
+            'contain' => ['Ips'],
+        ]);
+        
+        $radreply = [];
+        foreach ($contract->ips as $ip)
+        {
+            @list($address, $mask) = explode('/', $ip->ip);
+
+            if ($addressx = filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+            {
+                if ($maskx = filter_var($mask, FILTER_VALIDATE_INT, array('options' => array('min_range' => 0, 'max_range' => 32))))
+                {
+                    $radreply[] = $this->getTableLocator()->get('RADIUS.Radreply')
+                        ->findOrCreate([
+                            'username' => $user->username,
+                            'attribute' => 'Framed-Route',
+                            'op' => '=',
+                            'value' => $addressx . '/' . $maskx,
+                        ])
+                        ->toArray();
+                }
+                else
+                {
+                    $radreply[] = $this->getTableLocator()->get('RADIUS.Radreply')
+                        ->findOrCreate([
+                            'username' => $user->username,
+                            'attribute' => 'Framed-IP-Address',
+                            'op' => '=',
+                            'value' => $addressx,
+                        ])
+                        ->toArray();
+                }
+            }
+            if ($addressx = filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+            {
+                if ($maskx = filter_var($mask, FILTER_VALIDATE_INT, array('options' => array('min_range' => 0, 'max_range' => 128))))
+                {
+                    $radreply[] = $this->getTableLocator()->get('RADIUS.Radreply')
+                        ->findOrCreate([
+                            'username' => $user->username,
+                            'attribute' => 'Framed-IPv6-Prefix',
+                            'op' => '=',
+                            'value' => $addressx . '/' . $maskx,
+                        ])
+                        ->toArray();
+                }
+                else
+                {
+                        $radius->network->ipv6->address[] = $addressx;
+                    $radreply[] = $this->getTableLocator()->get('RADIUS.Radreply')
+                        ->findOrCreate([
+                            'username' => $user->username,
+                            'attribute' => 'Framed-IPv6-Address',
+                            'op' => '=',
+                            'value' => $addressx . '/' . $maskx,
+                        ])
+                        ->toArray();
+                }
+            }            
+        }
+        return $radreply;
     }
 }

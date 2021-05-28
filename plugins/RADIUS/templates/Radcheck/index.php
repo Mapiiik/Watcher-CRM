@@ -23,7 +23,7 @@
                 <?php foreach ($radcheck as $radcheck): ?>
                 <tr>
                     <td><?= $this->Number->format($radcheck->id) ?></td>
-                    <td><?= h($radcheck->username) ?></td>
+                    <td><?= $radcheck->has('user') ? $this->Html->link($radcheck->user->username, ['controller' => 'Users', 'action' => 'view', $radcheck->user->id]) : $radcheck->username ?></td>
                     <td><?= h($radcheck->attribute) ?></td>
                     <td><?= h($radcheck->op) ?></td>
                     <td><?= h($radcheck->value) ?></td>

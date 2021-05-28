@@ -33,7 +33,7 @@
                     <td><?= $user->has('contract') ? $this->Html->link($user->contract->number, ['plugin' => null, 'controller' => 'Contracts', 'action' => 'view', 'customer_id' => $user->contract->customer_id, $user->contract->id]) : '' ?></td>
                     <td><?= h($user->username) ?></td>
                     <td><?= h($user->password) ?></td>
-                    <td><?= h($user->active) ?></td>
+                    <td><?= $user->active ? __('Yes') : __('No'); ?></td>
                     <td><?= $this->Number->format($user->type) ?></td>
                     <td><?= h($user->created) ?></td>
                     <td><?= $this->Number->format($user->created_by) ?></td>

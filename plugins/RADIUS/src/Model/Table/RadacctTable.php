@@ -187,7 +187,7 @@ class RadacctTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->isUnique(['username']), ['errorField' => 'username']);
+        //$rules->add($rules->isUnique(['username']), ['errorField' => 'username']);
         $rules->add($rules->isUnique(['acctuniqueid']), ['errorField' => 'acctuniqueid']);
 
         return $rules;
