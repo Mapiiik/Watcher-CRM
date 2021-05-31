@@ -327,6 +327,10 @@ th {
     padding-left: 1rem;
 }
 
+.nav-content-left {
+    min-width: 20rem;
+}
+
 .nav-content-right {
     text-align: right;
 }
