@@ -65,7 +65,7 @@ class Billing extends Entity
         'percentage_discount' => true,        
     ];
     
-    protected function _getSum(): int
+    protected function _getSum(): float
     {
         $sum = 0;
         
@@ -79,7 +79,7 @@ class Billing extends Entity
         
         return $sum;
     }    
-    protected function _getDiscount(): int
+    protected function _getDiscount(): float
     {
         $discount = 0;
         
@@ -88,8 +88,16 @@ class Billing extends Entity
         
         return $discount;
     }
-    protected function _getTotal(): int
+    protected function _getTotal(): float
     {
         return $this->sum - $this->discount;
+    }    
+    protected function _getVatBase(): float
+    {
+        return $this->total - $this->vat;
+    }    
+    protected function _getVat(): float
+    {
+        return round($this->total - ($this->total / (1 + env('VAT_RATE', 0))), 2);
     }    
 }
