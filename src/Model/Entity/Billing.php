@@ -24,6 +24,8 @@ use Cake\ORM\Entity;
  * @property int|null $service_id
  * @property int $quantity
  * @property int $contract_id
+ * @property int|null $fixed_discount
+ * @property int|null $percentage_discount
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Service $service
@@ -59,5 +61,35 @@ class Billing extends Entity
         'customer' => true,
         'service' => true,
         'contract' => true,
+        'fixed_discount' => true,
+        'percentage_discount' => true,        
     ];
+    
+    protected function _getSum(): int
+    {
+        $sum = 0;
+        
+        if (isset($this->price)) {
+            $sum = $this->price;
+        } else if (isset($this->service->price)) {
+            $sum = $this->service->price;
+        }
+        
+        $sum = $sum * $this->quantity;
+        
+        return $sum;
+    }    
+    protected function _getDiscount(): int
+    {
+        $discount = 0;
+        
+        if (isset($this->percentage_discount)) $discount += $this->sum * $this->percentage_discount / 100;
+        if (isset($this->fixed_discount)) $discount += $this->fixed_discount;
+        
+        return $discount;
+    }
+    protected function _getTotal(): int
+    {
+        return $this->sum - $this->discount;
+    }    
 }
