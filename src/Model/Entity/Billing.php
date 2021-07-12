@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\I18n\FrozenDate;
 
 /**
  * Billing Entity
@@ -99,5 +100,47 @@ class Billing extends Entity
     protected function _getVat(): float
     {
         return round($this->total - ($this->total / (1 + env('VAT_RATE', 0))), 2);
-    }    
+    }
+    
+    public function periodTotal(FrozenDate $from, FrozenDate $until): float
+    {
+        $period_days = $from->diffInDays($until->addDay(1));
+        
+        // billing_from not set
+        if (is_null($this->billing_from)) {
+            return 0;
+        }
+
+        // billing_from in future period
+        if ($this->billing_from > $until) {
+            return 0;
+        }
+
+        // billing_until before period
+        if (!is_null($this->billing_until) && $this->billing_until < $from) {
+            return 0;
+        }
+        
+        if (is_null($this->billing_until) || (!is_null($this->billing_until) && $this->billing_until >= $until)) { // billing_until is not limiting
+            // whole period
+            if ($this->billing_from <= $from) {
+                return round($this->total);
+            }
+            // later billing_from
+            if ($this->billing_from <= $until) {
+                return round($this->total / $period_days * $this->billing_from->diffInDays($until->addDay(1)));
+            }
+        } else { // billing_until is limiting
+            // earlier billing_until
+            if ($this->billing_from <= $from) {
+                return round($this->total / $period_days * $from->diffInDays($this->billing_until->addDay(1)));
+            }
+            // later billing_from and earlier billing_until
+            if ($this->billing_from <= $until) {
+                return round($this->total / $period_days * $this->billing_from->diffInDays($this->billing_until->addDay(1)));
+            }
+        }
+        
+        return false;
+    }
 }
