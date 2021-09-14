@@ -11,22 +11,29 @@ on:
 
 jobs:
   testsuite:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
         php-version: ['7.4', '8.0']
+        db-type: [pgsql]
+        prefer-lowest: ['']
     name: PHP ${{ matrix.php-version }}
 
     steps:
+    - name: Setup PostgreSQL latest
+      if: matrix.db-type == 'pgsql'
+      run: docker run --rm --name=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=watcher_crm -p 5432:5432 -d postgres
+      
     - uses: actions/checkout@v2
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-version }}
-        extensions: mbstring, intl, pdo_sqlite, pdo_mysql
-        coverage: none
+        extensions: mbstring, intl, apcu, pdo_${{ matrix.db-type }}, ${{ matrix.db-type }}
+        ini-values: apc.enable_cli = 1
+        coverage: pcov
 
     - name: Composer install
       run: |
@@ -39,11 +46,20 @@ jobs:
 
     - name: Run PHPUnit
       run: |
+        if [[ ${{ matrix.db-type }} == 'pgsql' ]]; then export DB_URL='postgres://postgres:postgres@127.0.0.1/watcher_crm'; fi
+        if [[ ${{ matrix.php-version }} == '7.4' ]]; then
+          export CODECOVERAGE=1 && vendor/bin/phpunit --verbose --coverage-clover=coverage.xml
+        else
           vendor/bin/phpunit
+        fi
+
+    - name: Submit code coverage
+      if: matrix.php-version == '7.4'
+      uses: codecov/codecov-action@v1
 
   coding-standard:
     name: Coding Standard
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
 
     steps:
     - uses: actions/checkout@v2
@@ -63,7 +79,7 @@ jobs:
 
   static-analysis:
     name: Static Analysis
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
 
     steps:
     - uses: actions/checkout@v2
@@ -76,7 +92,7 @@ jobs:
         coverage: none
 
     - name: Composer install
-      run: composer require --dev phpstan/phpstan:^0.12
+      run: composer install
 
     - name: Run phpstan
-      run: vendor/bin/phpstan.phar analyse
+      run: composer stan
