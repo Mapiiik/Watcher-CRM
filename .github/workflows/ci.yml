@@ -95,4 +95,4 @@ jobs:
       run: composer install
 
     - name: Run phpstan
-      run: composer stan
+      run: composer phpstan
