@@ -36,7 +36,6 @@ return [
      */
     'Datasources' => [
         'default' => [
-            'className' => Connection::class,
             'driver' => Postgres::class,            
             'host' => 'localhost',
             /*
@@ -62,7 +61,6 @@ return [
             'url' => env('DATABASE_URL', null),
         ],
         'ruian' => [
-            'className' => Connection::class,
             'driver' => Postgres::class,            
             'host' => 'localhost',
             /*
@@ -88,7 +86,6 @@ return [
             'url' => env('DATABASE_RUIAN_URL', null),
         ],
         'radius' => [
-            'className' => Connection::class,
             'driver' => Postgres::class,            
             'host' => 'localhost',
             /*
@@ -118,7 +115,6 @@ return [
          * The test connection is used during the test suite.
          */
         'test' => [
-            'className' => Connection::class,
             'driver' => Postgres::class,            
             'host' => 'localhost',
             //'port' => 'non_standard_port_number',
