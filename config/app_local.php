@@ -36,6 +36,8 @@ return [
      */
     'Datasources' => [
         'default' => [
+            'className' => Connection::class,
+            'driver' => Postgres::class,            
             'host' => 'localhost',
             /*
              * CakePHP will use the default DB port based on the driver selected
@@ -44,10 +46,10 @@ return [
              */
             //'port' => 'non_standard_port_number',
 
-            'username' => 'my_app',
-            'password' => 'secret',
+            'username' => 'postgres',
+            'password' => 'postgres',
 
-            'database' => 'my_app',
+            'database' => 'watcher_crm',
             /*
              * If not using the default 'public' schema with the PostgreSQL driver
              * set it here.
@@ -60,6 +62,8 @@ return [
             'url' => env('DATABASE_URL', null),
         ],
         'ruian' => [
+            'className' => Connection::class,
+            'driver' => Postgres::class,            
             'host' => 'localhost',
             /*
              * CakePHP will use the default DB port based on the driver selected
@@ -68,10 +72,10 @@ return [
              */
             //'port' => 'non_standard_port_number',
 
-            'username' => 'my_app',
-            'password' => 'secret',
+            'username' => 'postgres',
+            'password' => 'postgres',
 
-            'database' => 'my_app',
+            'database' => 'watcher_crm',
             /*
              * If not using the default 'public' schema with the PostgreSQL driver
              * set it here.
@@ -84,6 +88,8 @@ return [
             'url' => env('DATABASE_RUIAN_URL', null),
         ],
         'radius' => [
+            'className' => Connection::class,
+            'driver' => Postgres::class,            
             'host' => 'localhost',
             /*
              * CakePHP will use the default DB port based on the driver selected
@@ -92,10 +98,10 @@ return [
              */
             //'port' => 'non_standard_port_number',
 
-            'username' => 'my_app',
-            'password' => 'secret',
+            'username' => 'postgres',
+            'password' => 'postgres',
 
-            'database' => 'my_app',
+            'database' => 'watcher_crm',
             /*
              * If not using the default 'public' schema with the PostgreSQL driver
              * set it here.
@@ -112,12 +118,14 @@ return [
          * The test connection is used during the test suite.
          */
         'test' => [
+            'className' => Connection::class,
+            'driver' => Postgres::class,            
             'host' => 'localhost',
             //'port' => 'non_standard_port_number',
-            'username' => 'my_app',
-            'password' => 'secret',
-            'database' => 'test_myapp',
-            //'schema' => 'myapp',
+            'username' => 'postgres',
+            'password' => 'postgres',
+            'database' => 'watcher_crm',
+            //'schema' => 'public',
             'url' => env('DATABASE_TEST_URL', null),
         ],
     ],
