@@ -32,7 +32,7 @@ jobs:
     steps:
     - name: Setup PostgreSQL latest
       if: matrix.db-type == 'pgsql'
-      run: docker run --rm --name=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=watcher_nms -p 5432:5432 -d postgres
+      run: docker run --rm --name=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=watcher_crm -p 5432:5432 -d postgres
       
     - uses: actions/checkout@v2
 
@@ -71,7 +71,7 @@ jobs:
         REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
         MEMCACHED_PORT: ${{ job.services.memcached.ports['11211'] }}
       run: |
-        if [[ ${{ matrix.db-type }} == 'pgsql' ]]; then export DB_URL='postgres://postgres:postgres@127.0.0.1/watcher_nms'; fi
+        if [[ ${{ matrix.db-type }} == 'pgsql' ]]; then export DB_URL='postgres://postgres:postgres@127.0.0.1/watcher_crm'; fi
         if [[ ${{ matrix.php-version }} == '8.0' ]]; then
           export CODECOVERAGE=1 && vendor/bin/phpunit --verbose --coverage-clover=coverage.xml
         else
