@@ -36,7 +36,8 @@ return [
      */
     'Datasources' => [
         'default' => [
-            'driver' => Postgres::class,            
+            'className' => 'Cake\Database\Connection',
+            'driver' => 'Cake\Database\Driver\Postgres',
             'host' => 'localhost',
             /*
              * CakePHP will use the default DB port based on the driver selected
@@ -61,7 +62,8 @@ return [
             'url' => env('DATABASE_URL', null),
         ],
         'ruian' => [
-            'driver' => Postgres::class,            
+            'className' => 'Cake\Database\Connection',
+            'driver' => 'Cake\Database\Driver\Postgres',
             'host' => 'localhost',
             /*
              * CakePHP will use the default DB port based on the driver selected
@@ -86,7 +88,8 @@ return [
             'url' => env('DATABASE_RUIAN_URL', null),
         ],
         'radius' => [
-            'driver' => Postgres::class,            
+            'className' => 'Cake\Database\Connection',
+            'driver' => 'Cake\Database\Driver\Postgres',
             'host' => 'localhost',
             /*
              * CakePHP will use the default DB port based on the driver selected
@@ -115,7 +118,8 @@ return [
          * The test connection is used during the test suite.
          */
         'test' => [
-            'driver' => Postgres::class,            
+            'className' => 'Cake\Database\Connection',
+            'driver' => 'Cake\Database\Driver\Postgres',
             'host' => 'localhost',
             //'port' => 'non_standard_port_number',
             'username' => 'postgres',
