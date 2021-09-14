@@ -93,6 +93,21 @@
                     <?= $this->Text->autoParagraph(h($billing->note)); ?>
                 </blockquote>
             </div>
+            <?php
+            // show three billing calculations
+            $now = new \Cake\I18n\FrozenDate();
+            $bill_dates = [
+                $now->day(1),
+                $now->day(1)->addMonth(1),
+                $now->day(1)->addMonth(2),
+            ];
+
+            foreach ($bill_dates as $bill_date) {
+                echo '<br />';
+                echo ($bill_date->format('Y-m-d') . ': ' . $bill_date->subMonth(1)->format('Y-m-d') . ' - ' . $bill_date->subDay(1)->format('Y-m-d')) . ' = ';
+                echo ($billing->periodTotal($bill_date->subMonth(1), $bill_date->subDay(1)));
+            }
+            ?>
         </div>
     </div>
 </div>
