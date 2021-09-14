@@ -130,16 +130,46 @@ return [
         ],
         //users access
         [
-            'role' => ['user', 'technician'],
+            'role' => ['user', 'technician', 'manager'],
             'plugin' => null,
             'controller' => ['Customers'],
             'action' => ['index'],
         ],
         [
-            'role' => ['user', 'technician'],
+            'role' => ['user', 'technician', 'manager'],
             'plugin' => null,
             'controller' => ['Customers', 'Contracts'],
             'action' => ['view'],
+        ],
+        [
+            'role' => ['technician', 'manager'],
+            'plugin' => null,
+            'controller' => [
+                'Emails', 'Phones', 'Logins', 'Addresses',
+                'Billings', 'BorrowedEquipments', 'SoldEquipments', 'Ips',
+                'Tasks'
+            ],
+            'action' => ['view'],
+        ],
+        [
+            'role' => ['manager'],
+            'plugin' => null,
+            'controller' => [
+                'Customers', 'Contracts',
+                'Emails', 'Phones', 'Logins', 'Addresses',
+                'Billings', 'BorrowedEquipments', 'SoldEquipments', 'Ips',
+//                'Tasks'
+            ],
+            'action' => ['add', 'edit'],
+        ],
+        [
+            'role' => ['manager'],
+            'plugin' => null,
+            'controller' => [
+                'Emails', 'Phones', 'Logins',
+                'BorrowedEquipments', 'SoldEquipments', 'Ips',
+            ],
+            'action' => ['delete'],
         ],
     ]
 ];
