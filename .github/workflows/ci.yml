@@ -115,12 +115,12 @@ jobs:
       run: cp composer.json composer.backup && composer require --dev phpstan/phpstan psalm/phar && mv composer.backup composer.json
 
     - name: Run PHP CodeSniffer
-      run: vendor/bin/phpcs -n --report=checkstyle src/ tests/ | cs2pr
+      run: vendor/bin/phpcs --colors -p  src/ tests/
 
     - name: Run psalm
       if: success() || failure()
-      run: vendor/bin/psalm.phar --output-format=github
+      run: vendor/bin/psalm.phar
 
     - name: Run phpstan
       if: success() || failure()
-      run: vendor/bin/phpstan.phar analyse --error-format=github
+      run: vendor/bin/phpstan.phar analyse
