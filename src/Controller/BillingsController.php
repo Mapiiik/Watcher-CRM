@@ -77,14 +77,19 @@ class BillingsController extends AppController
         
         if ($this->request->is('post')) {
             $billing = $this->Billings->patchEntity($billing, $this->request->getData());
-            if ($this->Billings->save($billing)) {
-                $this->Flash->success(__('The billing has been saved.'));
+            
+            if ($this->Billings->Contracts->get($billing->contract_id)->service_type_id <> $this->Billings->Services->get($billing->service_id)->service_type_id) {
+                $this->Flash->error(__('The service type does not match the selected contract.'));
+            } else {
+                if ($this->Billings->save($billing)) {
+                    $this->Flash->success(__('The billing has been saved.'));
 
-                if (isset($contract_id)) return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                
-                return $this->redirect(['action' => 'index']);
+                    if (isset($contract_id)) return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+                    
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('The billing could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__('The billing could not be saved. Please, try again.'));
         }
         $customers = $this->Billings->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $contracts = $this->Billings->Contracts->find('list', ['order' => 'number']);
@@ -126,14 +131,18 @@ class BillingsController extends AppController
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $billing = $this->Billings->patchEntity($billing, $this->request->getData());
-            if ($this->Billings->save($billing)) {
-                $this->Flash->success(__('The billing has been saved.'));
+            if ($this->Billings->Contracts->get($billing->contract_id)->service_type_id <> $this->Billings->Services->get($billing->service_id)->service_type_id) {
+                $this->Flash->error(__('The service type does not match the selected contract.'));
+            } else {
+                if ($this->Billings->save($billing)) {
+                    $this->Flash->success(__('The billing has been saved.'));
 
-                if (isset($contract_id)) return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                
-                return $this->redirect(['action' => 'index']);
+                    if (isset($contract_id)) return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+                    
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('The billing could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__('The billing could not be saved. Please, try again.'));
         }
         $customers = $this->Billings->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $contracts = $this->Billings->Contracts->find('list', ['order' => 'number']);
