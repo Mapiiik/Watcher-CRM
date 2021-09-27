@@ -4,8 +4,8 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: CakePHP 4.2.5\n"
-"POT-Creation-Date: 2021-04-29 07:52+0200\n"
+"Project-Id-Version: CakePHP 4.2.9\n"
+"POT-Creation-Date: 2021-09-27 10:38+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -31,11 +31,11 @@ msgstr ""
 msgid "You are not authorized to access that location."
 msgstr ""
 
-#: Error/ExceptionRenderer.php:338
+#: Error/ExceptionRenderer.php:336
 msgid "Not Found"
 msgstr ""
 
-#: Error/ExceptionRenderer.php:340
+#: Error/ExceptionRenderer.php:338
 msgid "An Internal Error Has Occurred."
 msgstr ""
 
@@ -268,15 +268,15 @@ msgstr ""
 msgid "The provided value is invalid"
 msgstr ""
 
-#: View/Helper/FormHelper.php:983
+#: View/Helper/FormHelper.php:984
 msgid "Edit {0}"
 msgstr ""
 
-#: View/Helper/FormHelper.php:985
+#: View/Helper/FormHelper.php:986
 msgid "New {0}"
 msgstr ""
 
-#: View/Helper/FormHelper.php:1895
+#: View/Helper/FormHelper.php:1896
 msgid "Submit"
 msgstr ""
 
