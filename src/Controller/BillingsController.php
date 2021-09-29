@@ -78,7 +78,10 @@ class BillingsController extends AppController
         if ($this->request->is('post')) {
             $billing = $this->Billings->patchEntity($billing, $this->request->getData());
             
-            if ($this->Billings->Contracts->get($billing->contract_id)->service_type_id <> $this->Billings->Services->get($billing->service_id)->service_type_id) {
+            if (
+                isset($this->Billings->Services->get($billing->service_id)->service_type_id) && 
+                $this->Billings->Contracts->get($billing->contract_id)->service_type_id <> $this->Billings->Services->get($billing->service_id)->service_type_id
+            ) {
                 $this->Flash->error(__('The service type does not match the selected contract.'));
             } else {
                 if ($this->Billings->save($billing)) {
@@ -131,7 +134,10 @@ class BillingsController extends AppController
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $billing = $this->Billings->patchEntity($billing, $this->request->getData());
-            if ($this->Billings->Contracts->get($billing->contract_id)->service_type_id <> $this->Billings->Services->get($billing->service_id)->service_type_id) {
+            if (
+                isset($this->Billings->Services->get($billing->service_id)->service_type_id) && 
+                $this->Billings->Contracts->get($billing->contract_id)->service_type_id <> $this->Billings->Services->get($billing->service_id)->service_type_id
+            ) {
                 $this->Flash->error(__('The service type does not match the selected contract.'));
             } else {
                 if ($this->Billings->save($billing)) {
