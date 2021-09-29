@@ -47,6 +47,8 @@ $routes->setRouteClass(DashedRoute::class);
 $routes->scope('/admin/', function (RouteBuilder $builder) {    
 
     $builder->setRouteClass(DashedRoute::class);
+    
+    $builder->setExtensions(['pdf']);    
 
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}', 'Contracts::view')->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+'])->setPass(['contract_id']);
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}/edit', 'Contracts::edit')->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+'])->setPass(['contract_id']);
