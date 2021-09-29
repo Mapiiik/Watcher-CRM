@@ -53,7 +53,8 @@ $routes->scope('/admin/', function (RouteBuilder $builder) {
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}', 'Contracts::view')->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+'])->setPass(['contract_id']);
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}/edit', 'Contracts::edit')->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+'])->setPass(['contract_id']);
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}/delete', 'Contracts::delete')->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+'])->setPass(['contract_id']);
-
+    $builder->connect('/customers/{customer_id}/contracts/{contract_id}/print', 'Contracts::print')->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+'])->setPass(['contract_id']);
+    
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}', ['action' => 'index'])->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+']);
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/add', ['action' => 'add'])->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+']);
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/{id}', ['action' => 'view'])->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+', 'id' => '[0-9]+'])->setPass(['id']);
