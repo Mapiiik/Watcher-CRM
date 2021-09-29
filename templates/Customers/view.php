@@ -326,38 +326,7 @@
                 </div>
                 <?php endif; ?>
             </div>
-            <div class="related">
-                <?= $this->Html->link(__('New Task'), ['controller' => 'Tasks', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
-                <h4><?= __('Tasks') ?></h4>
-                <?php if (!empty($customer->tasks)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __('Task Type') ?></th>
-                            <th><?= __('Task State') ?></th>
-                            <th><?= __('Subject') ?></th>
-                            <th><?= __('Text') ?></th>
-                            <th><?= __('Dealer') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                        <?php foreach ($customer->tasks as $task) : ?>
-                        <tr>
-                            <td><?= $task->has('task_type') ? h($task->task_type->name) : '' ?></td>
-                            <td><?= $task->has('task_state') ? h($task->task_state->name) : '' ?></td>
-                            <td><?= h($task->subject) ?></td>
-                            <td><?= nl2br($task->text) ?></td>
-                            <td><?= $task->has('dealer') ? h($task->dealer->name) : '' ?></td>
-                            <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Tasks', 'action' => 'view', $task->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Tasks', 'action' => 'edit', $task->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Tasks', 'action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
-                <?php endif; ?>
-            </div>
+            <hr />
             <div class="related">
                 <h4><?= __('Related Billings') ?></h4>
                 <?php if (!empty($customer->billings)) : ?>
@@ -516,6 +485,38 @@
                                 <?= $this->Html->link(__('View'), ['controller' => 'RemovedIps', 'action' => 'view', $removedIp->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'RemovedIps', 'action' => 'edit', $removedIp->id]) ?>
                                 <?= $this->Form->postLink(__('Delete'), ['controller' => 'RemovedIps', 'action' => 'delete', $removedIp->id], ['confirm' => __('Are you sure you want to delete # {0}?', $removedIp->id)]) ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+                <?php endif; ?>
+            </div>
+            <div class="related">
+                <?= $this->Html->link(__('New Task'), ['controller' => 'Tasks', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
+                <h4><?= __('Tasks') ?></h4>
+                <?php if (!empty($customer->tasks)) : ?>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Task Type') ?></th>
+                            <th><?= __('Task State') ?></th>
+                            <th><?= __('Subject') ?></th>
+                            <th><?= __('Text') ?></th>
+                            <th><?= __('Dealer') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                        <?php foreach ($customer->tasks as $task) : ?>
+                        <tr>
+                            <td><?= $task->has('task_type') ? h($task->task_type->name) : '' ?></td>
+                            <td><?= $task->has('task_state') ? h($task->task_state->name) : '' ?></td>
+                            <td><?= h($task->subject) ?></td>
+                            <td><?= nl2br($task->text) ?></td>
+                            <td><?= $task->has('dealer') ? h($task->dealer->name) : '' ?></td>
+                            <td class="actions">
+                                <?= $this->Html->link(__('View'), ['controller' => 'Tasks', 'action' => 'view', $task->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'Tasks', 'action' => 'edit', $task->id]) ?>
+                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Tasks', 'action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
