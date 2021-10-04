@@ -82,4 +82,19 @@ class Contract extends Entity
         'removed_ips' => true,
         'sold_equipments' => true,
     ];
+
+    protected function _getBillingAddress(): ?Address
+    {
+        return $this->customer->billing_address;
+    }
+
+    protected function _getDeliveryAddress(): ?Address
+    {
+        return $this->customer->delivery_address;
+    }    
+
+    protected function _getPermanentAddress(): ?Address
+    {
+        return $this->customer->permanent_address;
+    }        
 }

@@ -152,6 +152,85 @@ class Customer extends Entity
         return $number;
     }
     
+    protected function _getEmail(): string
+    {
+        $email = implode(', ', array_column($this->emails, 'email'));
+        return $email;
+    }
+
+    protected function _getPhone(): string
+    {
+        $phone = implode(', ', array_column($this->phones, 'phone'));
+        return $phone;
+    }
+
+    protected function _getInstallationAddress(): ?Address
+    {
+        $installation_address = null;
+        
+        // take last installation address
+        foreach ($this->addresses as $address)
+        {
+            if ($address->type == 0)
+            {
+                $installation_address = $address;
+            }
+        }
+        
+        return $installation_address;
+    }        
+    
+    protected function _getBillingAddress(): ?Address
+    {
+        $billing_address = null;
+        
+        // take last billing address
+        foreach ($this->addresses as $address)
+        {
+            if ($address->type == 1)
+            {
+                $billing_address = $address;
+            }
+        }
+        
+        // if there is no billing address take installation adresses
+        if (!isset($billing_address) && isset($this->installation_address)) $billing_address = $this->installation_address;
+
+        return $billing_address;
+    }        
+
+    protected function _getDeliveryAddress(): ?Address
+    {
+        $delivery_address = null;
+        
+        // take last delivery address
+        foreach ($this->addresses as $address)
+        {
+            if ($address->type == 2)
+            {
+                $delivery_address = $address;
+            }
+        }
+        
+        return $delivery_address;
+    }        
+
+    protected function _getPermanentAddress(): ?Address
+    {
+        $permanent_address = null;
+        
+        // take last permanent address
+        foreach ($this->addresses as $address)
+        {
+            if ($address->type == 3)
+            {
+                $permanent_address = $address;
+            }
+        }
+        
+        return $permanent_address;
+    }        
+    
     function _getIcVerified()
     {
         $ic = $this->ic;
