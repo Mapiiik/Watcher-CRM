@@ -65,6 +65,23 @@ class Billing extends Entity
         'fixed_discount' => true,
         'percentage_discount' => true,        
     ];
+
+    protected function _getName(): string
+    {
+        $name = '';
+        
+        if (isset($this->text)) {
+            $name = $this->text;
+        } else if (isset($this->service->name)) {
+            $name = $this->service->name;
+        }
+
+        if ($this->quantity > 1) {
+            $name = $this->quantity . 'x ' . $name;
+        }
+
+        return $name;
+    }    
     
     protected function _getSum(): float
     {
@@ -80,14 +97,25 @@ class Billing extends Entity
         
         return $sum;
     }    
-    protected function _getDiscount(): float
+    protected function _getFixedDiscountSum(): float
     {
         $discount = 0;
         
-        if (isset($this->percentage_discount)) $discount += $this->sum * $this->percentage_discount / 100;
-        if (isset($this->fixed_discount)) $discount += $this->fixed_discount;
+        if (isset($this->fixed_discount)) $discount = $this->fixed_discount;
         
         return $discount;
+    }
+    protected function _getPercentageDiscountSum(): float
+    {
+        $discount = 0;
+        
+        if (isset($this->percentage_discount)) $discount = $this->sum * $this->percentage_discount / 100;
+        
+        return $discount;
+    }
+    protected function _getDiscount(): float
+    {
+        return $this->fixed_discount_sum + $this->percentage_discount_sum;
     }
     protected function _getTotal(): float
     {
