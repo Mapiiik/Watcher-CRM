@@ -83,6 +83,18 @@ class Contract extends Entity
         'sold_equipments' => true,
     ];
 
+    protected function _getMinimumDuration(): ?int
+    {
+        $minimum_duration = null;
+        
+        if (isset($this->obligation_until) && ($this->valid_from < $this->obligation_until))
+        {
+            $minimum_duration = $this->valid_from->diffInMonths($this->obligation_until->addDay(1));
+        }
+        
+        return $minimum_duration;
+    }
+
     protected function _getBillingAddress(): ?Address
     {
         return $this->customer->billing_address;
