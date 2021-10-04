@@ -193,7 +193,10 @@ class Customer extends Entity
             }
         }
         
-        // if there is no billing address take installation adresses
+        // if there is no billing address take permanent address
+        if (!isset($billing_address) && isset($this->permanent_address)) $billing_address = $this->permanent_address;
+
+        // if there is no billing address take installation address
         if (!isset($billing_address) && isset($this->installation_address)) $billing_address = $this->installation_address;
 
         return $billing_address;
