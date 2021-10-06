@@ -554,7 +554,7 @@ class ContractPDF extends TCPDF
             $this->Ln();
 
             $this->Ln(0.4);
-            $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
             $this->Ln(1);
 
             if (count($contract->borrowed_equipments) > 0)
