@@ -183,59 +183,66 @@ class ContractsController extends AppController
      */
     public function print($id = null, $type = null)
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+
         $contract = $this->Contracts->get($id, [
             'contain' => ['Customers' => ['Emails', 'Phones', 'Addresses'], 'InstallationAddresses', 'ServiceTypes', 'InstallationTechnicians', 'Brokerages', 'Billings' => ['Services'], 'BorrowedEquipments' => ['EquipmentTypes'], 'Ips', 'RemovedIps', 'SoldEquipments' => ['EquipmentTypes']],
         ]);
-
-        switch ($type) {
-        case 'contract-termination':
-            if (!$contract->has('valid_until')) {
-                $this->Flash->error(__('Please set a date until which the contract is valid.'));
-                return $this->redirect(['action' => 'edit', $id]);
-            }
-        case 'contract-amendment':
-        case 'contract-new-x':
-            if (!$contract->has('conclusion_date')) {
-                $this->Flash->error(__('Please set the date of conclusion of the original contract.'));
-                return $this->redirect(['action' => 'edit', $id]);
-            }
-        case 'contract-new':
-            if (!$contract->has('valid_from')) {
-                $this->Flash->error(__('Please set the date from which the contract is valid.'));
-                return $this->redirect(['action' => 'edit', $id]);
-            }
-            break;
-
-        default:
-            exit;
-        }
-                
         
         $query = $this->getRequest()->getQuery();
-        
-        // filter and split billings
-        $contract->individual_billings = [];
-        $contract->standard_billings = []; 
-        
-        foreach ($contract->billings as $billing) {
-            // skip non active items
-            if (!$billing->active) {
-                continue;
+
+        if ($this->request->getParam('_ext') === 'pdf') {
+            switch ($type) {
+            case 'contract-termination':
+                if (!$contract->has('valid_until')) {
+                    $this->Flash->error(__('Please set a date until which the contract is valid.'));
+                    return $this->redirect(['action' => 'edit', $id]);
+                }
+            case 'contract-amendment':
+                $contract->valid_from = \Cake\I18n\FrozenDate::createFromDate(11111, 11, 1);
+            case 'contract-new-x':
+                if (!$contract->has('conclusion_date')) {
+                    $this->Flash->error(__('Please set the date of conclusion of the original contract.'));
+                    return $this->redirect(['action' => 'edit', $id]);
+                }
+            case 'contract-new':
+                if (!$contract->has('valid_from')) {
+                    $this->Flash->error(__('Please set the date from which the contract is valid.'));
+                    return $this->redirect(['action' => 'edit', $id]);
+                }
+                break;
+
+            default:
+                $this->Flash->error(__('Invalid type of document requested.'));
+                return $this->redirect(['action' => 'print', $id, '?' => $query]);
             }
-            if ($billing->has('billing_from') && $billing->billing_from > $contract->valid_from) {
-                continue;
-            }
-            if ($billing->has('billing_until') && $billing->billing_until < $contract->valid_from) {
-                continue;
-            }
-            
-            // split by individual/standard price
-            if ($billing->has('price')) {
-                $contract->individual_billings[] = $billing;
-            } else {
-                $contract->standard_billings[] = $billing;
+
+            // filter and split billings
+            $contract->individual_billings = [];
+            $contract->standard_billings = []; 
+
+            foreach ($contract->billings as $billing) {
+                // skip non active items
+                if (!$billing->active) {
+                    continue;
+                }
+                if ($billing->has('billing_from') && $billing->billing_from > $contract->valid_from) {
+                    continue;
+                }
+                if ($billing->has('billing_until') && $billing->billing_until < $contract->valid_from) {
+                    continue;
+                }
+
+                // split by individual/standard price
+                if ($billing->has('price')) {
+                    $contract->individual_billings[] = $billing;
+                } else {
+                    $contract->standard_billings[] = $billing;
+                }
             }
         }
+
 
         $this->set(compact('contract', 'type', 'query'));
     }
