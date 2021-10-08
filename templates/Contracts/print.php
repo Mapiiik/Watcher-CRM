@@ -80,7 +80,7 @@
             <?= $this->Form->create($contract, [
                 'type' => 'get',
                 'valueSources' => ['query', 'context'],
-                'target' => '_blank',
+                'target' => 'print',
                 'url' => [
                     'action' => 'print',
                     $contract->id,
