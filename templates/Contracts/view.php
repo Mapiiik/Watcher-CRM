@@ -12,10 +12,12 @@
             <?= $this->Form->postLink(__('Delete Contract'), ['action' => 'delete', $contract->id], ['confirm' => __('Are you sure you want to delete # {0}?', $contract->id), 'class' => 'side-nav-item']) ?>
             <?= $this->Html->link(__('List Contracts'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->Html->link(__('New Contract'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('Print to PDF'), ['action' => 'print', $contract->id], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
         <div class="contracts view content">
+            <?= $this->Html->link(__('Print to PDF'), ['action' => 'print', $contract->id], ['class' => 'button button float-right']) ?>
             <h3><?= h($contract->number) ?></h3>
             <div class="row">
                 <div class="column-responsive">
