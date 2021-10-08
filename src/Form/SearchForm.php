@@ -8,7 +8,7 @@ use Cake\Form\Schema;
 use Cake\Validation\Validator;
 
 /**
- * MapOptions Form.
+ * Search Form.
  */
 class SearchForm extends Form
 {
