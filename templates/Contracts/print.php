@@ -13,7 +13,7 @@
         </div>
     </aside>
     <div class="column-responsive column-90">
-        <div class="contracts view content">
+        <div class="contracts form content">
             <h3><?= h($contract->number) ?></h3>
             <div class="row">
                 <div class="column-responsive">
@@ -77,8 +77,6 @@
                     </table>
                 </div>
             </div>
-        </div>
-        <div class="contracts form content">
             <?= $this->Form->create($contract, [
                 'type' => 'get',
                 'valueSources' => ['query', 'context'],
@@ -90,7 +88,7 @@
                 ]
             ]) ?>
             <fieldset>
-                <legend><?= __('Print Contract') ?></legend>
+                <legend><?= __('Print Documents') ?></legend>
                 <div class="row">
                     <div class="column-responsive">
                     <?php
