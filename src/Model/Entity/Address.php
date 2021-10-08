@@ -112,26 +112,43 @@ class Address extends Entity
     {
         $address = '';
         
+        $address .= $this->street_and_number;
+        $address .= ', ' . $this->zip_and_city;
+        
+        return $address;
+    }
+
+    protected function _getStreetAndNumber(): string
+    {
+        $street_and_number = '';
+        
         if (isset($this->street))
         {
-                $address .= $this->street . " " . $this->number;
+                $street_and_number .= $this->street . " " . $this->number;
         }
         else if (isset($this->number))
         {
-                $address .= "č.p. " . $this->number;
+                $street_and_number .= "č.p. " . $this->number;
         };
 
+        return $street_and_number;
+    }
+
+    protected function _getZipAndCity(): string
+    {
+        $zip_and_city = '';
+        
         if (isset($this->zip))
         {
-            $address .= ", " . substr($this->zip, 0, 3) . ' ' . substr($this->zip, 3, 2);
+            $zip_and_city .= substr($this->zip, 0, 3) . ' ' . substr($this->zip, 3, 2);
         }
 
         if (isset($this->city))
         {
-            $address .= " " . $this->city;
+            $zip_and_city .= " " . $this->city;
         }
         
-        return $address;
+        return $zip_and_city;
     }
 
     protected function _getFullAddress(): string
