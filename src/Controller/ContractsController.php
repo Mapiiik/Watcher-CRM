@@ -110,10 +110,10 @@ class ContractsController extends AppController
             $contract = $this->Contracts->patchEntity($contract, $this->request->getData());
             if ($this->Contracts->save($contract)) {
                 $this->Flash->success(__('The contract has been saved.'));
-
-                if (isset($customer_id)) return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
                 
-                return $this->redirect(['action' => 'index']);
+                $this->updateNumber($contract->id);
+
+                return $this->redirect(['action' => 'view', $id]);
             }
             $this->Flash->error(__('The contract could not be saved. Please, try again.'));
         }
