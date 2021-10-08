@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\I18n\FrozenDate;
+
 /**
  * Contracts Controller
  *
@@ -186,21 +188,35 @@ class ContractsController extends AppController
         $customer_id = $this->request->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
+        $documentTypes = [
+            'contract-new' => __('Contract for the provision of services'),
+            'contract-new-x' => __('Contract for the provision of services (with termination of the original contract)'),
+            'contract-amendment' => __('Amendment to the contract for the provision of services '),
+            'contract-termination' => __('Agreement to terminate contract for the provision of services'),
+        ];
+        $this->set('documentTypes', $documentTypes);
+        
         $contract = $this->Contracts->get($id, [
             'contain' => ['Customers' => ['Emails', 'Phones', 'Addresses'], 'InstallationAddresses', 'ServiceTypes', 'InstallationTechnicians', 'Brokerages', 'Billings' => ['Services'], 'BorrowedEquipments' => ['EquipmentTypes'], 'Ips', 'RemovedIps', 'SoldEquipments' => ['EquipmentTypes']],
         ]);
         
-        $query = $this->getRequest()->getQuery();
-
-        if ($this->request->getParam('_ext') === 'pdf') {
-            switch ($type) {
+        $query = $this->request->getQuery();
+        if (isset($query['document_type'])) $type = $query['document_type'];
+        
+        if ($this->request->getParam('_ext') === 'pdf' && !empty($this->request->getQuery())) {
+            switch ($query['document_type']) {
             case 'contract-termination':
                 if (!$contract->has('valid_until')) {
                     $this->Flash->error(__('Please set a date until which the contract is valid.'));
                     return $this->redirect(['action' => 'edit', $id]);
                 }
             case 'contract-amendment':
-                $contract->valid_from = \Cake\I18n\FrozenDate::createFromDate(11111, 11, 1);
+                if ($query['document_type'] == 'contract-amendment' && empty($query['effective_date_of_the_amendment'])) {
+                    $this->Flash->error(__('Please set the effective date of the amendment.'));
+                    return $this->redirect(['action' => 'print', $id, '?' => $query]);
+                } else {
+                    $contract->valid_from = new FrozenDate($query['effective_date_of_the_amendment']);
+                }
             case 'contract-new-x':
                 if (!$contract->has('conclusion_date')) {
                     $this->Flash->error(__('Please set the date of conclusion of the original contract.'));
@@ -242,7 +258,6 @@ class ContractsController extends AppController
                 }
             }
         }
-
 
         $this->set(compact('contract', 'type', 'query'));
     }

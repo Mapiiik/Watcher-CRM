@@ -81,6 +81,8 @@ class Contract extends Entity
         'ips' => true,
         'removed_ips' => true,
         'sold_equipments' => true,
+        'activation_fee' => true,
+        'activation_fee_with_obligation' => true,
     ];
 
     protected function _getMinimumDuration(): ?int
@@ -93,6 +95,28 @@ class Contract extends Entity
         }
         
         return $minimum_duration;
+    }
+    
+    protected function _getActivationFeeSum(): ?int
+    {
+        if (isset($this->activation_fee)) {
+            return $this->activation_fee;
+        }
+
+        if (isset($this->service_type->activation_fee)) {
+            return $this->service_type->activation_fee;
+        }
+    }
+
+    protected function _getActivationFeeWithObligationSum(): ?int
+    {
+        if (isset($this->activation_fee_with_obligation)) {
+            return $this->activation_fee_with_obligation;
+        }
+
+        if (isset($this->service_type->activation_fee_with_obligation)) {
+            return $this->service_type->activation_fee_with_obligation;
+        }
     }
 
     protected function _getBillingAddress(): ?Address

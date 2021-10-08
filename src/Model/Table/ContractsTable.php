@@ -157,6 +157,14 @@ class ContractsTable extends Table
             ->integer('number_of_amendments')
             ->allowEmptyString('number_of_amendments');
 
+        $validator
+            ->integer('activation_fee')
+            ->allowEmptyString('activation_fee');
+
+        $validator
+            ->integer('activation_fee_with_obligation')
+            ->allowEmptyString('activation_fee_with_obligation');
+        
         return $validator;
     }
 

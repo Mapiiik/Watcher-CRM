@@ -100,7 +100,7 @@ class ContractPDF extends TCPDF
             $this->Cell(45, 4, 'číslo smlouvy:', '', '', 'C');
             $this->Cell(45, 4, 'datum uzavření smlouvy:', '', '', 'C');
             $this->Cell(45, 4, 'číslo dodatku:', '', '', 'C');
-            $this->Cell(45, 4, 'účinnost dodatku:', '', '', 'C');
+            $this->Cell(45, 4, 'datum účinnosti dodatku:', '', '', 'C');
             $this->Ln();
             $this->SetFont('DejaVuSerif', 'B', '8');
             $this->Cell(45, 4, $contract->number, '', '', 'C');
@@ -229,12 +229,12 @@ class ContractPDF extends TCPDF
         $this->SetFont('DejaVuSerif', '', '8');
         $this->Cell(30, 4, 'ulice / č.p.:', '', '', 'R');
         $this->SetFont('DejaVuSerif', 'B', '8');
-        $this->MultiCell(60, 4, $contract->billing_address->street . ' ' . $contract->billing_address->number, '', 'L');
+        $this->MultiCell(60, 4, $contract->billing_address->street_and_number, '', 'L');
 
         $this->SetFont('DejaVuSerif', '', '8');
         $this->Cell(30, 4, 'PSČ / město:', '', '', 'R');
         $this->SetFont('DejaVuSerif', 'B', '8');
-        $this->MultiCell(60, 4, $contract->billing_address->zip . ' ' . $contract->billing_address->city, '', 'L');
+        $this->MultiCell(60, 4, $contract->billing_address->zip_and_city, '', 'L');
 
         // NEXT COLLUMN
         $addressStopY = $this->GetY();
@@ -600,20 +600,24 @@ class ContractPDF extends TCPDF
                 $this->MultiCell(180, 4, 'Náklady spojené s instalací dalších zařízení nebo další kabeláže se řídí aktuálně účinným Ceníkem Poskytovatele.' . PHP_EOL, 0, 'J');
                 $this->Ln(3);
 
-                if ($type === 'contract-new' && $contract->service_type->activation_fee > 0)
+                if ($contract->activation_fee_sum > 0)
                 {
                     $this->SetFont('DejaVuSerif', 'B', '8');
 
                     if ($contract->minimum_duration <= 0)
                     {
-                        $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . $contract->service_type->activation_fee . ',- Kč zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci Poskytnutých zařízení.' . PHP_EOL, 0, 'J');
-                        $this->Ln(3);
+                        if ($type === 'contract-new') {
+                            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . $contract->activation_fee_sum . ',- Kč zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci Poskytnutých zařízení.' . PHP_EOL, 0, 'J');
+                            $this->Ln(3);
+                        }
                     }
                     else
                     {
-                        $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . $contract->service_type->activation_fee_with_obligation . ',- Kč zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci Poskytnutých zařízení.' . PHP_EOL, 0, 'J');
-                        $this->Ln(3);
-                        $this->MultiCell(180, 4, 'Poskytnutá zařízení jsou Uživateli poskytnuta Poskytovatelem za zvýhodněných podmínek (bezúplatně). V případě zániku této smlouvy před uplynutím '. $this->contractDurationBefore($contract->minimum_duration) . ' od jejího uzavření je proto Uživatel povinen nahradit Poskytovateli náklady spojené s výše uvedenými Poskytnutými zařízeními, a to v paušální částce ' . ($contract->service_type->activation_fee - $contract->service_type->activation_fee_with_obligation) . ',- Kč (' . $contract->service_type->activation_fee . ',- Kč je aktivační poplatek při smlouvě bez úvazku).' . PHP_EOL, 0, 'J');
+                        if ($type === 'contract-new') {
+                            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . $contract->activation_fee_with_obligation_sum . ',- Kč zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci Poskytnutých zařízení.' . PHP_EOL, 0, 'J');
+                            $this->Ln(3);
+                        }
+                        $this->MultiCell(180, 4, 'Poskytnutá zařízení jsou Uživateli poskytnuta Poskytovatelem za zvýhodněných podmínek (bezúplatně). V případě zániku této smlouvy před uplynutím '. $this->contractDurationBefore($contract->minimum_duration) . ' od jejího uzavření je proto Uživatel povinen nahradit Poskytovateli náklady spojené s výše uvedenými Poskytnutými zařízeními, a to v paušální částce ' . ($contract->activation_fee_sum - $contract->activation_fee_with_obligation_sum) . ',- Kč (' . $contract->activation_fee_sum . ',- Kč je aktivační poplatek při smlouvě bez úvazku).' . PHP_EOL, 0, 'J');
                         $this->Ln(3);
                     }
                 }
@@ -621,43 +625,27 @@ class ContractPDF extends TCPDF
             else
             {
                 $this->SetFont('DejaVuSerif', '', '8');
+                $this->MultiCell(180, 4, 'Cena za případnou instalaci Uživatelových zařízení včetně případných souvisejících nákladů (např. kabeláž) se řídí aktuálním Ceníkem Poskytovatele.' . PHP_EOL, 0, 'J');
+                $this->Ln(3);
 
-                if ($type === 'contract-new' && $contract->service_type->activation_fee > 0)
-                {
+                if ($contract->activation_fee_sum > 0) {
                     $this->SetFont('DejaVuSerif', 'B', '8');
 
-                    if ($contract->minimum_duration <= 0)
-                    {
-                        $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . $contract->service_type->activation_fee . ',- Kč zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací.' . PHP_EOL, 0, 'J');
-                        $this->Ln(3);
-                    }
-                    else
-                    {
-                        $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . $contract->service_type->activation_fee_with_obligation . ',- Kč zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací.' . PHP_EOL, 0, 'J');
-                        $this->Ln(3);
-                        $this->MultiCell(180, 4, 'Aktivační poplatek je Uživateli poskytnut Poskytovatelem za zvýhodněných podmínek. V případě zániku této smlouvy před uplynutím ' . $this->contractDurationBefore($contract->minimum_duration) . ' od jejího uzavření je proto Uživatel povinen nahradit Poskytovateli náklady spojené se zřízením koncového bodu Poskytovatelovy sítě elektronických komunikací, a to v paušální částce ' . ($contract->service_type->activation_fee - $contract->service_type->activation_fee_with_obligation) . ',- Kč (' . $contract->service_type->activation_fee . ',- Kč je aktivační poplatek při smlouvě bez úvazku).' . PHP_EOL, 0, 'J');
+                    if ($contract->minimum_duration <= 0) {
+                        if ($type === 'contract-new') {
+                            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . $contract->activation_fee_sum . ',- Kč zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací.' . PHP_EOL, 0, 'J');
+                            $this->Ln(3);
+                        }
+                    } else {
+                        if ($type === 'contract-new') {
+                            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . $contract->activation_fee_with_obligation_sum . ',- Kč zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací.' . PHP_EOL, 0, 'J');
+                            $this->Ln(3);
+                        }
+                        $this->MultiCell(180, 4, 'Aktivační poplatek je Uživateli poskytnut Poskytovatelem za zvýhodněných podmínek. V případě zániku této smlouvy před uplynutím ' . $this->contractDurationBefore($contract->minimum_duration) . ' od jejího uzavření je proto Uživatel povinen nahradit Poskytovateli náklady spojené se zřízením koncového bodu Poskytovatelovy sítě elektronických komunikací, a to v paušální částce ' . ($contract->activation_fee_sum - $contract->activation_fee_with_obligation_sum) . ',- Kč (' . $contract->activation_fee_sum . ',- Kč je aktivační poplatek při smlouvě bez úvazku).' . PHP_EOL, 0, 'J');
                         $this->Ln(3);
                     }
                 }
-
-                $this->SetFont('DejaVuSerif', '', '8');
-                $this->MultiCell(180, 4, 'Cena za případnou instalaci Uživatelových zařízení včetně případných souvisejících nákladů (např. kabeláž) se řídí aktuálním Ceníkem Poskytovatele.' . PHP_EOL, 0, 'J');
-                $this->Ln(3);
             }
-
-            /*                        
-            // set the source file
-            $pageCount = $this->setSourceFile("../smlouva-cast_druha.pdf");
-
-            for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
-                // add a page
-                $this->AddPage();
-                // import page 1
-                $tplIdx = $this->importPage($pageNo);
-                // use the imported page and place it at point 10,10 with a width of 100 mm
-                $this->useTemplate($tplIdx, 0, 0);
-            }               
-            */
 
             $this->SetFont('DejaVuSerif', 'B', '9');
             $this->Write(4 , 'Závěrečná ustanovení');

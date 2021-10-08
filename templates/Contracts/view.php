@@ -56,6 +56,14 @@
                             <th><?= __('Vip') ?></th>
                             <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
                         </tr>
+                        <tr>
+                            <th><?= __('Activation Fee') ?></th>
+                            <td><?= h($contract->activation_fee) ?><?= $contract->has('service_type') ? ' (' . h($contract->service_type->activation_fee) . ')' : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Activation Fee With Obligation') ?></th>
+                            <td><?= h($contract->activation_fee_with_obligation) ?><?= $contract->has('service_type') ? ' (' . h($contract->service_type->activation_fee_with_obligation) . ')' : '' ?></td>
+                        </tr>
                     </table>
                 </div>
             </div>

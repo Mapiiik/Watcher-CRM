@@ -42,6 +42,8 @@
                         echo $this->Form->control('access_description');
                         echo $this->Form->control('brokerage_id', ['options' => $brokerages, 'empty' => true]);
                         echo $this->Form->control('vip');
+                        echo $this->Form->control('activation_fee', ['empty' => true]);
+                        echo $this->Form->control('activation_fee_with_obligation', ['empty' => true]);
                         echo $this->Form->control('note');
                     ?>
                     </div>

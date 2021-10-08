@@ -13,6 +13,71 @@
         </div>
     </aside>
     <div class="column-responsive column-90">
+        <div class="contracts view content">
+            <h3><?= h($contract->number) ?></h3>
+            <div class="row">
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Customer') ?></th>
+                            <td><?= $contract->has('customer') ? $this->Html->link($contract->customer->name, ['controller' => 'Customers', 'action' => 'view', $contract->customer->id]) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Service Type') ?></th>
+                            <td><?= $contract->has('service_type') ? $this->Html->link($contract->service_type->name, ['controller' => 'ServiceTypes', 'action' => 'view', $contract->service_type->id]) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Number') ?></th>
+                            <td><?= h($contract->number) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Installation Address') ?></th>
+                            <td><?= $contract->has('installation_address') ? $this->Html->link($contract->installation_address->full_address, ['controller' => 'Addresses', 'action' => 'view', $contract->installation_address->id]) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Installation Date') ?></th>
+                            <td><?= h($contract->installation_date) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Installation Technician') ?></th>
+                            <td><?= $contract->has('installation_technician') ? $this->Html->link($contract->installation_technician->name, ['controller' => 'Customers', 'action' => 'view', $contract->installation_technician->id]) : '' ?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Conclusion Date') ?></th>
+                            <td><?= h($contract->conclusion_date) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Number Of Amendments') ?></th>
+                            <td><?= $this->Number->format($contract->number_of_amendments) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Valid From') ?></th>
+                            <td><?= h($contract->valid_from) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Valid Until') ?></th>
+                            <td><?= h($contract->valid_until) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Obligation Until') ?></th>
+                            <td><?= h($contract->obligation_until) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Activation Fee') ?></th>
+                            <td><?= h($contract->activation_fee) ?><?= $contract->has('service_type') ? ' (' . h($contract->service_type->activation_fee) . ')' : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Activation Fee With Obligation') ?></th>
+                            <td><?= h($contract->activation_fee_with_obligation) ?><?= $contract->has('service_type') ? ' (' . h($contract->service_type->activation_fee_with_obligation) . ')' : '' ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
         <div class="contracts form content">
             <?= $this->Form->create($contract, [
                 'type' => 'get',
@@ -21,7 +86,6 @@
                 'url' => [
                     'action' => 'print',
                     $contract->id,
-                    'contract-amendmentx',
                     '_ext' => 'pdf'
                 ]
             ]) ?>
@@ -30,21 +94,12 @@
                 <div class="row">
                     <div class="column-responsive">
                     <?php
-                        echo $this->Form->control('conclusion_date', ['empty' => true, 'disabled' => true]);
-                        echo $this->Form->control('number_of_amendments');
-                        echo $this->Form->control('valid_from', ['empty' => true]);
-                        echo $this->Form->control('valid_until', ['empty' => true]);
-                        echo $this->Form->control('obligation_until', ['empty' => true]);
+                        echo $this->Form->control('document_type', ['options' => $documentTypes, 'empty' => true]);
                     ?>
                     </div>
                     <div class="column-responsive">
                     <?php
-                        echo $this->Form->control('installation_date', ['empty' => true]);
-                        echo $this->Form->control('installation_technician_id', ['options' => $installationTechnicians, 'empty' => true]);
-                        echo $this->Form->control('access_description');
-                        echo $this->Form->control('brokerage_id', ['options' => $brokerages, 'empty' => true]);
-                        echo $this->Form->control('vip');
-                        echo $this->Form->control('note');
+                        echo $this->Form->control('effective_date_of_the_amendment', ['empty' => true, 'type' => 'date']);
                     ?>
                     </div>
                 </div>
