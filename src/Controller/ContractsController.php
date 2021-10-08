@@ -203,15 +203,15 @@ class ContractsController extends AppController
         $query = $this->request->getQuery();
         if (isset($query['document_type'])) $type = $query['document_type'];
         
-        if ($this->request->getParam('_ext') === 'pdf' && !empty($this->request->getQuery())) {
-            switch ($query['document_type']) {
+        if ($this->request->getParam('_ext') === 'pdf') {
+            switch ($type) {
             case 'contract-termination':
                 if (!$contract->has('valid_until')) {
                     $this->Flash->error(__('Please set a date until which the contract is valid.'));
                     return $this->redirect(['action' => 'edit', $id]);
                 }
             case 'contract-amendment':
-                if ($query['document_type'] == 'contract-amendment' && empty($query['effective_date_of_the_amendment'])) {
+                if ($type == 'contract-amendment' && empty($query['effective_date_of_the_amendment'])) {
                     $this->Flash->error(__('Please set the effective date of the amendment.'));
                     return $this->redirect(['action' => 'print', $id, '?' => $query]);
                 } else {
