@@ -93,11 +93,15 @@
                     <div class="column-responsive">
                     <?php
                         echo $this->Form->control('document_type', ['options' => $documentTypes, 'empty' => true]);
+                        echo $this->Form->control('signed', ['type' => 'checkbox']);
                     ?>
                     </div>
                     <div class="column-responsive">
                     <?php
                         echo $this->Form->control('effective_date_of_the_amendment', ['empty' => true, 'type' => 'date']);
+                        echo $this->Form->control('ssid', ['empty' => true]);
+                        echo $this->Form->control('radius_username', ['empty' => true]);
+                        echo $this->Form->control('radius_password', ['empty' => true]);
                     ?>
                     </div>
                 </div>

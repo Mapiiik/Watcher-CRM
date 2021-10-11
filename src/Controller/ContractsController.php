@@ -193,6 +193,9 @@ class ContractsController extends AppController
             'contract-new-x' => __('Contract for the provision of services (with termination of the original contract)'),
             'contract-amendment' => __('Amendment to the contract for the provision of services '),
             'contract-termination' => __('Agreement to terminate contract for the provision of services'),
+            '--' => '--',            
+            'handover-protocol-installation' => __('Handover protocol - Installation of internet connection'),
+            'handover-protocol-uninstallation' => __('Handover protocol - Internet connection uninstallation'),
         ];
         $this->set('documentTypes', $documentTypes);
         
@@ -226,6 +229,27 @@ class ContractsController extends AppController
                 if (!$contract->has('valid_from')) {
                     $this->Flash->error(__('Please set the date from which the contract is valid.'));
                     return $this->redirect(['action' => 'edit', $id]);
+                }
+                break;
+
+            case 'handover-protocol-uninstallation':
+                if (!$contract->has('valid_until')) {
+                    $this->Flash->error(__('Please set a date until which the contract is valid.'));
+                    return $this->redirect(['action' => 'edit', $id]);
+                }
+            case 'handover-protocol-installation':
+                if (!$contract->has('valid_from')) {
+                    $this->Flash->error(__('Please set the date from which the contract is valid.'));
+                    return $this->redirect(['action' => 'edit', $id]);
+                }
+                if (!empty($query['ssid'])) {
+                        $contract->ssid = $query['ssid'];
+                }
+                if (!empty($query['radius_username'])) {
+                        $contract->radius_username = $query['radius_username'];
+                }
+                if (!empty($query['radius_password'])) {
+                        $contract->radius_password = $query['radius_password'];
                 }
                 break;
 
