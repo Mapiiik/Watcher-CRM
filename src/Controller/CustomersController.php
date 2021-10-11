@@ -160,4 +160,70 @@ class CustomersController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    /**
+     * Print method
+     *
+     * @param string|null $id Contract id.
+     * @return \Cake\Http\Response|null|void Renders view
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function print($id = null, $type = null)
+    {
+        $documentTypes = [
+            'gdpr-new' => __('Consent to the processing of personal data'),
+            'gdpr-change' => __('Consent to the processing of personal data (change)'),
+        ];
+        $this->set('documentTypes', $documentTypes);
+        
+        $customer = $this->Customers->get($id, [
+            'contain' => ['Taxes', 'Addresses' => ['Countries'], 'Billings' => ['Contracts', 'Services'], 'BorrowedEquipments' => ['Contracts', 'EquipmentTypes'], 'Contracts' => ['ServiceTypes', 'InstallationAddresses'], 'Emails', 'Ips' => ['Contracts'], 'LabelCustomers', 'Logins', 'Phones', 'RemovedIps' => ['Contracts'], 'SoldEquipments' => ['Contracts', 'EquipmentTypes'], 'Tasks' => ['TaskTypes', 'TaskStates', 'Dealers']],
+        ]);
+
+        $invoice_delivery_types = $this->Customers->invoice_delivery_types;
+        $address_types = $this->Customers->Addresses->types;
+        $login_rights = $this->Customers->Logins->rights;
+
+        $query = $this->request->getQuery();
+        if (isset($query['document_type'])) $type = $query['document_type'];
+        
+        if ($this->request->getParam('_ext') === 'pdf') {
+            switch ($type) {
+            case 'gdpr-new':
+            case 'gdpr-change':
+                break;
+
+            default:
+                $this->Flash->error(__('Invalid type of document requested.'));
+                return $this->redirect(['action' => 'print', $id, '?' => $query]);
+            }
+
+/*            
+            // filter and split billings
+            $contract->individual_billings = [];
+            $contract->standard_billings = []; 
+
+            foreach ($contract->billings as $billing) {
+                // skip non active items
+                if (!$billing->active) {
+                    continue;
+                }
+                if ($billing->has('billing_from') && $billing->billing_from > $contract->valid_from) {
+                    continue;
+                }
+                if ($billing->has('billing_until') && $billing->billing_until < $contract->valid_from) {
+                    continue;
+                }
+
+                // split by individual/standard price
+                if ($billing->has('price')) {
+                    $contract->individual_billings[] = $billing;
+                } else {
+                    $contract->standard_billings[] = $billing;
+                }
+            }
+*/
+        }
+        $this->set(compact('customer', 'type', 'query', 'address_types', 'invoice_delivery_types'));
+    }
 }

@@ -63,6 +63,7 @@ $routes->scope('/admin/', function (RouteBuilder $builder) {
     $builder->connect('/customers/{customer_id}', 'Customers::view')->setPatterns(['customer_id' => '[0-9]+'])->setPass(['customer_id']);
     $builder->connect('/customers/{customer_id}/edit', 'Customers::edit')->setPatterns(['customer_id' => '[0-9]+'])->setPass(['customer_id']);
     $builder->connect('/customers/{customer_id}/delete', 'Customers::delete')->setPatterns(['customer_id' => '[0-9]+'])->setPass(['customer_id']);
+    $builder->connect('/customers/{customer_id}/print', 'Customers::print')->setPatterns(['customer_id' => '[0-9]+'])->setPass(['customer_id']);
     
     $builder->connect('/customers/{customer_id}/{controller}', ['action' => 'index'])->setPatterns(['customer_id' => '[0-9]+']);
     $builder->connect('/customers/{customer_id}/{controller}/add', ['action' => 'add'])->setPatterns(['customer_id' => '[0-9]+']);

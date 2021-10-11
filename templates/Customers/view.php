@@ -12,10 +12,13 @@
             <?= $this->Form->postLink(__('Delete Customer'), ['action' => 'delete', $customer->id], ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id), 'class' => 'side-nav-item']) ?>
             <?= $this->Html->link(__('List Customers'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->Html->link(__('New Customer'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+             <br />
+            <?= $this->Html->link(__('Print to PDF'), ['action' => 'print', $customer->id], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
         <div class="customers view content">
+            <?= $this->Html->link(__('Print to PDF'), ['action' => 'print', $customer->id], ['class' => 'button button float-right']) ?>
             <h3><?= h($customer->name) ?></h3>
             <div class="row">
                 <div class="column-responsive">
