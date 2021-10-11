@@ -78,6 +78,7 @@
                     </table>
                 </div>
             </div>
+            <br />
             <?= $this->Form->create($contract, [
                 'type' => 'get',
                 'valueSources' => ['query', 'context'],
