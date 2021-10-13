@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Collection\Collection;
 use Cake\I18n\FrozenDate;
 
 /**
@@ -258,31 +259,24 @@ class ContractsController extends AppController
                 return $this->redirect(['action' => 'print', $id, '?' => $query]);
             }
 
-            // filter and split billings
-            $contract->individual_billings = [];
-            $contract->standard_billings = []; 
+            $billings_collection = new Collection($contract->billings);
+            
+            $active_billings_collection = $billings_collection->reject(function ($billing, $key) use ($contract) {
+                return (
+                    (!$billing->active) ||
+                    ($billing->has('billing_from') && $billing->billing_from > $contract->valid_from) ||
+                    ($billing->has('billing_until') && $billing->billing_until < $contract->valid_from)
+                );
+            });
+            
+            $contract->individual_billings = $active_billings_collection->filter(function ($billing, $key) {
+                return $billing->has('price');
+            })->toArray();
 
-            foreach ($contract->billings as $billing) {
-                // skip non active items
-                if (!$billing->active) {
-                    continue;
-                }
-                if ($billing->has('billing_from') && $billing->billing_from > $contract->valid_from) {
-                    continue;
-                }
-                if ($billing->has('billing_until') && $billing->billing_until < $contract->valid_from) {
-                    continue;
-                }
-
-                // split by individual/standard price
-                if ($billing->has('price')) {
-                    $contract->individual_billings[] = $billing;
-                } else {
-                    $contract->standard_billings[] = $billing;
-                }
-            }
+            $contract->standard_billings = $active_billings_collection->filter(function ($billing, $key) {
+                return !$billing->has('price');
+            })->toArray();
         }
-
         $this->set(compact('contract', 'type', 'query'));
     }
 }
