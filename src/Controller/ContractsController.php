@@ -191,7 +191,7 @@ class ContractsController extends AppController
         $documentTypes = [
             'contract-new' => __('Contract for the provision of services'),
             'contract-new-x' => __('Contract for the provision of services (with termination of the original contract)'),
-            'contract-amendment' => __('Amendment to the contract for the provision of services '),
+            'contract-amendment' => __('Amendment to the contract for the provision of services'),
             'contract-termination' => __('Agreement to terminate contract for the provision of services'),
             '--' => '--',            
             'handover-protocol-installation' => __('Handover protocol - Installation of internet connection'),
