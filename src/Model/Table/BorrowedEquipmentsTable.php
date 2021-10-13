@@ -78,6 +78,14 @@ class BorrowedEquipmentsTable extends Table
             ->allowEmptyString('id', null, 'create');
 
         $validator
+            ->integer('customer_id')
+            ->notEmptyString('customer_id');
+
+        $validator
+            ->integer('contract_id')
+            ->notEmptyString('contract_id');
+
+        $validator
             ->scalar('serial_number')
             ->allowEmptyString('serial_number');
 

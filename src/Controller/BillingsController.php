@@ -79,6 +79,7 @@ class BillingsController extends AppController
             $billing = $this->Billings->patchEntity($billing, $this->request->getData());
             
             if (
+                isset($billing->service_id) &&
                 isset($this->Billings->Services->get($billing->service_id)->service_type_id) && 
                 $this->Billings->Contracts->get($billing->contract_id)->service_type_id <> $this->Billings->Services->get($billing->service_id)->service_type_id
             ) {
@@ -135,6 +136,7 @@ class BillingsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $billing = $this->Billings->patchEntity($billing, $this->request->getData());
             if (
+                isset($billing->service_id) &&
                 isset($this->Billings->Services->get($billing->service_id)->service_type_id) && 
                 $this->Billings->Contracts->get($billing->contract_id)->service_type_id <> $this->Billings->Services->get($billing->service_id)->service_type_id
             ) {

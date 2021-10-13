@@ -109,6 +109,14 @@ class ContractsTable extends Table
             ->allowEmptyString('id', null, 'create');
 
         $validator
+            ->integer('customer_id')
+            ->notEmptyString('customer_id');
+
+        $validator
+            ->integer('service_type_id')
+            ->notEmptyString('service_type_id');
+
+        $validator
             ->scalar('number')
             ->allowEmptyString('number')
             ->add('number', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);

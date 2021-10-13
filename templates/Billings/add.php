@@ -18,7 +18,7 @@
                 <legend><?= __('Add Billing') ?></legend>
                 <?php
                     if (!isset($customer_id)) echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
-                    if (!isset($contract_id)) echo $this->Form->control('contract_id', ['options' => $contracts]);
+                    if (!isset($contract_id)) echo $this->Form->control('contract_id', ['options' => $contracts, 'empty' => true]);
                     echo $this->Form->control('service_id', ['options' => $services, 'empty' => true]);
                     echo $this->Form->control('text');
                     echo $this->Form->control('quantity');
