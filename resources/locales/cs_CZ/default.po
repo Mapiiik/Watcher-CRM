@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2021-09-27 10:31+0200\n"
-"PO-Revision-Date: 2021-09-27 10:41+0200\n"
+"POT-Creation-Date: 2021-10-13 08:25+0200\n"
+"PO-Revision-Date: 2021-10-13 08:36+0200\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -47,23 +47,23 @@ msgstr "Adresa nebyla v RUIAN nalezena."
 msgid "Unable to find results on page {0}. Redirect to page 1."
 msgstr "Nelze najít výsledky na stránce {0}. Přesměrování na stranu 1."
 
-#: Controller/BillingsController.php:82 Controller/BillingsController.php:135
+#: Controller/BillingsController.php:85 Controller/BillingsController.php:141
 msgid "The service type does not match the selected contract."
 msgstr "Typ služby neodpovídá vybrané smlouvě."
 
-#: Controller/BillingsController.php:85 Controller/BillingsController.php:138
+#: Controller/BillingsController.php:88 Controller/BillingsController.php:144
 msgid "The billing has been saved."
 msgstr "Fakturace byla uložena."
 
-#: Controller/BillingsController.php:91 Controller/BillingsController.php:144
+#: Controller/BillingsController.php:94 Controller/BillingsController.php:150
 msgid "The billing could not be saved. Please, try again."
 msgstr "Fakturace nelze uložit. Opakujte akci."
 
-#: Controller/BillingsController.php:181
+#: Controller/BillingsController.php:187
 msgid "The billing has been deleted."
 msgstr "Fakturace byla odstraněna."
 
-#: Controller/BillingsController.php:183
+#: Controller/BillingsController.php:189
 msgid "The billing could not be deleted. Please, try again."
 msgstr "Fakturace nelze odstranit. Opakujte akci."
 
@@ -121,29 +121,78 @@ msgstr ""
 msgid "The brokerage could not be deleted. Please, try again."
 msgstr ""
 
-#: Controller/ContractsController.php:71 Controller/ContractsController.php:112
+#: Controller/ContractsController.php:73 Controller/ContractsController.php:114
 msgid "The contract has been saved."
 msgstr "Smlouva byla uložena."
 
-#: Controller/ContractsController.php:77 Controller/ContractsController.php:118
+#: Controller/ContractsController.php:79 Controller/ContractsController.php:120
 msgid "The contract could not be saved. Please, try again."
 msgstr "Smlouvu nelze uložit. Opakujte akci."
 
-#: Controller/ContractsController.php:148
+#: Controller/ContractsController.php:150
 msgid "The contract has been deleted."
 msgstr "Smlouva byla odstraněna."
 
-#: Controller/ContractsController.php:150
+#: Controller/ContractsController.php:152
 msgid "The contract could not be deleted. Please, try again."
 msgstr "Smlouvu nelze odstranit. Opakujte akci."
 
-#: Controller/ContractsController.php:169
+#: Controller/ContractsController.php:171
 msgid "The contract number has been updated."
 msgstr "Číslo smlouvy bylo aktualizováno."
 
-#: Controller/ContractsController.php:173
+#: Controller/ContractsController.php:175
 msgid "The contract number could not be updated. Please, try again."
 msgstr "Číslo smlouvy nelze aktualizovat. Opakujte akci."
+
+#: Controller/ContractsController.php:192
+msgid "Contract for the provision of services"
+msgstr "Smlouva o poskytování služeb"
+
+#: Controller/ContractsController.php:193
+msgid ""
+"Contract for the provision of services (with termination of the original "
+"contract)"
+msgstr "Smlouva o poskytování služeb (s ukončením původní smlouvy)"
+
+#: Controller/ContractsController.php:194
+msgid "Amendment to the contract for the provision of services"
+msgstr "Dodatek ke smlouvě o poskytování služeb"
+
+#: Controller/ContractsController.php:195
+msgid "Agreement to terminate contract for the provision of services"
+msgstr "Dohoda o ukončení smlouvy o poskytování služeb"
+
+#: Controller/ContractsController.php:197
+msgid "Handover protocol - Installation of internet connection"
+msgstr "Předávací protokol - Instalace připojení k internetu"
+
+#: Controller/ContractsController.php:198
+msgid "Handover protocol - Internet connection uninstallation"
+msgstr "Předávací protokol - Deinstalace připojení k internetu"
+
+#: Controller/ContractsController.php:213
+#: Controller/ContractsController.php:237
+msgid "Please set a date until which the contract is valid."
+msgstr "Nastavte prosím datum, do kterého je smlouva platná."
+
+#: Controller/ContractsController.php:218
+msgid "Please set the effective date of the amendment."
+msgstr "Nastavte prosím datum účinnosti dodatku."
+
+#: Controller/ContractsController.php:225
+msgid "Please set the date of conclusion of the original contract."
+msgstr "Nastavte prosím datum uzavření původní smlouvy."
+
+#: Controller/ContractsController.php:230
+#: Controller/ContractsController.php:242
+msgid "Please set the date from which the contract is valid."
+msgstr "Nastavte prosím datum, od kterého je smlouva platná."
+
+#: Controller/ContractsController.php:257
+#: Controller/CustomersController.php:197
+msgid "Invalid type of document requested."
+msgstr "Neplatný typ požadovaného dokumentu."
 
 #: Controller/CountriesController.php:53 Controller/CountriesController.php:77
 msgid "The country has been saved."
@@ -190,6 +239,14 @@ msgstr "Zákazník byl odstraněn."
 #: Controller/CustomersController.php:158
 msgid "The customer could not be deleted. Please, try again."
 msgstr "Zákazníka nelze odstranit. Opakujte akci."
+
+#: Controller/CustomersController.php:174
+msgid "Consent to the processing of personal data"
+msgstr "Souhlas se zpracováním osobních údajů"
+
+#: Controller/CustomersController.php:175
+msgid "Consent to the processing of personal data (change)"
+msgstr "Souhlas se zpracováním osobních údajů (změna)"
 
 #: Controller/EmailsController.php:73 Controller/EmailsController.php:108
 msgid "The email has been saved."
@@ -459,20 +516,24 @@ msgstr "Daň byla odstraněna."
 msgid "The tax could not be deleted. Please, try again."
 msgstr "Daň nelze odstranit. Prosím, zkuste to znovu."
 
-#: Model/Table/AddressesTable.php:47 Contracts/view.php:36
-#: Customers/view.php:294
+#: Model/Table/AddressesTable.php:47 Contracts/pdf/print.php:259
+#: Contracts/pdf/print.php:977 Contracts/print.php:35 Contracts/view.php:39
+#: Customers/view.php:297
 msgid "Installation Address"
 msgstr "Adresa instalace"
 
-#: Model/Table/AddressesTable.php:48
+#: Model/Table/AddressesTable.php:48 Contracts/pdf/print.php:178
+#: Contracts/pdf/print.php:896
 msgid "Billing Address"
 msgstr "Fakturační adresa"
 
-#: Model/Table/AddressesTable.php:49
+#: Model/Table/AddressesTable.php:49 Contracts/pdf/print.php:268
+#: Contracts/pdf/print.php:986
 msgid "Delivery Address"
 msgstr "Doručovací adresa"
 
-#: Model/Table/AddressesTable.php:50
+#: Model/Table/AddressesTable.php:50 Contracts/pdf/print.php:276
+#: Contracts/pdf/print.php:994
 msgid "Permanent Address"
 msgstr "Adresa trvalého bydliště"
 
@@ -513,16 +574,17 @@ msgstr "Specialista"
 #: BrokerageDealers/view.php:10 Brokerages/add.php:10 Brokerages/edit.php:10
 #: Brokerages/index.php:16 Brokerages/view.php:10 Brokerages/view.php:41
 #: Brokerages/view.php:87 Contracts/add.php:10 Contracts/edit.php:10
-#: Contracts/index.php:28 Contracts/view.php:10 Contracts/view.php:143
-#: Contracts/view.php:180 Contracts/view.php:208 Contracts/view.php:234
-#: Contracts/view.php:261 Countries/add.php:10 Countries/edit.php:10
-#: Countries/index.php:16 Countries/view.php:10 Countries/view.php:56
-#: Customers/add.php:10 Customers/edit.php:10 Customers/index.php:34
-#: Customers/view.php:10 Customers/view.php:157 Customers/view.php:184
-#: Customers/view.php:214 Customers/view.php:255 Customers/view.php:303
-#: Customers/view.php:341 Customers/view.php:379 Customers/view.php:417
-#: Customers/view.php:446 Customers/view.php:475 Customers/view.php:506
-#: Emails/add.php:10 Emails/edit.php:10 Emails/index.php:20 Emails/view.php:10
+#: Contracts/index.php:28 Contracts/print.php:10 Contracts/view.php:10
+#: Contracts/view.php:154 Contracts/view.php:191 Contracts/view.php:219
+#: Contracts/view.php:245 Contracts/view.php:272 Countries/add.php:10
+#: Countries/edit.php:10 Countries/index.php:16 Countries/view.php:10
+#: Countries/view.php:56 Customers/add.php:10 Customers/edit.php:10
+#: Customers/index.php:34 Customers/print.php:10 Customers/view.php:10
+#: Customers/view.php:160 Customers/view.php:187 Customers/view.php:217
+#: Customers/view.php:258 Customers/view.php:306 Customers/view.php:351
+#: Customers/view.php:389 Customers/view.php:418 Customers/view.php:447
+#: Customers/view.php:478 Customers/view.php:510 Emails/add.php:10
+#: Emails/edit.php:10 Emails/index.php:20 Emails/view.php:10
 #: EquipmentTypes/add.php:10 EquipmentTypes/edit.php:10
 #: EquipmentTypes/index.php:17 EquipmentTypes/view.php:10
 #: EquipmentTypes/view.php:49 EquipmentTypes/view.php:88 Ips/add.php:10
@@ -560,18 +622,19 @@ msgstr "Přidat adresu"
 #: Billings/edit.php:40 BorrowedEquipments/add.php:28
 #: BorrowedEquipments/edit.php:33 BrokerageDealers/add.php:26
 #: BrokerageDealers/edit.php:31 Brokerages/add.php:23 Brokerages/edit.php:28
-#: Contracts/add.php:29 Contracts/edit.php:50 Countries/add.php:23
-#: Countries/edit.php:28 Customers/add.php:55 Customers/edit.php:60
-#: Emails/add.php:27 Emails/edit.php:32 EquipmentTypes/add.php:24
-#: EquipmentTypes/edit.php:29 Ips/add.php:26 Ips/edit.php:31
-#: LabelCustomers/add.php:26 LabelCustomers/edit.php:31 Labels/add.php:28
-#: Labels/edit.php:33 Logins/add.php:25 Logins/edit.php:31 Phones/add.php:24
-#: Phones/edit.php:29 Queues/add.php:31 Queues/edit.php:36
-#: RemovedIps/add.php:26 RemovedIps/edit.php:31 ServiceTypes/add.php:24
-#: ServiceTypes/edit.php:29 Services/add.php:26 Services/edit.php:31
-#: SoldEquipments/add.php:26 SoldEquipments/edit.php:31 TaskStates/add.php:23
-#: TaskStates/edit.php:28 TaskTypes/add.php:23 TaskTypes/edit.php:28
-#: Tasks/add.php:36 Tasks/edit.php:41 Taxes/add.php:23 Taxes/edit.php:28
+#: Contracts/add.php:29 Contracts/edit.php:52 Contracts/print.php:111
+#: Countries/add.php:23 Countries/edit.php:28 Customers/add.php:55
+#: Customers/edit.php:60 Customers/print.php:164 Emails/add.php:27
+#: Emails/edit.php:32 EquipmentTypes/add.php:24 EquipmentTypes/edit.php:29
+#: Ips/add.php:26 Ips/edit.php:31 LabelCustomers/add.php:26
+#: LabelCustomers/edit.php:31 Labels/add.php:28 Labels/edit.php:33
+#: Logins/add.php:25 Logins/edit.php:31 Phones/add.php:24 Phones/edit.php:29
+#: Queues/add.php:31 Queues/edit.php:36 RemovedIps/add.php:26
+#: RemovedIps/edit.php:31 ServiceTypes/add.php:24 ServiceTypes/edit.php:29
+#: Services/add.php:26 Services/edit.php:31 SoldEquipments/add.php:26
+#: SoldEquipments/edit.php:31 TaskStates/add.php:23 TaskStates/edit.php:28
+#: TaskTypes/add.php:23 TaskTypes/edit.php:28 Tasks/add.php:36
+#: Tasks/edit.php:41 Taxes/add.php:23 Taxes/edit.php:28
 msgid "Submit"
 msgstr "Potvrdit"
 
@@ -580,14 +643,14 @@ msgstr "Potvrdit"
 #: BorrowedEquipments/index.php:37 BrokerageDealers/edit.php:12
 #: BrokerageDealers/index.php:33 Brokerages/edit.php:12 Brokerages/index.php:27
 #: Brokerages/view.php:53 Brokerages/view.php:114 Contracts/edit.php:12
-#: Contracts/index.php:51 Contracts/view.php:161 Contracts/view.php:191
-#: Contracts/view.php:217 Contracts/view.php:243 Contracts/view.php:271
+#: Contracts/index.php:51 Contracts/view.php:172 Contracts/view.php:202
+#: Contracts/view.php:228 Contracts/view.php:254 Contracts/view.php:282
 #: Countries/edit.php:12 Countries/index.php:27 Countries/view.php:83
-#: Customers/edit.php:12 Customers/index.php:56 Customers/view.php:168
-#: Customers/view.php:192 Customers/view.php:228 Customers/view.php:277
-#: Customers/view.php:321 Customers/view.php:353 Customers/view.php:398
-#: Customers/view.php:429 Customers/view.php:456 Customers/view.php:487
-#: Customers/view.php:518 Emails/edit.php:12 Emails/index.php:35
+#: Customers/edit.php:12 Customers/index.php:56 Customers/view.php:171
+#: Customers/view.php:195 Customers/view.php:231 Customers/view.php:280
+#: Customers/view.php:324 Customers/view.php:370 Customers/view.php:401
+#: Customers/view.php:428 Customers/view.php:459 Customers/view.php:490
+#: Customers/view.php:522 Emails/edit.php:12 Emails/index.php:35
 #: EquipmentTypes/edit.php:12 EquipmentTypes/index.php:29
 #: EquipmentTypes/view.php:65 EquipmentTypes/view.php:104 Ips/edit.php:12
 #: Ips/index.php:31 LabelCustomers/edit.php:12 LabelCustomers/index.php:33
@@ -611,15 +674,15 @@ msgstr "Odstranit"
 #: BrokerageDealers/index.php:33 BrokerageDealers/view.php:12
 #: Brokerages/edit.php:14 Brokerages/index.php:27 Brokerages/view.php:12
 #: Brokerages/view.php:53 Brokerages/view.php:114 Contracts/edit.php:14
-#: Contracts/index.php:51 Contracts/view.php:12 Contracts/view.php:161
-#: Contracts/view.php:191 Contracts/view.php:217 Contracts/view.php:243
-#: Contracts/view.php:271 Countries/edit.php:14 Countries/index.php:27
+#: Contracts/index.php:51 Contracts/view.php:12 Contracts/view.php:172
+#: Contracts/view.php:202 Contracts/view.php:228 Contracts/view.php:254
+#: Contracts/view.php:282 Countries/edit.php:14 Countries/index.php:27
 #: Countries/view.php:12 Countries/view.php:83 Customers/edit.php:14
-#: Customers/index.php:56 Customers/view.php:12 Customers/view.php:168
-#: Customers/view.php:192 Customers/view.php:228 Customers/view.php:277
-#: Customers/view.php:321 Customers/view.php:353 Customers/view.php:398
-#: Customers/view.php:429 Customers/view.php:456 Customers/view.php:487
-#: Customers/view.php:518 Emails/edit.php:14 Emails/index.php:35
+#: Customers/index.php:56 Customers/view.php:12 Customers/view.php:171
+#: Customers/view.php:195 Customers/view.php:231 Customers/view.php:280
+#: Customers/view.php:324 Customers/view.php:370 Customers/view.php:401
+#: Customers/view.php:428 Customers/view.php:459 Customers/view.php:490
+#: Customers/view.php:522 Emails/edit.php:14 Emails/index.php:35
 #: Emails/view.php:12 EquipmentTypes/edit.php:14 EquipmentTypes/index.php:29
 #: EquipmentTypes/view.php:12 EquipmentTypes/view.php:65
 #: EquipmentTypes/view.php:104 Ips/edit.php:14 Ips/index.php:31 Ips/view.php:12
@@ -645,35 +708,35 @@ msgstr "Opravdu chcete odstranit # {0}?"
 msgid "Edit Address"
 msgstr "Upravit adresu"
 
-#: Addresses/index.php:8 Addresses/view.php:14 Customers/view.php:237
+#: Addresses/index.php:8 Addresses/view.php:14 Customers/view.php:240
 msgid "New Address"
 msgstr "Nová adresa"
 
-#: Addresses/index.php:9 Customers/view.php:238
+#: Addresses/index.php:9 Customers/view.php:241
 msgid "Addresses"
 msgstr "Adresy"
 
-#: Addresses/index.php:27 Addresses/view.php:84 Customers/view.php:254
+#: Addresses/index.php:27 Addresses/view.php:84 Customers/view.php:257
 msgid "Maps"
-msgstr ""
+msgstr "Mapy"
 
-#: Addresses/index.php:48 Addresses/view.php:86 Customers/view.php:271
+#: Addresses/index.php:48 Addresses/view.php:86 Customers/view.php:274
 msgid "Google Maps"
 msgstr ""
 
-#: Addresses/index.php:49 Addresses/view.php:88 Customers/view.php:272
+#: Addresses/index.php:49 Addresses/view.php:88 Customers/view.php:275
 msgid "Mapy.cz"
 msgstr ""
 
 #: Addresses/index.php:52 Billings/index.php:47 BorrowedEquipments/index.php:35
 #: BrokerageDealers/index.php:31 Brokerages/index.php:25 Brokerages/view.php:51
-#: Brokerages/view.php:112 Contracts/index.php:49 Contracts/view.php:159
-#: Contracts/view.php:189 Contracts/view.php:215 Contracts/view.php:241
-#: Contracts/view.php:269 Countries/index.php:25 Countries/view.php:81
-#: Customers/index.php:54 Customers/view.php:166 Customers/view.php:190
-#: Customers/view.php:226 Customers/view.php:275 Customers/view.php:319
-#: Customers/view.php:351 Customers/view.php:396 Customers/view.php:427
-#: Customers/view.php:454 Customers/view.php:485 Customers/view.php:516
+#: Brokerages/view.php:112 Contracts/index.php:49 Contracts/view.php:170
+#: Contracts/view.php:200 Contracts/view.php:226 Contracts/view.php:252
+#: Contracts/view.php:280 Countries/index.php:25 Countries/view.php:81
+#: Customers/index.php:54 Customers/view.php:169 Customers/view.php:193
+#: Customers/view.php:229 Customers/view.php:278 Customers/view.php:322
+#: Customers/view.php:368 Customers/view.php:399 Customers/view.php:426
+#: Customers/view.php:457 Customers/view.php:488 Customers/view.php:520
 #: Emails/index.php:33 EquipmentTypes/index.php:27 EquipmentTypes/view.php:63
 #: EquipmentTypes/view.php:102 Ips/index.php:29 LabelCustomers/index.php:31
 #: Labels/index.php:33 Labels/view.php:75 Logins/index.php:39
@@ -682,19 +745,19 @@ msgstr ""
 #: ServiceTypes/view.php:134 ServiceTypes/view.php:169 Services/index.php:35
 #: Services/view.php:93 SoldEquipments/index.php:31 TaskStates/index.php:23
 #: TaskStates/view.php:81 TaskTypes/index.php:23 TaskTypes/view.php:81
-#: Tasks/index.php:49 Taxes/index.php:25
+#: Tasks/index.php:49 Taxes/index.php:25 View/Helper/PaginatorHelper.php:1266
 msgid "View"
 msgstr "Zobrazit"
 
 #: Addresses/index.php:53 Billings/index.php:48 BorrowedEquipments/index.php:36
 #: BrokerageDealers/index.php:32 Brokerages/index.php:26 Brokerages/view.php:52
-#: Brokerages/view.php:113 Contracts/index.php:50 Contracts/view.php:160
-#: Contracts/view.php:190 Contracts/view.php:216 Contracts/view.php:242
-#: Contracts/view.php:270 Countries/index.php:26 Countries/view.php:82
-#: Customers/index.php:55 Customers/view.php:167 Customers/view.php:191
-#: Customers/view.php:227 Customers/view.php:276 Customers/view.php:320
-#: Customers/view.php:352 Customers/view.php:397 Customers/view.php:428
-#: Customers/view.php:455 Customers/view.php:486 Customers/view.php:517
+#: Brokerages/view.php:113 Contracts/index.php:50 Contracts/view.php:171
+#: Contracts/view.php:201 Contracts/view.php:227 Contracts/view.php:253
+#: Contracts/view.php:281 Countries/index.php:26 Countries/view.php:82
+#: Customers/index.php:55 Customers/view.php:170 Customers/view.php:194
+#: Customers/view.php:230 Customers/view.php:279 Customers/view.php:323
+#: Customers/view.php:369 Customers/view.php:400 Customers/view.php:427
+#: Customers/view.php:458 Customers/view.php:489 Customers/view.php:521
 #: Emails/index.php:34 EquipmentTypes/index.php:28 EquipmentTypes/view.php:64
 #: EquipmentTypes/view.php:103 Ips/index.php:30 LabelCustomers/index.php:32
 #: Labels/index.php:34 Labels/view.php:76 Logins/index.php:40
@@ -771,60 +834,61 @@ msgid "Delete Address"
 msgstr "Odstranit adresu"
 
 #: Addresses/view.php:24 Billings/view.php:22 BorrowedEquipments/view.php:22
-#: Contracts/view.php:24 Emails/view.php:22 Ips/view.php:22
-#: LabelCustomers/view.php:26 Logins/view.php:22 Phones/view.php:22
-#: RemovedIps/view.php:22 SoldEquipments/view.php:22 Tasks/view.php:48
+#: Contracts/print.php:23 Contracts/view.php:27 Emails/view.php:22
+#: Ips/view.php:22 LabelCustomers/view.php:26 Logins/view.php:22
+#: Phones/view.php:22 RemovedIps/view.php:22 SoldEquipments/view.php:22
+#: Tasks/view.php:48
 msgid "Customer"
 msgstr "Zákazník"
 
-#: Addresses/view.php:28 Countries/view.php:37 Customers/view.php:243
+#: Addresses/view.php:28 Countries/view.php:37 Customers/view.php:246
 msgid "Type"
 msgstr "Typ"
 
-#: Addresses/view.php:32 Countries/view.php:43 Customers/view.php:24
-#: Customers/view.php:244
+#: Addresses/view.php:32 Countries/view.php:43 Customers/print.php:22
+#: Customers/view.php:27 Customers/view.php:247
 msgid "Company"
 msgstr "Společnost"
 
-#: Addresses/view.php:36 Countries/view.php:39 Customers/view.php:28
-#: Customers/view.php:245
+#: Addresses/view.php:36 Countries/view.php:39 Customers/print.php:26
+#: Customers/view.php:31 Customers/view.php:248
 msgid "Title"
 msgstr "Titul"
 
-#: Addresses/view.php:40 Countries/view.php:40 Customers/view.php:32
-#: Customers/view.php:246
+#: Addresses/view.php:40 Countries/view.php:40 Customers/print.php:30
+#: Customers/view.php:35 Customers/view.php:249
 msgid "First Name"
 msgstr "Jméno"
 
-#: Addresses/view.php:44 Countries/view.php:41 Customers/view.php:36
-#: Customers/view.php:247
+#: Addresses/view.php:44 Countries/view.php:41 Customers/print.php:34
+#: Customers/view.php:39 Customers/view.php:250
 msgid "Last Name"
 msgstr "Příjmení"
 
-#: Addresses/view.php:48 Countries/view.php:42 Customers/view.php:40
-#: Customers/view.php:248
+#: Addresses/view.php:48 Countries/view.php:42 Customers/print.php:38
+#: Customers/view.php:43 Customers/view.php:251
 msgid "Suffix"
 msgstr "Přípona"
 
-#: Addresses/view.php:56 Countries/view.php:44 Customers/view.php:249
+#: Addresses/view.php:56 Countries/view.php:44 Customers/view.php:252
 msgid "Street"
 msgstr "Ulice"
 
-#: Addresses/view.php:60 Brokerages/view.php:70 Contracts/view.php:32
-#: Countries/view.php:45 Customers/view.php:250 Customers/view.php:293
-#: ServiceTypes/view.php:51
+#: Addresses/view.php:60 Brokerages/view.php:70 Contracts/print.php:31
+#: Contracts/view.php:35 Countries/view.php:45 Customers/view.php:253
+#: Customers/view.php:296 ServiceTypes/view.php:51
 msgid "Number"
 msgstr "Číslo"
 
-#: Addresses/view.php:64 Countries/view.php:46 Customers/view.php:251
+#: Addresses/view.php:64 Countries/view.php:46 Customers/view.php:254
 msgid "City"
 msgstr "Město"
 
-#: Addresses/view.php:68 Countries/view.php:47 Customers/view.php:252
+#: Addresses/view.php:68 Countries/view.php:47 Customers/view.php:255
 msgid "Zip"
 msgstr "PSČ"
 
-#: Addresses/view.php:72 Customers/view.php:253
+#: Addresses/view.php:72 Customers/view.php:256
 msgid "Country"
 msgstr "Země"
 
@@ -842,9 +906,9 @@ msgstr "GPS Y"
 
 #: Addresses/view.php:109 Billings/view.php:70 BorrowedEquipments/view.php:46
 #: BrokerageDealers/view.php:38 Brokerages/view.php:26 Brokerages/view.php:40
-#: Brokerages/view.php:67 Contracts/view.php:91 Countries/view.php:26
-#: Countries/view.php:36 Customers/view.php:112 Emails/view.php:42
-#: EquipmentTypes/view.php:26 EquipmentTypes/view.php:40
+#: Brokerages/view.php:67 Contracts/view.php:102 Countries/view.php:26
+#: Countries/view.php:36 Customers/print.php:110 Customers/view.php:115
+#: Emails/view.php:42 EquipmentTypes/view.php:26 EquipmentTypes/view.php:40
 #: EquipmentTypes/view.php:79 Ips/view.php:34 LabelCustomers/view.php:30
 #: Labels/view.php:34 Labels/view.php:62 Logins/view.php:54 Phones/view.php:30
 #: Queues/view.php:34 Queues/view.php:68 RemovedIps/view.php:34
@@ -857,42 +921,44 @@ msgid "Id"
 msgstr "ID"
 
 #: Addresses/view.php:113 Billings/view.php:74 BorrowedEquipments/view.php:50
-#: Brokerages/view.php:72 Contracts/view.php:95 Countries/view.php:50
-#: Customers/view.php:116 Customers/view.php:473 EquipmentTypes/view.php:45
-#: EquipmentTypes/view.php:84 Ips/view.php:38 LabelCustomers/view.php:38
-#: Labels/view.php:60 Logins/view.php:58 Queues/view.php:69
-#: ServiceTypes/view.php:34 ServiceTypes/view.php:53 ServiceTypes/view.php:151
-#: Services/view.php:42 Services/view.php:66 SoldEquipments/view.php:50
-#: TaskStates/view.php:48 TaskTypes/view.php:48 Tasks/view.php:84
+#: Brokerages/view.php:72 Contracts/view.php:106 Countries/view.php:50
+#: Customers/print.php:114 Customers/view.php:119 Customers/view.php:445
+#: EquipmentTypes/view.php:45 EquipmentTypes/view.php:84 Ips/view.php:38
+#: LabelCustomers/view.php:38 Labels/view.php:60 Logins/view.php:58
+#: Queues/view.php:69 ServiceTypes/view.php:34 ServiceTypes/view.php:53
+#: ServiceTypes/view.php:151 Services/view.php:42 Services/view.php:66
+#: SoldEquipments/view.php:50 TaskStates/view.php:48 TaskTypes/view.php:48
+#: Tasks/view.php:84
 msgid "Created"
 msgstr "Vytvořeno"
 
 #: Addresses/view.php:117 Billings/view.php:78 BorrowedEquipments/view.php:54
-#: Brokerages/view.php:73 Contracts/view.php:99 Countries/view.php:49
-#: Customers/view.php:120 Customers/view.php:474 EquipmentTypes/view.php:46
-#: EquipmentTypes/view.php:85 Ips/view.php:42 LabelCustomers/view.php:34
-#: Labels/view.php:63 Logins/view.php:62 ServiceTypes/view.php:54
-#: Services/view.php:65 SoldEquipments/view.php:42 TaskStates/view.php:47
-#: TaskTypes/view.php:47 Tasks/view.php:88
+#: Brokerages/view.php:73 Contracts/view.php:110 Countries/view.php:49
+#: Customers/print.php:118 Customers/view.php:123 Customers/view.php:446
+#: EquipmentTypes/view.php:46 EquipmentTypes/view.php:85 Ips/view.php:42
+#: LabelCustomers/view.php:34 Labels/view.php:63 Logins/view.php:62
+#: ServiceTypes/view.php:54 Services/view.php:65 SoldEquipments/view.php:42
+#: TaskStates/view.php:47 TaskTypes/view.php:47 Tasks/view.php:88
 msgid "Created By"
 msgstr "Vytvořil"
 
 #: Addresses/view.php:121 Billings/view.php:82 BorrowedEquipments/view.php:58
-#: Brokerages/view.php:74 Contracts/view.php:103 Countries/view.php:52
-#: Customers/view.php:124 EquipmentTypes/view.php:47 EquipmentTypes/view.php:86
-#: Ips/view.php:46 Logins/view.php:66 Queues/view.php:70
-#: ServiceTypes/view.php:38 ServiceTypes/view.php:55 ServiceTypes/view.php:152
-#: Services/view.php:46 Services/view.php:64 SoldEquipments/view.php:54
-#: TaskStates/view.php:46 TaskTypes/view.php:46 Tasks/view.php:92
+#: Brokerages/view.php:74 Contracts/view.php:114 Countries/view.php:52
+#: Customers/print.php:122 Customers/view.php:127 EquipmentTypes/view.php:47
+#: EquipmentTypes/view.php:86 Ips/view.php:46 Logins/view.php:66
+#: Queues/view.php:70 ServiceTypes/view.php:38 ServiceTypes/view.php:55
+#: ServiceTypes/view.php:152 Services/view.php:46 Services/view.php:64
+#: SoldEquipments/view.php:54 TaskStates/view.php:46 TaskTypes/view.php:46
+#: Tasks/view.php:92
 msgid "Modified"
 msgstr "Upraveno"
 
 #: Addresses/view.php:125 Billings/view.php:86 BorrowedEquipments/view.php:62
-#: Brokerages/view.php:75 Contracts/view.php:107 Countries/view.php:51
-#: Customers/view.php:128 EquipmentTypes/view.php:48 EquipmentTypes/view.php:87
-#: Ips/view.php:50 Logins/view.php:70 ServiceTypes/view.php:56
-#: Services/view.php:63 SoldEquipments/view.php:46 TaskStates/view.php:45
-#: TaskTypes/view.php:45 Tasks/view.php:96
+#: Brokerages/view.php:75 Contracts/view.php:118 Countries/view.php:51
+#: Customers/print.php:126 Customers/view.php:131 EquipmentTypes/view.php:48
+#: EquipmentTypes/view.php:87 Ips/view.php:50 Logins/view.php:70
+#: ServiceTypes/view.php:56 Services/view.php:63 SoldEquipments/view.php:46
+#: TaskStates/view.php:45 TaskTypes/view.php:45 Tasks/view.php:96
 msgid "Modified By"
 msgstr "Upravil"
 
@@ -908,37 +974,41 @@ msgstr "Přidat fakturaci"
 msgid "Edit Billing"
 msgstr "Upravit fakturaci"
 
-#: Billings/index.php:8 Billings/view.php:14 Contracts/view.php:126
+#: Billings/index.php:8 Billings/view.php:14 Contracts/view.php:137
 msgid "New Billing"
 msgstr "Nová fakturace"
 
-#: Billings/index.php:9 Contracts/view.php:127
+#: Billings/index.php:9 Contracts/view.php:138
 msgid "Billings"
 msgstr "Fakturace"
 
 #: Billings/index.php:44 Billings/index.php:45 Billings/view.php:63
-#: Billings/view.php:67 Contracts/index.php:44 Contracts/view.php:57
-#: Contracts/view.php:155 Contracts/view.php:156 Customers/index.php:41
-#: Customers/view.php:89 Customers/view.php:97 Customers/view.php:101
-#: Customers/view.php:105 Customers/view.php:109 Customers/view.php:162
-#: Customers/view.php:163 Customers/view.php:164 Customers/view.php:220
-#: Customers/view.php:315 Customers/view.php:392 Customers/view.php:393
-#: Emails/index.php:29 Emails/index.php:30 Emails/index.php:31
-#: Emails/view.php:31 Emails/view.php:35 Emails/view.php:39 Labels/view.php:43
-#: Logins/index.php:33 Logins/view.php:35
+#: Billings/view.php:67 Contracts/index.php:44 Contracts/view.php:60
+#: Contracts/view.php:166 Contracts/view.php:167 Customers/index.php:41
+#: Customers/print.php:87 Customers/print.php:95 Customers/print.php:99
+#: Customers/print.php:103 Customers/print.php:107 Customers/view.php:92
+#: Customers/view.php:100 Customers/view.php:104 Customers/view.php:108
+#: Customers/view.php:112 Customers/view.php:165 Customers/view.php:166
+#: Customers/view.php:167 Customers/view.php:223 Customers/view.php:318
+#: Customers/view.php:364 Customers/view.php:365 Emails/index.php:29
+#: Emails/index.php:30 Emails/index.php:31 Emails/view.php:31
+#: Emails/view.php:35 Emails/view.php:39 Labels/view.php:43 Logins/index.php:33
+#: Logins/view.php:35
 msgid "Yes"
 msgstr "Ano"
 
 #: Billings/index.php:44 Billings/index.php:45 Billings/view.php:63
-#: Billings/view.php:67 Contracts/index.php:44 Contracts/view.php:57
-#: Contracts/view.php:155 Contracts/view.php:156 Customers/index.php:41
-#: Customers/view.php:89 Customers/view.php:97 Customers/view.php:101
-#: Customers/view.php:105 Customers/view.php:109 Customers/view.php:162
-#: Customers/view.php:163 Customers/view.php:164 Customers/view.php:220
-#: Customers/view.php:315 Customers/view.php:392 Customers/view.php:393
-#: Emails/index.php:29 Emails/index.php:30 Emails/index.php:31
-#: Emails/view.php:31 Emails/view.php:35 Emails/view.php:39 Labels/view.php:43
-#: Logins/index.php:33 Logins/view.php:35
+#: Billings/view.php:67 Contracts/index.php:44 Contracts/view.php:60
+#: Contracts/view.php:166 Contracts/view.php:167 Customers/index.php:41
+#: Customers/print.php:87 Customers/print.php:95 Customers/print.php:99
+#: Customers/print.php:103 Customers/print.php:107 Customers/view.php:92
+#: Customers/view.php:100 Customers/view.php:104 Customers/view.php:108
+#: Customers/view.php:112 Customers/view.php:165 Customers/view.php:166
+#: Customers/view.php:167 Customers/view.php:223 Customers/view.php:318
+#: Customers/view.php:364 Customers/view.php:365 Emails/index.php:29
+#: Emails/index.php:30 Emails/index.php:31 Emails/view.php:31
+#: Emails/view.php:35 Emails/view.php:39 Labels/view.php:43 Logins/index.php:33
+#: Logins/view.php:35
 msgid "No"
 msgstr "Ne"
 
@@ -946,66 +1016,66 @@ msgstr "Ne"
 msgid "Delete Billing"
 msgstr "Odstranit fakturaci"
 
-#: Billings/view.php:26 BorrowedEquipments/view.php:26 Customers/view.php:367
-#: Customers/view.php:412 Customers/view.php:443 Customers/view.php:470
-#: Customers/view.php:501 Ips/view.php:26 RemovedIps/view.php:26
+#: Billings/view.php:26 BorrowedEquipments/view.php:26 Customers/view.php:339
+#: Customers/view.php:384 Customers/view.php:415 Customers/view.php:442
+#: Customers/view.php:473 Ips/view.php:26 RemovedIps/view.php:26
 #: SoldEquipments/view.php:26
 msgid "Contract"
 msgstr "Smlouva"
 
-#: Billings/view.php:30 Contracts/view.php:132 Customers/view.php:368
+#: Billings/view.php:30 Contracts/view.php:143 Customers/view.php:340
 msgid "Service"
 msgstr "Služba"
 
-#: Billings/view.php:34 Contracts/view.php:133 Customers/view.php:339
-#: Customers/view.php:369 Services/view.php:58 TaskStates/view.php:41
+#: Billings/view.php:34 Contracts/view.php:144 Customers/view.php:341
+#: Customers/view.php:508 Services/view.php:58 TaskStates/view.php:41
 #: TaskTypes/view.php:41 Tasks/view.php:103
 msgid "Text"
 msgstr "Text"
 
-#: Billings/view.php:38 Contracts/view.php:134 Customers/view.php:370
+#: Billings/view.php:38 Contracts/view.php:145 Customers/view.php:342
 #: Services/view.php:70
 msgid "Quantity"
 msgstr "Počet"
 
-#: Billings/view.php:42 Contracts/view.php:135 Customers/view.php:371
+#: Billings/view.php:42 Contracts/view.php:146 Customers/view.php:343
 #: EquipmentTypes/view.php:30 Queues/view.php:72 ServiceTypes/view.php:154
 #: Services/view.php:38 Services/view.php:59
 msgid "Price"
 msgstr "Cena"
 
-#: Billings/view.php:46 Contracts/view.php:136 Customers/view.php:372
+#: Billings/view.php:46 Contracts/view.php:147 Customers/view.php:344
 #: Services/view.php:60
 msgid "Billing From"
 msgstr "Fakturovat od"
 
-#: Billings/view.php:50 Contracts/view.php:137 Customers/view.php:373
+#: Billings/view.php:50 Contracts/view.php:148 Customers/view.php:345
 #: Services/view.php:67
 msgid "Billing Until"
 msgstr "Fakturovat do"
 
-#: Billings/view.php:54 Contracts/view.php:138 Customers/view.php:374
+#: Billings/view.php:54 Contracts/view.php:149 Customers/view.php:346
 msgid "Fixed Discount"
 msgstr "Pevná sleva"
 
-#: Billings/view.php:58 Contracts/view.php:139 Customers/view.php:375
+#: Billings/view.php:58 Contracts/view.php:150 Customers/view.php:347
 msgid "Percentage Discount"
 msgstr "Procentuální sleva"
 
-#: Billings/view.php:62 Contracts/view.php:140 Customers/view.php:376
+#: Billings/view.php:62 Contracts/view.php:151 Customers/view.php:348
 #: Services/view.php:62
 msgid "Active"
 msgstr "Aktivní"
 
-#: Billings/view.php:66 Contracts/view.php:141 Customers/view.php:377
+#: Billings/view.php:66 Contracts/view.php:152 Customers/view.php:349
 #: Services/view.php:68
 msgid "Separate"
 msgstr "Samostatný"
 
-#: Billings/view.php:91 Brokerages/view.php:76 Contracts/view.php:120
-#: Contracts/view.php:142 Contracts/view.php:233 Contracts/view.php:259
-#: Customers/view.php:135 Customers/view.php:302 Customers/view.php:378
-#: Customers/view.php:472 Customers/view.php:503 Ips/view.php:55
+#: Billings/view.php:91 Brokerages/view.php:76 Contracts/view.php:131
+#: Contracts/view.php:153 Contracts/view.php:244 Contracts/view.php:270
+#: Customers/view.php:138 Customers/view.php:305 Customers/view.php:350
+#: Customers/view.php:444 Customers/view.php:475 Ips/view.php:55
 #: LabelCustomers/view.php:43 Labels/view.php:61 RemovedIps/view.php:47
 #: ServiceTypes/view.php:57 Services/view.php:61
 msgid "Note"
@@ -1025,11 +1095,11 @@ msgid "Edit Borrowed Equipment"
 msgstr "Upravit zapůjčené zařízení"
 
 #: BorrowedEquipments/index.php:8 BorrowedEquipments/view.php:14
-#: Contracts/view.php:170
+#: Contracts/view.php:181
 msgid "New Borrowed Equipment"
 msgstr "Nové zapůjčené zařízení"
 
-#: BorrowedEquipments/index.php:9 Contracts/view.php:171
+#: BorrowedEquipments/index.php:9 Contracts/view.php:182
 msgid "Borrowed Equipments"
 msgstr "Zapůjčená zařízení"
 
@@ -1037,22 +1107,22 @@ msgstr "Zapůjčená zařízení"
 msgid "Delete Borrowed Equipment"
 msgstr "Odstranit zapůjčené zařízení"
 
-#: BorrowedEquipments/view.php:30 Contracts/view.php:176 Contracts/view.php:206
-#: Customers/view.php:413 Customers/view.php:444 SoldEquipments/view.php:30
+#: BorrowedEquipments/view.php:30 Contracts/view.php:187 Contracts/view.php:217
+#: Customers/view.php:385 Customers/view.php:416 SoldEquipments/view.php:30
 msgid "Equipment Type"
 msgstr "Typ zařízení"
 
-#: BorrowedEquipments/view.php:34 Contracts/view.php:177 Contracts/view.php:207
-#: Customers/view.php:414 Customers/view.php:445 EquipmentTypes/view.php:44
+#: BorrowedEquipments/view.php:34 Contracts/view.php:188 Contracts/view.php:218
+#: Customers/view.php:386 Customers/view.php:417 EquipmentTypes/view.php:44
 #: EquipmentTypes/view.php:83 SoldEquipments/view.php:34
 msgid "Serial Number"
 msgstr "Sériové číslo"
 
-#: BorrowedEquipments/view.php:38 Contracts/view.php:178 Customers/view.php:415
+#: BorrowedEquipments/view.php:38 Contracts/view.php:189 Customers/view.php:387
 msgid "Borrowed From"
 msgstr "Zapůjčené od"
 
-#: BorrowedEquipments/view.php:42 Contracts/view.php:179 Customers/view.php:416
+#: BorrowedEquipments/view.php:42 Contracts/view.php:190 Customers/view.php:388
 msgid "Borrowed Until"
 msgstr "Zapůjčené do"
 
@@ -1081,12 +1151,12 @@ msgstr ""
 msgid "Delete Brokerage Dealer"
 msgstr ""
 
-#: BrokerageDealers/view.php:22 Customers/view.php:88 Customers/view.php:340
-#: Tasks/view.php:52
+#: BrokerageDealers/view.php:22 Customers/print.php:86 Customers/view.php:91
+#: Customers/view.php:509 Tasks/view.php:52
 msgid "Dealer"
 msgstr "Dealer"
 
-#: BrokerageDealers/view.php:26 Contracts/view.php:52
+#: BrokerageDealers/view.php:26 Contracts/view.php:55
 msgid "Brokerage"
 msgstr "Provize"
 
@@ -1161,12 +1231,12 @@ msgstr "ID adresy instalace"
 msgid "Service Type Id"
 msgstr "ID typu služby"
 
-#: Brokerages/view.php:77 Contracts/view.php:83 Customers/view.php:299
-#: ServiceTypes/view.php:58
+#: Brokerages/view.php:77 Contracts/print.php:67 Contracts/view.php:94
+#: Customers/view.php:302 ServiceTypes/view.php:58
 msgid "Obligation Until"
 msgstr "Závazek do"
 
-#: Brokerages/view.php:78 Contracts/view.php:56 Customers/view.php:300
+#: Brokerages/view.php:78 Contracts/view.php:59 Customers/view.php:303
 #: ServiceTypes/view.php:59
 msgid "Vip"
 msgstr "VIP"
@@ -1175,36 +1245,37 @@ msgstr "VIP"
 msgid "Installation Technician Id"
 msgstr "ID instalačního technika"
 
-#: Brokerages/view.php:81 Contracts/view.php:44 Customers/view.php:301
-#: ServiceTypes/view.php:62
+#: Brokerages/view.php:81 Contracts/print.php:39 Contracts/view.php:47
+#: Customers/view.php:304 ServiceTypes/view.php:62
 msgid "Installation Date"
 msgstr "Datum instalace"
 
-#: Brokerages/view.php:82 Contracts/view.php:114 ServiceTypes/view.php:63
+#: Brokerages/view.php:82 Contracts/view.php:125 ServiceTypes/view.php:63
 msgid "Access Description"
 msgstr "Popis přístupu"
 
-#: Brokerages/view.php:83 Contracts/view.php:75 Customers/view.php:297
-#: ServiceTypes/view.php:64
+#: Brokerages/view.php:83 Contracts/print.php:59 Contracts/view.php:86
+#: Customers/view.php:300 ServiceTypes/view.php:64
 msgid "Valid From"
 msgstr "Platnost od"
 
-#: Brokerages/view.php:84 Contracts/view.php:79 Customers/view.php:298
-#: ServiceTypes/view.php:65
+#: Brokerages/view.php:84 Contracts/print.php:63 Contracts/view.php:90
+#: Customers/view.php:301 ServiceTypes/view.php:65
 msgid "Valid Until"
 msgstr "Platnost do"
 
-#: Brokerages/view.php:85 Contracts/view.php:67 Customers/view.php:295
-#: ServiceTypes/view.php:66
+#: Brokerages/view.php:85 Contracts/print.php:51 Contracts/view.php:78
+#: Customers/view.php:298 ServiceTypes/view.php:66
 msgid "Conclusion Date"
 msgstr "Datum uzavření"
 
-#: Brokerages/view.php:86 Contracts/view.php:71 Customers/view.php:296
-#: ServiceTypes/view.php:67
+#: Brokerages/view.php:86 Contracts/print.php:55 Contracts/view.php:82
+#: Customers/view.php:299 ServiceTypes/view.php:67
 msgid "Number Of Amendments"
 msgstr "Počet dodatků"
 
-#: Contracts/add.php:11 Contracts/edit.php:16 Contracts/view.php:13
+#: Contracts/add.php:11 Contracts/edit.php:16 Contracts/print.php:13
+#: Contracts/view.php:13
 msgid "List Contracts"
 msgstr "Seznam smluv"
 
@@ -1212,61 +1283,82 @@ msgstr "Seznam smluv"
 msgid "Add Contract"
 msgstr "Přidat smlouvu"
 
-#: Contracts/edit.php:23 Contracts/view.php:11
+#: Contracts/edit.php:23 Contracts/print.php:12 Contracts/view.php:11
 msgid "Edit Contract"
 msgstr "Upravit smlouvu"
 
-#: Contracts/index.php:8 Contracts/view.php:14 Customers/view.php:286
+#: Contracts/index.php:8 Contracts/view.php:14 Customers/view.php:289
 msgid "New Contract"
 msgstr "Nová smlouva"
 
-#: Contracts/index.php:9 Customers/index.php:32 Customers/view.php:287
+#: Contracts/index.php:9 Customers/index.php:32 Customers/view.php:290
 msgid "Contracts"
 msgstr "Smlouvy"
+
+#: Contracts/print.php:11
+msgid "View Contract"
+msgstr "Zobrazit smlouvu"
+
+#: Contracts/print.php:27 Contracts/view.php:31 Customers/view.php:295
+#: Queues/view.php:30 Services/view.php:26
+msgid "Service Type"
+msgstr "Typ služby"
+
+#: Contracts/print.php:43 Contracts/view.php:51
+msgid "Installation Technician"
+msgstr "Instalační technik"
+
+#: Contracts/print.php:71 Contracts/view.php:63
+msgid "Activation Fee"
+msgstr "Aktivační poplatek"
+
+#: Contracts/print.php:75 Contracts/view.php:67
+msgid "Activation Fee With Obligation"
+msgstr "Aktivační poplatek se závazkem"
+
+#: Contracts/print.php:93 Customers/print.php:144
+msgid "Print Documents"
+msgstr "Tisk dokumentů"
 
 #: Contracts/view.php:12
 msgid "Delete Contract"
 msgstr "Odstranit smlouvu"
 
-#: Contracts/view.php:28 Customers/view.php:292 Queues/view.php:30
-#: Services/view.php:26
-msgid "Service Type"
-msgstr "Typ služby"
+#: Contracts/view.php:16 Contracts/view.php:21 Customers/view.php:16
+#: Customers/view.php:21
+msgid "Print to PDF"
+msgstr "Tisk do PDF"
 
-#: Contracts/view.php:48
-msgid "Installation Technician"
-msgstr "Instalační technik"
-
-#: Contracts/view.php:200 SoldEquipments/index.php:8 SoldEquipments/view.php:14
+#: Contracts/view.php:211 SoldEquipments/index.php:8 SoldEquipments/view.php:14
 msgid "New Sold Equipment"
 msgstr "Nové prodané zařízení"
 
-#: Contracts/view.php:201 SoldEquipments/index.php:9
+#: Contracts/view.php:212 SoldEquipments/index.php:9
 msgid "Sold Equipments"
 msgstr "Prodaná zařízení"
 
-#: Contracts/view.php:226 Ips/index.php:8 Ips/view.php:14
+#: Contracts/view.php:237 Ips/index.php:8 Ips/view.php:14
 msgid "New Ip"
 msgstr "Nová IP adresa"
 
-#: Contracts/view.php:227 Customers/index.php:33 Ips/index.php:9
+#: Contracts/view.php:238 Customers/index.php:33 Ips/index.php:9
 msgid "Ips"
 msgstr "IP adresy"
 
-#: Contracts/view.php:232 Contracts/view.php:258 Customers/view.php:471
-#: Customers/view.php:502 Ips/view.php:30 RemovedIps/view.php:30
+#: Contracts/view.php:243 Contracts/view.php:269 Customers/view.php:443
+#: Customers/view.php:474 Ips/view.php:30 RemovedIps/view.php:30
 msgid "Ip"
 msgstr "IP"
 
-#: Contracts/view.php:252 RemovedIps/index.php:8 RemovedIps/view.php:14
+#: Contracts/view.php:263 RemovedIps/index.php:8 RemovedIps/view.php:14
 msgid "New Removed Ip"
 msgstr "Nová odebraná IP adresa"
 
-#: Contracts/view.php:253 RemovedIps/index.php:9
+#: Contracts/view.php:264 RemovedIps/index.php:9
 msgid "Removed Ips"
 msgstr "Odebrané IP adresy"
 
-#: Contracts/view.php:260 Customers/view.php:504 RemovedIps/view.php:38
+#: Contracts/view.php:271 Customers/view.php:476 RemovedIps/view.php:38
 msgid "Removed"
 msgstr "Odstraněno"
 
@@ -1310,7 +1402,7 @@ msgstr "Seznam zákazníků"
 msgid "Add Customer"
 msgstr "Přidat zákazníka"
 
-#: Customers/edit.php:23 Customers/view.php:11
+#: Customers/edit.php:23 Customers/print.php:12 Customers/view.php:11
 msgid "Edit Customer"
 msgstr "Upravit zákazníka"
 
@@ -1326,201 +1418,205 @@ msgstr "Nový zákazník"
 msgid "Customers"
 msgstr "Zákazníci"
 
-#: Customers/view.php:12
-msgid "Delete Customer"
-msgstr "Odstranit zákazníka"
+#: Customers/print.php:11
+msgid "View Customer"
+msgstr "Zobrazit zákazníka"
 
-#: Customers/view.php:44
+#: Customers/print.php:42 Customers/view.php:47
 msgid "Date Of Birth"
 msgstr "Datum narození"
 
-#: Customers/view.php:48
+#: Customers/print.php:46 Customers/view.php:51
 msgid "Identity Card Number"
 msgstr "Číslo občanského průkazu"
 
-#: Customers/view.php:52
+#: Customers/print.php:50 Customers/view.php:55
 msgid "Ic"
 msgstr "IČ"
 
-#: Customers/view.php:53
+#: Customers/print.php:51 Customers/view.php:56
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
-#: Customers/view.php:53
+#: Customers/print.php:51 Customers/view.php:56
 msgid "Invalid"
-msgstr ""
+msgstr "Neplatné"
 
-#: Customers/view.php:56
+#: Customers/print.php:54 Customers/view.php:59
 msgid "Dic"
 msgstr "DIČ"
 
-#: Customers/view.php:60
+#: Customers/print.php:58 Customers/view.php:63
 msgid "Www"
 msgstr "WWW"
 
-#: Customers/view.php:64
+#: Customers/print.php:62 Customers/view.php:67
 msgid "Bank Account"
 msgstr "Bankovní účet"
 
-#: Customers/view.php:68
+#: Customers/print.php:66 Customers/view.php:71
 msgid "Bank Code"
 msgstr "Kód banky"
 
-#: Customers/view.php:72
+#: Customers/print.php:70 Customers/view.php:75
 msgid "Bank Name"
 msgstr "Název banky"
 
-#: Customers/view.php:80
+#: Customers/print.php:78 Customers/view.php:83
 msgid "Tax"
 msgstr "Daň"
 
-#: Customers/view.php:84
+#: Customers/print.php:82 Customers/view.php:87
 msgid "Termination Date"
 msgstr "Datum ukončení"
 
-#: Customers/view.php:92
+#: Customers/print.php:90 Customers/view.php:95
 msgid "Invoice Delivery Type"
 msgstr "Typ doručení faktury"
 
-#: Customers/view.php:96
+#: Customers/print.php:94 Customers/view.php:99
 msgid "Agree Gdpr"
 msgstr "Souhlasí se zpracováním osobních údajů"
 
-#: Customers/view.php:100
+#: Customers/print.php:98 Customers/view.php:103
 msgid "Agree Mailing Billing"
 msgstr ""
 "Souhlasí se zasíláním veškeré korespondence spojené s měsíčním vyúčtováním"
 
-#: Customers/view.php:104
+#: Customers/print.php:102 Customers/view.php:107
 msgid "Agree Mailing Outages"
 msgstr "Souhlasí se zasíláním informací o odstávkách a poruchách"
 
-#: Customers/view.php:108
+#: Customers/print.php:106 Customers/view.php:111
 msgid "Agree Mailing Commercial"
 msgstr "Souhlasí se zasíláním obchodních sdělení"
 
-#: Customers/view.php:141
+#: Customers/view.php:12
+msgid "Delete Customer"
+msgstr "Odstranit zákazníka"
+
+#: Customers/view.php:144
 msgid "Internal Note"
 msgstr "Interní poznámka"
 
-#: Customers/view.php:147 Emails/index.php:8 Emails/view.php:14
+#: Customers/view.php:150 Emails/index.php:8 Emails/view.php:14
 msgid "New Email"
 msgstr "Nový e-mail"
 
-#: Customers/view.php:148 Emails/index.php:9
+#: Customers/view.php:151 Emails/index.php:9
 msgid "Emails"
 msgstr "E-maily"
 
-#: Customers/view.php:153 Emails/view.php:26 TaskStates/view.php:49
+#: Customers/view.php:156 Emails/view.php:26 TaskStates/view.php:49
 #: TaskTypes/view.php:49 Tasks/view.php:40
 msgid "Email"
 msgstr "E-mail"
 
-#: Customers/view.php:154 Emails/view.php:30
+#: Customers/view.php:157 Emails/view.php:30
 msgid "Use For Billing"
 msgstr "Použít pro fakturaci"
 
-#: Customers/view.php:155 Emails/view.php:34
+#: Customers/view.php:158 Emails/view.php:34
 msgid "Use For Outages"
 msgstr "Použit pro výpadky"
 
-#: Customers/view.php:156 Emails/view.php:38
+#: Customers/view.php:159 Emails/view.php:38
 msgid "Use For Commercial"
 msgstr "Použit pro komerční"
 
-#: Customers/view.php:177 Phones/index.php:8 Phones/view.php:14
+#: Customers/view.php:180 Phones/index.php:8 Phones/view.php:14
 msgid "New Phone"
 msgstr "Nový telefon"
 
-#: Customers/view.php:178 Phones/index.php:9
+#: Customers/view.php:181 Phones/index.php:9
 msgid "Phones"
 msgstr "Telefony"
 
-#: Customers/view.php:183 Phones/view.php:26 TaskStates/view.php:50
+#: Customers/view.php:186 Phones/view.php:26 TaskStates/view.php:50
 #: TaskTypes/view.php:50 Tasks/view.php:44
 msgid "Phone"
 msgstr "Telefon"
 
-#: Customers/view.php:201 Logins/index.php:8 Logins/view.php:14
+#: Customers/view.php:204 Logins/index.php:8 Logins/view.php:14
 msgid "New Login"
 msgstr "Nové přihlášení"
 
-#: Customers/view.php:202 Logins/index.php:9
+#: Customers/view.php:205 Logins/index.php:9
 msgid "Logins"
 msgstr "Přihlášení"
 
-#: Customers/view.php:207 Logins/view.php:26
+#: Customers/view.php:210 Logins/view.php:26
 msgid "Login"
 msgstr "Přihlášení"
 
-#: Customers/view.php:208 Logins/view.php:30
+#: Customers/view.php:211 Logins/view.php:30
 msgid "Rights"
 msgstr "Práva"
 
-#: Customers/view.php:209 Logins/view.php:34
+#: Customers/view.php:212 Logins/view.php:34
 msgid "Locked"
 msgstr "Zamčený"
 
-#: Customers/view.php:210 Logins/view.php:38
+#: Customers/view.php:213 Logins/view.php:38
 msgid "Last Granted"
 msgstr "Naposledy povoleno"
 
-#: Customers/view.php:211 Logins/view.php:42
+#: Customers/view.php:214 Logins/view.php:42
 msgid "Last Granted Ip"
 msgstr "Poslední povolená IP"
 
-#: Customers/view.php:212 Logins/view.php:46
+#: Customers/view.php:215 Logins/view.php:46
 msgid "Last Denied"
 msgstr "Naposledy odepřeno"
 
-#: Customers/view.php:213 Logins/view.php:50
+#: Customers/view.php:216 Logins/view.php:50
 msgid "Last Denied Ip"
 msgstr "Poslední odepřená IP"
 
-#: Customers/view.php:330 Tasks/index.php:8 Tasks/view.php:14
-msgid "New Task"
-msgstr "Nový úkol"
-
-#: Customers/view.php:331 Tasks/index.php:9 layout/default.php:62
-msgid "Tasks"
-msgstr "Úkoly"
-
-#: Customers/view.php:336 Tasks/view.php:24
-msgid "Task Type"
-msgstr "Typ úkolu"
-
-#: Customers/view.php:337 Tasks/view.php:32
-msgid "Task State"
-msgstr "Stav úkolu"
-
-#: Customers/view.php:338 TaskStates/view.php:40 TaskTypes/view.php:40
-#: Tasks/view.php:36
-msgid "Subject"
-msgstr "Předmět"
-
-#: Customers/view.php:362 Services/view.php:51
+#: Customers/view.php:334 Services/view.php:51
 msgid "Related Billings"
 msgstr "Související fakturace"
 
-#: Customers/view.php:407 EquipmentTypes/view.php:35
+#: Customers/view.php:379 EquipmentTypes/view.php:35
 msgid "Related Borrowed Equipments"
 msgstr "Související zapůjčená zařízení"
 
-#: Customers/view.php:438 EquipmentTypes/view.php:74
+#: Customers/view.php:410 EquipmentTypes/view.php:74
 msgid "Related Sold Equipments"
 msgstr "Související prodaná zařízení"
 
-#: Customers/view.php:465
+#: Customers/view.php:437
 msgid "Related Ips"
 msgstr "Související IP adresy"
 
-#: Customers/view.php:496
+#: Customers/view.php:468
 msgid "Related Removed Ips"
 msgstr "Související odebrané IP adresy"
 
-#: Customers/view.php:505 RemovedIps/view.php:42
+#: Customers/view.php:477 RemovedIps/view.php:42
 msgid "Removed By"
 msgstr "Odstranil"
+
+#: Customers/view.php:499 Tasks/index.php:8 Tasks/view.php:14
+msgid "New Task"
+msgstr "Nový úkol"
+
+#: Customers/view.php:500 Tasks/index.php:9 layout/default.php:62
+msgid "Tasks"
+msgstr "Úkoly"
+
+#: Customers/view.php:505 Tasks/view.php:24
+msgid "Task Type"
+msgstr "Typ úkolu"
+
+#: Customers/view.php:506 Tasks/view.php:32
+msgid "Task State"
+msgstr "Stav úkolu"
+
+#: Customers/view.php:507 TaskStates/view.php:40 TaskTypes/view.php:40
+#: Tasks/view.php:36
+msgid "Subject"
+msgstr "Předmět"
 
 #: Emails/add.php:11 Emails/edit.php:16 Emails/view.php:13
 msgid "List Emails"
