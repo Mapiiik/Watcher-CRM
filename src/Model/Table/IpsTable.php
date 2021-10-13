@@ -69,6 +69,18 @@ class IpsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
+            ->integer('id')
+            ->allowEmptyString('id', null, 'create');
+
+        $validator
+            ->integer('customer_id')
+            ->notEmptyString('customer_id');
+
+        $validator
+            ->integer('contract_id')
+            ->notEmptyString('contract_id');
+
+        $validator
             ->scalar('ip')
             ->maxLength('ip', 39)
             ->requirePresence('ip', 'create')
@@ -78,10 +90,6 @@ class IpsTable extends Table
         $validator
             ->scalar('note')
             ->allowEmptyString('note');
-
-        $validator
-            ->integer('id')
-            ->allowEmptyString('id', null, 'create');
 
         $validator
             ->integer('created_by')

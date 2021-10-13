@@ -17,8 +17,8 @@
             <fieldset>
                 <legend><?= __('Add Ip') ?></legend>
                 <?php
-                    if (!isset($customer_id)) echo $this->Form->control('customer_id', ['options' => $customers]);
-                    if (!isset($contract_id)) echo $this->Form->control('contract_id', ['options' => $contracts]);
+                    if (!isset($customer_id)) echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
+                    if (!isset($contract_id)) echo $this->Form->control('contract_id', ['options' => $contracts, 'empty' => true]);
                     echo $this->Form->control('ip');
                     echo $this->Form->control('note');
                 ?>
