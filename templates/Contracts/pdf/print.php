@@ -1093,7 +1093,7 @@ class ContractPDF extends TCPDF
             // billing of non-pricelist items
             if (count($contract->individual_billings) > 0) {
                 $this->SetFont('DejaVuSerif', 'B' . $format, '9');
-                $this->Cell(187, 3, 'Seznam poskytovaných služeb a údaje o jejich individuálních cenách');
+                $this->Cell(187, 3, 'Seznam poskytovaných služeb a údaje o jejich individuálních cenách včetně DPH');
                 $this->Ln();
 
                 $this->Ln(0.4);
