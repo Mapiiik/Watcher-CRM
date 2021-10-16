@@ -1,0 +1,13 @@
+version: "3.1"
+
+services:
+  php-fpm:
+    image: webdevops/php-nginx:8.0
+    container_name: watcher-crm-webserver
+    working_dir: /app
+    volumes:
+      - ./:/app
+    environment:
+      - WEB_DOCUMENT_ROOT=/app/webroot
+    ports:
+      - "80:80"
