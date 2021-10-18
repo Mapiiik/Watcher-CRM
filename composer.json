@@ -31,7 +31,8 @@
         "psr-4": {
             "App\\": "src/",
             "RUIAN\\": "plugins/RUIAN/src/",
-            "RADIUS\\": "plugins/RADIUS/src/"
+            "RADIUS\\": "plugins/RADIUS/src/",
+            "BookkeepingPohoda\\": "plugins/BookkeepingPohoda/src/"
         }
     },
     "autoload-dev": {
@@ -39,7 +40,8 @@
             "App\\Test\\": "tests/",
             "Cake\\Test\\": "vendor/cakephp/cakephp/tests/",
             "RUIAN\\Test\\": "plugins/RUIAN/tests/",
-            "RADIUS\\Test\\": "plugins/RADIUS/tests/"
+            "RADIUS\\Test\\": "plugins/RADIUS/tests/",
+            "BookkeepingPohoda\\Test\\": "plugins/BookkeepingPohoda/tests/"
         }
     },
     "scripts": {
