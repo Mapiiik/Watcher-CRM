@@ -39,9 +39,10 @@ class Plugin extends BasePlugin
     {
         $routes->plugin(
             'BookkeepingPohoda',
-            ['path' => '/bookkeeping-pohoda'],
+            ['path' => '/bookkeeping'],
             function (RouteBuilder $builder) {
                 // Add custom routes here
+                $builder->setExtensions(['dbf']);
 
                 $builder->fallbacks();
             }
