@@ -165,7 +165,7 @@ class CustomersController extends AppController
      * Print method
      *
      * @param string|null $id Contract id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return \Cake\Http\Response|null|void Renders print
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function print($id = null, $type = null)
