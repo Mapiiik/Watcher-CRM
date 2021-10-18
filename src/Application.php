@@ -44,6 +44,8 @@ class Application extends BaseApplication
      */
     public function bootstrap(): void
     {
+        $this->addPlugin('BookkeepingPohoda');
+
         $this->addPlugin('RUIAN');
 
         $this->addPlugin('RADIUS');
