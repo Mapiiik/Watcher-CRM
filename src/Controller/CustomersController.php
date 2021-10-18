@@ -197,32 +197,6 @@ class CustomersController extends AppController
                 $this->Flash->error(__('Invalid type of document requested.'));
                 return $this->redirect(['action' => 'print', $id, '?' => $query]);
             }
-
-/*            
-            // filter and split billings
-            $contract->individual_billings = [];
-            $contract->standard_billings = []; 
-
-            foreach ($contract->billings as $billing) {
-                // skip non active items
-                if (!$billing->active) {
-                    continue;
-                }
-                if ($billing->has('billing_from') && $billing->billing_from > $contract->valid_from) {
-                    continue;
-                }
-                if ($billing->has('billing_until') && $billing->billing_until < $contract->valid_from) {
-                    continue;
-                }
-
-                // split by individual/standard price
-                if ($billing->has('price')) {
-                    $contract->individual_billings[] = $billing;
-                } else {
-                    $contract->standard_billings[] = $billing;
-                }
-            }
-*/
         }
         $this->set(compact('customer', 'type', 'query', 'address_types', 'invoice_delivery_types'));
     }
