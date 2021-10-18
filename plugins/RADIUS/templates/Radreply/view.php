@@ -20,7 +20,7 @@
             <table>
                 <tr>
                     <th><?= __('Username') ?></th>
-                    <td><?= $radreply->has('user') ? $this->Html->link($radreply->user->username, ['controller' => 'Users', 'action' => 'view', $radreply->user->id]) : $radreply->username ?></td>
+                    <td><?= $radreply->has('account') ? $this->Html->link($radreply->account->username, ['controller' => 'Accounts', 'action' => 'view', $radreply->account->id]) : $radreply->username ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Attribute') ?></th>

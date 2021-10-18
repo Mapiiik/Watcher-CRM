@@ -23,7 +23,7 @@
                 <?php foreach ($radreply as $radreply): ?>
                 <tr>
                     <td><?= $this->Number->format($radreply->id) ?></td>
-                    <td><?= $radreply->has('user') ? $this->Html->link($radreply->user->username, ['controller' => 'Users', 'action' => 'view', $radreply->user->id]) : $radreply->username ?></td>
+                    <td><?= $radreply->has('account') ? $this->Html->link($radreply->account->username, ['controller' => 'Accounts', 'action' => 'view', $radreply->account->id]) : $radreply->username ?></td>
                     <td><?= h($radreply->attribute) ?></td>
                     <td><?= h($radreply->op) ?></td>
                     <td><?= h($radreply->value) ?></td>

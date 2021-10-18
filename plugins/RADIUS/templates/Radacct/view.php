@@ -20,7 +20,7 @@
             <table>
                 <tr>
                     <th><?= __('Username') ?></th>
-                    <td><?= $radacct->has('user') ? $this->Html->link($radacct->user->username, ['controller' => 'Users', 'action' => 'view', $radacct->user->id]) : h($radacct->username) ?></td>
+                    <td><?= $radacct->has('account') ? $this->Html->link($radacct->account->username, ['controller' => 'Accounts', 'action' => 'view', $radacct->account->id]) : h($radacct->username) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Nasipaddress') ?></th>

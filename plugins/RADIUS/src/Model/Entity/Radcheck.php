@@ -14,7 +14,7 @@ use Cake\ORM\Entity;
  * @property string $op
  * @property string $value
  *
- * @property \RADIUS\Model\Entity\User $user
+ * @property \RADIUS\Model\Entity\Account $account
  */
 class Radcheck extends Entity
 {
@@ -32,6 +32,6 @@ class Radcheck extends Entity
         'attribute' => true,
         'op' => true,
         'value' => true,
-        'user' => true,
+        'account' => true,
     ];
 }

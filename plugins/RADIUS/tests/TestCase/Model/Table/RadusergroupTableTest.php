@@ -25,7 +25,7 @@ class RadusergroupTableTest extends TestCase
      */
     protected $fixtures = [
         'plugin.RADIUS.Radusergroup',
-        'plugin.RADIUS.Users',
+        'plugin.RADIUS.Accounts',
         'plugin.RADIUS.Radgroupcheck',
         'plugin.RADIUS.Radgroupreply',
     ];

@@ -6,12 +6,12 @@ namespace RADIUS\Controller;
 use RADIUS\Controller\AppController;
 
 /**
- * Users Controller
+ * Accounts Controller
  *
- * @property \RADIUS\Model\Table\UsersTable $Users
- * @method \RADIUS\Model\Entity\User[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @property \RADIUS\Model\Table\AccountsTable $Accounts
+ * @method \RADIUS\Model\Entity\Account[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class UsersController extends AppController
+class AccountsController extends AppController
 {
     /**
      * Index method
@@ -28,35 +28,35 @@ class UsersController extends AppController
 
         $conditions = [];
         if (isset($customer_id)) {
-            $conditions += ['Users.customer_id' => $customer_id];
+            $conditions += ['Accounts.customer_id' => $customer_id];
         }
         if (isset($contract_id)) {
-            $conditions += ['Users.contract_id' => $contract_id];
+            $conditions += ['Accounts.contract_id' => $contract_id];
         }
         
         $this->paginate = [
             'contain' => ['Customers', 'Contracts'],
             'conditions' => $conditions,
         ];
-        $users = $this->paginate($this->Users);
+        $accounts = $this->paginate($this->Accounts);
 
-        $this->set(compact('users'));
+        $this->set(compact('accounts'));
     }
 
     /**
      * View method
      *
-     * @param string|null $id User id.
+     * @param string|null $id Account id.
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
     {
-        $user = $this->Users->get($id, [
+        $account = $this->Accounts->get($id, [
             'contain' => ['Customers', 'Contracts', 'Radcheck', 'Radreply', 'Radusergroup', 'Radpostauth', 'Radacct'],
         ]);
 
-        $this->set(compact('user'));
+        $this->set(compact('account'));
     }
 
     /**
@@ -72,29 +72,29 @@ class UsersController extends AppController
         $contract_id = $this->request->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
-        $user = $this->Users->newEmptyEntity();
+        $account = $this->Accounts->newEmptyEntity();
 
-        if (isset($customer_id)) $user = $this->Users->patchEntity($user, ['customer_id' => $customer_id]);
-        if (isset($contract_id)) $user = $this->Users->patchEntity($user, ['contract_id' => $contract_id]);
+        if (isset($customer_id)) $account = $this->Accounts->patchEntity($account, ['customer_id' => $customer_id]);
+        if (isset($contract_id)) $account = $this->Accounts->patchEntity($account, ['contract_id' => $contract_id]);
         
         if ($this->request->is('post')) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
+            $account = $this->Accounts->patchEntity($account, $this->request->getData());
 
             // autogenerate related radcheck recors
-            $user = $this->Users->patchEntity($user, ['radcheck' => $this->autoRadcheckData($user)]);
+            $account = $this->Accounts->patchEntity($account, ['radcheck' => $this->autoRadcheckData($account)]);
 
             // autogenerate related radreply recors
-            $user = $this->Users->patchEntity($user, ['radreply' => $this->autoRadreplyData($user)]);
+            $account = $this->Accounts->patchEntity($account, ['radreply' => $this->autoRadreplyData($account)]);
             
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
+            if ($this->Accounts->save($account)) {
+                $this->Flash->success(__('The account has been saved.'));
 
-                return $this->redirect(['action' => 'view', $user->id]);
+                return $this->redirect(['action' => 'view', $account->id]);
             }
-            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+            $this->Flash->error(__('The account could not be saved. Please, try again.'));
         }
-        $customers = $this->Users->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->Users->Contracts->find('list', ['order' => 'number']);
+        $customers = $this->Accounts->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $contracts = $this->Accounts->Contracts->find('list', ['order' => 'number']);
 
         $new_username = '';
         if (isset($customer_id)) {
@@ -102,12 +102,12 @@ class UsersController extends AppController
             $contracts->where(['customer_id' => $customer_id]);
 
             // START find free username
-            $customer = $this->Users->Customers->get($customer_id);
+            $customer = $this->Accounts->Customers->get($customer_id);
             $new_username = strtolower($this->squashCharacters($customer->last_name . '.' . $customer->first_name));
 
             $i = 1;
             $test_username = $new_username;
-            while ($this->Users->exists(['username' => $test_username]))
+            while ($this->Accounts->exists(['username' => $test_username]))
             {
                 $i++;
                 $test_username = $new_username . '.' . $i;
@@ -121,7 +121,7 @@ class UsersController extends AppController
             $contracts->where(['id' => $contract_id]);
         }
         
-        $this->set(compact('user', 'customers', 'contracts'));
+        $this->set(compact('account', 'customers', 'contracts'));
         
         // new available login
         $this->set('new_username', $new_username);
@@ -133,7 +133,7 @@ class UsersController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id User id.
+     * @param string|null $id Account id.
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -145,25 +145,25 @@ class UsersController extends AppController
         $contract_id = $this->request->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
-        $user = $this->Users->get($id, [
+        $account = $this->Accounts->get($id, [
             'contain' => ['Radcheck'],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
+            $account = $this->Accounts->patchEntity($account, $this->request->getData());
 
             // autogenerate related radcheck recors
-            $user = $this->Users->patchEntity($user, ['radcheck' => $this->autoRadcheckData($user)]);
+            $account = $this->Accounts->patchEntity($account, ['radcheck' => $this->autoRadcheckData($account)]);
             
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
+            if ($this->Accounts->save($account)) {
+                $this->Flash->success(__('The account has been saved.'));
 
-                return $this->redirect(['action' => 'view', $user->id]);
+                return $this->redirect(['action' => 'view', $account->id]);
             }
-            debug($user);
-            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+            debug($account);
+            $this->Flash->error(__('The account could not be saved. Please, try again.'));
         }
-        $customers = $this->Users->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->Users->Contracts->find('list', ['order' => 'number']);
+        $customers = $this->Accounts->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $contracts = $this->Accounts->Contracts->find('list', ['order' => 'number']);
 
         if (isset($customer_id)) {
             $customers->where(['id' => $customer_id]);
@@ -173,44 +173,44 @@ class UsersController extends AppController
             $contracts->where(['id' => $contract_id]);
         }
         
-        $this->set(compact('user', 'customers', 'contracts'));
+        $this->set(compact('account', 'customers', 'contracts'));
     }
 
     /**
      * Delete method
      *
-     * @param string|null $id User id.
+     * @param string|null $id Account id.
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $user = $this->Users->get($id);
-        if ($this->Users->delete($user)) {
-            $this->Flash->success(__('The user has been deleted.'));
+        $account = $this->Accounts->get($id);
+        if ($this->Accounts->delete($account)) {
+            $this->Flash->success(__('The account has been deleted.'));
         } else {
-            $this->Flash->error(__('The user could not be deleted. Please, try again.'));
+            $this->Flash->error(__('The account could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);
     }
     
-    private function autoRadcheckData(\RADIUS\Model\Entity\User $user): array
+    private function autoRadcheckData(\RADIUS\Model\Entity\Account $account): array
     {
         $radcheck = [];
         $radcheck[] = $this->getTableLocator()->get('RADIUS.Radcheck')
             ->findOrCreate([
-                'username' => $user->username,
+                'username' => $account->username,
                 'attribute' => 'Cleartext-Password',
                 'op' => ':=',
-                'value' => $user->password,
+                'value' => $account->password,
             ])
             ->toArray();
-        if (!$user->active) {
+        if (!$account->active) {
             $radcheck[] = $this->getTableLocator()->get('RADIUS.Radcheck')
             ->findOrCreate([
-                'username' => $user->username,
+                'username' => $account->username,
                 'attribute' => 'Auth-Type',
                 'op' => ':=',
                 'value' => 'Reject',
@@ -221,9 +221,9 @@ class UsersController extends AppController
         return $radcheck;
     }
 
-    private function autoRadreplyData(\RADIUS\Model\Entity\User $user): array
+    private function autoRadreplyData(\RADIUS\Model\Entity\Account $account): array
     {
-        $contract = $this->getTableLocator()->get('Contracts')->get($user->contract_id, [
+        $contract = $this->getTableLocator()->get('Contracts')->get($account->contract_id, [
             'contain' => ['Ips'],
         ]);
         
@@ -238,7 +238,7 @@ class UsersController extends AppController
                 {
                     $radreply[] = $this->getTableLocator()->get('RADIUS.Radreply')
                         ->findOrCreate([
-                            'username' => $user->username,
+                            'username' => $account->username,
                             'attribute' => 'Framed-Route',
                             'op' => '=',
                             'value' => $addressx . '/' . $maskx,
@@ -249,7 +249,7 @@ class UsersController extends AppController
                 {
                     $radreply[] = $this->getTableLocator()->get('RADIUS.Radreply')
                         ->findOrCreate([
-                            'username' => $user->username,
+                            'username' => $account->username,
                             'attribute' => 'Framed-IP-Address',
                             'op' => '=',
                             'value' => $addressx,
@@ -263,7 +263,7 @@ class UsersController extends AppController
                 {
                     $radreply[] = $this->getTableLocator()->get('RADIUS.Radreply')
                         ->findOrCreate([
-                            'username' => $user->username,
+                            'username' => $account->username,
                             'attribute' => 'Framed-IPv6-Prefix',
                             'op' => '=',
                             'value' => $addressx . '/' . $maskx,
@@ -275,7 +275,7 @@ class UsersController extends AppController
                         $radius->network->ipv6->address[] = $addressx;
                     $radreply[] = $this->getTableLocator()->get('RADIUS.Radreply')
                         ->findOrCreate([
-                            'username' => $user->username,
+                            'username' => $account->username,
                             'attribute' => 'Framed-IPv6-Address',
                             'op' => '=',
                             'value' => $addressx . '/' . $maskx,

@@ -9,28 +9,28 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * Users Model
+ * Accounts Model
  *
  * @property \RADIUS\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
  * @property \RADIUS\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
  *
- * @method \RADIUS\Model\Entity\User newEmptyEntity()
- * @method \RADIUS\Model\Entity\User newEntity(array $data, array $options = [])
- * @method \RADIUS\Model\Entity\User[] newEntities(array $data, array $options = [])
- * @method \RADIUS\Model\Entity\User get($primaryKey, $options = [])
- * @method \RADIUS\Model\Entity\User findOrCreate($search, ?callable $callback = null, $options = [])
- * @method \RADIUS\Model\Entity\User patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \RADIUS\Model\Entity\User[] patchEntities(iterable $entities, array $data, array $options = [])
- * @method \RADIUS\Model\Entity\User|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \RADIUS\Model\Entity\User saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \RADIUS\Model\Entity\User[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\User[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\User[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\User[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method \RADIUS\Model\Entity\Account newEmptyEntity()
+ * @method \RADIUS\Model\Entity\Account newEntity(array $data, array $options = [])
+ * @method \RADIUS\Model\Entity\Account[] newEntities(array $data, array $options = [])
+ * @method \RADIUS\Model\Entity\Account get($primaryKey, $options = [])
+ * @method \RADIUS\Model\Entity\Account findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \RADIUS\Model\Entity\Account patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \RADIUS\Model\Entity\Account[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \RADIUS\Model\Entity\Account|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \RADIUS\Model\Entity\Account saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \RADIUS\Model\Entity\Account[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
+ * @method \RADIUS\Model\Entity\Account[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
+ * @method \RADIUS\Model\Entity\Account[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
+ * @method \RADIUS\Model\Entity\Account[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class UsersTable extends Table
+class AccountsTable extends Table
 {
     /**
      * Initialize method
@@ -42,7 +42,7 @@ class UsersTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('users');
+        $this->setTable('accounts');
         $this->setDisplayField('username');
         $this->setPrimaryKey('id');
 

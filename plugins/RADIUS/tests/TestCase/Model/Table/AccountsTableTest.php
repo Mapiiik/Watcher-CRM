@@ -4,19 +4,19 @@ declare(strict_types=1);
 namespace RADIUS\Test\TestCase\Model\Table;
 
 use Cake\TestSuite\TestCase;
-use RADIUS\Model\Table\UsersTable;
+use RADIUS\Model\Table\AccountsTable;
 
 /**
- * RADIUS\Model\Table\UsersTable Test Case
+ * RADIUS\Model\Table\AccountsTable Test Case
  */
-class UsersTableTest extends TestCase
+class AccountsTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \RADIUS\Model\Table\UsersTable
+     * @var \RADIUS\Model\Table\AccountsTable
      */
-    protected $Users;
+    protected $Accounts;
 
     /**
      * Fixtures
@@ -24,7 +24,7 @@ class UsersTableTest extends TestCase
      * @var array
      */
     protected $fixtures = [
-        'plugin.RADIUS.Users',
+        'plugin.RADIUS.Accounts',
         'plugin.RADIUS.Customers',
         'plugin.RADIUS.Contracts',
         'plugin.RADIUS.Radcheck',
@@ -42,8 +42,8 @@ class UsersTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Users') ? [] : ['className' => UsersTable::class];
-        $this->Users = $this->getTableLocator()->get('Users', $config);
+        $config = $this->getTableLocator()->exists('Accounts') ? [] : ['className' => AccountsTable::class];
+        $this->Accounts = $this->getTableLocator()->get('Accounts', $config);
     }
 
     /**
@@ -53,7 +53,7 @@ class UsersTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Users);
+        unset($this->Accounts);
 
         parent::tearDown();
     }

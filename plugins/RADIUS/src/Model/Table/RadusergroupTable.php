@@ -45,7 +45,7 @@ class RadusergroupTable extends Table
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
 
-        $this->belongsTo('RADIUS.Users', [
+        $this->belongsTo('RADIUS.Accounts', [
             'foreignKey' => 'username',
             'bindingKey' => 'username',
         ]);

@@ -20,7 +20,7 @@
             <table>
                 <tr>
                     <th><?= __('Username') ?></th>
-                    <td><?= $radpostauth->has('user') ? $this->Html->link($radpostauth->user->username, ['controller' => 'Users', 'action' => 'view', $radpostauth->user->id]) : $radpostauth->username ?></td>
+                    <td><?= $radpostauth->has('account') ? $this->Html->link($radpostauth->account->username, ['controller' => 'Accounts', 'action' => 'view', $radpostauth->account->id]) : $radpostauth->username ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>

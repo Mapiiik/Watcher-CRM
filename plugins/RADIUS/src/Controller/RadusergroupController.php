@@ -21,7 +21,7 @@ class RadusergroupController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users'],
+            'contain' => ['Accounts'],
         ];
         $radusergroup = $this->paginate($this->Radusergroup);
 
@@ -38,7 +38,7 @@ class RadusergroupController extends AppController
     public function view($id = null)
     {
         $radusergroup = $this->Radusergroup->get($id, [
-            'contain' => ['Users', 'Radgroupcheck', 'Radgroupreply'],
+            'contain' => ['Accounts', 'Radgroupcheck', 'Radgroupreply'],
         ]);
 
         $this->set(compact('radusergroup'));
@@ -61,8 +61,8 @@ class RadusergroupController extends AppController
             }
             $this->Flash->error(__('The radusergroup could not be saved. Please, try again.'));
         }
-        $users = $this->Radusergroup->Users->find('list', ['keyField' => 'username', 'order' => 'username']);
-        $this->set(compact('radusergroup', 'users'));
+        $accounts = $this->Radusergroup->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
+        $this->set(compact('radusergroup', 'accounts'));
     }
 
     /**
@@ -86,8 +86,8 @@ class RadusergroupController extends AppController
             }
             $this->Flash->error(__('The radusergroup could not be saved. Please, try again.'));
         }
-        $users = $this->Radusergroup->Users->find('list', ['keyField' => 'username', 'order' => 'username']);
-        $this->set(compact('radusergroup', 'users'));
+        $accounts = $this->Radusergroup->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
+        $this->set(compact('radusergroup', 'accounts'));
     }
 
     /**

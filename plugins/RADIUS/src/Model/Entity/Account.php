@@ -6,7 +6,7 @@ namespace RADIUS\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * User Entity
+ * Account Entity
  *
  * @property int $id
  * @property string $username
@@ -28,7 +28,7 @@ use Cake\ORM\Entity;
  * @property \RADIUS\Model\Entity\Radpostauth[] $radpostauth
  * @property \RADIUS\Model\Entity\Radacct[] $radacct
  */
-class User extends Entity
+class Account extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

@@ -5,14 +5,14 @@ namespace RADIUS\Test\TestCase\Controller;
 
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
-use RADIUS\Controller\UsersController;
+use RADIUS\Controller\AccountsController;
 
 /**
- * RADIUS\Controller\UsersController Test Case
+ * RADIUS\Controller\AccountsController Test Case
  *
- * @uses \RADIUS\Controller\UsersController
+ * @uses \RADIUS\Controller\AccountsController
  */
-class UsersControllerTest extends TestCase
+class AccountsControllerTest extends TestCase
 {
     use IntegrationTestTrait;
 
@@ -22,7 +22,7 @@ class UsersControllerTest extends TestCase
      * @var array
      */
     protected $fixtures = [
-        'plugin.RADIUS.Users',
+        'plugin.RADIUS.Accounts',
     ];
 
     /**

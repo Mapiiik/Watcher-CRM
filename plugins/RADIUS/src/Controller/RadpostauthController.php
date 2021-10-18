@@ -21,7 +21,7 @@ class RadpostauthController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users'],
+            'contain' => ['Accounts'],
         ];
         $radpostauth = $this->paginate($this->Radpostauth);
 
@@ -38,7 +38,7 @@ class RadpostauthController extends AppController
     public function view($id = null)
     {
         $radpostauth = $this->Radpostauth->get($id, [
-            'contain' => ['Users'],
+            'contain' => ['Accounts'],
         ]);
 
         $this->set(compact('radpostauth'));
@@ -61,8 +61,8 @@ class RadpostauthController extends AppController
             }
             $this->Flash->error(__('The radpostauth could not be saved. Please, try again.'));
         }
-        $users = $this->Radpostauth->Users->find('list', ['keyField' => 'username', 'order' => 'username']);
-        $this->set(compact('radpostauth', 'users'));
+        $accounts = $this->Radpostauth->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
+        $this->set(compact('radpostauth', 'accounts'));
     }
 
     /**
@@ -86,8 +86,8 @@ class RadpostauthController extends AppController
             }
             $this->Flash->error(__('The radpostauth could not be saved. Please, try again.'));
         }
-        $users = $this->Radpostauth->Users->find('list', ['keyField' => 'username', 'order' => 'username']);
-        $this->set(compact('radpostauth', 'users'));
+        $accounts = $this->Radpostauth->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
+        $this->set(compact('radpostauth', 'accounts'));
     }
 
     /**

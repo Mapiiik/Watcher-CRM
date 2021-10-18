@@ -22,7 +22,7 @@
             <fieldset>
                 <legend><?= __('Edit Radpostauth') ?></legend>
                 <?php
-                    echo $this->Form->control('username', ['options' => $users]);
+                    echo $this->Form->control('username', ['options' => $accounts]);
                     echo $this->Form->control('pass');
                     echo $this->Form->control('reply');
                     echo $this->Form->control('calledstationid');

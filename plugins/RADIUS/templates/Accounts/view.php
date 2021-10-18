@@ -1,48 +1,48 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface $user
+ * @var \Cake\Datasource\EntityInterface $account
  */
 ?>
 <div class="row">
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit User'), ['action' => 'edit', $user->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete User'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Users'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New User'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('Edit Account'), ['action' => 'edit', $account->id], ['class' => 'side-nav-item']) ?>
+            <?= $this->Form->postLink(__('Delete Account'), ['action' => 'delete', $account->id], ['confirm' => __('Are you sure you want to delete # {0}?', $account->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('List Accounts'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('New Account'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
-        <div class="users view content">
-            <h3><?= h($user->username) ?></h3>
+        <div class="accounts view content">
+            <h3><?= h($account->username) ?></h3>
             <div class="row">
                 <div class="column-responsive">
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $user->has('customer') ? $this->Html->link($user->customer->name, ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $user->customer->id]) : '' ?></td>
+                            <td><?= $account->has('customer') ? $this->Html->link($account->customer->name, ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $account->customer->id]) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Contract') ?></th>
-                            <td><?= $user->has('contract') ? $this->Html->link($user->contract->number, ['plugin' => null, 'controller' => 'Contracts', 'action' => 'view', 'customer_id' => $user->contract->customer_id, $user->contract->id]) : '' ?></td>
+                            <td><?= $account->has('contract') ? $this->Html->link($account->contract->number, ['plugin' => null, 'controller' => 'Contracts', 'action' => 'view', 'customer_id' => $account->contract->customer_id, $account->contract->id]) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Username') ?></th>
-                            <td><?= h($user->username) ?></td>
+                            <td><?= h($account->username) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Password') ?></th>
-                            <td><?= h($user->password) ?></td>
+                            <td><?= h($account->password) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Type') ?></th>
-                            <td><?= $this->Number->format($user->type) ?></td>
+                            <td><?= $this->Number->format($account->type) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Active') ?></th>
-                            <td><?= $user->active ? __('Yes') : __('No'); ?></td>
+                            <td><?= $account->active ? __('Yes') : __('No'); ?></td>
                         </tr>
                     </table>
                 </div>
@@ -50,30 +50,30 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= $this->Number->format($user->id) ?></td>
+                            <td><?= $this->Number->format($account->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>
-                            <td><?= h($user->created) ?></td>
+                            <td><?= h($account->created) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $this->Number->format($user->created_by) ?></td>
+                            <td><?= $this->Number->format($account->created_by) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Modified') ?></th>
-                            <td><?= h($user->modified) ?></td>
+                            <td><?= h($account->modified) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $this->Number->format($user->modified_by) ?></td>
+                            <td><?= $this->Number->format($account->modified_by) ?></td>
                         </tr>
                     </table>
                 </div>
             </div>
             <div class="related">
                 <h4><?= __('Related Radcheck') ?></h4>
-                <?php if (!empty($user->radcheck)) : ?>
+                <?php if (!empty($account->radcheck)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
@@ -84,7 +84,7 @@
                             <th><?= __('Value') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($user->radcheck as $radcheck) : ?>
+                        <?php foreach ($account->radcheck as $radcheck) : ?>
                         <tr>
                             <td><?= h($radcheck->id) ?></td>
                             <td><?= h($radcheck->username) ?></td>
@@ -104,7 +104,7 @@
             </div>
             <div class="related">
                 <h4><?= __('Related Radreply') ?></h4>
-                <?php if (!empty($user->radreply)) : ?>
+                <?php if (!empty($account->radreply)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
@@ -115,7 +115,7 @@
                             <th><?= __('Value') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($user->radreply as $radreply) : ?>
+                        <?php foreach ($account->radreply as $radreply) : ?>
                         <tr>
                             <td><?= h($radreply->id) ?></td>
                             <td><?= h($radreply->username) ?></td>
@@ -135,7 +135,7 @@
             </div>
             <div class="related">
                 <h4><?= __('Related Radusergroup') ?></h4>
-                <?php if (!empty($user->radusergroup)) : ?>
+                <?php if (!empty($account->radusergroup)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
@@ -145,7 +145,7 @@
                             <th><?= __('Priority') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($user->radusergroup as $radusergroup) : ?>
+                        <?php foreach ($account->radusergroup as $radusergroup) : ?>
                         <tr>
                             <td><?= h($radusergroup->id) ?></td>
                             <td><?= h($radusergroup->username) ?></td>
@@ -164,7 +164,7 @@
             </div>
             <div class="related">
                 <h4><?= __('Related Radpostauth') ?></h4>
-                <?php if (!empty($user->radpostauth)) : ?>
+                <?php if (!empty($account->radpostauth)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
@@ -177,7 +177,7 @@
                             <th><?= __('Authdate') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($user->radpostauth as $radpostauth) : ?>
+                        <?php foreach ($account->radpostauth as $radpostauth) : ?>
                         <tr>
                             <td><?= h($radpostauth->id) ?></td>
                             <td><?= h($radpostauth->username) ?></td>
@@ -199,7 +199,7 @@
             </div>
             <div class="related">
                 <h4><?= __('Related Radacct') ?></h4>
-                <?php if (!empty($user->radacct)) : ?>
+                <?php if (!empty($account->radacct)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
@@ -233,7 +233,7 @@
                             <th><?= __('Delegatedipv6prefix') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($user->radacct as $radacct) : ?>
+                        <?php foreach ($account->radacct as $radacct) : ?>
                         <tr>
                             <td><?= h($radacct->radacctid) ?></td>
                             <td><?= h($radacct->acctsessionid) ?></td>

@@ -22,7 +22,7 @@
             <fieldset>
                 <legend><?= __('Edit Radreply') ?></legend>
                 <?php
-                    echo $this->Form->control('username', ['options' => $users]);
+                    echo $this->Form->control('username', ['options' => $accounts]);
                     echo $this->Form->control('attribute');
                     echo $this->Form->control('op');
                     echo $this->Form->control('value');

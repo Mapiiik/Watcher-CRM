@@ -6,9 +6,9 @@ namespace RADIUS\Test\Fixture;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
- * UsersFixture
+ * AccountsFixture
  */
-class UsersFixture extends TestFixture
+class AccountsFixture extends TestFixture
 {
     /**
      * Fields
@@ -30,7 +30,7 @@ class UsersFixture extends TestFixture
         'modified_by' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-            'users_username' => ['type' => 'unique', 'columns' => ['username'], 'length' => []],
+            'accounts_username' => ['type' => 'unique', 'columns' => ['username'], 'length' => []],
         ],
     ];
     // phpcs:enable

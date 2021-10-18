@@ -25,7 +25,7 @@ class RadreplyTableTest extends TestCase
      */
     protected $fixtures = [
         'plugin.RADIUS.Radreply',
-        'plugin.RADIUS.Users',
+        'plugin.RADIUS.Accounts',
     ];
 
     /**

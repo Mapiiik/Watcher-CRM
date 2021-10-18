@@ -37,7 +37,7 @@ use Cake\ORM\Entity;
  * @property string|null $framedinterfaceid
  * @property string|null $delegatedipv6prefix
  *
- * @property \RADIUS\Model\Entity\User $user
+ * @property \RADIUS\Model\Entity\Account $account
  */
 class Radacct extends Entity
 {
@@ -78,6 +78,6 @@ class Radacct extends Entity
         'framedipv6prefix' => true,
         'framedinterfaceid' => true,
         'delegatedipv6prefix' => true,
-        'user' => true,
+        'account' => true,
     ];
 }

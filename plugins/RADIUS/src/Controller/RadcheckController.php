@@ -21,7 +21,7 @@ class RadcheckController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users'],
+            'contain' => ['Accounts'],
         ];
         $radcheck = $this->paginate($this->Radcheck);
 
@@ -38,7 +38,7 @@ class RadcheckController extends AppController
     public function view($id = null)
     {
         $radcheck = $this->Radcheck->get($id, [
-            'contain' => ['Users'],
+            'contain' => ['Accounts'],
         ]);
 
         $this->set(compact('radcheck'));
@@ -61,8 +61,8 @@ class RadcheckController extends AppController
             }
             $this->Flash->error(__('The radcheck could not be saved. Please, try again.'));
         }
-        $users = $this->Radcheck->Users->find('list', ['keyField' => 'username', 'order' => 'username']);
-        $this->set(compact('radcheck', 'users'));
+        $accounts = $this->Radcheck->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
+        $this->set(compact('radcheck', 'accounts'));
     }
 
     /**
@@ -86,8 +86,8 @@ class RadcheckController extends AppController
             }
             $this->Flash->error(__('The radcheck could not be saved. Please, try again.'));
         }
-        $users = $this->Radcheck->Users->find('list', ['keyField' => 'username', 'order' => 'username']);
-        $this->set(compact('radcheck', 'users'));
+        $accounts = $this->Radcheck->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
+        $this->set(compact('radcheck', 'accounts'));
     }
 
     /**

@@ -21,7 +21,7 @@ class RadreplyController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users'],
+            'contain' => ['Accounts'],
         ];
         $radreply = $this->paginate($this->Radreply);
 
@@ -38,7 +38,7 @@ class RadreplyController extends AppController
     public function view($id = null)
     {
         $radreply = $this->Radreply->get($id, [
-            'contain' => ['Users'],
+            'contain' => ['Accounts'],
         ]);
 
         $this->set(compact('radreply'));
@@ -61,8 +61,8 @@ class RadreplyController extends AppController
             }
             $this->Flash->error(__('The radreply could not be saved. Please, try again.'));
         }
-        $users = $this->Radreply->Users->find('list', ['keyField' => 'username', 'order' => 'username']);
-        $this->set(compact('radreply', 'users'));
+        $accounts = $this->Radreply->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
+        $this->set(compact('radreply', 'accounts'));
     }
 
     /**
@@ -86,8 +86,8 @@ class RadreplyController extends AppController
             }
             $this->Flash->error(__('The radreply could not be saved. Please, try again.'));
         }
-        $users = $this->Radreply->Users->find('list', ['keyField' => 'username', 'order' => 'username']);
-        $this->set(compact('radreply', 'users'));
+        $accounts = $this->Radreply->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
+        $this->set(compact('radreply', 'accounts'));
     }
 
     /**

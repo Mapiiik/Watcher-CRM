@@ -25,7 +25,7 @@ class RadcheckTableTest extends TestCase
      */
     protected $fixtures = [
         'plugin.RADIUS.Radcheck',
-        'plugin.RADIUS.Users',
+        'plugin.RADIUS.Accounts',
     ];
 
     /**
