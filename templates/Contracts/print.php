@@ -94,14 +94,14 @@
                 <div class="row">
                     <div class="column-responsive">
                     <?php
-                        echo $this->Form->control('document_type', ['options' => $documentTypes, 'empty' => true]);
-                        echo $this->Form->control('signed', ['type' => 'checkbox']);
+                        echo $this->Form->control('document_type', ['label' => __('Document Type'), 'options' => $documentTypes, 'empty' => true]);
+                        echo $this->Form->control('signed', ['label' => __('Signed'), 'type' => 'checkbox']);
                     ?>
                     </div>
                     <div class="column-responsive">
                     <?php
-                        echo $this->Form->control('effective_date_of_the_amendment', ['empty' => true, 'type' => 'date']);
-                        echo $this->Form->control('ssid', ['empty' => true]);
+                        echo $this->Form->control('effective_date_of_the_amendment', ['label' => __('Effective Date Of The Amendment'), 'empty' => true, 'type' => 'date']);
+                        echo $this->Form->control('ssid', ['label' => __('SSID'), 'empty' => true]);
                         echo $this->Form->control('radius_username', ['empty' => true]);
                         echo $this->Form->control('radius_password', ['empty' => true]);
                     ?>
