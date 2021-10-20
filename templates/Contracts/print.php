@@ -94,7 +94,7 @@
                 <div class="row">
                     <div class="column-responsive">
                     <?php
-                        echo $this->Form->control('document_type', ['label' => __('Document Type'), 'options' => $documentTypes, 'empty' => true]);
+                        echo $this->Form->control('document_type', ['label' => __('Document Type'), 'options' => $documentTypes, 'empty' => true, 'required' => true]);
                         echo $this->Form->control('signed', ['label' => __('Signed'), 'type' => 'checkbox']);
                     ?>
                     </div>

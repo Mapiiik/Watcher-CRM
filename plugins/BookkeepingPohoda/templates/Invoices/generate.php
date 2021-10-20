@@ -25,8 +25,8 @@
                 <div class="row">
                     <div class="column-responsive">
                     <?php
-                        echo $this->Form->control('tax_rate_id', ['label' => __('Tax Rate'), 'options' => $taxes, 'empty' => true]);
-                        echo $this->Form->control('invoiced_month', ['label' => __('Invoiced Month'), 'type' => 'month', 'empty' => true]);
+                        echo $this->Form->control('tax_rate_id', ['label' => __('Tax Rate'), 'options' => $taxes, 'empty' => true, 'required' => true]);
+                        echo $this->Form->control('invoiced_month', ['label' => __('Invoiced Month'), 'type' => 'month', 'empty' => true, 'required' => true]);
                         echo $this->Form->control('csv_for_verification', ['label' => __('CSV for verification'), 'type' => 'file', 'empty' => true]);
                     ?>
                     </div>
