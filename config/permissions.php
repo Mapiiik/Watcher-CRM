@@ -141,6 +141,7 @@ return [
             'controller' => ['Customers', 'Contracts'],
             'action' => ['view'],
         ],
+        // allow technicians and managers to view some more details
         [
             'role' => ['technician', 'manager'],
             'plugin' => null,
@@ -151,6 +152,22 @@ return [
             ],
             'action' => ['view'],
         ],
+        // allow index when customer_id is set for managers
+        [
+            'role' => ['manager'],
+            'plugin' => null,
+            'controller' => [
+                'Contracts',
+                'Emails', 'Phones', 'Logins', 'Addresses',
+                'Billings', 'BorrowedEquipments', 'SoldEquipments', 'Ips',
+                'Tasks'
+            ],
+            'action' => ['index'],
+            'allowed' => function($user, $role, Cake\Http\ServerRequest $request) {
+                return is_numeric($request->getParam('customer_id'));
+            }
+        ],
+        // allow add/edit for managers
         [
             'role' => ['manager'],
             'plugin' => null,
@@ -162,6 +179,7 @@ return [
             ],
             'action' => ['add', 'edit'],
         ],
+        // allow delete of some items for managers
         [
             'role' => ['manager'],
             'plugin' => null,
