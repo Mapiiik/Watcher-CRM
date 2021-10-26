@@ -132,5 +132,10 @@ class Contract extends Entity
     protected function _getPermanentAddress(): ?Address
     {
         return $this->customer->permanent_address;
+    }
+
+    protected function _getSeparateInvoice(): bool
+    {
+        return true;
     }        
 }

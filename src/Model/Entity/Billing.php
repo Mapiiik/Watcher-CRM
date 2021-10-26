@@ -129,6 +129,10 @@ class Billing extends Entity
     {
         return round($this->total - ($this->total / (1 + env('VAT_RATE', 0))), 2);
     }
+    protected function _getSeparateInvoice(): bool
+    {
+        return $this->separate;
+    }    
     
     public function periodTotal(FrozenDate $from, FrozenDate $until): float
     {

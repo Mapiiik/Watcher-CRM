@@ -24,7 +24,7 @@
                 <div class="row">
                     <div class="column-responsive">
                     <?php
-                        echo $this->Form->control('tax_rate_id', ['label' => __('Tax Rate'), 'options' => $taxes, 'empty' => true, 'required' => true]);
+                        echo $this->Form->control('tax_rate_id', ['label' => __('Tax Rate'), 'options' => $tax_rates, 'empty' => true, 'required' => true]);
                         echo $this->Form->control('invoiced_month', ['label' => __('Invoiced Month'), 'type' => 'month', 'empty' => true, 'required' => true]);
                         echo $this->Form->control('csv_for_verification', ['label' => __('CSV for verification'), 'type' => 'file', 'empty' => true]);
                     ?>
@@ -51,7 +51,9 @@
                 <tbody>
                     <?php foreach ($verification_data as $customer_number => $customer_comparision): ?>
                     <tr>
-                        <td><?= h($customer_number) ?></td>
+                        <td><?= isset($customer_comparision['customer']) ?
+                            $this->Html->link($customer_number . ' - ' . $customer_comparision['customer']->name, ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $customer_comparision['customer']->id], ['target' => '_blank']) : 
+                            $this->Html->link($customer_number, ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $customer_number - env('CUSTOMER_SERIES', 0)], ['target' => '_blank']) ?></td>
                         <td>
                             <?php if (isset($customer_comparision['crm'])): ?>
                             <table>
