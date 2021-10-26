@@ -248,6 +248,7 @@ class InvoicesController extends AppController
             }
         }
         
+        // DOWNLOAD INVOICES
         if ($this->request->getParam('_ext') === 'dbf') {
             $invoiced_month = new FrozenDate($this->request->getQuery('invoiced_month'));
             $tax_rate_id = (int)$this->request->getQuery('tax_rate_id');
