@@ -96,15 +96,15 @@ class BillingsController extends AppController
             }
         }
         $customers = $this->Billings->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->Billings->Contracts->find('list', ['order' => 'number']);
+        $contracts = $this->Billings->Contracts->find('list', ['order' => 'Contracts.number', 'contain' => ['ServiceTypes', 'InstallationAddresses']]);
         $services = $this->Billings->Services->find('list', ['order' => 'name']);
         
         if (isset($customer_id)) {
-            $customers->where(['id' => $customer_id]);
-            $contracts->where(['customer_id' => $customer_id]);
+            $customers->where(['Customers.id' => $customer_id]);
+            $contracts->where(['Contracts.customer_id' => $customer_id]);
         }
         if (isset($contract_id)) {
-            $contracts->where(['id' => $contract_id]);
+            $contracts->where(['Contracts.id' => $contract_id]);
             $services->where(['OR' => [
                 'service_type_id' => $this->Billings->Contracts->get($contract_id)->service_type_id,
                 'service_type_id IS NULL',
@@ -153,15 +153,15 @@ class BillingsController extends AppController
             }
         }
         $customers = $this->Billings->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->Billings->Contracts->find('list', ['order' => 'number']);
+        $contracts = $this->Billings->Contracts->find('list', ['order' => 'Contracts.number', 'contain' => ['ServiceTypes', 'InstallationAddresses']]);
         $services = $this->Billings->Services->find('list', ['order' => 'name']);
         
         if (isset($customer_id)) {
-            $customers->where(['id' => $customer_id]);
-            $contracts->where(['customer_id' => $customer_id]);
+            $customers->where(['Customers.id' => $customer_id]);
+            $contracts->where(['Contracts.customer_id' => $customer_id]);
         }
         if (isset($contract_id)) {
-            $contracts->where(['id' => $contract_id]);
+            $contracts->where(['Contracts.id' => $contract_id]);
             $services->where(['OR' => [
                 'service_type_id' => $this->Billings->Contracts->get($contract_id)->service_type_id,
                 'service_type_id IS NULL',

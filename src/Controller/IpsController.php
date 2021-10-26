@@ -89,14 +89,14 @@ class IpsController extends AppController
             $this->Flash->error(__('The ip could not be saved. Please, try again.'));
         }
         $customers = $this->Ips->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->Ips->Contracts->find('list', ['order' => 'number']);
+        $contracts = $this->Ips->Contracts->find('list', ['order' => 'Contracts.number', 'contain' => ['ServiceTypes', 'InstallationAddresses']]);
 
         if (isset($customer_id)) {
-            $customers->where(['id' => $customer_id]);
-            $contracts->where(['customer_id' => $customer_id]);
+            $customers->where(['Customers.id' => $customer_id]);
+            $contracts->where(['Contracts.customer_id' => $customer_id]);
         }
         if (isset($contract_id)) {
-            $contracts->where(['id' => $contract_id]);
+            $contracts->where(['Contracts.id' => $contract_id]);
         }
 
         $this->set(compact('ip', 'customers', 'contracts'));
@@ -133,14 +133,14 @@ class IpsController extends AppController
             $this->Flash->error(__('The ip could not be saved. Please, try again.'));
         }
         $customers = $this->Ips->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->Ips->Contracts->find('list', ['order' => 'number']);
+        $contracts = $this->Ips->Contracts->find('list', ['order' => 'Contracts.number', 'contain' => ['ServiceTypes', 'InstallationAddresses']]);
 
         if (isset($customer_id)) {
-            $customers->where(['id' => $customer_id]);
-            $contracts->where(['customer_id' => $customer_id]);
+            $customers->where(['Customers.id' => $customer_id]);
+            $contracts->where(['Contracts.customer_id' => $customer_id]);
         }
         if (isset($contract_id)) {
-            $contracts->where(['id' => $contract_id]);
+            $contracts->where(['Contracts.id' => $contract_id]);
         }
 
         $this->set(compact('ip', 'customers', 'contracts'));

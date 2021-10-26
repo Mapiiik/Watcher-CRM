@@ -87,15 +87,15 @@ class BorrowedEquipmentsController extends AppController
             $this->Flash->error(__('The borrowed equipment could not be saved. Please, try again.'));
         }
         $customers = $this->BorrowedEquipments->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->BorrowedEquipments->Contracts->find('list', ['order' => 'number']);
+        $contracts = $this->BorrowedEquipments->Contracts->find('list', ['order' => 'Contracts.number', 'contain' => ['ServiceTypes', 'InstallationAddresses']]);
         $equipmentTypes = $this->BorrowedEquipments->EquipmentTypes->find('list', ['order' => 'name']);
 
         if (isset($customer_id)) {
-            $customers->where(['id' => $customer_id]);
-            $contracts->where(['customer_id' => $customer_id]);
+            $customers->where(['Customers.id' => $customer_id]);
+            $contracts->where(['Contracts.customer_id' => $customer_id]);
         }
         if (isset($contract_id)) {
-            $contracts->where(['id' => $contract_id]);
+            $contracts->where(['Contracts.id' => $contract_id]);
         }
 
         $this->set(compact('borrowedEquipment', 'customers', 'contracts', 'equipmentTypes'));
@@ -132,15 +132,15 @@ class BorrowedEquipmentsController extends AppController
             $this->Flash->error(__('The borrowed equipment could not be saved. Please, try again.'));
         }
         $customers = $this->BorrowedEquipments->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->BorrowedEquipments->Contracts->find('list', ['order' => 'number']);
+        $contracts = $this->BorrowedEquipments->Contracts->find('list', ['order' => 'Contracts.number', 'contain' => ['ServiceTypes', 'InstallationAddresses']]);
         $equipmentTypes = $this->BorrowedEquipments->EquipmentTypes->find('list', ['order' => 'name']);
 
         if (isset($customer_id)) {
-            $customers->where(['id' => $customer_id]);
-            $contracts->where(['customer_id' => $customer_id]);
+            $customers->where(['Customers.id' => $customer_id]);
+            $contracts->where(['Contracts.customer_id' => $customer_id]);
         }
         if (isset($contract_id)) {
-            $contracts->where(['id' => $contract_id]);
+            $contracts->where(['Contracts.id' => $contract_id]);
         }
 
         $this->set(compact('borrowedEquipment', 'customers', 'contracts', 'equipmentTypes'));

@@ -134,6 +134,12 @@ class Contract extends Entity
         return $this->customer->permanent_address;
     }
 
+    protected function _getName(): string {
+        return $this->number .
+            ($this->has('service_type') ? ' - ' . $this->service_type->name : '') .
+            ($this->has('installation_address') ? ' - ' . $this->installation_address->address : '');
+    }
+
     protected function _getSeparateInvoice(): bool
     {
         return false;

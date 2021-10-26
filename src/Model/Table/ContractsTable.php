@@ -51,7 +51,7 @@ class ContractsTable extends Table
         parent::initialize($config);
 
         $this->setTable('contracts');
-        $this->setDisplayField('number');
+        $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
