@@ -80,10 +80,10 @@ class DBFInvoices {
 		$data[] = $invoice->number;							//cislo faktury
 		$data[] = $invoice->variable_symbol;						//variabilni symbol
 		$data[] = $invoice->text;							//obecny text
-		$data[] = $customer['create'];							//datum vystaveni
-		$data[] = $customer['fDate'];							//posledni den v mesici
-		$data[] = $customer['maturity'];						//datum splatnosti
-		$data[] = $customer['fDate'];							//posledni den v mesici
+		$data[] = $invoice->creation_date->i18nFormat('yyyyMMdd');			//datum vystaveni
+		$data[] = $invoice->creation_date->i18nFormat('yyyyMMdd');			//posledni den v mesici
+		$data[] = $invoice->due_date->i18nFormat('yyyyMMdd');				//datum splatnosti
+		$data[] = $invoice->creation_date->i18nFormat('yyyyMMdd');			//posledni den v mesici
 
                 if ($reverse_charge)
                 {

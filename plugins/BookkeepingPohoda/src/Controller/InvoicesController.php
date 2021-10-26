@@ -164,7 +164,7 @@ class InvoicesController extends AppController
      */
     public function generate()
     {
-        $tax_rates = $this->getTableLocator()->get('Taxes')->find('list', ['order' => 'name']);
+        $tax_rates = $this->getTableLocator()->get('Taxes')->find('list', ['order' => 'name'])->toArray();
         
         if ($this->request->is(['post'])) {
             $invoiced_month = new FrozenDate($this->request->getData('invoiced_month'));
@@ -261,28 +261,10 @@ class InvoicesController extends AppController
                 $innerfix = "9";
             }            
             
-/*            
-            $customer['fDate'] = $fYear . $fMonth . $fDay;
-
-            $createDate = getdate(strtotime("$fYear-$fMonth-$fDay"));
-
-            $maturityDate = getdate(strtotime("$fYear-$fMonth-$fDay") + 864000);
-
-            $customer['create'] = sprintf('%04d', $createDate["year"]) . sprintf('%02d', $createDate["mon"]) . sprintf('%02d', $createDate["mday"]);
-            $customer['maturity'] = sprintf('%04d', $maturityDate["year"]) . sprintf('%02d', $maturityDate["mon"]) . sprintf('%02d', $maturityDate["mday"]);
-
-            $customer['varsym'] = sprintf('%06d', $customer["id"]) + VARSYM_PREFIX;
-*/                      
-
-            $dbf = new \BookkeepingPohoda\DBFInvoices();
-
-            // Generate DBF file name
-            $dbf_filename = TMP . uniqid("billing", true) . ".dbf";
-
-            $dbf->CreateDBF($dbf_filename);
-
             // invoice number index
             $index = 1;
+            
+            $invoices = [];
             
             foreach ($this->getQueryForBillingDataForMonth($invoiced_month, $tax_rate_id) as $customer) {
                 // declare customer billing data
@@ -301,11 +283,13 @@ class InvoicesController extends AppController
                             $invoice->number = sprintf('%02d', $invoiced_month->year - 1980) . $innerfix . $invoiced_month->month . sprintf('%04d', $index);
                             $invoice->customer = $customer;
                             $invoice->variable_symbol = $customer->number;
+                            $invoice->creation_date = $invoiced_month->lastOfMonth();
+                            $invoice->due_date = $invoiced_month->lastOfMonth()->addDays(10);
                             $invoice->text = $billing->name;
                             $invoice->internal_note = 'separate';
                             $invoice->total = $billing->period_total;
                             $invoice->items[] = $billing;
-                            $dbf->AddRecord($invoice, $reverse_charge);
+                            $invoices[] = $invoice;
                             unset($invoice);
                             $index++;
                         }
@@ -322,11 +306,13 @@ class InvoicesController extends AppController
                         $invoice->number = sprintf('%02d', $invoiced_month->year - 1980) . $innerfix . $invoiced_month->month . sprintf('%04d', $index);
                         $invoice->customer = $customer;
                         $invoice->variable_symbol = $customer->number;
+                        $invoice->creation_date = $invoiced_month->lastOfMonth();
+                        $invoice->due_date = $invoiced_month->lastOfMonth()->addDays(10);
                         $invoice->text = "Faktura za poskytované služby dle smlouvy {$contract->number} - {$invoiced_month->month}/{$invoiced_month->year}";
                         $invoice->internal_note = 'separate';
                         $invoice->total = $billing_contract['total'];
                         $invoice->items = $billing_contract['items'];
-                        $dbf->AddRecord($invoice, $reverse_charge);
+                        $invoices[] = $invoice;
                         unset($invoice);
                         $index++;
                     }
@@ -341,31 +327,23 @@ class InvoicesController extends AppController
 
                 if ($billing_customer['total'] <> 0)
                 {
-                        $invoice = $this->Invoices->newEmptyEntity();
-                        $invoice->number = sprintf('%02d', $invoiced_month->year - 1980) . $innerfix . $invoiced_month->month . sprintf('%04d', $index);
-                        $invoice->customer = $customer;
-                        $invoice->variable_symbol = $customer->number;
-                        $invoice->text = "Faktura za poskytované služby dle smlouvy - {$invoiced_month->month}/{$invoiced_month->year}";
-                        $invoice->total = $billing_customer['total'];
-                        $invoice->items = $billing_customer['items'];
-                        $dbf->AddRecord($invoice, $reverse_charge);
-                        $index++;
+                    $invoice = $this->Invoices->newEmptyEntity();
+                    $invoice->number = sprintf('%02d', $invoiced_month->year - 1980) . $innerfix . $invoiced_month->month . sprintf('%04d', $index);
+                    $invoice->customer = $customer;
+                    $invoice->variable_symbol = $customer->number;
+                    $invoice->creation_date = $invoiced_month->lastOfMonth();
+                    $invoice->due_date = $invoiced_month->lastOfMonth()->addDays(10);
+                    $invoice->text = "Faktura za poskytované služby dle smlouvy - {$invoiced_month->month}/{$invoiced_month->year}";
+                    $invoice->total = $billing_customer['total'];
+                    $invoice->items = $billing_customer['items'];
+                    $invoices[] = $invoice;
+                    $index++;
                 };
 
                 unset($billing_customer);
             }
             
-            $dbf->CloseDBF();
-/*
-            //download file
-            header("Content-Type: application/dbf");
-            header("Content-Disposition: attachment; filename=\"billing-" . strtolower($tax_rates[$tax_rate_id]->name) . '-' . $invoiced_month->i18nFormat('yyyy-MM') . ".dbf\"");
-            header("Content-Description: PHP Generated Data");
-*/            
-            readfile($dbf_filename);
-            //exit;
-            
-            //$this->set(compact('reverse_charge', 'invoices'));
+            $this->set(compact('invoices', 'tax_rate_id', 'invoiced_month', 'reverse_charge'));
         }
         
         $this->set(compact('tax_rates'));

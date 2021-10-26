@@ -136,6 +136,6 @@ class Contract extends Entity
 
     protected function _getSeparateInvoice(): bool
     {
-        return true;
+        return false;
     }        
 }
