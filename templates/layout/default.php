@@ -60,6 +60,7 @@ $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
             ?>
             <?= $this->AuthLink->link(__('Customers'), ['plugin' => null, 'controller' => 'Customers', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Customers'])]) ?>
             <?= $this->AuthLink->link(__('Tasks'), ['plugin' => null, 'controller' => 'Tasks', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Tasks'])]) ?>
+            <?= $this->AuthLink->link(__('Bookkeeping'), ['plugin' => 'BookkeepingPohoda', 'controller' => 'Invoices', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Invoices'])]) ?>
             <?= $this->AuthLink->link(__('RADIUS'), ['plugin' => 'RADIUS', 'controller' => 'Accounts', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Accounts', 'Nass', 'Radacct', 'Radcheck', 'Radgroupcheck', 'Radgroupreply', 'Radpostauth', 'Radreply', 'Radusergroup'])]) ?>
             <?= $this->AuthLink->link(__('RUIAN'), ['plugin' => 'RUIAN', 'controller' => 'Addresses', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Addresses'])]) ?>
             <?= $this->AuthLink->link(__('Users'), ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Users'])]) ?>
