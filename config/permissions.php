@@ -177,7 +177,7 @@ return [
                 'Billings', 'BorrowedEquipments', 'SoldEquipments', 'Ips',
 //                'Tasks'
             ],
-            'action' => ['add', 'edit'],
+            'action' => ['add', 'edit', 'print'],
         ],
         //allow delete of some items for managers
         [
