@@ -286,7 +286,7 @@ class InvoicesController extends AppController
                             $invoice->variable_symbol = $customer->number;
                             $invoice->creation_date = $invoiced_month->lastOfMonth();
                             $invoice->due_date = $invoiced_month->lastOfMonth()->addDays(10);
-                            $invoice->text = $billing->name;
+                            $invoice->text = $billing->name . " - {$invoiced_month->month}/{$invoiced_month->year}";
                             $invoice->internal_note = 'separate';
                             $invoice->total = $billing->period_total;
                             $invoice->items[] = $billing;
