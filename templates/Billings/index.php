@@ -5,7 +5,7 @@
  */
 ?>
 <div class="billings index content">
-    <?= $this->Html->link(__('New Billing'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Billing'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Billings') ?></h3>
     <div class="table-responsive">
         <table>
@@ -44,9 +44,9 @@
                     <td><?= $billing->active ? __('Yes') : __('No'); ?></td>
                     <td><?= $billing->separate ? __('Yes') : __('No'); ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $billing->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $billing->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $billing->id], ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id)]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $billing->id]) ?>
+                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $billing->id]) ?>
+                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $billing->id], ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

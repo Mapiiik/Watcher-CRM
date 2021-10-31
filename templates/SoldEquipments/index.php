@@ -5,7 +5,7 @@
  */
 ?>
 <div class="soldEquipments index content">
-    <?= $this->Html->link(__('New Sold Equipment'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Sold Equipment'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Sold Equipments') ?></h3>
     <div class="table-responsive">
         <table>
@@ -28,9 +28,9 @@
                     <td><?= $soldEquipment->has('equipment_type') ? $this->Html->link($soldEquipment->equipment_type->name, ['controller' => 'EquipmentTypes', 'action' => 'view', $soldEquipment->equipment_type->id]) : '' ?></td>
                     <td><?= h($soldEquipment->serial_number) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $soldEquipment->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $soldEquipment->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $soldEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id)]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $soldEquipment->id]) ?>
+                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $soldEquipment->id]) ?>
+                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $soldEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

@@ -5,7 +5,7 @@
  */
 ?>
 <div class="borrowedEquipments index content">
-    <?= $this->Html->link(__('New Borrowed Equipment'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Borrowed Equipment'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Borrowed Equipments') ?></h3>
     <div class="table-responsive">
         <table>
@@ -32,9 +32,9 @@
                     <td><?= h($borrowedEquipment->borrowed_from) ?></td>
                     <td><?= h($borrowedEquipment->borrowed_until) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $borrowedEquipment->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $borrowedEquipment->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $borrowedEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id)]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $borrowedEquipment->id]) ?>
+                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $borrowedEquipment->id]) ?>
+                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $borrowedEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

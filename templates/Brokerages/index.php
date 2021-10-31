@@ -5,7 +5,7 @@
  */
 ?>
 <div class="brokerages index content">
-    <?= $this->Html->link(__('New Brokerage'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Brokerage'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Brokerages') ?></h3>
     <div class="table-responsive">
         <table>
@@ -22,9 +22,9 @@
                     <td><?= $this->Number->format($brokerage->id) ?></td>
                     <td><?= h($brokerage->name) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $brokerage->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $brokerage->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $brokerage->id], ['confirm' => __('Are you sure you want to delete # {0}?', $brokerage->id)]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $brokerage->id]) ?>
+                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $brokerage->id]) ?>
+                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $brokerage->id], ['confirm' => __('Are you sure you want to delete # {0}?', $brokerage->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

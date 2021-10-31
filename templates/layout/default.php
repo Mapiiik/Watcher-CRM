@@ -65,7 +65,7 @@ $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
             <?= $this->AuthLink->link(__('RUIAN'), ['plugin' => 'RUIAN', 'controller' => 'Addresses', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Addresses'])]) ?>
             <?= $this->AuthLink->link(__('Users'), ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Users'])]) ?>
             
-            <?php if (!is_null($this->request->getSession()->read('Auth.id'))) echo $this->Html->link(__('Legacy'), '/legacy', ['class' => 'button button-small']); ?>
+            <?= $this->Html->link(__('Legacy'), '/legacy', ['class' => 'button button-small']) ?>
 
             <?php if ($this->request->getParam('action') == 'index'): ?>
             <select name="limit" class="button button-small button-outline" onchange="location = this.value;">

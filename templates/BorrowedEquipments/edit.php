@@ -8,12 +8,12 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Form->postLink(
+            <?= $this->AuthLink->postLink(
                 __('Delete'),
                 ['action' => 'delete', $borrowedEquipment->id],
                 ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id), 'class' => 'side-nav-item']
             ) ?>
-            <?= $this->Html->link(__('List Borrowed Equipments'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('List Borrowed Equipments'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">

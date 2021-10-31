@@ -5,7 +5,7 @@
  */
 ?>
 <div class="phones index content">
-    <?= $this->Html->link(__('New Phone'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Phone'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Phones') ?></h3>
     <div class="table-responsive">
         <table>
@@ -24,9 +24,9 @@
                     <td><?= $phone->has('customer') ? $this->Html->link($phone->customer->name, ['controller' => 'Customers', 'action' => 'view', $phone->customer->id]) : '' ?></td>
                     <td><?= h($phone->phone) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $phone->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $phone->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $phone->id], ['confirm' => __('Are you sure you want to delete # {0}?', $phone->id)]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $phone->id]) ?>
+                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $phone->id]) ?>
+                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $phone->id], ['confirm' => __('Are you sure you want to delete # {0}?', $phone->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

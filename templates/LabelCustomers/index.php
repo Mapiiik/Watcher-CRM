@@ -5,7 +5,7 @@
  */
 ?>
 <div class="labelCustomers index content">
-    <?= $this->Html->link(__('New Label Customer'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Label Customer'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Label Customers') ?></h3>
     <div class="table-responsive">
         <table>
@@ -28,9 +28,9 @@
                     <td><?= $this->Number->format($labelCustomer->id) ?></td>
                     <td><?= $this->Number->format($labelCustomer->created_by) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $labelCustomer->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $labelCustomer->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $labelCustomer->id], ['confirm' => __('Are you sure you want to delete # {0}?', $labelCustomer->id)]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $labelCustomer->id]) ?>
+                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $labelCustomer->id]) ?>
+                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $labelCustomer->id], ['confirm' => __('Are you sure you want to delete # {0}?', $labelCustomer->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

@@ -8,10 +8,10 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Login'), ['action' => 'edit', $login->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Login'), ['action' => 'delete', $login->id], ['confirm' => __('Are you sure you want to delete # {0}?', $login->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Logins'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Login'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('Edit Login'), ['action' => 'edit', $login->id], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->postLink(__('Delete Login'), ['action' => 'delete', $login->id], ['confirm' => __('Are you sure you want to delete # {0}?', $login->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('List Logins'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('New Login'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">

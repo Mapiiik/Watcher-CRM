@@ -5,7 +5,7 @@
  */
 ?>
 <div class="emails index content">
-    <?= $this->Html->link(__('New Email'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Email'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Emails') ?></h3>
     <div class="table-responsive">
         <table>
@@ -30,9 +30,9 @@
                     <td><?= $email->use_for_outages ? __('Yes') : __('No'); ?></td>
                     <td><?= $email->use_for_commercial ? __('Yes') : __('No'); ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $email->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $email->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $email->id], ['confirm' => __('Are you sure you want to delete # {0}?', $email->id)]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $email->id]) ?>
+                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $email->id]) ?>
+                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $email->id], ['confirm' => __('Are you sure you want to delete # {0}?', $email->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

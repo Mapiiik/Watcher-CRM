@@ -8,10 +8,10 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Sold Equipment'), ['action' => 'edit', $soldEquipment->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Sold Equipment'), ['action' => 'delete', $soldEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Sold Equipments'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Sold Equipment'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('Edit Sold Equipment'), ['action' => 'edit', $soldEquipment->id], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->postLink(__('Delete Sold Equipment'), ['action' => 'delete', $soldEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('List Sold Equipments'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('New Sold Equipment'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">

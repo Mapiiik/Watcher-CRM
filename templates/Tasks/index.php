@@ -5,7 +5,7 @@
  */
 ?>
 <div class="tasks index content">
-    <?= $this->Html->link(__('New Task'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Task'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Tasks') ?></h3>
     <div class="table-responsive">
         <table>
@@ -46,9 +46,9 @@
                     <td><?= h($task->critical_date) ?></td>
                     <td><?= h($task->finish_date) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $task->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $task->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $task->id]) ?>
+                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $task->id]) ?>
+                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

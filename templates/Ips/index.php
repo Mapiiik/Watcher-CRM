@@ -5,7 +5,7 @@
  */
 ?>
 <div class="ips index content">
-    <?= $this->Html->link(__('New Ip'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Ip'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Ips') ?></h3>
     <div class="table-responsive">
         <table>
@@ -26,9 +26,9 @@
                     <td><?= $ip->has('contract') ? $this->Html->link($ip->contract->number, ['controller' => 'Contracts', 'action' => 'view', $ip->contract->id]) : '' ?></td>
                     <td><?= h($ip->ip) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $ip->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $ip->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $ip->id], ['confirm' => __('Are you sure you want to delete # {0}?', $ip->id)]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $ip->id]) ?>
+                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $ip->id]) ?>
+                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $ip->id], ['confirm' => __('Are you sure you want to delete # {0}?', $ip->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

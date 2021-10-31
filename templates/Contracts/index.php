@@ -5,7 +5,7 @@
  */
 ?>
 <div class="contracts index content">
-    <?= $this->Html->link(__('New Contract'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Contract'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Contracts') ?></h3>
     <div class="table-responsive">
         <table>
@@ -46,9 +46,9 @@
                     <td><?= $contract->has('installation_technician') ? $this->Html->link($contract->installation_technician->name, ['controller' => 'Customers', 'action' => 'view', $contract->installation_technician->id]) : '' ?></td>
                     <td><?= $contract->has('brokerage') ? $this->Html->link($contract->brokerage->name, ['controller' => 'Brokerages', 'action' => 'view', $contract->brokerage->id]) : '' ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $contract->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $contract->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $contract->id], ['confirm' => __('Are you sure you want to delete # {0}?', $contract->id)]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $contract->id]) ?>
+                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $contract->id]) ?>
+                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $contract->id], ['confirm' => __('Are you sure you want to delete # {0}?', $contract->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

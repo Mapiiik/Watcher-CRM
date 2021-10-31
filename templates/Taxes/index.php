@@ -5,7 +5,7 @@
  */
 ?>
 <div class="taxes index content">
-    <?= $this->Html->link(__('New Tax'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Tax'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Taxes') ?></h3>
     <div class="table-responsive">
         <table>
@@ -22,9 +22,9 @@
                     <td><?= $this->Number->format($tax->id) ?></td>
                     <td><?= h($tax->name) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $tax->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $tax->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $tax->id], ['confirm' => __('Are you sure you want to delete # {0}?', $tax->id)]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $tax->id]) ?>
+                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $tax->id]) ?>
+                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $tax->id], ['confirm' => __('Are you sure you want to delete # {0}?', $tax->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

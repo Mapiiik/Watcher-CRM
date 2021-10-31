@@ -5,7 +5,7 @@
  */
 ?>
 <div class="services index content">
-    <?= $this->Html->link(__('New Service'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Service'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Services') ?></h3>
     <div class="table-responsive">
         <table>
@@ -32,9 +32,9 @@
                     <td><?= $service->has('service_type') ? $this->Html->link($service->service_type->name, ['controller' => 'ServiceTypes', 'action' => 'view', $service->service_type->id]) : '' ?></td>
                     <td><?= $service->has('queue') ? $this->Html->link($service->queue->name, ['controller' => 'Queues', 'action' => 'view', $service->queue->id]) : '' ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $service->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $service->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $service->id], ['confirm' => __('Are you sure you want to delete # {0}?', $service->id)]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $service->id]) ?>
+                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $service->id]) ?>
+                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $service->id], ['confirm' => __('Are you sure you want to delete # {0}?', $service->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

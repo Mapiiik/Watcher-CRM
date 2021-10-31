@@ -5,7 +5,7 @@
  */
 ?>
 <div class="equipmentTypes index content">
-    <?= $this->Html->link(__('New Equipment Type'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Equipment Type'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Equipment Types') ?></h3>
     <div class="table-responsive">
         <table>
@@ -24,9 +24,9 @@
                     <td><?= h($equipmentType->name) ?></td>
                     <td><?= $this->Number->format($equipmentType->price) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $equipmentType->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $equipmentType->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $equipmentType->id], ['confirm' => __('Are you sure you want to delete # {0}?', $equipmentType->id)]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $equipmentType->id]) ?>
+                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $equipmentType->id]) ?>
+                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $equipmentType->id], ['confirm' => __('Are you sure you want to delete # {0}?', $equipmentType->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

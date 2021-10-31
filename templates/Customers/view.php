@@ -8,17 +8,17 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Customer'), ['action' => 'edit', $customer->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Customer'), ['action' => 'delete', $customer->id], ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Customers'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Customer'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('Edit Customer'), ['action' => 'edit', $customer->id], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->postLink(__('Delete Customer'), ['action' => 'delete', $customer->id], ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('List Customers'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('New Customer'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
              <br />
-            <?= $this->Html->link(__('Print to PDF'), ['action' => 'print', $customer->id], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('Print to PDF'), ['action' => 'print', $customer->id], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
         <div class="customers view content">
-            <?= $this->Html->link(__('Print to PDF'), ['action' => 'print', $customer->id], ['class' => 'button button float-right']) ?>
+            <?= $this->AuthLink->link(__('Print to PDF'), ['action' => 'print', $customer->id], ['class' => 'button button float-right']) ?>
             <h3><?= h($customer->name) ?></h3>
             <div class="row">
                 <div class="column-responsive">
@@ -147,7 +147,7 @@
                 </blockquote>
             </div>
             <div class="related">
-                <?= $this->Html->link(__('New Email'), ['controller' => 'Emails', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
+                <?= $this->AuthLink->link(__('New Email'), ['controller' => 'Emails', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
                 <h4><?= __('Emails') ?></h4>
                 <?php if (!empty($customer->emails)) : ?>
                 <div class="table-responsive">
@@ -166,9 +166,9 @@
                             <td><?= $emails->use_for_outages ? __('Yes') : __('No'); ?></td>
                             <td><?= $emails->use_for_commercial ? __('Yes') : __('No'); ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Emails', 'action' => 'view', $emails->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Emails', 'action' => 'edit', $emails->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Emails', 'action' => 'delete', $emails->id], ['confirm' => __('Are you sure you want to delete # {0}?', $emails->id)]) ?>
+                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Emails', 'action' => 'view', $emails->id]) ?>
+                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'Emails', 'action' => 'edit', $emails->id]) ?>
+                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'Emails', 'action' => 'delete', $emails->id], ['confirm' => __('Are you sure you want to delete # {0}?', $emails->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -177,7 +177,7 @@
                 <?php endif; ?>
             </div>
             <div class="related">
-                <?= $this->Html->link(__('New Phone'), ['controller' => 'Phones', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
+                <?= $this->AuthLink->link(__('New Phone'), ['controller' => 'Phones', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
                 <h4><?= __('Phones') ?></h4>
                 <?php if (!empty($customer->phones)) : ?>
                 <div class="table-responsive">
@@ -190,9 +190,9 @@
                         <tr>
                             <td><?= h($phones->phone) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Phones', 'action' => 'view', $phones->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Phones', 'action' => 'edit', $phones->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Phones', 'action' => 'delete', $phones->id], ['confirm' => __('Are you sure you want to delete # {0}?', $phones->id)]) ?>
+                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Phones', 'action' => 'view', $phones->id]) ?>
+                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'Phones', 'action' => 'edit', $phones->id]) ?>
+                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'Phones', 'action' => 'delete', $phones->id], ['confirm' => __('Are you sure you want to delete # {0}?', $phones->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -201,7 +201,7 @@
                 <?php endif; ?>
             </div>
             <div class="related">
-                <?= $this->Html->link(__('New Login'), ['controller' => 'Logins', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
+                <?= $this->AuthLink->link(__('New Login'), ['controller' => 'Logins', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
                 <h4><?= __('Logins') ?></h4>
                 <?php if (!empty($customer->logins)) : ?>
                 <div class="table-responsive">
@@ -226,9 +226,9 @@
                             <td><?= h($logins->last_denied) ?></td>
                             <td><?= h($logins->last_denied_ip) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Logins', 'action' => 'view', $logins->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Logins', 'action' => 'edit', $logins->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Logins', 'action' => 'delete', $logins->id], ['confirm' => __('Are you sure you want to delete # {0}?', $logins->id)]) ?>
+                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Logins', 'action' => 'view', $logins->id]) ?>
+                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'Logins', 'action' => 'edit', $logins->id]) ?>
+                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'Logins', 'action' => 'delete', $logins->id], ['confirm' => __('Are you sure you want to delete # {0}?', $logins->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -237,7 +237,7 @@
                 <?php endif; ?>
             </div>
             <div class="related">
-                <?= $this->Html->link(__('New Address'), ['controller' => 'Addresses', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
+                <?= $this->AuthLink->link(__('New Address'), ['controller' => 'Addresses', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
                 <h4><?= __('Addresses') ?></h4>
                 <?php if (!empty($customer->addresses)) : ?>
                 <div class="table-responsive">
@@ -275,9 +275,9 @@
                                 <?= $addresses->has('ruian_gid') ? $this->Html->link(__('Mapy.cz'), 'https://mapy.cz/zakladni?source=coor&id=' . h("{$addresses->gpsx},{$addresses->gpsy}"), ['target' => '_blank']) : ''?>
                             </td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Addresses', 'action' => 'view', $addresses->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Addresses', 'action' => 'edit', $addresses->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Addresses', 'action' => 'delete', $addresses->id], ['confirm' => __('Are you sure you want to delete # {0}?', $addresses->id)]) ?>
+                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Addresses', 'action' => 'view', $addresses->id]) ?>
+                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'Addresses', 'action' => 'edit', $addresses->id]) ?>
+                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'Addresses', 'action' => 'delete', $addresses->id], ['confirm' => __('Are you sure you want to delete # {0}?', $addresses->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -286,7 +286,7 @@
                 <?php endif; ?>
             </div>
             <div class="related">
-                <?= $this->Html->link(__('New Contract'), ['controller' => 'Contracts', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
+                <?= $this->AuthLink->link(__('New Contract'), ['controller' => 'Contracts', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
                 <h4><?= __('Contracts') ?></h4>
                 <?php if (!empty($customer->contracts)) : ?>
                 <div class="table-responsive">
@@ -319,9 +319,9 @@
                             <td><?= h($contracts->installation_date) ?></td>
                             <td><?= h($contracts->note) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Contracts', 'action' => 'view', $contracts->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Contracts', 'action' => 'edit', $contracts->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Contracts', 'action' => 'delete', $contracts->id], ['confirm' => __('Are you sure you want to delete # {0}?', $contracts->id)]) ?>
+                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Contracts', 'action' => 'view', $contracts->id]) ?>
+                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'Contracts', 'action' => 'edit', $contracts->id]) ?>
+                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'Contracts', 'action' => 'delete', $contracts->id], ['confirm' => __('Are you sure you want to delete # {0}?', $contracts->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -365,9 +365,9 @@
                             <td><?= $billing->separate ? __('Yes') : __('No'); ?></td>
                             <td><?= h($billing->note) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Billings', 'action' => 'view', $billing->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Billings', 'action' => 'edit', $billing->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Billings', 'action' => 'delete', $billing->id], ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id)]) ?>
+                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Billings', 'action' => 'view', $billing->id]) ?>
+                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'Billings', 'action' => 'edit', $billing->id]) ?>
+                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'Billings', 'action' => 'delete', $billing->id], ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -396,9 +396,9 @@
                             <td><?= h($borrowedEquipment->borrowed_from) ?></td>
                             <td><?= h($borrowedEquipment->borrowed_until) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'BorrowedEquipments', 'action' => 'view', $borrowedEquipment->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'BorrowedEquipments', 'action' => 'edit', $borrowedEquipment->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'BorrowedEquipments', 'action' => 'delete', $borrowedEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id)]) ?>
+                                <?= $this->AuthLink->link(__('View'), ['controller' => 'BorrowedEquipments', 'action' => 'view', $borrowedEquipment->id]) ?>
+                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'BorrowedEquipments', 'action' => 'edit', $borrowedEquipment->id]) ?>
+                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'BorrowedEquipments', 'action' => 'delete', $borrowedEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -423,9 +423,9 @@
                             <td><?= $soldEquipment->has('equipment_type') ? $this->Html->link($soldEquipment->equipment_type->name, ['controller' => 'EquipmentTypes', 'action' => 'view', $soldEquipment->equipment_type->id]) : '' ?></td>
                             <td><?= h($soldEquipment->serial_number) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'SoldEquipments', 'action' => 'view', $soldEquipment->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'SoldEquipments', 'action' => 'edit', $soldEquipment->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'SoldEquipments', 'action' => 'delete', $soldEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id)]) ?>
+                                <?= $this->AuthLink->link(__('View'), ['controller' => 'SoldEquipments', 'action' => 'view', $soldEquipment->id]) ?>
+                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'SoldEquipments', 'action' => 'edit', $soldEquipment->id]) ?>
+                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'SoldEquipments', 'action' => 'delete', $soldEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -454,9 +454,9 @@
                             <td><?= h($ip->created) ?></td>
                             <td><?= h($ip->created_by) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Ips', 'action' => 'view', $ip->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Ips', 'action' => 'edit', $ip->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Ips', 'action' => 'delete', $ip->id], ['confirm' => __('Are you sure you want to delete # {0}?', $ip->ip)]) ?>
+                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Ips', 'action' => 'view', $ip->id]) ?>
+                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'Ips', 'action' => 'edit', $ip->id]) ?>
+                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'Ips', 'action' => 'delete', $ip->id], ['confirm' => __('Are you sure you want to delete # {0}?', $ip->ip)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -485,9 +485,9 @@
                             <td><?= h($removedIp->removed) ?></td>
                             <td><?= h($removedIp->removed_by) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'RemovedIps', 'action' => 'view', $removedIp->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'RemovedIps', 'action' => 'edit', $removedIp->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'RemovedIps', 'action' => 'delete', $removedIp->id], ['confirm' => __('Are you sure you want to delete # {0}?', $removedIp->id)]) ?>
+                                <?= $this->AuthLink->link(__('View'), ['controller' => 'RemovedIps', 'action' => 'view', $removedIp->id]) ?>
+                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'RemovedIps', 'action' => 'edit', $removedIp->id]) ?>
+                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'RemovedIps', 'action' => 'delete', $removedIp->id], ['confirm' => __('Are you sure you want to delete # {0}?', $removedIp->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -496,7 +496,7 @@
                 <?php endif; ?>
             </div>
             <div class="related">
-                <?= $this->Html->link(__('New Task'), ['controller' => 'Tasks', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
+                <?= $this->AuthLink->link(__('New Task'), ['controller' => 'Tasks', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
                 <h4><?= __('Tasks') ?></h4>
                 <?php if (!empty($customer->tasks)) : ?>
                 <div class="table-responsive">
@@ -517,9 +517,9 @@
                             <td><?= nl2br($task->text) ?></td>
                             <td><?= $task->has('dealer') ? h($task->dealer->name) : '' ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Tasks', 'action' => 'view', $task->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Tasks', 'action' => 'edit', $task->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Tasks', 'action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]) ?>
+                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Tasks', 'action' => 'view', $task->id]) ?>
+                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'Tasks', 'action' => 'edit', $task->id]) ?>
+                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'Tasks', 'action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

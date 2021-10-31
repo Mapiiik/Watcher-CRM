@@ -5,7 +5,7 @@
  */
 ?>
 <div class="addresses index content">
-    <?= $this->Html->link(__('New Address'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Address'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Addresses') ?></h3>
     <div class="table-responsive">
         <table>
@@ -49,9 +49,9 @@
                         <?= $address->has('ruian_gid') ? $this->Html->link(__('Mapy.cz'), 'https://mapy.cz/zakladni?source=coor&id=' . h("{$address->gpsx},{$address->gpsy}"), ['target' => '_blank']) : ''?>
                     </td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $address->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $address->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $address->id], ['confirm' => __('Are you sure you want to delete # {0}?', $address->id)]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $address->id]) ?>
+                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $address->id]) ?>
+                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $address->id], ['confirm' => __('Are you sure you want to delete # {0}?', $address->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

@@ -8,10 +8,10 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Label Customer'), ['action' => 'edit', $labelCustomer->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Label Customer'), ['action' => 'delete', $labelCustomer->id], ['confirm' => __('Are you sure you want to delete # {0}?', $labelCustomer->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Label Customers'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Label Customer'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('Edit Label Customer'), ['action' => 'edit', $labelCustomer->id], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->postLink(__('Delete Label Customer'), ['action' => 'delete', $labelCustomer->id], ['confirm' => __('Are you sure you want to delete # {0}?', $labelCustomer->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('List Label Customers'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('New Label Customer'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">

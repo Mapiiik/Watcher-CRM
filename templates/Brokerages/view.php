@@ -8,10 +8,10 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Brokerage'), ['action' => 'edit', $brokerage->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Brokerage'), ['action' => 'delete', $brokerage->id], ['confirm' => __('Are you sure you want to delete # {0}?', $brokerage->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Brokerages'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Brokerage'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('Edit Brokerage'), ['action' => 'edit', $brokerage->id], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->postLink(__('Delete Brokerage'), ['action' => 'delete', $brokerage->id], ['confirm' => __('Are you sure you want to delete # {0}?', $brokerage->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('List Brokerages'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('New Brokerage'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
@@ -48,9 +48,9 @@
                             <td><?= h($brokerageDealers->percentage) ?></td>
                             <td><?= h($brokerageDealers->id) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'BrokerageDealers', 'action' => 'view', $brokerageDealers->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'BrokerageDealers', 'action' => 'edit', $brokerageDealers->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'BrokerageDealers', 'action' => 'delete', $brokerageDealers->id], ['confirm' => __('Are you sure you want to delete # {0}?', $brokerageDealers->id)]) ?>
+                                <?= $this->AuthLink->link(__('View'), ['controller' => 'BrokerageDealers', 'action' => 'view', $brokerageDealers->id]) ?>
+                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'BrokerageDealers', 'action' => 'edit', $brokerageDealers->id]) ?>
+                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'BrokerageDealers', 'action' => 'delete', $brokerageDealers->id], ['confirm' => __('Are you sure you want to delete # {0}?', $brokerageDealers->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -109,9 +109,9 @@
                             <td><?= h($contracts->conclusion_date) ?></td>
                             <td><?= h($contracts->number_of_amendments) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Contracts', 'action' => 'view', $contracts->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Contracts', 'action' => 'edit', $contracts->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Contracts', 'action' => 'delete', $contracts->id], ['confirm' => __('Are you sure you want to delete # {0}?', $contracts->id)]) ?>
+                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Contracts', 'action' => 'view', $contracts->id]) ?>
+                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'Contracts', 'action' => 'edit', $contracts->id]) ?>
+                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'Contracts', 'action' => 'delete', $contracts->id], ['confirm' => __('Are you sure you want to delete # {0}?', $contracts->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

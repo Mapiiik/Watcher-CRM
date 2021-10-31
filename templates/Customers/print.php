@@ -8,8 +8,8 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('View Customer'), ['action' => 'view', $customer->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('Edit Customer'), ['action' => 'edit', $customer->id], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('View Customer'), ['action' => 'view', $customer->id], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('Edit Customer'), ['action' => 'edit', $customer->id], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">

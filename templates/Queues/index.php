@@ -5,7 +5,7 @@
  */
 ?>
 <div class="queues index content">
-    <?= $this->Html->link(__('New Queue'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Queue'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Queues') ?></h3>
     <div class="table-responsive">
         <table>
@@ -38,9 +38,9 @@
                     <td><?= $this->Number->format($queue->speed_up) ?></td>
                     <td><?= $this->Number->format($queue->speed_down) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $queue->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $queue->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $queue->id], ['confirm' => __('Are you sure you want to delete # {0}?', $queue->id)]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $queue->id]) ?>
+                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $queue->id]) ?>
+                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $queue->id], ['confirm' => __('Are you sure you want to delete # {0}?', $queue->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

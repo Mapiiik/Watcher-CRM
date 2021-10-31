@@ -5,7 +5,7 @@
  */
 ?>
 <div class="countries index content">
-    <?= $this->Html->link(__('New Country'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Country'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Countries') ?></h3>
     <div class="table-responsive">
         <table>
@@ -22,9 +22,9 @@
                     <td><?= $this->Number->format($country->id) ?></td>
                     <td><?= h($country->name) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $country->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $country->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $country->id], ['confirm' => __('Are you sure you want to delete # {0}?', $country->id)]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $country->id]) ?>
+                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $country->id]) ?>
+                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $country->id], ['confirm' => __('Are you sure you want to delete # {0}?', $country->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

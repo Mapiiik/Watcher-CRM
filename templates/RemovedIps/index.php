@@ -5,7 +5,7 @@
  */
 ?>
 <div class="removedIps index content">
-    <?= $this->Html->link(__('New Removed Ip'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Removed Ip'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Removed Ips') ?></h3>
     <div class="table-responsive">
         <table>
@@ -28,9 +28,9 @@
                     <td><?= h($removedIp->ip) ?></td>
                     <td><?= h($removedIp->removed) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $removedIp->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $removedIp->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $removedIp->id], ['confirm' => __('Are you sure you want to delete # {0}?', $removedIp->id)]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $removedIp->id]) ?>
+                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $removedIp->id]) ?>
+                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $removedIp->id], ['confirm' => __('Are you sure you want to delete # {0}?', $removedIp->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

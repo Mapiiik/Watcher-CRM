@@ -5,7 +5,7 @@
  */
 ?>
 <div class="serviceTypes index content">
-    <?= $this->Html->link(__('New Service Type'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Service Type'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Service Types') ?></h3>
     <div class="table-responsive">
         <table>
@@ -28,9 +28,9 @@
                     <td><?= h($serviceType->name) ?></td>
                     <td><?= h($serviceType->contract_number_format) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $serviceType->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $serviceType->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $serviceType->id], ['confirm' => __('Are you sure you want to delete # {0}?', $serviceType->id)]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $serviceType->id]) ?>
+                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $serviceType->id]) ?>
+                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $serviceType->id], ['confirm' => __('Are you sure you want to delete # {0}?', $serviceType->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

@@ -12,7 +12,7 @@ echo $this->Form->end();
 ?>
 
 <div class="customers index content">
-    <?= $this->Html->link(__('New Customer'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Customer'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Customers') ?></h3>
     <div class="table-responsive">
         <table>
@@ -51,9 +51,9 @@ echo $this->Form->end();
                     <td><?php foreach ($customer->contracts as $contract) echo h($contract->number) . '<br />'; ?></td>
                     <td><?php foreach ($customer->ips as $ip) echo h($ip->ip) . '<br />'; ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $customer->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $customer->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $customer->id], ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id)]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $customer->id]) ?>
+                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $customer->id]) ?>
+                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $customer->id], ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

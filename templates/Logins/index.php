@@ -5,7 +5,7 @@
  */
 ?>
 <div class="logins index content">
-    <?= $this->Html->link(__('New Login'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Login'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Logins') ?></h3>
     <div class="table-responsive">
         <table>
@@ -36,9 +36,9 @@
                     <td><?= h($login->last_denied) ?></td>
                     <td><?= h($login->last_denied_ip) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $login->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $login->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $login->id], ['confirm' => __('Are you sure you want to delete # {0}?', $login->id)]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $login->id]) ?>
+                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $login->id]) ?>
+                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $login->id], ['confirm' => __('Are you sure you want to delete # {0}?', $login->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

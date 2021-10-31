@@ -5,7 +5,7 @@
  */
 ?>
 <div class="labels index content">
-    <?= $this->Html->link(__('New Label'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Label'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Labels') ?></h3>
     <div class="table-responsive">
         <table>
@@ -30,9 +30,9 @@
                     <td><?= $this->Number->format($label->validity) ?></td>
                     <td><?= h($label->dynamic) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $label->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $label->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $label->id], ['confirm' => __('Are you sure you want to delete # {0}?', $label->id)]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $label->id]) ?>
+                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $label->id]) ?>
+                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $label->id], ['confirm' => __('Are you sure you want to delete # {0}?', $label->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
