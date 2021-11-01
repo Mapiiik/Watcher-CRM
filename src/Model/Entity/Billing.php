@@ -156,20 +156,20 @@ class Billing extends Entity
         if (is_null($this->billing_until) || (!is_null($this->billing_until) && $this->billing_until >= $until)) { // billing_until is not limiting
             // whole period
             if ($this->billing_from <= $from) {
-                return round($this->total);
+                return ceil($this->total);
             }
             // later billing_from
             if ($this->billing_from <= $until) {
-                return round($this->total / $period_days * $this->billing_from->diffInDays($until->addDay(1)));
+                return ceil($this->total / $period_days * $this->billing_from->diffInDays($until->addDay(1)));
             }
         } else { // billing_until is limiting
             // earlier billing_until
             if ($this->billing_from <= $from) {
-                return round($this->total / $period_days * $from->diffInDays($this->billing_until->addDay(1)));
+                return ceil($this->total / $period_days * $from->diffInDays($this->billing_until->addDay(1)));
             }
             // later billing_from and earlier billing_until
             if ($this->billing_from <= $until) {
-                return round($this->total / $period_days * $this->billing_from->diffInDays($this->billing_until->addDay(1)));
+                return ceil($this->total / $period_days * $this->billing_from->diffInDays($this->billing_until->addDay(1)));
             }
         }
         
