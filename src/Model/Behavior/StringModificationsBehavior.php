@@ -29,6 +29,11 @@ class StringModificationsBehavior extends Behavior
     {
         foreach ($data as $key => $value) {
             if (is_string($value)) {
+                // replace bad chars
+                if ($this->_config['replaceBadCharacters']) {
+                    $value = mb_ereg_replace('–', '-', $value);
+                    $data[$key] = $value;
+                }
                 // trim
                 if ($this->_config['trim']) {
                     $data[$key] = trim($value);
@@ -36,11 +41,6 @@ class StringModificationsBehavior extends Behavior
                 // empty as null
                 if ($this->_config['emptyAsNull']) {
                     if ($value === '') $data[$key] = null;
-                }
-                // replace bad chars
-                if ($this->_config['replaceBadCharacters']) {
-                    $value = mb_ereg_replace('–', '-', $value);
-                    $data[$key] = $value;
                 }
             }
         }
