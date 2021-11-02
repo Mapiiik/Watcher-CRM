@@ -230,7 +230,9 @@ class AddressesController extends AppController
                 'gpsx' => 'ST_X(geometry)',
             ]);
             
-            if ($ruianAddresses->count() > 1) $this->Flash->default(__('Multiple ({0}) RUIAN addresses found.', count($ruianAddresses->count())));
+            if ($ruianAddresses->count() > 1) {
+                $this->Flash->default(__('Multiple ({0}) RUIAN addresses found.', $ruianAddresses->count()));
+            }
 
             if ($ruianAddresses->count() == 1) {
                 $this->Flash->default(__('Address found in RUIAN.'));
