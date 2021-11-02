@@ -7,17 +7,18 @@
     "require": {
         "php": ">=7.2",
         "cakedc/users": "^9.2",
-        "cakephp/cakephp": "~4.2.0",
-        "cakephp/migrations": "^3.0",
+        "cakephp/cakephp": "^4.3",
+        "cakephp/migrations": "^3.2",
         "cakephp/plugin-installer": "^1.3",
-        "league/oauth2-google": "@stable",
         "mobiledetect/mobiledetectlib": "^2.8",
+        "league/oauth2-google": "@stable",
         "tecnickcom/tcpdf": "^6.4"
     },
     "require-dev": {
-        "cakephp/bake": "^2.3",
-        "cakephp/cakephp-codesniffer": "~4.2.0",
-        "cakephp/debug_kit": "^4.4",
+        "cakephp/bake": "^2.6",
+        "cakephp/repl": "^0.1",
+        "cakephp/cakephp-codesniffer": "^4.5",
+        "cakephp/debug_kit": "^4.5",
         "josegonzalez/dotenv": "^3.2",
         "phpunit/phpunit": "~8.5.0 || ^9.3",
         "psy/psysh": "@stable"
@@ -29,19 +30,13 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/",
-            "RUIAN\\": "plugins/RUIAN/src/",
-            "RADIUS\\": "plugins/RADIUS/src/",
-            "BookkeepingPohoda\\": "plugins/BookkeepingPohoda/src/"
+            "App\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "App\\Test\\": "tests/",
-            "Cake\\Test\\": "vendor/cakephp/cakephp/tests/",
-            "RUIAN\\Test\\": "plugins/RUIAN/tests/",
-            "RADIUS\\Test\\": "plugins/RADIUS/tests/",
-            "BookkeepingPohoda\\Test\\": "plugins/BookkeepingPohoda/tests/"
+            "Cake\\Test\\": "vendor/cakephp/cakephp/tests/"
         }
     },
     "scripts": {
