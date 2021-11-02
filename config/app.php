@@ -418,10 +418,5 @@ return [
     'Session' => [
         'defaults' => 'php',
         'timeout' => 1440,
-        'ini' => [
-                // Invalidate the cookie after 120 minutes without visiting
-                // any page on the site.
-                'session.cookie_lifetime' => 7200,
-        ],
     ],
 ];
