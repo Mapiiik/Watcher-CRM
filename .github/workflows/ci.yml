@@ -113,12 +113,12 @@ jobs:
           mv composer.backup composer.json
 
       - name: Run PHP CodeSniffer
-        run: vendor/bin/phpcs --colors -p src/ tests/ plugins/*/src/
+        run: vendor/bin/phpcs --colors -p src/ tests/
 
       - name: Run psalm
         if: success() || failure()
-        run: vendor/bin/psalm.phar
+        run: vendor/bin/psalm.phar --output-format=github
 
       - name: Run phpstan
         if: success() || failure()
-        run: vendor/bin/phpstan.phar analyse
+        run: vendor/bin/phpstan.phar analyse --error-format=checkstyle | cs2pr
