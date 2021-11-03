@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace RUIAN\Controller;
 
-use RUIAN\Controller\AppController;
-
 /**
  * Addresses Controller
  *

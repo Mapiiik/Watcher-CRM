@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
-use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -12,7 +10,6 @@ use Cake\Validation\Validator;
  * TaskStates Model
  *
  * @property \App\Model\Table\TasksTable&\Cake\ORM\Association\HasMany $Tasks
- *
  * @method \App\Model\Entity\TaskState newEmptyEntity()
  * @method \App\Model\Entity\TaskState newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\TaskState[] newEntities(array $data, array $options = [])
@@ -46,7 +43,7 @@ class TaskStatesTable extends Table
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
-        
+
         $this->hasMany('Tasks', [
             'foreignKey' => 'task_state_id',
         ]);

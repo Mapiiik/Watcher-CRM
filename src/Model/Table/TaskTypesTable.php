@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
-use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -12,7 +10,6 @@ use Cake\Validation\Validator;
  * TaskTypes Model
  *
  * @property \App\Model\Table\TasksTable&\Cake\ORM\Association\HasMany $Tasks
- *
  * @method \App\Model\Entity\TaskType newEmptyEntity()
  * @method \App\Model\Entity\TaskType newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\TaskType[] newEntities(array $data, array $options = [])

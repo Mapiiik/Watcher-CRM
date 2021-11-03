@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -21,7 +20,6 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\IpsTable&\Cake\ORM\Association\HasMany $Ips
  * @property \App\Model\Table\RemovedIpsTable&\Cake\ORM\Association\HasMany $RemovedIps
  * @property \App\Model\Table\SoldEquipmentsTable&\Cake\ORM\Association\HasMany $SoldEquipments
- *
  * @method \App\Model\Entity\Contract newEmptyEntity()
  * @method \App\Model\Entity\Contract newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Contract[] newEntities(array $data, array $options = [])
@@ -35,7 +33,6 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Contract[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
  * @method \App\Model\Entity\Contract[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \App\Model\Entity\Contract[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
- *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class ContractsTable extends Table
@@ -172,7 +169,7 @@ class ContractsTable extends Table
         $validator
             ->integer('activation_fee_with_obligation')
             ->allowEmptyString('activation_fee_with_obligation');
-        
+
         return $validator;
     }
 

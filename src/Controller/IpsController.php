@@ -22,7 +22,7 @@ class IpsController extends AppController
     {
         $customer_id = $this->request->getParam('customer_id');
         $this->set('customer_id', $customer_id);
-        
+
         $contract_id = $this->request->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
@@ -68,22 +68,28 @@ class IpsController extends AppController
     {
         $customer_id = $this->request->getParam('customer_id');
         $this->set('customer_id', $customer_id);
-        
+
         $contract_id = $this->request->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
         $ip = $this->Ips->newEmptyEntity();
 
-        if (isset($customer_id)) $ip = $this->Ips->patchEntity($ip, ['customer_id' => $customer_id]);
-        if (isset($contract_id)) $ip = $this->Ips->patchEntity($ip, ['contract_id' => $contract_id]);
+        if (isset($customer_id)) {
+            $ip = $this->Ips->patchEntity($ip, ['customer_id' => $customer_id]);
+        }
+        if (isset($contract_id)) {
+            $ip = $this->Ips->patchEntity($ip, ['contract_id' => $contract_id]);
+        }
 
         if ($this->request->is('post')) {
             $ip = $this->Ips->patchEntity($ip, $this->request->getData());
             if ($this->Ips->save($ip)) {
                 $this->Flash->success(__('The ip has been saved.'));
 
-                if (isset($contract_id)) return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                
+                if (isset($contract_id)) {
+                    return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+                }
+
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The ip could not be saved. Please, try again.'));
@@ -113,7 +119,7 @@ class IpsController extends AppController
     {
         $customer_id = $this->request->getParam('customer_id');
         $this->set('customer_id', $customer_id);
-        
+
         $contract_id = $this->request->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
@@ -126,8 +132,10 @@ class IpsController extends AppController
             if ($this->Ips->save($ip)) {
                 $this->Flash->success(__('The ip has been saved.'));
 
-                if (isset($contract_id)) return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                
+                if (isset($contract_id)) {
+                    return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+                }
+
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The ip could not be saved. Please, try again.'));
@@ -160,9 +168,8 @@ class IpsController extends AppController
 
         $this->request->allowMethod(['post', 'delete']);
         $ip = $this->Ips->get($id);
-        
-        if ($this->addToRemovedIps($id))
-        {
+
+        if ($this->addToRemovedIps($id)) {
             if ($this->Ips->delete($ip)) {
                 $this->Flash->success(__('The ip has been deleted.'));
             } else {
@@ -170,32 +177,36 @@ class IpsController extends AppController
             }
         }
 
-        if (isset($contract_id)) return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                
+        if (isset($contract_id)) {
+            return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+        }
+
         return $this->redirect(['action' => 'index']);
     }
-    
-    private function addToRemovedIps ($id = null)
+
+    private function addToRemovedIps($id = null)
     {
         $ip = $this->Ips->get($id);
-        
+
         $this->RemovedIps = $this->getTableLocator()->get('RemovedIps');
-        
+
         $removedIp = $this->RemovedIps->newEmptyEntity();
         $removedIp = $this->RemovedIps->patchEntity($removedIp, $ip->toArray());
-        
+
         // TODO - add who and when deleted this
         $removedIp->removed = FrozenTime::now();
         $removedIp->removed_by = $this->request->getSession()->read('Auth.id');
-        
+
         if ($this->RemovedIps->save($removedIp)) {
             $this->Flash->success(__('The removed ip has been saved.'));
+
             return true;
         }
-        
+
         debug($removedIp);
 
         $this->Flash->error(__('The removed ip could not be saved. Please, try again.'));
+
         return false;
     }
 }

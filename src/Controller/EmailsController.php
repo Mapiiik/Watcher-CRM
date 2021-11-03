@@ -20,7 +20,7 @@ class EmailsController extends AppController
     {
         $customer_id = $this->request->getParam('customer_id');
         $this->set('customer_id', $customer_id);
-        
+
         $conditions = [];
         if (isset($customer_id)) {
             $conditions = ['Emails.customer_id' => $customer_id];
@@ -72,8 +72,10 @@ class EmailsController extends AppController
             if ($this->Emails->save($email)) {
                 $this->Flash->success(__('The email has been saved.'));
 
-                if (isset($customer_id)) return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
-                    
+                if (isset($customer_id)) {
+                    return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+                }
+
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The email could not be saved. Please, try again.'));
@@ -107,8 +109,10 @@ class EmailsController extends AppController
             if ($this->Emails->save($email)) {
                 $this->Flash->success(__('The email has been saved.'));
 
-                if (isset($customer_id)) return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
-                
+                if (isset($customer_id)) {
+                    return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+                }
+
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The email could not be saved. Please, try again.'));
@@ -141,8 +145,10 @@ class EmailsController extends AppController
             $this->Flash->error(__('The email could not be deleted. Please, try again.'));
         }
 
-        if (isset($customer_id)) return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
-        
+        if (isset($customer_id)) {
+            return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+        }
+
         return $this->redirect(['action' => 'index']);
     }
 }

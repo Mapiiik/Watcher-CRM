@@ -74,62 +74,71 @@ class Address extends Entity
     protected function _getFullName(): string
     {
         $full_name = '';
-	
-	if (isset($this->title)) {
-            if ($full_name <> '') $full_name .= " ";
+
+        if (isset($this->title)) {
+            if ($full_name <> '') {
+                $full_name .= ' ';
+            }
             $full_name .= $this->title;
-}
+        }
         if (isset($this->first_name)) {
-            if ($full_name <> '') $full_name .= " ";
+            if ($full_name <> '') {
+                $full_name .= ' ';
+            }
             $full_name .= $this->first_name;
         }
         if (isset($this->last_name)) {
-            if ($full_name <> '') $full_name .= " ";
+            if ($full_name <> '') {
+                $full_name .= ' ';
+            }
             $full_name .= $this->last_name;
         }
-	if (isset($this->suffix)) {
-            if ($full_name <> '') $full_name .= " ";
+        if (isset($this->suffix)) {
+            if ($full_name <> '') {
+                $full_name .= ' ';
+            }
             $full_name .= $this->suffix;
         }
 
         return $full_name;
     }
-    
+
     protected function _getName(): string
     {
         $name = '';
-	
-        if (isset($this->company)) $name .= "[" . $this->company . "]";
+
+        if (isset($this->company)) {
+            $name .= '[' . $this->company . ']';
+        }
         if ($this->full_name <> '') {
-            if ($name <> '') $name .= " ";
+            if ($name <> '') {
+                $name .= ' ';
+            }
             $name .= $this->full_name;
         }
 
         return $name;
     }
-    
+
     protected function _getAddress(): string
     {
         $address = '';
-        
+
         $address .= $this->street_and_number;
         $address .= ', ' . $this->zip_and_city;
-        
+
         return $address;
     }
 
     protected function _getStreetAndNumber(): string
     {
         $street_and_number = '';
-        
-        if (isset($this->street))
-        {
-                $street_and_number .= $this->street . " " . $this->number;
+
+        if (isset($this->street)) {
+                $street_and_number .= $this->street . ' ' . $this->number;
+        } elseif (isset($this->number)) {
+                $street_and_number .= 'č.p. ' . $this->number;
         }
-        else if (isset($this->number))
-        {
-                $street_and_number .= "č.p. " . $this->number;
-        };
 
         return $street_and_number;
     }
@@ -137,28 +146,26 @@ class Address extends Entity
     protected function _getZipAndCity(): string
     {
         $zip_and_city = '';
-        
-        if (isset($this->zip))
-        {
+
+        if (isset($this->zip)) {
             $zip_and_city .= substr($this->zip, 0, 3) . ' ' . substr($this->zip, 3, 2);
         }
 
-        if (isset($this->city))
-        {
-            $zip_and_city .= " " . $this->city;
+        if (isset($this->city)) {
+            $zip_and_city .= ' ' . $this->city;
         }
-        
+
         return $zip_and_city;
     }
 
     protected function _getFullAddress(): string
     {
         $address = '';
-        
+
         $address .= $this->name;
-        $address .= ", ";
+        $address .= ', ';
         $address .= $this->address;
-        
+
         return $address;
     }
 }

@@ -3,18 +3,16 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
+use ArrayObject;
+use Cake\Event\EventInterface;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use Cake\Event\EventInterface;
-use ArrayObject;
 
 /**
  * Phones Model
  *
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
- *
  * @method \App\Model\Entity\Phone newEmptyEntity()
  * @method \App\Model\Entity\Phone newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Phone[] newEntities(array $data, array $options = [])
@@ -48,7 +46,7 @@ class PhonesTable extends Table
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
-        
+
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER',
@@ -93,29 +91,29 @@ class PhonesTable extends Table
     {
         if (isset($data['phone']) && is_string($data['phone']) && (strlen($data['phone']) > 0)) {
             $phone = $data['phone'];
-            $old = array('+','-',' ');
-            $new = array('','','');
+            $old = ['+','-',' '];
+            $new = ['','',''];
 
             $phone = trim(str_replace(['+', '-', ' '], ['', '', ''], $phone));
 
-            switch (strlen($phone))
-            {
-                    case 9:
-                            $phone = "420" . $phone;
-                            break;
-                    case 12:
-                            $phone = $phone;
-                            break;
-                    case 11: //some other countries, Netherlands etc.
-                            $phone = $phone;
-                            break;
-                    default:
-                            $data['phone'] = null;
-                            return;
+            switch (strlen($phone)) {
+                case 9:
+                        $phone = '420' . $phone;
+                    break;
+                case 12:
+                        $phone = $phone;
+                    break;
+                case 11: //some other countries, Netherlands etc.
+                        $phone = $phone;
+                    break;
+                default:
+                        $data['phone'] = null;
+
+                    return;
             }
 
-            $phone = substr($phone, 0, 3) . " " . substr($phone, 3);
-            $data['phone'] = "+" . $phone;
+            $phone = substr($phone, 0, 3) . ' ' . substr($phone, 3);
+            $data['phone'] = '+' . $phone;
         }
-    }        
+    }
 }

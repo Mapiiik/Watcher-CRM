@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace BookkeepingPohoda\Controller;
 
-use BookkeepingPohoda\Controller\AppController;
 use Cake\I18n\FrozenDate;
-use Cake\ORM\Query;
 use Cake\ORM\Entity;
+use Cake\ORM\Query;
 
 /**
  * Invoices Controller
@@ -112,8 +111,9 @@ class InvoicesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
-    
-    private function getQueryForBillingDataForMonth(FrozenDate $invoiced_month, int $tax_rate_id): Query {
+
+    private function getQueryForBillingDataForMonth(FrozenDate $invoiced_month, int $tax_rate_id): Query
+    {
         return $this->getTableLocator()->get('Customers')
                 ->find()
                 ->order('Customers.id')
@@ -149,14 +149,15 @@ class InvoicesController extends AppController
                                         ->formatResults(function (\Cake\Collection\CollectionInterface $billings) use ($invoiced_month) {
                                                 return $billings->map(function ($billing) use ($invoiced_month) {
                                                     $billing['period_total'] = $billing->periodTotal($invoiced_month->firstOfMonth(), $invoiced_month->lastOfMonth());
+
                                                     return $billing;
-                                                });                                        
+                                                });
                                         })
                                         ->contain(['Services']);
-                                });
-                    });
+                            });
+                });
     }
-    
+
     /**
      * GenerateInvoices method
      *
@@ -165,59 +166,61 @@ class InvoicesController extends AppController
     public function generate()
     {
         $tax_rates = $this->getTableLocator()->get('Taxes')->find('list', ['order' => 'name'])->toArray();
-        
+
         if ($this->request->is(['post'])) {
             $invoiced_month = new FrozenDate($this->request->getData('invoiced_month'));
             $tax_rate_id = (int)$this->request->getData('tax_rate_id');
             $csv_for_verification = $this->request->getData('csv_for_verification');
-            
+
             // VERIFICATION DATA CHECK
             if ($csv_for_verification->getSize() > 0) {
                 // load verification data from CSV
                 $lines = explode(PHP_EOL, $csv_for_verification->getStream()->getContents());
                 $verification_data = [];
-                
+
                 foreach ($lines as $line) {
-                    $parsed_line = explode(",", $line);
+                    $parsed_line = explode(',', $line);
                     $customer_number = trim($parsed_line[0]);
-                    
-                    if (!is_numeric($customer_number)) continue; // if there is no customer cumber in first column, skip the line
-                    
+
+                    if (!is_numeric($customer_number)) {
+                        continue; // if there is no customer cumber in first column, skip the line
+                    }
+
                     if (!isset($verification_data[$customer_number])) {
                         $verification_data[$customer_number]['csv']['total'] = 0;
                         $verification_data[$customer_number]['csv']['items'] = [];
                     }
-                    
-                    $item = new Entity;
+
+                    $item = new Entity();
                     if (isset($parsed_line[1])) {
                         $item->period_total = trim($parsed_line[1]);
                     }
                     if (isset($parsed_line[2])) {
                         $item->name = trim($parsed_line[2]);
                     }
-                    
+
                     $verification_data[$customer_number]['csv']['total'] += $item->period_total;
                     $verification_data[$customer_number]['csv']['items'][] = $item;
-                    
+
                     unset($item);
                     unset($customer_number);
                     unset($parsed_line);
                 }
                 unset($lines);
-                
+
                 // compare verification data with CRM billings
                 foreach ($this->getQueryForBillingDataForMonth($invoiced_month, $tax_rate_id) as $customer) {
                     // declare billing data
                     $billing_data['total'] = 0;
                     $billing_data['items'] = [];
-                    
+
                     foreach ($customer->contracts as $contract) {
                         foreach ($contract->billings as $billing) {
                             $billing_data['total'] += $billing->period_total;
                             $billing_data['items'][] = $billing;
                         }
                     }
-                    
+
                     // compare billing data with verification data
                     if (isset($verification_data[$customer->number])) {
                         if ($verification_data[$customer->number]['csv']['total'] == $billing_data['total']) {
@@ -235,19 +238,19 @@ class InvoicesController extends AppController
                             $verification_data[$customer->number]['crm'] = $billing_data;
                         }
                     }
-                    
+
                     // clear billing_data for this customer
                     unset($billing_data);
                 }
             }
-            
+
             if (isset($verification_data) && !empty($verification_data)) {
                 $this->set('verification_data', $verification_data);
             } else {
                 return $this->redirect(['action' => 'generate', '_ext' => 'dbf' , '?' => ['invoiced_month' => $invoiced_month->i18nFormat('yyyy-MM'), 'tax_rate_id' => $tax_rate_id]]);
             }
         }
-        
+
         // DOWNLOAD INVOICES
         if ($this->request->getParam('_ext') === 'dbf') {
             $invoiced_month = new FrozenDate($this->request->getQuery('invoiced_month'));
@@ -256,17 +259,17 @@ class InvoicesController extends AppController
             // DO THIS BETTER - REVERSE CHARGE
             if ($tax_rate_id == 5) {
                 $reverse_charge = true;
-                $innerfix = "8";
+                $innerfix = '8';
             } else {
                 $reverse_charge = false;
-                $innerfix = "9";
-            }            
-            
+                $innerfix = '9';
+            }
+
             // invoice number index
             $index = 1;
-            
+
             $invoices = [];
-            
+
             foreach ($this->getQueryForBillingDataForMonth($invoiced_month, $tax_rate_id) as $customer) {
                 // declare customer billing data
                 $billing_customer['total'] = 0;
@@ -275,11 +278,10 @@ class InvoicesController extends AppController
                 foreach ($customer->contracts as $contract) {
                     // declare contract billing data
                     $billing_contract['total'] = 0;
-                    $billing_contract['items'] = [];                    
-                    
+                    $billing_contract['items'] = [];
+
                     foreach ($contract->billings as $billing) {
-                        if ($billing->separate_invoice)
-                        {
+                        if ($billing->separate_invoice) {
                             $invoice = $this->Invoices->newEmptyEntity();
                             $invoice->number = sprintf('%02d', $invoiced_month->year - 1980) . $innerfix . $invoiced_month->month . sprintf('%04d', $index);
                             $invoice->customer = $customer;
@@ -293,16 +295,13 @@ class InvoicesController extends AppController
                             $invoices[] = $invoice;
                             unset($invoice);
                             $index++;
-                        }
-                        else
-                        {
+                        } else {
                             $billing_contract['total'] += $billing->period_total;
                             $billing_contract['items'][] = $billing;
                         }
                     }
-                    
-                    if ($contract->separate_invoice)
-                    {
+
+                    if ($contract->separate_invoice) {
                         $invoice = $this->Invoices->newEmptyEntity();
                         $invoice->number = sprintf('%02d', $invoiced_month->year - 1980) . $innerfix . $invoiced_month->month . sprintf('%04d', $index);
                         $invoice->customer = $customer;
@@ -316,9 +315,7 @@ class InvoicesController extends AppController
                         $invoices[] = $invoice;
                         unset($invoice);
                         $index++;
-                    }
-                    else
-                    {
+                    } else {
                         $billing_customer['total'] += $billing_contract['total'];
                         $billing_customer['items'] += $billing_contract['items'];
                     }
@@ -326,8 +323,7 @@ class InvoicesController extends AppController
                     unset($billing_contract);
                 }
 
-                if ($billing_customer['total'] <> 0)
-                {
+                if ($billing_customer['total'] <> 0) {
                     $invoice = $this->Invoices->newEmptyEntity();
                     $invoice->number = sprintf('%02d', $invoiced_month->year - 1980) . $innerfix . $invoiced_month->month . sprintf('%04d', $index);
                     $invoice->customer = $customer;
@@ -339,14 +335,14 @@ class InvoicesController extends AppController
                     $invoice->items = $billing_customer['items'];
                     $invoices[] = $invoice;
                     $index++;
-                };
+                }
 
                 unset($billing_customer);
             }
-            
+
             $this->set(compact('invoices', 'tax_rate_id', 'invoiced_month', 'reverse_charge'));
         }
-        
+
         $this->set(compact('tax_rates'));
-    }    
+    }
 }

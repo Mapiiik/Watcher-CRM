@@ -73,7 +73,7 @@ class Application extends BaseApplication
 
         // CakeDC/users
         $this->addPlugin(\CakeDC\Users\Plugin::class);
-        Configure::write('Users.config', ['users']);               
+        Configure::write('Users.config', ['users']);
     }
 
     /**

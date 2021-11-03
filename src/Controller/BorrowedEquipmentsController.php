@@ -20,7 +20,7 @@ class BorrowedEquipmentsController extends AppController
     {
         $customer_id = $this->request->getParam('customer_id');
         $this->set('customer_id', $customer_id);
-        
+
         $contract_id = $this->request->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
@@ -31,7 +31,7 @@ class BorrowedEquipmentsController extends AppController
         if (isset($contract_id)) {
             $conditions += ['BorrowedEquipments.contract_id' => $contract_id];
         }
-        
+
         $this->paginate = [
             'contain' => ['Customers', 'Contracts', 'EquipmentTypes'],
             'conditions' => $conditions,
@@ -66,22 +66,28 @@ class BorrowedEquipmentsController extends AppController
     {
         $customer_id = $this->request->getParam('customer_id');
         $this->set('customer_id', $customer_id);
-        
+
         $contract_id = $this->request->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
         $borrowedEquipment = $this->BorrowedEquipments->newEmptyEntity();
-        
-        if (isset($customer_id)) $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, ['customer_id' => $customer_id]);
-        if (isset($contract_id)) $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, ['contract_id' => $contract_id]);
-        
+
+        if (isset($customer_id)) {
+            $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, ['customer_id' => $customer_id]);
+        }
+        if (isset($contract_id)) {
+            $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, ['contract_id' => $contract_id]);
+        }
+
         if ($this->request->is('post')) {
             $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, $this->request->getData());
             if ($this->BorrowedEquipments->save($borrowedEquipment)) {
                 $this->Flash->success(__('The borrowed equipment has been saved.'));
 
-                if (isset($contract_id)) return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                
+                if (isset($contract_id)) {
+                    return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+                }
+
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The borrowed equipment could not be saved. Please, try again.'));
@@ -112,7 +118,7 @@ class BorrowedEquipmentsController extends AppController
     {
         $customer_id = $this->request->getParam('customer_id');
         $this->set('customer_id', $customer_id);
-        
+
         $contract_id = $this->request->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
@@ -125,8 +131,10 @@ class BorrowedEquipmentsController extends AppController
             if ($this->BorrowedEquipments->save($borrowedEquipment)) {
                 $this->Flash->success(__('The borrowed equipment has been saved.'));
 
-                if (isset($contract_id)) return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                
+                if (isset($contract_id)) {
+                    return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+                }
+
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The borrowed equipment could not be saved. Please, try again.'));
@@ -166,8 +174,10 @@ class BorrowedEquipmentsController extends AppController
             $this->Flash->error(__('The borrowed equipment could not be deleted. Please, try again.'));
         }
 
-        if (isset($contract_id)) return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                
+        if (isset($contract_id)) {
+            return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+        }
+
         return $this->redirect(['action' => 'index']);
     }
 }

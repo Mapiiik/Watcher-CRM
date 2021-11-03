@@ -20,7 +20,7 @@ class LoginsController extends AppController
     {
         $customer_id = $this->request->getParam('customer_id');
         $this->set('customer_id', $customer_id);
-        
+
         $conditions = [];
         if (isset($customer_id)) {
             $conditions = ['Logins.customer_id' => $customer_id];
@@ -78,8 +78,10 @@ class LoginsController extends AppController
             if ($this->Logins->save($login)) {
                 $this->Flash->success(__('The login has been saved.'));
 
-                if (isset($customer_id)) return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
-                
+                if (isset($customer_id)) {
+                    return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+                }
+
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The login could not be saved. Please, try again.'));
@@ -96,8 +98,7 @@ class LoginsController extends AppController
 
             $i = 1;
             $test_login = $new_login;
-            while ($this->Logins->exists(['login' => $test_login]))
-            {
+            while ($this->Logins->exists(['login' => $test_login])) {
                 $i++;
                 $test_login = $new_login . '.' . $i;
             }
@@ -114,7 +115,7 @@ class LoginsController extends AppController
 
         // generate new password
         $this->set('new_password', $this->generatePassword(8));
-        
+
         // rights
         $this->set('rights', $this->Logins->rights);
     }
@@ -136,14 +137,18 @@ class LoginsController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             // change password if is set new
-            if (strlen($this->request->getData()['new_password']) > 0) $login->password = $this->request->getData()['new_password'];
-            
+            if (strlen($this->request->getData()['new_password']) > 0) {
+                $login->password = $this->request->getData()['new_password'];
+            }
+
             $login = $this->Logins->patchEntity($login, $this->request->getData());
             if ($this->Logins->save($login)) {
                 $this->Flash->success(__('The login has been saved.'));
-                
-                if (isset($customer_id)) return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
-                
+
+                if (isset($customer_id)) {
+                    return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+                }
+
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The login could not be saved. Please, try again.'));
@@ -158,7 +163,7 @@ class LoginsController extends AppController
 
         // rights
         $this->set('rights', $this->Logins->rights);
-        }
+    }
 
     /**
      * Delete method
@@ -179,8 +184,10 @@ class LoginsController extends AppController
             $this->Flash->error(__('The login could not be deleted. Please, try again.'));
         }
 
-        if (isset($customer_id)) return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
-        
+        if (isset($customer_id)) {
+            return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+        }
+
         return $this->redirect(['action' => 'index']);
     }
 }

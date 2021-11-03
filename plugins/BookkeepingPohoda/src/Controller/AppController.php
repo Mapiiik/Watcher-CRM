@@ -11,7 +11,7 @@ class AppController extends BaseController
     {
         // add support for dBase extension
         $this->response->setTypeMap('dbf', ['application/dbase']);
-        
+
         parent::beforeFilter($event);
-    }    
+    }
 }

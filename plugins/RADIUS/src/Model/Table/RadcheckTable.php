@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace RADIUS\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -44,11 +43,11 @@ class RadcheckTable extends Table
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
-        
+
         $this->belongsTo('RADIUS.Accounts', [
             'foreignKey' => 'username',
             'bindingKey' => 'username',
-        ]);        
+        ]);
     }
 
     /**

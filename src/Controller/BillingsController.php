@@ -20,7 +20,7 @@ class BillingsController extends AppController
     {
         $customer_id = $this->request->getParam('customer_id');
         $this->set('customer_id', $customer_id);
-        
+
         $contract_id = $this->request->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
@@ -31,7 +31,7 @@ class BillingsController extends AppController
         if (isset($contract_id)) {
             $conditions += ['Billings.contract_id' => $contract_id];
         }
-        
+
         $this->paginate = [
             'contain' => ['Customers', 'Services', 'Contracts'],
             'conditions' => $conditions,
@@ -66,21 +66,25 @@ class BillingsController extends AppController
     {
         $customer_id = $this->request->getParam('customer_id');
         $this->set('customer_id', $customer_id);
-        
+
         $contract_id = $this->request->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
         $billing = $this->Billings->newEmptyEntity();
 
-        if (isset($customer_id)) $billing = $this->Billings->patchEntity($billing, ['customer_id' => $customer_id]);
-        if (isset($contract_id)) $billing = $this->Billings->patchEntity($billing, ['contract_id' => $contract_id]);
-        
+        if (isset($customer_id)) {
+            $billing = $this->Billings->patchEntity($billing, ['customer_id' => $customer_id]);
+        }
+        if (isset($contract_id)) {
+            $billing = $this->Billings->patchEntity($billing, ['contract_id' => $contract_id]);
+        }
+
         if ($this->request->is('post')) {
             $billing = $this->Billings->patchEntity($billing, $this->request->getData());
-            
+
             if (
                 isset($billing->service_id) &&
-                isset($this->Billings->Services->get($billing->service_id)->service_type_id) && 
+                isset($this->Billings->Services->get($billing->service_id)->service_type_id) &&
                 $this->Billings->Contracts->get($billing->contract_id)->service_type_id <> $this->Billings->Services->get($billing->service_id)->service_type_id
             ) {
                 $this->Flash->error(__('The service type does not match the selected contract.'));
@@ -88,8 +92,10 @@ class BillingsController extends AppController
                 if ($this->Billings->save($billing)) {
                     $this->Flash->success(__('The billing has been saved.'));
 
-                    if (isset($contract_id)) return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                    
+                    if (isset($contract_id)) {
+                        return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+                    }
+
                     return $this->redirect(['action' => 'index']);
                 }
                 $this->Flash->error(__('The billing could not be saved. Please, try again.'));
@@ -98,7 +104,7 @@ class BillingsController extends AppController
         $customers = $this->Billings->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $contracts = $this->Billings->Contracts->find('list', ['order' => 'Contracts.number', 'contain' => ['ServiceTypes', 'InstallationAddresses']]);
         $services = $this->Billings->Services->find('list', ['order' => 'name']);
-        
+
         if (isset($customer_id)) {
             $customers->where(['Customers.id' => $customer_id]);
             $contracts->where(['Contracts.customer_id' => $customer_id]);
@@ -110,7 +116,7 @@ class BillingsController extends AppController
                 'service_type_id IS NULL',
             ]]);
         }
-        
+
         $this->set(compact('billing', 'customers', 'services', 'contracts'));
     }
 
@@ -125,10 +131,10 @@ class BillingsController extends AppController
     {
         $customer_id = $this->request->getParam('customer_id');
         $this->set('customer_id', $customer_id);
-        
+
         $contract_id = $this->request->getParam('contract_id');
         $this->set('contract_id', $contract_id);
-        
+
         $billing = $this->Billings->get($id, [
             'contain' => [],
         ]);
@@ -137,7 +143,7 @@ class BillingsController extends AppController
             $billing = $this->Billings->patchEntity($billing, $this->request->getData());
             if (
                 isset($billing->service_id) &&
-                isset($this->Billings->Services->get($billing->service_id)->service_type_id) && 
+                isset($this->Billings->Services->get($billing->service_id)->service_type_id) &&
                 $this->Billings->Contracts->get($billing->contract_id)->service_type_id <> $this->Billings->Services->get($billing->service_id)->service_type_id
             ) {
                 $this->Flash->error(__('The service type does not match the selected contract.'));
@@ -145,8 +151,10 @@ class BillingsController extends AppController
                 if ($this->Billings->save($billing)) {
                     $this->Flash->success(__('The billing has been saved.'));
 
-                    if (isset($contract_id)) return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                    
+                    if (isset($contract_id)) {
+                        return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+                    }
+
                     return $this->redirect(['action' => 'index']);
                 }
                 $this->Flash->error(__('The billing could not be saved. Please, try again.'));
@@ -155,7 +163,7 @@ class BillingsController extends AppController
         $customers = $this->Billings->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $contracts = $this->Billings->Contracts->find('list', ['order' => 'Contracts.number', 'contain' => ['ServiceTypes', 'InstallationAddresses']]);
         $services = $this->Billings->Services->find('list', ['order' => 'name']);
-        
+
         if (isset($customer_id)) {
             $customers->where(['Customers.id' => $customer_id]);
             $contracts->where(['Contracts.customer_id' => $customer_id]);
@@ -167,7 +175,7 @@ class BillingsController extends AppController
                 'service_type_id IS NULL',
             ]]);
         }
-        
+
         $this->set(compact('billing', 'customers', 'services', 'contracts'));
     }
 
@@ -191,8 +199,10 @@ class BillingsController extends AppController
             $this->Flash->error(__('The billing could not be deleted. Please, try again.'));
         }
 
-        if (isset($contract_id)) return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                
+        if (isset($contract_id)) {
+            return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+        }
+
         return $this->redirect(['action' => 'index']);
     }
 }

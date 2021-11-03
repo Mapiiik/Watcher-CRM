@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -13,7 +12,6 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\ServiceTypesTable&\Cake\ORM\Association\BelongsTo $ServiceTypes
  * @property \App\Model\Table\ServicesTable&\Cake\ORM\Association\HasMany $Services
- *
  * @method \App\Model\Entity\Queue newEmptyEntity()
  * @method \App\Model\Entity\Queue newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Queue[] newEntities(array $data, array $options = [])
@@ -47,7 +45,7 @@ class QueuesTable extends Table
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
-        
+
         $this->belongsTo('ServiceTypes', [
             'foreignKey' => 'service_type_id',
         ]);

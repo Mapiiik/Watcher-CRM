@@ -20,12 +20,12 @@ class TasksController extends AppController
     {
         $customer_id = $this->request->getParam('customer_id');
         $this->set('customer_id', $customer_id);
-        
+
         $conditions = [];
         if (isset($customer_id)) {
             $conditions = ['Tasks.customer_id' => $customer_id];
         }
-        
+
         $this->paginate = [
             'contain' => ['TaskTypes', 'Customers', 'Dealers', 'TaskStates', 'Routers'],
             'conditions' => $conditions,

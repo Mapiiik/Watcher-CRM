@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
 use Cake\I18n\FrozenDate;
+use Cake\ORM\Entity;
 
 /**
  * Billing Entity
@@ -63,16 +63,16 @@ class Billing extends Entity
         'service' => true,
         'contract' => true,
         'fixed_discount' => true,
-        'percentage_discount' => true,        
+        'percentage_discount' => true,
     ];
 
     protected function _getName(): string
     {
         $name = '';
-        
+
         if (isset($this->text)) {
             $name = $this->text;
-        } else if (isset($this->service->name)) {
+        } elseif (isset($this->service->name)) {
             $name = $this->service->name;
         }
 
@@ -81,63 +81,74 @@ class Billing extends Entity
         }
 
         return $name;
-    }    
-    
+    }
+
     protected function _getSum(): float
     {
         $sum = 0;
-        
+
         if (isset($this->price)) {
             $sum = $this->price;
-        } else if (isset($this->service->price)) {
+        } elseif (isset($this->service->price)) {
             $sum = $this->service->price;
         }
-        
+
         $sum = $sum * $this->quantity;
-        
+
         return $sum;
-    }    
+    }
+
     protected function _getFixedDiscountSum(): float
     {
         $discount = 0;
-        
-        if (isset($this->fixed_discount)) $discount = $this->fixed_discount;
-        
+
+        if (isset($this->fixed_discount)) {
+            $discount = $this->fixed_discount;
+        }
+
         return $discount;
     }
+
     protected function _getPercentageDiscountSum(): float
     {
         $discount = 0;
-        
-        if (isset($this->percentage_discount)) $discount = $this->sum * $this->percentage_discount / 100;
-        
+
+        if (isset($this->percentage_discount)) {
+            $discount = $this->sum * $this->percentage_discount / 100;
+        }
+
         return $discount;
     }
+
     protected function _getDiscount(): float
     {
         return $this->fixed_discount_sum + $this->percentage_discount_sum;
     }
+
     protected function _getTotal(): float
     {
         return $this->sum - $this->discount;
-    }    
+    }
+
     protected function _getVatBase(): float
     {
         return $this->total - $this->vat;
-    }    
+    }
+
     protected function _getVat(): float
     {
         return round($this->total - ($this->total / (1 + env('VAT_RATE', 0))), 2);
     }
+
     protected function _getSeparateInvoice(): bool
     {
         return $this->separate;
-    }    
-    
+    }
+
     public function periodTotal(FrozenDate $from, FrozenDate $until): float
     {
         $period_days = $from->diffInDays($until->addDay(1));
-        
+
         // billing_from not set
         if (is_null($this->billing_from)) {
             return 0;
@@ -152,7 +163,7 @@ class Billing extends Entity
         if (!is_null($this->billing_until) && $this->billing_until < $from) {
             return 0;
         }
-        
+
         if (is_null($this->billing_until) || (!is_null($this->billing_until) && $this->billing_until >= $until)) { // billing_until is not limiting
             // whole period
             if ($this->billing_from <= $from) {
@@ -172,7 +183,7 @@ class Billing extends Entity
                 return ceil($this->total / $period_days * $this->billing_from->diffInDays($this->billing_until->addDay(1)));
             }
         }
-        
+
         return false;
     }
 }

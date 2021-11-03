@@ -64,7 +64,7 @@ class Login extends Entity
     ];
 
     // SHA1 for password if value is set
-    protected function _setPassword(string $password) : ?string
+    protected function _setPassword(string $password): ?string
     {
         if (strlen($password) > 0) {
             return Security::hash($password, 'sha1');

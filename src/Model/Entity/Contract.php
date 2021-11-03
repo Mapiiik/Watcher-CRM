@@ -88,15 +88,14 @@ class Contract extends Entity
     protected function _getMinimumDuration(): ?int
     {
         $minimum_duration = null;
-        
-        if (isset($this->obligation_until) && ($this->valid_from < $this->obligation_until))
-        {
+
+        if (isset($this->obligation_until) && ($this->valid_from < $this->obligation_until)) {
             $minimum_duration = $this->valid_from->diffInMonths($this->obligation_until->addDay(1));
         }
-        
+
         return $minimum_duration;
     }
-    
+
     protected function _getActivationFeeSum(): ?int
     {
         if (isset($this->activation_fee)) {
@@ -127,14 +126,15 @@ class Contract extends Entity
     protected function _getDeliveryAddress(): ?Address
     {
         return $this->customer->delivery_address;
-    }    
+    }
 
     protected function _getPermanentAddress(): ?Address
     {
         return $this->customer->permanent_address;
     }
 
-    protected function _getName(): string {
+    protected function _getName(): string
+    {
         return $this->number .
             ($this->has('service_type') ? ' - ' . $this->service_type->name : '') .
             ($this->has('installation_address') ? ' - ' . $this->installation_address->address : '');
@@ -143,5 +143,5 @@ class Contract extends Entity
     protected function _getSeparateInvoice(): bool
     {
         return false;
-    }        
+    }
 }

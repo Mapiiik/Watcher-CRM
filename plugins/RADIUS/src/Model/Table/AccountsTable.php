@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace RADIUS\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -13,7 +12,6 @@ use Cake\Validation\Validator;
  *
  * @property \RADIUS\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
  * @property \RADIUS\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
- *
  * @method \RADIUS\Model\Entity\Account newEmptyEntity()
  * @method \RADIUS\Model\Entity\Account newEntity(array $data, array $options = [])
  * @method \RADIUS\Model\Entity\Account[] newEntities(array $data, array $options = [])
@@ -27,7 +25,6 @@ use Cake\Validation\Validator;
  * @method \RADIUS\Model\Entity\Account[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
  * @method \RADIUS\Model\Entity\Account[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \RADIUS\Model\Entity\Account[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
- *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class AccountsTable extends Table
@@ -79,11 +76,11 @@ class AccountsTable extends Table
         $this->hasMany('RADIUS.Radpostauth', [
             'foreignKey' => 'username',
             'bindingKey' => 'username',
-        ]);        
+        ]);
         $this->hasMany('RADIUS.Radacct', [
             'foreignKey' => 'username',
             'bindingKey' => 'username',
-        ]);        
+        ]);
     }
 
     /**

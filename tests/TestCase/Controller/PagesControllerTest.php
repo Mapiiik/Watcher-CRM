@@ -17,9 +17,9 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use Cake\Core\Configure;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
-use Cake\ORM\TableRegistry;
 
 /**
  * PagesControllerTest class
@@ -38,12 +38,12 @@ class PagesControllerTest extends TestCase
     protected function login()
     {
         $users = TableRegistry::getTableLocator()->get('Users');
-        
+
         $user = $users->newEmptyEntity();
         $user->username = 'tester';
         $user->role = 'admin';
         $user->active = true;
-        
+
         $this->session(['Auth' => $user]);
     }
 

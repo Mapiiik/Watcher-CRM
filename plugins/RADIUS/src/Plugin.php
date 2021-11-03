@@ -45,7 +45,7 @@ class Plugin extends BasePlugin
 
                 $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}', ['action' => 'index'])->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+']);
                 $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/{action}/*', [])->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+']);
-                
+
                 $builder->connect('/customers/{customer_id}/{controller}', ['action' => 'index'])->setPatterns(['customer_id' => '[0-9]+']);
                 $builder->connect('/customers/{customer_id}/{controller}/{action}/*', [])->setPatterns(['customer_id' => '[0-9]+', 'id' => '[0-9]+']);
 
@@ -58,7 +58,7 @@ class Plugin extends BasePlugin
     /**
      * Add middleware for the plugin.
      *
-     * @param \Cake\Http\MiddlewareQueue $middleware The middleware queue to update.
+     * @param \Cake\Http\MiddlewareQueue $middlewareQueue The middleware queue to update.
      * @return \Cake\Http\MiddlewareQueue
      */
     public function middleware(MiddlewareQueue $middlewareQueue): MiddlewareQueue

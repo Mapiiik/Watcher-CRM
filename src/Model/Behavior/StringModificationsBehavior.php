@@ -3,11 +3,9 @@ declare(strict_types=1);
 
 namespace App\Model\Behavior;
 
-use Cake\ORM\Behavior;
-use Cake\ORM\Table;
-
-use Cake\Event\EventInterface;
 use ArrayObject;
+use Cake\Event\EventInterface;
+use Cake\ORM\Behavior;
 
 /**
  * StringModifications behavior
@@ -24,7 +22,7 @@ class StringModificationsBehavior extends Behavior
         'emptyAsNull' => true,
         'replaceBadCharacters' => true,
     ];
-    
+
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
         foreach ($data as $key => $value) {
@@ -40,9 +38,11 @@ class StringModificationsBehavior extends Behavior
                 }
                 // empty as null
                 if ($this->_config['emptyAsNull']) {
-                    if ($value === '') $data[$key] = null;
+                    if ($value === '') {
+                        $data[$key] = null;
+                    }
                 }
             }
         }
-    }    
+    }
 }

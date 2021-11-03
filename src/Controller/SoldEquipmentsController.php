@@ -20,7 +20,7 @@ class SoldEquipmentsController extends AppController
     {
         $customer_id = $this->request->getParam('customer_id');
         $this->set('customer_id', $customer_id);
-        
+
         $contract_id = $this->request->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
@@ -31,7 +31,7 @@ class SoldEquipmentsController extends AppController
         if (isset($contract_id)) {
             $conditions += ['SoldEquipments.contract_id' => $contract_id];
         }
-        
+
         $this->paginate = [
             'contain' => ['Customers', 'Contracts', 'EquipmentTypes'],
             'conditions' => $conditions,
@@ -66,22 +66,28 @@ class SoldEquipmentsController extends AppController
     {
         $customer_id = $this->request->getParam('customer_id');
         $this->set('customer_id', $customer_id);
-        
+
         $contract_id = $this->request->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
         $soldEquipment = $this->SoldEquipments->newEmptyEntity();
 
-        if (isset($customer_id)) $soldEquipment = $this->SoldEquipments->patchEntity($soldEquipment, ['customer_id' => $customer_id]);
-        if (isset($contract_id)) $soldEquipment = $this->SoldEquipments->patchEntity($soldEquipment, ['contract_id' => $contract_id]);
-        
+        if (isset($customer_id)) {
+            $soldEquipment = $this->SoldEquipments->patchEntity($soldEquipment, ['customer_id' => $customer_id]);
+        }
+        if (isset($contract_id)) {
+            $soldEquipment = $this->SoldEquipments->patchEntity($soldEquipment, ['contract_id' => $contract_id]);
+        }
+
         if ($this->request->is('post')) {
             $soldEquipment = $this->SoldEquipments->patchEntity($soldEquipment, $this->request->getData());
             if ($this->SoldEquipments->save($soldEquipment)) {
                 $this->Flash->success(__('The sold equipment has been saved.'));
 
-                if (isset($contract_id)) return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                
+                if (isset($contract_id)) {
+                    return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+                }
+
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The sold equipment could not be saved. Please, try again.'));
@@ -112,7 +118,7 @@ class SoldEquipmentsController extends AppController
     {
         $customer_id = $this->request->getParam('customer_id');
         $this->set('customer_id', $customer_id);
-        
+
         $contract_id = $this->request->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
@@ -125,8 +131,10 @@ class SoldEquipmentsController extends AppController
             if ($this->SoldEquipments->save($soldEquipment)) {
                 $this->Flash->success(__('The sold equipment has been saved.'));
 
-                if (isset($contract_id)) return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                
+                if (isset($contract_id)) {
+                    return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+                }
+
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The sold equipment could not be saved. Please, try again.'));
@@ -166,8 +174,10 @@ class SoldEquipmentsController extends AppController
             $this->Flash->error(__('The sold equipment could not be deleted. Please, try again.'));
         }
 
-        if (isset($contract_id)) return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                
+        if (isset($contract_id)) {
+            return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+        }
+
         return $this->redirect(['action' => 'index']);
     }
 }

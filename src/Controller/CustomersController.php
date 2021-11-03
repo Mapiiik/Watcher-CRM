@@ -33,10 +33,9 @@ class CustomersController extends AppController
             }
         }
         $this->set('search', $search);
-        
+
         if (in_array($this->request->getSession()->read('Auth.role'), ['admin'])) {
-            if ($search->getData('search') <> '')
-            {
+            if ($search->getData('search') <> '') {
                 $filter = "to_tsvector(Customers.id || ' ' || Customers.id + " . env('CUSTOMER_SERIES', 0) . " || ' ' || Contracts.id || ' ' || Contracts.number || ' ' || COALESCE(Customers.first_name, '') || ' ' || COALESCE(Customers.last_name, '') || ' ' || COALESCE(Customers.company, '')  || COALESCE(Addresses.first_name, '') || ' ' || COALESCE(Addresses.last_name, '') || ' ' || COALESCE(Addresses.company, '') || ' ' || COALESCE(Addresses.street, '') || ' ' || COALESCE(Addresses.number, '') || ' ' || COALESCE(Addresses.city, '') || ' ' || COALESCE(Addresses.zip, '') || ' ' || COALESCE(Emails.email, '') || ' ' || COALESCE(Phones.phone, '') || ' ' || COALESCE(Customers.ic, '') || ' ' || COALESCE(Customers.dic, '') || ' ' || COALESCE(Ips.ip, '0.0.0.0'::inet)) @@ to_tsquery('" . mb_ereg_replace('\s{1,}', '&', \trim($search->getData('search'))) . "')";
                 $filter = "(SELECT customers.id FROM customers LEFT JOIN contracts ON (customers.id = contracts.customer_id) LEFT JOIN emails ON (customers.id = emails.customer_id) LEFT JOIN phones ON (customers.id = phones.customer_id) LEFT JOIN addresses ON (customers.id = addresses.customer_id) LEFT JOIN ips ON (customers.id = ips.customer_id) WHERE $filter GROUP BY customers.id)";
 
@@ -48,9 +47,7 @@ class CustomersController extends AppController
                 ];
                 unset($filter);
             }
-        }
-        else
-        {
+        } else {
             if (is_numeric($search->getData('search'))) {
                 $this->paginate['conditions']['OR'] = [
                     'Customers.id' => (int)$search->getData('search'),
@@ -61,11 +58,11 @@ class CustomersController extends AppController
                 $this->paginate['conditions'] = ['false'];
             }
         }
-        
+
         $customers = $this->paginate($this->Customers);
 
         $invoice_delivery_types = $this->Customers->invoice_delivery_types;
-        
+
         $this->set(compact('customers', 'invoice_delivery_types'));
     }
 
@@ -175,7 +172,7 @@ class CustomersController extends AppController
             'gdpr-change' => __('Consent to the processing of personal data (change)'),
         ];
         $this->set('documentTypes', $documentTypes);
-        
+
         $customer = $this->Customers->get($id, [
             'contain' => ['Taxes', 'Addresses' => ['Countries'], 'Billings' => ['Contracts', 'Services'], 'BorrowedEquipments' => ['Contracts', 'EquipmentTypes'], 'Contracts' => ['ServiceTypes', 'InstallationAddresses'], 'Emails', 'Ips' => ['Contracts'], 'LabelCustomers', 'Logins', 'Phones', 'RemovedIps' => ['Contracts'], 'SoldEquipments' => ['Contracts', 'EquipmentTypes'], 'Tasks' => ['TaskTypes', 'TaskStates', 'Dealers']],
         ]);
@@ -185,17 +182,20 @@ class CustomersController extends AppController
         $login_rights = $this->Customers->Logins->rights;
 
         $query = $this->request->getQuery();
-        if (isset($query['document_type'])) $type = $query['document_type'];
-        
+        if (isset($query['document_type'])) {
+            $type = $query['document_type'];
+        }
+
         if ($this->request->getParam('_ext') === 'pdf') {
             switch ($type) {
-            case 'gdpr-new':
-            case 'gdpr-change':
-                break;
+                case 'gdpr-new':
+                case 'gdpr-change':
+                    break;
 
-            default:
-                $this->Flash->error(__('Invalid type of document requested.'));
-                return $this->redirect(['action' => 'print', $id, '?' => $query]);
+                default:
+                    $this->Flash->error(__('Invalid type of document requested.'));
+
+                    return $this->redirect(['action' => 'print', $id, '?' => $query]);
             }
         }
         $this->set(compact('customer', 'type', 'query', 'address_types', 'invoice_delivery_types'));

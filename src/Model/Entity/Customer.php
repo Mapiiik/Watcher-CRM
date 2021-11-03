@@ -111,34 +111,46 @@ class Customer extends Entity
     protected function _getFullName(): string
     {
         $name = '';
-	
-	if (isset($this->title)) {
-            if ($name <> '') $name .= " ";
+
+        if (isset($this->title)) {
+            if ($name <> '') {
+                $name .= ' ';
+            }
             $name .= $this->title;
         }
         if (isset($this->first_name)) {
-            if ($name <> '') $name .= " ";
+            if ($name <> '') {
+                $name .= ' ';
+            }
             $name .= $this->first_name;
         }
         if (isset($this->last_name)) {
-            if ($name <> '') $name .= " ";
+            if ($name <> '') {
+                $name .= ' ';
+            }
             $name .= $this->last_name;
         }
-	if (isset($this->suffix)) {
-            if ($name <> '') $name .= " ";
+        if (isset($this->suffix)) {
+            if ($name <> '') {
+                $name .= ' ';
+            }
             $name .= $this->suffix;
         }
 
         return $name;
     }
-    
+
     protected function _getName(): string
     {
         $name = '';
-	
-        if (isset($this->company)) $name .= "[" . $this->company . "]";
+
+        if (isset($this->company)) {
+            $name .= '[' . $this->company . ']';
+        }
         if ($this->full_name <> '') {
-            if ($name <> '') $name .= " ";
+            if ($name <> '') {
+                $name .= ' ';
+            }
             $name .= $this->full_name;
         }
 
@@ -148,96 +160,94 @@ class Customer extends Entity
     protected function _getNumber(): string
     {
         $number = strval($this->id + env('CUSTOMER_SERIES', 0));
-	
+
         return $number;
     }
-    
+
     protected function _getEmail(): string
     {
         $email = implode(', ', array_column($this->emails, 'email'));
+
         return $email;
     }
 
     protected function _getPhone(): string
     {
         $phone = implode(', ', array_column($this->phones, 'phone'));
+
         return $phone;
     }
 
     protected function _getInstallationAddress(): ?Address
     {
         $installation_address = null;
-        
+
         // take last installation address
-        foreach ($this->addresses as $address)
-        {
-            if ($address->type == 0)
-            {
+        foreach ($this->addresses as $address) {
+            if ($address->type == 0) {
                 $installation_address = $address;
             }
         }
-        
+
         return $installation_address;
-    }        
-    
+    }
+
     protected function _getBillingAddress(): ?Address
     {
         $billing_address = null;
-        
+
         // take last billing address
-        foreach ($this->addresses as $address)
-        {
-            if ($address->type == 1)
-            {
+        foreach ($this->addresses as $address) {
+            if ($address->type == 1) {
                 $billing_address = $address;
             }
         }
-        
+
         // if there is no billing address take permanent address
-        if (!isset($billing_address) && isset($this->permanent_address)) $billing_address = $this->permanent_address;
+        if (!isset($billing_address) && isset($this->permanent_address)) {
+            $billing_address = $this->permanent_address;
+        }
 
         // if there is no billing address take installation address
-        if (!isset($billing_address) && isset($this->installation_address)) $billing_address = $this->installation_address;
+        if (!isset($billing_address) && isset($this->installation_address)) {
+            $billing_address = $this->installation_address;
+        }
 
         return $billing_address;
-    }        
+    }
 
     protected function _getDeliveryAddress(): ?Address
     {
         $delivery_address = null;
-        
+
         // take last delivery address
-        foreach ($this->addresses as $address)
-        {
-            if ($address->type == 2)
-            {
+        foreach ($this->addresses as $address) {
+            if ($address->type == 2) {
                 $delivery_address = $address;
             }
         }
-        
+
         return $delivery_address;
-    }        
+    }
 
     protected function _getPermanentAddress(): ?Address
     {
         $permanent_address = null;
-        
+
         // take last permanent address
-        foreach ($this->addresses as $address)
-        {
-            if ($address->type == 3)
-            {
+        foreach ($this->addresses as $address) {
+            if ($address->type == 3) {
                 $permanent_address = $address;
             }
         }
-        
+
         return $permanent_address;
-    }        
-    
+    }
+
     function _getIcVerified()
     {
         $ic = $this->ic;
-        
+
         // be liberal in what you receive
         $ic = preg_replace('#\s+#', '', $ic);
 
@@ -261,6 +271,6 @@ class Customer extends Entity
             $c = 11 - $a;
         }
 
-        return (int) $ic[7] === $c;
+        return (int)$ic[7] === $c;
     }
 }

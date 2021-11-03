@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace RADIUS\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -40,7 +39,7 @@ class RadpostauthTable extends Table
         $this->setTable('radpostauth');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
-        
+
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -12,7 +11,6 @@ use Cake\Validation\Validator;
  * Emails Model
  *
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
- *
  * @method \App\Model\Entity\Email newEmptyEntity()
  * @method \App\Model\Entity\Email newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Email[] newEntities(array $data, array $options = [])

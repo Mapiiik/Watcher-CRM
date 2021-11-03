@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
-use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -13,7 +11,6 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\BrokerageDealersTable&\Cake\ORM\Association\HasMany $BrokerageDealers
  * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\HasMany $Contracts
- *
  * @method \App\Model\Entity\Brokerage newEmptyEntity()
  * @method \App\Model\Entity\Brokerage newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Brokerage[] newEntities(array $data, array $options = [])
@@ -47,7 +44,7 @@ class BrokeragesTable extends Table
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
-        
+
         $this->hasMany('BrokerageDealers', [
             'foreignKey' => 'brokerage_id',
         ]);

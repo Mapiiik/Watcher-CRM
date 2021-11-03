@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -13,7 +12,6 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\DealersTable&\Cake\ORM\Association\BelongsTo $Dealers
  * @property \App\Model\Table\BrokeragesTable&\Cake\ORM\Association\BelongsTo $Brokerages
- *
  * @method \App\Model\Entity\BrokerageDealer newEmptyEntity()
  * @method \App\Model\Entity\BrokerageDealer newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\BrokerageDealer[] newEntities(array $data, array $options = [])

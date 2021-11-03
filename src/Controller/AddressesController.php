@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Cake\ORM\Locator\LocatorAwareTrait;
-
 /**
  * Addresses Controller
  *
@@ -22,7 +20,7 @@ class AddressesController extends AppController
     {
         $customer_id = $this->request->getParam('customer_id');
         $this->set('customer_id', $customer_id);
-        
+
         $conditions = [];
         if (isset($customer_id)) {
             $conditions = ['Addresses.customer_id' => $customer_id];
@@ -34,7 +32,7 @@ class AddressesController extends AppController
         ];
 
         $addresses = $this->paginate($this->Addresses);
-        
+
         $types = $this->Addresses->types;
 
         $this->set(compact('addresses', 'types'));
@@ -73,10 +71,10 @@ class AddressesController extends AppController
         if (isset($customer_id)) {
             $customer = $this->Addresses->Customers->get($customer_id);
             $address = $this->Addresses->patchEntity($address, $customer->toArray());
-            
+
             $address = $this->Addresses->patchEntity($address, ['customer_id' => $customer_id]);
         }
-        
+
         if ($this->request->is('post')) {
             $address = $this->Addresses->patchEntity($address, $this->request->getData());
 
@@ -85,9 +83,11 @@ class AddressesController extends AppController
 
             if ($this->Addresses->save($address)) {
                 $this->Flash->success(__('The address has been saved.'));
-                
-                if (isset($customer_id)) return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
-                
+
+                if (isset($customer_id)) {
+                    return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+                }
+
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The address could not be saved. Please, try again.'));
@@ -98,7 +98,7 @@ class AddressesController extends AppController
         if (isset($customer_id)) {
             $customers->where(['id' => $customer_id]);
         }
-        
+
         $types = $this->Addresses->types;
 
         $this->set(compact('address', 'customers', 'countries', 'types'));
@@ -128,8 +128,10 @@ class AddressesController extends AppController
             if ($this->Addresses->save($address)) {
                 $this->Flash->success(__('The address has been saved.'));
 
-                if (isset($customer_id)) return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
-                
+                if (isset($customer_id)) {
+                    return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+                }
+
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The address could not be saved. Please, try again.'));
@@ -165,15 +167,17 @@ class AddressesController extends AppController
             $this->Flash->error(__('The address could not be deleted. Please, try again.'));
         }
 
-        if (isset($customer_id)) return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
-                
+        if (isset($customer_id)) {
+            return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+        }
+
         return $this->redirect(['action' => 'index']);
     }
 
     private function findRuianData(\App\Model\Entity\Address $address): array
     {
         $this->RuianAddresses = $this->getTableLocator()->get('RUIAN.Addresses');
-        
+
         $conditionsForSearches = [
             // search in RUIAN
             0 => [
@@ -229,24 +233,26 @@ class AddressesController extends AppController
                 'gpsy' => 'ST_Y(geometry)',
                 'gpsx' => 'ST_X(geometry)',
             ]);
-            
+
             if ($ruianAddresses->count() > 1) {
                 $this->Flash->default(__('Multiple ({0}) RUIAN addresses found.', $ruianAddresses->count()));
             }
 
             if ($ruianAddresses->count() == 1) {
                 $this->Flash->default(__('Address found in RUIAN.'));
+
                 return $ruianAddresses->first()->toArray();
             }
-            
+
             unset($ruianAddresses);
         }
 
         $this->Flash->error(__('Address could not be found in RUIAN.'));
+
         return [
             'ruian_gid' => null,
             'gpsy' => null,
-            'gpsx' => null
+            'gpsx' => null,
         ];
     }
 }

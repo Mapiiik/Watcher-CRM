@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace RADIUS\Controller;
 
-use RADIUS\Controller\AppController;
-
 /**
  * Accounts Controller
  *
@@ -22,7 +20,7 @@ class AccountsController extends AppController
     {
         $customer_id = $this->request->getParam('customer_id');
         $this->set('customer_id', $customer_id);
-        
+
         $contract_id = $this->request->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
@@ -33,7 +31,7 @@ class AccountsController extends AppController
         if (isset($contract_id)) {
             $conditions += ['Accounts.contract_id' => $contract_id];
         }
-        
+
         $this->paginate = [
             'contain' => ['Customers', 'Contracts'],
             'conditions' => $conditions,
@@ -68,15 +66,19 @@ class AccountsController extends AppController
     {
         $customer_id = $this->request->getParam('customer_id');
         $this->set('customer_id', $customer_id);
-        
+
         $contract_id = $this->request->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
         $account = $this->Accounts->newEmptyEntity();
 
-        if (isset($customer_id)) $account = $this->Accounts->patchEntity($account, ['customer_id' => $customer_id]);
-        if (isset($contract_id)) $account = $this->Accounts->patchEntity($account, ['contract_id' => $contract_id]);
-        
+        if (isset($customer_id)) {
+            $account = $this->Accounts->patchEntity($account, ['customer_id' => $customer_id]);
+        }
+        if (isset($contract_id)) {
+            $account = $this->Accounts->patchEntity($account, ['contract_id' => $contract_id]);
+        }
+
         if ($this->request->is('post')) {
             $account = $this->Accounts->patchEntity($account, $this->request->getData());
 
@@ -85,7 +87,7 @@ class AccountsController extends AppController
 
             // autogenerate related radreply recors
             $account = $this->Accounts->patchEntity($account, ['radreply' => $this->autoRadreplyData($account)]);
-            
+
             if ($this->Accounts->save($account)) {
                 $this->Flash->success(__('The account has been saved.'));
 
@@ -107,8 +109,7 @@ class AccountsController extends AppController
 
             $i = 1;
             $test_username = $new_username;
-            while ($this->Accounts->exists(['username' => $test_username]))
-            {
+            while ($this->Accounts->exists(['username' => $test_username])) {
                 $i++;
                 $test_username = $new_username . '.' . $i;
             }
@@ -120,14 +121,14 @@ class AccountsController extends AppController
         if (isset($contract_id)) {
             $contracts->where(['id' => $contract_id]);
         }
-        
+
         $this->set(compact('account', 'customers', 'contracts'));
-        
+
         // new available login
         $this->set('new_username', $new_username);
 
         // generate new password
-        $this->set('new_password', $this->generatePassword(10));        
+        $this->set('new_password', $this->generatePassword(10));
     }
 
     /**
@@ -141,7 +142,7 @@ class AccountsController extends AppController
     {
         $customer_id = $this->request->getParam('customer_id');
         $this->set('customer_id', $customer_id);
-        
+
         $contract_id = $this->request->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
@@ -153,7 +154,7 @@ class AccountsController extends AppController
 
             // autogenerate related radcheck recors
             $account = $this->Accounts->patchEntity($account, ['radcheck' => $this->autoRadcheckData($account)]);
-            
+
             if ($this->Accounts->save($account)) {
                 $this->Flash->success(__('The account has been saved.'));
 
@@ -172,7 +173,7 @@ class AccountsController extends AppController
         if (isset($contract_id)) {
             $contracts->where(['id' => $contract_id]);
         }
-        
+
         $this->set(compact('account', 'customers', 'contracts'));
     }
 
@@ -195,7 +196,7 @@ class AccountsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
-    
+
     private function autoRadcheckData(\RADIUS\Model\Entity\Account $account): array
     {
         $radcheck = [];
@@ -217,7 +218,7 @@ class AccountsController extends AppController
             ])
             ->toArray();
         }
-        
+
         return $radcheck;
     }
 
@@ -226,16 +227,13 @@ class AccountsController extends AppController
         $contract = $this->getTableLocator()->get('Contracts')->get($account->contract_id, [
             'contain' => ['Ips'],
         ]);
-        
-        $radreply = [];
-        foreach ($contract->ips as $ip)
-        {
-            @list($address, $mask) = explode('/', $ip->ip);
 
-            if ($addressx = filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
-            {
-                if ($maskx = filter_var($mask, FILTER_VALIDATE_INT, array('options' => array('min_range' => 0, 'max_range' => 32))))
-                {
+        $radreply = [];
+        foreach ($contract->ips as $ip) {
+            @[$address, $mask] = explode('/', $ip->ip);
+
+            if ($addressx = filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+                if ($maskx = filter_var($mask, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0, 'max_range' => 32]])) {
                     $radreply[] = $this->getTableLocator()->get('RADIUS.Radreply')
                         ->findOrCreate([
                             'username' => $account->username,
@@ -244,9 +242,7 @@ class AccountsController extends AppController
                             'value' => $addressx . '/' . $maskx,
                         ])
                         ->toArray();
-                }
-                else
-                {
+                } else {
                     $radreply[] = $this->getTableLocator()->get('RADIUS.Radreply')
                         ->findOrCreate([
                             'username' => $account->username,
@@ -257,10 +253,8 @@ class AccountsController extends AppController
                         ->toArray();
                 }
             }
-            if ($addressx = filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
-            {
-                if ($maskx = filter_var($mask, FILTER_VALIDATE_INT, array('options' => array('min_range' => 0, 'max_range' => 128))))
-                {
+            if ($addressx = filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+                if ($maskx = filter_var($mask, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0, 'max_range' => 128]])) {
                     $radreply[] = $this->getTableLocator()->get('RADIUS.Radreply')
                         ->findOrCreate([
                             'username' => $account->username,
@@ -269,9 +263,7 @@ class AccountsController extends AppController
                             'value' => $addressx . '/' . $maskx,
                         ])
                         ->toArray();
-                }
-                else
-                {
+                } else {
                         $radius->network->ipv6->address[] = $addressx;
                     $radreply[] = $this->getTableLocator()->get('RADIUS.Radreply')
                         ->findOrCreate([
@@ -282,8 +274,9 @@ class AccountsController extends AppController
                         ])
                         ->toArray();
                 }
-            }            
+            }
         }
+
         return $radreply;
     }
 }

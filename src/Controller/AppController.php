@@ -18,8 +18,8 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\EventInterface;
-use Cake\I18n\I18n;
 use Cake\Http\Exception\NotFoundException;
+use Cake\I18n\I18n;
 
 /**
  * Application Controller
@@ -55,35 +55,37 @@ class AppController extends Controller
     }
 
     # App > paginate
-    public function paginate($object = null, $settings = array()) {
-        try
-        {
+
+    public function paginate($object = null, $settings = [])
+    {
+        try {
             $this->paginate['maxLimit'] = 1000;
+
             return parent::paginate($object, $settings);
-        }
-        catch (NotFoundException $e)
-        {
+        } catch (NotFoundException $e) {
             $this->Flash->error(__('Unable to find results on page {0}. Redirect to page 1.', $this->request->getQuery('page')));
             $this->redirect(['page' => 1] + $this->request->getQueryParams());
         }
     }
-    
+
     # App > beforeFilter
-    public function beforeFilter(EventInterface $event) {
+
+    public function beforeFilter(EventInterface $event)
+    {
         # We check if we have a language set
         if ($this->request->getQuery('language')) {
             $this->request->getSession()->write('Config.language', $this->request->getQuery('language'));
         }
-        
+
         if ($language = $this->request->getSession()->read('Config.language', I18n::getDefaultLocale())) {
             I18n::setLocale($language);
         }
-        
+
         # Disable SecurityComponent POST validation for CakeDC/Users
         if ($this->request->getParam('plugin') === 'CakeDC/Users') {
             $this->Security->setConfig('validatePost', false);
         }
-        
+
         parent::beforeFilter($event);
     }
 
@@ -97,58 +99,59 @@ class AppController extends Controller
     {
         static $normalizeChars = null;
         if ($normalizeChars === null) {
-            $normalizeChars = array(
-                'Á'=>'A', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'Ae',
-                'Č'=>'C', 'Ç'=>'C',
-                'Ě'=>'E', 'È'=>'E', 'É'=>'E', 'Ê'=>'E', 'Ë'=>'E',
-                'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I',
-                'Ð'=>'Dj',
-                'Ñ'=>'N',
-                'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O',
-                'Ř'=>'R',
-                'Ů'=>'U', 'Ù'=>'U', 'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U',
-                'Ý'=>'Y',
-                'Þ'=>'B',
-                'ß'=>'Ss',
-                'á'=>'a', 'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'ae',
-                'č'=>'c','ç'=>'c',
-                'ě'=>'e', 'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e',
-                'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i',
-                'ð'=>'o', 'ň'=>'n', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o',
-                'ů'=>'u', 'ù'=>'u', 'ú'=>'u', 'û'=>'u',
-                'ý'=>'y',
-                'þ'=>'b',
-                'ÿ'=>'y',
-                'Š'=>'S', 'š'=>'s', 'ś' => 's',
-                'Ž'=>'Z', 'ž'=>'z',
-                'ƒ'=>'f'
-            );
+            $normalizeChars = [
+                'Á' => 'A', 'À' => 'A', 'Á' => 'A', 'Â' => 'A', 'Ã' => 'A', 'Ä' => 'A', 'Å' => 'A', 'Æ' => 'Ae',
+                'Č' => 'C', 'Ç' => 'C',
+                'Ě' => 'E', 'È' => 'E', 'É' => 'E', 'Ê' => 'E', 'Ë' => 'E',
+                'Ì' => 'I', 'Í' => 'I', 'Î' => 'I', 'Ï' => 'I',
+                'Ð' => 'Dj',
+                'Ñ' => 'N',
+                'Ò' => 'O', 'Ó' => 'O', 'Ô' => 'O', 'Õ' => 'O', 'Ö' => 'O', 'Ø' => 'O',
+                'Ř' => 'R',
+                'Ů' => 'U', 'Ù' => 'U', 'Ú' => 'U', 'Û' => 'U', 'Ü' => 'U',
+                'Ý' => 'Y',
+                'Þ' => 'B',
+                'ß' => 'Ss',
+                'á' => 'a', 'à' => 'a', 'á' => 'a', 'â' => 'a', 'ã' => 'a', 'ä' => 'a', 'å' => 'a', 'æ' => 'ae',
+                'č' => 'c','ç' => 'c',
+                'ě' => 'e', 'è' => 'e', 'é' => 'e', 'ê' => 'e', 'ë' => 'e',
+                'ì' => 'i', 'í' => 'i', 'î' => 'i', 'ï' => 'i',
+                'ð' => 'o', 'ň' => 'n', 'ñ' => 'n', 'ò' => 'o', 'ó' => 'o', 'ô' => 'o', 'õ' => 'o', 'ö' => 'o', 'ø' => 'o',
+                'ů' => 'u', 'ù' => 'u', 'ú' => 'u', 'û' => 'u',
+                'ý' => 'y',
+                'þ' => 'b',
+                'ÿ' => 'y',
+                'Š' => 'S', 'š' => 's', 'ś' => 's',
+                'Ž' => 'Z', 'ž' => 'z',
+                'ƒ' => 'f',
+            ];
         }
+
         return strtr($str, $normalizeChars);
     }
-    
+
     /**
      * Generate password.
      *
-     * @param integer $length
+     * @param int $length
      * @return string
      */
-    public function generatePassword ($length = 8, $possible = "123456789ABCDEFGHJKLMNPQRSTUVWXabcdefghjkmnopqrstuvwx"): string
+    public function generatePassword($length = 8, $possible = '123456789ABCDEFGHJKLMNPQRSTUVWXabcdefghjkmnopqrstuvwx'): string
     {
         // start with a blank password
-        $password = "";
+        $password = '';
 
         // set up a counter
-        $i = 0; 
+        $i = 0;
 
         // add random characters to $password until $length is reached
-        while ($i < $length) { 
+        while ($i < $length) {
             // pick a random character from the possible ones
-            $char = substr($possible, mt_rand(0, strlen($possible)-1), 1);
+            $char = substr($possible, mt_rand(0, strlen($possible) - 1), 1);
             // we don't want this character if it's already in the password
-            if (!strstr($password, $char)) { 
-              $password .= $char;
-              $i++;
+            if (!strstr($password, $char)) {
+                $password .= $char;
+                $i++;
             }
         }
         // done!

@@ -113,7 +113,7 @@ jobs:
           mv composer.backup composer.json
 
       - name: Run PHP CodeSniffer
-        run: vendor/bin/phpcs --colors -p  src/ tests/
+        run: vendor/bin/phpcs --colors -p src/ tests/ plugins/*/src/
 
       - name: Run psalm
         if: success() || failure()

@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
-use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -40,7 +38,7 @@ class TaxesTable extends Table
         $this->setTable('taxes');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
-        
+
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');

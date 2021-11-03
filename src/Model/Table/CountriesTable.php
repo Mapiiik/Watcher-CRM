@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -12,7 +11,6 @@ use Cake\Validation\Validator;
  * Countries Model
  *
  * @property \App\Model\Table\AddressesTable&\Cake\ORM\Association\HasMany $Addresses
- *
  * @method \App\Model\Entity\Country newEmptyEntity()
  * @method \App\Model\Entity\Country newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Country[] newEntities(array $data, array $options = [])
@@ -46,7 +44,7 @@ class CountriesTable extends Table
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
-        
+
         $this->hasMany('Addresses', [
             'foreignKey' => 'country_id',
         ]);

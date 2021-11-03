@@ -23,7 +23,7 @@ class ContractsController extends AppController
     {
         $customer_id = $this->request->getParam('customer_id');
         $this->set('customer_id', $customer_id);
-        
+
         $conditions = [];
         if (isset($customer_id)) {
             $conditions = ['Contracts.customer_id' => $customer_id];
@@ -66,13 +66,15 @@ class ContractsController extends AppController
 
         $contract = $this->Contracts->newEmptyEntity();
 
-        if (isset($customer_id)) $contract = $this->Contracts->patchEntity($contract, ['customer_id' => $customer_id]);
-        
+        if (isset($customer_id)) {
+            $contract = $this->Contracts->patchEntity($contract, ['customer_id' => $customer_id]);
+        }
+
         if ($this->request->is('post')) {
             $contract = $this->Contracts->patchEntity($contract, $this->request->getData());
             if ($this->Contracts->save($contract)) {
                 $this->Flash->success(__('The contract has been saved.'));
-                
+
                 $this->updateNumber($contract->id);
 
                 return $this->redirect(['action' => 'view', $contract->id]);
@@ -113,7 +115,7 @@ class ContractsController extends AppController
             $contract = $this->Contracts->patchEntity($contract, $this->request->getData());
             if ($this->Contracts->save($contract)) {
                 $this->Flash->success(__('The contract has been saved.'));
-                
+
                 $this->updateNumber($contract->id);
 
                 return $this->redirect(['action' => 'view', $id]);
@@ -153,27 +155,31 @@ class ContractsController extends AppController
             $this->Flash->error(__('The contract could not be deleted. Please, try again.'));
         }
 
-        if (isset($customer_id)) return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
-                
+        if (isset($customer_id)) {
+            return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+        }
+
         return $this->redirect(['action' => 'index']);
     }
-    
+
     private function updateNumber($id = null)
     {
         $contract = $this->Contracts->get($id);
         $service_type = $this->Contracts->ServiceTypes->get($contract->service_type_id);
-        
+
         $query = $this->Contracts->query();
         $query->update()
             ->set(['number = (' . $service_type->contract_number_format . ')'])
             ->where(['id' => $contract->id]);
-        
+
         if ($query->execute()) {
             $this->Flash->success(__('The contract number has been updated.'));
+
             return true;
         }
 
         $this->Flash->error(__('The contract number could not be updated. Please, try again.'));
+
         return false;
     }
 
@@ -194,81 +200,88 @@ class ContractsController extends AppController
             'contract-new-x' => __('Contract for the provision of services (with termination of the original contract)'),
             'contract-amendment' => __('Amendment to the contract for the provision of services'),
             'contract-termination' => __('Agreement to terminate contract for the provision of services'),
-            '--' => '--',            
+            '--' => '--',
             'handover-protocol-installation' => __('Handover protocol - Installation of internet connection'),
             'handover-protocol-uninstallation' => __('Handover protocol - Internet connection uninstallation'),
         ];
         $this->set('documentTypes', $documentTypes);
-        
+
         $contract = $this->Contracts->get($id, [
             'contain' => ['Customers' => ['Emails', 'Phones', 'Addresses'], 'InstallationAddresses', 'ServiceTypes', 'InstallationTechnicians', 'Brokerages', 'Billings' => ['Services'], 'BorrowedEquipments' => ['EquipmentTypes'], 'Ips', 'RemovedIps', 'SoldEquipments' => ['EquipmentTypes']],
         ]);
-        
+
         $query = $this->request->getQuery();
-        if (isset($query['document_type'])) $type = $query['document_type'];
-        
+        if (isset($query['document_type'])) {
+            $type = $query['document_type'];
+        }
+
         if ($this->request->getParam('_ext') === 'pdf') {
             switch ($type) {
-            case 'contract-termination':
-                if (!$contract->has('valid_until')) {
-                    $this->Flash->error(__('Please set a date until which the contract is valid.'));
-                    return $this->redirect(['action' => 'edit', $id]);
-                }
-            case 'contract-amendment':
-                if ($type == 'contract-amendment' && empty($query['effective_date_of_the_amendment'])) {
-                    $this->Flash->error(__('Please set the effective date of the amendment.'));
-                    return $this->redirect(['action' => 'print', $id, '?' => $query]);
-                } else {
-                    $contract->valid_from = new FrozenDate($query['effective_date_of_the_amendment']);
-                }
-            case 'contract-new-x':
-                if (!$contract->has('conclusion_date')) {
-                    $this->Flash->error(__('Please set the date of conclusion of the original contract.'));
-                    return $this->redirect(['action' => 'edit', $id]);
-                }
-            case 'contract-new':
-                if (!$contract->has('valid_from')) {
-                    $this->Flash->error(__('Please set the date from which the contract is valid.'));
-                    return $this->redirect(['action' => 'edit', $id]);
-                }
-                break;
+                case 'contract-termination':
+                    if (!$contract->has('valid_until')) {
+                        $this->Flash->error(__('Please set a date until which the contract is valid.'));
 
-            case 'handover-protocol-uninstallation':
-                if (!$contract->has('valid_until')) {
-                    $this->Flash->error(__('Please set a date until which the contract is valid.'));
-                    return $this->redirect(['action' => 'edit', $id]);
-                }
-            case 'handover-protocol-installation':
-                if (!$contract->has('valid_from')) {
-                    $this->Flash->error(__('Please set the date from which the contract is valid.'));
-                    return $this->redirect(['action' => 'edit', $id]);
-                }
-                if (!empty($query['ssid'])) {
+                        return $this->redirect(['action' => 'edit', $id]);
+                    }
+                case 'contract-amendment':
+                    if ($type == 'contract-amendment' && empty($query['effective_date_of_the_amendment'])) {
+                        $this->Flash->error(__('Please set the effective date of the amendment.'));
+
+                        return $this->redirect(['action' => 'print', $id, '?' => $query]);
+                    } else {
+                        $contract->valid_from = new FrozenDate($query['effective_date_of_the_amendment']);
+                    }
+                case 'contract-new-x':
+                    if (!$contract->has('conclusion_date')) {
+                        $this->Flash->error(__('Please set the date of conclusion of the original contract.'));
+
+                        return $this->redirect(['action' => 'edit', $id]);
+                    }
+                case 'contract-new':
+                    if (!$contract->has('valid_from')) {
+                        $this->Flash->error(__('Please set the date from which the contract is valid.'));
+
+                        return $this->redirect(['action' => 'edit', $id]);
+                    }
+                    break;
+
+                case 'handover-protocol-uninstallation':
+                    if (!$contract->has('valid_until')) {
+                        $this->Flash->error(__('Please set a date until which the contract is valid.'));
+
+                        return $this->redirect(['action' => 'edit', $id]);
+                    }
+                case 'handover-protocol-installation':
+                    if (!$contract->has('valid_from')) {
+                        $this->Flash->error(__('Please set the date from which the contract is valid.'));
+
+                        return $this->redirect(['action' => 'edit', $id]);
+                    }
+                    if (!empty($query['ssid'])) {
                         $contract->ssid = $query['ssid'];
-                }
-                if (!empty($query['radius_username'])) {
+                    }
+                    if (!empty($query['radius_username'])) {
                         $contract->radius_username = $query['radius_username'];
-                }
-                if (!empty($query['radius_password'])) {
+                    }
+                    if (!empty($query['radius_password'])) {
                         $contract->radius_password = $query['radius_password'];
-                }
-                break;
+                    }
+                    break;
 
-            default:
-                $this->Flash->error(__('Invalid type of document requested.'));
-                return $this->redirect(['action' => 'print', $id, '?' => $query]);
+                default:
+                    $this->Flash->error(__('Invalid type of document requested.'));
+
+                    return $this->redirect(['action' => 'print', $id, '?' => $query]);
             }
 
             $billings_collection = new Collection($contract->billings);
-            
+
             $active_billings_collection = $billings_collection->reject(function ($billing, $key) use ($contract) {
-                return (
-                    (!$billing->active) ||
+                return !$billing->active ||
                     ($billing->has('billing_from') && $billing->billing_from > $contract->valid_from) ||
-                    ($billing->has('billing_until') && $billing->billing_until < $contract->valid_from)
-                );
+                    ($billing->has('billing_until') && $billing->billing_until < $contract->valid_from);
             });
-            
+
             $contract->individual_billings = $active_billings_collection->filter(function ($billing, $key) {
                 return $billing->has('price');
             })->toArray();

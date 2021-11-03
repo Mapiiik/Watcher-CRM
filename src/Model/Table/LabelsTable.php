@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -12,7 +11,6 @@ use Cake\Validation\Validator;
  * Labels Model
  *
  * @property \App\Model\Table\LabelCustomersTable&\Cake\ORM\Association\HasMany $LabelCustomers
- *
  * @method \App\Model\Entity\Label newEmptyEntity()
  * @method \App\Model\Entity\Label newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Label[] newEntities(array $data, array $options = [])
@@ -46,7 +44,7 @@ class LabelsTable extends Table
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
-        
+
         $this->hasMany('LabelCustomers', [
             'foreignKey' => 'label_id',
         ]);

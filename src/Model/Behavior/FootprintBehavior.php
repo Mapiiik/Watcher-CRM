@@ -3,13 +3,11 @@ declare(strict_types=1);
 
 namespace App\Model\Behavior;
 
-use Cake\ORM\Behavior;
-use Cake\ORM\Table;
-
-use Cake\Event\EventInterface;
-use Cake\Datasource\EntityInterface;
-use Cake\Routing\Router;
 use ArrayObject;
+use Cake\Datasource\EntityInterface;
+use Cake\Event\EventInterface;
+use Cake\ORM\Behavior;
+use Cake\Routing\Router;
 
 /**
  * Footprint behavior
@@ -26,17 +24,19 @@ class FootprintBehavior extends Behavior
         'column_creator' => 'created_by',
         'column_modifier' => 'modified_by',
     ];
-    
-    private function fieldsExist(EventInterface $event): bool {
+
+    private function fieldsExist(EventInterface $event): bool
+    {
         // Make sure the table actually has proper fields
         $table = $event->getSubject();
-        return ($table->hasField($this->_config['column_creator']) && $table->hasField($this->_config['column_modifier']));
-    }  
+
+        return $table->hasField($this->_config['column_creator']) && $table->hasField($this->_config['column_modifier']);
+    }
 
     public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
         $session = Router::getRequest()->getSession();
-        
+
         if ($this->fieldsExist($event)) {
             if ($entity->isNew()) {
                 $entity->set($this->_config['column_creator'], $session->read($this->_config['session_key']));
@@ -45,5 +45,5 @@ class FootprintBehavior extends Behavior
                 $entity->set($this->_config['column_modifier'], $session->read($this->_config['session_key']));
             }
         }
-    } 
+    }
 }

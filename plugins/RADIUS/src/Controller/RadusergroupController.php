@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace RADIUS\Controller;
 
-use RADIUS\Controller\AppController;
-
 /**
  * Radusergroup Controller
  *

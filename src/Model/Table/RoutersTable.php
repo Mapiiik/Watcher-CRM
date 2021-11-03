@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
-use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -13,7 +11,6 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\RangesTable&\Cake\ORM\Association\HasMany $Ranges
  * @property \App\Model\Table\TasksTable&\Cake\ORM\Association\HasMany $Tasks
- *
  * @method \App\Model\Entity\Router newEmptyEntity()
  * @method \App\Model\Entity\Router newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Router[] newEntities(array $data, array $options = [])
@@ -47,7 +44,7 @@ class RoutersTable extends Table
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
-        
+
         $this->hasMany('Ranges', [
             'foreignKey' => 'router_id',
         ]);

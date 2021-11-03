@@ -34,13 +34,12 @@ class CustomerCell extends Cell
      */
     public function display()
     {
-        if ($customer_id = $this->request->getParam('customer_id'))
-        {
+        if ($customer_id = $this->request->getParam('customer_id')) {
             $this->loadModel('Customers');
             $customer = $this->Customers->get($customer_id, [
                 'contain' => ['Contracts' => ['ServiceTypes', 'InstallationAddresses']],
             ]);
-            
+
             $this->set(compact('customer'));
         }
     }

@@ -21,7 +21,7 @@ class SearchForm extends Form
     protected function _buildSchema(Schema $schema): Schema
     {
         return $schema->addField('search', 'string');
-}
+    }
 
     /**
      * Form validation builder
@@ -43,6 +43,7 @@ class SearchForm extends Form
     protected function _execute(array $data): bool
     {
         $this->setData($data);
+
         return true;
     }
 }

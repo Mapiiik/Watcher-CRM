@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
-use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -14,7 +12,6 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\HasMany $Contracts
  * @property \App\Model\Table\QueuesTable&\Cake\ORM\Association\HasMany $Queues
  * @property \App\Model\Table\ServicesTable&\Cake\ORM\Association\HasMany $Services
- *
  * @method \App\Model\Entity\ServiceType newEmptyEntity()
  * @method \App\Model\Entity\ServiceType newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\ServiceType[] newEntities(array $data, array $options = [])
@@ -28,7 +25,6 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\ServiceType[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
  * @method \App\Model\Entity\ServiceType[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \App\Model\Entity\ServiceType[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
- *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class ServiceTypesTable extends Table

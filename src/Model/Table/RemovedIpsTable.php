@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -13,7 +12,6 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
  * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
- *
  * @method \App\Model\Entity\RemovedIp newEmptyEntity()
  * @method \App\Model\Entity\RemovedIp newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\RemovedIp[] newEntities(array $data, array $options = [])
@@ -45,7 +43,7 @@ class RemovedIpsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('StringModifications');
-        
+
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER',

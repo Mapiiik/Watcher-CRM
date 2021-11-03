@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
-use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -13,7 +11,6 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\BorrowedEquipmentsTable&\Cake\ORM\Association\HasMany $BorrowedEquipments
  * @property \App\Model\Table\SoldEquipmentsTable&\Cake\ORM\Association\HasMany $SoldEquipments
- *
  * @method \App\Model\Entity\EquipmentType newEmptyEntity()
  * @method \App\Model\Entity\EquipmentType newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\EquipmentType[] newEntities(array $data, array $options = [])
@@ -47,7 +44,7 @@ class EquipmentTypesTable extends Table
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
-        
+
         $this->hasMany('BorrowedEquipments', [
             'foreignKey' => 'equipment_type_id',
         ]);
