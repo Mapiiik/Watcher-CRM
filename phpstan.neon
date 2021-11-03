@@ -1,6 +1,7 @@
 parameters:
-    level: 7
+    level: 5
     checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
     treatPhpDocTypesAsCertain: false
     paths:
         - src
