@@ -111,6 +111,11 @@ class Customer extends Entity
         'tasks' => true,
     ];
 
+    /**
+     * getter for full name of person
+     *
+     * @return string
+     */
     protected function _getFullName(): string
     {
         $name = '';
@@ -143,6 +148,11 @@ class Customer extends Entity
         return $name;
     }
 
+    /**
+     * getter for full name with company
+     *
+     * @return string
+     */
     protected function _getName(): string
     {
         $name = '';
@@ -160,6 +170,11 @@ class Customer extends Entity
         return $name;
     }
 
+    /**
+     * getter for customer number
+     *
+     * @return string
+     */
     protected function _getNumber(): string
     {
         $number = strval($this->id + (int)env('CUSTOMER_SERIES', '0'));
@@ -167,6 +182,11 @@ class Customer extends Entity
         return $number;
     }
 
+    /**
+     * all customer emails separated by commas
+     *
+     * @return string
+     */
     protected function _getEmail(): string
     {
         $email = implode(', ', array_column($this->emails, 'email'));
@@ -174,6 +194,11 @@ class Customer extends Entity
         return $email;
     }
 
+    /**
+     * all customer phones separated by commas
+     *
+     * @return string
+     */
     protected function _getPhone(): string
     {
         $phone = implode(', ', array_column($this->phones, 'phone'));
@@ -181,6 +206,11 @@ class Customer extends Entity
         return $phone;
     }
 
+    /**
+     * get last installation address
+     *
+     * @return \App\Model\Entity\Address|null
+     */
     protected function _getInstallationAddress(): ?Address
     {
         $installation_address = null;
@@ -195,6 +225,11 @@ class Customer extends Entity
         return $installation_address;
     }
 
+    /**
+     * get last billing address or alternative for billing
+     *
+     * @return \App\Model\Entity\Address|null
+     */
     protected function _getBillingAddress(): ?Address
     {
         $billing_address = null;
@@ -219,6 +254,11 @@ class Customer extends Entity
         return $billing_address;
     }
 
+    /**
+     * get last delivery address
+     *
+     * @return \App\Model\Entity\Address|null
+     */
     protected function _getDeliveryAddress(): ?Address
     {
         $delivery_address = null;
@@ -233,6 +273,11 @@ class Customer extends Entity
         return $delivery_address;
     }
 
+    /**
+     * get last permanent address
+     *
+     * @return \App\Model\Entity\Address|null
+     */
     protected function _getPermanentAddress(): ?Address
     {
         $permanent_address = null;
@@ -247,7 +292,12 @@ class Customer extends Entity
         return $permanent_address;
     }
 
-    function _getIcVerified()
+    /**
+     * get verification of identification number (citizen/company ID)
+     *
+     * @return bool
+     */
+    function _getIcVerified(): bool
     {
         $ic = $this->ic;
 

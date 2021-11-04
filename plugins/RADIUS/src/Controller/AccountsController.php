@@ -196,6 +196,12 @@ class AccountsController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
+    /**
+     * generate data for radcheck table for customer
+     *
+     * @param \RADIUS\Model\Entity\Account $account RADIUS account entity
+     * @return array
+     */
     private function autoRadcheckData(\RADIUS\Model\Entity\Account $account): array
     {
         $radcheck = [];
@@ -221,6 +227,12 @@ class AccountsController extends AppController
         return $radcheck;
     }
 
+    /**
+     * generate data for radreply table for customer
+     *
+     * @param \RADIUS\Model\Entity\Account $account RADIUS account entity
+     * @return array
+     */
     private function autoRadreplyData(\RADIUS\Model\Entity\Account $account): array
     {
         $contract = $this->getTableLocator()->get('Contracts')->get($account->contract_id, [
@@ -229,16 +241,16 @@ class AccountsController extends AppController
 
         $radreply = [];
         foreach ($contract->ips as $ip) {
-            @[$address, $mask] = explode('/', $ip->ip);
+            @[$address, $mask] = explode('/', $ip->ip); // phpcs:ignore
 
-            if ($addressx = filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-                if ($maskx = filter_var($mask, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0, 'max_range' => 32]])) {
+            if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+                if (filter_var($mask, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0, 'max_range' => 32]])) {
                     $radreply[] = $this->getTableLocator()->get('RADIUS.Radreply')
                         ->findOrCreate([
                             'username' => $account->username,
                             'attribute' => 'Framed-Route',
                             'op' => '=',
-                            'value' => $addressx . '/' . $maskx,
+                            'value' => $address . '/' . $mask,
                         ])
                         ->toArray();
                 } else {
@@ -247,19 +259,19 @@ class AccountsController extends AppController
                             'username' => $account->username,
                             'attribute' => 'Framed-IP-Address',
                             'op' => '=',
-                            'value' => $addressx,
+                            'value' => $address,
                         ])
                         ->toArray();
                 }
             }
-            if ($addressx = filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-                if ($maskx = filter_var($mask, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0, 'max_range' => 128]])) {
+            if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+                if (filter_var($mask, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0, 'max_range' => 128]])) {
                     $radreply[] = $this->getTableLocator()->get('RADIUS.Radreply')
                         ->findOrCreate([
                             'username' => $account->username,
                             'attribute' => 'Framed-IPv6-Prefix',
                             'op' => '=',
-                            'value' => $addressx . '/' . $maskx,
+                            'value' => $address . '/' . $mask,
                         ])
                         ->toArray();
                 } else {
@@ -268,7 +280,7 @@ class AccountsController extends AppController
                             'username' => $account->username,
                             'attribute' => 'Framed-IPv6-Address',
                             'op' => '=',
-                            'value' => $addressx . '/' . $maskx,
+                            'value' => $address . '/' . $mask,
                         ])
                         ->toArray();
                 }
