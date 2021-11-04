@@ -7,6 +7,8 @@ use Cake\View\Cell;
 
 /**
  * Customer cell
+ * 
+ * @property \App\Model\Table\CustomersTable $Customers
  */
 class CustomerCell extends Cell
 {
@@ -14,7 +16,7 @@ class CustomerCell extends Cell
      * List of valid options that can be passed into this
      * cell's constructor.
      *
-     * @var array
+     * @var array<string>
      */
     protected $_validCellOptions = [];
 

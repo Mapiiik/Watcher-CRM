@@ -49,7 +49,7 @@ class Contract extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<bool>
      */
     protected $_accessible = [
         'customer_id' => true,
@@ -105,6 +105,8 @@ class Contract extends Entity
         if (isset($this->service_type->activation_fee)) {
             return $this->service_type->activation_fee;
         }
+        
+        return null;
     }
 
     protected function _getActivationFeeWithObligationSum(): ?int
@@ -116,6 +118,8 @@ class Contract extends Entity
         if (isset($this->service_type->activation_fee_with_obligation)) {
             return $this->service_type->activation_fee_with_obligation;
         }
+        
+        return null;
     }
 
     protected function _getBillingAddress(): ?Address

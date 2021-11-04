@@ -30,7 +30,7 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\TaskType $task_type
  * @property \App\Model\Entity\Customer $customer
- * @property \App\Model\Entity\Dealer $dealer
+ * @property \App\Model\Entity\Customer $dealer
  * @property \App\Model\Entity\TaskState $task_state
  * @property \App\Model\Entity\Router $router
  */
@@ -43,7 +43,7 @@ class Task extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<bool>
      */
     protected $_accessible = [
         'task_type_id' => true,

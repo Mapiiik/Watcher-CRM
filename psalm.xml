@@ -9,6 +9,7 @@
 >
     <projectFiles>
         <directory name="src" />
+        <directory name="plugins/*/src" />
         <ignoreFiles>
             <directory name="vendor" />
         </ignoreFiles>

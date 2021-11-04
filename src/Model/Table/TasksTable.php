@@ -12,7 +12,7 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\TaskTypesTable&\Cake\ORM\Association\BelongsTo $TaskTypes
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
- * @property \App\Model\Table\DealersTable&\Cake\ORM\Association\BelongsTo $Dealers
+ * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Dealers
  * @property \App\Model\Table\TaskStatesTable&\Cake\ORM\Association\BelongsTo $TaskStates
  * @property \App\Model\Table\RoutersTable&\Cake\ORM\Association\BelongsTo $Routers
  * @method \App\Model\Entity\Task newEmptyEntity()

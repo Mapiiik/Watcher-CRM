@@ -11,7 +11,7 @@ use Cake\Validation\Validator;
  * Logins Model
  *
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
- * @property array $types
+ * @property array $rights
  * @method \App\Model\Entity\Login newEmptyEntity()
  * @method \App\Model\Entity\Login newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Login[] newEntities(array $data, array $options = [])

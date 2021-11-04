@@ -9,6 +9,7 @@ use Cake\I18n\FrozenTime;
  * Ips Controller
  *
  * @property \App\Model\Table\IpsTable $Ips
+ * @property \App\Model\Table\RemovedIpsTable $RemovedIps
  * @method \App\Model\Entity\Ip[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class IpsController extends AppController
@@ -202,8 +203,6 @@ class IpsController extends AppController
 
             return true;
         }
-
-        debug($removedIp);
 
         $this->Flash->error(__('The removed ip could not be saved. Please, try again.'));
 

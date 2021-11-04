@@ -40,6 +40,9 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Tax $tax
  * @property \App\Model\Entity\Address[] $addresses
  * @property \App\Model\Entity\Billing[] $billings
+ * @property \App\Model\Entity\Address $billing_address
+ * @property \App\Model\Entity\Address $delivery_address
+ * @property \App\Model\Entity\Address $permanent_address
  * @property \App\Model\Entity\BorrowedEquipment[] $borrowed_equipments
  * @property \App\Model\Entity\Contract[] $contracts
  * @property \App\Model\Entity\Email[] $emails
@@ -63,7 +66,7 @@ class Customer extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<bool>
      */
     protected $_accessible = [
         'dealer' => true,
@@ -159,7 +162,7 @@ class Customer extends Entity
 
     protected function _getNumber(): string
     {
-        $number = strval($this->id + env('CUSTOMER_SERIES', 0));
+        $number = strval($this->id + (int)env('CUSTOMER_SERIES', '0'));
 
         return $number;
     }
@@ -259,7 +262,7 @@ class Customer extends Entity
         // kontrolní součet
         $a = 0;
         for ($i = 0; $i < 7; $i++) {
-            $a += $ic[$i] * (8 - $i);
+            $a += (int)$ic[$i] * (8 - $i);
         }
 
         $a = $a % 11;

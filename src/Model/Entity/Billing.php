@@ -27,6 +27,12 @@ use Cake\ORM\Entity;
  * @property int $contract_id
  * @property int|null $fixed_discount
  * @property int|null $percentage_discount
+ * @property float $sum
+ * @property float $fixed_discount_sum
+ * @property float $percentage_discount_sum
+ * @property float $discount
+ * @property float $total
+ * @property float $vat
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Service $service
@@ -41,7 +47,7 @@ class Billing extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<bool>
      */
     protected $_accessible = [
         'customer_id' => true,
@@ -137,7 +143,7 @@ class Billing extends Entity
 
     protected function _getVat(): float
     {
-        return round($this->total - ($this->total / (1 + env('VAT_RATE', 0))), 2);
+        return round($this->total - ($this->total / (1 + (float)env('VAT_RATE', '0'))), 2);
     }
 
     protected function _getSeparateInvoice(): bool
@@ -184,6 +190,7 @@ class Billing extends Entity
             }
         }
 
-        return false;
+        // this should never happen
+        return 0;
     }
 }
