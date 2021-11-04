@@ -10,7 +10,7 @@ use Cake\Validation\Validator;
 /**
  * BrokerageDealers Model
  *
- * @property \App\Model\Table\DealersTable&\Cake\ORM\Association\BelongsTo $Dealers
+ * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Dealers
  * @property \App\Model\Table\BrokeragesTable&\Cake\ORM\Association\BelongsTo $Brokerages
  * @method \App\Model\Entity\BrokerageDealer newEmptyEntity()
  * @method \App\Model\Entity\BrokerageDealer newEntity(array $data, array $options = [])

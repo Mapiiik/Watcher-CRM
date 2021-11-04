@@ -42,6 +42,13 @@ use Cake\Validation\Validator;
 class CustomersTable extends Table
 {
     /**
+     * Invoice delivery types
+     *
+     * @var array<string>
+     */
+    public $invoice_delivery_types = [];
+
+    /**
      * Initialize method
      *
      * @param array $config The configuration for the Table.

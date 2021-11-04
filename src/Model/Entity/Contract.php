@@ -39,6 +39,8 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Ip[] $ips
  * @property \App\Model\Entity\RemovedIp[] $removed_ips
  * @property \App\Model\Entity\SoldEquipment[] $sold_equipments
+ * @property \App\Model\Entity\Billing[] $individual_billings
+ * @property \App\Model\Entity\Billing[] $standard_billings
  */
 class Contract extends Entity
 {

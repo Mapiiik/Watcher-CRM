@@ -6,6 +6,7 @@ namespace BookkeepingPohoda\Controller;
 use Cake\I18n\FrozenDate;
 use Cake\ORM\Entity;
 use Cake\ORM\Query;
+use stdClass;
 
 /**
  * Invoices Controller
@@ -123,11 +124,15 @@ class InvoicesController extends AppController
                     return $q
                             ->order('Contracts.id')
                             ->where([
-                                'OR' => [
+/* ignore until resolved how to manage new contracts with termination
+                                'OR' => 
+                                [
                                     'Contracts.valid_from IS NULL',
                                     'Contracts.valid_from <=' => $invoiced_month->lastOfMonth(), //last day of month
                                 ],
-                                'OR' => [
+                            ])
+                            ->andWhere([
+ */                               'OR' => [
                                     'Contracts.valid_until IS NULL',
                                     'Contracts.valid_until >=' => $invoiced_month->firstOfMonth(), //first day of month
                                 ],
@@ -135,12 +140,14 @@ class InvoicesController extends AppController
                             ->contain('Billings', function (Query $q) use ($invoiced_month) {
                                 return $q
                                         ->order('Billings.id')
-                                        ->where([
-                                            'Billings.active' => true,
+                                        ->where(['Billings.active' => true])
+                                        ->andWhere([
                                             'OR' => [
                                                 'Billings.billing_from IS NULL',
                                                 'Billings.billing_from <=' => $invoiced_month->lastOfMonth(), //last day of month
                                             ],
+                                        ])
+                                        ->andWhere([
                                             'OR' => [
                                                 'Billings.billing_until IS NULL',
                                                 'Billings.billing_until >=' => $invoiced_month->firstOfMonth(), //first day of month
@@ -191,13 +198,9 @@ class InvoicesController extends AppController
                         $verification_data[$customer_number]['csv']['items'] = [];
                     }
 
-                    $item = new Entity();
-                    if (isset($parsed_line[1])) {
-                        $item->period_total = trim($parsed_line[1]);
-                    }
-                    if (isset($parsed_line[2])) {
-                        $item->name = trim($parsed_line[2]);
-                    }
+                    $item = new stdClass();
+                    $item->period_total = (isset($parsed_line[1])) ? trim($parsed_line[1]) : '';
+                    $item->name = (isset($parsed_line[2])) ? trim($parsed_line[2]) : '';
 
                     $verification_data[$customer_number]['csv']['total'] += $item->period_total;
                     $verification_data[$customer_number]['csv']['items'][] = $item;
@@ -283,7 +286,7 @@ class InvoicesController extends AppController
                     foreach ($contract->billings as $billing) {
                         if ($billing->separate_invoice) {
                             $invoice = $this->Invoices->newEmptyEntity();
-                            $invoice->number = sprintf('%02d', $invoiced_month->year - 1980) . $innerfix . $invoiced_month->month . sprintf('%04d', $index);
+                            $invoice->number = intval(sprintf('%02d', $invoiced_month->year - 1980) . $innerfix . $invoiced_month->month . sprintf('%04d', $index));
                             $invoice->customer = $customer;
                             $invoice->variable_symbol = $customer->number;
                             $invoice->creation_date = $invoiced_month->lastOfMonth();
@@ -303,7 +306,7 @@ class InvoicesController extends AppController
 
                     if ($contract->separate_invoice) {
                         $invoice = $this->Invoices->newEmptyEntity();
-                        $invoice->number = sprintf('%02d', $invoiced_month->year - 1980) . $innerfix . $invoiced_month->month . sprintf('%04d', $index);
+                        $invoice->number = intval(sprintf('%02d', $invoiced_month->year - 1980) . $innerfix . $invoiced_month->month . sprintf('%04d', $index));
                         $invoice->customer = $customer;
                         $invoice->variable_symbol = $customer->number;
                         $invoice->creation_date = $invoiced_month->lastOfMonth();
@@ -325,7 +328,7 @@ class InvoicesController extends AppController
 
                 if ($billing_customer['total'] <> 0) {
                     $invoice = $this->Invoices->newEmptyEntity();
-                    $invoice->number = sprintf('%02d', $invoiced_month->year - 1980) . $innerfix . $invoiced_month->month . sprintf('%04d', $index);
+                    $invoice->number = intval(sprintf('%02d', $invoiced_month->year - 1980) . $innerfix . $invoiced_month->month . sprintf('%04d', $index));
                     $invoice->customer = $customer;
                     $invoice->variable_symbol = $customer->number;
                     $invoice->creation_date = $invoiced_month->lastOfMonth();

@@ -10,8 +10,8 @@ use Cake\Validation\Validator;
 /**
  * Accounts Model
  *
- * @property \RADIUS\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
- * @property \RADIUS\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
+ * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
+ * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
  * @method \RADIUS\Model\Entity\Account newEmptyEntity()
  * @method \RADIUS\Model\Entity\Account newEntity(array $data, array $options = [])
  * @method \RADIUS\Model\Entity\Account[] newEntities(array $data, array $options = [])

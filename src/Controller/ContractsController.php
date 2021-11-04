@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use Cake\Collection\Collection;
 use Cake\I18n\FrozenDate;
+use stdClass;
 
 /**
  * Contracts Controller
@@ -172,7 +173,7 @@ class ContractsController extends AppController
             ->set(['number = (' . $service_type->contract_number_format . ')'])
             ->where(['id' => $contract->id]);
 
-        if ($query->execute()) {
+        if ($query->execute()->rowCount() == 1) {
             $this->Flash->success(__('The contract number has been updated.'));
 
             return true;
@@ -257,15 +258,20 @@ class ContractsController extends AppController
 
                         return $this->redirect(['action' => 'edit', $id]);
                     }
+                    
+                    $technical_details = new stdClass();
+                    
                     if (!empty($query['ssid'])) {
-                        $contract->ssid = $query['ssid'];
+                        $technical_details->ssid = $query['ssid'];
                     }
                     if (!empty($query['radius_username'])) {
-                        $contract->radius_username = $query['radius_username'];
+                        $technical_details->radius_username = $query['radius_username'];
                     }
                     if (!empty($query['radius_password'])) {
-                        $contract->radius_password = $query['radius_password'];
+                        $technical_details->radius_password = $query['radius_password'];
                     }
+                    
+                    $this->set('technical_details', $technical_details);
                     break;
 
                 default:

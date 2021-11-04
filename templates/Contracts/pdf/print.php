@@ -33,7 +33,7 @@ class ContractPDF extends TCPDF
         }
     }
 
-    function GenerateHandoverProtocol($contract, $type = 'handover-protocol-installation', $signed = false)
+    function GenerateHandoverProtocol($contract, $type = 'handover-protocol-installation', $signed = false, $technical_details = null)
     {
         $this->setPrintHeader(false);
         $this->setPrintFooter(false);
@@ -524,10 +524,10 @@ class ContractPDF extends TCPDF
 
         $this->SetFont('DejaVuSerif', '', '8');
         $this->Cell(4, 5);
-        $this->Cell(45, 5,  $contract->ssid, 1, 0, 'C');
+        $this->Cell(45, 5,  isset($technical_details->ssid) ? $technical_details->ssid : '', 1, 0, 'C');
         $this->Cell(45, 5,  implode(', ', array_column($contract->ips, 'ip')), 1, 0, 'C');
-        $this->Cell(45, 5,  $contract->radius_username, 1, 0, 'C');
-        $this->Cell(45, 5,  $contract->radius_password, 1, 0, 'C');
+        $this->Cell(45, 5,  isset($technical_details->radius_username) ? $technical_details->radius_username : '', 1, 0, 'C');
+        $this->Cell(45, 5,  isset($technical_details->radius_password) ? $technical_details->radius_password : '', 1, 0, 'C');
         $this->Ln();                                    
 
         $this->Ln(4);                                    
@@ -1418,7 +1418,7 @@ case 'contract-termination':
 case 'handover-protocol-installation':
     //Generate PDF
     $pdf = new ContractPDF('P', 'mm', 'A4');
-    $pdf->GenerateHandoverProtocol($contract, $type, $signed);
+    $pdf->GenerateHandoverProtocol($contract, $type, $signed, $technical_details);
     $pdf->Output($contract->number . '_' . $type . '_' . $contract->valid_from->i18nFormat('yyyy-MM-dd') . '.pdf', 'I');
     break;
 case 'handover-protocol-uninstallation':

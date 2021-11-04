@@ -56,6 +56,14 @@ class AppController extends Controller
 
     # App > paginate
 
+    /**
+     * Customize pagination
+     *
+     * @param \Cake\ORM\Table|string|\Cake\ORM\Query|null $object Table to paginate
+     * (e.g: Table instance, 'TableName' or a Query object)
+     * @param array $settings The settings/configuration used for pagination.
+     * @return \Cake\ORM\ResultSet|\Cake\Datasource\ResultSetInterface|null Query results
+     */
     public function paginate($object = null, $settings = [])
     {
         try {
@@ -63,8 +71,16 @@ class AppController extends Controller
 
             return parent::paginate($object, $settings);
         } catch (NotFoundException $e) {
-            $this->Flash->error(__('Unable to find results on page {0}. Redirect to page 1.', $this->request->getQuery('page')));
-            $this->redirect(['page' => 1] + $this->request->getQueryParams());
+            $this->Flash->error(__(
+                'Unable to find results on page {0}. Redirect to page 1.',
+                $this->request->getQuery('page')
+            ));
+            $this->redirect(
+                ['?' => ['page' => '1'] + $this->request->getQueryParams()]
+                + $this->request->getParam('pass')
+            );
+
+            return null;
         }
     }
 
@@ -100,7 +116,7 @@ class AppController extends Controller
         static $normalizeChars = null;
         if ($normalizeChars === null) {
             $normalizeChars = [
-                'Á' => 'A', 'À' => 'A', 'Á' => 'A', 'Â' => 'A', 'Ã' => 'A', 'Ä' => 'A', 'Å' => 'A', 'Æ' => 'Ae',
+                'Á' => 'A', 'À' => 'A', 'Â' => 'A', 'Ã' => 'A', 'Ä' => 'A', 'Å' => 'A', 'Æ' => 'Ae',
                 'Č' => 'C', 'Ç' => 'C',
                 'Ě' => 'E', 'È' => 'E', 'É' => 'E', 'Ê' => 'E', 'Ë' => 'E',
                 'Ì' => 'I', 'Í' => 'I', 'Î' => 'I', 'Ï' => 'I',
@@ -112,7 +128,7 @@ class AppController extends Controller
                 'Ý' => 'Y',
                 'Þ' => 'B',
                 'ß' => 'Ss',
-                'á' => 'a', 'à' => 'a', 'á' => 'a', 'â' => 'a', 'ã' => 'a', 'ä' => 'a', 'å' => 'a', 'æ' => 'ae',
+                'á' => 'a', 'à' => 'a', 'â' => 'a', 'ã' => 'a', 'ä' => 'a', 'å' => 'a', 'æ' => 'ae',
                 'č' => 'c','ç' => 'c',
                 'ě' => 'e', 'è' => 'e', 'é' => 'e', 'ê' => 'e', 'ë' => 'e',
                 'ì' => 'i', 'í' => 'i', 'î' => 'i', 'ï' => 'i',

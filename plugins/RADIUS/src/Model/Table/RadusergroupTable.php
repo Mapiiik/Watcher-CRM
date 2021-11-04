@@ -10,6 +10,8 @@ use Cake\Validation\Validator;
 /**
  * Radusergroup Model
  *
+ * @property \RADIUS\Model\Table\AccountsTable&\Cake\ORM\Association\BelongsTo $Accounts
+ *
  * @method \RADIUS\Model\Entity\Radusergroup newEmptyEntity()
  * @method \RADIUS\Model\Entity\Radusergroup newEntity(array $data, array $options = [])
  * @method \RADIUS\Model\Entity\Radusergroup[] newEntities(array $data, array $options = [])

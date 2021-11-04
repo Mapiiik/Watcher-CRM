@@ -10,6 +10,8 @@ use Cake\Validation\Validator;
 /**
  * Radcheck Model
  *
+ * @property \RADIUS\Model\Table\AccountsTable&\Cake\ORM\Association\BelongsTo $Accounts
+ *
  * @method \RADIUS\Model\Entity\Radcheck newEmptyEntity()
  * @method \RADIUS\Model\Entity\Radcheck newEntity(array $data, array $options = [])
  * @method \RADIUS\Model\Entity\Radcheck[] newEntities(array $data, array $options = [])

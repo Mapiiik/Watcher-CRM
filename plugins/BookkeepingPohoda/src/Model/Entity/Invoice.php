@@ -16,8 +16,15 @@ use Cake\ORM\Entity;
  * @property string|null $sum
  * @property string|null $debt
  * @property \Cake\I18n\FrozenDate|null $payment_date
+ * @property \Cake\I18n\FrozenDate|null $creation_date
+ * @property \Cake\I18n\FrozenDate|null $due_date
+ * @property string|null $variable_symbol
+ * @property string|null $note
+ * @property string|null $internal_note
+ * @property float|null $total
  * @property int $id
  * @property int|null $customer_id
+ * @property \App\Model\Entity\Billing[] $items
  *
  * @property \App\Model\Entity\Customer $customer
  */

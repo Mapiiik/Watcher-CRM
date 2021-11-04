@@ -160,7 +160,6 @@ class AccountsController extends AppController
 
                 return $this->redirect(['action' => 'view', $account->id]);
             }
-            debug($account);
             $this->Flash->error(__('The account could not be saved. Please, try again.'));
         }
         $customers = $this->Accounts->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
@@ -264,7 +263,6 @@ class AccountsController extends AppController
                         ])
                         ->toArray();
                 } else {
-                        $radius->network->ipv6->address[] = $addressx;
                     $radreply[] = $this->getTableLocator()->get('RADIUS.Radreply')
                         ->findOrCreate([
                             'username' => $account->username,

@@ -11,9 +11,9 @@ use Cake\Validation\Validator;
  * Contracts Model
  *
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
- * @property \App\Model\Table\InstallationAddressesTable&\Cake\ORM\Association\BelongsTo $InstallationAddresses
+ * @property \App\Model\Table\AddressesTable&\Cake\ORM\Association\BelongsTo $InstallationAddresses
  * @property \App\Model\Table\ServiceTypesTable&\Cake\ORM\Association\BelongsTo $ServiceTypes
- * @property \App\Model\Table\InstallationTechniciansTable&\Cake\ORM\Association\BelongsTo $InstallationTechnicians
+ * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $InstallationTechnicians
  * @property \App\Model\Table\BrokeragesTable&\Cake\ORM\Association\BelongsTo $Brokerages
  * @property \App\Model\Table\BillingsTable&\Cake\ORM\Association\HasMany $Billings
  * @property \App\Model\Table\BorrowedEquipmentsTable&\Cake\ORM\Association\HasMany $BorrowedEquipments

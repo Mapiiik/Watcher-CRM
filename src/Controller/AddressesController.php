@@ -176,8 +176,6 @@ class AddressesController extends AppController
 
     private function findRuianData(\App\Model\Entity\Address $address): array
     {
-        $this->RuianAddresses = $this->getTableLocator()->get('RUIAN.Addresses');
-
         $conditionsForSearches = [
             // search in RUIAN
             0 => [
@@ -224,7 +222,7 @@ class AddressesController extends AppController
 
         // search for all options
         foreach ($conditionsForSearches as $conditions) {
-            $ruianAddresses = $this->RuianAddresses->find('all', [
+            $ruianAddresses = $this->getTableLocator()->get('RUIAN.Addresses')->find('all', [
                 'conditions' => $conditions,
             ]);
 
@@ -235,11 +233,11 @@ class AddressesController extends AppController
             ]);
 
             if ($ruianAddresses->count() > 1) {
-                $this->Flash->default(__('Multiple ({0}) RUIAN addresses found.', $ruianAddresses->count()));
+                $this->Flash->set(__('Multiple ({0}) RUIAN addresses found.', $ruianAddresses->count()));
             }
 
             if ($ruianAddresses->count() == 1) {
-                $this->Flash->default(__('Address found in RUIAN.'));
+                $this->Flash->set(__('Address found in RUIAN.'));
 
                 return $ruianAddresses->first()->toArray();
             }

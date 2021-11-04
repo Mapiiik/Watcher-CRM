@@ -10,7 +10,7 @@ use Cake\Validation\Validator;
 /**
  * Invoices Model
  *
- * @property \BookkeepingPohoda\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
+ * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
  * @method \BookkeepingPohoda\Model\Entity\Invoice newEmptyEntity()
  * @method \BookkeepingPohoda\Model\Entity\Invoice newEntity(array $data, array $options = [])
  * @method \BookkeepingPohoda\Model\Entity\Invoice[] newEntities(array $data, array $options = [])

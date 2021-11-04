@@ -30,6 +30,13 @@ use Cake\Validation\Validator;
 class LoginsTable extends Table
 {
     /**
+     * Customer rights
+     *
+     * @var array<string>
+     */
+    public $rights = [];
+
+    /**
      * Initialize method
      *
      * @param array $config The configuration for the Table.

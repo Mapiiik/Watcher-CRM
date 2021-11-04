@@ -12,7 +12,6 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
  * @property \App\Model\Table\CountriesTable&\Cake\ORM\Association\BelongsTo $Countries
- * @property array $types
  * @method \App\Model\Entity\Address newEmptyEntity()
  * @method \App\Model\Entity\Address newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Address[] newEntities(array $data, array $options = [])
@@ -30,6 +29,13 @@ use Cake\Validation\Validator;
  */
 class AddressesTable extends Table
 {
+    /**
+     * Address types
+     *
+     * @var array<string>
+     */
+    public $types = [];
+    
     /**
      * Initialize method
      *

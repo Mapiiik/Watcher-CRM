@@ -7,8 +7,6 @@ use Cake\View\Cell;
 
 /**
  * Customer cell
- * 
- * @property \App\Model\Table\CustomersTable $Customers
  */
 class CustomerCell extends Cell
 {
@@ -39,8 +37,7 @@ class CustomerCell extends Cell
         $customer_id = $this->request->getParam('customer_id');
         
         if ($customer_id) {
-            $this->loadModel('Customers');
-            $customer = $this->Customers->get($customer_id, [
+            $customer = $this->getTableLocator()->get('Customers')->get($customer_id, [
                 'contain' => ['Contracts' => ['ServiceTypes', 'InstallationAddresses']],
             ]);
 
