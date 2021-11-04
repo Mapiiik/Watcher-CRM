@@ -1,9 +1,9 @@
 {
-    "name": "cakephp/app",
-    "description": "CakePHP skeleton app",
-    "homepage": "https://cakephp.org",
+    "name": "mapik/watcher-crm",
+    "description": "Watcher CRM",
+    "homepage": "https://github.com/Mapiiik/Watcher-CRM",
     "type": "project",
-    "license": "MIT",
+    "license": "GPL-2.0-only",
     "require": {
         "php": ">=7.2",
         "cakedc/users": "^9.2",
