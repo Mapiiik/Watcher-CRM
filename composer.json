@@ -15,11 +15,13 @@
         "tecnickcom/tcpdf": "^6.4"
     },
     "require-dev": {
+        "cakedc/cakephp-phpstan": "^2.0",
         "cakephp/bake": "^2.6",
         "cakephp/cakephp-codesniffer": "^4.5",
         "cakephp/debug_kit": "^4.5",
         "cakephp/repl": "^0.1",
         "josegonzalez/dotenv": "^3.2",
+        "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^1.0",
         "phpunit/phpunit": "~8.5.0 || ^9.3",
         "psalm/phar": "^4.11",
