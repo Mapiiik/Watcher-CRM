@@ -83,9 +83,12 @@ class BillingsController extends AppController
             $billing = $this->Billings->patchEntity($billing, $this->request->getData());
 
             if (
-                isset($billing->service_id) &&
-                isset($this->Billings->Services->get($billing->service_id)->service_type_id) &&
-                $this->Billings->Contracts->get($billing->contract_id)->service_type_id <> $this->Billings->Services->get($billing->service_id)->service_type_id
+                isset($billing->service_id)
+                && isset($this->Billings->Services->get($billing->service_id)->service_type_id)
+                && (
+                    $this->Billings->Contracts->get($billing->contract_id)->service_type_id
+                    <> $this->Billings->Services->get($billing->service_id)->service_type_id
+                )
             ) {
                 $this->Flash->error(__('The service type does not match the selected contract.'));
             } else {
@@ -102,7 +105,10 @@ class BillingsController extends AppController
             }
         }
         $customers = $this->Billings->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->Billings->Contracts->find('list', ['order' => 'Contracts.number', 'contain' => ['ServiceTypes', 'InstallationAddresses']]);
+        $contracts = $this->Billings->Contracts->find('list', [
+            'order' => 'Contracts.number',
+            'contain' => ['ServiceTypes', 'InstallationAddresses'],
+        ]);
         $services = $this->Billings->Services->find('list', ['order' => 'name']);
 
         if (isset($customer_id)) {
@@ -142,9 +148,12 @@ class BillingsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $billing = $this->Billings->patchEntity($billing, $this->request->getData());
             if (
-                isset($billing->service_id) &&
-                isset($this->Billings->Services->get($billing->service_id)->service_type_id) &&
-                $this->Billings->Contracts->get($billing->contract_id)->service_type_id <> $this->Billings->Services->get($billing->service_id)->service_type_id
+                isset($billing->service_id)
+                && isset($this->Billings->Services->get($billing->service_id)->service_type_id)
+                && (
+                    $this->Billings->Contracts->get($billing->contract_id)->service_type_id
+                    <> $this->Billings->Services->get($billing->service_id)->service_type_id
+                )
             ) {
                 $this->Flash->error(__('The service type does not match the selected contract.'));
             } else {
@@ -161,7 +170,10 @@ class BillingsController extends AppController
             }
         }
         $customers = $this->Billings->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->Billings->Contracts->find('list', ['order' => 'Contracts.number', 'contain' => ['ServiceTypes', 'InstallationAddresses']]);
+        $contracts = $this->Billings->Contracts->find('list', ['order' => 'Contracts.number', 'contain' => [
+            'ServiceTypes',
+            'InstallationAddresses',
+        ]]);
         $services = $this->Billings->Services->find('list', ['order' => 'name']);
 
         if (isset($customer_id)) {

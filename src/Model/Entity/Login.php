@@ -63,7 +63,12 @@ class Login extends Entity
         'password',
     ];
 
-    // SHA1 for password if value is set
+    /**
+     * SHA1 for password if value is set
+     *
+     * @param string $password Plaintext password
+     * @return string|null
+     */
     protected function _setPassword(string $password): ?string
     {
         if (strlen($password) > 0) {

@@ -64,11 +64,12 @@ class DBFInvoices
     /**
      * Create and open new DBF file
      *
+     * @param string $path The path of the database. It can be a relative or absolute path to the file where dBase will store your data.
      * @return void No return value
      */
-    function CreateDBF($dbf_filename)
+    public function createDBF($path)
     {
-        $this->dbf = dbase_create($dbf_filename, $this->structure);
+        $this->dbf = dbase_create($path, $this->structure);
         if (!$this->dbf) {
             die('Errror when creating dBase file !!!!');
         }
@@ -79,7 +80,7 @@ class DBFInvoices
      *
      * @return void No return value
      */
-    function CloseDBF()
+    public function closeDBF()
     {
         dbase_close($this->dbf);
     }
@@ -91,7 +92,7 @@ class DBFInvoices
      * @param bool $reverse_charge Reverse charge?
      * @return void No return value
      */
-    function AddRecord($invoice, $reverse_charge = false)
+    public function addRecord($invoice, $reverse_charge = false)
     {
         $totalcost = $invoice->total;
 

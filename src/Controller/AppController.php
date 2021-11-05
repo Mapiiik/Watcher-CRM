@@ -97,7 +97,9 @@ class AppController extends Controller
             $this->request->getSession()->write('Config.language', $this->request->getQuery('language'));
         }
 
-        if ($language = $this->request->getSession()->read('Config.language', I18n::getDefaultLocale())) {
+        $language = $this->request->getSession()->read('Config.language', I18n::getDefaultLocale());
+
+        if ($language) {
             I18n::setLocale($language);
         }
 
@@ -112,7 +114,7 @@ class AppController extends Controller
     /**
      * Normalize non-ASCII characters to ASCII counterparts where possible.
      *
-     * @param string $str
+     * @param string $str Text with non-ASCII characters
      * @return string
      */
     public function squashCharacters($str): string
