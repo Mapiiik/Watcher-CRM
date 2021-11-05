@@ -27,7 +27,6 @@ class TasksTableTest extends TestCase
         'app.Tasks',
         'app.TaskTypes',
         'app.Customers',
-        'app.Customers',
         'app.TaskStates',
         'app.Routers',
     ];

@@ -25,7 +25,6 @@ class RoutersTableTest extends TestCase
      */
     protected $fixtures = [
         'app.Routers',
-        'app.Ranges',
         'app.Tasks',
     ];
 
