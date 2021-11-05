@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace BookkeepingPohoda\Test\TestCase\Controller;
 
-use BookkeepingPohoda\Controller\InvoicesController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 

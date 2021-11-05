@@ -5,7 +5,6 @@ namespace RADIUS\Test\TestCase\Controller;
 
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
-use RADIUS\Controller\RadcheckController;
 
 /**
  * RADIUS\Controller\RadcheckController Test Case

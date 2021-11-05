@@ -5,7 +5,6 @@ namespace RUIAN\Test\TestCase\Controller;
 
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
-use RUIAN\Controller\AddressesController;
 
 /**
  * RUIAN\Controller\AddressesController Test Case
