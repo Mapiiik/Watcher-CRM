@@ -1,7 +1,7 @@
 # Watcher CRM
 
 [![Total Downloads](https://img.shields.io/packagist/dt/mapik/watcher-crm.svg?style=flat-square)](https://packagist.org/packages/mapik/watcher-crm)
-[![PHPStan](https://img.shields.io/badge/PHPStan-level%205-brightgreen.svg?style=flat-square)](https://github.com/phpstan/phpstan)
+[![PHPStan](https://img.shields.io/badge/PHPStan-level%206-brightgreen.svg?style=flat-square)](https://github.com/phpstan/phpstan)
 
 The framework source code can be found here: [cakephp/cakephp](https://github.com/cakephp/cakephp).
 

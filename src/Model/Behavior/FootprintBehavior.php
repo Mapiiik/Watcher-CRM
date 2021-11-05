@@ -25,14 +25,29 @@ class FootprintBehavior extends Behavior
         'column_modifier' => 'modified_by',
     ];
 
+    /**
+     * Check if needed fields exist
+     *
+     * @param \Cake\Event\EventInterface $event Event
+     * @return bool
+     */
     private function fieldsExist(EventInterface $event): bool
     {
         // Make sure the table actually has proper fields
         $table = $event->getSubject();
 
-        return $table->hasField($this->_config['column_creator']) && $table->hasField($this->_config['column_modifier']);
+        return $table->hasField($this->_config['column_creator'])
+            && $table->hasField($this->_config['column_modifier']);
     }
 
+    /**
+     * Add creator/modifier to actual Entity
+     *
+     * @param \Cake\Event\EventInterface $event Event
+     * @param \Cake\Datasource\EntityInterface $entity Entity
+     * @param \ArrayObject $options Options
+     * @return void
+     */
     public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
         $session = Router::getRequest()->getSession();

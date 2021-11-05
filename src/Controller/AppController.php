@@ -138,7 +138,8 @@ class AppController extends Controller
                 'č' => 'c','ç' => 'c',
                 'ě' => 'e', 'è' => 'e', 'é' => 'e', 'ê' => 'e', 'ë' => 'e',
                 'ì' => 'i', 'í' => 'i', 'î' => 'i', 'ï' => 'i',
-                'ð' => 'o', 'ň' => 'n', 'ñ' => 'n', 'ò' => 'o', 'ó' => 'o', 'ô' => 'o', 'õ' => 'o', 'ö' => 'o', 'ø' => 'o',
+                'ð' => 'o', 'ň' => 'n', 'ñ' => 'n', 'ò' => 'o', 'ó' => 'o',
+                'ô' => 'o', 'õ' => 'o', 'ö' => 'o', 'ø' => 'o',
                 'ů' => 'u', 'ù' => 'u', 'ú' => 'u', 'û' => 'u',
                 'ý' => 'y',
                 'þ' => 'b',
@@ -155,11 +156,14 @@ class AppController extends Controller
     /**
      * Generate password.
      *
-     * @param int $length
+     * @param int $length Length of new password
+     * @param string $possible Available chars for password
      * @return string
      */
-    public function generatePassword($length = 8, $possible = '123456789ABCDEFGHJKLMNPQRSTUVWXabcdefghjkmnopqrstuvwx'): string
-    {
+    public function generatePassword(
+        $length = 8,
+        $possible = '123456789ABCDEFGHJKLMNPQRSTUVWXabcdefghjkmnopqrstuvwx'
+    ): string {
         // start with a blank password
         $password = '';
 

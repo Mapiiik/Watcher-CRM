@@ -184,9 +184,18 @@ class ContractsTable extends Table
     {
         $rules->add($rules->isUnique(['number']), ['errorField' => 'number']);
         $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
-        $rules->add($rules->existsIn(['installation_address_id'], 'InstallationAddresses'), ['errorField' => 'installation_address_id']);
-        $rules->add($rules->existsIn(['service_type_id'], 'ServiceTypes'), ['errorField' => 'service_type_id']);
-        $rules->add($rules->existsIn(['installation_technician_id'], 'InstallationTechnicians'), ['errorField' => 'installation_technician_id']);
+        $rules->add(
+            $rules->existsIn(['installation_address_id'], 'InstallationAddresses'),
+            ['errorField' => 'installation_address_id']
+        );
+        $rules->add(
+            $rules->existsIn(['service_type_id'], 'ServiceTypes'),
+            ['errorField' => 'service_type_id']
+        );
+        $rules->add(
+            $rules->existsIn(['installation_technician_id'], 'InstallationTechnicians'),
+            ['errorField' => 'installation_technician_id']
+        );
         $rules->add($rules->existsIn(['brokerage_id'], 'Brokerages'), ['errorField' => 'brokerage_id']);
 
         return $rules;

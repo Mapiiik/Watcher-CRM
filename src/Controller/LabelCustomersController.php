@@ -60,7 +60,9 @@ class LabelCustomersController extends AppController
             $this->Flash->error(__('The label customer could not be saved. Please, try again.'));
         }
         $labels = $this->LabelCustomers->Labels->find('list', ['order' => 'name']);
-        $customers = $this->LabelCustomers->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $customers = $this->LabelCustomers->Customers->find('list', [
+            'order' => ['company', 'first_name', 'last_name'],
+        ]);
         $this->set(compact('labelCustomer', 'labels', 'customers'));
     }
 
@@ -86,7 +88,9 @@ class LabelCustomersController extends AppController
             $this->Flash->error(__('The label customer could not be saved. Please, try again.'));
         }
         $labels = $this->LabelCustomers->Labels->find('list', ['order' => 'name']);
-        $customers = $this->LabelCustomers->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $customers = $this->LabelCustomers->Customers->find('list', [
+            'order' => ['company', 'first_name', 'last_name'],
+        ]);
         $this->set(compact('labelCustomer', 'labels', 'customers'));
     }
 

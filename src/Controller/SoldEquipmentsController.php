@@ -92,8 +92,13 @@ class SoldEquipmentsController extends AppController
             }
             $this->Flash->error(__('The sold equipment could not be saved. Please, try again.'));
         }
-        $customers = $this->SoldEquipments->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->SoldEquipments->Contracts->find('list', ['order' => 'Contracts.number', 'contain' => ['ServiceTypes', 'InstallationAddresses']]);
+        $customers = $this->SoldEquipments->Customers->find('list', [
+            'order' => ['company', 'first_name', 'last_name'],
+        ]);
+        $contracts = $this->SoldEquipments->Contracts->find('list', [
+            'order' => 'Contracts.number',
+            'contain' => ['ServiceTypes', 'InstallationAddresses'],
+        ]);
         $equipmentTypes = $this->SoldEquipments->EquipmentTypes->find('list', ['order' => 'name']);
 
         if (isset($customer_id)) {
@@ -139,8 +144,14 @@ class SoldEquipmentsController extends AppController
             }
             $this->Flash->error(__('The sold equipment could not be saved. Please, try again.'));
         }
-        $customers = $this->SoldEquipments->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->SoldEquipments->Contracts->find('list', ['order' => 'Contracts.number', 'contain' => ['ServiceTypes', 'InstallationAddresses']]);
+        $customers = $this->SoldEquipments->Customers->find(
+            'list',
+            ['order' => ['company', 'first_name', 'last_name']]
+        );
+        $contracts = $this->SoldEquipments->Contracts->find('list', [
+            'order' => 'Contracts.number',
+            'contain' => ['ServiceTypes', 'InstallationAddresses'],
+        ]);
         $equipmentTypes = $this->SoldEquipments->EquipmentTypes->find('list', ['order' => 'name']);
 
         if (isset($customer_id)) {

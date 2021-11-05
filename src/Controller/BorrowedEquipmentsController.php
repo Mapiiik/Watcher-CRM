@@ -73,10 +73,12 @@ class BorrowedEquipmentsController extends AppController
         $borrowedEquipment = $this->BorrowedEquipments->newEmptyEntity();
 
         if (isset($customer_id)) {
-            $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, ['customer_id' => $customer_id]);
+            $borrowedEquipment = $this->BorrowedEquipments
+                ->patchEntity($borrowedEquipment, ['customer_id' => $customer_id]);
         }
         if (isset($contract_id)) {
-            $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, ['contract_id' => $contract_id]);
+            $borrowedEquipment = $this->BorrowedEquipments
+                ->patchEntity($borrowedEquipment, ['contract_id' => $contract_id]);
         }
 
         if ($this->request->is('post')) {
@@ -92,8 +94,13 @@ class BorrowedEquipmentsController extends AppController
             }
             $this->Flash->error(__('The borrowed equipment could not be saved. Please, try again.'));
         }
-        $customers = $this->BorrowedEquipments->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->BorrowedEquipments->Contracts->find('list', ['order' => 'Contracts.number', 'contain' => ['ServiceTypes', 'InstallationAddresses']]);
+        $customers = $this->BorrowedEquipments->Customers->find('list', [
+            'order' => ['company', 'first_name', 'last_name'],
+        ]);
+        $contracts = $this->BorrowedEquipments->Contracts->find('list', [
+            'order' => 'Contracts.number',
+            'contain' => ['ServiceTypes', 'InstallationAddresses'],
+        ]);
         $equipmentTypes = $this->BorrowedEquipments->EquipmentTypes->find('list', ['order' => 'name']);
 
         if (isset($customer_id)) {
@@ -139,8 +146,13 @@ class BorrowedEquipmentsController extends AppController
             }
             $this->Flash->error(__('The borrowed equipment could not be saved. Please, try again.'));
         }
-        $customers = $this->BorrowedEquipments->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->BorrowedEquipments->Contracts->find('list', ['order' => 'Contracts.number', 'contain' => ['ServiceTypes', 'InstallationAddresses']]);
+        $customers = $this->BorrowedEquipments->Customers->find('list', [
+            'order' => ['company', 'first_name', 'last_name'],
+        ]);
+        $contracts = $this->BorrowedEquipments->Contracts->find('list', [
+            'order' => 'Contracts.number',
+            'contain' => ['ServiceTypes', 'InstallationAddresses'],
+        ]);
         $equipmentTypes = $this->BorrowedEquipments->EquipmentTypes->find('list', ['order' => 'name']);
 
         if (isset($customer_id)) {

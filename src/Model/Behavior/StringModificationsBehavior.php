@@ -23,6 +23,14 @@ class StringModificationsBehavior extends Behavior
         'replaceBadCharacters' => true,
     ];
 
+    /**
+     * String modifications
+     *
+     * @param \Cake\Event\EventInterface $event Event
+     * @param \ArrayObject $data Data
+     * @param \ArrayObject $options Options
+     * @return void
+     */
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
         foreach ($data as $key => $value) {

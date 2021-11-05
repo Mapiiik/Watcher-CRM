@@ -15,9 +15,12 @@ namespace BookkeepingPohoda;
  */
 class DBFInvoices
 {
+    /**
+     * @var resource|false
+     */
     public $dbf;
-    public $charset;
-    private $structure = [];
+    public string $charset;
+    private array $structure;
 
     /**
      * Constructor

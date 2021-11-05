@@ -72,6 +72,11 @@ class Billing extends Entity
         'percentage_discount' => true,
     ];
 
+    /**
+     * getter for name (use local text parameter or service name and adds number of items on front if more than one)
+     *
+     * @return string
+     */
     protected function _getName(): string
     {
         $name = '';
@@ -89,6 +94,11 @@ class Billing extends Entity
         return $name;
     }
 
+    /**
+     * getter for sum of price (use local price or from service and multiply by quantity)
+     *
+     * @return float
+     */
     protected function _getSum(): float
     {
         $sum = 0;
@@ -104,6 +114,11 @@ class Billing extends Entity
         return $sum;
     }
 
+    /**
+     * getter for sum of fixed discount (0 when not set)
+     *
+     * @return float
+     */
     protected function _getFixedDiscountSum(): float
     {
         $discount = 0;
@@ -115,6 +130,11 @@ class Billing extends Entity
         return $discount;
     }
 
+    /**
+     * getter for sum of percentage discount from calculated sum (0 when not set)
+     *
+     * @return float
+     */
     protected function _getPercentageDiscountSum(): float
     {
         $discount = 0;
@@ -126,31 +146,63 @@ class Billing extends Entity
         return $discount;
     }
 
+    /**
+     * getter for sum of all discounts from calculated sum
+     *
+     * @return float
+     */
     protected function _getDiscount(): float
     {
         return $this->fixed_discount_sum + $this->percentage_discount_sum;
     }
 
+    /**
+     * getter for total price (sum - discount)
+     *
+     * @return float
+     */
     protected function _getTotal(): float
     {
         return $this->sum - $this->discount;
     }
 
+    /**
+     * getter for vat base (total - vat)
+     *
+     * @return float
+     */
     protected function _getVatBase(): float
     {
         return $this->total - $this->vat;
     }
 
+    /**
+     * getter for vat (calculated using set VAT_RATE environment variable)
+     *
+     * @return float
+     */
     protected function _getVat(): float
     {
         return round($this->total - ($this->total / (1 + (float)env('VAT_RATE', '0'))), 2);
     }
 
+    /**
+     * alias for "separate" parameter (for more consistent implementation in invoice genration)
+     *
+     * @return bool
+     */
     protected function _getSeparateInvoice(): bool
     {
         return $this->separate;
     }
 
+    /**
+     * getter for total price per period (calculates the price ratio within active days in the selected period)
+     *
+     * @param \Cake\I18n\FrozenDate $from First day of period
+     * @param \Cake\I18n\FrozenDate $until Last day of period
+     * @return float
+     */
     public function periodTotal(FrozenDate $from, FrozenDate $until): float
     {
         $period_days = $from->diffInDays($until->addDay(1));
@@ -177,16 +229,19 @@ class Billing extends Entity
             }
             // later billing_from
             if ($this->billing_from <= $until) {
-                return ceil($this->total / $period_days * $this->billing_from->diffInDays($until->addDay(1)));
+                return ceil($this->total / $period_days
+                    * $this->billing_from->diffInDays($until->addDay(1)));
             }
         } else { // billing_until is limiting
             // earlier billing_until
             if ($this->billing_from <= $from) {
-                return ceil($this->total / $period_days * $from->diffInDays($this->billing_until->addDay(1)));
+                return ceil($this->total / $period_days
+                    * $from->diffInDays($this->billing_until->addDay(1)));
             }
             // later billing_from and earlier billing_until
             if ($this->billing_from <= $until) {
-                return ceil($this->total / $period_days * $this->billing_from->diffInDays($this->billing_until->addDay(1)));
+                return ceil($this->total / $period_days
+                    * $this->billing_from->diffInDays($this->billing_until->addDay(1)));
             }
         }
 

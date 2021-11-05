@@ -74,6 +74,11 @@ class Address extends Entity
         'country' => true,
     ];
 
+    /**
+     * getter for full name of person
+     *
+     * @return string
+     */
     protected function _getFullName(): string
     {
         $full_name = '';
@@ -106,6 +111,11 @@ class Address extends Entity
         return $full_name;
     }
 
+    /**
+     * getter for full name with company
+     *
+     * @return string
+     */
     protected function _getName(): string
     {
         $name = '';
@@ -123,6 +133,11 @@ class Address extends Entity
         return $name;
     }
 
+    /**
+     * getter for address without company/name
+     *
+     * @return string
+     */
     protected function _getAddress(): string
     {
         $address = '';
@@ -133,6 +148,11 @@ class Address extends Entity
         return $address;
     }
 
+    /**
+     * getter for street and object number line
+     *
+     * @return string
+     */
     protected function _getStreetAndNumber(): string
     {
         $street_and_number = '';
@@ -146,6 +166,11 @@ class Address extends Entity
         return $street_and_number;
     }
 
+    /**
+     * getter for zip and city line
+     *
+     * @return string
+     */
     protected function _getZipAndCity(): string
     {
         $zip_and_city = '';
@@ -161,6 +186,11 @@ class Address extends Entity
         return $zip_and_city;
     }
 
+    /**
+     * getter for address with company/name
+     *
+     * @return string
+     */
     protected function _getFullAddress(): string
     {
         $address = '';

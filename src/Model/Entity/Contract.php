@@ -87,6 +87,11 @@ class Contract extends Entity
         'activation_fee_with_obligation' => true,
     ];
 
+    /**
+     * getter for minumum duration of contract in months (based on valid_from a obligation_until params)
+     *
+     * @return int|null
+     */
     protected function _getMinimumDuration(): ?int
     {
         $minimum_duration = null;
@@ -98,6 +103,11 @@ class Contract extends Entity
         return $minimum_duration;
     }
 
+    /**
+     * getter for activation_fee (local or from service_type)
+     *
+     * @return int|null
+     */
     protected function _getActivationFeeSum(): ?int
     {
         if (isset($this->activation_fee)) {
@@ -111,6 +121,11 @@ class Contract extends Entity
         return null;
     }
 
+    /**
+     * getter for activation_fee_with_obligation (local or from service_type)
+     *
+     * @return int|null
+     */
     protected function _getActivationFeeWithObligationSum(): ?int
     {
         if (isset($this->activation_fee_with_obligation)) {
@@ -124,21 +139,41 @@ class Contract extends Entity
         return null;
     }
 
+    /**
+     * getter for billing address from Customer object
+     *
+     * @return \App\Model\Entity\Address|null
+     */
     protected function _getBillingAddress(): ?Address
     {
         return $this->customer->billing_address;
     }
 
+    /**
+     * getter for delivery address from Customer object
+     *
+     * @return \App\Model\Entity\Address|null
+     */
     protected function _getDeliveryAddress(): ?Address
     {
         return $this->customer->delivery_address;
     }
 
+    /**
+     * getter for permanent address from Customer object
+     *
+     * @return \App\Model\Entity\Address|null
+     */
     protected function _getPermanentAddress(): ?Address
     {
         return $this->customer->permanent_address;
     }
 
+    /**
+     * getter for name in format "number - service_type->name - installation_address->address"
+     *
+     * @return string
+     */
     protected function _getName(): string
     {
         return $this->number .
@@ -146,6 +181,11 @@ class Contract extends Entity
             ($this->has('installation_address') ? ' - ' . $this->installation_address->address : '');
     }
 
+    /**
+     * fake getter for option separate_invoice (for easier implementation in future)
+     *
+     * @return bool
+     */
     protected function _getSeparateInvoice(): bool
     {
         return false;

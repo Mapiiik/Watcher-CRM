@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Entity\Address;
+
 /**
  * Addresses Controller
  *
@@ -174,7 +176,13 @@ class AddressesController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-    private function findRuianData(\App\Model\Entity\Address $address): array
+    /**
+     * Find RUIAN data for address
+     *
+     * @param \App\Model\Entity\Address $address Address to be find in RUIAN
+     * @return array
+     */
+    private function findRuianData(Address $address): array
     {
         $conditionsForSearches = [
             // search in RUIAN

@@ -87,6 +87,14 @@ class PhonesTable extends Table
         return $rules;
     }
 
+    /**
+     * Normalise phone numbers
+     *
+     * @param \Cake\Event\EventInterface $event Event
+     * @param \ArrayObject $data Data
+     * @param \ArrayObject $options Options
+     * @return void
+     */
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
         if (isset($data['phone']) && is_string($data['phone']) && (strlen($data['phone']) > 0)) {
