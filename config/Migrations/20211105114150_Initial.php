@@ -950,14 +950,16 @@ class Initial extends AbstractMigration
             ->create();
 
         $this->table('service_types')
-            ->addColumn('created', 'timestamptimezone', [
+            ->addColumn('created', 'timestamp', [
+                'timezone' => true,
                 'default' => null,
                 'limit' => null,
                 'null' => true,
                 'precision' => 6,
                 'scale' => 6,
             ])
-            ->addColumn('modified', 'timestamptimezone', [
+            ->addColumn('modified', 'timestamp', [
+                'timezone' => true,
                 'default' => null,
                 'limit' => null,
                 'null' => true,
@@ -987,14 +989,16 @@ class Initial extends AbstractMigration
             ->create();
 
         $this->table('services')
-            ->addColumn('created', 'timestamptimezone', [
+            ->addColumn('created', 'timestamp', [
+                'timezone' => true,
                 'default' => 'now()',
                 'limit' => null,
                 'null' => true,
                 'precision' => 6,
                 'scale' => 6,
             ])
-            ->addColumn('modified', 'timestamptimezone', [
+            ->addColumn('modified', 'timestamp', [
+                'timezone' => true,
                 'default' => null,
                 'limit' => null,
                 'null' => true,
