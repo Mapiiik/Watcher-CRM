@@ -16,7 +16,7 @@ class EquipmentTypesTableTest extends TestCase
      *
      * @var \App\Model\Table\EquipmentTypesTable
      */
-    protected $EquipmentTypes;
+    protected $EquipmentTypesTable;
 
     /**
      * Fixtures
@@ -38,7 +38,7 @@ class EquipmentTypesTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('EquipmentTypes') ? [] : ['className' => EquipmentTypesTable::class];
-        $this->EquipmentTypes = $this->getTableLocator()->get('EquipmentTypes', $config);
+        $this->EquipmentTypesTable = $this->getTableLocator()->get('EquipmentTypes', $config);
     }
 
     /**
@@ -48,7 +48,7 @@ class EquipmentTypesTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->EquipmentTypes);
+        unset($this->EquipmentTypesTable);
 
         parent::tearDown();
     }
@@ -57,6 +57,7 @@ class EquipmentTypesTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
+     * @uses \App\Model\Table\EquipmentTypesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {

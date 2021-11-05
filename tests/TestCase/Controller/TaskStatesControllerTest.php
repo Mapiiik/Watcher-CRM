@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
+use App\Controller\TaskStatesController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -29,6 +30,7 @@ class TaskStatesControllerTest extends TestCase
      * Test index method
      *
      * @return void
+     * @uses \App\Controller\TaskStatesController::index()
      */
     public function testIndex(): void
     {
@@ -39,6 +41,7 @@ class TaskStatesControllerTest extends TestCase
      * Test view method
      *
      * @return void
+     * @uses \App\Controller\TaskStatesController::view()
      */
     public function testView(): void
     {
@@ -49,6 +52,7 @@ class TaskStatesControllerTest extends TestCase
      * Test add method
      *
      * @return void
+     * @uses \App\Controller\TaskStatesController::add()
      */
     public function testAdd(): void
     {
@@ -59,6 +63,7 @@ class TaskStatesControllerTest extends TestCase
      * Test edit method
      *
      * @return void
+     * @uses \App\Controller\TaskStatesController::edit()
      */
     public function testEdit(): void
     {
@@ -69,6 +74,7 @@ class TaskStatesControllerTest extends TestCase
      * Test delete method
      *
      * @return void
+     * @uses \App\Controller\TaskStatesController::delete()
      */
     public function testDelete(): void
     {

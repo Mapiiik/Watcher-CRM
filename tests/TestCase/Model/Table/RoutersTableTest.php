@@ -16,7 +16,7 @@ class RoutersTableTest extends TestCase
      *
      * @var \App\Model\Table\RoutersTable
      */
-    protected $Routers;
+    protected $RoutersTable;
 
     /**
      * Fixtures
@@ -38,7 +38,7 @@ class RoutersTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Routers') ? [] : ['className' => RoutersTable::class];
-        $this->Routers = $this->getTableLocator()->get('Routers', $config);
+        $this->RoutersTable = $this->getTableLocator()->get('Routers', $config);
     }
 
     /**
@@ -48,7 +48,7 @@ class RoutersTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Routers);
+        unset($this->RoutersTable);
 
         parent::tearDown();
     }
@@ -57,6 +57,7 @@ class RoutersTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
+     * @uses \App\Model\Table\RoutersTable::validationDefault()
      */
     public function testValidationDefault(): void
     {

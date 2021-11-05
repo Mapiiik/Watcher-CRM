@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
+use App\Controller\EquipmentTypesController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -30,6 +31,7 @@ class EquipmentTypesControllerTest extends TestCase
      * Test index method
      *
      * @return void
+     * @uses \App\Controller\EquipmentTypesController::index()
      */
     public function testIndex(): void
     {
@@ -40,6 +42,7 @@ class EquipmentTypesControllerTest extends TestCase
      * Test view method
      *
      * @return void
+     * @uses \App\Controller\EquipmentTypesController::view()
      */
     public function testView(): void
     {
@@ -50,6 +53,7 @@ class EquipmentTypesControllerTest extends TestCase
      * Test add method
      *
      * @return void
+     * @uses \App\Controller\EquipmentTypesController::add()
      */
     public function testAdd(): void
     {
@@ -60,6 +64,7 @@ class EquipmentTypesControllerTest extends TestCase
      * Test edit method
      *
      * @return void
+     * @uses \App\Controller\EquipmentTypesController::edit()
      */
     public function testEdit(): void
     {
@@ -70,6 +75,7 @@ class EquipmentTypesControllerTest extends TestCase
      * Test delete method
      *
      * @return void
+     * @uses \App\Controller\EquipmentTypesController::delete()
      */
     public function testDelete(): void
     {

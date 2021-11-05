@@ -16,7 +16,7 @@ class BorrowedEquipmentsTableTest extends TestCase
      *
      * @var \App\Model\Table\BorrowedEquipmentsTable
      */
-    protected $BorrowedEquipments;
+    protected $BorrowedEquipmentsTable;
 
     /**
      * Fixtures
@@ -39,7 +39,7 @@ class BorrowedEquipmentsTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('BorrowedEquipments') ? [] : ['className' => BorrowedEquipmentsTable::class];
-        $this->BorrowedEquipments = $this->getTableLocator()->get('BorrowedEquipments', $config);
+        $this->BorrowedEquipmentsTable = $this->getTableLocator()->get('BorrowedEquipments', $config);
     }
 
     /**
@@ -49,7 +49,7 @@ class BorrowedEquipmentsTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->BorrowedEquipments);
+        unset($this->BorrowedEquipmentsTable);
 
         parent::tearDown();
     }
@@ -58,6 +58,7 @@ class BorrowedEquipmentsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
+     * @uses \App\Model\Table\BorrowedEquipmentsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -68,6 +69,7 @@ class BorrowedEquipmentsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
+     * @uses \App\Model\Table\BorrowedEquipmentsTable::buildRules()
      */
     public function testBuildRules(): void
     {

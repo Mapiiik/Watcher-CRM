@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
+use App\Controller\ServiceTypesController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -31,6 +32,7 @@ class ServiceTypesControllerTest extends TestCase
      * Test index method
      *
      * @return void
+     * @uses \App\Controller\ServiceTypesController::index()
      */
     public function testIndex(): void
     {
@@ -41,6 +43,7 @@ class ServiceTypesControllerTest extends TestCase
      * Test view method
      *
      * @return void
+     * @uses \App\Controller\ServiceTypesController::view()
      */
     public function testView(): void
     {
@@ -51,6 +54,7 @@ class ServiceTypesControllerTest extends TestCase
      * Test add method
      *
      * @return void
+     * @uses \App\Controller\ServiceTypesController::add()
      */
     public function testAdd(): void
     {
@@ -61,6 +65,7 @@ class ServiceTypesControllerTest extends TestCase
      * Test edit method
      *
      * @return void
+     * @uses \App\Controller\ServiceTypesController::edit()
      */
     public function testEdit(): void
     {
@@ -71,6 +76,7 @@ class ServiceTypesControllerTest extends TestCase
      * Test delete method
      *
      * @return void
+     * @uses \App\Controller\ServiceTypesController::delete()
      */
     public function testDelete(): void
     {

@@ -16,7 +16,7 @@ class BrokeragesTableTest extends TestCase
      *
      * @var \App\Model\Table\BrokeragesTable
      */
-    protected $Brokerages;
+    protected $BrokeragesTable;
 
     /**
      * Fixtures
@@ -38,7 +38,7 @@ class BrokeragesTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Brokerages') ? [] : ['className' => BrokeragesTable::class];
-        $this->Brokerages = $this->getTableLocator()->get('Brokerages', $config);
+        $this->BrokeragesTable = $this->getTableLocator()->get('Brokerages', $config);
     }
 
     /**
@@ -48,7 +48,7 @@ class BrokeragesTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Brokerages);
+        unset($this->BrokeragesTable);
 
         parent::tearDown();
     }
@@ -57,6 +57,7 @@ class BrokeragesTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
+     * @uses \App\Model\Table\BrokeragesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {

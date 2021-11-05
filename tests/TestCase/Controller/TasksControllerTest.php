@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
+use App\Controller\TasksController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -33,6 +34,7 @@ class TasksControllerTest extends TestCase
      * Test index method
      *
      * @return void
+     * @uses \App\Controller\TasksController::index()
      */
     public function testIndex(): void
     {
@@ -43,6 +45,7 @@ class TasksControllerTest extends TestCase
      * Test view method
      *
      * @return void
+     * @uses \App\Controller\TasksController::view()
      */
     public function testView(): void
     {
@@ -53,6 +56,7 @@ class TasksControllerTest extends TestCase
      * Test add method
      *
      * @return void
+     * @uses \App\Controller\TasksController::add()
      */
     public function testAdd(): void
     {
@@ -63,6 +67,7 @@ class TasksControllerTest extends TestCase
      * Test edit method
      *
      * @return void
+     * @uses \App\Controller\TasksController::edit()
      */
     public function testEdit(): void
     {
@@ -73,6 +78,7 @@ class TasksControllerTest extends TestCase
      * Test delete method
      *
      * @return void
+     * @uses \App\Controller\TasksController::delete()
      */
     public function testDelete(): void
     {

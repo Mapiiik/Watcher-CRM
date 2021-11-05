@@ -16,7 +16,7 @@ class ContractsTableTest extends TestCase
      *
      * @var \App\Model\Table\ContractsTable
      */
-    protected $Contracts;
+    protected $ContractsTable;
 
     /**
      * Fixtures
@@ -46,7 +46,7 @@ class ContractsTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Contracts') ? [] : ['className' => ContractsTable::class];
-        $this->Contracts = $this->getTableLocator()->get('Contracts', $config);
+        $this->ContractsTable = $this->getTableLocator()->get('Contracts', $config);
     }
 
     /**
@@ -56,7 +56,7 @@ class ContractsTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Contracts);
+        unset($this->ContractsTable);
 
         parent::tearDown();
     }
@@ -65,6 +65,7 @@ class ContractsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
+     * @uses \App\Model\Table\ContractsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -75,6 +76,7 @@ class ContractsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
+     * @uses \App\Model\Table\ContractsTable::buildRules()
      */
     public function testBuildRules(): void
     {

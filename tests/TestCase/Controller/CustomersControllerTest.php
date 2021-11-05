@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
+use App\Controller\CustomersController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -41,6 +42,7 @@ class CustomersControllerTest extends TestCase
      * Test index method
      *
      * @return void
+     * @uses \App\Controller\CustomersController::index()
      */
     public function testIndex(): void
     {
@@ -51,6 +53,7 @@ class CustomersControllerTest extends TestCase
      * Test view method
      *
      * @return void
+     * @uses \App\Controller\CustomersController::view()
      */
     public function testView(): void
     {
@@ -61,6 +64,7 @@ class CustomersControllerTest extends TestCase
      * Test add method
      *
      * @return void
+     * @uses \App\Controller\CustomersController::add()
      */
     public function testAdd(): void
     {
@@ -71,6 +75,7 @@ class CustomersControllerTest extends TestCase
      * Test edit method
      *
      * @return void
+     * @uses \App\Controller\CustomersController::edit()
      */
     public function testEdit(): void
     {
@@ -81,8 +86,20 @@ class CustomersControllerTest extends TestCase
      * Test delete method
      *
      * @return void
+     * @uses \App\Controller\CustomersController::delete()
      */
     public function testDelete(): void
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test print method
+     *
+     * @return void
+     * @uses \App\Controller\CustomersController::print()
+     */
+    public function testPrint(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

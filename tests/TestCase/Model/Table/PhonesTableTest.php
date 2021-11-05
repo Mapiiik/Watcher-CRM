@@ -16,7 +16,7 @@ class PhonesTableTest extends TestCase
      *
      * @var \App\Model\Table\PhonesTable
      */
-    protected $Phones;
+    protected $PhonesTable;
 
     /**
      * Fixtures
@@ -37,7 +37,7 @@ class PhonesTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Phones') ? [] : ['className' => PhonesTable::class];
-        $this->Phones = $this->getTableLocator()->get('Phones', $config);
+        $this->PhonesTable = $this->getTableLocator()->get('Phones', $config);
     }
 
     /**
@@ -47,7 +47,7 @@ class PhonesTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Phones);
+        unset($this->PhonesTable);
 
         parent::tearDown();
     }
@@ -56,6 +56,7 @@ class PhonesTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
+     * @uses \App\Model\Table\PhonesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -66,8 +67,20 @@ class PhonesTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
+     * @uses \App\Model\Table\PhonesTable::buildRules()
      */
     public function testBuildRules(): void
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test beforeMarshal method
+     *
+     * @return void
+     * @uses \App\Model\Table\PhonesTable::beforeMarshal()
+     */
+    public function testBeforeMarshal(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

@@ -16,7 +16,7 @@ class TaxesTableTest extends TestCase
      *
      * @var \App\Model\Table\TaxesTable
      */
-    protected $Taxes;
+    protected $TaxesTable;
 
     /**
      * Fixtures
@@ -36,7 +36,7 @@ class TaxesTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Taxes') ? [] : ['className' => TaxesTable::class];
-        $this->Taxes = $this->getTableLocator()->get('Taxes', $config);
+        $this->TaxesTable = $this->getTableLocator()->get('Taxes', $config);
     }
 
     /**
@@ -46,7 +46,7 @@ class TaxesTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Taxes);
+        unset($this->TaxesTable);
 
         parent::tearDown();
     }
@@ -55,6 +55,7 @@ class TaxesTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
+     * @uses \App\Model\Table\TaxesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {

@@ -1,28 +1,14 @@
 <?php
 declare(strict_types=1);
 
-/**
- * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice
- *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- * @link          https://cakephp.org CakePHP(tm) Project
- * @since         1.2.0
- * @license       https://opensource.org/licenses/mit-license.php MIT License
- */
 namespace App\Test\TestCase\Controller;
 
-use Cake\Core\Configure;
-use Cake\ORM\TableRegistry;
+use App\Controller\PagesController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
 /**
- * PagesControllerTest class
+ * App\Controller\PagesController Test Case
  *
  * @uses \App\Controller\PagesController
  */
@@ -31,124 +17,22 @@ class PagesControllerTest extends TestCase
     use IntegrationTestTrait;
 
     /**
-     * login method
+     * Fixtures
      *
-     * @return void
+     * @var array
      */
-    protected function login()
-    {
-        $users = TableRegistry::getTableLocator()->get('Users');
-
-        $user = $users->newEmptyEntity();
-        $user->username = 'tester';
-        $user->role = 'admin';
-        $user->active = true;
-
-        $this->session(['Auth' => $user]);
-    }
+    protected $fixtures = [
+        'app.Pages',
+    ];
 
     /**
-     * testMultipleGet method
+     * Test display method
      *
      * @return void
+     * @uses \App\Controller\PagesController::display()
      */
-    public function testMultipleGet()
+    public function testDisplay(): void
     {
-        $this->login();
-        $this->get('/');
-        $this->assertResponseOk();
-        $this->get('/');
-        $this->assertResponseOk();
-    }
-
-    /**
-     * testDisplay method
-     *
-     * @return void
-     */
-    public function testDisplay()
-    {
-        $this->login();
-        $this->get('/pages/home');
-        $this->assertResponseOk();
-        $this->assertResponseContains('CakePHP');
-        $this->assertResponseContains('<html>');
-    }
-
-    /**
-     * Test that missing template renders 404 page in production
-     *
-     * @return void
-     */
-    public function testMissingTemplate()
-    {
-        $this->login();
-
-        Configure::write('debug', false);
-        $this->get('/pages/not_existing');
-
-        $this->assertResponseError();
-        $this->assertResponseContains('Error');
-    }
-
-    /**
-     * Test that missing template in debug mode renders missing_template error page
-     *
-     * @return void
-     */
-    public function testMissingTemplateInDebug()
-    {
-        $this->login();
-
-        Configure::write('debug', true);
-        $this->get('/pages/not_existing');
-
-        $this->assertResponseFailure();
-        $this->assertResponseContains('Missing Template');
-        $this->assertResponseContains('Stacktrace');
-        $this->assertResponseContains('not_existing.php');
-    }
-
-    /**
-     * Test directory traversal protection
-     *
-     * @return void
-     */
-    public function testDirectoryTraversalProtection()
-    {
-        $this->login();
-        $this->get('/pages/../Layout/ajax');
-        $this->assertResponseCode(403);
-        $this->assertResponseContains('Forbidden');
-    }
-
-    /**
-     * Test that CSRF protection is applied to page rendering.
-     *
-     * @return void
-     */
-    public function testCsrfAppliedError()
-    {
-        $this->login();
-        $this->post('/pages/home', ['hello' => 'world']);
-
-        $this->assertResponseCode(403);
-        $this->assertResponseContains('CSRF');
-    }
-
-    /**
-     * Test that CSRF protection is applied to page rendering.
-     *
-     * @return void
-     */
-    public function testCsrfAppliedOk()
-    {
-        $this->login();
-        $this->enableCsrfToken();
-        $this->post('/pages/home', ['hello' => 'world']);
-
-        //$this->assertResponseCode(200);
-        $this->assertResponseCode(400); //bad request from FormProtection
-        $this->assertResponseContains('CakePHP');
+        $this->markTestIncomplete('Not implemented yet.');
     }
 }

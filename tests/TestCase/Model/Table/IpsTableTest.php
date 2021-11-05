@@ -16,7 +16,7 @@ class IpsTableTest extends TestCase
      *
      * @var \App\Model\Table\IpsTable
      */
-    protected $Ips;
+    protected $IpsTable;
 
     /**
      * Fixtures
@@ -38,7 +38,7 @@ class IpsTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Ips') ? [] : ['className' => IpsTable::class];
-        $this->Ips = $this->getTableLocator()->get('Ips', $config);
+        $this->IpsTable = $this->getTableLocator()->get('Ips', $config);
     }
 
     /**
@@ -48,7 +48,7 @@ class IpsTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Ips);
+        unset($this->IpsTable);
 
         parent::tearDown();
     }
@@ -57,6 +57,7 @@ class IpsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
+     * @uses \App\Model\Table\IpsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -67,6 +68,7 @@ class IpsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
+     * @uses \App\Model\Table\IpsTable::buildRules()
      */
     public function testBuildRules(): void
     {

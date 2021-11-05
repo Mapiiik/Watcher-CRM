@@ -16,7 +16,7 @@ class ServiceTypesTableTest extends TestCase
      *
      * @var \App\Model\Table\ServiceTypesTable
      */
-    protected $ServiceTypes;
+    protected $ServiceTypesTable;
 
     /**
      * Fixtures
@@ -39,7 +39,7 @@ class ServiceTypesTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('ServiceTypes') ? [] : ['className' => ServiceTypesTable::class];
-        $this->ServiceTypes = $this->getTableLocator()->get('ServiceTypes', $config);
+        $this->ServiceTypesTable = $this->getTableLocator()->get('ServiceTypes', $config);
     }
 
     /**
@@ -49,7 +49,7 @@ class ServiceTypesTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->ServiceTypes);
+        unset($this->ServiceTypesTable);
 
         parent::tearDown();
     }
@@ -58,6 +58,7 @@ class ServiceTypesTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
+     * @uses \App\Model\Table\ServiceTypesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {

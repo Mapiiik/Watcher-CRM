@@ -16,7 +16,7 @@ class TaskStatesTableTest extends TestCase
      *
      * @var \App\Model\Table\TaskStatesTable
      */
-    protected $TaskStates;
+    protected $TaskStatesTable;
 
     /**
      * Fixtures
@@ -37,7 +37,7 @@ class TaskStatesTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('TaskStates') ? [] : ['className' => TaskStatesTable::class];
-        $this->TaskStates = $this->getTableLocator()->get('TaskStates', $config);
+        $this->TaskStatesTable = $this->getTableLocator()->get('TaskStates', $config);
     }
 
     /**
@@ -47,7 +47,7 @@ class TaskStatesTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->TaskStates);
+        unset($this->TaskStatesTable);
 
         parent::tearDown();
     }
@@ -56,6 +56,7 @@ class TaskStatesTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
+     * @uses \App\Model\Table\TaskStatesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {

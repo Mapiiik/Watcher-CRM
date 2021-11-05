@@ -16,7 +16,7 @@ class QueuesTableTest extends TestCase
      *
      * @var \App\Model\Table\QueuesTable
      */
-    protected $Queues;
+    protected $QueuesTable;
 
     /**
      * Fixtures
@@ -38,7 +38,7 @@ class QueuesTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Queues') ? [] : ['className' => QueuesTable::class];
-        $this->Queues = $this->getTableLocator()->get('Queues', $config);
+        $this->QueuesTable = $this->getTableLocator()->get('Queues', $config);
     }
 
     /**
@@ -48,7 +48,7 @@ class QueuesTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Queues);
+        unset($this->QueuesTable);
 
         parent::tearDown();
     }
@@ -57,6 +57,7 @@ class QueuesTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
+     * @uses \App\Model\Table\QueuesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -67,6 +68,7 @@ class QueuesTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
+     * @uses \App\Model\Table\QueuesTable::buildRules()
      */
     public function testBuildRules(): void
     {

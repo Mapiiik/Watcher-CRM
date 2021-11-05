@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
+use App\Controller\TaxesController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -28,6 +29,7 @@ class TaxesControllerTest extends TestCase
      * Test index method
      *
      * @return void
+     * @uses \App\Controller\TaxesController::index()
      */
     public function testIndex(): void
     {
@@ -38,6 +40,7 @@ class TaxesControllerTest extends TestCase
      * Test view method
      *
      * @return void
+     * @uses \App\Controller\TaxesController::view()
      */
     public function testView(): void
     {
@@ -48,6 +51,7 @@ class TaxesControllerTest extends TestCase
      * Test add method
      *
      * @return void
+     * @uses \App\Controller\TaxesController::add()
      */
     public function testAdd(): void
     {
@@ -58,6 +62,7 @@ class TaxesControllerTest extends TestCase
      * Test edit method
      *
      * @return void
+     * @uses \App\Controller\TaxesController::edit()
      */
     public function testEdit(): void
     {
@@ -68,6 +73,7 @@ class TaxesControllerTest extends TestCase
      * Test delete method
      *
      * @return void
+     * @uses \App\Controller\TaxesController::delete()
      */
     public function testDelete(): void
     {

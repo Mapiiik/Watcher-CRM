@@ -16,7 +16,7 @@ class SoldEquipmentsTableTest extends TestCase
      *
      * @var \App\Model\Table\SoldEquipmentsTable
      */
-    protected $SoldEquipments;
+    protected $SoldEquipmentsTable;
 
     /**
      * Fixtures
@@ -39,7 +39,7 @@ class SoldEquipmentsTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('SoldEquipments') ? [] : ['className' => SoldEquipmentsTable::class];
-        $this->SoldEquipments = $this->getTableLocator()->get('SoldEquipments', $config);
+        $this->SoldEquipmentsTable = $this->getTableLocator()->get('SoldEquipments', $config);
     }
 
     /**
@@ -49,7 +49,7 @@ class SoldEquipmentsTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->SoldEquipments);
+        unset($this->SoldEquipmentsTable);
 
         parent::tearDown();
     }
@@ -58,6 +58,7 @@ class SoldEquipmentsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
+     * @uses \App\Model\Table\SoldEquipmentsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -68,6 +69,7 @@ class SoldEquipmentsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
+     * @uses \App\Model\Table\SoldEquipmentsTable::buildRules()
      */
     public function testBuildRules(): void
     {

@@ -16,7 +16,7 @@ class LoginsTableTest extends TestCase
      *
      * @var \App\Model\Table\LoginsTable
      */
-    protected $Logins;
+    protected $LoginsTable;
 
     /**
      * Fixtures
@@ -37,7 +37,7 @@ class LoginsTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Logins') ? [] : ['className' => LoginsTable::class];
-        $this->Logins = $this->getTableLocator()->get('Logins', $config);
+        $this->LoginsTable = $this->getTableLocator()->get('Logins', $config);
     }
 
     /**
@@ -47,7 +47,7 @@ class LoginsTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Logins);
+        unset($this->LoginsTable);
 
         parent::tearDown();
     }
@@ -56,6 +56,7 @@ class LoginsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
+     * @uses \App\Model\Table\LoginsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -66,6 +67,7 @@ class LoginsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
+     * @uses \App\Model\Table\LoginsTable::buildRules()
      */
     public function testBuildRules(): void
     {

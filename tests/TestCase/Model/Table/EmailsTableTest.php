@@ -16,7 +16,7 @@ class EmailsTableTest extends TestCase
      *
      * @var \App\Model\Table\EmailsTable
      */
-    protected $Emails;
+    protected $EmailsTable;
 
     /**
      * Fixtures
@@ -37,7 +37,7 @@ class EmailsTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Emails') ? [] : ['className' => EmailsTable::class];
-        $this->Emails = $this->getTableLocator()->get('Emails', $config);
+        $this->EmailsTable = $this->getTableLocator()->get('Emails', $config);
     }
 
     /**
@@ -47,7 +47,7 @@ class EmailsTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Emails);
+        unset($this->EmailsTable);
 
         parent::tearDown();
     }
@@ -56,6 +56,7 @@ class EmailsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
+     * @uses \App\Model\Table\EmailsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -66,6 +67,7 @@ class EmailsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
+     * @uses \App\Model\Table\EmailsTable::buildRules()
      */
     public function testBuildRules(): void
     {

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
+use App\Controller\BrokeragesController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -30,6 +31,7 @@ class BrokeragesControllerTest extends TestCase
      * Test index method
      *
      * @return void
+     * @uses \App\Controller\BrokeragesController::index()
      */
     public function testIndex(): void
     {
@@ -40,6 +42,7 @@ class BrokeragesControllerTest extends TestCase
      * Test view method
      *
      * @return void
+     * @uses \App\Controller\BrokeragesController::view()
      */
     public function testView(): void
     {
@@ -50,6 +53,7 @@ class BrokeragesControllerTest extends TestCase
      * Test add method
      *
      * @return void
+     * @uses \App\Controller\BrokeragesController::add()
      */
     public function testAdd(): void
     {
@@ -60,6 +64,7 @@ class BrokeragesControllerTest extends TestCase
      * Test edit method
      *
      * @return void
+     * @uses \App\Controller\BrokeragesController::edit()
      */
     public function testEdit(): void
     {
@@ -70,6 +75,7 @@ class BrokeragesControllerTest extends TestCase
      * Test delete method
      *
      * @return void
+     * @uses \App\Controller\BrokeragesController::delete()
      */
     public function testDelete(): void
     {

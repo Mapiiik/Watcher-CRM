@@ -16,7 +16,7 @@ class RemovedIpsTableTest extends TestCase
      *
      * @var \App\Model\Table\RemovedIpsTable
      */
-    protected $RemovedIps;
+    protected $RemovedIpsTable;
 
     /**
      * Fixtures
@@ -38,7 +38,7 @@ class RemovedIpsTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('RemovedIps') ? [] : ['className' => RemovedIpsTable::class];
-        $this->RemovedIps = $this->getTableLocator()->get('RemovedIps', $config);
+        $this->RemovedIpsTable = $this->getTableLocator()->get('RemovedIps', $config);
     }
 
     /**
@@ -48,7 +48,7 @@ class RemovedIpsTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->RemovedIps);
+        unset($this->RemovedIpsTable);
 
         parent::tearDown();
     }
@@ -57,6 +57,7 @@ class RemovedIpsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
+     * @uses \App\Model\Table\RemovedIpsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -67,6 +68,7 @@ class RemovedIpsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
+     * @uses \App\Model\Table\RemovedIpsTable::buildRules()
      */
     public function testBuildRules(): void
     {

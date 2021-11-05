@@ -16,7 +16,7 @@ class ServicesTableTest extends TestCase
      *
      * @var \App\Model\Table\ServicesTable
      */
-    protected $Services;
+    protected $ServicesTable;
 
     /**
      * Fixtures
@@ -39,7 +39,7 @@ class ServicesTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Services') ? [] : ['className' => ServicesTable::class];
-        $this->Services = $this->getTableLocator()->get('Services', $config);
+        $this->ServicesTable = $this->getTableLocator()->get('Services', $config);
     }
 
     /**
@@ -49,7 +49,7 @@ class ServicesTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Services);
+        unset($this->ServicesTable);
 
         parent::tearDown();
     }
@@ -58,6 +58,7 @@ class ServicesTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
+     * @uses \App\Model\Table\ServicesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -68,6 +69,7 @@ class ServicesTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
+     * @uses \App\Model\Table\ServicesTable::buildRules()
      */
     public function testBuildRules(): void
     {

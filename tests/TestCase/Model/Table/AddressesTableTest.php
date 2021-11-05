@@ -16,7 +16,7 @@ class AddressesTableTest extends TestCase
      *
      * @var \App\Model\Table\AddressesTable
      */
-    protected $Addresses;
+    protected $AddressesTable;
 
     /**
      * Fixtures
@@ -38,7 +38,7 @@ class AddressesTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Addresses') ? [] : ['className' => AddressesTable::class];
-        $this->Addresses = $this->getTableLocator()->get('Addresses', $config);
+        $this->AddressesTable = $this->getTableLocator()->get('Addresses', $config);
     }
 
     /**
@@ -48,7 +48,7 @@ class AddressesTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Addresses);
+        unset($this->AddressesTable);
 
         parent::tearDown();
     }
@@ -57,6 +57,7 @@ class AddressesTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
+     * @uses \App\Model\Table\AddressesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -67,6 +68,7 @@ class AddressesTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
+     * @uses \App\Model\Table\AddressesTable::buildRules()
      */
     public function testBuildRules(): void
     {

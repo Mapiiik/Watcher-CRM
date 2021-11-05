@@ -16,7 +16,7 @@ class CustomersTableTest extends TestCase
      *
      * @var \App\Model\Table\CustomersTable
      */
-    protected $Customers;
+    protected $CustomersTable;
 
     /**
      * Fixtures
@@ -49,7 +49,7 @@ class CustomersTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Customers') ? [] : ['className' => CustomersTable::class];
-        $this->Customers = $this->getTableLocator()->get('Customers', $config);
+        $this->CustomersTable = $this->getTableLocator()->get('Customers', $config);
     }
 
     /**
@@ -59,7 +59,7 @@ class CustomersTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Customers);
+        unset($this->CustomersTable);
 
         parent::tearDown();
     }
@@ -68,6 +68,7 @@ class CustomersTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
+     * @uses \App\Model\Table\CustomersTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -78,6 +79,7 @@ class CustomersTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
+     * @uses \App\Model\Table\CustomersTable::buildRules()
      */
     public function testBuildRules(): void
     {

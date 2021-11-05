@@ -16,7 +16,7 @@ class LabelsTableTest extends TestCase
      *
      * @var \App\Model\Table\LabelsTable
      */
-    protected $Labels;
+    protected $LabelsTable;
 
     /**
      * Fixtures
@@ -37,7 +37,7 @@ class LabelsTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Labels') ? [] : ['className' => LabelsTable::class];
-        $this->Labels = $this->getTableLocator()->get('Labels', $config);
+        $this->LabelsTable = $this->getTableLocator()->get('Labels', $config);
     }
 
     /**
@@ -47,7 +47,7 @@ class LabelsTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Labels);
+        unset($this->LabelsTable);
 
         parent::tearDown();
     }
@@ -56,6 +56,7 @@ class LabelsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
+     * @uses \App\Model\Table\LabelsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -66,6 +67,7 @@ class LabelsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
+     * @uses \App\Model\Table\LabelsTable::buildRules()
      */
     public function testBuildRules(): void
     {

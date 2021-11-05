@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
+use App\Controller\QueuesController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -30,6 +31,7 @@ class QueuesControllerTest extends TestCase
      * Test index method
      *
      * @return void
+     * @uses \App\Controller\QueuesController::index()
      */
     public function testIndex(): void
     {
@@ -40,6 +42,7 @@ class QueuesControllerTest extends TestCase
      * Test view method
      *
      * @return void
+     * @uses \App\Controller\QueuesController::view()
      */
     public function testView(): void
     {
@@ -50,6 +53,7 @@ class QueuesControllerTest extends TestCase
      * Test add method
      *
      * @return void
+     * @uses \App\Controller\QueuesController::add()
      */
     public function testAdd(): void
     {
@@ -60,6 +64,7 @@ class QueuesControllerTest extends TestCase
      * Test edit method
      *
      * @return void
+     * @uses \App\Controller\QueuesController::edit()
      */
     public function testEdit(): void
     {
@@ -70,6 +75,7 @@ class QueuesControllerTest extends TestCase
      * Test delete method
      *
      * @return void
+     * @uses \App\Controller\QueuesController::delete()
      */
     public function testDelete(): void
     {

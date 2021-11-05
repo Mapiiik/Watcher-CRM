@@ -16,7 +16,7 @@ class TasksTableTest extends TestCase
      *
      * @var \App\Model\Table\TasksTable
      */
-    protected $Tasks;
+    protected $TasksTable;
 
     /**
      * Fixtures
@@ -41,7 +41,7 @@ class TasksTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Tasks') ? [] : ['className' => TasksTable::class];
-        $this->Tasks = $this->getTableLocator()->get('Tasks', $config);
+        $this->TasksTable = $this->getTableLocator()->get('Tasks', $config);
     }
 
     /**
@@ -51,7 +51,7 @@ class TasksTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Tasks);
+        unset($this->TasksTable);
 
         parent::tearDown();
     }
@@ -60,6 +60,7 @@ class TasksTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
+     * @uses \App\Model\Table\TasksTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -70,6 +71,7 @@ class TasksTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
+     * @uses \App\Model\Table\TasksTable::buildRules()
      */
     public function testBuildRules(): void
     {

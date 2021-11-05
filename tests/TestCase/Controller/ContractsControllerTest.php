@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
+use App\Controller\ContractsController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -38,6 +39,7 @@ class ContractsControllerTest extends TestCase
      * Test index method
      *
      * @return void
+     * @uses \App\Controller\ContractsController::index()
      */
     public function testIndex(): void
     {
@@ -48,6 +50,7 @@ class ContractsControllerTest extends TestCase
      * Test view method
      *
      * @return void
+     * @uses \App\Controller\ContractsController::view()
      */
     public function testView(): void
     {
@@ -58,6 +61,7 @@ class ContractsControllerTest extends TestCase
      * Test add method
      *
      * @return void
+     * @uses \App\Controller\ContractsController::add()
      */
     public function testAdd(): void
     {
@@ -68,6 +72,7 @@ class ContractsControllerTest extends TestCase
      * Test edit method
      *
      * @return void
+     * @uses \App\Controller\ContractsController::edit()
      */
     public function testEdit(): void
     {
@@ -78,8 +83,20 @@ class ContractsControllerTest extends TestCase
      * Test delete method
      *
      * @return void
+     * @uses \App\Controller\ContractsController::delete()
      */
     public function testDelete(): void
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test print method
+     *
+     * @return void
+     * @uses \App\Controller\ContractsController::print()
+     */
+    public function testPrint(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

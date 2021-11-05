@@ -16,7 +16,7 @@ class CountriesTableTest extends TestCase
      *
      * @var \App\Model\Table\CountriesTable
      */
-    protected $Countries;
+    protected $CountriesTable;
 
     /**
      * Fixtures
@@ -37,7 +37,7 @@ class CountriesTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Countries') ? [] : ['className' => CountriesTable::class];
-        $this->Countries = $this->getTableLocator()->get('Countries', $config);
+        $this->CountriesTable = $this->getTableLocator()->get('Countries', $config);
     }
 
     /**
@@ -47,7 +47,7 @@ class CountriesTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Countries);
+        unset($this->CountriesTable);
 
         parent::tearDown();
     }
@@ -56,6 +56,7 @@ class CountriesTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
+     * @uses \App\Model\Table\CountriesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -66,6 +67,7 @@ class CountriesTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
+     * @uses \App\Model\Table\CountriesTable::buildRules()
      */
     public function testBuildRules(): void
     {
