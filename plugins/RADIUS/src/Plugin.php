@@ -43,11 +43,25 @@ class Plugin extends BasePlugin
             function (RouteBuilder $builder) {
                 $builder->connect('/', ['controller' => 'Accounts', 'action' => 'index']);
 
-                $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}', ['action' => 'index'])->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+']);
-                $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/{action}/*', [])->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+']);
+                $builder->connect(
+                    '/customers/{customer_id}/contracts/{contract_id}/{controller}',
+                    ['action' => 'index']
+                )->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+']);
 
-                $builder->connect('/customers/{customer_id}/{controller}', ['action' => 'index'])->setPatterns(['customer_id' => '[0-9]+']);
-                $builder->connect('/customers/{customer_id}/{controller}/{action}/*', [])->setPatterns(['customer_id' => '[0-9]+', 'id' => '[0-9]+']);
+                $builder->connect(
+                    '/customers/{customer_id}/contracts/{contract_id}/{controller}/{action}/*',
+                    []
+                )->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+']);
+
+                $builder->connect(
+                    '/customers/{customer_id}/{controller}',
+                    ['action' => 'index']
+                )->setPatterns(['customer_id' => '[0-9]+']);
+
+                $builder->connect(
+                    '/customers/{customer_id}/{controller}/{action}/*',
+                    []
+                )->setPatterns(['customer_id' => '[0-9]+', 'id' => '[0-9]+']);
 
                 $builder->fallbacks();
             }

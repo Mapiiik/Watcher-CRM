@@ -11,7 +11,6 @@ use Cake\Validation\Validator;
  * Radpostauth Model
  *
  * @property \RADIUS\Model\Table\AccountsTable&\Cake\ORM\Association\BelongsTo $Accounts
- *
  * @method \RADIUS\Model\Entity\Radpostauth newEmptyEntity()
  * @method \RADIUS\Model\Entity\Radpostauth newEntity(array $data, array $options = [])
  * @method \RADIUS\Model\Entity\Radpostauth[] newEntities(array $data, array $options = [])

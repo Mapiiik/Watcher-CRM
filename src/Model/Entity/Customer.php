@@ -297,7 +297,7 @@ class Customer extends Entity
      *
      * @return bool
      */
-    function _getIcVerified(): bool
+    protected function _getIcVerified(): bool
     {
         $ic = $this->ic;
 

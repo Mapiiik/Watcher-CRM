@@ -84,8 +84,12 @@ class AppController extends Controller
         }
     }
 
-    # App > beforeFilter
-
+    /**
+     * Global beforeFilter
+     *
+     * @param \Cake\Event\EventInterface $event An Event instance
+     * @return \Cake\Http\Response|null|void
+     */
     public function beforeFilter(EventInterface $event)
     {
         # We check if we have a language set

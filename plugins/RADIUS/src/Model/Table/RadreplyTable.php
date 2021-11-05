@@ -11,7 +11,6 @@ use Cake\Validation\Validator;
  * Radreply Model
  *
  * @property \RADIUS\Model\Table\AccountsTable&\Cake\ORM\Association\BelongsTo $Accounts
- *
  * @method \RADIUS\Model\Entity\Radreply newEmptyEntity()
  * @method \RADIUS\Model\Entity\Radreply newEntity(array $data, array $options = [])
  * @method \RADIUS\Model\Entity\Radreply[] newEntities(array $data, array $options = [])

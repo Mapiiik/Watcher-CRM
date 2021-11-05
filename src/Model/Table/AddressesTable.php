@@ -35,7 +35,7 @@ class AddressesTable extends Table
      * @var array<string>
      */
     public $types = [];
-    
+
     /**
      * Initialize method
      *

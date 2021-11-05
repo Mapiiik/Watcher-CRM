@@ -69,7 +69,7 @@ class Login extends Entity
         if (strlen($password) > 0) {
             return Security::hash($password, 'sha1');
         }
-        
+
         return null;
     }
 }

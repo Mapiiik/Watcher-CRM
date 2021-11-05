@@ -107,7 +107,7 @@ class Contract extends Entity
         if (isset($this->service_type->activation_fee)) {
             return $this->service_type->activation_fee;
         }
-        
+
         return null;
     }
 
@@ -120,7 +120,7 @@ class Contract extends Entity
         if (isset($this->service_type->activation_fee_with_obligation)) {
             return $this->service_type->activation_fee_with_obligation;
         }
-        
+
         return null;
     }
 

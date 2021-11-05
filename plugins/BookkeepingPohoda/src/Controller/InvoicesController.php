@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace BookkeepingPohoda\Controller;
 
+use Cake\Collection\CollectionInterface;
 use Cake\I18n\FrozenDate;
-use Cake\ORM\Entity;
 use Cake\ORM\Query;
 use stdClass;
 
@@ -113,6 +113,13 @@ class InvoicesController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
+    /**
+     * get Query with billing data for selected month
+     *
+     * @param \Cake\I18n\FrozenDate $invoiced_month Month for billing
+     * @param int $tax_rate_id month Id of tax rate for billing
+     * @return \Cake\ORM\Query
+     */
     private function getQueryForBillingDataForMonth(FrozenDate $invoiced_month, int $tax_rate_id): Query
     {
         return $this->getTableLocator()->get('Customers')
@@ -125,14 +132,14 @@ class InvoicesController extends AppController
                             ->order('Contracts.id')
                             ->where([
 /* ignore until resolved how to manage new contracts with termination
-                                'OR' => 
-                                [
+                                'OR' => [
                                     'Contracts.valid_from IS NULL',
                                     'Contracts.valid_from <=' => $invoiced_month->lastOfMonth(), //last day of month
                                 ],
                             ])
                             ->andWhere([
- */                               'OR' => [
+*/
+                                'OR' => [
                                     'Contracts.valid_until IS NULL',
                                     'Contracts.valid_until >=' => $invoiced_month->firstOfMonth(), //first day of month
                                 ],
@@ -153,13 +160,18 @@ class InvoicesController extends AppController
                                                 'Billings.billing_until >=' => $invoiced_month->firstOfMonth(), //first day of month
                                             ],
                                         ])
-                                        ->formatResults(function (\Cake\Collection\CollectionInterface $billings) use ($invoiced_month) {
+                                        ->formatResults(
+                                            function (CollectionInterface $billings) use ($invoiced_month) {
                                                 return $billings->map(function ($billing) use ($invoiced_month) {
-                                                    $billing['period_total'] = $billing->periodTotal($invoiced_month->firstOfMonth(), $invoiced_month->lastOfMonth());
+                                                    $billing['period_total'] = $billing->periodTotal(
+                                                        $invoiced_month->firstOfMonth(),
+                                                        $invoiced_month->lastOfMonth()
+                                                    );
 
                                                     return $billing;
                                                 });
-                                        })
+                                            }
+                                        )
                                         ->contain(['Services']);
                             });
                 });
@@ -199,8 +211,8 @@ class InvoicesController extends AppController
                     }
 
                     $item = new stdClass();
-                    $item->period_total = (isset($parsed_line[1])) ? trim($parsed_line[1]) : '';
-                    $item->name = (isset($parsed_line[2])) ? trim($parsed_line[2]) : '';
+                    $item->period_total = isset($parsed_line[1]) ? trim($parsed_line[1]) : '';
+                    $item->name = isset($parsed_line[2]) ? trim($parsed_line[2]) : '';
 
                     $verification_data[$customer_number]['csv']['total'] += $item->period_total;
                     $verification_data[$customer_number]['csv']['items'][] = $item;
@@ -250,7 +262,14 @@ class InvoicesController extends AppController
             if (isset($verification_data) && !empty($verification_data)) {
                 $this->set('verification_data', $verification_data);
             } else {
-                return $this->redirect(['action' => 'generate', '_ext' => 'dbf' , '?' => ['invoiced_month' => $invoiced_month->i18nFormat('yyyy-MM'), 'tax_rate_id' => $tax_rate_id]]);
+                return $this->redirect([
+                    'action' => 'generate',
+                    '_ext' => 'dbf',
+                    '?' => [
+                        'invoiced_month' => $invoiced_month->i18nFormat('yyyy-MM'),
+                        'tax_rate_id' => $tax_rate_id,
+                    ],
+                ]);
             }
         }
 
@@ -262,10 +281,14 @@ class InvoicesController extends AppController
             // DO THIS BETTER - REVERSE CHARGE
             if ($tax_rate_id == 5) {
                 $reverse_charge = true;
-                $innerfix = '8';
+                $prefix = 10000000 * ($invoiced_month->year - 1980)
+                        + 1000000 * 8
+                        + 10000 * $invoiced_month->month;
             } else {
                 $reverse_charge = false;
-                $innerfix = '9';
+                $prefix = 10000000 * ($invoiced_month->year - 1980)
+                        + 1000000 * 9
+                        + 10000 * $invoiced_month->month;
             }
 
             // invoice number index
@@ -286,12 +309,13 @@ class InvoicesController extends AppController
                     foreach ($contract->billings as $billing) {
                         if ($billing->separate_invoice) {
                             $invoice = $this->Invoices->newEmptyEntity();
-                            $invoice->number = intval(sprintf('%02d', $invoiced_month->year - 1980) . $innerfix . $invoiced_month->month . sprintf('%04d', $index));
+                            $invoice->number = $prefix + $index;
                             $invoice->customer = $customer;
                             $invoice->variable_symbol = $customer->number;
                             $invoice->creation_date = $invoiced_month->lastOfMonth();
                             $invoice->due_date = $invoiced_month->lastOfMonth()->addDays(10);
-                            $invoice->text = $billing->name . " - {$invoiced_month->month}/{$invoiced_month->year}";
+                            $invoice->text = $billing->name
+                                . ' - ' . $invoiced_month->i18nFormat('MM/yyyy');
                             $invoice->internal_note = 'separate';
                             $invoice->total = $billing->period_total;
                             $invoice->items[] = $billing;
@@ -306,12 +330,13 @@ class InvoicesController extends AppController
 
                     if ($contract->separate_invoice) {
                         $invoice = $this->Invoices->newEmptyEntity();
-                        $invoice->number = intval(sprintf('%02d', $invoiced_month->year - 1980) . $innerfix . $invoiced_month->month . sprintf('%04d', $index));
+                        $invoice->number = $prefix + $index;
                         $invoice->customer = $customer;
                         $invoice->variable_symbol = $customer->number;
                         $invoice->creation_date = $invoiced_month->lastOfMonth();
                         $invoice->due_date = $invoiced_month->lastOfMonth()->addDays(10);
-                        $invoice->text = "Faktura za poskytované služby dle smlouvy {$contract->number} - {$invoiced_month->month}/{$invoiced_month->year}";
+                        $invoice->text = 'Faktura za poskytované služby dle smlouvy ' . $contract->number
+                            . ' - ' . $invoiced_month->i18nFormat('MM/yyyy');
                         $invoice->internal_note = 'separate';
                         $invoice->total = $billing_contract['total'];
                         $invoice->items = $billing_contract['items'];
@@ -328,12 +353,13 @@ class InvoicesController extends AppController
 
                 if ($billing_customer['total'] <> 0) {
                     $invoice = $this->Invoices->newEmptyEntity();
-                    $invoice->number = intval(sprintf('%02d', $invoiced_month->year - 1980) . $innerfix . $invoiced_month->month . sprintf('%04d', $index));
+                    $invoice->number = $prefix + $index;
                     $invoice->customer = $customer;
                     $invoice->variable_symbol = $customer->number;
                     $invoice->creation_date = $invoiced_month->lastOfMonth();
                     $invoice->due_date = $invoiced_month->lastOfMonth()->addDays(10);
-                    $invoice->text = "Faktura za poskytované služby dle smlouvy - {$invoiced_month->month}/{$invoiced_month->year}";
+                    $invoice->text = 'Faktura za poskytované služby dle smlouvy'
+                        . ' - ' . $invoiced_month->i18nFormat('MM/yyyy');
                     $invoice->total = $billing_customer['total'];
                     $invoice->items = $billing_customer['items'];
                     $invoices[] = $invoice;

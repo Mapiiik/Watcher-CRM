@@ -258,9 +258,9 @@ class ContractsController extends AppController
 
                         return $this->redirect(['action' => 'edit', $id]);
                     }
-                    
+
                     $technical_details = new stdClass();
-                    
+
                     if (!empty($query['ssid'])) {
                         $technical_details->ssid = $query['ssid'];
                     }
@@ -270,7 +270,7 @@ class ContractsController extends AppController
                     if (!empty($query['radius_password'])) {
                         $technical_details->radius_password = $query['radius_password'];
                     }
-                    
+
                     $this->set('technical_details', $technical_details);
                     break;
 

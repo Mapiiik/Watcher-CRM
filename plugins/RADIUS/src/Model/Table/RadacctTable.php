@@ -9,9 +9,8 @@ use Cake\Validation\Validator;
 
 /**
  * Radacct Model
- * 
- * @property \RADIUS\Model\Table\AccountsTable&\Cake\ORM\Association\BelongsTo $Accounts
  *
+ * @property \RADIUS\Model\Table\AccountsTable&\Cake\ORM\Association\BelongsTo $Accounts
  * @method \RADIUS\Model\Entity\Radacct newEmptyEntity()
  * @method \RADIUS\Model\Entity\Radacct newEntity(array $data, array $options = [])
  * @method \RADIUS\Model\Entity\Radacct[] newEntities(array $data, array $options = [])
