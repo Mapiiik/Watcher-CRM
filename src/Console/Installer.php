@@ -64,10 +64,6 @@ class Installer
         static::setFolderPermissions($rootDir, $io);
         static::setSecuritySalt($rootDir, $io);
 
-        $migrations = new Migrations();
-        $migrations->migrate();
-        $migrations->migrate(['plugin' => 'CakeDC/Users']);
-        
         if (class_exists(CodeceptionInstaller::class)) {
             CodeceptionInstaller::customizeCodeceptionBinary($event);
         }
