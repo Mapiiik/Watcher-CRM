@@ -49,8 +49,18 @@
         }
     },
     "scripts": {
-        "post-install-cmd": "App\\Console\\Installer::postInstall",
-        "post-create-project-cmd": "App\\Console\\Installer::postInstall",
+        "post-create-project-cmd": [
+            "@migrations"
+        ],
+        "post-install-cmd": [
+            "App\\Console\\Installer::postInstall"
+        ],
+        "post-update-cmd": [],
+        "migrations": [
+            "bin/cake migrations migrate",
+            "bin/cake migrations migrate --plugin CakeDC/Users",
+            "bin/cake schema_cache build"
+        ],
         "check": [
             "@test",
             "@cs-check"
