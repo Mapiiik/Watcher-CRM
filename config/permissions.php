@@ -128,6 +128,14 @@ return [
             'controller' => 'Pages',
             'action' => 'display',
         ],
+        //always allow access to DebugKit
+        [
+            'role' => '*',
+            'plugin' => 'DebugKit',
+            'controller' => '*',
+            'action' => '*',
+            'bypassAuth' => true,
+        ],
         //users access
         [
             'role' => ['user', 'technician', 'manager'],
