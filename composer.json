@@ -24,8 +24,7 @@
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^1.0",
         "phpunit/phpunit": "~8.5.0 || ^9.3",
-        "psalm/phar": "^4.11",
-        "psy/psysh": "@stable"
+        "psalm/phar": "^4.11"
     },
     "suggest": {
         "markstory/asset_compress": "An asset compression plugin which provides file concatenation and a flexible filter system for preprocessing and minification.",
