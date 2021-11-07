@@ -57,8 +57,8 @@
         ],
         "post-update-cmd": [],
         "migrations": [
-            "bin/cake migrations migrate",
             "bin/cake migrations migrate --plugin CakeDC/Users",
+            "bin/cake migrations migrate",
             "bin/cake schema_cache build"
         ],
         "check": [

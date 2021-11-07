@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 use Migrations\AbstractMigration;
 
+require_once __DIR__ . '/../Seeds/UsersSeed.php';
+
 class Initial extends AbstractMigration
 {
     /**
@@ -1194,6 +1196,12 @@ class Initial extends AbstractMigration
                 'null' => false,
             ])
             ->create();
+
+        (new UsersSeed())
+            ->setAdapter($this->getAdapter())
+            ->setInput($this->getInput())
+            ->setOutput($this->getOutput())
+            ->run();
     }
 
     /**
