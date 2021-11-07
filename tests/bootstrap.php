@@ -68,6 +68,6 @@ $migrator = new Migrator();
 
 // Run migrations on test connection
 $migrator->runMany([
-    ['plugin' => 'CakeDC/Users']
-    []
+    ['plugin' => 'CakeDC/Users'],
+    [],
 ]);
