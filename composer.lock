@@ -293,16 +293,16 @@
         },
         {
             "name": "cakephp/cakephp",
-            "version": "4.3.0",
+            "version": "4.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "fc71c2d7e1bda979da41ed1dea726d6e04240d3b"
+                "reference": "6b1cf0e74bbfbb73ecdb1e8a5d0fd36230930931"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/fc71c2d7e1bda979da41ed1dea726d6e04240d3b",
-                "reference": "fc71c2d7e1bda979da41ed1dea726d6e04240d3b",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/6b1cf0e74bbfbb73ecdb1e8a5d0fd36230930931",
+                "reference": "6b1cf0e74bbfbb73ecdb1e8a5d0fd36230930931",
                 "shasum": ""
             },
             "require": {
@@ -315,6 +315,7 @@
                 "laminas/laminas-httphandlerrunner": "^1.1",
                 "league/container": "^4.1.1",
                 "php": ">=7.2.0",
+                "psr/container": "^2.0",
                 "psr/http-client": "^1.0",
                 "psr/http-server-handler": "^1.0",
                 "psr/http-server-middleware": "^1.0",
@@ -392,7 +393,7 @@
                 "issues": "https://github.com/cakephp/cakephp/issues",
                 "source": "https://github.com/cakephp/cakephp"
             },
-            "time": "2021-10-24T01:34:13+00:00"
+            "time": "2021-11-06T15:39:56+00:00"
         },
         {
             "name": "cakephp/chronos",
@@ -4938,16 +4939,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.0.2",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "e9e2a501102ba0b126b2f63a7f0a3b151056fe91"
+                "reference": "cb317029197236c571c1b9305b8dd12850d8d85c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/e9e2a501102ba0b126b2f63a7f0a3b151056fe91",
-                "reference": "e9e2a501102ba0b126b2f63a7f0a3b151056fe91",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/cb317029197236c571c1b9305b8dd12850d8d85c",
+                "reference": "cb317029197236c571c1b9305b8dd12850d8d85c",
                 "shasum": ""
             },
             "require": {
@@ -4978,7 +4979,7 @@
             "description": "PHPStan - PHP Static Analysis Tool",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/1.0.2"
+                "source": "https://github.com/phpstan/phpstan/tree/1.1.1"
             },
             "funding": [
                 {
@@ -4998,7 +4999,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-03T16:09:51+00:00"
+            "time": "2021-11-06T22:46:47+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -5423,16 +5424,16 @@
         },
         {
             "name": "psalm/phar",
-            "version": "4.11.2",
+            "version": "4.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psalm/phar.git",
-                "reference": "ca9b6b2cd07b503bd64d9363d81e57aaffa07ae8"
+                "reference": "0ccb66911b6ca4cd4ecb88a619476791cf624bab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psalm/phar/zipball/ca9b6b2cd07b503bd64d9363d81e57aaffa07ae8",
-                "reference": "ca9b6b2cd07b503bd64d9363d81e57aaffa07ae8",
+                "url": "https://api.github.com/repos/psalm/phar/zipball/0ccb66911b6ca4cd4ecb88a619476791cf624bab",
+                "reference": "0ccb66911b6ca4cd4ecb88a619476791cf624bab",
                 "shasum": ""
             },
             "require": {
@@ -5452,9 +5453,9 @@
             "description": "Composer-based Psalm Phar",
             "support": {
                 "issues": "https://github.com/psalm/phar/issues",
-                "source": "https://github.com/psalm/phar/tree/4.11.2"
+                "source": "https://github.com/psalm/phar/tree/4.12.0"
             },
-            "time": "2021-10-26T17:41:16+00:00"
+            "time": "2021-11-06T18:59:32+00:00"
         },
         {
             "name": "psy/psysh",
@@ -7254,5 +7255,5 @@
         "php": ">=7.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }
