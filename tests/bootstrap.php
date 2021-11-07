@@ -64,5 +64,10 @@ session_id('cli');
 // load schema from a SQL dump file with
 // use Cake\TestSuite\SchemaLoader;
 // (new SchemaManager())->loadSqlFiles('./tests/schema.sql', 'test');
-(new Migrator())->run(['plugin' => 'CakeDC/Users']);
-(new Migrator())->run();
+$migrator = new Migrator();
+
+// Run migrations for plugins
+$migrator->run(['plugin' => 'CakeDC/Users']);
+
+// Run migrations for base
+$migrator->run();
