@@ -1,0 +1,38 @@
+version: "3.7"
+
+services:
+  database:
+    image: postgres
+    volumes:
+      - app-database:/var/lib/postgresql/data:Z
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: watcher_crm
+    ports:
+      - 5432/tcp
+
+  webserver:
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+      args:
+        - buildno
+        - gitcommithash
+    depends_on:
+      - database
+    tmpfs:
+      - /app/tmp:uid=1000,gid=1000
+    volumes:
+      - app-logs:/app/logs:uid=1000,gid=1000
+    working_dir: /app/
+    environment:
+      WEB_DOCUMENT_ROOT: /app/webroot
+      DATABASE_URL: postgres://postgres@database/watcher_crm
+      DEBUG: false
+    ports:
+      - 80:80/tcp
+
+volumes:
+  app-database:
+  app-logs:

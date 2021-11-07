@@ -1,0 +1,16 @@
+# syntax=docker/dockerfile:1
+
+FROM webdevops/php-nginx:7.4
+
+ARG buildno
+ARG gitcommithash
+
+RUN echo "Build number: $buildno"
+RUN echo "Based on commit: $gitcommithash"
+
+COPY --chown="${APPLICATION_USER}":"${APPLICATION_USER}" ./ /app
+
+RUN gosu "${APPLICATION_USER}" composer install -d /app --no-interaction --no-dev
+
+RUN echo '# Composer oprations' >> /opt/docker/provision/entrypoint.d/99-composer.sh \
+ && echo 'gosu "${APPLICATION_USER}" composer run-script migrations -d /app' >> /opt/docker/provision/entrypoint.d/99-composer.sh
