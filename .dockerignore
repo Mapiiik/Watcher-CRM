@@ -1,0 +1,11 @@
+*
+!bin
+!config
+!plugins
+!resources
+!src
+!templates
+!tests
+!webroot
+!composer.json
+!composer.lock
