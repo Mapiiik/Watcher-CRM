@@ -10,7 +10,7 @@ services:
     ports:
       - 5432/tcp
 
-  webserver:
+  webserver-dev:
     build:
       context: .
       dockerfile: Dockerfile.dev
