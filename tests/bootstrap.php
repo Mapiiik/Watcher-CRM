@@ -66,8 +66,8 @@ session_id('cli');
 // (new SchemaManager())->loadSqlFiles('./tests/schema.sql', 'test');
 $migrator = new Migrator();
 
-// Run migrations for plugins
-$migrator->run(['plugin' => 'CakeDC/Users']);
-
-// Run migrations for base
-$migrator->run();
+// Run migrations on test connection
+$migrator->runMany([
+    ['plugin' => 'CakeDC/Users']
+    []
+]);

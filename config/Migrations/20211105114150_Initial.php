@@ -5,7 +5,7 @@ use Migrations\AbstractMigration;
 
 require_once __DIR__ . '/../Seeds/UsersSeed.php';
 
-class Initial extends AbstractMigration
+class InitialCRM extends AbstractMigration
 {
     /**
      * Up Method.
