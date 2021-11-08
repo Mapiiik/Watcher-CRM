@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
-  database:
+  database-dev:
     image: postgres
     environment:
       POSTGRES_USER: postgres
@@ -18,7 +18,7 @@ services:
         - buildno
         - gitcommithash
     depends_on:
-      - database
+      - database-dev
     tmpfs:
       - /app/logs:uid=1000,gid=1000
       - /app/tmp:uid=1000,gid=1000
@@ -28,7 +28,7 @@ services:
     working_dir: /app/
     environment:
       WEB_DOCUMENT_ROOT: /app/webroot
-      DATABASE_URL: postgres://postgres@database/watcher_crm
+      DATABASE_URL: postgres://postgres@database-dev/watcher_crm
       DEBUG: true
     ports:
       - 80:80/tcp

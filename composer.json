@@ -50,7 +50,8 @@
     },
     "scripts": {
         "post-create-project-cmd": [
-            "@migrations"
+            "@migrations",
+            "@schema-cache"
         ],
         "post-install-cmd": [
             "App\\Console\\Installer::postInstall"
@@ -58,7 +59,9 @@
         "post-update-cmd": [],
         "migrations": [
             "bin/cake migrations migrate --plugin CakeDC/Users",
-            "bin/cake migrations migrate",
+            "bin/cake migrations migrate"
+        ],
+        "schema-cache": [
             "bin/cake schema_cache build"
         ],
         "check": [

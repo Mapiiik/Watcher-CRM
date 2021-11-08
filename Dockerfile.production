@@ -13,4 +13,5 @@ COPY --chown="${APPLICATION_USER}":"${APPLICATION_USER}" ./ /app
 RUN gosu "${APPLICATION_USER}" composer install -d /app --no-interaction --no-dev
 
 RUN echo '# Composer oprations' >> /opt/docker/provision/entrypoint.d/99-composer.sh \
- && echo 'gosu "${APPLICATION_USER}" composer run-script migrations -d /app' >> /opt/docker/provision/entrypoint.d/99-composer.sh
+ && echo 'gosu "${APPLICATION_USER}" composer run-script migrations -d /app' >> /opt/docker/provision/entrypoint.d/99-composer.sh \
+ && echo 'gosu "${APPLICATION_USER}" composer run-script schema-cache -d /app' >> /opt/docker/provision/entrypoint.d/99-composer.sh
