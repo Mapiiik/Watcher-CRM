@@ -615,9 +615,9 @@ class InitialCRM extends AbstractMigration
             ->create();
 
         $this->table('ips')
-            ->addColumn('ip', 'string', [
+            ->addColumn('ip', 'inet', [
                 'default' => null,
-                'limit' => 39,
+                'limit' => null,
                 'null' => false,
             ])
             ->addColumn('customer_id', 'integer', [
@@ -886,9 +886,9 @@ class InitialCRM extends AbstractMigration
                 'precision' => 6,
                 'scale' => 6,
             ])
-            ->addColumn('ip', 'string', [
+            ->addColumn('ip', 'inet', [
                 'default' => null,
-                'limit' => 39,
+                'limit' => null,
                 'null' => false,
             ])
             ->addColumn('customer_id', 'integer', [
@@ -914,9 +914,9 @@ class InitialCRM extends AbstractMigration
                 'limit' => null,
                 'null' => false,
             ])
-            ->addColumn('ip', 'string', [
+            ->addColumn('ip', 'inet', [
                 'default' => null,
-                'limit' => 39,
+                'limit' => null,
                 'null' => false,
             ])
             ->addColumn('port', 'integer', [
