@@ -3,6 +3,8 @@ version: "3.7"
 services:
   database-dev:
     image: postgres
+    tmpfs:
+      - /var/lib/postgresql/data:exec
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -22,7 +24,7 @@ services:
     tmpfs:
       - /app/logs:uid=1000,gid=1000
       - /app/tmp:uid=1000,gid=1000
-      - /app/vendor:uid=1000,gid=1000
+      - /app/vendor:uid=1000,gid=1000,exec
     volumes:
       - ./:/app
     working_dir: /app/
