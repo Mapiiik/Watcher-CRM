@@ -62,7 +62,7 @@ class CustomersController extends AppController
                         . 'LEFT JOIN phones ON (customers.id = phones.customer_id) '
                         . 'LEFT JOIN addresses ON (customers.id = addresses.customer_id) '
                         . 'LEFT JOIN ips ON (customers.id = ips.customer_id) '
-                        . 'WHERE $filter GROUP BY customers.id'
+                        . 'WHERE ' . $filter . ' GROUP BY customers.id'
                     . ')';
 
                 $this->paginate['conditions']['OR'] = [
