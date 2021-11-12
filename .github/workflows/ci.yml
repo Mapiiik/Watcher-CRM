@@ -76,6 +76,7 @@ jobs:
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
           MEMCACHED_PORT: ${{ job.services.memcached.ports['11211'] }}
           DATABASE_TEST_URL: postgres://postgres@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/watcher_crm
+          DEBUG: 'true'
 
   cs-stan:
     name: Coding Standard & Static Analysis
