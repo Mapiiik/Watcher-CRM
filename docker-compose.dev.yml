@@ -31,6 +31,6 @@ services:
     environment:
       WEB_DOCUMENT_ROOT: /app/webroot
       DATABASE_URL: postgres://postgres@database-dev/watcher_crm
-      DEBUG: true
+      DEBUG: 'true'
     ports:
       - 80:80/tcp
