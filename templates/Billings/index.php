@@ -3,6 +3,8 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Billing[]|\Cake\Collection\CollectionInterface $billings
  */
+
+use Cake\I18n\Number;
 ?>
 <div class="billings index content">
     <?= $this->AuthLink->link(__('New Billing'), ['action' => 'add'], ['class' => 'button float-right']) ?>
@@ -18,17 +20,18 @@
                     <th><?= $this->Paginator->sort('text') ?></th>
                     <th><?= $this->Paginator->sort('quantity') ?></th>
                     <th><?= $this->Paginator->sort('price') ?></th>
-                    <th><?= $this->Paginator->sort('billing_from') ?></th>
-                    <th><?= $this->Paginator->sort('billing_until') ?></th>
                     <th><?= $this->Paginator->sort('fixed_discount') ?></th>
                     <th><?= $this->Paginator->sort('percentage_discount') ?></th>
+                    <th><?= $this->Paginator->sort('total') ?></th>
+                    <th><?= $this->Paginator->sort('billing_from') ?></th>
+                    <th><?= $this->Paginator->sort('billing_until') ?></th>
                     <th><?= $this->Paginator->sort('active') ?></th>
                     <th><?= $this->Paginator->sort('separate') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($billings as $billing): ?>
+                <?php foreach ($billings as $billing) : ?>
                 <tr>
                     <td><?= $this->Number->format($billing->id) ?></td>
                     <td><?= $billing->has('customer') ? $this->Html->link($billing->customer->name, ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]) : '' ?></td>
@@ -37,10 +40,11 @@
                     <td><?= h($billing->text) ?></td>
                     <td><?= $this->Number->format($billing->quantity) ?></td>
                     <td><?= h($billing->price) ?><?= $billing->has('service') ? ' (' . h($billing->service->price) . ')' : '' ?></td>
-                    <td><?= h($billing->billing_from) ?></td>
-                    <td><?= h($billing->billing_until) ?></td>
                     <td><?= h($billing->fixed_discount) ?></td>
                     <td><?= h($billing->percentage_discount) ?></td>
+                    <td><?= Number::currency($billing->total) ?></td>
+                    <td><?= h($billing->billing_from) ?></td>
+                    <td><?= h($billing->billing_until) ?></td>
                     <td><?= $billing->active ? __('Yes') : __('No'); ?></td>
                     <td><?= $billing->separate ? __('Yes') : __('No'); ?></td>
                     <td class="actions">

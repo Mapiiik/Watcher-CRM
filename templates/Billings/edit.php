@@ -22,19 +22,23 @@
             <fieldset>
                 <legend><?= __('Edit Billing') ?></legend>
                 <?php
-                    if (!isset($customer_id)) echo $this->Form->control('customer_id', ['options' => $customers]);
-                    if (!isset($contract_id)) echo $this->Form->control('contract_id', ['options' => $contracts]);
-                    echo $this->Form->control('service_id', ['options' => $services, 'empty' => true]);
-                    echo $this->Form->control('text');
-                    echo $this->Form->control('quantity');
-                    echo $this->Form->control('price');
-                    echo $this->Form->control('billing_from', ['empty' => true]);
-                    echo $this->Form->control('billing_until', ['empty' => true]);
-                    echo $this->Form->control('fixed_discount');
-                    echo $this->Form->control('percentage_discount');
-                    echo $this->Form->control('active');
-                    echo $this->Form->control('separate');
-                    echo $this->Form->control('note');
+                if (!isset($customer_id)) {
+                    echo $this->Form->control('customer_id', ['options' => $customers]);
+                }
+                if (!isset($contract_id)) {
+                    echo $this->Form->control('contract_id', ['options' => $contracts]);
+                }
+                echo $this->Form->control('service_id', ['options' => $services, 'empty' => true]);
+                echo $this->Form->control('text');
+                echo $this->Form->control('quantity');
+                echo $this->Form->control('price');
+                echo $this->Form->control('fixed_discount');
+                echo $this->Form->control('percentage_discount');
+                echo $this->Form->control('billing_from', ['empty' => true]);
+                echo $this->Form->control('billing_until', ['empty' => true]);
+                echo $this->Form->control('active');
+                echo $this->Form->control('separate');
+                echo $this->Form->control('note');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

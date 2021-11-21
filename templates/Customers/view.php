@@ -3,6 +3,8 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Customer $customer
  */
+
+use Cake\I18n\Number;
 ?>
 <div class="row">
     <aside class="column">
@@ -53,7 +55,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Ic') ?></th>
-                            <td><?= $customer->has('ic') ? h($customer->ic) . ' (' . ($customer->ic_verified ?  __('OK') : __('Invalid')) . ')' : '' ?></td>
+                            <td><?= $customer->has('ic') ? h($customer->ic) . ' (' . ($customer->ic_verified ? __('OK') : __('Invalid')) . ')' : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Dic') ?></th>
@@ -341,10 +343,11 @@
                             <th><?= __('Text') ?></th>
                             <th><?= __('Quantity') ?></th>
                             <th><?= __('Price') ?></th>
-                            <th><?= __('Billing From') ?></th>
-                            <th><?= __('Billing Until') ?></th>
                             <th><?= __('Fixed Discount') ?></th>
                             <th><?= __('Percentage Discount') ?></th>
+                            <th><?= __('Total') ?></th>
+                            <th><?= __('Billing From') ?></th>
+                            <th><?= __('Billing Until') ?></th>
                             <th><?= __('Active') ?></th>
                             <th><?= __('Separate') ?></th>
                             <th><?= __('Note') ?></th>
@@ -357,10 +360,11 @@
                             <td><?= h($billing->text) ?></td>
                             <td><?= h($billing->quantity) ?></td>
                             <td><?= h($billing->price) ?><?= $billing->has('service') ? ' (' . h($billing->service->price) . ')' : '' ?></td>
-                            <td><?= h($billing->billing_from) ?></td>
-                            <td><?= h($billing->billing_until) ?></td>
                             <td><?= h($billing->fixed_discount) ?></td>
                             <td><?= h($billing->percentage_discount) ?></td>
+                            <td><?= Number::currency($billing->total) ?></td>
+                            <td><?= h($billing->billing_from) ?></td>
+                            <td><?= h($billing->billing_until) ?></td>
                             <td><?= $billing->active ? __('Yes') : __('No'); ?></td>
                             <td><?= $billing->separate ? __('Yes') : __('No'); ?></td>
                             <td><?= h($billing->note) ?></td>

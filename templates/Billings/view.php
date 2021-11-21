@@ -3,6 +3,8 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Billing $billing
  */
+
+use Cake\I18n\Number;
 ?>
 <div class="row">
     <aside class="column">
@@ -43,20 +45,24 @@
                     <td><?= h($billing->price) ?><?= $billing->has('service') ? ' (' . h($billing->service->price) . ')' : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Billing From') ?></th>
-                    <td><?= h($billing->billing_from) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Billing Until') ?></th>
-                    <td><?= h($billing->billing_until) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Fixed Discount') ?></th>
                     <td><?= h($billing->fixed_discount) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Percentage Discount') ?></th>
                     <td><?= h($billing->percentage_discount) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Total') ?></th>
+                    <td><?= Number::currency($billing->total) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Billing From') ?></th>
+                    <td><?= h($billing->billing_from) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Billing Until') ?></th>
+                    <td><?= h($billing->billing_until) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Active') ?></th>
@@ -104,8 +110,8 @@
 
             foreach ($bill_dates as $bill_date) {
                 echo '<br />';
-                echo ($bill_date->format('Y-m-d') . ': ' . $bill_date->subMonth(1)->format('Y-m-d') . ' - ' . $bill_date->subDay(1)->format('Y-m-d')) . ' = ';
-                echo ($billing->periodTotal($bill_date->subMonth(1), $bill_date->subDay(1)));
+                echo $bill_date->format('Y-m-d') . ': ' . $bill_date->subMonth(1)->format('Y-m-d') . ' - ' . $bill_date->subDay(1)->format('Y-m-d') . ' = ';
+                echo $billing->periodTotal($bill_date->subMonth(1), $bill_date->subDay(1));
             }
             ?>
         </div>
