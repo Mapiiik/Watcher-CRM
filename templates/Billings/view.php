@@ -53,8 +53,8 @@ use Cake\I18n\Number;
                     <td><?= h($billing->percentage_discount) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Total') ?></th>
-                    <td><?= Number::currency($billing->total) ?></td>
+                    <th><?= __('Total Price') ?></th>
+                    <td><?= Number::currency($billing->total_price) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Billing From') ?></th>

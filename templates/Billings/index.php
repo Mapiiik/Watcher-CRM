@@ -22,7 +22,7 @@ use Cake\I18n\Number;
                     <th><?= $this->Paginator->sort('price') ?></th>
                     <th><?= $this->Paginator->sort('fixed_discount') ?></th>
                     <th><?= $this->Paginator->sort('percentage_discount') ?></th>
-                    <th><?= $this->Paginator->sort('total') ?></th>
+                    <th><?= $this->Paginator->sort('total_price') ?></th>
                     <th><?= $this->Paginator->sort('billing_from') ?></th>
                     <th><?= $this->Paginator->sort('billing_until') ?></th>
                     <th><?= $this->Paginator->sort('active') ?></th>
@@ -42,7 +42,7 @@ use Cake\I18n\Number;
                     <td><?= h($billing->price) ?><?= $billing->has('service') ? ' (' . h($billing->service->price) . ')' : '' ?></td>
                     <td><?= h($billing->fixed_discount) ?></td>
                     <td><?= h($billing->percentage_discount) ?></td>
-                    <td><?= Number::currency($billing->total) ?></td>
+                    <td><?= Number::currency($billing->total_price) ?></td>
                     <td><?= h($billing->billing_from) ?></td>
                     <td><?= h($billing->billing_until) ?></td>
                     <td><?= $billing->active ? __('Yes') : __('No'); ?></td>

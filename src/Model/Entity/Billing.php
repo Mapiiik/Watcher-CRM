@@ -31,7 +31,7 @@ use Cake\ORM\Entity;
  * @property float $fixed_discount_sum
  * @property float $percentage_discount_sum
  * @property float $discount
- * @property float $total
+ * @property float $total_price
  * @property float $vat
  *
  * @property \App\Model\Entity\Customer $customer
@@ -161,7 +161,7 @@ class Billing extends Entity
      *
      * @return float
      */
-    protected function _getTotal(): float
+    protected function _getTotalPrice(): float
     {
         return $this->sum - $this->discount;
     }
@@ -173,7 +173,7 @@ class Billing extends Entity
      */
     protected function _getVatBase(): float
     {
-        return $this->total - $this->vat;
+        return $this->total_price - $this->vat;
     }
 
     /**
@@ -183,7 +183,7 @@ class Billing extends Entity
      */
     protected function _getVat(): float
     {
-        return round($this->total - ($this->total / (1 + (float)env('VAT_RATE', '0'))), 2);
+        return round($this->total_price - ($this->total_price / (1 + (float)env('VAT_RATE', '0'))), 2);
     }
 
     /**
@@ -225,22 +225,22 @@ class Billing extends Entity
         if (is_null($this->billing_until) || (!is_null($this->billing_until) && $this->billing_until >= $until)) { // billing_until is not limiting
             // whole period
             if ($this->billing_from <= $from) {
-                return ceil($this->total);
+                return ceil($this->total_price);
             }
             // later billing_from
             if ($this->billing_from <= $until) {
-                return ceil($this->total / $period_days
+                return ceil($this->total_price / $period_days
                     * $this->billing_from->diffInDays($until->addDay(1)));
             }
         } else { // billing_until is limiting
             // earlier billing_until
             if ($this->billing_from <= $from) {
-                return ceil($this->total / $period_days
+                return ceil($this->total_price / $period_days
                     * $from->diffInDays($this->billing_until->addDay(1)));
             }
             // later billing_from and earlier billing_until
             if ($this->billing_from <= $until) {
-                return ceil($this->total / $period_days
+                return ceil($this->total_price / $period_days
                     * $this->billing_from->diffInDays($this->billing_until->addDay(1)));
             }
         }

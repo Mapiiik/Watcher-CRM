@@ -1087,7 +1087,7 @@ class ContractPDF extends TCPDF
                         $this->Ln();
                     }
                     
-                    $totalCost += $billing->total;
+                    $totalCost += $billing->total_price;
                 }
                 $this->Ln();
             }
@@ -1131,7 +1131,7 @@ class ContractPDF extends TCPDF
                         $this->Ln();
                     }
 
-                    $totalCost += $billing->total;
+                    $totalCost += $billing->total_price;
                 }
 
                 $this->SetFont('DejaVuSerif', '' . $format, '7');

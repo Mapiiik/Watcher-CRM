@@ -345,7 +345,7 @@ use Cake\I18n\Number;
                             <th><?= __('Price') ?></th>
                             <th><?= __('Fixed Discount') ?></th>
                             <th><?= __('Percentage Discount') ?></th>
-                            <th><?= __('Total') ?></th>
+                            <th><?= __('Total Price') ?></th>
                             <th><?= __('Billing From') ?></th>
                             <th><?= __('Billing Until') ?></th>
                             <th><?= __('Active') ?></th>
@@ -362,7 +362,7 @@ use Cake\I18n\Number;
                             <td><?= h($billing->price) ?><?= $billing->has('service') ? ' (' . h($billing->service->price) . ')' : '' ?></td>
                             <td><?= h($billing->fixed_discount) ?></td>
                             <td><?= h($billing->percentage_discount) ?></td>
-                            <td><?= Number::currency($billing->total) ?></td>
+                            <td><?= Number::currency($billing->total_price) ?></td>
                             <td><?= h($billing->billing_from) ?></td>
                             <td><?= h($billing->billing_until) ?></td>
                             <td><?= $billing->active ? __('Yes') : __('No'); ?></td>
