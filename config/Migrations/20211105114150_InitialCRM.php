@@ -12,6 +12,7 @@ class InitialCRM extends AbstractMigration
      *
      * More information on this method is available here:
      * https://book.cakephp.org/phinx/0/en/migrations.html#the-up-method
+     *
      * @return void
      */
     public function up()
@@ -1197,6 +1198,47 @@ class InitialCRM extends AbstractMigration
             ])
             ->create();
 
+        // hack CakeDC/Users tables to use integer IDs
+        $this->table('social_accounts')
+            ->removeColumn('id')
+            ->removeColumn('user_id')
+            ->save();
+
+        $this->table('users')
+            ->removeColumn('id')
+            ->save();
+
+        $this->table('users')
+            ->addColumn('id', 'integer', [
+                'default' => null,
+                'limit' => 10,
+                'null' => false,
+                'identity' => true,
+            ])
+            ->addColumn('customer_id', 'integer', [
+                'default' => null,
+                'limit' => 10,
+                'null' => true,
+            ])
+            ->changePrimaryKey(['id'])
+            ->save();
+
+        $this->table('social_accounts')
+            ->addColumn('id', 'integer', [
+                'default' => null,
+                'limit' => 10,
+                'null' => false,
+                'identity' => true,
+            ])
+            ->addColumn('user_id', 'integer', [
+                'default' => null,
+                'limit' => 10,
+                'null' => false,
+            ])
+            ->changePrimaryKey(['id'])
+            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->save();
+
         (new UsersSeed())
             ->setAdapter($this->getAdapter())
             ->setInput($this->getInput())
@@ -1209,6 +1251,7 @@ class InitialCRM extends AbstractMigration
      *
      * More information on this method is available here:
      * https://book.cakephp.org/phinx/0/en/migrations.html#the-down-method
+     *
      * @return void
      */
     public function down()

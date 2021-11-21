@@ -23,7 +23,7 @@ class UsersSeed extends AbstractSeed
     {
         $data = [
             [
-                'id' => Text::uuid(),
+//                'id' => Text::uuid(),
                 'username' => 'admin',
                 'password' => '$2y$10$xFQXP4qGYX3e97gRTx.qJ.0nFAzMOmBdRISzgMf0hmrikHR/03txu',
                 'email' => 'admin@example.com',
