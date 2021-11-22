@@ -37,8 +37,10 @@ class CustomersController extends AppController
         if (in_array($this->request->getSession()->read('Auth.role'), ['admin'])) {
             if ($search->getData('search') <> '') {
                 $filter = 'to_tsvector('
-                        . "Customers.id || ' ' || Customers.id + " . (int)env('CUSTOMER_SERIES', '0') . " || ' ' || "
-                        . "Contracts.id || ' ' || Contracts.number || ' ' || "
+                        . "Customers.id || ' ' || "
+                        . "Customers.id + " . (int)env('CUSTOMER_SERIES', '0') . " || ' ' || "
+                        . "COALESCE(Contracts.id::text, '') || ' ' || "
+                        . "COALESCE(Contracts.number, '') || ' ' || "
                         . "COALESCE(Customers.first_name, '') || ' ' || "
                         . "COALESCE(Customers.last_name, '') || ' ' || "
                         . "COALESCE(Customers.company, '')  || "
