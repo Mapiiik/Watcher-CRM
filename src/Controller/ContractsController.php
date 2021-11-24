@@ -297,7 +297,8 @@ class ContractsController extends AppController
                     if (empty($query['number_of_the_contract_to_be_terminated'])) {
                         $contract->number_of_the_contract_to_be_terminated = $contract->number;
                     } else {
-                        $contract->number_of_the_contract_to_be_terminated = $query['number_of_the_contract_to_be_terminated'];
+                        $contract->number_of_the_contract_to_be_terminated
+                            = $query['number_of_the_contract_to_be_terminated'];
                     }
 
                     break;
