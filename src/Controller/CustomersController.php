@@ -21,7 +21,7 @@ class CustomersController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Taxes', 'Contracts', 'Ips'],
+            'contain' => ['Taxes', 'Contracts', 'Ips' => ['Contracts']],
         ];
 
         $search = new SearchForm();

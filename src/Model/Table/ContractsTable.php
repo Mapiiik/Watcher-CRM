@@ -78,6 +78,9 @@ class ContractsTable extends Table
         ]);
         $this->hasMany('Billings', [
             'foreignKey' => 'contract_id',
+            'sort' => [
+                'Billings.billing_from' => 'DESC',
+            ],
         ]);
         $this->hasMany('BorrowedEquipments', [
             'foreignKey' => 'contract_id',

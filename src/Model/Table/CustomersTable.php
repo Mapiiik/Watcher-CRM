@@ -77,21 +77,43 @@ class CustomersTable extends Table
         ]);
         $this->hasMany('Addresses', [
             'foreignKey' => 'customer_id',
+            'sort' => [
+                'Addresses.type',
+                'Addresses.id' => 'DESC',
+            ],
         ]);
         $this->hasMany('Billings', [
             'foreignKey' => 'customer_id',
+            'sort' => [
+                'Contracts.service_type_id',
+                'Contracts.id' => 'DESC',
+                'Billings.billing_from' => 'DESC',
+            ],
         ]);
         $this->hasMany('BorrowedEquipments', [
             'foreignKey' => 'customer_id',
+            'sort' => [
+                'Contracts.service_type_id',
+                'Contracts.id' => 'DESC',
+            ],
         ]);
         $this->hasMany('Contracts', [
             'foreignKey' => 'customer_id',
+            'sort' => [
+                'Contracts.service_type_id',
+                'Contracts.id' => 'DESC',
+            ],
         ]);
         $this->hasMany('Emails', [
             'foreignKey' => 'customer_id',
         ]);
         $this->hasMany('Ips', [
             'foreignKey' => 'customer_id',
+            'sort' => [
+                'Contracts.service_type_id',
+                'Contracts.id' => 'DESC',
+                'Ips.ip',
+            ],
         ]);
         $this->hasMany('LabelCustomers', [
             'foreignKey' => 'customer_id',
@@ -104,9 +126,18 @@ class CustomersTable extends Table
         ]);
         $this->hasMany('RemovedIps', [
             'foreignKey' => 'customer_id',
+            'sort' => [
+                'Contracts.service_type_id',
+                'Contracts.id' => 'DESC',
+                'RemovedIps.ip',
+            ],
         ]);
         $this->hasMany('SoldEquipments', [
             'foreignKey' => 'customer_id',
+            'sort' => [
+                'Contracts.service_type_id',
+                'Contracts.id' => 'DESC',
+            ],
         ]);
         $this->hasMany('Tasks', [
             'foreignKey' => 'customer_id',
