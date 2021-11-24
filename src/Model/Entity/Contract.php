@@ -28,6 +28,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenDate|null $valid_until
  * @property \Cake\I18n\FrozenDate|null $conclusion_date
  * @property int|null $number_of_amendments
+ * @property string|null $number_of_the_contract_to_be_terminated
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Address $installation_address

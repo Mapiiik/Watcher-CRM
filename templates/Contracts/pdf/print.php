@@ -809,7 +809,7 @@ class ContractPDF extends TCPDF
             $this->Cell(60, 4, 'datum ukončení poskytování služeb:', '', '', 'C');
             $this->Ln();
             $this->SetFont('DejaVuSerif', 'B', '8');
-            $this->Cell(60, 4, $contract->number, '', '', 'C');
+            $this->Cell(60, 4, $contract->number_of_the_contract_to_be_terminated, '', '', 'C');
             $this->Cell(60, 4, $contract->conclusion_date, '', '', 'C');
             $this->Cell(60, 4, $contract->valid_until, '', '', 'C');
             $this->Ln();
@@ -1006,7 +1006,7 @@ class ContractPDF extends TCPDF
         if ($type === 'contract-termination')
         {
             $this->SetFont('DejaVuSerif', 'B', '8');
-            $this->Write(4, 'Smluvní strany ujednávají ukončení smlouvy o poskytování služeb č. ' . $contract->number . ' ze dne ' . $contract->conclusion_date . ' (ve znění případných pozdějších dodatků) ke dni ' . $contract->valid_until . '.');
+            $this->Write(4, 'Smluvní strany ujednávají ukončení smlouvy o poskytování služeb č. ' . $contract->number_of_the_contract_to_be_terminated . ' ze dne ' . $contract->conclusion_date . ' (ve znění případných pozdějších dodatků) ke dni ' . $contract->valid_until . '.');
             $this->Ln();
             $this->Ln();
             $this->SetFont('DejaVuSerif', '', '8');
@@ -1025,7 +1025,7 @@ class ContractPDF extends TCPDF
 
             if ($type === 'contract-new-x')
             {
-                $this->Write(4, 'Smluvní strany zároveň ujednávají, že předchozí smlouva o poskytování služeb č. ' . $contract->number . ' ze dne ' . $contract->conclusion_date . ' (ve znění případných pozdějších dodatků) zaniká ke dni ' . $contract->valid_from->subDay(1) . '.');
+                $this->Write(4, 'Smluvní strany zároveň ujednávají, že předchozí smlouva o poskytování služeb č. ' . $contract->number_of_the_contract_to_be_terminated . ' ze dne ' . $contract->conclusion_date . ' (ve znění případných pozdějších dodatků) zaniká ke dni ' . $contract->valid_from->subDay(1) . '.');
                 $this->Ln();
                 $this->Ln();
             }

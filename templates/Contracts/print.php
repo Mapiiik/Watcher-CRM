@@ -100,7 +100,8 @@
                     </div>
                     <div class="column-responsive">
                     <?php
-                        echo $this->Form->control('effective_date_of_the_amendment', ['label' => __('Effective Date Of The Amendment'), 'empty' => true, 'type' => 'date']);
+                        echo $this->Form->control('effective_date_of_the_amendment', ['label' => __('Effective date of the amendment'), 'empty' => true, 'type' => 'date']);
+                        echo $this->Form->control('number_of_the_contract_to_be_terminated', ['label' => __('The number of the contract to be terminated'), 'empty' => true]);
                         echo $this->Form->control('ssid', ['label' => __('SSID'), 'empty' => true]);
                         echo $this->Form->control('radius_username', ['empty' => true]);
                         echo $this->Form->control('radius_password', ['empty' => true]);
