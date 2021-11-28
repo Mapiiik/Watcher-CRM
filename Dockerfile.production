@@ -8,10 +8,23 @@ ARG gitcommithash
 RUN echo "Build number: $buildno"
 RUN echo "Based on commit: $gitcommithash"
 
+ENV DEBUG "false"
+ENV WEB_DOCUMENT_ROOT "/app/webroot"
+
+# Copy app data
 COPY --chown="${APPLICATION_USER}":"${APPLICATION_USER}" ./ /app
 
+# Install acme.sh and create volume for data
+ENV LE_WORKING_DIR "/acme.sh"
+ENV LE_CONFIG_HOME "/acme"
+VOLUME [ "/acme" ]
+RUN curl https://get.acme.sh | sh
+RUN ln -s  /acme.sh/acme.sh  /usr/local/bin/acme.sh && crontab -l | grep acme.sh | sed 's#> /dev/null##' | crontab -
+
+# Composer install
 RUN gosu "${APPLICATION_USER}" composer install -d /app --no-interaction --no-dev
 
+# Add on-start commands
 RUN echo '# Composer oprations' >> /opt/docker/provision/entrypoint.d/99-composer.sh \
  && echo 'gosu "${APPLICATION_USER}" composer run-script migrations -d /app' >> /opt/docker/provision/entrypoint.d/99-composer.sh \
  && echo 'gosu "${APPLICATION_USER}" composer run-script schema-cache -d /app' >> /opt/docker/provision/entrypoint.d/99-composer.sh

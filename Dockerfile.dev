@@ -8,6 +8,10 @@ ARG gitcommithash
 RUN echo "Build number: $buildno"
 RUN echo "Based on commit: $gitcommithash"
 
+ENV DEBUG "true"
+ENV WEB_DOCUMENT_ROOT "/app/webroot"
+
+# Add on-start commands
 RUN echo '# Composer oprations' >> /opt/docker/provision/entrypoint.d/99-composer.sh \
  && echo 'gosu "${APPLICATION_USER}" composer install -d /app' >> /opt/docker/provision/entrypoint.d/99-composer.sh \
  && echo 'gosu "${APPLICATION_USER}" composer run-script migrations -d /app -- --no-lock' >> /opt/docker/provision/entrypoint.d/99-composer.sh \
