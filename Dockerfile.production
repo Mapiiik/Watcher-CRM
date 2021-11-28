@@ -8,7 +8,6 @@ ARG gitcommithash
 RUN echo "Build number: $buildno"
 RUN echo "Based on commit: $gitcommithash"
 
-ENV DEBUG "false"
 ENV WEB_DOCUMENT_ROOT "/app/webroot"
 
 # Copy app data
