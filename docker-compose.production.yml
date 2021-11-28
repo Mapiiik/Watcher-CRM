@@ -5,6 +5,7 @@ services:
     image: postgres
     volumes:
       - app-database:/var/lib/postgresql/data:Z
+    restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -25,6 +26,7 @@ services:
       - app-logs:/app/logs:uid=1000,gid=1000
       - app-acme:/acme
     working_dir: /app/
+    restart: always
     environment:
       DATABASE_URL: postgres://postgres@database/watcher_crm
     ports:
