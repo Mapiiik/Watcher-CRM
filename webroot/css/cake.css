@@ -96,7 +96,7 @@ table {
 th, td {
     border: 0.1rem solid #aaaaaa;
     vertical-align: baseline;
-    padding: 0.7rem 1.0rem;
+    padding: 0.5rem 0.5rem;
 }
 td:first-child,
 th:first-child {
