@@ -50,14 +50,18 @@ class FootprintBehavior extends Behavior
      */
     public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
-        $session = Router::getRequest()->getSession();
+        $request = Router::getRequest();
 
-        if ($this->fieldsExist($event)) {
-            if ($entity->isNew()) {
-                $entity->set($this->_config['column_creator'], $session->read($this->_config['session_key']));
-                $entity->set($this->_config['column_modifier'], $session->read($this->_config['session_key']));
-            } else {
-                $entity->set($this->_config['column_modifier'], $session->read($this->_config['session_key']));
+        if ($request) {
+            $session = $request->getSession();
+
+            if ($this->fieldsExist($event)) {
+                if ($entity->isNew()) {
+                    $entity->set($this->_config['column_creator'], $session->read($this->_config['session_key']));
+                    $entity->set($this->_config['column_modifier'], $session->read($this->_config['session_key']));
+                } else {
+                    $entity->set($this->_config['column_modifier'], $session->read($this->_config['session_key']));
+                }
             }
         }
     }
