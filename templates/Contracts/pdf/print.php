@@ -534,7 +534,7 @@ class ContractPDF extends TCPDF
 
         // SOLD EQUIPMENTS
         $this->SetFont('DejaVuSerif', 'B', '9');
-        $this->Write(4, 'Prodaná zařízení a příslušenství:');
+        $this->Write(4, 'Prodaná zařízení a příslušenství a práce nad rámec aktivačního poplatku:');
         $this->Ln();
 
         $this->Ln(0.4);
@@ -542,7 +542,7 @@ class ContractPDF extends TCPDF
         $this->Ln(1);
 
         $this->SetFont('DejaVuSerif', '', '8');
-        $this->Write(4, 'Poskytovatel dodal Uživateli tato zařízení a příslušenství:');
+        $this->Write(4, 'Poskytovatel dodal Uživateli tato zařízení a příslušenství a provedl práce nad rámec aktivačního poplatku:');
 
         $this->Ln(5);
 
@@ -613,9 +613,6 @@ class ContractPDF extends TCPDF
             $this->MultiCell(180, 4, 'Uživatel je povinen tato zařízení Poskytovateli vrátit bez zbytečných odkladů nejpozději po zániku Smlouvy.' . PHP_EOL, 0, 'J');
             $this->Ln(3);
 
-            $this->MultiCell(180, 4, 'Náklady spojené s instalací dalších zařízení nebo další kabeláže se řídí aktuálně účinným Ceníkem Poskytovatele.' . PHP_EOL, 0, 'J');
-            $this->Ln(3);
-
             if ($contract->activation_fee_sum > 0)
             {
                 $this->SetFont('DejaVuSerif', 'B', '8');
@@ -634,10 +631,6 @@ class ContractPDF extends TCPDF
         }
         else
         {
-            $this->SetFont('DejaVuSerif', '', '8');
-            $this->MultiCell(180, 4, 'Cena za případnou instalaci Uživatelových zařízení včetně případných souvisejících nákladů (např. kabeláž) se řídí aktuálním Ceníkem Poskytovatele.' . PHP_EOL, 0, 'J');
-            $this->Ln(3);
-
             if ($contract->activation_fee_sum > 0) {
                 $this->SetFont('DejaVuSerif', 'B', '8');
 
@@ -687,7 +680,7 @@ class ContractPDF extends TCPDF
         $this->Ln(1);
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->MultiCell(180, 4, 'Svým podpisem stvrzuji, že jsem výše uvedená zařízení převzal nainstalovaná a plně funkční, a zároveň se zavazuji uhradit částku aktivačního poplatku i cenu zakoupených zařízení nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené výše).' . PHP_EOL, 0, 'J');
+        $this->MultiCell(180, 4, 'Svým podpisem stvrzuji, že jsem výše uvedená zařízení převzal nainstalovaná a plně funkční, a zároveň se zavazuji uhradit částku aktivačního poplatku i cenu dodaných zařízení a příslušenství a prací nad rámec aktivačního poplatku nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené výše).' . PHP_EOL, 0, 'J');
         $this->Ln(3);
         $this->MultiCell(180, 4, 'Dále potvrzuji, že  souhlasím s provedenou instalací a nemám vůči ní žádné námitky. Zároveň prohlašuji, že objednané služby jsou plně funkční.' . PHP_EOL, 0, 'J');
         $this->Ln(3);
@@ -1337,35 +1330,33 @@ class ContractPDF extends TCPDF
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', '', 8);
-            $this->MultiCell(180, 4,
-                'Uživatel prohlašuje, že se podrobně seznámil s obsahem aktuálně účinných Všeobecných podmínek služeb elektronických komunikací (dále jako "Podmínky") a potvrzuje, že je od Poskytovatele obdržel a s jejich obsahem plně souhlasí.'
-//                                'Uživatel prohlašuje, že se podrobně seznámil s obsahem aktuálně účinných Všeobecných podmínek služeb elektronických komunikací ze dne 22.2.2021 i s obsahem Všeobecných podmínek služeb elektronických komunikací ze dne 23.03.2021 účinných od 01.05.2021 (dále společně jako "Podmínky") a potvrzuje, že je od Poskytovatele obdržel a s jejich obsahem plně souhlasí.'
-                . ' Je si vědom skutečnosti, že Podmínky jsou nedílnou součástí této smlouvy jako příloha č. 3 a zavazuje se je dodržovat.'
-//                                . ' Je si vědom skutečnosti, že Podmínky jsou nedílnou součástí této smlouvy jako příloha č. 3 a č. 4 a zavazuje se je dodržovat.'
-                . ' Je mu též známo, že Poskytovatel je oprávněn Podmínky v souladu s příslušnými právními předpisy jednostranně měnit.'
-                . ' Podmínky obsahují mimo jiné i podrobné informace vyžadované § 63 odst. 1 zákona č. 127/2005 Sb. o elektronických komunikacích,'
+            $this->setListIndentWidth(4);
+            $this->writeHTML(
+                'Uživatel prohlašuje, že se podrobně seznámil s obsahem těchto aktuálně účinných dokumentů (dále jako „Dokumenty“):' . PHP_EOL
+                . '<ol>' . PHP_EOL
+                . '  <li><b><i>Všeobecné podmínky služeb elektronických komunikací</i></b> (dále jako „Podmínky“)<ul>' . PHP_EOL
+                . '    <li>Uživatel si je vědom skutečnosti, že Podmínky jsou nedílnou součástí této Smlouvy a zavazuje se je dodržovat.</li>' . PHP_EOL
+                . '    <li>Uživateli je též známo, že Poskytovatel je oprávněn Podmínky v souladu s příslušnými právními předpisy jednostranně měnit.</li>' . PHP_EOL
+                . '    <li>Podmínky obsahují mimo jiné i podrobné informace vyžadované § 63 odst. 1 zákona č. 127/2005 Sb. o elektronických komunikacích,'
                 . ' jako jsou informace o veškerých podmínkách omezujících přístup k poskytovaným službám a možnostem jejich využívání,'
-                . ' o minimální nabízené a minimální zaručené úrovni kvality poskytovaných služeb, o omezeních týkajících se omezení užívání koncových zařízení nebo o možnostech ukončení smlouvy.' . PHP_EOL, 0, 'J');
-            $this->Ln(3);
-            $this->MultiCell(180, 4, 'Uživatel uděluje Poskytovateli souhlas se zpracováním svých osobních údajů. Informace pro subjekt osobních údajů je přílohou č. 1 této smlouvy.' . PHP_EOL, 0, 'J');
-            $this->Ln(3);
-            $this->MultiCell(180, 4, 'Uživatel prohlašuje, že se podrobně seznámil s aktuálně účinným Ceníkem Poskytovatele, který je volně dostupný na Webu.' . PHP_EOL, 0, 'J');
-            $this->Ln(3);
-            $this->MultiCell(180, 4, 'Uživatel prohlašuje, že se podrobně seznámil s aktuálně účinným „Přehledem parametrů a rychlostí poskytovaných tarifů pro služby připojení k internetu v pevném místě“, který je nedílnou součástí této smlouvy jako příloha č. 2.' . PHP_EOL, 0, 'J');
+                . ' o minimální nabízené a minimální zaručené úrovni kvality poskytovaných služeb, o omezeních týkajících se omezení užívání koncových zařízení nebo o možnostech ukončení smlouvy.</li>' . PHP_EOL
+                . '  </ul></li>' . PHP_EOL
+                . '  <li><b><i>Přehled parametrů a rychlostí poskytovaných tarifů pro služby připojení k internetu v pevném místě</i></b>, který je nedílnou součástí této smlouvy</li>' . PHP_EOL
+                . '  <li><b><i>Oznámení o typech rozhraní pro připojení k veřejné komunikační síti</i></b></li>' . PHP_EOL
+                . '  <li><b><i>Zásady ochrany osobních údajů</i></b></li>' . PHP_EOL
+                . '  <li><b><i>Ceník</i></b></li>' . PHP_EOL
+                . '</ol>' . PHP_EOL
+                . 'Uživatel potvrzuje, že Dokumenty od Poskytovatele obdržel k prostudování a s jejich obsahem plně souhlasí.<br>' . PHP_EOL
+                . 'Uživatel je srozuměn se skutečností, že aktuální znění těchto Dokumentů, kterými se tato Smlouva řídí, je vždy dostupné na:' . PHP_EOL
+                . '<ul>' . PHP_EOL
+                . '  <li>poskytovatelových webových stránkách: <u>https://netair.cz</u>' . PHP_EOL
+                . '  <li>ke dni uzavření této smlouvy konkrétně v této sekci: <u>https://netair.cz/internet/vseobecne-informace</u>' . PHP_EOL
+                . '</ul>' . PHP_EOL,
+                true, 0, false, true, ''
+            );
             $this->Ln(3);
             $this->MultiCell(180, 4, 'Tato smlouva (č. ' . $contract->number . ') je vyhotovena ve dvou stejnopisech.' . PHP_EOL, 0, 'J');
             $this->Ln(3);
-
-            $this->Write(4, 'Přílohy:');
-            $this->Ln();
-            $this->Write(4, '   1) Souhlas se zpracováním osobních údajů');
-            $this->Ln();
-            $this->Write(4, '   2) Přehled parametrů a rychlostí poskytovaných tarifů pro služby přístupu k internetu');
-            $this->Ln();
-            $this->Write(4, '   3) Všeobecné podmínky služeb elektronických komunikací v aktuálním znění');
-            $this->Ln();
-//            $this->Write(4, '   4) Všeobecné podmínky služeb elektronických komunikací platné od 01.05.2021');
-//            $this->Ln();
         }
 
         $this->SetFont('DejaVuSerif', '', '8');
