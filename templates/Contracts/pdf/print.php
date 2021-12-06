@@ -269,7 +269,7 @@ class ContractPDF extends TCPDF
             $this->SetFont('DejaVuSerif', 'B', '8');
             $this->Cell(30, 4, __('Delivery Address') . ': ', '' , '' , 'L');
             $this->Ln();
-            $this->Cell(4, 4);
+            $this->Cell(30, 4);
             $this->MultiCell(180, 4, $contract->delivery_address->full_address, '', 'L');                    
         }
         // PERMANENT ADDRESS
@@ -277,7 +277,7 @@ class ContractPDF extends TCPDF
             $this->SetFont('DejaVuSerif', 'B', '8');
             $this->Cell(30, 4, __('Permanent Address') . ': ', '' , '' , 'L');
             $this->Ln();
-            $this->Cell(4, 4);
+            $this->Cell(30, 4);
             $this->MultiCell(180, 4, $contract->permanent_address->full_address, '', 'L');                    
         }
 
