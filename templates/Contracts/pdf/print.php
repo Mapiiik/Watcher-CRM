@@ -1341,7 +1341,8 @@ class ContractPDF extends TCPDF
                 . ' jako jsou informace o veškerých podmínkách omezujících přístup k poskytovaným službám a možnostem jejich využívání,'
                 . ' o minimální nabízené a minimální zaručené úrovni kvality poskytovaných služeb, o omezeních týkajících se omezení užívání koncových zařízení nebo o možnostech ukončení smlouvy.</li>' . PHP_EOL
                 . '  </ul></li>' . PHP_EOL
-                . '  <li><b><i>Přehled parametrů a rychlostí poskytovaných tarifů pro služby připojení k internetu v pevném místě</i></b>, který je nedílnou součástí této smlouvy</li>' . PHP_EOL
+//                . '  <li><b><i>Přehled parametrů a rychlostí poskytovaných tarifů pro služby připojení k internetu v pevném místě</i></b>, který je nedílnou součástí této smlouvy</li>' . PHP_EOL
+                . '  <li><b><i>Přehled parametrů a rychlostí poskytovaných tarifů pro služby připojení k internetu v pevném místě</i></b></li>' . PHP_EOL
                 . '  <li><b><i>Oznámení o typech rozhraní pro připojení k veřejné komunikační síti</i></b></li>' . PHP_EOL
                 . '  <li><b><i>Zásady zpracování osobních údajů</i></b></li>' . PHP_EOL
                 . '  <li><b><i>Ceník</i></b></li>' . PHP_EOL
