@@ -1343,7 +1343,7 @@ class ContractPDF extends TCPDF
                 . '  </ul></li>' . PHP_EOL
                 . '  <li><b><i>Přehled parametrů a rychlostí poskytovaných tarifů pro služby připojení k internetu v pevném místě</i></b>, který je nedílnou součástí této smlouvy</li>' . PHP_EOL
                 . '  <li><b><i>Oznámení o typech rozhraní pro připojení k veřejné komunikační síti</i></b></li>' . PHP_EOL
-                . '  <li><b><i>Zásady ochrany osobních údajů</i></b></li>' . PHP_EOL
+                . '  <li><b><i>Zásady zpracování osobních údajů</i></b></li>' . PHP_EOL
                 . '  <li><b><i>Ceník</i></b></li>' . PHP_EOL
                 . '</ol>' . PHP_EOL
                 . 'Uživatel potvrzuje, že Dokumenty od Poskytovatele obdržel k prostudování a s jejich obsahem plně souhlasí.<br>' . PHP_EOL
