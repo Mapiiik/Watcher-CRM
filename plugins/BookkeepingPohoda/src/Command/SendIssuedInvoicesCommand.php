@@ -8,6 +8,7 @@ use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\I18n\FrozenDate;
+use Cake\I18n\FrozenTime;
 use Cake\I18n\Number;
 use Cake\Log\Log;
 use Cake\Mailer\Mailer;
@@ -40,7 +41,9 @@ class SendIssuedInvoicesCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        $issued_invoices = $this->fetchTable('Invoices')->find('all', [
+        $issued_invoices_table = $this->fetchTable('BookkeepingPohoda.Invoices');
+        $issued_invoices = $issued_invoices_table->find('all', [
+            'contain' => ['Customers' => ['Emails']],
             'conditions' => [
                 'send_by_email' => true,
                 'email_sent IS' => null,
@@ -51,58 +54,81 @@ class SendIssuedInvoicesCommand extends Command
         echo 'Sending notifications:' . "\n";
         foreach ($issued_invoices as $issued_invoice)
         {
-            $customer = $this->fetchTable('Customer')->get($issued_invoice->customer_id, [
-                'contain' => ['Emails'],
-            ]);
+            if (
+                $issued_invoice->has('customer') &&
+                $issued_invoice->customer->agree_mailing_billing &&
+                count($issued_invoice->customer->emails) > 0
+            ) {
+                // send email with notification
+                echo 'Invoice - ' . $issued_invoice->number . ' - ' . $issued_invoice->customer->email . ' - ';
 
-            // send email with notification
-            echo 'Invoice - ' . $issued_invoice->number . ' - ' . $customer->emails->emails . ' - ';
+                $mailer = new Mailer('invoices');
 
-            $mailer = new Mailer('default');
-            $mailer->setFrom([
-                (string)env('EMAIL_TRANSPORT_DEFAULT_SENDER_EMAIL', 'mapik@mapik.net')
-                => (string)env('EMAIL_TRANSPORT_DEFAULT_SENDER_NAME', 'Mapik'),
-            ]);
-
-            $mailer->addTo('mapik@mapik.net');
-            foreach ($customer->emails as $email) {
-                if ($email->use_for_billing) {
-                    //$mailer->addTo($email->email);
-                    echo $email->email;
+                foreach ($issued_invoice->customer->emails as $email) {
+                    if ($email->use_for_billing) {
+                        $mailer->addTo($email->email);
+                    }
                 }
-            }
-            $mailer->setSubject($issued_invoice->text . ' - ' . $issued_invoice->number . ' - VS' . $issued_invoice->variable_symbol . ' - NETAIR, s.r.o.');
+                $mailer->setSubject('NETAIR - ' . $issued_invoice->text . ' - ' . $issued_invoice->number . ' - VS' . $issued_invoice->variable_symbol);
+                
+                $mailer->setAttachments([
+                    'NETAIR-' . $issued_invoice->number . '-VS' . $issued_invoice->variable_symbol . '.pdf' => [
+                        'file' => '/data/nginx/crm.netair.net/data/invoices/Faktura_' . $issued_invoice->number . '.pdf',
+                        'mimetype' => 'application/pdf',
+                        'contentId' => 'issued-invoice-' . $issued_invoice->number,
+                    ]
+                ]);
 
-            // define date format
-            FrozenDate::setToStringFormat('dd.MM.YYYY');
+                // define date format
+                FrozenDate::setToStringFormat('dd.MM.YYYY');
 
-            $message = "Vážený zákazníku,
+                $message =
+                    'Vážený zákazníku,' . PHP_EOL
+                    . PHP_EOL
+                    . '-------------------------------------------------------------------------------' . PHP_EOL
+                    . 'OPĚTOVNÉ ZASLÁNÍ, POKUD JSTE JIŽ FAKTURU OBDRŽELI, TENTO EMAIL PROSÍM IGNORUJTE' . PHP_EOL
+                    . '-------------------------------------------------------------------------------' . PHP_EOL
+                    . PHP_EOL
+                    . 'dne ' . $issued_invoice->creation_date
+                    . ' Vám byla na základě smlouvy č. ' . $issued_invoice->variable_symbol
+                    . ' vystavena faktura - daňový doklad č. ' . $issued_invoice->number
+                    . ' splatná ' . $issued_invoice->due_date . '.' . PHP_EOL
+                    . PHP_EOL
+                    . 'Variabilní symbol pro platbu: ' . $issued_invoice->variable_symbol . PHP_EOL
+                    . 'Číslo našeho účtu: 207385091/0100' . PHP_EOL
+                    . 'Celková částka (včetně DPH): ' . Number::currency($issued_invoice->total) . PHP_EOL
+                    . PHP_EOL
+                    . 'V příloze Vám zasíláme doklad ve formátu PDF.' . PHP_EOL
+                    . PHP_EOL
+                    . 'Tuto i další námi vystavené faktury je možné zároveň stahovat i v našem Uživatelském systému'
+                    . ', kde si zároveň můžete zkontrolovat, zda jsou uhrazeny.' . PHP_EOL
+                    . 'Pokud si nepřejete dostávat faktury e-mailem, můžete si zde změnit i formu zasílání.' . PHP_EOL
+                    . PHP_EOL
+                    . 'Uživatelský systém: https://data.netair.cz/' . PHP_EOL
+                    . PHP_EOL
+                    . 'Tento email byl vygenerován automaticky.' . PHP_EOL
+                    . PHP_EOL
+                    . 'NETAIR, s.r.o.' . PHP_EOL
+                    . 'Jablonec nad Jizerou 299, 512 43 Jablonec nad Jizerou' . PHP_EOL
+                    . 'IČ: 27496139, DIČ: CZ27496139';
 
-dne " . $issued_invoice->creation_date . " Vám byla na základě smlouvy č. " . $issued_invoice->variable_symbol . ",
-vystavena faktura - daňový doklad, č. " . $issued_invoice->number . ", splatná " . $issued_invoice->due_date . ".
+                try {
+                    $mailer->deliver($message);
+                    Log::write('debug', 'Email was successfully sent.');
+                    $io->info(__('Email was successfully sent.'));
 
-Variabilní symbol pro úhradu: " . $issued_invoice->variable_symbol . "
-Celková částka (včetně DPH): " . Number::currency($issued_invoice->total) . "
-Úhadu proveďte prosím na účet: 207385091 / 0100
-
-V příloze Vám zasíláme doklad ve formátu PDF.
-
-Tuto i další námi vystavené faktury je možné zároveň stahovat i v našem uživatelském systému (http://data.netair.cz/), kde si můžete zkontrolovat také zda jsou uhrazeny.
-Pokud si nepřejete dostávat faktury e-mailem, můžete si zde změnit i formu zasílání.
-
-Na tento e-mail prosím neodpovídejte, byl vygenerován automaticky.
-
-NETAIR, s.r.o.
-Jablonec nad Jizerou 299, 512 43 Jablonec nad Jizerou
-IČ: 27496139, DIČ: CZ27496139";
-
-            try {
-                $mailer->deliver($message);
-                Log::write('debug', 'E-mail was successfully sent..');
-                $io->info('E-mail was successfully sent..');
-            } catch (\Exception $e) {
-                Log::write('warning', 'The e-mail cannot be sent.');
-                $io->abort('The e-mail cannot be sent.');
+                    // save time to database
+                    $issued_invoice->email_sent = new FrozenTime();
+                    $issued_invoices_table->save($issued_invoice);
+                } catch (\Exception $e) {
+                    Log::write('warning', 'The email cannot be sent. (' . $e->getMessage() . ')');
+                    $io->abort(__('The email cannot be sent.'));
+                }
+                
+                // clean mailer
+                unset($mailer);
+            } else {
+                Log::write('warning', 'Skipping invoice because no valid contact found. (' . $issued_invoice->number . ')');
             }
         }
         echo 'Done' . "\n";
