@@ -20,6 +20,13 @@ VOLUME [ "/acme" ]
 RUN curl https://get.acme.sh | sh
 RUN ln -s  /acme.sh/acme.sh  /usr/local/bin/acme.sh && crontab -l | grep acme.sh | sed 's#> /dev/null##' | crontab -
 
+# Install PECL-DBASE extension
+RUN set -x \
+ && CPPFLAGS="-DHAVE_SYS_FILE_H" pecl install dbase \
+ && docker-php-ext-enable dbase \
+ && docker-run-bootstrap \
+ && docker-image-cleanup
+
 # Composer install
 RUN gosu "${APPLICATION_USER}" composer install -d /app --no-interaction --no-dev
 
