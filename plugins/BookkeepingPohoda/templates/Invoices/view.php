@@ -23,36 +23,60 @@
                     <td><?= $invoice->has('customer') ? $this->Html->link($invoice->customer->name, ['controller' => 'Customers', 'action' => 'view', $invoice->customer->id]) : '' ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('Id') ?></th>
+                    <td><?= $this->Number->format($invoice->id) ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Number') ?></th>
                     <td><?= $this->Number->format($invoice->number) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Varsym') ?></th>
-                    <td><?= $this->Number->format($invoice->varsym) ?></td>
+                    <th><?= __('Variable Symbol') ?></th>
+                    <td><?= $this->Number->format($invoice->variable_symbol) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Sum') ?></th>
-                    <td><?= $this->Number->format($invoice->sum) ?></td>
+                    <th><?= __('Total') ?></th>
+                    <td><?= $this->Number->format($invoice->total) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Debt') ?></th>
                     <td><?= $this->Number->format($invoice->debt) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($invoice->id) ?></td>
+                    <th><?= __('Created By') ?></th>
+                    <td><?= $this->Number->format($invoice->created_by) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Date') ?></th>
-                    <td><?= h($invoice->date) ?></td>
+                    <th><?= __('Modified By') ?></th>
+                    <td><?= $this->Number->format($invoice->modified_by) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Maturity') ?></th>
-                    <td><?= h($invoice->maturity) ?></td>
+                    <th><?= __('Creation Date') ?></th>
+                    <td><?= h($invoice->creation_date) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Due Date') ?></th>
+                    <td><?= h($invoice->due_date) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Payment Date') ?></th>
                     <td><?= h($invoice->payment_date) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Email Sent') ?></th>
+                    <td><?= h($invoice->email_sent) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Created') ?></th>
+                    <td><?= h($invoice->created) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified') ?></th>
+                    <td><?= h($invoice->modified) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Send By Email') ?></th>
+                    <td><?= $invoice->send_by_email ? __('Yes') : __('No'); ?></td>
                 </tr>
             </table>
             <div class="text">

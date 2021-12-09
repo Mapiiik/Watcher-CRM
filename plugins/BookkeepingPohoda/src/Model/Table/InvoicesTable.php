@@ -24,6 +24,7 @@ use Cake\Validation\Validator;
  * @method \BookkeepingPohoda\Model\Entity\Invoice[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
  * @method \BookkeepingPohoda\Model\Entity\Invoice[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \BookkeepingPohoda\Model\Entity\Invoice[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class InvoicesTable extends Table
 {
@@ -40,6 +41,10 @@ class InvoicesTable extends Table
         $this->setTable('invoices');
         $this->setDisplayField('number');
         $this->setPrimaryKey('id');
+
+        $this->addBehavior('Timestamp');
+        $this->addBehavior('Footprint');
+        $this->addBehavior('StringModifications');
 
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
@@ -63,24 +68,24 @@ class InvoicesTable extends Table
             ->notEmptyString('number');
 
         $validator
-            ->integer('varsym')
-            ->allowEmptyString('varsym');
+            ->integer('variable_symbol')
+            ->allowEmptyString('variable_symbol');
 
         $validator
-            ->date('date')
-            ->allowEmptyDate('date');
+            ->date('creation_date')
+            ->allowEmptyDate('creation_date');
 
         $validator
-            ->date('maturity')
-            ->allowEmptyDate('maturity');
+            ->date('due_date')
+            ->allowEmptyDate('due_date');
 
         $validator
             ->scalar('text')
             ->allowEmptyString('text');
 
         $validator
-            ->decimal('sum')
-            ->allowEmptyString('sum');
+            ->decimal('total')
+            ->allowEmptyString('total');
 
         $validator
             ->decimal('debt')
@@ -89,6 +94,22 @@ class InvoicesTable extends Table
         $validator
             ->date('payment_date')
             ->allowEmptyDate('payment_date');
+
+        $validator
+            ->boolean('send_by_email')
+            ->notEmptyString('send_by_email');
+
+        $validator
+            ->dateTime('email_sent')
+            ->allowEmptyDateTime('email_sent');
+
+        $validator
+            ->integer('created_by')
+            ->allowEmptyString('created_by');
+
+        $validator
+            ->integer('modified_by')
+            ->allowEmptyString('modified_by');
 
         return $validator;
     }
@@ -102,7 +123,7 @@ class InvoicesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
+        $rules->add($rules->existsIn('customer_id', 'Customers'), ['errorField' => 'customer_id']);
 
         return $rules;
     }

@@ -23,15 +23,17 @@
             <fieldset>
                 <legend><?= __('Edit Invoice') ?></legend>
                 <?php
+                    echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
                     echo $this->Form->control('number');
-                    echo $this->Form->control('varsym');
-                    echo $this->Form->control('date', ['empty' => true]);
-                    echo $this->Form->control('maturity', ['empty' => true]);
+                    echo $this->Form->control('variable_symbol');
+                    echo $this->Form->control('creation_date', ['empty' => true]);
+                    echo $this->Form->control('due_date', ['empty' => true]);
                     echo $this->Form->control('text');
-                    echo $this->Form->control('sum');
+                    echo $this->Form->control('total');
                     echo $this->Form->control('debt');
                     echo $this->Form->control('payment_date', ['empty' => true]);
-                    echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
+                    echo $this->Form->control('send_by_email');
+                    echo $this->Form->control('email_sent');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

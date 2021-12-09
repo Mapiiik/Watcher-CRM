@@ -8,22 +8,22 @@ use Cake\ORM\Entity;
 /**
  * Invoice Entity
  *
- * @property int $number
- * @property int|null $varsym
- * @property \Cake\I18n\FrozenDate|null $date
- * @property \Cake\I18n\FrozenDate|null $maturity
- * @property string|null $text
- * @property string|null $sum
- * @property string|null $debt
- * @property \Cake\I18n\FrozenDate|null $payment_date
- * @property \Cake\I18n\FrozenDate|null $creation_date
- * @property \Cake\I18n\FrozenDate|null $due_date
- * @property string|null $variable_symbol
- * @property string|null $note
- * @property string|null $internal_note
- * @property float|null $total
  * @property int $id
  * @property int|null $customer_id
+ * @property int $number
+ * @property int|null $variable_symbol
+ * @property \Cake\I18n\FrozenDate|null $creation_date
+ * @property \Cake\I18n\FrozenDate|null $due_date
+ * @property string|null $text
+ * @property float|null $total
+ * @property float|null $debt
+ * @property \Cake\I18n\FrozenDate|null $payment_date
+ * @property bool $send_by_email
+ * @property \Cake\I18n\FrozenTime|null $email_sent
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property int|null $created_by
+ * @property \Cake\I18n\FrozenTime|null $modified
+ * @property int|null $modified_by
  * @property \App\Model\Entity\Billing[] $items
  *
  * @property \App\Model\Entity\Customer $customer
@@ -37,18 +37,24 @@ class Invoice extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array<bool>
+     * @var array
      */
     protected $_accessible = [
+        'customer_id' => true,
         'number' => true,
-        'varsym' => true,
-        'date' => true,
-        'maturity' => true,
+        'variable_symbol' => true,
+        'creation_date' => true,
+        'due_date' => true,
         'text' => true,
-        'sum' => true,
+        'total' => true,
         'debt' => true,
         'payment_date' => true,
-        'customer_id' => true,
+        'send_by_email' => true,
+        'email_sent' => true,
+        'created' => true,
+        'created_by' => true,
+        'modified' => true,
+        'modified_by' => true,
         'customer' => true,
     ];
 }

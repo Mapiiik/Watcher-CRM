@@ -178,7 +178,7 @@ class InvoicesController extends AppController
     }
 
     /**
-     * GenerateInvoices method
+     * Generate method
      *
      * @return \Cake\Http\Response|null|void Renders generateInvoices
      */
@@ -189,6 +189,7 @@ class InvoicesController extends AppController
         if ($this->request->is(['post'])) {
             $invoiced_month = new FrozenDate($this->request->getData('invoiced_month'));
             $tax_rate_id = (int)$this->request->getData('tax_rate_id');
+            /** @var \Laminas\Diactoros\UploadedFile $csv_for_verification */
             $csv_for_verification = $this->request->getData('csv_for_verification');
 
             // VERIFICATION DATA CHECK
@@ -373,5 +374,78 @@ class InvoicesController extends AppController
         }
 
         $this->set(compact('tax_rates'));
+    }
+
+    /**
+     * Import from DBF method
+     *
+     * @return \Cake\Http\Response|null|void Renders generateInvoices
+     */
+    public function importFromDBF()
+    {
+        if ($this->request->is(['post'])) {
+            /** @var \Laminas\Diactoros\UploadedFile $dbf_for_import */
+            $dbf_for_import = $this->request->getData('dbf_for_import');
+
+            $created = 0;
+            $modified = 0;
+            // VERIFICATION DATA CHECK
+            if ($dbf_for_import->getSize() > 0) {
+                $dbase = \dbase_open($_FILES['dbf_for_import']['tmp_name'], 0);
+
+                $record_count = \dbase_numrecords($dbase);
+                $record_count = 100;
+                for ($record_number = 1; $record_number <= $record_count; $record_number++) {
+                    // right! record #s begin with 1, don't forget <=
+                    $record = \dbase_get_record_with_names($dbase, $record_number);
+                    foreach ($record as $key => $value) {
+                        if (is_string($value)) {
+                            $record[$key] = trim(iconv('CP852', 'UTF-8', $value));
+                        } else {
+                            $record[$key] = $value;
+                        }
+                    }
+
+                    if ((env('CUSTOMER_SERIES', 0) < $record['VARSYM']) && ($record['VARSYM'] < env('CUSTOMER_SERIES', 0) + 50000)) {
+                        $invoice = $this->Invoices->findOrCreate(['number' => $record['CISLO']]);
+
+                        $invoice->customer_id = $record['VARSYM'] - env('CUSTOMER_SERIES', 0);
+                        $invoice->variable_symbol = $record['VARSYM'];
+                        $invoice->creation_date = $record['DATUM'];
+                        $invoice->due_date = $record['DATSPLAT'];
+                        $invoice->text = $record['STEXT'];
+                        $invoice->total = $record['KCCELKEM'];
+                        $invoice->debt = $record['KCLIKV'];
+                        $invoice->payment_date = $record['DATLIKV'] <> '' ? $record['DATLIKV'] : null;
+
+                        if ($invoice->isNew()) {
+                            $created++;
+                        } else {
+                            $modified++;
+                        }
+
+                        $this->Invoices->save($invoice);
+
+                        if ($invoice->hasErrors()) {
+                            $this->Flash->error(__('Invoice {0} could not be loaded.', $invoice->number));
+                        }
+                    }
+
+                    if ($record_number == $record_count) {
+                        $this->Flash->success(__(
+                            'Successfully imported {0} invoices. Created {1}, modified {2} and skipped {3} records.',
+                            $record_count,
+                            $created,
+                            $modified,
+                            $record_count - $created - $modified
+                        ));
+                    }
+                }
+                // close database
+                \dbase_close($dbase);
+                //remove file
+                unlink($_FILES['dbf_for_import']['tmp_name']);
+            }
+        }
     }
 }
