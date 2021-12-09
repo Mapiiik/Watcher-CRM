@@ -1,4 +1,7 @@
 <?php
+
+use Cake\Mailer\Transport\MailTransport;
+
 /*
  * Local configuration file to provide any overrides to your app.php configuration.
  * Copy and save this file as app_local.php and make changes as required.
@@ -139,19 +142,25 @@ return [
      */
     'EmailTransport' => [
         'default' => [
+            'className' => MailTransport::class,
             'host' => 'localhost',
             'port' => 25,
+            'timeout' => 30,
             'username' => null,
             'password' => null,
             'client' => null,
+            'tls' => false,
             'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
         ],
         'invoices' => [
+            'className' => MailTransport::class,
             'host' => 'localhost',
             'port' => 25,
+            'timeout' => 30,
             'username' => null,
             'password' => null,
             'client' => null,
+            'tls' => false,
             'url' => env('EMAIL_TRANSPORT_INVOICES_URL', null),
         ],
     ],
