@@ -7,6 +7,7 @@
 <div class="invoices index content">
     <?= $this->Html->link(__('New Invoice'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <?= $this->Html->link(__('Generate Invoices'), ['action' => 'generate'], ['class' => 'button float-right']) ?>
+    <?= $this->Html->link(__('Import from DBF'), ['action' => 'importFromDBF'], ['class' => 'button float-right']) ?>
     <h3><?= __('Invoices') ?></h3>
     <div class="table-responsive">
         <table>
@@ -25,7 +26,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($invoices as $invoice): ?>
+                <?php foreach ($invoices as $invoice) : ?>
                 <tr>
                     <td><?= $this->Number->format($invoice->number) ?></td>
                     <td><?= $this->Number->format($invoice->varsym) ?></td>
@@ -35,11 +36,19 @@
                     <td><?= $this->Number->format($invoice->debt) ?></td>
                     <td><?= h($invoice->payment_date) ?></td>
                     <td><?= $this->Number->format($invoice->id) ?></td>
-                    <td><?= $invoice->has('customer') ? $this->Html->link($invoice->customer->name, ['controller' => 'Customers', 'action' => 'view', $invoice->customer->id]) : '' ?></td>
+                    <td><?= $invoice->has('customer') ?
+                        $this->Html->link($invoice->customer->name, [
+                            'controller' => 'Customers',
+                            'action' => 'view',
+                            $invoice->customer->id,
+                        ]) : '' ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $invoice->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $invoice->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $invoice->id], ['confirm' => __('Are you sure you want to delete # {0}?', $invoice->id)]) ?>
+                        <?= $this->Form->postLink(__('Delete'), [
+                            'action' => 'delete',
+                            $invoice->id,
+                        ], ['confirm' => __('Are you sure you want to delete # {0}?', $invoice->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
