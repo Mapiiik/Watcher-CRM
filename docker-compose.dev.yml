@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: watcher_crm
     ports:
-      - 5432/tcp
+      - 5432:5432/tcp
 
   webserver-dev:
     build:
