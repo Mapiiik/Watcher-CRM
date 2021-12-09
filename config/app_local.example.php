@@ -146,5 +146,39 @@ return [
             'client' => null,
             'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
         ],
+        'invoices' => [
+            'host' => 'localhost',
+            'port' => 25,
+            'username' => null,
+            'password' => null,
+            'client' => null,
+            'url' => env('EMAIL_TRANSPORT_INVOICES_URL', null),
+        ],
+    ],
+    'Email' => [
+        'default' => [
+            'transport' => 'default',
+            'from' => [
+                (string)env('EMAIL_DEFAULT_SENDER_EMAIL', 'default@localhost')
+                => (string)env('EMAIL_DEFAULT_SENDER_NAME', 'Default'),
+            ],
+            /*
+             * Will by default be set to config value of App.encoding, if that exists otherwise to UTF-8.
+             */
+            'charset' => 'utf-8',
+            'headerCharset' => 'utf-8',
+        ],
+        'invoices' => [
+            'transport' => 'invoices',
+            'from' => [
+                (string)env('EMAIL_INVOICES_SENDER_EMAIL', 'default@localhost')
+                => (string)env('EMAIL_INVOICES_SENDER_NAME', 'Default'),
+            ],
+            /*
+             * Will by default be set to config value of App.encoding, if that exists otherwise to UTF-8.
+             */
+            'charset' => 'utf-8',
+            'headerCharset' => 'utf-8',
+        ],
     ],
 ];
