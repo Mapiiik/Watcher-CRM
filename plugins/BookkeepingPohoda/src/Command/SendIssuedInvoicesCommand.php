@@ -104,7 +104,7 @@ class SendIssuedInvoicesCommand extends Command
                     . ', kde si zároveň můžete zkontrolovat, zda jsou uhrazeny.' . PHP_EOL
                     . 'Pokud si nepřejete dostávat faktury e-mailem, můžete si zde změnit i formu zasílání.' . PHP_EOL
                     . PHP_EOL
-                    . 'Uživatelský systém: https://data.netair.cz/' . PHP_EOL
+                    . 'Uživatelský systém: https://nms.netair.cz/netair/' . PHP_EOL
                     . PHP_EOL
                     . 'Tento email byl vygenerován automaticky.' . PHP_EOL
                     . PHP_EOL
