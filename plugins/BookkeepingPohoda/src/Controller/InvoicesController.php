@@ -64,7 +64,7 @@ class InvoicesController extends AppController
             }
             $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
         }
-        $customers = $this->Invoices->Customers->find('list', ['limit' => 200]);
+        $customers = $this->Invoices->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $this->set(compact('invoice', 'customers'));
     }
 
@@ -89,7 +89,7 @@ class InvoicesController extends AppController
             }
             $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
         }
-        $customers = $this->Invoices->Customers->find('list', ['limit' => 200]);
+        $customers = $this->Invoices->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $this->set(compact('invoice', 'customers'));
     }
 
