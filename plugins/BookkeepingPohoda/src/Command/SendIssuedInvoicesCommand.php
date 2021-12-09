@@ -128,7 +128,7 @@ class SendIssuedInvoicesCommand extends Command
                 // clean mailer
                 unset($mailer);
             } else {
-                Log::write('warning', 'Skipping invoice because no valid contact found. (' . $issued_invoice->number . ')');
+                Log::write('warning', 'Skipping invoice because no valid contact found. (' . $issued_invoice->number . ' - ' . $issued_invoice->variable_symbol . ')');
             }
         }
         echo 'Done' . "\n";
