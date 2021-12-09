@@ -394,7 +394,6 @@ class InvoicesController extends AppController
                 $dbase = \dbase_open($_FILES['dbf_for_import']['tmp_name'], 0);
 
                 $record_count = \dbase_numrecords($dbase);
-                $record_count = 100;
                 for ($record_number = 1; $record_number <= $record_count; $record_number++) {
                     // right! record #s begin with 1, don't forget <=
                     $record = \dbase_get_record_with_names($dbase, $record_number);
