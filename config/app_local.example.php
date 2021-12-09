@@ -171,6 +171,7 @@ return [
                 (string)env('EMAIL_DEFAULT_SENDER_EMAIL', 'default@localhost')
                 => (string)env('EMAIL_DEFAULT_SENDER_NAME', 'Default'),
             ],
+            'replyTo' => env('EMAIL_DEFAULT_REPLY_TO_EMAIL', null),
             /*
              * Will by default be set to config value of App.encoding, if that exists otherwise to UTF-8.
              */
@@ -183,6 +184,7 @@ return [
                 (string)env('EMAIL_INVOICES_SENDER_EMAIL', 'default@localhost')
                 => (string)env('EMAIL_INVOICES_SENDER_NAME', 'Default'),
             ],
+            'replyTo' => env('EMAIL_INVOICES_REPLY_TO_EMAIL', null),
             /*
              * Will by default be set to config value of App.encoding, if that exists otherwise to UTF-8.
              */
