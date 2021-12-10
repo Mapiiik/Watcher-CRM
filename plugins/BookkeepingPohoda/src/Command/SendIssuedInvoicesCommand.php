@@ -52,8 +52,7 @@ class SendIssuedInvoicesCommand extends Command
         ]);
 
         echo 'Sending notifications:' . "\n";
-        foreach ($issued_invoices as $issued_invoice)
-        {
+        foreach ($issued_invoices as $issued_invoice) {
             if (
                 $issued_invoice->has('customer') &&
                 $issued_invoice->customer->agree_mailing_billing &&
@@ -67,14 +66,19 @@ class SendIssuedInvoicesCommand extends Command
                 foreach ($issued_invoice->customer->billing_emails as $email) {
                     $mailer->addTo($email->email);
                 }
-                $mailer->setSubject('NETAIR - ' . $issued_invoice->text . ' - ' . $issued_invoice->number . ' - VS' . $issued_invoice->variable_symbol);
-                
+                $mailer->setSubject(
+                    'NETAIR - ' . $issued_invoice->text
+                        . ' - ' . $issued_invoice->number
+                        . ' - VS' . $issued_invoice->variable_symbol
+                );
+
                 $mailer->setAttachments([
                     'NETAIR-' . $issued_invoice->number . '-VS' . $issued_invoice->variable_symbol . '.pdf' => [
-                        'file' => '/data/nginx/crm.netair.net/data/invoices/Faktura_' . $issued_invoice->number . '.pdf',
+                        'file' => '/data/nginx/crm.netair.net/data/invoices/'
+                                    . 'Faktura_' . $issued_invoice->number . '.pdf',
                         'mimetype' => 'application/pdf',
                         'contentId' => 'issued-invoice-' . $issued_invoice->number,
-                    ]
+                    ],
                 ]);
 
                 // define date format
@@ -122,12 +126,13 @@ class SendIssuedInvoicesCommand extends Command
                     Log::write('warning', 'The email cannot be sent. (' . $e->getMessage() . ')');
                     $io->abort(__('The email cannot be sent.'));
                 }
-                
+
                 // clean mailer
                 unset($mailer);
             } else {
-                Log::write('warning', 'Skipping invoice because no valid contact found. (' . $issued_invoice->number . ' - ' . $issued_invoice->variable_symbol . ')');
-                
+                Log::write('warning', 'Skipping invoice because no valid contact found.'
+                    . ' (' . $issued_invoice->number . ' - ' . $issued_invoice->variable_symbol . ')');
+
                 // do not attempt to re-deliver this invoice by email
                 $issued_invoice->send_by_email = false;
                 $issued_invoices_table->save($issued_invoice);

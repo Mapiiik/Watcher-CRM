@@ -25,6 +25,8 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime|null $modified
  * @property int|null $modified_by
  * @property \App\Model\Entity\Billing[] $items
+ * @property string|null $note
+ * @property string|null $internal_note
  *
  * @property \App\Model\Entity\Customer $customer
  */
@@ -37,7 +39,7 @@ class Invoice extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<bool>
      */
     protected $_accessible = [
         'customer_id' => true,

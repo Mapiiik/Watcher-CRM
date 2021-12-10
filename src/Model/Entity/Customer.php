@@ -46,6 +46,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\BorrowedEquipment[] $borrowed_equipments
  * @property \App\Model\Entity\Contract[] $contracts
  * @property \App\Model\Entity\Email[] $emails
+ * @property \App\Model\Entity\Email[] $billing_emails
  * @property \App\Model\Entity\Ip[] $ips
  * @property \App\Model\Entity\LabelCustomer[] $label_customers
  * @property \App\Model\Entity\Login[] $logins
@@ -207,9 +208,10 @@ class Customer extends Entity
                 $billing_emails[] = $email;
             }
         }
+
         return $billing_emails;
     }
-    
+
     /**
      * all customer emails for billing separated by commas
      *
@@ -221,7 +223,7 @@ class Customer extends Entity
 
         return $email;
     }
-    
+
     /**
      * all customer phones separated by commas
      *

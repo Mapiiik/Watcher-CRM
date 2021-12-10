@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace BookkeepingPohoda\Test\TestCase\Command;
 
-use BookkeepingPohoda\Command\SendInvoicesCommand;
+//use BookkeepingPohoda\Command\SendIssuedInvoicesCommand;
 use Cake\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -26,11 +26,12 @@ class SendInvoicesCommandTest extends TestCase
         parent::setUp();
         $this->useCommandRunner();
     }
+
     /**
      * Test buildOptionParser method
      *
      * @return void
-     * @uses \BookkeepingPohoda\Command\SendInvoicesCommand::buildOptionParser()
+     * @uses \BookkeepingPohoda\Command\SendIssuedInvoicesCommand::buildOptionParser()
      */
     public function testBuildOptionParser(): void
     {
@@ -41,7 +42,7 @@ class SendInvoicesCommandTest extends TestCase
      * Test execute method
      *
      * @return void
-     * @uses \BookkeepingPohoda\Command\SendInvoicesCommand::execute()
+     * @uses \BookkeepingPohoda\Command\SendIssuedInvoicesCommand::execute()
      */
     public function testExecute(): void
     {
