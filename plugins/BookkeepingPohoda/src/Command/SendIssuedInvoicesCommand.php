@@ -102,7 +102,7 @@ class SendIssuedInvoicesCommand extends Command
                     . PHP_EOL
                     . 'V příloze Vám zasíláme doklad ve formátu PDF.' . PHP_EOL
                     . PHP_EOL
-                    . 'Tuto i další námi vystavené faktury je možné zároveň stahovat i v našem Uživatelském portálu'
+                    . 'Tuto i další námi vystavené faktury je možné stahovat i v našem Uživatelském portálu'
                     . ', kde si zároveň můžete zkontrolovat, zda jsou uhrazeny.' . PHP_EOL
                     . 'Pokud si nepřejete dostávat faktury e-mailem, můžete si zde změnit i formu zasílání.' . PHP_EOL
                     . PHP_EOL
