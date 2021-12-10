@@ -78,7 +78,7 @@ class SendIssuedInvoicesCommand extends Command
                 ]);
 
                 // define date format
-                FrozenDate::setToStringFormat('dd.MM.YYYY');
+                FrozenDate::setToStringFormat('dd.MM.yyyy');
 
                 $message =
                     'Vážený zákazníku,' . PHP_EOL

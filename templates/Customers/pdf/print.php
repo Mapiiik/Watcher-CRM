@@ -3,7 +3,7 @@
 define('K_PATH_IMAGES', WWW_ROOT . 'legacy' . DS . 'images' . DS);
 
 // define date format
-\Cake\I18n\FrozenDate::setToStringFormat('dd.MM.YYYY');
+\Cake\I18n\FrozenDate::setToStringFormat('dd.MM.yyyy');
 
 class CustomerPDF extends TCPDF
 {
