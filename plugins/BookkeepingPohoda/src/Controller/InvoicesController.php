@@ -406,13 +406,13 @@ class InvoicesController extends AppController
                     }
 
                     if (
-                        (env('CUSTOMER_SERIES', 0) < $record['VARSYM']) &&
-                        ($record['VARSYM'] < env('CUSTOMER_SERIES', 0) + 50000)
+                        ((int)env('CUSTOMER_SERIES', '0') < (int)$record['VARSYM']) &&
+                        ((int)$record['VARSYM'] < (int)env('CUSTOMER_SERIES', '0') + 50000)
                     ) {
                         $invoice = $this->Invoices->findOrCreate(['number' => $record['CISLO']]);
 
-                        $invoice->customer_id = $record['VARSYM'] - env('CUSTOMER_SERIES', 0);
-                        $invoice->variable_symbol = $record['VARSYM'];
+                        $invoice->customer_id = (int)$record['VARSYM'] - (int)env('CUSTOMER_SERIES', '0');
+                        $invoice->variable_symbol = (int)$record['VARSYM'];
                         $invoice->creation_date = $record['DATUM'];
                         $invoice->due_date = $record['DATSPLAT'];
                         $invoice->text = $record['STEXT'];
