@@ -117,7 +117,7 @@ class SendIssuedInvoicesCommand extends Command
                     Log::write('debug', 'Email was successfully sent.');
                     $io->info(__('Email was successfully sent.'));
 
-                    // save time to database
+                    // save the date of submission to the database
                     $issued_invoice->email_sent = new FrozenTime();
                     $issued_invoices_table->save($issued_invoice);
                 } catch (\Exception $e) {
@@ -129,6 +129,10 @@ class SendIssuedInvoicesCommand extends Command
                 unset($mailer);
             } else {
                 Log::write('warning', 'Skipping invoice because no valid contact found. (' . $issued_invoice->number . ' - ' . $issued_invoice->variable_symbol . ')');
+                
+                // do not attempt to re-deliver this invoice by email
+                $issued_invoice->send_by_email = false;
+                $issued_invoices_table->save($issued_invoice);
             }
         }
         echo 'Done' . "\n";
