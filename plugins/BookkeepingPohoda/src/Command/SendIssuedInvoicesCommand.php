@@ -57,17 +57,15 @@ class SendIssuedInvoicesCommand extends Command
             if (
                 $issued_invoice->has('customer') &&
                 $issued_invoice->customer->agree_mailing_billing &&
-                count($issued_invoice->customer->emails) > 0
+                count($issued_invoice->customer->billing_emails) > 0
             ) {
                 // send email with notification
-                echo 'Invoice - ' . $issued_invoice->number . ' - ' . $issued_invoice->customer->email . ' - ';
+                echo 'Invoice - ' . $issued_invoice->number . ' - ' . $issued_invoice->customer->billing_email . ' - ';
 
                 $mailer = new Mailer('invoices');
 
-                foreach ($issued_invoice->customer->emails as $email) {
-                    if ($email->use_for_billing) {
-                        $mailer->addTo($email->email);
-                    }
+                foreach ($issued_invoice->customer->billing_emails as $email) {
+                    $mailer->addTo($email->email);
                 }
                 $mailer->setSubject('NETAIR - ' . $issued_invoice->text . ' - ' . $issued_invoice->number . ' - VS' . $issued_invoice->variable_symbol);
                 

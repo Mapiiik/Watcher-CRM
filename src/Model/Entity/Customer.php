@@ -195,6 +195,34 @@ class Customer extends Entity
     }
 
     /**
+     * all customer emails for billing
+     *
+     * @return array
+     */
+    protected function _getBillingEmails(): array
+    {
+        $billing_emails = [];
+        foreach ($this->emails as $email) {
+            if ($email->use_for_billing) {
+                $billing_emails[] = $email;
+            }
+        }
+        return $billing_emails;
+    }
+    
+    /**
+     * all customer emails for billing separated by commas
+     *
+     * @return string
+     */
+    protected function _getBillingEmail(): string
+    {
+        $email = implode(', ', array_column($this->billing_emails, 'email'));
+
+        return $email;
+    }
+    
+    /**
      * all customer phones separated by commas
      *
      * @return string
