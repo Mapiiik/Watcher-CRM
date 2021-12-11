@@ -162,8 +162,7 @@ class CustomerPDF extends TCPDF
         $this->SetFont('DejaVuSerif', '', '8');
         $this->Cell(30, 4, 'firma:', '', '', 'R');
         $this->SetFont('DejaVuSerif', 'B', '8');
-        $this->Cell(60, 4, $customer->billing_address->company);
-        $this->Ln();
+        $this->MultiCell(60, 4, $customer->billing_address->company, '', 'L');
 
         $this->SetFont('DejaVuSerif', '', '8');
         $this->Cell(30, 4, 'datum narození:', '', '', 'R');
@@ -199,10 +198,10 @@ class CustomerPDF extends TCPDF
 
         foreach ($customer->addresses as $address)
         {
-            $this->SetFont('DejaVuSerif', 'B', '7');
+            $this->SetFont('DejaVuSerif', 'B', '8');
             $this->Cell(30, 4, $address_types[$address->type] . ': ', '' , '' , 'L');
             $this->Ln();
-            $this->SetFont('DejaVuSerif', 'B', '7');
+            $this->SetFont('DejaVuSerif', 'B', '8');
             $this->Cell(30, 4);
             $this->MultiCell(180, 4, $address->full_address, '', 'L');                    
         }
@@ -213,7 +212,7 @@ class CustomerPDF extends TCPDF
         $this->Write(3, '
 Prohlášení Správce:
 
-    Správce prohlašuje, že bude zpracovávat osobní údaje v rozsahu nezbytném pro naplnění níže stanoveného účelu, plnění smlouvy, plnění zákonných povinností a ochrany oprávněných zájmů. Zaměstnanci Správce nebo jiné fyzické osoby, které zpracovávají osobní údaje na základě smlouvy se Správcem a další osoby jsou povinni zachovávat mlčenlivost o osobních údajích, a to i po skončení pracovního poměru nebo prací.
+    Správce prohlašuje, že bude zpracovávat osobní údaje v rozsahu nezbytném pro naplnění níže stanovených účelů, plnění smlouvy, plnění zákonných povinností a ochrany oprávněných zájmů. Zaměstnanci Správce nebo jiné fyzické osoby, které zpracovávají osobní údaje na základě smlouvy se Správcem a další osoby jsou povinni zachovávat mlčenlivost o osobních údajích, a to i po skončení pracovního poměru nebo prací.
 
 Já, níže podepsaný:
 
