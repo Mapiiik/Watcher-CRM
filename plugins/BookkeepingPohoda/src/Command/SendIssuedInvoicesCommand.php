@@ -111,7 +111,8 @@ class SendIssuedInvoicesCommand extends Command
                     . 'Tento email byl vygenerován automaticky.' . PHP_EOL
                     . PHP_EOL
                     . 'NETAIR, s.r.o.' . PHP_EOL
-                    . 'Jablonec nad Jizerou 299, 512 43 Jablonec nad Jizerou' . PHP_EOL
+                    . 'Jablonec nad Jizerou 299' . PHP_EOL
+                    . '512 43 Jablonec nad Jizerou' . PHP_EOL
                     . 'IČ: 27496139, DIČ: CZ27496139';
 
                 try {
