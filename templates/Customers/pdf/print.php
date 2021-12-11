@@ -189,12 +189,12 @@ class CustomerPDF extends TCPDF
         $this->SetFont('DejaVuSerif', '', '8');
         $this->Cell(30, 4, 'tel:', '', '', 'R');
         $this->SetFont('DejaVuSerif', 'B', '8');
-        $this->MultiCell(70, 4, $customer->phone, '', 'L');
+        $this->MultiCell(160, 4, $customer->phone, '', 'L');
 
         $this->SetFont('DejaVuSerif', '', '8');
         $this->Cell(30, 4, 'e-mail:', '', '', 'R');
         $this->SetFont('DejaVuSerif', 'B', '8');
-        $this->MultiCell(70, 4, $customer->email, '', 'L');
+        $this->MultiCell(160, 4, $customer->email, '', 'L');
 
         foreach ($customer->addresses as $address)
         {
@@ -203,7 +203,7 @@ class CustomerPDF extends TCPDF
             $this->Ln();
             $this->SetFont('DejaVuSerif', 'B', '8');
             $this->Cell(30, 4);
-            $this->MultiCell(180, 4, $address->full_address, '', 'L');                    
+            $this->MultiCell(160, 4, $address->full_address, '', 'L');                    
         }
 
         $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
