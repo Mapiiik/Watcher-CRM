@@ -87,10 +87,6 @@ class SendIssuedInvoicesCommand extends Command
                 $message =
                     'Vážený zákazníku,' . PHP_EOL
                     . PHP_EOL
-                    . '-------------------------------------------------------------------------------' . PHP_EOL
-                    . 'OPĚTOVNÉ ZASLÁNÍ, POKUD JSTE JIŽ FAKTURU OBDRŽELI, TENTO EMAIL PROSÍM IGNORUJTE' . PHP_EOL
-                    . '-------------------------------------------------------------------------------' . PHP_EOL
-                    . PHP_EOL
                     . 'dne ' . $issued_invoice->creation_date
                     . ' Vám byla na základě smlouvy č. ' . $issued_invoice->variable_symbol
                     . ' vystavena faktura - daňový doklad č. ' . $issued_invoice->number
