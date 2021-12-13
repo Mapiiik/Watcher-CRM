@@ -138,20 +138,20 @@ return [
         ],
         //users access
         [
-            'role' => ['user', 'technician', 'manager'],
+            'role' => ['user', 'technician', 'manager', 'bookkeeper'],
             'plugin' => null,
             'controller' => ['Customers'],
             'action' => ['index'],
         ],
         [
-            'role' => ['user', 'technician', 'manager'],
+            'role' => ['user', 'technician', 'manager', 'bookkeeper'],
             'plugin' => null,
             'controller' => ['Customers', 'Contracts'],
             'action' => ['view'],
         ],
-        //allow technicians and managers to view some more details
+        //allow technicians, managers and bookkeepers to view some more details
         [
-            'role' => ['technician', 'manager'],
+            'role' => ['technician', 'manager', 'bookkeeper'],
             'plugin' => null,
             'controller' => [
                 'Emails', 'Phones', 'Logins', 'Addresses',
@@ -160,9 +160,9 @@ return [
             ],
             'action' => ['view'],
         ],
-        //allow index when customer_id is set for managers
+        //allow index when customer_id is set for managers and bookkeepers
         [
-            'role' => ['manager'],
+            'role' => ['manager', 'bookkeeper'],
             'plugin' => null,
             'controller' => [
                 'Contracts',
@@ -175,9 +175,9 @@ return [
                 return is_numeric($request->getParam('customer_id'));
             }
         ],
-        //allow add/edit for managers
+        //allow add/edit for managers and bookkeepers
         [
-            'role' => ['manager'],
+            'role' => ['manager', 'bookkeeper'],
             'plugin' => null,
             'controller' => [
                 'Customers', 'Contracts',
@@ -187,15 +187,22 @@ return [
             ],
             'action' => ['add', 'edit', 'print'],
         ],
-        //allow delete of some items for managers
+        //allow delete of some items for managers and bookkeepers
         [
-            'role' => ['manager'],
+            'role' => ['manager', 'bookkeeper'],
             'plugin' => null,
             'controller' => [
                 'Emails', 'Phones', 'Logins',
                 'BorrowedEquipments', 'SoldEquipments', 'Ips',
             ],
             'action' => ['delete'],
+        ],
+        //allow all in bookkeeping plugin for bookkeepers
+        [
+            'role' => ['bookkeeper'],
+            'plugin' => ['BookkeepingPohoda'],
+            'controller' => '*',
+            'action' => '*',
         ],
     ]
 ];
