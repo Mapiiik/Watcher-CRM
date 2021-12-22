@@ -42,7 +42,7 @@ class Plugin extends BasePlugin
             ['path' => '/bookkeeping'],
             function (RouteBuilder $builder) {
                 // Add custom routes here
-                $builder->setExtensions(['dbf']);
+                $builder->setExtensions(['dbf', 'xml']);
 
                 $builder->fallbacks();
             }
