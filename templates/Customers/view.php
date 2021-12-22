@@ -354,7 +354,7 @@ use Cake\I18n\Number;
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($customer->billings as $billing) : ?>
-                        <tr>
+                        <tr style="<?= $billing->style ?>">
                             <td><?= $billing->has('contract') ? $this->Html->link($billing->contract->number, ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]) : '' ?></td>
                             <td><?= $billing->has('service') ? $this->Html->link($billing->service->name, ['controller' => 'Services', 'action' => 'view', $billing->service->id]) : '' ?></td>
                             <td><?= h($billing->text) ?></td>

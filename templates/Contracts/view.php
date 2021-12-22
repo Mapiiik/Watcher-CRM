@@ -156,24 +156,24 @@ use Cake\I18n\Number;
                             <th><?= __('Note') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($contract->billings as $billings) : ?>
-                        <tr>
-                            <td><?= $billings->has('service') ? h($billings->service->name) : '' ?></td>
-                            <td><?= h($billings->text) ?></td>
-                            <td><?= h($billings->quantity) ?></td>
-                            <td><?= h($billings->price) ?><?= $billings->has('service') ? ' (' . h($billings->service->price) . ')' : '' ?></td>
-                            <td><?= h($billings->fixed_discount) ?></td>
-                            <td><?= h($billings->percentage_discount) ?></td>
-                            <td><?= Number::currency($billings->total_price) ?></td>
-                            <td><?= h($billings->billing_from) ?></td>
-                            <td><?= h($billings->billing_until) ?></td>
-                            <td><?= $billings->active ? __('Yes') : __('No'); ?></td>
-                            <td><?= $billings->separate ? __('Yes') : __('No'); ?></td>
-                            <td><?= h($billings->note) ?></td>
+                        <?php foreach ($contract->billings as $billing) : ?>
+                        <tr style="<?= $billing->style ?>">
+                            <td><?= $billing->has('service') ? h($billing->service->name) : '' ?></td>
+                            <td><?= h($billing->text) ?></td>
+                            <td><?= h($billing->quantity) ?></td>
+                            <td><?= h($billing->price) ?><?= $billing->has('service') ? ' (' . h($billing->service->price) . ')' : '' ?></td>
+                            <td><?= h($billing->fixed_discount) ?></td>
+                            <td><?= h($billing->percentage_discount) ?></td>
+                            <td><?= Number::currency($billing->total_price) ?></td>
+                            <td><?= h($billing->billing_from) ?></td>
+                            <td><?= h($billing->billing_until) ?></td>
+                            <td><?= $billing->active ? __('Yes') : __('No'); ?></td>
+                            <td><?= $billing->separate ? __('Yes') : __('No'); ?></td>
+                            <td><?= h($billing->note) ?></td>
                             <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Billings', 'action' => 'view', $billings->id]) ?>
-                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'Billings', 'action' => 'edit', $billings->id]) ?>
-                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'Billings', 'action' => 'delete', $billings->id], ['confirm' => __('Are you sure you want to delete # {0}?', $billings->id)]) ?>
+                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Billings', 'action' => 'view', $billing->id]) ?>
+                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'Billings', 'action' => 'edit', $billing->id]) ?>
+                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'Billings', 'action' => 'delete', $billing->id], ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

@@ -32,7 +32,7 @@ use Cake\I18n\Number;
             </thead>
             <tbody>
                 <?php foreach ($billings as $billing) : ?>
-                <tr>
+                <tr style="<?= $billing->style ?>">
                     <td><?= $this->Number->format($billing->id) ?></td>
                     <td><?= $billing->has('customer') ? $this->Html->link($billing->customer->name, ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]) : '' ?></td>
                     <td><?= $billing->has('contract') ? $this->Html->link($billing->contract->number, ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]) : '' ?></td>

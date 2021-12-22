@@ -33,6 +33,8 @@ use Cake\ORM\Entity;
  * @property float $discount
  * @property float $total_price
  * @property float $vat
+ * @property float $vat_base
+ * @property string $style
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Service $service
@@ -247,5 +249,30 @@ class Billing extends Entity
 
         // this should never happen
         return 0;
+    }
+
+    /**
+     * getter for color
+     *
+     * @return string
+     */
+    protected function _getStyle(): string
+    {
+        $style = '';
+        $now = new FrozenDate();
+
+        if ($this->billing_from > $now) {
+            $style = 'background-color: #eb984e;';
+        }
+
+        if (isset($this->billing_until) && $this->billing_until < $now) {
+            $style = 'background-color: #bbbbbb;';
+        }
+
+        if (isset($this->contract->valid_until) && $this->contract->valid_until < $now) {
+            $style = 'background-color: #ffaaaa;';
+        }
+
+        return $style;
     }
 }

@@ -71,28 +71,28 @@
                             <th><?= __('Contract Id') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($service->billings as $billings) : ?>
+                        <?php foreach ($service->billings as $billing) : ?>
                         <tr>
-                            <td><?= h($billings->id) ?></td>
-                            <td><?= h($billings->customer_id) ?></td>
-                            <td><?= h($billings->text) ?></td>
-                            <td><?= h($billings->price) ?></td>
-                            <td><?= h($billings->billing_from) ?></td>
-                            <td><?= h($billings->note) ?></td>
-                            <td><?= h($billings->active) ?></td>
-                            <td><?= h($billings->modified_by) ?></td>
-                            <td><?= h($billings->modified) ?></td>
-                            <td><?= h($billings->created_by) ?></td>
-                            <td><?= h($billings->created) ?></td>
-                            <td><?= h($billings->billing_until) ?></td>
-                            <td><?= h($billings->separate) ?></td>
-                            <td><?= h($billings->service_id) ?></td>
-                            <td><?= h($billings->quantity) ?></td>
-                            <td><?= h($billings->contract_id) ?></td>
+                            <td><?= h($billing->id) ?></td>
+                            <td><?= h($billing->customer_id) ?></td>
+                            <td><?= h($billing->text) ?></td>
+                            <td><?= h($billing->price) ?></td>
+                            <td><?= h($billing->billing_from) ?></td>
+                            <td><?= h($billing->note) ?></td>
+                            <td><?= h($billing->active) ?></td>
+                            <td><?= h($billing->modified_by) ?></td>
+                            <td><?= h($billing->modified) ?></td>
+                            <td><?= h($billing->created_by) ?></td>
+                            <td><?= h($billing->created) ?></td>
+                            <td><?= h($billing->billing_until) ?></td>
+                            <td><?= h($billing->separate) ?></td>
+                            <td><?= h($billing->service_id) ?></td>
+                            <td><?= h($billing->quantity) ?></td>
+                            <td><?= h($billing->contract_id) ?></td>
                             <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Billings', 'action' => 'view', $billings->id]) ?>
-                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'Billings', 'action' => 'edit', $billings->id]) ?>
-                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'Billings', 'action' => 'delete', $billings->id], ['confirm' => __('Are you sure you want to delete # {0}?', $billings->id)]) ?>
+                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Billings', 'action' => 'view', $billing->id]) ?>
+                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'Billings', 'action' => 'edit', $billing->id]) ?>
+                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'Billings', 'action' => 'delete', $billing->id], ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
