@@ -21,7 +21,7 @@
             </thead>
             <tbody>
                 <?php foreach ($soldEquipments as $soldEquipment): ?>
-                <tr>
+                <tr style="<?= $soldEquipment->style ?>">
                     <td><?= $this->Number->format($soldEquipment->id) ?></td>
                     <td><?= $soldEquipment->has('customer') ? $this->Html->link($soldEquipment->customer->name, ['controller' => 'Customers', 'action' => 'view', $soldEquipment->customer->id]) : '' ?></td>
                     <td><?= $soldEquipment->has('contract') ? $this->Html->link($soldEquipment->contract->number, ['controller' => 'Contracts', 'action' => 'view', $soldEquipment->contract->id]) : '' ?></td>

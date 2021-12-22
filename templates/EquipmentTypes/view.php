@@ -87,21 +87,21 @@
                             <th><?= __('Modified By') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($equipmentType->sold_equipments as $soldEquipments) : ?>
+                        <?php foreach ($equipmentType->sold_equipments as $soldEquipment) : ?>
                         <tr>
-                            <td><?= h($soldEquipments->id) ?></td>
-                            <td><?= h($soldEquipments->customer_id) ?></td>
-                            <td><?= h($soldEquipments->contract_id) ?></td>
-                            <td><?= h($soldEquipments->equipment_type_id) ?></td>
-                            <td><?= h($soldEquipments->serial_number) ?></td>
-                            <td><?= h($soldEquipments->created) ?></td>
-                            <td><?= h($soldEquipments->created_by) ?></td>
-                            <td><?= h($soldEquipments->modified) ?></td>
-                            <td><?= h($soldEquipments->modified_by) ?></td>
+                            <td><?= h($soldEquipment->id) ?></td>
+                            <td><?= h($soldEquipment->customer_id) ?></td>
+                            <td><?= h($soldEquipment->contract_id) ?></td>
+                            <td><?= h($soldEquipment->equipment_type_id) ?></td>
+                            <td><?= h($soldEquipment->serial_number) ?></td>
+                            <td><?= h($soldEquipment->created) ?></td>
+                            <td><?= h($soldEquipment->created_by) ?></td>
+                            <td><?= h($soldEquipment->modified) ?></td>
+                            <td><?= h($soldEquipment->modified_by) ?></td>
                             <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), ['controller' => 'SoldEquipments', 'action' => 'view', $soldEquipments->id]) ?>
-                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'SoldEquipments', 'action' => 'edit', $soldEquipments->id]) ?>
-                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'SoldEquipments', 'action' => 'delete', $soldEquipments->id], ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipments->id)]) ?>
+                                <?= $this->AuthLink->link(__('View'), ['controller' => 'SoldEquipments', 'action' => 'view', $soldEquipment->id]) ?>
+                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'SoldEquipments', 'action' => 'edit', $soldEquipment->id]) ?>
+                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'SoldEquipments', 'action' => 'delete', $soldEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

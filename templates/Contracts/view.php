@@ -222,14 +222,14 @@ use Cake\I18n\Number;
                             <th><?= __('Serial Number') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($contract->sold_equipments as $soldEquipments) : ?>
-                        <tr>
-                            <td><?= h($soldEquipments->equipment_type->name) ?></td>
-                            <td><?= h($soldEquipments->serial_number) ?></td>
+                        <?php foreach ($contract->sold_equipments as $soldEquipment) : ?>
+                        <tr style="<?= $soldEquipment->style ?>">
+                            <td><?= h($soldEquipment->equipment_type->name) ?></td>
+                            <td><?= h($soldEquipment->serial_number) ?></td>
                             <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), ['controller' => 'SoldEquipments', 'action' => 'view', $soldEquipments->id]) ?>
-                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'SoldEquipments', 'action' => 'edit', $soldEquipments->id]) ?>
-                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'SoldEquipments', 'action' => 'delete', $soldEquipments->id], ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipments->id)]) ?>
+                                <?= $this->AuthLink->link(__('View'), ['controller' => 'SoldEquipments', 'action' => 'view', $soldEquipment->id]) ?>
+                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'SoldEquipments', 'action' => 'edit', $soldEquipment->id]) ?>
+                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'SoldEquipments', 'action' => 'delete', $soldEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

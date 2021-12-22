@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use Cake\I18n\FrozenDate;
 use Cake\ORM\Entity;
 
 /**
@@ -17,6 +18,7 @@ use Cake\ORM\Entity;
  * @property int $created_by
  * @property \Cake\I18n\FrozenTime|null $modified
  * @property int|null $modified_by
+ * @property string $style
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Contract $contract
@@ -46,4 +48,21 @@ class SoldEquipment extends Entity
         'contract' => true,
         'equipment_type' => true,
     ];
+
+    /**
+     * getter for style
+     *
+     * @return string
+     */
+    protected function _getStyle(): string
+    {
+        $style = '';
+        $now = new FrozenDate();
+
+        if (isset($this->contract->valid_until) && $this->contract->valid_until < $now) {
+            $style = 'background-color: #ffaaaa;';
+        }
+
+        return $style;
+    }
 }
