@@ -48,21 +48,21 @@
                             <th><?= __('Modified By') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($equipmentType->borrowed_equipments as $borrowedEquipments) : ?>
+                        <?php foreach ($equipmentType->borrowed_equipments as $borrowedEquipment) : ?>
                         <tr>
-                            <td><?= h($borrowedEquipments->id) ?></td>
-                            <td><?= h($borrowedEquipments->customer_id) ?></td>
-                            <td><?= h($borrowedEquipments->contract_id) ?></td>
-                            <td><?= h($borrowedEquipments->equipment_type_id) ?></td>
-                            <td><?= h($borrowedEquipments->serial_number) ?></td>
-                            <td><?= h($borrowedEquipments->created) ?></td>
-                            <td><?= h($borrowedEquipments->created_by) ?></td>
-                            <td><?= h($borrowedEquipments->modified) ?></td>
-                            <td><?= h($borrowedEquipments->modified_by) ?></td>
+                            <td><?= h($borrowedEquipment->id) ?></td>
+                            <td><?= h($borrowedEquipment->customer_id) ?></td>
+                            <td><?= h($borrowedEquipment->contract_id) ?></td>
+                            <td><?= h($borrowedEquipment->equipment_type_id) ?></td>
+                            <td><?= h($borrowedEquipment->serial_number) ?></td>
+                            <td><?= h($borrowedEquipment->created) ?></td>
+                            <td><?= h($borrowedEquipment->created_by) ?></td>
+                            <td><?= h($borrowedEquipment->modified) ?></td>
+                            <td><?= h($borrowedEquipment->modified_by) ?></td>
                             <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), ['controller' => 'BorrowedEquipments', 'action' => 'view', $borrowedEquipments->id]) ?>
-                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'BorrowedEquipments', 'action' => 'edit', $borrowedEquipments->id]) ?>
-                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'BorrowedEquipments', 'action' => 'delete', $borrowedEquipments->id], ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipments->id)]) ?>
+                                <?= $this->AuthLink->link(__('View'), ['controller' => 'BorrowedEquipments', 'action' => 'view', $borrowedEquipment->id]) ?>
+                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'BorrowedEquipments', 'action' => 'edit', $borrowedEquipment->id]) ?>
+                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'BorrowedEquipments', 'action' => 'delete', $borrowedEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

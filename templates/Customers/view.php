@@ -393,7 +393,7 @@ use Cake\I18n\Number;
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($customer->borrowed_equipments as $borrowedEquipment) : ?>
-                        <tr>
+                        <tr style="<?= $borrowedEquipment->style ?>">
                             <td><?= $borrowedEquipment->has('contract') ? $this->Html->link($borrowedEquipment->contract->number, ['controller' => 'Contracts', 'action' => 'view', $borrowedEquipment->contract->id]) : '' ?></td>
                             <td><?= $borrowedEquipment->has('equipment_type') ? $this->Html->link($borrowedEquipment->equipment_type->name, ['controller' => 'EquipmentTypes', 'action' => 'view', $borrowedEquipment->equipment_type->id]) : '' ?></td>
                             <td><?= h($borrowedEquipment->serial_number) ?></td>

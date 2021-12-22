@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use Cake\I18n\FrozenDate;
 use Cake\ORM\Entity;
 
 /**
@@ -19,6 +20,7 @@ use Cake\ORM\Entity;
  * @property int|null $modified_by
  * @property \Cake\I18n\FrozenDate|null $borrowed_from
  * @property \Cake\I18n\FrozenDate|null $borrowed_until
+ * @property string $style
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Contract $contract
@@ -50,4 +52,29 @@ class BorrowedEquipment extends Entity
         'contract' => true,
         'equipment_type' => true,
     ];
+
+    /**
+     * getter for style
+     *
+     * @return string
+     */
+    protected function _getStyle(): string
+    {
+        $style = '';
+        $now = new FrozenDate();
+
+        if (isset($this->borrowed_from) && $this->borrowed_from > $now) {
+            $style = 'background-color: #eb984e;';
+        }
+
+        if (isset($this->borrowed_until) && $this->borrowed_until < $now) {
+            $style = 'background-color: #bbbbbb;';
+        }
+
+        if (isset($this->contract->valid_until) && $this->contract->valid_until < $now) {
+            $style = 'background-color: #ffaaaa;';
+        }
+
+        return $style;
+    }
 }

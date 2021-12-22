@@ -194,16 +194,16 @@ use Cake\I18n\Number;
                             <th><?= __('Borrowed Until') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($contract->borrowed_equipments as $borrowedEquipments) : ?>
-                        <tr>
-                            <td><?= h($borrowedEquipments->equipment_type->name) ?></td>
-                            <td><?= h($borrowedEquipments->serial_number) ?></td>
-                            <td><?= h($borrowedEquipments->borrowed_from) ?></td>
-                            <td><?= h($borrowedEquipments->borrowed_until) ?></td>
+                        <?php foreach ($contract->borrowed_equipments as $borrowedEquipment) : ?>
+                        <tr style="<?= $borrowedEquipment->style ?>">
+                            <td><?= h($borrowedEquipment->equipment_type->name) ?></td>
+                            <td><?= h($borrowedEquipment->serial_number) ?></td>
+                            <td><?= h($borrowedEquipment->borrowed_from) ?></td>
+                            <td><?= h($borrowedEquipment->borrowed_until) ?></td>
                             <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), ['controller' => 'BorrowedEquipments', 'action' => 'view', $borrowedEquipments->id]) ?>
-                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'BorrowedEquipments', 'action' => 'edit', $borrowedEquipments->id]) ?>
-                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'BorrowedEquipments', 'action' => 'delete', $borrowedEquipments->id], ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipments->id)]) ?>
+                                <?= $this->AuthLink->link(__('View'), ['controller' => 'BorrowedEquipments', 'action' => 'view', $borrowedEquipment->id]) ?>
+                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'BorrowedEquipments', 'action' => 'edit', $borrowedEquipment->id]) ?>
+                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'BorrowedEquipments', 'action' => 'delete', $borrowedEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

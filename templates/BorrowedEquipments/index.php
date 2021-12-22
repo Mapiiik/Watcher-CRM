@@ -23,7 +23,7 @@
             </thead>
             <tbody>
                 <?php foreach ($borrowedEquipments as $borrowedEquipment): ?>
-                <tr>
+                <tr style="<?= $borrowedEquipment->style ?>">
                     <td><?= $this->Number->format($borrowedEquipment->id) ?></td>
                     <td><?= $borrowedEquipment->has('customer') ? $this->Html->link($borrowedEquipment->customer->name, ['controller' => 'Customers', 'action' => 'view', $borrowedEquipment->customer->id]) : '' ?></td>
                     <td><?= $borrowedEquipment->has('contract') ? $this->Html->link($borrowedEquipment->contract->number, ['controller' => 'Contracts', 'action' => 'view', $borrowedEquipment->contract->id]) : '' ?></td>
