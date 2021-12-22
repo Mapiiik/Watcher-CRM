@@ -82,8 +82,14 @@ class BillingsController extends AppController
         if ($this->request->is('post')) {
             $billing = $this->Billings->patchEntity($billing, $this->request->getData());
 
-            if (
-                isset($billing->service_id)
+            if ($this->request->getData('refresh') == 'refresh') {
+                // only refresh
+            } else if (
+                !isset($billing->service_id) && !isset($billing->text)
+            ) {
+                $this->Flash->error(__('Billing text must be entered or service selected.'));
+            } else if (
+                isset($billing->contract_id) && isset($billing->service_id)
                 && isset($this->Billings->Services->get($billing->service_id)->service_type_id)
                 && (
                     $this->Billings->Contracts->get($billing->contract_id)->service_type_id
@@ -121,6 +127,11 @@ class BillingsController extends AppController
                 'service_type_id' => $this->Billings->Contracts->get($contract_id)->service_type_id,
                 'service_type_id IS NULL',
             ]]);
+        } else if (isset($billing->contract_id)) {
+            $services->where(['OR' => [
+                'service_type_id' => $this->Billings->Contracts->get($billing->contract_id)->service_type_id,
+                'service_type_id IS NULL',
+            ]]);
         }
 
         $this->set(compact('billing', 'customers', 'services', 'contracts'));
@@ -147,8 +158,15 @@ class BillingsController extends AppController
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $billing = $this->Billings->patchEntity($billing, $this->request->getData());
-            if (
-                isset($billing->service_id)
+
+            if ($this->request->getData('refresh') == 'refresh') {
+                // only refresh
+            } else if (
+                !isset($billing->service_id) && !isset($billing->text)
+            ) {
+                $this->Flash->error(__('Billing text must be entered or service selected.'));
+            } else if (
+                isset($billing->contract_id) && isset($billing->service_id)
                 && isset($this->Billings->Services->get($billing->service_id)->service_type_id)
                 && (
                     $this->Billings->Contracts->get($billing->contract_id)->service_type_id
@@ -184,6 +202,11 @@ class BillingsController extends AppController
             $contracts->where(['Contracts.id' => $contract_id]);
             $services->where(['OR' => [
                 'service_type_id' => $this->Billings->Contracts->get($contract_id)->service_type_id,
+                'service_type_id IS NULL',
+            ]]);
+        } else if (isset($billing->contract_id)) {
+            $services->where(['OR' => [
+                'service_type_id' => $this->Billings->Contracts->get($billing->contract_id)->service_type_id,
                 'service_type_id IS NULL',
             ]]);
         }

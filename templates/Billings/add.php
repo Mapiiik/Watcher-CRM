@@ -21,7 +21,19 @@
                     echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
                 }
                 if (!isset($contract_id)) {
-                    echo $this->Form->control('contract_id', ['options' => $contracts, 'empty' => true]);
+                    echo $this->Form->control('contract_id', [
+                        'options' => $contracts,
+                        'empty' => true,
+                        'onchange' => '
+                            var refresh = document.createElement("input");
+                            refresh.type = "hidden";
+                            refresh.name = "refresh";
+                            refresh.value = "refresh";
+                            this.form.appendChild(refresh);
+                            this.form.submit();
+                        ',
+                    ]);
+                    $this->Form->unlockField('refresh'); //disable form security check
                 }
                 echo $this->Form->control('service_id', ['options' => $services, 'empty' => true]);
                 echo $this->Form->control('text');
