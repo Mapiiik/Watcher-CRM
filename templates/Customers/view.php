@@ -451,7 +451,7 @@ use Cake\I18n\Number;
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($customer->ips as $ip) : ?>
-                        <tr>
+                        <tr style="<?= $ip->style ?>">
                             <td><?= $ip->has('contract') ? $this->Html->link($ip->contract->number, ['controller' => 'Contracts', 'action' => 'view', $ip->contract->id]) : '' ?></td>
                             <td><?= h($ip->ip) ?></td>
                             <td><?= h($ip->note) ?></td>
@@ -482,7 +482,7 @@ use Cake\I18n\Number;
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($customer->removed_ips as $removedIp) : ?>
-                        <tr>
+                        <tr style="<?= $removedIp->style ?>">
                             <td><?= $removedIp->has('contract') ? $this->Html->link($removedIp->contract->number, ['controller' => 'Contracts', 'action' => 'view', $removedIp->contract->id]) : '' ?></td>
                             <td><?= h($removedIp->ip) ?></td>
                             <td><?= h($removedIp->note) ?></td>

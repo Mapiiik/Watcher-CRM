@@ -21,7 +21,7 @@
             </thead>
             <tbody>
                 <?php foreach ($removedIps as $removedIp): ?>
-                <tr>
+                <tr style="<?= $removedIp->style ?>">
                     <td><?= $this->Number->format($removedIp->id) ?></td>
                     <td><?= $removedIp->has('customer') ? $this->Html->link($removedIp->customer->name, ['controller' => 'Customers', 'action' => 'view', $removedIp->customer->id]) : '' ?></td>
                     <td><?= $removedIp->has('contract') ? $this->Html->link($removedIp->contract->number, ['controller' => 'Contracts', 'action' => 'view', $removedIp->contract->id]) : '' ?></td>

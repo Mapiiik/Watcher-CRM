@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use Cake\I18n\FrozenDate;
 use Cake\ORM\Entity;
 
 /**
@@ -15,6 +16,7 @@ use Cake\ORM\Entity;
  * @property int $customer_id
  * @property string|null $note
  * @property int|null $contract_id
+ * @property string $style
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Contract $contract
@@ -40,4 +42,21 @@ class RemovedIp extends Entity
         'customer' => true,
         'contract' => true,
     ];
+
+    /**
+     * getter for style
+     *
+     * @return string
+     */
+    protected function _getStyle(): string
+    {
+        $style = '';
+        $now = new FrozenDate();
+
+        if (isset($this->contract->valid_until) && $this->contract->valid_until < $now) {
+            $style = 'background-color: #ffaaaa;';
+        }
+
+        return $style;
+    }
 }

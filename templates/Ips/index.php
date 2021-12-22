@@ -20,7 +20,7 @@
             </thead>
             <tbody>
                 <?php foreach ($ips as $ip): ?>
-                <tr>
+                <tr style="<?= $ip->style ?>">
                     <td><?= $this->Number->format($ip->id) ?></td>
                     <td><?= $ip->has('customer') ? $this->Html->link($ip->customer->name, ['controller' => 'Customers', 'action' => 'view', $ip->customer->id]) : '' ?></td>
                     <td><?= $ip->has('contract') ? $this->Html->link($ip->contract->number, ['controller' => 'Contracts', 'action' => 'view', $ip->contract->id]) : '' ?></td>

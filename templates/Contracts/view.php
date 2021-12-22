@@ -249,7 +249,7 @@ use Cake\I18n\Number;
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($contract->ips as $ip) : ?>
-                        <tr>
+                        <tr style="<?= $ip->style ?>">
                             <td><?= h($ip->ip) ?></td>
                             <td><?= h($ip->note) ?></td>
                             <td class="actions">
@@ -276,7 +276,7 @@ use Cake\I18n\Number;
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($contract->removed_ips as $removedIp) : ?>
-                        <tr>
+                        <tr style="<?= $removedIp->style ?>">
                             <td><?= h($removedIp->ip) ?></td>
                             <td><?= h($removedIp->note) ?></td>
                             <td><?= h($removedIp->removed) ?></td>
