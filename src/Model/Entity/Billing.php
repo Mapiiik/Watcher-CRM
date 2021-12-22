@@ -252,7 +252,7 @@ class Billing extends Entity
     }
 
     /**
-     * getter for color
+     * getter for style
      *
      * @return string
      */
@@ -261,7 +261,7 @@ class Billing extends Entity
         $style = '';
         $now = new FrozenDate();
 
-        if ($this->billing_from > $now) {
+        if (isset($this->billing_from) && $this->billing_from > $now) {
             $style = 'background-color: #eb984e;';
         }
 
