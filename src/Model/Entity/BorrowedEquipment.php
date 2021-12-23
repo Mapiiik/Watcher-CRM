@@ -64,7 +64,7 @@ class BorrowedEquipment extends Entity
         $now = new FrozenDate();
 
         if (isset($this->borrowed_from) && $this->borrowed_from > $now) {
-            $style = 'background-color: #eb984e;';
+            $style = 'background-color: #ffbc80;';
         }
 
         if (isset($this->borrowed_until) && $this->borrowed_until < $now) {
