@@ -308,7 +308,7 @@ class InvoicesController extends AppController
                     $billing_contract['items'] = [];
 
                     foreach ($contract->billings as $billing) {
-                        if ($billing->separate_invoice) {
+                        if ($billing->separate_invoice && $billing->period_total <> 0) {
                             $invoice = $this->Invoices->newEmptyEntity();
                             $invoice->number = $prefix + $index;
                             $invoice->customer = $customer;
@@ -319,7 +319,7 @@ class InvoicesController extends AppController
                                 . ' - ' . $invoiced_month->i18nFormat('MM/yyyy');
                             $invoice->internal_note = 'separate';
                             $invoice->total = $billing->period_total;
-                            $invoice->items[] = $billing;
+                            $invoice->items = [$billing];
                             $invoices[] = $invoice;
                             unset($invoice);
                             $index++;
@@ -329,7 +329,7 @@ class InvoicesController extends AppController
                         }
                     }
 
-                    if ($contract->separate_invoice) {
+                    if ($contract->separate_invoice && $billing_contract['total'] <> 0) {
                         $invoice = $this->Invoices->newEmptyEntity();
                         $invoice->number = $prefix + $index;
                         $invoice->customer = $customer;
@@ -346,7 +346,7 @@ class InvoicesController extends AppController
                         $index++;
                     } else {
                         $billing_customer['total'] += $billing_contract['total'];
-                        $billing_customer['items'] += $billing_contract['items'];
+                        $billing_customer['items'] = array_merge(array_values($billing_customer['items']), array_values($billing_contract['items']));
                     }
 
                     unset($billing_contract);
@@ -364,6 +364,7 @@ class InvoicesController extends AppController
                     $invoice->total = $billing_customer['total'];
                     $invoice->items = $billing_customer['items'];
                     $invoices[] = $invoice;
+                    unset($invoice);
                     $index++;
                 }
 
