@@ -346,7 +346,10 @@ class InvoicesController extends AppController
                         $index++;
                     } else {
                         $billing_customer['total'] += $billing_contract['total'];
-                        $billing_customer['items'] = array_merge(array_values($billing_customer['items']), array_values($billing_contract['items']));
+                        $billing_customer['items'] = array_merge(
+                            array_values($billing_customer['items']),
+                            array_values($billing_contract['items'])
+                        );
                     }
 
                     unset($billing_contract);
