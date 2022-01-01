@@ -36,6 +36,12 @@
                             'empty' => true,
                             'required' => true,
                         ]);
+                        echo $this->Form->control('output_format', [
+                            'label' => __('Output Format'),
+                            'options' => ['xml' => 'Pohoda XML', 'dbf' => 'dBase DBF'],
+                            'empty' => true,
+                            'required' => true,
+                        ]);
                         echo $this->Form->control('csv_for_verification', [
                             'label' => __('CSV for verification'),
                             'type' => 'file',

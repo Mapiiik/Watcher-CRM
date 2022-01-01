@@ -265,7 +265,7 @@ class InvoicesController extends AppController
             } else {
                 return $this->redirect([
                     'action' => 'generate',
-                    '_ext' => 'dbf',
+                    '_ext' => $this->request->getData('output_format'),
                     '?' => [
                         'invoiced_month' => $invoiced_month->i18nFormat('yyyy-MM'),
                         'tax_rate_id' => $tax_rate_id,
