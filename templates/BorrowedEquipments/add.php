@@ -19,7 +19,7 @@
                 <?php
                     if (!isset($customer_id)) echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
                     if (!isset($contract_id)) echo $this->Form->control('contract_id', ['options' => $contracts, 'empty' => true]);
-                    echo $this->Form->control('equipment_type_id', ['options' => $equipmentTypes]);
+                    echo $this->Form->control('equipment_type_id', ['options' => $equipmentTypes, 'empty' => true]);
                     echo $this->Form->control('serial_number');
                     echo $this->Form->control('borrowed_from', ['empty' => true]);
                     echo $this->Form->control('borrowed_until', ['empty' => true]);
