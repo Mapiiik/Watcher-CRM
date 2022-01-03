@@ -210,6 +210,9 @@ th {
     color: #cc1f1a;
     border-color: #ef5753;
 }
+.error-message {
+    color: #cc1f1a;
+}
 
 /* Forms */
 .input.radio,
