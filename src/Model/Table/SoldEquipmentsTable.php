@@ -83,6 +83,10 @@ class SoldEquipmentsTable extends Table
             ->notEmptyString('contract_id');
 
         $validator
+            ->integer('equipment_type_id')
+            ->notEmptyString('equipment_type_id');
+
+        $validator
             ->scalar('serial_number')
             ->allowEmptyString('serial_number');
 
