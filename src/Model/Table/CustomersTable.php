@@ -269,6 +269,23 @@ class CustomersTable extends Table
     {
         $rules->add($rules->existsIn(['taxe_id'], 'Taxes'), ['errorField' => 'taxe_id']);
 
+        $rules->add(
+            function ($entity, $options) {
+                // allow empty IC
+                if (is_null($entity->ic)) {
+                    return true;
+                }
+
+                // verify entered IC
+                return $entity->ic_verified;
+            },
+            'isIcVerified',
+            [
+                'errorField' => 'ic',
+                'message' => __('The specified identification number is not valid.'),
+            ]
+        );
+
         return $rules;
     }
 }
