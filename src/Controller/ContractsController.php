@@ -85,7 +85,7 @@ class ContractsController extends AppController
         $contract = $this->Contracts->newEmptyEntity();
 
         if (isset($customer_id)) {
-            $contract = $this->Contracts->patchEntity($contract, ['customer_id' => $customer_id]);
+            $contract->customer_id = $customer_id;
         }
 
         if ($this->request->is('post')) {

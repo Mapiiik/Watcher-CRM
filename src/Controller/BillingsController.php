@@ -73,10 +73,10 @@ class BillingsController extends AppController
         $billing = $this->Billings->newEmptyEntity();
 
         if (isset($customer_id)) {
-            $billing = $this->Billings->patchEntity($billing, ['customer_id' => $customer_id]);
+            $billing->customer_id = $customer_id;
         }
         if (isset($contract_id)) {
-            $billing = $this->Billings->patchEntity($billing, ['contract_id' => $contract_id]);
+            $billing->contract_id = $contract_id;
         }
 
         if ($this->request->is('post')) {

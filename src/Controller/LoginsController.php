@@ -70,7 +70,7 @@ class LoginsController extends AppController
         $login = $this->Logins->newEmptyEntity();
 
         if (isset($customer_id)) {
-            $login = $this->Logins->patchEntity($login, ['customer_id' => $customer_id]);
+            $login->customer_id = $customer_id;
         }
 
         if ($this->request->is('post')) {

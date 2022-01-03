@@ -72,9 +72,9 @@ class AddressesController extends AppController
 
         if (isset($customer_id)) {
             $customer = $this->Addresses->Customers->get($customer_id);
-            $address = $this->Addresses->patchEntity($address, $customer->toArray());
-
-            $address = $this->Addresses->patchEntity($address, ['customer_id' => $customer_id]);
+            
+            $address = $this->Addresses->patchEntity($address, $customer->toArray(), ['validate' => false]);
+            $address->customer_id = $customer_id;
         }
 
         if ($this->request->is('post')) {

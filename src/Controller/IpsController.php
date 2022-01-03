@@ -76,10 +76,10 @@ class IpsController extends AppController
         $ip = $this->Ips->newEmptyEntity();
 
         if (isset($customer_id)) {
-            $ip = $this->Ips->patchEntity($ip, ['customer_id' => $customer_id]);
+            $ip->customer_id = $customer_id;
         }
         if (isset($contract_id)) {
-            $ip = $this->Ips->patchEntity($ip, ['contract_id' => $contract_id]);
+            $ip->contract_id = $contract_id;
         }
 
         if ($this->request->is('post')) {

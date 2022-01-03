@@ -73,10 +73,10 @@ class SoldEquipmentsController extends AppController
         $soldEquipment = $this->SoldEquipments->newEmptyEntity();
 
         if (isset($customer_id)) {
-            $soldEquipment = $this->SoldEquipments->patchEntity($soldEquipment, ['customer_id' => $customer_id]);
+            $soldEquipment->customer_id = $customer_id;
         }
         if (isset($contract_id)) {
-            $soldEquipment = $this->SoldEquipments->patchEntity($soldEquipment, ['contract_id' => $contract_id]);
+            $soldEquipment->contract_id = $contract_id;
         }
 
         if ($this->request->is('post')) {

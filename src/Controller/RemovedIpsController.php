@@ -75,10 +75,10 @@ class RemovedIpsController extends AppController
         $removedIp = $this->RemovedIps->newEmptyEntity();
 
         if (isset($customer_id)) {
-            $removedIp = $this->RemovedIps->patchEntity($removedIp, ['customer_id' => $customer_id]);
+            $removedIp->customer_id = $customer_id;
         }
         if (isset($contract_id)) {
-            $removedIp = $this->RemovedIps->patchEntity($removedIp, ['contract_id' => $contract_id]);
+            $removedIp->contract_id = $contract_id;
         }
 
         if ($this->request->is('post')) {

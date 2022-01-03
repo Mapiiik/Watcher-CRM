@@ -64,7 +64,7 @@ class EmailsController extends AppController
         $email = $this->Emails->newEmptyEntity();
 
         if (isset($customer_id)) {
-            $email = $this->Emails->patchEntity($email, ['customer_id' => $customer_id]);
+            $email->customer_id = $customer_id;
         }
 
         if ($this->request->is('post')) {

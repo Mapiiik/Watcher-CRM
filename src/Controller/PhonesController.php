@@ -64,7 +64,7 @@ class PhonesController extends AppController
         $phone = $this->Phones->newEmptyEntity();
 
         if (isset($customer_id)) {
-            $phone = $this->Phones->patchEntity($phone, ['customer_id' => $customer_id]);
+            $phone->customer_id = $customer_id;
         }
 
         if ($this->request->is('post')) {

@@ -65,7 +65,7 @@ class TasksController extends AppController
         $task = $this->Tasks->newEmptyEntity();
 
         if (isset($customer_id)) {
-            $task = $this->Tasks->patchEntity($task, ['customer_id' => $customer_id]);
+            $task->customer_id = $customer_id;
         }
 
         if ($this->request->is('post')) {
