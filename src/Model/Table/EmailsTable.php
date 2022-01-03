@@ -65,7 +65,8 @@ class EmailsTable extends Table
 
         $validator
             ->email('email')
-            ->allowEmptyString('email');
+            ->requirePresence('email', 'create')
+            ->notEmptyString('email');
 
         $validator
             ->boolean('use_for_billing')
