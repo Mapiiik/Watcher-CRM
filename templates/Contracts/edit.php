@@ -35,7 +35,7 @@
                         echo $this->Form->control('service_type_id', ['options' => $serviceTypes, 'disabled' => true]);
                         echo $this->Form->control('number');
                         echo $this->Form->control('installation_address_id', ['options' => $installationAddresses, 'empty' => true]);
-                        echo $this->Form->control('conclusion_date', ['empty' => true]);
+                        echo $this->Form->control('conclusion_date', ['empty' => true, 'max' => date('Y-m-d')]);
                         echo $this->Form->control('number_of_amendments');
                         echo $this->Form->control('valid_from', ['empty' => true]);
                         
