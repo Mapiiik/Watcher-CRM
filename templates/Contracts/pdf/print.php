@@ -284,223 +284,10 @@ class ContractPDF extends TCPDF
         $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
 
         $this->Ln(4);
-/*
-        if ($type === 'contract-termination')
-        {
-            $this->SetFont('DejaVuSerif', 'B', '8');
-            $this->Write(4, 'Smluvní strany ujednávají ukončení smlouvy o poskytování služeb č. ' . $contract->number . ' ze dne ' . $contract->conclusion_date . ' (ve znění případných pozdějších dodatků) ke dni ' . $contract->valid_until . '.');
-            $this->Ln();
-            $this->Ln();
-            $this->SetFont('DejaVuSerif', '', '8');
-            $this->Write(4, 'Tato dohoda je vyhotovena ve dvou stejnopisech.');
-            $this->Ln();
-        };
 
-        if ($type === 'contract-new' || $type === 'contract-new-x')
-        {
-            $this->SetFont('DejaVuSerif', 'B', '8');
-            $this->Write(4, 'Smlouva je uzavřena ' . $this->contractDuration($contract->minimum_duration) . '.');
-            $this->Ln();
-            $this->Write(4, 'Datum zahájení poskytování služeb: ' . $contract->valid_from);
-            $this->Ln();
-            $this->Ln();
-
-            if ($type === 'contract-new-x')
-            {
-                $this->Write(4, 'Smluvní strany zároveň ujednávají, že předchozí smlouva o poskytování služeb č. ' . $contract->number . ' ze dne ' . $contract->conclusion_date . ' (ve znění případných pozdějších dodatků) zaniká ke dni ' . $contract->valid_from->subDay(1) . '.');
-                $this->Ln();
-                $this->Ln();
-            }
-        }
-        if ($type === 'contract-amendment')
-        {
-            $this->SetFont('DejaVuSerif', 'B', '8');
-            $this->Write(4, 'Tento dodatek mění Seznam poskytovaných služeb a Platební údaje původní smlouvy ve znění případných předchozích dodatků s účinností od ' . $contract->valid_from . ' takto:');
-            $this->Ln();
-            $this->Ln();
-        }
-
-        if ($type === 'contract-new' || $type === 'contract-new-x' || $type === 'contract-amendment')
-        {
-            if ($type === 'contract-amendment')
-                $format = 'I';
-            else
-                $format = '';
-            
-            // sum of all items
-            $totalCost = 0;
-
-            // billing of pricelist items
-            if (count($contract->standard_billings) > 0) {
-                $this->SetFont('DejaVuSerif', 'B' . $format, '9');
-                $this->Cell(187, 3, 'Seznam poskytovaných služeb a údaje o jejich aktuálních cenách dle Ceníku včetně DPH');
-                $this->Ln();
-
-                $this->Ln(0.4);
-                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
-                $this->Ln(1);
-
-                $this->SetFont('DejaVuSerif', '' . $format, '8');
-                $this->Cell(4, 4);
-                $this->Cell(135, 4, 'služba:', '', '', 'L');
-                $this->Cell(40, 4, 'cena / měsíc:', '', '', 'R');
-                $this->Ln();
-
-                foreach ($contract->standard_billings as $billing)
-                {
-                    $this->SetFont('DejaVuSerif', 'B' . $format, '8');
-                    $this->Cell(4, 4);
-                    $this->Cell(135, 4, $billing->name, '', '', 'L');
-                    $this->Cell(40, 4, $billing->sum . ',- Kč', '', '', 'R');
-                    $this->Ln();
-
-                    if ($billing->percentage_discount_sum > 0) {
-                        $this->SetFont('DejaVuSerif', '' . $format, '8');
-                        $this->Cell(4, 4);
-                        $this->Cell(135, 4, ' - sleva ve výši ' . $billing->percentage_discount . ' % z ceny této služby', '', '', 'L');
-                        $this->Cell(40, 4, -$billing->percentage_discount_sum . ',- Kč', '', '', 'R');
-                        $this->Ln();
-                    }
-                    if ($billing->fixed_discount_sum > 0) {
-                        $this->SetFont('DejaVuSerif', '' . $format, '8');
-                        $this->Cell(4, 4);
-                        $this->Cell(135, 4, ' - sleva v pevné výši z ceny této služby', '', '', 'L');
-                        $this->Cell(40, 4, -$billing->fixed_discount_sum . ',- Kč', '', '', 'R');
-                        $this->Ln();
-                    }
-                    
-                    $totalCost += $billing->total;
-                }
-                $this->Ln();
-            }
-
-            // billing of non-pricelist items
-            if (count($contract->individual_billings) > 0) {
-                $this->SetFont('DejaVuSerif', 'B' . $format, '9');
-                $this->Cell(187, 3, 'Seznam poskytovaných služeb a údaje o jejich individuálních cenách');
-                $this->Ln();
-
-                $this->Ln(0.4);
-                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
-                $this->Ln(1);
-
-                $this->SetFont('DejaVuSerif', '' . $format, '8');
-                $this->Cell(4, 4);
-                $this->Cell(135, 4, 'služba:', '', '', 'L');
-                $this->Cell(40, 4, 'cena / měsíc:', '', '', 'R');
-                $this->Ln();
-
-                foreach ($contract->individual_billings as $billing)
-                {
-                    $this->SetFont('DejaVuSerif', 'B' . $format, '8');
-                    $this->Cell(4, 4);
-                    $this->Cell(135, 4, $billing->name, '', '', 'L');
-                    $this->Cell(40, 4, $billing->sum . ',- Kč', '', '', 'R');
-                    $this->Ln();
-
-                    if ($billing->percentage_discount_sum > 0) {
-                        $this->SetFont('DejaVuSerif', '' . $format, '8');
-                        $this->Cell(4, 4);
-                        $this->Cell(135, 4, ' - sleva ve výši ' . $billing->percentage_discount . ' % z ceny této služby', '', '', 'L');
-                        $this->Cell(40, 4, -$billing->percentage_discount_sum . ',- Kč', '', '', 'R');
-                        $this->Ln();
-                    }
-                    if ($billing->fixed_discount_sum > 0) {
-                        $this->SetFont('DejaVuSerif', '' . $format, '8');
-                        $this->Cell(4, 4);
-                        $this->Cell(135, 4, ' - sleva v pevné výši z ceny této služby', '', '', 'L');
-                        $this->Cell(40, 4, -$billing->fixed_discount_sum . ',- Kč', '', '', 'R');
-                        $this->Ln();
-                    }
-
-                    $totalCost += $billing->total;
-                }
-
-                $this->SetFont('DejaVuSerif', '' . $format, '7');
-                $this->Cell(4, 4);
-                $this->MultiCell(180, 4, 'Smluvní strany ujednávají, že výše cen za Poskytovatelovy služby je touto smlouvou ujednána oproti Ceníku v individuální výši. Včetně všech svých složek má proto povahu Poskytovatelova obchodního tajemství dle § 504 zákona č. 89/2012 Sb., občanského zákoníku.', '', 'L');
-
-                $this->Ln();
-            }
-            
-            // reverse charge
-            if ($contract->customer->taxe_id == 5) {
-                $totalCost = round($totalCost - ($totalCost / (1 + VAT_RATE)), 2);
-            }
-
-            $this->SetFont('DejaVuSerif', 'B' . $format, '9');
-            $this->Cell(187, 3, 'Platební údaje');
-            $this->Ln();
-
-            $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
-            $this->Ln(1);
-
-            $this->SetFont('DejaVuSerif', '' . $format, '8');
-            $this->Cell(45, 4, 'perioda platby:', '', '', 'C');
-            $this->Cell(45, 4, 'způsob úhrady:', '', '', 'C');
-            $this->Cell(45, 4, 'datum 1. úhrady:', '', '', 'C');
-            $this->Cell(45, 4, 'měsíční platba za služby celkem:', '', '', 'C');
-            $this->Ln();
-
-            $this->SetFont('DejaVuSerif', 'B' . $format, '8');
-            $this->Cell(45, 4, 'měsíčně', '', '', 'C');
-            $this->Cell(45, 4, 'převodem z účtu', '', '', 'C');
-            $this->Cell(45, 4, 'do ' . $contract->valid_from->day(1)->addMonth(1)->addDay(9), '', '', 'C');
-
-            // reverse charge
-            if ($contract->customer->taxe_id == 5) {
-                $this->Cell(45, 4, formatPrice($totalCost - round($totalCost - ($totalCost / (1 + VAT_RATE)), 2)) . ' *', '', '', 'C');
-                $this->Ln();
-
-                $this->Line($this->GetX()+4,$this->GetY(),$this->GetX()+187,$this->GetY());
-                $this->Ln(1);
-
-                $this->SetFont('DejaVuSerif', '' . $format, '7');
-                $this->Cell(4, 4);
-                $this->MultiCell(180, 4, '*faktury budou vystaveny v režimu přenesené daňové povinnosti dle § 92a zákona o dani z přidané hodnoty, kdy výši daně je povinen doplnit a přiznat plátce, pro kterého je plnění uskutečněno' . PHP_EOL, 0, 'J');
-            } else {
-                $this->Cell(45, 4, $totalCost . ',- Kč', '', '', 'C');
-                $this->Ln();
-            }
-
-            $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
-            $this->Ln(1);
-
-            $this->SetFont('DejaVuSerif', '' . $format, '8');
-            $this->Cell(90, 4, 'peněžní ústav poskytovatele:', '', '', 'C');
-            $this->Cell(45, 4, 'číslo účtu poskytovatele:', '', '', 'C');
-            $this->Cell(45, 4, 'variabilní symbol:', '', '', 'C');
-            $this->Ln();
-
-            $this->SetFont('DejaVuSerif', 'B' . $format, '8');
-            $this->Cell(90, 4, 'Komerční banka, a.s.', '', '', 'C');
-            $this->Cell(45, 4, '207385091/0100', '', '', 'C');
-            $this->Cell(45, 4, $contract->customer->number . " *", '', '', 'C');
-            $this->Ln();
-
-            $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
-            $this->Ln(1);
-
-            $this->SetFont('DejaVuSerif', '' . $format, '7');
-            $this->Cell(4, 4);
-            $this->Cell(180, 4, '*doporučujeme nastavit si trvalý příkaz dle předepsaných platebních údajů, údaje lze použít i pro jednotlivé platby', '', '', 'L');
-            $this->Ln();
-
-            unset($format);
-        };
-
-        if ($type === 'contract-amendment')
-        {
-            $this->SetFont('DejaVuSerif', '', '8');
-            $this->Ln();
-            $this->Write(4, 'Ustanovení smlouvy (ve znění případných předchozích dodatků) nedotčená tímto dodatkem zůstávají beze změn.');
-            $this->Ln();
-            $this->Ln();
-            $this->Write(4, 'Tento dodatek je vyhotoven ve dvou stejnopisech.');
-            $this->Ln();
-        }
-*/
+        // BEGIN INSTALLATION
+        if ($type == 'handover-protocol-installation'):
+        
         // ACCESS INFORMATION
         $this->SetFont('DejaVuSerif', 'B', '9');
         $this->Write(4 , 'Přístupové údaje a technické informace');
@@ -530,6 +317,30 @@ class ContractPDF extends TCPDF
         $this->Cell(45, 5,  isset($technical_details->radius_password) ? $technical_details->radius_password : '', 1, 0, 'C');
         $this->Ln();                                    
 
+        $this->Ln(1);                                    
+
+        $this->SetFont('DejaVuSerif', '', '8');
+        $this->Write(4, 'Nastavení zařízení ve vnitřní síti Uživatele:');
+        $this->Ln(5);                                    
+
+        $this->SetFont('DejaVuSerif', 'B', '8');
+        $this->Cell(4, 5);
+        $this->Cell(36, 5,  'IPv4 rozsah', 1, 0, 'C');
+        $this->Cell(36, 5,  'IPv4 brána', 1, 0, 'C');
+        $this->Cell(36, 5,  'DNS servery', 1, 0, 'C');
+        $this->Cell(36, 5,  'WiFi - SSID', 1, 0, 'C');
+        $this->Cell(36, 5,  'WiFi - Heslo', 1, 0, 'C');
+        $this->Ln();                                    
+
+        $this->SetFont('DejaVuSerif', '', '8');
+        $this->Cell(4, 5);
+        $this->Cell(36, 5,  '192.168.1.0/24', 1, 0, 'C');
+        $this->Cell(36, 5,  '192.168.1.1', 1, 0, 'C');
+        $this->Cell(36, 5,  '79.98.156.2, 79.98.152.2', 1, 0, 'C');
+        $this->Cell(36, 5,  '', 1, 0, 'C');
+        $this->Cell(36, 5,  '', 1, 0, 'C');
+        $this->Ln();                                    
+
         $this->Ln(4);                                    
 
         // SOLD EQUIPMENTS
@@ -548,7 +359,7 @@ class ContractPDF extends TCPDF
 
         $this->SetFont('DejaVuSerif', 'B', '8');
         $this->Cell(4, 5);
-        $this->Cell(120, 5,  'Zařízení / příslušenství', 1);
+        $this->Cell(120, 5,  'Zařízení / příslušenství / práce', 1);
         $this->Cell(30, 5,  'Sériové číslo', 1, 0, 'C');
         $this->Cell(30, 5,  'Cena', 1, 0, 'R');
         $this->Ln();                                    
@@ -572,7 +383,7 @@ class ContractPDF extends TCPDF
         $this->Ln(2);
 
         $this->SetFont('DejaVuSerif', 'B', '8');
-        $this->MultiCell(180, 4, 'Uživatel je povinen cenu těchto zařízení Poskytovateli uhradit.' . PHP_EOL, 0, 'J');
+        $this->MultiCell(180, 4, 'Uživatel je povinen cenu těchto zařízení, příslušenství a prací Poskytovateli uhradit.' . PHP_EOL, 0, 'J');
         $this->Ln(4);
 
         // BORROWED EQUIPMENTS
@@ -619,12 +430,12 @@ class ContractPDF extends TCPDF
 
                 if ($contract->minimum_duration <= 0)
                 {
-                    $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . Number::currency($contract->activation_fee_sum) . ' zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci Poskytnutých zařízení.' . PHP_EOL, 0, 'J');
+                    $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . Number::currency($contract->activation_fee_sum) . ' zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci poskytnutých zařízení.' . PHP_EOL, 0, 'J');
                     $this->Ln(3);
                 }
                 else
                 {
-                    $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . Number::currency($contract->activation_fee_with_obligation_sum) . ' zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci Poskytnutých zařízení.' . PHP_EOL, 0, 'J');
+                    $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . Number::currency($contract->activation_fee_with_obligation_sum) . ' zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci poskytnutých zařízení.' . PHP_EOL, 0, 'J');
                     $this->Ln(3);
                 }
             }
@@ -685,6 +496,107 @@ class ContractPDF extends TCPDF
         $this->MultiCell(180, 4, 'Dále potvrzuji, že  souhlasím s provedenou instalací a nemám vůči ní žádné námitky. Zároveň prohlašuji, že objednané služby jsou plně funkční.' . PHP_EOL, 0, 'J');
         $this->Ln(3);
 
+        endif;
+        // END INSTALLATION
+
+        // BEGIN UNINSTALLATION
+        if ($type == 'handover-protocol-uninstallation'):
+
+        // BORROWED EQUIPMENTS
+        $this->SetFont('DejaVuSerif', 'B', '9');
+        $this->Write(4, 'Poskytnutá zařízení, jejich stav a náhrada nákladů');
+        $this->Ln();
+
+        $this->Ln(0.4);
+        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+        $this->Ln(1);
+
+        if (count($contract->borrowed_equipments) > 0)
+        {
+            $this->SetFont('DejaVuSerif', '', '8');
+            $this->Write(4, 'Poskytovatel poskytl Uživateli pro dobu trvání Smlouvy bezúplatně tato zařízení:');
+
+            $this->Ln(5);
+
+            $this->SetFont('DejaVuSerif', 'B', '8');
+            $this->Cell(4, 5);
+            $this->Cell(120, 5,  'Zařízení', 1);
+            $this->Cell(30, 5,  'Sériové číslo', 1, 0, 'C');
+            $this->Cell(30, 5,  'Hodnota', 1, 0, 'R');
+            $this->Ln();                                    
+
+            $this->SetFont('DejaVuSerif', '', '8');
+            foreach ($contract->borrowed_equipments as $borrowed_equipment) {
+                $this->Cell(4, 5);
+                $this->Cell(120, 5, $borrowed_equipment->equipment_type->name, 1);
+                $this->Cell(30, 5, $borrowed_equipment->serial_number, 1, 0, 'C');
+                $this->Cell(30, 5, Number::currency($borrowed_equipment->equipment_type->price), 1, 0, 'R');
+                $this->Ln();                                    
+            }
+
+            $this->Ln(2);
+
+            $this->SetFont('DejaVuSerif', 'U', '8');
+            $this->Write(4, 'Stav zařízení v době deinstalace:');
+            $this->Ln(5);
+
+            $this->SetFont('DejaVuSerif', '', '8');
+            $this->Cell(22, 0, '▢ ano / ▢ ne - ');
+            $this->MultiCell(170, 0, 'Poskytovateli byla umožněna zkouška funkčnosti zařízení na místě, jejich zapnutím, připojením se do jejich konfiguračního rozhraní pokud to umožňují a provedením diagnostiky' . PHP_EOL, 0, 'L');
+            $this->Ln(1);
+
+            $this->Cell(22, 0, '▢ ano / ▢ ne - ');
+            $this->MultiCell(170, 0, 'provedením zkoušky funkčnosti zařízení na místě, byla zjištěna jeho nefunkčnost' . PHP_EOL, 0, 'L');
+            $this->Ln(1);
+            
+            $this->Cell(22, 0, '▢ ano / ▢ ne - ');
+            $this->MultiCell(170, 4, 'zařízení má viditelnou vadu nebo poškození způsobené neodborným zacházením ze strany Uživatele' . PHP_EOL, 0, 'L');
+            $this->Ln(3);
+
+            $this->MultiCell(180, 0, 'zjištěné nedostatky: _______________________________________________________________________________________________________', 0, 'L');
+            $this->Ln(3);
+            
+            $this->MultiCell(180, 4, 'V případě že provedení zkoušky funkčnosti těchto zařízení na místě nebylo umožněno, bude provedeno následně v provozovně Poskytovatele.' . PHP_EOL, 0, 'J');
+            $this->Ln(1);
+
+            $this->MultiCell(180, 4, 'V případě viditelné vady, poškození nebo zjištění nefunkčnosti těchto zařízení se Uživatel zavazuje uhradit hodnotu těchto zařízení.' . PHP_EOL, 0, 'J');
+            $this->Ln(1);
+        }
+        
+        // CASH PAYMENT
+        $this->SetFont('DejaVuSerif', 'B', '9');
+        $this->Write(4, 'Úhrada v hotovosti');
+        $this->Ln();
+
+        $this->Ln(0.4);
+        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+        $this->Ln(1);
+
+        $this->SetFont('DejaVuSerif', '', 8);
+        $this->Ln(4);
+        $this->MultiCell(180, 4, 'Placeno hotově ____________________,- Kč, podpis příjemce: ____________________' . PHP_EOL, 0, 'J');
+        $this->Ln(4);
+        
+        // FINAL STATEMENTS
+        $this->SetFont('DejaVuSerif', 'B', '9');
+        $this->Write(4, 'Závěrečná ustanovení');
+        $this->Ln();
+
+        $this->Ln(0.4);
+        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+        $this->Ln(1);
+
+        $this->SetFont('DejaVuSerif', '', 8);
+        $this->MultiCell(180, 4, 'Poskytovatel svým podpisem stvrzuje, že výše uvedená zařízení převzal ve stavu uvedeném výše.' . PHP_EOL, 0, 'J');
+        $this->Ln(1);
+        $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit hodnotu zařízení v případě jejich viditelné vady, poškození nebo zjištěné nefunkčnosti nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené výše).' . PHP_EOL, 0, 'J');
+        $this->Ln(1);
+        $this->MultiCell(180, 4, 'Uživatel dále potvrzuje, že souhlasí s provedenou deinstalací a nemá vůči ní žádné námitky.' . PHP_EOL, 0, 'J');
+        $this->Ln(1);
+
+        endif;
+        // END UNINSTALLATION
+        
         // SIGNS
         $this->SetFont('DejaVuSerif', '', '8');
         if ($this->GetY() > 240) $this->AddPage();
