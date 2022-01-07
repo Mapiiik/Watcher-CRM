@@ -13,8 +13,8 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime|null $modified
  * @property string|null $name
  * @property string|null $contract_number_format
- * @property integer|null $activation_fee
- * @property integer|null $activation_fee_with_obligation
+ * @property int|null $activation_fee
+ * @property int|null $activation_fee_with_obligation
  * @property bool $separate_invoice
  * @property bool $invoice_with_items
  * @property string|null $invoice_text
