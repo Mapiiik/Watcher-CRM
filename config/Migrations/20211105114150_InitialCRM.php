@@ -179,7 +179,7 @@ class InitialCRM extends AbstractMigration
                 'limit' => null,
                 'null' => true,
             ])
-            ->addColumn('separate', 'boolean', [
+            ->addColumn('separate_invoice', 'boolean', [
                 'default' => false,
                 'limit' => null,
                 'null' => false,

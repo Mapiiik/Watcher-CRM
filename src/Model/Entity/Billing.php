@@ -21,7 +21,7 @@ use Cake\ORM\Entity;
  * @property int|null $created_by
  * @property \Cake\I18n\FrozenTime|null $created
  * @property \Cake\I18n\FrozenDate|null $billing_until
- * @property bool $separate
+ * @property bool $separate_invoice
  * @property int|null $service_id
  * @property int $quantity
  * @property int $contract_id
@@ -63,7 +63,7 @@ class Billing extends Entity
         'created_by' => true,
         'created' => true,
         'billing_until' => true,
-        'separate' => true,
+        'separate_invoice' => true,
         'service_id' => true,
         'quantity' => true,
         'contract_id' => true,
@@ -186,16 +186,6 @@ class Billing extends Entity
     protected function _getVat(): float
     {
         return round($this->total_price - ($this->total_price / (1 + (float)env('VAT_RATE', '0'))), 2);
-    }
-
-    /**
-     * alias for "separate" parameter (for more consistent implementation in invoice genration)
-     *
-     * @return bool
-     */
-    protected function _getSeparateInvoice(): bool
-    {
-        return $this->separate;
     }
 
     /**

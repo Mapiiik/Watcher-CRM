@@ -69,8 +69,8 @@ use Cake\I18n\Number;
                     <td><?= $billing->active ? __('Yes') : __('No'); ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Separate') ?></th>
-                    <td><?= $billing->separate ? __('Yes') : __('No'); ?></td>
+                    <th><?= __('Separate Invoice') ?></th>
+                    <td><?= $billing->separate_invoice ? __('Yes') : __('No'); ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>

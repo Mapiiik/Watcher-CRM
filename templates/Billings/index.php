@@ -26,7 +26,7 @@ use Cake\I18n\Number;
                     <th><?= $this->Paginator->sort('billing_from') ?></th>
                     <th><?= $this->Paginator->sort('billing_until') ?></th>
                     <th><?= $this->Paginator->sort('active') ?></th>
-                    <th><?= $this->Paginator->sort('separate') ?></th>
+                    <th><?= $this->Paginator->sort('separate_invoice') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -46,7 +46,7 @@ use Cake\I18n\Number;
                     <td><?= h($billing->billing_from) ?></td>
                     <td><?= h($billing->billing_until) ?></td>
                     <td><?= $billing->active ? __('Yes') : __('No'); ?></td>
-                    <td><?= $billing->separate ? __('Yes') : __('No'); ?></td>
+                    <td><?= $billing->separate_invoice ? __('Yes') : __('No'); ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $billing->id]) ?>
                         <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $billing->id]) ?>

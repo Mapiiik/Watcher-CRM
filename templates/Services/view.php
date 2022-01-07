@@ -65,7 +65,7 @@
                             <th><?= __('Created By') ?></th>
                             <th><?= __('Created') ?></th>
                             <th><?= __('Billing Until') ?></th>
-                            <th><?= __('Separate') ?></th>
+                            <th><?= __('Separate Invoice') ?></th>
                             <th><?= __('Service Id') ?></th>
                             <th><?= __('Quantity') ?></th>
                             <th><?= __('Contract Id') ?></th>
@@ -85,7 +85,7 @@
                             <td><?= h($billing->created_by) ?></td>
                             <td><?= h($billing->created) ?></td>
                             <td><?= h($billing->billing_until) ?></td>
-                            <td><?= h($billing->separate) ?></td>
+                            <td><?= h($billing->separate_invoice) ?></td>
                             <td><?= h($billing->service_id) ?></td>
                             <td><?= h($billing->quantity) ?></td>
                             <td><?= h($billing->contract_id) ?></td>

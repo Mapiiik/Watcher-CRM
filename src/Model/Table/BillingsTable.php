@@ -112,8 +112,8 @@ class BillingsTable extends Table
             ->allowEmptyDate('billing_until');
 
         $validator
-            ->boolean('separate')
-            ->notEmptyString('separate');
+            ->boolean('separate_invoice')
+            ->notEmptyString('separate_invoice');
 
         $validator
             ->integer('quantity')

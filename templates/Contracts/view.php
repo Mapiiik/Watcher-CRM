@@ -152,7 +152,7 @@ use Cake\I18n\Number;
                             <th><?= __('Billing From') ?></th>
                             <th><?= __('Billing Until') ?></th>
                             <th><?= __('Active') ?></th>
-                            <th><?= __('Separate') ?></th>
+                            <th><?= __('Separate Invoice') ?></th>
                             <th><?= __('Note') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
@@ -168,7 +168,7 @@ use Cake\I18n\Number;
                             <td><?= h($billing->billing_from) ?></td>
                             <td><?= h($billing->billing_until) ?></td>
                             <td><?= $billing->active ? __('Yes') : __('No'); ?></td>
-                            <td><?= $billing->separate ? __('Yes') : __('No'); ?></td>
+                            <td><?= $billing->separate_invoice ? __('Yes') : __('No'); ?></td>
                             <td><?= h($billing->note) ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(__('View'), ['controller' => 'Billings', 'action' => 'view', $billing->id]) ?>
