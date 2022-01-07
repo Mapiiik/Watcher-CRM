@@ -989,6 +989,21 @@ class InitialCRM extends AbstractMigration
                 'limit' => 10,
                 'null' => true,
             ])
+            ->addColumn('separate_invoice', 'boolean', [
+                'default' => false,
+                'limit' => null,
+                'null' => false,
+            ])
+            ->addColumn('invoice_with_items', 'boolean', [
+                'default' => false,
+                'limit' => null,
+                'null' => false,
+            ])
+            ->addColumn('invoice_text', 'string', [
+                'default' => null,
+                'limit' => null,
+                'null' => true,
+            ])
             ->create();
 
         $this->table('services')

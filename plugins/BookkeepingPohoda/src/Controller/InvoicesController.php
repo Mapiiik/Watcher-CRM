@@ -144,6 +144,7 @@ class InvoicesController extends AppController
                                     'Contracts.valid_until >=' => $invoiced_month->firstOfMonth(), //first day of month
                                 ],
                             ])
+                            ->contain('ServiceTypes')
                             ->contain('Billings', function (Query $q) use ($invoiced_month) {
                                 return $q
                                         ->order('Billings.id')
@@ -319,7 +320,8 @@ class InvoicesController extends AppController
                                 . ' - ' . $invoiced_month->i18nFormat('MM/yyyy');
                             $invoice->internal_note = 'separate';
                             $invoice->total = $billing->period_total;
-                            $invoice->items = [$billing];
+                            //$invoice->items = [$billing];
+                            $invoice->items = [];
                             $invoices[] = $invoice;
                             unset($invoice);
                             $index++;
@@ -336,11 +338,19 @@ class InvoicesController extends AppController
                         $invoice->variable_symbol = $customer->number;
                         $invoice->creation_date = $invoiced_month->lastOfMonth();
                         $invoice->due_date = $invoiced_month->lastOfMonth()->addDays(10);
-                        $invoice->text = 'Faktura za poskytované služby dle smlouvy ' . $contract->number
-                            . ' - ' . $invoiced_month->i18nFormat('MM/yyyy');
+                        if ($contract->invoice_text) {
+                            $invoice->text = __($contract->invoice_text, [
+                                'number' => $contract->number,
+                                'month' => $invoiced_month->i18nFormat('MM/yyyy'),
+                            ]);
+                        } else {
+                            $invoice->text = 'Faktura za poskytované služby dle smlouvy '
+                                . $contract->number
+                                . ' - ' . $invoiced_month->i18nFormat('MM/yyyy');
+                        }
                         $invoice->internal_note = 'separate';
                         $invoice->total = $billing_contract['total'];
-                        $invoice->items = $billing_contract['items'];
+                        $invoice->items = $contract->invoice_with_items ? $billing_contract['items'] : [];
                         $invoices[] = $invoice;
                         unset($invoice);
                         $index++;
@@ -365,7 +375,7 @@ class InvoicesController extends AppController
                     $invoice->text = 'Faktura za poskytované služby dle smlouvy'
                         . ' - ' . $invoiced_month->i18nFormat('MM/yyyy');
                     $invoice->total = $billing_customer['total'];
-                    $invoice->items = $billing_customer['items'];
+                    $invoice->items = $customer->invoice_with_items ? $billing_customer['items'] : [];
                     $invoices[] = $invoice;
                     unset($invoice);
                     $index++;

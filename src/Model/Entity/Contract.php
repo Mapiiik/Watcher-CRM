@@ -183,12 +183,44 @@ class Contract extends Entity
     }
 
     /**
-     * fake getter for option separate_invoice (for easier implementation in future)
+     * getter for option separate_invoice (use option from service type)
      *
      * @return bool
      */
     protected function _getSeparateInvoice(): bool
     {
+        if (isset($this->service_type->separate_invoice)) {
+            return $this->service_type->separate_invoice;
+        }
+
         return false;
+    }
+
+    /**
+     * getter for option invoice_with_items (use option from service type)
+     *
+     * @return bool
+     */
+    protected function _getInvoiceWithItems(): bool
+    {
+        if (isset($this->service_type->invoice_with_items)) {
+            return $this->service_type->invoice_with_items;
+        }
+
+        return false;
+    }
+
+    /**
+     * getter for option invoice_text (use option from service type)
+     *
+     * @return string|null
+     */
+    protected function _getInvoiceText(): ?string
+    {
+        if (isset($this->service_type->invoice_text)) {
+            return $this->service_type->invoice_text;
+        }
+
+        return null;
     }
 }
