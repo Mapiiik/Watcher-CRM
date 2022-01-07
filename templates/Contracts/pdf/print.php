@@ -343,14 +343,75 @@ class ContractPDF extends TCPDF
 
         $this->Ln(4);                                    
 
+        // BORROWED EQUIPMENTS
+        if (count($contract->borrowed_equipments) > 0)
+        {
+            $this->SetFont('DejaVuSerif', 'B', '9');
+            $this->Write(4, 'Poskytnutá zařízení');
+            $this->Ln();
+
+            $this->Ln(0.4);
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+            $this->Ln(1);
+
+            $this->SetFont('DejaVuSerif', '', '8');
+            $this->Write(4, 'Poskytovatel poskytne Uživateli pro dobu trvání Smlouvy bezúplatně tato zařízení:');
+
+            $this->Ln(5);
+
+            $this->SetFont('DejaVuSerif', 'B', '8');
+            $this->Cell(4, 5);
+            $this->Cell(130, 5,  'Zařízení', 1);
+            $this->Cell(25, 5,  'Sériové číslo', 1, 0, 'C');
+            $this->Cell(25, 5,  'Hodnota', 1, 0, 'R');
+            $this->Ln();                                    
+
+            $this->SetFont('DejaVuSerif', '', '8');
+            foreach ($contract->borrowed_equipments as $borrowed_equipment) {
+                $this->Cell(4, 5);
+                $this->Cell(130, 5, $borrowed_equipment->equipment_type->name, 1);
+                $this->Cell(25, 5, $borrowed_equipment->serial_number, 1, 0, 'C');
+                $this->Cell(25, 5, Number::currency($borrowed_equipment->equipment_type->price), 1, 0, 'R');
+                $this->Ln();                                    
+            }
+
+            $this->Ln(2);
+
+            $this->SetFont('DejaVuSerif', '', '8');
+            $this->MultiCell(180, 4, 'Uživatel je povinen tato zařízení Poskytovateli vrátit bez zbytečných odkladů nejpozději po zániku Smlouvy.' . PHP_EOL, 0, 'J');
+            $this->Ln(2);
+
+            $this->SetFont('DejaVuSerif', 'B', '8');
+        }
+
         // SOLD EQUIPMENTS
         $this->SetFont('DejaVuSerif', 'B', '9');
-        $this->Write(4, 'Prodaná zařízení a příslušenství a práce nad rámec aktivačního poplatku:');
+        $this->Write(4, 'Aktivační poplatek, prodaná zařízení a příslušenství a práce nad rámec aktivačního poplatku');
         $this->Ln();
 
         $this->Ln(0.4);
         $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
         $this->Ln(1);
+
+
+        $this->SetFont('DejaVuSerif', '', '8');
+        if (count($contract->borrowed_equipments) > 0) {
+            $this->MultiCell(180, 4, 'Aktivační poplatek zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci poskytnutých zařízení:' . PHP_EOL, 0, 'J');
+        }
+        else
+        {
+            $this->MultiCell(180, 4, 'Aktivační poplatek zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací:' . PHP_EOL, 0, 'J');
+        }
+        $this->Ln(1);
+
+        $subtotal = 0;
+        
+        $this->Cell(4, 5);
+        $this->Cell(155, 5, 'Aktivační poplatek', 1);
+        $this->Cell(25, 5, Number::currency($subtotal = ($contract->minimum_duration <= 0) ? $contract->activation_fee_sum : $contract->activation_fee_with_obligation_sum), 1, 0, 'R');
+        $this->Ln();
+
+        $this->Ln(2);
 
         $this->SetFont('DejaVuSerif', '', '8');
         $this->Write(4, 'Poskytovatel dodal Uživateli tato zařízení a příslušenství a provedl práce nad rámec aktivačního poplatku:');
@@ -359,101 +420,34 @@ class ContractPDF extends TCPDF
 
         $this->SetFont('DejaVuSerif', 'B', '8');
         $this->Cell(4, 5);
-        $this->Cell(120, 5,  'Zařízení / příslušenství / práce', 1);
-        $this->Cell(30, 5,  'Sériové číslo', 1, 0, 'C');
-        $this->Cell(30, 5,  'Cena', 1, 0, 'R');
+        $this->Cell(105, 5,  'Zařízení / příslušenství / práce', 1);
+        $this->Cell(25, 5,  'Sériové číslo', 1, 0, 'C');
+        $this->Cell(25, 5,  'Cena', 1, 0, 'R');
+        $this->Cell(25, 5,  'Mezisoučet', 1, 0, 'R');
         $this->Ln();                                    
 
         $this->SetFont('DejaVuSerif', '', '8');
         foreach ($contract->sold_equipments as $sold_equipment) {
             $this->Cell(4, 5);
-            $this->Cell(120, 5, $sold_equipment->equipment_type->name, 1);
-            $this->Cell(30, 5, $sold_equipment->serial_number, 1, 0, 'C');
-            $this->Cell(30, 5, Number::currency($sold_equipment->equipment_type->price), 1, 0, 'R');
+            $this->Cell(105, 5, $sold_equipment->equipment_type->name, 1);
+            $this->Cell(25, 5, $sold_equipment->serial_number, 1, 0, 'C');
+            $this->Cell(25, 5, Number::currency($sold_equipment->equipment_type->price), 1, 0, 'R');
+            $this->Cell(25, 5, Number::currency($subtotal += $sold_equipment->equipment_type->price), 1, 0, 'R');
             $this->Ln();                                    
         }
         for ($i = 1; $i <= 3; $i++) {
             $this->Cell(4, 5);
-            $this->Cell(120, 5, '', 1);
-            $this->Cell(30, 5, '', 1, 0, 'C');
-            $this->Cell(30, 5, '', 1, 0, 'R');
+            $this->Cell(105, 5, '', 1);
+            $this->Cell(25, 5, '', 1, 0, 'C');
+            $this->Cell(25, 5, '', 1, 0, 'C');
+            $this->Cell(25, 5, '', 1, 0, 'R');
             $this->Ln();                                    
         }
 
         $this->Ln(2);
 
         $this->SetFont('DejaVuSerif', 'B', '8');
-        $this->MultiCell(180, 4, 'Uživatel je povinen cenu těchto zařízení, příslušenství a prací Poskytovateli uhradit.' . PHP_EOL, 0, 'J');
-        $this->Ln(4);
-
-        // BORROWED EQUIPMENTS
-        $this->SetFont('DejaVuSerif', 'B', '9');
-        $this->Write(4, 'Poskytnutá zařízení, aktivační poplatek a náhrada nákladů');
-        $this->Ln();
-
-        $this->Ln(0.4);
-        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
-        $this->Ln(1);
-
-        if (count($contract->borrowed_equipments) > 0)
-        {
-            $this->SetFont('DejaVuSerif', '', '8');
-            $this->Write(4, 'Poskytovatel poskytne Uživateli pro dobu trvání Smlouvy bezúplatně tato zařízení:');
-
-            $this->Ln(5);
-
-            $this->SetFont('DejaVuSerif', 'B', '8');
-            $this->Cell(4, 5);
-            $this->Cell(120, 5,  'Zařízení', 1);
-            $this->Cell(30, 5,  'Sériové číslo', 1, 0, 'C');
-            $this->Cell(30, 5,  'Hodnota', 1, 0, 'R');
-            $this->Ln();                                    
-
-            $this->SetFont('DejaVuSerif', '', '8');
-            foreach ($contract->borrowed_equipments as $borrowed_equipment) {
-                $this->Cell(4, 5);
-                $this->Cell(120, 5, $borrowed_equipment->equipment_type->name, 1);
-                $this->Cell(30, 5, $borrowed_equipment->serial_number, 1, 0, 'C');
-                $this->Cell(30, 5, Number::currency($borrowed_equipment->equipment_type->price), 1, 0, 'R');
-                $this->Ln();                                    
-            }
-
-            $this->Ln(2);
-
-            $this->SetFont('DejaVuSerif', '', '8');
-            $this->MultiCell(180, 4, 'Uživatel je povinen tato zařízení Poskytovateli vrátit bez zbytečných odkladů nejpozději po zániku Smlouvy.' . PHP_EOL, 0, 'J');
-            $this->Ln(3);
-
-            if ($contract->activation_fee_sum > 0)
-            {
-                $this->SetFont('DejaVuSerif', 'B', '8');
-
-                if ($contract->minimum_duration <= 0)
-                {
-                    $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . Number::currency($contract->activation_fee_sum) . ' zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci poskytnutých zařízení.' . PHP_EOL, 0, 'J');
-                    $this->Ln(3);
-                }
-                else
-                {
-                    $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . Number::currency($contract->activation_fee_with_obligation_sum) . ' zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci poskytnutých zařízení.' . PHP_EOL, 0, 'J');
-                    $this->Ln(3);
-                }
-            }
-        }
-        else
-        {
-            if ($contract->activation_fee_sum > 0) {
-                $this->SetFont('DejaVuSerif', 'B', '8');
-
-                if ($contract->minimum_duration <= 0) {
-                    $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . Number::currency($contract->activation_fee_sum) . ' zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací.' . PHP_EOL, 0, 'J');
-                    $this->Ln(3);
-                } else {
-                    $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . Number::currency($contract->activation_fee_with_obligation_sum) . ' zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací.' . PHP_EOL, 0, 'J');
-                    $this->Ln(3);
-                }
-            }
-        }
+        $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek a cenu těchto zařízení, příslušenství a prací.' . PHP_EOL, 0, 'J');
 
         // CROSS
         $this->Ln(5);
@@ -520,17 +514,17 @@ class ContractPDF extends TCPDF
 
             $this->SetFont('DejaVuSerif', 'B', '8');
             $this->Cell(4, 5);
-            $this->Cell(120, 5,  'Zařízení', 1);
-            $this->Cell(30, 5,  'Sériové číslo', 1, 0, 'C');
-            $this->Cell(30, 5,  'Hodnota', 1, 0, 'R');
+            $this->Cell(130, 5,  'Zařízení', 1);
+            $this->Cell(25, 5,  'Sériové číslo', 1, 0, 'C');
+            $this->Cell(25, 5,  'Hodnota', 1, 0, 'R');
             $this->Ln();                                    
 
             $this->SetFont('DejaVuSerif', '', '8');
             foreach ($contract->borrowed_equipments as $borrowed_equipment) {
                 $this->Cell(4, 5);
-                $this->Cell(120, 5, $borrowed_equipment->equipment_type->name, 1);
-                $this->Cell(30, 5, $borrowed_equipment->serial_number, 1, 0, 'C');
-                $this->Cell(30, 5, Number::currency($borrowed_equipment->equipment_type->price), 1, 0, 'R');
+                $this->Cell(130, 5, $borrowed_equipment->equipment_type->name, 1);
+                $this->Cell(25, 5, $borrowed_equipment->serial_number, 1, 0, 'C');
+                $this->Cell(25, 5, Number::currency($borrowed_equipment->equipment_type->price), 1, 0, 'R');
                 $this->Ln();                                    
             }
 
