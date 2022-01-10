@@ -420,35 +420,40 @@ class ContractPDF extends TCPDF
 
         $this->SetFont('DejaVuSerif', 'B', '8');
         $this->Cell(4, 5);
-        $this->Cell(105, 5,  'Zařízení / příslušenství / práce', 1);
+        $this->Cell(130, 5,  'Zařízení / příslušenství / práce', 1);
         $this->Cell(25, 5,  'Sériové číslo', 1, 0, 'C');
         $this->Cell(25, 5,  'Cena', 1, 0, 'R');
-        $this->Cell(25, 5,  'Mezisoučet', 1, 0, 'R');
         $this->Ln();                                    
 
         $this->SetFont('DejaVuSerif', '', '8');
         foreach ($contract->sold_equipments as $sold_equipment) {
+            $subtotal += $sold_equipment->equipment_type->price;
             $this->Cell(4, 5);
-            $this->Cell(105, 5, $sold_equipment->equipment_type->name, 1);
+            $this->Cell(130, 5, $sold_equipment->equipment_type->name, 1);
             $this->Cell(25, 5, $sold_equipment->serial_number, 1, 0, 'C');
             $this->Cell(25, 5, Number::currency($sold_equipment->equipment_type->price), 1, 0, 'R');
-            $this->Cell(25, 5, Number::currency($subtotal += $sold_equipment->equipment_type->price), 1, 0, 'R');
             $this->Ln();                                    
         }
-        for ($i = 1; $i <= 3; $i++) {
+        for ($i = 1; $i <= 6; $i++) {
             $this->Cell(4, 5);
-            $this->Cell(105, 5, '', 1);
+            $this->Cell(130, 5, '', 1);
             $this->Cell(25, 5, '', 1, 0, 'C');
             $this->Cell(25, 5, '', 1, 0, 'C');
-            $this->Cell(25, 5, '', 1, 0, 'R');
             $this->Ln();                                    
         }
 
         $this->Ln(2);
 
         $this->SetFont('DejaVuSerif', 'B', '8');
-        $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek a cenu těchto zařízení, příslušenství a prací.' . PHP_EOL, 0, 'J');
+        $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek a cenu prodaných zařízení, příslušenství a prací.' . PHP_EOL, 0, 'J');
 
+        $this->Cell(4, 5);
+        $this->Cell(155, 5, 'Celkem k úhradě', 1);
+        $this->Cell(25, 5, Number::currency($subtotal), 1, 0, 'R');
+        $this->Ln();
+
+        $this->Ln(2);
+        
         // CROSS
         $this->Ln(5);
         $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY()); // --
@@ -472,7 +477,7 @@ class ContractPDF extends TCPDF
 
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Ln(4);
-        $this->MultiCell(180, 4, 'Placeno hotově ____________________,- Kč, podpis příjemce: ____________________' . PHP_EOL, 0, 'J');
+        $this->MultiCell(180, 4, 'Placeno hotově: ____________________,- Kč, podpis příjemce: ____________________' . PHP_EOL, 0, 'J');
         $this->Ln(4);
         
         // FINAL STATEMENTS
@@ -547,8 +552,15 @@ class ContractPDF extends TCPDF
             $this->MultiCell(170, 4, 'zařízení má viditelnou vadu nebo poškození způsobené neodborným zacházením ze strany Uživatele' . PHP_EOL, 0, 'L');
             $this->Ln(3);
 
-            $this->MultiCell(180, 0, 'zjištěné nedostatky: _______________________________________________________________________________________________________', 0, 'L');
-            $this->Ln(3);
+            $this->Cell(30, 0, 'zjištěné nedostatky:', 0, 'L');
+            $this->MultiCell(150, 0, '_______________________________________________________________________________________________________', 0, 'L');
+            $this->Ln(2);
+            $this->Cell(30, 0);
+            $this->MultiCell(150, 0, '_______________________________________________________________________________________________________', 0, 'L');
+            $this->Ln(2);
+            $this->Cell(30, 0);
+            $this->MultiCell(150, 0, '_______________________________________________________________________________________________________', 0, 'L');
+            $this->Ln(2);
             
             $this->MultiCell(180, 4, 'V případě že provedení zkoušky funkčnosti těchto zařízení na místě nebylo umožněno, bude provedeno následně v provozovně Poskytovatele.' . PHP_EOL, 0, 'J');
             $this->Ln(1);
@@ -556,21 +568,16 @@ class ContractPDF extends TCPDF
             $this->MultiCell(180, 4, 'V případě viditelné vady, poškození nebo zjištění nefunkčnosti těchto zařízení se Uživatel zavazuje uhradit hodnotu těchto zařízení.' . PHP_EOL, 0, 'J');
             $this->Ln(1);
         }
+        $this->Ln(3);
         
         // CASH PAYMENT
-        $this->SetFont('DejaVuSerif', 'B', '9');
+        $this->SetFont('DejaVuSerif', 'B', '8');
         $this->Write(4, 'Úhrada v hotovosti');
-        $this->Ln();
-
-        $this->Ln(0.4);
-        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
-        $this->Ln(1);
-
         $this->SetFont('DejaVuSerif', '', 8);
+        $this->Write(4, ' - placeno hotově: ____________________,- Kč, podpis příjemce: ____________________');
+        $this->Ln();
         $this->Ln(4);
-        $this->MultiCell(180, 4, 'Placeno hotově ____________________,- Kč, podpis příjemce: ____________________' . PHP_EOL, 0, 'J');
-        $this->Ln(4);
-        
+
         // FINAL STATEMENTS
         $this->SetFont('DejaVuSerif', 'B', '9');
         $this->Write(4, 'Závěrečná ustanovení');
@@ -581,7 +588,7 @@ class ContractPDF extends TCPDF
         $this->Ln(1);
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->MultiCell(180, 4, 'Poskytovatel svým podpisem stvrzuje, že výše uvedená zařízení převzal ve stavu uvedeném výše.' . PHP_EOL, 0, 'J');
+        $this->MultiCell(180, 4, 'Poskytovatel svým podpisem stvrzuje, že uvedená zařízení převzal ve stavu popsaném výše.' . PHP_EOL, 0, 'J');
         $this->Ln(1);
         $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit hodnotu zařízení v případě jejich viditelné vady, poškození nebo zjištěné nefunkčnosti nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené výše).' . PHP_EOL, 0, 'J');
         $this->Ln(1);
