@@ -7,7 +7,7 @@
 $dbf = new \BookkeepingPohoda\DBFInvoices();
 
 // Generate DBF file name
-$dbf_filename = TMP . uniqid("billing", true) . ".dbf";
+$dbf_filename = TMP . uniqid("invoices-", true) . ".dbf";
 
 $dbf->createDBF($dbf_filename);
 
@@ -18,7 +18,10 @@ foreach ($invoices as $invoice) {
 $dbf->closeDBF();
 
 // set for download with specified filename
-header("Content-Disposition: attachment; filename=\"billing-" . strtolower($tax_rates[$tax_rate_id]) . '-' . $invoiced_month->i18nFormat('yyyy-MM') . ".dbf\"");
+$this->response = $this->response->withDownload(
+    'Invoices' . '-' . strtolower($tax_rates[$tax_rate_id])
+        . '-' . $invoiced_month->i18nFormat('yyyy-MM') . '.dbf'
+);
 
 //read file to output
 readfile($dbf_filename);

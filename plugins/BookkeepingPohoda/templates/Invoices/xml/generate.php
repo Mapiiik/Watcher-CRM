@@ -103,7 +103,10 @@ foreach ($invoices as $invoice) {
 $pohoda->close();
 
 // set for download with specified filename
-header("Content-Disposition: attachment; filename=\"billing-" . strtolower($tax_rates[$tax_rate_id]) . '-' . $invoiced_month->i18nFormat('yyyy-MM') . ".xml\"");
+$this->response = $this->response->withDownload(
+    'Invoices' . '-' . strtolower($tax_rates[$tax_rate_id])
+        . '-' . $invoiced_month->i18nFormat('yyyy-MM') . '.xml'
+);
 
 //read file to output
 readfile($xml_filename);
