@@ -14,7 +14,7 @@ use Cake\I18n\Number;
             <?= $this->AuthLink->postLink(__('Delete Customer'), ['action' => 'delete', $customer->id], ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id), 'class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('List Customers'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Customer'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
-             <br />
+            <br />
             <?= $this->AuthLink->link(__('Print to PDF'), ['action' => 'print', $customer->id], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
