@@ -230,12 +230,15 @@ Jméno, příjmení, emailová adresa, telefonní číslo, adresa trvalého poby
     d) vyžádat si u Správce přístup k těmto údajům a tyto nechat aktualizovat nebo opravit
     e) požadovat po Správci výmaz těchto osobních údajů, pokud Správce neprokáže oprávněné důvody pro zpracování těchto osobních údajů
     f) v případě pochybností o dodržování povinností souvisejících se zpracováním osobních údajů obrátit se na Správce nebo na Úřad pro ochranu osobních údajů
+');
 
-        ▢ souhlasím se zasíláním veškeré korespondence spojené s měsíčním vyúčtováním *
-        ▢ souhlasím se zasíláním informací o odstávkách a poruchách *
-        ▢ souhlasím se zasíláním obchodních sdělení *
+        $this->SetFont('DejaVuSerif', 'B', '8');
+        $this->Write(3, '
+▢ souhlasím se zasíláním veškeré korespondence spojené s měsíčním vyúčtováním *
+▢ souhlasím se zasíláním informací o odstávkách a poruchách *
+▢ souhlasím se zasíláním obchodních sdělení *
 
-    * zašrtněte prosím jaké typy zpráv chcete dostávat
+* zašrtněte prosím jaké typy zpráv chcete dostávat
 ');
 
         // SIGNS
