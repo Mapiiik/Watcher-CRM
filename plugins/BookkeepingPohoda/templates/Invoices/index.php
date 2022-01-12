@@ -35,7 +35,7 @@
                 <?php foreach ($invoices as $invoice) : ?>
                 <tr>
                     <td><?= $this->Number->format($invoice->id) ?></td>
-                    <td><?= $invoice->has('customer') ? $this->Html->link($invoice->customer->name, ['controller' => 'Customers', 'action' => 'view', $invoice->customer->id]) : '' ?></td>
+                    <td><?= $invoice->has('customer') ? $this->Html->link($invoice->customer->name, ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $invoice->customer->id]) : '' ?></td>
                     <td><?= $this->Number->format($invoice->number) ?></td>
                     <td><?= $this->Number->format($invoice->variable_symbol) ?></td>
                     <td><?= h($invoice->creation_date) ?></td>
@@ -50,6 +50,7 @@
                     <td><?= h($invoice->modified) ?></td>
                     <td><?= $this->Number->format($invoice->modified_by) ?></td>
                     <td class="actions">
+                        <?= $this->Html->link(__('Download'), ['action' => 'download', $invoice->id], ['target' => '_blank']) ?>
                         <?= $this->Html->link(__('View'), ['action' => 'view', $invoice->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $invoice->id]) ?>
                         <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $invoice->id], ['confirm' => __('Are you sure you want to delete # {0}?', $invoice->id)]) ?>

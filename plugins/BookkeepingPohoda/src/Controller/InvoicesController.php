@@ -48,6 +48,31 @@ class InvoicesController extends AppController
     }
 
     /**
+     * Download method
+     *
+     * @param string|null $id Invoice id.
+     * @return \Cake\Http\Response|null|void Renders view
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function download($id = null)
+    {
+        $invoice = $this->Invoices->get($id, [
+            'contain' => ['Customers'],
+        ]);
+
+        $filename = env('DATA_ROOT', DS . 'data' . DS) . 'invoices' . DS
+                    . 'Faktura_' . $invoice->number . '.pdf';
+
+        $response = $this->response->withFile($filename, [
+            'download' => true,
+            'name' => 'Faktura-' . $invoice->number
+                    . '-VS' . $invoice->variable_symbol . '.pdf',
+        ]);
+
+        return $response;
+    }
+
+    /**
      * Add method
      *
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
