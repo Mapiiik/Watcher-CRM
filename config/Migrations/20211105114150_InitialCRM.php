@@ -1004,6 +1004,11 @@ class InitialCRM extends AbstractMigration
                 'limit' => null,
                 'null' => true,
             ])
+            ->addColumn('installation_address_required', 'boolean', [
+                'default' => false,
+                'limit' => null,
+                'null' => false,
+            ])
             ->create();
 
         $this->table('services')

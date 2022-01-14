@@ -201,6 +201,24 @@ class ContractsTable extends Table
         );
         $rules->add($rules->existsIn(['brokerage_id'], 'Brokerages'), ['errorField' => 'brokerage_id']);
 
+        $rules->add(
+            function ($entity, $options) {
+                // load service type
+                $service_type = $this->ServiceTypes->get($entity->service_type_id);
+                // check if installation adress required for this service type
+                if ($service_type->installation_address_required) {
+                    return is_numeric($entity->installation_address_id);
+                } else {
+                    return true;
+                }
+            },
+            'isRequiredInstallationAdressFilled',
+            [
+                'errorField' => 'installation_address_id',
+                'message' => __('The specified service type requires the installation address to be set.'),
+            ]
+        );
+
         return $rules;
     }
 }

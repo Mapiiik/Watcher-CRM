@@ -18,6 +18,7 @@ use Cake\ORM\Entity;
  * @property bool $separate_invoice
  * @property bool $invoice_with_items
  * @property string|null $invoice_text
+ * @property bool $installation_address_required
  *
  * @property \App\Model\Entity\Contract[] $contracts
  * @property \App\Model\Entity\Queue[] $queues
