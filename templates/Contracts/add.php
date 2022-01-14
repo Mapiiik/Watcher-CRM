@@ -32,7 +32,7 @@ use Cake\I18n\FrozenDate;
                         ],
                         'onclick' => 'document.getElementById("valid-until").disabled = !this.checked;']
                     );
-                    echo $this->Form->hidden('valid_until', ['value' => null]); //return null if not enabled
+                    echo $this->Form->hidden('valid_until', ['value' => '']); //return null if not enabled
                     echo $this->Form->control('valid_until', ['empty' => true, 'disabled' => !$contract->has('valid_until')]);
                     $this->Form->unlockField('valid_until'); //disable form security check
 
@@ -44,7 +44,7 @@ use Cake\I18n\FrozenDate;
                         ],
                         'onclick' => 'document.getElementById("obligation-until").disabled = !this.checked;']
                     );
-                    echo $this->Form->hidden('obligation_until', ['value' => null]); //return null if not enabled
+                    echo $this->Form->hidden('obligation_until', ['value' => '']); //return null if not enabled
                     echo $this->Form->control('obligation_until', ['empty' => true, 'disabled' => !$contract->has('obligation_until'), 'default' => FrozenDate::now()->addMonth(24)->lastOfMonth()]);
                     $this->Form->unlockField('obligation_until'); //disable form security check
 

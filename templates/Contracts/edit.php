@@ -48,7 +48,7 @@
                             ],
                             'onclick' => 'document.getElementById("valid-until").disabled = !this.checked;']
                         );
-                        echo $this->Form->hidden('valid_until', ['value' => null]); //return null if not enabled
+                        echo $this->Form->hidden('valid_until', ['value' => '']); //return null if not enabled
                         echo $this->Form->control('valid_until', ['empty' => true, 'disabled' => !$contract->has('valid_until')]);
                         $this->Form->unlockField('valid_until'); //disable form security check
 
@@ -61,7 +61,7 @@
                             ],
                             'onclick' => 'document.getElementById("obligation-until").disabled = !this.checked;']
                         );
-                        echo $this->Form->hidden('obligation_until', ['value' => null]); //return null if not enabled
+                        echo $this->Form->hidden('obligation_until', ['value' => '']); //return null if not enabled
                         echo $this->Form->control('obligation_until', ['empty' => true, 'disabled' => !$contract->has('obligation_until'), 'default' => $contract->has('valid_from') ? $contract->valid_from->addMonth(24)->subDay(1) : null]);
                         $this->Form->unlockField('obligation_until'); //disable form security check
                     ?>
