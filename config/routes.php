@@ -44,17 +44,17 @@ use Cake\Routing\RouteBuilder;
 /** @var \Cake\Routing\RouteBuilder $routes */
 $routes->setRouteClass(DashedRoute::class);
 
-$routes->scope('/admin/', function (RouteBuilder $builder) {    
+$routes->scope('/admin/', function (RouteBuilder $builder) {
 
     $builder->setRouteClass(DashedRoute::class);
-    
-    $builder->setExtensions(['pdf']);    
+
+    $builder->setExtensions(['pdf']);
 
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}', 'Contracts::view')->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+'])->setPass(['contract_id']);
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}/edit', 'Contracts::edit')->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+'])->setPass(['contract_id']);
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}/delete', 'Contracts::delete')->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+'])->setPass(['contract_id']);
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}/print', 'Contracts::print')->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+'])->setPass(['contract_id']);
-    
+
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}', ['action' => 'index'])->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+']);
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/add', ['action' => 'add'])->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+']);
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/{id}', ['action' => 'view'])->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+', 'id' => '[0-9]+'])->setPass(['id']);
@@ -64,12 +64,13 @@ $routes->scope('/admin/', function (RouteBuilder $builder) {
     $builder->connect('/customers/{customer_id}/edit', 'Customers::edit')->setPatterns(['customer_id' => '[0-9]+'])->setPass(['customer_id']);
     $builder->connect('/customers/{customer_id}/delete', 'Customers::delete')->setPatterns(['customer_id' => '[0-9]+'])->setPass(['customer_id']);
     $builder->connect('/customers/{customer_id}/print', 'Customers::print')->setPatterns(['customer_id' => '[0-9]+'])->setPass(['customer_id']);
-    
+
     $builder->connect('/customers/{customer_id}/{controller}', ['action' => 'index'])->setPatterns(['customer_id' => '[0-9]+']);
     $builder->connect('/customers/{customer_id}/{controller}/add', ['action' => 'add'])->setPatterns(['customer_id' => '[0-9]+']);
     $builder->connect('/customers/{customer_id}/{controller}/{id}', ['action' => 'view'])->setPatterns(['customer_id' => '[0-9]+', 'id' => '[0-9]+'])->setPass(['id']);
     $builder->connect('/customers/{customer_id}/{controller}/{id}/{action}/*', [])->setPatterns(['customer_id' => '[0-9]+', 'id' => '[0-9]+'])->setPass(['id']);
 
+    $builder->connect('/reports/{action}/*', ['controller' => 'Reports']);
 
     $builder->connect('/{controller}', ['action' => 'index']);
     $builder->connect('/{controller}/add', ['action' => 'add']);
@@ -115,10 +116,10 @@ $routes->scope('/', function (RouteBuilder $builder) {
  * ```
  * $routes->scope('/api', function (RouteBuilder $builder) {
  *     // No $builder->applyMiddleware() here.
- *     
+ *
  *     // Parse specified extensions from URLs
  *     // $builder->setExtensions(['json', 'xml']);
- *     
+ *
  *     // Connect API actions here.
  * });
  * ```
@@ -136,7 +137,7 @@ Router::addUrlFilter(function (array $params, ServerRequest $request) {
     if ($request->getParam('contract_id') && !isset($params['contract_id'])) {
         $params['contract_id'] = $request->getParam('contract_id');
     }
-    
+
     //remove for self (because of duplicating nesting)
     if (isset($params['controller']) && $params['controller'] == 'Customers') unset ($params['customer_id']);
     if (!isset($params['controller']) && $request->getParam('controller') == 'Customers') unset ($params['customer_id']);

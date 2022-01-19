@@ -38,7 +38,11 @@ $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
     <?= $this->fetch('script') ?>
 </head>
 <body>
-<?php if (!isset($_SERVER['HTTP_REFERER']) || (strpos($_SERVER['HTTP_REFERER'], '/legacy/administration/') === false)): ?>
+<?php
+if (
+    !isset($_SERVER['HTTP_REFERER'])
+    || (strpos($_SERVER['HTTP_REFERER'], '/legacy/administration/') === false)
+) : ?>
     <nav class="top-nav">
         <div class="top-nav-title">
             <a href="<?= $this->Url->build('/') ?>"><span>Watcher</span> CRM</a>
@@ -48,43 +52,89 @@ $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
             <?php
             $controller = $this->name;
             $action = $this->request->getParam('action');
-            $buttonSelected = function ($haystack = []) use ($controller, $action)
-            {
-                if (in_array($controller, $haystack))
+            $buttonSelected = function ($haystack = []) use ($controller, $action) {
+                if (in_array($controller, $haystack)) {
                     return ' button-selected';
-                else if (in_array($action, $haystack))
+                } elseif (in_array($action, $haystack)) {
                     return ' button-selected';
-                else                    
+                } else {
                     return '';
-            };
-            ?>
-            <?= $this->AuthLink->link(__('Customers'), ['plugin' => null, 'controller' => 'Customers', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Customers'])]) ?>
-            <?= $this->AuthLink->link(__('Tasks'), ['plugin' => null, 'controller' => 'Tasks', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Tasks'])]) ?>
-            <?= $this->AuthLink->link(__('Bookkeeping'), ['plugin' => 'BookkeepingPohoda', 'controller' => 'Invoices', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Invoices'])]) ?>
-            <?= $this->AuthLink->link(__('RADIUS'), ['plugin' => 'RADIUS', 'controller' => 'Accounts', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Accounts', 'Nass', 'Radacct', 'Radcheck', 'Radgroupcheck', 'Radgroupreply', 'Radpostauth', 'Radreply', 'Radusergroup'])]) ?>
-            <?= $this->AuthLink->link(__('RUIAN'), ['plugin' => 'RUIAN', 'controller' => 'Addresses', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Addresses'])]) ?>
-            <?= $this->AuthLink->link(__('Users'), ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'index'], ['class' => 'button button-small' . $buttonSelected(['Users'])]) ?>
+                }
+            }; ?>
+
+            <?= $this->AuthLink->link(
+                __('Customers'),
+                ['plugin' => null, 'controller' => 'Customers', 'action' => 'index'],
+                ['class' => 'button button-small' . $buttonSelected(['Customers'])]
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Tasks'),
+                ['plugin' => null, 'controller' => 'Tasks', 'action' => 'index'],
+                ['class' => 'button button-small' . $buttonSelected(['Tasks'])]
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Bookkeeping'),
+                ['plugin' => 'BookkeepingPohoda', 'controller' => 'Invoices', 'action' => 'index'],
+                ['class' => 'button button-small' . $buttonSelected(['Invoices'])]
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('RADIUS'),
+                ['plugin' => 'RADIUS', 'controller' => 'Accounts', 'action' => 'index'],
+                ['class' => 'button button-small' . $buttonSelected([
+                    'Accounts',
+                    'Nass',
+                    'Radacct',
+                    'Radcheck',
+                    'Radgroupcheck',
+                    'Radgroupreply',
+                    'Radpostauth',
+                    'Radreply',
+                    'Radusergroup',
+                ])]
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('RUIAN'),
+                ['plugin' => 'RUIAN', 'controller' => 'Addresses', 'action' => 'index'],
+                ['class' => 'button button-small' . $buttonSelected(['Addresses'])]
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Reports'),
+                ['plugin' => null, 'controller' => 'Reports', 'action' => 'index'],
+                ['class' => 'button button-small' . $buttonSelected(['Reports'])]
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Users'),
+                ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'index'],
+                ['class' => 'button button-small' . $buttonSelected(['Users'])]
+            ) ?>
             
             <?= $this->Html->link(__('Legacy'), '/legacy', ['class' => 'button button-small']) ?>
 
-            <?php if ($this->request->getParam('action') == 'index'): ?>
+            <?php if ($this->request->getParam('action') == 'index') : ?>
             <select name="limit" class="button button-small button-outline" onchange="location = this.value;">
-                <option <?php if ($this->request->getQuery('limit') == 20) echo 'selected="selected"'; ?> value="<?php echo $this->Url->build(['?' => ['limit' => 20] + $this->request->getQueryParams()] + $this->request->getParam('pass')); ?>">20</option>
-                <option <?php if ($this->request->getQuery('limit') == 50) echo 'selected="selected"'; ?> value="<?php echo $this->Url->build(['?' => ['limit' => 50] + $this->request->getQueryParams()] + $this->request->getParam('pass')); ?>">50</option>
-                <option <?php if ($this->request->getQuery('limit') == 100) echo 'selected="selected"'; ?> value="<?php echo $this->Url->build(['?' => ['limit' => 100] + $this->request->getQueryParams()] + $this->request->getParam('pass')); ?>">100</option>
-                <option <?php if ($this->request->getQuery('limit') == 500) echo 'selected="selected"'; ?> value="<?php echo $this->Url->build(['?' => ['limit' => 500] + $this->request->getQueryParams()] + $this->request->getParam('pass')); ?>">500</option>
-                <option <?php if ($this->request->getQuery('limit') == 1000) echo 'selected="selected"'; ?> value="<?php echo $this->Url->build(['?' => ['limit' => 1000] + $this->request->getQueryParams()] + $this->request->getParam('pass')); ?>">1000</option>
+                <option <?= $this->request->getQuery('limit') == 20 ? 'selected="selected"' : '' ?>value="<?= $this->Url->build(['?' => ['limit' => 20] + $this->request->getQueryParams()] + $this->request->getParam('pass')) ?>">20</option>
+                <option <?= $this->request->getQuery('limit') == 50 ? 'selected="selected"' : '' ?> value="<?= $this->Url->build(['?' => ['limit' => 50] + $this->request->getQueryParams()] + $this->request->getParam('pass')) ?>">50</option>
+                <option <?= $this->request->getQuery('limit') == 100 ? 'selected="selected"' : '' ?> value="<?= $this->Url->build(['?' => ['limit' => 100] + $this->request->getQueryParams()] + $this->request->getParam('pass')) ?>">100</option>
+                <option <?= $this->request->getQuery('limit') == 500 ? 'selected="selected"' : '' ?> value="<?= $this->Url->build(['?' => ['limit' => 500] + $this->request->getQueryParams()] + $this->request->getParam('pass')) ?>">500</option>
+                <option <?= $this->request->getQuery('limit') == 1000 ? 'selected="selected"' : '' ?> value="<?= $this->Url->build(['?' => ['limit' => 1000] + $this->request->getQueryParams()] + $this->request->getParam('pass')) ?>">1000</option>
             </select>
             <?php endif; ?>
             
             <?php $language = $this->request->getSession()->read('Config.language', Cake\I18n\I18n::getDefaultLocale()); ?>
             
             <select name="language" class="button button-small button-outline" onchange="location = this.value;">
-                <option <?php if ($language == 'cs_CZ') echo 'selected="selected"'; ?> value="<?php echo $this->Url->build(['?' => ['language' => 'cs_CZ'] + $this->request->getQueryParams()] + $this->request->getParam('pass')); ?>">Čeština</option>
-                <option <?php if ($language == 'en_US') echo 'selected="selected"'; ?> value="<?php echo $this->Url->build(['?' => ['language' => 'en_US'] + $this->request->getQueryParams()] + $this->request->getParam('pass')); ?>">English</option>
+                <option <?= $language == 'cs_CZ' ? 'selected="selected"' : '' ?> value="<?= $this->Url->build(['?' => ['language' => 'cs_CZ'] + $this->request->getQueryParams()] + $this->request->getParam('pass')) ?>">Čeština</option>
+                <option <?= $language == 'en_US' ? 'selected="selected"' : '' ?> value="<?= $this->Url->build(['?' => ['language' => 'en_US'] + $this->request->getQueryParams()] + $this->request->getParam('pass')) ?>">English</option>
             </select>
 
-            <?php if (!is_null($this->request->getSession()->read('Auth.id'))) echo $this->AuthLink->link(__('Logout'), ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout'], ['class' => 'button button-small button-outline']) ?>
+            <?php
+            if (!is_null($this->request->getSession()->read('Auth.id'))) {
+                echo $this->AuthLink->link(
+                    __('Logout'),
+                    ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout'],
+                    ['class' => 'button button-small button-outline']
+                );
+            } ?>
         </div>
 
     </nav>
