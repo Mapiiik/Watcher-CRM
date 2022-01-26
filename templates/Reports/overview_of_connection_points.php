@@ -37,7 +37,8 @@
                             <th><?= __('Active 100+ Mbps') ?></th>
                             <th><?= __('Available 0-30 Mbps') ?></th>
                             <th><?= __('Available 30-100 Mbps') ?></th>
-                            <th><?= __('Available 100-1000 Mbps') ?></th>
+                            <th><?= __('Available 100-300 Mbps') ?></th>
+                            <th><?= __('Available 300-1000 Mbps') ?></th>
                             <th><?= __('Available 1000+ Mbps') ?></th>
                             <th><?= __('VHCN') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
@@ -54,7 +55,8 @@
                             <td><?= $this->Number->format($connection_point->active_speeds->speed_100_plus) ?></td>
                             <td><?= $this->Number->format($connection_point->available_speeds->speed_0_30) ?></td>
                             <td><?= $this->Number->format($connection_point->available_speeds->speed_30_100) ?></td>
-                            <td><?= $this->Number->format($connection_point->available_speeds->speed_100_1000) ?></td>
+                            <td><?= $this->Number->format($connection_point->available_speeds->speed_100_300) ?></td>
+                            <td><?= $this->Number->format($connection_point->available_speeds->speed_300_1000) ?></td>
                             <td><?= $this->Number->format($connection_point->available_speeds->speed_1000_plus) ?></td>
                             <td><?= $connection_point->vhcn ? __('Yes') : __('No'); ?></td>
                             <td class="actions">

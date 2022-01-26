@@ -170,7 +170,7 @@ class ReportsController extends AppController
                                             if ($billing->service->queue->cto_category == 's2_wifi') {
                                                 return 'speed_30_100';
                                             } elseif ($billing->service->queue->cto_category == 's2_fttb') {
-                                                return 'speed_100_1000';
+                                                return 'speed_300_1000';
                                             } else {
                                                 return 'unknown';
                                             }
@@ -197,7 +197,8 @@ class ReportsController extends AppController
             . 'Přístupy nepodnikajících osob;'
             . 'Přípojky do 30Mb;'
             . 'Přípojky 30-100Mb;'
-            . 'Přípojky 100Mb - 1Gb;'
+            . 'Přípojky 100-300Mb;'
+            . 'Přípojky 300Mb - 1Gb;'
             . 'Přípojky nad 1Gb;'
             . 'Síť VHCN;'
             . 'Adresa'
@@ -213,7 +214,8 @@ class ReportsController extends AppController
                 . (int)$connection_point->active_connections_nonbusiness . ';'
                 . (int)$connection_point->available_speeds->speed_0_30 . ';'
                 . (int)$connection_point->available_speeds->speed_30_100 . ';'
-                . (int)$connection_point->available_speeds->speed_100_1000 . ';'
+                . (int)$connection_point->available_speeds->speed_100_300 . ';'
+                . (int)$connection_point->available_speeds->speed_300_1000 . ';'
                 . (int)$connection_point->available_speeds->speed_1000_plus . ';'
                 . ($connection_point->vhcn ? 'ANO' : 'NE') . ';'
                 . PHP_EOL;
