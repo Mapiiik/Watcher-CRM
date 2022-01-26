@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Task $task
+ * @var \App\Model\Entity\Service[]|\Cake\Collection\CollectionInterface $services
  */
 ?>
 <div class="row">
@@ -39,8 +39,16 @@
                             <td><?= $this->Number->format($service->id) ?></td>
                             <td><?= h($service->name) ?></td>
                             <td><?= $this->Number->currency($service->price) ?></td>
-                            <td><?= $service->has('service_type') ? $this->Html->link($service->service_type->name, ['controller' => 'ServiceTypes', 'action' => 'view', $service->service_type->id]) : '' ?></td>
-                            <td><?= $service->has('queue') ? $this->Html->link($service->queue->name, ['controller' => 'Queues', 'action' => 'view', $service->queue->id]) : '' ?></td>
+                            <td><?= $service->has('service_type') ? $this->Html->link($service->service_type->name, [
+                                'controller' => 'ServiceTypes',
+                                'action' => 'view',
+                                $service->service_type->id,
+                            ]) : '' ?></td>
+                            <td><?= $service->has('queue') ? $this->Html->link($service->queue->name, [
+                                'controller' => 'Queues',
+                                'action' => 'view',
+                                $service->queue->id,
+                            ]) : '' ?></td>
                             <td><?= $this->Number->format($service->number_of_uses) ?></td>
                             <td><?= $this->Number->format($service->number_of_uses_nonbusiness) ?></td>
                             <td><?= $this->Number->currency($service->sum) ?></td>
@@ -49,7 +57,11 @@
                             <td><?= $this->Number->currency($service->total_sum) ?></td>
                             <td><?= $this->Number->currency($service->total_sum_nonbusiness) ?></td>
                             <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Services', 'action' => 'view', $service->id]) ?>
+                                <?= $this->AuthLink->link(__('View'), [
+                                    'controller' => 'Services',
+                                    'action' => 'view',
+                                    $service->id,
+                                ]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

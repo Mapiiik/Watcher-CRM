@@ -12,5 +12,10 @@
             ['action' => 'overviewOfActiveServices'],
             ['class' => 'side-nav-item']
         ) ?>
+        <?= $this->AuthLink->link(
+            __('Overview of connection points'),
+            ['action' => 'overviewOfConnectionPoints'],
+            ['class' => 'side-nav-item']
+        ) ?>
     </div>
 </div>

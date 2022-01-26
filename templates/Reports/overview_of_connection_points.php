@@ -1,0 +1,76 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \Cake\Collection\CollectionInterface $cto_categories
+ * @var \Cake\I18n\FrozenDate $invoiced_month
+ */
+?>
+<div class="row">
+    <aside class="column">
+        <div class="side-nav">
+            <h4 class="heading"><?= __('Actions') ?></h4>
+            <?= $this->AuthLink->link(__('List Reports'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+        </div>
+    </aside>
+    <div class="column-responsive column-90">
+        <div class="reports index content">
+            <?php foreach ($cto_categories as $cto_category => $connection_points) : ?>
+                <?= $this->AuthLink->link(
+                    __('Export') . ' ' . $cto_category,
+                    ['_ext' => 'csv', $invoiced_month->i18nFormat('yyyy-MM'), $cto_category],
+                    ['class' => 'button button float-right']
+                ) ?>
+            <?php endforeach; ?>
+            <h3><?= __('Overview of connection points') ?></h3>
+
+            <?php foreach ($cto_categories as $cto_category => $connection_points) : ?>
+            <div class="table-responsive">
+            <h4><?= $cto_category ?></h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th><?= __('RUIAN GID') ?></th>
+                            <th><?= __('Active Connections') ?></th>
+                            <th><?= __('Active Connections (nonbusiness)') ?></th>
+                            <th><?= __('Active 0-30 Mbps') ?></th>
+                            <th><?= __('Active 30-100 Mbps') ?></th>
+                            <th><?= __('Active 100+ Mbps') ?></th>
+                            <th><?= __('Available 0-30 Mbps') ?></th>
+                            <th><?= __('Available 30-100 Mbps') ?></th>
+                            <th><?= __('Available 100-1000 Mbps') ?></th>
+                            <th><?= __('Available 1000+ Mbps') ?></th>
+                            <th><?= __('VHCN') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($connection_points as $connection_point) : ?>
+                        <tr>
+                            <td><?= $this->Number->format($connection_point->ruian_gid) ?></td>
+                            <td><?= $this->Number->format($connection_point->active_connections) ?></td>
+                            <td><?= $this->Number->format($connection_point->active_connections_nonbusiness) ?></td>
+                            <td><?= $this->Number->format($connection_point->active_speeds->speed_0_30) ?></td>
+                            <td><?= $this->Number->format($connection_point->active_speeds->speed_30_100) ?></td>
+                            <td><?= $this->Number->format($connection_point->active_speeds->speed_100_plus) ?></td>
+                            <td><?= $this->Number->format($connection_point->available_speeds->speed_0_30) ?></td>
+                            <td><?= $this->Number->format($connection_point->available_speeds->speed_30_100) ?></td>
+                            <td><?= $this->Number->format($connection_point->available_speeds->speed_100_1000) ?></td>
+                            <td><?= $this->Number->format($connection_point->available_speeds->speed_1000_plus) ?></td>
+                            <td><?= $connection_point->vhcn ? __('Yes') : __('No'); ?></td>
+                            <td class="actions">
+                                <?= $this->AuthLink->link(__('View'), [
+                                    'plugin' => 'RUIAN',
+                                    'controller' => 'Addresses',
+                                    'action' => 'view',
+                                    $connection_point->ruian_gid,
+                                ]) ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
