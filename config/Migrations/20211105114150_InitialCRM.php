@@ -872,6 +872,11 @@ class InitialCRM extends AbstractMigration
                 'limit' => 20,
                 'null' => true,
             ])
+            ->addColumn('cto_category', 'string', [
+                'default' => null,
+                'limit' => null,
+                'null' => true,
+            ])
             ->create();
 
         $this->table('removed_ips')
