@@ -56,7 +56,7 @@ class CustomersController extends AppController
                         . "COALESCE(Customers.ic, '') || ' ' || "
                         . "COALESCE(Customers.dic, '') || ' ' || "
                         . "COALESCE(Ips.ip, '0.0.0.0'::inet)"
-                    . ") @@ to_tsquery('" . mb_ereg_replace('\s{1,}', '&', \trim($search->getData('search'))) . "')";
+                    . ") @@ plainto_tsquery('" . pg_escape_string(trim($search->getData('search'))) . "')";
                 $filter = '('
                         . 'SELECT customers.id FROM customers '
                         . 'LEFT JOIN contracts ON (customers.id = contracts.customer_id) '
@@ -68,9 +68,9 @@ class CustomersController extends AppController
                     . ')';
 
                 $this->paginate['conditions']['OR'] = [
-                    'Customers.company ILIKE' => '%' . \trim($search->getData('search')) . '%',
-                    'Customers.first_name ILIKE' => '%' . \trim($search->getData('search')) . '%',
-                    'Customers.last_name ILIKE' => '%' . \trim($search->getData('search')) . '%',
+                    'Customers.company ILIKE' => '%' . trim($search->getData('search')) . '%',
+                    'Customers.first_name ILIKE' => '%' . trim($search->getData('search')) . '%',
+                    'Customers.last_name ILIKE' => '%' . trim($search->getData('search')) . '%',
                     'Customers.id IN ' . $filter,
                 ];
                 unset($filter);
