@@ -88,8 +88,7 @@ class SendIssuedInvoicesCommand extends Command
                     'Vážený zákazníku,' . PHP_EOL
                     . PHP_EOL
                     . 'dne ' . $issued_invoice->creation_date
-                    . ' Vám byla na základě smlouvy č. ' . $issued_invoice->variable_symbol
-                    . ' vystavena faktura - daňový doklad č. ' . $issued_invoice->number
+                    . ' Vám byla vystavena faktura - daňový doklad č. ' . $issued_invoice->number
                     . ' splatná ' . $issued_invoice->due_date . '.' . PHP_EOL
                     . PHP_EOL
                     . 'Variabilní symbol pro platbu: ' . $issued_invoice->variable_symbol . PHP_EOL
