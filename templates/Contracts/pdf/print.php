@@ -344,7 +344,7 @@ class ContractPDF extends TCPDF
         $this->Ln(1);
 
         $this->writeHTML(
-            '<strong>Přístup do Uživatelského portálu je možné si aktivovat na Webu Poskytovatele:</strong><br />' . PHP_EOL
+            '<strong>Přístup do Uživatelského portálu je možné zřídit na Webu Poskytovatele:</strong><br />' . PHP_EOL
             . '<u>https://netair.cz/internet/uzivatelsky-portal</u>' . PHP_EOL,
             true, 0, false, true, ''
         );
@@ -486,7 +486,7 @@ class ContractPDF extends TCPDF
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Ln(4);
         $this->MultiCell(180, 4, 'Placeno hotově: ____________________,- Kč, podpis příjemce: ____________________' . PHP_EOL, 0, 'J');
-        $this->Ln(3);
+        $this->Ln(6);
 
         // CONNECTION POINT STATE
         $this->SetFont('DejaVuSerif', 'B', '9');
@@ -502,7 +502,7 @@ class ContractPDF extends TCPDF
         $this->MultiCell(180, 4, 'Síla signálu na straně Uživatele v případě bezdrátového připojení do sítě Poskytovatele (Tx / Rx): ____________________ dBm' . PHP_EOL, 0, 'J');
         $this->Ln(3);
         $this->MultiCell(180, 4, 'Pro případný servis je zapotřebí žebřík v minimální délce: ______ m' . PHP_EOL, 0, 'J');
-        $this->Ln(3);
+        $this->Ln(6);
         
         // FINAL STATEMENTS
         $this->SetFont('DejaVuSerif', 'B', '9');
@@ -599,8 +599,7 @@ class ContractPDF extends TCPDF
         $this->Write(4, 'Úhrada v hotovosti');
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Write(4, ' - placeno hotově: ____________________,- Kč, podpis příjemce: ____________________');
-        $this->Ln();
-        $this->Ln(4);
+        $this->Ln(6);
 
         // FINAL STATEMENTS
         $this->SetFont('DejaVuSerif', 'B', '9');
