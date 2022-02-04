@@ -341,6 +341,14 @@ class ContractPDF extends TCPDF
         $this->Cell(36, 5,  '', 1, 0, 'C');
         $this->Ln();                                    
 
+        $this->Ln(1);
+
+        $this->writeHTML(
+            '<strong>Přístup do Uživatelského portálu je možné si aktivovat na Webu Poskytovatele:</strong><br />' . PHP_EOL
+            . '<u>https://netair.cz/internet/uzivatelsky-portal</u>' . PHP_EOL,
+            true, 0, false, true, ''
+        );
+
         $this->Ln(4);                                    
 
         // BORROWED EQUIPMENTS
@@ -478,7 +486,23 @@ class ContractPDF extends TCPDF
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Ln(4);
         $this->MultiCell(180, 4, 'Placeno hotově: ____________________,- Kč, podpis příjemce: ____________________' . PHP_EOL, 0, 'J');
-        $this->Ln(4);
+        $this->Ln(3);
+
+        // CONNECTION POINT STATE
+        $this->SetFont('DejaVuSerif', 'B', '9');
+        $this->Write(4, 'Stav přípojného bodu po instalaci');
+        $this->Ln();
+
+        $this->Ln(0.4);
+        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+        $this->Ln(1);
+
+        $this->SetFont('DejaVuSerif', '', 8);
+        $this->Ln(3);
+        $this->MultiCell(180, 4, 'Síla signálu na straně Uživatele v případě bezdrátového připojení do sítě Poskytovatele (Tx / Rx): ____________________ dBm' . PHP_EOL, 0, 'J');
+        $this->Ln(3);
+        $this->MultiCell(180, 4, 'Pro případný servis je zapotřebí žebřík v minimální délce: ______ m' . PHP_EOL, 0, 'J');
+        $this->Ln(3);
         
         // FINAL STATEMENTS
         $this->SetFont('DejaVuSerif', 'B', '9');
@@ -490,9 +514,9 @@ class ContractPDF extends TCPDF
         $this->Ln(1);
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->MultiCell(180, 4, 'Svým podpisem stvrzuji, že jsem výše uvedená zařízení převzal nainstalovaná a plně funkční, a zároveň se zavazuji uhradit částku aktivačního poplatku i cenu dodaných zařízení a příslušenství a prací nad rámec aktivačního poplatku nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené výše).' . PHP_EOL, 0, 'J');
+        $this->MultiCell(180, 4, 'Uživatel svým podpisem stvrzuje, že výše uvedená zařízení převzal nainstalovaná a plně funkční, a zároveň se zavazuje uhradit částku aktivačního poplatku i cenu dodaných zařízení a příslušenství a prací nad rámec aktivačního poplatku nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené výše).' . PHP_EOL, 0, 'J');
         $this->Ln(3);
-        $this->MultiCell(180, 4, 'Dále potvrzuji, že  souhlasím s provedenou instalací a nemám vůči ní žádné námitky. Zároveň prohlašuji, že objednané služby jsou plně funkční.' . PHP_EOL, 0, 'J');
+        $this->MultiCell(180, 4, 'Uživatel dále potvrzuje, že  souhlasí s provedenou instalací a nemá vůči ní žádné námitky a zároveň prohlašuje, že objednané služby jsou plně funkční.' . PHP_EOL, 0, 'J');
         $this->Ln(3);
 
         endif;
