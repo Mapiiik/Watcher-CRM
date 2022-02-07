@@ -161,6 +161,10 @@ $routes->scope('/', function (RouteBuilder $builder) {
  */
 
 Router::addUrlFilter(function (array $params, ServerRequest $request) {
+    if ($request->getQuery('win-link') == 'true') {
+        $params['?']['win-link'] = 'true';
+    }
+
     //inject customer_id
     if ($request->getParam('customer_id') && !isset($params['customer_id'])) {
         $params['customer_id'] = $request->getParam('customer_id');
