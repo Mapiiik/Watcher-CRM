@@ -57,7 +57,7 @@ $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
                     return '';
                 }
             };
-            
+
             $request = $this->request;
             $urlWithQuery = function ($query = []) use ($request) {
                 return $this->Url->build(
@@ -147,7 +147,11 @@ $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
         <?php endif; ?>
     </nav>
 
-    <?= $this->request->getParam('customer_id') ? $this->cell('Customer') : ''; ?>
+    <?= $this->request->getParam('customer_id') ? $this->cell(
+        'Customer',
+        [$this->request->getParam('customer_id')],
+        ['compact' => ($this->request->getQuery('win-link') == 'true')]
+    ) : '' ?>
 
     <main class="main">
         <div class="container">

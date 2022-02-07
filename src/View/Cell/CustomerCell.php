@@ -16,7 +16,14 @@ class CustomerCell extends Cell
      *
      * @var array<string>
      */
-    protected $_validCellOptions = [];
+    protected $_validCellOptions = ['compact'];
+
+    /**
+     * Compact view
+     *
+     * @var bool
+     */
+    protected $compact = false;
 
     /**
      * Initialization logic run at the end of object construction.
@@ -30,18 +37,19 @@ class CustomerCell extends Cell
     /**
      * Default display method.
      *
+     * @param string|null $customer_id Customer Id.
      * @return void
      */
-    public function display()
+    public function display($customer_id)
     {
-        $customer_id = $this->request->getParam('customer_id');
-
         if ($customer_id) {
             $customer = $this->getTableLocator()->get('Customers')->get($customer_id, [
                 'contain' => ['Contracts' => ['ServiceTypes', 'InstallationAddresses']],
             ]);
 
             $this->set(compact('customer'));
+
+            $this->set('compact', $this->compact);
         }
     }
 }

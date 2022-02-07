@@ -3,14 +3,26 @@
         <div class="nav-content-left">
             <?= $this->AuthLink->link(
                 '<h4>' . h($customer->name) . ' (' . h($customer->number) . ')' . '</h4>',
-                ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $customer->id], ['escape' => false, 'class' => ''])
-            ?>
+                ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $customer->id],
+                ['escape' => false, 'class' => '']
+            ) ?>
         </div>
         <div class="nav-content-right">
-            <?php foreach ($customer->contracts as $contract): ?>
-                <?= $this->AuthLink->link($contract->name,
+            <?php foreach ($customer->contracts as $contract) : ?>
+                <?php
+                if ($this->request->getParam('contract_id') == $contract->id) {
+                    echo $this->AuthLink->link(
+                        $contract->name,
                         ['plugin' => null, 'controller' => 'Contracts', 'action' => 'view', $contract->id],
-                        ['class' => 'button button-small' . (($contract->id == $this->request->getParam('contract_id')) ? ' button-selected' : '')])
+                        ['class' => 'button button-small button-selected']
+                    );
+                } elseif (!$compact) { //skip non selected contracts in compact mode
+                    echo $this->AuthLink->link(
+                        $contract->name,
+                        ['plugin' => null, 'controller' => 'Contracts', 'action' => 'view', $contract->id],
+                        ['class' => 'button button-small']
+                    );
+                }
                 ?>
             <?php endforeach; ?>
         </div>
