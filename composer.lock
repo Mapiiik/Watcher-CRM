@@ -1404,16 +1404,16 @@
         },
         {
             "name": "mapik/pohoda-xml",
-            "version": "v1.16.0",
+            "version": "v1.16.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Mapiiik/pohoda-xml.git",
-                "reference": "ae0e196b4b50095ccfa58a35227c78858b0aad40"
+                "reference": "e170188d4a601363b984f299e070f5a2fcc662d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Mapiiik/pohoda-xml/zipball/ae0e196b4b50095ccfa58a35227c78858b0aad40",
-                "reference": "ae0e196b4b50095ccfa58a35227c78858b0aad40",
+                "url": "https://api.github.com/repos/Mapiiik/pohoda-xml/zipball/e170188d4a601363b984f299e070f5a2fcc662d6",
+                "reference": "e170188d4a601363b984f299e070f5a2fcc662d6",
                 "shasum": ""
             },
             "require": {
@@ -1450,9 +1450,10 @@
             ],
             "description": "Pohoda XML communication",
             "support": {
-                "source": "https://github.com/Mapiiik/pohoda-xml/tree/v1.16.0"
+                "issues": "https://github.com/Mapiiik/pohoda-xml/issues",
+                "source": "https://github.com/Mapiiik/pohoda-xml"
             },
-            "time": "2022-02-01T11:19:22+00:00"
+            "time": "2022-02-11T17:48:33+00:00"
         },
         {
             "name": "mobiledetect/mobiledetectlib",
