@@ -21,7 +21,7 @@ class RadcheckController extends AppController
         $this->paginate = [
             'contain' => ['Accounts'],
         ];
-        $radcheck = $this->paginate($this->Radcheck);
+        $radchecks = $this->paginate($this->Radcheck);
 
         $this->set(compact('radchecks'));
     }

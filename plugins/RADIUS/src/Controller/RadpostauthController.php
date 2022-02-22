@@ -21,7 +21,7 @@ class RadpostauthController extends AppController
         $this->paginate = [
             'contain' => ['Accounts'],
         ];
-        $radpostauth = $this->paginate($this->Radpostauth);
+        $radpostauths = $this->paginate($this->Radpostauth);
 
         $this->set(compact('radpostauths'));
     }

@@ -21,7 +21,7 @@ class RadusergroupController extends AppController
         $this->paginate = [
             'contain' => ['Accounts'],
         ];
-        $radusergroup = $this->paginate($this->Radusergroup);
+        $radusergroups = $this->paginate($this->Radusergroup);
 
         $this->set(compact('radusergroups'));
     }

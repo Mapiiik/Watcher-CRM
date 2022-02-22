@@ -21,7 +21,7 @@ class RadreplyController extends AppController
         $this->paginate = [
             'contain' => ['Accounts'],
         ];
-        $radreply = $this->paginate($this->Radreply);
+        $radreplies = $this->paginate($this->Radreply);
 
         $this->set(compact('radreplies'));
     }

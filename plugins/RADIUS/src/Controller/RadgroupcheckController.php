@@ -18,7 +18,7 @@ class RadgroupcheckController extends AppController
      */
     public function index()
     {
-        $radgroupcheck = $this->paginate($this->Radgroupcheck);
+        $radgroupchecks = $this->paginate($this->Radgroupcheck);
 
         $this->set(compact('radgroupchecks'));
     }

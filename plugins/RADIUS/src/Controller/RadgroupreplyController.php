@@ -18,7 +18,7 @@ class RadgroupreplyController extends AppController
      */
     public function index()
     {
-        $radgroupreply = $this->paginate($this->Radgroupreply);
+        $radgroupreplies = $this->paginate($this->Radgroupreply);
 
         $this->set(compact('radgroupreplies'));
     }

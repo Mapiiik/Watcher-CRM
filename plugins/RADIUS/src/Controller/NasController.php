@@ -18,7 +18,7 @@ class NasController extends AppController
      */
     public function index()
     {
-        $Nas = $this->paginate($this->Nas);
+        $nases = $this->paginate($this->Nas);
 
         $this->set(compact('nases'));
     }

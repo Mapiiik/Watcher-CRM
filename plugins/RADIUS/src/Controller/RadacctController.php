@@ -21,7 +21,7 @@ class RadacctController extends AppController
         $this->paginate = [
             'contain' => ['Accounts'],
         ];
-        $radacct = $this->paginate($this->Radacct);
+        $radaccts = $this->paginate($this->Radacct);
 
         $this->set(compact('radaccts'));
     }
