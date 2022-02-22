@@ -23,7 +23,7 @@ class RadpostauthController extends AppController
         ];
         $radpostauth = $this->paginate($this->Radpostauth);
 
-        $this->set(compact('radpostauth'));
+        $this->set(compact('radpostauths'));
     }
 
     /**

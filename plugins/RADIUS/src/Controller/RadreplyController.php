@@ -23,7 +23,7 @@ class RadreplyController extends AppController
         ];
         $radreply = $this->paginate($this->Radreply);
 
-        $this->set(compact('radreply'));
+        $this->set(compact('radreplies'));
     }
 
     /**

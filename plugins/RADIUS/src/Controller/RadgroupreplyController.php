@@ -20,7 +20,7 @@ class RadgroupreplyController extends AppController
     {
         $radgroupreply = $this->paginate($this->Radgroupreply);
 
-        $this->set(compact('radgroupreply'));
+        $this->set(compact('radgroupreplies'));
     }
 
     /**

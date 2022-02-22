@@ -5,7 +5,7 @@
  */
 ?>
 <div class="tasks index content">
-    <?= $this->AuthLink->link(__('New Task'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Task'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
     <h3><?= __('Tasks') ?></h3>
     <div class="table-responsive">
         <table>
@@ -29,26 +29,59 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($tasks as $task): ?>
+                <?php foreach ($tasks as $task) : ?>
                 <tr>
                     <td><?= $this->Number->format($task->id) ?></td>
-                    <td><?= $task->has('task_type') ? $this->Html->link($task->task_type->name, ['controller' => 'TaskTypes', 'action' => 'view', $task->task_type->id]) : '' ?></td>
+                    <td>
+                        <?= $task->has('task_type') ? $this->Html->link(
+                            $task->task_type->name,
+                            ['controller' => 'TaskTypes', 'action' => 'view', $task->task_type->id]
+                        ) : '' ?>
+                    </td>
                     <td><?= $this->Number->format($task->priority) ?></td>
-                    <td><?= $task->has('task_state') ? $this->Html->link($task->task_state->name, ['controller' => 'TaskStates', 'action' => 'view', $task->task_state->id]) : '' ?></td>
+                    <td>
+                        <?= $task->has('task_state') ? $this->Html->link(
+                            $task->task_state->name,
+                            ['controller' => 'TaskStates', 'action' => 'view', $task->task_state->id]
+                        ) : '' ?>
+                    </td>
                     <td><?= h($task->subject) ?></td>
                     <td><?= h($task->email) ?></td>
                     <td><?= h($task->phone) ?></td>
-                    <td><?= $task->has('customer') ? $this->Html->link($task->customer->name, ['controller' => 'Customers', 'action' => 'view', $task->customer->id]) : '' ?></td>
-                    <td><?= $task->has('dealer') ? $this->Html->link($task->dealer->name, ['controller' => 'Customers', 'action' => 'view', $task->dealer->id]) : '' ?></td>
-                    <td><?= $task->has('router') ? $this->Html->link($task->router->name, ['controller' => 'Routers', 'action' => 'view', $task->router->id]) : '' ?></td>
+                    <td>
+                        <?= $task->has('customer') ? $this->Html->link(
+                            $task->customer->name,
+                            ['controller' => 'Customers', 'action' => 'view', $task->customer->id]
+                        ) : '' ?>
+                    </td>
+                    <td>
+                        <?= $task->has('dealer') ? $this->Html->link(
+                            $task->dealer->name,
+                            ['controller' => 'Customers', 'action' => 'view', $task->dealer->id]
+                        ) : '' ?>
+                    </td>
+                    <td>
+                        <?= $task->has('router') ? $this->Html->link(
+                            $task->router->name,
+                            ['controller' => 'Routers', 'action' => 'view', $task->router->id]
+                        ) : '' ?>
+                    </td>
                     <td><?= h($task->start_date) ?></td>
                     <td><?= h($task->estimated_date) ?></td>
                     <td><?= h($task->critical_date) ?></td>
                     <td><?= h($task->finish_date) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $task->id]) ?>
-                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $task->id]) ?>
-                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]) ?>
+                        <?= $this->AuthLink->link(
+                            __('Edit'),
+                            ['action' => 'edit', $task->id],
+                            ['class' => 'win-link']
+                        ) ?>
+                        <?= $this->AuthLink->postLink(
+                            __('Delete'),
+                            ['action' => 'delete', $task->id],
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]
+                        ) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -63,6 +96,8 @@
             <?= $this->Paginator->next(__('next') . ' >') ?>
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+        <p><?= $this->Paginator->counter(
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+        ) ?></p>
     </div>
 </div>

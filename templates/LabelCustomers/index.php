@@ -5,7 +5,11 @@
  */
 ?>
 <div class="labelCustomers index content">
-    <?= $this->AuthLink->link(__('New Label Customer'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(
+        __('New Label Customer'),
+        ['action' => 'add'],
+        ['class' => 'button float-right win-link']
+    ) ?>
     <h3><?= __('Label Customers') ?></h3>
     <div class="table-responsive">
         <table>
@@ -20,17 +24,35 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($labelCustomers as $labelCustomer): ?>
+                <?php foreach ($labelCustomers as $labelCustomer) : ?>
                 <tr>
-                    <td><?= $labelCustomer->has('label') ? $this->Html->link($labelCustomer->label->name, ['controller' => 'Labels', 'action' => 'view', $labelCustomer->label->id]) : '' ?></td>
-                    <td><?= $labelCustomer->has('customer') ? $this->Html->link($labelCustomer->customer->name, ['controller' => 'Customers', 'action' => 'view', $labelCustomer->customer->id]) : '' ?></td>
+                    <td>
+                        <?= $labelCustomer->has('label') ? $this->Html->link(
+                            $labelCustomer->label->name,
+                            ['controller' => 'Labels', 'action' => 'view', $labelCustomer->label->id]
+                        ) : '' ?>
+                    </td>
+                    <td>
+                        <?= $labelCustomer->has('customer') ? $this->Html->link(
+                            $labelCustomer->customer->name,
+                            ['controller' => 'Customers', 'action' => 'view', $labelCustomer->customer->id]
+                        ) : '' ?>
+                    </td>
                     <td><?= h($labelCustomer->created) ?></td>
                     <td><?= $this->Number->format($labelCustomer->id) ?></td>
                     <td><?= $this->Number->format($labelCustomer->created_by) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $labelCustomer->id]) ?>
-                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $labelCustomer->id]) ?>
-                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $labelCustomer->id], ['confirm' => __('Are you sure you want to delete # {0}?', $labelCustomer->id)]) ?>
+                        <?= $this->AuthLink->link(
+                            __('Edit'),
+                            ['action' => 'edit', $labelCustomer->id],
+                            ['class' => 'win-link']
+                        ) ?>
+                        <?= $this->AuthLink->postLink(
+                            __('Delete'),
+                            ['action' => 'delete', $labelCustomer->id],
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $labelCustomer->id)]
+                        ) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -45,6 +67,8 @@
             <?= $this->Paginator->next(__('next') . ' >') ?>
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+        <p><?= $this->Paginator->counter(
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+        ) ?></p>
     </div>
 </div>

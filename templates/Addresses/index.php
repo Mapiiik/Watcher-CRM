@@ -5,7 +5,7 @@
  */
 ?>
 <div class="addresses index content">
-    <?= $this->AuthLink->link(__('New Address'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Address'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
     <h3><?= __('Addresses') ?></h3>
     <div class="table-responsive">
         <table>
@@ -29,10 +29,15 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($addresses as $address): ?>
+                <?php foreach ($addresses as $address) : ?>
                 <tr>
                     <td><?= $this->Number->format($address->id) ?></td>
-                    <td><?= $address->has('customer') ? $this->Html->link($address->customer->name, ['controller' => 'Customers', 'action' => 'view', $address->customer->id]) : '' ?></td>
+                    <td>
+                        <?= $address->has('customer') ? $this->Html->link(
+                            $address->customer->name,
+                            ['controller' => 'Customers', 'action' => 'view', $address->customer->id]
+                        ) : '' ?>
+                    </td>
                     <td><?= h($types[$address->type]) ?></td>
                     <td><?= h($address->company) ?></td>
                     <td><?= h($address->title) ?></td>
@@ -43,15 +48,36 @@
                     <td><?= h($address->number) ?></td>
                     <td><?= h($address->city) ?></td>
                     <td><?= h($address->zip) ?></td>
-                    <td><?= $address->has('country') ? $this->Html->link($address->country->name, ['controller' => 'Countries', 'action' => 'view', $address->country->id]) : '' ?></td>
+                    <td>
+                        <?= $address->has('country') ? $this->Html->link(
+                            $address->country->name,
+                            ['controller' => 'Countries', 'action' => 'view', $address->country->id]
+                        ) : '' ?>
+                    </td>
                     <td class="actions">
-                        <?= $address->has('ruian_gid') ? $this->Html->link(__('Google Maps'), 'https://maps.google.com/maps?q=' . h("{$address->gpsy},{$address->gpsx}"), ['target' => '_blank']) : '' ?>
-                        <?= $address->has('ruian_gid') ? $this->Html->link(__('Mapy.cz'), 'https://mapy.cz/zakladni?source=coor&id=' . h("{$address->gpsx},{$address->gpsy}"), ['target' => '_blank']) : ''?>
+                        <?= $address->has('ruian_gid') ? $this->Html->link(
+                            __('Google Maps'),
+                            'https://maps.google.com/maps?q=' . h("{$address->gpsy},{$address->gpsx}"),
+                            ['target' => '_blank']
+                        ) : '' ?>
+                        <?= $address->has('ruian_gid') ? $this->Html->link(
+                            __('Mapy.cz'),
+                            'https://mapy.cz/zakladni?source=coor&id=' . h("{$address->gpsx},{$address->gpsy}"),
+                            ['target' => '_blank']
+                        ) : ''?>
                     </td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $address->id]) ?>
-                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $address->id]) ?>
-                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $address->id], ['confirm' => __('Are you sure you want to delete # {0}?', $address->id)]) ?>
+                        <?= $this->AuthLink->link(
+                            __('Edit'),
+                            ['action' => 'edit', $address->id],
+                            ['class' => 'win-link']
+                        ) ?>
+                        <?= $this->AuthLink->postLink(
+                            __('Delete'),
+                            ['action' => 'delete', $address->id],
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $address->id)]
+                        ) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -66,6 +92,8 @@
             <?= $this->Paginator->next(__('next') . ' >') ?>
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+        <p><?= $this->Paginator->counter(
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+        ) ?></p>
     </div>
 </div>

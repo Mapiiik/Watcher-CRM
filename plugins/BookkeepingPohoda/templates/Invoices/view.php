@@ -8,12 +8,24 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Invoice'), ['action' => 'edit', $invoice->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Invoice'), ['action' => 'delete', $invoice->id], ['confirm' => __('Are you sure you want to delete # {0}?', $invoice->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(
+                __('Edit Invoice'),
+                ['action' => 'edit', $invoice->id],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->Form->postLink(
+                __('Delete Invoice'),
+                ['action' => 'delete', $invoice->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $invoice->id), 'class' => 'side-nav-item']
+            ) ?>
             <?= $this->Html->link(__('List Invoices'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->Html->link(__('New Invoice'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
             <br />
-            <?= $this->Html->link(__('Download Invoice'), ['action' => 'download', $invoice->id], ['class' => 'side-nav-item', 'target' => '_blank']) ?>
+            <?= $this->Html->link(
+                __('Download Invoice'),
+                ['action' => 'download', $invoice->id],
+                ['class' => 'side-nav-item', 'target' => '_blank']
+            ) ?>
         </div>
     </aside>
     <div class="column-responsive column-80">
@@ -22,7 +34,10 @@
             <table>
                 <tr>
                     <th><?= __('Customer') ?></th>
-                    <td><?= $invoice->has('customer') ? $this->Html->link($invoice->customer->name, ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $invoice->customer->id]) : '' ?></td>
+                    <td><?= $invoice->has('customer') ? $this->Html->link(
+                        $invoice->customer->name,
+                        ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $invoice->customer->id]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>

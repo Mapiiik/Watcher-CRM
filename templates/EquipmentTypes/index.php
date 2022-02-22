@@ -5,7 +5,11 @@
  */
 ?>
 <div class="equipmentTypes index content">
-    <?= $this->AuthLink->link(__('New Equipment Type'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(
+        __('New Equipment Type'),
+        ['action' => 'add'],
+        ['class' => 'button float-right win-link']
+    ) ?>
     <h3><?= __('Equipment Types') ?></h3>
     <div class="table-responsive">
         <table>
@@ -18,15 +22,23 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($equipmentTypes as $equipmentType): ?>
+                <?php foreach ($equipmentTypes as $equipmentType) : ?>
                 <tr>
                     <td><?= $this->Number->format($equipmentType->id) ?></td>
                     <td><?= h($equipmentType->name) ?></td>
                     <td><?= $this->Number->format($equipmentType->price) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $equipmentType->id]) ?>
-                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $equipmentType->id]) ?>
-                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $equipmentType->id], ['confirm' => __('Are you sure you want to delete # {0}?', $equipmentType->id)]) ?>
+                        <?= $this->AuthLink->link(
+                            __('Edit'),
+                            ['action' => 'edit', $equipmentType->id],
+                            ['class' => 'win-link']
+                        ) ?>
+                        <?= $this->AuthLink->postLink(
+                            __('Delete'),
+                            ['action' => 'delete', $equipmentType->id],
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $equipmentType->id)]
+                        ) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -41,6 +53,8 @@
             <?= $this->Paginator->next(__('next') . ' >') ?>
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+        <p><?= $this->Paginator->counter(
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+        ) ?></p>
     </div>
 </div>

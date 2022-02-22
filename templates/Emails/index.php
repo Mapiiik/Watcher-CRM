@@ -5,7 +5,7 @@
  */
 ?>
 <div class="emails index content">
-    <?= $this->AuthLink->link(__('New Email'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Email'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
     <h3><?= __('Emails') ?></h3>
     <div class="table-responsive">
         <table>
@@ -21,18 +21,31 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($emails as $email): ?>
+                <?php foreach ($emails as $email) : ?>
                 <tr>
                     <td><?= $this->Number->format($email->id) ?></td>
-                    <td><?= $email->has('customer') ? $this->Html->link($email->customer->name, ['controller' => 'Customers', 'action' => 'view', $email->customer->id]) : '' ?></td>
+                    <td>
+                        <?= $email->has('customer') ? $this->Html->link(
+                            $email->customer->name,
+                            ['controller' => 'Customers', 'action' => 'view', $email->customer->id]
+                        ) : '' ?>
+                    </td>
                     <td><?= h($email->email) ?></td>
                     <td><?= $email->use_for_billing ? __('Yes') : __('No'); ?></td>
                     <td><?= $email->use_for_outages ? __('Yes') : __('No'); ?></td>
                     <td><?= $email->use_for_commercial ? __('Yes') : __('No'); ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $email->id]) ?>
-                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $email->id]) ?>
-                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $email->id], ['confirm' => __('Are you sure you want to delete # {0}?', $email->id)]) ?>
+                        <?= $this->AuthLink->link(
+                            __('Edit'),
+                            ['action' => 'edit', $email->id],
+                            ['class' => 'win-link']
+                        ) ?>
+                        <?= $this->AuthLink->postLink(
+                            __('Delete'),
+                            ['action' => 'delete', $email->id],
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $email->id)]
+                        ) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -47,6 +60,8 @@
             <?= $this->Paginator->next(__('next') . ' >') ?>
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+        <p><?= $this->Paginator->counter(
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+        ) ?></p>
     </div>
 </div>

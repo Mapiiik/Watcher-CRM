@@ -17,11 +17,15 @@
             <fieldset>
                 <legend><?= __('Add Account') ?></legend>
                 <?php
-                    if (!isset($customer_id)) echo $this->Form->control('customer_id', ['options' => $customers]);
-                    if (!isset($contract_id)) echo $this->Form->control('contract_id', ['options' => $contracts]);
-                    echo $this->Form->control('username', ['type' => 'text', 'default' => $new_username]);
-                    echo $this->Form->control('password', ['type' => 'text', 'default' => $new_password]);
-                    echo $this->Form->control('active');
+                if (!isset($customer_id)) {
+                    echo $this->Form->control('customer_id', ['options' => $customers]);
+                }
+                if (!isset($contract_id)) {
+                    echo $this->Form->control('contract_id', ['options' => $contracts]);
+                }
+                echo $this->Form->control('username', ['type' => 'text', 'default' => $new_username]);
+                echo $this->Form->control('password', ['type' => 'text', 'default' => $new_password]);
+                echo $this->Form->control('active');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

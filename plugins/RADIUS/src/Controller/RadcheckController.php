@@ -23,7 +23,7 @@ class RadcheckController extends AppController
         ];
         $radcheck = $this->paginate($this->Radcheck);
 
-        $this->set(compact('radcheck'));
+        $this->set(compact('radchecks'));
     }
 
     /**

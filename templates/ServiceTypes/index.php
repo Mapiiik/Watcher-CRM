@@ -5,7 +5,11 @@
  */
 ?>
 <div class="serviceTypes index content">
-    <?= $this->AuthLink->link(__('New Service Type'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(
+        __('New Service Type'),
+        ['action' => 'add'],
+        ['class' => 'button float-right win-link']
+    ) ?>
     <h3><?= __('Service Types') ?></h3>
     <div class="table-responsive">
         <table>
@@ -20,7 +24,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($serviceTypes as $serviceType): ?>
+                <?php foreach ($serviceTypes as $serviceType) : ?>
                 <tr>
                     <td><?= $this->Number->format($serviceType->id) ?></td>
                     <td><?= h($serviceType->created) ?></td>
@@ -29,8 +33,16 @@
                     <td><?= h($serviceType->contract_number_format) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $serviceType->id]) ?>
-                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $serviceType->id]) ?>
-                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $serviceType->id], ['confirm' => __('Are you sure you want to delete # {0}?', $serviceType->id)]) ?>
+                        <?= $this->AuthLink->link(
+                            __('Edit'),
+                            ['action' => 'edit', $serviceType->id],
+                            ['class' => 'win-link']
+                        ) ?>
+                        <?= $this->AuthLink->postLink(
+                            __('Delete'),
+                            ['action' => 'delete', $serviceType->id],
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $serviceType->id)]
+                        ) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -45,6 +57,8 @@
             <?= $this->Paginator->next(__('next') . ' >') ?>
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+        <p><?= $this->Paginator->counter(
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+        ) ?></p>
     </div>
 </div>

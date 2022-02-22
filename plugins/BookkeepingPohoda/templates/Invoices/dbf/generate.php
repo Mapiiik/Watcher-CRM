@@ -7,7 +7,7 @@
 $dbf = new \BookkeepingPohoda\DBFInvoices();
 
 // Generate DBF file name
-$dbf_filename = TMP . uniqid("invoices-", true) . ".dbf";
+$dbf_filename = TMP . uniqid('invoices-', true) . '.dbf';
 
 $dbf->createDBF($dbf_filename);
 
@@ -28,4 +28,3 @@ readfile($dbf_filename);
 
 //remove file
 unlink($dbf_filename);
-?>

@@ -1,11 +1,11 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface[]|\Cake\Collection\CollectionInterface $radacct
+ * @var \Cake\Datasource\EntityInterface[]|\Cake\Collection\CollectionInterface $radaccts
  */
 ?>
 <div class="radacct index content">
-    <?= $this->Html->link(__('New Radacct'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->Html->link(__('New Radacct'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
     <h3><?= __('Radacct') ?></h3>
     <div class="table-responsive">
         <table>
@@ -42,7 +42,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($radacct as $radacct): ?>
+                <?php foreach ($radaccts as $radacct) : ?>
                 <tr>
                     <td><?= $this->Number->format($radacct->radacctid) ?></td>
                     <td><?= h($radacct->acctsessionid) ?></td>
@@ -73,8 +73,16 @@
                     <td><?= h($radacct->delegatedipv6prefix) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $radacct->radacctid]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $radacct->radacctid]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $radacct->radacctid], ['confirm' => __('Are you sure you want to delete # {0}?', $radacct->radacctid)]) ?>
+                        <?= $this->Html->link(
+                            __('Edit'),
+                            ['action' => 'edit', $radacct->radacctid],
+                            ['class' => 'win-link']
+                        ) ?>
+                        <?= $this->Form->postLink(
+                            __('Delete'),
+                            ['action' => 'delete', $radacct->radacctid],
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $radacct->radacctid)]
+                        ) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -89,6 +97,8 @@
             <?= $this->Paginator->next(__('next') . ' >') ?>
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+        <p><?= $this->Paginator->counter(
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+        ) ?></p>
     </div>
 </div>

@@ -7,7 +7,7 @@
 use Cake\I18n\Number;
 ?>
 <div class="billings index content">
-    <?= $this->AuthLink->link(__('New Billing'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Billing'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
     <h3><?= __('Billings') ?></h3>
     <div class="table-responsive">
         <table>
@@ -34,12 +34,30 @@ use Cake\I18n\Number;
                 <?php foreach ($billings as $billing) : ?>
                 <tr style="<?= $billing->style ?>">
                     <td><?= $this->Number->format($billing->id) ?></td>
-                    <td><?= $billing->has('customer') ? $this->Html->link($billing->customer->name, ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]) : '' ?></td>
-                    <td><?= $billing->has('contract') ? $this->Html->link($billing->contract->number, ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]) : '' ?></td>
-                    <td><?= $billing->has('service') ? $this->Html->link($billing->service->name, ['controller' => 'Services', 'action' => 'view', $billing->service->id]) : '' ?></td>
+                    <td>
+                        <?= $billing->has('customer') ? $this->Html->link(
+                            $billing->customer->name,
+                            ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]
+                        ) : '' ?>
+                    </td>
+                    <td>
+                        <?= $billing->has('contract') ? $this->Html->link(
+                            $billing->contract->number,
+                            ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]
+                        ) : '' ?>
+                    </td>
+                    <td>
+                        <?= $billing->has('service') ? $this->Html->link(
+                            $billing->service->name,
+                            ['controller' => 'Services', 'action' => 'view', $billing->service->id]
+                        ) : '' ?>
+                    </td>
                     <td><?= h($billing->text) ?></td>
                     <td><?= $this->Number->format($billing->quantity) ?></td>
-                    <td><?= h($billing->price) ?><?= $billing->has('service') ? ' (' . h($billing->service->price) . ')' : '' ?></td>
+                    <td>
+                        <?= h($billing->price) ?>
+                        <?= $billing->has('service') ? '(' . h($billing->service->price) . ')' : '' ?>
+                    </td>
                     <td><?= h($billing->fixed_discount) ?></td>
                     <td><?= h($billing->percentage_discount) ?></td>
                     <td><?= Number::currency($billing->total_price) ?></td>
@@ -49,8 +67,16 @@ use Cake\I18n\Number;
                     <td><?= $billing->separate_invoice ? __('Yes') : __('No'); ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $billing->id]) ?>
-                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $billing->id]) ?>
-                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $billing->id], ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id)]) ?>
+                        <?= $this->AuthLink->link(
+                            __('Edit'),
+                            ['action' => 'edit', $billing->id],
+                            ['class' => 'win-link']
+                        ) ?>
+                        <?= $this->AuthLink->postLink(
+                            __('Delete'),
+                            ['action' => 'delete', $billing->id],
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id)]
+                        ) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -65,6 +91,8 @@ use Cake\I18n\Number;
             <?= $this->Paginator->next(__('next') . ' >') ?>
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+        <p><?= $this->Paginator->counter(
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+        ) ?></p>
     </div>
 </div>

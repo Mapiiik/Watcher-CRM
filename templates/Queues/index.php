@@ -5,7 +5,7 @@
  */
 ?>
 <div class="queues index content">
-    <?= $this->AuthLink->link(__('New Queue'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Queue'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
     <h3><?= __('Queues') ?></h3>
     <div class="table-responsive">
         <table>
@@ -25,7 +25,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($queues as $queue): ?>
+                <?php foreach ($queues as $queue) : ?>
                 <tr>
                     <td><?= $this->Number->format($queue->id) ?></td>
                     <td><?= h($queue->name) ?></td>
@@ -34,13 +34,26 @@
                     <td><?= $this->Number->format($queue->limit) ?></td>
                     <td><?= $this->Number->format($queue->overlimit_fragment) ?></td>
                     <td><?= $this->Number->format($queue->overlimit_cost) ?></td>
-                    <td><?= $queue->has('service_type') ? $this->Html->link($queue->service_type->name, ['controller' => 'ServiceTypes', 'action' => 'view', $queue->service_type->id]) : '' ?></td>
+                    <td>
+                        <?= $queue->has('service_type') ? $this->Html->link(
+                            $queue->service_type->name,
+                            ['controller' => 'ServiceTypes', 'action' => 'view', $queue->service_type->id]
+                        ) : '' ?>
+                    </td>
                     <td><?= $this->Number->format($queue->speed_up) ?></td>
                     <td><?= $this->Number->format($queue->speed_down) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $queue->id]) ?>
-                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $queue->id]) ?>
-                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $queue->id], ['confirm' => __('Are you sure you want to delete # {0}?', $queue->id)]) ?>
+                        <?= $this->AuthLink->link(
+                            __('Edit'),
+                            ['action' => 'edit', $queue->id],
+                            ['class' => 'win-link']
+                        ) ?>
+                        <?= $this->AuthLink->postLink(
+                            __('Delete'),
+                            ['action' => 'delete', $queue->id],
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $queue->id)]
+                        ) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -55,6 +68,8 @@
             <?= $this->Paginator->next(__('next') . ' >') ?>
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+        <p><?= $this->Paginator->counter(
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+        ) ?></p>
     </div>
 </div>

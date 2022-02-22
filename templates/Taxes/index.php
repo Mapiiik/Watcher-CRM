@@ -5,7 +5,7 @@
  */
 ?>
 <div class="taxes index content">
-    <?= $this->AuthLink->link(__('New Tax'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Tax'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
     <h3><?= __('Taxes') ?></h3>
     <div class="table-responsive">
         <table>
@@ -17,14 +17,22 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($taxes as $tax): ?>
+                <?php foreach ($taxes as $tax) : ?>
                 <tr>
                     <td><?= $this->Number->format($tax->id) ?></td>
                     <td><?= h($tax->name) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $tax->id]) ?>
-                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $tax->id]) ?>
-                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $tax->id], ['confirm' => __('Are you sure you want to delete # {0}?', $tax->id)]) ?>
+                        <?= $this->AuthLink->link(
+                            __('Edit'),
+                            ['action' => 'edit', $tax->id],
+                            ['class' => 'win-link']
+                        ) ?>
+                        <?= $this->AuthLink->postLink(
+                            __('Delete'),
+                            ['action' => 'delete', $tax->id],
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $tax->id)]
+                        ) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -39,6 +47,8 @@
             <?= $this->Paginator->next(__('next') . ' >') ?>
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+        <p><?= $this->Paginator->counter(
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+        ) ?></p>
     </div>
 </div>

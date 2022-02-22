@@ -1,11 +1,11 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface[]|\Cake\Collection\CollectionInterface $Nas
+ * @var \Cake\Datasource\EntityInterface[]|\Cake\Collection\CollectionInterface $nases
  */
 ?>
 <div class="Nas index content">
-    <?= $this->Html->link(__('New Nas'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->Html->link(__('New Nas'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
     <h3><?= __('Nas') ?></h3>
     <div class="table-responsive">
         <table>
@@ -24,7 +24,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($Nas as $nas): ?>
+                <?php foreach ($nases as $nas) : ?>
                 <tr>
                     <td><?= $this->Number->format($nas->id) ?></td>
                     <td><?= h($nas->nasname) ?></td>
@@ -37,8 +37,16 @@
                     <td><?= h($nas->description) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $nas->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $nas->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $nas->id], ['confirm' => __('Are you sure you want to delete # {0}?', $nas->id)]) ?>
+                        <?= $this->Html->link(
+                            __('Edit'),
+                            ['action' => 'edit', $nas->id],
+                            ['class' => 'win-link']
+                        ) ?>
+                        <?= $this->Form->postLink(
+                            __('Delete'),
+                            ['action' => 'delete', $nas->id],
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $nas->id)]
+                        ) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -53,6 +61,8 @@
             <?= $this->Paginator->next(__('next') . ' >') ?>
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+        <p><?= $this->Paginator->counter(
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+        ) ?></p>
     </div>
 </div>

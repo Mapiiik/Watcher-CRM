@@ -5,7 +5,7 @@
  */
 ?>
 <div class="taskStates index content">
-    <?= $this->AuthLink->link(__('New Task State'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Task State'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
     <h3><?= __('Task States') ?></h3>
     <div class="table-responsive">
         <table>
@@ -16,13 +16,21 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($taskStates as $taskState): ?>
+                <?php foreach ($taskStates as $taskState) : ?>
                 <tr>
                     <td><?= $this->Number->format($taskState->id) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $taskState->id]) ?>
-                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $taskState->id]) ?>
-                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $taskState->id], ['confirm' => __('Are you sure you want to delete # {0}?', $taskState->id)]) ?>
+                        <?= $this->AuthLink->link(
+                            __('Edit'),
+                            ['action' => 'edit', $taskState->id],
+                            ['class' => 'win-link']
+                        ) ?>
+                        <?= $this->AuthLink->postLink(
+                            __('Delete'),
+                            ['action' => 'delete', $taskState->id],
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $taskState->id)]
+                        ) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -37,6 +45,8 @@
             <?= $this->Paginator->next(__('next') . ' >') ?>
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+        <p><?= $this->Paginator->counter(
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+        ) ?></p>
     </div>
 </div>

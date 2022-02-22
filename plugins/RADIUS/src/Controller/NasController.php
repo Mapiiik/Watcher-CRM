@@ -20,7 +20,7 @@ class NasController extends AppController
     {
         $Nas = $this->paginate($this->Nas);
 
-        $this->set(compact('Nas'));
+        $this->set(compact('nases'));
     }
 
     /**

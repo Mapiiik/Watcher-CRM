@@ -5,7 +5,7 @@
  */
 ?>
 <div class="invoices index content">
-    <?= $this->Html->link(__('New Invoice'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->Html->link(__('New Invoice'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
     <?= $this->Html->link(__('Generate Invoices'), ['action' => 'generate'], ['class' => 'button float-right']) ?>
     <?= $this->Html->link(__('Import from DBF'), ['action' => 'importFromDBF'], ['class' => 'button float-right']) ?>
     <h3><?= __('Invoices') ?></h3>
@@ -35,7 +35,12 @@
                 <?php foreach ($invoices as $invoice) : ?>
                 <tr>
                     <td><?= $this->Number->format($invoice->id) ?></td>
-                    <td><?= $invoice->has('customer') ? $this->Html->link($invoice->customer->name, ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $invoice->customer->id]) : '' ?></td>
+                    <td>
+                        <?= $invoice->has('customer') ? $this->Html->link(
+                            $invoice->customer->name,
+                            ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $invoice->customer->id]
+                        ) : '' ?>
+                    </td>
                     <td><?= $this->Number->format($invoice->number) ?></td>
                     <td><?= $this->Number->format($invoice->variable_symbol) ?></td>
                     <td><?= h($invoice->creation_date) ?></td>
@@ -50,10 +55,22 @@
                     <td><?= h($invoice->modified) ?></td>
                     <td><?= $this->Number->format($invoice->modified_by) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('Download'), ['action' => 'download', $invoice->id], ['target' => '_blank']) ?>
+                        <?= $this->Html->link(
+                            __('Download'),
+                            ['action' => 'download', $invoice->id],
+                            ['target' => '_blank']
+                        ) ?>
                         <?= $this->Html->link(__('View'), ['action' => 'view', $invoice->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $invoice->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $invoice->id], ['confirm' => __('Are you sure you want to delete # {0}?', $invoice->id)]) ?>
+                        <?= $this->Html->link(
+                            __('Edit'),
+                            ['action' => 'edit', $invoice->id],
+                            ['class' => 'win-link']
+                        ) ?>
+                        <?= $this->Form->postLink(
+                            __('Delete'),
+                            ['action' => 'delete', $invoice->id],
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $invoice->id)]
+                        ) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -68,6 +85,8 @@
             <?= $this->Paginator->next(__('next') . ' >') ?>
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+        <p><?= $this->Paginator->counter(
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+        ) ?></p>
     </div>
 </div>

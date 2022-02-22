@@ -12,7 +12,7 @@ $pohoda = new Pohoda('27496139');
 $pohoda->setApplicationName(env('APP_NAME', 'Watcher CRM'));
 
 // Generate XML file name
-$xml_filename = TMP . uniqid("billing", true) . ".xml";
+$xml_filename = TMP . uniqid('invoices-', true) . '.xml';
 
 // create file
 $pohoda->open($xml_filename, $invoiced_month->i18nFormat('yyyy-MM'), 'Import invoices');
@@ -62,7 +62,6 @@ foreach ($invoices as $invoice) {
         'intNote' => $invoice->internal_note,
     ]);
 
-
     // add items
     foreach ($invoice->items as $item) {
         $invoiceRecord->addItem([
@@ -90,9 +89,9 @@ foreach ($invoices as $invoice) {
             'priceHigh' => $invoice->total - round($invoice->total - ($invoice->total / (1 + env('VAT_RATE'))), 2),
             'priceHighVAT' => $reverse_charge ? 0 : round($invoice->total - ($invoice->total / (1 + env('VAT_RATE'))), 2),
             'round' => [
-                'priceRound' => 0
-            ]
-        ]
+                'priceRound' => 0,
+            ],
+        ],
     ]);
 
     // add invoice to import (identified by $invoice->number)
@@ -113,4 +112,3 @@ readfile($xml_filename);
 
 //remove file
 unlink($xml_filename);
-?>

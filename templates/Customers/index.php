@@ -6,7 +6,9 @@
 ?>
 <?php
 echo $this->Form->create($search, ['type' => 'get']);
-if ($this->request->getQuery('limit')) echo $this->Form->hidden('limit', ['value' => $this->request->getQuery('limit')]);
+if ($this->request->getQuery('limit')) {
+    echo $this->Form->hidden('limit', ['value' => $this->request->getQuery('limit')]);
+}
 echo $this->Form->control('search', ['label' => __('Search')]);
 echo $this->Form->end();
 ?>
@@ -35,11 +37,16 @@ echo $this->Form->end();
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($customers as $customer): ?>
+                <?php foreach ($customers as $customer) : ?>
                 <tr>
                     <td><?= $this->Number->format($customer->id) ?></td>
                     <td><?= $customer->dealer ? __('Yes') : __('No'); ?></td>
-                    <td><?= $customer->has('tax') ? $this->Html->link($customer->tax->name, ['controller' => 'Taxes', 'action' => 'view', $customer->tax->id]) : '' ?></td>
+                    <td>
+                        <?= $customer->has('tax') ? $this->Html->link(
+                            $customer->tax->name,
+                            ['controller' => 'Taxes', 'action' => 'view', $customer->tax->id]
+                        ) : '' ?>
+                    </td>
                     <td><?= h($customer->company) ?></td>
                     <td><?= h($customer->title) ?></td>
                     <td><?= h($customer->first_name) ?></td>
@@ -48,12 +55,28 @@ echo $this->Form->end();
                     <td><?= h($customer->date_of_birth) ?></td>
                     <td><?= h($customer->ic) ?></td>
                     <td><?= h($customer->dic) ?></td>
-                    <td><?php foreach ($customer->contracts as $contract) echo h($contract->number) . '<br />'; ?></td>
-                    <td><?php foreach ($customer->ips as $ip) echo h($ip->ip) . '<br />'; ?></td>
+                    <td>
+                        <?php foreach ($customer->contracts as $contract) {
+                            echo h($contract->number) . '<br />';
+                        } ?>
+                    </td>
+                    <td>
+                        <?php foreach ($customer->ips as $ip) {
+                            echo h($ip->ip) . '<br />';
+                        } ?>
+                    </td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $customer->id]) ?>
-                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $customer->id]) ?>
-                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $customer->id], ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id)]) ?>
+                        <?= $this->AuthLink->link(
+                            __('Edit'),
+                            ['action' => 'edit', $customer->id],
+                            ['class' => 'win-link']
+                        ) ?>
+                        <?= $this->AuthLink->postLink(
+                            __('Delete'),
+                            ['action' => 'delete', $customer->id],
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id)]
+                        ) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -68,6 +91,8 @@ echo $this->Form->end();
             <?= $this->Paginator->next(__('next') . ' >') ?>
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+        <p><?= $this->Paginator->counter(
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+        ) ?></p>
     </div>
 </div>

@@ -23,7 +23,7 @@ class RadusergroupController extends AppController
         ];
         $radusergroup = $this->paginate($this->Radusergroup);
 
-        $this->set(compact('radusergroup'));
+        $this->set(compact('radusergroups'));
     }
 
     /**

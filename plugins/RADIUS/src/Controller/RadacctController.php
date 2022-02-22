@@ -23,7 +23,7 @@ class RadacctController extends AppController
         ];
         $radacct = $this->paginate($this->Radacct);
 
-        $this->set(compact('radacct'));
+        $this->set(compact('radaccts'));
     }
 
     /**

@@ -5,7 +5,7 @@
  */
 ?>
 <div class="contracts index content">
-    <?= $this->AuthLink->link(__('New Contract'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(__('New Contract'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
     <h3><?= __('Contracts') ?></h3>
     <div class="table-responsive">
         <table>
@@ -29,13 +29,28 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($contracts as $contract): ?>
+                <?php foreach ($contracts as $contract) : ?>
                 <tr>
                     <td><?= $this->Number->format($contract->id) ?></td>
-                    <td><?= $contract->has('customer') ? $this->Html->link($contract->customer->name, ['controller' => 'Customers', 'action' => 'view', $contract->customer->id]) : '' ?></td>
-                    <td><?= $contract->has('service_type') ? $this->Html->link($contract->service_type->name, ['controller' => 'ServiceTypes', 'action' => 'view', $contract->service_type->id]) : '' ?></td>
+                    <td>
+                        <?= $contract->has('customer') ? $this->Html->link(
+                            $contract->customer->name,
+                            ['controller' => 'Customers', 'action' => 'view', $contract->customer->id]
+                        ) : '' ?>
+                    </td>
+                    <td>
+                        <?= $contract->has('service_type') ? $this->Html->link(
+                            $contract->service_type->name,
+                            ['controller' => 'ServiceTypes', 'action' => 'view', $contract->service_type->id]
+                        ) : '' ?>
+                    </td>
                     <td><?= h($contract->number) ?></td>
-                    <td><?= $contract->has('installation_address') ? $this->Html->link($contract->installation_address->full_address, ['controller' => 'Addresses', 'action' => 'view', $contract->installation_address->id]) : '' ?></td>
+                    <td>
+                        <?= $contract->has('installation_address') ? $this->Html->link(
+                            $contract->installation_address->full_address,
+                            ['controller' => 'Addresses', 'action' => 'view', $contract->installation_address->id]
+                        ) : '' ?>
+                    </td>
                     <td><?= h($contract->conclusion_date) ?></td>
                     <td><?= $this->Number->format($contract->number_of_amendments) ?></td>
                     <td><?= h($contract->valid_from) ?></td>
@@ -43,12 +58,30 @@
                     <td><?= h($contract->obligation_until) ?></td>
                     <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
                     <td><?= h($contract->installation_date) ?></td>
-                    <td><?= $contract->has('installation_technician') ? $this->Html->link($contract->installation_technician->name, ['controller' => 'Customers', 'action' => 'view', $contract->installation_technician->id]) : '' ?></td>
-                    <td><?= $contract->has('brokerage') ? $this->Html->link($contract->brokerage->name, ['controller' => 'Brokerages', 'action' => 'view', $contract->brokerage->id]) : '' ?></td>
+                    <td>
+                        <?= $contract->has('installation_technician') ? $this->Html->link(
+                            $contract->installation_technician->name,
+                            ['controller' => 'Customers', 'action' => 'view', $contract->installation_technician->id]
+                        ) : '' ?>
+                    </td>
+                    <td>
+                        <?= $contract->has('brokerage') ? $this->Html->link(
+                            $contract->brokerage->name,
+                            ['controller' => 'Brokerages', 'action' => 'view', $contract->brokerage->id]
+                        ) : '' ?>
+                    </td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $contract->id]) ?>
-                        <?= $this->AuthLink->link(__('Edit'), ['action' => 'edit', $contract->id]) ?>
-                        <?= $this->AuthLink->postLink(__('Delete'), ['action' => 'delete', $contract->id], ['confirm' => __('Are you sure you want to delete # {0}?', $contract->id)]) ?>
+                        <?= $this->AuthLink->link(
+                            __('Edit'),
+                            ['action' => 'edit', $contract->id],
+                            ['class' => 'win-link']
+                        ) ?>
+                        <?= $this->AuthLink->postLink(
+                            __('Delete'),
+                            ['action' => 'delete', $contract->id],
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $contract->id)]
+                        ) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -63,6 +96,8 @@
             <?= $this->Paginator->next(__('next') . ' >') ?>
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+        <p><?= $this->Paginator->counter(
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+        ) ?></p>
     </div>
 </div>
