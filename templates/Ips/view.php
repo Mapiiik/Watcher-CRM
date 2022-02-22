@@ -9,7 +9,11 @@
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->AuthLink->link(__('Edit Ip'), ['action' => 'edit', $ip->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->postLink(__('Delete Ip'), ['action' => 'delete', $ip->id], ['confirm' => __('Are you sure you want to delete # {0}?', $ip->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->postLink(
+                __('Delete Ip'),
+                ['action' => 'delete', $ip->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $ip->id), 'class' => 'side-nav-item']
+            ) ?>
             <?= $this->AuthLink->link(__('List Ips'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Ip'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
@@ -20,11 +24,17 @@
             <table>
                 <tr>
                     <th><?= __('Customer') ?></th>
-                    <td><?= $ip->has('customer') ? $this->Html->link($ip->customer->name, ['controller' => 'Customers', 'action' => 'view', $ip->customer->id]) : '' ?></td>
+                    <td><?= $ip->has('customer') ? $this->Html->link(
+                        $ip->customer->name,
+                        ['controller' => 'Customers', 'action' => 'view', $ip->customer->id]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Contract') ?></th>
-                    <td><?= $ip->has('contract') ? $this->Html->link($ip->contract->number, ['controller' => 'Contracts', 'action' => 'view', $ip->contract->id]) : '' ?></td>
+                    <td><?= $ip->has('contract') ? $this->Html->link(
+                        $ip->contract->number,
+                        ['controller' => 'Contracts', 'action' => 'view', $ip->contract->id]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Ip') ?></th>

@@ -8,10 +8,29 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->AuthLink->link(__('Edit Equipment Type'), ['action' => 'edit', $equipmentType->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->postLink(__('Delete Equipment Type'), ['action' => 'delete', $equipmentType->id], ['confirm' => __('Are you sure you want to delete # {0}?', $equipmentType->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->link(__('List Equipment Types'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->link(__('New Equipment Type'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __('Edit Equipment Type'),
+                ['action' => 'edit', $equipmentType->id],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->postLink(
+                __('Delete Equipment Type'),
+                ['action' => 'delete', $equipmentType->id],
+                [
+                    'confirm' => __('Are you sure you want to delete # {0}?', $equipmentType->id),
+                    'class' => 'side-nav-item',
+                ]
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('List Equipment Types'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('New Equipment Type'),
+                ['action' => 'add'],
+                ['class' => 'side-nav-item']
+            ) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
@@ -60,9 +79,24 @@
                             <td><?= h($borrowedEquipment->modified) ?></td>
                             <td><?= h($borrowedEquipment->modified_by) ?></td>
                             <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), ['controller' => 'BorrowedEquipments', 'action' => 'view', $borrowedEquipment->id]) ?>
-                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'BorrowedEquipments', 'action' => 'edit', $borrowedEquipment->id]) ?>
-                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'BorrowedEquipments', 'action' => 'delete', $borrowedEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id)]) ?>
+                                <?= $this->AuthLink->link(
+                                    __('View'),
+                                    ['controller' => 'BorrowedEquipments', 'action' => 'view', $borrowedEquipment->id]
+                                ) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Edit'),
+                                    ['controller' => 'BorrowedEquipments', 'action' => 'edit', $borrowedEquipment->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->AuthLink->postLink(
+                                    __('Delete'),
+                                    [
+                                        'controller' => 'BorrowedEquipments',
+                                        'action' => 'delete',
+                                        $borrowedEquipment->id,
+                                    ],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id)]
+                                ) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -99,9 +133,20 @@
                             <td><?= h($soldEquipment->modified) ?></td>
                             <td><?= h($soldEquipment->modified_by) ?></td>
                             <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), ['controller' => 'SoldEquipments', 'action' => 'view', $soldEquipment->id]) ?>
-                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'SoldEquipments', 'action' => 'edit', $soldEquipment->id]) ?>
-                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'SoldEquipments', 'action' => 'delete', $soldEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id)]) ?>
+                                <?= $this->AuthLink->link(
+                                    __('View'),
+                                    ['controller' => 'SoldEquipments', 'action' => 'view', $soldEquipment->id]
+                                ) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Edit'),
+                                    ['controller' => 'SoldEquipments', 'action' => 'edit', $soldEquipment->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->AuthLink->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'SoldEquipments', 'action' => 'delete', $soldEquipment->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id)]
+                                ) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

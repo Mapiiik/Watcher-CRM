@@ -8,10 +8,29 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->AuthLink->link(__('Edit Sold Equipment'), ['action' => 'edit', $soldEquipment->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->postLink(__('Delete Sold Equipment'), ['action' => 'delete', $soldEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->link(__('List Sold Equipments'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->link(__('New Sold Equipment'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __('Edit Sold Equipment'),
+                ['action' => 'edit', $soldEquipment->id],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->postLink(
+                __('Delete Sold Equipment'),
+                ['action' => 'delete', $soldEquipment->id],
+                [
+                    'confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id),
+                    'class' => 'side-nav-item',
+                ]
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('List Sold Equipments'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('New Sold Equipment'),
+                ['action' => 'add'],
+                ['class' => 'side-nav-item']
+            ) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
@@ -20,15 +39,24 @@
             <table>
                 <tr>
                     <th><?= __('Customer') ?></th>
-                    <td><?= $soldEquipment->has('customer') ? $this->Html->link($soldEquipment->customer->name, ['controller' => 'Customers', 'action' => 'view', $soldEquipment->customer->id]) : '' ?></td>
+                    <td><?= $soldEquipment->has('customer') ? $this->Html->link(
+                        $soldEquipment->customer->name,
+                        ['controller' => 'Customers', 'action' => 'view', $soldEquipment->customer->id]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Contract') ?></th>
-                    <td><?= $soldEquipment->has('contract') ? $this->Html->link($soldEquipment->contract->id, ['controller' => 'Contracts', 'action' => 'view', $soldEquipment->contract->id]) : '' ?></td>
+                    <td><?= $soldEquipment->has('contract') ? $this->Html->link(
+                        $soldEquipment->contract->id,
+                        ['controller' => 'Contracts', 'action' => 'view', $soldEquipment->contract->id]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Equipment Type') ?></th>
-                    <td><?= $soldEquipment->has('equipment_type') ? $this->Html->link($soldEquipment->equipment_type->name, ['controller' => 'EquipmentTypes', 'action' => 'view', $soldEquipment->equipment_type->id]) : '' ?></td>
+                    <td><?= $soldEquipment->has('equipment_type') ? $this->Html->link(
+                        $soldEquipment->equipment_type->name,
+                        ['controller' => 'EquipmentTypes', 'action' => 'view', $soldEquipment->equipment_type->id]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Serial Number') ?></th>

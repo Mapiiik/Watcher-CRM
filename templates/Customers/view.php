@@ -10,17 +10,33 @@ use Cake\I18n\Number;
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->AuthLink->link(__('Edit Customer'), ['action' => 'edit', $customer->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->postLink(__('Delete Customer'), ['action' => 'delete', $customer->id], ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __('Edit Customer'),
+                ['action' => 'edit', $customer->id],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->postLink(
+                __('Delete Customer'),
+                ['action' => 'delete', $customer->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id), 'class' => 'side-nav-item']
+            ) ?>
             <?= $this->AuthLink->link(__('List Customers'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Customer'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
             <br />
-            <?= $this->AuthLink->link(__('Print to PDF'), ['action' => 'print', $customer->id], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __('Print to PDF'),
+                ['action' => 'print', $customer->id],
+                ['class' => 'side-nav-item']
+            ) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
         <div class="customers view content">
-            <?= $this->AuthLink->link(__('Print to PDF'), ['action' => 'print', $customer->id], ['class' => 'button button float-right']) ?>
+            <?= $this->AuthLink->link(
+                __('Print to PDF'),
+                ['action' => 'print', $customer->id],
+                ['class' => 'button button float-right']
+            ) ?>
             <h3><?= h($customer->name) ?></h3>
             <div class="row">
                 <div class="column-responsive">
@@ -55,7 +71,9 @@ use Cake\I18n\Number;
                         </tr>
                         <tr>
                             <th><?= __('Ic') ?></th>
-                            <td><?= $customer->has('ic') ? h($customer->ic) . ' (' . ($customer->ic_verified ? __('OK') : __('Invalid')) . ')' : '' ?></td>
+                            <td><?= $customer->has('ic') ? (
+                                h($customer->ic) . ' (' . ($customer->ic_verified ? __('OK') : __('Invalid')) . ')'
+                            ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Dic') ?></th>
@@ -83,7 +101,10 @@ use Cake\I18n\Number;
                     <table>
                         <tr>
                             <th><?= __('Tax') ?></th>
-                            <td><?= $customer->has('tax') ? $this->Html->link($customer->tax->name, ['controller' => 'Taxes', 'action' => 'view', $customer->tax->id]) : '' ?></td>
+                            <td><?= $customer->has('tax') ? $this->Html->link(
+                                $customer->tax->name,
+                                ['controller' => 'Taxes', 'action' => 'view', $customer->tax->id]
+                            ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Termination Date') ?></th>
@@ -149,7 +170,11 @@ use Cake\I18n\Number;
                 </blockquote>
             </div>
             <div class="related">
-                <?= $this->AuthLink->link(__('New Email'), ['controller' => 'Emails', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
+                <?= $this->AuthLink->link(
+                    __('New Email'),
+                    ['controller' => 'Emails', 'action' => 'add'],
+                    ['class' => 'button button-small float-right win-link']
+                ) ?>
                 <h4><?= __('Emails') ?></h4>
                 <?php if (!empty($customer->emails)) : ?>
                 <div class="table-responsive">
@@ -168,9 +193,20 @@ use Cake\I18n\Number;
                             <td><?= $emails->use_for_outages ? __('Yes') : __('No'); ?></td>
                             <td><?= $emails->use_for_commercial ? __('Yes') : __('No'); ?></td>
                             <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Emails', 'action' => 'view', $emails->id]) ?>
-                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'Emails', 'action' => 'edit', $emails->id]) ?>
-                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'Emails', 'action' => 'delete', $emails->id], ['confirm' => __('Are you sure you want to delete # {0}?', $emails->id)]) ?>
+                                <?= $this->AuthLink->link(
+                                    __('View'),
+                                    ['controller' => 'Emails', 'action' => 'view', $emails->id]
+                                ) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Edit'),
+                                    ['controller' => 'Emails', 'action' => 'edit', $emails->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->AuthLink->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'Emails', 'action' => 'delete', $emails->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $emails->id)]
+                                ) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -179,7 +215,11 @@ use Cake\I18n\Number;
                 <?php endif; ?>
             </div>
             <div class="related">
-                <?= $this->AuthLink->link(__('New Phone'), ['controller' => 'Phones', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
+                <?= $this->AuthLink->link(
+                    __('New Phone'),
+                    ['controller' => 'Phones', 'action' => 'add'],
+                    ['class' => 'button button-small float-right win-link']
+                ) ?>
                 <h4><?= __('Phones') ?></h4>
                 <?php if (!empty($customer->phones)) : ?>
                 <div class="table-responsive">
@@ -192,9 +232,20 @@ use Cake\I18n\Number;
                         <tr>
                             <td><?= h($phones->phone) ?></td>
                             <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Phones', 'action' => 'view', $phones->id]) ?>
-                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'Phones', 'action' => 'edit', $phones->id]) ?>
-                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'Phones', 'action' => 'delete', $phones->id], ['confirm' => __('Are you sure you want to delete # {0}?', $phones->id)]) ?>
+                                <?= $this->AuthLink->link(
+                                    __('View'),
+                                    ['controller' => 'Phones', 'action' => 'view', $phones->id]
+                                ) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Edit'),
+                                    ['controller' => 'Phones', 'action' => 'edit', $phones->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->AuthLink->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'Phones', 'action' => 'delete', $phones->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $phones->id)]
+                                ) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -203,7 +254,11 @@ use Cake\I18n\Number;
                 <?php endif; ?>
             </div>
             <div class="related">
-                <?= $this->AuthLink->link(__('New Login'), ['controller' => 'Logins', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
+                <?= $this->AuthLink->link(
+                    __('New Login'),
+                    ['controller' => 'Logins', 'action' => 'add'],
+                    ['class' => 'button button-small float-right win-link']
+                ) ?>
                 <h4><?= __('Logins') ?></h4>
                 <?php if (!empty($customer->logins)) : ?>
                 <div class="table-responsive">
@@ -228,9 +283,20 @@ use Cake\I18n\Number;
                             <td><?= h($logins->last_denied) ?></td>
                             <td><?= h($logins->last_denied_ip) ?></td>
                             <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Logins', 'action' => 'view', $logins->id]) ?>
-                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'Logins', 'action' => 'edit', $logins->id]) ?>
-                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'Logins', 'action' => 'delete', $logins->id], ['confirm' => __('Are you sure you want to delete # {0}?', $logins->id)]) ?>
+                                <?= $this->AuthLink->link(
+                                    __('View'),
+                                    ['controller' => 'Logins', 'action' => 'view', $logins->id]
+                                ) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Edit'),
+                                    ['controller' => 'Logins', 'action' => 'edit', $logins->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->AuthLink->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'Logins', 'action' => 'delete', $logins->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $logins->id)]
+                                ) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -239,7 +305,11 @@ use Cake\I18n\Number;
                 <?php endif; ?>
             </div>
             <div class="related">
-                <?= $this->AuthLink->link(__('New Address'), ['controller' => 'Addresses', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
+                <?= $this->AuthLink->link(
+                    __('New Address'),
+                    ['controller' => 'Addresses', 'action' => 'add'],
+                    ['class' => 'button button-small float-right win-link']
+                ) ?>
                 <h4><?= __('Addresses') ?></h4>
                 <?php if (!empty($customer->addresses)) : ?>
                 <div class="table-responsive">
@@ -273,13 +343,33 @@ use Cake\I18n\Number;
                             <td><?= h($addresses->zip) ?></td>
                             <td><?= $addresses->has('country') ? h($addresses->country->name) : '' ?></td>
                             <td class="actions">
-                                <?= $addresses->has('ruian_gid') ? $this->Html->link(__('Google Maps'), 'https://maps.google.com/maps?q=' . h("{$addresses->gpsy},{$addresses->gpsx}"), ['target' => '_blank']) : '' ?>
-                                <?= $addresses->has('ruian_gid') ? $this->Html->link(__('Mapy.cz'), 'https://mapy.cz/zakladni?source=coor&id=' . h("{$addresses->gpsx},{$addresses->gpsy}"), ['target' => '_blank']) : ''?>
+                                <?= $addresses->has('ruian_gid') ? $this->Html->link(
+                                    __('Google Maps'),
+                                    'https://maps.google.com/maps?q=' . h("{$addresses->gpsy},{$addresses->gpsx}"),
+                                    ['target' => '_blank']
+                                ) : '' ?>
+                                <?= $addresses->has('ruian_gid') ? $this->Html->link(
+                                    __('Mapy.cz'),
+                                    'https://mapy.cz/zakladni?source=coor&id='
+                                    . h("{$addresses->gpsx},{$addresses->gpsy}"),
+                                    ['target' => '_blank']
+                                ) : ''?>
                             </td>
                             <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Addresses', 'action' => 'view', $addresses->id]) ?>
-                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'Addresses', 'action' => 'edit', $addresses->id]) ?>
-                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'Addresses', 'action' => 'delete', $addresses->id], ['confirm' => __('Are you sure you want to delete # {0}?', $addresses->id)]) ?>
+                                <?= $this->AuthLink->link(
+                                    __('View'),
+                                    ['controller' => 'Addresses', 'action' => 'view', $addresses->id]
+                                ) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Edit'),
+                                    ['controller' => 'Addresses', 'action' => 'edit', $addresses->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->AuthLink->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'Addresses', 'action' => 'delete', $addresses->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $addresses->id)]
+                                ) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -288,7 +378,11 @@ use Cake\I18n\Number;
                 <?php endif; ?>
             </div>
             <div class="related">
-                <?= $this->AuthLink->link(__('New Contract'), ['controller' => 'Contracts', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
+                <?= $this->AuthLink->link(
+                    __('New Contract'),
+                    ['controller' => 'Contracts', 'action' => 'add'],
+                    ['class' => 'button button-small float-right win-link']
+                ) ?>
                 <h4><?= __('Contracts') ?></h4>
                 <?php if (!empty($customer->contracts)) : ?>
                 <div class="table-responsive">
@@ -311,7 +405,8 @@ use Cake\I18n\Number;
                         <tr>
                             <td><?= $contracts->has('service_type') ? h($contracts->service_type->name) : '' ?></td>
                             <td><?= h($contracts->number) ?></td>
-                            <td><?= $contracts->has('installation_address') ? h($contracts->installation_address->full_address) : '' ?></td>
+                            <td><?= $contracts->has('installation_address') ?
+                                h($contracts->installation_address->full_address) : '' ?></td>
                             <td><?= h($contracts->conclusion_date) ?></td>
                             <td><?= h($contracts->number_of_amendments) ?></td>
                             <td><?= h($contracts->valid_from) ?></td>
@@ -321,9 +416,20 @@ use Cake\I18n\Number;
                             <td><?= h($contracts->installation_date) ?></td>
                             <td><?= h($contracts->note) ?></td>
                             <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Contracts', 'action' => 'view', $contracts->id]) ?>
-                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'Contracts', 'action' => 'edit', $contracts->id]) ?>
-                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'Contracts', 'action' => 'delete', $contracts->id], ['confirm' => __('Are you sure you want to delete # {0}?', $contracts->id)]) ?>
+                                <?= $this->AuthLink->link(
+                                    __('View'),
+                                    ['controller' => 'Contracts', 'action' => 'view', $contracts->id]
+                                ) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Edit'),
+                                    ['controller' => 'Contracts', 'action' => 'edit', $contracts->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->AuthLink->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'Contracts', 'action' => 'delete', $contracts->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $contracts->id)]
+                                ) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -355,11 +461,20 @@ use Cake\I18n\Number;
                         </tr>
                         <?php foreach ($customer->billings as $billing) : ?>
                         <tr style="<?= $billing->style ?>">
-                            <td><?= $billing->has('contract') ? $this->Html->link($billing->contract->number, ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]) : '' ?></td>
-                            <td><?= $billing->has('service') ? $this->Html->link($billing->service->name, ['controller' => 'Services', 'action' => 'view', $billing->service->id]) : '' ?></td>
+                            <td><?= $billing->has('contract') ?
+                                $this->Html->link(
+                                    $billing->contract->number,
+                                    ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]
+                                ) : '' ?></td>
+                            <td><?= $billing->has('service') ?
+                                $this->Html->link(
+                                    $billing->service->name,
+                                    ['controller' => 'Services', 'action' => 'view', $billing->service->id]
+                                ) : '' ?></td>
                             <td><?= h($billing->text) ?></td>
                             <td><?= h($billing->quantity) ?></td>
-                            <td><?= h($billing->price) ?><?= $billing->has('service') ? ' (' . h($billing->service->price) . ')' : '' ?></td>
+                            <td><?= h($billing->price) ?><?= $billing->has('service') ?
+                                ' (' . h($billing->service->price) . ')' : '' ?></td>
                             <td><?= h($billing->fixed_discount) ?></td>
                             <td><?= h($billing->percentage_discount) ?></td>
                             <td><?= Number::currency($billing->total_price) ?></td>
@@ -369,9 +484,20 @@ use Cake\I18n\Number;
                             <td><?= $billing->separate_invoice ? __('Yes') : __('No'); ?></td>
                             <td><?= h($billing->note) ?></td>
                             <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Billings', 'action' => 'view', $billing->id]) ?>
-                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'Billings', 'action' => 'edit', $billing->id]) ?>
-                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'Billings', 'action' => 'delete', $billing->id], ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id)]) ?>
+                                <?= $this->AuthLink->link(
+                                    __('View'),
+                                    ['controller' => 'Billings', 'action' => 'view', $billing->id]
+                                ) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Edit'),
+                                    ['controller' => 'Billings', 'action' => 'edit', $billing->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->AuthLink->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'Billings', 'action' => 'delete', $billing->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id)]
+                                ) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -394,15 +520,42 @@ use Cake\I18n\Number;
                         </tr>
                         <?php foreach ($customer->borrowed_equipments as $borrowedEquipment) : ?>
                         <tr style="<?= $borrowedEquipment->style ?>">
-                            <td><?= $borrowedEquipment->has('contract') ? $this->Html->link($borrowedEquipment->contract->number, ['controller' => 'Contracts', 'action' => 'view', $borrowedEquipment->contract->id]) : '' ?></td>
-                            <td><?= $borrowedEquipment->has('equipment_type') ? $this->Html->link($borrowedEquipment->equipment_type->name, ['controller' => 'EquipmentTypes', 'action' => 'view', $borrowedEquipment->equipment_type->id]) : '' ?></td>
+                            <td><?= $borrowedEquipment->has('contract') ?
+                                $this->Html->link(
+                                    $borrowedEquipment->contract->number,
+                                    ['controller' => 'Contracts', 'action' => 'view', $borrowedEquipment->contract->id]
+                                ) : '' ?></td>
+                            <td><?= $borrowedEquipment->has('equipment_type') ?
+                                $this->Html->link(
+                                    $borrowedEquipment->equipment_type->name,
+                                    [
+                                        'controller' => 'EquipmentTypes',
+                                        'action' => 'view',
+                                        $borrowedEquipment->equipment_type->id,
+                                    ]
+                                ) : '' ?></td>
                             <td><?= h($borrowedEquipment->serial_number) ?></td>
                             <td><?= h($borrowedEquipment->borrowed_from) ?></td>
                             <td><?= h($borrowedEquipment->borrowed_until) ?></td>
                             <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), ['controller' => 'BorrowedEquipments', 'action' => 'view', $borrowedEquipment->id]) ?>
-                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'BorrowedEquipments', 'action' => 'edit', $borrowedEquipment->id]) ?>
-                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'BorrowedEquipments', 'action' => 'delete', $borrowedEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id)]) ?>
+                                <?= $this->AuthLink->link(
+                                    __('View'),
+                                    ['controller' => 'BorrowedEquipments', 'action' => 'view', $borrowedEquipment->id]
+                                ) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Edit'),
+                                    ['controller' => 'BorrowedEquipments', 'action' => 'edit', $borrowedEquipment->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->AuthLink->postLink(
+                                    __('Delete'),
+                                    [
+                                        'controller' => 'BorrowedEquipments',
+                                        'action' => 'delete',
+                                        $borrowedEquipment->id,
+                                    ],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id)]
+                                ) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -423,13 +576,36 @@ use Cake\I18n\Number;
                         </tr>
                         <?php foreach ($customer->sold_equipments as $soldEquipment) : ?>
                         <tr style="<?= $soldEquipment->style ?>">
-                            <td><?= $soldEquipment->has('contract') ? $this->Html->link($soldEquipment->contract->number, ['controller' => 'Contracts', 'action' => 'view', $soldEquipment->contract->id]) : '' ?></td>
-                            <td><?= $soldEquipment->has('equipment_type') ? $this->Html->link($soldEquipment->equipment_type->name, ['controller' => 'EquipmentTypes', 'action' => 'view', $soldEquipment->equipment_type->id]) : '' ?></td>
+                            <td><?= $soldEquipment->has('contract') ?
+                                $this->Html->link(
+                                    $soldEquipment->contract->number,
+                                    ['controller' => 'Contracts', 'action' => 'view', $soldEquipment->contract->id]
+                                ) : '' ?></td>
+                            <td><?= $soldEquipment->has('equipment_type') ?
+                                $this->Html->link(
+                                    $soldEquipment->equipment_type->name,
+                                    [
+                                        'controller' => 'EquipmentTypes',
+                                        'action' => 'view',
+                                        $soldEquipment->equipment_type->id,
+                                    ]
+                                ) : '' ?></td>
                             <td><?= h($soldEquipment->serial_number) ?></td>
                             <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), ['controller' => 'SoldEquipments', 'action' => 'view', $soldEquipment->id]) ?>
-                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'SoldEquipments', 'action' => 'edit', $soldEquipment->id]) ?>
-                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'SoldEquipments', 'action' => 'delete', $soldEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id)]) ?>
+                                <?= $this->AuthLink->link(
+                                    __('View'),
+                                    ['controller' => 'SoldEquipments', 'action' => 'view', $soldEquipment->id]
+                                ) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Edit'),
+                                    ['controller' => 'SoldEquipments', 'action' => 'edit', $soldEquipment->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->AuthLink->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'SoldEquipments', 'action' => 'delete', $soldEquipment->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id)]
+                                ) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -452,15 +628,30 @@ use Cake\I18n\Number;
                         </tr>
                         <?php foreach ($customer->ips as $ip) : ?>
                         <tr style="<?= $ip->style ?>">
-                            <td><?= $ip->has('contract') ? $this->Html->link($ip->contract->number, ['controller' => 'Contracts', 'action' => 'view', $ip->contract->id]) : '' ?></td>
+                            <td><?= $ip->has('contract') ?
+                                $this->Html->link(
+                                    $ip->contract->number,
+                                    ['controller' => 'Contracts', 'action' => 'view', $ip->contract->id]
+                                ) : '' ?></td>
                             <td><?= h($ip->ip) ?></td>
                             <td><?= h($ip->note) ?></td>
                             <td><?= h($ip->created) ?></td>
                             <td><?= h($ip->created_by) ?></td>
                             <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Ips', 'action' => 'view', $ip->id]) ?>
-                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'Ips', 'action' => 'edit', $ip->id]) ?>
-                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'Ips', 'action' => 'delete', $ip->id], ['confirm' => __('Are you sure you want to delete # {0}?', $ip->ip)]) ?>
+                                <?= $this->AuthLink->link(
+                                    __('View'),
+                                    ['controller' => 'Ips', 'action' => 'view', $ip->id]
+                                ) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Edit'),
+                                    ['controller' => 'Ips', 'action' => 'edit', $ip->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->AuthLink->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'Ips', 'action' => 'delete', $ip->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $ip->ip)]
+                                ) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -483,15 +674,30 @@ use Cake\I18n\Number;
                         </tr>
                         <?php foreach ($customer->removed_ips as $removedIp) : ?>
                         <tr style="<?= $removedIp->style ?>">
-                            <td><?= $removedIp->has('contract') ? $this->Html->link($removedIp->contract->number, ['controller' => 'Contracts', 'action' => 'view', $removedIp->contract->id]) : '' ?></td>
+                            <td><?= $removedIp->has('contract') ?
+                                $this->Html->link(
+                                    $removedIp->contract->number,
+                                    ['controller' => 'Contracts', 'action' => 'view', $removedIp->contract->id]
+                                ) : '' ?></td>
                             <td><?= h($removedIp->ip) ?></td>
                             <td><?= h($removedIp->note) ?></td>
                             <td><?= h($removedIp->removed) ?></td>
                             <td><?= h($removedIp->removed_by) ?></td>
                             <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), ['controller' => 'RemovedIps', 'action' => 'view', $removedIp->id]) ?>
-                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'RemovedIps', 'action' => 'edit', $removedIp->id]) ?>
-                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'RemovedIps', 'action' => 'delete', $removedIp->id], ['confirm' => __('Are you sure you want to delete # {0}?', $removedIp->id)]) ?>
+                                <?= $this->AuthLink->link(
+                                    __('View'),
+                                    ['controller' => 'RemovedIps', 'action' => 'view', $removedIp->id]
+                                ) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Edit'),
+                                    ['controller' => 'RemovedIps', 'action' => 'edit', $removedIp->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->AuthLink->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'RemovedIps', 'action' => 'delete', $removedIp->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $removedIp->id)]
+                                ) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -500,7 +706,11 @@ use Cake\I18n\Number;
                 <?php endif; ?>
             </div>
             <div class="related">
-                <?= $this->AuthLink->link(__('New Task'), ['controller' => 'Tasks', 'action' => 'add'], ['class' => 'button button-small float-right']) ?>
+                <?= $this->AuthLink->link(
+                    __('New Task'),
+                    ['controller' => 'Tasks', 'action' => 'add'],
+                    ['class' => 'button button-small float-right win-link']
+                ) ?>
                 <h4><?= __('Tasks') ?></h4>
                 <?php if (!empty($customer->tasks)) : ?>
                 <div class="table-responsive">
@@ -521,9 +731,20 @@ use Cake\I18n\Number;
                             <td><?= nl2br($task->text) ?></td>
                             <td><?= $task->has('dealer') ? h($task->dealer->name) : '' ?></td>
                             <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Tasks', 'action' => 'view', $task->id]) ?>
-                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'Tasks', 'action' => 'edit', $task->id]) ?>
-                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'Tasks', 'action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]) ?>
+                                <?= $this->AuthLink->link(
+                                    __('View'),
+                                    ['controller' => 'Tasks', 'action' => 'view', $task->id]
+                                ) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Edit'),
+                                    ['controller' => 'Tasks', 'action' => 'edit', $task->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->AuthLink->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'Tasks', 'action' => 'delete', $task->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]
+                                ) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

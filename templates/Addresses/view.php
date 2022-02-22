@@ -8,8 +8,16 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->AuthLink->link(__('Edit Address'), ['action' => 'edit', $address->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->postLink(__('Delete Address'), ['action' => 'delete', $address->id], ['confirm' => __('Are you sure you want to delete # {0}?', $address->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __('Edit Address'),
+                ['action' => 'edit', $address->id],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->postLink(
+                __('Delete Address'),
+                ['action' => 'delete', $address->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $address->id), 'class' => 'side-nav-item']
+            ) ?>
             <?= $this->AuthLink->link(__('List Addresses'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Address'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
@@ -22,7 +30,10 @@
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $address->has('customer') ? $this->Html->link($address->customer->name, ['controller' => 'Customers', 'action' => 'view', $address->customer->id]) : '' ?></td>
+                            <td><?= $address->has('customer') ? $this->Html->link(
+                                $address->customer->name,
+                                ['controller' => 'Customers', 'action' => 'view', $address->customer->id]
+                            ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Type') ?></th>
@@ -70,7 +81,10 @@
                         </tr>
                         <tr>
                             <th><?= __('Country') ?></th>
-                            <td><?= $address->has('country') ? $this->Html->link($address->country->name, ['controller' => 'Countries', 'action' => 'view', $address->country->id]) : '' ?></td>
+                            <td><?= $address->has('country') ? $this->Html->link(
+                                $address->country->name,
+                                ['controller' => 'Countries', 'action' => 'view', $address->country->id]
+                            ) : '' ?></td>
                         </tr>
                     </table>
                 </div>
@@ -79,13 +93,21 @@
             <div class="row">
                 <div class="column-responsive">
                     <table>
-                        <?php if ($address->has('ruian_gid')): ?>
+                        <?php if ($address->has('ruian_gid')) : ?>
                         <tr>
                             <th><?= __('Maps') ?></th>
                             <td>
-                                <?= $this->Html->link(__('Google Maps'), 'https://maps.google.com/maps?q=' . h("{$address->gpsy},{$address->gpsx}"), ['target' => '_blank']) ?>
+                                <?= $this->Html->link(
+                                    __('Google Maps'),
+                                    'https://maps.google.com/maps?q=' . h("{$address->gpsy},{$address->gpsx}"),
+                                    ['target' => '_blank']
+                                ) ?>
                                 ,
-                                <?= $this->Html->link(__('Mapy.cz'), 'https://mapy.cz/zakladni?source=coor&id=' . h("{$address->gpsx},{$address->gpsy}"), ['target' => '_blank']) ?>
+                                <?= $this->Html->link(
+                                    __('Mapy.cz'),
+                                    'https://mapy.cz/zakladni?source=coor&id=' . h("{$address->gpsx},{$address->gpsy}"),
+                                    ['target' => '_blank']
+                                ) ?>
                             </td>
                         </tr>
                         <?php endif; ?>

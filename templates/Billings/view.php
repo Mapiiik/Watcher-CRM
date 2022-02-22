@@ -10,8 +10,16 @@ use Cake\I18n\Number;
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->AuthLink->link(__('Edit Billing'), ['action' => 'edit', $billing->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->postLink(__('Delete Billing'), ['action' => 'delete', $billing->id], ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __('Edit Billing'),
+                ['action' => 'edit', $billing->id],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->postLink(
+                __('Delete Billing'),
+                ['action' => 'delete', $billing->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id), 'class' => 'side-nav-item']
+            ) ?>
             <?= $this->AuthLink->link(__('List Billings'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Billing'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
@@ -22,15 +30,24 @@ use Cake\I18n\Number;
             <table>
                 <tr>
                     <th><?= __('Customer') ?></th>
-                    <td><?= $billing->has('customer') ? $this->Html->link($billing->customer->name, ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]) : '' ?></td>
+                    <td><?= $billing->has('customer') ? $this->Html->link(
+                        $billing->customer->name,
+                        ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Contract') ?></th>
-                    <td><?= $billing->has('contract') ? $this->Html->link($billing->contract->number, ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]) : '' ?></td>
+                    <td><?= $billing->has('contract') ? $this->Html->link(
+                        $billing->contract->number,
+                        ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Service') ?></th>
-                    <td><?= $billing->has('service') ? $this->Html->link($billing->service->name, ['controller' => 'Services', 'action' => 'view', $billing->service->id]) : '' ?></td>
+                    <td><?= $billing->has('service') ? $this->Html->link(
+                        $billing->service->name,
+                        ['controller' => 'Services', 'action' => 'view', $billing->service->id]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Text') ?></th>
@@ -42,7 +59,8 @@ use Cake\I18n\Number;
                 </tr>
                 <tr>
                     <th><?= __('Price') ?></th>
-                    <td><?= h($billing->price) ?><?= $billing->has('service') ? ' (' . h($billing->service->price) . ')' : '' ?></td>
+                    <td><?= h($billing->price) ?><?= $billing->has('service') ?
+                        ' (' . h($billing->service->price) . ')' : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Fixed Discount') ?></th>
@@ -110,7 +128,8 @@ use Cake\I18n\Number;
 
             foreach ($bill_dates as $bill_date) {
                 echo '<br />';
-                echo $bill_date->format('Y-m-d') . ': ' . $bill_date->subMonth(1)->format('Y-m-d') . ' - ' . $bill_date->subDay(1)->format('Y-m-d') . ' = ';
+                echo $bill_date->format('Y-m-d') . ': '
+                    . $bill_date->subMonth(1)->format('Y-m-d') . ' - ' . $bill_date->subDay(1)->format('Y-m-d') . ' = ';
                 echo $billing->periodTotal($bill_date->subMonth(1), $bill_date->subDay(1));
             }
             ?>

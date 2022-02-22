@@ -8,8 +8,16 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->AuthLink->link(__('Edit Label'), ['action' => 'edit', $label->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->postLink(__('Delete Label'), ['action' => 'delete', $label->id], ['confirm' => __('Are you sure you want to delete # {0}?', $label->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __('Edit Label'),
+                ['action' => 'edit', $label->id],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->postLink(
+                __('Delete Label'),
+                ['action' => 'delete', $label->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $label->id), 'class' => 'side-nav-item']
+            ) ?>
             <?= $this->AuthLink->link(__('List Labels'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Label'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
@@ -72,9 +80,20 @@
                             <td><?= h($labelCustomers->id) ?></td>
                             <td><?= h($labelCustomers->created_by) ?></td>
                             <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), ['controller' => 'LabelCustomers', 'action' => 'view', $labelCustomers->id]) ?>
-                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'LabelCustomers', 'action' => 'edit', $labelCustomers->id]) ?>
-                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'LabelCustomers', 'action' => 'delete', $labelCustomers->id], ['confirm' => __('Are you sure you want to delete # {0}?', $labelCustomers->id)]) ?>
+                                <?= $this->AuthLink->link(
+                                    __('View'),
+                                    ['controller' => 'LabelCustomers', 'action' => 'view', $labelCustomers->id]
+                                ) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Edit'),
+                                    ['controller' => 'LabelCustomers', 'action' => 'edit', $labelCustomers->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->AuthLink->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'LabelCustomers', 'action' => 'delete', $labelCustomers->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $labelCustomers->id)]
+                                ) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

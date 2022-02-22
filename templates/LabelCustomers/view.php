@@ -8,10 +8,29 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->AuthLink->link(__('Edit Label Customer'), ['action' => 'edit', $labelCustomer->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->postLink(__('Delete Label Customer'), ['action' => 'delete', $labelCustomer->id], ['confirm' => __('Are you sure you want to delete # {0}?', $labelCustomer->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->link(__('List Label Customers'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->link(__('New Label Customer'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __('Edit Label Customer'),
+                ['action' => 'edit', $labelCustomer->id],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->postLink(
+                __('Delete Label Customer'),
+                ['action' => 'delete', $labelCustomer->id],
+                [
+                    'confirm' => __('Are you sure you want to delete # {0}?', $labelCustomer->id),
+                    'class' => 'side-nav-item',
+                ]
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('List Label Customers'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('New Label Customer'),
+                ['action' => 'add'],
+                ['class' => 'side-nav-item']
+            ) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
@@ -20,11 +39,17 @@
             <table>
                 <tr>
                     <th><?= __('Label') ?></th>
-                    <td><?= $labelCustomer->has('label') ? $this->Html->link($labelCustomer->label->name, ['controller' => 'Labels', 'action' => 'view', $labelCustomer->label->id]) : '' ?></td>
+                    <td><?= $labelCustomer->has('label') ? $this->Html->link(
+                        $labelCustomer->label->name,
+                        ['controller' => 'Labels', 'action' => 'view', $labelCustomer->label->id]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Customer') ?></th>
-                    <td><?= $labelCustomer->has('customer') ? $this->Html->link($labelCustomer->customer->name, ['controller' => 'Customers', 'action' => 'view', $labelCustomer->customer->id]) : '' ?></td>
+                    <td><?= $labelCustomer->has('customer') ? $this->Html->link(
+                        $labelCustomer->customer->name,
+                        ['controller' => 'Customers', 'action' => 'view', $labelCustomer->customer->id]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>

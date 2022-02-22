@@ -8,8 +8,16 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->AuthLink->link(__('Edit Login'), ['action' => 'edit', $login->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->postLink(__('Delete Login'), ['action' => 'delete', $login->id], ['confirm' => __('Are you sure you want to delete # {0}?', $login->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __('Edit Login'),
+                ['action' => 'edit', $login->id],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->postLink(
+                __('Delete Login'),
+                ['action' => 'delete', $login->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $login->id), 'class' => 'side-nav-item']
+            ) ?>
             <?= $this->AuthLink->link(__('List Logins'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Login'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
@@ -20,7 +28,10 @@
             <table>
                 <tr>
                     <th><?= __('Customer') ?></th>
-                    <td><?= $login->has('customer') ? $this->Html->link($login->customer->name, ['controller' => 'Customers', 'action' => 'view', $login->customer->id]) : '' ?></td>
+                    <td><?= $login->has('customer') ? $this->Html->link(
+                        $login->customer->name,
+                        ['controller' => 'Customers', 'action' => 'view', $login->customer->id]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Login') ?></th>

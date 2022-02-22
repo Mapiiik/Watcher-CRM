@@ -8,10 +8,29 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->AuthLink->link(__('Edit Brokerage Dealer'), ['action' => 'edit', $brokerageDealer->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->postLink(__('Delete Brokerage Dealer'), ['action' => 'delete', $brokerageDealer->id], ['confirm' => __('Are you sure you want to delete # {0}?', $brokerageDealer->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->link(__('List Brokerage Dealers'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->link(__('New Brokerage Dealer'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __('Edit Brokerage Dealer'),
+                ['action' => 'edit', $brokerageDealer->id],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->postLink(
+                __('Delete Brokerage Dealer'),
+                ['action' => 'delete', $brokerageDealer->id],
+                [
+                    'confirm' => __('Are you sure you want to delete # {0}?', $brokerageDealer->id),
+                    'class' => 'side-nav-item',
+                ]
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('List Brokerage Dealers'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('New Brokerage Dealer'),
+                ['action' => 'add'],
+                ['class' => 'side-nav-item']
+            ) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
@@ -20,11 +39,17 @@
             <table>
                 <tr>
                     <th><?= __('Dealer') ?></th>
-                    <td><?= $brokerageDealer->has('dealer') ? $this->Html->link($brokerageDealer->dealer->name, ['controller' => 'Customers', 'action' => 'view', $brokerageDealer->dealer->id]) : '' ?></td>
+                    <td><?= $brokerageDealer->has('dealer') ? $this->Html->link(
+                        $brokerageDealer->dealer->name,
+                        ['controller' => 'Customers', 'action' => 'view', $brokerageDealer->dealer->id]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Brokerage') ?></th>
-                    <td><?= $brokerageDealer->has('brokerage') ? $this->Html->link($brokerageDealer->brokerage->name, ['controller' => 'Brokerages', 'action' => 'view', $brokerageDealer->brokerage->id]) : '' ?></td>
+                    <td><?= $brokerageDealer->has('brokerage') ? $this->Html->link(
+                        $brokerageDealer->brokerage->name,
+                        ['controller' => 'Brokerages', 'action' => 'view', $brokerageDealer->brokerage->id]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Fixed') ?></th>

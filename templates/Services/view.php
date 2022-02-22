@@ -8,8 +8,16 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->AuthLink->link(__('Edit Service'), ['action' => 'edit', $service->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->postLink(__('Delete Service'), ['action' => 'delete', $service->id], ['confirm' => __('Are you sure you want to delete # {0}?', $service->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __('Edit Service'),
+                ['action' => 'edit', $service->id],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->postLink(
+                __('Delete Service'),
+                ['action' => 'delete', $service->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $service->id), 'class' => 'side-nav-item']
+            ) ?>
             <?= $this->AuthLink->link(__('List Services'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Service'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
@@ -24,11 +32,17 @@
                 </tr>
                 <tr>
                     <th><?= __('Service Type') ?></th>
-                    <td><?= $service->has('service_type') ? $this->Html->link($service->service_type->name, ['controller' => 'ServiceTypes', 'action' => 'view', $service->service_type->id]) : '' ?></td>
+                    <td><?= $service->has('service_type') ? $this->Html->link(
+                        $service->service_type->name,
+                        ['controller' => 'ServiceTypes', 'action' => 'view', $service->service_type->id]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Queue') ?></th>
-                    <td><?= $service->has('queue') ? $this->Html->link($service->queue->name, ['controller' => 'Queues', 'action' => 'view', $service->queue->id]) : '' ?></td>
+                    <td><?= $service->has('queue') ? $this->Html->link(
+                        $service->queue->name,
+                        ['controller' => 'Queues', 'action' => 'view', $service->queue->id]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>
@@ -90,9 +104,20 @@
                             <td><?= h($billing->quantity) ?></td>
                             <td><?= h($billing->contract_id) ?></td>
                             <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Billings', 'action' => 'view', $billing->id]) ?>
-                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'Billings', 'action' => 'edit', $billing->id]) ?>
-                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'Billings', 'action' => 'delete', $billing->id], ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id)]) ?>
+                                <?= $this->AuthLink->link(
+                                    __('View'),
+                                    ['controller' => 'Billings', 'action' => 'view', $billing->id]
+                                ) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Edit'),
+                                    ['controller' => 'Billings', 'action' => 'edit', $billing->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->AuthLink->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'Billings', 'action' => 'delete', $billing->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id)]
+                                ) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

@@ -9,7 +9,11 @@
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->AuthLink->link(__('Edit Task'), ['action' => 'edit', $task->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->postLink(__('Delete Task'), ['action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete # {0}?', $task->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->postLink(
+                __('Delete Task'),
+                ['action' => 'delete', $task->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $task->id), 'class' => 'side-nav-item']
+            ) ?>
             <?= $this->AuthLink->link(__('List Tasks'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Task'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
@@ -22,7 +26,10 @@
                     <table>
                         <tr>
                             <th><?= __('Task Type') ?></th>
-                            <td><?= $task->has('task_type') ? $this->Html->link($task->task_type->name, ['controller' => 'TaskTypes', 'action' => 'view', $task->task_type->id]) : '' ?></td>
+                            <td><?= $task->has('task_type') ? $this->Html->link(
+                                $task->task_type->name,
+                                ['controller' => 'TaskTypes', 'action' => 'view', $task->task_type->id]
+                            ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Priority') ?></th>
@@ -30,7 +37,10 @@
                         </tr>
                         <tr>
                             <th><?= __('Task State') ?></th>
-                            <td><?= $task->has('task_state') ? $this->Html->link($task->task_state->name, ['controller' => 'TaskStates', 'action' => 'view', $task->task_state->id]) : '' ?></td>
+                            <td><?= $task->has('task_state') ? $this->Html->link(
+                                $task->task_state->name,
+                                ['controller' => 'TaskStates', 'action' => 'view', $task->task_state->id]
+                            ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Subject') ?></th>
@@ -46,15 +56,24 @@
                         </tr>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $task->has('customer') ? $this->Html->link($task->customer->name, ['controller' => 'Customers', 'action' => 'view', $task->customer->id]) : '' ?></td>
+                            <td><?= $task->has('customer') ? $this->Html->link(
+                                $task->customer->name,
+                                ['controller' => 'Customers', 'action' => 'view', $task->customer->id]
+                            ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Dealer') ?></th>
-                            <td><?= $task->has('dealer') ? $this->Html->link($task->dealer->name, ['controller' => 'Customers', 'action' => 'view', $task->dealer->id]) : '' ?></td>
+                            <td><?= $task->has('dealer') ? $this->Html->link(
+                                $task->dealer->name,
+                                ['controller' => 'Customers', 'action' => 'view', $task->dealer->id]
+                            ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Router') ?></th>
-                            <td><?= $task->has('router') ? $this->Html->link($task->router->name, ['controller' => 'Routers', 'action' => 'view', $task->router->id]) : '' ?></td>
+                            <td><?= $task->has('router') ? $this->Html->link(
+                                $task->router->name,
+                                ['controller' => 'Routers', 'action' => 'view', $task->router->id]
+                            ) : '' ?></td>
                         </tr>
                     </table>
                 </div>

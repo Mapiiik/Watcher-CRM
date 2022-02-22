@@ -8,8 +8,16 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->AuthLink->link(__('Edit Task State'), ['action' => 'edit', $taskState->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->postLink(__('Delete Task State'), ['action' => 'delete', $taskState->id], ['confirm' => __('Are you sure you want to delete # {0}?', $taskState->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __('Edit Task State'),
+                ['action' => 'edit', $taskState->id],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->postLink(
+                __('Delete Task State'),
+                ['action' => 'delete', $taskState->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $taskState->id), 'class' => 'side-nav-item']
+            ) ?>
             <?= $this->AuthLink->link(__('List Task States'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Task State'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
@@ -78,9 +86,20 @@
                             <td><?= h($task->critical_date) ?></td>
                             <td><?= h($task->router_id) ?></td>
                             <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Tasks', 'action' => 'view', $task->id]) ?>
-                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'Tasks', 'action' => 'edit', $task->id]) ?>
-                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'Tasks', 'action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]) ?>
+                                <?= $this->AuthLink->link(
+                                    __('View'),
+                                    ['controller' => 'Tasks', 'action' => 'view', $task->id]
+                                ) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Edit'),
+                                    ['controller' => 'Tasks', 'action' => 'edit', $task->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->AuthLink->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'Tasks', 'action' => 'delete', $task->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]
+                                ) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

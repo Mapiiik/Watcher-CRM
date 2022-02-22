@@ -8,10 +8,29 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->AuthLink->link(__('Edit Borrowed Equipment'), ['action' => 'edit', $borrowedEquipment->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->postLink(__('Delete Borrowed Equipment'), ['action' => 'delete', $borrowedEquipment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->link(__('List Borrowed Equipments'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->link(__('New Borrowed Equipment'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __('Edit Borrowed Equipment'),
+                ['action' => 'edit', $borrowedEquipment->id],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->postLink(
+                __('Delete Borrowed Equipment'),
+                ['action' => 'delete', $borrowedEquipment->id],
+                [
+                    'confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id),
+                    'class' => 'side-nav-item',
+                ]
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('List Borrowed Equipments'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('New Borrowed Equipment'),
+                ['action' => 'add'],
+                ['class' => 'side-nav-item']
+            ) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
@@ -20,15 +39,24 @@
             <table>
                 <tr>
                     <th><?= __('Customer') ?></th>
-                    <td><?= $borrowedEquipment->has('customer') ? $this->Html->link($borrowedEquipment->customer->name, ['controller' => 'Customers', 'action' => 'view', $borrowedEquipment->customer->id]) : '' ?></td>
+                    <td><?= $borrowedEquipment->has('customer') ? $this->Html->link(
+                        $borrowedEquipment->customer->name,
+                        ['controller' => 'Customers', 'action' => 'view', $borrowedEquipment->customer->id]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Contract') ?></th>
-                    <td><?= $borrowedEquipment->has('contract') ? $this->Html->link($borrowedEquipment->contract->number, ['controller' => 'Contracts', 'action' => 'view', $borrowedEquipment->contract->id]) : '' ?></td>
+                    <td><?= $borrowedEquipment->has('contract') ? $this->Html->link(
+                        $borrowedEquipment->contract->number,
+                        ['controller' => 'Contracts', 'action' => 'view', $borrowedEquipment->contract->id]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Equipment Type') ?></th>
-                    <td><?= $borrowedEquipment->has('equipment_type') ? $this->Html->link($borrowedEquipment->equipment_type->name, ['controller' => 'EquipmentTypes', 'action' => 'view', $borrowedEquipment->equipment_type->id]) : '' ?></td>
+                    <td><?= $borrowedEquipment->has('equipment_type') ? $this->Html->link(
+                        $borrowedEquipment->equipment_type->name,
+                        ['controller' => 'EquipmentTypes', 'action' => 'view', $borrowedEquipment->equipment_type->id]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Serial Number') ?></th>

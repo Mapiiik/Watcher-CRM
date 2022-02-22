@@ -8,8 +8,16 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->AuthLink->link(__('Edit Queue'), ['action' => 'edit', $queue->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->postLink(__('Delete Queue'), ['action' => 'delete', $queue->id], ['confirm' => __('Are you sure you want to delete # {0}?', $queue->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __('Edit Queue'),
+                ['action' => 'edit', $queue->id],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->postLink(
+                __('Delete Queue'),
+                ['action' => 'delete', $queue->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $queue->id), 'class' => 'side-nav-item']
+            ) ?>
             <?= $this->AuthLink->link(__('List Queues'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Queue'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
@@ -28,7 +36,10 @@
                 </tr>
                 <tr>
                     <th><?= __('Service Type') ?></th>
-                    <td><?= $queue->has('service_type') ? $this->Html->link($queue->service_type->name, ['controller' => 'ServiceTypes', 'action' => 'view', $queue->service_type->id]) : '' ?></td>
+                    <td><?= $queue->has('service_type') ? $this->Html->link(
+                        $queue->service_type->name,
+                        ['controller' => 'ServiceTypes', 'action' => 'view', $queue->service_type->id]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>
@@ -84,9 +95,20 @@
                             <td><?= h($services->service_type_id) ?></td>
                             <td><?= h($services->queue_id) ?></td>
                             <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), ['controller' => 'Services', 'action' => 'view', $services->id]) ?>
-                                <?= $this->AuthLink->link(__('Edit'), ['controller' => 'Services', 'action' => 'edit', $services->id]) ?>
-                                <?= $this->AuthLink->postLink(__('Delete'), ['controller' => 'Services', 'action' => 'delete', $services->id], ['confirm' => __('Are you sure you want to delete # {0}?', $services->id)]) ?>
+                                <?= $this->AuthLink->link(
+                                    __('View'),
+                                    ['controller' => 'Services', 'action' => 'view', $services->id]
+                                ) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Edit'),
+                                    ['controller' => 'Services', 'action' => 'edit', $services->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->AuthLink->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'Services', 'action' => 'delete', $services->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $services->id)]
+                                ) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
