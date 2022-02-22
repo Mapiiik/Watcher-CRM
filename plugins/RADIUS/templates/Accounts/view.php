@@ -8,8 +8,16 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Account'), ['action' => 'edit', $account->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Account'), ['action' => 'delete', $account->id], ['confirm' => __('Are you sure you want to delete # {0}?', $account->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(
+                __('Edit Account'),
+                ['action' => 'edit', $account->id],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->Form->postLink(
+                __('Delete Account'),
+                ['action' => 'delete', $account->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $account->id), 'class' => 'side-nav-item']
+            ) ?>
             <?= $this->Html->link(__('List Accounts'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->Html->link(__('New Account'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
@@ -22,11 +30,28 @@
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $account->has('customer') ? $this->Html->link($account->customer->name, ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $account->customer->id]) : '' ?></td>
+                            <td><?= $account->has('customer') ? $this->Html->link(
+                                $account->customer->name,
+                                [
+                                    'plugin' => null,
+                                    'controller' => 'Customers',
+                                    'action' => 'view',
+                                    $account->customer->id,
+                                ]
+                            ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Contract') ?></th>
-                            <td><?= $account->has('contract') ? $this->Html->link($account->contract->number, ['plugin' => null, 'controller' => 'Contracts', 'action' => 'view', 'customer_id' => $account->contract->customer_id, $account->contract->id]) : '' ?></td>
+                            <td><?= $account->has('contract') ? $this->Html->link(
+                                $account->contract->number,
+                                [
+                                    'plugin' => null,
+                                    'controller' => 'Contracts',
+                                    'action' => 'view',
+                                    'customer_id' => $account->contract->customer_id,
+                                    $account->contract->id,
+                                ]
+                            ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Username') ?></th>
@@ -92,9 +117,20 @@
                             <td><?= h($radcheck->op) ?></td>
                             <td><?= h($radcheck->value) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Radcheck', 'action' => 'view', $radcheck->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Radcheck', 'action' => 'edit', $radcheck->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Radcheck', 'action' => 'delete', $radcheck->id], ['confirm' => __('Are you sure you want to delete # {0}?', $radcheck->id)]) ?>
+                                <?= $this->Html->link(
+                                    __('View'),
+                                    ['controller' => 'Radcheck', 'action' => 'view', $radcheck->id]
+                                ) ?>
+                                <?= $this->Html->link(
+                                    __('Edit'),
+                                    ['controller' => 'Radcheck', 'action' => 'edit', $radcheck->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->Form->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'Radcheck', 'action' => 'delete', $radcheck->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $radcheck->id)]
+                                ) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -123,9 +159,20 @@
                             <td><?= h($radreply->op) ?></td>
                             <td><?= h($radreply->value) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Radreply', 'action' => 'view', $radreply->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Radreply', 'action' => 'edit', $radreply->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Radreply', 'action' => 'delete', $radreply->id], ['confirm' => __('Are you sure you want to delete # {0}?', $radreply->id)]) ?>
+                                <?= $this->Html->link(
+                                    __('View'),
+                                    ['controller' => 'Radreply', 'action' => 'view', $radreply->id]
+                                ) ?>
+                                <?= $this->Html->link(
+                                    __('Edit'),
+                                    ['controller' => 'Radreply', 'action' => 'edit', $radreply->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->Form->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'Radreply', 'action' => 'delete', $radreply->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $radreply->id)]
+                                ) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -152,9 +199,20 @@
                             <td><?= h($radusergroup->groupname) ?></td>
                             <td><?= h($radusergroup->priority) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Radusergroup', 'action' => 'view', $radusergroup->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Radusergroup', 'action' => 'edit', $radusergroup->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Radusergroup', 'action' => 'delete', $radusergroup->id], ['confirm' => __('Are you sure you want to delete # {0}?', $radusergroup->id)]) ?>
+                                <?= $this->Html->link(
+                                    __('View'),
+                                    ['controller' => 'Radusergroup', 'action' => 'view', $radusergroup->id]
+                                ) ?>
+                                <?= $this->Html->link(
+                                    __('Edit'),
+                                    ['controller' => 'Radusergroup', 'action' => 'edit', $radusergroup->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->Form->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'Radusergroup', 'action' => 'delete', $radusergroup->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $radusergroup->id)]
+                                ) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -187,9 +245,20 @@
                             <td><?= h($radpostauth->callingstationid) ?></td>
                             <td><?= h($radpostauth->authdate) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Radpostauth', 'action' => 'view', $radpostauth->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Radpostauth', 'action' => 'edit', $radpostauth->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Radpostauth', 'action' => 'delete', $radpostauth->id], ['confirm' => __('Are you sure you want to delete # {0}?', $radpostauth->id)]) ?>
+                                <?= $this->Html->link(
+                                    __('View'),
+                                    ['controller' => 'Radpostauth', 'action' => 'view', $radpostauth->id]
+                                ) ?>
+                                <?= $this->Html->link(
+                                    __('Edit'),
+                                    ['controller' => 'Radpostauth', 'action' => 'edit', $radpostauth->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->Form->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'Radpostauth', 'action' => 'delete', $radpostauth->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $radpostauth->id)]
+                                ) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -264,9 +333,20 @@
                             <td><?= h($radacct->framedinterfaceid) ?></td>
                             <td><?= h($radacct->delegatedipv6prefix) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Radacct', 'action' => 'view', $radacct->radacctid]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Radacct', 'action' => 'edit', $radacct->radacctid]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Radacct', 'action' => 'delete', $radacct->radacctid], ['confirm' => __('Are you sure you want to delete # {0}?', $radacct->radacctid)]) ?>
+                                <?= $this->Html->link(
+                                    __('View'),
+                                    ['controller' => 'Radacct', 'action' => 'view', $radacct->radacctid]
+                                ) ?>
+                                <?= $this->Html->link(
+                                    __('Edit'),
+                                    ['controller' => 'Radacct', 'action' => 'edit', $radacct->radacctid],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->Form->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'Radacct', 'action' => 'delete', $radacct->radacctid],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $radacct->radacctid)]
+                                ) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

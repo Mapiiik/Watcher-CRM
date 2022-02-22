@@ -8,8 +8,19 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Address'), ['action' => 'edit', $address->kod_adm], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Address'), ['action' => 'delete', $address->kod_adm], ['confirm' => __('Are you sure you want to delete # {0}?', $address->kod_adm), 'class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(
+                __('Edit Address'),
+                ['action' => 'edit', $address->kod_adm],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->Form->postLink(
+                __('Delete Address'),
+                ['action' => 'delete', $address->kod_adm],
+                [
+                    'confirm' => __('Are you sure you want to delete # {0}?', $address->kod_adm),
+                    'class' => 'side-nav-item',
+                ]
+            ) ?>
             <?= $this->Html->link(__('List Addresses'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->Html->link(__('New Address'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>

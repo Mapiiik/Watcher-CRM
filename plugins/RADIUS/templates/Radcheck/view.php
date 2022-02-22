@@ -8,8 +8,16 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Radcheck'), ['action' => 'edit', $radcheck->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Radcheck'), ['action' => 'delete', $radcheck->id], ['confirm' => __('Are you sure you want to delete # {0}?', $radcheck->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(
+                __('Edit Radcheck'),
+                ['action' => 'edit', $radcheck->id],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->Form->postLink(
+                __('Delete Radcheck'),
+                ['action' => 'delete', $radcheck->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $radcheck->id), 'class' => 'side-nav-item']
+            ) ?>
             <?= $this->Html->link(__('List Radcheck'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->Html->link(__('New Radcheck'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
@@ -20,7 +28,10 @@
             <table>
                 <tr>
                     <th><?= __('Username') ?></th>
-                    <td><?= $radcheck->has('account') ? $this->Html->link($radcheck->account->username, ['controller' => 'Accounts', 'action' => 'view', $radcheck->account->id]) : $radcheck->username ?></td>
+                    <td><?= $radcheck->has('account') ? $this->Html->link(
+                        $radcheck->account->username,
+                        ['controller' => 'Accounts', 'action' => 'view', $radcheck->account->id]
+                    ) : $radcheck->username ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Attribute') ?></th>

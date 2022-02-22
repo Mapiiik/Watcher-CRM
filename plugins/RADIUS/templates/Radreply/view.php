@@ -8,8 +8,16 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Radreply'), ['action' => 'edit', $radreply->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Radreply'), ['action' => 'delete', $radreply->id], ['confirm' => __('Are you sure you want to delete # {0}?', $radreply->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(
+                __('Edit Radreply'),
+                ['action' => 'edit', $radreply->id],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->Form->postLink(
+                __('Delete Radreply'),
+                ['action' => 'delete', $radreply->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $radreply->id), 'class' => 'side-nav-item']
+            ) ?>
             <?= $this->Html->link(__('List Radreply'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->Html->link(__('New Radreply'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
@@ -20,7 +28,10 @@
             <table>
                 <tr>
                     <th><?= __('Username') ?></th>
-                    <td><?= $radreply->has('account') ? $this->Html->link($radreply->account->username, ['controller' => 'Accounts', 'action' => 'view', $radreply->account->id]) : $radreply->username ?></td>
+                    <td><?= $radreply->has('account') ? $this->Html->link(
+                        $radreply->account->username,
+                        ['controller' => 'Accounts', 'action' => 'view', $radreply->account->id]
+                    ) : $radreply->username ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Attribute') ?></th>

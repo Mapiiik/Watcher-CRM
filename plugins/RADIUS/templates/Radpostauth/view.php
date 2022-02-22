@@ -8,8 +8,19 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Radpostauth'), ['action' => 'edit', $radpostauth->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Radpostauth'), ['action' => 'delete', $radpostauth->id], ['confirm' => __('Are you sure you want to delete # {0}?', $radpostauth->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(
+                __('Edit Radpostauth'),
+                ['action' => 'edit', $radpostauth->id],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->Form->postLink(
+                __('Delete Radpostauth'),
+                ['action' => 'delete', $radpostauth->id],
+                [
+                    'confirm' => __('Are you sure you want to delete # {0}?', $radpostauth->id),
+                    'class' => 'side-nav-item',
+                ]
+            ) ?>
             <?= $this->Html->link(__('List Radpostauth'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->Html->link(__('New Radpostauth'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
@@ -20,7 +31,10 @@
             <table>
                 <tr>
                     <th><?= __('Username') ?></th>
-                    <td><?= $radpostauth->has('account') ? $this->Html->link($radpostauth->account->username, ['controller' => 'Accounts', 'action' => 'view', $radpostauth->account->id]) : $radpostauth->username ?></td>
+                    <td><?= $radpostauth->has('account') ? $this->Html->link(
+                        $radpostauth->account->username,
+                        ['controller' => 'Accounts', 'action' => 'view', $radpostauth->account->id]
+                    ) : $radpostauth->username ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>

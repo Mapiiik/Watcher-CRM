@@ -8,8 +8,19 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Radacct'), ['action' => 'edit', $radacct->radacctid], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Radacct'), ['action' => 'delete', $radacct->radacctid], ['confirm' => __('Are you sure you want to delete # {0}?', $radacct->radacctid), 'class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(
+                __('Edit Radacct'),
+                ['action' => 'edit', $radacct->radacctid],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->Form->postLink(
+                __('Delete Radacct'),
+                ['action' => 'delete', $radacct->radacctid],
+                [
+                    'confirm' => __('Are you sure you want to delete # {0}?', $radacct->radacctid),
+                    'class' => 'side-nav-item',
+                ]
+            ) ?>
             <?= $this->Html->link(__('List Radacct'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->Html->link(__('New Radacct'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
@@ -20,7 +31,10 @@
             <table>
                 <tr>
                     <th><?= __('Username') ?></th>
-                    <td><?= $radacct->has('account') ? $this->Html->link($radacct->account->username, ['controller' => 'Accounts', 'action' => 'view', $radacct->account->id]) : h($radacct->username) ?></td>
+                    <td><?= $radacct->has('account') ? $this->Html->link(
+                        $radacct->account->username,
+                        ['controller' => 'Accounts', 'action' => 'view', $radacct->account->id]
+                    ) : h($radacct->username) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Nasipaddress') ?></th>
