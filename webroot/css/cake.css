@@ -85,19 +85,25 @@ select {
 
 /* Tables */
 table {
-        border-collapse:collapse;
-        margin-bottom: 6px;
-        margin-right: 6px;
-        background-color: #ffffff;
+    border-collapse:collapse;
+    margin-bottom: 6px;
+    margin-right: 6px;
+    background-color: #ffffff;
 
-        border-radius: 0.4rem;
-        box-shadow: 0 3px 6px 0 rgba(60, 66, 87, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.05);
+    border-radius: 0.4rem;
+    box-shadow: 0 3px 6px 0 rgba(60, 66, 87, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.05);
 }
+
+tr:hover td {
+    background:#ddf0ff;
+}
+
 th, td {
     border: 0.1rem solid #aaaaaa;
     vertical-align: baseline;
     padding: 0.5rem 0.5rem;
 }
+
 td:first-child,
 th:first-child {
     padding-left: 0.7rem;
@@ -131,6 +137,7 @@ body {
     font-size: 1.3em;
     line-height: 1.0;
 }
+
 .content {
     padding: 2rem;
     background: #fbfcff;
@@ -139,10 +146,12 @@ body {
     box-shadow: 0 7px 14px 0 rgba(60, 66, 87, 0.1),
         0 3px 6px 0 rgba(0, 0, 0, 0.07);
 }
+
 .actions a {
     font-weight: bold;
     padding: 0 0.4rem;
 }
+
 th {
 /*    white-space: nowrap; */
     background: #ddf0ff;
@@ -156,16 +165,16 @@ th {
     padding: 2rem;
     margin: 0 auto 0rem;
 }
+
 .top-nav-title a {
     font-size: 2.4rem;
     color: #d33c43;
 }
+
 .top-nav-title span {
     color: #404041;
 }
-.top-nav-links a {
-    /*margin: 0 0.5rem;*/
-}
+
 .top-nav-title a,
 .top-nav-links a {
     font-weight: bold;
@@ -180,6 +189,7 @@ th {
 .view.content .text {
     margin-top: 1.2rem;
 }
+
 .related {
     margin-top: 2rem;
 }
@@ -197,19 +207,23 @@ th {
     border-radius: 4px;
     margin-bottom: 2rem;
 }
+
 .message.hidden {
     display: none;
 }
+
 .message.success {
     background: #e3fcec;
     color: #1f9d55;
     border-color: #51d88a;
 }
+
 .message.error {
     background: #fcebea;
     color: #cc1f1a;
     border-color: #ef5753;
 }
+
 .error-message {
     color: #cc1f1a;
 }
@@ -219,20 +233,24 @@ th {
 .input.checkbox {
     margin-bottom: 2.0rem;
 }
+
 .input.radio input,
 .input.checkbox input {
     margin: 0;
 }
+
 .input.radio label,
 .input.checkbox label {
     margin: 0;
     display: flex;
     align-items: center;
 }
+
 .input.radio label > input,
 .input.checkbox label > input {
     margin-right: 1.0rem;
 }
+
 .input.radio label:first-of-type {
     margin-bottom: 2.0rem;
 }
@@ -241,6 +259,7 @@ th {
 .paginator {
     text-align: right;
 }
+
 .pagination {
     display: flex;
     justify-content: center;
@@ -248,17 +267,21 @@ th {
     padding: 0;
     margin: 1rem 0 1rem;
 }
+
 .pagination li {
     margin: 0 0.5rem;
 }
+
 .prev.disabled a,
 .next.disabled a {
     cursor: not-allowed;
     color: #606c76;
 }
+
 .asc:after {
     content: " \2193";
 }
+
 .desc:after {
     content: " \2191";
 }
@@ -276,19 +299,24 @@ th {
     .top-nav {
         margin: 0 auto;
     }
+
     .side-nav {
         margin-bottom: 1rem;
     }
+
     .heading {
         margin-bottom: 1rem;
     }
+
     .side-nav-item {
         display: inline;
         margin: 0 1.5rem 0 0;
     }
+
     .asc:after {
         content: " \2192";
     }
+
     .desc:after {
         content: " \2190";
     }
@@ -306,11 +334,13 @@ th {
     line-height: 2.8rem;
     padding: 0 1.5rem;
 }
+
 .button-auto {
     height: auto;
     line-height: 2.0rem;
     padding: 0 1.5rem;
 }
+
 .button-selected {
     background-color: #606c76;
     border-color: #606c76;

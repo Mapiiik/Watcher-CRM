@@ -114,7 +114,7 @@ $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
             <?= $this->Html->link(__('Legacy'), '/legacy', ['class' => 'button button-small']) ?>
 
             <?php if ($this->request->getParam('action') == 'index') : ?>
-            <select name="limit" class="button button-outline" onchange="location = this.value;">
+            <select name="limit" class="button button-small button-outline" onchange="location = this.value;">
                 <option <?= $this->request->getQuery('limit') == 20 ? 'selected="selected"' : '' ?>
                     value="<?= $urlWithQuery(['limit' => 20]) ?>">20</option>
                 <option <?= $this->request->getQuery('limit') == 50 ? 'selected="selected"' : '' ?>
@@ -131,7 +131,7 @@ $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
             <?php $language = $this->request
                 ->getSession()->read('Config.language', Cake\I18n\I18n::getDefaultLocale());
             ?>
-            <select name="language" class="button button-outline" onchange="location = this.value;">
+            <select name="language" class="button button-small button-outline" onchange="location = this.value;">
                 <option <?= $language == 'cs_CZ' ? 'selected="selected"' : '' ?>
                     value="<?= $urlWithQuery(['language' => 'cs_CZ']) ?>">Čeština</option>
                 <option <?= $language == 'en_US' ? 'selected="selected"' : '' ?>
