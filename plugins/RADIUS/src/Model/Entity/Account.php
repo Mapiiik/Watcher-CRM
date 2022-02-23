@@ -22,11 +22,11 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Contract $contract
- * @property \RADIUS\Model\Entity\Radcheck[] $radchecks
- * @property \RADIUS\Model\Entity\Radreply[] $radreplies
- * @property \RADIUS\Model\Entity\Radusergroup[] $radusergroups
- * @property \RADIUS\Model\Entity\Radpostauth[] $radpostauths
- * @property \RADIUS\Model\Entity\Radacct[] $radaccts
+ * @property \RADIUS\Model\Entity\Radcheck[] $radcheck
+ * @property \RADIUS\Model\Entity\Radreply[] $radreply
+ * @property \RADIUS\Model\Entity\Radusergroup[] $radusergroup
+ * @property \RADIUS\Model\Entity\Radpostauth[] $radpostauth
+ * @property \RADIUS\Model\Entity\Radacct[] $radacct
  */
 class Account extends Entity
 {

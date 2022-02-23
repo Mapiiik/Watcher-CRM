@@ -14,8 +14,8 @@ use Cake\ORM\Entity;
  * @property int $priority
  *
  * @property \RADIUS\Model\Entity\Account $account
- * @property \RADIUS\Model\Entity\Radgroupcheck[] $radgroupcheckw
- * @property \RADIUS\Model\Entity\Radgroupreply[] $radgroupreplies
+ * @property \RADIUS\Model\Entity\Radgroupcheck[] $radgroupcheck
+ * @property \RADIUS\Model\Entity\Radgroupreply[] $radgroupreply
  */
 class Radusergroup extends Entity
 {
