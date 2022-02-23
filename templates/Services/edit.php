@@ -26,6 +26,7 @@
                     echo $this->Form->control('price');
                     echo $this->Form->control('service_type_id', ['options' => $serviceTypes, 'empty' => true]);
                     echo $this->Form->control('queue_id', ['options' => $queues, 'empty' => true]);
+                    echo $this->Form->control('not_for_new_customers');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

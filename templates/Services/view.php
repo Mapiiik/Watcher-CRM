@@ -45,20 +45,32 @@
                     ) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($service->id) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Price') ?></th>
                     <td><?= $this->Number->format($service->price) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Not For New Customers') ?></th>
+                    <td><?= $service->not_for_new_customers ? __('Yes') : __('No'); ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Id') ?></th>
+                    <td><?= $this->Number->format($service->id) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Created') ?></th>
                     <td><?= h($service->created) ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('Created By') ?></th>
+                    <td><?= $this->Number->format($service->created_by) ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Modified') ?></th>
                     <td><?= h($service->modified) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified By') ?></th>
+                    <td><?= $this->Number->format($service->modified_by) ?></td>
                 </tr>
             </table>
             <div class="related">

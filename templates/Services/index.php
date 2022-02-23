@@ -12,12 +12,11 @@
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('created') ?></th>
-                    <th><?= $this->Paginator->sort('modified') ?></th>
                     <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('price') ?></th>
                     <th><?= $this->Paginator->sort('service_type_id') ?></th>
                     <th><?= $this->Paginator->sort('queue_id') ?></th>
+                    <th><?= $this->Paginator->sort('not_for_new_customers') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -25,8 +24,6 @@
                 <?php foreach ($services as $service) : ?>
                 <tr>
                     <td><?= $this->Number->format($service->id) ?></td>
-                    <td><?= h($service->created) ?></td>
-                    <td><?= h($service->modified) ?></td>
                     <td><?= h($service->name) ?></td>
                     <td><?= $this->Number->format($service->price) ?></td>
                     <td>
@@ -41,6 +38,7 @@
                             ['controller' => 'Queues', 'action' => 'view', $service->queue->id]
                         ) : '' ?>
                     </td>
+                    <td><?= $service->not_for_new_customers ? __('Yes') : __('No'); ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $service->id]) ?>
                         <?= $this->AuthLink->link(

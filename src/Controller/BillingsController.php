@@ -134,6 +134,9 @@ class BillingsController extends AppController
             ]]);
         }
 
+        // only services available for new customers
+        $services->andWhere(['Services.not_for_new_customers' => false]);
+
         $this->set(compact('billing', 'customers', 'services', 'contracts'));
     }
 

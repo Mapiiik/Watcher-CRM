@@ -79,6 +79,10 @@ class ServicesTable extends Table
             ->integer('price')
             ->allowEmptyString('price');
 
+        $validator
+            ->boolean('not_for_new_customers')
+            ->notEmptyString('not_for_new_customers');
+
         return $validator;
     }
 
