@@ -29,6 +29,9 @@ class TasksController extends AppController
         $this->paginate = [
             'contain' => ['TaskTypes', 'Customers', 'Dealers', 'TaskStates', 'Routers'],
             'conditions' => $conditions,
+            'order' => [
+                'Tasks.id' => 'desc',
+            ],
         ];
 
         $tasks = $this->paginate($this->Tasks);

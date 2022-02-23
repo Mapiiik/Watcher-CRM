@@ -18,6 +18,12 @@ class AddressesController extends AppController
      */
     public function index()
     {
+        $this->paginate = [
+            'order' => [
+                'Addresses.id' => 'desc',
+            ],
+        ];
+
         $addresses = $this->paginate($this->Addresses);
 
         $this->set(compact('addresses'));
