@@ -96,10 +96,6 @@ class BillingsTable extends Table
             ->allowEmptyString('note');
 
         $validator
-            ->boolean('active')
-            ->notEmptyString('active');
-
-        $validator
             ->integer('modified_by')
             ->allowEmptyString('modified_by');
 

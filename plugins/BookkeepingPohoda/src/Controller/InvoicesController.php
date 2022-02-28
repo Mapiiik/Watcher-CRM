@@ -176,12 +176,8 @@ class InvoicesController extends AppController
                             ->contain('Billings', function (Query $q) use ($invoiced_month) {
                                 return $q
                                         ->order('Billings.id')
-                                        ->where(['Billings.active' => true])
-                                        ->andWhere([
-                                            'OR' => [
-                                                'Billings.billing_from IS NULL',
-                                                'Billings.billing_from <=' => $invoiced_month->lastOfMonth(), //last day of month
-                                            ],
+                                        ->where([
+                                            'Billings.billing_from <=' => $invoiced_month->lastOfMonth(), //last day of month
                                         ])
                                         ->andWhere([
                                             'OR' => [

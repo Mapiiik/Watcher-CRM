@@ -40,21 +40,17 @@ class ReportsController extends AppController
             ->contain('ServiceTypes')
             ->contain('Billings', function (Query $q) use ($invoiced_month) {
                 return $q
-                        ->where(['Billings.active' => true])
-                        ->andWhere([
-                            'OR' => [
-                                'Billings.billing_from IS NULL',
-                                'Billings.billing_from <=' => $invoiced_month->lastOfMonth(), //last day of month
-                            ],
-                        ])
-                        ->andWhere([
-                            'OR' => [
-                                'Billings.billing_until IS NULL',
-                                'Billings.billing_until >=' => $invoiced_month->firstOfMonth(), //first day of month
-                            ],
-                        ])
-                        ->contain(['Services'])
-                        ->contain(['Customers']);
+                    ->where([
+                        'Billings.billing_from <=' => $invoiced_month->lastOfMonth(), //last day of month
+                    ])
+                    ->andWhere([
+                        'OR' => [
+                            'Billings.billing_until IS NULL',
+                            'Billings.billing_until >=' => $invoiced_month->firstOfMonth(), //first day of month
+                        ],
+                    ])
+                    ->contain(['Services'])
+                    ->contain(['Customers']);
             })
             ->formatResults(
                 function (CollectionInterface $services) {
@@ -100,12 +96,8 @@ class ReportsController extends AppController
         $invoiced_month = new FrozenDate($param);
 
         $cto_categories = $this->fetchTable('Billings')->find()
-            ->where(['Billings.active' => true])
-            ->andWhere([
-                'OR' => [
-                    'Billings.billing_from IS NULL',
-                    'Billings.billing_from <=' => $invoiced_month->lastOfMonth(), //last day of month
-                ],
+            ->where([
+                'Billings.billing_from <=' => $invoiced_month->lastOfMonth(), //last day of month
             ])
             ->andWhere([
                 'OR' => [

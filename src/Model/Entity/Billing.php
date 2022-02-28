@@ -57,7 +57,6 @@ class Billing extends Entity
         'price' => true,
         'billing_from' => true,
         'note' => true,
-        'active' => true,
         'modified_by' => true,
         'modified' => true,
         'created_by' => true,
@@ -264,5 +263,30 @@ class Billing extends Entity
         }
 
         return $style;
+    }
+
+    /**
+     * getter for active
+     *
+     * @return bool
+     */
+    protected function _getActive(): bool
+    {
+        $active = true;
+        $now = new FrozenDate();
+
+        if (isset($this->billing_from) && $this->billing_from > $now) {
+            $active = false;
+        }
+
+        if (isset($this->billing_until) && $this->billing_until < $now) {
+            $active = false;
+        }
+
+        if (isset($this->contract->valid_until) && $this->contract->valid_until < $now) {
+            $active = false;
+        }
+
+        return $active;
     }
 }

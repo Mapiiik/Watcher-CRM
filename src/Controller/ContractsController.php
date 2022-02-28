@@ -341,9 +341,8 @@ class ContractsController extends AppController
             $billings_collection = new Collection($contract->billings);
 
             $active_billings_collection = $billings_collection->reject(function ($billing, $key) use ($contract) {
-                return !$billing->active ||
-                    ($billing->has('billing_from') && $billing->billing_from > $contract->valid_from) ||
-                    ($billing->has('billing_until') && $billing->billing_until < $contract->valid_from);
+                return ($billing->has('billing_from') && $billing->billing_from > $contract->valid_from)
+                    || ($billing->has('billing_until') && $billing->billing_until < $contract->valid_from);
             });
 
             $contract->individual_billings = $active_billings_collection->filter(function ($billing, $key) {
