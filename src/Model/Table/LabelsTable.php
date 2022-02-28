@@ -73,8 +73,7 @@ class LabelsTable extends Table
 
         $validator
             ->scalar('color')
-            ->maxLength('color', 6)
-            ->allowEmptyString('color');
+            ->maxLength('color', 7);
 
         $validator
             ->integer('validity')

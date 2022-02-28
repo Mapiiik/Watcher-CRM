@@ -24,7 +24,7 @@
                 <?php
                     echo $this->Form->control('name');
                     echo $this->Form->control('caption');
-                    echo $this->Form->control('color');
+                    echo $this->Form->control('color', ['type' => 'color']);
                     echo $this->Form->control('validity');
                     echo $this->Form->control('dynamic');
                     echo $this->Form->control('dynamic_sql');

@@ -26,7 +26,7 @@
                     <td><?= $this->Number->format($label->id) ?></td>
                     <td><?= h($label->name) ?></td>
                     <td><?= h($label->caption) ?></td>
-                    <td><?= h($label->color) ?></td>
+                    <td style="background-color: <?= h($label->color) ?>;"><?= h($label->color) ?></td>
                     <td><?= $this->Number->format($label->validity) ?></td>
                     <td><?= h($label->dynamic) ?></td>
                     <td class="actions">

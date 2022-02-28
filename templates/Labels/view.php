@@ -36,7 +36,7 @@
                 </tr>
                 <tr>
                     <th><?= __('Color') ?></th>
-                    <td><?= h($label->color) ?></td>
+                    <td style="background-color: <?= h($label->color) ?>;"><?= h($label->color) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>
