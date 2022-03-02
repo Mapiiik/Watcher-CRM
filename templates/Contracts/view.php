@@ -296,12 +296,14 @@ use Cake\I18n\Number;
                         <tr>
                             <th><?= __('Equipment Type') ?></th>
                             <th><?= __('Serial Number') ?></th>
+                            <th><?= __('Date Of Sale') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($contract->sold_equipments as $soldEquipment) : ?>
                         <tr style="<?= $soldEquipment->style ?>">
                             <td><?= h($soldEquipment->equipment_type->name) ?></td>
                             <td><?= h($soldEquipment->serial_number) ?></td>
+                            <td><?= h($soldEquipment->date_of_sale) ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),

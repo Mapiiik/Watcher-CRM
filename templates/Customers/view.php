@@ -572,6 +572,7 @@ use Cake\I18n\Number;
                             <th><?= __('Contract') ?></th>
                             <th><?= __('Equipment Type') ?></th>
                             <th><?= __('Serial Number') ?></th>
+                            <th><?= __('Date Of Sale') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($customer->sold_equipments as $soldEquipment) : ?>
@@ -591,6 +592,7 @@ use Cake\I18n\Number;
                                     ]
                                 ) : '' ?></td>
                             <td><?= h($soldEquipment->serial_number) ?></td>
+                            <td><?= h($soldEquipment->date_of_sale) ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),

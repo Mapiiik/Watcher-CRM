@@ -20,6 +20,7 @@
                     <th><?= $this->Paginator->sort('contract_id') ?></th>
                     <th><?= $this->Paginator->sort('equipment_type_id') ?></th>
                     <th><?= $this->Paginator->sort('serial_number') ?></th>
+                    <th><?= $this->Paginator->sort('date_of_sale') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -46,6 +47,7 @@
                         ) : '' ?>
                     </td>
                     <td><?= h($soldEquipment->serial_number) ?></td>
+                    <td><?= h($soldEquipment->date_of_sale) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $soldEquipment->id]) ?>
                         <?= $this->AuthLink->link(

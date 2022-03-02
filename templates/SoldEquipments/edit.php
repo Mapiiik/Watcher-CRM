@@ -26,6 +26,7 @@
                     if (!isset($contract_id)) echo $this->Form->control('contract_id', ['options' => $contracts]);
                     echo $this->Form->control('equipment_type_id', ['options' => $equipmentTypes]);
                     echo $this->Form->control('serial_number');
+                    echo $this->Form->control('date_of_sale', ['empty' => true]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

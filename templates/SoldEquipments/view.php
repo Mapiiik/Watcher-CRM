@@ -63,6 +63,10 @@
                     <td><?= h($soldEquipment->serial_number) ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('Date Of Sale') ?></th>
+                    <td><?= h($soldEquipment->date_of_sale) ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Id') ?></th>
                     <td><?= $this->Number->format($soldEquipment->id) ?></td>
                 </tr>

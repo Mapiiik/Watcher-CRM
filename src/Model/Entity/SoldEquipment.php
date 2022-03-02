@@ -18,6 +18,7 @@ use Cake\ORM\Entity;
  * @property int $created_by
  * @property \Cake\I18n\FrozenTime|null $modified
  * @property int|null $modified_by
+ * @property \Cake\I18n\FrozenTime|null $date_of_sale
  * @property string $style
  *
  * @property \App\Model\Entity\Customer $customer
@@ -44,6 +45,7 @@ class SoldEquipment extends Entity
         'created_by' => true,
         'modified' => true,
         'modified_by' => true,
+        'date_of_sale' => true,
         'customer' => true,
         'contract' => true,
         'equipment_type' => true,

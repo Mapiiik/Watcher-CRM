@@ -98,6 +98,10 @@ class SoldEquipmentsTable extends Table
             ->integer('modified_by')
             ->allowEmptyString('modified_by');
 
+        $validator
+            ->date('date_of_sale')
+            ->allowEmptyDate('date_of_sale');
+
         return $validator;
     }
 
