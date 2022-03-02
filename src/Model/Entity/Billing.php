@@ -272,21 +272,16 @@ class Billing extends Entity
      */
     protected function _getActive(): bool
     {
-        $active = true;
         $now = new FrozenDate();
 
         if (isset($this->billing_from) && $this->billing_from > $now) {
-            $active = false;
+            return false;
         }
 
         if (isset($this->billing_until) && $this->billing_until < $now) {
-            $active = false;
+            return false;
         }
 
-        if (isset($this->contract->valid_until) && $this->contract->valid_until < $now) {
-            $active = false;
-        }
-
-        return $active;
+        return true;
     }
 }

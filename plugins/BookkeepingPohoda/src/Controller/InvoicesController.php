@@ -158,20 +158,20 @@ class InvoicesController extends AppController
                 ->contain('Contracts', function (Query $q) use ($invoiced_month) {
                     return $q
                             ->order('Contracts.id')
+/* ignore for now, use only dates from billings (sometimes we want to bill even without contract)
                             ->where([
-/* ignore until resolved how to manage new contracts with termination
                                 'OR' => [
                                     'Contracts.valid_from IS NULL',
                                     'Contracts.valid_from <=' => $invoiced_month->lastOfMonth(), //last day of month
                                 ],
                             ])
                             ->andWhere([
-*/
                                 'OR' => [
                                     'Contracts.valid_until IS NULL',
                                     'Contracts.valid_until >=' => $invoiced_month->firstOfMonth(), //first day of month
                                 ],
                             ])
+*/
                             ->contain('ServiceTypes')
                             ->contain('Billings', function (Query $q) use ($invoiced_month) {
                                 return $q
