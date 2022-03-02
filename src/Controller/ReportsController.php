@@ -170,7 +170,7 @@ class ReportsController extends AppController
                                         ->toArray()
                                     );
 
-                                    $address['vhcn'] = false;
+                                    $address['vhcn'] = $cto_category == 's2_fttb' ? true : false;
 
                                     return $address;
                                 });
