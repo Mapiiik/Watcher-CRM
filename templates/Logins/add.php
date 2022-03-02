@@ -17,9 +17,11 @@
             <fieldset>
                 <legend><?= __('Add Login') ?></legend>
                 <?php
-                    if (!isset($customer_id)) echo $this->Form->control('customer_id', ['options' => $customers]);
-                    echo $this->Form->control('login', ['default' => $new_login]);
-                    echo $this->Form->control('password', ['type' => 'text', 'default' => $new_password]);
+                if (!isset($customer_id)) {
+                    echo $this->Form->control('customer_id', ['options' => $customers]);
+                }
+                echo $this->Form->control('login', ['default' => $new_login]);
+                echo $this->Form->control('password', ['type' => 'text', 'default' => $new_password]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

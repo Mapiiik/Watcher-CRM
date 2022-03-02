@@ -4,4 +4,3 @@
  */
 
 echo $this->fetch('content');
-?>

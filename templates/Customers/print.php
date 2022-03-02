@@ -8,8 +8,16 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->AuthLink->link(__('View Customer'), ['action' => 'view', $customer->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->link(__('Edit Customer'), ['action' => 'edit', $customer->id], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __('View Customer'),
+                ['action' => 'view', $customer->id],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Edit Customer'),
+                ['action' => 'edit', $customer->id],
+                ['class' => 'side-nav-item']
+            ) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
@@ -48,7 +56,10 @@
                         </tr>
                         <tr>
                             <th><?= __('Ic') ?></th>
-                            <td><?= $customer->has('ic') ? h($customer->ic) . ' (' . ($customer->ic_verified ?  __('OK') : __('Invalid')) . ')' : '' ?></td>
+                            <td><?= $customer->has('ic') ?
+                                h($customer->ic) . ' (' . (
+                                    $customer->ic_verified ? __('OK') : __('Invalid')
+                                ) . ')' : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Dic') ?></th>
@@ -76,7 +87,10 @@
                     <table>
                         <tr>
                             <th><?= __('Tax') ?></th>
-                            <td><?= $customer->has('tax') ? $this->Html->link($customer->tax->name, ['controller' => 'Taxes', 'action' => 'view', $customer->tax->id]) : '' ?></td>
+                            <td><?= $customer->has('tax') ? $this->Html->link(
+                                $customer->tax->name,
+                                ['controller' => 'Taxes', 'action' => 'view', $customer->tax->id]
+                            ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Termination Date') ?></th>
@@ -137,16 +151,21 @@
                 'url' => [
                     'action' => 'print',
                     $customer->id,
-                    '_ext' => 'pdf'
-                ]
+                    '_ext' => 'pdf',
+                ],
             ]) ?>
             <fieldset>
                 <legend><?= __('Print Documents') ?></legend>
                 <div class="row">
                     <div class="column-responsive">
-                    <?php
-                        echo $this->Form->control('document_type', ['label' => __('Document Type'), 'options' => $documentTypes, 'empty' => true, 'required' => true]);
-                    ?>
+                        <?php
+                        echo $this->Form->control('document_type', [
+                            'label' => __('Document Type'),
+                            'options' => $documentTypes,
+                            'empty' => true,
+                            'required' => true,
+                        ]);
+                        ?>
                     </div>
                     <div class="column-responsive">
                     </div>

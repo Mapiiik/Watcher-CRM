@@ -17,8 +17,10 @@
             <fieldset>
                 <legend><?= __('Add Phone') ?></legend>
                 <?php
-                    if (!isset($customer_id)) echo $this->Form->control('customer_id', ['options' => $customers]);
-                    echo $this->Form->control('phone');
+                if (!isset($customer_id)) {
+                    echo $this->Form->control('customer_id', ['options' => $customers]);
+                }
+                echo $this->Form->control('phone');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

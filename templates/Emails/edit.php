@@ -22,11 +22,13 @@
             <fieldset>
                 <legend><?= __('Edit Email') ?></legend>
                 <?php
-                    if (!isset($customer_id)) echo $this->Form->control('customer_id', ['options' => $customers]);
-                    echo $this->Form->control('email');
-                    echo $this->Form->control('use_for_billing');
-                    echo $this->Form->control('use_for_outages');
-                    echo $this->Form->control('use_for_commercial');
+                if (!isset($customer_id)) {
+                    echo $this->Form->control('customer_id', ['options' => $customers]);
+                }
+                echo $this->Form->control('email');
+                echo $this->Form->control('use_for_billing');
+                echo $this->Form->control('use_for_outages');
+                echo $this->Form->control('use_for_commercial');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

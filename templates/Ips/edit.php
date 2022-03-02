@@ -22,10 +22,14 @@
             <fieldset>
                 <legend><?= __('Edit Ip') ?></legend>
                 <?php
-                    if (!isset($customer_id)) echo $this->Form->control('customer_id', ['options' => $customers]);
-                    if (!isset($contract_id)) echo $this->Form->control('contract_id', ['options' => $contracts]);
-                    echo $this->Form->control('ip', ['disabled' => true]);
-                    echo $this->Form->control('note');
+                if (!isset($customer_id)) {
+                    echo $this->Form->control('customer_id', ['options' => $customers]);
+                }
+                if (!isset($contract_id)) {
+                    echo $this->Form->control('contract_id', ['options' => $contracts]);
+                }
+                echo $this->Form->control('ip', ['disabled' => true]);
+                echo $this->Form->control('note');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

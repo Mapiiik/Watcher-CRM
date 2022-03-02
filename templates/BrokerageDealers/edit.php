@@ -11,9 +11,16 @@
             <?= $this->AuthLink->postLink(
                 __('Delete'),
                 ['action' => 'delete', $brokerageDealer->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $brokerageDealer->id), 'class' => 'side-nav-item']
+                [
+                    'confirm' => __('Are you sure you want to delete # {0}?', $brokerageDealer->id),
+                    'class' => 'side-nav-item',
+                ]
             ) ?>
-            <?= $this->AuthLink->link(__('List Brokerage Dealers'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __('List Brokerage Dealers'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item']
+            ) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">

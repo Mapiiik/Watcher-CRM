@@ -11,9 +11,16 @@
             <?= $this->AuthLink->postLink(
                 __('Delete'),
                 ['action' => 'delete', $soldEquipment->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id), 'class' => 'side-nav-item']
+                [
+                    'confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id),
+                    'class' => 'side-nav-item',
+                ]
             ) ?>
-            <?= $this->AuthLink->link(__('List Sold Equipments'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __('List Sold Equipments'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item']
+            ) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
@@ -22,11 +29,15 @@
             <fieldset>
                 <legend><?= __('Edit Sold Equipment') ?></legend>
                 <?php
-                    if (!isset($customer_id)) echo $this->Form->control('customer_id', ['options' => $customers]);
-                    if (!isset($contract_id)) echo $this->Form->control('contract_id', ['options' => $contracts]);
-                    echo $this->Form->control('equipment_type_id', ['options' => $equipmentTypes]);
-                    echo $this->Form->control('serial_number');
-                    echo $this->Form->control('date_of_sale', ['empty' => true]);
+                if (!isset($customer_id)) {
+                    echo $this->Form->control('customer_id', ['options' => $customers]);
+                }
+                if (!isset($contract_id)) {
+                    echo $this->Form->control('contract_id', ['options' => $contracts]);
+                }
+                echo $this->Form->control('equipment_type_id', ['options' => $equipmentTypes]);
+                echo $this->Form->control('serial_number');
+                echo $this->Form->control('date_of_sale', ['empty' => true]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
