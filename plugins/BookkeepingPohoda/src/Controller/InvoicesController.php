@@ -341,7 +341,7 @@ class InvoicesController extends AppController
                             $invoice->creation_date = $invoiced_month->lastOfMonth();
                             $invoice->due_date = $invoiced_month->lastOfMonth()->addDays(10);
                             $invoice->text = $billing->name
-                                . ' - ' . $invoiced_month->i18nFormat('MM/yyyy');
+                                . ' za období ' . $invoiced_month->i18nFormat('MM/yyyy');
                             $invoice->internal_note = 'separate';
                             $invoice->total = $billing->period_total;
                             //$invoice->items = [$billing];
@@ -370,7 +370,7 @@ class InvoicesController extends AppController
                         } else {
                             $invoice->text = 'Faktura za poskytované služby dle smlouvy '
                                 . $contract->number
-                                . ' - ' . $invoiced_month->i18nFormat('MM/yyyy');
+                                . ' za období ' . $invoiced_month->i18nFormat('MM/yyyy');
                         }
                         $invoice->internal_note = 'separate';
                         $invoice->total = $billing_contract['total'];
@@ -397,7 +397,7 @@ class InvoicesController extends AppController
                     $invoice->creation_date = $invoiced_month->lastOfMonth();
                     $invoice->due_date = $invoiced_month->lastOfMonth()->addDays(10);
                     $invoice->text = 'Faktura za poskytované služby dle smlouvy'
-                        . ' - ' . $invoiced_month->i18nFormat('MM/yyyy');
+                        . ' za období ' . $invoiced_month->i18nFormat('MM/yyyy');
                     $invoice->total = $billing_customer['total'];
                     $invoice->items = $customer->invoice_with_items ? $billing_customer['items'] : [];
                     $invoices[] = $invoice;
