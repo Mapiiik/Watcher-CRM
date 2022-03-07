@@ -86,8 +86,9 @@ select {
 /* Tables */
 table {
     border-collapse:collapse;
+    width: calc(100% - 3px);
     margin-bottom: 6px;
-    margin-right: 6px;
+    margin-right: 3px;
     background-color: #ffffff;
 
     border-radius: 0.4rem;
