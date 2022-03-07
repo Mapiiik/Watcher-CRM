@@ -91,7 +91,7 @@ class ReportsController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function overviewOfConnectionPoints($param = null, $category = null)
+    public function overviewOfCustomerConnectionPoints($param = null, $category = null)
     {
         $invoiced_month = new FrozenDate($param);
 

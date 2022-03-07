@@ -13,8 +13,8 @@
             ['class' => 'side-nav-item']
         ) ?>
         <?= $this->AuthLink->link(
-            __('Overview of connection points'),
-            ['action' => 'overviewOfConnectionPoints'],
+            __('Overview of customer connection points'),
+            ['action' => 'overviewOfCustomerConnectionPoints'],
             ['class' => 'side-nav-item']
         ) ?>
     </div>
