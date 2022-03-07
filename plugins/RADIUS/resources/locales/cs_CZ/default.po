@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2022-03-07 11:55+0000\n"
-"PO-Revision-Date: 2022-03-07 13:28+0100\n"
+"PO-Revision-Date: 2022-03-07 13:47+0100\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -448,8 +448,12 @@ msgstr "poslední"
 #: plugins/RADIUS/templates/Radpostauth/index.php:61
 #: plugins/RADIUS/templates/Radreply/index.php:62
 #: plugins/RADIUS/templates/Radusergroup/index.php:55
-msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
-msgstr "Stránka {{page}} z {{pages}}, zobrazující {{current}} záznamů z celkového počtu {{count}}"
+msgid ""
+"Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} "
+"total"
+msgstr ""
+"Stránka {{page}} z {{pages}}, zobrazující {{current}} záznamů z celkového "
+"počtu {{count}}"
 
 #: plugins/RADIUS/templates/Accounts/view.php:17
 msgid "Delete Account"
