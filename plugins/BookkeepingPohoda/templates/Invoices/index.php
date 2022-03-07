@@ -5,8 +5,16 @@
  */
 ?>
 <div class="invoices index content">
-    <?= $this->Html->link(__d('bookkeeping_pohoda', 'New Invoice'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
-    <?= $this->Html->link(__d('bookkeeping_pohoda', 'Generate Invoices'), ['action' => 'generate'], ['class' => 'button float-right']) ?>
+    <?= $this->Html->link(
+        __d('bookkeeping_pohoda', 'New Invoice'),
+        ['action' => 'add'],
+        ['class' => 'button float-right win-link']
+    ) ?>
+    <?= $this->Html->link(
+        __d('bookkeeping_pohoda', 'Generate Invoices'),
+        ['action' => 'generate'],
+        ['class' => 'button float-right']
+    ) ?>
     <?= $this->Html->link(
         __d('bookkeeping_pohoda', 'Import Invoices from DBF'),
         ['action' => 'importFromDBF'],
@@ -17,21 +25,24 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('customer_id') ?></th>
-                    <th><?= $this->Paginator->sort('number') ?></th>
-                    <th><?= $this->Paginator->sort('variable_symbol') ?></th>
-                    <th><?= $this->Paginator->sort('creation_date') ?></th>
-                    <th><?= $this->Paginator->sort('due_date') ?></th>
-                    <th><?= $this->Paginator->sort('total') ?></th>
-                    <th><?= $this->Paginator->sort('debt') ?></th>
-                    <th><?= $this->Paginator->sort('payment_date') ?></th>
-                    <th><?= $this->Paginator->sort('send_by_email') ?></th>
-                    <th><?= $this->Paginator->sort('email_sent') ?></th>
-                    <th><?= $this->Paginator->sort('created') ?></th>
-                    <th><?= $this->Paginator->sort('created_by') ?></th>
-                    <th><?= $this->Paginator->sort('modified') ?></th>
-                    <th><?= $this->Paginator->sort('modified_by') ?></th>
+                    <th><?= $this->Paginator->sort('id', __d('bookkeeping_pohoda', 'Id')) ?></th>
+                    <th><?= $this->Paginator->sort('customer_id', __d('bookkeeping_pohoda', 'Customer')) ?></th>
+                    <th><?= $this->Paginator->sort('number', __d('bookkeeping_pohoda', 'Number')) ?></th>
+                    <th><?= $this->Paginator->sort(
+                        'variable_symbol',
+                        __d('bookkeeping_pohoda', 'Variable Symbol')
+                    ) ?></th>
+                    <th><?= $this->Paginator->sort('creation_date', __d('bookkeeping_pohoda', 'Creation Date')) ?></th>
+                    <th><?= $this->Paginator->sort('due_date', __d('bookkeeping_pohoda', 'Due Date')) ?></th>
+                    <th><?= $this->Paginator->sort('total', __d('bookkeeping_pohoda', 'Total')) ?></th>
+                    <th><?= $this->Paginator->sort('debt', __d('bookkeeping_pohoda', 'Debt')) ?></th>
+                    <th><?= $this->Paginator->sort('payment_date', __d('bookkeeping_pohoda', 'Payment Date')) ?></th>
+                    <th><?= $this->Paginator->sort('send_by_email', __d('bookkeeping_pohoda', 'Send By Email')) ?></th>
+                    <th><?= $this->Paginator->sort('email_sent', __d('bookkeeping_pohoda', 'Email Sent')) ?></th>
+                    <th><?= $this->Paginator->sort('created', __d('bookkeeping_pohoda', 'Created')) ?></th>
+                    <th><?= $this->Paginator->sort('created_by', __d('bookkeeping_pohoda', 'Created By')) ?></th>
+                    <th><?= $this->Paginator->sort('modified', __d('bookkeeping_pohoda', 'Modified')) ?></th>
+                    <th><?= $this->Paginator->sort('modified_by', __d('bookkeeping_pohoda', 'Modified By')) ?></th>
                     <th class="actions"><?= __d('bookkeeping_pohoda', 'Actions') ?></th>
                 </tr>
             </thead>
@@ -73,7 +84,11 @@
                         <?= $this->Form->postLink(
                             __d('bookkeeping_pohoda', 'Delete'),
                             ['action' => 'delete', $invoice->id],
-                            ['confirm' => __d('bookkeeping_pohoda', 'Are you sure you want to delete # {0}?', $invoice->id)]
+                            ['confirm' => __d(
+                                'bookkeeping_pohoda',
+                                'Are you sure you want to delete # {0}?',
+                                $invoice->id
+                            )]
                         ) ?>
                     </td>
                 </tr>
@@ -90,7 +105,10 @@
             <?= $this->Paginator->last(__d('bookkeeping_pohoda', 'last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __d('bookkeeping_pohoda', 'Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __d(
+                'bookkeeping_pohoda',
+                'Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'
+            )
         ) ?></p>
     </div>
 </div>

@@ -9,7 +9,11 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __d('bookkeeping_pohoda', 'Actions') ?></h4>
-            <?= $this->Html->link(__d('bookkeeping_pohoda', 'List Invoices'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(
+                __d('bookkeeping_pohoda', 'List Invoices'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item']
+            ) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">

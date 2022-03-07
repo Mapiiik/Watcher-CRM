@@ -12,9 +12,16 @@
             <?= $this->Form->postLink(
                 __d('bookkeeping_pohoda', 'Delete'),
                 ['action' => 'delete', $invoice->id],
-                ['confirm' => __d('bookkeeping_pohoda', 'Are you sure you want to delete # {0}?', $invoice->id), 'class' => 'side-nav-item']
+                [
+                    'confirm' => __d('bookkeeping_pohoda', 'Are you sure you want to delete # {0}?', $invoice->id),
+                    'class' => 'side-nav-item',
+                ]
             ) ?>
-            <?= $this->Html->link(__d('bookkeeping_pohoda', 'List Invoices'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(
+                __d('bookkeeping_pohoda', 'List Invoices'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item']
+            ) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">

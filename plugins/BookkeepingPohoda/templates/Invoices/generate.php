@@ -102,7 +102,8 @@
                                         <?php endforeach; ?>
                                     </tbody>
                                 </table>
-                                <?= __d('bookkeeping_pohoda', 'Total') . ': ' . $this->Number->currency($customer_comparision['crm']['total']) ?>
+                                <?= __d('bookkeeping_pohoda', 'Total')
+                                    . ': ' . $this->Number->currency($customer_comparision['crm']['total']) ?>
                             <?php endif; ?>
                         </td>
                         <td>
@@ -123,7 +124,8 @@
                                         <?php endforeach; ?>
                                     </tbody>
                                 </table>
-                                <?= __d('bookkeeping_pohoda', 'Total') . ': ' . $this->Number->currency($customer_comparision['csv']['total']) ?>
+                                <?= __d('bookkeeping_pohoda', 'Total')
+                                    . ': ' . $this->Number->currency($customer_comparision['csv']['total']) ?>
                             <?php endif; ?>
                         </td>
                     </tr>
