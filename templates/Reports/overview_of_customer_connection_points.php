@@ -21,7 +21,7 @@
                     ['class' => 'button button float-right']
                 ) ?>
             <?php endforeach; ?>
-            <h3><?= __('Overview of connection points') ?></h3>
+            <h3><?= __('Overview of customer connection points') ?></h3>
 
             <?php foreach ($cto_categories as $cto_category => $connection_points) : ?>
             <div class="table-responsive">
