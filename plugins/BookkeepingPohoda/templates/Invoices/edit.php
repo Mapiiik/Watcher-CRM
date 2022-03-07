@@ -30,17 +30,44 @@
             <fieldset>
                 <legend><?= __d('bookkeeping_pohoda', 'Edit Invoice') ?></legend>
                 <?php
-                    echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
-                    echo $this->Form->control('number');
-                    echo $this->Form->control('variable_symbol');
-                    echo $this->Form->control('creation_date', ['empty' => true]);
-                    echo $this->Form->control('due_date', ['empty' => true]);
-                    echo $this->Form->control('text');
-                    echo $this->Form->control('total');
-                    echo $this->Form->control('debt');
-                    echo $this->Form->control('payment_date', ['empty' => true]);
-                    echo $this->Form->control('send_by_email');
-                    echo $this->Form->control('email_sent');
+                echo $this->Form->control('customer_id', [
+                    'label' => __d('bookkeeping_pohoda', 'Customer'),
+                    'options' => $customers,
+                    'empty' => true,
+                ]);
+                echo $this->Form->control('number', [
+                    'label' => __d('bookkeeping_pohoda', 'Number'),
+                ]);
+                echo $this->Form->control('variable_symbol', [
+                    'label' => __d('bookkeeping_pohoda', 'Variable Symbol'),
+                ]);
+                echo $this->Form->control('creation_date', [
+                    'label' => __d('bookkeeping_pohoda', 'Creation Date'),
+                    'empty' => true,
+                ]);
+                echo $this->Form->control('due_date', [
+                    'label' => __d('bookkeeping_pohoda', 'Due Date'),
+                    'empty' => true,
+                ]);
+                echo $this->Form->control('text', [
+                    'label' => __d('bookkeeping_pohoda', 'Text'),
+                ]);
+                echo $this->Form->control('total', [
+                    'label' => __d('bookkeeping_pohoda', 'Total'),
+                ]);
+                echo $this->Form->control('debt', [
+                    'label' => __d('bookkeeping_pohoda', 'Debt'),
+                ]);
+                echo $this->Form->control('payment_date', [
+                    'label' => __d('bookkeeping_pohoda', 'Payment Date'),
+                    'empty' => true,
+                ]);
+                echo $this->Form->control('send_by_email', [
+                    'label' => __d('bookkeeping_pohoda', 'Send By Email'),
+                ]);
+                echo $this->Form->control('email_sent', [
+                    'label' => __d('bookkeeping_pohoda', 'Email Sent'),
+                ]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__d('bookkeeping_pohoda', 'Submit')) ?>
