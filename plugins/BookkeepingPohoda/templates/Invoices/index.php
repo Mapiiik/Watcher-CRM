@@ -7,7 +7,11 @@
 <div class="invoices index content">
     <?= $this->Html->link(__('New Invoice'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
     <?= $this->Html->link(__('Generate Invoices'), ['action' => 'generate'], ['class' => 'button float-right']) ?>
-    <?= $this->Html->link(__('Import from DBF'), ['action' => 'importFromDBF'], ['class' => 'button float-right']) ?>
+    <?= $this->Html->link(
+        __('Import Invoices from DBF'),
+        ['action' => 'importFromDBF'],
+        ['class' => 'button float-right']
+    ) ?>
     <h3><?= __('Invoices') ?></h3>
     <div class="table-responsive">
         <table>

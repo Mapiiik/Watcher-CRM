@@ -1,0 +1,189 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2022-03-07 11:53+0000\n"
+"PO-Revision-Date: 2022-03-07 13:06+0100\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"Language: cs_CZ\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
+"X-Generator: Poedit 3.0.1\n"
+
+#: plugins/RUIAN/src/Controller/AddressesController.php:59
+#: plugins/RUIAN/src/Controller/AddressesController.php:83
+msgid "The address has been saved."
+msgstr "Adresa byla uložena."
+
+#: plugins/RUIAN/src/Controller/AddressesController.php:63
+#: plugins/RUIAN/src/Controller/AddressesController.php:87
+msgid "The address could not be saved. Please, try again."
+msgstr "Adresu nelze uložit. Opakujte akci."
+
+#: plugins/RUIAN/src/Controller/AddressesController.php:104
+msgid "The address has been deleted."
+msgstr "Adresa byla odstraněna."
+
+#: plugins/RUIAN/src/Controller/AddressesController.php:106
+msgid "The address could not be deleted. Please, try again."
+msgstr "Adresu nelze odstranit. Opakujte akci."
+
+#: plugins/RUIAN/templates/Addresses/add.php:10
+#: plugins/RUIAN/templates/Addresses/edit.php:10
+#: plugins/RUIAN/templates/Addresses/index.php:33
+#: plugins/RUIAN/templates/Addresses/view.php:10
+msgid "Actions"
+msgstr "Akce"
+
+#: plugins/RUIAN/templates/Addresses/add.php:11
+#: plugins/RUIAN/templates/Addresses/edit.php:16
+#: plugins/RUIAN/templates/Addresses/view.php:24
+msgid "List Addresses"
+msgstr "Seznam adres"
+
+#: plugins/RUIAN/templates/Addresses/add.php:18
+msgid "Add Address"
+msgstr "Přidat adresu"
+
+#: plugins/RUIAN/templates/Addresses/add.php:40
+#: plugins/RUIAN/templates/Addresses/edit.php:45
+msgid "Submit"
+msgstr "Potvrdit"
+
+#: plugins/RUIAN/templates/Addresses/edit.php:12
+#: plugins/RUIAN/templates/Addresses/index.php:66
+msgid "Delete"
+msgstr "Odstranit"
+
+#: plugins/RUIAN/templates/Addresses/edit.php:14
+#: plugins/RUIAN/templates/Addresses/index.php:68
+#: plugins/RUIAN/templates/Addresses/view.php:20
+msgid "Are you sure you want to delete # {0}?"
+msgstr "Opravdu chcete odstranit # {0}?"
+
+#: plugins/RUIAN/templates/Addresses/edit.php:23
+#: plugins/RUIAN/templates/Addresses/view.php:12
+msgid "Edit Address"
+msgstr "Upravit adresu"
+
+#: plugins/RUIAN/templates/Addresses/index.php:8
+#: plugins/RUIAN/templates/Addresses/view.php:25
+msgid "New Address"
+msgstr "Nová adresa"
+
+#: plugins/RUIAN/templates/Addresses/index.php:9
+msgid "Addresses"
+msgstr "Adresy"
+
+#: plugins/RUIAN/templates/Addresses/index.php:59
+msgid "View"
+msgstr "Zobrazit"
+
+#: plugins/RUIAN/templates/Addresses/index.php:61
+msgid "Edit"
+msgstr "Upravit"
+
+#: plugins/RUIAN/templates/Addresses/index.php:78
+msgid "first"
+msgstr "první"
+
+#: plugins/RUIAN/templates/Addresses/index.php:79
+msgid "previous"
+msgstr "předchozí"
+
+#: plugins/RUIAN/templates/Addresses/index.php:81
+msgid "next"
+msgstr "další"
+
+#: plugins/RUIAN/templates/Addresses/index.php:82
+msgid "last"
+msgstr "poslední"
+
+#: plugins/RUIAN/templates/Addresses/index.php:85
+msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
+msgstr "Stránka {{page}} z {{pages}}, zobrazující {{current}} záznamů z celkového počtu {{count}}"
+
+#: plugins/RUIAN/templates/Addresses/view.php:17
+msgid "Delete Address"
+msgstr "Odstranit adresu"
+
+#: plugins/RUIAN/templates/Addresses/view.php:33
+msgid "Obec Nazev"
+msgstr ""
+
+#: plugins/RUIAN/templates/Addresses/view.php:37
+msgid "Momc Nazev"
+msgstr ""
+
+#: plugins/RUIAN/templates/Addresses/view.php:41
+msgid "Mop Nazev"
+msgstr ""
+
+#: plugins/RUIAN/templates/Addresses/view.php:45
+msgid "Cast Obce Nazev"
+msgstr ""
+
+#: plugins/RUIAN/templates/Addresses/view.php:49
+msgid "Ulice Nazev"
+msgstr ""
+
+#: plugins/RUIAN/templates/Addresses/view.php:53
+msgid "Typ So"
+msgstr ""
+
+#: plugins/RUIAN/templates/Addresses/view.php:57
+msgid "Cislo Orientacni Znak"
+msgstr ""
+
+#: plugins/RUIAN/templates/Addresses/view.php:61
+msgid "Geometry"
+msgstr ""
+
+#: plugins/RUIAN/templates/Addresses/view.php:65
+msgid "Geometry Jtsk"
+msgstr ""
+
+#: plugins/RUIAN/templates/Addresses/view.php:69
+msgid "Kod Adm"
+msgstr ""
+
+#: plugins/RUIAN/templates/Addresses/view.php:73
+msgid "Obec Kod"
+msgstr ""
+
+#: plugins/RUIAN/templates/Addresses/view.php:77
+msgid "Momc Kod"
+msgstr ""
+
+#: plugins/RUIAN/templates/Addresses/view.php:81
+msgid "Mop Kod"
+msgstr ""
+
+#: plugins/RUIAN/templates/Addresses/view.php:85
+msgid "Cast Obce Kod"
+msgstr ""
+
+#: plugins/RUIAN/templates/Addresses/view.php:89
+msgid "Ulice Kod"
+msgstr ""
+
+#: plugins/RUIAN/templates/Addresses/view.php:93
+msgid "Cislo Domovni"
+msgstr ""
+
+#: plugins/RUIAN/templates/Addresses/view.php:97
+msgid "Cislo Orientacni"
+msgstr ""
+
+#: plugins/RUIAN/templates/Addresses/view.php:101
+msgid "Psc"
+msgstr ""
+
+#: plugins/RUIAN/templates/Addresses/view.php:105
+msgid "Plati Od"
+msgstr ""
