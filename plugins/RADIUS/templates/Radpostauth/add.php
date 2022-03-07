@@ -7,15 +7,19 @@
 <div class="row">
     <aside class="column">
         <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('List Radpostauth'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <h4 class="heading"><?= __d('radius', 'Actions') ?></h4>
+            <?= $this->Html->link(
+                __d('radius', 'List Radpostauth'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item']
+            ) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
         <div class="radpostauth form content">
             <?= $this->Form->create($radpostauth) ?>
             <fieldset>
-                <legend><?= __('Add Radpostauth') ?></legend>
+                <legend><?= __d('radius', 'Add Radpostauth') ?></legend>
                 <?php
                     echo $this->Form->control('username', ['options' => $accounts]);
                     echo $this->Form->control('pass');
@@ -25,7 +29,7 @@
                     echo $this->Form->control('authdate');
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__d('radius', 'Submit')) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

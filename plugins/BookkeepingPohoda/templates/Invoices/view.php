@@ -7,22 +7,22 @@
 <div class="row">
     <aside class="column">
         <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
+            <h4 class="heading"><?= __d('bookkeeping_pohoda', 'Actions') ?></h4>
             <?= $this->Html->link(
-                __('Edit Invoice'),
+                __d('bookkeeping_pohoda', 'Edit Invoice'),
                 ['action' => 'edit', $invoice->id],
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->Form->postLink(
-                __('Delete Invoice'),
+                __d('bookkeeping_pohoda', 'Delete Invoice'),
                 ['action' => 'delete', $invoice->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $invoice->id), 'class' => 'side-nav-item']
+                ['confirm' => __d('bookkeeping_pohoda', 'Are you sure you want to delete # {0}?', $invoice->id), 'class' => 'side-nav-item']
             ) ?>
-            <?= $this->Html->link(__('List Invoices'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Invoice'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__d('bookkeeping_pohoda', 'List Invoices'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__d('bookkeeping_pohoda', 'New Invoice'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
             <br />
             <?= $this->Html->link(
-                __('Download Invoice'),
+                __d('bookkeeping_pohoda', 'Download Invoice'),
                 ['action' => 'download', $invoice->id],
                 ['class' => 'side-nav-item', 'target' => '_blank']
             ) ?>
@@ -33,71 +33,71 @@
             <h3><?= h($invoice->number) ?></h3>
             <table>
                 <tr>
-                    <th><?= __('Customer') ?></th>
+                    <th><?= __d('bookkeeping_pohoda', 'Customer') ?></th>
                     <td><?= $invoice->has('customer') ? $this->Html->link(
                         $invoice->customer->name,
                         ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $invoice->customer->id]
                     ) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Id') ?></th>
+                    <th><?= __d('bookkeeping_pohoda', 'Id') ?></th>
                     <td><?= $this->Number->format($invoice->id) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Number') ?></th>
+                    <th><?= __d('bookkeeping_pohoda', 'Number') ?></th>
                     <td><?= $this->Number->format($invoice->number) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Variable Symbol') ?></th>
+                    <th><?= __d('bookkeeping_pohoda', 'Variable Symbol') ?></th>
                     <td><?= $this->Number->format($invoice->variable_symbol) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Total') ?></th>
+                    <th><?= __d('bookkeeping_pohoda', 'Total') ?></th>
                     <td><?= $this->Number->format($invoice->total) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Debt') ?></th>
+                    <th><?= __d('bookkeeping_pohoda', 'Debt') ?></th>
                     <td><?= $this->Number->format($invoice->debt) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Created By') ?></th>
+                    <th><?= __d('bookkeeping_pohoda', 'Created By') ?></th>
                     <td><?= $this->Number->format($invoice->created_by) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Modified By') ?></th>
+                    <th><?= __d('bookkeeping_pohoda', 'Modified By') ?></th>
                     <td><?= $this->Number->format($invoice->modified_by) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Creation Date') ?></th>
+                    <th><?= __d('bookkeeping_pohoda', 'Creation Date') ?></th>
                     <td><?= h($invoice->creation_date) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Due Date') ?></th>
+                    <th><?= __d('bookkeeping_pohoda', 'Due Date') ?></th>
                     <td><?= h($invoice->due_date) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Payment Date') ?></th>
+                    <th><?= __d('bookkeeping_pohoda', 'Payment Date') ?></th>
                     <td><?= h($invoice->payment_date) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Email Sent') ?></th>
+                    <th><?= __d('bookkeeping_pohoda', 'Email Sent') ?></th>
                     <td><?= h($invoice->email_sent) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Created') ?></th>
+                    <th><?= __d('bookkeeping_pohoda', 'Created') ?></th>
                     <td><?= h($invoice->created) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Modified') ?></th>
+                    <th><?= __d('bookkeeping_pohoda', 'Modified') ?></th>
                     <td><?= h($invoice->modified) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Send By Email') ?></th>
-                    <td><?= $invoice->send_by_email ? __('Yes') : __('No'); ?></td>
+                    <th><?= __d('bookkeeping_pohoda', 'Send By Email') ?></th>
+                    <td><?= $invoice->send_by_email ? __d('bookkeeping_pohoda', 'Yes') : __d('bookkeeping_pohoda', 'No'); ?></td>
                 </tr>
             </table>
             <div class="text">
-                <strong><?= __('Text') ?></strong>
+                <strong><?= __d('bookkeeping_pohoda', 'Text') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($invoice->text)); ?>
                 </blockquote>

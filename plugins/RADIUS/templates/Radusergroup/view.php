@@ -7,22 +7,22 @@
 <div class="row">
     <aside class="column">
         <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
+            <h4 class="heading"><?= __d('radius', 'Actions') ?></h4>
             <?= $this->Html->link(
-                __('Edit Radusergroup'),
+                __d('radius', 'Edit Radusergroup'),
                 ['action' => 'edit', $radusergroup->id],
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->Form->postLink(
-                __('Delete Radusergroup'),
+                __d('radius', 'Delete Radusergroup'),
                 ['action' => 'delete', $radusergroup->id],
                 [
-                    'confirm' => __('Are you sure you want to delete # {0}?', $radusergroup->id),
+                    'confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radusergroup->id),
                     'class' => 'side-nav-item',
                 ]
             ) ?>
-            <?= $this->Html->link(__('List Radusergroup'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Radusergroup'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__d('radius', 'List Radusergroup'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__d('radius', 'New Radusergroup'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
@@ -30,37 +30,37 @@
             <h3><?= h($radusergroup->id) ?></h3>
             <table>
                 <tr>
-                    <th><?= __('Username') ?></th>
+                    <th><?= __d('radius', 'Username') ?></th>
                     <td><?= $radusergroup->has('account') ? $this->Html->link(
                         $radusergroup->account->username,
                         ['controller' => 'Accounts', 'action' => 'view', $radusergroup->account->id]
                     ) : $radusergroup->username ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Groupname') ?></th>
+                    <th><?= __d('radius', 'Groupname') ?></th>
                     <td><?= h($radusergroup->groupname) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Priority') ?></th>
+                    <th><?= __d('radius', 'Priority') ?></th>
                     <td><?= $this->Number->format($radusergroup->priority) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Id') ?></th>
+                    <th><?= __d('radius', 'Id') ?></th>
                     <td><?= $this->Number->format($radusergroup->id) ?></td>
                 </tr>
             </table>
             <div class="related">
-                <h4><?= __('Related Radgroupcheck') ?></h4>
+                <h4><?= __d('radius', 'Related Radgroupcheck') ?></h4>
                 <?php if (!empty($radusergroup->radgroupcheck)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
-                            <th><?= __('Groupname') ?></th>
-                            <th><?= __('Attribute') ?></th>
-                            <th><?= __('Op') ?></th>
-                            <th><?= __('Value') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
+                            <th><?= __d('radius', 'Id') ?></th>
+                            <th><?= __d('radius', 'Groupname') ?></th>
+                            <th><?= __d('radius', 'Attribute') ?></th>
+                            <th><?= __d('radius', 'Op') ?></th>
+                            <th><?= __d('radius', 'Value') ?></th>
+                            <th class="actions"><?= __d('radius', 'Actions') ?></th>
                         </tr>
                         <?php foreach ($radusergroup->radgroupcheck as $radgroupcheck) : ?>
                         <tr>
@@ -71,18 +71,18 @@
                             <td><?= h($radgroupcheck->value) ?></td>
                             <td class="actions">
                                 <?= $this->Html->link(
-                                    __('View'),
+                                    __d('radius', 'View'),
                                     ['controller' => 'Radgroupcheck', 'action' => 'view', $radgroupcheck->id]
                                 ) ?>
                                 <?= $this->Html->link(
-                                    __('Edit'),
+                                    __d('radius', 'Edit'),
                                     ['controller' => 'Radgroupcheck', 'action' => 'edit', $radgroupcheck->id],
                                     ['class' => 'win-link']
                                 ) ?>
                                 <?= $this->Form->postLink(
-                                    __('Delete'),
+                                    __d('radius', 'Delete'),
                                     ['controller' => 'Radgroupcheck', 'action' => 'delete', $radgroupcheck->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $radgroupcheck->id)]
+                                    ['confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radgroupcheck->id)]
                                 ) ?>
                             </td>
                         </tr>
@@ -92,17 +92,17 @@
                 <?php endif; ?>
             </div>
             <div class="related">
-                <h4><?= __('Related Radgroupreply') ?></h4>
+                <h4><?= __d('radius', 'Related Radgroupreply') ?></h4>
                 <?php if (!empty($radusergroup->radgroupreply)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
-                            <th><?= __('Groupname') ?></th>
-                            <th><?= __('Attribute') ?></th>
-                            <th><?= __('Op') ?></th>
-                            <th><?= __('Value') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
+                            <th><?= __d('radius', 'Id') ?></th>
+                            <th><?= __d('radius', 'Groupname') ?></th>
+                            <th><?= __d('radius', 'Attribute') ?></th>
+                            <th><?= __d('radius', 'Op') ?></th>
+                            <th><?= __d('radius', 'Value') ?></th>
+                            <th class="actions"><?= __d('radius', 'Actions') ?></th>
                         </tr>
                         <?php foreach ($radusergroup->radgroupreply as $radgroupreply) : ?>
                         <tr>
@@ -113,18 +113,18 @@
                             <td><?= h($radgroupreply->value) ?></td>
                             <td class="actions">
                                 <?= $this->Html->link(
-                                    __('View'),
+                                    __d('radius', 'View'),
                                     ['controller' => 'Radgroupreply', 'action' => 'view', $radgroupreply->id]
                                 ) ?>
                                 <?= $this->Html->link(
-                                    __('Edit'),
+                                    __d('radius', 'Edit'),
                                     ['controller' => 'Radgroupreply', 'action' => 'edit', $radgroupreply->id],
                                     ['class' => 'win-link']
                                 ) ?>
                                 <?= $this->Form->postLink(
-                                    __('Delete'),
+                                    __d('radius', 'Delete'),
                                     ['controller' => 'Radgroupreply', 'action' => 'delete', $radgroupreply->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $radgroupreply->id)]
+                                    ['confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radgroupreply->id)]
                                 ) ?>
                             </td>
                         </tr>

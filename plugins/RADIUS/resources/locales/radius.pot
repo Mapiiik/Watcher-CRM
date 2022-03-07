@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-03-07 11:55+0000\n"
+"POT-Creation-Date: 2022-03-07 14:25+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -178,256 +178,220 @@ msgstr ""
 
 #: ./plugins/RADIUS/templates/Accounts/add.php:10
 #: ./plugins/RADIUS/templates/Accounts/edit.php:10
-#: ./plugins/RADIUS/templates/Accounts/index.php:25
+#: ./plugins/RADIUS/templates/Accounts/index.php:29
 #: ./plugins/RADIUS/templates/Accounts/view.php:10
-#: ./plugins/RADIUS/templates/Accounts/view.php:110
-#: ./plugins/RADIUS/templates/Accounts/view.php:152
-#: ./plugins/RADIUS/templates/Accounts/view.php:193
-#: ./plugins/RADIUS/templates/Accounts/view.php:236
-#: ./plugins/RADIUS/templates/Accounts/view.php:303
+#: ./plugins/RADIUS/templates/Accounts/view.php:117
+#: ./plugins/RADIUS/templates/Accounts/view.php:163
+#: ./plugins/RADIUS/templates/Accounts/view.php:208
+#: ./plugins/RADIUS/templates/Accounts/view.php:255
+#: ./plugins/RADIUS/templates/Accounts/view.php:326
 #: ./plugins/RADIUS/templates/Nas/add.php:10
 #: ./plugins/RADIUS/templates/Nas/edit.php:10
 #: ./plugins/RADIUS/templates/Nas/index.php:23
 #: ./plugins/RADIUS/templates/Nas/view.php:10
 #: ./plugins/RADIUS/templates/Radacct/add.php:10
 #: ./plugins/RADIUS/templates/Radacct/edit.php:10
-#: ./plugins/RADIUS/templates/Radacct/index.php:41
+#: ./plugins/RADIUS/templates/Radacct/index.php:45
 #: ./plugins/RADIUS/templates/Radacct/view.php:10
 #: ./plugins/RADIUS/templates/Radcheck/add.php:10
 #: ./plugins/RADIUS/templates/Radcheck/edit.php:10
-#: ./plugins/RADIUS/templates/Radcheck/index.php:19
+#: ./plugins/RADIUS/templates/Radcheck/index.php:23
 #: ./plugins/RADIUS/templates/Radcheck/view.php:10
 #: ./plugins/RADIUS/templates/Radgroupcheck/add.php:10
 #: ./plugins/RADIUS/templates/Radgroupcheck/edit.php:10
-#: ./plugins/RADIUS/templates/Radgroupcheck/index.php:19
+#: ./plugins/RADIUS/templates/Radgroupcheck/index.php:23
 #: ./plugins/RADIUS/templates/Radgroupcheck/view.php:10
-#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:63
+#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:71
 #: ./plugins/RADIUS/templates/Radgroupreply/add.php:10
 #: ./plugins/RADIUS/templates/Radgroupreply/edit.php:10
-#: ./plugins/RADIUS/templates/Radgroupreply/index.php:19
+#: ./plugins/RADIUS/templates/Radgroupreply/index.php:23
 #: ./plugins/RADIUS/templates/Radgroupreply/view.php:10
-#: ./plugins/RADIUS/templates/Radgroupreply/view.php:63
+#: ./plugins/RADIUS/templates/Radgroupreply/view.php:71
 #: ./plugins/RADIUS/templates/Radpostauth/add.php:10
 #: ./plugins/RADIUS/templates/Radpostauth/edit.php:10
-#: ./plugins/RADIUS/templates/Radpostauth/index.php:21
+#: ./plugins/RADIUS/templates/Radpostauth/index.php:25
 #: ./plugins/RADIUS/templates/Radpostauth/view.php:10
 #: ./plugins/RADIUS/templates/Radreply/add.php:10
 #: ./plugins/RADIUS/templates/Radreply/edit.php:10
-#: ./plugins/RADIUS/templates/Radreply/index.php:19
+#: ./plugins/RADIUS/templates/Radreply/index.php:23
 #: ./plugins/RADIUS/templates/Radreply/view.php:10
 #: ./plugins/RADIUS/templates/Radusergroup/add.php:10
 #: ./plugins/RADIUS/templates/Radusergroup/edit.php:10
-#: ./plugins/RADIUS/templates/Radusergroup/index.php:18
+#: ./plugins/RADIUS/templates/Radusergroup/index.php:22
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:10
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:63
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:105
 msgid "Actions"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/add.php:11
-#: ./plugins/RADIUS/templates/Accounts/edit.php:16
-#: ./plugins/RADIUS/templates/Accounts/view.php:21
+#: ./plugins/RADIUS/templates/Accounts/add.php:12
+#: ./plugins/RADIUS/templates/Accounts/edit.php:20
+#: ./plugins/RADIUS/templates/Accounts/view.php:25
 msgid "List Accounts"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/add.php:18
+#: ./plugins/RADIUS/templates/Accounts/add.php:22
 msgid "Add Account"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/add.php:31
-#: ./plugins/RADIUS/templates/Accounts/edit.php:36
+#: ./plugins/RADIUS/templates/Accounts/add.php:35
+#: ./plugins/RADIUS/templates/Accounts/edit.php:43
 #: ./plugins/RADIUS/templates/Nas/add.php:30
-#: ./plugins/RADIUS/templates/Nas/edit.php:35
+#: ./plugins/RADIUS/templates/Nas/edit.php:38
 #: ./plugins/RADIUS/templates/Radacct/add.php:49
-#: ./plugins/RADIUS/templates/Radacct/edit.php:54
-#: ./plugins/RADIUS/templates/Radcheck/add.php:26
-#: ./plugins/RADIUS/templates/Radcheck/edit.php:31
-#: ./plugins/RADIUS/templates/Radgroupcheck/add.php:26
-#: ./plugins/RADIUS/templates/Radgroupcheck/edit.php:31
-#: ./plugins/RADIUS/templates/Radgroupreply/add.php:26
-#: ./plugins/RADIUS/templates/Radgroupreply/edit.php:31
-#: ./plugins/RADIUS/templates/Radpostauth/add.php:28
-#: ./plugins/RADIUS/templates/Radpostauth/edit.php:33
-#: ./plugins/RADIUS/templates/Radreply/add.php:26
-#: ./plugins/RADIUS/templates/Radreply/edit.php:31
-#: ./plugins/RADIUS/templates/Radusergroup/add.php:25
-#: ./plugins/RADIUS/templates/Radusergroup/edit.php:30
+#: ./plugins/RADIUS/templates/Radacct/edit.php:61
+#: ./plugins/RADIUS/templates/Radcheck/add.php:30
+#: ./plugins/RADIUS/templates/Radcheck/edit.php:38
+#: ./plugins/RADIUS/templates/Radgroupcheck/add.php:30
+#: ./plugins/RADIUS/templates/Radgroupcheck/edit.php:38
+#: ./plugins/RADIUS/templates/Radgroupreply/add.php:30
+#: ./plugins/RADIUS/templates/Radgroupreply/edit.php:38
+#: ./plugins/RADIUS/templates/Radpostauth/add.php:32
+#: ./plugins/RADIUS/templates/Radpostauth/edit.php:40
+#: ./plugins/RADIUS/templates/Radreply/add.php:30
+#: ./plugins/RADIUS/templates/Radreply/edit.php:38
+#: ./plugins/RADIUS/templates/Radusergroup/add.php:29
+#: ./plugins/RADIUS/templates/Radusergroup/edit.php:37
 msgid "Submit"
 msgstr ""
 
 #: ./plugins/RADIUS/templates/Accounts/edit.php:12
-#: ./plugins/RADIUS/templates/Accounts/index.php:66
-#: ./plugins/RADIUS/templates/Accounts/view.php:130
-#: ./plugins/RADIUS/templates/Accounts/view.php:172
-#: ./plugins/RADIUS/templates/Accounts/view.php:212
-#: ./plugins/RADIUS/templates/Accounts/view.php:258
-#: ./plugins/RADIUS/templates/Accounts/view.php:346
+#: ./plugins/RADIUS/templates/Accounts/index.php:70
+#: ./plugins/RADIUS/templates/Accounts/view.php:137
+#: ./plugins/RADIUS/templates/Accounts/view.php:183
+#: ./plugins/RADIUS/templates/Accounts/view.php:227
+#: ./plugins/RADIUS/templates/Accounts/view.php:277
+#: ./plugins/RADIUS/templates/Accounts/view.php:369
 #: ./plugins/RADIUS/templates/Nas/edit.php:12
 #: ./plugins/RADIUS/templates/Nas/index.php:46
 #: ./plugins/RADIUS/templates/Radacct/edit.php:12
-#: ./plugins/RADIUS/templates/Radacct/index.php:82
+#: ./plugins/RADIUS/templates/Radacct/index.php:86
 #: ./plugins/RADIUS/templates/Radcheck/edit.php:12
-#: ./plugins/RADIUS/templates/Radcheck/index.php:43
+#: ./plugins/RADIUS/templates/Radcheck/index.php:47
 #: ./plugins/RADIUS/templates/Radgroupcheck/edit.php:12
-#: ./plugins/RADIUS/templates/Radgroupcheck/index.php:38
-#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:82
+#: ./plugins/RADIUS/templates/Radgroupcheck/index.php:42
+#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:90
 #: ./plugins/RADIUS/templates/Radgroupreply/edit.php:12
-#: ./plugins/RADIUS/templates/Radgroupreply/index.php:38
-#: ./plugins/RADIUS/templates/Radgroupreply/view.php:82
+#: ./plugins/RADIUS/templates/Radgroupreply/index.php:42
+#: ./plugins/RADIUS/templates/Radgroupreply/view.php:90
 #: ./plugins/RADIUS/templates/Radpostauth/edit.php:12
-#: ./plugins/RADIUS/templates/Radpostauth/index.php:42
+#: ./plugins/RADIUS/templates/Radpostauth/index.php:46
 #: ./plugins/RADIUS/templates/Radreply/edit.php:12
-#: ./plugins/RADIUS/templates/Radreply/index.php:43
+#: ./plugins/RADIUS/templates/Radreply/index.php:47
 #: ./plugins/RADIUS/templates/Radusergroup/edit.php:12
-#: ./plugins/RADIUS/templates/Radusergroup/index.php:36
+#: ./plugins/RADIUS/templates/Radusergroup/index.php:40
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:83
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:125
 msgid "Delete"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/edit.php:14
-#: ./plugins/RADIUS/templates/Accounts/index.php:68
-#: ./plugins/RADIUS/templates/Accounts/view.php:19
-#: ./plugins/RADIUS/templates/Accounts/view.php:132
-#: ./plugins/RADIUS/templates/Accounts/view.php:174
-#: ./plugins/RADIUS/templates/Accounts/view.php:214
-#: ./plugins/RADIUS/templates/Accounts/view.php:260
-#: ./plugins/RADIUS/templates/Accounts/view.php:348
-#: ./plugins/RADIUS/templates/Nas/edit.php:14
+#: ./plugins/RADIUS/templates/Accounts/edit.php:15
+#: ./plugins/RADIUS/templates/Accounts/index.php:72
+#: ./plugins/RADIUS/templates/Accounts/view.php:20
+#: ./plugins/RADIUS/templates/Accounts/view.php:139
+#: ./plugins/RADIUS/templates/Accounts/view.php:185
+#: ./plugins/RADIUS/templates/Accounts/view.php:229
+#: ./plugins/RADIUS/templates/Accounts/view.php:279
+#: ./plugins/RADIUS/templates/Accounts/view.php:371
+#: ./plugins/RADIUS/templates/Nas/edit.php:15
 #: ./plugins/RADIUS/templates/Nas/index.php:48
-#: ./plugins/RADIUS/templates/Nas/view.php:12
-#: ./plugins/RADIUS/templates/Radacct/edit.php:14
-#: ./plugins/RADIUS/templates/Radacct/index.php:84
+#: ./plugins/RADIUS/templates/Nas/view.php:20
+#: ./plugins/RADIUS/templates/Radacct/edit.php:15
+#: ./plugins/RADIUS/templates/Radacct/index.php:88
 #: ./plugins/RADIUS/templates/Radacct/view.php:20
-#: ./plugins/RADIUS/templates/Radcheck/edit.php:14
-#: ./plugins/RADIUS/templates/Radcheck/index.php:45
-#: ./plugins/RADIUS/templates/Radcheck/view.php:19
-#: ./plugins/RADIUS/templates/Radgroupcheck/edit.php:14
-#: ./plugins/RADIUS/templates/Radgroupcheck/index.php:40
+#: ./plugins/RADIUS/templates/Radcheck/edit.php:15
+#: ./plugins/RADIUS/templates/Radcheck/index.php:49
+#: ./plugins/RADIUS/templates/Radcheck/view.php:20
+#: ./plugins/RADIUS/templates/Radgroupcheck/edit.php:15
+#: ./plugins/RADIUS/templates/Radgroupcheck/index.php:44
 #: ./plugins/RADIUS/templates/Radgroupcheck/view.php:20
-#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:84
-#: ./plugins/RADIUS/templates/Radgroupreply/edit.php:14
-#: ./plugins/RADIUS/templates/Radgroupreply/index.php:40
+#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:92
+#: ./plugins/RADIUS/templates/Radgroupreply/edit.php:15
+#: ./plugins/RADIUS/templates/Radgroupreply/index.php:44
 #: ./plugins/RADIUS/templates/Radgroupreply/view.php:20
-#: ./plugins/RADIUS/templates/Radgroupreply/view.php:84
-#: ./plugins/RADIUS/templates/Radpostauth/edit.php:14
-#: ./plugins/RADIUS/templates/Radpostauth/index.php:44
+#: ./plugins/RADIUS/templates/Radgroupreply/view.php:92
+#: ./plugins/RADIUS/templates/Radpostauth/edit.php:15
+#: ./plugins/RADIUS/templates/Radpostauth/index.php:48
 #: ./plugins/RADIUS/templates/Radpostauth/view.php:20
-#: ./plugins/RADIUS/templates/Radreply/edit.php:14
-#: ./plugins/RADIUS/templates/Radreply/index.php:45
+#: ./plugins/RADIUS/templates/Radreply/edit.php:15
+#: ./plugins/RADIUS/templates/Radreply/index.php:49
 #: ./plugins/RADIUS/templates/Radreply/view.php:19
-#: ./plugins/RADIUS/templates/Radusergroup/edit.php:14
-#: ./plugins/RADIUS/templates/Radusergroup/index.php:38
+#: ./plugins/RADIUS/templates/Radusergroup/edit.php:15
+#: ./plugins/RADIUS/templates/Radusergroup/index.php:42
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:20
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:85
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:127
 msgid "Are you sure you want to delete # {0}?"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/edit.php:23
+#: ./plugins/RADIUS/templates/Accounts/edit.php:30
 #: ./plugins/RADIUS/templates/Accounts/view.php:12
 msgid "Edit Account"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/index.php:8
-#: ./plugins/RADIUS/templates/Accounts/view.php:22
+#: ./plugins/RADIUS/templates/Accounts/index.php:9
+#: ./plugins/RADIUS/templates/Accounts/view.php:29
 msgid "New Account"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/index.php:9
+#: ./plugins/RADIUS/templates/Accounts/index.php:13
 msgid "Accounts"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/index.php:52
-#: ./plugins/RADIUS/templates/Accounts/view.php:70
+#: ./plugins/RADIUS/templates/Accounts/index.php:56
+#: ./plugins/RADIUS/templates/Accounts/view.php:77
 msgid "Yes"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/index.php:52
-#: ./plugins/RADIUS/templates/Accounts/view.php:70
+#: ./plugins/RADIUS/templates/Accounts/index.php:56
+#: ./plugins/RADIUS/templates/Accounts/view.php:77
 msgid "No"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/index.php:59
-#: ./plugins/RADIUS/templates/Accounts/view.php:121
-#: ./plugins/RADIUS/templates/Accounts/view.php:163
-#: ./plugins/RADIUS/templates/Accounts/view.php:203
-#: ./plugins/RADIUS/templates/Accounts/view.php:249
-#: ./plugins/RADIUS/templates/Accounts/view.php:337
+#: ./plugins/RADIUS/templates/Accounts/index.php:63
+#: ./plugins/RADIUS/templates/Accounts/view.php:128
+#: ./plugins/RADIUS/templates/Accounts/view.php:174
+#: ./plugins/RADIUS/templates/Accounts/view.php:218
+#: ./plugins/RADIUS/templates/Accounts/view.php:268
+#: ./plugins/RADIUS/templates/Accounts/view.php:360
 #: ./plugins/RADIUS/templates/Nas/index.php:39
-#: ./plugins/RADIUS/templates/Radacct/index.php:75
-#: ./plugins/RADIUS/templates/Radcheck/index.php:36
-#: ./plugins/RADIUS/templates/Radgroupcheck/index.php:31
-#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:73
-#: ./plugins/RADIUS/templates/Radgroupreply/index.php:31
-#: ./plugins/RADIUS/templates/Radgroupreply/view.php:73
-#: ./plugins/RADIUS/templates/Radpostauth/index.php:35
-#: ./plugins/RADIUS/templates/Radreply/index.php:36
-#: ./plugins/RADIUS/templates/Radusergroup/index.php:29
+#: ./plugins/RADIUS/templates/Radacct/index.php:79
+#: ./plugins/RADIUS/templates/Radcheck/index.php:40
+#: ./plugins/RADIUS/templates/Radgroupcheck/index.php:35
+#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:81
+#: ./plugins/RADIUS/templates/Radgroupreply/index.php:35
+#: ./plugins/RADIUS/templates/Radgroupreply/view.php:81
+#: ./plugins/RADIUS/templates/Radpostauth/index.php:39
+#: ./plugins/RADIUS/templates/Radreply/index.php:40
+#: ./plugins/RADIUS/templates/Radusergroup/index.php:33
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:74
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:116
 msgid "View"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/index.php:61
-#: ./plugins/RADIUS/templates/Accounts/view.php:125
-#: ./plugins/RADIUS/templates/Accounts/view.php:167
-#: ./plugins/RADIUS/templates/Accounts/view.php:207
-#: ./plugins/RADIUS/templates/Accounts/view.php:253
-#: ./plugins/RADIUS/templates/Accounts/view.php:341
+#: ./plugins/RADIUS/templates/Accounts/index.php:65
+#: ./plugins/RADIUS/templates/Accounts/view.php:132
+#: ./plugins/RADIUS/templates/Accounts/view.php:178
+#: ./plugins/RADIUS/templates/Accounts/view.php:222
+#: ./plugins/RADIUS/templates/Accounts/view.php:272
+#: ./plugins/RADIUS/templates/Accounts/view.php:364
 #: ./plugins/RADIUS/templates/Nas/index.php:41
-#: ./plugins/RADIUS/templates/Radacct/index.php:77
-#: ./plugins/RADIUS/templates/Radcheck/index.php:38
-#: ./plugins/RADIUS/templates/Radgroupcheck/index.php:33
-#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:77
-#: ./plugins/RADIUS/templates/Radgroupreply/index.php:33
-#: ./plugins/RADIUS/templates/Radgroupreply/view.php:77
-#: ./plugins/RADIUS/templates/Radpostauth/index.php:37
-#: ./plugins/RADIUS/templates/Radreply/index.php:38
-#: ./plugins/RADIUS/templates/Radusergroup/index.php:31
+#: ./plugins/RADIUS/templates/Radacct/index.php:81
+#: ./plugins/RADIUS/templates/Radcheck/index.php:42
+#: ./plugins/RADIUS/templates/Radgroupcheck/index.php:37
+#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:85
+#: ./plugins/RADIUS/templates/Radgroupreply/index.php:37
+#: ./plugins/RADIUS/templates/Radgroupreply/view.php:85
+#: ./plugins/RADIUS/templates/Radpostauth/index.php:41
+#: ./plugins/RADIUS/templates/Radreply/index.php:42
+#: ./plugins/RADIUS/templates/Radusergroup/index.php:35
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:78
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:120
 msgid "Edit"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/index.php:78
-#: ./plugins/RADIUS/templates/Nas/index.php:58
-#: ./plugins/RADIUS/templates/Radacct/index.php:94
-#: ./plugins/RADIUS/templates/Radcheck/index.php:55
-#: ./plugins/RADIUS/templates/Radgroupcheck/index.php:50
-#: ./plugins/RADIUS/templates/Radgroupreply/index.php:50
-#: ./plugins/RADIUS/templates/Radpostauth/index.php:54
-#: ./plugins/RADIUS/templates/Radreply/index.php:55
-#: ./plugins/RADIUS/templates/Radusergroup/index.php:48
-msgid "first"
-msgstr ""
-
-#: ./plugins/RADIUS/templates/Accounts/index.php:79
-#: ./plugins/RADIUS/templates/Nas/index.php:59
-#: ./plugins/RADIUS/templates/Radacct/index.php:95
-#: ./plugins/RADIUS/templates/Radcheck/index.php:56
-#: ./plugins/RADIUS/templates/Radgroupcheck/index.php:51
-#: ./plugins/RADIUS/templates/Radgroupreply/index.php:51
-#: ./plugins/RADIUS/templates/Radpostauth/index.php:55
-#: ./plugins/RADIUS/templates/Radreply/index.php:56
-#: ./plugins/RADIUS/templates/Radusergroup/index.php:49
-msgid "previous"
-msgstr ""
-
-#: ./plugins/RADIUS/templates/Accounts/index.php:81
-#: ./plugins/RADIUS/templates/Nas/index.php:61
-#: ./plugins/RADIUS/templates/Radacct/index.php:97
-#: ./plugins/RADIUS/templates/Radcheck/index.php:58
-#: ./plugins/RADIUS/templates/Radgroupcheck/index.php:53
-#: ./plugins/RADIUS/templates/Radgroupreply/index.php:53
-#: ./plugins/RADIUS/templates/Radpostauth/index.php:57
-#: ./plugins/RADIUS/templates/Radreply/index.php:58
-#: ./plugins/RADIUS/templates/Radusergroup/index.php:51
-msgid "next"
-msgstr ""
-
 #: ./plugins/RADIUS/templates/Accounts/index.php:82
-#: ./plugins/RADIUS/templates/Nas/index.php:62
+#: ./plugins/RADIUS/templates/Nas/index.php:58
 #: ./plugins/RADIUS/templates/Radacct/index.php:98
 #: ./plugins/RADIUS/templates/Radcheck/index.php:59
 #: ./plugins/RADIUS/templates/Radgroupcheck/index.php:54
@@ -435,11 +399,23 @@ msgstr ""
 #: ./plugins/RADIUS/templates/Radpostauth/index.php:58
 #: ./plugins/RADIUS/templates/Radreply/index.php:59
 #: ./plugins/RADIUS/templates/Radusergroup/index.php:52
-msgid "last"
+msgid "first"
+msgstr ""
+
+#: ./plugins/RADIUS/templates/Accounts/index.php:83
+#: ./plugins/RADIUS/templates/Nas/index.php:59
+#: ./plugins/RADIUS/templates/Radacct/index.php:99
+#: ./plugins/RADIUS/templates/Radcheck/index.php:60
+#: ./plugins/RADIUS/templates/Radgroupcheck/index.php:55
+#: ./plugins/RADIUS/templates/Radgroupreply/index.php:55
+#: ./plugins/RADIUS/templates/Radpostauth/index.php:59
+#: ./plugins/RADIUS/templates/Radreply/index.php:60
+#: ./plugins/RADIUS/templates/Radusergroup/index.php:53
+msgid "previous"
 msgstr ""
 
 #: ./plugins/RADIUS/templates/Accounts/index.php:85
-#: ./plugins/RADIUS/templates/Nas/index.php:65
+#: ./plugins/RADIUS/templates/Nas/index.php:61
 #: ./plugins/RADIUS/templates/Radacct/index.php:101
 #: ./plugins/RADIUS/templates/Radcheck/index.php:62
 #: ./plugins/RADIUS/templates/Radgroupcheck/index.php:57
@@ -447,6 +423,30 @@ msgstr ""
 #: ./plugins/RADIUS/templates/Radpostauth/index.php:61
 #: ./plugins/RADIUS/templates/Radreply/index.php:62
 #: ./plugins/RADIUS/templates/Radusergroup/index.php:55
+msgid "next"
+msgstr ""
+
+#: ./plugins/RADIUS/templates/Accounts/index.php:86
+#: ./plugins/RADIUS/templates/Nas/index.php:62
+#: ./plugins/RADIUS/templates/Radacct/index.php:102
+#: ./plugins/RADIUS/templates/Radcheck/index.php:63
+#: ./plugins/RADIUS/templates/Radgroupcheck/index.php:58
+#: ./plugins/RADIUS/templates/Radgroupreply/index.php:58
+#: ./plugins/RADIUS/templates/Radpostauth/index.php:62
+#: ./plugins/RADIUS/templates/Radreply/index.php:63
+#: ./plugins/RADIUS/templates/Radusergroup/index.php:56
+msgid "last"
+msgstr ""
+
+#: ./plugins/RADIUS/templates/Accounts/index.php:89
+#: ./plugins/RADIUS/templates/Nas/index.php:65
+#: ./plugins/RADIUS/templates/Radacct/index.php:105
+#: ./plugins/RADIUS/templates/Radcheck/index.php:66
+#: ./plugins/RADIUS/templates/Radgroupcheck/index.php:61
+#: ./plugins/RADIUS/templates/Radgroupreply/index.php:61
+#: ./plugins/RADIUS/templates/Radpostauth/index.php:65
+#: ./plugins/RADIUS/templates/Radreply/index.php:66
+#: ./plugins/RADIUS/templates/Radusergroup/index.php:59
 msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
 msgstr ""
 
@@ -454,55 +454,55 @@ msgstr ""
 msgid "Delete Account"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:32
+#: ./plugins/RADIUS/templates/Accounts/view.php:39
 msgid "Customer"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:44
+#: ./plugins/RADIUS/templates/Accounts/view.php:51
 msgid "Contract"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:57
-#: ./plugins/RADIUS/templates/Accounts/view.php:106
-#: ./plugins/RADIUS/templates/Accounts/view.php:148
-#: ./plugins/RADIUS/templates/Accounts/view.php:190
-#: ./plugins/RADIUS/templates/Accounts/view.php:230
-#: ./plugins/RADIUS/templates/Accounts/view.php:278
+#: ./plugins/RADIUS/templates/Accounts/view.php:64
+#: ./plugins/RADIUS/templates/Accounts/view.php:113
+#: ./plugins/RADIUS/templates/Accounts/view.php:159
+#: ./plugins/RADIUS/templates/Accounts/view.php:205
+#: ./plugins/RADIUS/templates/Accounts/view.php:249
+#: ./plugins/RADIUS/templates/Accounts/view.php:301
 #: ./plugins/RADIUS/templates/Radacct/view.php:33
-#: ./plugins/RADIUS/templates/Radcheck/view.php:30
-#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:60
-#: ./plugins/RADIUS/templates/Radgroupreply/view.php:60
-#: ./plugins/RADIUS/templates/Radpostauth/view.php:33
+#: ./plugins/RADIUS/templates/Radcheck/view.php:41
+#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:68
+#: ./plugins/RADIUS/templates/Radgroupreply/view.php:68
+#: ./plugins/RADIUS/templates/Radpostauth/view.php:41
 #: ./plugins/RADIUS/templates/Radreply/view.php:30
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:33
 msgid "Username"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:61
+#: ./plugins/RADIUS/templates/Accounts/view.php:68
 msgid "Password"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:65
-#: ./plugins/RADIUS/templates/Nas/view.php:43
+#: ./plugins/RADIUS/templates/Accounts/view.php:72
+#: ./plugins/RADIUS/templates/Nas/view.php:62
 msgid "Type"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:69
+#: ./plugins/RADIUS/templates/Accounts/view.php:76
 msgid "Active"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:77
-#: ./plugins/RADIUS/templates/Accounts/view.php:105
-#: ./plugins/RADIUS/templates/Accounts/view.php:147
-#: ./plugins/RADIUS/templates/Accounts/view.php:189
-#: ./plugins/RADIUS/templates/Accounts/view.php:229
-#: ./plugins/RADIUS/templates/Nas/view.php:22
-#: ./plugins/RADIUS/templates/Radcheck/view.php:49
-#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:49
-#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:59
-#: ./plugins/RADIUS/templates/Radgroupreply/view.php:49
-#: ./plugins/RADIUS/templates/Radgroupreply/view.php:59
-#: ./plugins/RADIUS/templates/Radpostauth/view.php:40
+#: ./plugins/RADIUS/templates/Accounts/view.php:84
+#: ./plugins/RADIUS/templates/Accounts/view.php:112
+#: ./plugins/RADIUS/templates/Accounts/view.php:158
+#: ./plugins/RADIUS/templates/Accounts/view.php:204
+#: ./plugins/RADIUS/templates/Accounts/view.php:248
+#: ./plugins/RADIUS/templates/Nas/view.php:41
+#: ./plugins/RADIUS/templates/Radcheck/view.php:60
+#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:57
+#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:67
+#: ./plugins/RADIUS/templates/Radgroupreply/view.php:57
+#: ./plugins/RADIUS/templates/Radgroupreply/view.php:67
+#: ./plugins/RADIUS/templates/Radpostauth/view.php:48
 #: ./plugins/RADIUS/templates/Radreply/view.php:49
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:48
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:58
@@ -510,252 +510,252 @@ msgstr ""
 msgid "Id"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:81
+#: ./plugins/RADIUS/templates/Accounts/view.php:88
 msgid "Created"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:85
+#: ./plugins/RADIUS/templates/Accounts/view.php:92
 msgid "Created By"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:89
+#: ./plugins/RADIUS/templates/Accounts/view.php:96
 msgid "Modified"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:93
+#: ./plugins/RADIUS/templates/Accounts/view.php:100
 msgid "Modified By"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:100
+#: ./plugins/RADIUS/templates/Accounts/view.php:107
 msgid "Related Radcheck"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:107
-#: ./plugins/RADIUS/templates/Accounts/view.php:149
-#: ./plugins/RADIUS/templates/Radcheck/view.php:37
-#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:37
-#: ./plugins/RADIUS/templates/Radgroupreply/view.php:37
+#: ./plugins/RADIUS/templates/Accounts/view.php:114
+#: ./plugins/RADIUS/templates/Accounts/view.php:160
+#: ./plugins/RADIUS/templates/Radcheck/view.php:48
+#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:45
+#: ./plugins/RADIUS/templates/Radgroupreply/view.php:45
 #: ./plugins/RADIUS/templates/Radreply/view.php:37
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:60
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:102
 msgid "Attribute"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:108
-#: ./plugins/RADIUS/templates/Accounts/view.php:150
-#: ./plugins/RADIUS/templates/Radcheck/view.php:41
-#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:41
-#: ./plugins/RADIUS/templates/Radgroupreply/view.php:41
+#: ./plugins/RADIUS/templates/Accounts/view.php:115
+#: ./plugins/RADIUS/templates/Accounts/view.php:161
+#: ./plugins/RADIUS/templates/Radcheck/view.php:52
+#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:49
+#: ./plugins/RADIUS/templates/Radgroupreply/view.php:49
 #: ./plugins/RADIUS/templates/Radreply/view.php:41
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:61
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:103
 msgid "Op"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:109
-#: ./plugins/RADIUS/templates/Accounts/view.php:151
-#: ./plugins/RADIUS/templates/Radcheck/view.php:45
-#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:45
-#: ./plugins/RADIUS/templates/Radgroupreply/view.php:45
+#: ./plugins/RADIUS/templates/Accounts/view.php:116
+#: ./plugins/RADIUS/templates/Accounts/view.php:162
+#: ./plugins/RADIUS/templates/Radcheck/view.php:56
+#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:53
+#: ./plugins/RADIUS/templates/Radgroupreply/view.php:53
 #: ./plugins/RADIUS/templates/Radreply/view.php:45
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:62
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:104
 msgid "Value"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:142
+#: ./plugins/RADIUS/templates/Accounts/view.php:153
 msgid "Related Radreply"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:184
-#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:54
-#: ./plugins/RADIUS/templates/Radgroupreply/view.php:54
+#: ./plugins/RADIUS/templates/Accounts/view.php:199
+#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:62
+#: ./plugins/RADIUS/templates/Radgroupreply/view.php:62
 msgid "Related Radusergroup"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:191
-#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:33
-#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:61
-#: ./plugins/RADIUS/templates/Radgroupreply/view.php:33
-#: ./plugins/RADIUS/templates/Radgroupreply/view.php:61
+#: ./plugins/RADIUS/templates/Accounts/view.php:206
+#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:41
+#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:69
+#: ./plugins/RADIUS/templates/Radgroupreply/view.php:41
+#: ./plugins/RADIUS/templates/Radgroupreply/view.php:69
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:40
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:59
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:101
 msgid "Groupname"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:192
-#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:62
-#: ./plugins/RADIUS/templates/Radgroupreply/view.php:62
+#: ./plugins/RADIUS/templates/Accounts/view.php:207
+#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:70
+#: ./plugins/RADIUS/templates/Radgroupreply/view.php:70
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:44
 msgid "Priority"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:224
+#: ./plugins/RADIUS/templates/Accounts/view.php:243
 msgid "Related Radpostauth"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:231
-#: ./plugins/RADIUS/templates/Radpostauth/view.php:49
+#: ./plugins/RADIUS/templates/Accounts/view.php:250
+#: ./plugins/RADIUS/templates/Radpostauth/view.php:57
 msgid "Pass"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:232
-#: ./plugins/RADIUS/templates/Radpostauth/view.php:55
+#: ./plugins/RADIUS/templates/Accounts/view.php:251
+#: ./plugins/RADIUS/templates/Radpostauth/view.php:63
 msgid "Reply"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:233
-#: ./plugins/RADIUS/templates/Accounts/view.php:293
+#: ./plugins/RADIUS/templates/Accounts/view.php:252
+#: ./plugins/RADIUS/templates/Accounts/view.php:316
 #: ./plugins/RADIUS/templates/Radacct/view.php:141
-#: ./plugins/RADIUS/templates/Radpostauth/view.php:61
+#: ./plugins/RADIUS/templates/Radpostauth/view.php:69
 msgid "Calledstationid"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:234
-#: ./plugins/RADIUS/templates/Accounts/view.php:294
+#: ./plugins/RADIUS/templates/Accounts/view.php:253
+#: ./plugins/RADIUS/templates/Accounts/view.php:317
 #: ./plugins/RADIUS/templates/Radacct/view.php:147
-#: ./plugins/RADIUS/templates/Radpostauth/view.php:67
+#: ./plugins/RADIUS/templates/Radpostauth/view.php:75
 msgid "Callingstationid"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:235
-#: ./plugins/RADIUS/templates/Radpostauth/view.php:44
+#: ./plugins/RADIUS/templates/Accounts/view.php:254
+#: ./plugins/RADIUS/templates/Radpostauth/view.php:52
 msgid "Authdate"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:270
+#: ./plugins/RADIUS/templates/Accounts/view.php:293
 msgid "Related Radacct"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:275
+#: ./plugins/RADIUS/templates/Accounts/view.php:298
 #: ./plugins/RADIUS/templates/Radacct/view.php:60
 msgid "Radacctid"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:276
+#: ./plugins/RADIUS/templates/Accounts/view.php:299
 #: ./plugins/RADIUS/templates/Radacct/view.php:93
 msgid "Acctsessionid"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:277
+#: ./plugins/RADIUS/templates/Accounts/view.php:300
 #: ./plugins/RADIUS/templates/Radacct/view.php:99
 msgid "Acctuniqueid"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:279
+#: ./plugins/RADIUS/templates/Accounts/view.php:302
 #: ./plugins/RADIUS/templates/Radacct/view.php:105
 msgid "Realm"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:280
+#: ./plugins/RADIUS/templates/Accounts/view.php:303
 #: ./plugins/RADIUS/templates/Radacct/view.php:40
 msgid "Nasipaddress"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:281
+#: ./plugins/RADIUS/templates/Accounts/view.php:304
 #: ./plugins/RADIUS/templates/Radacct/view.php:111
 msgid "Nasportid"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:282
+#: ./plugins/RADIUS/templates/Accounts/view.php:305
 #: ./plugins/RADIUS/templates/Radacct/view.php:117
 msgid "Nasporttype"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:283
+#: ./plugins/RADIUS/templates/Accounts/view.php:306
 #: ./plugins/RADIUS/templates/Radacct/view.php:80
 msgid "Acctstarttime"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:284
+#: ./plugins/RADIUS/templates/Accounts/view.php:307
 #: ./plugins/RADIUS/templates/Radacct/view.php:84
 msgid "Acctupdatetime"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:285
+#: ./plugins/RADIUS/templates/Accounts/view.php:308
 #: ./plugins/RADIUS/templates/Radacct/view.php:88
 msgid "Acctstoptime"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:286
+#: ./plugins/RADIUS/templates/Accounts/view.php:309
 #: ./plugins/RADIUS/templates/Radacct/view.php:64
 msgid "Acctinterval"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:287
+#: ./plugins/RADIUS/templates/Accounts/view.php:310
 #: ./plugins/RADIUS/templates/Radacct/view.php:68
 msgid "Acctsessiontime"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:288
+#: ./plugins/RADIUS/templates/Accounts/view.php:311
 #: ./plugins/RADIUS/templates/Radacct/view.php:123
 msgid "Acctauthentic"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:289
+#: ./plugins/RADIUS/templates/Accounts/view.php:312
 #: ./plugins/RADIUS/templates/Radacct/view.php:129
 msgid "Connectinfo Start"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:290
+#: ./plugins/RADIUS/templates/Accounts/view.php:313
 #: ./plugins/RADIUS/templates/Radacct/view.php:135
 msgid "Connectinfo Stop"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:291
+#: ./plugins/RADIUS/templates/Accounts/view.php:314
 #: ./plugins/RADIUS/templates/Radacct/view.php:72
 msgid "Acctinputoctets"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:292
+#: ./plugins/RADIUS/templates/Accounts/view.php:315
 #: ./plugins/RADIUS/templates/Radacct/view.php:76
 msgid "Acctoutputoctets"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:295
+#: ./plugins/RADIUS/templates/Accounts/view.php:318
 #: ./plugins/RADIUS/templates/Radacct/view.php:153
 msgid "Acctterminatecause"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:296
+#: ./plugins/RADIUS/templates/Accounts/view.php:319
 #: ./plugins/RADIUS/templates/Radacct/view.php:159
 msgid "Servicetype"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:297
+#: ./plugins/RADIUS/templates/Accounts/view.php:320
 #: ./plugins/RADIUS/templates/Radacct/view.php:165
 msgid "Framedprotocol"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:298
+#: ./plugins/RADIUS/templates/Accounts/view.php:321
 #: ./plugins/RADIUS/templates/Radacct/view.php:44
 msgid "Framedipaddress"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:299
+#: ./plugins/RADIUS/templates/Accounts/view.php:322
 #: ./plugins/RADIUS/templates/Radacct/view.php:48
 msgid "Framedipv6address"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:300
+#: ./plugins/RADIUS/templates/Accounts/view.php:323
 #: ./plugins/RADIUS/templates/Radacct/view.php:52
 msgid "Framedipv6prefix"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:301
+#: ./plugins/RADIUS/templates/Accounts/view.php:324
 #: ./plugins/RADIUS/templates/Radacct/view.php:171
 msgid "Framedinterfaceid"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Accounts/view.php:302
+#: ./plugins/RADIUS/templates/Accounts/view.php:325
 #: ./plugins/RADIUS/templates/Radacct/view.php:56
 msgid "Delegatedipv6prefix"
 msgstr ""
 
 #: ./plugins/RADIUS/templates/Nas/add.php:11
-#: ./plugins/RADIUS/templates/Nas/edit.php:16
-#: ./plugins/RADIUS/templates/Nas/view.php:13
+#: ./plugins/RADIUS/templates/Nas/edit.php:19
+#: ./plugins/RADIUS/templates/Nas/view.php:25
 msgid "List Nas"
 msgstr ""
 
@@ -763,13 +763,13 @@ msgstr ""
 msgid "Add Nas"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Nas/edit.php:23
-#: ./plugins/RADIUS/templates/Nas/view.php:11
+#: ./plugins/RADIUS/templates/Nas/edit.php:26
+#: ./plugins/RADIUS/templates/Nas/view.php:12
 msgid "Edit Nas"
 msgstr ""
 
 #: ./plugins/RADIUS/templates/Nas/index.php:8
-#: ./plugins/RADIUS/templates/Nas/view.php:14
+#: ./plugins/RADIUS/templates/Nas/view.php:30
 msgid "New Nas"
 msgstr ""
 
@@ -777,40 +777,40 @@ msgstr ""
 msgid "Nas"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Nas/view.php:12
+#: ./plugins/RADIUS/templates/Nas/view.php:17
 msgid "Delete Nas"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Nas/view.php:26
+#: ./plugins/RADIUS/templates/Nas/view.php:45
 msgid "Ports"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Nas/view.php:31
+#: ./plugins/RADIUS/templates/Nas/view.php:50
 msgid "Nasname"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Nas/view.php:37
+#: ./plugins/RADIUS/templates/Nas/view.php:56
 msgid "Shortname"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Nas/view.php:49
+#: ./plugins/RADIUS/templates/Nas/view.php:68
 msgid "Secret"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Nas/view.php:55
+#: ./plugins/RADIUS/templates/Nas/view.php:74
 msgid "Server"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Nas/view.php:61
+#: ./plugins/RADIUS/templates/Nas/view.php:80
 msgid "Community"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Nas/view.php:67
+#: ./plugins/RADIUS/templates/Nas/view.php:86
 msgid "Description"
 msgstr ""
 
 #: ./plugins/RADIUS/templates/Radacct/add.php:11
-#: ./plugins/RADIUS/templates/Radacct/edit.php:16
+#: ./plugins/RADIUS/templates/Radacct/edit.php:20
 #: ./plugins/RADIUS/templates/Radacct/view.php:24
 msgid "List Radacct"
 msgstr ""
@@ -819,17 +819,17 @@ msgstr ""
 msgid "Add Radacct"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radacct/edit.php:23
+#: ./plugins/RADIUS/templates/Radacct/edit.php:30
 #: ./plugins/RADIUS/templates/Radacct/view.php:12
 msgid "Edit Radacct"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radacct/index.php:8
+#: ./plugins/RADIUS/templates/Radacct/index.php:9
 #: ./plugins/RADIUS/templates/Radacct/view.php:25
 msgid "New Radacct"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radacct/index.php:9
+#: ./plugins/RADIUS/templates/Radacct/index.php:13
 msgid "Radacct"
 msgstr ""
 
@@ -837,27 +837,27 @@ msgstr ""
 msgid "Delete Radacct"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radcheck/add.php:11
-#: ./plugins/RADIUS/templates/Radcheck/edit.php:16
-#: ./plugins/RADIUS/templates/Radcheck/view.php:21
+#: ./plugins/RADIUS/templates/Radcheck/add.php:12
+#: ./plugins/RADIUS/templates/Radcheck/edit.php:20
+#: ./plugins/RADIUS/templates/Radcheck/view.php:25
 msgid "List Radcheck"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radcheck/add.php:18
+#: ./plugins/RADIUS/templates/Radcheck/add.php:22
 msgid "Add Radcheck"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radcheck/edit.php:23
+#: ./plugins/RADIUS/templates/Radcheck/edit.php:30
 #: ./plugins/RADIUS/templates/Radcheck/view.php:12
 msgid "Edit Radcheck"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radcheck/index.php:8
-#: ./plugins/RADIUS/templates/Radcheck/view.php:22
+#: ./plugins/RADIUS/templates/Radcheck/index.php:9
+#: ./plugins/RADIUS/templates/Radcheck/view.php:30
 msgid "New Radcheck"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radcheck/index.php:9
+#: ./plugins/RADIUS/templates/Radcheck/index.php:13
 msgid "Radcheck"
 msgstr ""
 
@@ -865,27 +865,27 @@ msgstr ""
 msgid "Delete Radcheck"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radgroupcheck/add.php:11
-#: ./plugins/RADIUS/templates/Radgroupcheck/edit.php:16
-#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:24
+#: ./plugins/RADIUS/templates/Radgroupcheck/add.php:12
+#: ./plugins/RADIUS/templates/Radgroupcheck/edit.php:20
+#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:25
 msgid "List Radgroupcheck"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radgroupcheck/add.php:18
+#: ./plugins/RADIUS/templates/Radgroupcheck/add.php:22
 msgid "Add Radgroupcheck"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radgroupcheck/edit.php:23
+#: ./plugins/RADIUS/templates/Radgroupcheck/edit.php:30
 #: ./plugins/RADIUS/templates/Radgroupcheck/view.php:12
 msgid "Edit Radgroupcheck"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radgroupcheck/index.php:8
-#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:25
+#: ./plugins/RADIUS/templates/Radgroupcheck/index.php:9
+#: ./plugins/RADIUS/templates/Radgroupcheck/view.php:30
 msgid "New Radgroupcheck"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radgroupcheck/index.php:9
+#: ./plugins/RADIUS/templates/Radgroupcheck/index.php:13
 msgid "Radgroupcheck"
 msgstr ""
 
@@ -893,27 +893,27 @@ msgstr ""
 msgid "Delete Radgroupcheck"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radgroupreply/add.php:11
-#: ./plugins/RADIUS/templates/Radgroupreply/edit.php:16
-#: ./plugins/RADIUS/templates/Radgroupreply/view.php:24
+#: ./plugins/RADIUS/templates/Radgroupreply/add.php:12
+#: ./plugins/RADIUS/templates/Radgroupreply/edit.php:20
+#: ./plugins/RADIUS/templates/Radgroupreply/view.php:25
 msgid "List Radgroupreply"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radgroupreply/add.php:18
+#: ./plugins/RADIUS/templates/Radgroupreply/add.php:22
 msgid "Add Radgroupreply"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radgroupreply/edit.php:23
+#: ./plugins/RADIUS/templates/Radgroupreply/edit.php:30
 #: ./plugins/RADIUS/templates/Radgroupreply/view.php:12
 msgid "Edit Radgroupreply"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radgroupreply/index.php:8
-#: ./plugins/RADIUS/templates/Radgroupreply/view.php:25
+#: ./plugins/RADIUS/templates/Radgroupreply/index.php:9
+#: ./plugins/RADIUS/templates/Radgroupreply/view.php:30
 msgid "New Radgroupreply"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radgroupreply/index.php:9
+#: ./plugins/RADIUS/templates/Radgroupreply/index.php:13
 msgid "Radgroupreply"
 msgstr ""
 
@@ -921,27 +921,27 @@ msgstr ""
 msgid "Delete Radgroupreply"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radpostauth/add.php:11
-#: ./plugins/RADIUS/templates/Radpostauth/edit.php:16
-#: ./plugins/RADIUS/templates/Radpostauth/view.php:24
+#: ./plugins/RADIUS/templates/Radpostauth/add.php:12
+#: ./plugins/RADIUS/templates/Radpostauth/edit.php:20
+#: ./plugins/RADIUS/templates/Radpostauth/view.php:25
 msgid "List Radpostauth"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radpostauth/add.php:18
+#: ./plugins/RADIUS/templates/Radpostauth/add.php:22
 msgid "Add Radpostauth"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radpostauth/edit.php:23
+#: ./plugins/RADIUS/templates/Radpostauth/edit.php:30
 #: ./plugins/RADIUS/templates/Radpostauth/view.php:12
 msgid "Edit Radpostauth"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radpostauth/index.php:8
-#: ./plugins/RADIUS/templates/Radpostauth/view.php:25
+#: ./plugins/RADIUS/templates/Radpostauth/index.php:9
+#: ./plugins/RADIUS/templates/Radpostauth/view.php:30
 msgid "New Radpostauth"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radpostauth/index.php:9
+#: ./plugins/RADIUS/templates/Radpostauth/index.php:13
 msgid "Radpostauth"
 msgstr ""
 
@@ -949,27 +949,27 @@ msgstr ""
 msgid "Delete Radpostauth"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radreply/add.php:11
-#: ./plugins/RADIUS/templates/Radreply/edit.php:16
+#: ./plugins/RADIUS/templates/Radreply/add.php:12
+#: ./plugins/RADIUS/templates/Radreply/edit.php:20
 #: ./plugins/RADIUS/templates/Radreply/view.php:21
 msgid "List Radreply"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radreply/add.php:18
+#: ./plugins/RADIUS/templates/Radreply/add.php:22
 msgid "Add Radreply"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radreply/edit.php:23
+#: ./plugins/RADIUS/templates/Radreply/edit.php:30
 #: ./plugins/RADIUS/templates/Radreply/view.php:12
 msgid "Edit Radreply"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radreply/index.php:8
+#: ./plugins/RADIUS/templates/Radreply/index.php:9
 #: ./plugins/RADIUS/templates/Radreply/view.php:22
 msgid "New Radreply"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radreply/index.php:9
+#: ./plugins/RADIUS/templates/Radreply/index.php:13
 msgid "Radreply"
 msgstr ""
 
@@ -977,27 +977,27 @@ msgstr ""
 msgid "Delete Radreply"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radusergroup/add.php:11
-#: ./plugins/RADIUS/templates/Radusergroup/edit.php:16
+#: ./plugins/RADIUS/templates/Radusergroup/add.php:12
+#: ./plugins/RADIUS/templates/Radusergroup/edit.php:20
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:24
 msgid "List Radusergroup"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radusergroup/add.php:18
+#: ./plugins/RADIUS/templates/Radusergroup/add.php:22
 msgid "Add Radusergroup"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radusergroup/edit.php:23
+#: ./plugins/RADIUS/templates/Radusergroup/edit.php:30
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:12
 msgid "Edit Radusergroup"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radusergroup/index.php:8
+#: ./plugins/RADIUS/templates/Radusergroup/index.php:9
 #: ./plugins/RADIUS/templates/Radusergroup/view.php:25
 msgid "New Radusergroup"
 msgstr ""
 
-#: ./plugins/RADIUS/templates/Radusergroup/index.php:9
+#: ./plugins/RADIUS/templates/Radusergroup/index.php:13
 msgid "Radusergroup"
 msgstr ""
 

@@ -53,11 +53,11 @@ class RadpostauthController extends AppController
         if ($this->request->is('post')) {
             $radpostauth = $this->Radpostauth->patchEntity($radpostauth, $this->request->getData());
             if ($this->Radpostauth->save($radpostauth)) {
-                $this->Flash->success(__('The radpostauth has been saved.'));
+                $this->Flash->success(__d('radius', 'The radpostauth has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The radpostauth could not be saved. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The radpostauth could not be saved. Please, try again.'));
         }
         $accounts = $this->Radpostauth->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
         $this->set(compact('radpostauth', 'accounts'));
@@ -78,11 +78,11 @@ class RadpostauthController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $radpostauth = $this->Radpostauth->patchEntity($radpostauth, $this->request->getData());
             if ($this->Radpostauth->save($radpostauth)) {
-                $this->Flash->success(__('The radpostauth has been saved.'));
+                $this->Flash->success(__d('radius', 'The radpostauth has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The radpostauth could not be saved. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The radpostauth could not be saved. Please, try again.'));
         }
         $accounts = $this->Radpostauth->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
         $this->set(compact('radpostauth', 'accounts'));
@@ -100,9 +100,9 @@ class RadpostauthController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $radpostauth = $this->Radpostauth->get($id);
         if ($this->Radpostauth->delete($radpostauth)) {
-            $this->Flash->success(__('The radpostauth has been deleted.'));
+            $this->Flash->success(__d('radius', 'The radpostauth has been deleted.'));
         } else {
-            $this->Flash->error(__('The radpostauth could not be deleted. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The radpostauth could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);

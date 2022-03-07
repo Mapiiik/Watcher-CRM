@@ -5,8 +5,12 @@
  */
 ?>
 <div class="addresses index content">
-    <?= $this->Html->link(__('New Address'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
-    <h3><?= __('Addresses') ?></h3>
+    <?= $this->Html->link(
+        __d('ruian', 'New Address'),
+        ['action' => 'add'],
+        ['class' => 'button float-right win-link']
+    ) ?>
+    <h3><?= __d('ruian', 'Addresses') ?></h3>
     <div class="table-responsive">
         <table>
             <thead>
@@ -30,7 +34,7 @@
                     <th><?= $this->Paginator->sort('plati_od') ?></th>
                     <th><?= $this->Paginator->sort('geometry') ?></th>
                     <th><?= $this->Paginator->sort('geometry_jtsk') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
+                    <th class="actions"><?= __d('ruian', 'Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -56,16 +60,16 @@
                     <td><?= h($address->geometry) ?></td>
                     <td><?= h($address->geometry_jtsk) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $address->kod_adm]) ?>
+                        <?= $this->Html->link(__d('ruian', 'View'), ['action' => 'view', $address->kod_adm]) ?>
                         <?= $this->Html->link(
-                            __('Edit'),
+                            __d('ruian', 'Edit'),
                             ['action' => 'edit', $address->kod_adm],
                             ['class' => 'win-link']
                         ) ?>
                         <?= $this->Form->postLink(
-                            __('Delete'),
+                            __d('ruian', 'Delete'),
                             ['action' => 'delete', $address->kod_adm],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $address->kod_adm)]
+                            ['confirm' => __d('ruian', 'Are you sure you want to delete # {0}?', $address->kod_adm)]
                         ) ?>
                     </td>
                 </tr>
@@ -75,14 +79,14 @@
     </div>
     <div class="paginator">
         <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
+            <?= $this->Paginator->first('<< ' . __d('ruian', 'first')) ?>
+            <?= $this->Paginator->prev('< ' . __d('ruian', 'previous')) ?>
             <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
+            <?= $this->Paginator->next(__d('ruian', 'next') . ' >') ?>
+            <?= $this->Paginator->last(__d('ruian', 'last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __d('ruian', 'Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
         ) ?></p>
     </div>
 </div>

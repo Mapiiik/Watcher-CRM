@@ -56,11 +56,11 @@ class AddressesController extends AppController
         if ($this->request->is('post')) {
             $address = $this->Addresses->patchEntity($address, $this->request->getData());
             if ($this->Addresses->save($address)) {
-                $this->Flash->success(__('The address has been saved.'));
+                $this->Flash->success(__d('ruian', 'The address has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The address could not be saved. Please, try again.'));
+            $this->Flash->error(__d('ruian', 'The address could not be saved. Please, try again.'));
         }
         $this->set(compact('address'));
     }
@@ -80,11 +80,11 @@ class AddressesController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $address = $this->Addresses->patchEntity($address, $this->request->getData());
             if ($this->Addresses->save($address)) {
-                $this->Flash->success(__('The address has been saved.'));
+                $this->Flash->success(__d('ruian', 'The address has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The address could not be saved. Please, try again.'));
+            $this->Flash->error(__d('ruian', 'The address could not be saved. Please, try again.'));
         }
         $this->set(compact('address'));
     }
@@ -101,9 +101,9 @@ class AddressesController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $address = $this->Addresses->get($id);
         if ($this->Addresses->delete($address)) {
-            $this->Flash->success(__('The address has been deleted.'));
+            $this->Flash->success(__d('ruian', 'The address has been deleted.'));
         } else {
-            $this->Flash->error(__('The address could not be deleted. Please, try again.'));
+            $this->Flash->error(__d('ruian', 'The address could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);

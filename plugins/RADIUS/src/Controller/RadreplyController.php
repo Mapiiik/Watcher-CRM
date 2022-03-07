@@ -53,11 +53,11 @@ class RadreplyController extends AppController
         if ($this->request->is('post')) {
             $radreply = $this->Radreply->patchEntity($radreply, $this->request->getData());
             if ($this->Radreply->save($radreply)) {
-                $this->Flash->success(__('The radreply has been saved.'));
+                $this->Flash->success(__d('radius', 'The radreply has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The radreply could not be saved. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The radreply could not be saved. Please, try again.'));
         }
         $accounts = $this->Radreply->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
         $this->set(compact('radreply', 'accounts'));
@@ -78,11 +78,11 @@ class RadreplyController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $radreply = $this->Radreply->patchEntity($radreply, $this->request->getData());
             if ($this->Radreply->save($radreply)) {
-                $this->Flash->success(__('The radreply has been saved.'));
+                $this->Flash->success(__d('radius', 'The radreply has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The radreply could not be saved. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The radreply could not be saved. Please, try again.'));
         }
         $accounts = $this->Radreply->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
         $this->set(compact('radreply', 'accounts'));
@@ -100,9 +100,9 @@ class RadreplyController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $radreply = $this->Radreply->get($id);
         if ($this->Radreply->delete($radreply)) {
-            $this->Flash->success(__('The radreply has been deleted.'));
+            $this->Flash->success(__d('radius', 'The radreply has been deleted.'));
         } else {
-            $this->Flash->error(__('The radreply could not be deleted. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The radreply could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);

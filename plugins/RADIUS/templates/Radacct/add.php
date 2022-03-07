@@ -7,15 +7,15 @@
 <div class="row">
     <aside class="column">
         <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('List Radacct'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <h4 class="heading"><?= __d('radius', 'Actions') ?></h4>
+            <?= $this->Html->link(__d('radius', 'List Radacct'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
         <div class="radacct form content">
             <?= $this->Form->create($radacct) ?>
             <fieldset>
-                <legend><?= __('Add Radacct') ?></legend>
+                <legend><?= __d('radius', 'Add Radacct') ?></legend>
                 <?php
                     echo $this->Form->control('acctsessionid');
                     echo $this->Form->control('acctuniqueid');
@@ -46,7 +46,7 @@
                     echo $this->Form->control('delegatedipv6prefix');
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__d('radius', 'Submit')) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

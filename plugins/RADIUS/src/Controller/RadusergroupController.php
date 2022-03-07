@@ -53,11 +53,11 @@ class RadusergroupController extends AppController
         if ($this->request->is('post')) {
             $radusergroup = $this->Radusergroup->patchEntity($radusergroup, $this->request->getData());
             if ($this->Radusergroup->save($radusergroup)) {
-                $this->Flash->success(__('The radusergroup has been saved.'));
+                $this->Flash->success(__d('radius', 'The radusergroup has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The radusergroup could not be saved. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The radusergroup could not be saved. Please, try again.'));
         }
         $accounts = $this->Radusergroup->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
         $this->set(compact('radusergroup', 'accounts'));
@@ -78,11 +78,11 @@ class RadusergroupController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $radusergroup = $this->Radusergroup->patchEntity($radusergroup, $this->request->getData());
             if ($this->Radusergroup->save($radusergroup)) {
-                $this->Flash->success(__('The radusergroup has been saved.'));
+                $this->Flash->success(__d('radius', 'The radusergroup has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The radusergroup could not be saved. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The radusergroup could not be saved. Please, try again.'));
         }
         $accounts = $this->Radusergroup->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
         $this->set(compact('radusergroup', 'accounts'));
@@ -100,9 +100,9 @@ class RadusergroupController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $radusergroup = $this->Radusergroup->get($id);
         if ($this->Radusergroup->delete($radusergroup)) {
-            $this->Flash->success(__('The radusergroup has been deleted.'));
+            $this->Flash->success(__d('radius', 'The radusergroup has been deleted.'));
         } else {
-            $this->Flash->error(__('The radusergroup could not be deleted. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The radusergroup could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);

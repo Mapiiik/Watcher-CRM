@@ -7,15 +7,15 @@
 <div class="row">
     <aside class="column">
         <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('List Nas'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <h4 class="heading"><?= __d('radius', 'Actions') ?></h4>
+            <?= $this->Html->link(__d('radius', 'List Nas'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
         <div class="Nas form content">
             <?= $this->Form->create($nas) ?>
             <fieldset>
-                <legend><?= __('Add Nas') ?></legend>
+                <legend><?= __d('radius', 'Add Nas') ?></legend>
                 <?php
                     echo $this->Form->control('nasname');
                     echo $this->Form->control('shortname');
@@ -27,7 +27,7 @@
                     echo $this->Form->control('description');
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__d('radius', 'Submit')) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

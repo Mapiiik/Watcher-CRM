@@ -92,11 +92,11 @@ class AccountsController extends AppController
             $account = $this->Accounts->patchEntity($account, ['radreply' => $this->autoRadreplyData($account)]);
 
             if ($this->Accounts->save($account)) {
-                $this->Flash->success(__('The account has been saved.'));
+                $this->Flash->success(__d('radius', 'The account has been saved.'));
 
                 return $this->redirect(['action' => 'view', $account->id]);
             }
-            $this->Flash->error(__('The account could not be saved. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The account could not be saved. Please, try again.'));
         }
         $customers = $this->Accounts->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $contracts = $this->Accounts->Contracts->find('list', ['order' => 'number']);
@@ -159,11 +159,11 @@ class AccountsController extends AppController
             $account = $this->Accounts->patchEntity($account, ['radcheck' => $this->autoRadcheckData($account)]);
 
             if ($this->Accounts->save($account)) {
-                $this->Flash->success(__('The account has been saved.'));
+                $this->Flash->success(__d('radius', 'The account has been saved.'));
 
                 return $this->redirect(['action' => 'view', $account->id]);
             }
-            $this->Flash->error(__('The account could not be saved. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The account could not be saved. Please, try again.'));
         }
         $customers = $this->Accounts->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $contracts = $this->Accounts->Contracts->find('list', ['order' => 'number']);
@@ -191,9 +191,9 @@ class AccountsController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $account = $this->Accounts->get($id);
         if ($this->Accounts->delete($account)) {
-            $this->Flash->success(__('The account has been deleted.'));
+            $this->Flash->success(__d('radius', 'The account has been deleted.'));
         } else {
-            $this->Flash->error(__('The account could not be deleted. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The account could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);

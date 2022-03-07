@@ -8,20 +8,20 @@
 <div class="row">
     <aside class="column">
         <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
+            <h4 class="heading"><?= __d('bookkeeping_pohoda', 'Actions') ?></h4>
             <?= $this->Form->postLink(
-                __('Delete'),
+                __d('bookkeeping_pohoda', 'Delete'),
                 ['action' => 'delete', $invoice->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $invoice->id), 'class' => 'side-nav-item']
+                ['confirm' => __d('bookkeeping_pohoda', 'Are you sure you want to delete # {0}?', $invoice->id), 'class' => 'side-nav-item']
             ) ?>
-            <?= $this->Html->link(__('List Invoices'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__d('bookkeeping_pohoda', 'List Invoices'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
         <div class="invoices form content">
             <?= $this->Form->create($invoice) ?>
             <fieldset>
-                <legend><?= __('Edit Invoice') ?></legend>
+                <legend><?= __d('bookkeeping_pohoda', 'Edit Invoice') ?></legend>
                 <?php
                     echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
                     echo $this->Form->control('number');
@@ -36,7 +36,7 @@
                     echo $this->Form->control('email_sent');
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__d('bookkeeping_pohoda', 'Submit')) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

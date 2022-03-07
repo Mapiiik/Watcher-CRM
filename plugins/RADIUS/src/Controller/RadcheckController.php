@@ -53,11 +53,11 @@ class RadcheckController extends AppController
         if ($this->request->is('post')) {
             $radcheck = $this->Radcheck->patchEntity($radcheck, $this->request->getData());
             if ($this->Radcheck->save($radcheck)) {
-                $this->Flash->success(__('The radcheck has been saved.'));
+                $this->Flash->success(__d('radius', 'The radcheck has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The radcheck could not be saved. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The radcheck could not be saved. Please, try again.'));
         }
         $accounts = $this->Radcheck->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
         $this->set(compact('radcheck', 'accounts'));
@@ -78,11 +78,11 @@ class RadcheckController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $radcheck = $this->Radcheck->patchEntity($radcheck, $this->request->getData());
             if ($this->Radcheck->save($radcheck)) {
-                $this->Flash->success(__('The radcheck has been saved.'));
+                $this->Flash->success(__d('radius', 'The radcheck has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The radcheck could not be saved. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The radcheck could not be saved. Please, try again.'));
         }
         $accounts = $this->Radcheck->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
         $this->set(compact('radcheck', 'accounts'));
@@ -100,9 +100,9 @@ class RadcheckController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $radcheck = $this->Radcheck->get($id);
         if ($this->Radcheck->delete($radcheck)) {
-            $this->Flash->success(__('The radcheck has been deleted.'));
+            $this->Flash->success(__d('radius', 'The radcheck has been deleted.'));
         } else {
-            $this->Flash->error(__('The radcheck could not be deleted. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The radcheck could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);

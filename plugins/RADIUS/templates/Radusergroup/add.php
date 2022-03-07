@@ -7,22 +7,26 @@
 <div class="row">
     <aside class="column">
         <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('List Radusergroup'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <h4 class="heading"><?= __d('radius', 'Actions') ?></h4>
+            <?= $this->Html->link(
+                __d('radius', 'List Radusergroup'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item']
+            ) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
         <div class="radusergroup form content">
             <?= $this->Form->create($radusergroup) ?>
             <fieldset>
-                <legend><?= __('Add Radusergroup') ?></legend>
+                <legend><?= __d('radius', 'Add Radusergroup') ?></legend>
                 <?php
                     echo $this->Form->control('username', ['options' => $accounts]);
                     echo $this->Form->control('groupname');
                     echo $this->Form->control('priority');
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__d('radius', 'Submit')) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

@@ -53,11 +53,11 @@ class RadacctController extends AppController
         if ($this->request->is('post')) {
             $radacct = $this->Radacct->patchEntity($radacct, $this->request->getData());
             if ($this->Radacct->save($radacct)) {
-                $this->Flash->success(__('The radacct has been saved.'));
+                $this->Flash->success(__d('radius', 'The radacct has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The radacct could not be saved. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The radacct could not be saved. Please, try again.'));
         }
         $accounts = $this->Radacct->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
         $this->set(compact('radacct', 'accounts'));
@@ -78,11 +78,11 @@ class RadacctController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $radacct = $this->Radacct->patchEntity($radacct, $this->request->getData());
             if ($this->Radacct->save($radacct)) {
-                $this->Flash->success(__('The radacct has been saved.'));
+                $this->Flash->success(__d('radius', 'The radacct has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The radacct could not be saved. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The radacct could not be saved. Please, try again.'));
         }
         $accounts = $this->Radacct->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
         $this->set(compact('radacct', 'accounts'));
@@ -100,9 +100,9 @@ class RadacctController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $radacct = $this->Radacct->get($id);
         if ($this->Radacct->delete($radacct)) {
-            $this->Flash->success(__('The radacct has been deleted.'));
+            $this->Flash->success(__d('radius', 'The radacct has been deleted.'));
         } else {
-            $this->Flash->error(__('The radacct could not be deleted. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The radacct could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);

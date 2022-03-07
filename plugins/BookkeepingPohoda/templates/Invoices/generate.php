@@ -7,7 +7,7 @@
 <div class="row">
     <aside class="column">
         <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
+            <h4 class="heading"><?= __d('bookkeeping_pohoda', 'Actions') ?></h4>
         </div>
     </aside>
     <div class="column-responsive column-90">
@@ -20,30 +20,30 @@
                 ],
             ]) ?>
             <fieldset>
-                <legend><?= __('Generate Invoices') ?></legend>
+                <legend><?= __d('bookkeeping_pohoda', 'Generate Invoices') ?></legend>
                 <div class="row">
                     <div class="column-responsive">
                     <?php
                         echo $this->Form->control('tax_rate_id', [
-                            'label' => __('Tax Rate'),
+                            'label' => __d('bookkeeping_pohoda', 'Tax Rate'),
                             'options' => $tax_rates,
                             'empty' => true,
                             'required' => true,
                         ]);
                         echo $this->Form->control('invoiced_month', [
-                            'label' => __('Invoiced Month'),
+                            'label' => __d('bookkeeping_pohoda', 'Invoiced Month'),
                             'type' => 'month',
                             'empty' => true,
                             'required' => true,
                         ]);
                         echo $this->Form->control('output_format', [
-                            'label' => __('Output Format'),
+                            'label' => __d('bookkeeping_pohoda', 'Output Format'),
                             'options' => ['xml' => 'Pohoda XML', 'dbf' => 'dBase DBF'],
                             'empty' => true,
                             'required' => true,
                         ]);
                         echo $this->Form->control('csv_for_verification', [
-                            'label' => __('CSV for verification'),
+                            'label' => __d('bookkeeping_pohoda', 'CSV for verification'),
                             'type' => 'file',
                             'empty' => true,
                         ]);
@@ -53,7 +53,7 @@
                     </div>
                 </div>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__d('bookkeeping_pohoda', 'Submit')) ?>
             <?= $this->Form->end() ?>
         </div>
         
@@ -63,7 +63,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th><?= __('Customer') ?></th>
+                        <th><?= __d('bookkeeping_pohoda', 'Customer') ?></th>
                         <th>CRM</th>
                         <th>CSV</th>
                     </tr>
@@ -89,8 +89,8 @@
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th><?= __('Name') ?></th>
-                                            <th><?= __('Price') ?></th>
+                                            <th><?= __d('bookkeeping_pohoda', 'Name') ?></th>
+                                            <th><?= __d('bookkeeping_pohoda', 'Price') ?></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -102,7 +102,7 @@
                                         <?php endforeach; ?>
                                     </tbody>
                                 </table>
-                                <?= __('Total') . ': ' . $this->Number->currency($customer_comparision['crm']['total']) ?>
+                                <?= __d('bookkeeping_pohoda', 'Total') . ': ' . $this->Number->currency($customer_comparision['crm']['total']) ?>
                             <?php endif; ?>
                         </td>
                         <td>
@@ -110,8 +110,8 @@
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th><?= __('Name') ?></th>
-                                            <th><?= __('Price') ?></th>
+                                            <th><?= __d('bookkeeping_pohoda', 'Name') ?></th>
+                                            <th><?= __d('bookkeeping_pohoda', 'Price') ?></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -123,7 +123,7 @@
                                         <?php endforeach; ?>
                                     </tbody>
                                 </table>
-                                <?= __('Total') . ': ' . $this->Number->currency($customer_comparision['csv']['total']) ?>
+                                <?= __d('bookkeeping_pohoda', 'Total') . ': ' . $this->Number->currency($customer_comparision['csv']['total']) ?>
                             <?php endif; ?>
                         </td>
                     </tr>

@@ -7,22 +7,22 @@
 <div class="row">
     <aside class="column">
         <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
+            <h4 class="heading"><?= __d('radius', 'Actions') ?></h4>
             <?= $this->Html->link(
-                __('Edit Radacct'),
+                __d('radius', 'Edit Radacct'),
                 ['action' => 'edit', $radacct->radacctid],
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->Form->postLink(
-                __('Delete Radacct'),
+                __d('radius', 'Delete Radacct'),
                 ['action' => 'delete', $radacct->radacctid],
                 [
-                    'confirm' => __('Are you sure you want to delete # {0}?', $radacct->radacctid),
+                    'confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radacct->radacctid),
                     'class' => 'side-nav-item',
                 ]
             ) ?>
-            <?= $this->Html->link(__('List Radacct'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Radacct'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__d('radius', 'List Radacct'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__d('radius', 'New Radacct'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
@@ -30,145 +30,145 @@
             <h3><?= h($radacct->radacctid) ?></h3>
             <table>
                 <tr>
-                    <th><?= __('Username') ?></th>
+                    <th><?= __d('radius', 'Username') ?></th>
                     <td><?= $radacct->has('account') ? $this->Html->link(
                         $radacct->account->username,
                         ['controller' => 'Accounts', 'action' => 'view', $radacct->account->id]
                     ) : h($radacct->username) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Nasipaddress') ?></th>
+                    <th><?= __d('radius', 'Nasipaddress') ?></th>
                     <td><?= h($radacct->nasipaddress) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Framedipaddress') ?></th>
+                    <th><?= __d('radius', 'Framedipaddress') ?></th>
                     <td><?= h($radacct->framedipaddress) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Framedipv6address') ?></th>
+                    <th><?= __d('radius', 'Framedipv6address') ?></th>
                     <td><?= h($radacct->framedipv6address) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Framedipv6prefix') ?></th>
+                    <th><?= __d('radius', 'Framedipv6prefix') ?></th>
                     <td><?= h($radacct->framedipv6prefix) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Delegatedipv6prefix') ?></th>
+                    <th><?= __d('radius', 'Delegatedipv6prefix') ?></th>
                     <td><?= h($radacct->delegatedipv6prefix) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Radacctid') ?></th>
+                    <th><?= __d('radius', 'Radacctid') ?></th>
                     <td><?= $this->Number->format($radacct->radacctid) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Acctinterval') ?></th>
+                    <th><?= __d('radius', 'Acctinterval') ?></th>
                     <td><?= $this->Number->format($radacct->acctinterval) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Acctsessiontime') ?></th>
+                    <th><?= __d('radius', 'Acctsessiontime') ?></th>
                     <td><?= $this->Number->format($radacct->acctsessiontime) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Acctinputoctets') ?></th>
+                    <th><?= __d('radius', 'Acctinputoctets') ?></th>
                     <td><?= $this->Number->format($radacct->acctinputoctets) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Acctoutputoctets') ?></th>
+                    <th><?= __d('radius', 'Acctoutputoctets') ?></th>
                     <td><?= $this->Number->format($radacct->acctoutputoctets) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Acctstarttime') ?></th>
+                    <th><?= __d('radius', 'Acctstarttime') ?></th>
                     <td><?= h($radacct->acctstarttime) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Acctupdatetime') ?></th>
+                    <th><?= __d('radius', 'Acctupdatetime') ?></th>
                     <td><?= h($radacct->acctupdatetime) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Acctstoptime') ?></th>
+                    <th><?= __d('radius', 'Acctstoptime') ?></th>
                     <td><?= h($radacct->acctstoptime) ?></td>
                 </tr>
             </table>
             <div class="text">
-                <strong><?= __('Acctsessionid') ?></strong>
+                <strong><?= __d('radius', 'Acctsessionid') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($radacct->acctsessionid)); ?>
                 </blockquote>
             </div>
             <div class="text">
-                <strong><?= __('Acctuniqueid') ?></strong>
+                <strong><?= __d('radius', 'Acctuniqueid') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($radacct->acctuniqueid)); ?>
                 </blockquote>
             </div>
             <div class="text">
-                <strong><?= __('Realm') ?></strong>
+                <strong><?= __d('radius', 'Realm') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($radacct->realm)); ?>
                 </blockquote>
             </div>
             <div class="text">
-                <strong><?= __('Nasportid') ?></strong>
+                <strong><?= __d('radius', 'Nasportid') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($radacct->nasportid)); ?>
                 </blockquote>
             </div>
             <div class="text">
-                <strong><?= __('Nasporttype') ?></strong>
+                <strong><?= __d('radius', 'Nasporttype') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($radacct->nasporttype)); ?>
                 </blockquote>
             </div>
             <div class="text">
-                <strong><?= __('Acctauthentic') ?></strong>
+                <strong><?= __d('radius', 'Acctauthentic') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($radacct->acctauthentic)); ?>
                 </blockquote>
             </div>
             <div class="text">
-                <strong><?= __('Connectinfo Start') ?></strong>
+                <strong><?= __d('radius', 'Connectinfo Start') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($radacct->connectinfo_start)); ?>
                 </blockquote>
             </div>
             <div class="text">
-                <strong><?= __('Connectinfo Stop') ?></strong>
+                <strong><?= __d('radius', 'Connectinfo Stop') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($radacct->connectinfo_stop)); ?>
                 </blockquote>
             </div>
             <div class="text">
-                <strong><?= __('Calledstationid') ?></strong>
+                <strong><?= __d('radius', 'Calledstationid') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($radacct->calledstationid)); ?>
                 </blockquote>
             </div>
             <div class="text">
-                <strong><?= __('Callingstationid') ?></strong>
+                <strong><?= __d('radius', 'Callingstationid') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($radacct->callingstationid)); ?>
                 </blockquote>
             </div>
             <div class="text">
-                <strong><?= __('Acctterminatecause') ?></strong>
+                <strong><?= __d('radius', 'Acctterminatecause') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($radacct->acctterminatecause)); ?>
                 </blockquote>
             </div>
             <div class="text">
-                <strong><?= __('Servicetype') ?></strong>
+                <strong><?= __d('radius', 'Servicetype') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($radacct->servicetype)); ?>
                 </blockquote>
             </div>
             <div class="text">
-                <strong><?= __('Framedprotocol') ?></strong>
+                <strong><?= __d('radius', 'Framedprotocol') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($radacct->framedprotocol)); ?>
                 </blockquote>
             </div>
             <div class="text">
-                <strong><?= __('Framedinterfaceid') ?></strong>
+                <strong><?= __d('radius', 'Framedinterfaceid') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($radacct->framedinterfaceid)); ?>
                 </blockquote>

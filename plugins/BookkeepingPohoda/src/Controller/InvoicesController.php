@@ -86,11 +86,11 @@ class InvoicesController extends AppController
         if ($this->request->is('post')) {
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->getData());
             if ($this->Invoices->save($invoice)) {
-                $this->Flash->success(__('The invoice has been saved.'));
+                $this->Flash->success(__d('bookkeeping_pohoda', 'The invoice has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
+            $this->Flash->error(__d('bookkeeping_pohoda', 'The invoice could not be saved. Please, try again.'));
         }
         $customers = $this->Invoices->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $this->set(compact('invoice', 'customers'));
@@ -111,11 +111,11 @@ class InvoicesController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->getData());
             if ($this->Invoices->save($invoice)) {
-                $this->Flash->success(__('The invoice has been saved.'));
+                $this->Flash->success(__d('bookkeeping_pohoda', 'The invoice has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
+            $this->Flash->error(__d('bookkeeping_pohoda', 'The invoice could not be saved. Please, try again.'));
         }
         $customers = $this->Invoices->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $this->set(compact('invoice', 'customers'));
@@ -133,9 +133,9 @@ class InvoicesController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $invoice = $this->Invoices->get($id);
         if ($this->Invoices->delete($invoice)) {
-            $this->Flash->success(__('The invoice has been deleted.'));
+            $this->Flash->success(__d('bookkeeping_pohoda', 'The invoice has been deleted.'));
         } else {
-            $this->Flash->error(__('The invoice could not be deleted. Please, try again.'));
+            $this->Flash->error(__d('bookkeeping_pohoda', 'The invoice could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);
@@ -363,7 +363,7 @@ class InvoicesController extends AppController
                         $invoice->creation_date = $invoiced_month->lastOfMonth();
                         $invoice->due_date = $invoiced_month->lastOfMonth()->addDays(10);
                         if ($contract->invoice_text) {
-                            $invoice->text = __($contract->invoice_text, [
+                            $invoice->text = __d('bookkeeping_pohoda', $contract->invoice_text, [
                                 'number' => $contract->number,
                                 'month' => $invoiced_month->i18nFormat('MM/yyyy'),
                             ]);
@@ -467,12 +467,17 @@ class InvoicesController extends AppController
                         $this->Invoices->save($invoice);
 
                         if ($invoice->hasErrors()) {
-                            $this->Flash->error(__('Invoice {0} could not be loaded.', $invoice->number));
+                            $this->Flash->error(__d(
+                                'bookkeeping_pohoda',
+                                'Invoice {0} could not be loaded.',
+                                $invoice->number
+                            ));
                         }
                     }
 
                     if ($record_number == $record_count) {
-                        $this->Flash->success(__(
+                        $this->Flash->success(__d(
+                            'bookkeeping_pohoda',
                             'Successfully imported {0} invoices. Created {1}, modified {2} and skipped {3} records.',
                             $record_count,
                             $created,

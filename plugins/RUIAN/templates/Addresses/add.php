@@ -7,15 +7,19 @@
 <div class="row">
     <aside class="column">
         <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('List Addresses'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <h4 class="heading"><?= __d('ruian', 'Actions') ?></h4>
+            <?= $this->Html->link(
+                __d('ruian', 'List Addresses'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item']
+            ) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
         <div class="addresses form content">
             <?= $this->Form->create($address) ?>
             <fieldset>
-                <legend><?= __('Add Address') ?></legend>
+                <legend><?= __d('ruian', 'Add Address') ?></legend>
                 <?php
                     echo $this->Form->control('obec_kod');
                     echo $this->Form->control('obec_nazev');
@@ -37,7 +41,7 @@
                     echo $this->Form->control('geometry_jtsk');
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__d('ruian', 'Submit')) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

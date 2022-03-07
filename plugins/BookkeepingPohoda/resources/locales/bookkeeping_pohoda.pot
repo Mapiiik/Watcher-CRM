@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-03-07 12:17+0000\n"
+"POT-Creation-Date: 2022-03-07 14:24+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -44,7 +44,7 @@ msgstr ""
 msgid "Invoice {0} could not be loaded."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:475
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:479
 msgid "Successfully imported {0} invoices. Created {1}, modified {2} and skipped {3} records."
 msgstr ""
 
@@ -52,7 +52,7 @@ msgstr ""
 #: ./plugins/BookkeepingPohoda/templates/Invoices/edit.php:11
 #: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:10
 #: ./plugins/BookkeepingPohoda/templates/Invoices/import_from_d_b_f.php:9
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:31
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:35
 #: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:10
 msgid "Actions"
 msgstr ""
@@ -75,12 +75,12 @@ msgid "Submit"
 msgstr ""
 
 #: ./plugins/BookkeepingPohoda/templates/Invoices/edit.php:13
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:70
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:74
 msgid "Delete"
 msgstr ""
 
 #: ./plugins/BookkeepingPohoda/templates/Invoices/edit.php:15
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:72
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:76
 #: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:19
 msgid "Are you sure you want to delete # {0}?"
 msgstr ""
@@ -133,7 +133,7 @@ msgid "Total"
 msgstr ""
 
 #: ./plugins/BookkeepingPohoda/templates/Invoices/import_from_d_b_f.php:22
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:10
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:11
 msgid "Import Invoices from DBF"
 msgstr ""
 
@@ -146,39 +146,39 @@ msgstr ""
 msgid "New Invoice"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:11
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:15
 msgid "Invoices"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:59
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:63
 msgid "Download"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:63
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:67
 msgid "View"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:65
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:69
 msgid "Edit"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:82
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:86
 msgid "first"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:83
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:87
 msgid "previous"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:85
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:89
 msgid "next"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:86
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:90
 msgid "last"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:89
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:93
 msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
 msgstr ""
 

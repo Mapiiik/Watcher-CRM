@@ -5,8 +5,8 @@
  */
 ?>
 <div class="Nas index content">
-    <?= $this->Html->link(__('New Nas'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
-    <h3><?= __('Nas') ?></h3>
+    <?= $this->Html->link(__d('radius', 'New Nas'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
+    <h3><?= __d('radius', 'Nas') ?></h3>
     <div class="table-responsive">
         <table>
             <thead>
@@ -20,7 +20,7 @@
                     <th><?= $this->Paginator->sort('server') ?></th>
                     <th><?= $this->Paginator->sort('community') ?></th>
                     <th><?= $this->Paginator->sort('description') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
+                    <th class="actions"><?= __d('radius', 'Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -36,16 +36,16 @@
                     <td><?= h($nas->community) ?></td>
                     <td><?= h($nas->description) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $nas->id]) ?>
+                        <?= $this->Html->link(__d('radius', 'View'), ['action' => 'view', $nas->id]) ?>
                         <?= $this->Html->link(
-                            __('Edit'),
+                            __d('radius', 'Edit'),
                             ['action' => 'edit', $nas->id],
                             ['class' => 'win-link']
                         ) ?>
                         <?= $this->Form->postLink(
-                            __('Delete'),
+                            __d('radius', 'Delete'),
                             ['action' => 'delete', $nas->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $nas->id)]
+                            ['confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $nas->id)]
                         ) ?>
                     </td>
                 </tr>
@@ -55,14 +55,14 @@
     </div>
     <div class="paginator">
         <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
+            <?= $this->Paginator->first('<< ' . __d('radius', 'first')) ?>
+            <?= $this->Paginator->prev('< ' . __d('radius', 'previous')) ?>
             <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
+            <?= $this->Paginator->next(__d('radius', 'next') . ' >') ?>
+            <?= $this->Paginator->last(__d('radius', 'last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __d('radius', 'Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
         ) ?></p>
     </div>
 </div>

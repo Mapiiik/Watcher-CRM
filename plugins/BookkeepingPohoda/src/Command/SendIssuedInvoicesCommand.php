@@ -113,14 +113,14 @@ class SendIssuedInvoicesCommand extends Command
                 try {
                     $mailer->deliver($message);
                     Log::write('debug', 'Email was successfully sent.');
-                    $io->info(__('Email was successfully sent.'));
+                    $io->info(__d('bookkeeping_pohoda', 'Email was successfully sent.'));
 
                     // save the date of submission to the database
                     $issued_invoice->email_sent = new FrozenTime();
                     $issued_invoices_table->save($issued_invoice);
                 } catch (\Exception $e) {
                     Log::write('warning', 'The email cannot be sent. (' . $e->getMessage() . ')');
-                    $io->abort(__('The email cannot be sent.'));
+                    $io->abort(__d('bookkeeping_pohoda', 'The email cannot be sent.'));
                 }
 
                 // clean mailer

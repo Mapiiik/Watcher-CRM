@@ -7,19 +7,30 @@
 <div class="row">
     <aside class="column">
         <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
+            <h4 class="heading"><?= __d('radius', 'Actions') ?></h4>
             <?= $this->Html->link(
-                __('Edit Radcheck'),
+                __d('radius', 'Edit Radcheck'),
                 ['action' => 'edit', $radcheck->id],
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->Form->postLink(
-                __('Delete Radcheck'),
+                __d('radius', 'Delete Radcheck'),
                 ['action' => 'delete', $radcheck->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $radcheck->id), 'class' => 'side-nav-item']
+                [
+                    'confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radcheck->id),
+                    'class' => 'side-nav-item',
+                ]
             ) ?>
-            <?= $this->Html->link(__('List Radcheck'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Radcheck'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(
+                __d('radius', 'List Radcheck'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->Html->link(
+                __d('radius', 'New Radcheck'),
+                ['action' => 'add'],
+                ['class' => 'side-nav-item']
+            ) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
@@ -27,26 +38,26 @@
             <h3><?= h($radcheck->username) ?></h3>
             <table>
                 <tr>
-                    <th><?= __('Username') ?></th>
+                    <th><?= __d('radius', 'Username') ?></th>
                     <td><?= $radcheck->has('account') ? $this->Html->link(
                         $radcheck->account->username,
                         ['controller' => 'Accounts', 'action' => 'view', $radcheck->account->id]
                     ) : $radcheck->username ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Attribute') ?></th>
+                    <th><?= __d('radius', 'Attribute') ?></th>
                     <td><?= h($radcheck->attribute) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Op') ?></th>
+                    <th><?= __d('radius', 'Op') ?></th>
                     <td><?= h($radcheck->op) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Value') ?></th>
+                    <th><?= __d('radius', 'Value') ?></th>
                     <td><?= h($radcheck->value) ?></td>
                 </tr>
                  <tr>
-                    <th><?= __('Id') ?></th>
+                    <th><?= __d('radius', 'Id') ?></th>
                     <td><?= $this->Number->format($radcheck->id) ?></td>
                 </tr>
             </table>
