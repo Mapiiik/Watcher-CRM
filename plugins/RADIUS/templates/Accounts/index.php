@@ -15,17 +15,17 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('customer_id') ?></th>
-                    <th><?= $this->Paginator->sort('contract_id') ?></th>
-                    <th><?= $this->Paginator->sort('username') ?></th>
-                    <th><?= $this->Paginator->sort('password') ?></th>
-                    <th><?= $this->Paginator->sort('active') ?></th>
-                    <th><?= $this->Paginator->sort('type') ?></th>
-                    <th><?= $this->Paginator->sort('created') ?></th>
-                    <th><?= $this->Paginator->sort('created_by') ?></th>
-                    <th><?= $this->Paginator->sort('modified') ?></th>
-                    <th><?= $this->Paginator->sort('modified_by') ?></th>
+                    <th><?= $this->Paginator->sort('id', __d('radius', 'Id')) ?></th>
+                    <th><?= $this->Paginator->sort('customer_id', __d('radius', 'Customer')) ?></th>
+                    <th><?= $this->Paginator->sort('contract_id', __d('radius', 'Contract')) ?></th>
+                    <th><?= $this->Paginator->sort('username', __d('radius', 'Username')) ?></th>
+                    <th><?= $this->Paginator->sort('password', __d('radius', 'Password')) ?></th>
+                    <th><?= $this->Paginator->sort('active', __d('radius', 'Active')) ?></th>
+                    <th><?= $this->Paginator->sort('type', __d('radius', 'Type')) ?></th>
+                    <th><?= $this->Paginator->sort('created', __d('radius', 'Created')) ?></th>
+                    <th><?= $this->Paginator->sort('created_by', __d('radius', 'Created By')) ?></th>
+                    <th><?= $this->Paginator->sort('modified', __d('radius', 'Modified')) ?></th>
+                    <th><?= $this->Paginator->sort('modified_by', __d('radius', 'Modified By')) ?></th>
                     <th class="actions"><?= __d('radius', 'Actions') ?></th>
                 </tr>
             </thead>
