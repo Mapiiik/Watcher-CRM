@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace RUIAN\Model\Entity;
+namespace Ruian\Model\Entity;
 
 use Cake\ORM\Entity;
 

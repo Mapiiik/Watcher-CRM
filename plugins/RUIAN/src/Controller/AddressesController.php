@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace RUIAN\Controller;
+namespace Ruian\Controller;
 
 /**
  * Addresses Controller
  *
- * @property \RUIAN\Model\Table\AddressesTable $Addresses
- * @method \RUIAN\Model\Entity\Address[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @property \Ruian\Model\Table\AddressesTable $Addresses
+ * @method \Ruian\Model\Entity\Address[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class AddressesController extends AppController
 {

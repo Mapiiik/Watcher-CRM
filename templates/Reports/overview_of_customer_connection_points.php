@@ -61,7 +61,7 @@
                             <td><?= $connection_point->vhcn ? __('Yes') : __('No'); ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(__('View'), [
-                                    'plugin' => 'RUIAN',
+                                    'plugin' => 'Ruian',
                                     'controller' => 'Addresses',
                                     'action' => 'view',
                                     $connection_point->ruian_gid,

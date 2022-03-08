@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace RUIAN;
+namespace Ruian;
 
 use Cake\Core\BasePlugin;
 use Cake\Core\PluginApplicationInterface;
@@ -38,7 +38,7 @@ class Plugin extends BasePlugin
     public function routes(RouteBuilder $routes): void
     {
         $routes->plugin(
-            'RUIAN',
+            'Ruian',
             ['path' => '/ruian'],
             function (RouteBuilder $builder) {
                 $builder->connect('/', ['controller' => 'Addresses', 'action' => 'index']);

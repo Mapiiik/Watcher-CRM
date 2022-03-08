@@ -97,7 +97,7 @@ $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
             ) ?>
             <?= $this->AuthLink->link(
                 __('RUIAN'),
-                ['controller' => 'Addresses', 'action' => 'index', 'plugin' => 'RUIAN'],
+                ['controller' => 'Addresses', 'action' => 'index', 'plugin' => 'Ruian'],
                 ['class' => 'button button-small' . $buttonSelected(['Addresses'])]
             ) ?>
             <?= $this->AuthLink->link(

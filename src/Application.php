@@ -45,7 +45,7 @@ class Application extends BaseApplication
     {
         $this->addPlugin('BookkeepingPohoda');
 
-        $this->addPlugin('RUIAN');
+        $this->addPlugin('Ruian');
 
         $this->addPlugin('Radius');
 

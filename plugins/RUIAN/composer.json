@@ -12,12 +12,12 @@
     },
     "autoload": {
         "psr-4": {
-            "RUIAN\\": "src/"
+            "Ruian\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "RUIAN\\Test\\": "tests/",
+            "Ruian\\Test\\": "tests/",
             "Cake\\Test\\": "vendor/cakephp/cakephp/tests/"
         }
     }

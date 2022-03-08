@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace RUIAN\Test\TestCase\Model\Table;
+namespace Ruian\Test\TestCase\Model\Table;
 
 use Cake\TestSuite\TestCase;
-use RUIAN\Model\Table\AddressesTable;
+use Ruian\Model\Table\AddressesTable;
 
 /**
- * RUIAN\Model\Table\AddressesTable Test Case
+ * Ruian\Model\Table\AddressesTable Test Case
  */
 class AddressesTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \RUIAN\Model\Table\AddressesTable
+     * @var \Ruian\Model\Table\AddressesTable
      */
     protected $Addresses;
 
@@ -24,7 +24,7 @@ class AddressesTableTest extends TestCase
      * @var array
      */
     protected $fixtures = [
-        'plugin.RUIAN.Addresses',
+        'plugin.Ruian.Addresses',
     ];
 
     /**
