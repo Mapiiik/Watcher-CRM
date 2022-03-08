@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace RADIUS\Model\Table;
+namespace Radius\Model\Table;
 
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -9,19 +9,19 @@ use Cake\Validation\Validator;
 /**
  * Radgroupcheck Model
  *
- * @method \RADIUS\Model\Entity\Radgroupcheck newEmptyEntity()
- * @method \RADIUS\Model\Entity\Radgroupcheck newEntity(array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Radgroupcheck[] newEntities(array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Radgroupcheck get($primaryKey, $options = [])
- * @method \RADIUS\Model\Entity\Radgroupcheck findOrCreate($search, ?callable $callback = null, $options = [])
- * @method \RADIUS\Model\Entity\Radgroupcheck patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Radgroupcheck[] patchEntities(iterable $entities, array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Radgroupcheck|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \RADIUS\Model\Entity\Radgroupcheck saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \RADIUS\Model\Entity\Radgroupcheck[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\Radgroupcheck[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\Radgroupcheck[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\Radgroupcheck[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radgroupcheck newEmptyEntity()
+ * @method \Radius\Model\Entity\Radgroupcheck newEntity(array $data, array $options = [])
+ * @method \Radius\Model\Entity\Radgroupcheck[] newEntities(array $data, array $options = [])
+ * @method \Radius\Model\Entity\Radgroupcheck get($primaryKey, $options = [])
+ * @method \Radius\Model\Entity\Radgroupcheck findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \Radius\Model\Entity\Radgroupcheck patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \Radius\Model\Entity\Radgroupcheck[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \Radius\Model\Entity\Radgroupcheck|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Radius\Model\Entity\Radgroupcheck saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Radius\Model\Entity\Radgroupcheck[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radgroupcheck[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radgroupcheck[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radgroupcheck[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
 class RadgroupcheckTable extends Table
 {
@@ -43,7 +43,7 @@ class RadgroupcheckTable extends Table
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
 
-        $this->hasMany('RADIUS.Radusergroup', [
+        $this->hasMany('Radius.Radusergroup', [
             'foreignKey' => 'groupname',
             'bindingKey' => 'groupname',
         ]);

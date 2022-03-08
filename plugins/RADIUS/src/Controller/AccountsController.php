@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace RADIUS\Controller;
+namespace Radius\Controller;
 
 /**
  * Accounts Controller
  *
- * @property \RADIUS\Model\Table\AccountsTable $Accounts
- * @method \RADIUS\Model\Entity\Account[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @property \Radius\Model\Table\AccountsTable $Accounts
+ * @method \Radius\Model\Entity\Account[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class AccountsController extends AppController
 {
@@ -202,13 +202,13 @@ class AccountsController extends AppController
     /**
      * generate data for radcheck table for customer
      *
-     * @param \RADIUS\Model\Entity\Account $account RADIUS account entity
+     * @param \Radius\Model\Entity\Account $account RADIUS account entity
      * @return array
      */
-    private function autoRadcheckData(\RADIUS\Model\Entity\Account $account): array
+    private function autoRadcheckData(\Radius\Model\Entity\Account $account): array
     {
         $radcheck = [];
-        $radcheck[] = $this->getTableLocator()->get('RADIUS.Radcheck')
+        $radcheck[] = $this->getTableLocator()->get('Radius.Radcheck')
             ->findOrCreate([
                 'username' => $account->username,
                 'attribute' => 'Cleartext-Password',
@@ -217,7 +217,7 @@ class AccountsController extends AppController
             ])
             ->toArray();
         if (!$account->active) {
-            $radcheck[] = $this->getTableLocator()->get('RADIUS.Radcheck')
+            $radcheck[] = $this->getTableLocator()->get('Radius.Radcheck')
             ->findOrCreate([
                 'username' => $account->username,
                 'attribute' => 'Auth-Type',
@@ -233,10 +233,10 @@ class AccountsController extends AppController
     /**
      * generate data for radreply table for customer
      *
-     * @param \RADIUS\Model\Entity\Account $account RADIUS account entity
+     * @param \Radius\Model\Entity\Account $account RADIUS account entity
      * @return array
      */
-    private function autoRadreplyData(\RADIUS\Model\Entity\Account $account): array
+    private function autoRadreplyData(\Radius\Model\Entity\Account $account): array
     {
         $contract = $this->getTableLocator()->get('Contracts')->get($account->contract_id, [
             'contain' => ['Ips'],
@@ -248,7 +248,7 @@ class AccountsController extends AppController
 
             if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
                 if (filter_var($mask, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0, 'max_range' => 32]])) {
-                    $radreply[] = $this->getTableLocator()->get('RADIUS.Radreply')
+                    $radreply[] = $this->getTableLocator()->get('Radius.Radreply')
                         ->findOrCreate([
                             'username' => $account->username,
                             'attribute' => 'Framed-Route',
@@ -257,7 +257,7 @@ class AccountsController extends AppController
                         ])
                         ->toArray();
                 } else {
-                    $radreply[] = $this->getTableLocator()->get('RADIUS.Radreply')
+                    $radreply[] = $this->getTableLocator()->get('Radius.Radreply')
                         ->findOrCreate([
                             'username' => $account->username,
                             'attribute' => 'Framed-IP-Address',
@@ -269,7 +269,7 @@ class AccountsController extends AppController
             }
             if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
                 if (filter_var($mask, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0, 'max_range' => 128]])) {
-                    $radreply[] = $this->getTableLocator()->get('RADIUS.Radreply')
+                    $radreply[] = $this->getTableLocator()->get('Radius.Radreply')
                         ->findOrCreate([
                             'username' => $account->username,
                             'attribute' => 'Framed-IPv6-Prefix',
@@ -278,7 +278,7 @@ class AccountsController extends AppController
                         ])
                         ->toArray();
                 } else {
-                    $radreply[] = $this->getTableLocator()->get('RADIUS.Radreply')
+                    $radreply[] = $this->getTableLocator()->get('Radius.Radreply')
                         ->findOrCreate([
                             'username' => $account->username,
                             'attribute' => 'Framed-IPv6-Address',

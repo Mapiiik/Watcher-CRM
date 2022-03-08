@@ -47,7 +47,7 @@ class Application extends BaseApplication
 
         $this->addPlugin('RUIAN');
 
-        $this->addPlugin('RADIUS');
+        $this->addPlugin('Radius');
 
         // Call parent to load bootstrap from files.
         parent::bootstrap();

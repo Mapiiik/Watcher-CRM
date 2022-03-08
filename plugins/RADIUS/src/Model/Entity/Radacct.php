@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace RADIUS\Model\Entity;
+namespace Radius\Model\Entity;
 
 use Cake\ORM\Entity;
 
@@ -37,7 +37,7 @@ use Cake\ORM\Entity;
  * @property string|null $framedinterfaceid
  * @property string|null $delegatedipv6prefix
  *
- * @property \RADIUS\Model\Entity\Account $account
+ * @property \Radius\Model\Entity\Account $account
  */
 class Radacct extends Entity
 {

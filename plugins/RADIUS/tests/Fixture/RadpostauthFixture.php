@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace RADIUS\Test\Fixture;
+namespace Radius\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
 

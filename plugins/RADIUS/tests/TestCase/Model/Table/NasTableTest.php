@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace RADIUS\Test\TestCase\Model\Table;
+namespace Radius\Test\TestCase\Model\Table;
 
 use Cake\TestSuite\TestCase;
-use RADIUS\Model\Table\NasTable;
+use Radius\Model\Table\NasTable;
 
 /**
- * RADIUS\Model\Table\NasTable Test Case
+ * Radius\Model\Table\NasTable Test Case
  */
 class NasTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \RADIUS\Model\Table\NasTable
+     * @var \Radius\Model\Table\NasTable
      */
     protected $Nas;
 
@@ -24,7 +24,7 @@ class NasTableTest extends TestCase
      * @var array
      */
     protected $fixtures = [
-        'plugin.RADIUS.Nas',
+        'plugin.Radius.Nas',
     ];
 
     /**

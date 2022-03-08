@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace RADIUS\Controller;
+namespace Radius\Controller;
 
 /**
  * Radgroupreply Controller
  *
- * @property \RADIUS\Model\Table\RadgroupreplyTable $Radgroupreply
- * @method \RADIUS\Model\Entity\Radgroupreply[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @property \Radius\Model\Table\RadgroupreplyTable $Radgroupreply
+ * @method \Radius\Model\Entity\Radgroupreply[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class RadgroupreplyController extends AppController
 {

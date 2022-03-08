@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace RADIUS\Model\Table;
+namespace Radius\Model\Table;
 
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -12,19 +12,19 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
  * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
- * @method \RADIUS\Model\Entity\Account newEmptyEntity()
- * @method \RADIUS\Model\Entity\Account newEntity(array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Account[] newEntities(array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Account get($primaryKey, $options = [])
- * @method \RADIUS\Model\Entity\Account findOrCreate($search, ?callable $callback = null, $options = [])
- * @method \RADIUS\Model\Entity\Account patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Account[] patchEntities(iterable $entities, array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Account|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \RADIUS\Model\Entity\Account saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \RADIUS\Model\Entity\Account[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\Account[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\Account[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\Account[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Account newEmptyEntity()
+ * @method \Radius\Model\Entity\Account newEntity(array $data, array $options = [])
+ * @method \Radius\Model\Entity\Account[] newEntities(array $data, array $options = [])
+ * @method \Radius\Model\Entity\Account get($primaryKey, $options = [])
+ * @method \Radius\Model\Entity\Account findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \Radius\Model\Entity\Account patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \Radius\Model\Entity\Account[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \Radius\Model\Entity\Account|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Radius\Model\Entity\Account saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Radius\Model\Entity\Account[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Account[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Account[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Account[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class AccountsTable extends Table
@@ -55,29 +55,29 @@ class AccountsTable extends Table
             'foreignKey' => 'contract_id',
             'strategy' => 'select',
         ]);
-        $this->hasMany('RADIUS.Radcheck', [
+        $this->hasMany('Radius.Radcheck', [
             'foreignKey' => 'username',
             'bindingKey' => 'username',
             'dependent' => true,
             'saveStrategy' => 'replace',
         ]);
-        $this->hasMany('RADIUS.Radreply', [
+        $this->hasMany('Radius.Radreply', [
             'foreignKey' => 'username',
             'bindingKey' => 'username',
             'dependent' => true,
             'saveStrategy' => 'replace',
         ]);
-        $this->HasMany('RADIUS.Radusergroup', [
+        $this->HasMany('Radius.Radusergroup', [
             'foreignKey' => 'username',
             'bindingKey' => 'username',
             'dependent' => true,
             'saveStrategy' => 'replace',
         ]);
-        $this->hasMany('RADIUS.Radpostauth', [
+        $this->hasMany('Radius.Radpostauth', [
             'foreignKey' => 'username',
             'bindingKey' => 'username',
         ]);
-        $this->hasMany('RADIUS.Radacct', [
+        $this->hasMany('Radius.Radacct', [
             'foreignKey' => 'username',
             'bindingKey' => 'username',
         ]);

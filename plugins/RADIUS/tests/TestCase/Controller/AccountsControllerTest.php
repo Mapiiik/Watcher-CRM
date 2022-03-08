@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace RADIUS\Test\TestCase\Controller;
+namespace Radius\Test\TestCase\Controller;
 
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
 /**
- * RADIUS\Controller\AccountsController Test Case
+ * Radius\Controller\AccountsController Test Case
  *
- * @uses \RADIUS\Controller\AccountsController
+ * @uses \Radius\Controller\AccountsController
  */
 class AccountsControllerTest extends TestCase
 {
@@ -21,7 +21,7 @@ class AccountsControllerTest extends TestCase
      * @var array
      */
     protected $fixtures = [
-        'plugin.RADIUS.Accounts',
+        'plugin.Radius.Accounts',
     ];
 
     /**

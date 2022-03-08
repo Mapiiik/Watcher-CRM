@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace RADIUS\Model\Entity;
+namespace Radius\Model\Entity;
 
 use Cake\ORM\Entity;
 

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace RADIUS\Model\Table;
+namespace Radius\Model\Table;
 
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -10,20 +10,20 @@ use Cake\Validation\Validator;
 /**
  * Radacct Model
  *
- * @property \RADIUS\Model\Table\AccountsTable&\Cake\ORM\Association\BelongsTo $Accounts
- * @method \RADIUS\Model\Entity\Radacct newEmptyEntity()
- * @method \RADIUS\Model\Entity\Radacct newEntity(array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Radacct[] newEntities(array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Radacct get($primaryKey, $options = [])
- * @method \RADIUS\Model\Entity\Radacct findOrCreate($search, ?callable $callback = null, $options = [])
- * @method \RADIUS\Model\Entity\Radacct patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Radacct[] patchEntities(iterable $entities, array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Radacct|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \RADIUS\Model\Entity\Radacct saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \RADIUS\Model\Entity\Radacct[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\Radacct[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\Radacct[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\Radacct[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @property \Radius\Model\Table\AccountsTable&\Cake\ORM\Association\BelongsTo $Accounts
+ * @method \Radius\Model\Entity\Radacct newEmptyEntity()
+ * @method \Radius\Model\Entity\Radacct newEntity(array $data, array $options = [])
+ * @method \Radius\Model\Entity\Radacct[] newEntities(array $data, array $options = [])
+ * @method \Radius\Model\Entity\Radacct get($primaryKey, $options = [])
+ * @method \Radius\Model\Entity\Radacct findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \Radius\Model\Entity\Radacct patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \Radius\Model\Entity\Radacct[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \Radius\Model\Entity\Radacct|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Radius\Model\Entity\Radacct saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Radius\Model\Entity\Radacct[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radacct[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radacct[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radacct[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
 class RadacctTable extends Table
 {
@@ -45,7 +45,7 @@ class RadacctTable extends Table
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
 
-        $this->belongsTo('RADIUS.Accounts', [
+        $this->belongsTo('Radius.Accounts', [
             'foreignKey' => 'username',
             'bindingKey' => 'username',
         ]);

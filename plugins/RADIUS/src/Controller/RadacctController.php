@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace RADIUS\Controller;
+namespace Radius\Controller;
 
 /**
  * Radacct Controller
  *
- * @property \RADIUS\Model\Table\RadacctTable $Radacct
- * @method \RADIUS\Model\Entity\Radacct[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @property \Radius\Model\Table\RadacctTable $Radacct
+ * @method \Radius\Model\Entity\Radacct[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class RadacctController extends AppController
 {

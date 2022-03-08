@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace RADIUS;
+namespace Radius;
 
 use Cake\Core\BasePlugin;
 use Cake\Core\PluginApplicationInterface;
@@ -38,7 +38,7 @@ class Plugin extends BasePlugin
     public function routes(RouteBuilder $routes): void
     {
         $routes->plugin(
-            'RADIUS',
+            'Radius',
             ['path' => '/radius'],
             function (RouteBuilder $builder) {
                 $builder->connect('/', ['controller' => 'Accounts', 'action' => 'index']);

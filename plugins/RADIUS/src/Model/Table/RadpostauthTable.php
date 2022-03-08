@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace RADIUS\Model\Table;
+namespace Radius\Model\Table;
 
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -10,20 +10,20 @@ use Cake\Validation\Validator;
 /**
  * Radpostauth Model
  *
- * @property \RADIUS\Model\Table\AccountsTable&\Cake\ORM\Association\BelongsTo $Accounts
- * @method \RADIUS\Model\Entity\Radpostauth newEmptyEntity()
- * @method \RADIUS\Model\Entity\Radpostauth newEntity(array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Radpostauth[] newEntities(array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Radpostauth get($primaryKey, $options = [])
- * @method \RADIUS\Model\Entity\Radpostauth findOrCreate($search, ?callable $callback = null, $options = [])
- * @method \RADIUS\Model\Entity\Radpostauth patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Radpostauth[] patchEntities(iterable $entities, array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Radpostauth|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \RADIUS\Model\Entity\Radpostauth saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \RADIUS\Model\Entity\Radpostauth[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\Radpostauth[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\Radpostauth[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\Radpostauth[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @property \Radius\Model\Table\AccountsTable&\Cake\ORM\Association\BelongsTo $Accounts
+ * @method \Radius\Model\Entity\Radpostauth newEmptyEntity()
+ * @method \Radius\Model\Entity\Radpostauth newEntity(array $data, array $options = [])
+ * @method \Radius\Model\Entity\Radpostauth[] newEntities(array $data, array $options = [])
+ * @method \Radius\Model\Entity\Radpostauth get($primaryKey, $options = [])
+ * @method \Radius\Model\Entity\Radpostauth findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \Radius\Model\Entity\Radpostauth patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \Radius\Model\Entity\Radpostauth[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \Radius\Model\Entity\Radpostauth|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Radius\Model\Entity\Radpostauth saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Radius\Model\Entity\Radpostauth[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radpostauth[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radpostauth[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radpostauth[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
 class RadpostauthTable extends Table
 {
@@ -45,7 +45,7 @@ class RadpostauthTable extends Table
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
 
-        $this->belongsTo('RADIUS.Accounts', [
+        $this->belongsTo('Radius.Accounts', [
             'foreignKey' => 'username',
             'bindingKey' => 'username',
         ]);

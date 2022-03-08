@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace RADIUS\Model\Table;
+namespace Radius\Model\Table;
 
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -10,20 +10,20 @@ use Cake\Validation\Validator;
 /**
  * Radusergroup Model
  *
- * @property \RADIUS\Model\Table\AccountsTable&\Cake\ORM\Association\BelongsTo $Accounts
- * @method \RADIUS\Model\Entity\Radusergroup newEmptyEntity()
- * @method \RADIUS\Model\Entity\Radusergroup newEntity(array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Radusergroup[] newEntities(array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Radusergroup get($primaryKey, $options = [])
- * @method \RADIUS\Model\Entity\Radusergroup findOrCreate($search, ?callable $callback = null, $options = [])
- * @method \RADIUS\Model\Entity\Radusergroup patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Radusergroup[] patchEntities(iterable $entities, array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Radusergroup|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \RADIUS\Model\Entity\Radusergroup saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \RADIUS\Model\Entity\Radusergroup[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\Radusergroup[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\Radusergroup[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\Radusergroup[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @property \Radius\Model\Table\AccountsTable&\Cake\ORM\Association\BelongsTo $Accounts
+ * @method \Radius\Model\Entity\Radusergroup newEmptyEntity()
+ * @method \Radius\Model\Entity\Radusergroup newEntity(array $data, array $options = [])
+ * @method \Radius\Model\Entity\Radusergroup[] newEntities(array $data, array $options = [])
+ * @method \Radius\Model\Entity\Radusergroup get($primaryKey, $options = [])
+ * @method \Radius\Model\Entity\Radusergroup findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \Radius\Model\Entity\Radusergroup patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \Radius\Model\Entity\Radusergroup[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \Radius\Model\Entity\Radusergroup|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Radius\Model\Entity\Radusergroup saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Radius\Model\Entity\Radusergroup[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radusergroup[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radusergroup[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radusergroup[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
 class RadusergroupTable extends Table
 {
@@ -45,15 +45,15 @@ class RadusergroupTable extends Table
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
 
-        $this->belongsTo('RADIUS.Accounts', [
+        $this->belongsTo('Radius.Accounts', [
             'foreignKey' => 'username',
             'bindingKey' => 'username',
         ]);
-        $this->hasMany('RADIUS.Radgroupcheck', [
+        $this->hasMany('Radius.Radgroupcheck', [
             'foreignKey' => 'groupname',
             'bindingKey' => 'groupname',
         ]);
-        $this->hasMany('RADIUS.Radgroupreply', [
+        $this->hasMany('Radius.Radgroupreply', [
             'foreignKey' => 'groupname',
             'bindingKey' => 'groupname',
         ]);

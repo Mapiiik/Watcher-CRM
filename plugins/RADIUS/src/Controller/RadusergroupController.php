@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace RADIUS\Controller;
+namespace Radius\Controller;
 
 /**
  * Radusergroup Controller
  *
- * @property \RADIUS\Model\Table\RadusergroupTable $Radusergroup
- * @method \RADIUS\Model\Entity\Radusergroup[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @property \Radius\Model\Table\RadusergroupTable $Radusergroup
+ * @method \Radius\Model\Entity\Radusergroup[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class RadusergroupController extends AppController
 {

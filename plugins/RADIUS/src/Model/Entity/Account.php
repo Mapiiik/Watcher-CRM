@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace RADIUS\Model\Entity;
+namespace Radius\Model\Entity;
 
 use Cake\ORM\Entity;
 
@@ -22,11 +22,11 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Contract $contract
- * @property \RADIUS\Model\Entity\Radcheck[] $radcheck
- * @property \RADIUS\Model\Entity\Radreply[] $radreply
- * @property \RADIUS\Model\Entity\Radusergroup[] $radusergroup
- * @property \RADIUS\Model\Entity\Radpostauth[] $radpostauth
- * @property \RADIUS\Model\Entity\Radacct[] $radacct
+ * @property \Radius\Model\Entity\Radcheck[] $radcheck
+ * @property \Radius\Model\Entity\Radreply[] $radreply
+ * @property \Radius\Model\Entity\Radusergroup[] $radusergroup
+ * @property \Radius\Model\Entity\Radpostauth[] $radpostauth
+ * @property \Radius\Model\Entity\Radacct[] $radacct
  */
 class Account extends Entity
 {

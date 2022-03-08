@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace RADIUS\Model\Entity;
+namespace Radius\Model\Entity;
 
 use Cake\ORM\Entity;
 
@@ -13,9 +13,9 @@ use Cake\ORM\Entity;
  * @property string $groupname
  * @property int $priority
  *
- * @property \RADIUS\Model\Entity\Account $account
- * @property \RADIUS\Model\Entity\Radgroupcheck[] $radgroupcheck
- * @property \RADIUS\Model\Entity\Radgroupreply[] $radgroupreply
+ * @property \Radius\Model\Entity\Account $account
+ * @property \Radius\Model\Entity\Radgroupcheck[] $radgroupcheck
+ * @property \Radius\Model\Entity\Radgroupreply[] $radgroupreply
  */
 class Radusergroup extends Entity
 {

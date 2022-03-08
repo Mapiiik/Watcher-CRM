@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace RADIUS\Test\TestCase\Model\Table;
+namespace Radius\Test\TestCase\Model\Table;
 
 use Cake\TestSuite\TestCase;
-use RADIUS\Model\Table\RadpostauthTable;
+use Radius\Model\Table\RadpostauthTable;
 
 /**
- * RADIUS\Model\Table\RadpostauthTable Test Case
+ * Radius\Model\Table\RadpostauthTable Test Case
  */
 class RadpostauthTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \RADIUS\Model\Table\RadpostauthTable
+     * @var \Radius\Model\Table\RadpostauthTable
      */
     protected $Radpostauth;
 
@@ -24,8 +24,8 @@ class RadpostauthTableTest extends TestCase
      * @var array
      */
     protected $fixtures = [
-        'plugin.RADIUS.Radpostauth',
-        'plugin.RADIUS.Accounts',
+        'plugin.Radius.Radpostauth',
+        'plugin.Radius.Accounts',
     ];
 
     /**

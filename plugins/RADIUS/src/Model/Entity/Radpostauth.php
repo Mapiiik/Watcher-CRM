@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace RADIUS\Model\Entity;
+namespace Radius\Model\Entity;
 
 use Cake\ORM\Entity;
 
@@ -16,7 +16,7 @@ use Cake\ORM\Entity;
  * @property string|null $callingstationid
  * @property \Cake\I18n\FrozenTime $authdate
  *
- * @property \RADIUS\Model\Entity\Account $account
+ * @property \Radius\Model\Entity\Account $account
  */
 class Radpostauth extends Entity
 {

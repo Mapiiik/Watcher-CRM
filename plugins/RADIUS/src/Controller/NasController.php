@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace RADIUS\Controller;
+namespace Radius\Controller;
 
 /**
  * Nas Controller
  *
- * @property \RADIUS\Model\Table\NasTable $Nas
- * @method \RADIUS\Model\Entity\Nas[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @property \Radius\Model\Table\NasTable $Nas
+ * @method \Radius\Model\Entity\Nas[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class NasController extends AppController
 {

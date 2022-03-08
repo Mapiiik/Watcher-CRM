@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace RADIUS\Model\Table;
+namespace Radius\Model\Table;
 
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -9,19 +9,19 @@ use Cake\Validation\Validator;
 /**
  * Radgroupreply Model
  *
- * @method \RADIUS\Model\Entity\Radgroupreply newEmptyEntity()
- * @method \RADIUS\Model\Entity\Radgroupreply newEntity(array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Radgroupreply[] newEntities(array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Radgroupreply get($primaryKey, $options = [])
- * @method \RADIUS\Model\Entity\Radgroupreply findOrCreate($search, ?callable $callback = null, $options = [])
- * @method \RADIUS\Model\Entity\Radgroupreply patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Radgroupreply[] patchEntities(iterable $entities, array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Radgroupreply|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \RADIUS\Model\Entity\Radgroupreply saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \RADIUS\Model\Entity\Radgroupreply[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\Radgroupreply[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\Radgroupreply[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\Radgroupreply[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radgroupreply newEmptyEntity()
+ * @method \Radius\Model\Entity\Radgroupreply newEntity(array $data, array $options = [])
+ * @method \Radius\Model\Entity\Radgroupreply[] newEntities(array $data, array $options = [])
+ * @method \Radius\Model\Entity\Radgroupreply get($primaryKey, $options = [])
+ * @method \Radius\Model\Entity\Radgroupreply findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \Radius\Model\Entity\Radgroupreply patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \Radius\Model\Entity\Radgroupreply[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \Radius\Model\Entity\Radgroupreply|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Radius\Model\Entity\Radgroupreply saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Radius\Model\Entity\Radgroupreply[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radgroupreply[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radgroupreply[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radgroupreply[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
 class RadgroupreplyTable extends Table
 {
@@ -43,7 +43,7 @@ class RadgroupreplyTable extends Table
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
 
-        $this->hasMany('RADIUS.Radusergroup', [
+        $this->hasMany('Radius.Radusergroup', [
             'foreignKey' => 'groupname',
             'bindingKey' => 'groupname',
         ]);

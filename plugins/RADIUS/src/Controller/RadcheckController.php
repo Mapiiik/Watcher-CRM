@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace RADIUS\Controller;
+namespace Radius\Controller;
 
 /**
  * Radcheck Controller
  *
- * @property \RADIUS\Model\Table\RadcheckTable $Radcheck
- * @method \RADIUS\Model\Entity\Radcheck[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @property \Radius\Model\Table\RadcheckTable $Radcheck
+ * @method \Radius\Model\Entity\Radcheck[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class RadcheckController extends AppController
 {

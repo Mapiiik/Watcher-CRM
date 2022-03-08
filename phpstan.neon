@@ -6,7 +6,7 @@ parameters:
     paths:
         - src
         - plugins/BookkeepingPohoda/src
-        - plugins/RADIUS/src
+        - plugins/Radius/src
         - plugins/RUIAN/src
     excludePaths:
         - src/Console/Installer.php

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace RADIUS\Model\Table;
+namespace Radius\Model\Table;
 
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -9,19 +9,19 @@ use Cake\Validation\Validator;
 /**
  * Nas Model
  *
- * @method \RADIUS\Model\Entity\Nas newEmptyEntity()
- * @method \RADIUS\Model\Entity\Nas newEntity(array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Nas[] newEntities(array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Nas get($primaryKey, $options = [])
- * @method \RADIUS\Model\Entity\Nas findOrCreate($search, ?callable $callback = null, $options = [])
- * @method \RADIUS\Model\Entity\Nas patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Nas[] patchEntities(iterable $entities, array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Nas|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \RADIUS\Model\Entity\Nas saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \RADIUS\Model\Entity\Nas[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\Nas[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\Nas[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\Nas[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Nas newEmptyEntity()
+ * @method \Radius\Model\Entity\Nas newEntity(array $data, array $options = [])
+ * @method \Radius\Model\Entity\Nas[] newEntities(array $data, array $options = [])
+ * @method \Radius\Model\Entity\Nas get($primaryKey, $options = [])
+ * @method \Radius\Model\Entity\Nas findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \Radius\Model\Entity\Nas patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \Radius\Model\Entity\Nas[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \Radius\Model\Entity\Nas|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Radius\Model\Entity\Nas saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Radius\Model\Entity\Nas[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Nas[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Nas[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Nas[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
 class NasTable extends Table
 {

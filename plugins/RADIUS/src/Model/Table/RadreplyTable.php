@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace RADIUS\Model\Table;
+namespace Radius\Model\Table;
 
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -10,20 +10,20 @@ use Cake\Validation\Validator;
 /**
  * Radreply Model
  *
- * @property \RADIUS\Model\Table\AccountsTable&\Cake\ORM\Association\BelongsTo $Accounts
- * @method \RADIUS\Model\Entity\Radreply newEmptyEntity()
- * @method \RADIUS\Model\Entity\Radreply newEntity(array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Radreply[] newEntities(array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Radreply get($primaryKey, $options = [])
- * @method \RADIUS\Model\Entity\Radreply findOrCreate($search, ?callable $callback = null, $options = [])
- * @method \RADIUS\Model\Entity\Radreply patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Radreply[] patchEntities(iterable $entities, array $data, array $options = [])
- * @method \RADIUS\Model\Entity\Radreply|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \RADIUS\Model\Entity\Radreply saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \RADIUS\Model\Entity\Radreply[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\Radreply[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\Radreply[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \RADIUS\Model\Entity\Radreply[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @property \Radius\Model\Table\AccountsTable&\Cake\ORM\Association\BelongsTo $Accounts
+ * @method \Radius\Model\Entity\Radreply newEmptyEntity()
+ * @method \Radius\Model\Entity\Radreply newEntity(array $data, array $options = [])
+ * @method \Radius\Model\Entity\Radreply[] newEntities(array $data, array $options = [])
+ * @method \Radius\Model\Entity\Radreply get($primaryKey, $options = [])
+ * @method \Radius\Model\Entity\Radreply findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \Radius\Model\Entity\Radreply patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \Radius\Model\Entity\Radreply[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \Radius\Model\Entity\Radreply|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Radius\Model\Entity\Radreply saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \Radius\Model\Entity\Radreply[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radreply[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radreply[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radreply[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
 class RadreplyTable extends Table
 {
@@ -45,7 +45,7 @@ class RadreplyTable extends Table
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
 
-        $this->belongsTo('RADIUS.Accounts', [
+        $this->belongsTo('Radius.Accounts', [
             'foreignKey' => 'username',
             'bindingKey' => 'username',
         ]);
