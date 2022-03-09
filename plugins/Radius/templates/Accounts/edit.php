@@ -31,27 +31,25 @@
                 <?php
                 if (!isset($customer_id)) {
                     echo $this->Form->control('customer_id', [
-                        'label' =>  __d('radius', 'Customer'),
-                        'options' => $customers
+                        'label' => __d('radius', 'Customer'),
+                        'options' => $customers,
                     ]);
                 }
                 if (!isset($contract_id)) {
                     echo $this->Form->control('contract_id', [
-                        'label' =>  __d('radius', 'Contract'),
-                        'options' => $contracts
+                        'label' => __d('radius', 'Contract'),
+                        'options' => $contracts,
                     ]);
                 }
                 echo $this->Form->control('username', [
-                    'label' =>  __d('radius', 'Username'),
+                    'label' => __d('radius', 'Username'),
                     'type' => 'text',
-                    'default' => $new_username
                 ]);
                 echo $this->Form->control('password', [
-                    'label' =>  __d('radius', 'Password'),
+                    'label' => __d('radius', 'Password'),
                     'type' => 'text',
-                    'default' => $new_password
                 ]);
-                echo $this->Form->control('active', ['label' =>  __d('radius', 'Active')]);
+                echo $this->Form->control('active', ['label' => __d('radius', 'Active')]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__d('radius', 'Submit')) ?>
