@@ -102,7 +102,9 @@ class RadpostauthController extends AppController
         if ($this->Radpostauth->delete($radpostauth)) {
             $this->Flash->success(__d('radius', 'The RADIUS post authentication has been deleted.'));
         } else {
-            $this->Flash->error(__d('radius', 'The RADIUS post authentication could not be deleted. Please, try again.'));
+            $this->Flash->error(
+                __d('radius', 'The RADIUS post authentication could not be deleted. Please, try again.')
+            );
         }
 
         return $this->redirect(['action' => 'index']);
