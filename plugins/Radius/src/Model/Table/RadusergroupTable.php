@@ -11,6 +11,8 @@ use Cake\Validation\Validator;
  * Radusergroup Model
  *
  * @property \Radius\Model\Table\AccountsTable&\Cake\ORM\Association\BelongsTo $Accounts
+ * @property \Radius\Model\Table\RadgroupcheckTable&\Cake\ORM\Association\HasMany $Radgroupcheck
+ * @property \Radius\Model\Table\RadgroupreplyTable&\Cake\ORM\Association\HasMany $Radgroupreply
  * @method \Radius\Model\Entity\Radusergroup newEmptyEntity()
  * @method \Radius\Model\Entity\Radusergroup newEntity(array $data, array $options = [])
  * @method \Radius\Model\Entity\Radusergroup[] newEntities(array $data, array $options = [])
