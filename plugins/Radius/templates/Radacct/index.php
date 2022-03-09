@@ -10,7 +10,7 @@
         ['action' => 'add'],
         ['class' => 'button float-right win-link']
     ) ?>
-    <h3><?= __d('radius', 'RADIUS Accounting') ?></h3>
+    <h3><?= __d('radius', 'RADIUS Accountings') ?></h3>
     <div class="table-responsive">
         <table>
             <thead>

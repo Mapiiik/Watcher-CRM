@@ -10,7 +10,7 @@
         ['action' => 'add'],
         ['class' => 'button float-right win-link']
     ) ?>
-    <h3><?= __d('radius', 'RADIUS Group Check') ?></h3>
+    <h3><?= __d('radius', 'RADIUS Group Checks') ?></h3>
     <div class="table-responsive">
         <table>
             <thead>

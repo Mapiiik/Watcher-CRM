@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-03-09 15:19+0000\n"
-"PO-Revision-Date: 2022-03-09 16:43+0100\n"
+"POT-Creation-Date: 2022-03-09 20:47+0000\n"
+"PO-Revision-Date: 2022-03-09 21:49+0100\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -18,24 +18,24 @@ msgstr ""
 #: plugins/Radius/src/Controller/AccountsController.php:99
 #: plugins/Radius/src/Controller/AccountsController.php:168
 msgid "The RADIUS account has been saved."
-msgstr "Účet byl uložen."
+msgstr "Účet RADIUS byl uložen."
 
 #: plugins/Radius/src/Controller/AccountsController.php:103
 #: plugins/Radius/src/Controller/AccountsController.php:172
 msgid "The RADIUS account could not be saved. Please, try again."
-msgstr "Účet nelze uložit. Zkuste to prosím znovu."
+msgstr "Účet RADIUS nelze uložit. Zkuste to prosím znovu."
 
 #: plugins/Radius/src/Controller/AccountsController.php:200
 msgid "The RADIUS account has been deleted."
-msgstr "Účet byl odstraněn."
+msgstr "Účet RADIUS byl odstraněn."
 
 #: plugins/Radius/src/Controller/AccountsController.php:202
 msgid "The RADIUS account could not be deleted. Please, try again."
-msgstr "Účet nelze odstranit. Zkuste to prosím znovu."
+msgstr "Účet RADIUS nelze odstranit. Zkuste to prosím znovu."
 
 #: plugins/Radius/src/Controller/AccountsController.php:230
 msgid "The RADIUS account has been updated."
-msgstr "Účet RADIUS byl odstraněn."
+msgstr "Účet RADIUS byl aktualizován."
 
 #: plugins/Radius/src/Controller/AccountsController.php:232
 msgid "The RADIUS account could not be updated. Please, try again."
@@ -44,9 +44,7 @@ msgstr "Účet RADIUS nelze aktualizovat. Zkuste to prosím znovu."
 #: plugins/Radius/src/Controller/AccountsController.php:337
 msgid ""
 "The RADIUS replies could not be found automatically. Please, set it manually."
-msgstr ""
-"Odpovědi protokolu RADIUS nebyly nalezeny automaticky. Nastavte je prosím "
-"ručně."
+msgstr "Odpovědi RADIUS nebyly nalezeny automaticky. Nastavte je prosím ručně."
 
 #: plugins/Radius/src/Controller/AccountsController.php:391
 msgid ""
@@ -100,7 +98,7 @@ msgstr "Kontrola RADIUS byla uložena."
 #: plugins/Radius/src/Controller/RadcheckController.php:60
 #: plugins/Radius/src/Controller/RadcheckController.php:85
 msgid "The RADIUS check could not be saved. Please, try again."
-msgstr "Kontrolu protokolu RADIUS nelze uložit. Zkuste to prosím znovu."
+msgstr "Kontrolu RADIUS nelze uložit. Zkuste to prosím znovu."
 
 #: plugins/Radius/src/Controller/RadcheckController.php:103
 msgid "The RADIUS check has been deleted."
@@ -108,7 +106,7 @@ msgstr "Kontrola RADIUS byla odstraněna."
 
 #: plugins/Radius/src/Controller/RadcheckController.php:105
 msgid "The RADIUS check could not be deleted. Please, try again."
-msgstr "Kontrolu protokolu RADIUS nelze odstranit. Zkuste to prosím znovu."
+msgstr "Kontrolu RADIUS nelze odstranit. Zkuste to prosím znovu."
 
 #: plugins/Radius/src/Controller/RadgroupcheckController.php:53
 #: plugins/Radius/src/Controller/RadgroupcheckController.php:77
@@ -160,14 +158,14 @@ msgstr "Následné ověření RADIUS nelze uložit. Zkuste to prosím znovu."
 msgid "The RADIUS post authentication has been deleted."
 msgstr "Následné ověření RADIUS bylo odstraněno."
 
-#: plugins/Radius/src/Controller/RadpostauthController.php:105
+#: plugins/Radius/src/Controller/RadpostauthController.php:106
 msgid "The RADIUS post authentication could not be deleted. Please, try again."
 msgstr "Následné ověření RADIUS nelze odstranit. Zkuste to prosím znovu."
 
 #: plugins/Radius/src/Controller/RadreplyController.php:56
 #: plugins/Radius/src/Controller/RadreplyController.php:81
 msgid "The RADIUS reply has been saved."
-msgstr "Odpověď protokolu RADIUS byla uložena."
+msgstr "Odpověď RADIUS byla uložena."
 
 #: plugins/Radius/src/Controller/RadreplyController.php:60
 #: plugins/Radius/src/Controller/RadreplyController.php:85
@@ -176,7 +174,7 @@ msgstr "Odpověď RADIUS nelze uložit. Zkuste to prosím znovu."
 
 #: plugins/Radius/src/Controller/RadreplyController.php:103
 msgid "The RADIUS reply has been deleted."
-msgstr "Odpověď protokolu RADIUS byla odstraněna."
+msgstr "Odpověď RADIUS byla odstraněna."
 
 #: plugins/Radius/src/Controller/RadreplyController.php:105
 msgid "The RADIUS reply could not be deleted. Please, try again."
@@ -591,7 +589,7 @@ msgstr "Nová kontrola RADIUS"
 
 #: plugins/Radius/templates/Accounts/view.php:124
 msgid "Related RADIUS Checks"
-msgstr "Související kontroly protokolu RADIUS"
+msgstr "Související kontroly RADIUS"
 
 #: plugins/Radius/templates/Accounts/view.php:131
 #: plugins/Radius/templates/Accounts/view.php:182
@@ -657,14 +655,14 @@ msgstr "Související skupiny uživatelů RADIUS"
 #: plugins/Radius/templates/Radusergroup/view.php:67
 #: plugins/Radius/templates/Radusergroup/view.php:113
 msgid "Groupname"
-msgstr ""
+msgstr "Název skupiny"
 
 #: plugins/Radius/templates/Accounts/view.php:234
 #: plugins/Radius/templates/Radgroupcheck/view.php:70
 #: plugins/Radius/templates/Radgroupreply/view.php:70
 #: plugins/Radius/templates/Radusergroup/view.php:52
 msgid "Priority"
-msgstr ""
+msgstr "Priorita"
 
 #: plugins/Radius/templates/Accounts/view.php:270
 msgid "Related RADIUS Post Authentications"
@@ -905,7 +903,7 @@ msgid "New RADIUS Accounting"
 msgstr "Nové monitorování účtů RADIUS"
 
 #: plugins/Radius/templates/Radacct/index.php:13
-msgid "RADIUS Accounting"
+msgid "RADIUS Accountings"
 msgstr "Monitorování účtů RADIUS"
 
 #: plugins/Radius/templates/Radacct/view.php:17
@@ -928,8 +926,8 @@ msgid "Edit RADIUS Check"
 msgstr "Upravit kontrolu RADIUS"
 
 #: plugins/Radius/templates/Radcheck/index.php:13
-msgid "RADIUS Check"
-msgstr "Kontrola protokolu RADIUS"
+msgid "RADIUS Checks"
+msgstr "Kontroly protokolu RADIUS"
 
 #: plugins/Radius/templates/Radcheck/view.php:17
 msgid "Delete RADIUS Check"
@@ -956,8 +954,8 @@ msgid "New RADIUS Group Check"
 msgstr "Nová kontrola skupiny RADIUS"
 
 #: plugins/Radius/templates/Radgroupcheck/index.php:13
-msgid "RADIUS Group Check"
-msgstr "Kontrola skupiny RADIUS"
+msgid "RADIUS Group Checks"
+msgstr "Kontroly skupiny RADIUS"
 
 #: plugins/Radius/templates/Radgroupcheck/view.php:17
 msgid "Delete RADIUS Group Check"
@@ -984,8 +982,8 @@ msgid "New RADIUS Group Reply"
 msgstr "Nová odpověď skupiny RADIUS"
 
 #: plugins/Radius/templates/Radgroupreply/index.php:13
-msgid "RADIUS Group Reply"
-msgstr "Odpověď skupiny RADIUS"
+msgid "RADIUS Group Replies"
+msgstr "Odpovědi skupiny RADIUS"
 
 #: plugins/Radius/templates/Radgroupreply/view.php:17
 msgid "Delete RADIUS Group Reply"
@@ -1012,8 +1010,8 @@ msgid "New RADIUS Post Authentication"
 msgstr "Nové následné ověření RADIUS"
 
 #: plugins/Radius/templates/Radpostauth/index.php:13
-msgid "RADIUS Post Authentication"
-msgstr "Následné ověření RADIUS"
+msgid "RADIUS Post Authentications"
+msgstr "Následné ověřování RADIUS"
 
 #: plugins/Radius/templates/Radpostauth/view.php:17
 msgid "Delete RADIUS Post Authentication"
@@ -1035,8 +1033,8 @@ msgid "Edit RADIUS Reply"
 msgstr "Upravit odpověď RADIUS"
 
 #: plugins/Radius/templates/Radreply/index.php:13
-msgid "RADIUS Reply"
-msgstr "Odpověď RADIUS"
+msgid "RADIUS Replies"
+msgstr "Odpovědi RADIUS"
 
 #: plugins/Radius/templates/Radreply/view.php:17
 msgid "Delete RADIUS Reply"
@@ -1058,8 +1056,8 @@ msgid "Edit RADIUS User Group"
 msgstr "Upravit skupinu uživatelů RADIUS"
 
 #: plugins/Radius/templates/Radusergroup/index.php:13
-msgid "RADIUS User Group"
-msgstr "Skupina uživatelů RADIUS"
+msgid "RADIUS User Groups"
+msgstr "Skupiny uživatelů RADIUS"
 
 #: plugins/Radius/templates/Radusergroup/view.php:17
 msgid "Delete RADIUS User Group"
@@ -1072,3 +1070,6 @@ msgstr "Související kontroly skupiny RADIUS"
 #: plugins/Radius/templates/Radusergroup/view.php:107
 msgid "Related RADIUS Group Replies"
 msgstr "Související odpovědi skupiny RADIUS"
+
+#~ msgid "RADIUS Reply"
+#~ msgstr "Odpověď RADIUS"

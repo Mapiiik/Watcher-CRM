@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-03-09 15:19+0000\n"
+"POT-Creation-Date: 2022-03-09 20:47+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -152,7 +152,7 @@ msgstr ""
 msgid "The RADIUS post authentication has been deleted."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadpostauthController.php:105
+#: ./plugins/Radius/src/Controller/RadpostauthController.php:106
 msgid "The RADIUS post authentication could not be deleted. Please, try again."
 msgstr ""
 
@@ -893,7 +893,7 @@ msgid "New RADIUS Accounting"
 msgstr ""
 
 #: ./plugins/Radius/templates/Radacct/index.php:13
-msgid "RADIUS Accounting"
+msgid "RADIUS Accountings"
 msgstr ""
 
 #: ./plugins/Radius/templates/Radacct/view.php:17
@@ -916,7 +916,7 @@ msgid "Edit RADIUS Check"
 msgstr ""
 
 #: ./plugins/Radius/templates/Radcheck/index.php:13
-msgid "RADIUS Check"
+msgid "RADIUS Checks"
 msgstr ""
 
 #: ./plugins/Radius/templates/Radcheck/view.php:17
@@ -944,7 +944,7 @@ msgid "New RADIUS Group Check"
 msgstr ""
 
 #: ./plugins/Radius/templates/Radgroupcheck/index.php:13
-msgid "RADIUS Group Check"
+msgid "RADIUS Group Checks"
 msgstr ""
 
 #: ./plugins/Radius/templates/Radgroupcheck/view.php:17
@@ -972,7 +972,7 @@ msgid "New RADIUS Group Reply"
 msgstr ""
 
 #: ./plugins/Radius/templates/Radgroupreply/index.php:13
-msgid "RADIUS Group Reply"
+msgid "RADIUS Group Replies"
 msgstr ""
 
 #: ./plugins/Radius/templates/Radgroupreply/view.php:17
@@ -1000,7 +1000,7 @@ msgid "New RADIUS Post Authentication"
 msgstr ""
 
 #: ./plugins/Radius/templates/Radpostauth/index.php:13
-msgid "RADIUS Post Authentication"
+msgid "RADIUS Post Authentications"
 msgstr ""
 
 #: ./plugins/Radius/templates/Radpostauth/view.php:17
@@ -1023,7 +1023,7 @@ msgid "Edit RADIUS Reply"
 msgstr ""
 
 #: ./plugins/Radius/templates/Radreply/index.php:13
-msgid "RADIUS Reply"
+msgid "RADIUS Replies"
 msgstr ""
 
 #: ./plugins/Radius/templates/Radreply/view.php:17
@@ -1046,7 +1046,7 @@ msgid "Edit RADIUS User Group"
 msgstr ""
 
 #: ./plugins/Radius/templates/Radusergroup/index.php:13
-msgid "RADIUS User Group"
+msgid "RADIUS User Groups"
 msgstr ""
 
 #: ./plugins/Radius/templates/Radusergroup/view.php:17
