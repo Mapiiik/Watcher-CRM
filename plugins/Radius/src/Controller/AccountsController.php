@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace Radius\Controller;
 
+use Cake\Database\Query;
+use Cake\I18n\FrozenDate;
+
 /**
  * Accounts Controller
  *
@@ -85,11 +88,12 @@ class AccountsController extends AppController
         if ($this->request->is('post')) {
             $account = $this->Accounts->patchEntity($account, $this->request->getData());
 
-            // autogenerate related radcheck recors
-            $account = $this->Accounts->patchEntity($account, ['radcheck' => $this->autoRadcheckData($account)]);
-
-            // autogenerate related radreply recors
-            $account = $this->Accounts->patchEntity($account, ['radreply' => $this->autoRadreplyData($account)]);
+            // autogenerate related records
+            $account = $this->Accounts->patchEntity($account, [
+                'radcheck' => $this->autoRadcheckData($account),
+                'radreply' => $this->autoRadreplyData($account),
+                'radusergroup' => $this->autoRadusergroupData($account),
+            ]);
 
             if ($this->Accounts->save($account)) {
                 $this->Flash->success(__d('radius', 'The account has been saved.'));
@@ -155,8 +159,10 @@ class AccountsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $account = $this->Accounts->patchEntity($account, $this->request->getData());
 
-            // autogenerate related radcheck recors
-            $account = $this->Accounts->patchEntity($account, ['radcheck' => $this->autoRadcheckData($account)]);
+            // autogenerate related records
+            $account = $this->Accounts->patchEntity($account, [
+                'radcheck' => $this->autoRadcheckData($account),
+            ]);
 
             if ($this->Accounts->save($account)) {
                 $this->Flash->success(__d('radius', 'The account has been saved.'));
@@ -200,6 +206,36 @@ class AccountsController extends AppController
     }
 
     /**
+     * Update method
+     *
+     * @param string|null $id Account id.
+     * @return \Cake\Http\Response|null|void Redirects always to view.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function update($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+        $account = $this->Accounts->get($id, [
+            'contain' => ['Radcheck', 'Radreply', 'Radusergroup'],
+        ]);
+
+        // autogenerate related records
+        $account = $this->Accounts->patchEntity($account, [
+            'radcheck' => $this->autoRadcheckData($account),
+            'radreply' => $this->autoRadreplyData($account),
+            'radusergroup' => $this->autoRadusergroupData($account),
+        ]);
+
+        if ($this->Accounts->save($account)) {
+            $this->Flash->success(__d('radius', 'The account has been updated.'));
+        } else {
+            $this->Flash->error(__d('radius', 'The account could not be updated. Please, try again.'));
+        }
+
+        return $this->redirect(['action' => 'view', $account->id]);
+    }
+
+    /**
      * generate data for radcheck table for customer
      *
      * @param \Radius\Model\Entity\Account $account RADIUS account entity
@@ -208,6 +244,7 @@ class AccountsController extends AppController
     private function autoRadcheckData(\Radius\Model\Entity\Account $account): array
     {
         $radcheck = [];
+
         $radcheck[] = $this->getTableLocator()->get('Radius.Radcheck')
             ->findOrCreate([
                 'username' => $account->username,
@@ -218,13 +255,13 @@ class AccountsController extends AppController
             ->toArray();
         if (!$account->active) {
             $radcheck[] = $this->getTableLocator()->get('Radius.Radcheck')
-            ->findOrCreate([
-                'username' => $account->username,
-                'attribute' => 'Auth-Type',
-                'op' => ':=',
-                'value' => 'Reject',
-            ])
-            ->toArray();
+                ->findOrCreate([
+                    'username' => $account->username,
+                    'attribute' => 'Auth-Type',
+                    'op' => ':=',
+                    'value' => 'Reject',
+                ])
+                ->toArray();
         }
 
         return $radcheck;
@@ -243,6 +280,7 @@ class AccountsController extends AppController
         ]);
 
         $radreply = [];
+
         foreach ($contract->ips as $ip) {
             @[$address, $mask] = explode('/', $ip->ip); // phpcs:ignore
 
@@ -290,6 +328,70 @@ class AccountsController extends AppController
             }
         }
 
+        if (empty($radreply)) {
+            // return current radusergroup records
+            foreach ($account->radreply as $current_radreply) {
+                $radreply[] = $current_radreply->toArray();
+            }
+            $this->Flash->warning(
+                __d('radius', 'The RADIUS replies could not be found automatically. Please, set it manually.')
+            );
+        }
+
         return $radreply;
+    }
+
+    /**
+     * generate data for radusergroup table for customer
+     *
+     * @param \Radius\Model\Entity\Account $account RADIUS account entity
+     * @return array
+     */
+    private function autoRadusergroupData(\Radius\Model\Entity\Account $account): array
+    {
+        $contract = $this->getTableLocator()->get('Contracts')->get($account->contract_id, [
+            'contain' => [
+                'Billings' => [
+                    'queryBuilder' => function (Query $q) {
+                        return $q->where([
+                            'Queues.name IS NOT NULL',
+                            'Billings.billing_from <=' => new FrozenDate(),
+                        ])
+                        ->andWhere([
+                            'OR' => [
+                                'Billings.billing_until IS NULL',
+                                'Billings.billing_until >=' => new FrozenDate(),
+                            ],
+                        ]);
+                    },
+                    'Services' => 'Queues',
+                ],
+            ],
+        ]);
+
+        $radusergroup = [];
+
+        if (count($contract->billings) == 1) {
+            // return radusergroup record with current queue name as groupname
+            $radusergroup[] = $this->getTableLocator()->get('Radius.Radusergroup')
+                ->findOrCreate([
+                    'username' => $account->username,
+                    'groupname' => $contract->billings[0]->service->queue->name,
+                    'priority' => 0,
+                ])
+                ->toArray();
+        }
+
+        if (empty($radusergroup)) {
+            // return current radusergroup records
+            foreach ($account->radusergroup as $current_radusergroup) {
+                $radusergroup[] = $current_radusergroup->toArray();
+            }
+            $this->Flash->warning(
+                __d('radius', 'The RADIUS user groups could not be found automatically. Please, set it manually.')
+            );
+        }
+
+        return $radusergroup;
     }
 }

@@ -60,7 +60,13 @@ class RadusergroupController extends AppController
             $this->Flash->error(__d('radius', 'The radusergroup could not be saved. Please, try again.'));
         }
         $accounts = $this->Radusergroup->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
-        $this->set(compact('radusergroup', 'accounts'));
+        $groupnames = $this->Radusergroup->Radgroupreply->find('list', [
+            'keyField' => 'groupname',
+            'valueField' => 'groupname',
+            'order' => 'groupname',
+            'group' => 'groupname',
+        ]);
+        $this->set(compact('radusergroup', 'accounts', 'groupnames'));
     }
 
     /**
@@ -85,7 +91,13 @@ class RadusergroupController extends AppController
             $this->Flash->error(__d('radius', 'The radusergroup could not be saved. Please, try again.'));
         }
         $accounts = $this->Radusergroup->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
-        $this->set(compact('radusergroup', 'accounts'));
+        $groupnames = $this->Radusergroup->Radgroupreply->find('list', [
+            'keyField' => 'groupname',
+            'valueField' => 'groupname',
+            'order' => 'groupname',
+            'group' => 'groupname',
+        ]);
+        $this->set(compact('radusergroup', 'accounts', 'groupnames'));
     }
 
     /**

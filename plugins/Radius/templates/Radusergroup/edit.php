@@ -30,7 +30,7 @@
                 <legend><?= __d('radius', 'Edit Radusergroup') ?></legend>
                 <?php
                     echo $this->Form->control('username', ['options' => $accounts]);
-                    echo $this->Form->control('groupname');
+                    echo $this->Form->control('groupname', ['options' => $groupnames]);
                     echo $this->Form->control('priority');
                 ?>
             </fieldset>

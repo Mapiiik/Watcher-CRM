@@ -21,9 +21,16 @@
             <fieldset>
                 <legend><?= __d('radius', 'Add Radusergroup') ?></legend>
                 <?php
-                    echo $this->Form->control('username', ['options' => $accounts]);
-                    echo $this->Form->control('groupname');
-                    echo $this->Form->control('priority');
+                echo $this->Form->control('username', [
+                    'options' => $accounts,
+                    'empty' => true,
+                    'default' => $this->request->getQuery('username'),
+                    ]);
+                echo $this->Form->control('groupname', [
+                    'options' => $groupnames,
+                    'empty' => true,
+                ]);
+                echo $this->Form->control('priority');
                 ?>
             </fieldset>
             <?= $this->Form->button(__d('radius', 'Submit')) ?>

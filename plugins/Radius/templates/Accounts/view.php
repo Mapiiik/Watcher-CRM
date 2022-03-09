@@ -31,6 +31,11 @@
     </aside>
     <div class="column-responsive column-90">
         <div class="accounts view content">
+            <?= $this->Form->postLink(
+                __('Update'),
+                ['action' => 'update', $account->id],
+                ['class' => 'button button float-right']
+            ) ?>
             <h3><?= h($account->username) ?></h3>
             <div class="row">
                 <div class="column-responsive">
@@ -104,6 +109,11 @@
                 </div>
             </div>
             <div class="related">
+                <?= $this->Html->link(
+                    __('New Radcheck'),
+                    ['controller' => 'Radcheck', 'action' => 'add', '?' => ['username' => $account->username]],
+                    ['class' => 'button button-small float-right win-link']
+                ) ?>
                 <h4><?= __d('radius', 'Related Radcheck') ?></h4>
                 <?php if (!empty($account->radcheck)) : ?>
                 <div class="table-responsive">
@@ -150,6 +160,11 @@
                 <?php endif; ?>
             </div>
             <div class="related">
+                <?= $this->Html->link(
+                    __('New Radreply'),
+                    ['controller' => 'Radreply', 'action' => 'add', '?' => ['username' => $account->username]],
+                    ['class' => 'button button-small float-right win-link']
+                ) ?>
                 <h4><?= __d('radius', 'Related Radreply') ?></h4>
                 <?php if (!empty($account->radreply)) : ?>
                 <div class="table-responsive">
@@ -196,6 +211,11 @@
                 <?php endif; ?>
             </div>
             <div class="related">
+                <?= $this->Html->link(
+                    __('New Radusergroup'),
+                    ['controller' => 'Radusergroup', 'action' => 'add', '?' => ['username' => $account->username]],
+                    ['class' => 'button button-small float-right win-link']
+                ) ?>
                 <h4><?= __d('radius', 'Related Radusergroup') ?></h4>
                 <?php if (!empty($account->radusergroup)) : ?>
                 <div class="table-responsive">

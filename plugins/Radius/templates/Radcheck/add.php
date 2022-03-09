@@ -21,10 +21,14 @@
             <fieldset>
                 <legend><?= __d('radius', 'Add Radcheck') ?></legend>
                 <?php
-                    echo $this->Form->control('username', ['options' => $accounts]);
-                    echo $this->Form->control('attribute');
-                    echo $this->Form->control('op');
-                    echo $this->Form->control('value');
+                echo $this->Form->control('username', [
+                    'options' => $accounts,
+                    'empty' => true,
+                    'default' => $this->request->getQuery('username'),
+                ]);
+                echo $this->Form->control('attribute');
+                echo $this->Form->control('op');
+                echo $this->Form->control('value');
                 ?>
             </fieldset>
             <?= $this->Form->button(__d('radius', 'Submit')) ?>
