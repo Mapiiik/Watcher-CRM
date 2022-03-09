@@ -9,20 +9,20 @@
         <div class="side-nav">
             <h4 class="heading"><?= __d('radius', 'Actions') ?></h4>
             <?= $this->Html->link(
-                __d('radius', 'Edit Radacct'),
+                __d('radius', 'Edit RADIUS Accounting'),
                 ['action' => 'edit', $radacct->radacctid],
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->Form->postLink(
-                __d('radius', 'Delete Radacct'),
+                __d('radius', 'Delete RADIUS Accounting'),
                 ['action' => 'delete', $radacct->radacctid],
                 [
                     'confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radacct->radacctid),
                     'class' => 'side-nav-item',
                 ]
             ) ?>
-            <?= $this->Html->link(__d('radius', 'List Radacct'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__d('radius', 'New Radacct'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__d('radius', 'List RADIUS Accountings'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__d('radius', 'New RADIUS Accounting'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">

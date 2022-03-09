@@ -17,7 +17,7 @@
                 ]
             ) ?>
             <?= $this->Html->link(
-                __d('radius', 'List Radcheck'),
+                __d('radius', 'List RADIUS Checks'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item']
             ) ?>
@@ -27,7 +27,7 @@
         <div class="radcheck form content">
             <?= $this->Form->create($radcheck) ?>
             <fieldset>
-                <legend><?= __d('radius', 'Edit Radcheck') ?></legend>
+                <legend><?= __d('radius', 'Edit RADIUS Check') ?></legend>
                 <?php
                     echo $this->Form->control('username', ['options' => $accounts]);
                     echo $this->Form->control('attribute');

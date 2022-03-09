@@ -50,11 +50,11 @@ class RadgroupcheckController extends AppController
         if ($this->request->is('post')) {
             $radgroupcheck = $this->Radgroupcheck->patchEntity($radgroupcheck, $this->request->getData());
             if ($this->Radgroupcheck->save($radgroupcheck)) {
-                $this->Flash->success(__d('radius', 'The radgroupcheck has been saved.'));
+                $this->Flash->success(__d('radius', 'The RADIUS group check has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__d('radius', 'The radgroupcheck could not be saved. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The RADIUS group check could not be saved. Please, try again.'));
         }
         $this->set(compact('radgroupcheck'));
     }
@@ -74,11 +74,11 @@ class RadgroupcheckController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $radgroupcheck = $this->Radgroupcheck->patchEntity($radgroupcheck, $this->request->getData());
             if ($this->Radgroupcheck->save($radgroupcheck)) {
-                $this->Flash->success(__d('radius', 'The radgroupcheck has been saved.'));
+                $this->Flash->success(__d('radius', 'The RADIUS group check has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__d('radius', 'The radgroupcheck could not be saved. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The RADIUS group check could not be saved. Please, try again.'));
         }
         $this->set(compact('radgroupcheck'));
     }
@@ -95,9 +95,9 @@ class RadgroupcheckController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $radgroupcheck = $this->Radgroupcheck->get($id);
         if ($this->Radgroupcheck->delete($radgroupcheck)) {
-            $this->Flash->success(__d('radius', 'The radgroupcheck has been deleted.'));
+            $this->Flash->success(__d('radius', 'The RADIUS group check has been deleted.'));
         } else {
-            $this->Flash->error(__d('radius', 'The radgroupcheck could not be deleted. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The RADIUS group check could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);

@@ -50,11 +50,11 @@ class NasController extends AppController
         if ($this->request->is('post')) {
             $nas = $this->Nas->patchEntity($nas, $this->request->getData());
             if ($this->Nas->save($nas)) {
-                $this->Flash->success(__d('radius', 'The nas has been saved.'));
+                $this->Flash->success(__d('radius', 'The RADIUS NAS has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__d('radius', 'The nas could not be saved. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The RADIUS NAS could not be saved. Please, try again.'));
         }
         $this->set(compact('nas'));
     }
@@ -74,11 +74,11 @@ class NasController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $nas = $this->Nas->patchEntity($nas, $this->request->getData());
             if ($this->Nas->save($nas)) {
-                $this->Flash->success(__d('radius', 'The nas has been saved.'));
+                $this->Flash->success(__d('radius', 'The RADIUS NAS has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__d('radius', 'The nas could not be saved. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The RADIUS NAS could not be saved. Please, try again.'));
         }
         $this->set(compact('nas'));
     }
@@ -95,9 +95,9 @@ class NasController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $nas = $this->Nas->get($id);
         if ($this->Nas->delete($nas)) {
-            $this->Flash->success(__d('radius', 'The nas has been deleted.'));
+            $this->Flash->success(__d('radius', 'The RADIUS NAS has been deleted.'));
         } else {
-            $this->Flash->error(__d('radius', 'The nas could not be deleted. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The RADIUS NAS could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);

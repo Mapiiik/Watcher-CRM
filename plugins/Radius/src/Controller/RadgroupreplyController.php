@@ -50,11 +50,11 @@ class RadgroupreplyController extends AppController
         if ($this->request->is('post')) {
             $radgroupreply = $this->Radgroupreply->patchEntity($radgroupreply, $this->request->getData());
             if ($this->Radgroupreply->save($radgroupreply)) {
-                $this->Flash->success(__d('radius', 'The radgroupreply has been saved.'));
+                $this->Flash->success(__d('radius', 'The RADIUS group reply has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__d('radius', 'The radgroupreply could not be saved. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The RADIUS group reply could not be saved. Please, try again.'));
         }
         $this->set(compact('radgroupreply'));
     }
@@ -74,11 +74,11 @@ class RadgroupreplyController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $radgroupreply = $this->Radgroupreply->patchEntity($radgroupreply, $this->request->getData());
             if ($this->Radgroupreply->save($radgroupreply)) {
-                $this->Flash->success(__d('radius', 'The radgroupreply has been saved.'));
+                $this->Flash->success(__d('radius', 'The RADIUS group reply has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__d('radius', 'The radgroupreply could not be saved. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The RADIUS group reply could not be saved. Please, try again.'));
         }
         $this->set(compact('radgroupreply'));
     }
@@ -95,9 +95,9 @@ class RadgroupreplyController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $radgroupreply = $this->Radgroupreply->get($id);
         if ($this->Radgroupreply->delete($radgroupreply)) {
-            $this->Flash->success(__d('radius', 'The radgroupreply has been deleted.'));
+            $this->Flash->success(__d('radius', 'The RADIUS group reply has been deleted.'));
         } else {
-            $this->Flash->error(__d('radius', 'The radgroupreply could not be deleted. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The RADIUS group reply could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);

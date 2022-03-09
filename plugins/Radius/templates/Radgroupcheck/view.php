@@ -9,12 +9,12 @@
         <div class="side-nav">
             <h4 class="heading"><?= __d('radius', 'Actions') ?></h4>
             <?= $this->Html->link(
-                __d('radius', 'Edit Radgroupcheck'),
+                __d('radius', 'Edit RADIUS Group Check'),
                 ['action' => 'edit', $radgroupcheck->id],
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->Form->postLink(
-                __d('radius', 'Delete Radgroupcheck'),
+                __d('radius', 'Delete RADIUS Group Check'),
                 ['action' => 'delete', $radgroupcheck->id],
                 [
                     'confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radgroupcheck->id),
@@ -22,12 +22,12 @@
                 ]
             ) ?>
             <?= $this->Html->link(
-                __d('radius', 'List Radgroupcheck'),
+                __d('radius', 'List RADIUS Group Checks'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->Html->link(
-                __d('radius', 'New Radgroupcheck'),
+                __d('radius', 'New RADIUS Group Check'),
                 ['action' => 'add'],
                 ['class' => 'side-nav-item']
             ) ?>
@@ -59,7 +59,7 @@
                 </tr>
             </table>
             <div class="related">
-                <h4><?= __d('radius', 'Related Radusergroup') ?></h4>
+                <h4><?= __d('radius', 'Related RADIUS User Groups') ?></h4>
                 <?php if (!empty($radgroupcheck->radusergroup)) : ?>
                 <div class="table-responsive">
                     <table>

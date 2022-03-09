@@ -17,7 +17,7 @@
                 ]
             ) ?>
             <?= $this->Html->link(
-                __d('radius', 'List Radgroupcheck'),
+                __d('radius', 'List RADIUS Group Checks'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item']
             ) ?>
@@ -27,7 +27,7 @@
         <div class="radgroupcheck form content">
             <?= $this->Form->create($radgroupcheck) ?>
             <fieldset>
-                <legend><?= __d('radius', 'Edit Radgroupcheck') ?></legend>
+                <legend><?= __d('radius', 'Edit RADIUS Group Check') ?></legend>
                 <?php
                     echo $this->Form->control('groupname');
                     echo $this->Form->control('attribute');

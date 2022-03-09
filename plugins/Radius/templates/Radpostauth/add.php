@@ -9,7 +9,7 @@
         <div class="side-nav">
             <h4 class="heading"><?= __d('radius', 'Actions') ?></h4>
             <?= $this->Html->link(
-                __d('radius', 'List Radpostauth'),
+                __d('radius', 'List RADIUS Post Authentications'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item']
             ) ?>
@@ -19,7 +19,7 @@
         <div class="radpostauth form content">
             <?= $this->Form->create($radpostauth) ?>
             <fieldset>
-                <legend><?= __d('radius', 'Add Radpostauth') ?></legend>
+                <legend><?= __d('radius', 'Add RADIUS Post Authentication') ?></legend>
                 <?php
                     echo $this->Form->control('username', ['options' => $accounts]);
                     echo $this->Form->control('pass');

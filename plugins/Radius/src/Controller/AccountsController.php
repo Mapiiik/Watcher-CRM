@@ -96,11 +96,11 @@ class AccountsController extends AppController
             ]);
 
             if ($this->Accounts->save($account)) {
-                $this->Flash->success(__d('radius', 'The account has been saved.'));
+                $this->Flash->success(__d('radius', 'The RADIUS account has been saved.'));
 
                 return $this->redirect(['action' => 'view', $account->id]);
             }
-            $this->Flash->error(__d('radius', 'The account could not be saved. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The RADIUS account could not be saved. Please, try again.'));
         }
         $customers = $this->Accounts->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $contracts = $this->Accounts->Contracts->find('list', ['order' => 'number']);
@@ -165,11 +165,11 @@ class AccountsController extends AppController
             ]);
 
             if ($this->Accounts->save($account)) {
-                $this->Flash->success(__d('radius', 'The account has been saved.'));
+                $this->Flash->success(__d('radius', 'The RADIUS account has been saved.'));
 
                 return $this->redirect(['action' => 'view', $account->id]);
             }
-            $this->Flash->error(__d('radius', 'The account could not be saved. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The RADIUS account could not be saved. Please, try again.'));
         }
         $customers = $this->Accounts->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $contracts = $this->Accounts->Contracts->find('list', ['order' => 'number']);
@@ -197,9 +197,9 @@ class AccountsController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $account = $this->Accounts->get($id);
         if ($this->Accounts->delete($account)) {
-            $this->Flash->success(__d('radius', 'The account has been deleted.'));
+            $this->Flash->success(__d('radius', 'The RADIUS account has been deleted.'));
         } else {
-            $this->Flash->error(__d('radius', 'The account could not be deleted. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The RADIUS account could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);
@@ -212,7 +212,7 @@ class AccountsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects always to view.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function update($id = null)
+    public function updateRelatedRecords($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
         $account = $this->Accounts->get($id, [
@@ -227,9 +227,9 @@ class AccountsController extends AppController
         ]);
 
         if ($this->Accounts->save($account)) {
-            $this->Flash->success(__d('radius', 'The account has been updated.'));
+            $this->Flash->success(__d('radius', 'The RADIUS account has been updated.'));
         } else {
-            $this->Flash->error(__d('radius', 'The account could not be updated. Please, try again.'));
+            $this->Flash->error(__d('radius', 'The RADIUS account could not be updated. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'view', $account->id]);

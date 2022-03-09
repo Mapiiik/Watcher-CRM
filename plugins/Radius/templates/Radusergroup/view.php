@@ -9,20 +9,28 @@
         <div class="side-nav">
             <h4 class="heading"><?= __d('radius', 'Actions') ?></h4>
             <?= $this->Html->link(
-                __d('radius', 'Edit Radusergroup'),
+                __d('radius', 'Edit RADIUS User Group'),
                 ['action' => 'edit', $radusergroup->id],
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->Form->postLink(
-                __d('radius', 'Delete Radusergroup'),
+                __d('radius', 'Delete RADIUS User Group'),
                 ['action' => 'delete', $radusergroup->id],
                 [
                     'confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radusergroup->id),
                     'class' => 'side-nav-item',
                 ]
             ) ?>
-            <?= $this->Html->link(__d('radius', 'List Radusergroup'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__d('radius', 'New Radusergroup'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(
+                __d('radius', 'List RADIUS User Groups'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->Html->link(
+                __d('radius', 'New RADIUS User Group'),
+                ['action' => 'add'],
+                ['class' => 'side-nav-item']
+            ) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
@@ -50,7 +58,7 @@
                 </tr>
             </table>
             <div class="related">
-                <h4><?= __d('radius', 'Related Radgroupcheck') ?></h4>
+                <h4><?= __d('radius', 'Related RADIUS Group Checks') ?></h4>
                 <?php if (!empty($radusergroup->radgroupcheck)) : ?>
                 <div class="table-responsive">
                     <table>
@@ -82,7 +90,11 @@
                                 <?= $this->Form->postLink(
                                     __d('radius', 'Delete'),
                                     ['controller' => 'Radgroupcheck', 'action' => 'delete', $radgroupcheck->id],
-                                    ['confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radgroupcheck->id)]
+                                    ['confirm' => __d(
+                                        'radius',
+                                        'Are you sure you want to delete # {0}?',
+                                        $radgroupcheck->id
+                                    )]
                                 ) ?>
                             </td>
                         </tr>
@@ -92,7 +104,7 @@
                 <?php endif; ?>
             </div>
             <div class="related">
-                <h4><?= __d('radius', 'Related Radgroupreply') ?></h4>
+                <h4><?= __d('radius', 'Related RADIUS Group Replies') ?></h4>
                 <?php if (!empty($radusergroup->radgroupreply)) : ?>
                 <div class="table-responsive">
                     <table>
@@ -124,7 +136,11 @@
                                 <?= $this->Form->postLink(
                                     __d('radius', 'Delete'),
                                     ['controller' => 'Radgroupreply', 'action' => 'delete', $radgroupreply->id],
-                                    ['confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radgroupreply->id)]
+                                    ['confirm' => __d(
+                                        'radius',
+                                        'Are you sure you want to delete # {0}?',
+                                        $radgroupreply->id
+                                    )]
                                 ) ?>
                             </td>
                         </tr>

@@ -6,11 +6,11 @@
 ?>
 <div class="radpostauth index content">
     <?= $this->Html->link(
-        __d('radius', 'New Radpostauth'),
+        __d('radius', 'New RADIUS Post Authentication'),
         ['action' => 'add'],
         ['class' => 'button float-right win-link']
     ) ?>
-    <h3><?= __d('radius', 'Radpostauth') ?></h3>
+    <h3><?= __d('radius', 'RADIUS Post Authentication') ?></h3>
     <div class="table-responsive">
         <table>
             <thead>

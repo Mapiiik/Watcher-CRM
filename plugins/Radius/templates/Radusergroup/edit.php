@@ -17,7 +17,7 @@
                 ]
             ) ?>
             <?= $this->Html->link(
-                __d('radius', 'List Radusergroup'),
+                __d('radius', 'List RADIUS User Groups'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item']
             ) ?>
@@ -27,7 +27,7 @@
         <div class="radusergroup form content">
             <?= $this->Form->create($radusergroup) ?>
             <fieldset>
-                <legend><?= __d('radius', 'Edit Radusergroup') ?></legend>
+                <legend><?= __d('radius', 'Edit RADIUS User Group') ?></legend>
                 <?php
                     echo $this->Form->control('username', ['options' => $accounts]);
                     echo $this->Form->control('groupname', ['options' => $groupnames]);

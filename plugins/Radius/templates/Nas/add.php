@@ -8,14 +8,14 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __d('radius', 'Actions') ?></h4>
-            <?= $this->Html->link(__d('radius', 'List Nas'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__d('radius', 'List RADIUS NAS'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
         <div class="Nas form content">
             <?= $this->Form->create($nas) ?>
             <fieldset>
-                <legend><?= __d('radius', 'Add Nas') ?></legend>
+                <legend><?= __d('radius', 'Add RADIUS NAS') ?></legend>
                 <?php
                     echo $this->Form->control('nasname');
                     echo $this->Form->control('shortname');

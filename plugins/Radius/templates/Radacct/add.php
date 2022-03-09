@@ -8,14 +8,14 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __d('radius', 'Actions') ?></h4>
-            <?= $this->Html->link(__d('radius', 'List Radacct'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__d('radius', 'List RADIUS Accountings'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
         <div class="radacct form content">
             <?= $this->Form->create($radacct) ?>
             <fieldset>
-                <legend><?= __d('radius', 'Add Radacct') ?></legend>
+                <legend><?= __d('radius', 'Add RADIUS Accounting') ?></legend>
                 <?php
                     echo $this->Form->control('acctsessionid');
                     echo $this->Form->control('acctuniqueid');

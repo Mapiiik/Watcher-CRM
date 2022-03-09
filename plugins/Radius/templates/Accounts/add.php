@@ -9,7 +9,7 @@
         <div class="side-nav">
             <h4 class="heading"><?= __d('radius', 'Actions') ?></h4>
             <?= $this->Html->link(
-                __d('radius', 'List Accounts'),
+                __d('radius', 'List RADIUS Accounts'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item']
             ) ?>
@@ -19,7 +19,7 @@
         <div class="accounts form content">
             <?= $this->Form->create($account) ?>
             <fieldset>
-                <legend><?= __d('radius', 'Add Account') ?></legend>
+                <legend><?= __d('radius', 'Add RADIUS Account') ?></legend>
                 <?php
                 if (!isset($customer_id)) {
                     echo $this->Form->control('customer_id', [

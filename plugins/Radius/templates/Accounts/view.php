@@ -9,12 +9,12 @@
         <div class="side-nav">
             <h4 class="heading"><?= __d('radius', 'Actions') ?></h4>
             <?= $this->Html->link(
-                __d('radius', 'Edit Account'),
+                __d('radius', 'Edit RADIUS Account'),
                 ['action' => 'edit', $account->id],
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->Form->postLink(
-                __d('radius', 'Delete Account'),
+                __d('radius', 'Delete RADIUS Account'),
                 ['action' => 'delete', $account->id],
                 [
                     'confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $account->id),
@@ -22,19 +22,26 @@
                 ]
             ) ?>
             <?= $this->Html->link(
-                __d('radius', 'List Accounts'),
+                __d('radius', 'List RADIUS Accounts'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item']
             ) ?>
-            <?= $this->Html->link(__d('radius', 'New Account'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(
+                __d('radius', 'New RADIUS Account'),
+                ['action' => 'add'],
+                ['class' => 'side-nav-item']
+            ) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
         <div class="accounts view content">
             <?= $this->Form->postLink(
-                __('Update'),
-                ['action' => 'update', $account->id],
-                ['class' => 'button button float-right']
+                __d('radius', 'Update Related Records'),
+                ['action' => 'updateRelatedRecords', $account->id],
+                [
+                    'confirm' => __d('radius', 'Are you sure you want to update related records?'),
+                    'class' => 'button button float-right',
+                ]
             ) ?>
             <h3><?= h($account->username) ?></h3>
             <div class="row">
@@ -110,11 +117,11 @@
             </div>
             <div class="related">
                 <?= $this->Html->link(
-                    __('New Radcheck'),
+                    __d('radius', 'New RADIUS Check'),
                     ['controller' => 'Radcheck', 'action' => 'add', '?' => ['username' => $account->username]],
                     ['class' => 'button button-small float-right win-link']
                 ) ?>
-                <h4><?= __d('radius', 'Related Radcheck') ?></h4>
+                <h4><?= __d('radius', 'Related RADIUS Checks') ?></h4>
                 <?php if (!empty($account->radcheck)) : ?>
                 <div class="table-responsive">
                     <table>
@@ -161,11 +168,11 @@
             </div>
             <div class="related">
                 <?= $this->Html->link(
-                    __('New Radreply'),
+                    __d('radius', 'New RADIUS Reply'),
                     ['controller' => 'Radreply', 'action' => 'add', '?' => ['username' => $account->username]],
                     ['class' => 'button button-small float-right win-link']
                 ) ?>
-                <h4><?= __d('radius', 'Related Radreply') ?></h4>
+                <h4><?= __d('radius', 'Related RADIUS Replies') ?></h4>
                 <?php if (!empty($account->radreply)) : ?>
                 <div class="table-responsive">
                     <table>
@@ -212,11 +219,11 @@
             </div>
             <div class="related">
                 <?= $this->Html->link(
-                    __('New Radusergroup'),
+                    __d('radius', 'New RADIUS User Group'),
                     ['controller' => 'Radusergroup', 'action' => 'add', '?' => ['username' => $account->username]],
                     ['class' => 'button button-small float-right win-link']
                 ) ?>
-                <h4><?= __d('radius', 'Related Radusergroup') ?></h4>
+                <h4><?= __d('radius', 'Related RADIUS User Groups') ?></h4>
                 <?php if (!empty($account->radusergroup)) : ?>
                 <div class="table-responsive">
                     <table>
@@ -260,7 +267,7 @@
                 <?php endif; ?>
             </div>
             <div class="related">
-                <h4><?= __d('radius', 'Related Radpostauth') ?></h4>
+                <h4><?= __d('radius', 'Related RADIUS Post Authentications') ?></h4>
                 <?php if (!empty($account->radpostauth)) : ?>
                 <div class="table-responsive">
                     <table>
@@ -310,7 +317,7 @@
                 <?php endif; ?>
             </div>
             <div class="related">
-                <h4><?= __d('radius', 'Related Radacct') ?></h4>
+                <h4><?= __d('radius', 'Related RADIUS Accountings') ?></h4>
                 <?php if (!empty($account->radacct)) : ?>
                 <div class="table-responsive">
                     <table>

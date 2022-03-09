@@ -9,12 +9,12 @@
         <div class="side-nav">
             <h4 class="heading"><?= __d('radius', 'Actions') ?></h4>
             <?= $this->Html->link(
-                __d('radius', 'Edit Radcheck'),
+                __d('radius', 'Edit RADIUS Check'),
                 ['action' => 'edit', $radcheck->id],
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->Form->postLink(
-                __d('radius', 'Delete Radcheck'),
+                __d('radius', 'Delete RADIUS Check'),
                 ['action' => 'delete', $radcheck->id],
                 [
                     'confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radcheck->id),
@@ -22,12 +22,12 @@
                 ]
             ) ?>
             <?= $this->Html->link(
-                __d('radius', 'List Radcheck'),
+                __d('radius', 'List RADIUS Checks'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->Html->link(
-                __d('radius', 'New Radcheck'),
+                __d('radius', 'New RADIUS Check'),
                 ['action' => 'add'],
                 ['class' => 'side-nav-item']
             ) ?>

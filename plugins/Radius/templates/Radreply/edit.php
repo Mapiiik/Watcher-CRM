@@ -17,7 +17,7 @@
                 ]
             ) ?>
             <?= $this->Html->link(
-                __d('radius', 'List Radreply'),
+                __d('radius', 'List RADIUS Replies'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item']
             ) ?>
@@ -27,7 +27,7 @@
         <div class="radreply form content">
             <?= $this->Form->create($radreply) ?>
             <fieldset>
-                <legend><?= __d('radius', 'Edit Radreply') ?></legend>
+                <legend><?= __d('radius', 'Edit RADIUS Reply') ?></legend>
                 <?php
                     echo $this->Form->control('username', ['options' => $accounts]);
                     echo $this->Form->control('attribute');

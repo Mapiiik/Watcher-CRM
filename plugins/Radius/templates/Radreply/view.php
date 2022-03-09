@@ -9,17 +9,17 @@
         <div class="side-nav">
             <h4 class="heading"><?= __d('radius', 'Actions') ?></h4>
             <?= $this->Html->link(
-                __d('radius', 'Edit Radreply'),
+                __d('radius', 'Edit RADIUS Reply'),
                 ['action' => 'edit', $radreply->id],
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->Form->postLink(
-                __d('radius', 'Delete Radreply'),
+                __d('radius', 'Delete RADIUS Reply'),
                 ['action' => 'delete', $radreply->id],
                 ['confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radreply->id), 'class' => 'side-nav-item']
             ) ?>
-            <?= $this->Html->link(__d('radius', 'List Radreply'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__d('radius', 'New Radreply'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__d('radius', 'List RADIUS Replies'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__d('radius', 'New RADIUS Reply'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
