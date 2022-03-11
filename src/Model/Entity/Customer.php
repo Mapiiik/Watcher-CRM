@@ -122,9 +122,6 @@ class Customer extends Entity
         $name = '';
 
         if (isset($this->title)) {
-            if ($name <> '') {
-                $name .= ' ';
-            }
             $name .= $this->title;
         }
         if (isset($this->first_name)) {
