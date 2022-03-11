@@ -24,12 +24,14 @@
                 if (!isset($customer_id)) {
                     echo $this->Form->control('customer_id', [
                         'label' => __d('radius', 'Customer'),
+                        'empty' => true,
                         'options' => $customers,
                     ]);
                 }
                 if (!isset($contract_id)) {
                     echo $this->Form->control('contract_id', [
                         'label' => __d('radius', 'Contract'),
+                        'empty' => true,
                         'options' => $contracts,
                     ]);
                 }
