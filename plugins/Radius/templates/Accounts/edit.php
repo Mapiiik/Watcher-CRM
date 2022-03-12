@@ -43,6 +43,7 @@
                 }
                 echo $this->Form->control('username', [
                     'label' => __d('radius', 'Username'),
+                    'readonly' => true,
                     'type' => 'text',
                 ]);
                 echo $this->Form->control('password', [
