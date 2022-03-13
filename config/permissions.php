@@ -120,7 +120,7 @@ return [
                 }
 
                 return false;
-            }
+            },
         ],
         //all roles allowed to Pages/display
         [
@@ -156,7 +156,7 @@ return [
             'controller' => [
                 'Emails', 'Phones', 'Logins', 'Addresses',
                 'Billings', 'BorrowedEquipments', 'SoldEquipments', 'Ips',
-                'Tasks'
+                'Tasks',
             ],
             'action' => ['view'],
         ],
@@ -168,12 +168,12 @@ return [
                 'Contracts',
                 'Emails', 'Phones', 'Logins', 'Addresses',
                 'Billings', 'BorrowedEquipments', 'SoldEquipments', 'Ips',
-                'Tasks'
+                'Tasks',
             ],
             'action' => ['index'],
-            'allowed' => function($user, $role, Cake\Http\ServerRequest $request) {
+            'allowed' => function ($user, $role, Cake\Http\ServerRequest $request) {
                 return is_numeric($request->getParam('customer_id'));
-            }
+            },
         ],
         //allow add/edit for managers and bookkeepers
         [
@@ -204,5 +204,12 @@ return [
             'controller' => '*',
             'action' => '*',
         ],
-    ]
+        //allow standard account operations in RADIUS plugin for managers and bookkeepers
+        [
+            'role' => ['manager', 'bookkeeper'],
+            'plugin' => ['Radius'],
+            'controller' => 'accounts',
+            'action' => ['view', 'add', 'edit', 'updateRelatedRecords'],
+        ],
+    ],
 ];
