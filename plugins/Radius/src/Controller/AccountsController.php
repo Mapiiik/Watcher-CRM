@@ -110,8 +110,8 @@ class AccountsController extends AppController
 
         $new_username = '';
         if (isset($customer_id)) {
-            $customers->where(['id' => $customer_id]);
-            $contracts->where(['customer_id' => $customer_id]);
+            $customers->where(['Customers.id' => $customer_id]);
+            $contracts->where(['Contracts.customer_id' => $customer_id]);
 
             // START find free username
             $customer = $this->Accounts->Customers->get($customer_id);
@@ -129,7 +129,7 @@ class AccountsController extends AppController
             // END find free login
         }
         if (isset($contract_id)) {
-            $contracts->where(['id' => $contract_id]);
+            $contracts->where(['Contracts.id' => $contract_id]);
         }
 
         $this->set(compact('account', 'customers', 'contracts'));
@@ -181,11 +181,11 @@ class AccountsController extends AppController
         ]);
 
         if (isset($customer_id)) {
-            $customers->where(['id' => $customer_id]);
-            $contracts->where(['customer_id' => $customer_id]);
+            $customers->where(['Customers.id' => $customer_id]);
+            $contracts->where(['Contracts.customer_id' => $customer_id]);
         }
         if (isset($contract_id)) {
-            $contracts->where(['id' => $contract_id]);
+            $contracts->where(['Contracts.id' => $contract_id]);
         }
 
         $this->set(compact('account', 'customers', 'contracts'));
