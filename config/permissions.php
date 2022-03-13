@@ -208,7 +208,7 @@ return [
         [
             'role' => ['manager', 'bookkeeper'],
             'plugin' => ['Radius'],
-            'controller' => 'accounts',
+            'controller' => ['Accounts'],
             'action' => ['view', 'add', 'edit', 'updateRelatedRecords'],
         ],
     ],
