@@ -9,7 +9,7 @@
         <div class="side-nav">
             <h4 class="heading"><?= __d('radius', 'Actions') ?></h4>
             <?= $this->Form->postLink(
-                __d('radius', 'Delete'),
+                __d('radius', 'Delete RADIUS Reply'),
                 ['action' => 'delete', $radreply->id],
                 [
                     'confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radreply->id),
