@@ -30,5 +30,7 @@ services:
     working_dir: /app/
     environment:
       DATABASE_URL: postgres://postgres@database-dev/watcher_crm
+      DATABASE_RADIUS_URL: postgres://postgres@database-dev/watcher_crm_radius
+      DATABASE_RUIAN_URL: postgres://postgres@database-dev/watcher_crm_ruian
     ports:
       - 80:80/tcp
