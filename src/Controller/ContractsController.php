@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Collection\Collection;
+use Cake\Database\Exception\MissingConnectionException;
 use Cake\I18n\FrozenDate;
 use stdClass;
 
@@ -317,10 +318,16 @@ class ContractsController extends AppController
                         return $this->redirect(['action' => 'edit', $id]);
                     }
 
-                    $radius_accounts = $this->fetchTable('Radius.Accounts')
-                        ->find()
-                        ->where(['contract_id' => $contract->id, 'active' => true])
-                        ->order('id');
+                    try {
+                        $radius_accounts = $this->fetchTable('Radius.Accounts')
+                            ->find()
+                            ->where(['contract_id' => $contract->id, 'active' => true])
+                            ->order('id');
+                        $radius_connected = true;
+                    } catch (MissingConnectionException $connectionError) {
+                        //Couldn't connect
+                        $radius_connected = false;
+                    }
 
                     $technical_details = new stdClass();
 
@@ -329,12 +336,12 @@ class ContractsController extends AppController
                     }
                     if (!empty($query['radius_username'])) {
                         $technical_details->radius_username = $query['radius_username'];
-                    } elseif ($radius_accounts->count() > 0) {
+                    } elseif ($radius_connected && $radius_accounts->count() > 0) {
                         $technical_details->radius_username = $radius_accounts->last()->get('username');
                     }
                     if (!empty($query['radius_password'])) {
                         $technical_details->radius_password = $query['radius_password'];
-                    } elseif ($radius_accounts->count() > 0) {
+                    } elseif ($radius_connected && $radius_accounts->count() > 0) {
                         $technical_details->radius_password = $radius_accounts->last()->get('password');
                     }
 
