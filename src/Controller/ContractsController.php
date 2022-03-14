@@ -319,13 +319,17 @@ class ContractsController extends AppController
                     }
 
                     try {
-                        $radius_accounts = $this->fetchTable('Radius.Accounts')
+                        //Try to load lastly added RADIUS account
+                        $radius_account = $this->fetchTable('Radius.Accounts')
                             ->find()
                             ->where(['contract_id' => $contract->id, 'active' => true])
-                            ->order('id');
+                            ->order(['id' => 'DESC'])
+                            ->limit(1)
+                            ->first();
                         $radius_connected = true;
                     } catch (MissingConnectionException $connectionError) {
                         //Couldn't connect
+                        $radius_account = null;
                         $radius_connected = false;
                     }
 
@@ -336,13 +340,13 @@ class ContractsController extends AppController
                     }
                     if (!empty($query['radius_username'])) {
                         $technical_details->radius_username = $query['radius_username'];
-                    } elseif ($radius_connected && $radius_accounts->count() > 0) {
-                        $technical_details->radius_username = $radius_accounts->last()->get('username');
+                    } elseif ($radius_connected && isset($radius_account->username)) {
+                        $technical_details->radius_username = $radius_account->username;
                     }
                     if (!empty($query['radius_password'])) {
                         $technical_details->radius_password = $query['radius_password'];
-                    } elseif ($radius_connected && $radius_accounts->count() > 0) {
-                        $technical_details->radius_password = $radius_accounts->last()->get('password');
+                    } elseif ($radius_connected && isset($radius_account->password)) {
+                        $technical_details->radius_password = $radius_account->password;
                     }
 
                     $this->set('technical_details', $technical_details);
