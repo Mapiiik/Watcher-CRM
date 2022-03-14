@@ -317,6 +317,11 @@ class ContractsController extends AppController
                         return $this->redirect(['action' => 'edit', $id]);
                     }
 
+                    $radius_accounts = $this->fetchTable('Radius.Accounts')
+                        ->find()
+                        ->where(['contract_id' => $contract->id, 'active' => true])
+                        ->order('id');
+
                     $technical_details = new stdClass();
 
                     if (!empty($query['ssid'])) {
@@ -324,9 +329,13 @@ class ContractsController extends AppController
                     }
                     if (!empty($query['radius_username'])) {
                         $technical_details->radius_username = $query['radius_username'];
+                    } elseif ($radius_accounts->count() > 0) {
+                        $technical_details->radius_username = $radius_accounts->last()->get('username');
                     }
                     if (!empty($query['radius_password'])) {
                         $technical_details->radius_password = $query['radius_password'];
+                    } elseif ($radius_accounts->count() > 0) {
+                        $technical_details->radius_password = $radius_accounts->last()->get('password');
                     }
 
                     $this->set('technical_details', $technical_details);
