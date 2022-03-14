@@ -41,8 +41,6 @@ class Plugin extends BasePlugin
             'Radius',
             ['path' => '/radius'],
             function (RouteBuilder $builder) {
-                $builder->connect('/', ['controller' => 'Accounts', 'action' => 'index']);
-
                 $builder->connect(
                     '/customers/{customer_id}/contracts/{contract_id}/{controller}',
                     ['action' => 'index']

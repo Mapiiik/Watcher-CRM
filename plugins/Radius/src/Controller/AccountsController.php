@@ -208,6 +208,10 @@ class AccountsController extends AppController
             $this->Flash->error(__d('radius', 'The RADIUS account could not be deleted. Please, try again.'));
         }
 
+        if (isset($customer_id)) {
+            return $this->redirect(['action' => 'index', 'customer_id' => $customer_id]);
+        }
+
         return $this->redirect(['action' => 'index']);
     }
 
@@ -336,8 +340,10 @@ class AccountsController extends AppController
 
         if (empty($radreply)) {
             // return current radusergroup records
-            foreach ($account->radreply as $current_radreply) {
-                $radreply[] = $current_radreply->toArray();
+            if (is_array($account->radreply)) {
+                foreach ($account->radreply as $current_radreply) {
+                    $radreply[] = $current_radreply->toArray();
+                }
             }
             $this->Flash->warning(
                 __d('radius', 'The RADIUS replies could not be found automatically. Please, set it manually.')
@@ -361,14 +367,15 @@ class AccountsController extends AppController
                     'queryBuilder' => function (Query $q) {
                         return $q->where([
                             'Queues.name IS NOT NULL',
-                            'Billings.billing_from <=' => new FrozenDate(),
+                            'Billings.billing_from <=' => (new FrozenDate())->addMonths(1),
                         ])
                         ->andWhere([
                             'OR' => [
                                 'Billings.billing_until IS NULL',
                                 'Billings.billing_until >=' => new FrozenDate(),
                             ],
-                        ]);
+                        ])
+                        ->order(['Billings.billing_from' => 'ASC']);
                     },
                     'Services' => 'Queues',
                 ],
@@ -377,8 +384,8 @@ class AccountsController extends AppController
 
         $radusergroup = [];
 
-        if (count($contract->billings) == 1) {
-            // return radusergroup record with current queue name as groupname
+        if (isset($contract->billings[0])) {
+            // return radusergroup record with current (or the near future) queue name as groupname
             $radusergroup[] = $this->getTableLocator()->get('Radius.Radusergroup')
                 ->findOrCreate([
                     'username' => $account->username,
@@ -389,9 +396,11 @@ class AccountsController extends AppController
         }
 
         if (empty($radusergroup)) {
-            // return current radusergroup records
-            foreach ($account->radusergroup as $current_radusergroup) {
-                $radusergroup[] = $current_radusergroup->toArray();
+            // return current radusergroup records if exists
+            if (is_array($account->radusergroup)) {
+                foreach ($account->radusergroup as $current_radusergroup) {
+                    $radusergroup[] = $current_radusergroup->toArray();
+                }
             }
             $this->Flash->warning(
                 __d('radius', 'The RADIUS user groups could not be found automatically. Please, set it manually.')

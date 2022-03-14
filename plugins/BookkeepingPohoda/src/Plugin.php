@@ -41,7 +41,6 @@ class Plugin extends BasePlugin
             'BookkeepingPohoda',
             ['path' => '/bookkeeping'],
             function (RouteBuilder $builder) {
-                // Add custom routes here
                 $builder->setExtensions(['dbf', 'xml']);
 
                 $builder->fallbacks();

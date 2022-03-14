@@ -72,7 +72,7 @@ $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
             ) ?>
             <?= $this->AuthLink->link(
                 __('Tasks'),
-                ['controller' => 'Tasks', 'action' => 'index', 'plugin' => null],
+                ['controller' => 'Tasks', 'action' => 'index', 'plugin' => null, 'customer_id' => false],
                 ['class' => 'button button-small' . $buttonSelected(['Tasks'])]
             ) ?>
             <?= $this->AuthLink->link(
@@ -82,7 +82,7 @@ $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
             ) ?>
             <?= $this->AuthLink->link(
                 __('RADIUS'),
-                ['controller' => 'Accounts', 'action' => 'index', 'plugin' => 'Radius'],
+                ['controller' => 'Accounts', 'action' => 'index', 'plugin' => 'Radius', 'customer_id' => false],
                 ['class' => 'button button-small' . $buttonSelected([
                     'Accounts',
                     'Nass',
