@@ -79,21 +79,23 @@ class AccountsController extends AppController
         $account = $this->Accounts->newEmptyEntity();
 
         if (isset($customer_id)) {
-            $account = $this->Accounts->patchEntity($account, ['customer_id' => $customer_id]);
+            $account->customer_id = $customer_id;
         }
         if (isset($contract_id)) {
-            $account = $this->Accounts->patchEntity($account, ['contract_id' => $contract_id]);
+            $account->contract_id = $contract_id;
         }
 
         if ($this->request->is('post')) {
             $account = $this->Accounts->patchEntity($account, $this->request->getData());
 
-            // autogenerate related records
-            $account = $this->Accounts->patchEntity($account, [
-                'radcheck' => $this->autoRadcheckData($account),
-                'radreply' => $this->autoRadreplyData($account),
-                'radusergroup' => $this->autoRadusergroupData($account),
-            ]);
+            if (!$account->hasErrors()) {
+                // autogenerate related records
+                $account = $this->Accounts->patchEntity($account, [
+                    'radcheck' => $this->autoRadcheckData($account),
+                    'radreply' => $this->autoRadreplyData($account),
+                    'radusergroup' => $this->autoRadusergroupData($account),
+                ]);
+            }
 
             if ($this->Accounts->save($account)) {
                 $this->Flash->success(__d('radius', 'The RADIUS account has been saved.'));
@@ -162,10 +164,12 @@ class AccountsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $account = $this->Accounts->patchEntity($account, $this->request->getData());
 
-            // autogenerate related records
-            $account = $this->Accounts->patchEntity($account, [
-                'radcheck' => $this->autoRadcheckData($account),
-            ]);
+            if (!$account->hasErrors()) {
+                // autogenerate related records
+                $account = $this->Accounts->patchEntity($account, [
+                    'radcheck' => $this->autoRadcheckData($account),
+                ]);
+            }
 
             if ($this->Accounts->save($account)) {
                 $this->Flash->success(__d('radius', 'The RADIUS account has been saved.'));
