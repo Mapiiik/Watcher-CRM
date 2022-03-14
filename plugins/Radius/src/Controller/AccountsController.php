@@ -208,10 +208,6 @@ class AccountsController extends AppController
             $this->Flash->error(__d('radius', 'The RADIUS account could not be deleted. Please, try again.'));
         }
 
-        if (isset($customer_id)) {
-            return $this->redirect(['action' => 'index', 'customer_id' => $customer_id]);
-        }
-
         return $this->redirect(['action' => 'index']);
     }
 
