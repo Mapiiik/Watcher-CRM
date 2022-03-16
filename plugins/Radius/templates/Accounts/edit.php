@@ -46,6 +46,7 @@
                 if (!isset($contract_id)) {
                     echo $this->Form->control('contract_id', [
                         'label' => __d('radius', 'Contract'),
+                        'empty' => true,
                         'options' => $contracts,
                         'onchange' => '
                             var refresh = document.createElement("input");

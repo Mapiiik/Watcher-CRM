@@ -88,18 +88,18 @@ class AccountsController extends AppController
         if ($this->request->is('post')) {
             $account = $this->Accounts->patchEntity($account, $this->request->getData());
 
-            if (!$account->hasErrors()) {
-                // autogenerate related records
-                $account = $this->Accounts->patchEntity($account, [
-                    'radcheck' => $this->autoRadcheckData($account),
-                    'radreply' => $this->autoRadreplyData($account),
-                    'radusergroup' => $this->autoRadusergroupData($account),
-                ]);
-            }
-
             if ($this->request->getData('refresh') == 'refresh') {
                 // only refresh
             } else {
+                if (!$account->hasErrors()) {
+                    // autogenerate related records
+                    $account = $this->Accounts->patchEntity($account, [
+                        'radcheck' => $this->autoRadcheckData($account),
+                        'radreply' => $this->autoRadreplyData($account),
+                        'radusergroup' => $this->autoRadusergroupData($account),
+                    ]);
+                }
+
                 if ($this->Accounts->save($account)) {
                     $this->Flash->success(__d('radius', 'The RADIUS account has been saved.'));
 
@@ -138,12 +138,14 @@ class AccountsController extends AppController
                 }
 
                 if (empty($customer->company)) {
-                    $new_username = strtolower($this->squashCharacters($customer->last_name . '.' . $customer->first_name));
+                    $new_username = strtolower($this->squashCharacters(
+                        $customer->last_name . '.' . $customer->first_name
+                    ));
                 } else {
                     $new_username = strtolower($this->squashCharacters($customer->company));
                     $new_username = strtr($new_username, [' - ' => '-', ' ' => '-', '.' => '', ',' => '']);
                 }
-                $new_username = $contract->number . '-' . $new_username;
+                //$new_username = $contract->number . '-' . $new_username;
 
                 $i = 1;
                 $test_username = $new_username;
@@ -188,16 +190,16 @@ class AccountsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $account = $this->Accounts->patchEntity($account, $this->request->getData());
 
-            if (!$account->hasErrors()) {
-                // autogenerate related records
-                $account = $this->Accounts->patchEntity($account, [
-                    'radcheck' => $this->autoRadcheckData($account),
-                ]);
-            }
-
             if ($this->request->getData('refresh') == 'refresh') {
                 // only refresh
             } else {
+                if (!$account->hasErrors()) {
+                    // autogenerate related records
+                    $account = $this->Accounts->patchEntity($account, [
+                        'radcheck' => $this->autoRadcheckData($account),
+                    ]);
+                }
+
                 if ($this->Accounts->save($account)) {
                     $this->Flash->success(__d('radius', 'The RADIUS account has been saved.'));
 
