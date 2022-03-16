@@ -141,6 +141,7 @@ class AccountsController extends AppController
                     $new_username = strtolower($this->squashCharacters(
                         $customer->last_name . '.' . $customer->first_name
                     ));
+                    $new_username = strtr($new_username, [' - ' => '-', ' ' => '-']);
                 } else {
                     $new_username = strtolower($this->squashCharacters($customer->company));
                     $new_username = strtr($new_username, [' - ' => '-', ' ' => '-', '.' => '', ',' => '']);
