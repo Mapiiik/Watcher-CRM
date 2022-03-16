@@ -26,6 +26,14 @@
                         'label' => __d('radius', 'Customer'),
                         'empty' => true,
                         'options' => $customers,
+                        'onchange' => '
+                            var refresh = document.createElement("input");
+                            refresh.type = "hidden";
+                            refresh.name = "refresh";
+                            refresh.value = "refresh";
+                            this.form.appendChild(refresh);
+                            this.form.submit();
+                        ',
                     ]);
                 }
                 if (!isset($contract_id)) {
@@ -33,8 +41,18 @@
                         'label' => __d('radius', 'Contract'),
                         'empty' => true,
                         'options' => $contracts,
+                        'onchange' => '
+                            var refresh = document.createElement("input");
+                            refresh.type = "hidden";
+                            refresh.name = "refresh";
+                            refresh.value = "refresh";
+                            this.form.appendChild(refresh);
+                            this.form.submit();
+                        ',
                     ]);
                 }
+                $this->Form->unlockField('refresh'); //disable form security check
+
                 echo $this->Form->control('username', [
                     'label' => __d('radius', 'Username'),
                     'type' => 'text',

@@ -97,12 +97,16 @@ class AccountsController extends AppController
                 ]);
             }
 
-            if ($this->Accounts->save($account)) {
-                $this->Flash->success(__d('radius', 'The RADIUS account has been saved.'));
+            if ($this->request->getData('refresh') == 'refresh') {
+                // only refresh
+            } else {
+                if ($this->Accounts->save($account)) {
+                    $this->Flash->success(__d('radius', 'The RADIUS account has been saved.'));
 
-                return $this->redirect(['action' => 'view', $account->id]);
+                    return $this->redirect(['action' => 'view', $account->id]);
+                }
+                $this->Flash->error(__d('radius', 'The RADIUS account could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__d('radius', 'The RADIUS account could not be saved. Please, try again.'));
         }
         $customers = $this->Accounts->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $contracts = $this->Accounts->Contracts->find('list', [
@@ -110,29 +114,49 @@ class AccountsController extends AppController
             'contain' => ['ServiceTypes', 'InstallationAddresses'],
         ]);
 
-        $new_username = '';
         if (isset($customer_id)) {
             $customers->where(['Customers.id' => $customer_id]);
             $contracts->where(['Contracts.customer_id' => $customer_id]);
-
-            // START find free username
-            $customer = $this->Accounts->Customers->get($customer_id);
-            $new_username = strtolower($this->squashCharacters($customer->last_name . '.' . $customer->first_name));
-
-            $i = 1;
-            $test_username = $new_username;
-            while ($this->Accounts->exists(['username' => $test_username])) {
-                $i++;
-                $test_username = $new_username . '.' . $i;
-            }
-            $new_username = $test_username;
-            unset($test_username);
-            unset($i);
-            // END find free login
+        }
+        if (isset($account->customer_id)) {
+            $contracts->where(['Contracts.customer_id' => $account->customer_id]);
         }
         if (isset($contract_id)) {
             $contracts->where(['Contracts.id' => $contract_id]);
         }
+
+        // START find free username
+        $new_username = '';
+        if (isset($account->customer_id) && isset($account->contract_id)) {
+            $customer = $this->Accounts->Customers->get($account->customer_id);
+            $contract = $this->Accounts->Contracts->get($account->contract_id);
+
+            if ($customer->id == $contract->customer_id) {
+                // clear request data for username if empty
+                if (empty($this->request->getData('username'))) {
+                    $this->request = $this->request->withoutData('username');
+                }
+
+                if (empty($customer->company)) {
+                    $new_username = strtolower($this->squashCharacters($customer->last_name . '.' . $customer->first_name));
+                } else {
+                    $new_username = strtolower($this->squashCharacters($customer->company));
+                    $new_username = strtr($new_username, [' - ' => '-', ' ' => '-', '.' => '', ',' => '']);
+                }
+                $new_username = $contract->number . '-' . $new_username;
+
+                $i = 1;
+                $test_username = $new_username;
+                while ($this->Accounts->exists(['username' => $test_username])) {
+                    $i++;
+                    $test_username = $new_username . '.' . $i;
+                }
+                $new_username = $test_username;
+                unset($test_username);
+                unset($i);
+            }
+        }
+        // END find free username
 
         $this->set(compact('account', 'customers', 'contracts'));
 
@@ -171,12 +195,16 @@ class AccountsController extends AppController
                 ]);
             }
 
-            if ($this->Accounts->save($account)) {
-                $this->Flash->success(__d('radius', 'The RADIUS account has been saved.'));
+            if ($this->request->getData('refresh') == 'refresh') {
+                // only refresh
+            } else {
+                if ($this->Accounts->save($account)) {
+                    $this->Flash->success(__d('radius', 'The RADIUS account has been saved.'));
 
-                return $this->redirect(['action' => 'view', $account->id]);
+                    return $this->redirect(['action' => 'view', $account->id]);
+                }
+                $this->Flash->error(__d('radius', 'The RADIUS account could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__d('radius', 'The RADIUS account could not be saved. Please, try again.'));
         }
         $customers = $this->Accounts->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $contracts = $this->Accounts->Contracts->find('list', [
@@ -187,6 +215,9 @@ class AccountsController extends AppController
         if (isset($customer_id)) {
             $customers->where(['Customers.id' => $customer_id]);
             $contracts->where(['Contracts.customer_id' => $customer_id]);
+        }
+        if (isset($account->customer_id)) {
+            $contracts->where(['Contracts.customer_id' => $account->customer_id]);
         }
         if (isset($contract_id)) {
             $contracts->where(['Contracts.id' => $contract_id]);
