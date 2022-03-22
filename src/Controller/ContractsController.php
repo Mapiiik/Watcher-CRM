@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use Cake\Collection\Collection;
 use Cake\Database\Exception\MissingConnectionException;
+use Cake\Database\Query;
 use Cake\I18n\FrozenDate;
 use stdClass;
 
@@ -251,10 +252,14 @@ class ContractsController extends AppController
                 'InstallationTechnicians',
                 'Brokerages',
                 'Billings' => ['Services'],
-                'BorrowedEquipments' => ['EquipmentTypes'],
                 'Ips',
                 'RemovedIps',
-                'SoldEquipments' => ['EquipmentTypes'],
+                'BorrowedEquipments.EquipmentTypes' => function (Query $query) {
+                    return $query->where(['BorrowedEquipments.borrowed_until IS NULL']);
+                },
+                'SoldEquipments.EquipmentTypes' => function (Query $query) {
+                    return $query->where(['SoldEquipments.date_of_sale IS NULL']);
+                },
             ],
         ]);
 
