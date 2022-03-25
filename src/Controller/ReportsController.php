@@ -142,12 +142,21 @@ class ReportsController extends AppController
                                     $address['active_speeds'] = new Entity(
                                         $billings_collection
                                         ->countBy(function ($billing) {
+/*
                                             $commonly_available_download_speed
                                                 = $billing->service->queue->speed_down * 0.6;
 
                                             if ($commonly_available_download_speed < 30720) {
                                                 return 'speed_0_30';
                                             } elseif ($commonly_available_download_speed < 102400) {
+                                                return 'speed_30_100';
+                                            } else {
+                                                return 'speed_100_plus';
+                                            }
+*/
+                                            if ($billing->service->queue->speed_down < 30720) {
+                                                return 'speed_0_30';
+                                            } elseif ($billing->service->queue->speed_down < 102400) {
                                                 return 'speed_30_100';
                                             } else {
                                                 return 'speed_100_plus';
