@@ -160,34 +160,36 @@ $routes->scope('/', function (RouteBuilder $builder) {
  * ```
  */
 
-Router::addUrlFilter(function (array $params, ServerRequest $request) {
-    if ($request->getQuery('win-link') == 'true') {
-        $params['?']['win-link'] = 'true';
-    }
+if (!is_null($request)) { //check if not console route
+    Router::addUrlFilter(function (array $params, ServerRequest $request) {
+        if ($request->getQuery('win-link') == 'true') {
+            $params['?']['win-link'] = 'true';
+        }
 
-    //inject customer_id
-    if ($request->getParam('customer_id') && !isset($params['customer_id'])) {
-        $params['customer_id'] = $request->getParam('customer_id');
-    }
-    //inject contract_id
-    if ($request->getParam('contract_id') && !isset($params['contract_id'])) {
-        $params['contract_id'] = $request->getParam('contract_id');
-    }
+        //inject customer_id
+        if ($request->getParam('customer_id') && !isset($params['customer_id'])) {
+            $params['customer_id'] = $request->getParam('customer_id');
+        }
+        //inject contract_id
+        if ($request->getParam('contract_id') && !isset($params['contract_id'])) {
+            $params['contract_id'] = $request->getParam('contract_id');
+        }
 
-    //remove for self (because of duplicating nesting)
-    if (isset($params['controller']) && $params['controller'] == 'Customers') {
-        unset($params['customer_id']);
-    }
-    if (!isset($params['controller']) && $request->getParam('controller') == 'Customers') {
-        unset($params['customer_id']);
-    }
+        //remove for self (because of duplicating nesting)
+        if (isset($params['controller']) && $params['controller'] == 'Customers') {
+            unset($params['customer_id']);
+        }
+        if (!isset($params['controller']) && $request->getParam('controller') == 'Customers') {
+            unset($params['customer_id']);
+        }
 
-    if (isset($params['controller']) && $params['controller'] == 'Contracts') {
-        unset($params['contract_id']);
-    }
-    if (!isset($params['controller']) && $request->getParam('controller') == 'Contracts') {
-        unset($params['contract_id']);
-    }
+        if (isset($params['controller']) && $params['controller'] == 'Contracts') {
+            unset($params['contract_id']);
+        }
+        if (!isset($params['controller']) && $request->getParam('controller') == 'Contracts') {
+            unset($params['contract_id']);
+        }
 
-    return $params;
-});
+        return $params;
+    });
+}
