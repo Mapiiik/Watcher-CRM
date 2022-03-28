@@ -300,8 +300,14 @@ class CustomersController extends AppController
                                 try {
                                     $address = $this->fetchTable('Ruian.Addresses')->get($ruian_gid, [
                                         'fields' => [
-                                            //'gps_y' => 'ST_Y(geometry)',
-                                            //'gps_x' => 'ST_X(geometry)',
+                                            'ulice_nazev',
+                                            'typ_so',
+                                            'cislo_domovni',
+                                            'psc',
+                                            'obec_nazev',
+                                            'cast_obce_nazev',
+                                            'gps_y' => 'ST_Y(geometry)',
+                                            'gps_x' => 'ST_X(geometry)',
                                         ],
                                     ]);
                                 } catch (RecordNotFoundException $recordNotFoundError) {
