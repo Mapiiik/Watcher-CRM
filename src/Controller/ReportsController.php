@@ -160,9 +160,21 @@ class ReportsController extends AppController
                                         $billings_collection
                                         ->countBy(function ($billing) {
                                             if ($billing->service->queue->cto_category == 's2_wifi') {
-                                                return 'speed_30_100';
+                                                if ($billing->service->queue->speed_down >= 1024000) {
+                                                    return 'speed_1000_plus';
+                                                } elseif ($billing->service->queue->speed_down >= 307200) {
+                                                    return 'speed_300_1000';
+                                                } elseif ($billing->service->queue->speed_down >= 102400) {
+                                                    return 'speed_100_300';
+                                                } else {
+                                                    return 'speed_30_100';
+                                                }
                                             } elseif ($billing->service->queue->cto_category == 's2_fttb') {
-                                                return 'speed_300_1000';
+                                                if ($billing->service->queue->speed_down >= 1024000) {
+                                                    return 'speed_1000_plus';
+                                                } else {
+                                                    return 'speed_300_1000';
+                                                }
                                             } else {
                                                 return 'unknown';
                                             }
