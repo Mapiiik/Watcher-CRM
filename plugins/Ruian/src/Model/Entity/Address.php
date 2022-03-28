@@ -59,4 +59,61 @@ class Address extends Entity
         'geometry' => true,
         'geometry_jtsk' => true,
     ];
+
+    /**
+     * getter for address without company/name
+     *
+     * @return string
+     */
+    protected function _getAddress(): string
+    {
+        $address = '';
+
+        $address .= $this->street_and_number;
+        $address .= ', ' . $this->zip_and_city;
+
+        return $address;
+    }
+
+    /**
+     * getter for street and object number line
+     *
+     * @return string
+     */
+    protected function _getStreetAndNumber(): string
+    {
+        $street_and_number = '';
+
+        if (!empty($this->ulice_nazev)) {
+                $street_and_number .= $this->ulice_nazev . ' ' . $this->cislo_domovni;
+        } else {
+                $street_and_number .= $this->typ_so . ' ' . $this->cislo_domovni;
+        }
+
+        return $street_and_number;
+    }
+
+    /**
+     * getter for zip and city line
+     *
+     * @return string
+     */
+    protected function _getZipAndCity(): string
+    {
+        $zip_and_city = '';
+
+        if (!empty($this->psc)) {
+            $zip_and_city .= substr((string)$this->psc, 0, 3) . ' ' . substr((string)$this->psc, 3, 2);
+        }
+
+        if (!empty($this->obec_nazev)) {
+            $zip_and_city .= ' ' . $this->obec_nazev;
+        }
+
+        if (!empty($this->cast_obce_nazev) && $this->cast_obce_nazev <> $this->obec_nazev) {
+            $zip_and_city .= ' - ' . $this->cast_obce_nazev;
+        }
+
+        return $zip_and_city;
+    }
 }

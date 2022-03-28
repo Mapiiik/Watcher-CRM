@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Form\SearchForm;
+use Cake\Collection\Collection;
+use Cake\Collection\CollectionInterface;
 
 /**
  * Customers Controller
@@ -257,5 +259,80 @@ class CustomersController extends AppController
             }
         }
         $this->set(compact('customer', 'type', 'query', 'address_types', 'invoice_delivery_types'));
+    }
+
+    /**
+     * Customer points method
+     *
+     * @return \Cake\Http\Response|null|void Renders view
+     */
+    public function customerPoints()
+    {
+        /*
+        $options = [
+            'contain' => ['AccessPoints', 'DeviceTypes', 'CustomerConnections'],
+            'order' => ['RouterosDevices.modified' => 'DESC'],
+        ];
+
+        if ($this->request->is(['get']) && ($this->request->getQuery('ip')) !== null) {
+            $options['conditions']['ip_address'] = $this->request->getQuery('ip');
+        }
+        $routerosDevices = $this->RouterosDevices->find('all', $options);
+        */
+        $customerPoints = $this->fetchTable('Contracts')->find()
+            ->contain('InstallationAddresses')
+            ->contain('Customers')
+            ->contain('Ips')
+            ->where([
+                'InstallationAddresses.ruian_gid IS NOT NULL',
+                'InstallationAddresses.gpsx IS NOT NULL',
+                'InstallationAddresses.gpsy IS NOT NULL',
+            ])
+            ->formatResults(
+                function (CollectionInterface $customerPoints) {
+                    return $customerPoints
+                        ->groupBy('installation_address.ruian_gid')
+                        ->map(
+                            function ($customerConnections, $ruian_gid) {
+                                // load RUIAN record
+                                $address = $this->fetchTable('Ruian.Addresses')->get($ruian_gid, [
+                                    'fields' => [
+                                        'gps_y' => 'ST_Y(geometry)',
+                                        'gps_x' => 'ST_X(geometry)',
+                                    ],
+                                ]);
+
+                                return [
+                                    'name' => $address->address,
+                                    'gps_y' => $address->gps_y,
+                                    'gps_x' => $address->gps_x,
+                                    'note' => 'RUIAN: ' . $ruian_gid,
+                                    'CustomerConnections' => (new Collection($customerConnections))->map(
+                                        function ($contract) {
+                                            return [
+                                                'name' => $contract->installation_address->name,
+                                                'customer_number' => $contract->customer->name,
+                                                'contract_number' => $contract->name,
+                                                'note' => $contract->note,
+                                                'CustomerConnectionIps' => (new Collection($contract->ips))->map(
+                                                    function ($ip) {
+                                                        return [
+                                                            'ip_address' => $ip->ip,
+                                                            'name' => $ip->note,
+                                                            'note' => $ip->note,
+                                                        ];
+                                                    }
+                                                ),
+                                            ];
+                                        }
+                                    ),
+                                ];
+                            }
+                        );
+                }
+            );
+
+        $this->set(compact('customerPoints'));
+        $this->viewBuilder()->setOption('serialize', 'customerPoints');
     }
 }

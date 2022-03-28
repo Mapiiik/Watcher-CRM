@@ -160,7 +160,20 @@ $routes->scope('/', function (RouteBuilder $builder) {
  * ```
  */
 
-if (!is_null($request)) { //check if not console route
+$routes->scope('/api', function (RouteBuilder $builder) {
+    $builder->setExtensions(['json']);
+    $builder->resources('Customers', [
+        'only' => ['customer-points'],
+        'map' => [
+            'customer-points' => [
+                'action' => 'customerPoints',
+                'method' => 'GET',
+            ],
+        ],
+    ]);
+});
+
+if (isset($request)) { //check if not console route
     Router::addUrlFilter(function (array $params, ServerRequest $request) {
         if ($request->getQuery('win-link') == 'true') {
             $params['?']['win-link'] = 'true';
