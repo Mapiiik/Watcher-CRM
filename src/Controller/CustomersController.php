@@ -7,7 +7,7 @@ use App\Form\SearchForm;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
-use Cake\ORM\Entity;
+use Ruian\Model\Entity\Address;
 
 /**
  * Customers Controller
@@ -311,8 +311,7 @@ class CustomersController extends AppController
                                         ],
                                     ]);
                                 } catch (RecordNotFoundException $recordNotFoundError) {
-                                    $address = new Entity([
-                                        'address' => '--',
+                                    $address = new Address([
                                         'gps_y' => null,
                                         'gps_x' => null,
                                     ]);

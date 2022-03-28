@@ -27,6 +27,11 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenDate|null $plati_od
  * @property string|null $geometry
  * @property string|null $geometry_jtsk
+ * @property string $address
+ * @property string $street_and_number
+ * @property string $zip_and_city
+ * @property float|null $gps_x
+ * @property float|null $gps_y
  */
 class Address extends Entity
 {
