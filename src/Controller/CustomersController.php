@@ -326,8 +326,8 @@ class CustomersController extends AppController
                                         function ($contract) {
                                             return [
                                                 'name' => $contract->installation_address->name,
-                                                'customer_number' => $contract->customer->name,
-                                                'contract_number' => $contract->name,
+                                                'customer_number' => $contract->customer->number,
+                                                'contract_number' => $contract->number,
                                                 'note' => $contract->note,
                                                 'CustomerConnectionIps' => (new Collection($contract->ips))->map(
                                                     function ($ip) {
