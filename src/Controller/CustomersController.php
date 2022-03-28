@@ -6,6 +6,8 @@ namespace App\Controller;
 use App\Form\SearchForm;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
+use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\ORM\Entity;
 
 /**
  * Customers Controller
@@ -294,13 +296,21 @@ class CustomersController extends AppController
                         ->groupBy('installation_address.ruian_gid')
                         ->map(
                             function ($customerConnections, $ruian_gid) {
-                                // load RUIAN record
-                                $address = $this->fetchTable('Ruian.Addresses')->get($ruian_gid, [
-                                    'fields' => [
-                                        'gps_y' => 'ST_Y(geometry)',
-                                        'gps_x' => 'ST_X(geometry)',
-                                    ],
-                                ]);
+                                // Try to load RUIAN record
+                                try {
+                                    $address = $this->fetchTable('Ruian.Addresses')->get($ruian_gid, [
+                                        'fields' => [
+                                            //'gps_y' => 'ST_Y(geometry)',
+                                            //'gps_x' => 'ST_X(geometry)',
+                                        ],
+                                    ]);
+                                } catch (RecordNotFoundException $recordNotFoundError) {
+                                    $address = new Entity([
+                                        'address' => '--',
+                                        'gps_y' => null,
+                                        'gps_x' => null,
+                                    ]);
+                                }
 
                                 return [
                                     'name' => $address->address,
