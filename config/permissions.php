@@ -136,6 +136,13 @@ return [
             'action' => '*',
             'bypassAuth' => true,
         ],
+        //API access
+        [
+            'role' => ['api'],
+            'plugin' => null,
+            'controller' => ['Customers'],
+            'action' => ['customerPoints'],
+        ],
         //users access
         [
             'role' => ['user', 'technician', 'manager', 'bookkeeper'],
