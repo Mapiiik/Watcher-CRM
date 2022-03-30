@@ -173,7 +173,8 @@ $routes->scope('/api', function (RouteBuilder $builder) {
     ]);
 });
 
-if (isset($request)) { //check if not console route
+//apply URL filters only if not called from console
+if (!(php_sapi_name() == 'cli')) {
     Router::addUrlFilter(function (array $params, ServerRequest $request) {
         if ($request->getQuery('win-link') == 'true') {
             $params['?']['win-link'] = 'true';
