@@ -138,12 +138,12 @@ class AccountsController extends AppController
                 }
 
                 if (empty($customer->company)) {
-                    $new_username = strtolower($this->squashCharacters(
+                    $new_username = strtolower($this->removeAccents(
                         $customer->last_name . '.' . $customer->first_name
                     ));
                     $new_username = strtr($new_username, [' - ' => '-', ' ' => '-']);
                 } else {
-                    $new_username = strtolower($this->squashCharacters($customer->company));
+                    $new_username = strtolower($this->removeAccents($customer->company));
                     $new_username = strtr($new_username, [' - ' => '-', ' ' => '-', '.' => '', ',' => '']);
                 }
                 //$new_username = $contract->number . '-' . $new_username;
