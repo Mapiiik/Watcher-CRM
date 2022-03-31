@@ -16,21 +16,16 @@
     </aside>
     <div class="column-responsive column-90">
         <div class="invoices form content">
-            <?= $this->Form->create(null, [
-                'type' => 'file',
-                'valueSources' => ['data', 'query'],
-                'url' => [
-                    'action' => 'importFromDBF',
-                ],
-            ]) ?>
+            <?= $this->Form->create(null) ?>
             <fieldset>
-                <legend><?= __d('bookkeeping_pohoda', 'Import Invoices from DBF') ?></legend>
+                <legend><?= __d('bookkeeping_pohoda', 'Send by email') ?></legend>
                 <div class="row">
                     <div class="column-responsive">
-                    <?php
-                        echo $this->Form->control('dbf_for_import', [
-                            'label' => __d('bookkeeping_pohoda', 'DBF for import'),
-                            'type' => 'file',
+                        <?php
+                        echo $this->Form->control('creation_date', [
+                            'label' => __d('bookkeeping_pohoda', 'Creation Date'),
+                            'type' => 'date',
+                            'empty' => true,
                             'required' => true,
                         ]);
                         ?>

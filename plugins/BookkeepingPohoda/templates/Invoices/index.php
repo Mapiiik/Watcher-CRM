@@ -11,6 +11,11 @@
         ['class' => 'button float-right win-link']
     ) ?>
     <?= $this->Html->link(
+        __d('bookkeeping_pohoda', 'Send By Email'),
+        ['action' => 'sendByEmail'],
+        ['class' => 'button float-right']
+    ) ?>
+    <?= $this->Html->link(
         __d('bookkeeping_pohoda', 'Generate Invoices'),
         ['action' => 'generate'],
         ['class' => 'button float-right']

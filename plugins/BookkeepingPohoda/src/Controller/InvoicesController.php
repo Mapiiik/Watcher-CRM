@@ -142,6 +142,40 @@ class InvoicesController extends AppController
     }
 
     /**
+     * Send by email method
+     *
+     * @return \Cake\Http\Response|null|void Redirects successful edit, renders view otherwise.
+     */
+    public function sendByEmail()
+    {
+        if ($this->request->is(['post']) && !empty($this->request->getData('creation_date'))) {
+            $count = $this->Invoices->updateAll(
+                [ // fields
+                    'send_by_email' => true,
+                ],
+                [ // conditions
+                    'send_by_email' => false,
+                    'creation_date' => new FrozenDate($this->request->getData('creation_date')),
+                ]
+            );
+
+            if ($count > 0) {
+                $this->Flash->success(__d(
+                    'bookkeeping_pohoda',
+                    'The invoices has been marked to be sent by email ({1}).',
+                    $count
+                ));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->warning(__d(
+                'bookkeeping_pohoda',
+                'No invoices could be marked to be sent by email. Please, try again.'
+            ));
+        }
+    }
+
+    /**
      * get Query with billing data for selected month
      *
      * @param \Cake\I18n\FrozenDate $invoiced_month Month for billing
