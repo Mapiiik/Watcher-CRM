@@ -442,13 +442,15 @@ class ContractPDF extends TCPDF
             $this->Cell(25, 5, Number::currency($sold_equipment->equipment_type->price), 1, 0, 'R');
             $this->Ln();                                    
         }
-        for ($i = 1; $i <= 6; $i++) {
+        $count = (6 - min(6, count($contract->sold_equipments)));
+        for ($i = 1; $i <= $count; $i++) {
             $this->Cell(4, 5);
             $this->Cell(130, 5, '', 1);
             $this->Cell(25, 5, '', 1, 0, 'C');
             $this->Cell(25, 5, '', 1, 0, 'C');
             $this->Ln();                                    
         }
+        unset($count);
 
         $this->Ln(2);
 
