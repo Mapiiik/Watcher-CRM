@@ -162,7 +162,7 @@ class InvoicesController extends AppController
             if ($count > 0) {
                 $this->Flash->success(__d(
                     'bookkeeping_pohoda',
-                    'The invoices has been marked to be sent by email ({1}).',
+                    'The invoices has been marked to be sent by email ({0}).',
                     $count
                 ));
 
