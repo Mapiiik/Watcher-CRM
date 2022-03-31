@@ -204,6 +204,13 @@ return [
             ],
             'action' => ['delete'],
         ],
+        //allow invoice view/download for managers
+        [
+            'role' => ['manager'],
+            'plugin' => ['BookkeepingPohoda'],
+            'controller' => 'Invoices',
+            'action' => ['view', 'download'],
+        ],
         //allow all in bookkeeping plugin for bookkeepers
         [
             'role' => ['bookkeeper'],
