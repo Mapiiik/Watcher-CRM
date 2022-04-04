@@ -21,6 +21,7 @@
                     <th><?= $this->Paginator->sort('service_type_id') ?></th>
                     <th><?= $this->Paginator->sort('speed_up') ?></th>
                     <th><?= $this->Paginator->sort('speed_down') ?></th>
+                    <th><?= $this->Paginator->sort('cto_category') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -42,6 +43,7 @@
                     </td>
                     <td><?= $this->Number->format($queue->speed_up) ?></td>
                     <td><?= $this->Number->format($queue->speed_down) ?></td>
+                    <td><?= h($queue->cto_category) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $queue->id]) ?>
                         <?= $this->AuthLink->link(

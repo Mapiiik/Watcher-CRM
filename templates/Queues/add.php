@@ -26,6 +26,7 @@
                     echo $this->Form->control('service_type_id', ['options' => $serviceTypes, 'empty' => true]);
                     echo $this->Form->control('speed_up');
                     echo $this->Form->control('speed_down');
+                    echo $this->Form->control('cto_category');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

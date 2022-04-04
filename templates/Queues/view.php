@@ -69,6 +69,10 @@
                     <th><?= __('Speed Down') ?></th>
                     <td><?= $this->Number->format($queue->speed_down) ?></td>
                 </tr>
+                <tr>
+                    <th><?= __('Cto Category') ?></th>
+                    <td><?= h($queue->cto_category) ?></td>
+                </tr>
             </table>
             <div class="related">
                 <h4><?= __('Related Services') ?></h4>

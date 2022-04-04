@@ -18,6 +18,7 @@ use Cake\ORM\Entity;
  * @property int|null $service_type_id
  * @property int|null $speed_up
  * @property int|null $speed_down
+ * @property string|null $cto_category
  *
  * @property \App\Model\Entity\ServiceType $service_type
  * @property \App\Model\Entity\Service[] $services
@@ -43,6 +44,7 @@ class Queue extends Entity
         'service_type_id' => true,
         'speed_up' => true,
         'speed_down' => true,
+        'cto_category' => true,
         'service_type' => true,
         'services' => true,
     ];
