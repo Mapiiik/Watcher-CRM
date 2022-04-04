@@ -19,6 +19,13 @@
                 <?php
                     echo $this->Form->control('name');
                     echo $this->Form->control('contract_number_format');
+                    echo $this->Form->control('activation_fee');
+                    echo $this->Form->control('activation_fee_with_obligation');
+                    echo $this->Form->control('invoice_text');
+                    echo $this->Form->control('separate_invoice');
+                    echo $this->Form->control('invoice_with_items');
+                    echo $this->Form->control('installation_address_required');
+                    echo $this->Form->control('normally_with_borrowed_equipment');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

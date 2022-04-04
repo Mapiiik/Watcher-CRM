@@ -16,10 +16,15 @@
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('created') ?></th>
-                    <th><?= $this->Paginator->sort('modified') ?></th>
                     <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('contract_number_format') ?></th>
+                    <th><?= $this->Paginator->sort('activation_fee') ?></th>
+                    <th><?= $this->Paginator->sort('activation_fee_with_obligation') ?></th>
+                    <th><?= $this->Paginator->sort('invoice_text') ?></th>
+                    <th><?= $this->Paginator->sort('separate_invoice') ?></th>
+                    <th><?= $this->Paginator->sort('invoice_with_items') ?></th>
+                    <th><?= $this->Paginator->sort('installation_address_required') ?></th>
+                    <th><?= $this->Paginator->sort('normally_with_borrowed_equipment') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -27,10 +32,15 @@
                 <?php foreach ($serviceTypes as $serviceType) : ?>
                 <tr>
                     <td><?= $this->Number->format($serviceType->id) ?></td>
-                    <td><?= h($serviceType->created) ?></td>
-                    <td><?= h($serviceType->modified) ?></td>
                     <td><?= h($serviceType->name) ?></td>
                     <td><?= h($serviceType->contract_number_format) ?></td>
+                    <td><?= h($serviceType->activation_fee) ?></td>
+                    <td><?= h($serviceType->activation_fee_with_obligation) ?></td>
+                    <td><?= h($serviceType->invoice_text) ?></td>
+                    <td><?= $serviceType->separate_invoice ? __('Yes') : __('No'); ?></td>
+                    <td><?= $serviceType->invoice_with_items ? __('Yes') : __('No'); ?></td>
+                    <td><?= $serviceType->installation_address_required ? __('Yes') : __('No'); ?></td>
+                    <td><?= $serviceType->normally_with_borrowed_equipment ? __('Yes') : __('No'); ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $serviceType->id]) ?>
                         <?= $this->AuthLink->link(
