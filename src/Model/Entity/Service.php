@@ -10,7 +10,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property \Cake\I18n\FrozenTime|null $created
- * @property int $created_by
+ * @property int|null $created_by
  * @property \Cake\I18n\FrozenTime|null $modified
  * @property int|null $modified_by
  * @property string|null $name
@@ -36,7 +36,9 @@ class Service extends Entity
      */
     protected $_accessible = [
         'created' => true,
+        'created_by' => true,
         'modified' => true,
+        'modified_by' => true,
         'name' => true,
         'price' => true,
         'service_type_id' => true,

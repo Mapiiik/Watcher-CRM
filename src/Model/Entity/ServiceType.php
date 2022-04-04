@@ -10,7 +10,9 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property \Cake\I18n\FrozenTime|null $created
+ * @property int|null $created_by
  * @property \Cake\I18n\FrozenTime|null $modified
+ * @property int|null $modified_by
  * @property string|null $name
  * @property string|null $contract_number_format
  * @property int|null $activation_fee
@@ -19,6 +21,7 @@ use Cake\ORM\Entity;
  * @property bool $invoice_with_items
  * @property string|null $invoice_text
  * @property bool $installation_address_required
+ * @property bool $normally_with_borrowed_equipment
  *
  * @property \App\Model\Entity\Contract[] $contracts
  * @property \App\Model\Entity\Queue[] $queues
@@ -37,9 +40,18 @@ class ServiceType extends Entity
      */
     protected $_accessible = [
         'created' => true,
+        'created_by' => true,
         'modified' => true,
+        'modified_by' => true,
         'name' => true,
         'contract_number_format' => true,
+        'activation_fee' => true,
+        'activation_fee_with_obligation' => true,
+        'separate_invoice' => true,
+        'invoice_with_items' => true,
+        'invoice_text' => true,
+        'installation_address_required' => true,
+        'normally_with_borrowed_equipment' => true,
         'contracts' => true,
         'queues' => true,
         'services' => true,
