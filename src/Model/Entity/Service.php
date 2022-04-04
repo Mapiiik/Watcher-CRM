@@ -10,11 +10,14 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property \Cake\I18n\FrozenTime|null $created
+ * @property int $created_by
  * @property \Cake\I18n\FrozenTime|null $modified
+ * @property int|null $modified_by
  * @property string|null $name
  * @property int|null $price
  * @property int|null $service_type_id
  * @property int|null $queue_id
+ * @property bool $not_for_new_customers
  *
  * @property \App\Model\Entity\ServiceType $service_type
  * @property \App\Model\Entity\Queue $queue
