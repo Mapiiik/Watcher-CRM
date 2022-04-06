@@ -130,6 +130,10 @@
                             'empty' => true,
                             'required' => true,
                         ]);
+                        echo $this->Form->control('own_equipment', [
+                            'label' => __('The customer has his own equipment'),
+                            'type' => 'checkbox',
+                        ]);
                         echo $this->Form->control('signed', ['label' => __('Signed'), 'type' => 'checkbox']);
                         ?>
                     </div>

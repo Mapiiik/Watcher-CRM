@@ -269,6 +269,20 @@ class ContractsController extends AppController
         }
 
         if ($this->request->getParam('_ext') === 'pdf') {
+            // check if borrowed equipment is added where it should be
+            if (
+                !$query['own_equipment']
+                && $contract->service_type->normally_with_borrowed_equipment
+                && empty($contract->borrowed_equipments)
+            ) {
+                $this->Flash->error(__(
+                    'A borrowed equipment is not assigned, although it should normally be for this type of service.'
+                    . ' Please confirm that the customer has their own equipment or add it.'
+                ));
+
+                return $this->redirect(['action' => 'print', $id, '?' => $query]);
+            }
+
             switch ($type) {
                 case 'contract-termination':
                     if (!$contract->has('valid_until')) {
@@ -279,7 +293,7 @@ class ContractsController extends AppController
                     // no break - checks will continue
                 case 'contract-amendment':
                     if ($type == 'contract-amendment' && empty($query['effective_date_of_the_amendment'])) {
-                        $this->Flash->error(__('Please set the effective date of the amendment.'));
+                        $this->Flash->error(__('Please enter the effective date of the amendment.'));
 
                         return $this->redirect(['action' => 'print', $id, '?' => $query]);
                     } else {
@@ -292,19 +306,21 @@ class ContractsController extends AppController
 
                         return $this->redirect(['action' => 'edit', $id]);
                     }
+                    // by default use same contract number for termination or one from query
+                    if ($type != 'contract-amendment' && empty($query['number_of_the_contract_to_be_terminated'])) {
+                        $this->Flash->error(__('Please enter the number of the contract to be terminated.'));
+
+                        return $this->redirect(['action' => 'print', $id, '?' => $query]);
+                    } else {
+                        $contract->number_of_the_contract_to_be_terminated
+                            = $query['number_of_the_contract_to_be_terminated'];
+                    }
                     // no break - checks will continue
                 case 'contract-new':
                     if (!$contract->has('valid_from')) {
                         $this->Flash->error(__('Please set the date from which the contract is valid.'));
 
                         return $this->redirect(['action' => 'edit', $id]);
-                    }
-                    // by default use same contract number for termination or one from query
-                    if (empty($query['number_of_the_contract_to_be_terminated'])) {
-                        $contract->number_of_the_contract_to_be_terminated = $contract->number;
-                    } else {
-                        $contract->number_of_the_contract_to_be_terminated
-                            = $query['number_of_the_contract_to_be_terminated'];
                     }
 
                     break;
