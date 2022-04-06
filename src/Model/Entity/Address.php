@@ -10,6 +10,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $type
+ * @property int $number_type
  * @property int $customer_id
  * @property string|null $title
  * @property string|null $first_name
@@ -26,8 +27,10 @@ use Cake\ORM\Entity;
  * @property int|null $modified_by
  * @property \Cake\I18n\FrozenTime|null $modified
  * @property int|null $ruian_gid
- * @property float|null $gpsx
- * @property float|null $gpsy
+ * @property float|null $gps_x
+ * @property float|null $gps_y
+ * @property string|null $note
+ * @property bool $manual_coordinate_setting
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Country $country
@@ -52,6 +55,7 @@ class Address extends Entity
      */
     protected $_accessible = [
         'type' => true,
+        'number_type' => true,
         'customer_id' => true,
         'title' => true,
         'first_name' => true,
@@ -68,8 +72,10 @@ class Address extends Entity
         'modified_by' => true,
         'modified' => true,
         'ruian_gid' => true,
-        'gpsx' => true,
-        'gpsy' => true,
+        'gps_x' => true,
+        'gps_y' => true,
+        'note' => true,
+        'manual_coordinate_setting' => true,
         'customer' => true,
         'country' => true,
     ];
@@ -157,7 +163,7 @@ class Address extends Entity
         if (isset($this->street)) {
                 $street_and_number .= $this->street . ' ' . $this->number;
         } elseif (isset($this->number)) {
-                $street_and_number .= 'č.p. ' . $this->number;
+                $street_and_number .= $this->number_type == 1 ? 'č.ev. ' : 'č.p. ' . $this->number;
         }
 
         return $street_and_number;

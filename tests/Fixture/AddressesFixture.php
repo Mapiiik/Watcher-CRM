@@ -37,8 +37,8 @@ class AddressesFixture extends TestFixture
                 'modified_by' => 1,
                 'modified' => 1636113483,
                 'ruian_gid' => 1,
-                'gpsx' => 1,
-                'gpsy' => 1,
+                'gps_x' => 1,
+                'gps_y' => 1,
             ],
         ];
         parent::init();

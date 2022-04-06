@@ -37,6 +37,13 @@ class AddressesTable extends Table
     public $types = [];
 
     /**
+     * Number types
+     *
+     * @var array<string>
+     */
+    public $number_types = [];
+
+    /**
      * Initialize method
      *
      * @param array $config The configuration for the Table.
@@ -47,10 +54,15 @@ class AddressesTable extends Table
         parent::initialize($config);
 
         $this->types = [
-            '0' => __('Installation Address'),
-            '1' => __('Billing Address'),
-            '2' => __('Delivery Address'),
-            '3' => __('Permanent Address'),
+            0 => __('Installation Address'),
+            1 => __('Billing Address'),
+            2 => __('Delivery Address'),
+            3 => __('Permanent Address'),
+        ];
+
+        $this->number_types = [
+            0 => __('House Number'),
+            1 => __('Registration Number'),
         ];
 
         $this->setTable('addresses');
@@ -87,6 +99,11 @@ class AddressesTable extends Table
             ->integer('type')
             ->requirePresence('type', 'create')
             ->notEmptyString('type');
+
+        $validator
+            ->integer('number_type')
+            ->requirePresence('number_type')
+            ->notEmptyString('number_type');
 
         $validator
             ->scalar('title')
@@ -137,12 +154,20 @@ class AddressesTable extends Table
             ->allowEmptyString('ruian_gid');
 
         $validator
-            ->numeric('gpsx')
-            ->allowEmptyString('gpsx');
+            ->numeric('gps_x')
+            ->allowEmptyString('gps_x');
 
         $validator
-            ->numeric('gpsy')
-            ->allowEmptyString('gpsy');
+            ->numeric('gps_y')
+            ->allowEmptyString('gps_y');
+
+        $validator
+            ->boolean('manual_coordinate_setting')
+            ->notEmptyString('manual_coordinate_setting');
+
+        $validator
+            ->scalar('note')
+            ->allowEmptyString('note');
 
         return $validator;
     }

@@ -329,46 +329,46 @@ use Cake\I18n\Number;
                             <th class="actions"><?= __('Maps') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($customer->addresses as $addresses) : ?>
+                        <?php foreach ($customer->addresses as $address) : ?>
                         <tr>
-                            <td><?= h($address_types[$addresses->type]) ?></td>
-                            <td><?= h($addresses->company) ?></td>
-                            <td><?= h($addresses->title) ?></td>
-                            <td><?= h($addresses->first_name) ?></td>
-                            <td><?= h($addresses->last_name) ?></td>
-                            <td><?= h($addresses->suffix) ?></td>
-                            <td><?= h($addresses->street) ?></td>
-                            <td><?= h($addresses->number) ?></td>
-                            <td><?= h($addresses->city) ?></td>
-                            <td><?= h($addresses->zip) ?></td>
-                            <td><?= $addresses->has('country') ? h($addresses->country->name) : '' ?></td>
+                            <td><?= h($address_types[$address->type]) ?></td>
+                            <td><?= h($address->company) ?></td>
+                            <td><?= h($address->title) ?></td>
+                            <td><?= h($address->first_name) ?></td>
+                            <td><?= h($address->last_name) ?></td>
+                            <td><?= h($address->suffix) ?></td>
+                            <td><?= h($address->street) ?></td>
+                            <td><?= h($address->number) ?></td>
+                            <td><?= h($address->city) ?></td>
+                            <td><?= h($address->zip) ?></td>
+                            <td><?= $address->has('country') ? h($address->country->name) : '' ?></td>
                             <td class="actions">
-                                <?= $addresses->has('ruian_gid') ? $this->Html->link(
+                                <?= $address->has('gps_x') && $address->has('gps_y') ? $this->Html->link(
                                     __('Google Maps'),
-                                    'https://maps.google.com/maps?q=' . h("{$addresses->gpsy},{$addresses->gpsx}"),
+                                    'https://maps.google.com/maps?q=' . h("{$address->gps_y},{$address->gps_x}"),
                                     ['target' => '_blank']
                                 ) : '' ?>
-                                <?= $addresses->has('ruian_gid') ? $this->Html->link(
+                                <?= $address->has('gps_x') && $address->has('gps_y') ? $this->Html->link(
                                     __('Mapy.cz'),
                                     'https://mapy.cz/zakladni?source=coor&id='
-                                    . h("{$addresses->gpsx},{$addresses->gpsy}"),
+                                    . h("{$address->gps_x},{$address->gps_y}"),
                                     ['target' => '_blank']
                                 ) : ''?>
                             </td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
-                                    ['controller' => 'Addresses', 'action' => 'view', $addresses->id]
+                                    ['controller' => 'Addresses', 'action' => 'view', $address->id]
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __('Edit'),
-                                    ['controller' => 'Addresses', 'action' => 'edit', $addresses->id],
+                                    ['controller' => 'Addresses', 'action' => 'edit', $address->id],
                                     ['class' => 'win-link']
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
                                     __('Delete'),
-                                    ['controller' => 'Addresses', 'action' => 'delete', $addresses->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $addresses->id)]
+                                    ['controller' => 'Addresses', 'action' => 'delete', $address->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $address->id)]
                                 ) ?>
                             </td>
                         </tr>

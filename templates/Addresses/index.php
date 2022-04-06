@@ -55,14 +55,14 @@
                         ) : '' ?>
                     </td>
                     <td class="actions">
-                        <?= $address->has('ruian_gid') ? $this->Html->link(
+                        <?= $address->has('gps_x') && $address->has('gps_y') ? $this->Html->link(
                             __('Google Maps'),
-                            'https://maps.google.com/maps?q=' . h("{$address->gpsy},{$address->gpsx}"),
+                            'https://maps.google.com/maps?q=' . h("{$address->gps_y},{$address->gps_x}"),
                             ['target' => '_blank']
                         ) : '' ?>
-                        <?= $address->has('ruian_gid') ? $this->Html->link(
+                        <?= $address->has('gps_x') && $address->has('gps_y') ? $this->Html->link(
                             __('Mapy.cz'),
-                            'https://mapy.cz/zakladni?source=coor&id=' . h("{$address->gpsx},{$address->gpsy}"),
+                            'https://mapy.cz/zakladni?source=coor&id=' . h("{$address->gps_x},{$address->gps_y}"),
                             ['target' => '_blank']
                         ) : ''?>
                     </td>

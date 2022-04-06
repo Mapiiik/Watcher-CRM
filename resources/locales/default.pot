@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-04-06 12:12+0000\n"
+"POT-Creation-Date: 2022-04-06 17:38+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,33 +14,33 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ./src/Controller/AddressesController.php:87
-#: ./src/Controller/AddressesController.php:131
+#: ./src/Controller/AddressesController.php:97
+#: ./src/Controller/AddressesController.php:152
 msgid "The address has been saved."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:95
-#: ./src/Controller/AddressesController.php:139
+#: ./src/Controller/AddressesController.php:105
+#: ./src/Controller/AddressesController.php:160
 msgid "The address could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:167
+#: ./src/Controller/AddressesController.php:190
 msgid "The address has been deleted."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:169
+#: ./src/Controller/AddressesController.php:192
 msgid "The address could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:244
+#: ./src/Controller/AddressesController.php:269
 msgid "Multiple ({0}) RUIAN addresses found."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:248
+#: ./src/Controller/AddressesController.php:273
 msgid "Address found in RUIAN."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:256
+#: ./src/Controller/AddressesController.php:281
 msgid "Address could not be found in RUIAN."
 msgstr ""
 
@@ -557,7 +557,7 @@ msgstr ""
 msgid "The tax could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Model/Table/AddressesTable.php:50
+#: ./src/Model/Table/AddressesTable.php:57
 #: ./templates/Contracts/pdf/print.php:261
 #: ./templates/Contracts/pdf/print.php:910
 #: ./templates/Contracts/print.php:53
@@ -566,22 +566,30 @@ msgstr ""
 msgid "Installation Address"
 msgstr ""
 
-#: ./src/Model/Table/AddressesTable.php:51
+#: ./src/Model/Table/AddressesTable.php:58
 #: ./templates/Contracts/pdf/print.php:180
 #: ./templates/Contracts/pdf/print.php:829
 msgid "Billing Address"
 msgstr ""
 
-#: ./src/Model/Table/AddressesTable.php:52
+#: ./src/Model/Table/AddressesTable.php:59
 #: ./templates/Contracts/pdf/print.php:270
 #: ./templates/Contracts/pdf/print.php:919
 msgid "Delivery Address"
 msgstr ""
 
-#: ./src/Model/Table/AddressesTable.php:53
+#: ./src/Model/Table/AddressesTable.php:60
 #: ./templates/Contracts/pdf/print.php:278
 #: ./templates/Contracts/pdf/print.php:927
 msgid "Permanent Address"
+msgstr ""
+
+#: ./src/Model/Table/AddressesTable.php:64
+msgid "House Number"
+msgstr ""
+
+#: ./src/Model/Table/AddressesTable.php:65
+msgid "Registration Number"
 msgstr ""
 
 #: ./src/Model/Table/ContractsTable.php:218
@@ -764,8 +772,8 @@ msgstr ""
 msgid "Add Address"
 msgstr ""
 
-#: ./templates/Addresses/add.php:44
-#: ./templates/Addresses/edit.php:49
+#: ./templates/Addresses/add.php:64
+#: ./templates/Addresses/edit.php:69
 #: ./templates/Billings/add.php:50
 #: ./templates/Billings/edit.php:55
 #: ./templates/BorrowedEquipments/add.php:36
@@ -1018,19 +1026,19 @@ msgid "Addresses"
 msgstr ""
 
 #: ./templates/Addresses/index.php:27
-#: ./templates/Addresses/view.php:98
+#: ./templates/Addresses/view.php:102
 #: ./templates/Customers/view.php:329
 msgid "Maps"
 msgstr ""
 
 #: ./templates/Addresses/index.php:59
-#: ./templates/Addresses/view.php:101
+#: ./templates/Addresses/view.php:105
 #: ./templates/Customers/view.php:347
 msgid "Google Maps"
 msgstr ""
 
 #: ./templates/Addresses/index.php:64
-#: ./templates/Addresses/view.php:107
+#: ./templates/Addresses/view.php:111
 #: ./templates/Customers/view.php:352
 msgid "Mapy.cz"
 msgstr ""
@@ -1373,206 +1381,36 @@ msgid "Number"
 msgstr ""
 
 #: ./templates/Addresses/view.php:75
+msgid "Number Type"
+msgstr ""
+
+#: ./templates/Addresses/view.php:79
 #: ./templates/Countries/view.php:54
 #: ./templates/Customers/view.php:326
 msgid "City"
 msgstr ""
 
-#: ./templates/Addresses/view.php:79
+#: ./templates/Addresses/view.php:83
 #: ./templates/Countries/view.php:55
 #: ./templates/Customers/view.php:327
 msgid "Zip"
 msgstr ""
 
-#: ./templates/Addresses/view.php:83
+#: ./templates/Addresses/view.php:87
 #: ./templates/Customers/view.php:328
 msgid "Country"
 msgstr ""
 
-#: ./templates/Addresses/view.php:115
+#: ./templates/Addresses/view.php:120
 #: ./templates/Countries/view.php:61
 msgid "Ruian Gid"
 msgstr ""
 
-#: ./templates/Addresses/view.php:119
-#: ./templates/Countries/view.php:62
-msgid "Gpsx"
+#: ./templates/Addresses/view.php:124
+msgid "Manual Coordinate Setting"
 msgstr ""
 
-#: ./templates/Addresses/view.php:123
-#: ./templates/Countries/view.php:63
-msgid "Gpsy"
-msgstr ""
-
-#: ./templates/Addresses/view.php:131
-#: ./templates/Billings/view.php:94
-#: ./templates/BorrowedEquipments/view.php:74
-#: ./templates/BrokerageDealers/view.php:63
-#: ./templates/Brokerages/view.php:34
-#: ./templates/Brokerages/view.php:48
-#: ./templates/Brokerages/view.php:86
-#: ./templates/Contracts/view.php:141
-#: ./templates/Countries/view.php:34
-#: ./templates/Countries/view.php:44
-#: ./templates/Customers/print.php:124
-#: ./templates/Customers/view.php:138
-#: ./templates/Emails/view.php:53
-#: ./templates/EquipmentTypes/view.php:45
-#: ./templates/EquipmentTypes/view.php:59
-#: ./templates/EquipmentTypes/view.php:113
-#: ./templates/Ips/view.php:44
-#: ./templates/LabelCustomers/view.php:55
-#: ./templates/Labels/view.php:42
-#: ./templates/Labels/view.php:70
-#: ./templates/Logins/view.php:65
-#: ./templates/Phones/view.php:41
-#: ./templates/Queues/view.php:45
-#: ./templates/Queues/view.php:83
-#: ./templates/RemovedIps/view.php:48
-#: ./templates/ServiceTypes/view.php:69
-#: ./templates/ServiceTypes/view.php:95
-#: ./templates/ServiceTypes/view.php:167
-#: ./templates/ServiceTypes/view.php:219
-#: ./templates/Services/view.php:56
-#: ./templates/Services/view.php:82
-#: ./templates/SoldEquipments/view.php:70
-#: ./templates/TaskStates/view.php:30
-#: ./templates/TaskStates/view.php:46
-#: ./templates/TaskTypes/view.php:30
-#: ./templates/TaskTypes/view.php:46
-#: ./templates/Tasks/view.php:99
-#: ./templates/Taxes/view.php:30
-msgid "Id"
-msgstr ""
-
-#: ./templates/Addresses/view.php:135
-#: ./templates/Billings/view.php:98
-#: ./templates/BorrowedEquipments/view.php:78
-#: ./templates/Brokerages/view.php:91
-#: ./templates/Contracts/view.php:145
-#: ./templates/Countries/view.php:58
-#: ./templates/Customers/print.php:128
-#: ./templates/Customers/view.php:142
-#: ./templates/Customers/view.php:627
-#: ./templates/EquipmentTypes/view.php:64
-#: ./templates/EquipmentTypes/view.php:118
-#: ./templates/Ips/view.php:48
-#: ./templates/LabelCustomers/view.php:63
-#: ./templates/Labels/view.php:68
-#: ./templates/Logins/view.php:69
-#: ./templates/Queues/view.php:84
-#: ./templates/ServiceTypes/view.php:73
-#: ./templates/ServiceTypes/view.php:100
-#: ./templates/ServiceTypes/view.php:220
-#: ./templates/Services/view.php:60
-#: ./templates/Services/view.php:92
-#: ./templates/SoldEquipments/view.php:82
-#: ./templates/TaskStates/view.php:56
-#: ./templates/TaskTypes/view.php:56
-#: ./templates/Tasks/view.php:103
-msgid "Created"
-msgstr ""
-
-#: ./templates/Addresses/view.php:139
-#: ./templates/Billings/view.php:102
-#: ./templates/BorrowedEquipments/view.php:82
-#: ./templates/Brokerages/view.php:92
-#: ./templates/Contracts/view.php:149
-#: ./templates/Countries/view.php:57
-#: ./templates/Customers/print.php:132
-#: ./templates/Customers/view.php:146
-#: ./templates/Customers/view.php:628
-#: ./templates/EquipmentTypes/view.php:65
-#: ./templates/EquipmentTypes/view.php:119
-#: ./templates/Ips/view.php:52
-#: ./templates/LabelCustomers/view.php:59
-#: ./templates/Labels/view.php:71
-#: ./templates/Logins/view.php:73
-#: ./templates/ServiceTypes/view.php:77
-#: ./templates/ServiceTypes/view.php:101
-#: ./templates/Services/view.php:64
-#: ./templates/Services/view.php:91
-#: ./templates/SoldEquipments/view.php:74
-#: ./templates/TaskStates/view.php:55
-#: ./templates/TaskTypes/view.php:55
-#: ./templates/Tasks/view.php:107
-msgid "Created By"
-msgstr ""
-
-#: ./templates/Addresses/view.php:143
-#: ./templates/Billings/view.php:106
-#: ./templates/BorrowedEquipments/view.php:86
-#: ./templates/Brokerages/view.php:93
-#: ./templates/Contracts/view.php:153
-#: ./templates/Countries/view.php:60
-#: ./templates/Customers/print.php:136
-#: ./templates/Customers/view.php:150
-#: ./templates/EquipmentTypes/view.php:66
-#: ./templates/EquipmentTypes/view.php:120
-#: ./templates/Ips/view.php:56
-#: ./templates/Logins/view.php:77
-#: ./templates/Queues/view.php:85
-#: ./templates/ServiceTypes/view.php:81
-#: ./templates/ServiceTypes/view.php:102
-#: ./templates/ServiceTypes/view.php:221
-#: ./templates/Services/view.php:68
-#: ./templates/Services/view.php:90
-#: ./templates/SoldEquipments/view.php:86
-#: ./templates/TaskStates/view.php:54
-#: ./templates/TaskTypes/view.php:54
-#: ./templates/Tasks/view.php:111
-msgid "Modified"
-msgstr ""
-
-#: ./templates/Addresses/view.php:147
-#: ./templates/Billings/view.php:110
-#: ./templates/BorrowedEquipments/view.php:90
-#: ./templates/Brokerages/view.php:94
-#: ./templates/Contracts/view.php:157
-#: ./templates/Countries/view.php:59
-#: ./templates/Customers/print.php:140
-#: ./templates/Customers/view.php:154
-#: ./templates/EquipmentTypes/view.php:67
-#: ./templates/EquipmentTypes/view.php:121
-#: ./templates/Ips/view.php:60
-#: ./templates/Logins/view.php:81
-#: ./templates/ServiceTypes/view.php:85
-#: ./templates/ServiceTypes/view.php:103
-#: ./templates/Services/view.php:72
-#: ./templates/Services/view.php:89
-#: ./templates/SoldEquipments/view.php:78
-#: ./templates/TaskStates/view.php:53
-#: ./templates/TaskTypes/view.php:53
-#: ./templates/Tasks/view.php:115
-msgid "Modified By"
-msgstr ""
-
-#: ./templates/Billings/add.php:11
-#: ./templates/Billings/edit.php:16
-#: ./templates/Billings/view.php:23
-msgid "List Billings"
-msgstr ""
-
-#: ./templates/Billings/add.php:18
-msgid "Add Billing"
-msgstr ""
-
-#: ./templates/Billings/edit.php:23
-#: ./templates/Billings/view.php:14
-msgid "Edit Billing"
-msgstr ""
-
-#: ./templates/Billings/index.php:10
-#: ./templates/Billings/view.php:24
-#: ./templates/Contracts/view.php:177
-msgid "New Billing"
-msgstr ""
-
-#: ./templates/Billings/index.php:11
-#: ./templates/Contracts/view.php:181
-msgid "Billings"
-msgstr ""
-
+#: ./templates/Addresses/view.php:125
 #: ./templates/Billings/index.php:66
 #: ./templates/Billings/index.php:67
 #: ./templates/Billings/view.php:87
@@ -1622,6 +1460,7 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
+#: ./templates/Addresses/view.php:125
 #: ./templates/Billings/index.php:66
 #: ./templates/Billings/index.php:67
 #: ./templates/Billings/view.php:87
@@ -1669,6 +1508,206 @@ msgstr ""
 #: ./templates/Services/index.php:41
 #: ./templates/Services/view.php:53
 msgid "No"
+msgstr ""
+
+#: ./templates/Addresses/view.php:128
+#: ./templates/Countries/view.php:63
+msgid "Gps Y"
+msgstr ""
+
+#: ./templates/Addresses/view.php:132
+#: ./templates/Countries/view.php:62
+msgid "Gps X"
+msgstr ""
+
+#: ./templates/Addresses/view.php:140
+#: ./templates/Billings/view.php:94
+#: ./templates/BorrowedEquipments/view.php:74
+#: ./templates/BrokerageDealers/view.php:63
+#: ./templates/Brokerages/view.php:34
+#: ./templates/Brokerages/view.php:48
+#: ./templates/Brokerages/view.php:86
+#: ./templates/Contracts/view.php:141
+#: ./templates/Countries/view.php:34
+#: ./templates/Countries/view.php:44
+#: ./templates/Customers/print.php:124
+#: ./templates/Customers/view.php:138
+#: ./templates/Emails/view.php:53
+#: ./templates/EquipmentTypes/view.php:45
+#: ./templates/EquipmentTypes/view.php:59
+#: ./templates/EquipmentTypes/view.php:113
+#: ./templates/Ips/view.php:44
+#: ./templates/LabelCustomers/view.php:55
+#: ./templates/Labels/view.php:42
+#: ./templates/Labels/view.php:70
+#: ./templates/Logins/view.php:65
+#: ./templates/Phones/view.php:41
+#: ./templates/Queues/view.php:45
+#: ./templates/Queues/view.php:83
+#: ./templates/RemovedIps/view.php:48
+#: ./templates/ServiceTypes/view.php:69
+#: ./templates/ServiceTypes/view.php:95
+#: ./templates/ServiceTypes/view.php:167
+#: ./templates/ServiceTypes/view.php:219
+#: ./templates/Services/view.php:56
+#: ./templates/Services/view.php:82
+#: ./templates/SoldEquipments/view.php:70
+#: ./templates/TaskStates/view.php:30
+#: ./templates/TaskStates/view.php:46
+#: ./templates/TaskTypes/view.php:30
+#: ./templates/TaskTypes/view.php:46
+#: ./templates/Tasks/view.php:99
+#: ./templates/Taxes/view.php:30
+msgid "Id"
+msgstr ""
+
+#: ./templates/Addresses/view.php:144
+#: ./templates/Billings/view.php:98
+#: ./templates/BorrowedEquipments/view.php:78
+#: ./templates/Brokerages/view.php:91
+#: ./templates/Contracts/view.php:145
+#: ./templates/Countries/view.php:58
+#: ./templates/Customers/print.php:128
+#: ./templates/Customers/view.php:142
+#: ./templates/Customers/view.php:627
+#: ./templates/EquipmentTypes/view.php:64
+#: ./templates/EquipmentTypes/view.php:118
+#: ./templates/Ips/view.php:48
+#: ./templates/LabelCustomers/view.php:63
+#: ./templates/Labels/view.php:68
+#: ./templates/Logins/view.php:69
+#: ./templates/Queues/view.php:84
+#: ./templates/ServiceTypes/view.php:73
+#: ./templates/ServiceTypes/view.php:100
+#: ./templates/ServiceTypes/view.php:220
+#: ./templates/Services/view.php:60
+#: ./templates/Services/view.php:92
+#: ./templates/SoldEquipments/view.php:82
+#: ./templates/TaskStates/view.php:56
+#: ./templates/TaskTypes/view.php:56
+#: ./templates/Tasks/view.php:103
+msgid "Created"
+msgstr ""
+
+#: ./templates/Addresses/view.php:148
+#: ./templates/Billings/view.php:102
+#: ./templates/BorrowedEquipments/view.php:82
+#: ./templates/Brokerages/view.php:92
+#: ./templates/Contracts/view.php:149
+#: ./templates/Countries/view.php:57
+#: ./templates/Customers/print.php:132
+#: ./templates/Customers/view.php:146
+#: ./templates/Customers/view.php:628
+#: ./templates/EquipmentTypes/view.php:65
+#: ./templates/EquipmentTypes/view.php:119
+#: ./templates/Ips/view.php:52
+#: ./templates/LabelCustomers/view.php:59
+#: ./templates/Labels/view.php:71
+#: ./templates/Logins/view.php:73
+#: ./templates/ServiceTypes/view.php:77
+#: ./templates/ServiceTypes/view.php:101
+#: ./templates/Services/view.php:64
+#: ./templates/Services/view.php:91
+#: ./templates/SoldEquipments/view.php:74
+#: ./templates/TaskStates/view.php:55
+#: ./templates/TaskTypes/view.php:55
+#: ./templates/Tasks/view.php:107
+msgid "Created By"
+msgstr ""
+
+#: ./templates/Addresses/view.php:152
+#: ./templates/Billings/view.php:106
+#: ./templates/BorrowedEquipments/view.php:86
+#: ./templates/Brokerages/view.php:93
+#: ./templates/Contracts/view.php:153
+#: ./templates/Countries/view.php:60
+#: ./templates/Customers/print.php:136
+#: ./templates/Customers/view.php:150
+#: ./templates/EquipmentTypes/view.php:66
+#: ./templates/EquipmentTypes/view.php:120
+#: ./templates/Ips/view.php:56
+#: ./templates/Logins/view.php:77
+#: ./templates/Queues/view.php:85
+#: ./templates/ServiceTypes/view.php:81
+#: ./templates/ServiceTypes/view.php:102
+#: ./templates/ServiceTypes/view.php:221
+#: ./templates/Services/view.php:68
+#: ./templates/Services/view.php:90
+#: ./templates/SoldEquipments/view.php:86
+#: ./templates/TaskStates/view.php:54
+#: ./templates/TaskTypes/view.php:54
+#: ./templates/Tasks/view.php:111
+msgid "Modified"
+msgstr ""
+
+#: ./templates/Addresses/view.php:156
+#: ./templates/Billings/view.php:110
+#: ./templates/BorrowedEquipments/view.php:90
+#: ./templates/Brokerages/view.php:94
+#: ./templates/Contracts/view.php:157
+#: ./templates/Countries/view.php:59
+#: ./templates/Customers/print.php:140
+#: ./templates/Customers/view.php:154
+#: ./templates/EquipmentTypes/view.php:67
+#: ./templates/EquipmentTypes/view.php:121
+#: ./templates/Ips/view.php:60
+#: ./templates/Logins/view.php:81
+#: ./templates/ServiceTypes/view.php:85
+#: ./templates/ServiceTypes/view.php:103
+#: ./templates/Services/view.php:72
+#: ./templates/Services/view.php:89
+#: ./templates/SoldEquipments/view.php:78
+#: ./templates/TaskStates/view.php:53
+#: ./templates/TaskTypes/view.php:53
+#: ./templates/Tasks/view.php:115
+msgid "Modified By"
+msgstr ""
+
+#: ./templates/Addresses/view.php:163
+#: ./templates/Billings/view.php:115
+#: ./templates/Brokerages/view.php:95
+#: ./templates/Contracts/view.php:170
+#: ./templates/Contracts/view.php:197
+#: ./templates/Contracts/view.php:341
+#: ./templates/Contracts/view.php:382
+#: ./templates/Customers/view.php:161
+#: ./templates/Customers/view.php:401
+#: ./templates/Customers/view.php:459
+#: ./templates/Customers/view.php:626
+#: ./templates/Customers/view.php:672
+#: ./templates/Ips/view.php:65
+#: ./templates/LabelCustomers/view.php:68
+#: ./templates/Labels/view.php:69
+#: ./templates/RemovedIps/view.php:61
+#: ./templates/ServiceTypes/view.php:104
+#: ./templates/Services/view.php:87
+msgid "Note"
+msgstr ""
+
+#: ./templates/Billings/add.php:11
+#: ./templates/Billings/edit.php:16
+#: ./templates/Billings/view.php:23
+msgid "List Billings"
+msgstr ""
+
+#: ./templates/Billings/add.php:18
+msgid "Add Billing"
+msgstr ""
+
+#: ./templates/Billings/edit.php:23
+#: ./templates/Billings/view.php:14
+msgid "Edit Billing"
+msgstr ""
+
+#: ./templates/Billings/index.php:10
+#: ./templates/Billings/view.php:24
+#: ./templates/Contracts/view.php:177
+msgid "New Billing"
+msgstr ""
+
+#: ./templates/Billings/index.php:11
+#: ./templates/Contracts/view.php:181
+msgid "Billings"
 msgstr ""
 
 #: ./templates/Billings/view.php:19
@@ -1768,26 +1807,6 @@ msgstr ""
 #: ./templates/ServiceTypes/view.php:53
 #: ./templates/Services/view.php:94
 msgid "Separate Invoice"
-msgstr ""
-
-#: ./templates/Billings/view.php:115
-#: ./templates/Brokerages/view.php:95
-#: ./templates/Contracts/view.php:170
-#: ./templates/Contracts/view.php:197
-#: ./templates/Contracts/view.php:341
-#: ./templates/Contracts/view.php:382
-#: ./templates/Customers/view.php:161
-#: ./templates/Customers/view.php:401
-#: ./templates/Customers/view.php:459
-#: ./templates/Customers/view.php:626
-#: ./templates/Customers/view.php:672
-#: ./templates/Ips/view.php:65
-#: ./templates/LabelCustomers/view.php:68
-#: ./templates/Labels/view.php:69
-#: ./templates/RemovedIps/view.php:61
-#: ./templates/ServiceTypes/view.php:104
-#: ./templates/Services/view.php:87
-msgid "Note"
 msgstr ""
 
 #: ./templates/BorrowedEquipments/add.php:12

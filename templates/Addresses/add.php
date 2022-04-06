@@ -34,12 +34,32 @@
                         <?php
                         echo $this->Form->control('street');
                         echo $this->Form->control('number');
+                        echo $this->Form->control('number_type', ['options' => $number_types]);
                         echo $this->Form->control('city');
                         echo $this->Form->control('zip');
                         echo $this->Form->control('country_id', ['options' => $countries]);
                         ?>
                     </div>
                 </div>
+                <?php
+                echo $this->Form->control('note');
+                echo $this->Form->control('manual_coordinate_setting', [
+                    'onchange' => '
+                        var refresh = document.createElement("input");
+                        refresh.type = "hidden";
+                        refresh.name = "refresh";
+                        refresh.value = "refresh";
+                        this.form.appendChild(refresh);
+                        this.form.submit();
+                    ',
+                ]);
+                $this->Form->unlockField('refresh'); //disable form security check
+
+                if ($address->manual_coordinate_setting) {
+                    echo $this->Form->control('gps_y');
+                    echo $this->Form->control('gps_x');
+                }
+                ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>

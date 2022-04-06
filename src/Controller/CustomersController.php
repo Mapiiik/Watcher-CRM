@@ -286,9 +286,8 @@ class CustomersController extends AppController
             ->contain('Customers')
             ->contain('Ips')
             ->where([
-                'InstallationAddresses.ruian_gid IS NOT NULL',
-                'InstallationAddresses.gpsx IS NOT NULL',
-                'InstallationAddresses.gpsy IS NOT NULL',
+                'InstallationAddresses.gps_x IS NOT NULL',
+                'InstallationAddresses.gps_y IS NOT NULL',
             ])
             ->formatResults(
                 function (CollectionInterface $customerPoints) {

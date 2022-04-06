@@ -54,8 +54,9 @@ class AddressesController extends AppController
         ]);
 
         $types = $this->Addresses->types;
+        $number_types = $this->Addresses->number_types;
 
-        $this->set(compact('address', 'types'));
+        $this->set(compact('address', 'types', 'number_types'));
     }
 
     /**
@@ -80,19 +81,29 @@ class AddressesController extends AppController
         if ($this->request->is('post')) {
             $address = $this->Addresses->patchEntity($address, $this->request->getData());
 
-            // update RUIAN data
-            $address->set($this->findRuianData($address));
+            if ($this->request->getData('refresh') == 'refresh') {
+                // only refresh
+            } else {
+                // update RUIAN data
+                $address->set($this->findRuianData($address));
 
-            if ($this->Addresses->save($address)) {
-                $this->Flash->success(__('The address has been saved.'));
-
-                if (isset($customer_id)) {
-                    return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+                // set manual coordinate if defined
+                if ($address->manual_coordinate_setting) {
+                    $address->gps_y = $this->request->getData('gps_y');
+                    $address->gps_x = $this->request->getData('gps_x');
                 }
 
-                return $this->redirect(['action' => 'index']);
+                if ($this->Addresses->save($address)) {
+                    $this->Flash->success(__('The address has been saved.'));
+
+                    if (isset($customer_id)) {
+                        return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+                    }
+
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('The address could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__('The address could not be saved. Please, try again.'));
         }
         $customers = $this->Addresses->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $countries = $this->Addresses->Countries->find('list', ['order' => 'name']);
@@ -102,8 +113,9 @@ class AddressesController extends AppController
         }
 
         $types = $this->Addresses->types;
+        $number_types = $this->Addresses->number_types;
 
-        $this->set(compact('address', 'customers', 'countries', 'types'));
+        $this->set(compact('address', 'customers', 'countries', 'types', 'number_types'));
     }
 
     /**
@@ -124,19 +136,29 @@ class AddressesController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $address = $this->Addresses->patchEntity($address, $this->request->getData());
 
-            // update RUIAN data
-            $address->set($this->findRuianData($address));
+            if ($this->request->getData('refresh') == 'refresh') {
+                // only refresh
+            } else {
+                // update RUIAN data
+                $address->set($this->findRuianData($address));
 
-            if ($this->Addresses->save($address)) {
-                $this->Flash->success(__('The address has been saved.'));
-
-                if (isset($customer_id)) {
-                    return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+                // set manual coordinate if defined
+                if ($address->manual_coordinate_setting) {
+                    $address->gps_y = $this->request->getData('gps_y');
+                    $address->gps_x = $this->request->getData('gps_x');
                 }
 
-                return $this->redirect(['action' => 'index']);
+                if ($this->Addresses->save($address)) {
+                    $this->Flash->success(__('The address has been saved.'));
+
+                    if (isset($customer_id)) {
+                        return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+                    }
+
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('The address could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__('The address could not be saved. Please, try again.'));
         }
         $customers = $this->Addresses->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $countries = $this->Addresses->Countries->find('list', ['order' => 'name']);
@@ -146,8 +168,9 @@ class AddressesController extends AppController
         }
 
         $types = $this->Addresses->types;
+        $number_types = $this->Addresses->number_types;
 
-        $this->set(compact('address', 'customers', 'countries', 'types'));
+        $this->set(compact('address', 'customers', 'countries', 'types', 'number_types'));
     }
 
     /**
@@ -184,11 +207,13 @@ class AddressesController extends AppController
      */
     private function findRuianData(Address $address): array
     {
+        $typ_so = $address->number_type == 1 ? 'č.ev.' : 'č.p.';
+
         $conditionsForSearches = [
             // search in RUIAN
             0 => [
                 'ulice_nazev IS' => $address->street,
-                'typ_so' => 'č.p.',
+                'typ_so' => $typ_so,
                 'cislo_domovni' => (int)$address->number,
                 'obec_nazev IS' => $address->city,
                 'psc IS' => $address->zip,
@@ -196,7 +221,7 @@ class AddressesController extends AppController
             // search in RUIAN with city as MOP
             1 => [
                 'ulice_nazev IS' => $address->street,
-                'typ_so' => 'č.p.',
+                'typ_so' => $typ_so,
                 'cislo_domovni' => (int)$address->number,
                 'mop_nazev IS' => $address->city,
                 'psc IS' => $address->zip,
@@ -204,7 +229,7 @@ class AddressesController extends AppController
             // search in RUIAN with city as MOMC
             2 => [
                 'ulice_nazev IS' => $address->street,
-                'typ_so' => 'č.p.',
+                'typ_so' => $typ_so,
                 'cislo_domovni' => (int)$address->number,
                 'momc_nazev IS' => $address->city,
                 'psc IS' => $address->zip,
@@ -212,7 +237,7 @@ class AddressesController extends AppController
             // search in RUIAN with city as city part
             3 => [
                 'ulice_nazev IS' => $address->street,
-                'typ_so' => 'č.p.',
+                'typ_so' => $typ_so,
                 'cislo_domovni' => (int)$address->number,
                 'cast_obce_nazev IS' => $address->city,
                 'psc IS' => $address->zip,
@@ -221,7 +246,7 @@ class AddressesController extends AppController
             4 => [
                 'ulice_nazev' => '',
                 'cast_obce_nazev IS' => $address->street,
-                'typ_so' => 'č.p.',
+                'typ_so' => $typ_so,
                 'cislo_domovni' => (int)$address->number,
                 'obec_nazev IS' => $address->city,
                 'psc IS' => $address->zip,
@@ -236,8 +261,8 @@ class AddressesController extends AppController
 
             $ruianAddresses->select([
                 'ruian_gid' => 'kod_adm',
-                'gpsy' => 'ST_Y(geometry)',
-                'gpsx' => 'ST_X(geometry)',
+                'gps_y' => 'ST_Y(geometry)',
+                'gps_x' => 'ST_X(geometry)',
             ]);
 
             if ($ruianAddresses->count() > 1) {
@@ -257,8 +282,8 @@ class AddressesController extends AppController
 
         return [
             'ruian_gid' => null,
-            'gpsy' => null,
-            'gpsx' => null,
+            'gps_y' => null,
+            'gps_x' => null,
         ];
     }
 }

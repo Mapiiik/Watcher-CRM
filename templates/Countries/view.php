@@ -59,46 +59,46 @@
                             <th><?= __('Modified By') ?></th>
                             <th><?= __('Modified') ?></th>
                             <th><?= __('Ruian Gid') ?></th>
-                            <th><?= __('Gpsx') ?></th>
-                            <th><?= __('Gpsy') ?></th>
+                            <th><?= __('Gps X') ?></th>
+                            <th><?= __('Gps Y') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($country->addresses as $addresses) : ?>
+                        <?php foreach ($country->addresses as $address) : ?>
                         <tr>
-                            <td><?= h($addresses->id) ?></td>
-                            <td><?= h($addresses->type) ?></td>
-                            <td><?= h($addresses->customer_id) ?></td>
-                            <td><?= h($addresses->title) ?></td>
-                            <td><?= h($addresses->first_name) ?></td>
-                            <td><?= h($addresses->last_name) ?></td>
-                            <td><?= h($addresses->suffix) ?></td>
-                            <td><?= h($addresses->company) ?></td>
-                            <td><?= h($addresses->street) ?></td>
-                            <td><?= h($addresses->number) ?></td>
-                            <td><?= h($addresses->city) ?></td>
-                            <td><?= h($addresses->zip) ?></td>
-                            <td><?= h($addresses->country_id) ?></td>
-                            <td><?= h($addresses->created_by) ?></td>
-                            <td><?= h($addresses->created) ?></td>
-                            <td><?= h($addresses->modified_by) ?></td>
-                            <td><?= h($addresses->modified) ?></td>
-                            <td><?= h($addresses->ruian_gid) ?></td>
-                            <td><?= h($addresses->gpsx) ?></td>
-                            <td><?= h($addresses->gpsy) ?></td>
+                            <td><?= h($address->id) ?></td>
+                            <td><?= h($address->type) ?></td>
+                            <td><?= h($address->customer_id) ?></td>
+                            <td><?= h($address->title) ?></td>
+                            <td><?= h($address->first_name) ?></td>
+                            <td><?= h($address->last_name) ?></td>
+                            <td><?= h($address->suffix) ?></td>
+                            <td><?= h($address->company) ?></td>
+                            <td><?= h($address->street) ?></td>
+                            <td><?= h($address->number) ?></td>
+                            <td><?= h($address->city) ?></td>
+                            <td><?= h($address->zip) ?></td>
+                            <td><?= h($address->country_id) ?></td>
+                            <td><?= h($address->created_by) ?></td>
+                            <td><?= h($address->created) ?></td>
+                            <td><?= h($address->modified_by) ?></td>
+                            <td><?= h($address->modified) ?></td>
+                            <td><?= h($address->ruian_gid) ?></td>
+                            <td><?= h($address->gps_x) ?></td>
+                            <td><?= h($address->gps_y) ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
-                                    ['controller' => 'Addresses', 'action' => 'view', $addresses->id]
+                                    ['controller' => 'Addresses', 'action' => 'view', $address->id]
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __('Edit'),
-                                    ['controller' => 'Addresses', 'action' => 'edit', $addresses->id],
+                                    ['controller' => 'Addresses', 'action' => 'edit', $address->id],
                                     ['class' => 'win-link']
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
                                     __('Delete'),
-                                    ['controller' => 'Addresses', 'action' => 'delete', $addresses->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $addresses->id)]
+                                    ['controller' => 'Addresses', 'action' => 'delete', $address->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $address->id)]
                                 ) ?>
                             </td>
                         </tr>

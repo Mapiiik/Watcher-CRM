@@ -14,8 +14,8 @@ use Cake\ORM\Entity;
  * @property int $port
  * @property string|null $caption
  * @property bool $accounting
- * @property float|null $gpsx
- * @property float|null $gpsy
+ * @property float|null $gps_x
+ * @property float|null $gps_y
  * @property string|null $note
  *
  * @property \App\Model\Entity\Range[] $ranges
@@ -38,8 +38,8 @@ class Router extends Entity
         'port' => true,
         'caption' => true,
         'accounting' => true,
-        'gpsx' => true,
-        'gpsy' => true,
+        'gps_x' => true,
+        'gps_y' => true,
         'note' => true,
         'ranges' => true,
         'tasks' => true,

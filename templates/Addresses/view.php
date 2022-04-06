@@ -72,6 +72,10 @@
                             <td><?= h($address->number) ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Number Type') ?></th>
+                            <td><?= h($number_types[$address->number_type]) ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('City') ?></th>
                             <td><?= h($address->city) ?></td>
                         </tr>
@@ -93,19 +97,20 @@
             <div class="row">
                 <div class="column-responsive">
                     <table>
-                        <?php if ($address->has('ruian_gid')) : ?>
+                        <?php if ($address->has('gps_x') && $address->has('gps_y')) : ?>
                         <tr>
                             <th><?= __('Maps') ?></th>
                             <td>
                                 <?= $this->Html->link(
                                     __('Google Maps'),
-                                    'https://maps.google.com/maps?q=' . h("{$address->gpsy},{$address->gpsx}"),
+                                    'https://maps.google.com/maps?q=' . h("{$address->gps_y},{$address->gps_x}"),
                                     ['target' => '_blank']
                                 ) ?>
                                 ,
                                 <?= $this->Html->link(
                                     __('Mapy.cz'),
-                                    'https://mapy.cz/zakladni?source=coor&id=' . h("{$address->gpsx},{$address->gpsy}"),
+                                    'https://mapy.cz/zakladni?source=coor&id='
+                                    . h("{$address->gps_x},{$address->gps_y}"),
                                     ['target' => '_blank']
                                 ) ?>
                             </td>
@@ -116,12 +121,16 @@
                             <td><?= $this->Number->format($address->ruian_gid) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Gpsx') ?></th>
-                            <td><?= $this->Number->format($address->gpsx, ['precision' => 15]) ?></td>
+                            <th><?= __('Manual Coordinate Setting') ?></th>
+                            <td><?= $address->manual_coordinate_setting ? __('Yes') : __('No'); ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Gpsy') ?></th>
-                            <td><?= $this->Number->format($address->gpsy, ['precision' => 15]) ?></td>
+                            <th><?= __('Gps Y') ?></th>
+                            <td><?= $this->Number->format($address->gps_y, ['precision' => 15]) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Gps X') ?></th>
+                            <td><?= $this->Number->format($address->gps_x, ['precision' => 15]) ?></td>
                         </tr>
                     </table>
                 </div>
@@ -149,6 +158,12 @@
                         </tr>
                     </table>
                 </div>
+            </div>
+            <div class="text">
+                <strong><?= __('Note') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($address->note)); ?>
+                </blockquote>
             </div>
         </div>
     </div>
