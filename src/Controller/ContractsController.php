@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\ApiClient;
 use Cake\Collection\Collection;
 use Cake\Database\Exception\MissingConnectionException;
 use Cake\Database\Query;
@@ -118,6 +119,15 @@ class ContractsController extends AppController
 
         $this->set(compact('contract', 'customers'));
         $this->set(compact('installationAddresses', 'serviceTypes', 'installationTechnicians', 'brokerages'));
+
+        // load access points from NMS if possible
+        $accessPoints = ApiClient::getAccessPoints();
+        if ($accessPoints) {
+            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
+        } else {
+            $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
+            $this->set('accessPoints', []);
+        }
     }
 
     /**
@@ -164,6 +174,15 @@ class ContractsController extends AppController
 
         $this->set(compact('contract', 'customers'));
         $this->set(compact('installationAddresses', 'serviceTypes', 'installationTechnicians', 'brokerages'));
+
+        // load access points from NMS if possible
+        $accessPoints = ApiClient::getAccessPoints();
+        if ($accessPoints) {
+            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
+        } else {
+            $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
+            $this->set('accessPoints', []);
+        }
     }
 
     /**

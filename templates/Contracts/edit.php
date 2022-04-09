@@ -81,6 +81,7 @@
                     </div>
                     <div class="column-responsive">
                         <?php
+                        echo $this->Form->control('access_point_id', ['options' => $accessPoints, 'empty' => true]);
                         echo $this->Form->control('installation_date', ['empty' => true]);
                         echo $this->Form->control('installation_technician_id', [
                             'options' => $installationTechnicians,

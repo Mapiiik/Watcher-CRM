@@ -145,6 +145,18 @@ return [
             'duration' => '+1 years',
             'url' => env('CACHE_CAKEROUTES_URL', null),
         ],
+
+        /*
+         * Configure the cache for API Client
+         */
+        'api_client' => [
+            'className' => FileEngine::class,
+            'prefix' => 'api_client_',
+            'path' => CACHE,
+            'serialize' => true,
+            'duration' => '+5 minutes',
+            'url' => env('CACHE_APICLIENT_URL', null),
+        ],
     ],
 
     /*

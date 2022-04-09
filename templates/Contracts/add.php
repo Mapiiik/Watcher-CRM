@@ -27,6 +27,7 @@ use Cake\I18n\FrozenDate;
                     'options' => $installationAddresses,
                     'empty' => true,
                 ]);
+                echo $this->Form->control('access_point_id', ['options' => $accessPoints, 'empty' => true]);
                 echo $this->Form->control('valid_from', ['empty' => true]);
 
                 echo $this->Form->control('enable_valid_until', [
