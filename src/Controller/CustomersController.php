@@ -4,10 +4,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Form\SearchForm;
-use Cake\Collection\Collection;
-use Cake\Collection\CollectionInterface;
-use Cake\Datasource\Exception\RecordNotFoundException;
-use Ruian\Model\Entity\Address;
 
 /**
  * Customers Controller
@@ -119,7 +115,7 @@ class CustomersController extends AppController
                 'Contracts' => ['ServiceTypes', 'InstallationAddresses'],
                 'Emails',
                 'Ips' => ['Contracts'],
-                'LabelCustomers',
+                'LabelCustomers' => ['Labels'],
                 'Logins',
                 'Phones',
                 'RemovedIps' => ['Contracts'],
@@ -261,92 +257,5 @@ class CustomersController extends AppController
             }
         }
         $this->set(compact('customer', 'type', 'query', 'address_types', 'invoice_delivery_types'));
-    }
-
-    /**
-     * Customer points method
-     *
-     * @return \Cake\Http\Response|null|void Renders view
-     */
-    public function customerPoints()
-    {
-        /*
-        $options = [
-            'contain' => ['AccessPoints', 'DeviceTypes', 'CustomerConnections'],
-            'order' => ['RouterosDevices.modified' => 'DESC'],
-        ];
-
-        if ($this->request->is(['get']) && ($this->request->getQuery('ip')) !== null) {
-            $options['conditions']['ip_address'] = $this->request->getQuery('ip');
-        }
-        $routerosDevices = $this->RouterosDevices->find('all', $options);
-        */
-        $customerPoints = $this->fetchTable('Contracts')->find()
-            ->contain('InstallationAddresses')
-            ->contain('Customers')
-            ->contain('Ips')
-            ->where([
-                'InstallationAddresses.gps_x IS NOT NULL',
-                'InstallationAddresses.gps_y IS NOT NULL',
-            ])
-            ->formatResults(
-                function (CollectionInterface $customerPoints) {
-                    return $customerPoints
-                        ->groupBy('installation_address.ruian_gid')
-                        ->map(
-                            function ($customerConnections, $ruian_gid) {
-                                // Try to load RUIAN record
-                                try {
-                                    $address = $this->fetchTable('Ruian.Addresses')->get($ruian_gid, [
-                                        'fields' => [
-                                            'ulice_nazev',
-                                            'typ_so',
-                                            'cislo_domovni',
-                                            'psc',
-                                            'obec_nazev',
-                                            'cast_obce_nazev',
-                                            'gps_y' => 'ST_Y(geometry)',
-                                            'gps_x' => 'ST_X(geometry)',
-                                        ],
-                                    ]);
-                                } catch (RecordNotFoundException $recordNotFoundError) {
-                                    $address = new Address([
-                                        'gps_y' => null,
-                                        'gps_x' => null,
-                                    ]);
-                                }
-
-                                return [
-                                    'name' => $address->address,
-                                    'gps_y' => $address->gps_y,
-                                    'gps_x' => $address->gps_x,
-                                    'note' => 'RUIAN: ' . $ruian_gid,
-                                    'CustomerConnections' => (new Collection($customerConnections))->map(
-                                        function ($contract) {
-                                            return [
-                                                'name' => $contract->installation_address->name,
-                                                'customer_number' => $contract->customer->number,
-                                                'contract_number' => $contract->number,
-                                                'note' => $contract->note,
-                                                'CustomerConnectionIps' => (new Collection($contract->ips))->map(
-                                                    function ($ip) {
-                                                        return [
-                                                            'ip_address' => $ip->ip,
-                                                            'name' => $ip->note,
-                                                            'note' => $ip->note,
-                                                        ];
-                                                    }
-                                                ),
-                                            ];
-                                        }
-                                    ),
-                                ];
-                            }
-                        );
-                }
-            );
-
-        $this->set(compact('customerPoints'));
-        $this->viewBuilder()->setOption('serialize', 'customerPoints');
     }
 }

@@ -160,10 +160,10 @@ $routes->scope('/', function (RouteBuilder $builder) {
  * ```
  */
 
-$routes->scope('/api', function (RouteBuilder $builder) {
+$routes->prefix('Api', function (RouteBuilder $builder) {
     $builder->setExtensions(['json']);
+
     $builder->resources('Customers', [
-        'only' => ['customer-points'],
         'map' => [
             'customer-points' => [
                 'action' => 'customerPoints',

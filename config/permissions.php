@@ -139,9 +139,10 @@ return [
         //API access
         [
             'role' => ['api'],
+            'prefix' => 'Api',
             'plugin' => null,
             'controller' => ['Customers'],
-            'action' => ['customerPoints'],
+            'action' => ['index', 'view', 'customerPoints'],
         ],
         //users access
         [
