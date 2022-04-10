@@ -71,6 +71,10 @@ use Cake\I18n\Number;
                 <div class="column-responsive">
                     <table>
                         <tr>
+                            <th><?= __('Access Point') ?></th>
+                            <td><?= $contract->has('access_point') ? h($contract->access_point->name) : '' ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Installation Date') ?></th>
                             <td><?= h($contract->installation_date) ?></td>
                         </tr>

@@ -20,6 +20,7 @@ use Cake\Cache\Cache;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 use Cake\Http\Client;
+use Cake\ORM\Entity;
 
 /**
  * API Client
@@ -61,6 +62,48 @@ class ApiClient
             'access_points',
             function () {
                 return ApiClient::fetchAccessPoints();
+            },
+            'api_client'
+        );
+    }
+
+    /**
+     * Fetch access point method
+     *
+     * @param string $id Access Point id.
+     * @return \Cake\ORM\Entity|null Return result from API
+     */
+    public static function fetchAccessPoint(string $id): ?Entity
+    {
+        if (env('WATCHER_NMS_URL') && env('WATCHER_NMS_KEY')) {
+            $http = Client::createFromUrl(env('WATCHER_NMS_URL'));
+            $response = $http->get('/api/access-points/' . $id . '.json', [
+                'api_key' => env('WATCHER_NMS_KEY'),
+            ]);
+
+            $json = $response->getJson();
+            if (isset($json['accessPoint'])) {
+                $entity = new Entity($json['accessPoint']);
+
+                return $entity;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Get access point method
+     *
+     * @param string $id Access Point id.
+     * @return \Cake\ORM\Entity|null Return result from API or from cache if valid
+     */
+    public static function getAccessPoint(string $id): ?Entity
+    {
+        return Cache::remember(
+            'access_point_' . $id,
+            function () use ($id) {
+                return ApiClient::fetchAccessPoint($id);
             },
             'api_client'
         );

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\ApiClient;
 use Cake\ORM\Entity;
 
 /**
@@ -29,6 +30,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenDate|null $conclusion_date
  * @property int|null $number_of_amendments
  * @property string|null $number_of_the_contract_to_be_terminated
+ * @property string|null $access_point_id
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Address $installation_address
@@ -86,6 +88,7 @@ class Contract extends Entity
         'sold_equipments' => true,
         'activation_fee' => true,
         'activation_fee_with_obligation' => true,
+        'access_point_id' => true,
     ];
 
     /**
@@ -219,6 +222,20 @@ class Contract extends Entity
     {
         if (isset($this->service_type->invoice_text)) {
             return $this->service_type->invoice_text;
+        }
+
+        return null;
+    }
+
+    /**
+     * getter for acess point (try to load via ApiClient)
+     *
+     * @return \Cake\ORM\Entity|null
+     */
+    protected function _getAccessPoint(): ?Entity
+    {
+        if ($this->access_point_id) {
+            return ApiClient::getAccessPoint($this->access_point_id);
         }
 
         return null;

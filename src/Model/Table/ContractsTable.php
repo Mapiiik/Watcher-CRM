@@ -173,6 +173,10 @@ class ContractsTable extends Table
             ->integer('activation_fee_with_obligation')
             ->allowEmptyString('activation_fee_with_obligation');
 
+        $validator
+            ->uuid('access_point_id')
+            ->allowEmptyString('access_point_id');
+
         return $validator;
     }
 
