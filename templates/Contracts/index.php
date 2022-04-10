@@ -22,6 +22,7 @@
                     <th><?= $this->Paginator->sort('valid_until') ?></th>
                     <th><?= $this->Paginator->sort('obligation_until') ?></th>
                     <th><?= $this->Paginator->sort('vip') ?></th>
+                    <th><?= $this->Paginator->sort('access_point_id') ?></th>
                     <th><?= $this->Paginator->sort('installation_date') ?></th>
                     <th><?= $this->Paginator->sort('installation_technician_id') ?></th>
                     <th><?= $this->Paginator->sort('brokerage_id') ?></th>
@@ -57,6 +58,7 @@
                     <td><?= h($contract->valid_until) ?></td>
                     <td><?= h($contract->obligation_until) ?></td>
                     <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
+                    <td><?= $contract->has('access_point') ? h($contract->access_point->name) : '' ?></td>
                     <td><?= h($contract->installation_date) ?></td>
                     <td>
                         <?= $contract->has('installation_technician') ? $this->Html->link(

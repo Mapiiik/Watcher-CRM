@@ -397,38 +397,40 @@ use Cake\I18n\Number;
                             <th><?= __('Valid Until') ?></th>
                             <th><?= __('Obligation Until') ?></th>
                             <th><?= __('Vip') ?></th>
+                            <th><?= __('Access Point') ?></th>
                             <th><?= __('Installation Date') ?></th>
                             <th><?= __('Note') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($customer->contracts as $contracts) : ?>
+                        <?php foreach ($customer->contracts as $contract) : ?>
                         <tr>
-                            <td><?= $contracts->has('service_type') ? h($contracts->service_type->name) : '' ?></td>
-                            <td><?= h($contracts->number) ?></td>
-                            <td><?= $contracts->has('installation_address') ?
-                                h($contracts->installation_address->full_address) : '' ?></td>
-                            <td><?= h($contracts->conclusion_date) ?></td>
-                            <td><?= h($contracts->number_of_amendments) ?></td>
-                            <td><?= h($contracts->valid_from) ?></td>
-                            <td><?= h($contracts->valid_until) ?></td>
-                            <td><?= h($contracts->obligation_until) ?></td>
-                            <td><?= $contracts->vip ? __('Yes') : __('No'); ?></td>
-                            <td><?= h($contracts->installation_date) ?></td>
-                            <td><?= h($contracts->note) ?></td>
+                            <td><?= $contract->has('service_type') ? h($contract->service_type->name) : '' ?></td>
+                            <td><?= h($contract->number) ?></td>
+                            <td><?= $contract->has('installation_address') ?
+                                h($contract->installation_address->full_address) : '' ?></td>
+                            <td><?= h($contract->conclusion_date) ?></td>
+                            <td><?= h($contract->number_of_amendments) ?></td>
+                            <td><?= h($contract->valid_from) ?></td>
+                            <td><?= h($contract->valid_until) ?></td>
+                            <td><?= h($contract->obligation_until) ?></td>
+                            <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
+                            <td><?= $contract->has('access_point') ? h($contract->access_point->name) : '' ?></td>
+                            <td><?= h($contract->installation_date) ?></td>
+                            <td><?= h($contract->note) ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
-                                    ['controller' => 'Contracts', 'action' => 'view', $contracts->id]
+                                    ['controller' => 'Contracts', 'action' => 'view', $contract->id]
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __('Edit'),
-                                    ['controller' => 'Contracts', 'action' => 'edit', $contracts->id],
+                                    ['controller' => 'Contracts', 'action' => 'edit', $contract->id],
                                     ['class' => 'win-link']
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
                                     __('Delete'),
-                                    ['controller' => 'Contracts', 'action' => 'delete', $contracts->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $contracts->id)]
+                                    ['controller' => 'Contracts', 'action' => 'delete', $contract->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $contract->id)]
                                 ) ?>
                             </td>
                         </tr>
