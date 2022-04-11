@@ -61,7 +61,7 @@
                             <th><?= __('Start Date') ?></th>
                             <th><?= __('Estimated Date') ?></th>
                             <th><?= __('Critical Date') ?></th>
-                            <th><?= __('Router Id') ?></th>
+                            <th><?= __('Access Point Id') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($taskType->tasks as $task) : ?>
@@ -84,7 +84,7 @@
                             <td><?= h($task->start_date) ?></td>
                             <td><?= h($task->estimated_date) ?></td>
                             <td><?= h($task->critical_date) ?></td>
-                            <td><?= h($task->router_id) ?></td>
+                            <td><?= h($task->access_point_id) ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
