@@ -109,20 +109,20 @@ class TasksTable extends Table
             ->allowEmptyString('phone');
 
         $validator
-            ->dateTime('finish_date')
-            ->allowEmptyDateTime('finish_date');
+            ->date('finish_date')
+            ->allowEmptyDate('finish_date');
 
         $validator
-            ->dateTime('start_date')
-            ->allowEmptyDateTime('start_date');
+            ->date('start_date')
+            ->allowEmptyDate('start_date');
 
         $validator
-            ->dateTime('estimated_date')
-            ->allowEmptyDateTime('estimated_date');
+            ->date('estimated_date')
+            ->allowEmptyDate('estimated_date');
 
         $validator
-            ->dateTime('critical_date')
-            ->allowEmptyDateTime('critical_date');
+            ->date('critical_date')
+            ->allowEmptyDate('critical_date');
 
         $validator
             ->uuid('access_point_id')
