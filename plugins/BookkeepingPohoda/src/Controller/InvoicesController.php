@@ -397,9 +397,9 @@ class InvoicesController extends AppController
                         $invoice->creation_date = $invoiced_month->lastOfMonth();
                         $invoice->due_date = $invoiced_month->lastOfMonth()->addDays(10);
                         if ($contract->invoice_text) {
-                            $invoice->text = __d('bookkeeping_pohoda', $contract->invoice_text, [
-                                'number' => $contract->number,
-                                'month' => $invoiced_month->i18nFormat('MM/yyyy'),
+                            $invoice->text = strtr($contract->invoice_text, [
+                                '{number}' => $contract->number,
+                                '{month}' => $invoiced_month->i18nFormat('MM/yyyy'),
                             ]);
                         } else {
                             $invoice->text = 'Faktura za poskytované služby dle smlouvy '
@@ -463,12 +463,12 @@ class InvoicesController extends AppController
             $modified = 0;
             // VERIFICATION DATA CHECK
             if ($dbf_for_import->getSize() > 0) {
-                $dbase = \dbase_open($_FILES['dbf_for_import']['tmp_name'], 0);
+                $dbase = dbase_open($_FILES['dbf_for_import']['tmp_name'], 0);
 
-                $record_count = \dbase_numrecords($dbase);
+                $record_count = dbase_numrecords($dbase);
                 for ($record_number = 1; $record_number <= $record_count; $record_number++) {
                     // right! record #s begin with 1, don't forget <=
-                    $record = \dbase_get_record_with_names($dbase, $record_number);
+                    $record = dbase_get_record_with_names($dbase, $record_number);
                     foreach ($record as $key => $value) {
                         if (is_string($value)) {
                             $record[$key] = trim(iconv('CP852', 'UTF-8', $value));
@@ -521,7 +521,7 @@ class InvoicesController extends AppController
                     }
                 }
                 // close database
-                \dbase_close($dbase);
+                dbase_close($dbase);
                 //remove file
                 unlink($_FILES['dbf_for_import']['tmp_name']);
             }

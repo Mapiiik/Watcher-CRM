@@ -1,7 +1,11 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var string[]|\Cake\Collection\CollectionInterface $customers
+ * @var \BookkeepingPohoda\Model\Entity\Invoice[]|\Cake\Collection\CollectionInterface $invoices
+ * @var \Cake\I18n\FrozenDate $invoiced_month
+ * @var array $tax_rates
+ * @var int $tax_rate_id
+ * @var bool $reverse_charge
  */
 
 use Riesenia\Pohoda;
@@ -72,8 +76,14 @@ foreach ($invoices as $invoice) {
             'rateVAT' => 'high',
             'homeCurrency' => [
                 'unitPrice' => $item->period_total,
-                'price' => $item->period_total - round($item->period_total - ($item->period_total / (1 + env('VAT_RATE'))), 2),
-                'priceVAT' => $reverse_charge ? 0 : round($item->period_total - ($item->period_total / (1 + env('VAT_RATE'))), 2),
+                'price' => $item->period_total - round(
+                    $item->period_total - ($item->period_total / (1 + env('VAT_RATE'))),
+                    2
+                ),
+                'priceVAT' => $reverse_charge ? 0 : round(
+                    $item->period_total - ($item->period_total / (1 + env('VAT_RATE'))),
+                    2
+                ),
             ],
             'PDP' => $reverse_charge, // not implemented in pohoda class yet
         ]);
@@ -86,8 +96,14 @@ foreach ($invoices as $invoice) {
         'homeCurrency' => [
             'priceNone' => 0,
             'priceLow' => 0,
-            'priceHigh' => $invoice->total - round($invoice->total - ($invoice->total / (1 + env('VAT_RATE'))), 2),
-            'priceHighVAT' => $reverse_charge ? 0 : round($invoice->total - ($invoice->total / (1 + env('VAT_RATE'))), 2),
+            'priceHigh' => $invoice->total - round(
+                $invoice->total - ($invoice->total / (1 + env('VAT_RATE'))),
+                2
+            ),
+            'priceHighVAT' => $reverse_charge ? 0 : round(
+                $invoice->total - ($invoice->total / (1 + env('VAT_RATE'))),
+                2
+            ),
             'round' => [
                 'priceRound' => 0,
             ],
@@ -95,16 +111,18 @@ foreach ($invoices as $invoice) {
     ]);
 
     // add invoice to import (identified by $invoice->number)
-    $pohoda->addItem($invoice->number, $invoiceRecord);
+    $pohoda->addItem((string)$invoice->number, $invoiceRecord);
 }
 
 // finish import file
 $pohoda->close();
 
 // set for download with specified filename
-$this->response = $this->response->withDownload(
-    'Invoices' . '-' . strtolower($tax_rates[$tax_rate_id])
-        . '-' . $invoiced_month->i18nFormat('yyyy-MM') . '.xml'
+$this->setResponse(
+    $this->getResponse()->withDownload(
+        'Invoices' . '-' . strtolower($tax_rates[$tax_rate_id])
+            . '-' . $invoiced_month->i18nFormat('yyyy-MM') . '.xml'
+    )
 );
 
 //read file to output

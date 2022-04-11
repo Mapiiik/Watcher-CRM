@@ -35,6 +35,8 @@ use Cake\ORM\Entity;
  * @property float $vat
  * @property float $vat_base
  * @property string $style
+ * @property string $name
+ * @property float $period_total
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Service $service
