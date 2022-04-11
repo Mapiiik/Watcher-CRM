@@ -70,6 +70,7 @@
         "post-update-cmd": [],
         "migrations": [
             "bin/cake migrations migrate --plugin CakeDC/Users",
+            "bin/cake migrations migrate --plugin BookkeepingPohoda",
             "bin/cake migrations migrate"
         ],
         "schema-cache": [
