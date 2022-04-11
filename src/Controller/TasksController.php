@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\ApiClient;
+
 /**
  * Tasks Controller
  *
@@ -27,7 +29,7 @@ class TasksController extends AppController
         }
 
         $this->paginate = [
-            'contain' => ['TaskTypes', 'Customers', 'Dealers', 'TaskStates', 'Routers'],
+            'contain' => ['TaskTypes', 'Customers', 'Dealers', 'TaskStates'],
             'conditions' => $conditions,
             'order' => [
                 'Tasks.id' => 'desc',
@@ -49,7 +51,7 @@ class TasksController extends AppController
     public function view($id = null)
     {
         $task = $this->Tasks->get($id, [
-            'contain' => ['TaskTypes', 'Customers', 'Dealers', 'TaskStates', 'Routers'],
+            'contain' => ['TaskTypes', 'Customers', 'Dealers', 'TaskStates'],
         ]);
 
         $this->set(compact('task'));
@@ -84,13 +86,21 @@ class TasksController extends AppController
         $customers = $this->Tasks->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $dealers = $this->Tasks->Dealers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $taskStates = $this->Tasks->TaskStates->find('list', ['order' => 'name']);
-        $routers = $this->Tasks->Routers->find('list', ['order' => 'name']);
 
         if (isset($customer_id)) {
             $customers->where(['id' => $customer_id]);
         }
 
-        $this->set(compact('task', 'taskTypes', 'customers', 'dealers', 'taskStates', 'routers'));
+        $this->set(compact('task', 'taskTypes', 'customers', 'dealers', 'taskStates'));
+
+        // load access points from NMS if possible
+        $accessPoints = ApiClient::getAccessPoints();
+        if ($accessPoints) {
+            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
+        } else {
+            $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
+            $this->set('accessPoints', []);
+        }
     }
 
     /**
@@ -121,13 +131,21 @@ class TasksController extends AppController
         $customers = $this->Tasks->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $dealers = $this->Tasks->Dealers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $taskStates = $this->Tasks->TaskStates->find('list', ['order' => 'name']);
-        $routers = $this->Tasks->Routers->find('list', ['order' => 'name']);
 
         if (isset($customer_id)) {
             $customers->where(['id' => $customer_id]);
         }
 
-        $this->set(compact('task', 'taskTypes', 'customers', 'dealers', 'taskStates', 'routers'));
+        $this->set(compact('task', 'taskTypes', 'customers', 'dealers', 'taskStates'));
+
+        // load access points from NMS if possible
+        $accessPoints = ApiClient::getAccessPoints();
+        if ($accessPoints) {
+            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
+        } else {
+            $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
+            $this->set('accessPoints', []);
+        }
     }
 
     /**

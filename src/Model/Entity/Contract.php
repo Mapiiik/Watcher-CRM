@@ -44,6 +44,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\SoldEquipment[] $sold_equipments
  * @property \App\Model\Entity\Billing[] $individual_billings
  * @property \App\Model\Entity\Billing[] $standard_billings
+ * @property \Cake\ORM\Entity|null $access_point
  */
 class Contract extends Entity
 {
@@ -89,6 +90,7 @@ class Contract extends Entity
         'activation_fee' => true,
         'activation_fee_with_obligation' => true,
         'access_point_id' => true,
+        'access_point' => true,
     ];
 
     /**

@@ -14,7 +14,6 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Dealers
  * @property \App\Model\Table\TaskStatesTable&\Cake\ORM\Association\BelongsTo $TaskStates
- * @property \App\Model\Table\RoutersTable&\Cake\ORM\Association\BelongsTo $Routers
  * @method \App\Model\Entity\Task newEmptyEntity()
  * @method \App\Model\Entity\Task newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Task[] newEntities(array $data, array $options = [])
@@ -65,9 +64,6 @@ class TasksTable extends Table
         $this->belongsTo('TaskStates', [
             'foreignKey' => 'task_state_id',
             'joinType' => 'INNER',
-        ]);
-        $this->belongsTo('Routers', [
-            'foreignKey' => 'router_id',
         ]);
     }
 
@@ -128,6 +124,10 @@ class TasksTable extends Table
             ->dateTime('critical_date')
             ->allowEmptyDateTime('critical_date');
 
+        $validator
+            ->uuid('access_point_id')
+            ->allowEmptyString('access_point_id');
+
         return $validator;
     }
 
@@ -145,7 +145,6 @@ class TasksTable extends Table
         $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
         $rules->add($rules->existsIn(['dealer_id'], 'Dealers'), ['errorField' => 'dealer_id']);
         $rules->add($rules->existsIn(['task_state_id'], 'TaskStates'), ['errorField' => 'task_state_id']);
-        $rules->add($rules->existsIn(['router_id'], 'Routers'), ['errorField' => 'router_id']);
 
         return $rules;
     }

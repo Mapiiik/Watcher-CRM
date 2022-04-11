@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\ApiClient;
 use Cake\ORM\Entity;
 
 /**
@@ -26,13 +27,13 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime|null $start_date
  * @property \Cake\I18n\FrozenTime|null $estimated_date
  * @property \Cake\I18n\FrozenTime|null $critical_date
- * @property int|null $router_id
+ * @property string|null $access_point_id
  *
  * @property \App\Model\Entity\TaskType $task_type
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Customer $dealer
  * @property \App\Model\Entity\TaskState $task_state
- * @property \App\Model\Entity\Router $router
+ * @property \Cake\ORM\Entity|null $access_point
  */
 class Task extends Entity
 {
@@ -63,11 +64,25 @@ class Task extends Entity
         'start_date' => true,
         'estimated_date' => true,
         'critical_date' => true,
-        'router_id' => true,
         'task_type' => true,
         'customer' => true,
         'dealer' => true,
         'task_state' => true,
-        'router' => true,
+        'access_point_id' => true,
+        'access_point' => true,
     ];
+
+    /**
+     * getter for acess point (try to load via ApiClient)
+     *
+     * @return \Cake\ORM\Entity|null
+     */
+    protected function _getAccessPoint(): ?Entity
+    {
+        if ($this->access_point_id) {
+            return ApiClient::getAccessPoint($this->access_point_id);
+        }
+
+        return null;
+    }
 }

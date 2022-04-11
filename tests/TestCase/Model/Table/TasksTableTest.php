@@ -21,14 +21,13 @@ class TasksTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var array
+     * @var array<string>
      */
     protected $fixtures = [
         'app.Tasks',
         'app.TaskTypes',
         'app.Customers',
         'app.TaskStates',
-        'app.Routers',
     ];
 
     /**

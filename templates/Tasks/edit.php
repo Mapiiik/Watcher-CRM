@@ -31,7 +31,7 @@
                     echo $this->Form->control('phone');
                     echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
                     echo $this->Form->control('dealer_id', ['options' => $dealers, 'empty' => true]);
-                    echo $this->Form->control('router_id', ['options' => $routers, 'empty' => true]);
+                    echo $this->Form->control('access_point_id', ['options' => $accessPoints, 'empty' => true]);
                     echo $this->Form->control('start_date', ['empty' => true]);
                     echo $this->Form->control('estimated_date', ['empty' => true]);
                     echo $this->Form->control('critical_date', ['empty' => true]);

@@ -69,11 +69,8 @@
                             ) : '' ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Router') ?></th>
-                            <td><?= $task->has('router') ? $this->Html->link(
-                                $task->router->name,
-                                ['controller' => 'Routers', 'action' => 'view', $task->router->id]
-                            ) : '' ?></td>
+                            <th><?= __('Access Point') ?></th>
+                            <td><?= $task->has('access_point') ? h($task->access_point->name) : '' ?></td>
                         </tr>
                     </table>
                 </div>

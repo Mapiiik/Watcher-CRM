@@ -20,7 +20,7 @@
                     <th><?= $this->Paginator->sort('phone') ?></th>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('dealer_id') ?></th>
-                    <th><?= $this->Paginator->sort('router_id') ?></th>
+                    <th><?= $this->Paginator->sort('access_point_id') ?></th>
                     <th><?= $this->Paginator->sort('start_date') ?></th>
                     <th><?= $this->Paginator->sort('estimated_date') ?></th>
                     <th><?= $this->Paginator->sort('critical_date') ?></th>
@@ -60,12 +60,7 @@
                             ['controller' => 'Customers', 'action' => 'view', $task->dealer->id]
                         ) : '' ?>
                     </td>
-                    <td>
-                        <?= $task->has('router') ? $this->Html->link(
-                            $task->router->name,
-                            ['controller' => 'Routers', 'action' => 'view', $task->router->id]
-                        ) : '' ?>
-                    </td>
+                    <td><?= $task->has('access_point') ? h($task->access_point->name) : '' ?></td>
                     <td><?= h($task->start_date) ?></td>
                     <td><?= h($task->estimated_date) ?></td>
                     <td><?= h($task->critical_date) ?></td>
