@@ -309,6 +309,7 @@ class ContractsController extends AppController
 
                         return $this->redirect(['action' => 'edit', $id]);
                     }
+
                     // no break - checks will continue
                 case 'contract-amendment':
                     if ($type == 'contract-amendment' && empty($query['effective_date_of_the_amendment'])) {
@@ -318,6 +319,7 @@ class ContractsController extends AppController
                     } else {
                         $contract->valid_from = new FrozenDate($query['effective_date_of_the_amendment']);
                     }
+
                     // no break - checks will continue
                 case 'contract-new-x':
                     if (!$contract->has('conclusion_date')) {
@@ -325,7 +327,7 @@ class ContractsController extends AppController
 
                         return $this->redirect(['action' => 'edit', $id]);
                     }
-                    // by default use same contract number for termination or one from query
+
                     if ($type != 'contract-amendment' && empty($query['number_of_the_contract_to_be_terminated'])) {
                         $this->Flash->error(__('Please enter the number of the contract to be terminated.'));
 
@@ -334,6 +336,7 @@ class ContractsController extends AppController
                         $contract->number_of_the_contract_to_be_terminated
                             = $query['number_of_the_contract_to_be_terminated'];
                     }
+
                     // no break - checks will continue
                 case 'contract-new':
                     if (!$contract->has('valid_from')) {
@@ -350,6 +353,16 @@ class ContractsController extends AppController
 
                         return $this->redirect(['action' => 'edit', $id]);
                     }
+
+                    if ($type != 'contract-amendment' && empty($query['number_of_the_contract_to_be_terminated'])) {
+                        $this->Flash->error(__('Please enter the number of the contract to be terminated.'));
+
+                        return $this->redirect(['action' => 'print', $id, '?' => $query]);
+                    } else {
+                        $contract->number_of_the_contract_to_be_terminated
+                            = $query['number_of_the_contract_to_be_terminated'];
+                    }
+
                     // no break - checks will continue
                 case 'handover-protocol-installation':
                     if (!$contract->has('valid_from')) {

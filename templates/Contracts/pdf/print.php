@@ -92,7 +92,7 @@ class ContractPDF extends TCPDF
             $this->Cell(90, 4, 'datum ukončení poskytování služeb:', '', '', 'C');
             $this->Ln();
             $this->SetFont('DejaVuSerif', 'B', '8');
-            $this->Cell(90, 4, $contract->number, '', '', 'C');
+            $this->Cell(90, 4, $contract->number_of_the_contract_to_be_terminated, '', '', 'C');
             $this->Cell(90, 4, $contract->valid_until, '', '', 'C');
             $this->Ln();
 
