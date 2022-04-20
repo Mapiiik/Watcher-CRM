@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use App\ApiClient;
+use Cake\I18n\FrozenDate;
 use Cake\ORM\Entity;
 
 /**
@@ -31,6 +32,8 @@ use Cake\ORM\Entity;
  * @property int|null $number_of_amendments
  * @property string|null $number_of_the_contract_to_be_terminated
  * @property string|null $access_point_id
+ * @property string $style
+ * @property bool $active
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Address $installation_address
@@ -241,5 +244,38 @@ class Contract extends Entity
         }
 
         return null;
+    }
+
+    /**
+     * getter for style
+     *
+     * @return string
+     */
+    protected function _getStyle(): string
+    {
+        $style = '';
+        $now = new FrozenDate();
+
+        if (isset($this->valid_until) && $this->valid_until < $now) {
+            $style = 'background-color: #ffaaaa;';
+        }
+
+        return $style;
+    }
+
+    /**
+     * getter for active
+     *
+     * @return bool
+     */
+    protected function _getActive(): bool
+    {
+        $now = new FrozenDate();
+
+        if (isset($this->valid_until) && $this->valid_until < $now) {
+            return false;
+        }
+
+        return true;
     }
 }
