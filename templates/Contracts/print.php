@@ -109,9 +109,9 @@
                 </div>
             </div>
             <br />
-            <?= $this->Form->create($contract, [
+            <?= $this->Form->create(null, [
                 'type' => 'get',
-                'valueSources' => ['query', 'context'],
+                'valueSources' => ['query'],
                 'target' => 'print',
                 'url' => [
                     'action' => 'print',
