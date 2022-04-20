@@ -311,7 +311,7 @@ class ContractPDF extends TCPDF
 
         $this->SetFont('DejaVuSerif', '', '8');
         $this->Cell(4, 5);
-        $this->Cell(45, 5,  isset($technical_details->ssid) ? $technical_details->ssid : '', 1, 0, 'C');
+        $this->Cell(45, 5,  isset($technical_details->access_point) ? $technical_details->access_point : '', 1, 0, 'C');
         $this->Cell(45, 5,  implode(', ', array_column($contract->ips, 'ip')), 1, 0, 'C');
         $this->Cell(45, 5,  isset($technical_details->radius_username) ? $technical_details->radius_username : '', 1, 0, 'C');
         $this->Cell(45, 5,  isset($technical_details->radius_password) ? $technical_details->radius_password : '', 1, 0, 'C');

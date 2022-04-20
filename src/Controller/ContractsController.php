@@ -388,8 +388,10 @@ class ContractsController extends AppController
 
                     $technical_details = new stdClass();
 
-                    if (!empty($query['ssid'])) {
-                        $technical_details->ssid = $query['ssid'];
+                    if (!empty($query['access_point'])) {
+                        $technical_details->access_point = $query['access_point'];
+                    } elseif ($contract->has('access_point')) {
+                        $technical_details->access_point = $contract->access_point->name;
                     }
                     if (!empty($query['radius_username'])) {
                         $technical_details->radius_username = $query['radius_username'];

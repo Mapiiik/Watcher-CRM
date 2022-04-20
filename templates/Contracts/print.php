@@ -148,7 +148,7 @@
                             'label' => __('The number of the contract to be terminated'),
                             'empty' => true,
                         ]);
-                        echo $this->Form->control('ssid', ['label' => __('SSID'), 'empty' => true]);
+                        echo $this->Form->control('access_point', ['empty' => true]);
                         echo $this->Form->control('radius_username', ['empty' => true]);
                         echo $this->Form->control('radius_password', ['empty' => true]);
                         ?>
