@@ -391,6 +391,7 @@ class ContractsController extends AppController
                     if (!empty($query['access_point'])) {
                         $technical_details->access_point = $query['access_point'];
                     } elseif ($contract->has('access_point')) {
+                        /* @phpstan-ignore-next-line */
                         $technical_details->access_point = $contract->access_point->name;
                     }
                     if (!empty($query['radius_username'])) {
