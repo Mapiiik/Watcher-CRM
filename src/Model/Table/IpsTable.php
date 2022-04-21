@@ -30,6 +30,13 @@ use Cake\Validation\Validator;
 class IpsTable extends Table
 {
     /**
+     * Type of use
+     *
+     * @var array<string>
+     */
+    public $types_of_use = [];
+
+    /**
      * Initialize method
      *
      * @param array $config The configuration for the Table.
@@ -38,6 +45,12 @@ class IpsTable extends Table
     public function initialize(array $config): void
     {
         parent::initialize($config);
+
+        $this->types_of_use = [
+            00 => __('Customer address set via RADIUS'),
+            10 => __('Customer address set manually'),
+            20 => __('Technology address set manually'),
+        ];
 
         $this->setTable('ips');
         $this->setDisplayField('ip');
@@ -95,6 +108,11 @@ class IpsTable extends Table
         $validator
             ->integer('modified_by')
             ->allowEmptyString('modified_by');
+
+        $validator
+            ->integer('type_of_use')
+            ->requirePresence('type_of_use')
+            ->notEmptyString('type_of_use');
 
         return $validator;
     }

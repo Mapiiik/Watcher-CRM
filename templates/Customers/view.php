@@ -625,9 +625,10 @@ use Cake\I18n\Number;
                         <tr>
                             <th><?= __('Contract') ?></th>
                             <th><?= __('Ip') ?></th>
+                            <th><?= __('Type Of Use') ?></th>
                             <th><?= __('Note') ?></th>
-                            <th><?= __('Created') ?></th>
-                            <th><?= __('Created By') ?></th>
+                            <th><?= __('Device') ?></th>
+                            <th><?= __('Range') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($customer->ips as $ip) : ?>
@@ -638,9 +639,34 @@ use Cake\I18n\Number;
                                     ['controller' => 'Contracts', 'action' => 'view', $ip->contract->id]
                                 ) : '' ?></td>
                             <td><?= h($ip->ip) ?></td>
+                            <td><?= h($ip_address_types_of_use[$ip->type_of_use]) ?></td>
                             <td><?= h($ip->note) ?></td>
-                            <td><?= h($ip->created) ?></td>
-                            <td><?= h($ip->created_by) ?></td>
+                            <td>
+                                <?php $device = $ip->routeros_devices->first(); ?>
+                                <?= isset($device['id']) ?
+                                    $this->Html->link(
+                                        $device['system_description'],
+                                        env('WATCHER_NMS_URL') . '/routeros-devices/view/' . $device['id'],
+                                        ['target' => '_blank']
+                                    ) . '<br>' : '' ?>
+                                <?php unset($device); ?>
+                            </td>
+                            <td>
+                                <?php $range = $ip->ip_address_ranges->first(); ?>
+                                <?= isset($range['access_point']['id']) ?
+                                    __('Access Point') . ': ' . $this->Html->link(
+                                        $range['access_point']['name'],
+                                        env('WATCHER_NMS_URL') . '/access-points/view/' . $range['access_point']['id'],
+                                        ['target' => '_blank']
+                                    ) . '<br>' : '' ?>
+                                <?= isset($range['id']) ?
+                                    __('Range') . ': ' . $this->Html->link(
+                                        $range['name'],
+                                        env('WATCHER_NMS_URL') . '/ip-address-ranges/view/' . $range['id'],
+                                        ['target' => '_blank']
+                                    ) . '<br>' : '' ?>
+                                <?php unset($range); ?>
+                            </td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),

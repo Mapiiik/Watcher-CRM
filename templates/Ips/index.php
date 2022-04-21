@@ -15,6 +15,7 @@
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('contract_id') ?></th>
                     <th><?= $this->Paginator->sort('ip') ?></th>
+                    <th><?= $this->Paginator->sort('type_of_use') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -35,6 +36,7 @@
                         ) : '' ?>
                     </td>
                     <td><?= h($ip->ip) ?></td>
+                    <td><?= h($types_of_use[$ip->type_of_use]) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $ip->id]) ?>
                         <?= $this->AuthLink->link(

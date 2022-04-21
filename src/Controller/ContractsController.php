@@ -72,7 +72,9 @@ class ContractsController extends AppController
             ],
         ]);
 
-        $this->set(compact('contract'));
+        $ip_address_types_of_use = $this->Contracts->Ips->types_of_use;
+
+        $this->set(compact('contract', 'ip_address_types_of_use'));
     }
 
     /**

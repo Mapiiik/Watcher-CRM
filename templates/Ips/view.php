@@ -41,6 +41,37 @@
                     <td><?= h($ip->ip) ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('Type Of Use') ?></th>
+                    <td><?= h($types_of_use[$ip->type_of_use]) ?></td>
+                </tr>
+                <tr><?php $device = $ip->routeros_devices->first(); ?>
+
+                    <th><?= __('Device') ?></th>
+                    <td><?= isset($device['id']) ?
+                            $this->Html->link(
+                                $device['system_description'],
+                                env('WATCHER_NMS_URL') . '/routeros-devices/view/' . $device['id'],
+                                ['target' => '_blank']
+                            ) . '<br>' : '' ?></td><?php unset($device); ?>
+
+                </tr>
+                <tr>
+                    <?php $range = $ip->ip_address_ranges->first(); ?><th><?= __('Range') ?></th>
+                    <td><?= isset($range['access_point']['id']) ?
+                            __('Access Point') . ': ' . $this->Html->link(
+                                $range['access_point']['name'],
+                                env('WATCHER_NMS_URL') . '/access-points/view/' . $range['access_point']['id'],
+                                ['target' => '_blank']
+                            ) . '<br />' : '' ?>
+                        <?= isset($range['id']) ?
+                            __('Range') . ': ' . $this->Html->link(
+                                $range['name'],
+                                env('WATCHER_NMS_URL') . '/ip-address-ranges/view/' . $range['id'],
+                                ['target' => '_blank']
+                            ) . '<br />' : '' ?></td><?php unset($range); ?>
+
+                </tr>
+                <tr>
                     <th><?= __('Id') ?></th>
                     <td><?= $this->Number->format($ip->id) ?></td>
                 </tr>

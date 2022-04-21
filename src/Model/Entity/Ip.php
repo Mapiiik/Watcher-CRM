@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\ApiClient;
+use Cake\Collection\CollectionInterface;
 use Cake\I18n\FrozenDate;
 use Cake\ORM\Entity;
 
@@ -18,10 +20,13 @@ use Cake\ORM\Entity;
  * @property int|null $created_by
  * @property \Cake\I18n\FrozenTime|null $modified
  * @property int|null $modified_by
+ * @property int $type_of_use
  * @property string $style
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Contract $contract
+ * @property \Cake\Collection\CollectionInterface|null $routeros_devices
+ * @property \Cake\Collection\CollectionInterface|null $ip_address_ranges
  */
 class Ip extends Entity
 {
@@ -43,6 +48,7 @@ class Ip extends Entity
         'created_by' => true,
         'modified' => true,
         'modified_by' => true,
+        'type_of_use' => true,
         'customer' => true,
         'contract' => true,
     ];
@@ -62,5 +68,37 @@ class Ip extends Entity
         }
 
         return $style;
+    }
+
+    /**
+     * getter for RouterOS devices (try to load via ApiClient)
+     *
+     * @return \Cake\Collection\CollectionInterface|null
+     */
+    protected function _getRouterosDevices(): ?CollectionInterface
+    {
+        $routerosDevices = ApiClient::getRouterosDevicesForIp($this->ip);
+
+        if ($routerosDevices) {
+            return $routerosDevices;
+        }
+
+        return null;
+    }
+
+    /**
+     * getter for IP address ranges (try to load via ApiClient)
+     *
+     * @return \Cake\Collection\CollectionInterface|null
+     */
+    protected function _getIpAddressRanges(): ?CollectionInterface
+    {
+        $ipAddressRanges = ApiClient::getIpAddressRangesForIp($this->ip);
+
+        if ($ipAddressRanges) {
+            return $ipAddressRanges;
+        }
+
+        return null;
     }
 }

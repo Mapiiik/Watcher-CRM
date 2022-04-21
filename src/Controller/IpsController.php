@@ -41,7 +41,9 @@ class IpsController extends AppController
         ];
         $ips = $this->paginate($this->Ips);
 
-        $this->set(compact('ips'));
+        $types_of_use = $this->Ips->types_of_use;
+
+        $this->set(compact('ips', 'types_of_use'));
     }
 
     /**
@@ -57,7 +59,9 @@ class IpsController extends AppController
             'contain' => ['Customers', 'Contracts'],
         ]);
 
-        $this->set(compact('ip'));
+        $types_of_use = $this->Ips->types_of_use;
+
+        $this->set(compact('ip', 'types_of_use'));
     }
 
     /**
@@ -109,7 +113,9 @@ class IpsController extends AppController
             $contracts->where(['Contracts.id' => $contract_id]);
         }
 
-        $this->set(compact('ip', 'customers', 'contracts'));
+        $types_of_use = $this->Ips->types_of_use;
+
+        $this->set(compact('ip', 'customers', 'contracts', 'types_of_use'));
     }
 
     /**
@@ -158,7 +164,9 @@ class IpsController extends AppController
             $contracts->where(['Contracts.id' => $contract_id]);
         }
 
-        $this->set(compact('ip', 'customers', 'contracts'));
+        $types_of_use = $this->Ips->types_of_use;
+
+        $this->set(compact('ip', 'customers', 'contracts', 'types_of_use'));
     }
 
     /**
