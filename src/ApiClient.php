@@ -143,7 +143,7 @@ class ApiClient
     public static function getAccessPointsForIp(string $ip): ?CollectionInterface
     {
         return Cache::remember(
-            'access_points_for_ip_' . $ip,
+            'access_points_for_ip_' . strtr($ip, ['.' => '-', ':' => '-', '/' => '-mask-']),
             function () use ($ip) {
                 return ApiClient::searchAccessPoints(['ip_address' => $ip]);
             },
@@ -267,7 +267,7 @@ class ApiClient
     public static function getIpAddressRangesForIp(string $ip): ?CollectionInterface
     {
         return Cache::remember(
-            'ip_address_ranges_for_ip_' . $ip,
+            'ip_address_ranges_for_ip_' . strtr($ip, ['.' => '-', ':' => '-', '/' => '-mask-']),
             function () use ($ip) {
                 return ApiClient::searchIpAddressRanges(['ip_address' => $ip]);
             },
@@ -309,7 +309,7 @@ class ApiClient
     public static function getRouterosDevicesForIp(string $ip): ?CollectionInterface
     {
         return Cache::remember(
-            'routeros_devices_for_ip_' . $ip,
+            'routeros_devices_for_ip_' . strtr($ip, ['.' => '-', ':' => '-', '/' => '-mask-']),
             function () use ($ip) {
                 return ApiClient::searchRouterosDevices(['ip_address' => $ip]);
             },
