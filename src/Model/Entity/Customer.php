@@ -36,6 +36,10 @@ use Cake\ORM\Entity;
  * @property bool|null $agree_mailing_outages
  * @property bool|null $agree_mailing_commercial
  * @property bool|null $agree_mailing_billing
+ * @property string $email
+ * @property string $phone
+ * @property string $number
+
  *
  * @property \App\Model\Entity\Tax $tax
  * @property \App\Model\Entity\Address[] $addresses

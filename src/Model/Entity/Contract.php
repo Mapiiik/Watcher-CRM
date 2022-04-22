@@ -30,6 +30,9 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenDate|null $valid_until
  * @property \Cake\I18n\FrozenDate|null $conclusion_date
  * @property int|null $number_of_amendments
+ * @property int|null $minimum_duration
+ * @property int|null $activation_fee_sum
+ * @property int|null $activation_fee_with_obligation_sum
  * @property string|null $number_of_the_contract_to_be_terminated
  * @property string|null $access_point_id
  * @property string $style
@@ -37,6 +40,9 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Address $installation_address
+ * @property \App\Model\Entity\Address $billing_address
+ * @property \App\Model\Entity\Address $delivery_address
+ * @property \App\Model\Entity\Address $permanent_address
  * @property \App\Model\Entity\ServiceType $service_type
  * @property \App\Model\Entity\Customer $installation_technician
  * @property \App\Model\Entity\Brokerage $brokerage
