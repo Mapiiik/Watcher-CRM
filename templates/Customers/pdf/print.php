@@ -1,53 +1,37 @@
 <?php
+declare(strict_types=1);
+
+namespace App\View;
+
+use App\Model\Entity\Customer;
+use Cake\I18n\FrozenDate;
+use TCPDF;
+
 //set image path for TCPDF
 define('K_PATH_IMAGES', WWW_ROOT . 'legacy' . DS . 'images' . DS);
 
 // define date format
-\Cake\I18n\FrozenDate::setToStringFormat('dd.MM.yyyy');
+FrozenDate::setToStringFormat('dd.MM.yyyy');
 
 class CustomerPDF extends TCPDF
 {
-    function contractDurationBeforeX ($duration)
-    {
-        if ($duration <= 0) {
-            die(WRONG_DURATION);
-        } else {
-            if ($duration < 2) {
-                return $duration . ' měsíce';
-            }
-            return $duration . ' měsíců';
-        }
-    }
-
-    function contractDurationX ($duration)
-    {
-        if ($duration <= 0) {
-            return 'na dobu neurčitou';
-        } else {
-            if ($duration < 2) {
-                return 'na dobu neurčitou s minimální dobou plnění v trvání ' . $duration . ' měsíce';
-            }
-            return 'na dobu neurčitou s minimální dobou plnění v trvání ' . $duration . ' měsíců';
-        }
-    }
-
-    function GenerateGDPRAgreement($customer, $type = 'gdpr-new', $signed, $address_types = null)
+    public function generateGDPRAgreement(Customer $customer, string $type = 'gdpr-new', bool $signed = false, ?array $address_types = null)
     {
         $this->setPrintHeader(false);
         $this->setPrintFooter(false);
 
         $this->AddPage();
 
-        $this->Image(K_PATH_IMAGES . 'logo-contract.png',10, 5, 28);
+        $this->Image(K_PATH_IMAGES . 'logo-contract.png', 10, 5, 28);
 
         $this->SetFont('DejaVuSerif', 'BI', '8');
 
-        $this->SetFont('DejaVuSerif','B', '18');
+        $this->SetFont('DejaVuSerif', 'B', '18');
         $this->Cell(187, 6, 'SOUHLAS', '', '', 'C');
         $this->Ln();
 
         $this->SetFont('DejaVuSerif', 'B', '12');
-        $this->Cell(187, 2, 'se zpracováním osobních údajů','','','C');
+        $this->Cell(187, 2, 'se zpracováním osobních údajů', '', '', 'C');
         $this->Ln(3);
 
         $this->Ln(4);
@@ -61,28 +45,28 @@ class CustomerPDF extends TCPDF
 
         $this->SetFont('DejaVuSerif', 'B', '8');
         switch ($type) {
-        case 'gdpr-new':
-            $this->Cell(62, 4, 'nový', '', '', 'C');
-            $this->Cell(62, 4, $customer->number, '', '', 'C');
-            $this->Cell(62, 4, 'na dobu neurčitou', '', '', 'C');
+            case 'gdpr-new':
+                $this->Cell(62, 4, 'nový', '', '', 'C');
+                $this->Cell(62, 4, $customer->number, '', '', 'C');
+                $this->Cell(62, 4, 'na dobu neurčitou', '', '', 'C');
                 break;
-        case 'gdpr-change':
-            $this->Cell(62, 4, 'změna', '', '', 'C');
-            $this->Cell(62, 4, $customer->number, '', '', 'C');
-            $this->Cell(62, 4, 'na dobu neurčitou', '', '', 'C');
-            break;
-        };
+            case 'gdpr-change':
+                $this->Cell(62, 4, 'změna', '', '', 'C');
+                $this->Cell(62, 4, $customer->number, '', '', 'C');
+                $this->Cell(62, 4, 'na dobu neurčitou', '', '', 'C');
+                break;
+        }
         $this->Ln();
 
         $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
         $this->Ln(3);
 
         $this->SetFont('DejaVuSerif', 'B', '9');
-        $this->Cell(187,2,iconv('UTF-8', 'UTF-8', 'mezi'),'','','C');
+        $this->Cell(187, 2, iconv('UTF-8', 'UTF-8', 'mezi'), '', '', 'C');
         $this->Ln();
 
         $this->SetFont('DejaVuSerif', 'B', '9');
-        $this->Cell(45,4,iconv('UTF-8', 'UTF-8', 'Správcem:'));
+        $this->Cell(45, 4, iconv('UTF-8', 'UTF-8', 'Správcem:'));
         $this->Ln();
 
         $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
@@ -123,7 +107,7 @@ class CustomerPDF extends TCPDF
         $this->Cell(30, 4, '');
         $this->MultiCell(157, 4, 'zapsaným v obchodním rejstříku vedeném u Krajského soudu v Hradci Králové, oddíl C, vložka 22450.', '', 'L');
 
-        $this->Line($this->GetX() + 4,$this->GetY(), $this->GetX() + 187, $this->GetY());
+        $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
         $this->Ln(3);
 
         $this->SetFont('DejaVuSerif', 'B', '9');
@@ -132,21 +116,16 @@ class CustomerPDF extends TCPDF
         $this->Cell(30, 4, 'Uživatelem:');
 
         $this->SetFont('DejaVuSerif', '', '8');
-        if (is_null($customer->ic))
-        {
+        if (is_null($customer->ic)) {
             $this->Cell(60, 4, 'fyzická osoba nepodnikající');
-        }
-        else if (is_null($customer->billing_address->company))
-        {
+        } elseif (is_null($customer->billing_address->company)) {
             $this->Cell(60, 4, 'fyzická osoba podnikající');
-        }
-        else
-        {
+        } else {
             $this->Cell(60, 4, 'právnická osoba');
         }
 
         $this->Ln();
-        
+
         $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
 
         $this->SetFont('DejaVuSerif', 'B', '8');
@@ -158,7 +137,7 @@ class CustomerPDF extends TCPDF
         $this->Cell(30, 4, 'jméno:', '', '', 'R');
         $this->SetFont('DejaVuSerif', 'B', '8');
         $this->Cell(60, 4, $customer->billing_address->full_name);
-        
+
         $this->SetFont('DejaVuSerif', '', '8');
         $this->Cell(30, 4, 'firma:', '', '', 'R');
         $this->SetFont('DejaVuSerif', 'B', '8');
@@ -168,7 +147,7 @@ class CustomerPDF extends TCPDF
         $this->Cell(30, 4, 'datum narození:', '', '', 'R');
         $this->SetFont('DejaVuSerif', 'B', '8');
         $this->Cell(60, 4, $customer->date_of_birth);
-        
+
         $this->SetFont('DejaVuSerif', '', '8');
         $this->Cell(30, 4, 'IČ:', '', '', 'R');
         $this->SetFont('DejaVuSerif', 'B', '8');
@@ -179,7 +158,7 @@ class CustomerPDF extends TCPDF
         $this->Cell(30, 4, 'číslo OP:', '', '', 'R');
         $this->SetFont('DejaVuSerif', 'B', '8');
         $this->Cell(60, 4, $customer->identity_card_number);
-        
+
         $this->SetFont('DejaVuSerif', '', '8');
         $this->Cell(30, 4, 'DIČ:', '', '', 'R');
         $this->SetFont('DejaVuSerif', 'B', '8');
@@ -196,14 +175,13 @@ class CustomerPDF extends TCPDF
         $this->SetFont('DejaVuSerif', 'B', '8');
         $this->MultiCell(160, 4, $customer->email, '', 'L');
 
-        foreach ($customer->addresses as $address)
-        {
+        foreach ($customer->addresses as $address) {
             $this->SetFont('DejaVuSerif', 'B', '8');
-            $this->Cell(30, 4, $address_types[$address->type] . ': ', '' , '' , 'L');
+            $this->Cell(30, 4, $address_types[$address->type] . ': ', '', '', 'L');
             $this->Ln();
             $this->SetFont('DejaVuSerif', 'B', '8');
             $this->Cell(30, 4);
-            $this->MultiCell(160, 4, $address->full_address, '', 'L');                    
+            $this->MultiCell(160, 4, $address->full_address, '', 'L');
         }
 
         $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
@@ -243,15 +221,12 @@ Jméno, příjmení, emailová adresa, telefonní číslo, adresa trvalého poby
 
         // SIGNS
         $this->SetFont('DejaVuSerif', '', '8');
-        if ($this->GetY() > 240) $this->AddPage();
+        if ($this->GetY() > 240) {
+            $this->AddPage();
+        }
         $this->Ln();
         $this->Ln();
-/*        
-        if ($signed) 
-            $this->Cell(90, 4, 'Datum podpisu: ' . new \Cake\I18n\FrozenDate(), '', '', 'C');
-        else
-            $this->Cell(90, 4, 'Datum podpisu: ____________________', '', '', 'C');
-*/
+
         $this->Cell(90, 4);
         $this->Cell(90, 4, 'Datum podpisu: ____________________', '', '', 'C');
 
@@ -264,8 +239,6 @@ Jméno, příjmení, emailová adresa, telefonní číslo, adresa trvalého poby
         $this->Cell(90, 4, 'Uživatel', '', '', 'C');
         $this->Ln();
 
-        if ($signed) $this->Image(K_PATH_IMAGES . 'signature.png', 38, $this->GetY() - 19, 35);
-
         $this->Close();
     }
 }
@@ -277,14 +250,13 @@ if (isset($query['signed']) && $query['signed'] == 1) {
 }
 
 switch ($type) {
-case 'gdpr-new':
-case 'gdpr-change':
-    //Generate PDF
-    $pdf = new CustomerPDF('P', 'mm', 'A4');
-    $pdf->GenerateGDPRAgreement($customer, $type, $signed, $address_types);
-    $pdf->Output($customer->number . '_' . $type . '_' . date('Y-m-d') . '.pdf', 'I');
-    break;
-default:
-    exit;
+    case 'gdpr-new':
+    case 'gdpr-change':
+        //Generate PDF
+        $pdf = new CustomerPDF('P', 'mm', 'A4');
+        $pdf->generateGDPRAgreement($customer, $type, $signed, $address_types);
+        $pdf->Output($customer->number . '_' . $type . '_' . date('Y-m-d') . '.pdf', 'I');
+        break;
+    default:
+        exit;
 }
-?>
