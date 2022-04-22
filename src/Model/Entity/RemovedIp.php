@@ -50,7 +50,7 @@ class RemovedIp extends Entity
      */
     protected function _getStyle(): string
     {
-        $style = '';
+        $style = 'background-color: #bbbbbb;';
         $now = new FrozenDate();
 
         if (isset($this->contract->valid_until) && $this->contract->valid_until < $now) {
