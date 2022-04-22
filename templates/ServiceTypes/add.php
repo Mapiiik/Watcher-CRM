@@ -25,6 +25,7 @@
                     echo $this->Form->control('separate_invoice');
                     echo $this->Form->control('invoice_with_items');
                     echo $this->Form->control('installation_address_required');
+                    echo $this->Form->control('access_point_required');
                     echo $this->Form->control('normally_with_borrowed_equipment');
                 ?>
             </fieldset>

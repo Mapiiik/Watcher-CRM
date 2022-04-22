@@ -21,6 +21,7 @@ use Cake\ORM\Entity;
  * @property bool $invoice_with_items
  * @property string|null $invoice_text
  * @property bool $installation_address_required
+ * @property bool $access_point_required
  * @property bool $normally_with_borrowed_equipment
  *
  * @property \App\Model\Entity\Contract[] $contracts
@@ -51,6 +52,7 @@ class ServiceType extends Entity
         'invoice_with_items' => true,
         'invoice_text' => true,
         'installation_address_required' => true,
+        'access_point_required' => true,
         'normally_with_borrowed_equipment' => true,
         'contracts' => true,
         'queues' => true,

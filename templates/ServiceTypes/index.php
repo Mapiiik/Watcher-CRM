@@ -24,6 +24,7 @@
                     <th><?= $this->Paginator->sort('separate_invoice') ?></th>
                     <th><?= $this->Paginator->sort('invoice_with_items') ?></th>
                     <th><?= $this->Paginator->sort('installation_address_required') ?></th>
+                    <th><?= $this->Paginator->sort('access_point_required') ?></th>
                     <th><?= $this->Paginator->sort('normally_with_borrowed_equipment') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
@@ -40,6 +41,7 @@
                     <td><?= $serviceType->separate_invoice ? __('Yes') : __('No'); ?></td>
                     <td><?= $serviceType->invoice_with_items ? __('Yes') : __('No'); ?></td>
                     <td><?= $serviceType->installation_address_required ? __('Yes') : __('No'); ?></td>
+                    <td><?= $serviceType->access_point_required ? __('Yes') : __('No'); ?></td>
                     <td><?= $serviceType->normally_with_borrowed_equipment ? __('Yes') : __('No'); ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $serviceType->id]) ?>

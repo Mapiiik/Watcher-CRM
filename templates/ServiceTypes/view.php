@@ -62,6 +62,10 @@
                     <td><?= $serviceType->installation_address_required ? __('Yes') : __('No'); ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('Access Point Required') ?></th>
+                    <td><?= $serviceType->access_point_required ? __('Yes') : __('No'); ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Normally With Borrowed Equipment') ?></th>
                     <td><?= $serviceType->normally_with_borrowed_equipment ? __('Yes') : __('No'); ?></td>
                 </tr>

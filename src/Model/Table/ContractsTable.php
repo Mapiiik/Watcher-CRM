@@ -223,6 +223,24 @@ class ContractsTable extends Table
             ]
         );
 
+        $rules->add(
+            function ($entity, $options) {
+                // load service type
+                $service_type = $this->ServiceTypes->get($entity->service_type_id);
+                // check if access point required for this service type
+                if ($service_type->access_point_required) {
+                    return !empty($entity->access_point_id);
+                } else {
+                    return true;
+                }
+            },
+            'isRequiredAccessPointFilled',
+            [
+                'errorField' => 'access_point_id',
+                'message' => __('The specified service type requires the access point to be set.'),
+            ]
+        );
+
         return $rules;
     }
 }
