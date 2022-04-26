@@ -26,6 +26,7 @@ use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Http\MiddlewareQueue;
 use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
+use Cake\I18n\Number;
 use Cake\ORM\Locator\TableLocator;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
@@ -83,6 +84,11 @@ class Application extends BaseApplication
         }
         if (!empty(env('APP_DATE_FORMAT'))) {
             FrozenDate::setToStringFormat(env('APP_DATE_FORMAT'));
+        }
+
+        // Set default currency if specified in environment
+        if (!empty(env('APP_DEFAULT_CURRENCY'))) {
+            Number::setDefaultCurrency(env('APP_DEFAULT_CURRENCY'));
         }
     }
 
