@@ -191,7 +191,7 @@ class CustomersController extends AppController
                                 }
 
                                 return [
-                                    'name' => $address->address,
+                                    'name' => is_numeric($key) ? $address->address : $key,
                                     'gps_y' => $address->gps_y,
                                     'gps_x' => $address->gps_x,
                                     'note' => is_numeric($key) ? 'RUIAN: ' . $key : $key,
