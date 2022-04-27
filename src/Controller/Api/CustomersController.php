@@ -138,34 +138,55 @@ class CustomersController extends AppController
             ->contain('InstallationAddresses')
             ->contain('Customers')
             ->contain('Ips')
-            ->where([
-                'InstallationAddresses.gps_x IS NOT NULL',
-                'InstallationAddresses.gps_y IS NOT NULL',
-            ])
             ->formatResults(
                 function (CollectionInterface $customerPoints) {
                     return $customerPoints
-                        ->groupBy('installation_address.ruian_gid')
+                        ->groupBy(function ($contract) {
+                            if (isset($contract->installation_address->ruian_gid)) {
+                                // return RUIAN GID as key if set
+                                return $contract->installation_address->ruian_gid;
+                            } elseif (
+                                isset($contract->installation_address->gps_x)
+                                && isset($contract->installation_address->gps_y)
+                            ) {
+                                // return GPS coordinates as key if set
+                                return 'GPS: '
+                                    . $contract->installation_address->gps_y
+                                    . 'N, '
+                                    . $contract->installation_address->gps_x
+                                    . 'E';
+                            } else {
+                                // return 'unknown location' as key for others
+                                return 'unknown location';
+                            }
+                        })
                         ->map(
-                            function ($customerConnections, $ruian_gid) {
-                                // Try to load RUIAN record
-                                try {
-                                    $address = $this->fetchTable('Ruian.Addresses')->get($ruian_gid, [
-                                        'fields' => [
-                                            'ulice_nazev',
-                                            'typ_so',
-                                            'cislo_domovni',
-                                            'psc',
-                                            'obec_nazev',
-                                            'cast_obce_nazev',
-                                            'gps_y' => 'ST_Y(geometry)',
-                                            'gps_x' => 'ST_X(geometry)',
-                                        ],
-                                    ]);
-                                } catch (RecordNotFoundException $recordNotFoundError) {
+                            function ($contracts, $key) {
+                                if (is_numeric($key)) {
+                                    // Try to load RUIAN record if RUIAN GID is set
+                                    try {
+                                        $address = $this->fetchTable('Ruian.Addresses')->get($key, [
+                                            'fields' => [
+                                                'ulice_nazev',
+                                                'typ_so',
+                                                'cislo_domovni',
+                                                'psc',
+                                                'obec_nazev',
+                                                'cast_obce_nazev',
+                                                'gps_y' => 'ST_Y(geometry)',
+                                                'gps_x' => 'ST_X(geometry)',
+                                            ],
+                                        ]);
+                                    } catch (RecordNotFoundException $recordNotFoundError) {
+                                        $address = new Address([
+                                            'gps_y' => $contracts[0]->installation_address->gps_y ?? null,
+                                            'gps_x' => $contracts[0]->installation_address->gps_y ?? null,
+                                        ]);
+                                    }
+                                } else {
                                     $address = new Address([
-                                        'gps_y' => null,
-                                        'gps_x' => null,
+                                        'gps_y' => $contracts[0]->installation_address->gps_y ?? null,
+                                        'gps_x' => $contracts[0]->installation_address->gps_x ?? null,
                                     ]);
                                 }
 
@@ -173,13 +194,15 @@ class CustomersController extends AppController
                                     'name' => $address->address,
                                     'gps_y' => $address->gps_y,
                                     'gps_x' => $address->gps_x,
-                                    'note' => 'RUIAN: ' . $ruian_gid,
-                                    'CustomerConnections' => (new Collection($customerConnections))->map(
+                                    'note' => is_numeric($key) ? 'RUIAN: ' . $key : $key,
+                                    'CustomerConnections' => (new Collection($contracts))->map(
                                         function ($contract) {
                                             return [
-                                                'name' => $contract->installation_address->name,
+                                                'name' => $contract->installation_address->name ??
+                                                    $contract->customer->name,
                                                 'customer_number' => $contract->customer->number,
                                                 'contract_number' => $contract->number,
+                                                'access_point_id' => $contract->access_point_id,
                                                 'note' => $contract->note,
                                                 'CustomerConnectionIps' => (new Collection($contract->ips))->map(
                                                     function ($ip) {
