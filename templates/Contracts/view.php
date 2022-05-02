@@ -366,13 +366,13 @@ use Cake\I18n\Number;
                             <td>
                                 <?php $range = $ip->ip_address_ranges->first(); ?>
                                 <?= isset($range['access_point']['id']) ?
-                                    __('Access Point'). ': ' . $this->Html->link(
+                                    __('Access Point') . ': ' . $this->Html->link(
                                         $range['access_point']['name'],
                                         env('WATCHER_NMS_URL') . '/access-points/view/' . $range['access_point']['id'],
                                         ['target' => '_blank']
                                     ) . '<br>' : '' ?>
                                 <?= isset($range['id']) ?
-                                    __('Range'). ': ' . $this->Html->link(
+                                    __('Range') . ': ' . $this->Html->link(
                                         $range['name'],
                                         env('WATCHER_NMS_URL') . '/ip-address-ranges/view/' . $range['id'],
                                         ['target' => '_blank']
@@ -403,6 +403,49 @@ use Cake\I18n\Number;
             </div>
             <div class="related">
                 <?= $this->AuthLink->link(
+                    __('New IP Network'),
+                    ['controller' => 'IpNetworks', 'action' => 'add'],
+                    ['class' => 'button button-small float-right win-link']
+                ) ?>
+            <h4><?= __('IP Networks') ?></h4>
+                <?php if (!empty($contract->ip_networks)) : ?>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Ip Network') ?></th>
+                            <th><?= __('Type Of Use') ?></th>
+                            <th><?= __('Note') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                        <?php foreach ($contract->ip_networks as $ipNetwork) : ?>
+                        <tr style="<?= $ipNetwork->style ?>">
+                            <td><?= h($ipNetwork->ip_network) ?></td>
+                            <td><?= h($ip_network_types_of_use[$ipNetwork->type_of_use]) ?></td>
+                            <td><?= h($ipNetwork->note) ?></td>
+                            <td class="actions">
+                                <?= $this->AuthLink->link(
+                                    __('View'),
+                                    ['controller' => 'IpNetworks', 'action' => 'view', $ipNetwork->id]
+                                ) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Edit'),
+                                    ['controller' => 'IpNetworks', 'action' => 'edit', $ipNetwork->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->AuthLink->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'IpNetworks', 'action' => 'delete', $ipNetwork->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $ipNetwork->ip_network)]
+                                ) ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+                <?php endif; ?>
+            </div>
+            <div class="related">
+                <?= $this->AuthLink->link(
                     __('New Removed Ip'),
                     ['controller' => 'RemovedIps', 'action' => 'add'],
                     ['class' => 'button button-small float-right win-link']
@@ -413,6 +456,7 @@ use Cake\I18n\Number;
                     <table>
                         <tr>
                             <th><?= __('Ip') ?></th>
+                            <th><?= __('Type Of Use') ?></th>
                             <th><?= __('Note') ?></th>
                             <th><?= __('Removed') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
@@ -420,6 +464,7 @@ use Cake\I18n\Number;
                         <?php foreach ($contract->removed_ips as $removedIp) : ?>
                         <tr style="<?= $removedIp->style ?>">
                             <td><?= h($removedIp->ip) ?></td>
+                            <td><?= h($ip_address_types_of_use[$removedIp->type_of_use]) ?></td>
                             <td><?= h($removedIp->note) ?></td>
                             <td><?= h($removedIp->removed) ?></td>
                             <td class="actions">
@@ -436,6 +481,51 @@ use Cake\I18n\Number;
                                     __('Delete'),
                                     ['controller' => 'RemovedIps', 'action' => 'delete', $removedIp->id],
                                     ['confirm' => __('Are you sure you want to delete # {0}?', $removedIp->id)]
+                                ) ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+                <?php endif; ?>
+            </div>
+            <div class="related">
+                <?= $this->AuthLink->link(
+                    __('New Removed IP Network'),
+                    ['controller' => 'RemovedIpNetworks', 'action' => 'add'],
+                    ['class' => 'button button-small float-right win-link']
+                ) ?>
+                <h4><?= __('Removed IP Networks') ?></h4>
+                <?php if (!empty($contract->removed_ip_networks)) : ?>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Ip') ?></th>
+                            <th><?= __('Type Of Use') ?></th>
+                            <th><?= __('Note') ?></th>
+                            <th><?= __('Removed') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                        <?php foreach ($contract->removed_ip_networks as $removedIpNetork) : ?>
+                        <tr style="<?= $removedIpNetork->style ?>">
+                            <td><?= h($removedIpNetork->ip_network) ?></td>
+                            <td><?= h($ip_network_types_of_use[$removedIpNetork->type_of_use]) ?></td>
+                            <td><?= h($removedIpNetork->note) ?></td>
+                            <td><?= h($removedIpNetork->removed) ?></td>
+                            <td class="actions">
+                                <?= $this->AuthLink->link(
+                                    __('View'),
+                                    ['controller' => 'RemovedIpNetworks', 'action' => 'view', $removedIpNetork->id]
+                                ) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Edit'),
+                                    ['controller' => 'RemovedIpNetworks', 'action' => 'edit', $removedIpNetork->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->AuthLink->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'RemovedIpNetworks', 'action' => 'delete', $removedIpNetork->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $removedIpNetork->id)]
                                 ) ?>
                             </td>
                         </tr>

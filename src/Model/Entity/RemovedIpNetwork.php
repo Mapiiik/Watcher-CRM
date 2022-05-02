@@ -7,22 +7,22 @@ use Cake\I18n\FrozenDate;
 use Cake\ORM\Entity;
 
 /**
- * RemovedIp Entity
+ * RemovedIpNetwork Entity
  *
  * @property int $id
- * @property int $removed_by
- * @property \Cake\I18n\FrozenTime $removed
- * @property string $ip
  * @property int $customer_id
- * @property string|null $note
- * @property int|null $contract_id
+ * @property int $contract_id
+ * @property string $ip_network
  * @property int $type_of_use
+ * @property string|null $note
+ * @property \Cake\I18n\FrozenTime $removed
+ * @property int $removed_by
  * @property string $style
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Contract $contract
  */
-class RemovedIp extends Entity
+class RemovedIpNetwork extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -31,16 +31,16 @@ class RemovedIp extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array<bool>
+     * @var array<string, bool>
      */
     protected $_accessible = [
-        'removed_by' => true,
-        'removed' => true,
-        'ip' => true,
-        'type_of_use' => true,
         'customer_id' => true,
-        'note' => true,
         'contract_id' => true,
+        'ip_network' => true,
+        'type_of_use' => true,
+        'note' => true,
+        'removed' => true,
+        'removed_by' => true,
         'customer' => true,
         'contract' => true,
     ];

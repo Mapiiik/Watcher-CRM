@@ -29,6 +29,13 @@ use Cake\Validation\Validator;
 class RemovedIpsTable extends Table
 {
     /**
+     * Type of use
+     *
+     * @var array<string>
+     */
+    public $types_of_use = [];
+
+    /**
      * Initialize method
      *
      * @param array $config The configuration for the Table.
@@ -37,6 +44,12 @@ class RemovedIpsTable extends Table
     public function initialize(array $config): void
     {
         parent::initialize($config);
+
+        $this->types_of_use = [
+            00 => __('Customer address set via RADIUS'),
+            10 => __('Customer address set manually'),
+            20 => __('Technology address set manually'),
+        ];
 
         $this->setTable('removed_ips');
         $this->setDisplayField('ip');
@@ -91,6 +104,11 @@ class RemovedIpsTable extends Table
         $validator
             ->scalar('note')
             ->allowEmptyString('note');
+
+        $validator
+            ->integer('type_of_use')
+            ->requirePresence('type_of_use')
+            ->notEmptyString('type_of_use');
 
         return $validator;
     }

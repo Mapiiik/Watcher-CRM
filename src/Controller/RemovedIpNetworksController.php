@@ -3,15 +3,13 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Cake\I18n\FrozenTime;
-
 /**
- * RemovedIps Controller
+ * RemovedIpNetworks Controller
  *
- * @property \App\Model\Table\RemovedIpsTable $RemovedIps
- * @method \App\Model\Entity\RemovedIp[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @property \App\Model\Table\RemovedIpNetworksTable $RemovedIpNetworks
+ * @method \App\Model\Entity\RemovedIpNetwork[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class RemovedIpsController extends AppController
+class RemovedIpNetworksController extends AppController
 {
     /**
      * Index method
@@ -28,39 +26,39 @@ class RemovedIpsController extends AppController
 
         $conditions = [];
         if (isset($customer_id)) {
-            $conditions += ['RemovedIps.customer_id' => $customer_id];
+            $conditions += ['RemovedIpNetworks.customer_id' => $customer_id];
         }
         if (isset($contract_id)) {
-            $conditions += ['RemovedIps.contract_id' => $contract_id];
+            $conditions += ['RemovedIpNetworks.contract_id' => $contract_id];
         }
 
         $this->paginate = [
             'contain' => ['Customers', 'Contracts'],
             'conditions' => $conditions,
         ];
-        $removedIps = $this->paginate($this->RemovedIps);
+        $removedIpNetworks = $this->paginate($this->RemovedIpNetworks);
 
-        $types_of_use = $this->RemovedIps->types_of_use;
+        $types_of_use = $this->RemovedIpNetworks->types_of_use;
 
-        $this->set(compact('removedIps', 'types_of_use'));
+        $this->set(compact('removedIpNetworks', 'types_of_use'));
     }
 
     /**
      * View method
      *
-     * @param string|null $id Removed Ip id.
+     * @param string|null $id Removed Ip Network id.
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
     {
-        $removedIp = $this->RemovedIps->get($id, [
+        $removedIpNetwork = $this->RemovedIpNetworks->get($id, [
             'contain' => ['Customers', 'Contracts'],
         ]);
 
-        $types_of_use = $this->RemovedIps->types_of_use;
+        $types_of_use = $this->RemovedIpNetworks->types_of_use;
 
-        $this->set(compact('removedIp', 'types_of_use'));
+        $this->set(compact('removedIpNetwork', 'types_of_use'));
     }
 
     /**
@@ -76,37 +74,28 @@ class RemovedIpsController extends AppController
         $contract_id = $this->request->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
-        $removedIp = $this->RemovedIps->newEmptyEntity();
+        $removedIpNetwork = $this->RemovedIpNetworks->newEmptyEntity();
 
         if (isset($customer_id)) {
-            $removedIp->customer_id = $customer_id;
+            $removedIpNetwork->customer_id = $customer_id;
         }
         if (isset($contract_id)) {
-            $removedIp->contract_id = $contract_id;
+            $removedIpNetwork->contract_id = $contract_id;
         }
 
         if ($this->request->is('post')) {
-            $removedIp = $this->RemovedIps->patchEntity($removedIp, $this->request->getData());
-
-            // TODO - add who and when deleted this
-            $removedIp->removed = FrozenTime::now();
-            $removedIp->removed_by = $this->request->getSession()->read('Auth.id');
-
-            if ($this->RemovedIps->save($removedIp)) {
-                $this->Flash->success(__('The removed ip has been saved.'));
-
-                if (isset($contract_id)) {
-                    return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                }
+            $removedIpNetwork = $this->RemovedIpNetworks->patchEntity($removedIpNetwork, $this->request->getData());
+            if ($this->RemovedIpNetworks->save($removedIpNetwork)) {
+                $this->Flash->success(__('The removed IP network has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The removed ip could not be saved. Please, try again.'));
+            $this->Flash->error(__('The removed IP network could not be saved. Please, try again.'));
         }
-        $customers = $this->RemovedIps->Customers->find('list', [
+        $customers = $this->RemovedIpNetworks->Customers->find('list', [
             'order' => ['company', 'first_name', 'last_name'],
         ]);
-        $contracts = $this->RemovedIps->Contracts->find('list', [
+        $contracts = $this->RemovedIpNetworks->Contracts->find('list', [
             'order' => 'Contracts.number',
             'contain' => ['ServiceTypes', 'InstallationAddresses'],
         ]);
@@ -119,15 +108,15 @@ class RemovedIpsController extends AppController
             $contracts->where(['Contracts.id' => $contract_id]);
         }
 
-        $types_of_use = $this->RemovedIps->types_of_use;
+        $types_of_use = $this->RemovedIpNetworks->types_of_use;
 
-        $this->set(compact('removedIp', 'customers', 'contracts', 'types_of_use'));
+        $this->set(compact('removedIpNetwork', 'customers', 'contracts', 'types_of_use'));
     }
 
     /**
      * Edit method
      *
-     * @param string|null $id Removed Ip id.
+     * @param string|null $id Removed Ip Network id.
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -139,25 +128,22 @@ class RemovedIpsController extends AppController
         $contract_id = $this->request->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
-        $removedIp = $this->RemovedIps->get($id, [
+        $removedIpNetwork = $this->RemovedIpNetworks->get($id, [
             'contain' => [],
         ]);
-
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $removedIp = $this->RemovedIps->patchEntity($removedIp, $this->request->getData());
-            if ($this->RemovedIps->save($removedIp)) {
-                $this->Flash->success(__('The removed ip has been saved.'));
-
-                if (isset($contract_id)) {
-                    return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                }
+            $removedIpNetwork = $this->RemovedIpNetworks->patchEntity($removedIpNetwork, $this->request->getData());
+            if ($this->RemovedIpNetworks->save($removedIpNetwork)) {
+                $this->Flash->success(__('The removed IP network has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The removed ip could not be saved. Please, try again.'));
+            $this->Flash->error(__('The removed IP network could not be saved. Please, try again.'));
         }
-        $customers = $this->RemovedIps->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
-        $contracts = $this->RemovedIps->Contracts->find('list', [
+        $customers = $this->RemovedIpNetworks->Customers->find('list', [
+            'order' => ['company', 'first_name', 'last_name'],
+        ]);
+        $contracts = $this->RemovedIpNetworks->Contracts->find('list', [
             'order' => 'Contracts.number',
             'contain' => ['ServiceTypes', 'InstallationAddresses'],
         ]);
@@ -170,33 +156,26 @@ class RemovedIpsController extends AppController
             $contracts->where(['Contracts.id' => $contract_id]);
         }
 
-        $types_of_use = $this->RemovedIps->types_of_use;
+        $types_of_use = $this->RemovedIpNetworks->types_of_use;
 
-        $this->set(compact('removedIp', 'customers', 'contracts', 'types_of_use'));
+        $this->set(compact('removedIpNetwork', 'customers', 'contracts', 'types_of_use'));
     }
 
     /**
      * Delete method
      *
-     * @param string|null $id Removed Ip id.
+     * @param string|null $id Removed Ip Network id.
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
-        $contract_id = $this->request->getParam('contract_id');
-
         $this->request->allowMethod(['post', 'delete']);
-        $removedIp = $this->RemovedIps->get($id);
-        if ($this->RemovedIps->delete($removedIp)) {
-            $this->Flash->success(__('The removed ip has been deleted.'));
+        $removedIpNetwork = $this->RemovedIpNetworks->get($id);
+        if ($this->RemovedIpNetworks->delete($removedIpNetwork)) {
+            $this->Flash->success(__('The removed IP network has been deleted.'));
         } else {
-            $this->Flash->error(__('The removed ip could not be deleted. Please, try again.'));
-        }
-
-        if (isset($contract_id)) {
-            return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+            $this->Flash->error(__('The removed IP network could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);

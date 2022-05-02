@@ -19,6 +19,8 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\BorrowedEquipmentsTable&\Cake\ORM\Association\HasMany $BorrowedEquipments
  * @property \App\Model\Table\IpsTable&\Cake\ORM\Association\HasMany $Ips
  * @property \App\Model\Table\RemovedIpsTable&\Cake\ORM\Association\HasMany $RemovedIps
+ * @property \App\Model\Table\IpNetworksTable&\Cake\ORM\Association\HasMany $IpNetworks
+ * @property \App\Model\Table\RemovedIpNetworksTable&\Cake\ORM\Association\HasMany $RemovedIpNetworks
  * @property \App\Model\Table\SoldEquipmentsTable&\Cake\ORM\Association\HasMany $SoldEquipments
  * @method \App\Model\Entity\Contract newEmptyEntity()
  * @method \App\Model\Entity\Contract newEntity(array $data, array $options = [])
@@ -89,6 +91,12 @@ class ContractsTable extends Table
             'foreignKey' => 'contract_id',
         ]);
         $this->hasMany('RemovedIps', [
+            'foreignKey' => 'contract_id',
+        ]);
+        $this->hasMany('IpNetworks', [
+            'foreignKey' => 'contract_id',
+        ]);
+        $this->hasMany('RemovedIpNetworks', [
             'foreignKey' => 'contract_id',
         ]);
         $this->hasMany('SoldEquipments', [

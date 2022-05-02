@@ -68,13 +68,16 @@ class ContractsController extends AppController
                 'BorrowedEquipments' => ['EquipmentTypes'],
                 'Ips',
                 'RemovedIps',
+                'IpNetworks',
+                'RemovedIpNetworks',
                 'SoldEquipments' => ['EquipmentTypes'],
             ],
         ]);
 
-        $ip_address_types_of_use = $this->Contracts->Ips->types_of_use;
+        $this->set('ip_address_types_of_use', $this->Contracts->Ips->types_of_use);
+        $this->set('ip_network_types_of_use', $this->Contracts->IpNetworks->types_of_use);
 
-        $this->set(compact('contract', 'ip_address_types_of_use'));
+        $this->set(compact('contract'));
     }
 
     /**

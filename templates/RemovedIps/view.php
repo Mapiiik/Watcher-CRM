@@ -45,6 +45,10 @@
                     <td><?= h($removedIp->ip) ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('Type Of Use') ?></th>
+                    <td><?= h($types_of_use[$removedIp->type_of_use]) ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Id') ?></th>
                     <td><?= $this->Number->format($removedIp->id) ?></td>
                 </tr>

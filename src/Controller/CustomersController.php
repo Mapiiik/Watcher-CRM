@@ -114,26 +114,30 @@ class CustomersController extends AppController
                 'BorrowedEquipments' => ['Contracts', 'EquipmentTypes'],
                 'Contracts' => ['ServiceTypes', 'InstallationAddresses'],
                 'Emails',
-                'Ips' => ['Contracts'],
                 'LabelCustomers' => ['Labels'],
                 'Logins',
                 'Phones',
-                'RemovedIps' => ['Contracts'],
                 'SoldEquipments' => ['Contracts', 'EquipmentTypes'],
-                'Tasks' => ['TaskTypes', 'TaskStates', 'Dealers']],
+                'Tasks' => ['TaskTypes', 'TaskStates', 'Dealers'],
+                'Ips' => ['Contracts'],
+                'RemovedIps' => ['Contracts'],
+                'IpNetworks' => ['Contracts'],
+                'RemovedIpNetworks' => ['Contracts'],
+            ],
         ]);
 
         $invoice_delivery_types = $this->Customers->invoice_delivery_types;
         $address_types = $this->Customers->Addresses->types;
         $login_rights = $this->Customers->Logins->rights;
-        $ip_address_types_of_use = $this->Customers->Ips->types_of_use;
+
+        $this->set('ip_address_types_of_use', $this->Customers->Ips->types_of_use);
+        $this->set('ip_network_types_of_use', $this->Customers->IpNetworks->types_of_use);
 
         $this->set(compact(
             'customer',
             'invoice_delivery_types',
             'address_types',
-            'login_rights',
-            'ip_address_types_of_use'
+            'login_rights'
         ));
     }
 

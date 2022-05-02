@@ -16,11 +16,13 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\BorrowedEquipmentsTable&\Cake\ORM\Association\HasMany $BorrowedEquipments
  * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\HasMany $Contracts
  * @property \App\Model\Table\EmailsTable&\Cake\ORM\Association\HasMany $Emails
- * @property \App\Model\Table\IpsTable&\Cake\ORM\Association\HasMany $Ips
  * @property \App\Model\Table\LabelCustomersTable&\Cake\ORM\Association\HasMany $LabelCustomers
  * @property \App\Model\Table\LoginsTable&\Cake\ORM\Association\HasMany $Logins
  * @property \App\Model\Table\PhonesTable&\Cake\ORM\Association\HasMany $Phones
+ * @property \App\Model\Table\IpsTable&\Cake\ORM\Association\HasMany $Ips
  * @property \App\Model\Table\RemovedIpsTable&\Cake\ORM\Association\HasMany $RemovedIps
+ * @property \App\Model\Table\IpNetworksTable&\Cake\ORM\Association\HasMany $IpNetworks
+ * @property \App\Model\Table\RemovedIpNetworksTable&\Cake\ORM\Association\HasMany $RemovedIpNetworks
  * @property \App\Model\Table\SoldEquipmentsTable&\Cake\ORM\Association\HasMany $SoldEquipments
  * @property \App\Model\Table\TasksTable&\Cake\ORM\Association\HasMany $Tasks
  * @property array $invoice_delivery_types
@@ -107,14 +109,6 @@ class CustomersTable extends Table
         $this->hasMany('Emails', [
             'foreignKey' => 'customer_id',
         ]);
-        $this->hasMany('Ips', [
-            'foreignKey' => 'customer_id',
-            'sort' => [
-                'Contracts.service_type_id',
-                'Contracts.id' => 'DESC',
-                'Ips.ip',
-            ],
-        ]);
         $this->hasMany('LabelCustomers', [
             'foreignKey' => 'customer_id',
         ]);
@@ -124,6 +118,21 @@ class CustomersTable extends Table
         $this->hasMany('Phones', [
             'foreignKey' => 'customer_id',
         ]);
+        $this->hasMany('SoldEquipments', [
+            'foreignKey' => 'customer_id',
+            'sort' => [
+                'Contracts.service_type_id',
+                'Contracts.id' => 'DESC',
+            ],
+        ]);
+        $this->hasMany('Ips', [
+            'foreignKey' => 'customer_id',
+            'sort' => [
+                'Contracts.service_type_id',
+                'Contracts.id' => 'DESC',
+                'Ips.ip',
+            ],
+        ]);
         $this->hasMany('RemovedIps', [
             'foreignKey' => 'customer_id',
             'sort' => [
@@ -132,11 +141,20 @@ class CustomersTable extends Table
                 'RemovedIps.ip',
             ],
         ]);
-        $this->hasMany('SoldEquipments', [
+        $this->hasMany('IpNetworks', [
             'foreignKey' => 'customer_id',
             'sort' => [
                 'Contracts.service_type_id',
                 'Contracts.id' => 'DESC',
+                'IpNetworks.ip_network',
+            ],
+        ]);
+        $this->hasMany('RemovedIpNetworks', [
+            'foreignKey' => 'customer_id',
+            'sort' => [
+                'Contracts.service_type_id',
+                'Contracts.id' => 'DESC',
+                'RemovedIpNetworks.ip_network',
             ],
         ]);
         $this->hasMany('Tasks', [

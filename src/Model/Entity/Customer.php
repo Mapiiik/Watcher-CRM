@@ -52,10 +52,12 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Email[] $emails
  * @property \App\Model\Entity\Email[] $billing_emails
  * @property \App\Model\Entity\Ip[] $ips
+ * @property \App\Model\Entity\RemovedIp[] $removed_ips
+ * @property \App\Model\Entity\IpNetwork[] $ip_networks
+ * @property \App\Model\Entity\RemovedIpNetwork[] $removed_ip_networks
  * @property \App\Model\Entity\LabelCustomer[] $label_customers
  * @property \App\Model\Entity\Login[] $logins
  * @property \App\Model\Entity\Phone[] $phones
- * @property \App\Model\Entity\RemovedIp[] $removed_ips
  * @property \App\Model\Entity\SoldEquipment[] $sold_equipments
  * @property \App\Model\Entity\Task[] $tasks
  *
