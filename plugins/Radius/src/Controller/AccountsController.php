@@ -289,7 +289,7 @@ class AccountsController extends AppController
     {
         $radcheck = [];
 
-        $radcheck[] = $this->getTableLocator()->get('Radius.Radcheck')
+        $radcheck[] = $this->fetchTable('Radius.Radcheck')
             ->findOrCreate([
                 'username' => $account->username,
                 'attribute' => 'Cleartext-Password',
@@ -298,7 +298,7 @@ class AccountsController extends AppController
             ])
             ->toArray();
         if (!$account->active) {
-            $radcheck[] = $this->getTableLocator()->get('Radius.Radcheck')
+            $radcheck[] = $this->fetchTable('Radius.Radcheck')
                 ->findOrCreate([
                     'username' => $account->username,
                     'attribute' => 'Auth-Type',
@@ -319,8 +319,8 @@ class AccountsController extends AppController
      */
     private function autoRadreplyData(\Radius\Model\Entity\Account $account): array
     {
-        $contract = $this->getTableLocator()->get('Contracts')->get($account->contract_id, [
-            'contain' => ['Ips'],
+        $contract = $this->fetchTable('Contracts')->get($account->contract_id, [
+            'contain' => ['Ips', 'IpNetworks'],
         ]);
 
         $radreply = [];
@@ -329,46 +329,49 @@ class AccountsController extends AppController
             @[$address, $mask] = explode('/', $ip->ip); // phpcs:ignore
 
             if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-                if (filter_var($mask, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0, 'max_range' => 32]])) {
-                    $radreply[] = $this->getTableLocator()->get('Radius.Radreply')
-                        ->findOrCreate([
-                            'username' => $account->username,
-                            'attribute' => 'Framed-Route',
-                            'op' => '=',
-                            'value' => $address . '/' . $mask,
-                        ])
-                        ->toArray();
-                } else {
-                    $radreply[] = $this->getTableLocator()->get('Radius.Radreply')
-                        ->findOrCreate([
-                            'username' => $account->username,
-                            'attribute' => 'Framed-IP-Address',
-                            'op' => '=',
-                            'value' => $address,
-                        ])
-                        ->toArray();
-                }
+                $radreply[] = $this->fetchTable('Radius.Radreply')
+                    ->findOrCreate([
+                        'username' => $account->username,
+                        'attribute' => 'Framed-IP-Address',
+                        'op' => '=',
+                        'value' => $address,
+                    ])
+                    ->toArray();
             }
             if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-                if (filter_var($mask, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0, 'max_range' => 128]])) {
-                    $radreply[] = $this->getTableLocator()->get('Radius.Radreply')
-                        ->findOrCreate([
-                            'username' => $account->username,
-                            'attribute' => 'Framed-IPv6-Prefix',
-                            'op' => '=',
-                            'value' => $address . '/' . $mask,
-                        ])
-                        ->toArray();
-                } else {
-                    $radreply[] = $this->getTableLocator()->get('Radius.Radreply')
-                        ->findOrCreate([
-                            'username' => $account->username,
-                            'attribute' => 'Framed-IPv6-Address',
-                            'op' => '=',
-                            'value' => $address . '/' . $mask,
-                        ])
-                        ->toArray();
-                }
+                $radreply[] = $this->fetchTable('Radius.Radreply')
+                    ->findOrCreate([
+                        'username' => $account->username,
+                        'attribute' => 'Framed-IPv6-Address',
+                        'op' => '=',
+                        'value' => $address,
+                    ])
+                    ->toArray();
+            }
+        }
+
+        foreach ($contract->ip_networks as $ipNetwork) {
+            @[$address, $mask] = explode('/', $ipNetwork->ip_network); // phpcs:ignore
+
+            if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+                $radreply[] = $this->fetchTable('Radius.Radreply')
+                    ->findOrCreate([
+                        'username' => $account->username,
+                        'attribute' => 'Framed-Route',
+                        'op' => '=',
+                        'value' => $address . '/' . $mask,
+                    ])
+                    ->toArray();
+            }
+            if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+                $radreply[] = $this->fetchTable('Radius.Radreply')
+                    ->findOrCreate([
+                        'username' => $account->username,
+                        'attribute' => 'Framed-IPv6-Prefix',
+                        'op' => '=',
+                        'value' => $address . '/' . $mask,
+                    ])
+                    ->toArray();
             }
         }
 
@@ -395,7 +398,7 @@ class AccountsController extends AppController
      */
     private function autoRadusergroupData(\Radius\Model\Entity\Account $account): array
     {
-        $contract = $this->getTableLocator()->get('Contracts')->get($account->contract_id, [
+        $contract = $this->fetchTable('Contracts')->get($account->contract_id, [
             'contain' => [
                 'Billings' => [
                     'queryBuilder' => function (Query $q) {
@@ -420,7 +423,7 @@ class AccountsController extends AppController
 
         if (isset($contract->billings[0])) {
             // return radusergroup record with current (or the near future) queue name as groupname
-            $radusergroup[] = $this->getTableLocator()->get('Radius.Radusergroup')
+            $radusergroup[] = $this->fetchTable('Radius.Radusergroup')
                 ->findOrCreate([
                     'username' => $account->username,
                     'groupname' => $contract->billings[0]->service->queue->name,
