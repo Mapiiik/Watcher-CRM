@@ -33,7 +33,7 @@
             ) ?>
         </div>
     </aside>
-    <div class="column-responsive column-80">
+    <div class="column-responsive column-90">
         <div class="removedIpNetworks view content">
             <h3><?= h($removedIpNetwork->ip_network) ?></h3>
             <table>

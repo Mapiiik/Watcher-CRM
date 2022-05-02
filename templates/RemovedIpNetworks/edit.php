@@ -25,7 +25,7 @@
             ) ?>
         </div>
     </aside>
-    <div class="column-responsive column-80">
+    <div class="column-responsive column-90">
         <div class="removedIpNetworks form content">
             <?= $this->Form->create($removedIpNetwork) ?>
             <fieldset>
