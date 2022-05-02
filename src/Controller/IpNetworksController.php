@@ -196,16 +196,16 @@ class IpNetworksController extends AppController
     {
         $ip = $this->IpNetworks->get($id);
 
-        $this->RemovedIpNetworks = $this->getTableLocator()->get('RemovedIpNetworks');
+        $removedIpNetworksTable = $this->fetchTable('RemovedIpNetworks');
 
-        $removedIpNetwork = $this->RemovedIpNetworks->newEmptyEntity();
-        $removedIpNetwork = $this->RemovedIpNetworks->patchEntity($removedIpNetwork, $ip->toArray());
+        $removedIpNetwork = $removedIpNetworksTable->newEmptyEntity();
+        $removedIpNetwork = $removedIpNetworksTable->patchEntity($removedIpNetwork, $ip->toArray());
 
         // TODO - add who and when deleted this
         $removedIpNetwork->removed = FrozenTime::now();
         $removedIpNetwork->removed_by = $this->request->getSession()->read('Auth.id');
 
-        if ($this->RemovedIpNetworks->save($removedIpNetwork)) {
+        if ($removedIpNetworksTable->save($removedIpNetwork)) {
             $this->Flash->success(__('The removed IP network has been saved.'));
 
             return true;

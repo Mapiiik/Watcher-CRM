@@ -9,7 +9,6 @@ use Cake\I18n\FrozenTime;
  * Ips Controller
  *
  * @property \App\Model\Table\IpsTable $Ips
- * @property \App\Model\Table\RemovedIpsTable $RemovedIps
  * @method \App\Model\Entity\Ip[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class IpsController extends AppController
@@ -211,16 +210,16 @@ class IpsController extends AppController
     {
         $ip = $this->Ips->get($id);
 
-        $this->RemovedIps = $this->getTableLocator()->get('RemovedIps');
+        $removedIpsTable = $this->fetchTable('RemovedIps');
 
-        $removedIp = $this->RemovedIps->newEmptyEntity();
-        $removedIp = $this->RemovedIps->patchEntity($removedIp, $ip->toArray());
+        $removedIp = $removedIpsTable->newEmptyEntity();
+        $removedIp = $removedIpsTable->patchEntity($removedIp, $ip->toArray());
 
         // TODO - add who and when deleted this
         $removedIp->removed = FrozenTime::now();
         $removedIp->removed_by = $this->request->getSession()->read('Auth.id');
 
-        if ($this->RemovedIps->save($removedIp)) {
+        if ($removedIpsTable->save($removedIp)) {
             $this->Flash->success(__('The removed ip has been saved.'));
 
             return true;
