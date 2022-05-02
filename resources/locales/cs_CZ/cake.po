@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CakePHP 4.2.4\n"
-"POT-Creation-Date: 2022-04-21 11:49+0200\n"
-"PO-Revision-Date: 2022-04-21 12:00+0200\n"
+"POT-Creation-Date: 2022-05-02 15:33+0200\n"
+"PO-Revision-Date: 2022-05-02 15:37+0200\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -59,11 +59,11 @@ msgstr ""
 msgid "Missing or incorrect CSRF session key"
 msgstr "Chybějící nebo nesprávný klíč relace CSRF"
 
-#: vendor/cakephp/cakephp/src/Http/Response.php:1490
+#: vendor/cakephp/cakephp/src/Http/Response.php:1460
 msgid "The requested file contains `..` and will not be read."
 msgstr "Požadovaný soubor obsahuje '.. ' a nebude načten."
 
-#: vendor/cakephp/cakephp/src/Http/Response.php:1498
+#: vendor/cakephp/cakephp/src/Http/Response.php:1468
 msgid "The requested file was not found"
 msgstr "Požadovaný soubor nebyl nalezen"
 
