@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2022-05-02 15:32+0200\n"
-"PO-Revision-Date: 2022-05-02 15:46+0200\n"
+"PO-Revision-Date: 2022-05-03 19:19+0200\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -322,32 +322,32 @@ msgstr "Typ zařízení nelze odstranit. Opakujte akci."
 #: src/Controller/IpNetworksController.php:91
 #: src/Controller/IpNetworksController.php:139
 msgid "The IP network has been saved."
-msgstr "Síť IP byla uložena."
+msgstr "IP síť byla uložena."
 
 #: src/Controller/IpNetworksController.php:95
 #: src/Controller/IpNetworksController.php:143
 msgid "The IP network could not be saved. Please, try again."
-msgstr "Síť IP nelze uložit. Zkuste to prosím znovu."
+msgstr "IP síť nelze uložit. Zkuste to prosím znovu."
 
 #: src/Controller/IpNetworksController.php:180
 msgid "The IP network has been deleted."
-msgstr "Síť IP byla odstraněna."
+msgstr "IP síť byla odstraněna."
 
 #: src/Controller/IpNetworksController.php:182
 msgid "The IP network could not be deleted. Please, try again."
-msgstr "Síť IP nelze odstranit. Zkuste to prosím znovu."
+msgstr "IP síť nelze odstranit. Zkuste to prosím znovu."
 
 #: src/Controller/IpNetworksController.php:209
 #: src/Controller/RemovedIpNetworksController.php:89
 #: src/Controller/RemovedIpNetworksController.php:137
 msgid "The removed IP network has been saved."
-msgstr "Odebraná síť IP byla uložena."
+msgstr "Odebraná IP síť byla uložena."
 
 #: src/Controller/IpNetworksController.php:214
 #: src/Controller/RemovedIpNetworksController.php:93
 #: src/Controller/RemovedIpNetworksController.php:141
 msgid "The removed IP network could not be saved. Please, try again."
-msgstr "Odebranou síť IP nelze uložit. Zkuste to prosím znovu."
+msgstr "Odebranou IP síť nelze uložit. Zkuste to prosím znovu."
 
 #: src/Controller/IpsController.php:92 src/Controller/IpsController.php:145
 msgid "The ip has been saved."
@@ -469,11 +469,11 @@ msgstr "Frontu nelze odstranit. Zkuste to prosím znovu."
 
 #: src/Controller/RemovedIpNetworksController.php:176
 msgid "The removed IP network has been deleted."
-msgstr "Odebraná síť IP byla odstraněna."
+msgstr "Odebraná IP síť byla odstraněna."
 
 #: src/Controller/RemovedIpNetworksController.php:178
 msgid "The removed IP network could not be deleted. Please, try again."
-msgstr "Odebranou síť IP nelze odstranit. Zkuste to prosím znovu."
+msgstr "Odebranou IP síť nelze odstranit. Zkuste to prosím znovu."
 
 #: src/Controller/RemovedIpsController.php:193
 msgid "The removed ip has been deleted."
@@ -1858,11 +1858,11 @@ msgstr "Odstraněno"
 
 #: templates/Contracts/view.php:494
 msgid "New Removed IP Network"
-msgstr "Nová odebraná síť IP"
+msgstr "Nová odebraná IP síť"
 
 #: templates/Contracts/view.php:498
 msgid "Removed IP Networks"
-msgstr "Odebrané sítě IP"
+msgstr "Odebrané IP sítě"
 
 #: templates/Countries/add.php:11 templates/Countries/edit.php:16
 #: templates/Countries/view.php:21
@@ -2109,7 +2109,7 @@ msgstr "Související odebrané IP adresy"
 
 #: templates/Customers/view.php:783
 msgid "Related Removed IP Networks"
-msgstr "Související odebrané sítě IP"
+msgstr "Související odebrané IP sítě"
 
 #: templates/Customers/view.php:830 templates/Tasks/index.php:8
 #: templates/Tasks/view.php:18
@@ -2188,15 +2188,15 @@ msgstr "ID typu zařízení"
 #: templates/IpNetworks/add.php:13 templates/IpNetworks/edit.php:18
 #: templates/IpNetworks/view.php:22
 msgid "List Ip Networks"
-msgstr "Seznam sítí IP"
+msgstr "Seznam IP sítí"
 
 #: templates/IpNetworks/add.php:20
 msgid "Add Ip Network"
-msgstr "Přidat síť IP"
+msgstr "Přidat IP síť"
 
 #: templates/IpNetworks/edit.php:25 templates/IpNetworks/view.php:12
 msgid "Edit Ip Network"
-msgstr "Upravit síť IP"
+msgstr "Upravit IP síť"
 
 #: templates/IpNetworks/index.php:8 templates/IpNetworks/view.php:27
 msgid "New Ip Network"
@@ -2208,7 +2208,7 @@ msgstr "IP sítě"
 
 #: templates/IpNetworks/view.php:17
 msgid "Delete Ip Network"
-msgstr "Odstranit síť IP"
+msgstr "Odstranit IP síť"
 
 #: templates/Ips/add.php:11 templates/Ips/edit.php:16 templates/Ips/view.php:17
 msgid "List Ips"
@@ -2412,29 +2412,29 @@ msgstr "ID fronty"
 #: templates/RemovedIpNetworks/edit.php:22
 #: templates/RemovedIpNetworks/view.php:25
 msgid "List Removed Ip Networks"
-msgstr "Seznam odebraných sítí IP"
+msgstr "Seznam odebraných IP sítí"
 
 #: templates/RemovedIpNetworks/add.php:24
 msgid "Add Removed Ip Network"
-msgstr "Přidat odebranou síť IP"
+msgstr "Přidat odebranou IP síť"
 
 #: templates/RemovedIpNetworks/edit.php:32
 #: templates/RemovedIpNetworks/view.php:12
 msgid "Edit Removed Ip Network"
-msgstr "Upravit odebranou síť IP"
+msgstr "Upravit odebranou IP síť"
 
 #: templates/RemovedIpNetworks/index.php:8
 #: templates/RemovedIpNetworks/view.php:30
 msgid "New Removed Ip Network"
-msgstr "Nová odebraná síť IP"
+msgstr "Nová odebraná IP síť"
 
 #: templates/RemovedIpNetworks/index.php:9
 msgid "Removed Ip Networks"
-msgstr "Odebrané sítě IP"
+msgstr "Odebrané IP sítě"
 
 #: templates/RemovedIpNetworks/view.php:17
 msgid "Delete Removed Ip Network"
-msgstr "Odstranit odebranou síť IP"
+msgstr "Odstranit odebranou IP síť"
 
 #: templates/RemovedIpNetworks/view.php:73 templates/RemovedIps/view.php:60
 msgid "Removed By"
