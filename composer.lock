@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "64ae73ad4134164da1d4543a7c1262cf",
+    "content-hash": "6217c401366e6282fde504b75535f6e6",
     "packages": [
         {
             "name": "cakedc/auth",
@@ -1403,17 +1403,17 @@
             "time": "2021-03-04T21:12:06+00:00"
         },
         {
-            "name": "mapik/pohoda-xml",
-            "version": "v1.16.2",
+            "name": "mapiiik/pohoda-xml",
+            "version": "v1.16.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Mapiiik/pohoda-xml.git",
-                "reference": "616ba5e8e94f5130ed2d236be46aac764256829e"
+                "reference": "1e4686c8406be7d24d8ccbc7e6ebc36730669767"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Mapiiik/pohoda-xml/zipball/616ba5e8e94f5130ed2d236be46aac764256829e",
-                "reference": "616ba5e8e94f5130ed2d236be46aac764256829e",
+                "url": "https://api.github.com/repos/Mapiiik/pohoda-xml/zipball/1e4686c8406be7d24d8ccbc7e6ebc36730669767",
+                "reference": "1e4686c8406be7d24d8ccbc7e6ebc36730669767",
                 "shasum": ""
             },
             "require": {
@@ -1453,7 +1453,7 @@
                 "issues": "https://github.com/Mapiiik/pohoda-xml/issues",
                 "source": "https://github.com/Mapiiik/pohoda-xml"
             },
-            "time": "2022-05-03T20:17:53+00:00"
+            "time": "2022-05-08T13:22:20+00:00"
         },
         {
             "name": "mobiledetect/mobiledetectlib",
