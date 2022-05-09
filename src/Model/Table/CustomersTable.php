@@ -16,7 +16,7 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\BorrowedEquipmentsTable&\Cake\ORM\Association\HasMany $BorrowedEquipments
  * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\HasMany $Contracts
  * @property \App\Model\Table\EmailsTable&\Cake\ORM\Association\HasMany $Emails
- * @property \App\Model\Table\LabelCustomersTable&\Cake\ORM\Association\HasMany $LabelCustomers
+ * @property \App\Model\Table\CustomerLabelsTable&\Cake\ORM\Association\HasMany $CustomerLabels
  * @property \App\Model\Table\LoginsTable&\Cake\ORM\Association\HasMany $Logins
  * @property \App\Model\Table\PhonesTable&\Cake\ORM\Association\HasMany $Phones
  * @property \App\Model\Table\IpsTable&\Cake\ORM\Association\HasMany $Ips
@@ -109,7 +109,7 @@ class CustomersTable extends Table
         $this->hasMany('Emails', [
             'foreignKey' => 'customer_id',
         ]);
-        $this->hasMany('LabelCustomers', [
+        $this->hasMany('CustomerLabels', [
             'foreignKey' => 'customer_id',
         ]);
         $this->hasMany('Logins', [

@@ -50,7 +50,7 @@ class CustomersController extends AppController
                 'Contracts' => ['ServiceTypes', 'InstallationAddresses'],
                 'Emails',
                 'Ips' => ['Contracts'],
-                'LabelCustomers' => ['Labels'],
+                'CustomerLabels' => ['Labels'],
                 'Logins',
                 'Phones',
                 'RemovedIps' => ['Contracts'],

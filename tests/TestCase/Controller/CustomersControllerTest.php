@@ -29,7 +29,7 @@ class CustomersControllerTest extends TestCase
         'app.Contracts',
         'app.Emails',
         'app.Ips',
-        'app.LabelCustomers',
+        'app.CustomerLabels',
         'app.Logins',
         'app.Phones',
         'app.RemovedIps',

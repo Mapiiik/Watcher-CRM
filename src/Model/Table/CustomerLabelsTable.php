@@ -8,26 +8,26 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * LabelCustomers Model
+ * CustomerLabels Model
  *
  * @property \App\Model\Table\LabelsTable&\Cake\ORM\Association\BelongsTo $Labels
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
- * @method \App\Model\Entity\LabelCustomer newEmptyEntity()
- * @method \App\Model\Entity\LabelCustomer newEntity(array $data, array $options = [])
- * @method \App\Model\Entity\LabelCustomer[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\LabelCustomer get($primaryKey, $options = [])
- * @method \App\Model\Entity\LabelCustomer findOrCreate($search, ?callable $callback = null, $options = [])
- * @method \App\Model\Entity\LabelCustomer patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\LabelCustomer[] patchEntities(iterable $entities, array $data, array $options = [])
- * @method \App\Model\Entity\LabelCustomer|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\LabelCustomer saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\LabelCustomer[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\LabelCustomer[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\LabelCustomer[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\LabelCustomer[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method \App\Model\Entity\CustomerLabel newEmptyEntity()
+ * @method \App\Model\Entity\CustomerLabel newEntity(array $data, array $options = [])
+ * @method \App\Model\Entity\CustomerLabel[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\CustomerLabel get($primaryKey, $options = [])
+ * @method \App\Model\Entity\CustomerLabel findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \App\Model\Entity\CustomerLabel patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\CustomerLabel[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \App\Model\Entity\CustomerLabel|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\CustomerLabel saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\CustomerLabel[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
+ * @method \App\Model\Entity\CustomerLabel[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
+ * @method \App\Model\Entity\CustomerLabel[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
+ * @method \App\Model\Entity\CustomerLabel[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class LabelCustomersTable extends Table
+class CustomerLabelsTable extends Table
 {
     /**
      * Initialize method
@@ -39,7 +39,7 @@ class LabelCustomersTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('label_customers');
+        $this->setTable('customer_labels');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 

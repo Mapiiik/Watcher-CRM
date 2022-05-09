@@ -3,20 +3,20 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\LabelCustomersTable;
+use App\Model\Table\CustomerLabelsTable;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\LabelCustomersTable Test Case
+ * App\Model\Table\CustomerLabelsTable Test Case
  */
-class LabelCustomersTableTest extends TestCase
+class CustomerLabelsTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \App\Model\Table\LabelCustomersTable
+     * @var \App\Model\Table\CustomerLabelsTable
      */
-    protected $LabelCustomersTable;
+    protected $CustomerLabelsTable;
 
     /**
      * Fixtures
@@ -24,7 +24,7 @@ class LabelCustomersTableTest extends TestCase
      * @var array
      */
     protected $fixtures = [
-        'app.LabelCustomers',
+        'app.CustomerLabels',
         'app.Labels',
         'app.Customers',
     ];
@@ -37,8 +37,8 @@ class LabelCustomersTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('LabelCustomers') ? [] : ['className' => LabelCustomersTable::class];
-        $this->LabelCustomersTable = $this->getTableLocator()->get('LabelCustomers', $config);
+        $config = $this->getTableLocator()->exists('CustomerLabels') ? [] : ['className' => CustomerLabelsTable::class];
+        $this->CustomerLabelsTable = $this->getTableLocator()->get('CustomerLabels', $config);
     }
 
     /**
@@ -48,7 +48,7 @@ class LabelCustomersTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->LabelCustomersTable);
+        unset($this->CustomerLabelsTable);
 
         parent::tearDown();
     }
@@ -57,7 +57,7 @@ class LabelCustomersTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\LabelCustomersTable::validationDefault()
+     * @uses \App\Model\Table\CustomerLabelsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -68,7 +68,7 @@ class LabelCustomersTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\LabelCustomersTable::buildRules()
+     * @uses \App\Model\Table\CustomerLabelsTable::buildRules()
      */
     public function testBuildRules(): void
     {

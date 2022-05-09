@@ -16,7 +16,7 @@ use Cake\ORM\Entity;
  * @property bool $dynamic
  * @property string|null $dynamic_sql
  *
- * @property \App\Model\Entity\LabelCustomer[] $label_customers
+ * @property \App\Model\Entity\CustomerLabel[] $customer_labels
  */
 class Label extends Entity
 {
@@ -36,6 +36,6 @@ class Label extends Entity
         'validity' => true,
         'dynamic' => true,
         'dynamic_sql' => true,
-        'label_customers' => true,
+        'customer_labels' => true,
     ];
 }

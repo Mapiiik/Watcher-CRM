@@ -10,7 +10,7 @@ use Cake\Validation\Validator;
 /**
  * Labels Model
  *
- * @property \App\Model\Table\LabelCustomersTable&\Cake\ORM\Association\HasMany $LabelCustomers
+ * @property \App\Model\Table\CustomerLabelsTable&\Cake\ORM\Association\HasMany $CustomerLabels
  * @method \App\Model\Entity\Label newEmptyEntity()
  * @method \App\Model\Entity\Label newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Label[] newEntities(array $data, array $options = [])
@@ -45,7 +45,7 @@ class LabelsTable extends Table
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
 
-        $this->hasMany('LabelCustomers', [
+        $this->hasMany('CustomerLabels', [
             'foreignKey' => 'label_id',
         ]);
     }

@@ -55,7 +55,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\RemovedIp[] $removed_ips
  * @property \App\Model\Entity\IpNetwork[] $ip_networks
  * @property \App\Model\Entity\RemovedIpNetwork[] $removed_ip_networks
- * @property \App\Model\Entity\LabelCustomer[] $label_customers
+ * @property \App\Model\Entity\CustomerLabel[] $customer_labels
  * @property \App\Model\Entity\Login[] $logins
  * @property \App\Model\Entity\Phone[] $phones
  * @property \App\Model\Entity\SoldEquipment[] $sold_equipments
@@ -110,7 +110,7 @@ class Customer extends Entity
         'contracts' => true,
         'emails' => true,
         'ips' => true,
-        'label_customers' => true,
+        'customer_labels' => true,
         'logins' => true,
         'phones' => true,
         'removed_ips' => true,

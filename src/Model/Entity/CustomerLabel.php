@@ -6,7 +6,7 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * LabelCustomer Entity
+ * CustomerLabel Entity
  *
  * @property int $label_id
  * @property int $customer_id
@@ -18,7 +18,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Label $label
  * @property \App\Model\Entity\Customer $customer
  */
-class LabelCustomer extends Entity
+class CustomerLabel extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

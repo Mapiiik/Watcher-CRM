@@ -7,11 +7,11 @@ use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Controller\LabelCustomersController Test Case
+ * App\Controller\CustomerLabelsController Test Case
  *
- * @uses \App\Controller\LabelCustomersController
+ * @uses \App\Controller\CustomerLabelsController
  */
-class LabelCustomersControllerTest extends TestCase
+class CustomerLabelsControllerTest extends TestCase
 {
     use IntegrationTestTrait;
 
@@ -21,7 +21,7 @@ class LabelCustomersControllerTest extends TestCase
      * @var array
      */
     protected $fixtures = [
-        'app.LabelCustomers',
+        'app.CustomerLabels',
         'app.Labels',
         'app.Customers',
     ];
@@ -30,7 +30,7 @@ class LabelCustomersControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\LabelCustomersController::index()
+     * @uses \App\Controller\CustomerLabelsController::index()
      */
     public function testIndex(): void
     {
@@ -41,7 +41,7 @@ class LabelCustomersControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\LabelCustomersController::view()
+     * @uses \App\Controller\CustomerLabelsController::view()
      */
     public function testView(): void
     {
@@ -52,7 +52,7 @@ class LabelCustomersControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\LabelCustomersController::add()
+     * @uses \App\Controller\CustomerLabelsController::add()
      */
     public function testAdd(): void
     {
@@ -63,7 +63,7 @@ class LabelCustomersControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\LabelCustomersController::edit()
+     * @uses \App\Controller\CustomerLabelsController::edit()
      */
     public function testEdit(): void
     {
@@ -74,7 +74,7 @@ class LabelCustomersControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\LabelCustomersController::delete()
+     * @uses \App\Controller\CustomerLabelsController::delete()
      */
     public function testDelete(): void
     {

@@ -22,7 +22,7 @@ class LabelsControllerTest extends TestCase
      */
     protected $fixtures = [
         'app.Labels',
-        'app.LabelCustomers',
+        'app.CustomerLabels',
     ];
 
     /**

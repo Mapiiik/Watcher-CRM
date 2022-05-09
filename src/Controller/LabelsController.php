@@ -33,7 +33,7 @@ class LabelsController extends AppController
     public function view($id = null)
     {
         $label = $this->Labels->get($id, [
-            'contain' => ['LabelCustomers'],
+            'contain' => ['CustomerLabels'],
         ]);
 
         $this->set(compact('label'));

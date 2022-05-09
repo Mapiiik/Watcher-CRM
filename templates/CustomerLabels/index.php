@@ -1,16 +1,16 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\LabelCustomer[]|\Cake\Collection\CollectionInterface $labelCustomers
+ * @var \App\Model\Entity\CustomerLabel[]|\Cake\Collection\CollectionInterface $customerLabels
  */
 ?>
-<div class="labelCustomers index content">
+<div class="customerLabels index content">
     <?= $this->AuthLink->link(
-        __('New Label Customer'),
+        __('New Customer Label'),
         ['action' => 'add'],
         ['class' => 'button float-right win-link']
     ) ?>
-    <h3><?= __('Label Customers') ?></h3>
+    <h3><?= __('Customer Labels') ?></h3>
     <div class="table-responsive">
         <table>
             <thead>
@@ -24,34 +24,34 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($labelCustomers as $labelCustomer) : ?>
+                <?php foreach ($customerLabels as $customerLabel) : ?>
                 <tr>
                     <td>
-                        <?= $labelCustomer->has('label') ? $this->Html->link(
-                            $labelCustomer->label->name,
-                            ['controller' => 'Labels', 'action' => 'view', $labelCustomer->label->id]
+                        <?= $customerLabel->has('label') ? $this->Html->link(
+                            $customerLabel->label->name,
+                            ['controller' => 'Labels', 'action' => 'view', $customerLabel->label->id]
                         ) : '' ?>
                     </td>
                     <td>
-                        <?= $labelCustomer->has('customer') ? $this->Html->link(
-                            $labelCustomer->customer->name,
-                            ['controller' => 'Customers', 'action' => 'view', $labelCustomer->customer->id]
+                        <?= $customerLabel->has('customer') ? $this->Html->link(
+                            $customerLabel->customer->name,
+                            ['controller' => 'Customers', 'action' => 'view', $customerLabel->customer->id]
                         ) : '' ?>
                     </td>
-                    <td><?= h($labelCustomer->created) ?></td>
-                    <td><?= $this->Number->format($labelCustomer->id) ?></td>
-                    <td><?= $this->Number->format($labelCustomer->created_by) ?></td>
+                    <td><?= h($customerLabel->created) ?></td>
+                    <td><?= $this->Number->format($customerLabel->id) ?></td>
+                    <td><?= $this->Number->format($customerLabel->created_by) ?></td>
                     <td class="actions">
-                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $labelCustomer->id]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $customerLabel->id]) ?>
                         <?= $this->AuthLink->link(
                             __('Edit'),
-                            ['action' => 'edit', $labelCustomer->id],
+                            ['action' => 'edit', $customerLabel->id],
                             ['class' => 'win-link']
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
-                            ['action' => 'delete', $labelCustomer->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $labelCustomer->id)]
+                            ['action' => 'delete', $customerLabel->id],
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $customerLabel->id)]
                         ) ?>
                     </td>
                 </tr>

@@ -58,8 +58,8 @@
                 </blockquote>
             </div>
             <div class="related">
-                <h4><?= __('Related Label Customers') ?></h4>
-                <?php if (!empty($label->label_customers)) : ?>
+                <h4><?= __('Related Customer Labels') ?></h4>
+                <?php if (!empty($label->customer_labels)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
@@ -71,28 +71,28 @@
                             <th><?= __('Created By') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($label->label_customers as $labelCustomers) : ?>
+                        <?php foreach ($label->customer_labels as $customerLabels) : ?>
                         <tr>
-                            <td><?= h($labelCustomers->label_id) ?></td>
-                            <td><?= h($labelCustomers->customer_id) ?></td>
-                            <td><?= h($labelCustomers->created) ?></td>
-                            <td><?= h($labelCustomers->note) ?></td>
-                            <td><?= h($labelCustomers->id) ?></td>
-                            <td><?= h($labelCustomers->created_by) ?></td>
+                            <td><?= h($customerLabels->label_id) ?></td>
+                            <td><?= h($customerLabels->customer_id) ?></td>
+                            <td><?= h($customerLabels->created) ?></td>
+                            <td><?= h($customerLabels->note) ?></td>
+                            <td><?= h($customerLabels->id) ?></td>
+                            <td><?= h($customerLabels->created_by) ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
-                                    ['controller' => 'LabelCustomers', 'action' => 'view', $labelCustomers->id]
+                                    ['controller' => 'CustomerLabels', 'action' => 'view', $customerLabels->id]
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __('Edit'),
-                                    ['controller' => 'LabelCustomers', 'action' => 'edit', $labelCustomers->id],
+                                    ['controller' => 'CustomerLabels', 'action' => 'edit', $customerLabels->id],
                                     ['class' => 'win-link']
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
                                     __('Delete'),
-                                    ['controller' => 'LabelCustomers', 'action' => 'delete', $labelCustomers->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $labelCustomers->id)]
+                                    ['controller' => 'CustomerLabels', 'action' => 'delete', $customerLabels->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $customerLabels->id)]
                                 ) ?>
                             </td>
                         </tr>

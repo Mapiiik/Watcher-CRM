@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\LabelCustomer $labelCustomer
+ * @var \App\Model\Entity\CustomerLabel $customerLabel
  */
 ?>
 <div class="row">
@@ -9,65 +9,65 @@
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->AuthLink->link(
-                __('Edit Label Customer'),
-                ['action' => 'edit', $labelCustomer->id],
+                __('Edit Customer Label'),
+                ['action' => 'edit', $customerLabel->id],
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->AuthLink->postLink(
-                __('Delete Label Customer'),
-                ['action' => 'delete', $labelCustomer->id],
+                __('Delete Customer Label'),
+                ['action' => 'delete', $customerLabel->id],
                 [
-                    'confirm' => __('Are you sure you want to delete # {0}?', $labelCustomer->id),
+                    'confirm' => __('Are you sure you want to delete # {0}?', $customerLabel->id),
                     'class' => 'side-nav-item',
                 ]
             ) ?>
             <?= $this->AuthLink->link(
-                __('List Label Customers'),
+                __('List Customer Labels'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->AuthLink->link(
-                __('New Label Customer'),
+                __('New Customer Label'),
                 ['action' => 'add'],
                 ['class' => 'side-nav-item']
             ) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
-        <div class="labelCustomers view content">
-            <h3><?= h($labelCustomer->id) ?></h3>
+        <div class="customerLabels view content">
+            <h3><?= h($customerLabel->id) ?></h3>
             <table>
                 <tr>
                     <th><?= __('Label') ?></th>
-                    <td><?= $labelCustomer->has('label') ? $this->Html->link(
-                        $labelCustomer->label->name,
-                        ['controller' => 'Labels', 'action' => 'view', $labelCustomer->label->id]
+                    <td><?= $customerLabel->has('label') ? $this->Html->link(
+                        $customerLabel->label->name,
+                        ['controller' => 'Labels', 'action' => 'view', $customerLabel->label->id]
                     ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Customer') ?></th>
-                    <td><?= $labelCustomer->has('customer') ? $this->Html->link(
-                        $labelCustomer->customer->name,
-                        ['controller' => 'Customers', 'action' => 'view', $labelCustomer->customer->id]
+                    <td><?= $customerLabel->has('customer') ? $this->Html->link(
+                        $customerLabel->customer->name,
+                        ['controller' => 'Customers', 'action' => 'view', $customerLabel->customer->id]
                     ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($labelCustomer->id) ?></td>
+                    <td><?= $this->Number->format($customerLabel->id) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Created By') ?></th>
-                    <td><?= $this->Number->format($labelCustomer->created_by) ?></td>
+                    <td><?= $this->Number->format($customerLabel->created_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Created') ?></th>
-                    <td><?= h($labelCustomer->created) ?></td>
+                    <td><?= h($customerLabel->created) ?></td>
                 </tr>
             </table>
             <div class="text">
                 <strong><?= __('Note') ?></strong>
                 <blockquote>
-                    <?= $this->Text->autoParagraph(h($labelCustomer->note)); ?>
+                    <?= $this->Text->autoParagraph(h($customerLabel->note)); ?>
                 </blockquote>
             </div>
         </div>
