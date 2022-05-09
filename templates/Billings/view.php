@@ -118,21 +118,42 @@ use Cake\I18n\Number;
                 </blockquote>
             </div>
             <?php
-            // show three billing calculations
-            $now = new \Cake\I18n\FrozenDate();
+            // show three billing calculations from start and from end
             $bill_dates = [
-                $now->day(1),
-                $now->day(1)->addMonth(1),
-                $now->day(1)->addMonth(2),
+                $billing->billing_from->day(1),
+                $billing->billing_from->day(1)->addMonth(1),
+                $billing->billing_from->day(1)->addMonth(2),
             ];
-
-            foreach ($bill_dates as $bill_date) {
-                echo '<br />';
-                echo $bill_date->format('Y-m-d') . ': '
-                    . $bill_date->subMonth(1)->format('Y-m-d') . ' - ' . $bill_date->subDay(1)->format('Y-m-d') . ' = ';
-                echo $billing->periodTotal($bill_date->subMonth(1), $bill_date->subDay(1));
+            if (isset($billing->billing_until)) {
+                $bill_dates[] = $billing->billing_until->day(1);
+                $bill_dates[] = $billing->billing_until->day(1)->addMonth(1);
+                $bill_dates[] = $billing->billing_until->day(1)->addMonth(2);
             }
             ?>
+            <div class="related">
+                <h4><?= __('Billing Overview') ?></h4>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Billing Date') ?></th>
+                            <th><?= __('Period From') ?></th>
+                            <th><?= __('Period Until') ?></th>
+                            <th><?= __('Price') ?></th>
+                        </tr>
+                        <?php foreach ($bill_dates as $bill_date) : ?>
+                        <tr>
+                            <td><?= $bill_date->subDay(1) ?></td>
+                            <td><?= $bill_date->subMonth(1) ?></td>
+                            <td><?= $bill_date->subDay(1) ?></td>
+                            <td><?= Number::currency($billing->periodTotal(
+                                $bill_date->subMonth(1),
+                                $bill_date->subDay(1)
+                            )) ?></td>
+                        </tr>
+                        <?php endforeach ?>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
