@@ -699,6 +699,7 @@ use Cake\I18n\Number;
                             <th><?= __('Ip Network') ?></th>
                             <th><?= __('Type Of Use') ?></th>
                             <th><?= __('Note') ?></th>
+                            <th><?= __('Range') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($customer->ip_networks as $ipNetwork) : ?>
@@ -711,6 +712,22 @@ use Cake\I18n\Number;
                             <td><?= h($ipNetwork->ip_network) ?></td>
                             <td><?= h($ip_network_types_of_use[$ipNetwork->type_of_use]) ?></td>
                             <td><?= h($ipNetwork->note) ?></td>
+                            <td>
+                                <?php $range = $ipNetwork->ip_address_ranges->first(); ?>
+                                <?= isset($range['access_point']['id']) ?
+                                    __('Access Point') . ': ' . $this->Html->link(
+                                        $range['access_point']['name'],
+                                        env('WATCHER_NMS_URL') . '/access-points/view/' . $range['access_point']['id'],
+                                        ['target' => '_blank']
+                                    ) . '<br>' : '' ?>
+                                <?= isset($range['id']) ?
+                                    __('Range') . ': ' . $this->Html->link(
+                                        $range['name'],
+                                        env('WATCHER_NMS_URL') . '/ip-address-ranges/view/' . $range['id'],
+                                        ['target' => '_blank']
+                                    ) . '<br>' : '' ?>
+                                <?php unset($range); ?>
+                            </td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
