@@ -5,11 +5,21 @@
  */
 ?>
 <?php
-echo $this->Form->create($search, ['type' => 'get']);
-if ($this->request->getQuery('limit')) {
-    echo $this->Form->hidden('limit', ['value' => $this->request->getQuery('limit')]);
+echo $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]);
+
+echo $this->Form->hidden('limit');
+echo $this->Form->control('search', [
+    'label' => __('Search'),
+    'type' => 'search',
+    'onchange' => 'this.form.submit();',
+]);
+if ($is_admin) {
+    echo $this->Form->control('advanced_search', [
+        'label' => __('Advanced Search'),
+        'type' => 'checkbox',
+        'onchange' => 'this.form.submit();',
+    ]);
 }
-echo $this->Form->control('search', ['label' => __('Search')]);
 echo $this->Form->end();
 ?>
 
