@@ -463,6 +463,19 @@ use Cake\I18n\Number;
             </div>
             <div class="related">
                 <?= $this->AuthLink->link(
+                    __('New RADIUS Account'),
+                    ['plugin' => 'Radius', 'controller' => 'Accounts', 'action' => 'add'],
+                    ['class' => 'button button-small float-right win-link']
+                ) ?>
+                <h4><?= __('RADIUS Accounts') ?></h4>
+                <?= $this->cell(
+                    'Radius.Accounts',
+                    [['Accounts.contract_id' => $contract->id]],
+                    ['show_contracts' => false]
+                ) ?>
+            </div>
+            <div class="related">
+                <?= $this->AuthLink->link(
                     __('New Removed Ip'),
                     ['controller' => 'RemovedIps', 'action' => 'add'],
                     ['class' => 'button button-small float-right win-link']

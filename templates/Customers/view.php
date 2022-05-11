@@ -751,6 +751,18 @@ use Cake\I18n\Number;
                 <?php endif; ?>
             </div>
             <div class="related">
+                <?= $this->AuthLink->link(
+                    __('New RADIUS Account'),
+                    ['plugin' => 'Radius', 'controller' => 'Accounts', 'action' => 'add'],
+                    ['class' => 'button button-small float-right win-link']
+                ) ?>
+                <h4><?= __('Related RADIUS Accounts') ?></h4>
+                <?= $this->cell(
+                    'Radius.Accounts',
+                    [['Accounts.customer_id' => $customer->id]]
+                ) ?>
+            </div>
+            <div class="related">
                 <h4><?= __('Related Removed Ips') ?></h4>
                 <?php if (!empty($customer->removed_ips)) : ?>
                 <div class="table-responsive">
