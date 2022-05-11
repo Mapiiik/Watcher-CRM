@@ -40,7 +40,7 @@
             ?></td>
             <td><?php
             if (isset($account->radacct[0]->nasipaddress)) {
-                $device = $ip->routeros_devices->first();
+                $device = $account->radacct[0]->routeros_devices_for_nas->first();
                 echo isset($device['access_point']['id']) ?
                     __d('radius', 'Access Point') . ': ' . $this->Html->link(
                         $device['access_point']['name'],
