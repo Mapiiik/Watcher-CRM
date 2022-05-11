@@ -38,9 +38,10 @@ class AccountsCell extends Cell
     /**
      * Default display method.
      *
+     * @param array<mixed> $conditions Query conditions.
      * @return void
      */
-    public function display($conditions = [])
+    public function display(array $conditions = [])
     {
         try {
             //Try to load RADIUS accounts
