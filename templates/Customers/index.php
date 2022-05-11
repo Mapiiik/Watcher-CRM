@@ -7,7 +7,9 @@
 <?php
 echo $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]);
 
-echo $this->Form->hidden('limit');
+if ($this->request->getQuery('limit')) {
+    echo $this->Form->hidden('limit');
+}
 echo $this->Form->control('search', [
     'label' => __('Search'),
     'type' => 'search',
