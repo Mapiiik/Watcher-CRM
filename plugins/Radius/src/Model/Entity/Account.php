@@ -19,6 +19,7 @@ use Cake\ORM\Entity;
  * @property int $created_by
  * @property \Cake\I18n\FrozenTime|null $modified
  * @property int|null $modified_by
+ * @property string $style
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Contract $contract
@@ -67,4 +68,20 @@ class Account extends Entity
     protected $_hidden = [
         'password',
     ];
+
+    /**
+     * getter for style
+     *
+     * @return string
+     */
+    protected function _getStyle(): string
+    {
+        $style = '';
+
+        if (!$this->active) {
+            $style = 'background-color: #bbbbbb;';
+        }
+
+        return $style;
+    }
 }

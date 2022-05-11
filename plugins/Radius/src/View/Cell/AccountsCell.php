@@ -54,8 +54,8 @@ class AccountsCell extends Cell
                     'Radacct' => ['sort' => ['Radacct.acctstarttime' => 'DESC']],
                 ],
                 'order' => [
+                    'Accounts.active' => 'DESC',
                     'Accounts.contract_id',
-                    'Accounts.active',
                     'Accounts.username',
                 ],
             ]);
