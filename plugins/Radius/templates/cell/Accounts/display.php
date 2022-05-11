@@ -2,7 +2,7 @@
 <div class="table-responsive">
     <table>
         <tr>
-            <?php if ($show_contracts): ?>
+            <?php if ($show_contracts) : ?>
             <th><?= __d('radius', 'Contract') ?></th>
             <?php endif; ?>
             <th><?= __d('radius', 'Username') ?></th>
@@ -15,7 +15,7 @@
         </tr>
         <?php foreach ($accounts as $account) : ?>
         <tr style="<?= $account->style ?>">
-            <?php if ($show_contracts): ?>
+            <?php if ($show_contracts) : ?>
             <td><?= $account->has('contract') ?
                 $this->Html->link(
                     $account->contract->number,

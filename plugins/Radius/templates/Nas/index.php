@@ -5,7 +5,11 @@
  */
 ?>
 <div class="Nas index content">
-    <?= $this->Html->link(__d('radius', 'New RADIUS NAS'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
+    <?= $this->Html->link(
+        __d('radius', 'New RADIUS NAS'),
+        ['action' => 'add'],
+        ['class' => 'button float-right win-link']
+    ) ?>
     <h3><?= __d('radius', 'RADIUS NAS') ?></h3>
     <div class="table-responsive">
         <table>
