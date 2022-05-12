@@ -4,6 +4,7 @@
  * @var \App\Model\Entity\Billing $billing
  */
 
+use Cake\I18n\FrozenDate;
 use Cake\I18n\Number;
 ?>
 <div class="row">
@@ -131,7 +132,7 @@ use Cake\I18n\Number;
             }
             ?>
             <div class="related">
-                <h4><?= __('Billing Overview') ?></h4>
+                <h4><?= __('Billing Preview') ?></h4>
                 <div class="table-responsive">
                     <table>
                         <tr>
@@ -141,7 +142,10 @@ use Cake\I18n\Number;
                             <th><?= __('Price') ?></th>
                         </tr>
                         <?php foreach ($bill_dates as $bill_date) : ?>
-                        <tr>
+                        <tr style="<?=
+                            $bill_date->subDay(1) == FrozenDate::create()->lastOfMonth() ?
+                                'background-color: #ffd500;' : ''
+                        ?>">
                             <td><?= $bill_date->subDay(1) ?></td>
                             <td><?= $bill_date->subMonth(1) ?></td>
                             <td><?= $bill_date->subDay(1) ?></td>
