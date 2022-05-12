@@ -751,11 +751,6 @@ use Cake\I18n\Number;
                 <?php endif; ?>
             </div>
             <div class="related">
-                <?= $this->AuthLink->link(
-                    __('New RADIUS Account'),
-                    ['plugin' => 'Radius', 'controller' => 'Accounts', 'action' => 'add'],
-                    ['class' => 'button button-small float-right win-link']
-                ) ?>
                 <h4><?= __('Related RADIUS Accounts') ?></h4>
                 <?= $this->cell(
                     'Radius.Accounts',
@@ -853,6 +848,14 @@ use Cake\I18n\Number;
                     </table>
                 </div>
                 <?php endif; ?>
+            </div>
+            <div class="related">
+                <h4><?= __('Invoices') ?></h4>
+                <?= $this->cell(
+                    'BookkeepingPohoda.Invoices',
+                    [['Invoices.customer_id' => $customer->id]],
+                    ['show_customers' => false]
+                ) ?>
             </div>
             <div class="related">
                 <?= $this->AuthLink->link(

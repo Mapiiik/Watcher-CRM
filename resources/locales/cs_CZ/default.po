@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-05-12 20:05+0200\n"
-"PO-Revision-Date: 2022-05-12 20:07+0200\n"
+"POT-Creation-Date: 2022-05-12 21:15+0200\n"
+"PO-Revision-Date: 2022-05-12 21:15+0200\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -724,8 +724,8 @@ msgstr "Specialista"
 #: templates/Customers/view.php:330 templates/Customers/view.php:403
 #: templates/Customers/view.php:462 templates/Customers/view.php:521
 #: templates/Customers/view.php:578 templates/Customers/view.php:632
-#: templates/Customers/view.php:703 templates/Customers/view.php:776
-#: templates/Customers/view.php:822 templates/Customers/view.php:873
+#: templates/Customers/view.php:703 templates/Customers/view.php:771
+#: templates/Customers/view.php:817 templates/Customers/view.php:876
 #: templates/Emails/add.php:10 templates/Emails/edit.php:10
 #: templates/Emails/index.php:20 templates/Emails/view.php:10
 #: templates/EquipmentTypes/add.php:10 templates/EquipmentTypes/edit.php:10
@@ -835,8 +835,8 @@ msgstr "Potvrdit"
 #: templates/Customers/view.php:369 templates/Customers/view.php:431
 #: templates/Customers/view.php:499 templates/Customers/view.php:553
 #: templates/Customers/view.php:609 templates/Customers/view.php:681
-#: templates/Customers/view.php:742 templates/Customers/view.php:800
-#: templates/Customers/view.php:846 templates/Customers/view.php:893
+#: templates/Customers/view.php:742 templates/Customers/view.php:795
+#: templates/Customers/view.php:841 templates/Customers/view.php:896
 #: templates/Emails/edit.php:12 templates/Emails/index.php:45
 #: templates/EquipmentTypes/edit.php:12 templates/EquipmentTypes/index.php:38
 #: templates/EquipmentTypes/view.php:92 templates/EquipmentTypes/view.php:146
@@ -889,8 +889,8 @@ msgstr "Odstranit"
 #: templates/Customers/view.php:433 templates/Customers/view.php:501
 #: templates/Customers/view.php:559 templates/Customers/view.php:611
 #: templates/Customers/view.php:683 templates/Customers/view.php:744
-#: templates/Customers/view.php:802 templates/Customers/view.php:848
-#: templates/Customers/view.php:895 templates/Emails/edit.php:14
+#: templates/Customers/view.php:797 templates/Customers/view.php:843
+#: templates/Customers/view.php:898 templates/Emails/edit.php:14
 #: templates/Emails/index.php:47 templates/Emails/view.php:19
 #: templates/EquipmentTypes/edit.php:15 templates/EquipmentTypes/index.php:40
 #: templates/EquipmentTypes/view.php:20 templates/EquipmentTypes/view.php:98
@@ -968,8 +968,8 @@ msgstr "Mapy.cz"
 #: templates/Customers/view.php:422 templates/Customers/view.php:490
 #: templates/Customers/view.php:544 templates/Customers/view.php:600
 #: templates/Customers/view.php:672 templates/Customers/view.php:733
-#: templates/Customers/view.php:791 templates/Customers/view.php:837
-#: templates/Customers/view.php:884 templates/Emails/index.php:38
+#: templates/Customers/view.php:786 templates/Customers/view.php:832
+#: templates/Customers/view.php:887 templates/Emails/index.php:38
 #: templates/EquipmentTypes/index.php:31 templates/EquipmentTypes/view.php:83
 #: templates/EquipmentTypes/view.php:137 templates/IpNetworks/index.php:39
 #: templates/Ips/index.php:41 templates/Labels/index.php:33
@@ -1005,8 +1005,8 @@ msgstr "Zobrazit"
 #: templates/Customers/view.php:426 templates/Customers/view.php:494
 #: templates/Customers/view.php:548 templates/Customers/view.php:604
 #: templates/Customers/view.php:676 templates/Customers/view.php:737
-#: templates/Customers/view.php:795 templates/Customers/view.php:841
-#: templates/Customers/view.php:888 templates/Emails/index.php:40
+#: templates/Customers/view.php:790 templates/Customers/view.php:836
+#: templates/Customers/view.php:891 templates/Emails/index.php:40
 #: templates/EquipmentTypes/index.php:33 templates/EquipmentTypes/view.php:87
 #: templates/EquipmentTypes/view.php:141 templates/IpNetworks/index.php:41
 #: templates/Ips/index.php:43 templates/Labels/index.php:35
@@ -1360,8 +1360,8 @@ msgstr "Upravil"
 #: templates/Contracts/view.php:535 templates/CustomerLabels/view.php:68
 #: templates/Customers/view.php:161 templates/Customers/view.php:402
 #: templates/Customers/view.php:461 templates/Customers/view.php:629
-#: templates/Customers/view.php:701 templates/Customers/view.php:774
-#: templates/Customers/view.php:820 templates/IpNetworks/view.php:83
+#: templates/Customers/view.php:701 templates/Customers/view.php:769
+#: templates/Customers/view.php:815 templates/IpNetworks/view.php:83
 #: templates/Ips/view.php:96 templates/Labels/view.php:69
 #: templates/RemovedIpNetworks/view.php:78 templates/RemovedIps/view.php:65
 #: templates/ServiceTypes/view.php:108 templates/Services/view.php:87
@@ -1397,8 +1397,8 @@ msgstr "Odstranit fakturaci"
 #: templates/Billings/view.php:40 templates/BorrowedEquipments/view.php:48
 #: templates/Customers/view.php:449 templates/Customers/view.php:516
 #: templates/Customers/view.php:574 templates/Customers/view.php:626
-#: templates/Customers/view.php:698 templates/Customers/view.php:771
-#: templates/Customers/view.php:817 templates/IpNetworks/view.php:46
+#: templates/Customers/view.php:698 templates/Customers/view.php:766
+#: templates/Customers/view.php:812 templates/IpNetworks/view.php:46
 #: templates/Ips/view.php:33 templates/RemovedIpNetworks/view.php:49
 #: templates/RemovedIps/view.php:37 templates/SoldEquipments/view.php:48
 msgid "Contract"
@@ -1410,7 +1410,7 @@ msgid "Service"
 msgstr "Služba"
 
 #: templates/Billings/view.php:54 templates/Contracts/view.php:191
-#: templates/Customers/view.php:451 templates/Customers/view.php:871
+#: templates/Customers/view.php:451 templates/Customers/view.php:874
 #: templates/Services/view.php:84 templates/TaskStates/view.php:49
 #: templates/TaskTypes/view.php:49 templates/Tasks/view.php:119
 msgid "Text"
@@ -1560,7 +1560,7 @@ msgid "Delete Brokerage Dealer"
 msgstr ""
 
 #: templates/BrokerageDealers/view.php:41 templates/Customers/print.php:100
-#: templates/Customers/view.php:114 templates/Customers/view.php:872
+#: templates/Customers/view.php:114 templates/Customers/view.php:875
 #: templates/Tasks/view.php:65
 msgid "Dealer"
 msgstr "Dealer"
@@ -1812,7 +1812,7 @@ msgstr "IP adresy"
 
 #: templates/Contracts/view.php:344 templates/Contracts/view.php:488
 #: templates/Contracts/view.php:533 templates/Customers/view.php:627
-#: templates/Customers/view.php:772 templates/Ips/view.php:40
+#: templates/Customers/view.php:767 templates/Ips/view.php:40
 #: templates/RemovedIps/view.php:44
 msgid "Ip"
 msgstr "IP"
@@ -1820,7 +1820,7 @@ msgstr "IP"
 #: templates/Contracts/view.php:345 templates/Contracts/view.php:416
 #: templates/Contracts/view.php:489 templates/Contracts/view.php:534
 #: templates/Customers/view.php:628 templates/Customers/view.php:700
-#: templates/Customers/view.php:773 templates/Customers/view.php:819
+#: templates/Customers/view.php:768 templates/Customers/view.php:814
 #: templates/IpNetworks/view.php:58 templates/Ips/view.php:44
 #: templates/RemovedIpNetworks/view.php:61 templates/RemovedIps/view.php:48
 msgid "Type Of Use"
@@ -1848,12 +1848,12 @@ msgid "IP Networks"
 msgstr "IP sítě"
 
 #: templates/Contracts/view.php:415 templates/Customers/view.php:699
-#: templates/Customers/view.php:818 templates/IpNetworks/view.php:54
+#: templates/Customers/view.php:813 templates/IpNetworks/view.php:54
 #: templates/RemovedIpNetworks/view.php:57
 msgid "Ip Network"
 msgstr "IP síť"
 
-#: templates/Contracts/view.php:466 templates/Customers/view.php:755
+#: templates/Contracts/view.php:466
 msgid "New RADIUS Account"
 msgstr "Nový účet RADIUS"
 
@@ -1871,7 +1871,7 @@ msgid "Removed Ips"
 msgstr "Odebrané IP adresy"
 
 #: templates/Contracts/view.php:491 templates/Contracts/view.php:536
-#: templates/Customers/view.php:775 templates/Customers/view.php:821
+#: templates/Customers/view.php:770 templates/Customers/view.php:816
 #: templates/RemovedIpNetworks/view.php:69 templates/RemovedIps/view.php:56
 msgid "Removed"
 msgstr "Odstraněno"
@@ -2156,37 +2156,41 @@ msgstr "Související IP adresy"
 msgid "Related IP Networks"
 msgstr "Související IP sítě"
 
-#: templates/Customers/view.php:759
+#: templates/Customers/view.php:754
 msgid "Related RADIUS Accounts"
 msgstr "Související účty RADIUS"
 
-#: templates/Customers/view.php:766
+#: templates/Customers/view.php:761
 msgid "Related Removed Ips"
 msgstr "Související odebrané IP adresy"
 
-#: templates/Customers/view.php:812
+#: templates/Customers/view.php:807
 msgid "Related Removed IP Networks"
 msgstr "Související odebrané IP sítě"
 
-#: templates/Customers/view.php:859 templates/Tasks/index.php:8
+#: templates/Customers/view.php:853
+msgid "Invoices"
+msgstr "Faktury"
+
+#: templates/Customers/view.php:862 templates/Tasks/index.php:8
 #: templates/Tasks/view.php:18
 msgid "New Task"
 msgstr "Nový úkol"
 
-#: templates/Customers/view.php:863 templates/Tasks/index.php:9
+#: templates/Customers/view.php:866 templates/Tasks/index.php:9
 #: templates/layout/default.php:74
 msgid "Tasks"
 msgstr "Úkoly"
 
-#: templates/Customers/view.php:868 templates/Tasks/view.php:28
+#: templates/Customers/view.php:871 templates/Tasks/view.php:28
 msgid "Task Type"
 msgstr "Typ úkolu"
 
-#: templates/Customers/view.php:869 templates/Tasks/view.php:39
+#: templates/Customers/view.php:872 templates/Tasks/view.php:39
 msgid "Task State"
 msgstr "Stav úkolu"
 
-#: templates/Customers/view.php:870 templates/TaskStates/view.php:48
+#: templates/Customers/view.php:873 templates/TaskStates/view.php:48
 #: templates/TaskTypes/view.php:48 templates/Tasks/view.php:46
 msgid "Subject"
 msgstr "Předmět"

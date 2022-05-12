@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-04-11 10:50+0200\n"
+"POT-Creation-Date: 2022-05-12 21:16+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -63,6 +63,7 @@ msgstr ""
 #: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:51
 #: ./plugins/BookkeepingPohoda/templates/Invoices/send_by_email.php:9
 #: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:10
+#: ./plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:18
 msgid "Actions"
 msgstr ""
 
@@ -84,6 +85,7 @@ msgstr ""
 #: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:71
 #: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:34
 #: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:47
+#: ./plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:6
 msgid "Customer"
 msgstr ""
 
@@ -91,6 +93,7 @@ msgstr ""
 #: ./plugins/BookkeepingPohoda/templates/Invoices/edit.php:39
 #: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:35
 #: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:58
+#: ./plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:8
 msgid "Number"
 msgstr ""
 
@@ -98,6 +101,7 @@ msgstr ""
 #: ./plugins/BookkeepingPohoda/templates/Invoices/edit.php:42
 #: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:38
 #: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:62
+#: ./plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:9
 msgid "Variable Symbol"
 msgstr ""
 
@@ -106,6 +110,7 @@ msgstr ""
 #: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:40
 #: ./plugins/BookkeepingPohoda/templates/Invoices/send_by_email.php:26
 #: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:66
+#: ./plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:10
 msgid "Creation Date"
 msgstr ""
 
@@ -113,12 +118,14 @@ msgstr ""
 #: ./plugins/BookkeepingPohoda/templates/Invoices/edit.php:49
 #: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:41
 #: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:70
+#: ./plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:11
 msgid "Due Date"
 msgstr ""
 
 #: ./plugins/BookkeepingPohoda/templates/Invoices/add.php:45
 #: ./plugins/BookkeepingPohoda/templates/Invoices/edit.php:53
 #: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:112
+#: ./plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:13
 msgid "Text"
 msgstr ""
 
@@ -128,6 +135,7 @@ msgstr ""
 #: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:132
 #: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:42
 #: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:74
+#: ./plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:14
 msgid "Total"
 msgstr ""
 
@@ -135,6 +143,7 @@ msgstr ""
 #: ./plugins/BookkeepingPohoda/templates/Invoices/edit.php:59
 #: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:43
 #: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:78
+#: ./plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:15
 msgid "Debt"
 msgstr ""
 
@@ -142,6 +151,7 @@ msgstr ""
 #: ./plugins/BookkeepingPohoda/templates/Invoices/edit.php:62
 #: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:44
 #: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:82
+#: ./plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:12
 msgid "Payment Date"
 msgstr ""
 
@@ -150,6 +160,7 @@ msgstr ""
 #: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:14
 #: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:45
 #: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:86
+#: ./plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:16
 msgid "Send By Email"
 msgstr ""
 
@@ -157,6 +168,7 @@ msgstr ""
 #: ./plugins/BookkeepingPohoda/templates/Invoices/edit.php:69
 #: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:46
 #: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:91
+#: ./plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:17
 msgid "Email Sent"
 msgstr ""
 
@@ -169,12 +181,12 @@ msgid "Submit"
 msgstr ""
 
 #: ./plugins/BookkeepingPohoda/templates/Invoices/edit.php:13
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:90
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:91
 msgid "Delete"
 msgstr ""
 
 #: ./plugins/BookkeepingPohoda/templates/Invoices/edit.php:16
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:92
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:93
 #: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:20
 msgid "Are you sure you want to delete # {0}?"
 msgstr ""
@@ -258,35 +270,48 @@ msgstr ""
 msgid "Modified By"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:79
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:72
+#: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:88
+#: ./plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:39
+msgid "Yes"
+msgstr ""
+
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:72
+#: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:88
+#: ./plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:39
+msgid "No"
+msgstr ""
+
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:80
+#: ./plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:43
 msgid "Download"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:83
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:84
 msgid "View"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:85
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:86
 msgid "Edit"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:106
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:107
 msgid "first"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:107
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:108
 msgid "previous"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:109
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:110
 msgid "next"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:110
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:111
 msgid "last"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:113
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:114
 msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
 msgstr ""
 
@@ -300,13 +325,5 @@ msgstr ""
 
 #: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:36
 msgid "Download Invoice"
-msgstr ""
-
-#: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:88
-msgid "Yes"
-msgstr ""
-
-#: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:88
-msgid "No"
 msgstr ""
 

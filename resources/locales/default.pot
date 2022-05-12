@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-05-12 20:05+0200\n"
+"POT-Creation-Date: 2022-05-12 21:15+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -758,9 +758,9 @@ msgstr ""
 #: ./templates/Customers/view.php:578
 #: ./templates/Customers/view.php:632
 #: ./templates/Customers/view.php:703
-#: ./templates/Customers/view.php:776
-#: ./templates/Customers/view.php:822
-#: ./templates/Customers/view.php:873
+#: ./templates/Customers/view.php:771
+#: ./templates/Customers/view.php:817
+#: ./templates/Customers/view.php:876
 #: ./templates/Emails/add.php:10
 #: ./templates/Emails/edit.php:10
 #: ./templates/Emails/index.php:20
@@ -951,9 +951,9 @@ msgstr ""
 #: ./templates/Customers/view.php:609
 #: ./templates/Customers/view.php:681
 #: ./templates/Customers/view.php:742
-#: ./templates/Customers/view.php:800
-#: ./templates/Customers/view.php:846
-#: ./templates/Customers/view.php:893
+#: ./templates/Customers/view.php:795
+#: ./templates/Customers/view.php:841
+#: ./templates/Customers/view.php:896
 #: ./templates/Emails/edit.php:12
 #: ./templates/Emails/index.php:45
 #: ./templates/EquipmentTypes/edit.php:12
@@ -1048,9 +1048,9 @@ msgstr ""
 #: ./templates/Customers/view.php:611
 #: ./templates/Customers/view.php:683
 #: ./templates/Customers/view.php:744
-#: ./templates/Customers/view.php:802
-#: ./templates/Customers/view.php:848
-#: ./templates/Customers/view.php:895
+#: ./templates/Customers/view.php:797
+#: ./templates/Customers/view.php:843
+#: ./templates/Customers/view.php:898
 #: ./templates/Emails/edit.php:14
 #: ./templates/Emails/index.php:47
 #: ./templates/Emails/view.php:19
@@ -1178,9 +1178,9 @@ msgstr ""
 #: ./templates/Customers/view.php:600
 #: ./templates/Customers/view.php:672
 #: ./templates/Customers/view.php:733
-#: ./templates/Customers/view.php:791
-#: ./templates/Customers/view.php:837
-#: ./templates/Customers/view.php:884
+#: ./templates/Customers/view.php:786
+#: ./templates/Customers/view.php:832
+#: ./templates/Customers/view.php:887
 #: ./templates/Emails/index.php:38
 #: ./templates/EquipmentTypes/index.php:31
 #: ./templates/EquipmentTypes/view.php:83
@@ -1243,9 +1243,9 @@ msgstr ""
 #: ./templates/Customers/view.php:604
 #: ./templates/Customers/view.php:676
 #: ./templates/Customers/view.php:737
-#: ./templates/Customers/view.php:795
-#: ./templates/Customers/view.php:841
-#: ./templates/Customers/view.php:888
+#: ./templates/Customers/view.php:790
+#: ./templates/Customers/view.php:836
+#: ./templates/Customers/view.php:891
 #: ./templates/Emails/index.php:40
 #: ./templates/EquipmentTypes/index.php:33
 #: ./templates/EquipmentTypes/view.php:87
@@ -1817,8 +1817,8 @@ msgstr ""
 #: ./templates/Customers/view.php:461
 #: ./templates/Customers/view.php:629
 #: ./templates/Customers/view.php:701
-#: ./templates/Customers/view.php:774
-#: ./templates/Customers/view.php:820
+#: ./templates/Customers/view.php:769
+#: ./templates/Customers/view.php:815
 #: ./templates/IpNetworks/view.php:83
 #: ./templates/Ips/view.php:96
 #: ./templates/Labels/view.php:69
@@ -1866,8 +1866,8 @@ msgstr ""
 #: ./templates/Customers/view.php:574
 #: ./templates/Customers/view.php:626
 #: ./templates/Customers/view.php:698
-#: ./templates/Customers/view.php:771
-#: ./templates/Customers/view.php:817
+#: ./templates/Customers/view.php:766
+#: ./templates/Customers/view.php:812
 #: ./templates/IpNetworks/view.php:46
 #: ./templates/Ips/view.php:33
 #: ./templates/RemovedIpNetworks/view.php:49
@@ -1885,7 +1885,7 @@ msgstr ""
 #: ./templates/Billings/view.php:54
 #: ./templates/Contracts/view.php:191
 #: ./templates/Customers/view.php:451
-#: ./templates/Customers/view.php:871
+#: ./templates/Customers/view.php:874
 #: ./templates/Services/view.php:84
 #: ./templates/TaskStates/view.php:49
 #: ./templates/TaskTypes/view.php:49
@@ -2068,7 +2068,7 @@ msgstr ""
 #: ./templates/BrokerageDealers/view.php:41
 #: ./templates/Customers/print.php:100
 #: ./templates/Customers/view.php:114
-#: ./templates/Customers/view.php:872
+#: ./templates/Customers/view.php:875
 #: ./templates/Tasks/view.php:65
 msgid "Dealer"
 msgstr ""
@@ -2383,7 +2383,7 @@ msgstr ""
 #: ./templates/Contracts/view.php:488
 #: ./templates/Contracts/view.php:533
 #: ./templates/Customers/view.php:627
-#: ./templates/Customers/view.php:772
+#: ./templates/Customers/view.php:767
 #: ./templates/Ips/view.php:40
 #: ./templates/RemovedIps/view.php:44
 msgid "Ip"
@@ -2395,8 +2395,8 @@ msgstr ""
 #: ./templates/Contracts/view.php:534
 #: ./templates/Customers/view.php:628
 #: ./templates/Customers/view.php:700
-#: ./templates/Customers/view.php:773
-#: ./templates/Customers/view.php:819
+#: ./templates/Customers/view.php:768
+#: ./templates/Customers/view.php:814
 #: ./templates/IpNetworks/view.php:58
 #: ./templates/Ips/view.php:44
 #: ./templates/RemovedIpNetworks/view.php:61
@@ -2433,14 +2433,13 @@ msgstr ""
 
 #: ./templates/Contracts/view.php:415
 #: ./templates/Customers/view.php:699
-#: ./templates/Customers/view.php:818
+#: ./templates/Customers/view.php:813
 #: ./templates/IpNetworks/view.php:54
 #: ./templates/RemovedIpNetworks/view.php:57
 msgid "Ip Network"
 msgstr ""
 
 #: ./templates/Contracts/view.php:466
-#: ./templates/Customers/view.php:755
 msgid "New RADIUS Account"
 msgstr ""
 
@@ -2461,8 +2460,8 @@ msgstr ""
 
 #: ./templates/Contracts/view.php:491
 #: ./templates/Contracts/view.php:536
-#: ./templates/Customers/view.php:775
-#: ./templates/Customers/view.php:821
+#: ./templates/Customers/view.php:770
+#: ./templates/Customers/view.php:816
 #: ./templates/RemovedIpNetworks/view.php:69
 #: ./templates/RemovedIps/view.php:56
 msgid "Removed"
@@ -2797,41 +2796,45 @@ msgstr ""
 msgid "Related IP Networks"
 msgstr ""
 
-#: ./templates/Customers/view.php:759
+#: ./templates/Customers/view.php:754
 msgid "Related RADIUS Accounts"
 msgstr ""
 
-#: ./templates/Customers/view.php:766
+#: ./templates/Customers/view.php:761
 msgid "Related Removed Ips"
 msgstr ""
 
-#: ./templates/Customers/view.php:812
+#: ./templates/Customers/view.php:807
 msgid "Related Removed IP Networks"
 msgstr ""
 
-#: ./templates/Customers/view.php:859
+#: ./templates/Customers/view.php:853
+msgid "Invoices"
+msgstr ""
+
+#: ./templates/Customers/view.php:862
 #: ./templates/Tasks/index.php:8
 #: ./templates/Tasks/view.php:18
 msgid "New Task"
 msgstr ""
 
-#: ./templates/Customers/view.php:863
+#: ./templates/Customers/view.php:866
 #: ./templates/Tasks/index.php:9
 #: ./templates/layout/default.php:74
 msgid "Tasks"
 msgstr ""
 
-#: ./templates/Customers/view.php:868
+#: ./templates/Customers/view.php:871
 #: ./templates/Tasks/view.php:28
 msgid "Task Type"
 msgstr ""
 
-#: ./templates/Customers/view.php:869
+#: ./templates/Customers/view.php:872
 #: ./templates/Tasks/view.php:39
 msgid "Task State"
 msgstr ""
 
-#: ./templates/Customers/view.php:870
+#: ./templates/Customers/view.php:873
 #: ./templates/TaskStates/view.php:48
 #: ./templates/TaskTypes/view.php:48
 #: ./templates/Tasks/view.php:46

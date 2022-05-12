@@ -65,10 +65,11 @@
                     <td><?= $this->Number->format($invoice->variable_symbol) ?></td>
                     <td><?= h($invoice->creation_date) ?></td>
                     <td><?= h($invoice->due_date) ?></td>
-                    <td><?= $this->Number->format($invoice->total) ?></td>
-                    <td><?= $this->Number->format($invoice->debt) ?></td>
+                    <td><?= $this->Number->currency($invoice->total) ?></td>
+                    <td><?= $this->Number->currency($invoice->debt) ?></td>
                     <td><?= h($invoice->payment_date) ?></td>
-                    <td><?= h($invoice->send_by_email) ?></td>
+                    <td><?= $invoice->send_by_email ?
+                        __d('bookkeeping_pohoda', 'Yes') : __d('bookkeeping_pohoda', 'No'); ?></td>
                     <td><?= h($invoice->email_sent) ?></td>
                     <td><?= h($invoice->created) ?></td>
                     <td><?= $this->Number->format($invoice->created_by) ?></td>
