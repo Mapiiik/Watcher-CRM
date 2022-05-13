@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace BookkeepingPohoda\Model\Entity;
 
+use Cake\I18n\FrozenDate;
 use Cake\ORM\Entity;
 
 /**
@@ -27,6 +28,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Billing[] $items
  * @property string|null $note
  * @property string|null $internal_note
+ * @property string $style
  *
  * @property \App\Model\Entity\Customer $customer
  */
@@ -59,4 +61,25 @@ class Invoice extends Entity
         'modified_by' => true,
         'customer' => true,
     ];
+
+    /**
+     * getter for style
+     *
+     * @return string
+     */
+    protected function _getStyle(): string
+    {
+        $style = '';
+        $now = new FrozenDate();
+
+        if ($this->debt > 0) {
+            $style = 'color: red';
+        }
+
+        if ($this->debt > 0 && $this->due_date > $now) {
+            $style = 'background-color: red';
+        }
+
+        return $style;
+    }
 }

@@ -53,7 +53,7 @@
             </thead>
             <tbody>
                 <?php foreach ($invoices as $invoice) : ?>
-                <tr>
+                <tr style="<?= $invoice->style ?>">
                     <td><?= $this->Number->format($invoice->id) ?></td>
                     <td>
                         <?= $invoice->has('customer') ? $this->Html->link(
