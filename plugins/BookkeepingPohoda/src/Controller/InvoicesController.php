@@ -511,7 +511,7 @@ class InvoicesController extends AppController
                             'The import file is missing some required columns.'
                         ));
 
-                        return;
+                        return null;
                     }
 
                     if (
