@@ -73,11 +73,11 @@ class Invoice extends Entity
         $now = new FrozenDate();
 
         if ($this->debt > 0) {
-            $style = 'color: red';
+            $style = 'color: red;';
         }
 
-        if ($this->debt > 0 && $this->due_date > $now) {
-            $style = 'background-color: red';
+        if ($this->debt > 0 && $this->due_date < $now) {
+            $style = 'background-color: red; color: black;';
         }
 
         return $style;
