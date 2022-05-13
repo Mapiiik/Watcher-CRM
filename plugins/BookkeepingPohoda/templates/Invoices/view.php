@@ -60,7 +60,7 @@
                 </tr>
                 <tr>
                     <th><?= __d('bookkeeping_pohoda', 'Variable Symbol') ?></th>
-                    <td><?= $this->Number->format($invoice->variable_symbol) ?></td>
+                    <td><?= h($invoice->variable_symbol) ?></td>
                 </tr>
                 <tr>
                     <th><?= __d('bookkeeping_pohoda', 'Creation Date') ?></th>

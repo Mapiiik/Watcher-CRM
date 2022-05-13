@@ -28,7 +28,7 @@
             </td>
             <?php endif; ?>
             <td><?= $this->Number->format($invoice->number) ?></td>
-            <td><?= $this->Number->format($invoice->variable_symbol) ?></td>
+            <td><?= h($invoice->variable_symbol) ?></td>
             <td><?= h($invoice->creation_date) ?></td>
             <td><?= h($invoice->due_date) ?></td>
             <td><?= h($invoice->payment_date) ?></td>
