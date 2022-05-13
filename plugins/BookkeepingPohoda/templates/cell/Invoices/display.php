@@ -1,4 +1,8 @@
-<?php if (!empty($invoices)) : ?>
+<?php
+
+use Cake\I18n\FrozenDate;
+
+if (!empty($invoices)) : ?>
 <div class="table-responsive">
     <table>
         <tr>
@@ -48,5 +52,18 @@
         </tr>
         <?php endforeach; ?>
     </table>
+</div>
+<div>
+    <?= __d('bookkeeping_pohoda', 'Total Debt') . ': '
+        . $this->Number->currency($invoices->sumOf('debt')) ?><br>
+    <?= __d('bookkeeping_pohoda', 'Total Overdue Debt') . ': '
+        . $this->Number->currency(
+            $invoices
+                ->filter(function ($value, $key) {
+                    return $value->due_date < FrozenDate::create();
+                })
+                ->sumOf('debt')
+        )
+    ?><br>
 </div>
 <?php endif; ?>

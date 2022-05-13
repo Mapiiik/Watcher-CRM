@@ -3,6 +3,7 @@
  * @var \App\View\AppView $this
  * @var \BookkeepingPohoda\Model\Entity\Invoice[]|\Cake\Collection\CollectionInterface $invoices
  */
+
 ?>
 <div class="invoices index content">
     <?= $this->Html->link(
@@ -101,6 +102,10 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
+    </div>
+    <div>
+        <?= __d('bookkeeping_pohoda', 'Total Debt') . ': ' . $this->Number->currency($total_debt) ?><br>
+        <?= __d('bookkeeping_pohoda', 'Total Overdue Debt') . ': ' . $this->Number->currency($total_overdue_debt) ?><br>
     </div>
     <div class="paginator">
         <ul class="pagination">

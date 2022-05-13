@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace BookkeepingPohoda\Controller;
 
 use Cake\Collection\CollectionInterface;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\I18n\FrozenDate;
 use Cake\ORM\Query;
 use stdClass;
@@ -30,6 +31,21 @@ class InvoicesController extends AppController
             ],
         ];
         $invoices = $this->paginate($this->Invoices);
+
+        // get debts
+        $query = $this->Invoices->find();
+        $query = $query
+            ->select([
+                'debt' => $query->func()->sum('Invoices.debt'),
+            ]);
+
+        $this->set('total_debt', $query->first()['debt']);
+        $this->set(
+            'total_overdue_debt',
+            $query
+                ->where(['Invoices.due_date < NOW()'])
+                ->first()['debt']
+        );
 
         $this->set(compact('invoices'));
     }
@@ -477,11 +493,36 @@ class InvoicesController extends AppController
                         }
                     }
 
+                    // check that all columns are present
+                    if (
+                        !(
+                            isset($record['CISLO'])
+                            && isset($record['VARSYM'])
+                            && isset($record['DATUM'])
+                            && isset($record['DATSPLAT'])
+                            && isset($record['STEXT'])
+                            && isset($record['KCCELKEM'])
+                            && isset($record['KCLIKV'])
+                            && isset($record['DATLIKV'])
+                        )
+                    ) {
+                        $this->Flash->error(__d(
+                            'bookkeeping_pohoda',
+                            'The import file is missing some required columns.'
+                        ));
+
+                        return;
+                    }
+
                     if (
                         ((int)env('CUSTOMER_SERIES', '0') < (int)$record['VARSYM']) &&
                         ((int)$record['VARSYM'] < (int)env('CUSTOMER_SERIES', '0') + 50000)
                     ) {
-                        $invoice = $this->Invoices->findOrCreate(['number' => $record['CISLO']]);
+                        try {
+                            $invoice = $this->Invoices->setPrimaryKey('number')->get($record['CISLO']);
+                        } catch (RecordNotFoundException $e) {
+                            $invoice = $this->Invoices->newEntity(['number' => $record['CISLO']]);
+                        }
 
                         $invoice->customer_id = (int)$record['VARSYM'] - (int)env('CUSTOMER_SERIES', '0');
                         $invoice->variable_symbol = (int)$record['VARSYM'];
