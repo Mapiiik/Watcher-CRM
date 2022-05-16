@@ -28,6 +28,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime|null $estimated_date
  * @property \Cake\I18n\FrozenTime|null $critical_date
  * @property string|null $access_point_id
+ * @property string $style
  *
  * @property \App\Model\Entity\TaskType $task_type
  * @property \App\Model\Entity\Customer $customer
@@ -84,5 +85,21 @@ class Task extends Entity
         }
 
         return null;
+    }
+
+    /**
+     * getter for style
+     *
+     * @return string
+     */
+    protected function _getStyle(): string
+    {
+        $style = '';
+
+        if (isset($this->task_state->color)) {
+            $style = 'background-color: ' . $this->task_state->color . ';';
+        }
+
+        return $style;
     }
 }

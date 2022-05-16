@@ -876,7 +876,7 @@ use Cake\I18n\Number;
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($customer->tasks as $task) : ?>
-                        <tr>
+                        <tr style="<?= $task->style ?>">
                             <td><?= $task->has('task_type') ? h($task->task_type->name) : '' ?></td>
                             <td><?= $task->has('task_state') ? h($task->task_state->name) : '' ?></td>
                             <td><?= h($task->subject) ?></td>

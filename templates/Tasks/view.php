@@ -33,7 +33,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Priority') ?></th>
-                            <td><?= $this->Number->format($task->priority) ?></td>
+                            <td><?= $priorities[$task->priority] ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Task State') ?></th>

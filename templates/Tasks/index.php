@@ -16,8 +16,7 @@
                     <th><?= $this->Paginator->sort('priority') ?></th>
                     <th><?= $this->Paginator->sort('task_state_id') ?></th>
                     <th><?= $this->Paginator->sort('subject') ?></th>
-                    <th><?= $this->Paginator->sort('email') ?></th>
-                    <th><?= $this->Paginator->sort('phone') ?></th>
+                    <th><?= $this->Paginator->sort('text') ?></th>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('dealer_id') ?></th>
                     <th><?= $this->Paginator->sort('access_point_id') ?></th>
@@ -30,7 +29,7 @@
             </thead>
             <tbody>
                 <?php foreach ($tasks as $task) : ?>
-                <tr>
+                <tr style="<?= $task->style ?>">
                     <td><?= $this->Number->format($task->id) ?></td>
                     <td>
                         <?= $task->has('task_type') ? $this->Html->link(
@@ -38,7 +37,7 @@
                             ['controller' => 'TaskTypes', 'action' => 'view', $task->task_type->id]
                         ) : '' ?>
                     </td>
-                    <td><?= $this->Number->format($task->priority) ?></td>
+                    <td><?= $priorities[$task->priority] ?></td>
                     <td>
                         <?= $task->has('task_state') ? $this->Html->link(
                             $task->task_state->name,
@@ -46,8 +45,7 @@
                         ) : '' ?>
                     </td>
                     <td><?= h($task->subject) ?></td>
-                    <td><?= h($task->email) ?></td>
-                    <td><?= h($task->phone) ?></td>
+                    <td><?= nl2br($task->text) ?></td>
                     <td>
                         <?= $task->has('customer') ? $this->Html->link(
                             $task->customer->name,

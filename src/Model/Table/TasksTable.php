@@ -32,6 +32,13 @@ use Cake\Validation\Validator;
 class TasksTable extends Table
 {
     /**
+     * Priorities
+     *
+     * @var array<string>
+     */
+    public $priorities = [];
+
+    /**
      * Initialize method
      *
      * @param array $config The configuration for the Table.
@@ -40,6 +47,13 @@ class TasksTable extends Table
     public function initialize(array $config): void
     {
         parent::initialize($config);
+
+        $this->priorities = [
+            -10 => __('Low'),
+            0 => __('Normal'),
+            10 => __('High'),
+            50 => __('Urgent'),
+        ];
 
         $this->setTable('tasks');
         $this->setDisplayField('id');

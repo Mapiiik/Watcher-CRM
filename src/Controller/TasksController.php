@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\ApiClient;
+use Cake\I18n\FrozenTime;
 
 /**
  * Tasks Controller
@@ -32,13 +33,16 @@ class TasksController extends AppController
             'contain' => ['TaskTypes', 'Customers', 'Dealers', 'TaskStates'],
             'conditions' => $conditions,
             'order' => [
-                'Tasks.id' => 'desc',
+                'Tasks.task_state_id' => 'ASC',
+                'Tasks.id' => 'DESC',
             ],
         ];
 
         $tasks = $this->paginate($this->Tasks);
 
         $this->set(compact('tasks'));
+
+        $this->set('priorities', $this->Tasks->priorities);
     }
 
     /**
@@ -55,6 +59,8 @@ class TasksController extends AppController
         ]);
 
         $this->set(compact('task'));
+
+        $this->set('priorities', $this->Tasks->priorities);
     }
 
     /**
@@ -78,7 +84,7 @@ class TasksController extends AppController
             if ($this->Tasks->save($task)) {
                 $this->Flash->success(__('The task has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $task->id]);
             }
             $this->Flash->error(__('The task could not be saved. Please, try again.'));
         }
@@ -89,9 +95,50 @@ class TasksController extends AppController
 
         if (isset($customer_id)) {
             $customers->where(['id' => $customer_id]);
+
+            $customer = $this->Tasks->Customers->get($customer_id, ['contain' => ['Addresses', 'Phones', 'Emails']]);
+
+            // preset subject
+            if (empty($task->subject)) {
+                $task->subject = $customer->number . ' - ' . $customer->name;
+            }
+            // preset email
+            if (empty($task->email)) {
+                $task->email = $customer->email;
+            }
+            // preset phone
+            if (empty($task->phone)) {
+                $task->phone = $customer->phone;
+            }
+            // add customer details to text
+            if (empty($task->text)) {
+                foreach ($customer->addresses as $address) {
+                    // list all installation addresses
+                    if ($address->type == 0) {
+                        $task->text .= $this->Tasks->Customers->Addresses->types[$address->type] . ': ';
+                        $task->text .= $address->full_address . PHP_EOL;
+                    }
+                }
+                $task->text .= __('Email') . ': ' . $customer->email . PHP_EOL;
+                $task->text .= __('Phone') . ': ' . $customer->phone . PHP_EOL;
+            }
         }
 
+        // preset start date
+        if (empty($task->start_date)) {
+            $task->start_date = FrozenTime::create();
+        }
+        // preset dealer
+        if (empty($task->dealer_id)) {
+            $task->dealer_id = $this->request->getSession()->read('Auth.customer_id');
+        }
+
+        // add task text header
+        $task->text .= $this->taskTextHeader();
+
         $this->set(compact('task', 'taskTypes', 'customers', 'dealers', 'taskStates'));
+
+        $this->set('priorities', $this->Tasks->priorities);
 
         // load access points from NMS if possible
         $accessPoints = ApiClient::getAccessPoints();
@@ -123,7 +170,7 @@ class TasksController extends AppController
             if ($this->Tasks->save($task)) {
                 $this->Flash->success(__('The task has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $task->id]);
             }
             $this->Flash->error(__('The task could not be saved. Please, try again.'));
         }
@@ -136,7 +183,15 @@ class TasksController extends AppController
             $customers->where(['id' => $customer_id]);
         }
 
+        // add task text header
+        if (!empty($task->text)) {
+            $task->text .= PHP_EOL . PHP_EOL;
+        }
+        $task->text .= $this->taskTextHeader();
+
         $this->set(compact('task', 'taskTypes', 'customers', 'dealers', 'taskStates'));
+
+        $this->set('priorities', $this->Tasks->priorities);
 
         // load access points from NMS if possible
         $accessPoints = ApiClient::getAccessPoints();
@@ -166,5 +221,24 @@ class TasksController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    /**
+     * Task text header method
+     *
+     * @return string Task text header.
+     */
+    private function taskTextHeader()
+    {
+        $text = '';
+
+        $session = $this->request->getSession();
+        $text .= '------------------------------------------------------------' . PHP_EOL;
+        $text .= ' ' . $session->read('Auth.first_name') . ' ' . $session->read('Auth.last_name');
+        $text .= ' (' . FrozenTime::create() . ')' . PHP_EOL;
+        $text .= '------------------------------------------------------------' . PHP_EOL;
+        unset($session);
+
+        return $text;
     }
 }
