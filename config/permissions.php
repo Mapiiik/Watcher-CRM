@@ -157,14 +157,21 @@ return [
             'controller' => ['Customers', 'Contracts'],
             'action' => ['view'],
         ],
+        //allow tasks for technicians, managers and bookkeepers
+        [
+            'role' => ['technician', 'manager', 'bookkeeper'],
+            'plugin' => null,
+            'controller' => ['Tasks'],
+            'action' => ['index', 'view', 'add', 'edit'],
+        ],
         //allow technicians, managers and bookkeepers to view some more details
         [
             'role' => ['technician', 'manager', 'bookkeeper'],
             'plugin' => null,
             'controller' => [
                 'Emails', 'Phones', 'Logins', 'Addresses',
-                'Billings', 'BorrowedEquipments', 'SoldEquipments', 'Ips',
-                'Tasks',
+                'Billings', 'BorrowedEquipments', 'SoldEquipments',
+                'Ips', 'IpNetworks',
             ],
             'action' => ['view'],
         ],
@@ -175,8 +182,8 @@ return [
             'controller' => [
                 'Contracts',
                 'Emails', 'Phones', 'Logins', 'Addresses',
-                'Billings', 'BorrowedEquipments', 'SoldEquipments', 'Ips',
-                'Tasks',
+                'Billings', 'BorrowedEquipments', 'SoldEquipments',
+                'Ips', 'IpNetworks',
             ],
             'action' => ['index'],
             'allowed' => function ($user, $role, Cake\Http\ServerRequest $request) {
@@ -190,8 +197,8 @@ return [
             'controller' => [
                 'Customers', 'Contracts',
                 'Emails', 'Phones', 'Logins', 'Addresses',
-                'Billings', 'BorrowedEquipments', 'SoldEquipments', 'Ips',
-//                'Tasks'
+                'Billings', 'BorrowedEquipments', 'SoldEquipments',
+                'Ips', 'IpNetworks',
             ],
             'action' => ['add', 'edit', 'print'],
         ],
@@ -201,7 +208,8 @@ return [
             'plugin' => null,
             'controller' => [
                 'Emails', 'Phones', 'Logins',
-                'BorrowedEquipments', 'SoldEquipments', 'Ips',
+                'BorrowedEquipments', 'SoldEquipments',
+                'Ips', 'IpNetworks',
             ],
             'action' => ['delete'],
         ],
