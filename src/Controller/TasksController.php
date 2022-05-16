@@ -35,11 +35,11 @@ class TasksController extends AppController
         $access_point_id = $this->request->getQuery('access_point_id');
         // initially load only own tasks if assigned customer_id
         if (is_null($dealer_id)) {
-            if (null !== $this->request->getSession()->read('Auth.customer_id')) {
+            if ($this->request->getSession()->read('Auth.customer_id') !== null) {
                 return $this->redirect([
                     '?' => [
-                        'dealer_id' => $this->request->getSession()->read('Auth.customer_id')
-                    ] + $this->request->getQueryParams()
+                        'dealer_id' => $this->request->getSession()->read('Auth.customer_id'),
+                    ] + $this->request->getQueryParams(),
                 ]);
             }
         }
