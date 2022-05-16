@@ -12,6 +12,9 @@
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
+                    <th><?= $this->Paginator->sort('name') ?></th>
+                    <th><?= $this->Paginator->sort('color') ?></th>
+                    <th><?= $this->Paginator->sort('completed') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -19,6 +22,9 @@
                 <?php foreach ($taskStates as $taskState) : ?>
                 <tr>
                     <td><?= $this->Number->format($taskState->id) ?></td>
+                    <td><?= h($taskState->name) ?></td>
+                    <td style="background-color: <?= h($taskState->color) ?>;"><?= h($taskState->color) ?></td>
+                    <td><?= $taskState->completed ? __('Yes') : __('No'); ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $taskState->id]) ?>
                         <?= $this->AuthLink->link(

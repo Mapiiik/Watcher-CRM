@@ -18,6 +18,8 @@
                 <legend><?= __('Add Task State') ?></legend>
                 <?php
                     echo $this->Form->control('name');
+                    echo $this->Form->control('color', ['type' => 'color']);
+                    echo $this->Form->control('completed');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

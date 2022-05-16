@@ -10,6 +10,8 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string|null $name
+ * @property string $color
+ * @property bool $completed
  *
  * @property \App\Model\Entity\Task[] $tasks
  */
@@ -26,6 +28,8 @@ class TaskState extends Entity
      */
     protected $_accessible = [
         'name' => true,
+        'color' => true,
+        'completed' => true,
         'tasks' => true,
     ];
 }
