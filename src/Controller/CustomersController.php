@@ -21,7 +21,7 @@ class CustomersController extends AppController
         $this->paginate = [
             'contain' => ['Taxes', 'Contracts', 'Ips' => ['Contracts']],
             'order' => [
-                'Customers.id' => 'desc',
+                'Customers.id' => 'DESC',
             ],
         ];
 

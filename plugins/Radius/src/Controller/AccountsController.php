@@ -39,7 +39,7 @@ class AccountsController extends AppController
             'contain' => ['Customers', 'Contracts'],
             'conditions' => $conditions,
             'order' => [
-                'Accounts.id' => 'desc',
+                'Accounts.id' => 'DESC',
             ],
         ];
         $accounts = $this->paginate($this->Accounts);

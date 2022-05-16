@@ -20,7 +20,7 @@ class AddressesController extends AppController
     {
         $this->paginate = [
             'order' => [
-                'Addresses.id' => 'desc',
+                'Addresses.id' => 'DESC',
             ],
         ];
 

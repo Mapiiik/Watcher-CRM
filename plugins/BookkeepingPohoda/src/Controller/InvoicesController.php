@@ -27,7 +27,7 @@ class InvoicesController extends AppController
         $this->paginate = [
             'contain' => ['Customers'],
             'order' => [
-                'Invoices.id' => 'desc',
+                'Invoices.id' => 'DESC',
             ],
         ];
         $invoices = $this->paginate($this->Invoices);
