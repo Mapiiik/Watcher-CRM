@@ -77,7 +77,7 @@ class Invoice extends Entity
         }
 
         if ($this->debt > 0 && $this->due_date < $now) {
-            $style = 'background-color: red; color: black;';
+            $style = 'background-color: #ffc0c0; color: red;';
         }
 
         return $style;
