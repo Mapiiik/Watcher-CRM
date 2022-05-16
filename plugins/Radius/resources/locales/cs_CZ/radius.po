@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-05-11 13:43+0200\n"
-"PO-Revision-Date: 2022-05-11 13:52+0200\n"
+"POT-Creation-Date: 2022-05-16 14:45+0200\n"
+"PO-Revision-Date: 2022-05-16 14:48+0200\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -209,7 +209,7 @@ msgstr "Skupinu uživatelů RADIUS nelze odstranit. Zkuste to prosím znovu."
 #: plugins/Radius/templates/Accounts/view.php:353
 #: plugins/Radius/templates/Nas/add.php:10
 #: plugins/Radius/templates/Nas/edit.php:10
-#: plugins/Radius/templates/Nas/index.php:23
+#: plugins/Radius/templates/Nas/index.php:27
 #: plugins/Radius/templates/Nas/view.php:10
 #: plugins/Radius/templates/Radacct/add.php:10
 #: plugins/Radius/templates/Radacct/edit.php:10
@@ -281,12 +281,12 @@ msgstr "Smlouva"
 #: plugins/Radius/templates/Accounts/view.php:232
 #: plugins/Radius/templates/Accounts/view.php:276
 #: plugins/Radius/templates/Accounts/view.php:328
-#: plugins/Radius/templates/Radacct/view.php:33
+#: plugins/Radius/templates/Radacct/view.php:41
 #: plugins/Radius/templates/Radcheck/view.php:41
 #: plugins/Radius/templates/Radgroupcheck/view.php:68
 #: plugins/Radius/templates/Radgroupreply/view.php:68
 #: plugins/Radius/templates/Radpostauth/view.php:41
-#: plugins/Radius/templates/Radreply/view.php:30
+#: plugins/Radius/templates/Radreply/view.php:41
 #: plugins/Radius/templates/Radusergroup/view.php:41
 #: plugins/Radius/templates/cell/Accounts/display.php:8
 msgid "Username"
@@ -310,9 +310,9 @@ msgstr "Aktivní"
 
 #: plugins/Radius/templates/Accounts/add.php:69
 #: plugins/Radius/templates/Accounts/edit.php:75
-#: plugins/Radius/templates/Nas/add.php:30
+#: plugins/Radius/templates/Nas/add.php:34
 #: plugins/Radius/templates/Nas/edit.php:42
-#: plugins/Radius/templates/Radacct/add.php:49
+#: plugins/Radius/templates/Radacct/add.php:53
 #: plugins/Radius/templates/Radacct/edit.php:61
 #: plugins/Radius/templates/Radcheck/add.php:34
 #: plugins/Radius/templates/Radcheck/edit.php:38
@@ -343,7 +343,7 @@ msgstr "Odstranit účet RADIUS"
 #: plugins/Radius/templates/Accounts/view.php:306
 #: plugins/Radius/templates/Accounts/view.php:398
 #: plugins/Radius/templates/Nas/edit.php:15
-#: plugins/Radius/templates/Nas/index.php:48
+#: plugins/Radius/templates/Nas/index.php:52
 #: plugins/Radius/templates/Nas/view.php:20
 #: plugins/Radius/templates/Radacct/edit.php:15
 #: plugins/Radius/templates/Radacct/index.php:88
@@ -364,7 +364,7 @@ msgstr "Odstranit účet RADIUS"
 #: plugins/Radius/templates/Radpostauth/view.php:20
 #: plugins/Radius/templates/Radreply/edit.php:15
 #: plugins/Radius/templates/Radreply/index.php:49
-#: plugins/Radius/templates/Radreply/view.php:19
+#: plugins/Radius/templates/Radreply/view.php:20
 #: plugins/Radius/templates/Radusergroup/edit.php:15
 #: plugins/Radius/templates/Radusergroup/index.php:42
 #: plugins/Radius/templates/Radusergroup/view.php:20
@@ -401,7 +401,7 @@ msgstr "Účty RADIUS"
 #: plugins/Radius/templates/Radgroupreply/view.php:57
 #: plugins/Radius/templates/Radgroupreply/view.php:67
 #: plugins/Radius/templates/Radpostauth/view.php:48
-#: plugins/Radius/templates/Radreply/view.php:49
+#: plugins/Radius/templates/Radreply/view.php:60
 #: plugins/Radius/templates/Radusergroup/view.php:56
 #: plugins/Radius/templates/Radusergroup/view.php:66
 #: plugins/Radius/templates/Radusergroup/view.php:112
@@ -452,7 +452,7 @@ msgstr "Ne"
 #: plugins/Radius/templates/Accounts/view.php:245
 #: plugins/Radius/templates/Accounts/view.php:295
 #: plugins/Radius/templates/Accounts/view.php:387
-#: plugins/Radius/templates/Nas/index.php:39
+#: plugins/Radius/templates/Nas/index.php:43
 #: plugins/Radius/templates/Radacct/index.php:79
 #: plugins/Radius/templates/Radcheck/index.php:40
 #: plugins/Radius/templates/Radgroupcheck/index.php:35
@@ -474,7 +474,7 @@ msgstr "Zobrazit"
 #: plugins/Radius/templates/Accounts/view.php:249
 #: plugins/Radius/templates/Accounts/view.php:299
 #: plugins/Radius/templates/Accounts/view.php:391
-#: plugins/Radius/templates/Nas/index.php:41
+#: plugins/Radius/templates/Nas/index.php:45
 #: plugins/Radius/templates/Radacct/index.php:81
 #: plugins/Radius/templates/Radcheck/index.php:42
 #: plugins/Radius/templates/Radgroupcheck/index.php:37
@@ -496,7 +496,7 @@ msgstr "Upravit"
 #: plugins/Radius/templates/Accounts/view.php:254
 #: plugins/Radius/templates/Accounts/view.php:304
 #: plugins/Radius/templates/Accounts/view.php:396
-#: plugins/Radius/templates/Nas/index.php:46
+#: plugins/Radius/templates/Nas/index.php:50
 #: plugins/Radius/templates/Radacct/index.php:86
 #: plugins/Radius/templates/Radcheck/index.php:47
 #: plugins/Radius/templates/Radgroupcheck/index.php:42
@@ -513,7 +513,7 @@ msgid "Delete"
 msgstr "Odstranit"
 
 #: plugins/Radius/templates/Accounts/index.php:82
-#: plugins/Radius/templates/Nas/index.php:58
+#: plugins/Radius/templates/Nas/index.php:62
 #: plugins/Radius/templates/Radacct/index.php:98
 #: plugins/Radius/templates/Radcheck/index.php:59
 #: plugins/Radius/templates/Radgroupcheck/index.php:54
@@ -525,7 +525,7 @@ msgid "first"
 msgstr "první"
 
 #: plugins/Radius/templates/Accounts/index.php:83
-#: plugins/Radius/templates/Nas/index.php:59
+#: plugins/Radius/templates/Nas/index.php:63
 #: plugins/Radius/templates/Radacct/index.php:99
 #: plugins/Radius/templates/Radcheck/index.php:60
 #: plugins/Radius/templates/Radgroupcheck/index.php:55
@@ -537,7 +537,7 @@ msgid "previous"
 msgstr "předchozí"
 
 #: plugins/Radius/templates/Accounts/index.php:85
-#: plugins/Radius/templates/Nas/index.php:61
+#: plugins/Radius/templates/Nas/index.php:65
 #: plugins/Radius/templates/Radacct/index.php:101
 #: plugins/Radius/templates/Radcheck/index.php:62
 #: plugins/Radius/templates/Radgroupcheck/index.php:57
@@ -549,7 +549,7 @@ msgid "next"
 msgstr "další"
 
 #: plugins/Radius/templates/Accounts/index.php:86
-#: plugins/Radius/templates/Nas/index.php:62
+#: plugins/Radius/templates/Nas/index.php:66
 #: plugins/Radius/templates/Radacct/index.php:102
 #: plugins/Radius/templates/Radcheck/index.php:63
 #: plugins/Radius/templates/Radgroupcheck/index.php:58
@@ -561,7 +561,7 @@ msgid "last"
 msgstr "poslední"
 
 #: plugins/Radius/templates/Accounts/index.php:89
-#: plugins/Radius/templates/Nas/index.php:65
+#: plugins/Radius/templates/Nas/index.php:69
 #: plugins/Radius/templates/Radacct/index.php:105
 #: plugins/Radius/templates/Radcheck/index.php:66
 #: plugins/Radius/templates/Radgroupcheck/index.php:61
@@ -599,7 +599,7 @@ msgstr "Související kontroly RADIUS"
 #: plugins/Radius/templates/Radcheck/view.php:48
 #: plugins/Radius/templates/Radgroupcheck/view.php:45
 #: plugins/Radius/templates/Radgroupreply/view.php:45
-#: plugins/Radius/templates/Radreply/view.php:37
+#: plugins/Radius/templates/Radreply/view.php:48
 #: plugins/Radius/templates/Radusergroup/view.php:68
 #: plugins/Radius/templates/Radusergroup/view.php:114
 msgid "Attribute"
@@ -610,7 +610,7 @@ msgstr "Atribut"
 #: plugins/Radius/templates/Radcheck/view.php:52
 #: plugins/Radius/templates/Radgroupcheck/view.php:49
 #: plugins/Radius/templates/Radgroupreply/view.php:49
-#: plugins/Radius/templates/Radreply/view.php:41
+#: plugins/Radius/templates/Radreply/view.php:52
 #: plugins/Radius/templates/Radusergroup/view.php:69
 #: plugins/Radius/templates/Radusergroup/view.php:115
 msgid "Op"
@@ -621,7 +621,7 @@ msgstr "Op"
 #: plugins/Radius/templates/Radcheck/view.php:56
 #: plugins/Radius/templates/Radgroupcheck/view.php:53
 #: plugins/Radius/templates/Radgroupreply/view.php:53
-#: plugins/Radius/templates/Radreply/view.php:45
+#: plugins/Radius/templates/Radreply/view.php:56
 #: plugins/Radius/templates/Radusergroup/view.php:70
 #: plugins/Radius/templates/Radusergroup/view.php:116
 msgid "Value"
@@ -629,7 +629,7 @@ msgstr "Hodnota"
 
 #: plugins/Radius/templates/Accounts/view.php:171
 #: plugins/Radius/templates/Radreply/index.php:9
-#: plugins/Radius/templates/Radreply/view.php:22
+#: plugins/Radius/templates/Radreply/view.php:30
 msgid "New RADIUS Reply"
 msgstr "Nová odpověď RADIUS"
 
@@ -683,14 +683,14 @@ msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:279
 #: plugins/Radius/templates/Accounts/view.php:343
-#: plugins/Radius/templates/Radacct/view.php:141
+#: plugins/Radius/templates/Radacct/view.php:149
 #: plugins/Radius/templates/Radpostauth/view.php:69
 msgid "Calledstationid"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:280
 #: plugins/Radius/templates/Accounts/view.php:344
-#: plugins/Radius/templates/Radacct/view.php:147
+#: plugins/Radius/templates/Radacct/view.php:155
 #: plugins/Radius/templates/Radpostauth/view.php:75
 msgid "Callingstationid"
 msgstr ""
@@ -705,137 +705,137 @@ msgid "Related RADIUS Accountings"
 msgstr "Související monitorování účtů RADIUS"
 
 #: plugins/Radius/templates/Accounts/view.php:325
-#: plugins/Radius/templates/Radacct/view.php:60
+#: plugins/Radius/templates/Radacct/view.php:68
 msgid "Radacctid"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:326
-#: plugins/Radius/templates/Radacct/view.php:93
+#: plugins/Radius/templates/Radacct/view.php:101
 msgid "Acctsessionid"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:327
-#: plugins/Radius/templates/Radacct/view.php:99
+#: plugins/Radius/templates/Radacct/view.php:107
 msgid "Acctuniqueid"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:329
-#: plugins/Radius/templates/Radacct/view.php:105
+#: plugins/Radius/templates/Radacct/view.php:113
 msgid "Realm"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:330
-#: plugins/Radius/templates/Radacct/view.php:40
+#: plugins/Radius/templates/Radacct/view.php:48
 msgid "Nasipaddress"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:331
-#: plugins/Radius/templates/Radacct/view.php:111
+#: plugins/Radius/templates/Radacct/view.php:119
 msgid "Nasportid"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:332
-#: plugins/Radius/templates/Radacct/view.php:117
+#: plugins/Radius/templates/Radacct/view.php:125
 msgid "Nasporttype"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:333
-#: plugins/Radius/templates/Radacct/view.php:80
+#: plugins/Radius/templates/Radacct/view.php:88
 msgid "Acctstarttime"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:334
-#: plugins/Radius/templates/Radacct/view.php:84
+#: plugins/Radius/templates/Radacct/view.php:92
 msgid "Acctupdatetime"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:335
-#: plugins/Radius/templates/Radacct/view.php:88
+#: plugins/Radius/templates/Radacct/view.php:96
 msgid "Acctstoptime"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:336
-#: plugins/Radius/templates/Radacct/view.php:64
+#: plugins/Radius/templates/Radacct/view.php:72
 msgid "Acctinterval"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:337
-#: plugins/Radius/templates/Radacct/view.php:68
+#: plugins/Radius/templates/Radacct/view.php:76
 msgid "Acctsessiontime"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:338
-#: plugins/Radius/templates/Radacct/view.php:123
+#: plugins/Radius/templates/Radacct/view.php:131
 msgid "Acctauthentic"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:339
-#: plugins/Radius/templates/Radacct/view.php:129
+#: plugins/Radius/templates/Radacct/view.php:137
 msgid "Connectinfo Start"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:340
-#: plugins/Radius/templates/Radacct/view.php:135
+#: plugins/Radius/templates/Radacct/view.php:143
 msgid "Connectinfo Stop"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:341
-#: plugins/Radius/templates/Radacct/view.php:72
+#: plugins/Radius/templates/Radacct/view.php:80
 msgid "Acctinputoctets"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:342
-#: plugins/Radius/templates/Radacct/view.php:76
+#: plugins/Radius/templates/Radacct/view.php:84
 msgid "Acctoutputoctets"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:345
-#: plugins/Radius/templates/Radacct/view.php:153
+#: plugins/Radius/templates/Radacct/view.php:161
 msgid "Acctterminatecause"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:346
-#: plugins/Radius/templates/Radacct/view.php:159
+#: plugins/Radius/templates/Radacct/view.php:167
 msgid "Servicetype"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:347
-#: plugins/Radius/templates/Radacct/view.php:165
+#: plugins/Radius/templates/Radacct/view.php:173
 msgid "Framedprotocol"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:348
-#: plugins/Radius/templates/Radacct/view.php:44
+#: plugins/Radius/templates/Radacct/view.php:52
 msgid "Framedipaddress"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:349
-#: plugins/Radius/templates/Radacct/view.php:48
+#: plugins/Radius/templates/Radacct/view.php:56
 msgid "Framedipv6address"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:350
-#: plugins/Radius/templates/Radacct/view.php:52
+#: plugins/Radius/templates/Radacct/view.php:60
 msgid "Framedipv6prefix"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:351
-#: plugins/Radius/templates/Radacct/view.php:171
+#: plugins/Radius/templates/Radacct/view.php:179
 msgid "Framedinterfaceid"
 msgstr ""
 
 #: plugins/Radius/templates/Accounts/view.php:352
-#: plugins/Radius/templates/Radacct/view.php:56
+#: plugins/Radius/templates/Radacct/view.php:64
 msgid "Delegatedipv6prefix"
 msgstr ""
 
-#: plugins/Radius/templates/Nas/add.php:11
+#: plugins/Radius/templates/Nas/add.php:12
 #: plugins/Radius/templates/Nas/edit.php:20
 #: plugins/Radius/templates/Nas/view.php:25
 msgid "List RADIUS NAS"
 msgstr "Seznam RADIUS NASů"
 
-#: plugins/Radius/templates/Nas/add.php:18
+#: plugins/Radius/templates/Nas/add.php:22
 msgid "Add RADIUS NAS"
 msgstr "Přidat RADIUS NAS"
 
@@ -849,12 +849,12 @@ msgstr "Odstranit RADIUS NAS"
 msgid "Edit RADIUS NAS"
 msgstr "Upravit RADIUS NAS"
 
-#: plugins/Radius/templates/Nas/index.php:8
+#: plugins/Radius/templates/Nas/index.php:9
 #: plugins/Radius/templates/Nas/view.php:30
 msgid "New RADIUS NAS"
 msgstr "Nový RADIUS NAS"
 
-#: plugins/Radius/templates/Nas/index.php:9
+#: plugins/Radius/templates/Nas/index.php:13
 msgid "RADIUS NAS"
 msgstr "RADIUS NAS"
 
@@ -886,13 +886,13 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: plugins/Radius/templates/Radacct/add.php:11
+#: plugins/Radius/templates/Radacct/add.php:12
 #: plugins/Radius/templates/Radacct/edit.php:20
-#: plugins/Radius/templates/Radacct/view.php:24
+#: plugins/Radius/templates/Radacct/view.php:25
 msgid "List RADIUS Accountings"
 msgstr "Seznam monitorování účtů RADIUS"
 
-#: plugins/Radius/templates/Radacct/add.php:18
+#: plugins/Radius/templates/Radacct/add.php:22
 msgid "Add RADIUS Accounting"
 msgstr "Přidat monitorování účtů RADIUS"
 
@@ -907,7 +907,7 @@ msgid "Edit RADIUS Accounting"
 msgstr "Úprava monitorování účtů RADIUS"
 
 #: plugins/Radius/templates/Radacct/index.php:9
-#: plugins/Radius/templates/Radacct/view.php:25
+#: plugins/Radius/templates/Radacct/view.php:30
 msgid "New RADIUS Accounting"
 msgstr "Nové monitorování účtů RADIUS"
 
@@ -1028,7 +1028,7 @@ msgstr "Následné ověřování RADIUS"
 
 #: plugins/Radius/templates/Radreply/add.php:12
 #: plugins/Radius/templates/Radreply/edit.php:20
-#: plugins/Radius/templates/Radreply/view.php:21
+#: plugins/Radius/templates/Radreply/view.php:25
 msgid "List RADIUS Replies"
 msgstr "Seznam odpovědí RADIUS"
 
