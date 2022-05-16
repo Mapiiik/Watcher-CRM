@@ -29,6 +29,30 @@ class TasksController extends AppController
             $conditions = ['Tasks.customer_id' => $customer_id];
         }
 
+        // filter
+        $dealer_id = $this->request->getQuery('dealer_id');
+        $task_type_id = $this->request->getQuery('task_type_id');
+        $access_point_id = $this->request->getQuery('access_point_id');
+        // initially load only own tasks if assigned customer_id
+        if (is_null($dealer_id)) {
+            if (null !== $this->request->getSession()->read('Auth.customer_id')) {
+                return $this->redirect([
+                    '?' => [
+                        'dealer_id' => $this->request->getSession()->read('Auth.customer_id')
+                    ] + $this->request->getQueryParams()
+                ]);
+            }
+        }
+        if (!empty($dealer_id)) {
+            $conditions['Tasks.dealer_id'] = $dealer_id;
+        }
+        if (!empty($task_type_id)) {
+            $conditions['Tasks.task_type_id'] = $task_type_id;
+        }
+        if (!empty($access_point_id)) {
+            $conditions['Tasks.access_point_id'] = $access_point_id;
+        }
+
         $this->paginate = [
             'contain' => ['TaskTypes', 'Customers', 'Dealers', 'TaskStates'],
             'conditions' => $conditions,
@@ -40,9 +64,21 @@ class TasksController extends AppController
 
         $tasks = $this->paginate($this->Tasks);
 
-        $this->set(compact('tasks'));
+        $dealers = $this->Tasks->Dealers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $taskTypes = $this->Tasks->TaskTypes->find('list', ['order' => 'name']);
+
+        $this->set(compact('tasks', 'taskTypes', 'dealers'));
 
         $this->set('priorities', $this->Tasks->priorities);
+
+        // load access points from NMS if possible
+        $accessPoints = ApiClient::getAccessPoints();
+        if ($accessPoints) {
+            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
+        } else {
+            $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
+            $this->set('accessPoints', []);
+        }
     }
 
     /**
