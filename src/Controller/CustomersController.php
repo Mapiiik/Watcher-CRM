@@ -73,9 +73,10 @@ class CustomersController extends AppController
             $this->paginate['conditions']['OR'] = [
                 'Customers.id' => (int)$search,
                 '(Customers.id + ' . (int)env('CUSTOMER_SERIES', '0') . ') =' => (int)$search,
+                'Customers.ic' => $search,
             ];
         } elseif (!empty($search) || !$is_admin) {
-            $this->Flash->set(__('Please use the customer number in the search.'));
+            $this->Flash->set(__('Please use the customer number or company identification number in the search.'));
             $this->paginate['conditions'] = ['false'];
         }
 
