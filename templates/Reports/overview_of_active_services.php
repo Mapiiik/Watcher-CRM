@@ -91,6 +91,9 @@
                     </tbody>
                 </table>
             </div>
+            <div>
+                <?= __('Total Sum') . ': ' . $this->Number->currency($services->sumOf('total_sum')) ?><br>
+            </div>
         </div>
     </div>
 </div>
