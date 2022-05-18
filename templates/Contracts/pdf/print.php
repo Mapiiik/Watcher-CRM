@@ -1143,7 +1143,7 @@ class ContractPDF extends TCPDF
             $this->Cell(45, 4, 'převodem z účtu', '', 0, 'C');
             $this->Cell(45, 4, 'do ' . $contract->valid_from->day(1)->addMonth(1)->addDay(9), '', 0, 'C');
 
-            // reverse charge
+            // reverse charge (NEED REWORK)
             if ($contract->customer->taxe_id == 5) {
                 $this->Cell(45, 4, Number::currency($totalCost - round($totalCost - ($totalCost / (1 + env('VAT_RATE', '0'))), 2)) . ' *', '', 0, 'C');
                 $this->Ln();
