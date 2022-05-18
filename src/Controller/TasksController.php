@@ -33,7 +33,8 @@ class TasksController extends AppController
         $dealer_id = $this->request->getQuery('dealer_id');
         $task_type_id = $this->request->getQuery('task_type_id');
         $access_point_id = $this->request->getQuery('access_point_id');
-        // initially load only own tasks if assigned customer_id
+        $search = $this->request->getQuery('search');
+        // initially load only own tasks if assigned Auth.customer_id
         if (is_null($dealer_id)) {
             if ($this->request->getSession()->read('Auth.customer_id') !== null) {
                 return $this->redirect([
@@ -51,6 +52,12 @@ class TasksController extends AppController
         }
         if (!empty($access_point_id)) {
             $conditions['Tasks.access_point_id'] = $access_point_id;
+        }
+        if (!empty($search)) {
+            $conditions['OR'] = [
+                'Tasks.subject ILIKE' => '%' . trim($search) . '%',
+                'Tasks.text ILIKE' => '%' . trim($search) . '%',
+            ];
         }
 
         $this->paginate = [
