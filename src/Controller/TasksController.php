@@ -74,7 +74,7 @@ class TasksController extends AppController
             ->find('all')
             ->sortBy(function ($dealer) {
                 return ($dealer->active ? '##' : '__') . $dealer->first_name . '-' . $dealer->last_name;
-            }, SORT_ASC, SORT_STRING)
+            }, SORT_ASC, SORT_LOCALE_STRING)
             ->map(function ($dealer) {
                 return [
                     'value' => $dealer->id,
@@ -147,7 +147,7 @@ class TasksController extends AppController
             ->find('all')
             ->sortBy(function ($dealer) {
                 return ($dealer->active ? '##' : '__') . $dealer->first_name . '-' . $dealer->last_name;
-            }, SORT_ASC, SORT_STRING)
+            }, SORT_ASC, SORT_LOCALE_STRING)
             ->map(function ($dealer) {
                 return [
                     'value' => $dealer->id,
@@ -244,7 +244,7 @@ class TasksController extends AppController
             ->find('all')
             ->sortBy(function ($dealer) {
                 return ($dealer->active ? '##' : '__') . $dealer->first_name . '-' . $dealer->last_name;
-            }, SORT_ASC, SORT_STRING)
+            }, SORT_ASC, SORT_LOCALE_STRING)
             ->map(function ($dealer) {
                 return [
                     'value' => $dealer->id,
