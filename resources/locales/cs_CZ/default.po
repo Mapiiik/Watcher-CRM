@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-05-18 13:38+0200\n"
-"PO-Revision-Date: 2022-05-18 13:39+0200\n"
+"POT-Creation-Date: 2022-05-18 15:27+0200\n"
+"PO-Revision-Date: 2022-05-18 15:28+0200\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -143,6 +143,7 @@ msgstr "Smlouvu nelze uložit. Opakujte akci."
 
 #: src/Controller/ContractsController.php:133
 #: src/Controller/ContractsController.php:188
+#: src/Controller/ReportsController.php:101
 #: src/Controller/TasksController.php:96 src/Controller/TasksController.php:212
 #: src/Controller/TasksController.php:276
 msgid "The access points list could not be loaded. Please, try again."
@@ -784,10 +785,10 @@ msgstr "Naléhavé"
 #: templates/RemovedIpNetworks/view.php:10 templates/RemovedIps/add.php:10
 #: templates/RemovedIps/edit.php:10 templates/RemovedIps/index.php:19
 #: templates/RemovedIps/view.php:10
-#: templates/Reports/overview_of_active_services.php:10
-#: templates/Reports/overview_of_active_services.php:33
+#: templates/Reports/overview_of_active_services.php:11
+#: templates/Reports/overview_of_active_services.php:56
 #: templates/Reports/overview_of_customer_connection_points.php:11
-#: templates/Reports/overview_of_customer_connection_points.php:44
+#: templates/Reports/overview_of_customer_connection_points.php:63
 #: templates/ServiceTypes/add.php:10 templates/ServiceTypes/edit.php:10
 #: templates/ServiceTypes/index.php:29 templates/ServiceTypes/view.php:10
 #: templates/ServiceTypes/view.php:119 templates/ServiceTypes/view.php:181
@@ -1011,8 +1012,8 @@ msgstr "Mapy.cz"
 #: templates/Phones/index.php:32 templates/Queues/index.php:48
 #: templates/Queues/view.php:103 templates/RemovedIpNetworks/index.php:41
 #: templates/RemovedIps/index.php:41
-#: templates/Reports/overview_of_active_services.php:60
-#: templates/Reports/overview_of_customer_connection_points.php:63
+#: templates/Reports/overview_of_active_services.php:83
+#: templates/Reports/overview_of_customer_connection_points.php:82
 #: templates/ServiceTypes/index.php:47 templates/ServiceTypes/view.php:145
 #: templates/ServiceTypes/view.php:197 templates/ServiceTypes/view.php:243
 #: templates/Services/index.php:43 templates/Services/view.php:120
@@ -1067,7 +1068,6 @@ msgstr "Upravit"
 #: templates/Labels/index.php:52 templates/Logins/index.php:63
 #: templates/Phones/index.php:51 templates/Queues/index.php:67
 #: templates/RemovedIpNetworks/index.php:60 templates/RemovedIps/index.php:60
-#: templates/Reports/overview_of_active_services.php:73
 #: templates/ServiceTypes/index.php:66 templates/Services/index.php:62
 #: templates/SoldEquipments/index.php:71 templates/TaskStates/index.php:48
 #: templates/TaskTypes/index.php:44 templates/Tasks/index.php:117
@@ -1085,7 +1085,6 @@ msgstr "první"
 #: templates/Labels/index.php:53 templates/Logins/index.php:64
 #: templates/Phones/index.php:52 templates/Queues/index.php:68
 #: templates/RemovedIpNetworks/index.php:61 templates/RemovedIps/index.php:61
-#: templates/Reports/overview_of_active_services.php:74
 #: templates/ServiceTypes/index.php:67 templates/Services/index.php:63
 #: templates/SoldEquipments/index.php:72 templates/TaskStates/index.php:49
 #: templates/TaskTypes/index.php:45 templates/Tasks/index.php:118
@@ -1103,7 +1102,6 @@ msgstr "předchozí"
 #: templates/Labels/index.php:55 templates/Logins/index.php:66
 #: templates/Phones/index.php:54 templates/Queues/index.php:70
 #: templates/RemovedIpNetworks/index.php:63 templates/RemovedIps/index.php:63
-#: templates/Reports/overview_of_active_services.php:76
 #: templates/ServiceTypes/index.php:69 templates/Services/index.php:65
 #: templates/SoldEquipments/index.php:74 templates/TaskStates/index.php:51
 #: templates/TaskTypes/index.php:47 templates/Tasks/index.php:120
@@ -1121,7 +1119,6 @@ msgstr "další"
 #: templates/Labels/index.php:56 templates/Logins/index.php:67
 #: templates/Phones/index.php:55 templates/Queues/index.php:71
 #: templates/RemovedIpNetworks/index.php:64 templates/RemovedIps/index.php:64
-#: templates/Reports/overview_of_active_services.php:77
 #: templates/ServiceTypes/index.php:70 templates/Services/index.php:66
 #: templates/SoldEquipments/index.php:75 templates/TaskStates/index.php:52
 #: templates/TaskTypes/index.php:48 templates/Tasks/index.php:121
@@ -1139,7 +1136,6 @@ msgstr "poslední"
 #: templates/Labels/index.php:59 templates/Logins/index.php:70
 #: templates/Phones/index.php:58 templates/Queues/index.php:74
 #: templates/RemovedIpNetworks/index.php:67 templates/RemovedIps/index.php:67
-#: templates/Reports/overview_of_active_services.php:80
 #: templates/ServiceTypes/index.php:73 templates/Services/index.php:69
 #: templates/SoldEquipments/index.php:78 templates/TaskStates/index.php:55
 #: templates/TaskTypes/index.php:51 templates/Tasks/index.php:124
@@ -1258,7 +1254,7 @@ msgstr "Ruční nastavení souřadnic"
 #: templates/Emails/view.php:42 templates/Emails/view.php:46
 #: templates/Emails/view.php:50 templates/Labels/view.php:51
 #: templates/Logins/index.php:38 templates/Logins/view.php:46
-#: templates/Reports/overview_of_customer_connection_points.php:61
+#: templates/Reports/overview_of_customer_connection_points.php:80
 #: templates/ServiceTypes/index.php:41 templates/ServiceTypes/index.php:42
 #: templates/ServiceTypes/index.php:43 templates/ServiceTypes/index.php:44
 #: templates/ServiceTypes/index.php:45 templates/ServiceTypes/view.php:54
@@ -1287,7 +1283,7 @@ msgstr "Ano"
 #: templates/Emails/view.php:42 templates/Emails/view.php:46
 #: templates/Emails/view.php:50 templates/Labels/view.php:51
 #: templates/Logins/index.php:38 templates/Logins/view.php:46
-#: templates/Reports/overview_of_customer_connection_points.php:61
+#: templates/Reports/overview_of_customer_connection_points.php:80
 #: templates/ServiceTypes/index.php:41 templates/ServiceTypes/index.php:42
 #: templates/ServiceTypes/index.php:43 templates/ServiceTypes/index.php:44
 #: templates/ServiceTypes/index.php:45 templates/ServiceTypes/view.php:54
@@ -1320,6 +1316,7 @@ msgstr ""
 #: templates/Logins/view.php:65 templates/Phones/view.php:41
 #: templates/Queues/view.php:45 templates/Queues/view.php:83
 #: templates/RemovedIpNetworks/view.php:65 templates/RemovedIps/view.php:52
+#: templates/Reports/overview_of_active_services.php:44
 #: templates/ServiceTypes/view.php:73 templates/ServiceTypes/view.php:99
 #: templates/ServiceTypes/view.php:171 templates/ServiceTypes/view.php:223
 #: templates/Services/view.php:56 templates/Services/view.php:82
@@ -1457,6 +1454,7 @@ msgstr "Počet"
 #: templates/Billings/view.php:62 templates/Billings/view.php:142
 #: templates/Contracts/view.php:193 templates/Customers/view.php:453
 #: templates/EquipmentTypes/view.php:49 templates/Queues/view.php:87
+#: templates/Reports/overview_of_active_services.php:46
 #: templates/ServiceTypes/view.php:227 templates/Services/view.php:48
 #: templates/Services/view.php:85
 msgid "Price"
@@ -1639,6 +1637,7 @@ msgstr ""
 #: templates/Brokerages/view.php:30 templates/Countries/view.php:30
 #: templates/EquipmentTypes/view.php:41 templates/Labels/view.php:30
 #: templates/Queues/view.php:30 templates/Queues/view.php:86
+#: templates/Reports/overview_of_active_services.php:45
 #: templates/ServiceTypes/view.php:33 templates/ServiceTypes/view.php:172
 #: templates/ServiceTypes/view.php:226 templates/Services/view.php:30
 #: templates/TaskStates/view.php:30 templates/TaskTypes/view.php:30
@@ -1760,6 +1759,7 @@ msgstr "Zobrazit smlouvu"
 
 #: templates/Contracts/print.php:42 templates/Contracts/view.php:52
 #: templates/Customers/view.php:391 templates/Queues/view.php:38
+#: templates/Reports/overview_of_active_services.php:47
 #: templates/Services/view.php:34
 msgid "Service Type"
 msgstr "Typ služby"
@@ -2517,45 +2517,55 @@ msgid "Reports"
 msgstr "Reporty"
 
 #: templates/Reports/index.php:11
-#: templates/Reports/overview_of_active_services.php:16
+#: templates/Reports/overview_of_active_services.php:17
 msgid "Overview of active services"
 msgstr "Přehled aktivních služeb"
 
 #: templates/Reports/index.php:16
-#: templates/Reports/overview_of_customer_connection_points.php:24
+#: templates/Reports/overview_of_customer_connection_points.php:28
 msgid "Overview of customer connection points"
 msgstr "Přehled přípojných bodů zákazníků"
 
-#: templates/Reports/overview_of_active_services.php:11
+#: templates/Reports/overview_of_active_services.php:12
 #: templates/Reports/overview_of_customer_connection_points.php:12
 msgid "List Reports"
 msgstr "Seznam reportů"
 
 #: templates/Reports/overview_of_active_services.php:26
+#: templates/Reports/overview_of_customer_connection_points.php:37
+msgid "Month To Display"
+msgstr "Měsíc k zobrazení"
+
+#: templates/Reports/overview_of_active_services.php:48
+#: templates/Services/view.php:41
+msgid "Queue"
+msgstr "Fronta"
+
+#: templates/Reports/overview_of_active_services.php:49
 msgid "Number of Uses"
 msgstr "Počet použití"
 
-#: templates/Reports/overview_of_active_services.php:27
+#: templates/Reports/overview_of_active_services.php:50
 msgid "Number of Uses (nonbusiness)"
 msgstr "Počet použití (neobchodní)"
 
-#: templates/Reports/overview_of_active_services.php:28
+#: templates/Reports/overview_of_active_services.php:51
 msgid "Sum"
 msgstr "Součet"
 
-#: templates/Reports/overview_of_active_services.php:29
+#: templates/Reports/overview_of_active_services.php:52
 msgid "Fixed Discount Sum"
 msgstr "Součet pevných slev"
 
-#: templates/Reports/overview_of_active_services.php:30
+#: templates/Reports/overview_of_active_services.php:53
 msgid "Percentage Discount Sum"
 msgstr "Součet procentuálních slev"
 
-#: templates/Reports/overview_of_active_services.php:31
+#: templates/Reports/overview_of_active_services.php:54
 msgid "Total Sum"
 msgstr "Celkový součet"
 
-#: templates/Reports/overview_of_active_services.php:32
+#: templates/Reports/overview_of_active_services.php:55
 msgid "Total Sum (nonbusiness)"
 msgstr "Celkový součet (neobchodní)"
 
@@ -2563,51 +2573,51 @@ msgstr "Celkový součet (neobchodní)"
 msgid "Export"
 msgstr "Export"
 
-#: templates/Reports/overview_of_customer_connection_points.php:32
+#: templates/Reports/overview_of_customer_connection_points.php:51
 msgid "RUIAN GID"
 msgstr "RUIAN GID"
 
-#: templates/Reports/overview_of_customer_connection_points.php:33
+#: templates/Reports/overview_of_customer_connection_points.php:52
 msgid "Active Connections"
 msgstr "Aktivní připojení"
 
-#: templates/Reports/overview_of_customer_connection_points.php:34
+#: templates/Reports/overview_of_customer_connection_points.php:53
 msgid "Active Connections (nonbusiness)"
 msgstr "Aktivní připojení (neobchodní)"
 
-#: templates/Reports/overview_of_customer_connection_points.php:35
+#: templates/Reports/overview_of_customer_connection_points.php:54
 msgid "Active 0-30 Mbps"
 msgstr "Aktivní 0-30 Mb/s"
 
-#: templates/Reports/overview_of_customer_connection_points.php:36
+#: templates/Reports/overview_of_customer_connection_points.php:55
 msgid "Active 30-100 Mbps"
 msgstr "Aktivní 30-100 Mb/s"
 
-#: templates/Reports/overview_of_customer_connection_points.php:37
+#: templates/Reports/overview_of_customer_connection_points.php:56
 msgid "Active 100+ Mbps"
 msgstr "Aktivní 100+ Mb/s"
 
-#: templates/Reports/overview_of_customer_connection_points.php:38
+#: templates/Reports/overview_of_customer_connection_points.php:57
 msgid "Available 0-30 Mbps"
 msgstr "K dispozici 0-30 Mbps"
 
-#: templates/Reports/overview_of_customer_connection_points.php:39
+#: templates/Reports/overview_of_customer_connection_points.php:58
 msgid "Available 30-100 Mbps"
 msgstr "K dispozici 30-100 Mbps"
 
-#: templates/Reports/overview_of_customer_connection_points.php:40
+#: templates/Reports/overview_of_customer_connection_points.php:59
 msgid "Available 100-300 Mbps"
 msgstr "K dispozici 100-300 Mbps"
 
-#: templates/Reports/overview_of_customer_connection_points.php:41
+#: templates/Reports/overview_of_customer_connection_points.php:60
 msgid "Available 300-1000 Mbps"
 msgstr "K dispozici 300-1000 Mbps"
 
-#: templates/Reports/overview_of_customer_connection_points.php:42
+#: templates/Reports/overview_of_customer_connection_points.php:61
 msgid "Available 1000+ Mbps"
 msgstr "K dispozici 1000+ Mb/s"
 
-#: templates/Reports/overview_of_customer_connection_points.php:43
+#: templates/Reports/overview_of_customer_connection_points.php:62
 msgid "VHCN"
 msgstr "VHCN"
 
@@ -2688,10 +2698,6 @@ msgstr "Služby"
 #: templates/Services/view.php:17
 msgid "Delete Service"
 msgstr "Odstranit službu"
-
-#: templates/Services/view.php:41
-msgid "Queue"
-msgstr "Fronta"
 
 #: templates/Services/view.php:52
 msgid "Not For New Customers"
