@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \Cake\Collection\CollectionInterface $cto_categories
- * @var \Cake\I18n\FrozenDate $invoiced_month
+ * @var \Cake\I18n\FrozenDate $month_to_display
  */
 ?>
 <div class="row">
@@ -17,11 +17,30 @@
             <?php foreach ($cto_categories as $cto_category => $connection_points) : ?>
                 <?= $this->AuthLink->link(
                     __('Export') . ' ' . $cto_category,
-                    ['_ext' => 'csv', $invoiced_month->i18nFormat('yyyy-MM'), $cto_category],
+                    [
+                        '_ext' => 'csv',
+                        $cto_category,
+                        '?' => ['month_to_display' => $month_to_display->i18nFormat('yyyy-MM')],
+                    ],
                     ['class' => 'button button float-right']
                 ) ?>
             <?php endforeach; ?>
-            <h3><?= __('Overview of customer connection points') ?></h3>
+            <h3><?= __('Overview of customer connection points')
+                . ' - '
+                . $month_to_display->i18nFormat('LLLL yyyy') ?></h3>
+
+            <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
+            <?= $this->request->getQuery('limit') ? $this->Form->hidden('limit') : '' ?>
+            <div class="row">
+                <div class="column-responsive">
+                    <?= $this->Form->control('month_to_display', [
+                        'label' => __('Month To Display'),
+                        'type' => 'month',
+                        'onchange' => 'this.form.submit();',
+                    ]) ?>
+                </div>
+            </div>
+            <?= $this->Form->end() ?>
 
             <?php foreach ($cto_categories as $cto_category => $connection_points) : ?>
             <div class="table-responsive">

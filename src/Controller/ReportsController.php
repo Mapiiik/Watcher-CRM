@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\ApiClient;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 use Cake\I18n\FrozenDate;
@@ -28,29 +29,34 @@ class ReportsController extends AppController
     /**
      * Overview of active services method
      *
-     * @param string|null $param Optional parameter, month of overview.
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function overviewOfActiveServices($param = null)
+    public function overviewOfActiveServices()
     {
-        $invoiced_month = new FrozenDate($param);
+        $month_to_display = new FrozenDate($this->request->getQuery('month_to_display'));
+        $access_point_id = $this->request->getQuery('access_point_id');
 
         $servicesQuery = $this->fetchTable('Services')->find()
             ->contain('ServiceTypes')
-            ->contain('Billings', function (Query $q) use ($invoiced_month) {
+            ->contain('Billings', function (Query $q) use ($month_to_display, $access_point_id) {
                 return $q
                     ->where([
-                        'Billings.billing_from <=' => $invoiced_month->lastOfMonth(), //last day of month
+                        'Billings.billing_from <=' => $month_to_display->lastOfMonth(), //last day of month
                     ])
                     ->andWhere([
                         'OR' => [
                             'Billings.billing_until IS NULL',
-                            'Billings.billing_until >=' => $invoiced_month->firstOfMonth(), //first day of month
+                            'Billings.billing_until >=' => $month_to_display->firstOfMonth(), //first day of month
                         ],
                     ])
                     ->contain(['Services'])
-                    ->contain(['Customers']);
+                    ->contain(['Customers'])
+                    ->contain('Contracts', function (Query $q) use ($access_point_id) {
+                        return !empty($access_point_id) ?
+                            $q->where(['Contracts.access_point_id' => $access_point_id]) :
+                            $q;
+                    });
             })
             ->formatResults(
                 function (CollectionInterface $services) {
@@ -79,30 +85,43 @@ class ReportsController extends AppController
                 }
             );
 
-        $services = $this->paginate($servicesQuery);
-        $this->set(compact('services'));
+        $services = $servicesQuery
+            ->filter(function ($service) {
+                return $service->number_of_uses > 0;
+            })
+            ->sortBy('number_of_uses');
+
+        $this->set(compact('services', 'month_to_display'));
+
+        // load access points from NMS if possible
+        $accessPoints = ApiClient::getAccessPoints();
+        if ($accessPoints) {
+            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
+        } else {
+            $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
+            $this->set('accessPoints', []);
+        }
     }
 
     /**
      * Overview of connection points method
      *
-     * @param string|null $param Optional parameter, month of overview.
      * @param string|null $category Optional parameter, CTO category.
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function overviewOfCustomerConnectionPoints($param = null, $category = null)
+    public function overviewOfCustomerConnectionPoints($category = null)
     {
-        $invoiced_month = new FrozenDate($param);
+        $month_to_display = new FrozenDate($this->request->getQuery('month_to_display'));
 
         $cto_categories = $this->fetchTable('Billings')->find()
             ->where([
-                'Billings.billing_from <=' => $invoiced_month->lastOfMonth(), //last day of month
+                'Billings.billing_from <=' => $month_to_display->lastOfMonth(), //last day of month
             ])
             ->andWhere([
                 'OR' => [
                     'Billings.billing_until IS NULL',
-                    'Billings.billing_until >=' => $invoiced_month->firstOfMonth(), //first day of month
+                    'Billings.billing_until >=' => $month_to_display->firstOfMonth(), //first day of month
                 ],
             ])
 
@@ -230,10 +249,10 @@ class ReportsController extends AppController
                 ->withType('csv')
                 ->withDownload(
                     $category
-                    . '_' . $invoiced_month->i18nFormat('yyyy-MM') . '.csv'
+                    . '_' . $month_to_display->i18nFormat('yyyy-MM') . '.csv'
                 );
         }
 
-        $this->set(compact('cto_categories', 'invoiced_month'));
+        $this->set(compact('cto_categories', 'month_to_display'));
     }
 }

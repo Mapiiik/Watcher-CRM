@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Service[]|\Cake\Collection\CollectionInterface $services
+ * @var \Cake\I18n\FrozenDate $month_to_display
  */
 ?>
 <div class="row">
@@ -13,16 +14,38 @@
     </aside>
     <div class="column-responsive column-90">
         <div class="reports index content">
-            <h3><?= __('Overview of active services') ?></h3>
+            <h3><?= __('Overview of active services')
+                . ' - '
+                . $month_to_display->i18nFormat('LLLL yyyy') ?></h3>
+
+            <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
+            <?= $this->request->getQuery('limit') ? $this->Form->hidden('limit') : '' ?>
+            <div class="row">
+                <div class="column-responsive">
+                    <?= $this->Form->control('month_to_display', [
+                        'label' => __('Month To Display'),
+                        'type' => 'month',
+                        'onchange' => 'this.form.submit();',
+                    ]) ?>
+                </div>
+                <div class="column-responsive">
+                    <?= $this->Form->control('access_point_id', [
+                        'empty' => true,
+                        'onchange' => 'this.form.submit();',
+                    ]) ?>
+                </div>
+            </div>
+            <?= $this->Form->end() ?>
+
             <div class="table-responsive">
                 <table>
                     <thead>
                         <tr>
-                            <th><?= $this->Paginator->sort('id') ?></th>
-                            <th><?= $this->Paginator->sort('name') ?></th>
-                            <th><?= $this->Paginator->sort('price') ?></th>
-                            <th><?= $this->Paginator->sort('service_type_id') ?></th>
-                            <th><?= $this->Paginator->sort('queue_id') ?></th>
+                            <th><?= __('Id') ?></th>
+                            <th><?= __('Name') ?></th>
+                            <th><?= __('Price') ?></th>
+                            <th><?= __('Service Type') ?></th>
+                            <th><?= __('Queue') ?></th>
                             <th><?= __('Number of Uses') ?></th>
                             <th><?= __('Number of Uses (nonbusiness)') ?></th>
                             <th><?= __('Sum') ?></th>
@@ -67,18 +90,6 @@
                         <?php endforeach; ?>
                     </tbody>
                 </table>
-            </div>
-            <div class="paginator">
-                <ul class="pagination">
-                    <?= $this->Paginator->first('<< ' . __('first')) ?>
-                    <?= $this->Paginator->prev('< ' . __('previous')) ?>
-                    <?= $this->Paginator->numbers() ?>
-                    <?= $this->Paginator->next(__('next') . ' >') ?>
-                    <?= $this->Paginator->last(__('last') . ' >>') ?>
-                </ul>
-                <p><?= $this->Paginator->counter(
-                    __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
-                ) ?></p>
             </div>
         </div>
     </div>
