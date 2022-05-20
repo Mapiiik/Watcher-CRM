@@ -5,7 +5,7 @@
  */
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
-<?= $this->request->getQuery('limit') ? $this->Form->hidden('limit') : '' ?>
+<?= $this->getRequest()->getQuery('limit') ? $this->Form->hidden('limit') : '' ?>
 
 <div class="row">
     <div class="column-responsive">
@@ -35,6 +35,7 @@
     </div>
 </div>
 <?= $this->Form->end() ?>
+
 <div class="tasks index content">
     <?= $this->AuthLink->link(__('New Task'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
     <h3><?= __('Tasks') ?></h3>

@@ -4,26 +4,24 @@
  * @var \App\Model\Entity\Customer[]|\Cake\Collection\CollectionInterface $customers
  */
 ?>
-<?php
-echo $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]);
+<?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
+<?= $this->getRequest()->getQuery('limit') ? $this->Form->hidden('limit') : '' ?>
 
-if ($this->request->getQuery('limit')) {
-    echo $this->Form->hidden('limit');
-}
-echo $this->Form->control('search', [
-    'label' => __('Search'),
-    'type' => 'search',
-    'onchange' => 'this.form.submit();',
-]);
-if ($is_admin) {
-    echo $this->Form->control('advanced_search', [
-        'label' => __('Advanced Search'),
-        'type' => 'checkbox',
-        'onchange' => 'this.form.submit();',
-    ]);
-}
-echo $this->Form->end();
-?>
+<div class="row">
+    <div class="column-responsive">
+        <?= $this->Form->control('search', [
+            'label' => __('Search'),
+            'type' => 'search',
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+        <?= $is_admin ? $this->Form->control('advanced_search', [
+            'label' => __('Advanced Search'),
+            'type' => 'checkbox',
+            'onchange' => 'this.form.submit();',
+        ]) : '' ?>
+    </div>
+</div>
+<?= $this->Form->end() ?>
 
 <div class="customers index content">
     <?= $this->AuthLink->link(__('New Customer'), ['action' => 'add'], ['class' => 'button float-right']) ?>

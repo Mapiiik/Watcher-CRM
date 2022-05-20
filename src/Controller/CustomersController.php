@@ -18,17 +18,13 @@ class CustomersController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Taxes', 'Contracts', 'Ips' => ['Contracts']],
-            'order' => [
-                'Customers.id' => 'DESC',
-            ],
-        ];
+        // filter
+        $conditions = [];
 
-        $is_admin = in_array($this->request->getSession()->read('Auth.role'), ['admin']);
-
+        // search
         $search = $this->request->getQuery('search');
         $advanced_search = $this->request->getQuery('advanced_search');
+        $is_admin = in_array($this->request->getSession()->read('Auth.role'), ['admin']);
 
         if ($is_admin && $advanced_search && !empty($search)) {
             $filter = 'to_tsvector('
@@ -62,23 +58,35 @@ class CustomersController extends AppController
                     . 'WHERE ' . $filter . ' GROUP BY customers.id'
                 . ')';
 
-            $this->paginate['conditions']['OR'] = [
-                'Customers.company ILIKE' => '%' . trim($search) . '%',
-                'Customers.first_name ILIKE' => '%' . trim($search) . '%',
-                'Customers.last_name ILIKE' => '%' . trim($search) . '%',
-                'Customers.id IN ' . $filter,
+            $conditions[] = [
+                'OR' => [
+                    'Customers.company ILIKE' => '%' . trim($search) . '%',
+                    'Customers.first_name ILIKE' => '%' . trim($search) . '%',
+                    'Customers.last_name ILIKE' => '%' . trim($search) . '%',
+                    'Customers.id IN ' . $filter,
+                ],
             ];
             unset($filter);
         } elseif (is_numeric($search)) {
-            $this->paginate['conditions']['OR'] = [
-                'Customers.id' => (int)$search,
-                '(Customers.id + ' . (int)env('CUSTOMER_SERIES', '0') . ') =' => (int)$search,
-                'Customers.ic' => $search,
+            $conditions[] = [
+                'OR' => [
+                    'Customers.id' => (int)$search,
+                    '(Customers.id + ' . (int)env('CUSTOMER_SERIES', '0') . ') =' => (int)$search,
+                    'Customers.ic' => $search,
+                ],
             ];
         } elseif (!empty($search) || !$is_admin) {
             $this->Flash->set(__('Please use the customer number or company identification number in the search.'));
-            $this->paginate['conditions'] = ['false'];
+            $conditions = ['false'];
         }
+
+        $this->paginate = [
+            'contain' => ['Taxes', 'Contracts', 'Ips' => ['Contracts']],
+            'order' => [
+                'Customers.id' => 'DESC',
+            ],
+            'conditions' => $conditions,
+        ];
 
         $customers = $this->paginate($this->Customers);
 

@@ -24,16 +24,32 @@ class TasksController extends AppController
         $customer_id = $this->request->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
+        // filter
         $conditions = [];
         if (isset($customer_id)) {
-            $conditions = ['Tasks.customer_id' => $customer_id];
+            $conditions[] = [
+                'Tasks.customer_id' => $customer_id,
+            ];
+        }
+        $dealer_id = $this->request->getQuery('dealer_id');
+        if (!empty($dealer_id)) {
+            $conditions[] = [
+                'Tasks.dealer_id' => $dealer_id,
+            ];
+        }
+        $task_type_id = $this->request->getQuery('task_type_id');
+        if (!empty($task_type_id)) {
+            $conditions[] = [
+                'Tasks.task_type_id' => $task_type_id,
+            ];
+        }
+        $access_point_id = $this->request->getQuery('access_point_id');
+        if (!empty($access_point_id)) {
+            $conditions[] = [
+                'Tasks.access_point_id' => $access_point_id,
+            ];
         }
 
-        // filter
-        $dealer_id = $this->request->getQuery('dealer_id');
-        $task_type_id = $this->request->getQuery('task_type_id');
-        $access_point_id = $this->request->getQuery('access_point_id');
-        $search = $this->request->getQuery('search');
         // initially load only own tasks if assigned Auth.customer_id
         if (is_null($dealer_id)) {
             if ($this->request->getSession()->read('Auth.customer_id') !== null) {
@@ -44,29 +60,25 @@ class TasksController extends AppController
                 ]);
             }
         }
-        if (!empty($dealer_id)) {
-            $conditions['Tasks.dealer_id'] = $dealer_id;
-        }
-        if (!empty($task_type_id)) {
-            $conditions['Tasks.task_type_id'] = $task_type_id;
-        }
-        if (!empty($access_point_id)) {
-            $conditions['Tasks.access_point_id'] = $access_point_id;
-        }
+
+        // search
+        $search = $this->request->getQuery('search');
         if (!empty($search)) {
-            $conditions['OR'] = [
-                'Tasks.subject ILIKE' => '%' . trim($search) . '%',
-                'Tasks.text ILIKE' => '%' . trim($search) . '%',
+            $conditions[] = [
+                'OR' => [
+                    'Tasks.subject ILIKE' => '%' . trim($search) . '%',
+                    'Tasks.text ILIKE' => '%' . trim($search) . '%',
+                ],
             ];
         }
 
         $this->paginate = [
             'contain' => ['TaskTypes', 'Customers', 'Dealers', 'TaskStates'],
-            'conditions' => $conditions,
             'order' => [
                 'Tasks.task_state_id' => 'ASC',
                 'Tasks.id' => 'DESC',
             ],
+            'conditions' => $conditions,
         ];
 
         $tasks = $this->paginate($this->Tasks);
