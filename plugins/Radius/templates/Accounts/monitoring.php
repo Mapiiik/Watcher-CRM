@@ -128,8 +128,8 @@ use Cake\I18n\FrozenTime;
                             <th><?= __d('radius', 'Framed IP Address') ?></th>
                             <th><?= __d('radius', 'Framed IPv6 Address') ?></th>
                             <th><?= __d('radius', 'Framed IPv6 Prefix') ?></th>
-                            <th><?= __d('radius', 'Framed Interface ID') ?></th>
                             <th><?= __d('radius', 'Delegated IPv6 Prefix') ?></th>
+                            <th><?= __d('radius', 'Framed Interface ID') ?></th>
                             <th><?= __d('radius', 'NAS IP Address') ?></th>
                             <th><?= __d('radius', 'NAS Port ID') ?></th>
                             <th><?= __d('radius', 'NAS Port Type') ?></th>
@@ -140,8 +140,8 @@ use Cake\I18n\FrozenTime;
                             <th><?= __d('radius', 'Stop Time') ?></th>
                             <th><?= __d('radius', 'Termination Cause') ?></th>
                             <th><?= __d('radius', 'Session Time') ?></th>
-                            <th><?= __d('radius', 'Upload') ?></th>
-                            <th><?= __d('radius', 'Download') ?></th>
+                            <th><?= __d('radius', 'Uploaded') ?></th>
+                            <th><?= __d('radius', 'Downloaded') ?></th>
                             <th class="actions"><?= __d('radius', 'Actions') ?></th>
                         </tr>
                         <?php foreach ($account->radacct as $radacct) : ?>
@@ -153,8 +153,8 @@ use Cake\I18n\FrozenTime;
                             <td><?= h($radacct->framedipaddress) ?></td>
                             <td><?= h($radacct->framedipv6address) ?></td>
                             <td><?= h($radacct->framedipv6prefix) ?></td>
-                            <td><?= h($radacct->framedinterfaceid) ?></td>
                             <td><?= h($radacct->delegatedipv6prefix) ?></td>
+                            <td><?= h($radacct->framedinterfaceid) ?></td>
                             <td><?= h($radacct->nasipaddress) ?></td>
                             <td><?= h($radacct->nasportid) ?></td>
                             <td><?= h($radacct->nasporttype) ?></td>

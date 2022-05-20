@@ -47,13 +47,13 @@
                 </tr>
             </table>
             <div class="text">
-                <strong><?= __d('radius', 'Nasname') ?></strong>
+                <strong><?= __d('radius', 'NAS Name') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($nas->nasname)); ?>
                 </blockquote>
             </div>
             <div class="text">
-                <strong><?= __d('radius', 'Shortname') ?></strong>
+                <strong><?= __d('radius', 'Short Name') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($nas->shortname)); ?>
                 </blockquote>

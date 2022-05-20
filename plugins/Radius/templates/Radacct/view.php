@@ -65,11 +65,11 @@
                     <td><?= h($radacct->delegatedipv6prefix) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __d('radius', 'Upload') ?></th>
+                    <th><?= __d('radius', 'Uploaded') ?></th>
                     <td><?= $this->Number->toReadableSize($radacct->acctinputoctets) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __d('radius', 'Download') ?></th>
+                    <th><?= __d('radius', 'Downloaded') ?></th>
                     <td><?= $this->Number->toReadableSize($radacct->acctoutputoctets) ?></td>
                 </tr>
                 <tr>
@@ -128,7 +128,7 @@
                 </blockquote>
             </div>
             <div class="text">
-                <strong><?= __d('radius', 'Authenticated By') ?></strong>
+                <strong><?= __d('radius', 'Authenticated Via') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($radacct->acctauthentic)); ?>
                 </blockquote>
