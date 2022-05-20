@@ -32,6 +32,15 @@ use Cake\ORM\Entity;
 class Account extends Entity
 {
     /**
+     * Account types
+     *
+     * @var array<string>
+     */
+    public $types = [
+        0 => 'PPPoE',
+    ];
+
+    /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
      * Note that when '*' is set to true, this allows all unspecified fields to
@@ -83,5 +92,15 @@ class Account extends Entity
         }
 
         return $style;
+    }
+
+    /**
+     * returns the type name
+     *
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->types[$this->type];
     }
 }

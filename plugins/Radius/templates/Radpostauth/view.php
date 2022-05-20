@@ -49,7 +49,7 @@
                     <td><?= $this->Number->format($radpostauth->id) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __d('radius', 'Authdate') ?></th>
+                    <th><?= __d('radius', 'Authentication Date') ?></th>
                     <td><?= h($radpostauth->authdate) ?></td>
                 </tr>
             </table>
@@ -66,13 +66,13 @@
                 </blockquote>
             </div>
             <div class="text">
-                <strong><?= __d('radius', 'Calledstationid') ?></strong>
+                <strong><?= __d('radius', 'Called Station ID') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($radpostauth->calledstationid)); ?>
                 </blockquote>
             </div>
             <div class="text">
-                <strong><?= __d('radius', 'Callingstationid') ?></strong>
+                <strong><?= __d('radius', 'Calling Station ID') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($radpostauth->callingstationid)); ?>
                 </blockquote>

@@ -3,6 +3,9 @@
  * @var \App\View\AppView $this
  * @var \Cake\Datasource\EntityInterface $account
  */
+
+use Cake\I18n\FrozenTime;
+
 ?>
 <div class="row">
     <aside class="column">
@@ -36,17 +39,9 @@
     <div class="column-responsive column-90">
         <div class="accounts view content">
             <?= $this->Html->link(
-                __d('radius', 'RADIUS Account Monitoring'),
-                ['action' => 'monitoring', $account->id],
+                __d('radius', 'View RADIUS Account'),
+                ['action' => 'view', $account->id],
                 ['class' => 'button button float-right']
-            ) ?>
-            <?= $this->Form->postLink(
-                __d('radius', 'Update Related Records'),
-                ['action' => 'updateRelatedRecords', $account->id],
-                [
-                    'confirm' => __d('radius', 'Are you sure you want to update related records?'),
-                    'class' => 'button button float-right',
-                ]
             ) ?>
             <h3><?= h($account->username) ?></h3>
             <div class="row">
@@ -121,47 +116,94 @@
                 </div>
             </div>
             <div class="related">
-                <?= $this->Html->link(
-                    __d('radius', 'New RADIUS Check'),
-                    ['controller' => 'Radcheck', 'action' => 'add', '?' => ['username' => $account->username]],
-                    ['class' => 'button button-small float-right win-link']
-                ) ?>
-                <h4><?= __d('radius', 'Related RADIUS Checks') ?></h4>
-                <?php if (!empty($account->radcheck)) : ?>
+                <h4><?= __d('radius', 'Related RADIUS Accountings') ?></h4>
+                <?php if (!empty($account->radacct)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __d('radius', 'Id') ?></th>
-                            <th><?= __d('radius', 'Username') ?></th>
-                            <th><?= __d('radius', 'Attribute') ?></th>
-                            <th><?= __d('radius', 'Op') ?></th>
-                            <th><?= __d('radius', 'Value') ?></th>
+                            <th><?= __d('radius', 'Service Type') ?></th>
+                            <th><?= __d('radius', 'Framed Protocol') ?></th>
+                            <th><?= __d('radius', 'Called Station ID') ?></th>
+                            <th><?= __d('radius', 'Calling Station ID') ?></th>
+                            <th><?= __d('radius', 'Framed IP Address') ?></th>
+                            <th><?= __d('radius', 'Framed IPv6 Address') ?></th>
+                            <th><?= __d('radius', 'Framed IPv6 Prefix') ?></th>
+                            <th><?= __d('radius', 'Framed Interface ID') ?></th>
+                            <th><?= __d('radius', 'Delegated IPv6 Prefix') ?></th>
+                            <th><?= __d('radius', 'NAS IP Address') ?></th>
+                            <th><?= __d('radius', 'NAS Port ID') ?></th>
+                            <th><?= __d('radius', 'NAS Port Type') ?></th>
+                            <th><?= __d('radius', 'Network Access Server') ?></th>
+                            <th><?= __d('radius', 'Start Time') ?></th>
+                            <th><?= __d('radius', 'Update Time') ?></th>
+                            <th><?= __d('radius', 'Update Interval') ?></th>
+                            <th><?= __d('radius', 'Stop Time') ?></th>
+                            <th><?= __d('radius', 'Termination Cause') ?></th>
+                            <th><?= __d('radius', 'Session Time') ?></th>
+                            <th><?= __d('radius', 'Upload') ?></th>
+                            <th><?= __d('radius', 'Download') ?></th>
                             <th class="actions"><?= __d('radius', 'Actions') ?></th>
                         </tr>
-                        <?php foreach ($account->radcheck as $radcheck) : ?>
+                        <?php foreach ($account->radacct as $radacct) : ?>
                         <tr>
-                            <td><?= h($radcheck->id) ?></td>
-                            <td><?= h($radcheck->username) ?></td>
-                            <td><?= h($radcheck->attribute) ?></td>
-                            <td><?= h($radcheck->op) ?></td>
-                            <td><?= h($radcheck->value) ?></td>
+                            <td><?= h($radacct->servicetype) ?></td>
+                            <td><?= h($radacct->framedprotocol) ?></td>
+                            <td><?= h($radacct->calledstationid) ?></td>
+                            <td><?= h($radacct->callingstationid) ?></td>
+                            <td><?= h($radacct->framedipaddress) ?></td>
+                            <td><?= h($radacct->framedipv6address) ?></td>
+                            <td><?= h($radacct->framedipv6prefix) ?></td>
+                            <td><?= h($radacct->framedinterfaceid) ?></td>
+                            <td><?= h($radacct->delegatedipv6prefix) ?></td>
+                            <td><?= h($radacct->nasipaddress) ?></td>
+                            <td><?= h($radacct->nasportid) ?></td>
+                            <td><?= h($radacct->nasporttype) ?></td>
+                            <td><?php
+                            if (isset($radacct->nasipaddress)) {
+                                $device = $radacct->routeros_devices_for_nas->first();
+                                echo isset($device['access_point']['id']) ?
+                                    __d('radius', 'Access Point') . ': ' . $this->Html->link(
+                                        $device['access_point']['name'],
+                                        env('WATCHER_NMS_URL') . '/access-points/view/' . $device['access_point']['id'],
+                                        ['target' => '_blank']
+                                    ) . '<br>' : '';
+                                echo isset($device['id']) ?
+                                    $this->Html->link(
+                                        $device['name'],
+                                        env('WATCHER_NMS_URL') . '/routeros-devices/view/' . $device['id'],
+                                        ['target' => '_blank']
+                                    ) . '<br>' : '';
+                                unset($device);
+                            }
+                            ?></td>
+                            <td><?= h($radacct->acctstarttime) ?></td>
+                            <td><?= h($radacct->acctupdatetime) ?></td>
+                            <td><?= $radacct->acctinterval ?
+                                FrozenTime::createFromTimestamp($radacct->acctinterval)
+                                    ->diffForHumans(FrozenTime::createFromTimestamp(0), true) : '' ?></td>
+                            <td><?= h($radacct->acctstoptime) ?></td>
+                            <td><?= h($radacct->acctterminatecause) ?></td>
+                            <td><?= FrozenTime::createFromTimestamp($radacct->acctsessiontime)
+                                ->diffForHumans(FrozenTime::createFromTimestamp(0), true) ?></td>
+                            <td><?= $this->Number->toReadableSize($radacct->acctinputoctets) ?></td>
+                            <td><?= $this->Number->toReadableSize($radacct->acctoutputoctets) ?></td>
                             <td class="actions">
                                 <?= $this->Html->link(
                                     __d('radius', 'View'),
-                                    ['controller' => 'Radcheck', 'action' => 'view', $radcheck->id]
+                                    ['controller' => 'Radacct', 'action' => 'view', $radacct->radacctid]
                                 ) ?>
                                 <?= $this->Html->link(
                                     __d('radius', 'Edit'),
-                                    ['controller' => 'Radcheck', 'action' => 'edit', $radcheck->id],
+                                    ['controller' => 'Radacct', 'action' => 'edit', $radacct->radacctid],
                                     ['class' => 'win-link']
                                 ) ?>
                                 <?= $this->Form->postLink(
                                     __d('radius', 'Delete'),
-                                    ['controller' => 'Radcheck', 'action' => 'delete', $radcheck->id],
+                                    ['controller' => 'Radacct', 'action' => 'delete', $radacct->radacctid],
                                     ['confirm' => __d(
                                         'radius',
                                         'Are you sure you want to delete # {0}?',
-                                        $radcheck->id
+                                        $radacct->radacctid
                                     )]
                                 ) ?>
                             </td>
@@ -172,96 +214,46 @@
                 <?php endif; ?>
             </div>
             <div class="related">
-                <?= $this->Html->link(
-                    __d('radius', 'New RADIUS Reply'),
-                    ['controller' => 'Radreply', 'action' => 'add', '?' => ['username' => $account->username]],
-                    ['class' => 'button button-small float-right win-link']
-                ) ?>
-                <h4><?= __d('radius', 'Related RADIUS Replies') ?></h4>
-                <?php if (!empty($account->radreply)) : ?>
+                <h4><?= __d('radius', 'Related RADIUS Post Authentications') ?></h4>
+                <?php if (!empty($account->radpostauth)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
                             <th><?= __d('radius', 'Id') ?></th>
                             <th><?= __d('radius', 'Username') ?></th>
-                            <th><?= __d('radius', 'Attribute') ?></th>
-                            <th><?= __d('radius', 'Op') ?></th>
-                            <th><?= __d('radius', 'Value') ?></th>
+                            <th><?= __d('radius', 'Pass') ?></th>
+                            <th><?= __d('radius', 'Reply') ?></th>
+                            <th><?= __d('radius', 'Called Station ID') ?></th>
+                            <th><?= __d('radius', 'Calling Station ID') ?></th>
+                            <th><?= __d('radius', 'Authentication Date') ?></th>
                             <th class="actions"><?= __d('radius', 'Actions') ?></th>
                         </tr>
-                        <?php foreach ($account->radreply as $radreply) : ?>
+                        <?php foreach ($account->radpostauth as $radpostauth) : ?>
                         <tr>
-                            <td><?= h($radreply->id) ?></td>
-                            <td><?= h($radreply->username) ?></td>
-                            <td><?= h($radreply->attribute) ?></td>
-                            <td><?= h($radreply->op) ?></td>
-                            <td><?= h($radreply->value) ?></td>
+                            <td><?= h($radpostauth->id) ?></td>
+                            <td><?= h($radpostauth->username) ?></td>
+                            <td><?= h($radpostauth->pass) ?></td>
+                            <td><?= h($radpostauth->reply) ?></td>
+                            <td><?= h($radpostauth->calledstationid) ?></td>
+                            <td><?= h($radpostauth->callingstationid) ?></td>
+                            <td><?= h($radpostauth->authdate) ?></td>
                             <td class="actions">
                                 <?= $this->Html->link(
                                     __d('radius', 'View'),
-                                    ['controller' => 'Radreply', 'action' => 'view', $radreply->id]
+                                    ['controller' => 'Radpostauth', 'action' => 'view', $radpostauth->id]
                                 ) ?>
                                 <?= $this->Html->link(
                                     __d('radius', 'Edit'),
-                                    ['controller' => 'Radreply', 'action' => 'edit', $radreply->id],
+                                    ['controller' => 'Radpostauth', 'action' => 'edit', $radpostauth->id],
                                     ['class' => 'win-link']
                                 ) ?>
                                 <?= $this->Form->postLink(
                                     __d('radius', 'Delete'),
-                                    ['controller' => 'Radreply', 'action' => 'delete', $radreply->id],
+                                    ['controller' => 'Radpostauth', 'action' => 'delete', $radpostauth->id],
                                     ['confirm' => __d(
                                         'radius',
                                         'Are you sure you want to delete # {0}?',
-                                        $radreply->id
-                                    )]
-                                ) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
-                <?php endif; ?>
-            </div>
-            <div class="related">
-                <?= $this->Html->link(
-                    __d('radius', 'New RADIUS User Group'),
-                    ['controller' => 'Radusergroup', 'action' => 'add', '?' => ['username' => $account->username]],
-                    ['class' => 'button button-small float-right win-link']
-                ) ?>
-                <h4><?= __d('radius', 'Related RADIUS User Groups') ?></h4>
-                <?php if (!empty($account->radusergroup)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __d('radius', 'Id') ?></th>
-                            <th><?= __d('radius', 'Username') ?></th>
-                            <th><?= __d('radius', 'Groupname') ?></th>
-                            <th><?= __d('radius', 'Priority') ?></th>
-                            <th class="actions"><?= __d('radius', 'Actions') ?></th>
-                        </tr>
-                        <?php foreach ($account->radusergroup as $radusergroup) : ?>
-                        <tr>
-                            <td><?= h($radusergroup->id) ?></td>
-                            <td><?= h($radusergroup->username) ?></td>
-                            <td><?= h($radusergroup->groupname) ?></td>
-                            <td><?= h($radusergroup->priority) ?></td>
-                            <td class="actions">
-                                <?= $this->Html->link(
-                                    __d('radius', 'View'),
-                                    ['controller' => 'Radusergroup', 'action' => 'view', $radusergroup->id]
-                                ) ?>
-                                <?= $this->Html->link(
-                                    __d('radius', 'Edit'),
-                                    ['controller' => 'Radusergroup', 'action' => 'edit', $radusergroup->id],
-                                    ['class' => 'win-link']
-                                ) ?>
-                                <?= $this->Form->postLink(
-                                    __d('radius', 'Delete'),
-                                    ['controller' => 'Radusergroup', 'action' => 'delete', $radusergroup->id],
-                                    ['confirm' => __d(
-                                        'radius',
-                                        'Are you sure you want to delete # {0}?',
-                                        $radusergroup->id
+                                        $radpostauth->id
                                     )]
                                 ) ?>
                             </td>

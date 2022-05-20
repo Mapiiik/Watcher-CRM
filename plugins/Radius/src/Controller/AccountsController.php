@@ -57,7 +57,34 @@ class AccountsController extends AppController
     public function view($id = null)
     {
         $account = $this->Accounts->get($id, [
-            'contain' => ['Customers', 'Contracts', 'Radcheck', 'Radreply', 'Radusergroup', 'Radpostauth', 'Radacct'],
+            'contain' => [
+                'Customers',
+                'Contracts',
+                'Radcheck',
+                'Radreply',
+                'Radusergroup',
+            ],
+        ]);
+
+        $this->set(compact('account'));
+    }
+
+    /**
+     * Monitoring method
+     *
+     * @param string|null $id Account id.
+     * @return \Cake\Http\Response|null|void Renders view
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function monitoring($id = null)
+    {
+        $account = $this->Accounts->get($id, [
+            'contain' => [
+                'Customers',
+                'Contracts',
+                'Radacct' => ['sort' => ['Radacct.acctstarttime' => 'DESC']],
+                'Radpostauth' => ['sort' => ['Radpostauth.authdate' => 'DESC']],
+            ],
         ]);
 
         $this->set(compact('account'));

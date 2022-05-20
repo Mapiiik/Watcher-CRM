@@ -67,6 +67,15 @@
                     ]
                 ) ?>
                 <?= $this->AuthLink->link(
+                    __d('radius', 'Monitoring'),
+                    [
+                        'plugin' => 'Radius',
+                        'controller' => 'Accounts',
+                        'action' => 'monitoring',
+                        $account->id,
+                    ]
+                ) ?>
+                <?= $this->AuthLink->link(
                     __d('radius', 'Edit'),
                     [
                         'plugin' => 'Radius',
