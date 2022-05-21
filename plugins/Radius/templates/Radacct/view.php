@@ -134,13 +134,13 @@
                 </blockquote>
             </div>
             <div class="text">
-                <strong><?= __d('radius', 'Connectinfo Start') ?></strong>
+                <strong><?= __d('radius', 'Connection Info Start') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($radacct->connectinfo_start)); ?>
                 </blockquote>
             </div>
             <div class="text">
-                <strong><?= __d('radius', 'Connectinfo Stop') ?></strong>
+                <strong><?= __d('radius', 'Connection Info Stop') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($radacct->connectinfo_stop)); ?>
                 </blockquote>
