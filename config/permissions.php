@@ -232,7 +232,7 @@ return [
             'role' => ['manager', 'bookkeeper'],
             'plugin' => ['Radius'],
             'controller' => ['Accounts'],
-            'action' => ['view', 'add', 'edit', 'updateRelatedRecords'],
+            'action' => ['view', 'add', 'edit', 'monitoring', 'disconnectRequest', 'updateRelatedRecords'],
         ],
     ],
 ];
