@@ -43,6 +43,14 @@ use Cake\I18n\FrozenTime;
                 ['action' => 'view', $account->id],
                 ['class' => 'button button float-right']
             ) ?>
+            <?= $this->Form->postLink(
+                __d('radius', 'RADIUS Disconnect Request'),
+                ['action' => 'disconnectRequest', $account->id],
+                [
+                    'confirm' => __d('radius', 'Are you sure you want to disconnect {0}?', $account->username),
+                    'class' => 'button button float-right',
+                ]
+            ) ?>
             <h3><?= h($account->username) ?></h3>
             <div class="row">
                 <div class="column-responsive">

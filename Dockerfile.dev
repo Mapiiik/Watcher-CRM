@@ -18,6 +18,13 @@ RUN set -x \
  && docker-run-bootstrap \
  && docker-image-cleanup
 
+# Install PECL-RADIUS extension
+RUN set -x \
+ && CPPFLAGS="-DHAVE_SYS_FILE_H" pecl install radius-beta \
+ && docker-php-ext-enable radius \
+ && docker-run-bootstrap \
+ && docker-image-cleanup
+
 # Add on-start commands
 RUN echo '# Composer oprations' >> /opt/docker/provision/entrypoint.d/99-composer.sh \
  && echo 'gosu "${APPLICATION_USER}" composer install -d /app' >> /opt/docker/provision/entrypoint.d/99-composer.sh \
