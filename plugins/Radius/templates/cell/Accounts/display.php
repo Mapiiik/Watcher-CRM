@@ -58,20 +58,20 @@
             ?></td>
             <td class="actions">
                 <?= $this->AuthLink->link(
-                    __d('radius', 'View'),
-                    [
-                        'plugin' => 'Radius',
-                        'controller' => 'Accounts',
-                        'action' => 'view',
-                        $account->id,
-                    ]
-                ) ?>
-                <?= $this->AuthLink->link(
                     __d('radius', 'Monitoring'),
                     [
                         'plugin' => 'Radius',
                         'controller' => 'Accounts',
                         'action' => 'monitoring',
+                        $account->id,
+                    ]
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __d('radius', 'View'),
+                    [
+                        'plugin' => 'Radius',
+                        'controller' => 'Accounts',
+                        'action' => 'view',
                         $account->id,
                     ]
                 ) ?>

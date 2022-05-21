@@ -60,8 +60,8 @@
                     <td><?= h($account->modified) ?></td>
                     <td><?= $this->Number->format($account->modified_by) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__d('radius', 'View'), ['action' => 'view', $account->id]) ?>
                         <?= $this->Html->link(__d('radius', 'Monitoring'), ['action' => 'monitoring', $account->id]) ?>
+                        <?= $this->Html->link(__d('radius', 'View'), ['action' => 'view', $account->id]) ?>
                         <?= $this->Html->link(
                             __d('radius', 'Edit'),
                             ['action' => 'edit', $account->id],
