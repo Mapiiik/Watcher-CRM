@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-05-13 19:34+0200\n"
+"POT-Creation-Date: 2022-05-22 19:50+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -20,6 +20,32 @@ msgstr ""
 
 #: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:123
 msgid "The email cannot be sent."
+msgstr ""
+
+#: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:31
+#: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:53
+msgid "Routers updated."
+msgstr ""
+
+#: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:32
+#: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:54
+msgid "Nothing has changed."
+msgstr ""
+
+#: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:126
+msgid "Removed IPv4 record {0} from {1}."
+msgstr ""
+
+#: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:145
+msgid "Added IPv4 record {0} to {1}."
+msgstr ""
+
+#: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:166
+msgid "Removed IPv6 record {0} from {1}."
+msgstr ""
+
+#: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:185
+msgid "Added IPv6 record {0} to {1}."
 msgstr ""
 
 #: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:105

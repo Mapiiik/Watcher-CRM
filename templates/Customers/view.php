@@ -850,6 +850,30 @@ use Cake\I18n\Number;
                 <?php endif; ?>
             </div>
             <div class="related">
+                <?= $this->AuthLink->postLink(
+                    __('Unblock Debtor'),
+                    ['plugin' => 'BookkeepingPohoda', 'controller' => 'Debtors', 'action' => 'unblock', $customer->id],
+                    [
+                        'class' => 'button button-small float-right',
+                        'confirm' => __d(
+                            'bookkeeping_pohoda',
+                            'Are you sure you want to unblock # {0}?',
+                            $customer->id
+                        ),
+                    ]
+                ) ?>
+                <?= $this->AuthLink->postLink(
+                    __('Block Debtor'),
+                    ['plugin' => 'BookkeepingPohoda', 'controller' => 'Debtors', 'action' => 'block', $customer->id],
+                    [
+                        'class' => 'button button-small float-right',
+                        'confirm' => __d(
+                            'bookkeeping_pohoda',
+                            'Are you sure you want to block # {0}?',
+                            $customer->id
+                        ),
+                    ]
+                ) ?>
                 <h4><?= __('Invoices') ?></h4>
                 <?= $this->cell(
                     'BookkeepingPohoda.Invoices',
