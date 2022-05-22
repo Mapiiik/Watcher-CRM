@@ -855,11 +855,7 @@ use Cake\I18n\Number;
                     ['plugin' => 'BookkeepingPohoda', 'controller' => 'Debtors', 'action' => 'unblock', $customer->id],
                     [
                         'class' => 'button button-small float-right',
-                        'confirm' => __d(
-                            'bookkeeping_pohoda',
-                            'Are you sure you want to unblock # {0}?',
-                            $customer->id
-                        ),
+                        'confirm' => __('Are you sure you want to unblock # {0}?', $customer->id),
                     ]
                 ) ?>
                 <?= $this->AuthLink->postLink(
@@ -867,11 +863,7 @@ use Cake\I18n\Number;
                     ['plugin' => 'BookkeepingPohoda', 'controller' => 'Debtors', 'action' => 'block', $customer->id],
                     [
                         'class' => 'button button-small float-right',
-                        'confirm' => __d(
-                            'bookkeeping_pohoda',
-                            'Are you sure you want to block # {0}?',
-                            $customer->id
-                        ),
+                        'confirm' => __('Are you sure you want to block # {0}?', $customer->id),
                     ]
                 ) ?>
                 <h4><?= __('Invoices') ?></h4>
