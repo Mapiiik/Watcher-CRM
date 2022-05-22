@@ -33,7 +33,12 @@ class DebtorsController extends AppController
             ['escape' => false]
         );
 
-        return $this->redirect($this->referer(['plugin' => null, 'controller' => 'Customers', $id]));
+        return $this->redirect($this->referer([
+            'plugin' => null,
+            'controller' => 'Customers',
+            'action' => 'view',
+            $id,
+        ]));
     }
 
     /**
@@ -55,7 +60,12 @@ class DebtorsController extends AppController
             ['escape' => false]
         );
 
-        return $this->redirect($this->referer(['plugin' => null, 'controller' => 'Customers', $id]));
+        return $this->redirect($this->referer([
+            'plugin' => null,
+            'controller' => 'Customers',
+            'action' => 'view',
+            $id,
+        ]));
     }
 
     /**
