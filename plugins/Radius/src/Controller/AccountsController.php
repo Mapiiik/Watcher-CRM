@@ -485,7 +485,7 @@ class AccountsController extends AppController
         $radreply = [];
 
         foreach ($contract->ips as $ip) {
-            @[$address, $mask] = explode('/', $ip->ip); // phpcs:ignore
+            [$address] = explode('/', $ip->ip);
 
             if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
                 $radreply[] = $this->fetchTable('Radius.Radreply')
@@ -510,7 +510,7 @@ class AccountsController extends AppController
         }
 
         foreach ($contract->ip_networks as $ipNetwork) {
-            @[$address, $mask] = explode('/', $ipNetwork->ip_network); // phpcs:ignore
+            [$address, $mask] = explode('/', $ipNetwork->ip_network);
 
             if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
                 $radreply[] = $this->fetchTable('Radius.Radreply')
