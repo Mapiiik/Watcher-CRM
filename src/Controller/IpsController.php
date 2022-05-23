@@ -90,10 +90,6 @@ class IpsController extends AppController
             if ($this->Ips->save($ip)) {
                 $this->Flash->success(__('The ip has been saved.'));
 
-                if (isset($contract_id)) {
-                    return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                }
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The ip could not be saved. Please, try again.'));
@@ -142,10 +138,6 @@ class IpsController extends AppController
             $ip = $this->Ips->patchEntity($ip, $this->request->getData());
             if ($this->Ips->save($ip)) {
                 $this->Flash->success(__('The ip has been saved.'));
-
-                if (isset($contract_id)) {
-                    return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                }
 
                 return $this->redirect(['action' => 'index']);
             }

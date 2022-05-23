@@ -183,6 +183,10 @@ class IpNetworksController extends AppController
             }
         }
 
+        if (isset($contract_id)) {
+            return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+        }
+
         return $this->redirect(['action' => 'index']);
     }
 

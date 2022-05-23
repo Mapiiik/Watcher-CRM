@@ -84,10 +84,6 @@ class SoldEquipmentsController extends AppController
             if ($this->SoldEquipments->save($soldEquipment)) {
                 $this->Flash->success(__('The sold equipment has been saved.'));
 
-                if (isset($contract_id)) {
-                    return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                }
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The sold equipment could not be saved. Please, try again.'));
@@ -135,10 +131,6 @@ class SoldEquipmentsController extends AppController
             $soldEquipment = $this->SoldEquipments->patchEntity($soldEquipment, $this->request->getData());
             if ($this->SoldEquipments->save($soldEquipment)) {
                 $this->Flash->success(__('The sold equipment has been saved.'));
-
-                if (isset($contract_id)) {
-                    return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                }
 
                 return $this->redirect(['action' => 'index']);
             }

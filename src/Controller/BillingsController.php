@@ -101,10 +101,6 @@ class BillingsController extends AppController
                 if ($this->Billings->save($billing)) {
                     $this->Flash->success(__('The billing has been saved.'));
 
-                    if (isset($contract_id)) {
-                        return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                    }
-
                     return $this->redirect(['action' => 'index']);
                 }
                 $this->Flash->error(__('The billing could not be saved. Please, try again.'));
@@ -181,11 +177,7 @@ class BillingsController extends AppController
                 if ($this->Billings->save($billing)) {
                     $this->Flash->success(__('The billing has been saved.'));
 
-                    if (isset($contract_id)) {
-                        return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                    }
-
-                    return $this->redirect(['action' => 'index']);
+                    return $this->redirect(['action' => 'view', $billing->id]);
                 }
                 $this->Flash->error(__('The billing could not be saved. Please, try again.'));
             }

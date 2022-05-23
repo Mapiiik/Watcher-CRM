@@ -95,10 +95,6 @@ class RemovedIpsController extends AppController
             if ($this->RemovedIps->save($removedIp)) {
                 $this->Flash->success(__('The removed ip has been saved.'));
 
-                if (isset($contract_id)) {
-                    return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                }
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The removed ip could not be saved. Please, try again.'));
@@ -147,10 +143,6 @@ class RemovedIpsController extends AppController
             $removedIp = $this->RemovedIps->patchEntity($removedIp, $this->request->getData());
             if ($this->RemovedIps->save($removedIp)) {
                 $this->Flash->success(__('The removed ip has been saved.'));
-
-                if (isset($contract_id)) {
-                    return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                }
 
                 return $this->redirect(['action' => 'index']);
             }

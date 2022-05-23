@@ -84,10 +84,6 @@ class BorrowedEquipmentsController extends AppController
             if ($this->BorrowedEquipments->save($borrowedEquipment)) {
                 $this->Flash->success(__('The borrowed equipment has been saved.'));
 
-                if (isset($contract_id)) {
-                    return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                }
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The borrowed equipment could not be saved. Please, try again.'));
@@ -135,10 +131,6 @@ class BorrowedEquipmentsController extends AppController
             $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, $this->request->getData());
             if ($this->BorrowedEquipments->save($borrowedEquipment)) {
                 $this->Flash->success(__('The borrowed equipment has been saved.'));
-
-                if (isset($contract_id)) {
-                    return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
-                }
 
                 return $this->redirect(['action' => 'index']);
             }
