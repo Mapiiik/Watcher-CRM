@@ -849,6 +849,7 @@ use Cake\I18n\Number;
                 </div>
                 <?php endif; ?>
             </div>
+            <hr />
             <div class="related">
                 <?= $this->AuthLink->postLink(
                     __('Unblock Debtor'),
