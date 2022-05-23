@@ -172,6 +172,9 @@ class IpNetworksController extends AppController
      */
     public function delete($id = null)
     {
+        $customer_id = $this->request->getParam('customer_id');
+        $contract_id = $this->request->getParam('contract_id');
+
         $this->request->allowMethod(['post', 'delete']);
         $ipNetwork = $this->IpNetworks->get($id);
 
