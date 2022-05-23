@@ -118,21 +118,17 @@ use Cake\I18n\Number;
                     <?= $this->Text->autoParagraph(h($billing->note)); ?>
                 </blockquote>
             </div>
-            <?php
-            // show three billing calculations from start and from end
-            $bill_dates = [
-                $billing->billing_from->day(1),
-                $billing->billing_from->day(1)->addMonth(1),
-                $billing->billing_from->day(1)->addMonth(2),
-            ];
-            if (isset($billing->billing_until)) {
-                $bill_dates[] = $billing->billing_until->day(1);
-                $bill_dates[] = $billing->billing_until->day(1)->addMonth(1);
-                $bill_dates[] = $billing->billing_until->day(1)->addMonth(2);
-            }
-            ?>
+
             <div class="related">
-                <h4><?= __('Billing Preview') ?></h4>
+                <?php
+                // show three billing calculations from start
+                $bill_dates = [
+                    $billing->billing_from->day(1),
+                    $billing->billing_from->day(1)->addMonth(1),
+                    $billing->billing_from->day(1)->addMonth(2),
+                ];
+                ?>
+                <h4><?= __('Billing Preview - Start') ?></h4>
                 <div class="table-responsive">
                     <table>
                         <tr>
@@ -158,6 +154,44 @@ use Cake\I18n\Number;
                     </table>
                 </div>
             </div>
+
+            <?php if (isset($billing->billing_until)) : ?>
+            <div class="related">
+                <?php
+                // show three billing calculations before end
+                $bill_dates = [
+                    $billing->billing_until->day(1),
+                    $billing->billing_until->day(1)->addMonth(1),
+                    $billing->billing_until->day(1)->addMonth(2),
+                ];
+                ?>
+                <h4><?= __('Billing Preview - End') ?></h4>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Billing Date') ?></th>
+                            <th><?= __('Period From') ?></th>
+                            <th><?= __('Period Until') ?></th>
+                            <th><?= __('Price') ?></th>
+                        </tr>
+                        <?php foreach ($bill_dates as $bill_date) : ?>
+                        <tr style="<?=
+                            $bill_date->subDay(1) == FrozenDate::create()->lastOfMonth() ?
+                                'background-color: #ffd500;' : ''
+                        ?>">
+                            <td><?= $bill_date->subDay(1) ?></td>
+                            <td><?= $bill_date->subMonth(1) ?></td>
+                            <td><?= $bill_date->subDay(1) ?></td>
+                            <td><?= Number::currency($billing->periodTotal(
+                                $bill_date->subMonth(1),
+                                $bill_date->subDay(1)
+                            )) ?></td>
+                        </tr>
+                        <?php endforeach ?>
+                    </table>
+                </div>
+            </div>
+            <?php endif ?>
         </div>
     </div>
 </div>
