@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-05-23 12:13+0200\n"
-"PO-Revision-Date: 2022-05-23 12:16+0200\n"
+"POT-Creation-Date: 2022-05-23 13:12+0200\n"
+"PO-Revision-Date: 2022-05-23 13:13+0200\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -15,50 +15,50 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 "X-Generator: Poedit 3.0.1\n"
 
-#: plugins/Radius/src/Controller/AccountsController.php:131
-#: plugins/Radius/src/Controller/AccountsController.php:232
+#: plugins/Radius/src/Controller/AccountsController.php:133
+#: plugins/Radius/src/Controller/AccountsController.php:234
 msgid "The RADIUS account has been saved."
 msgstr "Účet RADIUS byl uložen."
 
-#: plugins/Radius/src/Controller/AccountsController.php:135
-#: plugins/Radius/src/Controller/AccountsController.php:236
+#: plugins/Radius/src/Controller/AccountsController.php:137
+#: plugins/Radius/src/Controller/AccountsController.php:238
 msgid "The RADIUS account could not be saved. Please, try again."
 msgstr "Účet RADIUS nelze uložit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/AccountsController.php:271
+#: plugins/Radius/src/Controller/AccountsController.php:273
 msgid "The RADIUS account has been deleted."
 msgstr "Účet RADIUS byl odstraněn."
 
-#: plugins/Radius/src/Controller/AccountsController.php:273
+#: plugins/Radius/src/Controller/AccountsController.php:275
 msgid "The RADIUS account could not be deleted. Please, try again."
 msgstr "Účet RADIUS nelze odstranit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/AccountsController.php:387
+#: plugins/Radius/src/Controller/AccountsController.php:389
 msgid "The RADIUS session started on {0} has been disconnected ({1})."
 msgstr "Relace RADIUS zahájená {0} byla odpojena ({1})."
 
-#: plugins/Radius/src/Controller/AccountsController.php:394
+#: plugins/Radius/src/Controller/AccountsController.php:396
 msgid "The RADIUS session started on {0} could not be disconnected ({1})."
 msgstr "Relaci RADIUS zahájenou {0} nelze odpojit ({1})."
 
-#: plugins/Radius/src/Controller/AccountsController.php:431
+#: plugins/Radius/src/Controller/AccountsController.php:433
 msgid "The RADIUS account has been updated."
 msgstr "Účet RADIUS byl aktualizován."
 
-#: plugins/Radius/src/Controller/AccountsController.php:433
+#: plugins/Radius/src/Controller/AccountsController.php:435
 msgid "The RADIUS account could not be updated. Please, try again."
 msgstr "Účet RADIUS nelze aktualizovat. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/AccountsController.php:543
+#: plugins/Radius/src/Controller/AccountsController.php:545
 msgid ""
 "The RADIUS replies could not be found automatically. Please, set it manually."
 msgstr "Odpovědi RADIUS nebyly nalezeny automaticky. Nastavte je prosím ručně."
 
-#: plugins/Radius/src/Controller/AccountsController.php:545
+#: plugins/Radius/src/Controller/AccountsController.php:547
 msgid "The IP addresses for the contract are probably not set correctly."
 msgstr "IP adresy pro smlouvu pravděpodobně nejsou správně nastaveny."
 
-#: plugins/Radius/src/Controller/AccountsController.php:603
+#: plugins/Radius/src/Controller/AccountsController.php:605
 msgid ""
 "The RADIUS user groups could not be found automatically. Please, set it "
 "manually."
@@ -66,7 +66,7 @@ msgstr ""
 "Skupiny uživatelů RADIUS nebyly nalezeny automaticky. Nastavte je prosím "
 "ručně."
 
-#: plugins/Radius/src/Controller/AccountsController.php:605
+#: plugins/Radius/src/Controller/AccountsController.php:607
 msgid ""
 "The billings for the contract for the current or upcoming period are "
 "probably not set correctly."
@@ -222,8 +222,8 @@ msgstr "Skupinu uživatelů RADIUS nelze odstranit. Zkuste to prosím znovu."
 #: plugins/Radius/templates/Accounts/edit.php:10
 #: plugins/Radius/templates/Accounts/index.php:29
 #: plugins/Radius/templates/Accounts/monitoring.php:13
-#: plugins/Radius/templates/Accounts/monitoring.php:153
-#: plugins/Radius/templates/Accounts/monitoring.php:237
+#: plugins/Radius/templates/Accounts/monitoring.php:172
+#: plugins/Radius/templates/Accounts/monitoring.php:266
 #: plugins/Radius/templates/Accounts/view.php:10
 #: plugins/Radius/templates/Accounts/view.php:139
 #: plugins/Radius/templates/Accounts/view.php:190
@@ -300,7 +300,7 @@ msgstr "Smlouva"
 #: plugins/Radius/templates/Accounts/edit.php:64
 #: plugins/Radius/templates/Accounts/index.php:21
 #: plugins/Radius/templates/Accounts/monitoring.php:84
-#: plugins/Radius/templates/Accounts/monitoring.php:231
+#: plugins/Radius/templates/Accounts/monitoring.php:260
 #: plugins/Radius/templates/Accounts/view.php:81
 #: plugins/Radius/templates/Accounts/view.php:135
 #: plugins/Radius/templates/Accounts/view.php:186
@@ -364,8 +364,8 @@ msgstr "Odstranit účet RADIUS"
 #: plugins/Radius/templates/Accounts/edit.php:15
 #: plugins/Radius/templates/Accounts/index.php:73
 #: plugins/Radius/templates/Accounts/monitoring.php:23
-#: plugins/Radius/templates/Accounts/monitoring.php:211
-#: plugins/Radius/templates/Accounts/monitoring.php:261
+#: plugins/Radius/templates/Accounts/monitoring.php:240
+#: plugins/Radius/templates/Accounts/monitoring.php:290
 #: plugins/Radius/templates/Accounts/view.php:20
 #: plugins/Radius/templates/Accounts/view.php:161
 #: plugins/Radius/templates/Accounts/view.php:212
@@ -420,7 +420,7 @@ msgstr "Účty RADIUS"
 
 #: plugins/Radius/templates/Accounts/index.php:18
 #: plugins/Radius/templates/Accounts/monitoring.php:104
-#: plugins/Radius/templates/Accounts/monitoring.php:230
+#: plugins/Radius/templates/Accounts/monitoring.php:259
 #: plugins/Radius/templates/Accounts/view.php:101
 #: plugins/Radius/templates/Accounts/view.php:134
 #: plugins/Radius/templates/Accounts/view.php:185
@@ -490,8 +490,8 @@ msgid "Monitoring"
 msgstr "Monitorování"
 
 #: plugins/Radius/templates/Accounts/index.php:64
-#: plugins/Radius/templates/Accounts/monitoring.php:200
-#: plugins/Radius/templates/Accounts/monitoring.php:250
+#: plugins/Radius/templates/Accounts/monitoring.php:229
+#: plugins/Radius/templates/Accounts/monitoring.php:279
 #: plugins/Radius/templates/Accounts/view.php:150
 #: plugins/Radius/templates/Accounts/view.php:201
 #: plugins/Radius/templates/Accounts/view.php:250
@@ -512,8 +512,8 @@ msgid "View"
 msgstr "Zobrazit"
 
 #: plugins/Radius/templates/Accounts/index.php:66
-#: plugins/Radius/templates/Accounts/monitoring.php:204
-#: plugins/Radius/templates/Accounts/monitoring.php:254
+#: plugins/Radius/templates/Accounts/monitoring.php:233
+#: plugins/Radius/templates/Accounts/monitoring.php:283
 #: plugins/Radius/templates/Accounts/view.php:154
 #: plugins/Radius/templates/Accounts/view.php:205
 #: plugins/Radius/templates/Accounts/view.php:254
@@ -534,8 +534,8 @@ msgid "Edit"
 msgstr "Upravit"
 
 #: plugins/Radius/templates/Accounts/index.php:71
-#: plugins/Radius/templates/Accounts/monitoring.php:209
-#: plugins/Radius/templates/Accounts/monitoring.php:259
+#: plugins/Radius/templates/Accounts/monitoring.php:238
+#: plugins/Radius/templates/Accounts/monitoring.php:288
 #: plugins/Radius/templates/Accounts/view.php:159
 #: plugins/Radius/templates/Accounts/view.php:210
 #: plugins/Radius/templates/Accounts/view.php:259
@@ -631,139 +631,143 @@ msgstr "Požadavek na odpojení RADIUS"
 msgid "Are you sure you want to disconnect {0}?"
 msgstr "Opravdu chcete odpojit {0}?"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:127
+#: plugins/Radius/templates/Accounts/monitoring.php:130
+msgid "Show Details"
+msgstr "Zobrazit detaily"
+
+#: plugins/Radius/templates/Accounts/monitoring.php:136
 msgid "Related RADIUS Accountings"
 msgstr "Související monitorování účtů RADIUS"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:132
+#: plugins/Radius/templates/Accounts/monitoring.php:142
 #: plugins/Radius/templates/Radacct/view.php:167
 msgid "Service Type"
 msgstr "Typ služby"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:133
+#: plugins/Radius/templates/Accounts/monitoring.php:143
 #: plugins/Radius/templates/Radacct/view.php:173
 msgid "Framed Protocol"
 msgstr "Rámcový protokol"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:134
-#: plugins/Radius/templates/Accounts/monitoring.php:234
+#: plugins/Radius/templates/Accounts/monitoring.php:144
+#: plugins/Radius/templates/Accounts/monitoring.php:263
 #: plugins/Radius/templates/Radacct/view.php:149
 #: plugins/Radius/templates/Radpostauth/view.php:69
 msgid "Called Station ID"
 msgstr "ID volané stanice"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:135
-#: plugins/Radius/templates/Accounts/monitoring.php:235
+#: plugins/Radius/templates/Accounts/monitoring.php:146
+#: plugins/Radius/templates/Accounts/monitoring.php:264
 #: plugins/Radius/templates/Radacct/view.php:155
 #: plugins/Radius/templates/Radpostauth/view.php:75
 msgid "Calling Station ID"
 msgstr "ID volající stanice"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:136
+#: plugins/Radius/templates/Accounts/monitoring.php:147
 #: plugins/Radius/templates/Radacct/view.php:52
 msgid "Framed IP Address"
 msgstr "Rámcová IP adresa"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:137
+#: plugins/Radius/templates/Accounts/monitoring.php:148
 #: plugins/Radius/templates/Radacct/view.php:56
 msgid "Framed IPv6 Address"
 msgstr "Rámcová IPv6 adresa"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:138
+#: plugins/Radius/templates/Accounts/monitoring.php:149
 #: plugins/Radius/templates/Radacct/view.php:60
 msgid "Framed IPv6 Prefix"
 msgstr "Rámcová předpona IPv6"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:139
+#: plugins/Radius/templates/Accounts/monitoring.php:150
 #: plugins/Radius/templates/Radacct/view.php:64
 msgid "Delegated IPv6 Prefix"
 msgstr "Delegovaná předpona IPv6"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:140
+#: plugins/Radius/templates/Accounts/monitoring.php:152
 #: plugins/Radius/templates/Radacct/view.php:179
 msgid "Framed Interface ID"
 msgstr "ID rámcového rozhraní"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:141
+#: plugins/Radius/templates/Accounts/monitoring.php:154
 #: plugins/Radius/templates/Radacct/view.php:48
 msgid "NAS IP Address"
 msgstr "IP adresa NAS"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:142
+#: plugins/Radius/templates/Accounts/monitoring.php:155
 #: plugins/Radius/templates/Radacct/view.php:119
 msgid "NAS Port ID"
 msgstr "ID portu NAS"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:143
+#: plugins/Radius/templates/Accounts/monitoring.php:157
 #: plugins/Radius/templates/Radacct/view.php:125
 msgid "NAS Port Type"
 msgstr "Typ portu NAS"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:144
+#: plugins/Radius/templates/Accounts/monitoring.php:159
 #: plugins/Radius/templates/cell/Accounts/display.php:13
 msgid "Network Access Server"
 msgstr "Server pro přístup k síti"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:145
+#: plugins/Radius/templates/Accounts/monitoring.php:160
 #: plugins/Radius/templates/Radacct/view.php:76
 msgid "Start Time"
 msgstr "Čas zahájení"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:146
+#: plugins/Radius/templates/Accounts/monitoring.php:162
 #: plugins/Radius/templates/Radacct/view.php:80
 msgid "Update Time"
 msgstr "Čas aktualizace"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:147
+#: plugins/Radius/templates/Accounts/monitoring.php:163
 #: plugins/Radius/templates/Radacct/view.php:84
 msgid "Update Interval"
 msgstr "Interval aktualizace"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:148
+#: plugins/Radius/templates/Accounts/monitoring.php:165
 #: plugins/Radius/templates/Radacct/view.php:88
 msgid "Stop Time"
 msgstr "Čas zastavení"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:149
+#: plugins/Radius/templates/Accounts/monitoring.php:167
 #: plugins/Radius/templates/Radacct/view.php:161
 msgid "Termination Cause"
 msgstr "Příčina ukončení"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:150
+#: plugins/Radius/templates/Accounts/monitoring.php:169
 #: plugins/Radius/templates/Radacct/view.php:92
 msgid "Session Time"
 msgstr "Doba relace"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:151
+#: plugins/Radius/templates/Accounts/monitoring.php:170
 #: plugins/Radius/templates/Radacct/view.php:68
 msgid "Uploaded"
 msgstr "Nahráno"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:152
+#: plugins/Radius/templates/Accounts/monitoring.php:171
 #: plugins/Radius/templates/Radacct/view.php:72
 msgid "Downloaded"
 msgstr "Staženo"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:173
+#: plugins/Radius/templates/Accounts/monitoring.php:198
 #: plugins/Radius/templates/cell/Accounts/display.php:45
 msgid "Access Point"
 msgstr "Přístupový bod"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:225
+#: plugins/Radius/templates/Accounts/monitoring.php:254
 msgid "Related RADIUS Post Authentications"
 msgstr "Související následná ověření RADIUS"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:232
+#: plugins/Radius/templates/Accounts/monitoring.php:261
 #: plugins/Radius/templates/Radpostauth/view.php:57
 msgid "Pass"
 msgstr "V pořádku"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:233
+#: plugins/Radius/templates/Accounts/monitoring.php:262
 #: plugins/Radius/templates/Radpostauth/view.php:63
 msgid "Reply"
 msgstr "Odpověď"
 
-#: plugins/Radius/templates/Accounts/monitoring.php:236
+#: plugins/Radius/templates/Accounts/monitoring.php:265
 #: plugins/Radius/templates/Radpostauth/view.php:52
 msgid "Authentication Date"
 msgstr "Datum ověření"

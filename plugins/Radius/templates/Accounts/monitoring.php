@@ -127,7 +127,7 @@ use Cake\I18n\FrozenTime;
                 <div class="float-right">
                     <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
                     <?= $this->Form->control('show_details', [
-                        'label' => __('Show Details'),
+                        'label' => __d('radius', 'Show Details'),
                         'type' => 'checkbox',
                         'onchange' => 'this.form.submit();',
                     ]) ?>
