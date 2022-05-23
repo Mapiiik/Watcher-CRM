@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-05-21 16:09+0200\n"
-"PO-Revision-Date: 2022-05-21 16:10+0200\n"
+"POT-Creation-Date: 2022-05-23 12:13+0200\n"
+"PO-Revision-Date: 2022-05-23 12:16+0200\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -54,13 +54,25 @@ msgid ""
 "The RADIUS replies could not be found automatically. Please, set it manually."
 msgstr "Odpovědi RADIUS nebyly nalezeny automaticky. Nastavte je prosím ručně."
 
-#: plugins/Radius/src/Controller/AccountsController.php:600
+#: plugins/Radius/src/Controller/AccountsController.php:545
+msgid "The IP addresses for the contract are probably not set correctly."
+msgstr "IP adresy pro smlouvu pravděpodobně nejsou správně nastaveny."
+
+#: plugins/Radius/src/Controller/AccountsController.php:603
 msgid ""
 "The RADIUS user groups could not be found automatically. Please, set it "
 "manually."
 msgstr ""
 "Skupiny uživatelů RADIUS nebyly nalezeny automaticky. Nastavte je prosím "
 "ručně."
+
+#: plugins/Radius/src/Controller/AccountsController.php:605
+msgid ""
+"The billings for the contract for the current or upcoming period are "
+"probably not set correctly."
+msgstr ""
+"Fakturace pro smlouvu pro aktuální nebo nadcházející období pravděpodobně "
+"nejsou správně nastaveny."
 
 #: plugins/Radius/src/Controller/NasController.php:53
 #: plugins/Radius/src/Controller/NasController.php:77

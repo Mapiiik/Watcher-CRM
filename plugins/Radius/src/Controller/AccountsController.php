@@ -415,7 +415,7 @@ class AccountsController extends AppController
      */
     public function updateRelatedRecords($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->request->allowMethod(['post']);
         $account = $this->Accounts->get($id, [
             'contain' => ['Radcheck', 'Radreply', 'Radusergroup'],
         ]);
@@ -541,6 +541,9 @@ class AccountsController extends AppController
             }
             $this->Flash->warning(
                 __d('radius', 'The RADIUS replies could not be found automatically. Please, set it manually.')
+                . ' ('
+                . __d('radius', 'The IP addresses for the contract are probably not set correctly.')
+                . ')'
             );
         }
 
@@ -598,6 +601,12 @@ class AccountsController extends AppController
             }
             $this->Flash->warning(
                 __d('radius', 'The RADIUS user groups could not be found automatically. Please, set it manually.')
+                . ' ('
+                . __d(
+                    'radius',
+                    'The billings for the contract for the current or upcoming period are probably not set correctly.'
+                )
+                . ')'
             );
         }
 
