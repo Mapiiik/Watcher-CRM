@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-05-23 13:12+0200\n"
+"POT-Creation-Date: 2022-05-23 14:38+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -254,7 +254,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Radusergroup/view.php:10
 #: ./plugins/Radius/templates/Radusergroup/view.php:71
 #: ./plugins/Radius/templates/Radusergroup/view.php:117
-#: ./plugins/Radius/templates/cell/Accounts/display.php:14
+#: ./plugins/Radius/templates/cell/Accounts/display.php:21
 msgid "Actions"
 msgstr ""
 
@@ -282,7 +282,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Accounts/index.php:20
 #: ./plugins/Radius/templates/Accounts/monitoring.php:71
 #: ./plugins/Radius/templates/Accounts/view.php:68
-#: ./plugins/Radius/templates/cell/Accounts/display.php:6
+#: ./plugins/Radius/templates/cell/Accounts/display.php:12
 msgid "Contract"
 msgstr ""
 
@@ -302,7 +302,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Radpostauth/view.php:41
 #: ./plugins/Radius/templates/Radreply/view.php:41
 #: ./plugins/Radius/templates/Radusergroup/view.php:41
-#: ./plugins/Radius/templates/cell/Accounts/display.php:8
+#: ./plugins/Radius/templates/cell/Accounts/display.php:14
 msgid "Username"
 msgstr ""
 
@@ -311,7 +311,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Accounts/index.php:22
 #: ./plugins/Radius/templates/Accounts/monitoring.php:88
 #: ./plugins/Radius/templates/Accounts/view.php:85
-#: ./plugins/Radius/templates/cell/Accounts/display.php:9
+#: ./plugins/Radius/templates/cell/Accounts/display.php:15
 msgid "Password"
 msgstr ""
 
@@ -320,7 +320,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Accounts/index.php:23
 #: ./plugins/Radius/templates/Accounts/monitoring.php:96
 #: ./plugins/Radius/templates/Accounts/view.php:93
-#: ./plugins/Radius/templates/cell/Accounts/display.php:10
+#: ./plugins/Radius/templates/cell/Accounts/display.php:16
 msgid "Active"
 msgstr ""
 
@@ -388,7 +388,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Radusergroup/view.php:20
 #: ./plugins/Radius/templates/Radusergroup/view.php:93
 #: ./plugins/Radius/templates/Radusergroup/view.php:139
-#: ./plugins/Radius/templates/cell/Accounts/display.php:96
+#: ./plugins/Radius/templates/cell/Accounts/display.php:110
 msgid "Are you sure you want to delete # {0}?"
 msgstr ""
 
@@ -463,19 +463,19 @@ msgstr ""
 #: ./plugins/Radius/templates/Accounts/index.php:56
 #: ./plugins/Radius/templates/Accounts/monitoring.php:97
 #: ./plugins/Radius/templates/Accounts/view.php:94
-#: ./plugins/Radius/templates/cell/Accounts/display.php:27
+#: ./plugins/Radius/templates/cell/Accounts/display.php:34
 msgid "Yes"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/index.php:56
 #: ./plugins/Radius/templates/Accounts/monitoring.php:97
 #: ./plugins/Radius/templates/Accounts/view.php:94
-#: ./plugins/Radius/templates/cell/Accounts/display.php:27
+#: ./plugins/Radius/templates/cell/Accounts/display.php:34
 msgid "No"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/index.php:63
-#: ./plugins/Radius/templates/cell/Accounts/display.php:61
+#: ./plugins/Radius/templates/cell/Accounts/display.php:75
 msgid "Monitoring"
 msgstr ""
 
@@ -497,7 +497,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Radusergroup/index.php:33
 #: ./plugins/Radius/templates/Radusergroup/view.php:82
 #: ./plugins/Radius/templates/Radusergroup/view.php:128
-#: ./plugins/Radius/templates/cell/Accounts/display.php:70
+#: ./plugins/Radius/templates/cell/Accounts/display.php:84
 msgid "View"
 msgstr ""
 
@@ -519,7 +519,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Radusergroup/index.php:35
 #: ./plugins/Radius/templates/Radusergroup/view.php:86
 #: ./plugins/Radius/templates/Radusergroup/view.php:132
-#: ./plugins/Radius/templates/cell/Accounts/display.php:79
+#: ./plugins/Radius/templates/cell/Accounts/display.php:93
 msgid "Edit"
 msgstr ""
 
@@ -541,7 +541,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Radusergroup/index.php:40
 #: ./plugins/Radius/templates/Radusergroup/view.php:91
 #: ./plugins/Radius/templates/Radusergroup/view.php:137
-#: ./plugins/Radius/templates/cell/Accounts/display.php:89
+#: ./plugins/Radius/templates/cell/Accounts/display.php:103
 msgid "Delete"
 msgstr ""
 
@@ -690,7 +690,7 @@ msgid "NAS Port Type"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/monitoring.php:159
-#: ./plugins/Radius/templates/cell/Accounts/display.php:13
+#: ./plugins/Radius/templates/cell/Accounts/display.php:20
 msgid "Network Access Server"
 msgstr ""
 
@@ -735,7 +735,7 @@ msgid "Downloaded"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/monitoring.php:198
-#: ./plugins/Radius/templates/cell/Accounts/display.php:45
+#: ./plugins/Radius/templates/cell/Accounts/display.php:59
 msgid "Access Point"
 msgstr ""
 
@@ -1099,7 +1099,7 @@ msgid "Edit RADIUS Reply"
 msgstr ""
 
 #: ./plugins/Radius/templates/Radreply/index.php:13
-#: ./plugins/Radius/templates/cell/Accounts/display.php:11
+#: ./plugins/Radius/templates/cell/Accounts/display.php:18
 msgid "RADIUS Replies"
 msgstr ""
 
@@ -1124,7 +1124,7 @@ msgid "Edit RADIUS User Group"
 msgstr ""
 
 #: ./plugins/Radius/templates/Radusergroup/index.php:13
-#: ./plugins/Radius/templates/cell/Accounts/display.php:12
+#: ./plugins/Radius/templates/cell/Accounts/display.php:19
 msgid "RADIUS User Groups"
 msgstr ""
 
@@ -1134,5 +1134,9 @@ msgstr ""
 
 #: ./plugins/Radius/templates/Radusergroup/view.php:107
 msgid "Related RADIUS Group Replies"
+msgstr ""
+
+#: ./plugins/Radius/templates/cell/Accounts/display.php:17
+msgid "IP Addresses"
 msgstr ""
 

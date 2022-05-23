@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-05-23 13:12+0200\n"
-"PO-Revision-Date: 2022-05-23 13:13+0200\n"
+"POT-Creation-Date: 2022-05-23 14:38+0200\n"
+"PO-Revision-Date: 2022-05-23 14:39+0200\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -264,7 +264,7 @@ msgstr "Skupinu uživatelů RADIUS nelze odstranit. Zkuste to prosím znovu."
 #: plugins/Radius/templates/Radusergroup/view.php:10
 #: plugins/Radius/templates/Radusergroup/view.php:71
 #: plugins/Radius/templates/Radusergroup/view.php:117
-#: plugins/Radius/templates/cell/Accounts/display.php:14
+#: plugins/Radius/templates/cell/Accounts/display.php:21
 msgid "Actions"
 msgstr "Akce"
 
@@ -292,7 +292,7 @@ msgstr "Zákazník"
 #: plugins/Radius/templates/Accounts/index.php:20
 #: plugins/Radius/templates/Accounts/monitoring.php:71
 #: plugins/Radius/templates/Accounts/view.php:68
-#: plugins/Radius/templates/cell/Accounts/display.php:6
+#: plugins/Radius/templates/cell/Accounts/display.php:12
 msgid "Contract"
 msgstr "Smlouva"
 
@@ -312,7 +312,7 @@ msgstr "Smlouva"
 #: plugins/Radius/templates/Radpostauth/view.php:41
 #: plugins/Radius/templates/Radreply/view.php:41
 #: plugins/Radius/templates/Radusergroup/view.php:41
-#: plugins/Radius/templates/cell/Accounts/display.php:8
+#: plugins/Radius/templates/cell/Accounts/display.php:14
 msgid "Username"
 msgstr "Uživatelské jméno"
 
@@ -321,7 +321,7 @@ msgstr "Uživatelské jméno"
 #: plugins/Radius/templates/Accounts/index.php:22
 #: plugins/Radius/templates/Accounts/monitoring.php:88
 #: plugins/Radius/templates/Accounts/view.php:85
-#: plugins/Radius/templates/cell/Accounts/display.php:9
+#: plugins/Radius/templates/cell/Accounts/display.php:15
 msgid "Password"
 msgstr "Heslo"
 
@@ -330,7 +330,7 @@ msgstr "Heslo"
 #: plugins/Radius/templates/Accounts/index.php:23
 #: plugins/Radius/templates/Accounts/monitoring.php:96
 #: plugins/Radius/templates/Accounts/view.php:93
-#: plugins/Radius/templates/cell/Accounts/display.php:10
+#: plugins/Radius/templates/cell/Accounts/display.php:16
 msgid "Active"
 msgstr "Aktivní"
 
@@ -398,7 +398,7 @@ msgstr "Odstranit účet RADIUS"
 #: plugins/Radius/templates/Radusergroup/view.php:20
 #: plugins/Radius/templates/Radusergroup/view.php:93
 #: plugins/Radius/templates/Radusergroup/view.php:139
-#: plugins/Radius/templates/cell/Accounts/display.php:96
+#: plugins/Radius/templates/cell/Accounts/display.php:110
 msgid "Are you sure you want to delete # {0}?"
 msgstr "Opravdu chcete odstranit # {0}?"
 
@@ -473,19 +473,19 @@ msgstr "Upravil"
 #: plugins/Radius/templates/Accounts/index.php:56
 #: plugins/Radius/templates/Accounts/monitoring.php:97
 #: plugins/Radius/templates/Accounts/view.php:94
-#: plugins/Radius/templates/cell/Accounts/display.php:27
+#: plugins/Radius/templates/cell/Accounts/display.php:34
 msgid "Yes"
 msgstr "Ano"
 
 #: plugins/Radius/templates/Accounts/index.php:56
 #: plugins/Radius/templates/Accounts/monitoring.php:97
 #: plugins/Radius/templates/Accounts/view.php:94
-#: plugins/Radius/templates/cell/Accounts/display.php:27
+#: plugins/Radius/templates/cell/Accounts/display.php:34
 msgid "No"
 msgstr "Ne"
 
 #: plugins/Radius/templates/Accounts/index.php:63
-#: plugins/Radius/templates/cell/Accounts/display.php:61
+#: plugins/Radius/templates/cell/Accounts/display.php:75
 msgid "Monitoring"
 msgstr "Monitorování"
 
@@ -507,7 +507,7 @@ msgstr "Monitorování"
 #: plugins/Radius/templates/Radusergroup/index.php:33
 #: plugins/Radius/templates/Radusergroup/view.php:82
 #: plugins/Radius/templates/Radusergroup/view.php:128
-#: plugins/Radius/templates/cell/Accounts/display.php:70
+#: plugins/Radius/templates/cell/Accounts/display.php:84
 msgid "View"
 msgstr "Zobrazit"
 
@@ -529,7 +529,7 @@ msgstr "Zobrazit"
 #: plugins/Radius/templates/Radusergroup/index.php:35
 #: plugins/Radius/templates/Radusergroup/view.php:86
 #: plugins/Radius/templates/Radusergroup/view.php:132
-#: plugins/Radius/templates/cell/Accounts/display.php:79
+#: plugins/Radius/templates/cell/Accounts/display.php:93
 msgid "Edit"
 msgstr "Upravit"
 
@@ -551,7 +551,7 @@ msgstr "Upravit"
 #: plugins/Radius/templates/Radusergroup/index.php:40
 #: plugins/Radius/templates/Radusergroup/view.php:91
 #: plugins/Radius/templates/Radusergroup/view.php:137
-#: plugins/Radius/templates/cell/Accounts/display.php:89
+#: plugins/Radius/templates/cell/Accounts/display.php:103
 msgid "Delete"
 msgstr "Odstranit"
 
@@ -704,7 +704,7 @@ msgid "NAS Port Type"
 msgstr "Typ portu NAS"
 
 #: plugins/Radius/templates/Accounts/monitoring.php:159
-#: plugins/Radius/templates/cell/Accounts/display.php:13
+#: plugins/Radius/templates/cell/Accounts/display.php:20
 msgid "Network Access Server"
 msgstr "Server pro přístup k síti"
 
@@ -749,7 +749,7 @@ msgid "Downloaded"
 msgstr "Staženo"
 
 #: plugins/Radius/templates/Accounts/monitoring.php:198
-#: plugins/Radius/templates/cell/Accounts/display.php:45
+#: plugins/Radius/templates/cell/Accounts/display.php:59
 msgid "Access Point"
 msgstr "Přístupový bod"
 
@@ -1113,7 +1113,7 @@ msgid "Edit RADIUS Reply"
 msgstr "Upravit odpověď RADIUS"
 
 #: plugins/Radius/templates/Radreply/index.php:13
-#: plugins/Radius/templates/cell/Accounts/display.php:11
+#: plugins/Radius/templates/cell/Accounts/display.php:18
 msgid "RADIUS Replies"
 msgstr "Odpovědi RADIUS"
 
@@ -1138,7 +1138,7 @@ msgid "Edit RADIUS User Group"
 msgstr "Upravit skupinu uživatelů RADIUS"
 
 #: plugins/Radius/templates/Radusergroup/index.php:13
-#: plugins/Radius/templates/cell/Accounts/display.php:12
+#: plugins/Radius/templates/cell/Accounts/display.php:19
 msgid "RADIUS User Groups"
 msgstr "Skupiny uživatelů RADIUS"
 
@@ -1149,6 +1149,10 @@ msgstr "Související kontroly skupiny RADIUS"
 #: plugins/Radius/templates/Radusergroup/view.php:107
 msgid "Related RADIUS Group Replies"
 msgstr "Související odpovědi skupiny RADIUS"
+
+#: plugins/Radius/templates/cell/Accounts/display.php:17
+msgid "IP Addresses"
+msgstr "IP adresy"
 
 #~ msgid "RADIUS Reply"
 #~ msgstr "Odpověď RADIUS"

@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \Cake\Datasource\EntityInterface[]|\Cake\Collection\CollectionInterface $accounts
+ */
+?>
 <?php if (!empty($accounts)) : ?>
 <div class="table-responsive">
     <table>
@@ -8,6 +14,7 @@
             <th><?= __d('radius', 'Username') ?></th>
             <th><?= __d('radius', 'Password') ?></th>
             <th><?= __d('radius', 'Active') ?></th>
+            <th><?= __d('radius', 'IP Addresses') ?></th>
             <th><?= __d('radius', 'RADIUS Replies') ?></th>
             <th><?= __d('radius', 'RADIUS User Groups') ?></th>
             <th><?= __d('radius', 'Network Access Server') ?></th>
@@ -25,6 +32,13 @@
             <td><?= h($account->username) ?></td>
             <td><?= h($account->password) ?></td>
             <td><?= $account->active ? __d('radius', 'Yes') : __d('radius', 'No'); ?></td>
+            <td><?php
+            foreach ($account->radreply as $radreply) {
+                if (in_array($radreply->attribute, ['Framed-IP-Address', 'Framed-IPv6-Address'])) {
+                    echo h($radreply->value) . '<br />';
+                }
+            }
+            ?></td>
             <td><?php
             foreach ($account->radreply as $radreply) {
                 echo h($radreply->attribute)
