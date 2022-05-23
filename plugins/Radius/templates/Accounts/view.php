@@ -131,8 +131,6 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __d('radius', 'Id') ?></th>
-                            <th><?= __d('radius', 'Username') ?></th>
                             <th><?= __d('radius', 'Attribute') ?></th>
                             <th><?= __d('radius', 'Op') ?></th>
                             <th><?= __d('radius', 'Value') ?></th>
@@ -140,8 +138,6 @@
                         </tr>
                         <?php foreach ($account->radcheck as $radcheck) : ?>
                         <tr>
-                            <td><?= h($radcheck->id) ?></td>
-                            <td><?= h($radcheck->username) ?></td>
                             <td><?= h($radcheck->attribute) ?></td>
                             <td><?= h($radcheck->op) ?></td>
                             <td><?= h($radcheck->value) ?></td>
@@ -182,8 +178,6 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __d('radius', 'Id') ?></th>
-                            <th><?= __d('radius', 'Username') ?></th>
                             <th><?= __d('radius', 'Attribute') ?></th>
                             <th><?= __d('radius', 'Op') ?></th>
                             <th><?= __d('radius', 'Value') ?></th>
@@ -191,8 +185,6 @@
                         </tr>
                         <?php foreach ($account->radreply as $radreply) : ?>
                         <tr>
-                            <td><?= h($radreply->id) ?></td>
-                            <td><?= h($radreply->username) ?></td>
                             <td><?= h($radreply->attribute) ?></td>
                             <td><?= h($radreply->op) ?></td>
                             <td><?= h($radreply->value) ?></td>
@@ -233,16 +225,12 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __d('radius', 'Id') ?></th>
-                            <th><?= __d('radius', 'Username') ?></th>
                             <th><?= __d('radius', 'Groupname') ?></th>
                             <th><?= __d('radius', 'Priority') ?></th>
                             <th class="actions"><?= __d('radius', 'Actions') ?></th>
                         </tr>
                         <?php foreach ($account->radusergroup as $radusergroup) : ?>
                         <tr>
-                            <td><?= h($radusergroup->id) ?></td>
-                            <td><?= h($radusergroup->username) ?></td>
                             <td><?= h($radusergroup->groupname) ?></td>
                             <td><?= h($radusergroup->priority) ?></td>
                             <td class="actions">
