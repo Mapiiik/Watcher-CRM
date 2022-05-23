@@ -1,8 +1,12 @@
 <?php
+/**
+ * @var \App\View\AppView $this
+ * @var \BookkeepingPohoda\Model\Entity\Invoice[]|\Cake\Collection\CollectionInterface $invoices
+ */
 
 use Cake\I18n\FrozenDate;
 
-if (!empty($invoices)) : ?>
+if (!$invoices->isEmpty()) : ?>
 <div class="table-responsive">
     <table>
         <tr>

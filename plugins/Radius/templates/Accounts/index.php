@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface[]|\Cake\Collection\CollectionInterface $accounts
+ * @var \Radius\Model\Entity\Account[]|\Cake\Collection\CollectionInterface $accounts
  */
 ?>
 <div class="accounts index content">

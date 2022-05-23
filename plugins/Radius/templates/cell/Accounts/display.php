@@ -1,10 +1,10 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface[]|\Cake\Collection\CollectionInterface $accounts
+ * @var \Radius\Model\Entity\Account[]|\Cake\Collection\CollectionInterface $accounts
  */
 ?>
-<?php if (!empty($accounts)) : ?>
+<?php if (!$accounts->isEmpty()) : ?>
 <div class="table-responsive">
     <table>
         <tr>
