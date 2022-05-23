@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface $account
+ * @var \Radius\Model\Entity\Account $account
  */
 ?>
 <div class="row">

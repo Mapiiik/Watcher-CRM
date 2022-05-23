@@ -87,7 +87,9 @@ class AccountsController extends AppController
             ],
         ]);
 
-        $this->set(compact('account'));
+        $details = $this->request->getQuery('show_details') == true;
+
+        $this->set(compact('account', 'details'));
     }
 
     /**

@@ -1,12 +1,12 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface $account
+ * @var \Radius\Model\Entity\Account $account
  */
 
 use Cake\I18n\FrozenTime;
-
 ?>
+
 <div class="row">
     <aside class="column">
         <div class="side-nav">
@@ -124,29 +124,48 @@ use Cake\I18n\FrozenTime;
                 </div>
             </div>
             <div class="related">
+                <div class="float-right">
+                    <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
+                    <?= $this->Form->control('show_details', [
+                        'label' => __('Show Details'),
+                        'type' => 'checkbox',
+                        'onchange' => 'this.form.submit();',
+                    ]) ?>
+                    <?= $this->Form->end() ?>
+                </div>
                 <h4><?= __d('radius', 'Related RADIUS Accountings') ?></h4>
                 <?php if (!empty($account->radacct)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
+                            <?php if ($details) : ?>
                             <th><?= __d('radius', 'Service Type') ?></th>
                             <th><?= __d('radius', 'Framed Protocol') ?></th>
                             <th><?= __d('radius', 'Called Station ID') ?></th>
+                            <?php endif ?>
                             <th><?= __d('radius', 'Calling Station ID') ?></th>
                             <th><?= __d('radius', 'Framed IP Address') ?></th>
                             <th><?= __d('radius', 'Framed IPv6 Address') ?></th>
                             <th><?= __d('radius', 'Framed IPv6 Prefix') ?></th>
                             <th><?= __d('radius', 'Delegated IPv6 Prefix') ?></th>
+                            <?php if ($details) : ?>
                             <th><?= __d('radius', 'Framed Interface ID') ?></th>
+                            <?php endif ?>
                             <th><?= __d('radius', 'NAS IP Address') ?></th>
                             <th><?= __d('radius', 'NAS Port ID') ?></th>
+                            <?php if ($details) : ?>
                             <th><?= __d('radius', 'NAS Port Type') ?></th>
+                            <?php endif ?>
                             <th><?= __d('radius', 'Network Access Server') ?></th>
                             <th><?= __d('radius', 'Start Time') ?></th>
+                            <?php if ($details) : ?>
                             <th><?= __d('radius', 'Update Time') ?></th>
                             <th><?= __d('radius', 'Update Interval') ?></th>
+                            <?php endif ?>
                             <th><?= __d('radius', 'Stop Time') ?></th>
+                            <?php if ($details) : ?>
                             <th><?= __d('radius', 'Termination Cause') ?></th>
+                            <?php endif ?>
                             <th><?= __d('radius', 'Session Time') ?></th>
                             <th><?= __d('radius', 'Uploaded') ?></th>
                             <th><?= __d('radius', 'Downloaded') ?></th>
@@ -154,18 +173,24 @@ use Cake\I18n\FrozenTime;
                         </tr>
                         <?php foreach ($account->radacct as $radacct) : ?>
                         <tr>
+                            <?php if ($details) : ?>
                             <td><?= h($radacct->servicetype) ?></td>
                             <td><?= h($radacct->framedprotocol) ?></td>
                             <td><?= h($radacct->calledstationid) ?></td>
+                            <?php endif ?>
                             <td><?= h($radacct->callingstationid) ?></td>
                             <td><?= h($radacct->framedipaddress) ?></td>
                             <td><?= h($radacct->framedipv6address) ?></td>
                             <td><?= h($radacct->framedipv6prefix) ?></td>
                             <td><?= h($radacct->delegatedipv6prefix) ?></td>
+                            <?php if ($details) : ?>
                             <td><?= h($radacct->framedinterfaceid) ?></td>
+                            <?php endif ?>
                             <td><?= h($radacct->nasipaddress) ?></td>
                             <td><?= h($radacct->nasportid) ?></td>
+                            <?php if ($details) : ?>
                             <td><?= h($radacct->nasporttype) ?></td>
+                            <?php endif ?>
                             <td><?php
                             if (isset($radacct->nasipaddress)) {
                                 $device = $radacct->routeros_devices_for_nas->first();
@@ -185,12 +210,16 @@ use Cake\I18n\FrozenTime;
                             }
                             ?></td>
                             <td><?= h($radacct->acctstarttime) ?></td>
+                            <?php if ($details) : ?>
                             <td><?= h($radacct->acctupdatetime) ?></td>
                             <td><?= $radacct->acctinterval ?
                                 FrozenTime::createFromTimestamp($radacct->acctinterval)
                                     ->diffForHumans(FrozenTime::createFromTimestamp(0), true) : '' ?></td>
+                            <?php endif ?>
                             <td><?= h($radacct->acctstoptime) ?></td>
+                            <?php if ($details) : ?>
                             <td><?= h($radacct->acctterminatecause) ?></td>
+                            <?php endif ?>
                             <td><?= FrozenTime::createFromTimestamp($radacct->acctsessiontime)
                                 ->diffForHumans(FrozenTime::createFromTimestamp(0), true) ?></td>
                             <td><?= $this->Number->toReadableSize($radacct->acctinputoctets) ?></td>
