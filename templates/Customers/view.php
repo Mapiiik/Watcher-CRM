@@ -326,6 +326,7 @@ use Cake\I18n\Number;
                             <th><?= __('City') ?></th>
                             <th><?= __('Zip') ?></th>
                             <th><?= __('Country') ?></th>
+                            <th><?= __('Ruian Gid') ?></th>
                             <th class="actions"><?= __('Maps') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
@@ -342,6 +343,7 @@ use Cake\I18n\Number;
                             <td><?= h($address->city) ?></td>
                             <td><?= h($address->zip) ?></td>
                             <td><?= $address->has('country') ? h($address->country->name) : '' ?></td>
+                            <td><?= $this->Number->format($address->ruian_gid) ?></td>
                             <td class="actions">
                                 <?= $address->has('gps_x') && $address->has('gps_y') ? $this->Html->link(
                                     __('Google Maps'),

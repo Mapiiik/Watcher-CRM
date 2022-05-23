@@ -24,6 +24,7 @@
                     <th><?= $this->Paginator->sort('city') ?></th>
                     <th><?= $this->Paginator->sort('zip') ?></th>
                     <th><?= $this->Paginator->sort('country_id') ?></th>
+                    <th><?= $this->Paginator->sort('ruian_gid') ?></th>
                     <th class="actions"><?= __('Maps') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
@@ -54,6 +55,7 @@
                             ['controller' => 'Countries', 'action' => 'view', $address->country->id]
                         ) : '' ?>
                     </td>
+                    <td><?= $this->Number->format($address->ruian_gid) ?></td>
                     <td class="actions">
                         <?= $address->has('gps_x') && $address->has('gps_y') ? $this->Html->link(
                             __('Google Maps'),
