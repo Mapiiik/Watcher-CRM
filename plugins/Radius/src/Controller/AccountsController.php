@@ -294,6 +294,15 @@ class AccountsController extends AppController
             ],
         ]);
 
+        if (empty($account->radacct)) {
+            $this->Flash->warning(__d(
+                'radius',
+                'No active RADIUS session found.'
+            ));
+
+            return $this->redirect(['action' => 'monitoring', $account->id]);
+        }
+
         foreach ($account->radacct as $session) {
             $disconnected = false;
 
