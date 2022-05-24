@@ -55,7 +55,7 @@ class AccountsCell extends Cell
                 ],
                 'order' => [
                     'Accounts.active' => 'DESC',
-                    'Accounts.contract_id',
+                    'Accounts.contract_id' => 'DESC',
                     'Accounts.username',
                 ],
             ]);

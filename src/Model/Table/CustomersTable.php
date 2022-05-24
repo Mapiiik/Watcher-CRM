@@ -88,7 +88,7 @@ class CustomersTable extends Table
             'foreignKey' => 'customer_id',
             'sort' => [
                 'Contracts.service_type_id',
-                'Contracts.id' => 'DESC',
+                'Billings.contract_id' => 'DESC',
                 'Billings.billing_from' => 'DESC',
             ],
         ]);
@@ -96,8 +96,9 @@ class CustomersTable extends Table
             'foreignKey' => 'customer_id',
             'sort' => [
                 'Contracts.service_type_id',
-                'Contracts.id' => 'DESC',
-            ],
+                'BorrowedEquipments.contract_id' => 'DESC',
+                'BorrowedEquipments.id' => 'DESC',
+                ],
         ]);
         $this->hasMany('Contracts', [
             'foreignKey' => 'customer_id',
@@ -122,8 +123,9 @@ class CustomersTable extends Table
             'foreignKey' => 'customer_id',
             'sort' => [
                 'Contracts.service_type_id',
-                'Contracts.id' => 'DESC',
-            ],
+                'SoldEquipments.contract_id' => 'DESC',
+                'SoldEquipments.id' => 'DESC',
+                ],
         ]);
         $this->hasMany('Ips', [
             'foreignKey' => 'customer_id',
