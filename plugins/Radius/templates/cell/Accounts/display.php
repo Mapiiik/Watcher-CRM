@@ -15,8 +15,8 @@
             <th><?= __d('radius', 'Password') ?></th>
             <th><?= __d('radius', 'Active') ?></th>
             <th><?= __d('radius', 'IP Addresses') ?></th>
-            <th><?= __d('radius', 'RADIUS Replies') ?></th>
             <th><?= __d('radius', 'RADIUS User Groups') ?></th>
+            <th><?= __d('radius', 'RADIUS Replies') ?></th>
             <th><?= __d('radius', 'Network Access Server') ?></th>
             <th class="actions"><?= __d('radius', 'Actions') ?></th>
         </tr>
@@ -40,16 +40,16 @@
             }
             ?></td>
             <td><?php
+            foreach ($account->radusergroup as $radusergroup) {
+                echo h($radusergroup->groupname) . '<br />';
+            }
+            ?></td>
+            <td><?php
             foreach ($account->radreply as $radreply) {
                 echo h($radreply->attribute)
                     . ' ' . h($radreply->op)
                     . ' ' . h($radreply->value)
                     . '<br />';
-            }
-            ?></td>
-            <td><?php
-            foreach ($account->radusergroup as $radusergroup) {
-                echo h($radusergroup->groupname) . '<br />';
             }
             ?></td>
             <td><?php
