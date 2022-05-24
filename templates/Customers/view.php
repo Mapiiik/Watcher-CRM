@@ -390,8 +390,8 @@ use Cake\I18n\Number;
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Service Type') ?></th>
                             <th><?= __('Number') ?></th>
+                            <th><?= __('Service Type') ?></th>
                             <th><?= __('Installation Address') ?></th>
                             <th><?= __('Conclusion Date') ?></th>
                             <th><?= __('Number Of Amendments') ?></th>
@@ -406,8 +406,8 @@ use Cake\I18n\Number;
                         </tr>
                         <?php foreach ($customer->contracts as $contract) : ?>
                         <tr>
-                            <td><?= $contract->has('service_type') ? h($contract->service_type->name) : '' ?></td>
                             <td><?= h($contract->number) ?></td>
+                            <td><?= $contract->has('service_type') ? h($contract->service_type->name) : '' ?></td>
                             <td><?= $contract->has('installation_address') ?
                                 h($contract->installation_address->full_address) : '' ?></td>
                             <td><?= h($contract->conclusion_date) ?></td>
