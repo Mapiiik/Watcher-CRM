@@ -510,6 +510,13 @@ use Cake\I18n\Number;
                 <?php endif; ?>
             </div>
             <div class="related">
+                <h4><?= __('Related RADIUS Accounts') ?></h4>
+                <?= $this->cell(
+                    'Radius.Accounts',
+                    [['Accounts.customer_id' => $customer->id]]
+                ) ?>
+            </div>
+            <div class="related">
                 <h4><?= __('Related Borrowed Equipments') ?></h4>
                 <?php if (!empty($customer->borrowed_equipments)) : ?>
                 <div class="table-responsive">
@@ -751,13 +758,6 @@ use Cake\I18n\Number;
                     </table>
                 </div>
                 <?php endif; ?>
-            </div>
-            <div class="related">
-                <h4><?= __('Related RADIUS Accounts') ?></h4>
-                <?= $this->cell(
-                    'Radius.Accounts',
-                    [['Accounts.customer_id' => $customer->id]]
-                ) ?>
             </div>
             <div class="related">
                 <h4><?= __('Related Removed Ips') ?></h4>

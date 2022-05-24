@@ -240,6 +240,19 @@ use Cake\I18n\Number;
             </div>
             <div class="related">
                 <?= $this->AuthLink->link(
+                    __('New RADIUS Account'),
+                    ['plugin' => 'Radius', 'controller' => 'Accounts', 'action' => 'add'],
+                    ['class' => 'button button-small float-right win-link']
+                ) ?>
+                <h4><?= __('RADIUS Accounts') ?></h4>
+                <?= $this->cell(
+                    'Radius.Accounts',
+                    [['Accounts.contract_id' => $contract->id]],
+                    ['show_contracts' => false]
+                ) ?>
+            </div>
+            <div class="related">
+                <?= $this->AuthLink->link(
                     __('New Borrowed Equipment'),
                     ['controller' => 'BorrowedEquipments', 'action' => 'add'],
                     ['class' => 'button button-small float-right win-link']
@@ -460,19 +473,6 @@ use Cake\I18n\Number;
                     </table>
                 </div>
                 <?php endif; ?>
-            </div>
-            <div class="related">
-                <?= $this->AuthLink->link(
-                    __('New RADIUS Account'),
-                    ['plugin' => 'Radius', 'controller' => 'Accounts', 'action' => 'add'],
-                    ['class' => 'button button-small float-right win-link']
-                ) ?>
-                <h4><?= __('RADIUS Accounts') ?></h4>
-                <?= $this->cell(
-                    'Radius.Accounts',
-                    [['Accounts.contract_id' => $contract->id]],
-                    ['show_contracts' => false]
-                ) ?>
             </div>
             <div class="related">
                 <?= $this->AuthLink->link(
