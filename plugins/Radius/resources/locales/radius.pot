@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-05-24 12:22+0200\n"
+"POT-Creation-Date: 2022-05-25 13:18+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1097,7 +1097,7 @@ msgid "Edit RADIUS Reply"
 msgstr ""
 
 #: ./plugins/Radius/templates/Radreply/index.php:13
-#: ./plugins/Radius/templates/cell/Accounts/display.php:18
+#: ./plugins/Radius/templates/cell/Accounts/display.php:19
 msgid "RADIUS Replies"
 msgstr ""
 
@@ -1122,7 +1122,7 @@ msgid "Edit RADIUS User Group"
 msgstr ""
 
 #: ./plugins/Radius/templates/Radusergroup/index.php:13
-#: ./plugins/Radius/templates/cell/Accounts/display.php:19
+#: ./plugins/Radius/templates/cell/Accounts/display.php:18
 msgid "RADIUS User Groups"
 msgstr ""
 
