@@ -80,41 +80,46 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <th><?= __('Customer Id') ?></th>
+                            <th><?= __('Customer') ?></th>
+                            <th><?= __('Contract') ?></th>
                             <th><?= __('Text') ?></th>
-                            <th><?= __('Price') ?></th>
-                            <th><?= __('Billing From') ?></th>
-                            <th><?= __('Note') ?></th>
-                            <th><?= __('Active') ?></th>
-                            <th><?= __('Modified By') ?></th>
-                            <th><?= __('Modified') ?></th>
-                            <th><?= __('Created By') ?></th>
-                            <th><?= __('Created') ?></th>
-                            <th><?= __('Billing Until') ?></th>
-                            <th><?= __('Separate Invoice') ?></th>
-                            <th><?= __('Service Id') ?></th>
                             <th><?= __('Quantity') ?></th>
-                            <th><?= __('Contract Id') ?></th>
+                            <th><?= __('Price') ?></th>
+                            <th><?= __('Fixed Discount') ?></th>
+                            <th><?= __('Percentage Discount') ?></th>
+                            <th><?= __('Total Price') ?></th>
+                            <th><?= __('Billing From') ?></th>
+                            <th><?= __('Billing Until') ?></th>
+                            <th><?= __('Active') ?></th>
+                            <th><?= __('Separate Invoice') ?></th>
+                            <th><?= __('Note') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($service->billings as $billing) : ?>
-                        <tr>
-                            <td><?= h($billing->id) ?></td>
-                            <td><?= h($billing->customer_id) ?></td>
+                        <tr style="<?= $billing->style ?>">
+                            <td><?= $this->Number->format($billing->id) ?></td>
+                            <td><?= $billing->has('customer') ?
+                                $this->Html->link(
+                                    $billing->customer->name,
+                                    ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]
+                                ) : '' ?></td>
+                            <td><?= $billing->has('contract') ?
+                                $this->Html->link(
+                                    $billing->contract->number,
+                                    ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]
+                                ) : '' ?></td>
                             <td><?= h($billing->text) ?></td>
-                            <td><?= h($billing->price) ?></td>
-                            <td><?= h($billing->billing_from) ?></td>
-                            <td><?= h($billing->note) ?></td>
-                            <td><?= h($billing->active) ?></td>
-                            <td><?= h($billing->modified_by) ?></td>
-                            <td><?= h($billing->modified) ?></td>
-                            <td><?= h($billing->created_by) ?></td>
-                            <td><?= h($billing->created) ?></td>
-                            <td><?= h($billing->billing_until) ?></td>
-                            <td><?= h($billing->separate_invoice) ?></td>
-                            <td><?= h($billing->service_id) ?></td>
                             <td><?= h($billing->quantity) ?></td>
-                            <td><?= h($billing->contract_id) ?></td>
+                            <td><?= h($billing->price) ?><?= $billing->has('service') ?
+                                ' (' . h($billing->service->price) . ')' : '' ?></td>
+                            <td><?= h($billing->fixed_discount) ?></td>
+                            <td><?= h($billing->percentage_discount) ?></td>
+                            <td><?= $this->Number->currency($billing->total_price) ?></td>
+                            <td><?= h($billing->billing_from) ?></td>
+                            <td><?= h($billing->billing_until) ?></td>
+                            <td><?= $billing->active ? __('Yes') : __('No'); ?></td>
+                            <td><?= $billing->separate_invoice ? __('Yes') : __('No'); ?></td>
+                            <td><?= h($billing->note) ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
