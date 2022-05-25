@@ -180,13 +180,13 @@ class Billing extends Entity
     }
 
     /**
-     * getter for vat (calculated using set VAT_RATE environment variable)
+     * getter for VAT
      *
      * @return float
      */
     protected function _getVat(): float
     {
-        return round($this->total_price - ($this->total_price / (1 + (float)env('VAT_RATE', '0'))), 2);
+        return round($this->total_price - ($this->total_price / (1 + $this->customer->tax_rate->vat_rate)), 2);
     }
 
     /**

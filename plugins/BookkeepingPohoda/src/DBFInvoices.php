@@ -92,15 +92,15 @@ class DBFInvoices
      * Add record to opened DBF file
      *
      * @param \BookkeepingPohoda\Model\Entity\Invoice $invoice Invoice
-     * @param bool $reverse_charge Reverse charge?
+     * @param \App\Model\Entity\TaxRate $tax_rate Tax Rate
      * @return void No return value
      */
-    public function addRecord($invoice, $reverse_charge = false)
+    public function addRecord($invoice, $tax_rate)
     {
         $totalcost = $invoice->total;
 
     //START add record to dBase file
-        $dph = round($totalcost - ($totalcost / (1 + env('VAT_RATE'))), 2);
+        $dph = round($totalcost - ($totalcost / (1 + $tax_rate->vat_rate)), 2);
 
         $data[] = $invoice->number; //cislo faktury
         $data[] = $invoice->variable_symbol; //variabilni symbol
@@ -110,7 +110,7 @@ class DBFInvoices
         $data[] = $invoice->due_date->i18nFormat('yyyyMMdd'); //datum splatnosti
         $data[] = $invoice->creation_date->i18nFormat('yyyyMMdd'); //posledni den v mesici
 
-        if ($reverse_charge) {
+        if ($tax_rate->reverse_charge) {
             $data[] = 0; //vždy 0
             $data[] = 0; //vždy 0
             $data[] = 0; //vždy 0

@@ -4,8 +4,7 @@
  * @var \BookkeepingPohoda\Model\Entity\Invoice[]|\Cake\Collection\CollectionInterface $invoices
  * @var \Cake\I18n\FrozenDate $invoiced_month
  * @var array $tax_rates
- * @var int $tax_rate_id
- * @var bool $reverse_charge
+ * @var \App\Model\Entity\TaxRate $tax_rate
  */
 
 use Riesenia\Pohoda;
@@ -22,8 +21,6 @@ $xml_filename = TMP . uniqid('invoices-', true) . '.xml';
 $pohoda->open($xml_filename, $invoiced_month->i18nFormat('yyyy-MM'), 'Import invoices');
 
 foreach ($invoices as $invoice) {
-    //$dbf->addRecord($invoice, $reverse_charge);
-
     $invoiceRecord = $pohoda->createInvoice([
         'invoiceType' => 'issuedInvoice',
         'number' => [
@@ -38,7 +35,7 @@ foreach ($invoices as $invoice) {
             'ids' => '2Fv',
         ],
         'classificationVAT' => [
-            'ids' => $reverse_charge ? 'UDpdp' : 'UD',
+            'ids' => $tax_rate->reverse_charge ? 'UDpdp' : 'UD',
         ],
         'text' => $invoice->text,
         'partnerIdentity' => [
@@ -71,21 +68,21 @@ foreach ($invoices as $invoice) {
         $invoiceRecord->addItem([
             'text' => $item->name,
             'quantity' => 1,
-//            'unit' => 'ks',
-            'payVAT' => true, // částka s/bez DPH
+            // 'unit' => 'ks',
+            'payVAT' => true, // price includes VAT
             'rateVAT' => 'high',
             'homeCurrency' => [
                 'unitPrice' => $item->period_total,
                 'price' => $item->period_total - round(
-                    $item->period_total - ($item->period_total / (1 + env('VAT_RATE'))),
+                    $item->period_total - ($item->period_total / (1 + $tax_rate->vat_rate)),
                     2
                 ),
-                'priceVAT' => $reverse_charge ? 0 : round(
-                    $item->period_total - ($item->period_total / (1 + env('VAT_RATE'))),
+                'priceVAT' => $tax_rate->reverse_charge ? 0 : round(
+                    $item->period_total - ($item->period_total / (1 + $tax_rate->vat_rate)),
                     2
                 ),
             ],
-            'PDP' => $reverse_charge, // not implemented in pohoda class yet
+            'PDP' => $tax_rate->reverse_charge,
         ]);
     }
 
@@ -97,11 +94,11 @@ foreach ($invoices as $invoice) {
             'priceNone' => 0,
             'priceLow' => 0,
             'priceHigh' => $invoice->total - round(
-                $invoice->total - ($invoice->total / (1 + env('VAT_RATE'))),
+                $invoice->total - ($invoice->total / (1 + $tax_rate->vat_rate)),
                 2
             ),
-            'priceHighVAT' => $reverse_charge ? 0 : round(
-                $invoice->total - ($invoice->total / (1 + env('VAT_RATE'))),
+            'priceHighVAT' => $tax_rate->reverse_charge ? 0 : round(
+                $invoice->total - ($invoice->total / (1 + $tax_rate->vat_rate)),
                 2
             ),
             'round' => [
@@ -120,7 +117,7 @@ $pohoda->close();
 // set for download with specified filename
 $this->setResponse(
     $this->getResponse()->withDownload(
-        'Invoices' . '-' . strtolower($tax_rates[$tax_rate_id])
+        'Invoices' . '-' . strtolower($tax_rate->name)
             . '-' . $invoiced_month->i18nFormat('yyyy-MM') . '.xml'
     )
 );

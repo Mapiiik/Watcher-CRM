@@ -259,11 +259,11 @@ class InvoicesController extends AppController
      */
     public function generate()
     {
-        $tax_rates = $this->getTableLocator()->get('TaxRates')->find('list', ['order' => 'name'])->toArray();
+        $tax_rates = $this->fetchTable('TaxRates')->find('list', ['order' => 'name'])->toArray();
 
         if ($this->request->is(['post'])) {
             $invoiced_month = new FrozenDate($this->request->getData('invoiced_month'));
-            $tax_rate_id = (int)$this->request->getData('tax_rate_id');
+            $tax_rate = $this->fetchTable('TaxRates')->get($this->request->getData('tax_rate_id'));
             /** @var \Laminas\Diactoros\UploadedFile $csv_for_verification */
             $csv_for_verification = $this->request->getData('csv_for_verification');
 
@@ -300,7 +300,7 @@ class InvoicesController extends AppController
                 unset($lines);
 
                 // compare verification data with CRM billings
-                foreach ($this->getQueryForBillingDataForMonth($invoiced_month, $tax_rate_id) as $customer) {
+                foreach ($this->getQueryForBillingDataForMonth($invoiced_month, $tax_rate->id) as $customer) {
                     // declare billing data
                     $billing_data['total'] = 0;
                     $billing_data['items'] = [];
@@ -343,7 +343,7 @@ class InvoicesController extends AppController
                     '_ext' => $this->request->getData('output_format'),
                     '?' => [
                         'invoiced_month' => $invoiced_month->i18nFormat('yyyy-MM'),
-                        'tax_rate_id' => $tax_rate_id,
+                        'tax_rate_id' => $tax_rate->id,
                     ],
                 ]);
             }
@@ -352,16 +352,13 @@ class InvoicesController extends AppController
         // DOWNLOAD INVOICES
         if ($this->request->getParam('_ext') === 'dbf' || $this->request->getParam('_ext') === 'xml') {
             $invoiced_month = new FrozenDate($this->request->getQuery('invoiced_month'));
-            $tax_rate_id = (int)$this->request->getQuery('tax_rate_id');
+            $tax_rate = $this->fetchTable('TaxRates')->get($this->request->getQuery('tax_rate_id'));
 
-            // DO THIS BETTER - REVERSE CHARGE
-            if ($tax_rate_id == 5) {
-                $reverse_charge = true;
+            if ($tax_rate->reverse_charge) {
                 $prefix = 10000000 * ($invoiced_month->year - 1980)
                         + 1000000 * 8
                         + 10000 * $invoiced_month->month;
             } else {
-                $reverse_charge = false;
                 $prefix = 10000000 * ($invoiced_month->year - 1980)
                         + 1000000 * 9
                         + 10000 * $invoiced_month->month;
@@ -372,7 +369,7 @@ class InvoicesController extends AppController
 
             $invoices = [];
 
-            foreach ($this->getQueryForBillingDataForMonth($invoiced_month, $tax_rate_id) as $customer) {
+            foreach ($this->getQueryForBillingDataForMonth($invoiced_month, $tax_rate->id) as $customer) {
                 // declare customer billing data
                 $billing_customer['total'] = 0;
                 $billing_customer['items'] = [];
@@ -458,7 +455,7 @@ class InvoicesController extends AppController
                 unset($billing_customer);
             }
 
-            $this->set(compact('invoices', 'tax_rate_id', 'invoiced_month', 'reverse_charge'));
+            $this->set(compact('invoices', 'tax_rate', 'invoiced_month'));
         }
 
         $this->set(compact('tax_rates'));

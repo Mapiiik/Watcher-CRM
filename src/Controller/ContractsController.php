@@ -270,7 +270,7 @@ class ContractsController extends AppController
 
         $contract = $this->Contracts->get($id, [
             'contain' => [
-                'Customers' => ['Emails', 'Phones', 'Addresses'],
+                'Customers' => ['Emails', 'Phones', 'Addresses', 'TaxRates'],
                 'InstallationAddresses',
                 'ServiceTypes',
                 'InstallationTechnicians',

@@ -4,8 +4,7 @@
  * @var \BookkeepingPohoda\Model\Entity\Invoice[]|\Cake\Collection\CollectionInterface $invoices
  * @var \Cake\I18n\FrozenDate $invoiced_month
  * @var array $tax_rates
- * @var int $tax_rate_id
- * @var bool $reverse_charge
+ * @var \App\Model\Entity\TaxRate $tax_rate
  */
 
 use BookkeepingPohoda\DBFInvoices;
@@ -18,7 +17,7 @@ $dbf_filename = TMP . uniqid('invoices-', true) . '.dbf';
 $dbf->createDBF($dbf_filename);
 
 foreach ($invoices as $invoice) {
-    $dbf->addRecord($invoice, $reverse_charge);
+    $dbf->addRecord($invoice, $tax_rate);
 }
 
 $dbf->closeDBF();
@@ -26,7 +25,7 @@ $dbf->closeDBF();
 // set for download with specified filename
 $this->setResponse(
     $this->getResponse()->withDownload(
-        'Invoices' . '-' . strtolower($tax_rates[$tax_rate_id])
+        'Invoices' . '-' . strtolower($tax_rate->name)
             . '-' . $invoiced_month->i18nFormat('yyyy-MM') . '.dbf'
     )
 );
