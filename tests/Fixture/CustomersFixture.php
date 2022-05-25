@@ -26,7 +26,7 @@ class CustomersFixture extends TestFixture
                 'last_name' => 'Lorem ipsum dolor sit amet',
                 'suffix' => 'Lorem ipsum dolor sit amet',
                 'company' => 'Lorem ipsum dolor sit amet',
-                'taxe_id' => 1,
+                'tax_rate_id' => 1,
                 'bank_name' => 'Lorem ipsum dolor sit amet',
                 'bank_account' => 'Lorem ipsum dolor sit amet',
                 'bank_code' => 'Lo',

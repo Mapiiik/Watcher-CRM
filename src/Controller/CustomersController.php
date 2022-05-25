@@ -81,7 +81,7 @@ class CustomersController extends AppController
         }
 
         $this->paginate = [
-            'contain' => ['Taxes', 'Contracts', 'Ips' => ['Contracts']],
+            'contain' => ['TaxRates', 'Contracts', 'Ips' => ['Contracts']],
             'order' => [
                 'Customers.id' => 'DESC',
             ],
@@ -106,7 +106,7 @@ class CustomersController extends AppController
     {
         $customer = $this->Customers->get($id, [
             'contain' => [
-                'Taxes',
+                'TaxRates',
                 'Addresses' => ['Countries'],
                 'Billings' => ['Contracts', 'Services'],
                 'BorrowedEquipments' => ['Contracts', 'EquipmentTypes'],
@@ -156,11 +156,11 @@ class CustomersController extends AppController
             }
             $this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
-        $taxes = $this->Customers->Taxes->find('list', ['order' => 'name']);
+        $taxRates = $this->Customers->TaxRates->find('list', ['order' => 'name']);
 
         $invoice_delivery_types = $this->Customers->invoice_delivery_types;
 
-        $this->set(compact('customer', 'taxes', 'invoice_delivery_types'));
+        $this->set(compact('customer', 'taxRates', 'invoice_delivery_types'));
     }
 
     /**
@@ -184,11 +184,11 @@ class CustomersController extends AppController
             }
             $this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
-        $taxes = $this->Customers->Taxes->find('list', ['order' => 'name']);
+        $taxRates = $this->Customers->TaxRates->find('list', ['order' => 'name']);
 
         $invoice_delivery_types = $this->Customers->invoice_delivery_types;
 
-        $this->set(compact('customer', 'taxes', 'invoice_delivery_types'));
+        $this->set(compact('customer', 'taxRates', 'invoice_delivery_types'));
     }
 
     /**
@@ -229,7 +229,7 @@ class CustomersController extends AppController
 
         $customer = $this->Customers->get($id, [
             'contain' => [
-                'Taxes',
+                'TaxRates',
                 'Addresses' => ['Countries'],
                 'Billings' => ['Contracts', 'Services'],
                 'BorrowedEquipments' => ['Contracts', 'EquipmentTypes'],

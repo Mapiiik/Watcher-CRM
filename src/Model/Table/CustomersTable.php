@@ -10,7 +10,7 @@ use Cake\Validation\Validator;
 /**
  * Customers Model
  *
- * @property \App\Model\Table\TaxesTable&\Cake\ORM\Association\BelongsTo $Taxes
+ * @property \App\Model\Table\TaxRatesTable&\Cake\ORM\Association\BelongsTo $TaxRates
  * @property \App\Model\Table\AddressesTable&\Cake\ORM\Association\HasMany $Addresses
  * @property \App\Model\Table\BillingsTable&\Cake\ORM\Association\HasMany $Billings
  * @property \App\Model\Table\BorrowedEquipmentsTable&\Cake\ORM\Association\HasMany $BorrowedEquipments
@@ -73,8 +73,8 @@ class CustomersTable extends Table
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
 
-        $this->belongsTo('Taxes', [
-            'foreignKey' => 'taxe_id',
+        $this->belongsTo('TaxRates', [
+            'foreignKey' => 'tax_rate_id',
             'joinType' => 'INNER',
         ]);
         $this->hasMany('Addresses', [
@@ -287,7 +287,7 @@ class CustomersTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['taxe_id'], 'Taxes'), ['errorField' => 'taxe_id']);
+        $rules->add($rules->existsIn(['tax_rate_id'], 'TaxRates'), ['errorField' => 'tax_rate_id']);
 
         $rules->add(
             function ($entity, $options) {

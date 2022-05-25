@@ -3,28 +3,29 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\TaxesTable;
+use App\Model\Table\TaxRatesTable;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\TaxesTable Test Case
+ * App\Model\Table\TaxRatesTable Test Case
  */
-class TaxesTableTest extends TestCase
+class TaxRatesTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \App\Model\Table\TaxesTable
+     * @var \App\Model\Table\TaxRatesTable
      */
-    protected $TaxesTable;
+    protected $TaxRates;
 
     /**
      * Fixtures
      *
-     * @var array
+     * @var array<string>
      */
     protected $fixtures = [
-        'app.Taxes',
+        'app.TaxRates',
+        'app.Customers',
     ];
 
     /**
@@ -32,11 +33,11 @@ class TaxesTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Taxes') ? [] : ['className' => TaxesTable::class];
-        $this->TaxesTable = $this->getTableLocator()->get('Taxes', $config);
+        $config = $this->getTableLocator()->exists('TaxRates') ? [] : ['className' => TaxRatesTable::class];
+        $this->TaxRates = $this->getTableLocator()->get('TaxRates', $config);
     }
 
     /**
@@ -44,9 +45,9 @@ class TaxesTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
-        unset($this->TaxesTable);
+        unset($this->TaxRates);
 
         parent::tearDown();
     }
@@ -55,7 +56,7 @@ class TaxesTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\TaxesTable::validationDefault()
+     * @uses \App\Model\Table\TaxRatesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {

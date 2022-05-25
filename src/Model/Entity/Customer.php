@@ -15,7 +15,7 @@ use Cake\ORM\Entity;
  * @property string|null $last_name
  * @property string|null $suffix
  * @property string|null $company
- * @property int $taxe_id
+ * @property int $tax_rate_id
  * @property string|null $bank_name
  * @property string|null $bank_account
  * @property string|null $bank_code
@@ -82,7 +82,7 @@ class Customer extends Entity
         'last_name' => true,
         'suffix' => true,
         'company' => true,
-        'taxe_id' => true,
+        'tax_rate_id' => true,
         'bank_name' => true,
         'bank_account' => true,
         'bank_code' => true,
@@ -125,7 +125,7 @@ class Customer extends Entity
      */
     protected function _getActive(): bool
     {
-        if ($this->taxe_id == 0) {
+        if ($this->tax_rate_id == 0) {
             return true;
         }
 

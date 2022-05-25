@@ -100,10 +100,10 @@ use Cake\I18n\Number;
                 <div class="column-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Tax') ?></th>
-                            <td><?= $customer->has('tax') ? $this->Html->link(
-                                $customer->tax->name,
-                                ['controller' => 'Taxes', 'action' => 'view', $customer->tax->id]
+                            <th><?= __('Tax Rate') ?></th>
+                            <td><?= $customer->has('tax_rate') ? $this->Html->link(
+                                $customer->tax_rate->name,
+                                ['controller' => 'TaxRates', 'action' => 'view', $customer->tax_rate->id]
                             ) : '' ?></td>
                         </tr>
                         <tr>

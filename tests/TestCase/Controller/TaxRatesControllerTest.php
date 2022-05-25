@@ -7,28 +7,29 @@ use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Controller\TaxesController Test Case
+ * App\Controller\TaxRatesController Test Case
  *
- * @uses \App\Controller\TaxesController
+ * @uses \App\Controller\TaxRatesController
  */
-class TaxesControllerTest extends TestCase
+class TaxRatesControllerTest extends TestCase
 {
     use IntegrationTestTrait;
 
     /**
      * Fixtures
      *
-     * @var array
+     * @var array<string>
      */
     protected $fixtures = [
-        'app.Taxes',
+        'app.TaxRates',
+        'app.Customers',
     ];
 
     /**
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\TaxesController::index()
+     * @uses \App\Controller\TaxRatesController::index()
      */
     public function testIndex(): void
     {
@@ -39,7 +40,7 @@ class TaxesControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\TaxesController::view()
+     * @uses \App\Controller\TaxRatesController::view()
      */
     public function testView(): void
     {
@@ -50,7 +51,7 @@ class TaxesControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\TaxesController::add()
+     * @uses \App\Controller\TaxRatesController::add()
      */
     public function testAdd(): void
     {
@@ -61,7 +62,7 @@ class TaxesControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\TaxesController::edit()
+     * @uses \App\Controller\TaxRatesController::edit()
      */
     public function testEdit(): void
     {
@@ -72,7 +73,7 @@ class TaxesControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\TaxesController::delete()
+     * @uses \App\Controller\TaxRatesController::delete()
      */
     public function testDelete(): void
     {

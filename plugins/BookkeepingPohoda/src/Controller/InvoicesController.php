@@ -203,7 +203,7 @@ class InvoicesController extends AppController
         return $this->getTableLocator()->get('Customers')
                 ->find()
                 ->order('Customers.id')
-                ->where(['Customers.taxe_id' => $tax_rate_id])
+                ->where(['Customers.tax_rate_id' => $tax_rate_id])
                 ->contain('Addresses')
                 ->contain('Contracts', function (Query $q) use ($invoiced_month) {
                     return $q
@@ -259,7 +259,7 @@ class InvoicesController extends AppController
      */
     public function generate()
     {
-        $tax_rates = $this->getTableLocator()->get('Taxes')->find('list', ['order' => 'name'])->toArray();
+        $tax_rates = $this->getTableLocator()->get('TaxRates')->find('list', ['order' => 'name'])->toArray();
 
         if ($this->request->is(['post'])) {
             $invoiced_month = new FrozenDate($this->request->getData('invoiced_month'));

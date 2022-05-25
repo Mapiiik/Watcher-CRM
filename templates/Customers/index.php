@@ -32,7 +32,7 @@
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('dealer') ?></th>
-                    <th><?= $this->Paginator->sort('taxe_id') ?></th>
+                    <th><?= $this->Paginator->sort('tax_rate_id') ?></th>
                     <th><?= $this->Paginator->sort('company') ?></th>
                     <th><?= $this->Paginator->sort('title') ?></th>
                     <th><?= $this->Paginator->sort('first_name') ?></th>
@@ -52,9 +52,9 @@
                     <td><?= $this->Number->format($customer->id) ?></td>
                     <td><?= $customer->dealer ? __('Yes') : __('No'); ?></td>
                     <td>
-                        <?= $customer->has('tax') ? $this->Html->link(
-                            $customer->tax->name,
-                            ['controller' => 'Taxes', 'action' => 'view', $customer->tax->id]
+                        <?= $customer->has('tax_rate') ? $this->Html->link(
+                            $customer->tax_rate->name,
+                            ['controller' => 'TaxRates', 'action' => 'view', $customer->tax_rate->id]
                         ) : '' ?>
                     </td>
                     <td><?= h($customer->company) ?></td>

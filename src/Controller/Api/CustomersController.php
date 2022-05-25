@@ -25,7 +25,7 @@ class CustomersController extends AppController
     public function index()
     {
         $customers = $this->Customers->find('all', [
-            'contain' => ['Taxes'],
+            'contain' => ['TaxRates'],
         ])->all();
 
         $this->set('customers', $customers);
@@ -43,7 +43,7 @@ class CustomersController extends AppController
     {
         $customer = $this->Customers->get($id, [
             'contain' => [
-                'Taxes',
+                'TaxRates',
                 'Addresses' => ['Countries'],
                 'Billings' => ['Contracts', 'Services'],
                 'BorrowedEquipments' => ['Contracts', 'EquipmentTypes'],

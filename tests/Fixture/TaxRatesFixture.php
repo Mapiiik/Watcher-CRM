@@ -6,9 +6,9 @@ namespace App\Test\Fixture;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
- * TaxesFixture
+ * TaxRatesFixture
  */
-class TaxesFixture extends TestFixture
+class TaxRatesFixture extends TestFixture
 {
     /**
      * Init method
@@ -21,6 +21,8 @@ class TaxesFixture extends TestFixture
             [
                 'id' => 1,
                 'name' => 'Lorem ipsum dolor sit amet',
+                'vat_rate' => 1,
+                'reverse_charge' => 1,
             ],
         ];
         parent::init();
