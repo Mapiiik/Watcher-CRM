@@ -650,32 +650,36 @@ use Cake\I18n\Number;
                             <td><?= h($ip->ip) ?></td>
                             <td><?= h($ip_address_types_of_use[$ip->type_of_use]) ?></td>
                             <td><?= h($ip->note) ?></td>
-                            <td>
-                                <?php $device = $ip->routeros_devices->first(); ?>
-                                <?= isset($device['id']) ?
+                            <td><?php
+                            if (isset($ip->routeros_devices)) {
+                                $device = $ip->routeros_devices->first();
+                                echo isset($device['id']) ?
                                     $this->Html->link(
                                         $device['system_description'],
                                         env('WATCHER_NMS_URL') . '/routeros-devices/view/' . $device['id'],
                                         ['target' => '_blank']
-                                    ) . '<br>' : '' ?>
-                                <?php unset($device); ?>
-                            </td>
-                            <td>
-                                <?php $range = $ip->ip_address_ranges->first(); ?>
-                                <?= isset($range['access_point']['id']) ?
+                                    ) . '<br>' : '';
+                                unset($device);
+                            }
+                            ?></td>
+                            <td><?php
+                            if (isset($ip->ip_address_ranges)) {
+                                $range = $ip->ip_address_ranges->first();
+                                echo isset($range['access_point']['id']) ?
                                     __('Access Point') . ': ' . $this->Html->link(
                                         $range['access_point']['name'],
                                         env('WATCHER_NMS_URL') . '/access-points/view/' . $range['access_point']['id'],
                                         ['target' => '_blank']
-                                    ) . '<br>' : '' ?>
-                                <?= isset($range['id']) ?
+                                    ) . '<br>' : '';
+                                echo isset($range['id']) ?
                                     __('Range') . ': ' . $this->Html->link(
                                         $range['name'],
                                         env('WATCHER_NMS_URL') . '/ip-address-ranges/view/' . $range['id'],
                                         ['target' => '_blank']
-                                    ) . '<br>' : '' ?>
-                                <?php unset($range); ?>
-                            </td>
+                                    ) . '<br>' : '';
+                                    unset($range);
+                            }
+                            ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
@@ -721,22 +725,24 @@ use Cake\I18n\Number;
                             <td><?= h($ipNetwork->ip_network) ?></td>
                             <td><?= h($ip_network_types_of_use[$ipNetwork->type_of_use]) ?></td>
                             <td><?= h($ipNetwork->note) ?></td>
-                            <td>
-                                <?php $range = $ipNetwork->ip_address_ranges->first(); ?>
-                                <?= isset($range['access_point']['id']) ?
+                            <td><?php
+                            if (isset($ipNetwork->ip_address_ranges)) {
+                                $range = $ipNetwork->ip_address_ranges->first();
+                                echo isset($range['access_point']['id']) ?
                                     __('Access Point') . ': ' . $this->Html->link(
                                         $range['access_point']['name'],
                                         env('WATCHER_NMS_URL') . '/access-points/view/' . $range['access_point']['id'],
                                         ['target' => '_blank']
-                                    ) . '<br>' : '' ?>
-                                <?= isset($range['id']) ?
+                                    ) . '<br>' : '';
+                                echo isset($range['id']) ?
                                     __('Range') . ': ' . $this->Html->link(
                                         $range['name'],
                                         env('WATCHER_NMS_URL') . '/ip-address-ranges/view/' . $range['id'],
                                         ['target' => '_blank']
-                                    ) . '<br>' : '' ?>
-                                <?php unset($range); ?>
-                            </td>
+                                    ) . '<br>' : '';
+                                unset($range);
+                            }
+                            ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),

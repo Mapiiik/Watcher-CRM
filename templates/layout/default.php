@@ -110,8 +110,11 @@ $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
                 ['controller' => 'Users', 'action' => 'index', 'plugin' => 'CakeDC/Users'],
                 ['class' => 'button button-small' . $buttonSelected(['Users'])]
             ) ?>
-            
+
             <?= $this->Html->link(__('Legacy'), '/legacy', ['class' => 'button button-small']) ?>
+
+            <?= env('WATCHER_NMS_URL') ?
+                $this->Html->link(__('Network Management System'), env('WATCHER_NMS_URL'), ['class' => 'button button-small']) : '' ?>
 
             <?php if ($this->request->getParam('action') == 'index') : ?>
             <select name="limit" class="button button-small button-outline" onchange="location = this.value;">

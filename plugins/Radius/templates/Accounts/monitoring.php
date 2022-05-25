@@ -192,7 +192,7 @@ use Cake\I18n\FrozenTime;
                             <td><?= h($radacct->nasporttype) ?></td>
                             <?php endif ?>
                             <td><?php
-                            if (isset($radacct->nasipaddress)) {
+                            if (isset($radacct->routeros_devices_for_nas)) {
                                 $device = $radacct->routeros_devices_for_nas->first();
                                 echo isset($device['access_point']['id']) ?
                                     __d('radius', 'Access Point') . ': ' . $this->Html->link(

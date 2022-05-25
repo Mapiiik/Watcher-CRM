@@ -91,10 +91,12 @@ class Radacct extends Entity
      */
     protected function _getRouterosDevicesForNas(): ?CollectionInterface
     {
-        $routerosDevices = ApiClient::getRouterosDevicesForIp($this->nasipaddress);
+        if (!empty($this->nasipaddress)) {
+            $routerosDevices = ApiClient::getRouterosDevicesForIp($this->nasipaddress);
 
-        if ($routerosDevices) {
-            return $routerosDevices;
+            if ($routerosDevices) {
+                return $routerosDevices;
+            }
         }
 
         return null;
