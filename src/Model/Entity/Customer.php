@@ -41,7 +41,7 @@ use Cake\ORM\Entity;
  * @property string $number
  * @property bool $active
  *
- * @property \App\Model\Entity\Tax $tax
+ * @property \App\Model\Entity\TaxRate $tax_rate
  * @property \App\Model\Entity\Address[] $addresses
  * @property \App\Model\Entity\Billing[] $billings
  * @property \App\Model\Entity\Address $billing_address
@@ -103,7 +103,7 @@ class Customer extends Entity
         'agree_mailing_outages' => true,
         'agree_mailing_commercial' => true,
         'agree_mailing_billing' => true,
-        'tax' => true,
+        'tax_rate' => true,
         'addresses' => true,
         'billings' => true,
         'borrowed_equipments' => true,
