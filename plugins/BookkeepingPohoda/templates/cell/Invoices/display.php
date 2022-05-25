@@ -5,8 +5,8 @@
  */
 
 use Cake\I18n\FrozenDate;
-
-if (!$invoices->isEmpty()) : ?>
+?>
+<?php if (is_object($invoices) && !$invoices->isEmpty()) : ?>
 <div class="table-responsive">
     <table>
         <tr>

@@ -4,7 +4,7 @@
  * @var \Radius\Model\Entity\Account[]|\Cake\Collection\CollectionInterface $accounts
  */
 ?>
-<?php if (!$accounts->isEmpty()) : ?>
+<?php if (is_object($accounts) && !$accounts->isEmpty()) : ?>
 <div class="table-responsive">
     <table>
         <tr>
