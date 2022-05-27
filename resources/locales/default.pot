@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-05-25 16:45+0200\n"
+"POT-Creation-Date: 2022-05-27 15:36+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -2641,7 +2641,7 @@ msgid "New Customer"
 msgstr ""
 
 #: ./templates/Customers/index.php:28
-#: ./templates/layout/default.php:69
+#: ./templates/layout/default.php:70
 msgid "Customers"
 msgstr ""
 
@@ -2903,7 +2903,7 @@ msgstr ""
 
 #: ./templates/Customers/view.php:891
 #: ./templates/Tasks/index.php:41
-#: ./templates/layout/default.php:74
+#: ./templates/layout/default.php:75
 msgid "Tasks"
 msgstr ""
 
@@ -3256,7 +3256,7 @@ msgid "Delete Removed Ip"
 msgstr ""
 
 #: ./templates/Reports/index.php:8
-#: ./templates/layout/default.php:104
+#: ./templates/layout/default.php:105
 msgid "Reports"
 msgstr ""
 
@@ -3631,32 +3631,36 @@ msgstr ""
 msgid "Tax Rate Id"
 msgstr ""
 
-#: ./templates/layout/default.php:79
+#: ./templates/layout/default.php:80
 msgid "Bookkeeping"
 msgstr ""
 
-#: ./templates/layout/default.php:84
+#: ./templates/layout/default.php:85
 msgid "RADIUS"
 msgstr ""
 
-#: ./templates/layout/default.php:99
+#: ./templates/layout/default.php:100
 msgid "RUIAN"
 msgstr ""
 
-#: ./templates/layout/default.php:109
+#: ./templates/layout/default.php:110
 msgid "Users"
 msgstr ""
 
-#: ./templates/layout/default.php:114
+#: ./templates/layout/default.php:115
 msgid "Legacy"
 msgstr ""
 
-#: ./templates/layout/default.php:117
+#: ./templates/layout/default.php:119
 msgid "Network Management System"
 msgstr ""
 
-#: ./templates/layout/default.php:145
+#: ./templates/layout/default.php:150
 msgid "Logout"
+msgstr ""
+
+#: ./templates/layout/default.php:176
+msgid "High Contrast"
 msgstr ""
 
 #: ./templates/layout/error.php:38

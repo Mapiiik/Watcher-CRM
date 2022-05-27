@@ -31,6 +31,7 @@ $request = $this->getRequest();
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
 
     <?= $this->Html->css(['normalize.min', 'milligram.min', 'cake']) ?>
+    <?= $request->getSession()->read('Config.high-contrast') ? $this->Html->css(['high-contrast']) : '' ?>
 
     <?= $this->Html->script(['https://code.jquery.com/jquery.min.js', 'links.js']) ?>
 
@@ -167,6 +168,19 @@ $request = $this->getRequest();
         </div>
     </main>
     <footer>
+        <br>
+        <div class="container">
+            <div class="float-right">
+            <?= $this->Form->create(null, ['type' => 'get']) ?>
+                <?= $this->Form->control('high-contrast', [
+                    'label' => __('High Contrast'),
+                    'type' => 'checkbox',
+                    'checked' => $request->getSession()->read('Config.high-contrast'),
+                    'onchange' => 'this.form.submit();',
+                ]) ?>
+            <?= $this->Form->end() ?>
+            </div>
+        </div>
     </footer>
 </body>
 </html>

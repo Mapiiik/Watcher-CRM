@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-05-25 16:45+0200\n"
-"PO-Revision-Date: 2022-05-25 16:46+0200\n"
+"POT-Creation-Date: 2022-05-27 15:36+0200\n"
+"PO-Revision-Date: 2022-05-27 15:37+0200\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -2021,7 +2021,7 @@ msgstr "Pokročilé vyhledávání"
 msgid "New Customer"
 msgstr "Nový zákazník"
 
-#: templates/Customers/index.php:28 templates/layout/default.php:69
+#: templates/Customers/index.php:28 templates/layout/default.php:70
 msgid "Customers"
 msgstr "Zákazníci"
 
@@ -2245,7 +2245,7 @@ msgid "New Task"
 msgstr "Nový úkol"
 
 #: templates/Customers/view.php:891 templates/Tasks/index.php:41
-#: templates/layout/default.php:74
+#: templates/layout/default.php:75
 msgid "Tasks"
 msgstr "Úkoly"
 
@@ -2557,7 +2557,7 @@ msgstr "Upravit odebranou IP adresu"
 msgid "Delete Removed Ip"
 msgstr "Odstranit odebranou IP adresu"
 
-#: templates/Reports/index.php:8 templates/layout/default.php:104
+#: templates/Reports/index.php:8 templates/layout/default.php:105
 msgid "Reports"
 msgstr "Reporty"
 
@@ -2907,33 +2907,37 @@ msgstr "Související zákazníci"
 msgid "Tax Rate Id"
 msgstr "ID sazby daně"
 
-#: templates/layout/default.php:79
+#: templates/layout/default.php:80
 msgid "Bookkeeping"
 msgstr "Účetnictví"
 
-#: templates/layout/default.php:84
+#: templates/layout/default.php:85
 msgid "RADIUS"
 msgstr "RADIUS"
 
-#: templates/layout/default.php:99
+#: templates/layout/default.php:100
 msgid "RUIAN"
 msgstr "RUIAN"
 
-#: templates/layout/default.php:109
+#: templates/layout/default.php:110
 msgid "Users"
 msgstr "Uživatelé"
 
-#: templates/layout/default.php:114
+#: templates/layout/default.php:115
 msgid "Legacy"
 msgstr "Legacy"
 
-#: templates/layout/default.php:117
+#: templates/layout/default.php:119
 msgid "Network Management System"
 msgstr "Systém správy sítě"
 
-#: templates/layout/default.php:145
+#: templates/layout/default.php:150
 msgid "Logout"
 msgstr "Odhlášení"
+
+#: templates/layout/default.php:176
+msgid "High Contrast"
+msgstr "Vysoký kontrast"
 
 #: templates/layout/error.php:38
 msgid "Back"

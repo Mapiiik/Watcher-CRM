@@ -1,0 +1,114 @@
+/* Cake overrides */
+h1, h2, h3, h4, h5, h6 {
+    color: #000000;
+}
+
+a {
+    color: #000099;
+}
+
+a:hover,
+a:focus,
+a:active  {
+    color: #ffffff;
+    background-color: #40a0f0;
+}
+
+.side-nav a,
+th a,
+.actions a {
+    color: #000099;
+}
+
+.side-nav a:hover,
+.side-nav a:focus,
+.actions a:hover,
+.actions a:focus {
+    color: #ffffff;
+}
+
+/* Legend */
+legend {
+    color: #000000;
+}
+
+/* Input */
+input[type='email'],
+input[type='number'],
+input[type='password'],
+input[type='search'],
+input[type='tel'],
+input[type='text'],
+input[type='url'],
+input[type='color'],
+input[type='date'],
+input[type='month'],
+input[type='week'],
+input[type='datetime'],
+input[type='datetime-local'],
+input:not([type]),
+textarea,
+select {
+    background-color: #ffffff;
+}
+
+/* Tables */
+table {
+    background-color: #ffffff;
+}
+
+tr:hover td {
+    background:#ddf0ff;
+}
+
+th, td {
+    border: 0.1rem solid #000000;
+}
+
+/* Main */
+body {
+    color: #000000;
+    background: #ddf0ff;
+}
+
+.content {
+    background: #fbfcff;
+}
+
+th {
+    background: #99ccff;
+}
+
+/* Flash messages */
+.message {
+    background: #eff8ff;
+    color: #2779bd;
+    border-color: #6cb2eb;
+}
+
+.message.success {
+    background: #e3fcec;
+    color: #1f9d55;
+    border-color: #51d88a;
+}
+
+.message.warning {
+    background: #fffabc;
+    color: #8d7b00;
+    border-color: #d3b800;
+}
+
+.message.error {
+    background: #fcebea;
+    color: #cc1f1a;
+    border-color: #ef5753;
+}
+
+.error-message {
+    color: #cc1f1a;
+}
+
+.prev.disabled a,
+.next.disabled a {
+    color: #000000;
+}
