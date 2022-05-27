@@ -15,6 +15,7 @@
  */
 
 $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
+$request = $this->getRequest();
 ?>
 <!DOCTYPE html>
 <html>
@@ -43,11 +44,11 @@ $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
             <a href="<?= $this->Url->build('/') ?>"><span>Watcher</span> CRM</a>
         </div>
 
-        <?php if (!($this->request->getQuery('win-link') == 'true')) : ?>
+        <?php if (!($request->getQuery('win-link') == 'true')) : ?>
         <div class="top-nav-links">
             <?php
-            $controller = $this->name;
-            $action = $this->request->getParam('action');
+            $controller = $this->getName();
+            $action = $request->getParam('action');
             $buttonSelected = function ($haystack = []) use ($controller, $action) {
                 if (in_array($controller, $haystack)) {
                     return ' button-selected';
@@ -58,10 +59,9 @@ $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
                 }
             };
 
-            $request = $this->request;
             $urlWithQuery = function ($query = []) use ($request) {
                 return $this->Url->build(
-                    ['?' => $query + $this->request->getQueryParams()] + $this->request->getParam('pass')
+                    ['?' => $query + $request->getQueryParams()] + $request->getParam('pass')
                 );
             }; ?>
 
@@ -114,24 +114,28 @@ $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
             <?= $this->Html->link(__('Legacy'), '/legacy', ['class' => 'button button-small']) ?>
 
             <?= env('WATCHER_NMS_URL') ?
-                $this->Html->link(__('Network Management System'), env('WATCHER_NMS_URL'), ['class' => 'button button-small']) : '' ?>
+                $this->Html->link(
+                    __('Network Management System'),
+                    env('WATCHER_NMS_URL'),
+                    ['class' => 'button button-small']
+                ) : '' ?>
 
-            <?php if ($this->request->getParam('action') == 'index') : ?>
+            <?php if ($request->getParam('action') == 'index') : ?>
             <select name="limit" class="button button-small button-outline" onchange="location = this.value;">
-                <option <?= $this->request->getQuery('limit') == 20 ? 'selected="selected"' : '' ?>
+                <option <?= (int)$request->getQuery('limit') == 20 ? 'selected="selected"' : '' ?>
                     value="<?= $urlWithQuery(['limit' => 20]) ?>">20</option>
-                <option <?= $this->request->getQuery('limit') == 50 ? 'selected="selected"' : '' ?>
+                <option <?= (int)$request->getQuery('limit') == 50 ? 'selected="selected"' : '' ?>
                     value="<?= $urlWithQuery(['limit' => 50]) ?>">50</option>
-                <option <?= $this->request->getQuery('limit') == 100 ? 'selected="selected"' : '' ?>
+                <option <?= (int)$request->getQuery('limit') == 100 ? 'selected="selected"' : '' ?>
                     value="<?= $urlWithQuery(['limit' => 100]) ?>">100</option>
-                <option <?= $this->request->getQuery('limit') == 500 ? 'selected="selected"' : '' ?>
+                <option <?= (int)$request->getQuery('limit') == 500 ? 'selected="selected"' : '' ?>
                     value="<?= $urlWithQuery(['limit' => 500]) ?>">500</option>
-                <option <?= $this->request->getQuery('limit') == 1000 ? 'selected="selected"' : '' ?>
+                <option <?= (int)$request->getQuery('limit') == 1000 ? 'selected="selected"' : '' ?>
                     value="<?= $urlWithQuery(['limit' => 1000]) ?>">1000</option>
             </select>
             <?php endif; ?>
             
-            <?php $language = $this->request
+            <?php $language = $request
                 ->getSession()->read('Config.language', Cake\I18n\I18n::getDefaultLocale());
             ?>
             <select name="language" class="button button-small button-outline" onchange="location = this.value;">
@@ -141,7 +145,7 @@ $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
                     value="<?= $urlWithQuery(['language' => 'en_US']) ?>">English</option>
             </select>
 
-            <?= !is_null($this->request->getSession()->read('Auth.id')) ? $this->AuthLink->link(
+            <?= !is_null($request->getSession()->read('Auth.id')) ? $this->AuthLink->link(
                 __('Logout'),
                 ['controller' => 'Users', 'action' => 'logout', 'plugin' => 'CakeDC/Users'],
                 ['class' => 'button button-small button-outline']
@@ -150,10 +154,10 @@ $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
         <?php endif; ?>
     </nav>
 
-    <?= $this->request->getParam('customer_id') ? $this->cell(
+    <?= $request->getParam('customer_id') ? $this->cell(
         'Customer',
-        [$this->request->getParam('customer_id')],
-        ['compact' => ($this->request->getQuery('win-link') == 'true')]
+        [$request->getParam('customer_id')],
+        ['compact' => ($request->getQuery('win-link') == 'true')]
     ) : '' ?>
 
     <main class="main">
