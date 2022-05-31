@@ -39,7 +39,7 @@ class ServicesController extends AppController
             'contain' => [
                 'ServiceTypes',
                 'Queues',
-                'Billings' => ['Customers', 'Contracts'],
+                'Billings' => ['Customers', 'Contracts', 'Services'],
             ],
         ]);
 
