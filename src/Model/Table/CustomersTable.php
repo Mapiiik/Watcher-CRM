@@ -109,15 +109,24 @@ class CustomersTable extends Table
         ]);
         $this->hasMany('Emails', [
             'foreignKey' => 'customer_id',
+            'sort' => [
+                'Emails.email',
+            ],
         ]);
         $this->hasMany('CustomerLabels', [
             'foreignKey' => 'customer_id',
         ]);
         $this->hasMany('Logins', [
             'foreignKey' => 'customer_id',
+            'sort' => [
+                'Logins.login',
+            ],
         ]);
         $this->hasMany('Phones', [
             'foreignKey' => 'customer_id',
+            'sort' => [
+                'Phones.phone',
+            ],
         ]);
         $this->hasMany('SoldEquipments', [
             'foreignKey' => 'customer_id',
@@ -161,6 +170,10 @@ class CustomersTable extends Table
         ]);
         $this->hasMany('Tasks', [
             'foreignKey' => 'customer_id',
+            'sort' => [
+                'Tasks.task_state_id',
+                'Tasks.id' => 'DESC',
+            ],
         ]);
     }
 
