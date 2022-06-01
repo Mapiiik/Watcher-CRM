@@ -20,7 +20,7 @@ class LabelsController extends AppController
     {
         $this->paginate = [
             'contain' => ['CustomerLabels'],
-        ];        
+        ];
         $labels = $this->paginate($this->Labels);
 
         $this->set(compact('labels'));
