@@ -30,6 +30,7 @@
                     <td style="background-color: <?= h($label->color) ?>;"><?= h($label->color) ?></td>
                     <td><?= h($label->validity) ?></td>
                     <td><?= $label->dynamic ? __('Yes') : __('No'); ?></td>
+                    <td><?= $this->Number->format(count($label->customer_labels)) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $label->id]) ?>
                         <?= $this->AuthLink->link(
