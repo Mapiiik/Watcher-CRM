@@ -172,6 +172,7 @@ return [
                 'Emails', 'Phones', 'Logins', 'Addresses',
                 'Billings', 'BorrowedEquipments', 'SoldEquipments',
                 'Ips', 'IpNetworks',
+                'RemovedIps', 'RemovedIpNetworks',
             ],
             'action' => ['view'],
         ],
