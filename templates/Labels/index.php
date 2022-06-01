@@ -17,6 +17,7 @@
                     <th><?= $this->Paginator->sort('color') ?></th>
                     <th><?= $this->Paginator->sort('validity') ?></th>
                     <th><?= $this->Paginator->sort('dynamic') ?></th>
+                    <th><?= __('Number Of Uses') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -27,8 +28,8 @@
                     <td><?= h($label->name) ?></td>
                     <td><?= h($label->caption) ?></td>
                     <td style="background-color: <?= h($label->color) ?>;"><?= h($label->color) ?></td>
-                    <td><?= $this->Number->format($label->validity) ?></td>
-                    <td><?= h($label->dynamic) ?></td>
+                    <td><?= h($label->validity) ?></td>
+                    <td><?= $label->dynamic ? __('Yes') : __('No'); ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $label->id]) ?>
                         <?= $this->AuthLink->link(

@@ -18,6 +18,9 @@ class LabelsController extends AppController
      */
     public function index()
     {
+        $this->paginate = [
+            'contain' => ['CustomerLabels'],
+        ];        
         $labels = $this->paginate($this->Labels);
 
         $this->set(compact('labels'));
@@ -33,7 +36,9 @@ class LabelsController extends AppController
     public function view($id = null)
     {
         $label = $this->Labels->get($id, [
-            'contain' => ['CustomerLabels'],
+            'contain' => [
+                'CustomerLabels' => ['Customers'],
+            ],
         ]);
 
         $this->set(compact('label'));

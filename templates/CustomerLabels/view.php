@@ -56,12 +56,12 @@
                     <td><?= $this->Number->format($customerLabel->id) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Created By') ?></th>
-                    <td><?= $this->Number->format($customerLabel->created_by) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Created') ?></th>
                     <td><?= h($customerLabel->created) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Created By') ?></th>
+                    <td><?= $this->Number->format($customerLabel->created_by) ?></td>
                 </tr>
             </table>
             <div class="text">

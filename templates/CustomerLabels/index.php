@@ -15,17 +15,18 @@
         <table>
             <thead>
                 <tr>
+                <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('label_id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
+                    <th><?= $this->Paginator->sort('note') ?></th>
                     <th><?= $this->Paginator->sort('created') ?></th>
-                    <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('created_by') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($customerLabels as $customerLabel) : ?>
                 <tr>
+                    <td><?= $this->Number->format($customerLabel->id) ?></td>
                     <td>
                         <?= $customerLabel->has('label') ? $this->Html->link(
                             $customerLabel->label->name,
@@ -38,9 +39,8 @@
                             ['controller' => 'Customers', 'action' => 'view', $customerLabel->customer->id]
                         ) : '' ?>
                     </td>
+                    <td><?= h($customerLabel->note) ?></td>
                     <td><?= h($customerLabel->created) ?></td>
-                    <td><?= $this->Number->format($customerLabel->id) ?></td>
-                    <td><?= $this->Number->format($customerLabel->created_by) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $customerLabel->id]) ?>
                         <?= $this->AuthLink->link(
