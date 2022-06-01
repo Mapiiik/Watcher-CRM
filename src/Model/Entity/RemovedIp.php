@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\ApiClient;
+use Cake\Collection\CollectionInterface;
 use Cake\I18n\FrozenDate;
 use Cake\ORM\Entity;
 
@@ -21,6 +23,7 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Contract $contract
+ * @property \Cake\Collection\CollectionInterface|null $ip_address_ranges
  */
 class RemovedIp extends Entity
 {
@@ -60,5 +63,21 @@ class RemovedIp extends Entity
         }
 
         return $style;
+    }
+
+    /**
+     * getter for IP address ranges (try to load via ApiClient)
+     *
+     * @return \Cake\Collection\CollectionInterface|null
+     */
+    protected function _getIpAddressRanges(): ?CollectionInterface
+    {
+        $ipAddressRanges = ApiClient::getIpAddressRangesForIp($this->ip);
+
+        if ($ipAddressRanges) {
+            return $ipAddressRanges;
+        }
+
+        return null;
     }
 }
