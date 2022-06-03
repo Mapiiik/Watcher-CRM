@@ -115,7 +115,7 @@ class TasksTable extends Table
             ->notEmptyString('created_by');
 
         $validator
-            ->email('email')
+            ->scalar('email')
             ->allowEmptyString('email');
 
         $validator

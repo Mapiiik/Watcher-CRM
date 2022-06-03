@@ -22,8 +22,8 @@
                     echo $this->Form->control('task_state_id', ['options' => $taskStates]);
                     echo $this->Form->control('subject');
                     echo $this->Form->control('text', ['style' => 'height: 30.0rem']);
-                    echo $this->Form->control('email');
-                    echo $this->Form->control('phone');
+                    echo $this->Form->control('email', ['multiple' => 'multiple']);
+                    echo $this->Form->control('phone', ['multiple' => 'multiple']);
                     echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
                     echo $this->Form->control('dealer_id', ['options' => $dealers, 'empty' => true]);
                     echo $this->Form->control('access_point_id', ['options' => $accessPoints, 'empty' => true]);
