@@ -414,7 +414,10 @@ use Cake\I18n\Number;
                             <td><?= h($contract->number_of_amendments) ?></td>
                             <td><?= h($contract->valid_from) ?></td>
                             <td><?= h($contract->valid_until) ?></td>
-                            <td><?= h($contract->obligation_until) ?></td>
+                            <td style="<?=
+                                isset($contract->obligation_until) && $contract->obligation_until->isFuture() ?
+                                    'color: red;' : ''
+                            ?>"><?= h($contract->obligation_until) ?></td>
                             <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
                             <td><?= $contract->has('access_point') ? h($contract->access_point->name) : '' ?></td>
                             <td><?= h($contract->installation_date) ?></td>
@@ -786,7 +789,7 @@ use Cake\I18n\Number;
                                     ['controller' => 'Contracts', 'action' => 'view', $removedIp->contract->id]
                                 ) : '' ?></td>
                             <td><?= h($removedIp->ip) ?></td>
-                            <td><?= h($ip_address_types_of_use[$ip->type_of_use]) ?></td>
+                            <td><?= h($ip_address_types_of_use[$removedIp->type_of_use]) ?></td>
                             <td><?= h($removedIp->note) ?></td>
                             <td><?= h($removedIp->removed) ?></td>
                             <td class="actions">

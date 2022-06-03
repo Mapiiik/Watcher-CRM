@@ -93,7 +93,10 @@
                         </tr>
                         <tr>
                             <th><?= __('Obligation Until') ?></th>
-                            <td><?= h($contract->obligation_until) ?></td>
+                            <td style="<?=
+                                isset($contract->obligation_until) && $contract->obligation_until->isFuture() ?
+                                    'color: red;' : ''
+                            ?>"><?= h($contract->obligation_until) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Activation Fee') ?></th>
