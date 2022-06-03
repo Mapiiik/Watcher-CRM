@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \Radius\Model\Entity\Account[]|\Cake\Collection\CollectionInterface $accounts
+ * @var bool $show_contracts
  */
 ?>
 <?php if (is_object($accounts) && !$accounts->isEmpty()) : ?>
@@ -66,7 +67,7 @@
                         $device['name'],
                         env('WATCHER_NMS_URL') . '/routeros-devices/view/' . $device['id'],
                         ['target' => '_blank']
-                    ) . '<br>' : '';
+                    ) . ' (' . $device['ip_address'] . ')' . '<br>' : '';
                 unset($device);
             }
             ?></td>
