@@ -60,6 +60,7 @@
                             <th><?= __('Available 300-1000 Mbps') ?></th>
                             <th><?= __('Available 1000+ Mbps') ?></th>
                             <th><?= __('VHCN') ?></th>
+                            <th><?= __('Address') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                     </thead>
@@ -77,6 +78,7 @@
                             <td><?= $this->Number->format($connection_point->available_speeds->speed_100_300) ?></td>
                             <td><?= $this->Number->format($connection_point->available_speeds->speed_300_1000) ?></td>
                             <td><?= $this->Number->format($connection_point->available_speeds->speed_1000_plus) ?></td>
+                            <td><?= h($connection_point->ruian_address) ?></td>
                             <td><?= $connection_point->vhcn ? __('Yes') : __('No'); ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(__('View'), [

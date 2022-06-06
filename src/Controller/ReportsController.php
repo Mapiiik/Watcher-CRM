@@ -151,6 +151,10 @@ class ReportsController extends AppController
                                     $address['billings'] = $billings_collection;
 
                                     $address['ruian_gid'] = $ruian_gid;
+                                    $address['ruian_address'] = $this->fetchTable('Ruian.Addresses')
+                                        ->get($ruian_gid)
+                                        ->address;
+
                                     $address['cto_category'] = $cto_category;
 
                                     $address['active_connections'] = $billings_collection->count();
