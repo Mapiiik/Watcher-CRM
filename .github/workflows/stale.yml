@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/stale@v1
+    - uses: actions/stale@v5
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         stale-issue-message: 'This issue is stale because it has been open for 120 days with no activity. Remove the `stale` label or comment or this will be closed in 15 days'
@@ -19,5 +19,5 @@ jobs:
         stale-pr-label: 'stale'
         days-before-stale: 120
         days-before-close: 15
-        exempt-issue-label: 'pinned'
-        exempt-pr-label: 'pinned'
+        exempt-issue-labels: 'pinned'
+        exempt-pr-labels: 'pinned'

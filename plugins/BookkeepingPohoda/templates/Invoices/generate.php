@@ -61,7 +61,7 @@
             <?= $this->Form->button(__d('bookkeeping_pohoda', 'Submit')) ?>
             <?= $this->Form->end() ?>
         </div>
-        
+
         <?php if (isset($verification_data)) : ?>
         <br />
         <div class="table-responsive">
@@ -87,7 +87,7 @@
                                 'plugin' => null,
                                 'controller' => 'Customers',
                                 'action' => 'view',
-                                $customer_number - env('CUSTOMER_SERIES', 0),
+                                $customer_number - (int)env('CUSTOMER_SERIES', '0'),
                             ], ['target' => '_blank']) ?></td>
                         <td>
                             <?php if (isset($customer_comparision['crm'])) : ?>
