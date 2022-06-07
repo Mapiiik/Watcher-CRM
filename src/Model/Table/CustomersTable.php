@@ -172,6 +172,7 @@ class CustomersTable extends Table
             'foreignKey' => 'customer_id',
             'sort' => [
                 'Tasks.task_state_id',
+                'Tasks.priority' => 'DESC',
                 'Tasks.id' => 'DESC',
             ],
         ]);

@@ -66,7 +66,7 @@
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($taskState->tasks as $task) : ?>
-                        <tr>
+                        <tr style="<?= $task->style ?>">
                             <td><?= h($task->id) ?></td>
                             <td><?= $task->has('task_type') ?
                                 $this->Html->link(

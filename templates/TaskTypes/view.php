@@ -58,7 +58,7 @@
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($taskType->tasks as $task) : ?>
-                        <tr>
+                        <tr style="<?= $task->style ?>">
                             <td><?= h($task->id) ?></td>
                             <td><?= $priorities[$task->priority] ?></td>
                             <td><?= $task->has('task_state') ?

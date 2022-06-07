@@ -46,6 +46,11 @@ class TaskTypesTable extends Table
 
         $this->hasMany('Tasks', [
             'foreignKey' => 'task_type_id',
+            'sort' => [
+                'Tasks.task_state_id',
+                'Tasks.priority' => 'DESC',
+                'Tasks.id' => 'DESC',
+            ],
         ]);
     }
 
