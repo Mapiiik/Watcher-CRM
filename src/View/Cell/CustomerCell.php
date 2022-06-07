@@ -43,7 +43,7 @@ class CustomerCell extends Cell
     public function display($customer_id)
     {
         if ($customer_id) {
-            $customer = $this->getTableLocator()->get('Customers')->get($customer_id, [
+            $customer = $this->fetchTable('Customers')->get($customer_id, [
                 'contain' => ['Contracts' => ['ServiceTypes', 'InstallationAddresses']],
             ]);
 

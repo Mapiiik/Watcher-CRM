@@ -37,7 +37,7 @@ class CountriesTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Countries') ? [] : ['className' => CountriesTable::class];
-        $this->CountriesTable = $this->getTableLocator()->get('Countries', $config);
+        $this->CountriesTable = $this->fetchTable('Countries', $config);
     }
 
     /**

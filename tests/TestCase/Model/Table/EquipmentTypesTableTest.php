@@ -38,7 +38,7 @@ class EquipmentTypesTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('EquipmentTypes') ? [] : ['className' => EquipmentTypesTable::class];
-        $this->EquipmentTypesTable = $this->getTableLocator()->get('EquipmentTypes', $config);
+        $this->EquipmentTypesTable = $this->fetchTable('EquipmentTypes', $config);
     }
 
     /**

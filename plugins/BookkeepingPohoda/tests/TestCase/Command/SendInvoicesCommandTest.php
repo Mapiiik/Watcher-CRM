@@ -14,7 +14,7 @@ use Cake\TestSuite\TestCase;
  */
 class SendInvoicesCommandTest extends TestCase
 {
-    use ConsoleIntegrationTestTrait;
+    use \Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 
     /**
      * setUp method

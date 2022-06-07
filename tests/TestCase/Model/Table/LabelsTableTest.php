@@ -37,7 +37,7 @@ class LabelsTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Labels') ? [] : ['className' => LabelsTable::class];
-        $this->LabelsTable = $this->getTableLocator()->get('Labels', $config);
+        $this->LabelsTable = $this->fetchTable('Labels', $config);
     }
 
     /**

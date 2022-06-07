@@ -45,7 +45,7 @@ class ContractsTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Contracts') ? [] : ['className' => ContractsTable::class];
-        $this->ContractsTable = $this->getTableLocator()->get('Contracts', $config);
+        $this->ContractsTable = $this->fetchTable('Contracts', $config);
     }
 
     /**

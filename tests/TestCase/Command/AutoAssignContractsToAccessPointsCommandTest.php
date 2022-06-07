@@ -13,7 +13,7 @@ use Cake\TestSuite\TestCase;
  */
 class AutoAssignContractsToAccessPointsCommandTest extends TestCase
 {
-    use ConsoleIntegrationTestTrait;
+    use \Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 
     /**
      * setUp method

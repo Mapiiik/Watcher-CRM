@@ -37,7 +37,7 @@ class RadgroupreplyTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Radgroupreply') ? [] : ['className' => RadgroupreplyTable::class];
-        $this->Radgroupreply = $this->getTableLocator()->get('Radgroupreply', $config);
+        $this->Radgroupreply = $this->fetchTable('Radgroupreply', $config);
     }
 
     /**

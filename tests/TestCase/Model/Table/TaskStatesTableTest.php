@@ -37,7 +37,7 @@ class TaskStatesTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('TaskStates') ? [] : ['className' => TaskStatesTable::class];
-        $this->TaskStatesTable = $this->getTableLocator()->get('TaskStates', $config);
+        $this->TaskStatesTable = $this->fetchTable('TaskStates', $config);
     }
 
     /**

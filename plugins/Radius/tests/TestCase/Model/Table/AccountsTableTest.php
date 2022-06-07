@@ -43,7 +43,7 @@ class AccountsTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Accounts') ? [] : ['className' => AccountsTable::class];
-        $this->Accounts = $this->getTableLocator()->get('Accounts', $config);
+        $this->Accounts = $this->fetchTable('Accounts', $config);
     }
 
     /**

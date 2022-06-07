@@ -38,7 +38,7 @@ class BrokeragesTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Brokerages') ? [] : ['className' => BrokeragesTable::class];
-        $this->BrokeragesTable = $this->getTableLocator()->get('Brokerages', $config);
+        $this->BrokeragesTable = $this->fetchTable('Brokerages', $config);
     }
 
     /**

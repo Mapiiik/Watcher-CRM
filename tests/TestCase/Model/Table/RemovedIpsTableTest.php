@@ -38,7 +38,7 @@ class RemovedIpsTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('RemovedIps') ? [] : ['className' => RemovedIpsTable::class];
-        $this->RemovedIpsTable = $this->getTableLocator()->get('RemovedIps', $config);
+        $this->RemovedIpsTable = $this->fetchTable('RemovedIps', $config);
     }
 
     /**

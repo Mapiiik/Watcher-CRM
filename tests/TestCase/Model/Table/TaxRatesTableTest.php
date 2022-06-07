@@ -37,7 +37,7 @@ class TaxRatesTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('TaxRates') ? [] : ['className' => TaxRatesTable::class];
-        $this->TaxRates = $this->getTableLocator()->get('TaxRates', $config);
+        $this->TaxRates = $this->fetchTable('TaxRates', $config);
     }
 
     /**

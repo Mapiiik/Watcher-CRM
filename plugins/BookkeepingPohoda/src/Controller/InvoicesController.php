@@ -200,7 +200,7 @@ class InvoicesController extends AppController
      */
     private function getQueryForBillingDataForMonth(FrozenDate $invoiced_month, int $tax_rate_id): Query
     {
-        return $this->getTableLocator()->get('Customers')
+        return $this->fetchTable('Customers')
                 ->find()
                 ->order('Customers.id')
                 ->where(['Customers.tax_rate_id' => $tax_rate_id])

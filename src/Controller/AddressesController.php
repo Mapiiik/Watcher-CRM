@@ -255,7 +255,7 @@ class AddressesController extends AppController
 
         // search for all options
         foreach ($conditionsForSearches as $conditions) {
-            $ruianAddresses = $this->getTableLocator()->get('Ruian.Addresses')->find('all', [
+            $ruianAddresses = $this->fetchTable('Ruian.Addresses')->find('all', [
                 'conditions' => $conditions,
             ]);
 
