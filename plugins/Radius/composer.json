@@ -1,5 +1,5 @@
 {
-    "name": "mapiiik/radius",
+    "name": "mapik/radius",
     "description": "RADIUS plugin for CakePHP",
     "type": "cakephp-plugin",
     "license": "MIT",

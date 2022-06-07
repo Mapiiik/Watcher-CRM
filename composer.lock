@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d3a5efd275bcd3a87d03dc198b14081b",
+    "content-hash": "fc80af1b2c105d8e72dbd3bb1cdbdf42",
     "packages": [
         {
             "name": "cakedc/auth",
@@ -1403,17 +1403,17 @@
             "time": "2021-03-04T21:12:06+00:00"
         },
         {
-            "name": "mapiiik/pohoda-xml",
-            "version": "v1.16.3",
+            "name": "mapik/pohoda-xml",
+            "version": "v1.16.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Mapiiik/pohoda-xml.git",
-                "reference": "1b8996944f1281b1c89b1f7b483c71028bdfce2f"
+                "reference": "312c5567be706e724f10fa26268f34a7575ae8fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Mapiiik/pohoda-xml/zipball/1b8996944f1281b1c89b1f7b483c71028bdfce2f",
-                "reference": "1b8996944f1281b1c89b1f7b483c71028bdfce2f",
+                "url": "https://api.github.com/repos/Mapiiik/pohoda-xml/zipball/312c5567be706e724f10fa26268f34a7575ae8fd",
+                "reference": "312c5567be706e724f10fa26268f34a7575ae8fd",
                 "shasum": ""
             },
             "require": {
@@ -1453,20 +1453,20 @@
                 "issues": "https://github.com/Mapiiik/pohoda-xml/issues",
                 "source": "https://github.com/Mapiiik/pohoda-xml"
             },
-            "time": "2022-05-16T07:05:25+00:00"
+            "time": "2022-06-07T08:28:22+00:00"
         },
         {
-            "name": "mapiiik/routeros-api",
-            "version": "1.6.0.1",
+            "name": "mapik/routeros-api",
+            "version": "1.6.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Mapiiik/routeros-api.git",
-                "reference": "6428ef7e7096c87c846635d63b73a57ff91d9434"
+                "reference": "99846f4e98f13c0a85ae6536c45aed376c7d61ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Mapiiik/routeros-api/zipball/6428ef7e7096c87c846635d63b73a57ff91d9434",
-                "reference": "6428ef7e7096c87c846635d63b73a57ff91d9434",
+                "url": "https://api.github.com/repos/Mapiiik/routeros-api/zipball/99846f4e98f13c0a85ae6536c45aed376c7d61ed",
+                "reference": "99846f4e98f13c0a85ae6536c45aed376c7d61ed",
                 "shasum": ""
             },
             "type": "library",
@@ -1496,6 +1496,10 @@
                 },
                 {
                     "name": "Mikhail Moskalev"
+                },
+                {
+                    "name": "Martin Patočka",
+                    "email": "mapik@mapik.net"
                 }
             ],
             "description": "Client API for RouterOS/Mikrotik",
@@ -1507,7 +1511,7 @@
                 "issues": "https://github.com/Mapiiik/routeros-api/issues",
                 "source": "https://github.com/Mapiiik/routeros-api"
             },
-            "time": "2022-05-08T13:40:33+00:00"
+            "time": "2022-06-07T08:26:35+00:00"
         },
         {
             "name": "mobiledetect/mobiledetectlib",
