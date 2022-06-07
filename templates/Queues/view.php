@@ -42,10 +42,6 @@
                     ) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($queue->id) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Fup') ?></th>
                     <td><?= $this->Number->format($queue->fup) ?></td>
                 </tr>
@@ -59,7 +55,7 @@
                 </tr>
                 <tr>
                     <th><?= __('Overlimit Cost') ?></th>
-                    <td><?= $this->Number->format($queue->overlimit_cost) ?></td>
+                    <td><?= $this->Number->currency($queue->overlimit_cost) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Speed Up') ?></th>
@@ -73,6 +69,10 @@
                     <th><?= __('Cto Category') ?></th>
                     <td><?= h($queue->cto_category) ?></td>
                 </tr>
+                <tr>
+                    <th><?= __('Id') ?></th>
+                    <td><?= $this->Number->format($queue->id) ?></td>
+                </tr>
             </table>
             <div class="related">
                 <h4><?= __('Related Services') ?></h4>
@@ -81,37 +81,38 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <th><?= __('Created') ?></th>
-                            <th><?= __('Modified') ?></th>
                             <th><?= __('Name') ?></th>
                             <th><?= __('Price') ?></th>
-                            <th><?= __('Service Type Id') ?></th>
-                            <th><?= __('Queue Id') ?></th>
+                            <th><?= __('Service Type') ?></th>
+                            <th><?= __('Not For New Customers') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($queue->services as $services) : ?>
+                        <?php foreach ($queue->services as $service) : ?>
                         <tr>
-                            <td><?= h($services->id) ?></td>
-                            <td><?= h($services->created) ?></td>
-                            <td><?= h($services->modified) ?></td>
-                            <td><?= h($services->name) ?></td>
-                            <td><?= h($services->price) ?></td>
-                            <td><?= h($services->service_type_id) ?></td>
-                            <td><?= h($services->queue_id) ?></td>
+                            <td><?= $this->Number->format($service->id) ?></td>
+                            <td><?= h($service->name) ?></td>
+                            <td><?= $this->Number->currency($service->price) ?></td>
+                            <td>
+                                <?= $service->has('service_type') ? $this->Html->link(
+                                    $service->service_type->name,
+                                    ['controller' => 'ServiceTypes', 'action' => 'view', $service->service_type->id]
+                                ) : '' ?>
+                            </td>
+                            <td><?= $service->not_for_new_customers ? __('Yes') : __('No'); ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
-                                    ['controller' => 'Services', 'action' => 'view', $services->id]
+                                    ['controller' => 'Services', 'action' => 'view', $service->id]
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __('Edit'),
-                                    ['controller' => 'Services', 'action' => 'edit', $services->id],
+                                    ['controller' => 'Services', 'action' => 'edit', $service->id],
                                     ['class' => 'win-link']
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
                                     __('Delete'),
-                                    ['controller' => 'Services', 'action' => 'delete', $services->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $services->id)]
+                                    ['controller' => 'Services', 'action' => 'delete', $service->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $service->id)]
                                 ) ?>
                             </td>
                         </tr>

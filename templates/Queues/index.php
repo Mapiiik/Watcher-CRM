@@ -34,7 +34,7 @@
                     <td><?= $this->Number->format($queue->fup) ?></td>
                     <td><?= $this->Number->format($queue->limit) ?></td>
                     <td><?= $this->Number->format($queue->overlimit_fragment) ?></td>
-                    <td><?= $this->Number->format($queue->overlimit_cost) ?></td>
+                    <td><?= $this->Number->currency($queue->overlimit_cost) ?></td>
                     <td>
                         <?= $queue->has('service_type') ? $this->Html->link(
                             $queue->service_type->name,
