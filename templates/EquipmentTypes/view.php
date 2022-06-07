@@ -42,12 +42,12 @@
                     <td><?= h($equipmentType->name) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($equipmentType->id) ?></td>
+                    <th><?= __('Price') ?></th>
+                    <td><?= $this->Number->currency($equipmentType->price) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Price') ?></th>
-                    <td><?= $this->Number->format($equipmentType->price) ?></td>
+                    <th><?= __('Id') ?></th>
+                    <td><?= $this->Number->format($equipmentType->id) ?></td>
                 </tr>
             </table>
             <div class="related">
@@ -57,27 +57,29 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <th><?= __('Customer Id') ?></th>
-                            <th><?= __('Contract Id') ?></th>
-                            <th><?= __('Equipment Type Id') ?></th>
+                            <th><?= __('Customer') ?></th>
+                            <th><?= __('Contract') ?></th>
                             <th><?= __('Serial Number') ?></th>
-                            <th><?= __('Created') ?></th>
-                            <th><?= __('Created By') ?></th>
-                            <th><?= __('Modified') ?></th>
-                            <th><?= __('Modified By') ?></th>
+                            <th><?= __('Borrowed From') ?></th>
+                            <th><?= __('Borrowed Until') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($equipmentType->borrowed_equipments as $borrowedEquipment) : ?>
-                        <tr>
-                            <td><?= h($borrowedEquipment->id) ?></td>
-                            <td><?= h($borrowedEquipment->customer_id) ?></td>
-                            <td><?= h($borrowedEquipment->contract_id) ?></td>
-                            <td><?= h($borrowedEquipment->equipment_type_id) ?></td>
+                        <tr style="<?= $borrowedEquipment->style ?>">
+                            <td><?= $this->Number->format($borrowedEquipment->id) ?></td>
+                            <td><?= $borrowedEquipment->has('customer') ?
+                                $this->Html->link(
+                                    $borrowedEquipment->customer->name,
+                                    ['controller' => 'Customers', 'action' => 'view', $borrowedEquipment->customer->id]
+                                ) : '' ?></td>
+                            <td><?= $borrowedEquipment->has('contract') ?
+                                $this->Html->link(
+                                    $borrowedEquipment->contract->number,
+                                    ['controller' => 'Contracts', 'action' => 'view', $borrowedEquipment->contract->id]
+                                ) : '' ?></td>
                             <td><?= h($borrowedEquipment->serial_number) ?></td>
-                            <td><?= h($borrowedEquipment->created) ?></td>
-                            <td><?= h($borrowedEquipment->created_by) ?></td>
-                            <td><?= h($borrowedEquipment->modified) ?></td>
-                            <td><?= h($borrowedEquipment->modified_by) ?></td>
+                            <td><?= h($borrowedEquipment->borrowed_from) ?></td>
+                            <td><?= h($borrowedEquipment->borrowed_until) ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
@@ -111,27 +113,27 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <th><?= __('Customer Id') ?></th>
-                            <th><?= __('Contract Id') ?></th>
-                            <th><?= __('Equipment Type Id') ?></th>
+                            <th><?= __('Customer') ?></th>
+                            <th><?= __('Contract') ?></th>
                             <th><?= __('Serial Number') ?></th>
-                            <th><?= __('Created') ?></th>
-                            <th><?= __('Created By') ?></th>
-                            <th><?= __('Modified') ?></th>
-                            <th><?= __('Modified By') ?></th>
+                            <th><?= __('Date Of Sale') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($equipmentType->sold_equipments as $soldEquipment) : ?>
-                        <tr>
-                            <td><?= h($soldEquipment->id) ?></td>
-                            <td><?= h($soldEquipment->customer_id) ?></td>
-                            <td><?= h($soldEquipment->contract_id) ?></td>
-                            <td><?= h($soldEquipment->equipment_type_id) ?></td>
+                        <tr style="<?= $soldEquipment->style ?>">
+                            <td><?= $this->Number->format($soldEquipment->id) ?></td>
+                            <td><?= $soldEquipment->has('customer') ?
+                                $this->Html->link(
+                                    $soldEquipment->customer->name,
+                                    ['controller' => 'Customers', 'action' => 'view', $soldEquipment->customer->id]
+                                ) : '' ?></td>
+                            <td><?= $soldEquipment->has('contract') ?
+                                $this->Html->link(
+                                    $soldEquipment->contract->number,
+                                    ['controller' => 'Contracts', 'action' => 'view', $soldEquipment->contract->id]
+                                ) : '' ?></td>
                             <td><?= h($soldEquipment->serial_number) ?></td>
-                            <td><?= h($soldEquipment->created) ?></td>
-                            <td><?= h($soldEquipment->created_by) ?></td>
-                            <td><?= h($soldEquipment->modified) ?></td>
-                            <td><?= h($soldEquipment->modified_by) ?></td>
+                            <td><?= h($soldEquipment->date_of_sale) ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),

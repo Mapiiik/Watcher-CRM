@@ -26,7 +26,7 @@
                 <tr>
                     <td><?= $this->Number->format($equipmentType->id) ?></td>
                     <td><?= h($equipmentType->name) ?></td>
-                    <td><?= $this->Number->format($equipmentType->price) ?></td>
+                    <td><?= $this->Number->currency($equipmentType->price) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $equipmentType->id]) ?>
                         <?= $this->AuthLink->link(

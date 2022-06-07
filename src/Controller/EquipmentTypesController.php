@@ -33,7 +33,10 @@ class EquipmentTypesController extends AppController
     public function view($id = null)
     {
         $equipmentType = $this->EquipmentTypes->get($id, [
-            'contain' => ['BorrowedEquipments', 'SoldEquipments'],
+            'contain' => [
+                'BorrowedEquipments' => ['Customers', 'Contracts'],
+                'SoldEquipments' => ['Customers', 'Contracts'],
+            ],
         ]);
 
         $this->set(compact('equipmentType'));
