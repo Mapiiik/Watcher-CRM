@@ -15,17 +15,18 @@
         <table>
             <thead>
                 <tr>
+                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('dealer_id') ?></th>
                     <th><?= $this->Paginator->sort('brokerage_id') ?></th>
                     <th><?= $this->Paginator->sort('fixed') ?></th>
                     <th><?= $this->Paginator->sort('percentage') ?></th>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($brokerageDealers as $brokerageDealer) : ?>
                 <tr>
+                    <td><?= $this->Number->format($brokerageDealer->id) ?></td>
                     <td>
                         <?= $brokerageDealer->has('dealer') ? $this->Html->link(
                             $brokerageDealer->dealer->name,
@@ -40,7 +41,6 @@
                     </td>
                     <td><?= $this->Number->format($brokerageDealer->fixed) ?></td>
                     <td><?= $this->Number->format($brokerageDealer->percentage) ?></td>
-                    <td><?= $this->Number->format($brokerageDealer->id) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $brokerageDealer->id]) ?>
                         <?= $this->AuthLink->link(

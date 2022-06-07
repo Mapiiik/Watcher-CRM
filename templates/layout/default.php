@@ -103,12 +103,12 @@ $request = $this->getRequest();
             ) ?>
             <?= $this->AuthLink->link(
                 __('Reports'),
-                ['controller' => 'Reports', 'action' => 'index', 'plugin' => null],
+                ['controller' => 'Reports', 'action' => 'index', 'plugin' => null, 'customer_id' => false],
                 ['class' => 'button button-small' . $buttonSelected(['Reports'])]
             ) ?>
             <?= $this->AuthLink->link(
                 __('Settings'),
-                ['controller' => 'Settings', 'action' => 'index', 'plugin' => null],
+                ['controller' => 'Settings', 'action' => 'index', 'plugin' => null, 'customer_id' => false],
                 ['class' => 'button button-small' . $buttonSelected([
                     'Settings',
                     'Users',

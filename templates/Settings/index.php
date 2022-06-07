@@ -6,15 +6,181 @@
 <div class="settings index content">
     <h3><?= __('Settings') ?></h3>
     <div class="table-responsive">
-        <?= $this->AuthLink->link(
-            __('User Profile'),
-            ['controller' => 'Users', 'action' => 'profile', 'plugin' => 'CakeDC/Users'],
-            ['class' => 'side-nav-item']
-        ) ?>
-        <?= $this->AuthLink->link(
-            __('List Users'),
-            ['controller' => 'Users', 'action' => 'index', 'plugin' => 'CakeDC/Users'],
-            ['class' => 'side-nav-item']
-        ) ?>
+        <div class="related">
+            <h4><?= __('User Related') ?></h4>
+            <div>
+                <?= $this->AuthLink->link(
+                    __('Change Password'),
+                    ['controller' => 'Users', 'action' => 'changePassword', 'plugin' => 'CakeDC/Users'],
+                    ['class' => 'side-nav-item']
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('User Profile'),
+                    ['controller' => 'Users', 'action' => 'profile', 'plugin' => 'CakeDC/Users'],
+                    ['class' => 'side-nav-item']
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('List Users'),
+                    ['controller' => 'Users', 'action' => 'index', 'plugin' => 'CakeDC/Users'],
+                    ['class' => 'side-nav-item']
+                ) ?>
+            </div>
+        </div>
+
+        <div class="related">
+            <h4><?= __('System Related') ?></h4>
+            <div>
+                <?= $this->AuthLink->link(
+                    __('List Labels'),
+                    ['controller' => 'Labels', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('List Countries'),
+                    ['controller' => 'Countries', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('List Tax Rates'),
+                    ['controller' => 'Tax Rates', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+            </div>
+        </div>
+
+        <div class="related">
+            <h4><?= __('Service Related') ?></h4>
+            <div>
+                <?= $this->AuthLink->link(
+                    __('List Services'),
+                    ['controller' => 'Services', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('List Service Types'),
+                    ['controller' => 'ServiceTypes', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('List Queues'),
+                    ['controller' => 'Queues', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('List Equipment Types'),
+                    ['controller' => 'EquipmentTypes', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+            </div>
+        </div>
+
+        <div class="related">
+            <h4><?= __('Task Related') ?></h4>
+            <div>
+                <?= $this->AuthLink->link(
+                    __('List Task States'),
+                    ['controller' => 'TaskStates', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('List Task Types'),
+                    ['controller' => 'Task Types', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+            </div>
+        </div>
+
+        <div class="related">
+            <h4><?= __('Commission Related') ?></h4>
+            <div>
+                <?= $this->AuthLink->link(
+                    __('List Brokerages'),
+                    ['controller' => 'Brokerages', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('List Brokerage Dealers'),
+                    ['controller' => 'BrokerageDealers', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+            </div>
+        </div>
+
+        <div class="related">
+            <h4><?= __('Customer Related') ?></h4>
+            <div>
+                <?= $this->AuthLink->link(
+                    __('List Customer Labels'),
+                    ['controller' => 'Customer Labels', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('List Emails'),
+                    ['controller' => 'Emails', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('List Phones'),
+                    ['controller' => 'Phones', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('List Logins'),
+                    ['controller' => 'Logins', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('List Addresses'),
+                    ['controller' => 'Addresses', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('List Contracts'),
+                    ['controller' => 'Contracts', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+            </div>
+        </div>
+
+        <div class="related">
+            <h4><?= __('Contract Related') ?></h4>
+            <div>
+                <?= $this->AuthLink->link(
+                    __('List Billings'),
+                    ['controller' => 'Billings', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('List Borrowed Equipments'),
+                    ['controller' => 'BorrowedEquipments', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('List Sold Equipments'),
+                    ['controller' => 'SoldEquipments', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('List Ips'),
+                    ['controller' => 'Ips', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('List Ip Networks'),
+                    ['controller' => 'IpNetworks', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('List Removed Ips'),
+                    ['controller' => 'RemovedIps', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('List Removed Ip Networks'),
+                    ['controller' => 'RemovedIpNetworks', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+            </div>
+        </div>
     </div>
 </div>
