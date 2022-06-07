@@ -131,6 +131,28 @@ return [
             //'schema' => 'public',
             'url' => env('DATABASE_TEST_URL', null),
         ],
+        'test_ruian' => [
+            'className' => 'Cake\Database\Connection',
+            'driver' => 'Cake\Database\Driver\Postgres',
+            'host' => 'localhost',
+            //'port' => 'non_standard_port_number',
+            'username' => 'postgres',
+            'password' => 'postgres',
+            'database' => 'watcher_crm',
+            //'schema' => 'public',
+            'url' => env('DATABASE_TEST_URL', null),
+        ],
+        'test_radius' => [
+            'className' => 'Cake\Database\Connection',
+            'driver' => 'Cake\Database\Driver\Postgres',
+            'host' => 'localhost',
+            //'port' => 'non_standard_port_number',
+            'username' => 'postgres',
+            'password' => 'postgres',
+            'database' => 'watcher_crm',
+            //'schema' => 'public',
+            'url' => env('DATABASE_TEST_URL', null),
+        ],
     ],
 
     /*
