@@ -84,7 +84,9 @@ class RemovedIpNetworksController extends AppController
         }
 
         if ($this->getRequest()->is('post')) {
-            $removedIpNetwork = $this->RemovedIpNetworks->patchEntity($removedIpNetwork, $this->getRequest()->getData());
+            $removedIpNetwork = $this->RemovedIpNetworks
+                ->patchEntity($removedIpNetwork, $this->getRequest()->getData());
+
             if ($this->RemovedIpNetworks->save($removedIpNetwork)) {
                 $this->Flash->success(__('The removed IP network has been saved.'));
 
@@ -132,7 +134,9 @@ class RemovedIpNetworksController extends AppController
             'contain' => [],
         ]);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
-            $removedIpNetwork = $this->RemovedIpNetworks->patchEntity($removedIpNetwork, $this->getRequest()->getData());
+            $removedIpNetwork = $this->RemovedIpNetworks
+                ->patchEntity($removedIpNetwork, $this->getRequest()->getData());
+
             if ($this->RemovedIpNetworks->save($removedIpNetwork)) {
                 $this->Flash->success(__('The removed IP network has been saved.'));
 
