@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace BookkeepingPohoda\Test\TestCase\Command;
 
-//use BookkeepingPohoda\Command\SendIssuedInvoicesCommand;
-use Cake\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
 /**
