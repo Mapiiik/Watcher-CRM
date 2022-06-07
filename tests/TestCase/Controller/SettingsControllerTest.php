@@ -20,9 +20,7 @@ class SettingsControllerTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
-        'app.Settings',
-    ];
+    protected $fixtures = [];
 
     /**
      * Test index method
