@@ -107,6 +107,11 @@ $request = $this->getRequest();
                 ['class' => 'button button-small' . $buttonSelected(['Reports'])]
             ) ?>
             <?= $this->AuthLink->link(
+                __('Settings'),
+                ['controller' => 'Settings', 'action' => 'index', 'plugin' => null],
+                ['class' => 'button button-small' . $buttonSelected(['Settings'])]
+            ) ?>
+            <?= $this->AuthLink->link(
                 __('Users'),
                 ['controller' => 'Users', 'action' => 'index', 'plugin' => 'CakeDC/Users'],
                 ['class' => 'button button-small' . $buttonSelected(['Users'])]
