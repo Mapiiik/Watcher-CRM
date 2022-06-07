@@ -50,7 +50,7 @@ class TaskStatesTable extends Table
                 'Tasks.task_state_id',
                 'Tasks.id' => 'DESC',
             ],
-    ]);
+        ]);
     }
 
     /**
