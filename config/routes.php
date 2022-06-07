@@ -100,7 +100,7 @@ $routes->scope('/admin/', function (RouteBuilder $builder) {
         ->setPatterns(['customer_id' => '[0-9]+', 'id' => '[0-9]+'])
         ->setPass(['id']);
 
-    $builder->connect('/reports/{action}/*', ['controller' => 'Reports'])
+    $builder->connect('/overviews/{action}/*', ['controller' => 'Overviews'])
         ->setExtensions(['csv']);
 
     $builder->connect('/{controller}', ['action' => 'index']);

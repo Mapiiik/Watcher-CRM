@@ -7,11 +7,11 @@ use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Controller\ReportsController Test Case
+ * App\Controller\OverviewsController Test Case
  *
- * @uses \App\Controller\ReportsController
+ * @uses \App\Controller\OverviewsController
  */
-class ReportsControllerTest extends TestCase
+class OverviewsControllerTest extends TestCase
 {
     use IntegrationTestTrait;
 
@@ -26,7 +26,7 @@ class ReportsControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\ReportsController::index()
+     * @uses \App\Controller\OverviewsController::index()
      */
     public function testIndex(): void
     {
@@ -37,7 +37,7 @@ class ReportsControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\ReportsController::view()
+     * @uses \App\Controller\OverviewsController::view()
      */
     public function testView(): void
     {
@@ -48,7 +48,7 @@ class ReportsControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\ReportsController::add()
+     * @uses \App\Controller\OverviewsController::add()
      */
     public function testAdd(): void
     {
@@ -59,7 +59,7 @@ class ReportsControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\ReportsController::edit()
+     * @uses \App\Controller\OverviewsController::edit()
      */
     public function testEdit(): void
     {
@@ -70,7 +70,7 @@ class ReportsControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\ReportsController::delete()
+     * @uses \App\Controller\OverviewsController::delete()
      */
     public function testDelete(): void
     {

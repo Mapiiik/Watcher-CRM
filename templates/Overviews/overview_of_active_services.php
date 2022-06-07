@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Service[]|\Cake\Collection\CollectionInterface $services
+ * @var \Cake\Collection\CollectionInterface $services
  * @var \Cake\I18n\FrozenDate $month_to_display
  */
 ?>
@@ -9,11 +9,11 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->AuthLink->link(__('List Reports'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('List Overviews'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
-        <div class="reports index content">
+        <div class="overviews index content">
             <h3><?= __('Overview of active services')
                 . ' - '
                 . $month_to_display->i18nFormat('LLLL yyyy') ?></h3>

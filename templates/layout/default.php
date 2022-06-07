@@ -102,9 +102,9 @@ $request = $this->getRequest();
                 ['class' => 'button button-small' . $buttonSelected(['Addresses'])]
             ) ?>
             <?= $this->AuthLink->link(
-                __('Reports'),
-                ['controller' => 'Reports', 'action' => 'index', 'plugin' => null, 'customer_id' => false],
-                ['class' => 'button button-small' . $buttonSelected(['Reports'])]
+                __('Overviews'),
+                ['controller' => 'Overviews', 'action' => 'index', 'plugin' => null, 'customer_id' => false],
+                ['class' => 'button button-small' . $buttonSelected(['Overviews'])]
             ) ?>
             <?= $this->AuthLink->link(
                 __('Settings'),

@@ -9,11 +9,11 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->AuthLink->link(__('List Reports'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('List Overviews'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
-        <div class="reports index content">
+        <div class="overviews index content">
             <?php foreach ($cto_categories as $cto_category => $connection_points) : ?>
                 <?= $this->AuthLink->link(
                     __('Export') . ' ' . $cto_category,

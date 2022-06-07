@@ -11,11 +11,11 @@ use Cake\ORM\Entity;
 use Cake\ORM\Query;
 
 /**
- * Reports Controller
+ * Overviews Controller
  *
- * @method \App\Model\Entity\Report[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @method \App\Model\Entity\Overview[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class ReportsController extends AppController
+class OverviewsController extends AppController
 {
     /**
      * Index method
