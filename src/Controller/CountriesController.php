@@ -47,8 +47,8 @@ class CountriesController extends AppController
     public function add()
     {
         $country = $this->Countries->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $country = $this->Countries->patchEntity($country, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $country = $this->Countries->patchEntity($country, $this->getRequest()->getData());
             if ($this->Countries->save($country)) {
                 $this->Flash->success(__('The country has been saved.'));
 
@@ -71,8 +71,8 @@ class CountriesController extends AppController
         $country = $this->Countries->get($id, [
             'contain' => [],
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $country = $this->Countries->patchEntity($country, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $country = $this->Countries->patchEntity($country, $this->getRequest()->getData());
             if ($this->Countries->save($country)) {
                 $this->Flash->success(__('The country has been saved.'));
 
@@ -92,7 +92,7 @@ class CountriesController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $country = $this->Countries->get($id);
         if ($this->Countries->delete($country)) {
             $this->Flash->success(__('The country has been deleted.'));

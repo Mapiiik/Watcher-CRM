@@ -1,20 +1,19 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Task $task
  */
 ?>
-<div class="reports index content">
-    <h3><?= __('Reports') ?></h3>
+<div class="settings index content">
+    <h3><?= __('Settings') ?></h3>
     <div class="table-responsive">
         <?= $this->AuthLink->link(
-            __('Overview of active services'),
-            ['action' => 'overviewOfActiveServices'],
+            __('User Profile'),
+            ['controller' => 'Users', 'action' => 'profile', 'plugin' => 'CakeDC/Users'],
             ['class' => 'side-nav-item']
         ) ?>
         <?= $this->AuthLink->link(
-            __('Overview of customer connection points'),
-            ['action' => 'overviewOfCustomerConnectionPoints'],
+            __('List Users'),
+            ['controller' => 'Users', 'action' => 'index', 'plugin' => 'CakeDC/Users'],
             ['class' => 'side-nav-item']
         ) ?>
     </div>

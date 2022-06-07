@@ -47,8 +47,8 @@ class ServiceTypesController extends AppController
     public function add()
     {
         $serviceType = $this->ServiceTypes->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $serviceType = $this->ServiceTypes->patchEntity($serviceType, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $serviceType = $this->ServiceTypes->patchEntity($serviceType, $this->getRequest()->getData());
             if ($this->ServiceTypes->save($serviceType)) {
                 $this->Flash->success(__('The service type has been saved.'));
 
@@ -71,8 +71,8 @@ class ServiceTypesController extends AppController
         $serviceType = $this->ServiceTypes->get($id, [
             'contain' => [],
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $serviceType = $this->ServiceTypes->patchEntity($serviceType, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $serviceType = $this->ServiceTypes->patchEntity($serviceType, $this->getRequest()->getData());
             if ($this->ServiceTypes->save($serviceType)) {
                 $this->Flash->success(__('The service type has been saved.'));
 
@@ -92,7 +92,7 @@ class ServiceTypesController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $serviceType = $this->ServiceTypes->get($id);
         if ($this->ServiceTypes->delete($serviceType)) {
             $this->Flash->success(__('The service type has been deleted.'));

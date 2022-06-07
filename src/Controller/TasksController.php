@@ -21,7 +21,7 @@ class TasksController extends AppController
      */
     public function index()
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
         // filter
@@ -31,19 +31,19 @@ class TasksController extends AppController
                 'Tasks.customer_id' => $customer_id,
             ];
         }
-        $dealer_id = $this->request->getQuery('dealer_id');
+        $dealer_id = $this->getRequest()->getQuery('dealer_id');
         if (!empty($dealer_id)) {
             $conditions[] = [
                 'Tasks.dealer_id' => $dealer_id,
             ];
         }
-        $task_type_id = $this->request->getQuery('task_type_id');
+        $task_type_id = $this->getRequest()->getQuery('task_type_id');
         if (!empty($task_type_id)) {
             $conditions[] = [
                 'Tasks.task_type_id' => $task_type_id,
             ];
         }
-        $access_point_id = $this->request->getQuery('access_point_id');
+        $access_point_id = $this->getRequest()->getQuery('access_point_id');
         if (!empty($access_point_id)) {
             $conditions[] = [
                 'Tasks.access_point_id' => $access_point_id,
@@ -52,17 +52,17 @@ class TasksController extends AppController
 
         // initially load only own tasks if assigned Auth.customer_id
         if (is_null($dealer_id)) {
-            if ($this->request->getSession()->read('Auth.customer_id') !== null) {
+            if ($this->getRequest()->getSession()->read('Auth.customer_id') !== null) {
                 return $this->redirect([
                     '?' => [
-                        'dealer_id' => $this->request->getSession()->read('Auth.customer_id'),
-                    ] + $this->request->getQueryParams(),
+                        'dealer_id' => $this->getRequest()->getSession()->read('Auth.customer_id'),
+                    ] + $this->getRequest()->getQueryParams(),
                 ]);
             }
         }
 
         // search
-        $search = $this->request->getQuery('search');
+        $search = $this->getRequest()->getQuery('search');
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
@@ -135,7 +135,7 @@ class TasksController extends AppController
      */
     public function add()
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
         $task = $this->Tasks->newEmptyEntity();
@@ -144,8 +144,8 @@ class TasksController extends AppController
             $task->customer_id = $customer_id;
         }
 
-        if ($this->request->is('post')) {
-            $task = $this->Tasks->patchEntity($task, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $task = $this->Tasks->patchEntity($task, $this->getRequest()->getData());
             if ($this->Tasks->save($task)) {
                 $this->Flash->success(__('The task has been saved.'));
 
@@ -206,7 +206,7 @@ class TasksController extends AppController
         }
         // preset dealer
         if (empty($task->dealer_id)) {
-            $task->dealer_id = $this->request->getSession()->read('Auth.customer_id');
+            $task->dealer_id = $this->getRequest()->getSession()->read('Auth.customer_id');
         }
 
         // add task text header
@@ -235,14 +235,14 @@ class TasksController extends AppController
      */
     public function edit($id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
         $task = $this->Tasks->get($id, [
             'contain' => [],
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $task = $this->Tasks->patchEntity($task, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $task = $this->Tasks->patchEntity($task, $this->getRequest()->getData());
             if ($this->Tasks->save($task)) {
                 $this->Flash->success(__('The task has been saved.'));
 
@@ -299,7 +299,7 @@ class TasksController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $task = $this->Tasks->get($id);
         if ($this->Tasks->delete($task)) {
             $this->Flash->success(__('The task has been deleted.'));
@@ -319,7 +319,7 @@ class TasksController extends AppController
     {
         $text = '';
 
-        $session = $this->request->getSession();
+        $session = $this->getRequest()->getSession();
         $text .= '------------------------------------------------------------' . PHP_EOL;
         $text .= ' ' . $session->read('Auth.first_name') . ' ' . $session->read('Auth.last_name');
         $text .= ' (' . FrozenTime::create() . ')' . PHP_EOL;

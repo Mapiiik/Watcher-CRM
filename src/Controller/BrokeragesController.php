@@ -47,8 +47,8 @@ class BrokeragesController extends AppController
     public function add()
     {
         $brokerage = $this->Brokerages->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $brokerage = $this->Brokerages->patchEntity($brokerage, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $brokerage = $this->Brokerages->patchEntity($brokerage, $this->getRequest()->getData());
             if ($this->Brokerages->save($brokerage)) {
                 $this->Flash->success(__('The brokerage has been saved.'));
 
@@ -71,8 +71,8 @@ class BrokeragesController extends AppController
         $brokerage = $this->Brokerages->get($id, [
             'contain' => [],
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $brokerage = $this->Brokerages->patchEntity($brokerage, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $brokerage = $this->Brokerages->patchEntity($brokerage, $this->getRequest()->getData());
             if ($this->Brokerages->save($brokerage)) {
                 $this->Flash->success(__('The brokerage has been saved.'));
 
@@ -92,7 +92,7 @@ class BrokeragesController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $brokerage = $this->Brokerages->get($id);
         if ($this->Brokerages->delete($brokerage)) {
             $this->Flash->success(__('The brokerage has been deleted.'));

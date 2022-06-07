@@ -10,7 +10,7 @@
         <div class="nav-content-right">
             <?php foreach ($customer->contracts as $contract) : ?>
                 <?php
-                if ($this->request->getParam('contract_id') == $contract->id) {
+                if ($this->getRequest()->getParam('contract_id') == $contract->id) {
                     echo $this->AuthLink->link(
                         $contract->name,
                         ['plugin' => null, 'controller' => 'Contracts', 'action' => 'view', $contract->id],

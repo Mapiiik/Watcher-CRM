@@ -20,7 +20,7 @@ class AddressesController extends AppController
      */
     public function index()
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
         $conditions = [];
@@ -66,7 +66,7 @@ class AddressesController extends AppController
      */
     public function add()
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
         $address = $this->Addresses->newEmptyEntity();
@@ -78,10 +78,10 @@ class AddressesController extends AppController
             $address->customer_id = $customer_id;
         }
 
-        if ($this->request->is('post')) {
-            $address = $this->Addresses->patchEntity($address, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $address = $this->Addresses->patchEntity($address, $this->getRequest()->getData());
 
-            if ($this->request->getData('refresh') == 'refresh') {
+            if ($this->getRequest()->getData('refresh') == 'refresh') {
                 // only refresh
             } else {
                 // update RUIAN data
@@ -89,8 +89,8 @@ class AddressesController extends AppController
 
                 // set manual coordinate if defined
                 if ($address->manual_coordinate_setting) {
-                    $address->gps_y = $this->request->getData('gps_y');
-                    $address->gps_x = $this->request->getData('gps_x');
+                    $address->gps_y = $this->getRequest()->getData('gps_y');
+                    $address->gps_x = $this->getRequest()->getData('gps_x');
                 }
 
                 if ($this->Addresses->save($address)) {
@@ -127,16 +127,16 @@ class AddressesController extends AppController
      */
     public function edit($id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
         $address = $this->Addresses->get($id, [
             'contain' => [],
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $address = $this->Addresses->patchEntity($address, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $address = $this->Addresses->patchEntity($address, $this->getRequest()->getData());
 
-            if ($this->request->getData('refresh') == 'refresh') {
+            if ($this->getRequest()->getData('refresh') == 'refresh') {
                 // only refresh
             } else {
                 // update RUIAN data
@@ -144,8 +144,8 @@ class AddressesController extends AppController
 
                 // set manual coordinate if defined
                 if ($address->manual_coordinate_setting) {
-                    $address->gps_y = $this->request->getData('gps_y');
-                    $address->gps_x = $this->request->getData('gps_x');
+                    $address->gps_y = $this->getRequest()->getData('gps_y');
+                    $address->gps_x = $this->getRequest()->getData('gps_x');
                 }
 
                 if ($this->Addresses->save($address)) {
@@ -182,9 +182,9 @@ class AddressesController extends AppController
      */
     public function delete($id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
 
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $address = $this->Addresses->get($id);
         if ($this->Addresses->delete($address)) {
             $this->Flash->success(__('The address has been deleted.'));

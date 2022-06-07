@@ -22,9 +22,9 @@ class CustomersController extends AppController
         $conditions = [];
 
         // search
-        $search = $this->request->getQuery('search');
-        $advanced_search = $this->request->getQuery('advanced_search');
-        $is_admin = in_array($this->request->getSession()->read('Auth.role'), ['admin']);
+        $search = $this->getRequest()->getQuery('search');
+        $advanced_search = $this->getRequest()->getQuery('advanced_search');
+        $is_admin = in_array($this->getRequest()->getSession()->read('Auth.role'), ['admin']);
 
         if ($is_admin && $advanced_search && !empty($search)) {
             $filter = 'to_tsvector('
@@ -147,8 +147,8 @@ class CustomersController extends AppController
     public function add()
     {
         $customer = $this->Customers->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $customer = $this->Customers->patchEntity($customer, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $customer = $this->Customers->patchEntity($customer, $this->getRequest()->getData());
             if ($this->Customers->save($customer)) {
                 $this->Flash->success(__('The customer has been saved.'));
 
@@ -175,8 +175,8 @@ class CustomersController extends AppController
         $customer = $this->Customers->get($id, [
             'contain' => [],
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $customer = $this->Customers->patchEntity($customer, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $customer = $this->Customers->patchEntity($customer, $this->getRequest()->getData());
             if ($this->Customers->save($customer)) {
                 $this->Flash->success(__('The customer has been saved.'));
 
@@ -200,7 +200,7 @@ class CustomersController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $customer = $this->Customers->get($id);
         if ($this->Customers->delete($customer)) {
             $this->Flash->success(__('The customer has been deleted.'));
@@ -248,12 +248,12 @@ class CustomersController extends AppController
         $address_types = $this->Customers->Addresses->types;
         $login_rights = $this->Customers->Logins->rights;
 
-        $query = $this->request->getQuery();
+        $query = $this->getRequest()->getQuery();
         if (isset($query['document_type'])) {
             $type = $query['document_type'];
         }
 
-        if ($this->request->getParam('_ext') === 'pdf') {
+        if ($this->getRequest()->getParam('_ext') === 'pdf') {
             switch ($type) {
                 case 'gdpr-new':
                 case 'gdpr-change':

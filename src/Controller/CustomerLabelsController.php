@@ -50,8 +50,8 @@ class CustomerLabelsController extends AppController
     public function add()
     {
         $customerLabel = $this->CustomerLabels->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $customerLabel = $this->CustomerLabels->patchEntity($customerLabel, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $customerLabel = $this->CustomerLabels->patchEntity($customerLabel, $this->getRequest()->getData());
             if ($this->CustomerLabels->save($customerLabel)) {
                 $this->Flash->success(__('The customer label has been saved.'));
 
@@ -78,8 +78,8 @@ class CustomerLabelsController extends AppController
         $customerLabel = $this->CustomerLabels->get($id, [
             'contain' => [],
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $customerLabel = $this->CustomerLabels->patchEntity($customerLabel, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $customerLabel = $this->CustomerLabels->patchEntity($customerLabel, $this->getRequest()->getData());
             if ($this->CustomerLabels->save($customerLabel)) {
                 $this->Flash->success(__('The customer label has been saved.'));
 
@@ -103,7 +103,7 @@ class CustomerLabelsController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $customerLabel = $this->CustomerLabels->get($id);
         if ($this->CustomerLabels->delete($customerLabel)) {
             $this->Flash->success(__('The customer label has been deleted.'));

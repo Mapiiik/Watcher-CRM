@@ -20,10 +20,10 @@ class IpNetworksController extends AppController
      */
     public function index()
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
-        $contract_id = $this->request->getParam('contract_id');
+        $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
         $conditions = [];
@@ -70,10 +70,10 @@ class IpNetworksController extends AppController
      */
     public function add()
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
-        $contract_id = $this->request->getParam('contract_id');
+        $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
         $ipNetwork = $this->IpNetworks->newEmptyEntity();
@@ -85,8 +85,8 @@ class IpNetworksController extends AppController
             $ipNetwork->contract_id = $contract_id;
         }
 
-        if ($this->request->is('post')) {
-            $ipNetwork = $this->IpNetworks->patchEntity($ipNetwork, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $ipNetwork = $this->IpNetworks->patchEntity($ipNetwork, $this->getRequest()->getData());
             if ($this->IpNetworks->save($ipNetwork)) {
                 $this->Flash->success(__('The IP network has been saved.'));
 
@@ -124,17 +124,17 @@ class IpNetworksController extends AppController
      */
     public function edit($id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
-        $contract_id = $this->request->getParam('contract_id');
+        $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
         $ipNetwork = $this->IpNetworks->get($id, [
             'contain' => [],
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $ipNetwork = $this->IpNetworks->patchEntity($ipNetwork, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $ipNetwork = $this->IpNetworks->patchEntity($ipNetwork, $this->getRequest()->getData());
             if ($this->IpNetworks->save($ipNetwork)) {
                 $this->Flash->success(__('The IP network has been saved.'));
 
@@ -172,10 +172,10 @@ class IpNetworksController extends AppController
      */
     public function delete($id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
-        $contract_id = $this->request->getParam('contract_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
+        $contract_id = $this->getRequest()->getParam('contract_id');
 
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $ipNetwork = $this->IpNetworks->get($id);
 
         if ($this->addToRemovedIpNetworks($id)) {
@@ -210,7 +210,7 @@ class IpNetworksController extends AppController
 
         // TODO - add who and when deleted this
         $removedIpNetwork->removed = FrozenTime::now();
-        $removedIpNetwork->removed_by = $this->request->getSession()->read('Auth.id');
+        $removedIpNetwork->removed_by = $this->getRequest()->getSession()->read('Auth.id');
 
         if ($removedIpNetworksTable->save($removedIpNetwork)) {
             $this->Flash->success(__('The removed IP network has been saved.'));

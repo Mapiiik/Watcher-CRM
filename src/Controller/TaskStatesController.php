@@ -49,8 +49,8 @@ class TaskStatesController extends AppController
     public function add()
     {
         $taskState = $this->TaskStates->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $taskState = $this->TaskStates->patchEntity($taskState, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $taskState = $this->TaskStates->patchEntity($taskState, $this->getRequest()->getData());
             if ($this->TaskStates->save($taskState)) {
                 $this->Flash->success(__('The task state has been saved.'));
 
@@ -73,8 +73,8 @@ class TaskStatesController extends AppController
         $taskState = $this->TaskStates->get($id, [
             'contain' => [],
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $taskState = $this->TaskStates->patchEntity($taskState, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $taskState = $this->TaskStates->patchEntity($taskState, $this->getRequest()->getData());
             if ($this->TaskStates->save($taskState)) {
                 $this->Flash->success(__('The task state has been saved.'));
 
@@ -94,7 +94,7 @@ class TaskStatesController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $taskState = $this->TaskStates->get($id);
         if ($this->TaskStates->delete($taskState)) {
             $this->Flash->success(__('The task state has been deleted.'));

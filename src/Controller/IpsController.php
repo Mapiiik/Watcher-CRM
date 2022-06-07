@@ -20,10 +20,10 @@ class IpsController extends AppController
      */
     public function index()
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
-        $contract_id = $this->request->getParam('contract_id');
+        $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
         $conditions = [];
@@ -70,10 +70,10 @@ class IpsController extends AppController
      */
     public function add()
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
-        $contract_id = $this->request->getParam('contract_id');
+        $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
         $ip = $this->Ips->newEmptyEntity();
@@ -85,8 +85,8 @@ class IpsController extends AppController
             $ip->contract_id = $contract_id;
         }
 
-        if ($this->request->is('post')) {
-            $ip = $this->Ips->patchEntity($ip, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $ip = $this->Ips->patchEntity($ip, $this->getRequest()->getData());
             if ($this->Ips->save($ip)) {
                 $this->Flash->success(__('The ip has been saved.'));
 
@@ -124,18 +124,18 @@ class IpsController extends AppController
      */
     public function edit($id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
-        $contract_id = $this->request->getParam('contract_id');
+        $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
         $ip = $this->Ips->get($id, [
             'contain' => [],
         ]);
 
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $ip = $this->Ips->patchEntity($ip, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $ip = $this->Ips->patchEntity($ip, $this->getRequest()->getData());
             if ($this->Ips->save($ip)) {
                 $this->Flash->success(__('The ip has been saved.'));
 
@@ -171,10 +171,10 @@ class IpsController extends AppController
      */
     public function delete($id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
-        $contract_id = $this->request->getParam('contract_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
+        $contract_id = $this->getRequest()->getParam('contract_id');
 
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $ip = $this->Ips->get($id);
 
         if ($this->addToRemovedIps($id)) {
@@ -209,7 +209,7 @@ class IpsController extends AppController
 
         // TODO - add who and when deleted this
         $removedIp->removed = FrozenTime::now();
-        $removedIp->removed_by = $this->request->getSession()->read('Auth.id');
+        $removedIp->removed_by = $this->getRequest()->getSession()->read('Auth.id');
 
         if ($removedIpsTable->save($removedIp)) {
             $this->Flash->success(__('The removed ip has been saved.'));

@@ -18,7 +18,7 @@ class EmailsController extends AppController
      */
     public function index()
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
         $conditions = [];
@@ -58,7 +58,7 @@ class EmailsController extends AppController
      */
     public function add()
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
         $email = $this->Emails->newEmptyEntity();
@@ -67,8 +67,8 @@ class EmailsController extends AppController
             $email->customer_id = $customer_id;
         }
 
-        if ($this->request->is('post')) {
-            $email = $this->Emails->patchEntity($email, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $email = $this->Emails->patchEntity($email, $this->getRequest()->getData());
             if ($this->Emails->save($email)) {
                 $this->Flash->success(__('The email has been saved.'));
 
@@ -98,14 +98,14 @@ class EmailsController extends AppController
      */
     public function edit($id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
         $email = $this->Emails->get($id, [
             'contain' => [],
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $email = $this->Emails->patchEntity($email, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $email = $this->Emails->patchEntity($email, $this->getRequest()->getData());
             if ($this->Emails->save($email)) {
                 $this->Flash->success(__('The email has been saved.'));
 
@@ -135,9 +135,9 @@ class EmailsController extends AppController
      */
     public function delete($id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
 
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $email = $this->Emails->get($id);
         if ($this->Emails->delete($email)) {
             $this->Flash->success(__('The email has been deleted.'));

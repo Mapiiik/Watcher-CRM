@@ -25,7 +25,7 @@ class ContractsController extends AppController
      */
     public function index()
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
         $conditions = [];
@@ -87,7 +87,7 @@ class ContractsController extends AppController
      */
     public function add()
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
         $contract = $this->Contracts->newEmptyEntity();
@@ -96,8 +96,8 @@ class ContractsController extends AppController
             $contract->customer_id = $customer_id;
         }
 
-        if ($this->request->is('post')) {
-            $contract = $this->Contracts->patchEntity($contract, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $contract = $this->Contracts->patchEntity($contract, $this->getRequest()->getData());
             if ($this->Contracts->save($contract)) {
                 $this->Flash->success(__('The contract has been saved.'));
 
@@ -144,15 +144,15 @@ class ContractsController extends AppController
      */
     public function edit($id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
         $contract = $this->Contracts->get($id, [
             'contain' => [],
         ]);
 
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $contract = $this->Contracts->patchEntity($contract, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $contract = $this->Contracts->patchEntity($contract, $this->getRequest()->getData());
             if ($this->Contracts->save($contract)) {
                 $this->Flash->success(__('The contract has been saved.'));
 
@@ -199,9 +199,9 @@ class ContractsController extends AppController
      */
     public function delete($id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
 
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $contract = $this->Contracts->get($id);
         if ($this->Contracts->delete($contract)) {
             $this->Flash->success(__('The contract has been deleted.'));
@@ -253,7 +253,7 @@ class ContractsController extends AppController
      */
     public function print($id = null, $type = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
         $documentTypes = [
@@ -287,12 +287,12 @@ class ContractsController extends AppController
             ],
         ]);
 
-        $query = $this->request->getQuery();
+        $query = $this->getRequest()->getQuery();
         if (isset($query['document_type'])) {
             $type = $query['document_type'];
         }
 
-        if ($this->request->getParam('_ext') === 'pdf') {
+        if ($this->getRequest()->getParam('_ext') === 'pdf') {
             // check if borrowed equipment is added where it should be
             if (
                 !$query['own_equipment']

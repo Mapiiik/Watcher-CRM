@@ -47,8 +47,8 @@ class TaxRatesController extends AppController
     public function add()
     {
         $taxRate = $this->TaxRates->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $taxRate = $this->TaxRates->patchEntity($taxRate, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $taxRate = $this->TaxRates->patchEntity($taxRate, $this->getRequest()->getData());
             if ($this->TaxRates->save($taxRate)) {
                 $this->Flash->success(__('The tax rate has been saved.'));
 
@@ -71,8 +71,8 @@ class TaxRatesController extends AppController
         $taxRate = $this->TaxRates->get($id, [
             'contain' => [],
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $taxRate = $this->TaxRates->patchEntity($taxRate, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $taxRate = $this->TaxRates->patchEntity($taxRate, $this->getRequest()->getData());
             if ($this->TaxRates->save($taxRate)) {
                 $this->Flash->success(__('The tax rate has been saved.'));
 
@@ -92,7 +92,7 @@ class TaxRatesController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $taxRate = $this->TaxRates->get($id);
         if ($this->TaxRates->delete($taxRate)) {
             $this->Flash->success(__('The tax rate has been deleted.'));

@@ -52,8 +52,8 @@ class LabelsController extends AppController
     public function add()
     {
         $label = $this->Labels->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $label = $this->Labels->patchEntity($label, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $label = $this->Labels->patchEntity($label, $this->getRequest()->getData());
             if ($this->Labels->save($label)) {
                 $this->Flash->success(__('The label has been saved.'));
 
@@ -76,8 +76,8 @@ class LabelsController extends AppController
         $label = $this->Labels->get($id, [
             'contain' => [],
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $label = $this->Labels->patchEntity($label, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $label = $this->Labels->patchEntity($label, $this->getRequest()->getData());
             if ($this->Labels->save($label)) {
                 $this->Flash->success(__('The label has been saved.'));
 
@@ -97,7 +97,7 @@ class LabelsController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $label = $this->Labels->get($id);
         if ($this->Labels->delete($label)) {
             $this->Flash->success(__('The label has been deleted.'));

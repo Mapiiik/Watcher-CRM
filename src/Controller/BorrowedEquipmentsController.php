@@ -18,10 +18,10 @@ class BorrowedEquipmentsController extends AppController
      */
     public function index()
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
-        $contract_id = $this->request->getParam('contract_id');
+        $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
         $conditions = [];
@@ -64,10 +64,10 @@ class BorrowedEquipmentsController extends AppController
      */
     public function add()
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
-        $contract_id = $this->request->getParam('contract_id');
+        $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
         $borrowedEquipment = $this->BorrowedEquipments->newEmptyEntity();
@@ -79,8 +79,8 @@ class BorrowedEquipmentsController extends AppController
             $borrowedEquipment->contract_id = $contract_id;
         }
 
-        if ($this->request->is('post')) {
-            $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, $this->getRequest()->getData());
             if ($this->BorrowedEquipments->save($borrowedEquipment)) {
                 $this->Flash->success(__('The borrowed equipment has been saved.'));
 
@@ -117,18 +117,18 @@ class BorrowedEquipmentsController extends AppController
      */
     public function edit($id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
-        $contract_id = $this->request->getParam('contract_id');
+        $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
         $borrowedEquipment = $this->BorrowedEquipments->get($id, [
             'contain' => [],
         ]);
 
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $borrowedEquipment = $this->BorrowedEquipments->patchEntity($borrowedEquipment, $this->getRequest()->getData());
             if ($this->BorrowedEquipments->save($borrowedEquipment)) {
                 $this->Flash->success(__('The borrowed equipment has been saved.'));
 
@@ -165,10 +165,10 @@ class BorrowedEquipmentsController extends AppController
      */
     public function delete($id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
-        $contract_id = $this->request->getParam('contract_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
+        $contract_id = $this->getRequest()->getParam('contract_id');
 
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $borrowedEquipment = $this->BorrowedEquipments->get($id);
         if ($this->BorrowedEquipments->delete($borrowedEquipment)) {
             $this->Flash->success(__('The borrowed equipment has been deleted.'));

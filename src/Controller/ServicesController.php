@@ -54,8 +54,8 @@ class ServicesController extends AppController
     public function add()
     {
         $service = $this->Services->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $service = $this->Services->patchEntity($service, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $service = $this->Services->patchEntity($service, $this->getRequest()->getData());
             if ($this->Services->save($service)) {
                 $this->Flash->success(__('The service has been saved.'));
 
@@ -80,8 +80,8 @@ class ServicesController extends AppController
         $service = $this->Services->get($id, [
             'contain' => [],
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $service = $this->Services->patchEntity($service, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $service = $this->Services->patchEntity($service, $this->getRequest()->getData());
             if ($this->Services->save($service)) {
                 $this->Flash->success(__('The service has been saved.'));
 
@@ -103,7 +103,7 @@ class ServicesController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $service = $this->Services->get($id);
         if ($this->Services->delete($service)) {
             $this->Flash->success(__('The service has been deleted.'));

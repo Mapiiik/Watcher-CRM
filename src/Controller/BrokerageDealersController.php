@@ -50,8 +50,8 @@ class BrokerageDealersController extends AppController
     public function add()
     {
         $brokerageDealer = $this->BrokerageDealers->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $brokerageDealer = $this->BrokerageDealers->patchEntity($brokerageDealer, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $brokerageDealer = $this->BrokerageDealers->patchEntity($brokerageDealer, $this->getRequest()->getData());
             if ($this->BrokerageDealers->save($brokerageDealer)) {
                 $this->Flash->success(__('The brokerage dealer has been saved.'));
 
@@ -76,8 +76,8 @@ class BrokerageDealersController extends AppController
         $brokerageDealer = $this->BrokerageDealers->get($id, [
             'contain' => [],
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $brokerageDealer = $this->BrokerageDealers->patchEntity($brokerageDealer, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $brokerageDealer = $this->BrokerageDealers->patchEntity($brokerageDealer, $this->getRequest()->getData());
             if ($this->BrokerageDealers->save($brokerageDealer)) {
                 $this->Flash->success(__('The brokerage dealer has been saved.'));
 
@@ -99,7 +99,7 @@ class BrokerageDealersController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $brokerageDealer = $this->BrokerageDealers->get($id);
         if ($this->BrokerageDealers->delete($brokerageDealer)) {
             $this->Flash->success(__('The brokerage dealer has been deleted.'));

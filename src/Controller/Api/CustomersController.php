@@ -69,8 +69,8 @@ class CustomersController extends AppController
      */
     public function add()
     {
-        $this->request->allowMethod(['post', 'put']);
-        $customer = $this->Customers->newEntity($this->request->getData());
+        $this->getRequest()->allowMethod(['post', 'put']);
+        $customer = $this->Customers->newEntity($this->getRequest()->getData());
         if ($this->Customers->save($customer)) {
             $message = 'Saved';
         } else {
@@ -92,9 +92,9 @@ class CustomersController extends AppController
      */
     public function edit($id = null)
     {
-        $this->request->allowMethod(['patch', 'post', 'put']);
+        $this->getRequest()->allowMethod(['patch', 'post', 'put']);
         $customer = $this->Customers->get($id);
-        $customer = $this->Customers->patchEntity($customer, $this->request->getData());
+        $customer = $this->Customers->patchEntity($customer, $this->getRequest()->getData());
         if ($this->Customers->save($customer)) {
             $message = 'Saved';
         } else {
@@ -116,7 +116,7 @@ class CustomersController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['delete']);
+        $this->getRequest()->allowMethod(['delete']);
         $customer = $this->Customers->get($id);
         if ($this->Customers->delete($customer)) {
             $message = 'Deleted';

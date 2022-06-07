@@ -18,7 +18,7 @@ class LoginsController extends AppController
      */
     public function index()
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
         $conditions = [];
@@ -64,7 +64,7 @@ class LoginsController extends AppController
      */
     public function add()
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
         $login = $this->Logins->newEmptyEntity();
@@ -73,8 +73,8 @@ class LoginsController extends AppController
             $login->customer_id = $customer_id;
         }
 
-        if ($this->request->is('post')) {
-            $login = $this->Logins->patchEntity($login, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $login = $this->Logins->patchEntity($login, $this->getRequest()->getData());
             if ($this->Logins->save($login)) {
                 $this->Flash->success(__('The login has been saved.'));
 
@@ -129,19 +129,19 @@ class LoginsController extends AppController
      */
     public function edit($id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
         $login = $this->Logins->get($id, [
             'contain' => [],
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             // change password if is set new
-            if (strlen($this->request->getData()['new_password']) > 0) {
-                $login->password = $this->request->getData()['new_password'];
+            if (strlen($this->getRequest()->getData()['new_password']) > 0) {
+                $login->password = $this->getRequest()->getData()['new_password'];
             }
 
-            $login = $this->Logins->patchEntity($login, $this->request->getData());
+            $login = $this->Logins->patchEntity($login, $this->getRequest()->getData());
             if ($this->Logins->save($login)) {
                 $this->Flash->success(__('The login has been saved.'));
 
@@ -174,9 +174,9 @@ class LoginsController extends AppController
      */
     public function delete($id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
 
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $login = $this->Logins->get($id);
         if ($this->Logins->delete($login)) {
             $this->Flash->success(__('The login has been deleted.'));

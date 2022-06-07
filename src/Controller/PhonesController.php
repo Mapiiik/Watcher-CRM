@@ -18,7 +18,7 @@ class PhonesController extends AppController
      */
     public function index()
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
         $conditions = [];
@@ -58,7 +58,7 @@ class PhonesController extends AppController
      */
     public function add()
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
         $phone = $this->Phones->newEmptyEntity();
@@ -67,8 +67,8 @@ class PhonesController extends AppController
             $phone->customer_id = $customer_id;
         }
 
-        if ($this->request->is('post')) {
-            $phone = $this->Phones->patchEntity($phone, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $phone = $this->Phones->patchEntity($phone, $this->getRequest()->getData());
             if ($this->Phones->save($phone)) {
                 $this->Flash->success(__('The phone has been saved.'));
 
@@ -98,14 +98,14 @@ class PhonesController extends AppController
      */
     public function edit($id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
         $phone = $this->Phones->get($id, [
             'contain' => [],
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $phone = $this->Phones->patchEntity($phone, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $phone = $this->Phones->patchEntity($phone, $this->getRequest()->getData());
             if ($this->Phones->save($phone)) {
                 $this->Flash->success(__('The phone has been saved.'));
 
@@ -135,9 +135,9 @@ class PhonesController extends AppController
      */
     public function delete($id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
 
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $phone = $this->Phones->get($id);
         if ($this->Phones->delete($phone)) {
             $this->Flash->success(__('The phone has been deleted.'));

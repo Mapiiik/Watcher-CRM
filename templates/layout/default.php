@@ -109,12 +109,10 @@ $request = $this->getRequest();
             <?= $this->AuthLink->link(
                 __('Settings'),
                 ['controller' => 'Settings', 'action' => 'index', 'plugin' => null],
-                ['class' => 'button button-small' . $buttonSelected(['Settings'])]
-            ) ?>
-            <?= $this->AuthLink->link(
-                __('Users'),
-                ['controller' => 'Users', 'action' => 'index', 'plugin' => 'CakeDC/Users'],
-                ['class' => 'button button-small' . $buttonSelected(['Users'])]
+                ['class' => 'button button-small' . $buttonSelected([
+                    'Settings',
+                    'Users',
+                ])]
             ) ?>
 
             <?= $this->Html->link(__('Legacy'), '/legacy', ['class' => 'button button-small']) ?>

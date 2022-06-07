@@ -49,8 +49,8 @@ class TaskTypesController extends AppController
     public function add()
     {
         $taskType = $this->TaskTypes->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $taskType = $this->TaskTypes->patchEntity($taskType, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $taskType = $this->TaskTypes->patchEntity($taskType, $this->getRequest()->getData());
             if ($this->TaskTypes->save($taskType)) {
                 $this->Flash->success(__('The task type has been saved.'));
 
@@ -73,8 +73,8 @@ class TaskTypesController extends AppController
         $taskType = $this->TaskTypes->get($id, [
             'contain' => [],
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $taskType = $this->TaskTypes->patchEntity($taskType, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $taskType = $this->TaskTypes->patchEntity($taskType, $this->getRequest()->getData());
             if ($this->TaskTypes->save($taskType)) {
                 $this->Flash->success(__('The task type has been saved.'));
 
@@ -94,7 +94,7 @@ class TaskTypesController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $taskType = $this->TaskTypes->get($id);
         if ($this->TaskTypes->delete($taskType)) {
             $this->Flash->success(__('The task type has been deleted.'));

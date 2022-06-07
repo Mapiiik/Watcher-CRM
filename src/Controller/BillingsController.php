@@ -18,10 +18,10 @@ class BillingsController extends AppController
      */
     public function index()
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
-        $contract_id = $this->request->getParam('contract_id');
+        $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
         $conditions = [];
@@ -64,10 +64,10 @@ class BillingsController extends AppController
      */
     public function add()
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
-        $contract_id = $this->request->getParam('contract_id');
+        $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
         $billing = $this->Billings->newEmptyEntity();
@@ -79,10 +79,10 @@ class BillingsController extends AppController
             $billing->contract_id = $contract_id;
         }
 
-        if ($this->request->is('post')) {
-            $billing = $this->Billings->patchEntity($billing, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $billing = $this->Billings->patchEntity($billing, $this->getRequest()->getData());
 
-            if ($this->request->getData('refresh') == 'refresh') {
+            if ($this->getRequest()->getData('refresh') == 'refresh') {
                 // only refresh
             } elseif (
                 !isset($billing->service_id) && !isset($billing->text)
@@ -145,20 +145,20 @@ class BillingsController extends AppController
      */
     public function edit($id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
-        $contract_id = $this->request->getParam('contract_id');
+        $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
         $billing = $this->Billings->get($id, [
             'contain' => [],
         ]);
 
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $billing = $this->Billings->patchEntity($billing, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $billing = $this->Billings->patchEntity($billing, $this->getRequest()->getData());
 
-            if ($this->request->getData('refresh') == 'refresh') {
+            if ($this->getRequest()->getData('refresh') == 'refresh') {
                 // only refresh
             } elseif (
                 !isset($billing->service_id) && !isset($billing->text)
@@ -218,10 +218,10 @@ class BillingsController extends AppController
      */
     public function delete($id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
-        $contract_id = $this->request->getParam('contract_id');
+        $customer_id = $this->getRequest()->getParam('customer_id');
+        $contract_id = $this->getRequest()->getParam('contract_id');
 
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $billing = $this->Billings->get($id);
         if ($this->Billings->delete($billing)) {
             $this->Flash->success(__('The billing has been deleted.'));

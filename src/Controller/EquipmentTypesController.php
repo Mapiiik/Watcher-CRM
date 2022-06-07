@@ -47,8 +47,8 @@ class EquipmentTypesController extends AppController
     public function add()
     {
         $equipmentType = $this->EquipmentTypes->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $equipmentType = $this->EquipmentTypes->patchEntity($equipmentType, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $equipmentType = $this->EquipmentTypes->patchEntity($equipmentType, $this->getRequest()->getData());
             if ($this->EquipmentTypes->save($equipmentType)) {
                 $this->Flash->success(__('The equipment type has been saved.'));
 
@@ -71,8 +71,8 @@ class EquipmentTypesController extends AppController
         $equipmentType = $this->EquipmentTypes->get($id, [
             'contain' => [],
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $equipmentType = $this->EquipmentTypes->patchEntity($equipmentType, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $equipmentType = $this->EquipmentTypes->patchEntity($equipmentType, $this->getRequest()->getData());
             if ($this->EquipmentTypes->save($equipmentType)) {
                 $this->Flash->success(__('The equipment type has been saved.'));
 
@@ -92,7 +92,7 @@ class EquipmentTypesController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $equipmentType = $this->EquipmentTypes->get($id);
         if ($this->EquipmentTypes->delete($equipmentType)) {
             $this->Flash->success(__('The equipment type has been deleted.'));

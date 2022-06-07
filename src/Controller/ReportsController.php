@@ -34,8 +34,8 @@ class ReportsController extends AppController
      */
     public function overviewOfActiveServices()
     {
-        $month_to_display = new FrozenDate($this->request->getQuery('month_to_display'));
-        $access_point_id = $this->request->getQuery('access_point_id');
+        $month_to_display = new FrozenDate($this->getRequest()->getQuery('month_to_display'));
+        $access_point_id = $this->getRequest()->getQuery('access_point_id');
 
         $servicesQuery = $this->fetchTable('Services')->find()
             ->contain('ServiceTypes')
@@ -112,7 +112,7 @@ class ReportsController extends AppController
      */
     public function overviewOfCustomerConnectionPoints($category = null)
     {
-        $month_to_display = new FrozenDate($this->request->getQuery('month_to_display'));
+        $month_to_display = new FrozenDate($this->getRequest()->getQuery('month_to_display'));
 
         $cto_categories = $this->fetchTable('Billings')->find()
             ->where([
@@ -214,7 +214,7 @@ class ReportsController extends AppController
             );
 
         // DOWNLOAD CSV FOR CATEGORY
-        if ($this->request->getParam('_ext') === 'csv' && isset($category)) {
+        if ($this->getRequest()->getParam('_ext') === 'csv' && isset($category)) {
             $csv_data = ''
             . 'AdmIdent;'
             . 'AdmPriloha;'

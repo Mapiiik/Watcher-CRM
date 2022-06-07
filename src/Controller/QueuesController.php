@@ -50,8 +50,8 @@ class QueuesController extends AppController
     public function add()
     {
         $queue = $this->Queues->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $queue = $this->Queues->patchEntity($queue, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $queue = $this->Queues->patchEntity($queue, $this->getRequest()->getData());
             if ($this->Queues->save($queue)) {
                 $this->Flash->success(__('The queue has been saved.'));
 
@@ -75,8 +75,8 @@ class QueuesController extends AppController
         $queue = $this->Queues->get($id, [
             'contain' => [],
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $queue = $this->Queues->patchEntity($queue, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $queue = $this->Queues->patchEntity($queue, $this->getRequest()->getData());
             if ($this->Queues->save($queue)) {
                 $this->Flash->success(__('The queue has been saved.'));
 
@@ -97,7 +97,7 @@ class QueuesController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $queue = $this->Queues->get($id);
         if ($this->Queues->delete($queue)) {
             $this->Flash->success(__('The queue has been deleted.'));
