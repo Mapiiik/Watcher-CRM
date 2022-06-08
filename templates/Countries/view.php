@@ -39,52 +39,57 @@
                 <h4><?= __('Related Addresses') ?></h4>
                 <?php if (!empty($country->addresses)) : ?>
                 <div class="table-responsive">
-                    <table>
+                <table>
                         <tr>
                             <th><?= __('Id') ?></th>
+                            <th><?= __('Customer') ?></th>
                             <th><?= __('Type') ?></th>
-                            <th><?= __('Customer Id') ?></th>
+                            <th><?= __('Company') ?></th>
                             <th><?= __('Title') ?></th>
                             <th><?= __('First Name') ?></th>
                             <th><?= __('Last Name') ?></th>
                             <th><?= __('Suffix') ?></th>
-                            <th><?= __('Company') ?></th>
                             <th><?= __('Street') ?></th>
                             <th><?= __('Number') ?></th>
                             <th><?= __('City') ?></th>
                             <th><?= __('Zip') ?></th>
-                            <th><?= __('Country Id') ?></th>
-                            <th><?= __('Created By') ?></th>
-                            <th><?= __('Created') ?></th>
-                            <th><?= __('Modified By') ?></th>
-                            <th><?= __('Modified') ?></th>
                             <th><?= __('Ruian Gid') ?></th>
-                            <th><?= __('Gps X') ?></th>
-                            <th><?= __('Gps Y') ?></th>
+                            <th class="actions"><?= __('Maps') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($country->addresses as $address) : ?>
                         <tr>
-                            <td><?= h($address->id) ?></td>
-                            <td><?= h($address->type) ?></td>
-                            <td><?= h($address->customer_id) ?></td>
+                            <td><?= $this->Number->format($address->id) ?></td>
+                            <td>
+                                <?= $address->has('customer') ? $this->Html->link(
+                                    $address->customer->name,
+                                    ['controller' => 'Customers', 'action' => 'view', $address->customer->id]
+                                ) : '' ?>
+                            </td>
+                            <td><?= h($address_types[$address->type]) ?></td>
+                            <td><?= h($address->company) ?></td>
                             <td><?= h($address->title) ?></td>
                             <td><?= h($address->first_name) ?></td>
                             <td><?= h($address->last_name) ?></td>
                             <td><?= h($address->suffix) ?></td>
-                            <td><?= h($address->company) ?></td>
                             <td><?= h($address->street) ?></td>
                             <td><?= h($address->number) ?></td>
                             <td><?= h($address->city) ?></td>
                             <td><?= h($address->zip) ?></td>
-                            <td><?= h($address->country_id) ?></td>
-                            <td><?= h($address->created_by) ?></td>
-                            <td><?= h($address->created) ?></td>
-                            <td><?= h($address->modified_by) ?></td>
-                            <td><?= h($address->modified) ?></td>
-                            <td><?= h($address->ruian_gid) ?></td>
-                            <td><?= h($address->gps_x) ?></td>
-                            <td><?= h($address->gps_y) ?></td>
+                            <td><?= $this->Number->format($address->ruian_gid) ?></td>
+                            <td class="actions">
+                                <?= $address->has('gps_x') && $address->has('gps_y') ? $this->Html->link(
+                                    __('Google Maps'),
+                                    'https://maps.google.com/maps?q=' . h("{$address->gps_y},{$address->gps_x}"),
+                                    ['target' => '_blank']
+                                ) : '' ?>
+                                <?= $address->has('gps_x') && $address->has('gps_y') ? $this->Html->link(
+                                    __('Mapy.cz'),
+                                    'https://mapy.cz/zakladni?source=coor&id='
+                                    . h("{$address->gps_x},{$address->gps_y}"),
+                                    ['target' => '_blank']
+                                ) : ''?>
+                            </td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),

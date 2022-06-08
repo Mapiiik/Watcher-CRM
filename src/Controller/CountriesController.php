@@ -33,8 +33,12 @@ class CountriesController extends AppController
     public function view($id = null)
     {
         $country = $this->Countries->get($id, [
-            'contain' => ['Addresses'],
+            'contain' => [
+                'Addresses' => ['Customers'],
+            ],
         ]);
+
+        $this->set('address_types', $this->Countries->Addresses->types);
 
         $this->set(compact('country'));
     }
