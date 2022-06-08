@@ -45,7 +45,11 @@ class EmailsController extends AppController
     public function view($id = null)
     {
         $email = $this->Emails->get($id, [
-            'contain' => ['Customers'],
+            'contain' => [
+                'Customers',
+                'Creators',
+                'Modifiers',
+            ],
         ]);
 
         $this->set(compact('email'));

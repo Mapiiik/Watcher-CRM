@@ -25,7 +25,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Brokerage[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \App\Model\Entity\Brokerage[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
-class BrokeragesTable extends Table
+class BrokeragesTable extends AppTable
 {
     /**
      * Initialize method

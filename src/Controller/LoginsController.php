@@ -48,7 +48,11 @@ class LoginsController extends AppController
     public function view($id = null)
     {
         $login = $this->Logins->get($id, [
-            'contain' => ['Customers'],
+            'contain' => [
+                'Customers',
+                'Creators',
+                'Modifiers',
+            ],
         ]);
 
         $this->set(compact('login'));

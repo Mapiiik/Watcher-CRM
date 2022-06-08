@@ -45,7 +45,11 @@ class PhonesController extends AppController
     public function view($id = null)
     {
         $phone = $this->Phones->get($id, [
-            'contain' => ['Customers'],
+            'contain' => [
+                'Customers',
+                'Creators',
+                'Modifiers',
+            ],
         ]);
 
         $this->set(compact('phone'));

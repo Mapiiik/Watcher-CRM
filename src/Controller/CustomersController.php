@@ -121,6 +121,8 @@ class CustomersController extends AppController
                 'RemovedIps' => ['Contracts'],
                 'IpNetworks' => ['Contracts'],
                 'RemovedIpNetworks' => ['Contracts'],
+                'Creators',
+                'Modifiers',
             ],
         ]);
 

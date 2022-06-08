@@ -40,6 +40,8 @@ class ServicesController extends AppController
                 'ServiceTypes',
                 'Queues',
                 'Billings' => ['Customers', 'Contracts', 'Services'],
+                'Creators',
+                'Modifiers',
             ],
         ]);
 

@@ -38,6 +38,8 @@ class LabelsController extends AppController
         $label = $this->Labels->get($id, [
             'contain' => [
                 'CustomerLabels' => ['Customers'],
+                'Creators',
+                'Modifiers',
             ],
         ]);
 

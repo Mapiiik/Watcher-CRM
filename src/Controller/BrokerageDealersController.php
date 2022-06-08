@@ -36,7 +36,12 @@ class BrokerageDealersController extends AppController
     public function view($id = null)
     {
         $brokerageDealer = $this->BrokerageDealers->get($id, [
-            'contain' => ['Dealers', 'Brokerages'],
+            'contain' => [
+                'Dealers',
+                'Brokerages',
+                'Creators',
+                'Modifiers',
+            ],
         ]);
 
         $this->set(compact('brokerageDealer'));

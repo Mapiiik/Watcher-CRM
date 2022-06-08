@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use Cake\ORM\RulesChecker;
-use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
@@ -25,7 +24,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Email[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \App\Model\Entity\Email[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
-class EmailsTable extends Table
+class EmailsTable extends AppTable
 {
     /**
      * Initialize method

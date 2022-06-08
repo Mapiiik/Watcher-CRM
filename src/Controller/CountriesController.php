@@ -35,6 +35,8 @@ class CountriesController extends AppController
         $country = $this->Countries->get($id, [
             'contain' => [
                 'Addresses' => ['Customers'],
+                'Creators',
+                'Modifiers',
             ],
         ]);
 

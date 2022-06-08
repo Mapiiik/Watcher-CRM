@@ -33,7 +33,11 @@ class TaskStatesController extends AppController
     public function view($id = null)
     {
         $taskState = $this->TaskStates->get($id, [
-            'contain' => ['Tasks' => ['Customers', 'Dealers', 'TaskStates', 'TaskTypes']],
+            'contain' => [
+                'Tasks' => ['Customers', 'Dealers', 'TaskStates', 'TaskTypes'],
+                'Creators',
+                'Modifiers',
+            ],
         ]);
 
         $this->set(compact('taskState'));

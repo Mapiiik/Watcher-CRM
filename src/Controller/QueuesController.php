@@ -35,6 +35,8 @@ class QueuesController extends AppController
         $queue = $this->Queues->get($id, [
             'contain' => [
                 'Services' => ['ServiceTypes'],
+                'Creators',
+                'Modifiers',
             ],
         ]);
 

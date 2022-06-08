@@ -53,7 +53,12 @@ class RemovedIpNetworksController extends AppController
     public function view($id = null)
     {
         $removedIpNetwork = $this->RemovedIpNetworks->get($id, [
-            'contain' => ['Customers', 'Contracts'],
+            'contain' => [
+                'Customers',
+                'Contracts',
+                'Creators',
+                'Modifiers',
+            ],
         ]);
 
         $types_of_use = $this->RemovedIpNetworks->types_of_use;

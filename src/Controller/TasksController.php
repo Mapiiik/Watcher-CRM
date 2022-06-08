@@ -120,7 +120,14 @@ class TasksController extends AppController
     public function view($id = null)
     {
         $task = $this->Tasks->get($id, [
-            'contain' => ['TaskTypes', 'Customers', 'Dealers', 'TaskStates'],
+            'contain' => [
+                'TaskTypes',
+                'Customers',
+                'Dealers',
+                'TaskStates',
+                'Creators',
+                'Modifiers',
+            ],
         ]);
 
         $this->set(compact('task'));

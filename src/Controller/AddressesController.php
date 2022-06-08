@@ -50,7 +50,12 @@ class AddressesController extends AppController
     public function view($id = null)
     {
         $address = $this->Addresses->get($id, [
-            'contain' => ['Customers', 'Countries'],
+            'contain' => [
+                'Customers',
+                'Countries',
+                'Creators',
+                'Modifiers',
+            ],
         ]);
 
         $types = $this->Addresses->types;

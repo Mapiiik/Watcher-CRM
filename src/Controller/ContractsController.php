@@ -71,6 +71,8 @@ class ContractsController extends AppController
                 'IpNetworks',
                 'RemovedIpNetworks',
                 'SoldEquipments' => ['EquipmentTypes'],
+                'Creators',
+                'Modifiers',
             ],
         ]);
 

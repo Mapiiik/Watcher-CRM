@@ -51,7 +51,13 @@ class SoldEquipmentsController extends AppController
     public function view($id = null)
     {
         $soldEquipment = $this->SoldEquipments->get($id, [
-            'contain' => ['Customers', 'Contracts', 'EquipmentTypes'],
+            'contain' => [
+                'Customers',
+                'Contracts',
+                'EquipmentTypes',
+                'Creators',
+                'Modifiers',
+            ],
         ]);
 
         $this->set(compact('soldEquipment'));

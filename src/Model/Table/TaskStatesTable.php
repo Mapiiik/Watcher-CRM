@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
@@ -24,7 +23,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\TaskState[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \App\Model\Entity\TaskState[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
-class TaskStatesTable extends Table
+class TaskStatesTable extends AppTable
 {
     /**
      * Initialize method

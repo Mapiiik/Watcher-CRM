@@ -36,7 +36,12 @@ class CustomerLabelsController extends AppController
     public function view($id = null)
     {
         $customerLabel = $this->CustomerLabels->get($id, [
-            'contain' => ['Labels', 'Customers'],
+            'contain' => [
+                'Labels',
+                'Customers',
+                'Creators',
+                'Modifiers',
+            ],
         ]);
 
         $this->set(compact('customerLabel'));

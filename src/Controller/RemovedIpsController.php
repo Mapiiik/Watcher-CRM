@@ -55,7 +55,12 @@ class RemovedIpsController extends AppController
     public function view($id = null)
     {
         $removedIp = $this->RemovedIps->get($id, [
-            'contain' => ['Customers', 'Contracts'],
+            'contain' => [
+                'Customers',
+                'Contracts',
+                'Creators',
+                'Modifiers',
+            ],
         ]);
 
         $types_of_use = $this->RemovedIps->types_of_use;

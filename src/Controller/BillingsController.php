@@ -51,7 +51,13 @@ class BillingsController extends AppController
     public function view($id = null)
     {
         $billing = $this->Billings->get($id, [
-            'contain' => ['Customers', 'Services', 'Contracts'],
+            'contain' => [
+                'Customers',
+                'Services',
+                'Contracts',
+                'Creators',
+                'Modifiers',
+            ],
         ]);
 
         $this->set(compact('billing'));

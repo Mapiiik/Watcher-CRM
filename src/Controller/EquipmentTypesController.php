@@ -36,6 +36,8 @@ class EquipmentTypesController extends AppController
             'contain' => [
                 'BorrowedEquipments' => ['Customers', 'Contracts'],
                 'SoldEquipments' => ['Customers', 'Contracts'],
+                'Creators',
+                'Modifiers',
             ],
         ]);
 

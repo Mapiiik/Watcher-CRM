@@ -51,7 +51,13 @@ class BorrowedEquipmentsController extends AppController
     public function view($id = null)
     {
         $borrowedEquipment = $this->BorrowedEquipments->get($id, [
-            'contain' => ['Customers', 'Contracts', 'EquipmentTypes'],
+            'contain' => [
+                'Customers',
+                'Contracts',
+                'EquipmentTypes',
+                'Creators',
+                'Modifiers',
+            ],
         ]);
 
         $this->set(compact('borrowedEquipment'));

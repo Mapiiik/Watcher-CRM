@@ -55,7 +55,12 @@ class IpNetworksController extends AppController
     public function view($id = null)
     {
         $ipNetwork = $this->IpNetworks->get($id, [
-            'contain' => ['Customers', 'Contracts'],
+            'contain' => [
+                'Customers',
+                'Contracts',
+                'Creators',
+                'Modifiers',
+            ],
         ]);
 
         $types_of_use = $this->IpNetworks->types_of_use;

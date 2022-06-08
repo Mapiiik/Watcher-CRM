@@ -41,6 +41,8 @@ class ServiceTypesController extends AppController
                     'Brokerages',
                 ],
                 'Services' => ['Queues'],
+                'Creators',
+                'Modifiers',
             ],
         ]);
 

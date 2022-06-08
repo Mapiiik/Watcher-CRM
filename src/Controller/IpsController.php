@@ -55,7 +55,12 @@ class IpsController extends AppController
     public function view($id = null)
     {
         $ip = $this->Ips->get($id, [
-            'contain' => ['Customers', 'Contracts'],
+            'contain' => [
+                'Customers',
+                'Contracts',
+                'Creators',
+                'Modifiers',
+            ],
         ]);
 
         $types_of_use = $this->Ips->types_of_use;

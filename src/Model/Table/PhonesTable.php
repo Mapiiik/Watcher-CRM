@@ -6,7 +6,6 @@ namespace App\Model\Table;
 use ArrayObject;
 use Cake\Event\EventInterface;
 use Cake\ORM\RulesChecker;
-use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
@@ -27,7 +26,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Phone[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \App\Model\Entity\Phone[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
-class PhonesTable extends Table
+class PhonesTable extends AppTable
 {
     /**
      * Initialize method

@@ -29,7 +29,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Task[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class TasksTable extends Table
+class TasksTable extends AppTable
 {
     /**
      * Priorities
