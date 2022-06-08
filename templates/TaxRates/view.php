@@ -31,16 +31,16 @@
                     <td><?= h($taxRate->name) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($taxRate->id) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Vat Rate') ?></th>
                     <td><?= $this->Number->format($taxRate->vat_rate) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Reverse Charge') ?></th>
                     <td><?= $taxRate->reverse_charge ? __('Yes') : __('No'); ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Id') ?></th>
+                    <td><?= $this->Number->format($taxRate->id) ?></td>
                 </tr>
             </table>
             <div class="related">
@@ -50,78 +50,53 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <th><?= __('Dealer') ?></th>
+                            <th><?= __('Company') ?></th>
                             <th><?= __('Title') ?></th>
                             <th><?= __('First Name') ?></th>
                             <th><?= __('Last Name') ?></th>
                             <th><?= __('Suffix') ?></th>
-                            <th><?= __('Company') ?></th>
-                            <th><?= __('Tax Rate Id') ?></th>
-                            <th><?= __('Bank Name') ?></th>
-                            <th><?= __('Bank Account') ?></th>
-                            <th><?= __('Bank Code') ?></th>
-                            <th><?= __('Modified By') ?></th>
-                            <th><?= __('Modified') ?></th>
-                            <th><?= __('Created By') ?></th>
-                            <th><?= __('Created') ?></th>
+                            <th><?= __('Date Of Birth') ?></th>
                             <th><?= __('Ic') ?></th>
                             <th><?= __('Dic') ?></th>
-                            <th><?= __('Www') ?></th>
-                            <th><?= __('Internal Note') ?></th>
-                            <th><?= __('Invoice Delivery Type') ?></th>
-                            <th><?= __('Note') ?></th>
-                            <th><?= __('Identity Card Number') ?></th>
-                            <th><?= __('Date Of Birth') ?></th>
-                            <th><?= __('Termination Date') ?></th>
-                            <th><?= __('Agree Gdpr') ?></th>
-                            <th><?= __('Agree Mailing Outages') ?></th>
-                            <th><?= __('Agree Mailing Commercial') ?></th>
-                            <th><?= __('Agree Mailing Billing') ?></th>
+                            <th><?= __('Contracts') ?></th>
+                            <th><?= __('Ips') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($taxRate->customers as $customers) : ?>
+                        <?php foreach ($taxRate->customers as $customer) : ?>
                         <tr>
-                            <td><?= h($customers->id) ?></td>
-                            <td><?= h($customers->dealer) ?></td>
-                            <td><?= h($customers->title) ?></td>
-                            <td><?= h($customers->first_name) ?></td>
-                            <td><?= h($customers->last_name) ?></td>
-                            <td><?= h($customers->suffix) ?></td>
-                            <td><?= h($customers->company) ?></td>
-                            <td><?= h($customers->tax_rate_id) ?></td>
-                            <td><?= h($customers->bank_name) ?></td>
-                            <td><?= h($customers->bank_account) ?></td>
-                            <td><?= h($customers->bank_code) ?></td>
-                            <td><?= h($customers->modified_by) ?></td>
-                            <td><?= h($customers->modified) ?></td>
-                            <td><?= h($customers->created_by) ?></td>
-                            <td><?= h($customers->created) ?></td>
-                            <td><?= h($customers->ic) ?></td>
-                            <td><?= h($customers->dic) ?></td>
-                            <td><?= h($customers->www) ?></td>
-                            <td><?= h($customers->internal_note) ?></td>
-                            <td><?= h($customers->invoice_delivery_type) ?></td>
-                            <td><?= h($customers->note) ?></td>
-                            <td><?= h($customers->identity_card_number) ?></td>
-                            <td><?= h($customers->date_of_birth) ?></td>
-                            <td><?= h($customers->termination_date) ?></td>
-                            <td><?= h($customers->agree_gdpr) ?></td>
-                            <td><?= h($customers->agree_mailing_outages) ?></td>
-                            <td><?= h($customers->agree_mailing_commercial) ?></td>
-                            <td><?= h($customers->agree_mailing_billing) ?></td>
+                            <td><?= $this->Number->format($customer->id) ?></td>
+                            <td><?= h($customer->company) ?></td>
+                            <td><?= h($customer->title) ?></td>
+                            <td><?= h($customer->first_name) ?></td>
+                            <td><?= h($customer->last_name) ?></td>
+                            <td><?= h($customer->suffix) ?></td>
+                            <td><?= h($customer->date_of_birth) ?></td>
+                            <td><?= h($customer->ic) ?></td>
+                            <td><?= h($customer->dic) ?></td>
+                            <td>
+                                <?php foreach ($customer->contracts as $contract) {
+                                    echo h($contract->number) . '<br />';
+                                } ?>
+                            </td>
+                            <td>
+                                <?php foreach ($customer->ips as $ip) {
+                                    echo h($ip->ip) . '<br />';
+                                } ?>
+                            </td>
                             <td class="actions">
                                 <?= $this->Html->link(
                                     __('View'),
-                                    ['controller' => 'Customers', 'action' => 'view', $customers->id]
+                                    ['controller' => 'Customers', 'action' => 'view', $customer->id]
                                 ) ?>
                                 <?= $this->Html->link(
                                     __('Edit'),
-                                    ['controller' => 'Customers', 'action' => 'edit', $customers->id]
+                                    ['controller' => 'Customers', 'action' => 'edit', $customer->id],
+                                    ['class' => 'win-link']
                                 ) ?>
                                 <?= $this->Form->postLink(
                                     __('Delete'),
-                                    ['controller' => 'Customers', 'action' => 'delete', $customers->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $customers->id)]
+                                    ['controller' => 'Customers', 'action' => 'delete', $customer->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id)]
                                 ) ?>
                             </td>
                         </tr>

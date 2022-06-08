@@ -33,7 +33,13 @@ class TaxRatesController extends AppController
     public function view($id = null)
     {
         $taxRate = $this->TaxRates->get($id, [
-            'contain' => ['Customers'],
+            'contain' => [
+                'Customers' => [
+                    'TaxRates',
+                    'Contracts',
+                    'Ips' => ['Contracts'],
+                ],
+            ],
         ]);
 
         $this->set(compact('taxRate'));
