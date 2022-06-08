@@ -33,7 +33,15 @@ class ServiceTypesController extends AppController
     public function view($id = null)
     {
         $serviceType = $this->ServiceTypes->get($id, [
-            'contain' => ['Contracts', 'Services'],
+            'contain' => [
+                'Contracts' => [
+                    'Customers',
+                    'InstallationAddresses',
+                    'InstallationTechnicians',
+                    'Brokerages',
+                ],
+                'Services' => ['Queues'],
+            ],
         ]);
 
         $this->set(compact('serviceType'));

@@ -94,40 +94,41 @@
                 <h4><?= __('Related Services') ?></h4>
                 <?php if (!empty($serviceType->services)) : ?>
                 <div class="table-responsive">
-                    <table>
+                <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <th><?= __('Created') ?></th>
-                            <th><?= __('Modified') ?></th>
                             <th><?= __('Name') ?></th>
                             <th><?= __('Price') ?></th>
-                            <th><?= __('Service Type Id') ?></th>
-                            <th><?= __('Queue Id') ?></th>
+                            <th><?= __('Queue') ?></th>
+                            <th><?= __('Not For New Customers') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($serviceType->services as $services) : ?>
+                        <?php foreach ($serviceType->services as $service) : ?>
                         <tr>
-                            <td><?= h($services->id) ?></td>
-                            <td><?= h($services->created) ?></td>
-                            <td><?= h($services->modified) ?></td>
-                            <td><?= h($services->name) ?></td>
-                            <td><?= h($services->price) ?></td>
-                            <td><?= h($services->service_type_id) ?></td>
-                            <td><?= h($services->queue_id) ?></td>
+                            <td><?= $this->Number->format($service->id) ?></td>
+                            <td><?= h($service->name) ?></td>
+                            <td><?= $this->Number->currency($service->price) ?></td>
+                            <td>
+                                <?= $service->has('queue') ? $this->Html->link(
+                                    $service->queue->name,
+                                    ['controller' => 'Queues', 'action' => 'view', $service->queue->id]
+                                ) : '' ?>
+                            </td>
+                            <td><?= $service->not_for_new_customers ? __('Yes') : __('No'); ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
-                                    ['controller' => 'Services', 'action' => 'view', $services->id]
+                                    ['controller' => 'Services', 'action' => 'view', $service->id]
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __('Edit'),
-                                    ['controller' => 'Services', 'action' => 'edit', $services->id],
+                                    ['controller' => 'Services', 'action' => 'edit', $service->id],
                                     ['class' => 'win-link']
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
                                     __('Delete'),
-                                    ['controller' => 'Services', 'action' => 'delete', $services->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $services->id)]
+                                    ['controller' => 'Services', 'action' => 'delete', $service->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $service->id)]
                                 ) ?>
                             </td>
                         </tr>
@@ -143,63 +144,71 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <th><?= __('Customer Id') ?></th>
-                            <th><?= __('Installation Address Id') ?></th>
+                            <th><?= __('Customer') ?></th>
                             <th><?= __('Number') ?></th>
-                            <th><?= __('Service Type Id') ?></th>
-                            <th><?= __('Created') ?></th>
-                            <th><?= __('Created By') ?></th>
-                            <th><?= __('Modified') ?></th>
-                            <th><?= __('Modified By') ?></th>
-                            <th><?= __('Note') ?></th>
-                            <th><?= __('Obligation Until') ?></th>
-                            <th><?= __('Vip') ?></th>
-                            <th><?= __('Installation Technician Id') ?></th>
-                            <th><?= __('Brokerage Id') ?></th>
-                            <th><?= __('Installation Date') ?></th>
-                            <th><?= __('Access Description') ?></th>
-                            <th><?= __('Valid From') ?></th>
-                            <th><?= __('Valid Until') ?></th>
+                            <th><?= __('Installation Address') ?></th>
                             <th><?= __('Conclusion Date') ?></th>
                             <th><?= __('Number Of Amendments') ?></th>
+                            <th><?= __('Valid From') ?></th>
+                            <th><?= __('Valid Until') ?></th>
+                            <th><?= __('Obligation Until') ?></th>
+                            <th><?= __('Vip') ?></th>
+                            <th><?= __('Access Point') ?></th>
+                            <th><?= __('Installation Date') ?></th>
+                            <th><?= __('Installation Technician') ?></th>
+                            <th><?= __('Brokerage') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($serviceType->contracts as $contracts) : ?>
+                        <?php foreach ($serviceType->contracts as $contract) : ?>
                         <tr>
-                            <td><?= h($contracts->id) ?></td>
-                            <td><?= h($contracts->customer_id) ?></td>
-                            <td><?= h($contracts->installation_address_id) ?></td>
-                            <td><?= h($contracts->number) ?></td>
-                            <td><?= h($contracts->service_type_id) ?></td>
-                            <td><?= h($contracts->created) ?></td>
-                            <td><?= h($contracts->created_by) ?></td>
-                            <td><?= h($contracts->modified) ?></td>
-                            <td><?= h($contracts->modified_by) ?></td>
-                            <td><?= h($contracts->note) ?></td>
-                            <td><?= h($contracts->obligation_until) ?></td>
-                            <td><?= h($contracts->vip) ?></td>
-                            <td><?= h($contracts->installation_technician_id) ?></td>
-                            <td><?= h($contracts->brokerage_id) ?></td>
-                            <td><?= h($contracts->installation_date) ?></td>
-                            <td><?= h($contracts->access_description) ?></td>
-                            <td><?= h($contracts->valid_from) ?></td>
-                            <td><?= h($contracts->valid_until) ?></td>
-                            <td><?= h($contracts->conclusion_date) ?></td>
-                            <td><?= h($contracts->number_of_amendments) ?></td>
+                            <td><?= $this->Number->format($contract->id) ?></td>
+                            <td>
+                                <?= $contract->has('customer') ? $this->Html->link(
+                                    $contract->customer->name,
+                                    ['controller' => 'Customers', 'action' => 'view', $contract->customer->id]
+                                ) : '' ?>
+                            </td>
+                            <td><?= h($contract->number) ?></td>
+                            <td>
+                                <?= $contract->has('installation_address') ? $this->Html->link(
+                                    $contract->installation_address->full_address,
+                                    ['controller' => 'Addresses', 'action' => 'view', $contract->installation_address->id]
+                                ) : '' ?>
+                            </td>
+                            <td><?= h($contract->conclusion_date) ?></td>
+                            <td><?= $this->Number->format($contract->number_of_amendments) ?></td>
+                            <td><?= h($contract->valid_from) ?></td>
+                            <td><?= h($contract->valid_until) ?></td>
+                            <td><?= h($contract->obligation_until) ?></td>
+                            <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
+                            <td><?= $contract->has('access_point') ? h($contract->access_point->name) : '' ?></td>
+                            <td><?= h($contract->installation_date) ?></td>
+                            <td>
+                                <?= $contract->has('installation_technician') ? $this->Html->link(
+                                    $contract->installation_technician->name,
+                                    ['controller' => 'Customers', 'action' => 'view', $contract->installation_technician->id]
+                                ) : '' ?>
+                            </td>
+                            <td>
+                                <?= $contract->has('brokerage') ? $this->Html->link(
+                                    $contract->brokerage->name,
+                                    ['controller' => 'Brokerages', 'action' => 'view', $contract->brokerage->id]
+                                ) : '' ?>
+                            </td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
-                                    ['controller' => 'Contracts', 'action' => 'view', $contracts->id]
+                                    ['controller' => 'Contracts', 'action' => 'view', $contract->id]
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __('Edit'),
-                                    ['controller' => 'Contracts', 'action' => 'edit', $contracts->id],
+                                    ['controller' => 'Contracts', 'action' => 'edit', $contract->id],
                                     ['class' => 'win-link']
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
                                     __('Delete'),
-                                    ['controller' => 'Contracts', 'action' => 'delete', $contracts->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $contracts->id)]
+                                    ['controller' => 'Contracts', 'action' => 'delete', $contract->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $contract->id)]
                                 ) ?>
                             </td>
                         </tr>
