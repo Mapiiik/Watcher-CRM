@@ -53,6 +53,38 @@
                     <th><?= __('Id') ?></th>
                     <td><?= $this->Number->format($email->id) ?></td>
                 </tr>
+                <tr>
+                    <th><?= __('Created') ?></th>
+                    <td><?= h($email->created) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Created By') ?></th>
+                    <td><?= $email->has('creator') ? $this->Html->link(
+                        $email->creator->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $email->creator->id,
+                        ]
+                    ) : '' ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified') ?></th>
+                    <td><?= h($email->modified) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified By') ?></th>
+                    <td><?= $email->has('modifier') ? $this->Html->link(
+                        $email->modifier->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $email->modifier->id,
+                        ]
+                    ) : '' ?></td>
+                </tr>
             </table>
         </div>
     </div>

@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\TaskState $taskState
+ * @var string[]|\Cake\Collection\CollectionInterface $priorities
  */
 ?>
 <div class="row">
@@ -41,6 +42,38 @@
                 <tr>
                     <th><?= __('Id') ?></th>
                     <td><?= $this->Number->format($taskState->id) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Created') ?></th>
+                    <td><?= h($taskState->created) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Created By') ?></th>
+                    <td><?= $taskState->has('creator') ? $this->Html->link(
+                        $taskState->creator->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $taskState->creator->id,
+                        ]
+                    ) : '' ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified') ?></th>
+                    <td><?= h($taskState->modified) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified By') ?></th>
+                    <td><?= $taskState->has('modifier') ? $this->Html->link(
+                        $taskState->modifier->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $taskState->modifier->id,
+                        ]
+                    ) : '' ?></td>
                 </tr>
             </table>
             <div class="related">

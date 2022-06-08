@@ -80,7 +80,15 @@
                 </tr>
                 <tr>
                     <th><?= __('Created By') ?></th>
-                    <td><?= $this->Number->format($borrowedEquipment->created_by) ?></td>
+                    <td><?= $borrowedEquipment->has('creator') ? $this->Html->link(
+                        $borrowedEquipment->creator->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $borrowedEquipment->creator->id,
+                        ]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -88,7 +96,15 @@
                 </tr>
                 <tr>
                     <th><?= __('Modified By') ?></th>
-                    <td><?= $this->Number->format($borrowedEquipment->modified_by) ?></td>
+                    <td><?= $borrowedEquipment->has('modifier') ? $this->Html->link(
+                        $borrowedEquipment->modifier->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $borrowedEquipment->modifier->id,
+                        ]
+                    ) : '' ?></td>
                 </tr>
             </table>
         </div>

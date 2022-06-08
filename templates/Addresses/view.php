@@ -2,6 +2,8 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Address $address
+ * @var string[]|\Cake\Collection\CollectionInterface $types
+ * @var string[]|\Cake\Collection\CollectionInterface $number_types
  */
 ?>
 <div class="row">
@@ -146,7 +148,15 @@
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $this->Number->format($address->created_by) ?></td>
+                            <td><?= $address->has('creator') ? $this->Html->link(
+                                $address->creator->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $address->creator->id,
+                                ]
+                            ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Modified') ?></th>
@@ -154,7 +164,15 @@
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $this->Number->format($address->modified_by) ?></td>
+                            <td><?= $address->has('modifier') ? $this->Html->link(
+                                $address->modifier->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $address->modifier->id,
+                                ]
+                            ) : '' ?></td>
                         </tr>
                     </table>
                 </div>

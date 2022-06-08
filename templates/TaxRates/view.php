@@ -42,6 +42,38 @@
                     <th><?= __('Id') ?></th>
                     <td><?= $this->Number->format($taxRate->id) ?></td>
                 </tr>
+                <tr>
+                    <th><?= __('Created') ?></th>
+                    <td><?= h($taxRate->created) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Created By') ?></th>
+                    <td><?= $taxRate->has('creator') ? $this->Html->link(
+                        $taxRate->creator->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $taxRate->creator->id,
+                        ]
+                    ) : '' ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified') ?></th>
+                    <td><?= h($taxRate->modified) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified By') ?></th>
+                    <td><?= $taxRate->has('modifier') ? $this->Html->link(
+                        $taxRate->modifier->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $taxRate->modifier->id,
+                        ]
+                    ) : '' ?></td>
+                </tr>
             </table>
             <div class="related">
                 <h4><?= __('Related Customers') ?></h4>

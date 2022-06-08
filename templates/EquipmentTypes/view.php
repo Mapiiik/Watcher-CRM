@@ -49,6 +49,38 @@
                     <th><?= __('Id') ?></th>
                     <td><?= $this->Number->format($equipmentType->id) ?></td>
                 </tr>
+                <tr>
+                    <th><?= __('Created') ?></th>
+                    <td><?= h($equipmentType->created) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Created By') ?></th>
+                    <td><?= $equipmentType->has('creator') ? $this->Html->link(
+                        $equipmentType->creator->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $equipmentType->creator->id,
+                        ]
+                    ) : '' ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified') ?></th>
+                    <td><?= h($equipmentType->modified) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified By') ?></th>
+                    <td><?= $equipmentType->has('modifier') ? $this->Html->link(
+                        $equipmentType->modifier->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $equipmentType->modifier->id,
+                        ]
+                    ) : '' ?></td>
+                </tr>
             </table>
             <div class="related">
                 <h4><?= __('Related Borrowed Equipments') ?></h4>

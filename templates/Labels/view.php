@@ -50,6 +50,38 @@
                     <th><?= __('Id') ?></th>
                     <td><?= $this->Number->format($label->id) ?></td>
                 </tr>
+                <tr>
+                    <th><?= __('Created') ?></th>
+                    <td><?= h($label->created) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Created By') ?></th>
+                    <td><?= $label->has('creator') ? $this->Html->link(
+                        $label->creator->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $label->creator->id,
+                        ]
+                    ) : '' ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified') ?></th>
+                    <td><?= h($label->modified) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified By') ?></th>
+                    <td><?= $label->has('modifier') ? $this->Html->link(
+                        $label->modifier->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $label->modifier->id,
+                        ]
+                    ) : '' ?></td>
+                </tr>
             </table>
             <div class="text">
                 <strong><?= __('Dynamic Sql') ?></strong>

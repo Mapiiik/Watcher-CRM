@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Login $login
+ * @var string[]|\Cake\Collection\CollectionInterface $customers
  */
 ?>
 <div class="row">

@@ -66,6 +66,38 @@
                     <th><?= __('Id') ?></th>
                     <td><?= $this->Number->format($queue->id) ?></td>
                 </tr>
+                <tr>
+                    <th><?= __('Created') ?></th>
+                    <td><?= h($queue->created) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Created By') ?></th>
+                    <td><?= $queue->has('creator') ? $this->Html->link(
+                        $queue->creator->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $queue->creator->id,
+                        ]
+                    ) : '' ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified') ?></th>
+                    <td><?= h($queue->modified) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified By') ?></th>
+                    <td><?= $queue->has('modifier') ? $this->Html->link(
+                        $queue->modifier->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $queue->modifier->id,
+                        ]
+                    ) : '' ?></td>
+                </tr>
             </table>
             <div class="related">
                 <h4><?= __('Related Services') ?></h4>

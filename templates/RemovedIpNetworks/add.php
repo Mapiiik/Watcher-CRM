@@ -2,8 +2,9 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\RemovedIpNetwork $removedIpNetwork
- * @var \Cake\Collection\CollectionInterface|string[] $customers
- * @var \Cake\Collection\CollectionInterface|string[] $contracts
+ * @var string[]|\Cake\Collection\CollectionInterface $customers
+ * @var string[]|\Cake\Collection\CollectionInterface $contracts
+ * @var string[]|\Cake\Collection\CollectionInterface $types_of_use
  */
 ?>
 <div class="row">

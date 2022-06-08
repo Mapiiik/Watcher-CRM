@@ -4,6 +4,7 @@
  * @var \App\Model\Entity\RemovedIpNetwork $removedIpNetwork
  * @var string[]|\Cake\Collection\CollectionInterface $customers
  * @var string[]|\Cake\Collection\CollectionInterface $contracts
+ * @var string[]|\Cake\Collection\CollectionInterface $types_of_use
  */
 ?>
 <div class="row">

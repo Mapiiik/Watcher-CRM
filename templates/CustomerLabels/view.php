@@ -61,7 +61,31 @@
                 </tr>
                 <tr>
                     <th><?= __('Created By') ?></th>
-                    <td><?= $this->Number->format($customerLabel->created_by) ?></td>
+                    <td><?= $customerLabel->has('creator') ? $this->Html->link(
+                        $customerLabel->creator->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $customerLabel->creator->id,
+                        ]
+                    ) : '' ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified') ?></th>
+                    <td><?= h($customerLabel->modified) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified By') ?></th>
+                    <td><?= $customerLabel->has('modifier') ? $this->Html->link(
+                        $customerLabel->modifier->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $customerLabel->modifier->id,
+                        ]
+                    ) : '' ?></td>
                 </tr>
             </table>
             <div class="text">

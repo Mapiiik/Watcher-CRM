@@ -60,6 +60,7 @@ class RemovedIpsController extends AppController
                 'Contracts',
                 'Creators',
                 'Modifiers',
+                'Removers',
             ],
         ]);
 

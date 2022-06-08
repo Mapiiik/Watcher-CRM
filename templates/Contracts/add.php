@@ -2,6 +2,10 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Contract $contract
+ * @var string[]|\Cake\Collection\CollectionInterface $customers
+ * @var string[]|\Cake\Collection\CollectionInterface $serviceTypes
+ * @var string[]|\Cake\Collection\CollectionInterface $installationAddresses
+ * @var string[]|\Cake\Collection\CollectionInterface $accessPoints
  */
 
 use Cake\I18n\FrozenDate;

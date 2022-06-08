@@ -13,10 +13,13 @@ use Cake\ORM\Entity;
  *
  * @property \Cake\I18n\FrozenTime|null $created
  * @property int|null $created_by
+ * @property \CakeDC\Users\Model\Entity\User|null $creator
  * @property \Cake\I18n\FrozenTime|null $modified
  * @property int|null $modified_by
+ * @property \CakeDC\Users\Model\Entity\User|null $modifier
  * @property \Cake\I18n\FrozenTime|null $removed
  * @property int|null $removed_by
+ * @property \CakeDC\Users\Model\Entity\User|null $remover
  * @property int $id
  * @property string $ip
  * @property int $customer_id

@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Login[]|\Cake\Collection\CollectionInterface $logins
+ * @var string[]|\Cake\Collection\CollectionInterface $rights
  */
 ?>
 <div class="logins index content">

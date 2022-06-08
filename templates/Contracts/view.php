@@ -2,6 +2,8 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Contract $contract
+ * @var string[]|\Cake\Collection\CollectionInterface $ip_address_types_of_use
+ * @var string[]|\Cake\Collection\CollectionInterface $ip_network_types_of_use
  */
 
 use Cake\I18n\Number;
@@ -154,7 +156,15 @@ use Cake\I18n\Number;
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $this->Number->format($contract->created_by) ?></td>
+                            <td><?= $contract->has('creator') ? $this->Html->link(
+                                $contract->creator->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $contract->creator->id,
+                                ]
+                            ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Modified') ?></th>
@@ -162,7 +172,15 @@ use Cake\I18n\Number;
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $this->Number->format($contract->modified_by) ?></td>
+                            <td><?= $contract->has('modifier') ? $this->Html->link(
+                                $contract->modifier->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $contract->modifier->id,
+                                ]
+                            ) : '' ?></td>
                         </tr>
                     </table>
                 </div>

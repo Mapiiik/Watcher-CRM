@@ -1,4 +1,11 @@
 <?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\Customer $customer
+ * @var string|null $type
+ * @var \stdClass|null $technical_details
+ */
+
 declare(strict_types=1);
 
 namespace App\View;

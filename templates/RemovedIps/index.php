@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\RemovedIp[]|\Cake\Collection\CollectionInterface $removedIps
+ * @var string[]|\Cake\Collection\CollectionInterface $types_of_use
  */
 ?>
 <div class="removedIps index content">
@@ -15,6 +16,7 @@
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('contract_id') ?></th>
                     <th><?= $this->Paginator->sort('ip') ?></th>
+                    <th><?= $this->Paginator->sort('type_of_use') ?></th>
                     <th><?= $this->Paginator->sort('removed') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
@@ -36,6 +38,7 @@
                         ) : '' ?>
                     </td>
                     <td><?= h($removedIp->ip) ?></td>
+                    <td><?= h($types_of_use[$removedIp->type_of_use]) ?></td>
                     <td><?= h($removedIp->removed) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $removedIp->id]) ?>

@@ -12,8 +12,10 @@ use Cake\ORM\Entity;
  *
  * @property \Cake\I18n\FrozenTime|null $created
  * @property int|null $created_by
+ * @property \CakeDC\Users\Model\Entity\User|null $creator
  * @property \Cake\I18n\FrozenTime|null $modified
  * @property int|null $modified_by
+ * @property \CakeDC\Users\Model\Entity\User|null $modifier
  * @property int $id
  * @property int $customer_id
  * @property int|null $installation_address_id
@@ -31,6 +33,8 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenDate|null $conclusion_date
  * @property int|null $number_of_amendments
  * @property int|null $minimum_duration
+ * @property int|null $activation_fee
+ * @property int|null $activation_fee_with_obligation
  * @property int|null $activation_fee_sum
  * @property int|null $activation_fee_with_obligation_sum
  * @property string|null $number_of_the_contract_to_be_terminated

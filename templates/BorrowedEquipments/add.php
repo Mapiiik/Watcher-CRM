@@ -2,6 +2,9 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\BorrowedEquipment $borrowedEquipment
+ * @var string[]|\Cake\Collection\CollectionInterface $customers
+ * @var string[]|\Cake\Collection\CollectionInterface $contracts
+ * @var string[]|\Cake\Collection\CollectionInterface $equipmentTypes
  */
 ?>
 <div class="row">

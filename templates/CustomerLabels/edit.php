@@ -2,6 +2,8 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\CustomerLabel $customerLabel
+ * @var string[]|\Cake\Collection\CollectionInterface $labels
+ * @var string[]|\Cake\Collection\CollectionInterface $customers
  */
 ?>
 <div class="row">

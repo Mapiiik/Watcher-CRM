@@ -10,8 +10,10 @@ use Cake\ORM\Entity;
  *
  * @property \Cake\I18n\FrozenTime|null $created
  * @property int|null $created_by
+ * @property \CakeDC\Users\Model\Entity\User|null $creator
  * @property \Cake\I18n\FrozenTime|null $modified
  * @property int|null $modified_by
+ * @property \CakeDC\Users\Model\Entity\User|null $modifier
  * @property int $id
  * @property int $customer_id
  * @property string|null $email

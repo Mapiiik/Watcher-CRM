@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\RemovedIp $removedIp
+ * @var string[]|\Cake\Collection\CollectionInterface $types_of_use
  */
 ?>
 <div class="row">
@@ -74,12 +75,51 @@
                     <td><?= $this->Number->format($removedIp->id) ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('Created') ?></th>
+                    <td><?= h($removedIp->created) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Created By') ?></th>
+                    <td><?= $removedIp->has('creator') ? $this->Html->link(
+                        $removedIp->creator->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $removedIp->creator->id,
+                        ]
+                    ) : '' ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified') ?></th>
+                    <td><?= h($removedIp->modified) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified By') ?></th>
+                    <td><?= $removedIp->has('modifier') ? $this->Html->link(
+                        $removedIp->modifier->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $removedIp->modifier->id,
+                        ]
+                    ) : '' ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Removed') ?></th>
                     <td><?= h($removedIp->removed) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Removed By') ?></th>
-                    <td><?= $this->Number->format($removedIp->removed_by) ?></td>
+                    <td><?= $removedIp->has('remover') ? $this->Html->link(
+                        $removedIp->remover->username,
+                        [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $removedIp->remover->id]
+                    ) : '' ?></td>
                 </tr>
             </table>
             <div class="text">

@@ -58,6 +58,7 @@ class RemovedIpNetworksController extends AppController
                 'Contracts',
                 'Creators',
                 'Modifiers',
+                'Removers',
             ],
         ]);
 

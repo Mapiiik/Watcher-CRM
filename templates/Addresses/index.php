@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Address[]|\Cake\Collection\CollectionInterface $addresses
+ * @var string[]|\Cake\Collection\CollectionInterface $types
  */
 ?>
 <div class="addresses index content">

@@ -2,6 +2,9 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Address $address
+ * @var string[]|\Cake\Collection\CollectionInterface $customers
+ * @var string[]|\Cake\Collection\CollectionInterface $number_types
+ * @var string[]|\Cake\Collection\CollectionInterface $countries
  */
 ?>
 <div class="row">

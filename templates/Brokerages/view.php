@@ -88,10 +88,6 @@
                             <th><?= __('Installation Address Id') ?></th>
                             <th><?= __('Number') ?></th>
                             <th><?= __('Service Type Id') ?></th>
-                            <th><?= __('Created') ?></th>
-                            <th><?= __('Created By') ?></th>
-                            <th><?= __('Modified') ?></th>
-                            <th><?= __('Modified By') ?></th>
                             <th><?= __('Note') ?></th>
                             <th><?= __('Obligation Until') ?></th>
                             <th><?= __('Vip') ?></th>
@@ -112,10 +108,6 @@
                             <td><?= h($contracts->installation_address_id) ?></td>
                             <td><?= h($contracts->number) ?></td>
                             <td><?= h($contracts->service_type_id) ?></td>
-                            <td><?= h($contracts->created) ?></td>
-                            <td><?= h($contracts->created_by) ?></td>
-                            <td><?= h($contracts->modified) ?></td>
-                            <td><?= h($contracts->modified_by) ?></td>
                             <td><?= h($contracts->note) ?></td>
                             <td><?= h($contracts->obligation_until) ?></td>
                             <td><?= h($contracts->vip) ?></td>

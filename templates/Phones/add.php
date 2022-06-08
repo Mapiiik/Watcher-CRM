@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Phone $phone
+ * @var string[]|\Cake\Collection\CollectionInterface $customers
  */
 ?>
 <div class="row">

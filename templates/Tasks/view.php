@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Task $task
+ * @var string[]|\Cake\Collection\CollectionInterface $priorities
  */
 ?>
 <div class="row">
@@ -102,7 +103,15 @@
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $this->Number->format($task->created_by) ?></td>
+                            <td><?= $task->has('creator') ? $this->Html->link(
+                                $task->creator->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $task->creator->id,
+                                ]
+                            ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Modified') ?></th>
@@ -110,7 +119,15 @@
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $this->Number->format($task->modified_by) ?></td>
+                            <td><?= $task->has('modifier') ? $this->Html->link(
+                                $task->modifier->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $task->modifier->id,
+                                ]
+                            ) : '' ?></td>
                         </tr>
                     </table>
                 </div>

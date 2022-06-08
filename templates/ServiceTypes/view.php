@@ -79,7 +79,15 @@
                 </tr>
                 <tr>
                     <th><?= __('Created By') ?></th>
-                    <td><?= $this->Number->format($serviceType->created_by) ?></td>
+                    <td><?= $serviceType->has('creator') ? $this->Html->link(
+                        $serviceType->creator->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $serviceType->creator->id,
+                        ]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -87,7 +95,15 @@
                 </tr>
                 <tr>
                     <th><?= __('Modified By') ?></th>
-                    <td><?= $this->Number->format($serviceType->modified_by) ?></td>
+                    <td><?= $serviceType->has('modifier') ? $this->Html->link(
+                        $serviceType->modifier->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $serviceType->modifier->id,
+                        ]
+                    ) : '' ?></td>
                 </tr>
             </table>
             <div class="related">
@@ -172,7 +188,11 @@
                             <td>
                                 <?= $contract->has('installation_address') ? $this->Html->link(
                                     $contract->installation_address->full_address,
-                                    ['controller' => 'Addresses', 'action' => 'view', $contract->installation_address->id]
+                                    [
+                                        'controller' => 'Addresses',
+                                        'action' => 'view',
+                                        $contract->installation_address->id,
+                                    ]
                                 ) : '' ?>
                             </td>
                             <td><?= h($contract->conclusion_date) ?></td>
@@ -186,7 +206,11 @@
                             <td>
                                 <?= $contract->has('installation_technician') ? $this->Html->link(
                                     $contract->installation_technician->name,
-                                    ['controller' => 'Customers', 'action' => 'view', $contract->installation_technician->id]
+                                    [
+                                        'controller' => 'Customers',
+                                        'action' => 'view',
+                                        $contract->installation_technician->id,
+                                    ]
                                 ) : '' ?>
                             </td>
                             <td>

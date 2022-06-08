@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Country $country
+ * @var string[]|\Cake\Collection\CollectionInterface $address_types
  */
 ?>
 <div class="row">
@@ -33,6 +34,38 @@
                 <tr>
                     <th><?= __('Id') ?></th>
                     <td><?= $this->Number->format($country->id) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Created') ?></th>
+                    <td><?= h($country->created) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Created By') ?></th>
+                    <td><?= $country->has('creator') ? $this->Html->link(
+                        $country->creator->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                             $country->creator->id,
+                        ]
+                    ) : '' ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified') ?></th>
+                    <td><?= h($country->modified) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified By') ?></th>
+                    <td><?= $country->has('modifier') ? $this->Html->link(
+                        $country->modifier->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $country->modifier->id,
+                        ]
+                    ) : '' ?></td>
                 </tr>
             </table>
             <div class="related">

@@ -2,6 +2,11 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Customer $customer
+ * @var string[]|\Cake\Collection\CollectionInterface $invoice_delivery_types
+ * @var string[]|\Cake\Collection\CollectionInterface $address_types
+ * @var string[]|\Cake\Collection\CollectionInterface $login_rights
+ * @var string[]|\Cake\Collection\CollectionInterface $ip_address_types_of_use
+ * @var string[]|\Cake\Collection\CollectionInterface $ip_network_types_of_use
  */
 
 use Cake\I18n\Number;
@@ -144,7 +149,15 @@ use Cake\I18n\Number;
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $this->Number->format($customer->created_by) ?></td>
+                            <td><?= $customer->has('creator') ? $this->Html->link(
+                                $customer->creator->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $customer->creator->id,
+                                ]
+                            ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Modified') ?></th>
@@ -152,8 +165,17 @@ use Cake\I18n\Number;
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $this->Number->format($customer->modified_by) ?></td>
+                            <td><?= $customer->has('modifier') ? $this->Html->link(
+                                $customer->modifier->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $customer->modifier->id,
+                                ]
+                            ) : '' ?></td>
                         </tr>
+
                     </table>
                 </div>
             </div>

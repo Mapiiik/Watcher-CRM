@@ -10,6 +10,7 @@ use Cake\ORM\Table;
  *
  * @property \CakeDC\Users\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Creators
  * @property \CakeDC\Users\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Modifiers
+ * @property \CakeDC\Users\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Removers
  */
 class AppTable extends Table
 {
@@ -33,6 +34,12 @@ class AppTable extends Table
             $this->belongsTo('Modifiers', [
                 'className' => 'CakeDC/Users.Users',
                 'foreignKey' => 'modified_by',
+            ]);
+        }
+        if ($this->hasField('removed_by')) {
+            $this->belongsTo('Removers', [
+                'className' => 'CakeDC/Users.Users',
+                'foreignKey' => 'removed_by',
             ]);
         }
     }

@@ -2,6 +2,12 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Task $task
+ * @var string[]|\Cake\Collection\CollectionInterface $taskTypes
+ * @var string[]|\Cake\Collection\CollectionInterface $taskStates
+ * @var string[]|\Cake\Collection\CollectionInterface $priorities
+ * @var string[]|\Cake\Collection\CollectionInterface $customers
+ * @var string[]|\Cake\Collection\CollectionInterface $dealers
+ * @var string[]|\Cake\Collection\CollectionInterface $accessPoints
  */
 ?>
 <div class="row">

@@ -47,7 +47,7 @@
                 <tr>
                     <th><?= __('Contract') ?></th>
                     <td><?= $soldEquipment->has('contract') ? $this->Html->link(
-                        $soldEquipment->contract->id,
+                        $soldEquipment->contract->number,
                         ['controller' => 'Contracts', 'action' => 'view', $soldEquipment->contract->id]
                     ) : '' ?></td>
                 </tr>
@@ -71,20 +71,36 @@
                     <td><?= $this->Number->format($soldEquipment->id) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Created By') ?></th>
-                    <td><?= $this->Number->format($soldEquipment->created_by) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified By') ?></th>
-                    <td><?= $this->Number->format($soldEquipment->modified_by) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Created') ?></th>
                     <td><?= h($soldEquipment->created) ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('Created By') ?></th>
+                    <td><?= $soldEquipment->has('creator') ? $this->Html->link(
+                        $soldEquipment->creator->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $soldEquipment->creator->id,
+                        ]
+                    ) : '' ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Modified') ?></th>
                     <td><?= h($soldEquipment->modified) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified By') ?></th>
+                    <td><?= $soldEquipment->has('modifier') ? $this->Html->link(
+                        $soldEquipment->modifier->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $soldEquipment->modifier->id,
+                        ]
+                    ) : '' ?></td>
                 </tr>
             </table>
         </div>

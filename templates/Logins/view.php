@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Login $login
+ * @var string[]|\Cake\Collection\CollectionInterface $rights
  */
 ?>
 <div class="row">
@@ -71,7 +72,15 @@
                 </tr>
                 <tr>
                     <th><?= __('Created By') ?></th>
-                    <td><?= $this->Number->format($login->created_by) ?></td>
+                    <td><?= $login->has('creator') ? $this->Html->link(
+                        $login->creator->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $login->creator->id,
+                        ]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -79,7 +88,15 @@
                 </tr>
                 <tr>
                     <th><?= __('Modified By') ?></th>
-                    <td><?= $this->Number->format($login->modified_by) ?></td>
+                    <td><?= $login->has('modifier') ? $this->Html->link(
+                        $login->modifier->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $login->modifier->id,
+                        ]
+                    ) : '' ?></td>
                 </tr>
             </table>
         </div>

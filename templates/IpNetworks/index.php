@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\IpNetwork[]|\Cake\Collection\CollectionInterface $ipNetworks
+ * @var string[]|\Cake\Collection\CollectionInterface $types_of_use
  */
 ?>
 <div class="ipNetworks index content">
@@ -30,7 +31,7 @@
                         ) : '' ?></td>
                     <td><?= $ipNetwork->has('contract') ?
                         $this->Html->link(
-                            $ipNetwork->contract->name,
+                            $ipNetwork->contract->number,
                             ['controller' => 'Contracts', 'action' => 'view', $ipNetwork->contract->id]
                         ) : '' ?></td>
                     <td><?= h($ipNetwork->ip_network) ?></td>

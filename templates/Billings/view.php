@@ -101,7 +101,15 @@ use Cake\I18n\Number;
                 </tr>
                 <tr>
                     <th><?= __('Created By') ?></th>
-                    <td><?= $this->Number->format($billing->created_by) ?></td>
+                    <td><?= $billing->has('creator') ? $this->Html->link(
+                        $billing->creator->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $billing->creator->id,
+                        ]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -109,7 +117,15 @@ use Cake\I18n\Number;
                 </tr>
                 <tr>
                     <th><?= __('Modified By') ?></th>
-                    <td><?= $this->Number->format($billing->modified_by) ?></td>
+                    <td><?= $billing->has('modifier') ? $this->Html->link(
+                        $billing->modifier->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $billing->modifier->id,
+                        ]
+                    ) : '' ?></td>
                 </tr>
             </table>
             <div class="text">

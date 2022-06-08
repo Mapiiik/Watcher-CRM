@@ -1,7 +1,9 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Contract $contract
+ * @var \App\Model\Entity\Customer $customer
+ * @var string[]|\Cake\Collection\CollectionInterface $documentTypes
+ * @var string[]|\Cake\Collection\CollectionInterface $invoice_delivery_types
  */
 ?>
 <div class="row">
@@ -119,26 +121,6 @@
                         <tr>
                             <th><?= __('Agree Mailing Commercial') ?></th>
                             <td><?= $customer->agree_mailing_commercial ? __('Yes') : __('No'); ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Id') ?></th>
-                            <td><?= $this->Number->format($customer->id) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created') ?></th>
-                            <td><?= h($customer->created) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created By') ?></th>
-                            <td><?= $this->Number->format($customer->created_by) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified') ?></th>
-                            <td><?= h($customer->modified) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified By') ?></th>
-                            <td><?= $this->Number->format($customer->modified_by) ?></td>
                         </tr>
                     </table>
                 </div>

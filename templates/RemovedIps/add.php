@@ -2,6 +2,9 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\RemovedIp $removedIp
+ * @var string[]|\Cake\Collection\CollectionInterface $customers
+ * @var string[]|\Cake\Collection\CollectionInterface $contracts
+ * @var string[]|\Cake\Collection\CollectionInterface $types_of_use
  */
 ?>
 <div class="row">
@@ -24,6 +27,7 @@
                     echo $this->Form->control('contract_id', ['options' => $contracts, 'empty' => true]);
                 }
                 echo $this->Form->control('ip');
+                echo $this->Form->control('type_of_use', ['options' => $types_of_use]);
                 echo $this->Form->control('note');
                 ?>
             </fieldset>

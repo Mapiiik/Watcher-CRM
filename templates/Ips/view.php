@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Ip $ip
+ * @var string[]|\Cake\Collection\CollectionInterface $types_of_use
  */
 ?>
 <div class="row">
@@ -90,7 +91,15 @@
                 </tr>
                 <tr>
                     <th><?= __('Created By') ?></th>
-                    <td><?= $this->Number->format($ip->created_by) ?></td>
+                    <td><?= $ip->has('creator') ? $this->Html->link(
+                        $ip->creator->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $ip->creator->id,
+                        ]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -98,7 +107,15 @@
                 </tr>
                 <tr>
                     <th><?= __('Modified By') ?></th>
-                    <td><?= $this->Number->format($ip->modified_by) ?></td>
+                    <td><?= $ip->has('modifier') ? $this->Html->link(
+                        $ip->modifier->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $ip->modifier->id,
+                        ]
+                    ) : '' ?></td>
                 </tr>
             </table>
             <div class="text">

@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\IpNetwork $ipNetwork
+ * @var string[]|\Cake\Collection\CollectionInterface $types_of_use
  */
 ?>
 <div class="row">
@@ -46,7 +47,7 @@
                     <th><?= __('Contract') ?></th>
                     <td><?= $ipNetwork->has('contract') ?
                         $this->Html->link(
-                            $ipNetwork->contract->name,
+                            $ipNetwork->contract->number,
                             ['controller' => 'Contracts', 'action' => 'view', $ipNetwork->contract->id]
                         ) : '' ?></td>
                 </tr>
@@ -89,7 +90,15 @@
                 </tr>
                 <tr>
                     <th><?= __('Created By') ?></th>
-                    <td><?= $this->Number->format($ipNetwork->created_by) ?></td>
+                    <td><?= $ipNetwork->has('creator') ? $this->Html->link(
+                        $ipNetwork->creator->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $ipNetwork->creator->id,
+                        ]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -97,7 +106,15 @@
                 </tr>
                 <tr>
                     <th><?= __('Modified By') ?></th>
-                    <td><?= $this->Number->format($ipNetwork->modified_by) ?></td>
+                    <td><?= $ipNetwork->has('modifier') ? $this->Html->link(
+                        $ipNetwork->modifier->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $ipNetwork->modifier->id,
+                        ]
+                    ) : '' ?></td>
                 </tr>
             </table>
             <div class="text">
