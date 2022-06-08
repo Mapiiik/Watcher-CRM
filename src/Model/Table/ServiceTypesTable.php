@@ -10,7 +10,6 @@ use Cake\Validation\Validator;
  * ServiceTypes Model
  *
  * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\HasMany $Contracts
- * @property \App\Model\Table\QueuesTable&\Cake\ORM\Association\HasMany $Queues
  * @property \App\Model\Table\ServicesTable&\Cake\ORM\Association\HasMany $Services
  * @method \App\Model\Entity\ServiceType newEmptyEntity()
  * @method \App\Model\Entity\ServiceType newEntity(array $data, array $options = [])
@@ -48,9 +47,6 @@ class ServiceTypesTable extends Table
         $this->addBehavior('StringModifications');
 
         $this->hasMany('Contracts', [
-            'foreignKey' => 'service_type_id',
-        ]);
-        $this->hasMany('Queues', [
             'foreignKey' => 'service_type_id',
         ]);
         $this->hasMany('Services', [

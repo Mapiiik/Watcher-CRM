@@ -35,13 +35,6 @@
                     <td><?= h($queue->caption) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Service Type') ?></th>
-                    <td><?= $queue->has('service_type') ? $this->Html->link(
-                        $queue->service_type->name,
-                        ['controller' => 'ServiceTypes', 'action' => 'view', $queue->service_type->id]
-                    ) : '' ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Fup') ?></th>
                     <td><?= $this->Number->format($queue->fup) ?></td>
                 </tr>

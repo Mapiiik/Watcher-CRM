@@ -10,7 +10,6 @@ use Cake\Validation\Validator;
 /**
  * Queues Model
  *
- * @property \App\Model\Table\ServiceTypesTable&\Cake\ORM\Association\BelongsTo $ServiceTypes
  * @property \App\Model\Table\ServicesTable&\Cake\ORM\Association\HasMany $Services
  * @method \App\Model\Entity\Queue newEmptyEntity()
  * @method \App\Model\Entity\Queue newEntity(array $data, array $options = [])
@@ -46,9 +45,6 @@ class QueuesTable extends Table
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
 
-        $this->belongsTo('ServiceTypes', [
-            'foreignKey' => 'service_type_id',
-        ]);
         $this->hasMany('Services', [
             'foreignKey' => 'queue_id',
         ]);
@@ -108,8 +104,6 @@ class QueuesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['service_type_id'], 'ServiceTypes'), ['errorField' => 'service_type_id']);
-
         return $rules;
     }
 }

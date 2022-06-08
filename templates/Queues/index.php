@@ -18,7 +18,6 @@
                     <th><?= $this->Paginator->sort('limit') ?></th>
                     <th><?= $this->Paginator->sort('overlimit_fragment') ?></th>
                     <th><?= $this->Paginator->sort('overlimit_cost') ?></th>
-                    <th><?= $this->Paginator->sort('service_type_id') ?></th>
                     <th><?= $this->Paginator->sort('speed_up') ?></th>
                     <th><?= $this->Paginator->sort('speed_down') ?></th>
                     <th><?= $this->Paginator->sort('cto_category') ?></th>
@@ -35,12 +34,6 @@
                     <td><?= $this->Number->format($queue->limit) ?></td>
                     <td><?= $this->Number->format($queue->overlimit_fragment) ?></td>
                     <td><?= $this->Number->currency($queue->overlimit_cost) ?></td>
-                    <td>
-                        <?= $queue->has('service_type') ? $this->Html->link(
-                            $queue->service_type->name,
-                            ['controller' => 'ServiceTypes', 'action' => 'view', $queue->service_type->id]
-                        ) : '' ?>
-                    </td>
                     <td><?= $this->Number->format($queue->speed_up) ?></td>
                     <td><?= $this->Number->format($queue->speed_down) ?></td>
                     <td><?= h($queue->cto_category) ?></td>

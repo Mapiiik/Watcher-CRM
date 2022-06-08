@@ -26,7 +26,6 @@ class ServiceTypesTableTest extends TestCase
     protected $fixtures = [
         'app.ServiceTypes',
         'app.Contracts',
-        'app.Queues',
         'app.Services',
     ];
 

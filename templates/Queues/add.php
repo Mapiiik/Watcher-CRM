@@ -23,7 +23,6 @@
                     echo $this->Form->control('limit');
                     echo $this->Form->control('overlimit_fragment');
                     echo $this->Form->control('overlimit_cost');
-                    echo $this->Form->control('service_type_id', ['options' => $serviceTypes, 'empty' => true]);
                     echo $this->Form->control('speed_up');
                     echo $this->Form->control('speed_down');
                     echo $this->Form->control('cto_category');

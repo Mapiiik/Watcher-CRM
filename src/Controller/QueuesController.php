@@ -18,9 +18,6 @@ class QueuesController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['ServiceTypes'],
-        ];
         $queues = $this->paginate($this->Queues);
 
         $this->set(compact('queues'));
@@ -37,7 +34,6 @@ class QueuesController extends AppController
     {
         $queue = $this->Queues->get($id, [
             'contain' => [
-                'ServiceTypes',
                 'Services' => ['ServiceTypes'],
             ],
         ]);
@@ -62,8 +58,7 @@ class QueuesController extends AppController
             }
             $this->Flash->error(__('The queue could not be saved. Please, try again.'));
         }
-        $serviceTypes = $this->Queues->ServiceTypes->find('list', ['order' => 'name']);
-        $this->set(compact('queue', 'serviceTypes'));
+        $this->set(compact('queue'));
     }
 
     /**
@@ -87,8 +82,7 @@ class QueuesController extends AppController
             }
             $this->Flash->error(__('The queue could not be saved. Please, try again.'));
         }
-        $serviceTypes = $this->Queues->ServiceTypes->find('list', ['order' => 'name']);
-        $this->set(compact('queue', 'serviceTypes'));
+        $this->set(compact('queue'));
     }
 
     /**

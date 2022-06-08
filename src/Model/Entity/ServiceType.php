@@ -25,7 +25,6 @@ use Cake\ORM\Entity;
  * @property bool $normally_with_borrowed_equipment
  *
  * @property \App\Model\Entity\Contract[] $contracts
- * @property \App\Model\Entity\Queue[] $queues
  * @property \App\Model\Entity\Service[] $services
  */
 class ServiceType extends Entity
@@ -55,7 +54,6 @@ class ServiceType extends Entity
         'access_point_required' => true,
         'normally_with_borrowed_equipment' => true,
         'contracts' => true,
-        'queues' => true,
         'services' => true,
     ];
 }

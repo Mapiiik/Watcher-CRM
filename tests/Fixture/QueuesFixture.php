@@ -23,7 +23,6 @@ class QueuesFixture extends TestFixture
                 'name' => 'Lorem ipsum dolor sit amet',
                 'caption' => 'Lorem ipsum dolor sit amet',
                 'fup' => 1,
-                'service_type_id' => 1,
                 'speed_up' => 1,
                 'speed_down' => 1,
             ],
