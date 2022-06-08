@@ -10,15 +10,15 @@ use Cake\ORM\Entity;
 /**
  * Contract Entity
  *
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property int|null $created_by
+ * @property \Cake\I18n\FrozenTime|null $modified
+ * @property int|null $modified_by
  * @property int $id
  * @property int $customer_id
  * @property int|null $installation_address_id
  * @property string|null $number
  * @property int $service_type_id
- * @property \Cake\I18n\FrozenTime $created
- * @property int $created_by
- * @property \Cake\I18n\FrozenTime|null $modified
- * @property int|null $modified_by
  * @property string|null $note
  * @property \Cake\I18n\FrozenDate|null $obligation_until
  * @property bool|null $vip
@@ -69,14 +69,14 @@ class Contract extends Entity
      * @var array<bool>
      */
     protected $_accessible = [
-        'customer_id' => true,
-        'installation_address_id' => true,
-        'number' => true,
-        'service_type_id' => true,
         'created' => true,
         'created_by' => true,
         'modified' => true,
         'modified_by' => true,
+        'customer_id' => true,
+        'installation_address_id' => true,
+        'number' => true,
+        'service_type_id' => true,
         'note' => true,
         'obligation_until' => true,
         'vip' => true,

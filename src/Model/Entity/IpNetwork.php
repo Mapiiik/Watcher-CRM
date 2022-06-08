@@ -11,16 +11,16 @@ use Cake\ORM\Entity;
 /**
  * IpNetwork Entity
  *
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property int|null $created_by
+ * @property \Cake\I18n\FrozenTime|null $modified
+ * @property int|null $modified_by
  * @property int $id
  * @property int $customer_id
  * @property int $contract_id
  * @property string $ip_network
  * @property int $type_of_use
  * @property string|null $note
- * @property \Cake\I18n\FrozenTime $created
- * @property int $created_by
- * @property \Cake\I18n\FrozenTime $modified
- * @property int $modified_by
  * @property string $style
  *
  * @property \App\Model\Entity\Customer $customer
@@ -39,15 +39,15 @@ class IpNetwork extends Entity
      * @var array<string, bool>
      */
     protected $_accessible = [
+        'created' => true,
+        'created_by' => true,
+        'modified' => true,
+        'modified_by' => true,
         'customer_id' => true,
         'contract_id' => true,
         'ip_network' => true,
         'type_of_use' => true,
         'note' => true,
-        'created' => true,
-        'created_by' => true,
-        'modified' => true,
-        'modified_by' => true,
         'customer' => true,
         'contract' => true,
     ];

@@ -130,14 +130,6 @@ class ContractsTable extends Table
             ->add('number', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
-            ->integer('created_by')
-            ->notEmptyString('created_by');
-
-        $validator
-            ->integer('modified_by')
-            ->allowEmptyString('modified_by');
-
-        $validator
             ->scalar('note')
             ->allowEmptyString('note');
 

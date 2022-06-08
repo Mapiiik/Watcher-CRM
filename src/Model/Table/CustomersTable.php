@@ -227,14 +227,6 @@ class CustomersTable extends Table
             ->allowEmptyString('bank_code');
 
         $validator
-            ->integer('modified_by')
-            ->notEmptyString('modified_by');
-
-        $validator
-            ->integer('created_by')
-            ->notEmptyString('created_by');
-
-        $validator
             ->scalar('ic')
             ->maxLength('ic', 12)
             ->allowEmptyString('ic');

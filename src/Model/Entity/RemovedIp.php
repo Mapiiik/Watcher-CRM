@@ -11,9 +11,13 @@ use Cake\ORM\Entity;
 /**
  * RemovedIp Entity
  *
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property int|null $created_by
+ * @property \Cake\I18n\FrozenTime|null $modified
+ * @property int|null $modified_by
+ * @property \Cake\I18n\FrozenTime|null $removed
+ * @property int|null $removed_by
  * @property int $id
- * @property int $removed_by
- * @property \Cake\I18n\FrozenTime $removed
  * @property string $ip
  * @property int $customer_id
  * @property string|null $note
@@ -37,8 +41,12 @@ class RemovedIp extends Entity
      * @var array<bool>
      */
     protected $_accessible = [
-        'removed_by' => true,
+        'created' => true,
+        'created_by' => true,
+        'modified' => true,
+        'modified_by' => true,
         'removed' => true,
+        'removed_by' => true,
         'ip' => true,
         'type_of_use' => true,
         'customer_id' => true,

@@ -8,11 +8,11 @@ use Cake\ORM\Entity;
 /**
  * Service Entity
  *
- * @property int $id
  * @property \Cake\I18n\FrozenTime|null $created
  * @property int|null $created_by
  * @property \Cake\I18n\FrozenTime|null $modified
  * @property int|null $modified_by
+ * @property int $id
  * @property string|null $name
  * @property int|null $price
  * @property int|null $service_type_id

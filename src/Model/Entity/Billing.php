@@ -9,6 +9,10 @@ use Cake\ORM\Entity;
 /**
  * Billing Entity
  *
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property int|null $created_by
+ * @property \Cake\I18n\FrozenTime|null $modified
+ * @property int|null $modified_by
  * @property int $id
  * @property int|null $customer_id
  * @property string|null $text
@@ -16,10 +20,6 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenDate|null $billing_from
  * @property string|null $note
  * @property bool $active
- * @property int|null $modified_by
- * @property \Cake\I18n\FrozenTime|null $modified
- * @property int|null $created_by
- * @property \Cake\I18n\FrozenTime|null $created
  * @property \Cake\I18n\FrozenDate|null $billing_until
  * @property bool $separate_invoice
  * @property int|null $service_id
@@ -54,15 +54,15 @@ class Billing extends Entity
      * @var array<bool>
      */
     protected $_accessible = [
+        'created' => true,
+        'created_by' => true,
+        'modified' => true,
+        'modified_by' => true,
         'customer_id' => true,
         'text' => true,
         'price' => true,
         'billing_from' => true,
         'note' => true,
-        'modified_by' => true,
-        'modified' => true,
-        'created_by' => true,
-        'created' => true,
         'billing_until' => true,
         'separate_invoice' => true,
         'service_id' => true,

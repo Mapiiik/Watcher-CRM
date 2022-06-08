@@ -9,6 +9,10 @@ use Cake\Utility\Security;
 /**
  * Login Entity
  *
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property int|null $created_by
+ * @property \Cake\I18n\FrozenTime|null $modified
+ * @property int|null $modified_by
  * @property int $id
  * @property int $customer_id
  * @property string $login
@@ -19,10 +23,6 @@ use Cake\Utility\Security;
  * @property string|null $last_granted_ip
  * @property \Cake\I18n\FrozenTime|null $last_denied
  * @property string|null $last_denied_ip
- * @property int $modified_by
- * @property \Cake\I18n\FrozenTime|null $modified
- * @property int $created_by
- * @property \Cake\I18n\FrozenTime $created
  *
  * @property \App\Model\Entity\Customer $customer
  */
@@ -38,6 +38,10 @@ class Login extends Entity
      * @var array<bool>
      */
     protected $_accessible = [
+        'created' => true,
+        'created_by' => true,
+        'modified' => true,
+        'modified_by' => true,
         'customer_id' => true,
         'login' => true,
         'password' => true,
@@ -47,10 +51,6 @@ class Login extends Entity
         'last_granted_ip' => true,
         'last_denied' => true,
         'last_denied_ip' => true,
-        'modified_by' => true,
-        'modified' => true,
-        'created_by' => true,
-        'created' => true,
         'customer' => true,
     ];
 

@@ -11,15 +11,15 @@ use Cake\ORM\Entity;
 /**
  * Ip Entity
  *
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property int|null $created_by
+ * @property \Cake\I18n\FrozenTime|null $modified
+ * @property int|null $modified_by
  * @property string $ip
  * @property int $customer_id
  * @property string|null $note
  * @property int $contract_id
  * @property int $id
- * @property \Cake\I18n\FrozenTime|null $created
- * @property int|null $created_by
- * @property \Cake\I18n\FrozenTime|null $modified
- * @property int|null $modified_by
  * @property int $type_of_use
  * @property string $style
  *
@@ -40,14 +40,14 @@ class Ip extends Entity
      * @var array<bool>
      */
     protected $_accessible = [
-        'ip' => true,
-        'customer_id' => true,
-        'note' => true,
-        'contract_id' => true,
         'created' => true,
         'created_by' => true,
         'modified' => true,
         'modified_by' => true,
+        'ip' => true,
+        'customer_id' => true,
+        'note' => true,
+        'contract_id' => true,
         'type_of_use' => true,
         'customer' => true,
         'contract' => true,

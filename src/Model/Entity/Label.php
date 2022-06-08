@@ -8,6 +8,10 @@ use Cake\ORM\Entity;
 /**
  * Label Entity
  *
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property int|null $created_by
+ * @property \Cake\I18n\FrozenTime|null $modified
+ * @property int|null $modified_by
  * @property int $id
  * @property string|null $name
  * @property string|null $caption
@@ -30,6 +34,10 @@ class Label extends Entity
      * @var array<bool>
      */
     protected $_accessible = [
+        'created' => true,
+        'created_by' => true,
+        'modified' => true,
+        'modified_by' => true,
         'name' => true,
         'caption' => true,
         'color' => true,

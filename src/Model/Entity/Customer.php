@@ -8,6 +8,10 @@ use Cake\ORM\Entity;
 /**
  * Customer Entity
  *
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property int|null $created_by
+ * @property \Cake\I18n\FrozenTime|null $modified
+ * @property int|null $modified_by
  * @property int $id
  * @property int $dealer
  * @property string|null $title
@@ -19,10 +23,6 @@ use Cake\ORM\Entity;
  * @property string|null $bank_name
  * @property string|null $bank_account
  * @property string|null $bank_code
- * @property int $modified_by
- * @property \Cake\I18n\FrozenTime|null $modified
- * @property int $created_by
- * @property \Cake\I18n\FrozenTime|null $created
  * @property string|null $ic
  * @property string|null $dic
  * @property string|null $www
@@ -76,6 +76,10 @@ class Customer extends Entity
      * @var array<bool>
      */
     protected $_accessible = [
+        'created' => true,
+        'created_by' => true,
+        'modified' => true,
+        'modified_by' => true,
         'dealer' => true,
         'title' => true,
         'first_name' => true,
@@ -86,10 +90,6 @@ class Customer extends Entity
         'bank_name' => true,
         'bank_account' => true,
         'bank_code' => true,
-        'modified_by' => true,
-        'modified' => true,
-        'created_by' => true,
-        'created' => true,
         'ic' => true,
         'dic' => true,
         'www' => true,

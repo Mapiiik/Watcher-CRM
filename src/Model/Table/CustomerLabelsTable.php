@@ -74,10 +74,6 @@ class CustomerLabelsTable extends Table
             ->allowEmptyString('id', null, 'create')
             ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
-        $validator
-            ->integer('created_by')
-            ->notEmptyString('created_by');
-
         return $validator;
     }
 

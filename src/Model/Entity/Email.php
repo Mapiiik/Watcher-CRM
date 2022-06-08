@@ -8,6 +8,10 @@ use Cake\ORM\Entity;
 /**
  * Email Entity
  *
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property int|null $created_by
+ * @property \Cake\I18n\FrozenTime|null $modified
+ * @property int|null $modified_by
  * @property int $id
  * @property int $customer_id
  * @property string|null $email
@@ -29,6 +33,10 @@ class Email extends Entity
      * @var array<bool>
      */
     protected $_accessible = [
+        'created' => true,
+        'created_by' => true,
+        'modified' => true,
+        'modified_by' => true,
         'customer_id' => true,
         'email' => true,
         'use_for_billing' => true,

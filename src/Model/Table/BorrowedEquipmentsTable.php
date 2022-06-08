@@ -91,14 +91,6 @@ class BorrowedEquipmentsTable extends Table
             ->allowEmptyString('serial_number');
 
         $validator
-            ->integer('created_by')
-            ->notEmptyString('created_by');
-
-        $validator
-            ->integer('modified_by')
-            ->allowEmptyString('modified_by');
-
-        $validator
             ->date('borrowed_from')
             ->allowEmptyDate('borrowed_from');
 

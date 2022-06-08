@@ -96,14 +96,6 @@ class BillingsTable extends Table
             ->allowEmptyString('note');
 
         $validator
-            ->integer('modified_by')
-            ->allowEmptyString('modified_by');
-
-        $validator
-            ->integer('created_by')
-            ->allowEmptyString('created_by');
-
-        $validator
             ->date('billing_until')
             ->allowEmptyDate('billing_until');
 

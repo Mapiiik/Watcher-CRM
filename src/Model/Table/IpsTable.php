@@ -102,14 +102,6 @@ class IpsTable extends Table
             ->allowEmptyString('note');
 
         $validator
-            ->integer('created_by')
-            ->allowEmptyString('created_by');
-
-        $validator
-            ->integer('modified_by')
-            ->allowEmptyString('modified_by');
-
-        $validator
             ->integer('type_of_use')
             ->requirePresence('type_of_use')
             ->notEmptyString('type_of_use');

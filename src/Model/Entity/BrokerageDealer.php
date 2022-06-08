@@ -8,6 +8,10 @@ use Cake\ORM\Entity;
 /**
  * BrokerageDealer Entity
  *
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property int|null $created_by
+ * @property \Cake\I18n\FrozenTime|null $modified
+ * @property int|null $modified_by
  * @property int|null $dealer_id
  * @property int|null $brokerage_id
  * @property float|null $fixed
@@ -29,6 +33,10 @@ class BrokerageDealer extends Entity
      * @var array<bool>
      */
     protected $_accessible = [
+        'created' => true,
+        'created_by' => true,
+        'modified' => true,
+        'modified_by' => true,
         'dealer_id' => true,
         'brokerage_id' => true,
         'fixed' => true,

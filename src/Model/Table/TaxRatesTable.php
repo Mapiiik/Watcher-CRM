@@ -40,6 +40,10 @@ class TaxRatesTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('Timestamp');
+        $this->addBehavior('Footprint');
+        $this->addBehavior('StringModifications');
+
         $this->hasMany('Customers', [
             'foreignKey' => 'tax_rate_id',
         ]);

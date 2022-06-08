@@ -8,12 +8,14 @@ use Cake\ORM\Entity;
 /**
  * CustomerLabel Entity
  *
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property int|null $created_by
+ * @property \Cake\I18n\FrozenTime|null $modified
+ * @property int|null $modified_by
  * @property int $label_id
  * @property int $customer_id
- * @property \Cake\I18n\FrozenTime $created
  * @property string|null $note
  * @property int $id
- * @property int $created_by
  *
  * @property \App\Model\Entity\Label $label
  * @property \App\Model\Entity\Customer $customer
@@ -30,11 +32,13 @@ class CustomerLabel extends Entity
      * @var array<bool>
      */
     protected $_accessible = [
+        'created' => true,
+        'created_by' => true,
+        'modified' => true,
+        'modified_by' => true,
         'label_id' => true,
         'customer_id' => true,
-        'created' => true,
         'note' => true,
-        'created_by' => true,
         'label' => true,
         'customer' => true,
     ];

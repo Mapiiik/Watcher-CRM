@@ -107,14 +107,6 @@ class TasksTable extends Table
             ->notEmptyString('priority');
 
         $validator
-            ->integer('modified_by')
-            ->notEmptyString('modified_by');
-
-        $validator
-            ->integer('created_by')
-            ->notEmptyString('created_by');
-
-        $validator
             ->scalar('email')
             ->allowEmptyString('email');
 

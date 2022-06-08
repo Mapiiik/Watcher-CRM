@@ -9,15 +9,15 @@ use Cake\ORM\Entity;
 /**
  * BorrowedEquipment Entity
  *
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property int|null $created_by
+ * @property \Cake\I18n\FrozenTime|null $modified
+ * @property int|null $modified_by
  * @property int $id
  * @property int $customer_id
  * @property int $contract_id
  * @property int $equipment_type_id
  * @property string|null $serial_number
- * @property \Cake\I18n\FrozenTime $created
- * @property int $created_by
- * @property \Cake\I18n\FrozenTime|null $modified
- * @property int|null $modified_by
  * @property \Cake\I18n\FrozenDate|null $borrowed_from
  * @property \Cake\I18n\FrozenDate|null $borrowed_until
  * @property string $style
@@ -38,14 +38,14 @@ class BorrowedEquipment extends Entity
      * @var array<bool>
      */
     protected $_accessible = [
-        'customer_id' => true,
-        'contract_id' => true,
-        'equipment_type_id' => true,
-        'serial_number' => true,
         'created' => true,
         'created_by' => true,
         'modified' => true,
         'modified_by' => true,
+        'customer_id' => true,
+        'contract_id' => true,
+        'equipment_type_id' => true,
+        'serial_number' => true,
         'borrowed_from' => true,
         'borrowed_until' => true,
         'customer' => true,

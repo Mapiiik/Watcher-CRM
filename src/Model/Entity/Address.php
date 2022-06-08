@@ -8,6 +8,10 @@ use Cake\ORM\Entity;
 /**
  * Address Entity
  *
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property int|null $created_by
+ * @property \Cake\I18n\FrozenTime|null $modified
+ * @property int|null $modified_by
  * @property int $id
  * @property int $type
  * @property int $number_type
@@ -22,10 +26,6 @@ use Cake\ORM\Entity;
  * @property string|null $city
  * @property string|null $zip
  * @property int $country_id
- * @property int|null $created_by
- * @property \Cake\I18n\FrozenTime|null $created
- * @property int|null $modified_by
- * @property \Cake\I18n\FrozenTime|null $modified
  * @property int|null $ruian_gid
  * @property float|null $gps_x
  * @property float|null $gps_y
@@ -54,6 +54,10 @@ class Address extends Entity
      * @var array<bool>
      */
     protected $_accessible = [
+        'created' => true,
+        'created_by' => true,
+        'modified' => true,
+        'modified_by' => true,
         'type' => true,
         'number_type' => true,
         'customer_id' => true,
@@ -67,10 +71,6 @@ class Address extends Entity
         'city' => true,
         'zip' => true,
         'country_id' => true,
-        'created_by' => true,
-        'created' => true,
-        'modified_by' => true,
-        'modified' => true,
         'ruian_gid' => true,
         'gps_x' => true,
         'gps_y' => true,

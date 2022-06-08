@@ -8,6 +8,10 @@ use Cake\ORM\Entity;
 /**
  * TaxRate Entity
  *
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property int|null $created_by
+ * @property \Cake\I18n\FrozenTime|null $modified
+ * @property int|null $modified_by
  * @property int $id
  * @property string $name
  * @property float $vat_rate
@@ -27,6 +31,10 @@ class TaxRate extends Entity
      * @var array<string, bool>
      */
     protected $_accessible = [
+        'created' => true,
+        'created_by' => true,
+        'modified' => true,
+        'modified_by' => true,
         'name' => true,
         'vat_rate' => true,
         'reverse_charge' => true,

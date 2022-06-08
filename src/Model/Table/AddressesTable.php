@@ -142,14 +142,6 @@ class AddressesTable extends Table
             ->allowEmptyString('zip');
 
         $validator
-            ->integer('created_by')
-            ->allowEmptyString('created_by');
-
-        $validator
-            ->integer('modified_by')
-            ->allowEmptyString('modified_by');
-
-        $validator
             ->integer('ruian_gid')
             ->allowEmptyString('ruian_gid');
 

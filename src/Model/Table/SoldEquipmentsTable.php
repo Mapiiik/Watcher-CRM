@@ -91,14 +91,6 @@ class SoldEquipmentsTable extends Table
             ->allowEmptyString('serial_number');
 
         $validator
-            ->integer('created_by')
-            ->notEmptyString('created_by');
-
-        $validator
-            ->integer('modified_by')
-            ->allowEmptyString('modified_by');
-
-        $validator
             ->date('date_of_sale')
             ->allowEmptyDate('date_of_sale');
 

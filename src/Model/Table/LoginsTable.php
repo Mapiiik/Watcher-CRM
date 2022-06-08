@@ -115,14 +115,6 @@ class LoginsTable extends Table
             ->maxLength('last_denied_ip', 39)
             ->allowEmptyString('last_denied_ip');
 
-        $validator
-            ->integer('modified_by')
-            ->notEmptyString('modified_by');
-
-        $validator
-            ->integer('created_by')
-            ->notEmptyString('created_by');
-
         return $validator;
     }
 
