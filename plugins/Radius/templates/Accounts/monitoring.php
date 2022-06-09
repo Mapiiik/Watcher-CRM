@@ -106,11 +106,11 @@ use Cake\I18n\FrozenTime;
                             <td><?= $this->Number->format($account->id) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Created') ?></th>
+                            <th><?= __d('radius', 'Created') ?></th>
                             <td><?= h($account->created) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Created By') ?></th>
+                            <th><?= __d('radius', 'Created By') ?></th>
                             <td><?= $account->has('creator') ? $this->Html->link(
                                 $account->creator->username,
                                 [
@@ -122,11 +122,11 @@ use Cake\I18n\FrozenTime;
                             ) : '' ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Modified') ?></th>
+                            <th><?= __d('radius', 'Modified') ?></th>
                             <td><?= h($account->modified) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Modified By') ?></th>
+                            <th><?= __d('radius', 'Modified By') ?></th>
                             <td><?= $account->has('modifier') ? $this->Html->link(
                                 $account->modifier->username,
                                 [

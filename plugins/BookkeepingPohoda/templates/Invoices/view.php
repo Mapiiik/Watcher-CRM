@@ -92,11 +92,11 @@
                     <td><?= h($invoice->email_sent) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Created') ?></th>
+                    <th><?= __d('bookkeeping_pohoda', 'Created') ?></th>
                     <td><?= h($invoice->created) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Created By') ?></th>
+                    <th><?= __d('bookkeeping_pohoda', 'Created By') ?></th>
                     <td><?= $invoice->has('creator') ? $this->Html->link(
                         $invoice->creator->username,
                         [
@@ -108,11 +108,11 @@
                     ) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Modified') ?></th>
+                    <th><?= __d('bookkeeping_pohoda', 'Modified') ?></th>
                     <td><?= h($invoice->modified) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Modified By') ?></th>
+                    <th><?= __d('bookkeeping_pohoda', 'Modified By') ?></th>
                     <td><?= $invoice->has('modifier') ? $this->Html->link(
                         $invoice->modifier->username,
                         [
