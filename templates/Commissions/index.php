@@ -1,12 +1,12 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Brokerage[]|\Cake\Collection\CollectionInterface $brokerages
+ * @var \App\Model\Entity\Commission[]|\Cake\Collection\CollectionInterface $commissions
  */
 ?>
-<div class="brokerages index content">
-    <?= $this->AuthLink->link(__('New Brokerage'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
-    <h3><?= __('Brokerages') ?></h3>
+<div class="commissions index content">
+    <?= $this->AuthLink->link(__('New Commission'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
+    <h3><?= __('Commissions') ?></h3>
     <div class="table-responsive">
         <table>
             <thead>
@@ -17,21 +17,21 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($brokerages as $brokerage) : ?>
+                <?php foreach ($commissions as $commission) : ?>
                 <tr>
-                    <td><?= $this->Number->format($brokerage->id) ?></td>
-                    <td><?= h($brokerage->name) ?></td>
+                    <td><?= $this->Number->format($commission->id) ?></td>
+                    <td><?= h($commission->name) ?></td>
                     <td class="actions">
-                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $brokerage->id]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $commission->id]) ?>
                         <?= $this->AuthLink->link(
                             __('Edit'),
-                            ['action' => 'edit', $brokerage->id],
+                            ['action' => 'edit', $commission->id],
                             ['class' => 'win-link']
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
-                            ['action' => 'delete', $brokerage->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $brokerage->id)]
+                            ['action' => 'delete', $commission->id],
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $commission->id)]
                         ) ?>
                     </td>
                 </tr>

@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace App\Controller;
 
 /**
- * ServiceTypes Controller
+ * Commissions Controller
  *
- * @property \App\Model\Table\ServiceTypesTable $ServiceTypes
- * @method \App\Model\Entity\ServiceType[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @property \App\Model\Table\CommissionsTable $Commissions
+ * @method \App\Model\Entity\Commission[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class ServiceTypesController extends AppController
+class CommissionsController extends AppController
 {
     /**
      * Index method
@@ -18,35 +18,35 @@ class ServiceTypesController extends AppController
      */
     public function index()
     {
-        $serviceTypes = $this->paginate($this->ServiceTypes);
+        $commissions = $this->paginate($this->Commissions);
 
-        $this->set(compact('serviceTypes'));
+        $this->set(compact('commissions'));
     }
 
     /**
      * View method
      *
-     * @param string|null $id Service Type id.
+     * @param string|null $id Commission id.
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
     {
-        $serviceType = $this->ServiceTypes->get($id, [
+        $commission = $this->Commissions->get($id, [
             'contain' => [
+                'DealerCommissions' => ['Dealers'],
                 'Contracts' => [
                     'Customers',
+                    'ServiceTypes',
                     'InstallationAddresses',
                     'InstallationTechnicians',
-                    'Commissions',
                 ],
-                'Services' => ['Queues'],
                 'Creators',
                 'Modifiers',
             ],
         ]);
 
-        $this->set(compact('serviceType'));
+        $this->set(compact('commission'));
     }
 
     /**
@@ -56,58 +56,58 @@ class ServiceTypesController extends AppController
      */
     public function add()
     {
-        $serviceType = $this->ServiceTypes->newEmptyEntity();
+        $commission = $this->Commissions->newEmptyEntity();
         if ($this->getRequest()->is('post')) {
-            $serviceType = $this->ServiceTypes->patchEntity($serviceType, $this->getRequest()->getData());
-            if ($this->ServiceTypes->save($serviceType)) {
-                $this->Flash->success(__('The service type has been saved.'));
+            $commission = $this->Commissions->patchEntity($commission, $this->getRequest()->getData());
+            if ($this->Commissions->save($commission)) {
+                $this->Flash->success(__('The commission has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The service type could not be saved. Please, try again.'));
+            $this->Flash->error(__('The commission could not be saved. Please, try again.'));
         }
-        $this->set(compact('serviceType'));
+        $this->set(compact('commission'));
     }
 
     /**
      * Edit method
      *
-     * @param string|null $id Service Type id.
+     * @param string|null $id Commission id.
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null)
     {
-        $serviceType = $this->ServiceTypes->get($id, [
+        $commission = $this->Commissions->get($id, [
             'contain' => [],
         ]);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
-            $serviceType = $this->ServiceTypes->patchEntity($serviceType, $this->getRequest()->getData());
-            if ($this->ServiceTypes->save($serviceType)) {
-                $this->Flash->success(__('The service type has been saved.'));
+            $commission = $this->Commissions->patchEntity($commission, $this->getRequest()->getData());
+            if ($this->Commissions->save($commission)) {
+                $this->Flash->success(__('The commission has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The service type could not be saved. Please, try again.'));
+            $this->Flash->error(__('The commission could not be saved. Please, try again.'));
         }
-        $this->set(compact('serviceType'));
+        $this->set(compact('commission'));
     }
 
     /**
      * Delete method
      *
-     * @param string|null $id Service Type id.
+     * @param string|null $id Commission id.
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
-        $serviceType = $this->ServiceTypes->get($id);
-        if ($this->ServiceTypes->delete($serviceType)) {
-            $this->Flash->success(__('The service type has been deleted.'));
+        $commission = $this->Commissions->get($id);
+        if ($this->Commissions->delete($commission)) {
+            $this->Flash->success(__('The commission has been deleted.'));
         } else {
-            $this->Flash->error(__('The service type could not be deleted. Please, try again.'));
+            $this->Flash->error(__('The commission could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);

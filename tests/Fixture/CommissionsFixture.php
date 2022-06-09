@@ -6,9 +6,9 @@ namespace App\Test\Fixture;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
- * BrokeragesFixture
+ * CommissionsFixture
  */
-class BrokeragesFixture extends TestFixture
+class CommissionsFixture extends TestFixture
 {
     /**
      * Init method

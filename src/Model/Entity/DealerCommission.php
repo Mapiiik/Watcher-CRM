@@ -6,7 +6,7 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * BrokerageDealer Entity
+ * DealerCommission Entity
  *
  * @property \Cake\I18n\FrozenTime|null $created
  * @property int|null $created_by
@@ -15,15 +15,15 @@ use Cake\ORM\Entity;
  * @property int|null $modified_by
  * @property \CakeDC\Users\Model\Entity\User|null $modifier
  * @property int|null $dealer_id
- * @property int|null $brokerage_id
+ * @property int|null $commission_id
  * @property float|null $fixed
  * @property float|null $percentage
  * @property int $id
  *
  * @property \App\Model\Entity\Customer $dealer
- * @property \App\Model\Entity\Brokerage $brokerage
+ * @property \App\Model\Entity\Commission $commission
  */
-class BrokerageDealer extends Entity
+class DealerCommission extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -40,10 +40,10 @@ class BrokerageDealer extends Entity
         'modified' => true,
         'modified_by' => true,
         'dealer_id' => true,
-        'brokerage_id' => true,
+        'commission_id' => true,
         'fixed' => true,
         'percentage' => true,
         'dealer' => true,
-        'brokerage' => true,
+        'commission' => true,
     ];
 }

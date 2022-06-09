@@ -28,7 +28,7 @@ class ContractsTableTest extends TestCase
         'app.Customers',
         'app.Addresses',
         'app.ServiceTypes',
-        'app.Brokerages',
+        'app.Commissions',
         'app.Billings',
         'app.BorrowedEquipments',
         'app.Ips',

@@ -25,7 +25,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenDate|null $obligation_until
  * @property bool|null $vip
  * @property int|null $installation_technician_id
- * @property int|null $brokerage_id
+ * @property int|null $commission_id
  * @property \Cake\I18n\FrozenDate|null $installation_date
  * @property string|null $access_description
  * @property \Cake\I18n\FrozenDate|null $valid_from
@@ -49,7 +49,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Address $permanent_address
  * @property \App\Model\Entity\ServiceType $service_type
  * @property \App\Model\Entity\Customer $installation_technician
- * @property \App\Model\Entity\Brokerage $brokerage
+ * @property \App\Model\Entity\Commission $commission
  * @property \App\Model\Entity\Billing[] $billings
  * @property \App\Model\Entity\BorrowedEquipment[] $borrowed_equipments
  * @property \App\Model\Entity\Ip[] $ips
@@ -85,7 +85,7 @@ class Contract extends Entity
         'obligation_until' => true,
         'vip' => true,
         'installation_technician_id' => true,
-        'brokerage_id' => true,
+        'commission_id' => true,
         'installation_date' => true,
         'access_description' => true,
         'valid_from' => true,
@@ -96,7 +96,7 @@ class Contract extends Entity
         'installation_address' => true,
         'service_type' => true,
         'installation_technician' => true,
-        'brokerage' => true,
+        'commission' => true,
         'billings' => true,
         'borrowed_equipments' => true,
         'ips' => true,

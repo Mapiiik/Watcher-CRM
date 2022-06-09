@@ -13,7 +13,7 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\AddressesTable&\Cake\ORM\Association\BelongsTo $InstallationAddresses
  * @property \App\Model\Table\ServiceTypesTable&\Cake\ORM\Association\BelongsTo $ServiceTypes
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $InstallationTechnicians
- * @property \App\Model\Table\BrokeragesTable&\Cake\ORM\Association\BelongsTo $Brokerages
+ * @property \App\Model\Table\CommissionsTable&\Cake\ORM\Association\BelongsTo $Commissions
  * @property \App\Model\Table\BillingsTable&\Cake\ORM\Association\HasMany $Billings
  * @property \App\Model\Table\BorrowedEquipmentsTable&\Cake\ORM\Association\HasMany $BorrowedEquipments
  * @property \App\Model\Table\IpsTable&\Cake\ORM\Association\HasMany $Ips
@@ -74,8 +74,8 @@ class ContractsTable extends AppTable
             'foreignKey' => 'installation_technician_id',
             'conditions' => ['InstallationTechnicians.dealer' => 1],
         ]);
-        $this->belongsTo('Brokerages', [
-            'foreignKey' => 'brokerage_id',
+        $this->belongsTo('Commissions', [
+            'foreignKey' => 'commission_id',
         ]);
         $this->hasMany('Billings', [
             'foreignKey' => 'contract_id',
@@ -202,7 +202,7 @@ class ContractsTable extends AppTable
             $rules->existsIn(['installation_technician_id'], 'InstallationTechnicians'),
             ['errorField' => 'installation_technician_id']
         );
-        $rules->add($rules->existsIn(['brokerage_id'], 'Brokerages'), ['errorField' => 'brokerage_id']);
+        $rules->add($rules->existsIn(['commission_id'], 'Commissions'), ['errorField' => 'commission_id']);
 
         $rules->add(
             function ($entity, $options) {

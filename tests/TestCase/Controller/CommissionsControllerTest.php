@@ -7,11 +7,11 @@ use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Controller\BrokeragesController Test Case
+ * App\Controller\CommissionsController Test Case
  *
- * @uses \App\Controller\BrokeragesController
+ * @uses \App\Controller\CommissionsController
  */
-class BrokeragesControllerTest extends TestCase
+class CommissionsControllerTest extends TestCase
 {
     use IntegrationTestTrait;
 
@@ -21,8 +21,8 @@ class BrokeragesControllerTest extends TestCase
      * @var array<string>
      */
     protected $fixtures = [
-        'app.Brokerages',
-        'app.BrokerageDealers',
+        'app.Commissions',
+        'app.DealerCommissions',
         'app.Contracts',
     ];
 
@@ -30,7 +30,7 @@ class BrokeragesControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\BrokeragesController::index()
+     * @uses \App\Controller\CommissionsController::index()
      */
     public function testIndex(): void
     {
@@ -41,7 +41,7 @@ class BrokeragesControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\BrokeragesController::view()
+     * @uses \App\Controller\CommissionsController::view()
      */
     public function testView(): void
     {
@@ -52,7 +52,7 @@ class BrokeragesControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\BrokeragesController::add()
+     * @uses \App\Controller\CommissionsController::add()
      */
     public function testAdd(): void
     {
@@ -63,7 +63,7 @@ class BrokeragesControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\BrokeragesController::edit()
+     * @uses \App\Controller\CommissionsController::edit()
      */
     public function testEdit(): void
     {
@@ -74,7 +74,7 @@ class BrokeragesControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\BrokeragesController::delete()
+     * @uses \App\Controller\CommissionsController::delete()
      */
     public function testDelete(): void
     {

@@ -1,57 +1,57 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\BrokerageDealer[]|\Cake\Collection\CollectionInterface $brokerageDealers
+ * @var \App\Model\Entity\DealerCommission[]|\Cake\Collection\CollectionInterface $dealerCommissions
  */
 ?>
-<div class="brokerageDealers index content">
+<div class="dealerCommissions index content">
     <?= $this->AuthLink->link(
-        __('New Brokerage Dealer'),
+        __('New Dealer Commission'),
         ['action' => 'add'],
         ['class' => 'button float-right win-link']
     ) ?>
-    <h3><?= __('Brokerage Dealers') ?></h3>
+    <h3><?= __('Dealer Commissions') ?></h3>
     <div class="table-responsive">
         <table>
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('dealer_id') ?></th>
-                    <th><?= $this->Paginator->sort('brokerage_id') ?></th>
+                    <th><?= $this->Paginator->sort('commission_id') ?></th>
                     <th><?= $this->Paginator->sort('fixed') ?></th>
                     <th><?= $this->Paginator->sort('percentage') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($brokerageDealers as $brokerageDealer) : ?>
+                <?php foreach ($dealerCommissions as $dealerCommission) : ?>
                 <tr>
-                    <td><?= $this->Number->format($brokerageDealer->id) ?></td>
+                    <td><?= $this->Number->format($dealerCommission->id) ?></td>
                     <td>
-                        <?= $brokerageDealer->has('dealer') ? $this->Html->link(
-                            $brokerageDealer->dealer->name,
-                            ['controller' => 'Customers', 'action' => 'view', $brokerageDealer->dealer->id]
+                        <?= $dealerCommission->has('dealer') ? $this->Html->link(
+                            $dealerCommission->dealer->name,
+                            ['controller' => 'Customers', 'action' => 'view', $dealerCommission->dealer->id]
                         ) : '' ?>
                     </td>
                     <td>
-                        <?= $brokerageDealer->has('brokerage') ? $this->Html->link(
-                            $brokerageDealer->brokerage->name,
-                            ['controller' => 'Brokerages', 'action' => 'view', $brokerageDealer->brokerage->id]
+                        <?= $dealerCommission->has('commission') ? $this->Html->link(
+                            $dealerCommission->commission->name,
+                            ['controller' => 'Commissions', 'action' => 'view', $dealerCommission->commission->id]
                         ) : '' ?>
                     </td>
-                    <td><?= $this->Number->format($brokerageDealer->fixed) ?></td>
-                    <td><?= $this->Number->format($brokerageDealer->percentage) ?></td>
+                    <td><?= $this->Number->format($dealerCommission->fixed) ?></td>
+                    <td><?= $this->Number->format($dealerCommission->percentage) ?></td>
                     <td class="actions">
-                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $brokerageDealer->id]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $dealerCommission->id]) ?>
                         <?= $this->AuthLink->link(
                             __('Edit'),
-                            ['action' => 'edit', $brokerageDealer->id],
+                            ['action' => 'edit', $dealerCommission->id],
                             ['class' => 'win-link']
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
-                            ['action' => 'delete', $brokerageDealer->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $brokerageDealer->id)]
+                            ['action' => 'delete', $dealerCommission->id],
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $dealerCommission->id)]
                         ) ?>
                     </td>
                 </tr>

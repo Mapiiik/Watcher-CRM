@@ -3,20 +3,20 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\BrokeragesTable;
+use App\Model\Table\CommissionsTable;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\BrokeragesTable Test Case
+ * App\Model\Table\CommissionsTable Test Case
  */
-class BrokeragesTableTest extends TestCase
+class CommissionsTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \App\Model\Table\BrokeragesTable
+     * @var \App\Model\Table\CommissionsTable
      */
-    protected $BrokeragesTable;
+    protected $CommissionsTable;
 
     /**
      * Fixtures
@@ -24,8 +24,8 @@ class BrokeragesTableTest extends TestCase
      * @var array
      */
     protected $fixtures = [
-        'app.Brokerages',
-        'app.BrokerageDealers',
+        'app.Commissions',
+        'app.DealerCommissions',
         'app.Contracts',
     ];
 
@@ -37,8 +37,8 @@ class BrokeragesTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Brokerages') ? [] : ['className' => BrokeragesTable::class];
-        $this->BrokeragesTable = $this->fetchTable('Brokerages', $config);
+        $config = $this->getTableLocator()->exists('Commissions') ? [] : ['className' => CommissionsTable::class];
+        $this->CommissionsTable = $this->fetchTable('Commissions', $config);
     }
 
     /**
@@ -48,7 +48,7 @@ class BrokeragesTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->BrokeragesTable);
+        unset($this->CommissionsTable);
 
         parent::tearDown();
     }
@@ -57,7 +57,7 @@ class BrokeragesTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\BrokeragesTable::validationDefault()
+     * @uses \App\Model\Table\CommissionsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {

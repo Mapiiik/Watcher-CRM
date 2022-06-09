@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ServiceType $serviceType
+ * @var \App\Model\Entity\Commission $commission
  */
 ?>
 <div class="row">
@@ -9,142 +9,101 @@
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->AuthLink->link(
-                __('Edit Service Type'),
-                ['action' => 'edit', $serviceType->id],
+                __('Edit Commission'),
+                ['action' => 'edit', $commission->id],
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->AuthLink->postLink(
-                __('Delete Service Type'),
-                ['action' => 'delete', $serviceType->id],
-                [
-                    'confirm' => __('Are you sure you want to delete # {0}?', $serviceType->id),
-                    'class' => 'side-nav-item',
-                ]
+                __('Delete Commission'),
+                ['action' => 'delete', $commission->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $commission->id), 'class' => 'side-nav-item']
             ) ?>
-            <?= $this->AuthLink->link(__('List Service Types'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->link(__('New Service Type'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('List Commissions'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('New Commission'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
-        <div class="serviceTypes view content">
-            <h3><?= h($serviceType->name) ?></h3>
+        <div class="commissions view content">
+            <h3><?= h($commission->name) ?></h3>
             <table>
                 <tr>
                     <th><?= __('Name') ?></th>
-                    <td><?= h($serviceType->name) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Contract Number Format') ?></th>
-                    <td><?= h($serviceType->contract_number_format) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Activation Fee') ?></th>
-                    <td><?= h($serviceType->activation_fee) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Activation Fee With Obligation') ?></th>
-                    <td><?= h($serviceType->activation_fee_with_obligation) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Invoice Text') ?></th>
-                    <td><?= h($serviceType->invoice_text) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Separate Invoice') ?></th>
-                    <td><?= $serviceType->separate_invoice ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Invoice With Items') ?></th>
-                    <td><?= $serviceType->invoice_with_items ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Installation Address Required') ?></th>
-                    <td><?= $serviceType->installation_address_required ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Access Point Required') ?></th>
-                    <td><?= $serviceType->access_point_required ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Normally With Borrowed Equipment') ?></th>
-                    <td><?= $serviceType->normally_with_borrowed_equipment ? __('Yes') : __('No'); ?></td>
+                    <td><?= h($commission->name) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($serviceType->id) ?></td>
+                    <td><?= $this->Number->format($commission->id) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Created') ?></th>
-                    <td><?= h($serviceType->created) ?></td>
+                    <td><?= h($commission->created) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Created By') ?></th>
-                    <td><?= $serviceType->has('creator') ? $this->Html->link(
-                        $serviceType->creator->username,
+                    <td><?= $commission->has('creator') ? $this->Html->link(
+                        $commission->creator->username,
                         [
                             'plugin' => 'CakeDC/Users',
                             'controller' => 'Users',
                             'action' => 'view',
-                            $serviceType->creator->id,
+                             $commission->creator->id,
                         ]
-                    ) : h($serviceType->created_by) ?></td>
+                    ) : h($commission->created_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
-                    <td><?= h($serviceType->modified) ?></td>
+                    <td><?= h($commission->modified) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified By') ?></th>
-                    <td><?= $serviceType->has('modifier') ? $this->Html->link(
-                        $serviceType->modifier->username,
+                    <td><?= $commission->has('modifier') ? $this->Html->link(
+                        $commission->modifier->username,
                         [
                             'plugin' => 'CakeDC/Users',
                             'controller' => 'Users',
                             'action' => 'view',
-                            $serviceType->modifier->id,
+                            $commission->modifier->id,
                         ]
-                    ) : h($serviceType->modified_by) ?></td>
+                    ) : h($commission->modified_by) ?></td>
                 </tr>
             </table>
             <div class="related">
-                <h4><?= __('Related Services') ?></h4>
-                <?php if (!empty($serviceType->services)) : ?>
+                <h4><?= __('Related Dealer Commissions') ?></h4>
+                <?php if (!empty($commission->dealer_commissions)) : ?>
                 <div class="table-responsive">
-                <table>
+                    <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <th><?= __('Name') ?></th>
-                            <th><?= __('Price') ?></th>
-                            <th><?= __('Queue') ?></th>
-                            <th><?= __('Not For New Customers') ?></th>
+                            <th><?= __('Dealer') ?></th>
+                            <th><?= __('Fixed') ?></th>
+                            <th><?= __('Percentage') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($serviceType->services as $service) : ?>
+                        <?php foreach ($commission->dealer_commissions as $dealerCommission) : ?>
                         <tr>
-                            <td><?= $this->Number->format($service->id) ?></td>
-                            <td><?= h($service->name) ?></td>
-                            <td><?= $this->Number->currency($service->price) ?></td>
+                            <td><?= $this->Number->format($dealerCommission->id) ?></td>
                             <td>
-                                <?= $service->has('queue') ? $this->Html->link(
-                                    $service->queue->name,
-                                    ['controller' => 'Queues', 'action' => 'view', $service->queue->id]
+                                <?= $dealerCommission->has('dealer') ? $this->Html->link(
+                                    $dealerCommission->dealer->name,
+                                    ['controller' => 'Customers', 'action' => 'view', $dealerCommission->dealer->id]
                                 ) : '' ?>
                             </td>
-                            <td><?= $service->not_for_new_customers ? __('Yes') : __('No'); ?></td>
+                            <td><?= $this->Number->format($dealerCommission->fixed) ?></td>
+                            <td><?= $this->Number->format($dealerCommission->percentage) ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
-                                    ['controller' => 'Services', 'action' => 'view', $service->id]
+                                    ['controller' => 'DealerCommissions', 'action' => 'view', $dealerCommission->id]
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __('Edit'),
-                                    ['controller' => 'Services', 'action' => 'edit', $service->id],
+                                    ['controller' => 'DealerCommissions', 'action' => 'edit', $dealerCommission->id],
                                     ['class' => 'win-link']
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
                                     __('Delete'),
-                                    ['controller' => 'Services', 'action' => 'delete', $service->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $service->id)]
+                                    ['controller' => 'DealerCommissions', 'action' => 'delete', $dealerCommission->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $dealerCommission->id)]
                                 ) ?>
                             </td>
                         </tr>
@@ -155,13 +114,14 @@
             </div>
             <div class="related">
                 <h4><?= __('Related Contracts') ?></h4>
-                <?php if (!empty($serviceType->contracts)) : ?>
+                <?php if (!empty($commission->contracts)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
                             <th><?= __('Customer') ?></th>
                             <th><?= __('Number') ?></th>
+                            <th><?= __('Service Type') ?></th>
                             <th><?= __('Installation Address') ?></th>
                             <th><?= __('Conclusion Date') ?></th>
                             <th><?= __('Number Of Amendments') ?></th>
@@ -172,10 +132,9 @@
                             <th><?= __('Access Point') ?></th>
                             <th><?= __('Installation Date') ?></th>
                             <th><?= __('Installation Technician') ?></th>
-                            <th><?= __('Commission') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($serviceType->contracts as $contract) : ?>
+                        <?php foreach ($commission->contracts as $contract) : ?>
                         <tr>
                             <td><?= $this->Number->format($contract->id) ?></td>
                             <td>
@@ -185,6 +144,12 @@
                                 ) : '' ?>
                             </td>
                             <td><?= h($contract->number) ?></td>
+                            <td>
+                                <?= $contract->has('service_type') ? $this->Html->link(
+                                    $contract->service_type->name,
+                                    ['controller' => 'ServiceTypes', 'action' => 'view', $contract->service_type->id]
+                                ) : '' ?>
+                            </td>
                             <td>
                                 <?= $contract->has('installation_address') ? $this->Html->link(
                                     $contract->installation_address->full_address,
@@ -211,12 +176,6 @@
                                         'action' => 'view',
                                         $contract->installation_technician->id,
                                     ]
-                                ) : '' ?>
-                            </td>
-                            <td>
-                                <?= $contract->has('commission') ? $this->Html->link(
-                                    $contract->commission->name,
-                                    ['controller' => 'Commissions', 'action' => 'view', $contract->commission->id]
                                 ) : '' ?>
                             </td>
                             <td class="actions">

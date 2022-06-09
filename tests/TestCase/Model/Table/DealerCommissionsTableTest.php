@@ -3,20 +3,20 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\BrokerageDealersTable;
+use App\Model\Table\DealerCommissionsTable;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\BrokerageDealersTable Test Case
+ * App\Model\Table\DealerCommissionsTable Test Case
  */
-class BrokerageDealersTableTest extends TestCase
+class DealerCommissionsTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \App\Model\Table\BrokerageDealersTable
+     * @var \App\Model\Table\DealerCommissionsTable
      */
-    protected $BrokerageDealersTable;
+    protected $DealerCommissionsTable;
 
     /**
      * Fixtures
@@ -24,9 +24,9 @@ class BrokerageDealersTableTest extends TestCase
      * @var array
      */
     protected $fixtures = [
-        'app.BrokerageDealers',
+        'app.DealerCommissions',
         'app.Customers',
-        'app.Brokerages',
+        'app.Commissions',
     ];
 
     /**
@@ -37,8 +37,8 @@ class BrokerageDealersTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('BrokerageDealers') ? [] : ['className' => BrokerageDealersTable::class];
-        $this->BrokerageDealersTable = $this->fetchTable('BrokerageDealers', $config);
+        $config = $this->getTableLocator()->exists('DealerCommissions') ? [] : ['className' => DealerCommissionsTable::class];
+        $this->DealerCommissionsTable = $this->fetchTable('DealerCommissions', $config);
     }
 
     /**
@@ -48,7 +48,7 @@ class BrokerageDealersTableTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->BrokerageDealersTable);
+        unset($this->DealerCommissionsTable);
 
         parent::tearDown();
     }
@@ -57,7 +57,7 @@ class BrokerageDealersTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\BrokerageDealersTable::validationDefault()
+     * @uses \App\Model\Table\DealerCommissionsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -68,7 +68,7 @@ class BrokerageDealersTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\BrokerageDealersTable::buildRules()
+     * @uses \App\Model\Table\DealerCommissionsTable::buildRules()
      */
     public function testBuildRules(): void
     {

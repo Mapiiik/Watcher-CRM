@@ -25,7 +25,7 @@
                     <th><?= $this->Paginator->sort('access_point_id') ?></th>
                     <th><?= $this->Paginator->sort('installation_date') ?></th>
                     <th><?= $this->Paginator->sort('installation_technician_id') ?></th>
-                    <th><?= $this->Paginator->sort('brokerage_id') ?></th>
+                    <th><?= $this->Paginator->sort('commission_id') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -67,9 +67,9 @@
                         ) : '' ?>
                     </td>
                     <td>
-                        <?= $contract->has('brokerage') ? $this->Html->link(
-                            $contract->brokerage->name,
-                            ['controller' => 'Brokerages', 'action' => 'view', $contract->brokerage->id]
+                        <?= $contract->has('commission') ? $this->Html->link(
+                            $contract->commission->name,
+                            ['controller' => 'Commissions', 'action' => 'view', $contract->commission->id]
                         ) : '' ?>
                     </td>
                     <td class="actions">

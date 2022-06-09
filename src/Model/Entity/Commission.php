@@ -6,7 +6,7 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Brokerage Entity
+ * Commission Entity
  *
  * @property \Cake\I18n\FrozenTime|null $created
  * @property int|null $created_by
@@ -17,10 +17,10 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string|null $name
  *
- * @property \App\Model\Entity\BrokerageDealer[] $brokerage_dealers
+ * @property \App\Model\Entity\DealerCommission[] $dealer_commissions
  * @property \App\Model\Entity\Contract[] $contracts
  */
-class Brokerage extends Entity
+class Commission extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -37,7 +37,7 @@ class Brokerage extends Entity
         'modified' => true,
         'modified_by' => true,
         'name' => true,
-        'brokerage_dealers' => true,
+        'dealer_commissions' => true,
         'contracts' => true,
     ];
 }

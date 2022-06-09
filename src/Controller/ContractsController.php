@@ -39,7 +39,7 @@ class ContractsController extends AppController
                 'InstallationAddresses',
                 'ServiceTypes',
                 'InstallationTechnicians',
-                'Brokerages',
+                'Commissions',
             ],
             'conditions' => $conditions,
         ];
@@ -63,7 +63,7 @@ class ContractsController extends AppController
                 'InstallationAddresses',
                 'ServiceTypes',
                 'InstallationTechnicians',
-                'Brokerages',
+                'Commissions',
                 'Billings' => ['Services'],
                 'BorrowedEquipments' => ['EquipmentTypes'],
                 'Ips',
@@ -117,7 +117,7 @@ class ContractsController extends AppController
         $installationTechnicians = $this->Contracts->InstallationTechnicians->find('list', [
             'order' => ['company', 'first_name', 'last_name'],
         ]);
-        $brokerages = $this->Contracts->Brokerages->find('list', ['order' => 'name']);
+        $commissions = $this->Contracts->Commissions->find('list', ['order' => 'name']);
 
         if (isset($customer_id)) {
             $customers->where(['id' => $customer_id]);
@@ -125,7 +125,7 @@ class ContractsController extends AppController
         }
 
         $this->set(compact('contract', 'customers'));
-        $this->set(compact('installationAddresses', 'serviceTypes', 'installationTechnicians', 'brokerages'));
+        $this->set(compact('installationAddresses', 'serviceTypes', 'installationTechnicians', 'commissions'));
 
         // load access points from NMS if possible
         $accessPoints = ApiClient::getAccessPoints();
@@ -172,7 +172,7 @@ class ContractsController extends AppController
         $installationTechnicians = $this->Contracts->InstallationTechnicians->find('list', [
             'order' => ['company', 'first_name', 'last_name'],
         ]);
-        $brokerages = $this->Contracts->Brokerages->find('list', ['order' => 'name']);
+        $commissions = $this->Contracts->Commissions->find('list', ['order' => 'name']);
 
         if (isset($customer_id)) {
             $customers->where(['id' => $customer_id]);
@@ -180,7 +180,7 @@ class ContractsController extends AppController
         }
 
         $this->set(compact('contract', 'customers'));
-        $this->set(compact('installationAddresses', 'serviceTypes', 'installationTechnicians', 'brokerages'));
+        $this->set(compact('installationAddresses', 'serviceTypes', 'installationTechnicians', 'commissions'));
 
         // load access points from NMS if possible
         $accessPoints = ApiClient::getAccessPoints();
@@ -276,7 +276,7 @@ class ContractsController extends AppController
                 'InstallationAddresses',
                 'ServiceTypes',
                 'InstallationTechnicians',
-                'Brokerages',
+                'Commissions',
                 'Billings' => ['Services'],
                 'Ips',
                 'RemovedIps',

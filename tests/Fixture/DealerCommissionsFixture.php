@@ -6,9 +6,9 @@ namespace App\Test\Fixture;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
- * BrokerageDealersFixture
+ * DealerCommissionsFixture
  */
-class BrokerageDealersFixture extends TestFixture
+class DealerCommissionsFixture extends TestFixture
 {
     /**
      * Init method
@@ -20,7 +20,7 @@ class BrokerageDealersFixture extends TestFixture
         $this->records = [
             [
                 'dealer_id' => 1,
-                'brokerage_id' => 1,
+                'commission_id' => 1,
                 'fixed' => 1,
                 'percentage' => 1,
                 'id' => 1,

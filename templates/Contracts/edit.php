@@ -7,7 +7,7 @@
  * @var string[]|\Cake\Collection\CollectionInterface $installationAddresses
  * @var string[]|\Cake\Collection\CollectionInterface $accessPoints
  * @var string[]|\Cake\Collection\CollectionInterface $installationTechnicians
- * @var string[]|\Cake\Collection\CollectionInterface $brokerages
+ * @var string[]|\Cake\Collection\CollectionInterface $commissions
  */
 ?>
 <div class="row">
@@ -97,7 +97,7 @@
                             'type' => 'text',
                             'list' => 'access-descriptions',
                         ]);
-                        echo $this->Form->control('brokerage_id', ['options' => $brokerages, 'empty' => true]);
+                        echo $this->Form->control('commission_id', ['options' => $commissions, 'empty' => true]);
                         echo $this->Form->control('vip');
                         echo $this->Form->control('activation_fee', ['empty' => true]);
                         echo $this->Form->control('activation_fee_with_obligation', ['empty' => true]);

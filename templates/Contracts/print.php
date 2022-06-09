@@ -81,10 +81,10 @@
                             ) : '' ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Brokerage') ?></th>
-                            <td><?= $contract->has('brokerage') ? $this->Html->link(
-                                $contract->brokerage->name,
-                                ['controller' => 'Brokerages', 'action' => 'view', $contract->brokerage->id]
+                            <th><?= __('Commission') ?></th>
+                            <td><?= $contract->has('commission') ? $this->Html->link(
+                                $contract->commission->name,
+                                ['controller' => 'Commissions', 'action' => 'view', $contract->commission->id]
                             ) : '' ?></td>
                         </tr>
                         <tr>

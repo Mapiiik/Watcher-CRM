@@ -25,7 +25,7 @@ class ContractsControllerTest extends TestCase
         'app.Customers',
         'app.Addresses',
         'app.ServiceTypes',
-        'app.Brokerages',
+        'app.Commissions',
         'app.Billings',
         'app.BorrowedEquipments',
         'app.Ips',

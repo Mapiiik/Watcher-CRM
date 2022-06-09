@@ -94,13 +94,13 @@
             <h4><?= __('Commission Related') ?></h4>
             <div>
                 <?= $this->AuthLink->link(
-                    __('List Brokerages'),
-                    ['controller' => 'Brokerages', 'action' => 'index', 'plugin' => null],
+                    __('List Commissions'),
+                    ['controller' => 'Commissions', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item']
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __('List Brokerage Dealers'),
-                    ['controller' => 'BrokerageDealers', 'action' => 'index', 'plugin' => null],
+                    __('List Dealer Commissions'),
+                    ['controller' => 'DealerCommissions', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item']
                 ) ?>
             </div>
