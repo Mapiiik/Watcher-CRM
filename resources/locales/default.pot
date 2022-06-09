@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-06-09 11:33+0200\n"
+"POT-Creation-Date: 2022-06-09 13:14+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -94,40 +94,22 @@ msgstr ""
 msgid "The borrowed equipment could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/BrokerageDealersController.php:61
-#: ./src/Controller/BrokerageDealersController.php:87
-msgid "The brokerage dealer has been saved."
+#: ./src/Controller/CommissionsController.php:63
+#: ./src/Controller/CommissionsController.php:87
+msgid "The commission has been saved."
 msgstr ""
 
-#: ./src/Controller/BrokerageDealersController.php:65
-#: ./src/Controller/BrokerageDealersController.php:91
-msgid "The brokerage dealer could not be saved. Please, try again."
+#: ./src/Controller/CommissionsController.php:67
+#: ./src/Controller/CommissionsController.php:91
+msgid "The commission could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/BrokerageDealersController.php:110
-msgid "The brokerage dealer has been deleted."
+#: ./src/Controller/CommissionsController.php:108
+msgid "The commission has been deleted."
 msgstr ""
 
-#: ./src/Controller/BrokerageDealersController.php:112
-msgid "The brokerage dealer could not be deleted. Please, try again."
-msgstr ""
-
-#: ./src/Controller/BrokeragesController.php:58
-#: ./src/Controller/BrokeragesController.php:82
-msgid "The brokerage has been saved."
-msgstr ""
-
-#: ./src/Controller/BrokeragesController.php:62
-#: ./src/Controller/BrokeragesController.php:86
-msgid "The brokerage could not be saved. Please, try again."
-msgstr ""
-
-#: ./src/Controller/BrokeragesController.php:103
-msgid "The brokerage has been deleted."
-msgstr ""
-
-#: ./src/Controller/BrokeragesController.php:105
-msgid "The brokerage could not be deleted. Please, try again."
+#: ./src/Controller/CommissionsController.php:110
+msgid "The commission could not be deleted. Please, try again."
 msgstr ""
 
 #: ./src/Controller/ContractsController.php:104
@@ -285,6 +267,24 @@ msgstr ""
 
 #: ./src/Controller/CustomersController.php:228
 msgid "Consent to the processing of personal data (change)"
+msgstr ""
+
+#: ./src/Controller/DealerCommissionsController.php:63
+#: ./src/Controller/DealerCommissionsController.php:91
+msgid "The dealer commission has been saved."
+msgstr ""
+
+#: ./src/Controller/DealerCommissionsController.php:67
+#: ./src/Controller/DealerCommissionsController.php:95
+msgid "The dealer commission could not be saved. Please, try again."
+msgstr ""
+
+#: ./src/Controller/DealerCommissionsController.php:114
+msgid "The dealer commission has been deleted."
+msgstr ""
+
+#: ./src/Controller/DealerCommissionsController.php:116
+msgid "The dealer commission could not be deleted. Please, try again."
 msgstr ""
 
 #: ./src/Controller/EmailsController.php:77
@@ -616,6 +616,7 @@ msgid "The tax rate could not be deleted. Please, try again."
 msgstr ""
 
 #: ./src/Model/Table/AddressesTable.php:56
+#: ./templates/Commissions/view.php:125
 #: ./templates/Contracts/pdf/print.php:274
 #: ./templates/Contracts/pdf/print.php:974
 #: ./templates/Contracts/print.php:54
@@ -749,16 +750,12 @@ msgstr ""
 #: ./templates/BorrowedEquipments/edit.php:13
 #: ./templates/BorrowedEquipments/index.php:25
 #: ./templates/BorrowedEquipments/view.php:10
-#: ./templates/BrokerageDealers/add.php:10
-#: ./templates/BrokerageDealers/edit.php:10
-#: ./templates/BrokerageDealers/index.php:23
-#: ./templates/BrokerageDealers/view.php:10
-#: ./templates/Brokerages/add.php:10
-#: ./templates/Brokerages/edit.php:10
-#: ./templates/Brokerages/index.php:16
-#: ./templates/Brokerages/view.php:10
-#: ./templates/Brokerages/view.php:49
-#: ./templates/Brokerages/view.php:102
+#: ./templates/Commissions/add.php:10
+#: ./templates/Commissions/edit.php:10
+#: ./templates/Commissions/index.php:16
+#: ./templates/Commissions/view.php:10
+#: ./templates/Commissions/view.php:80
+#: ./templates/Commissions/view.php:135
 #: ./templates/Contracts/add.php:16
 #: ./templates/Contracts/edit.php:16
 #: ./templates/Contracts/index.php:29
@@ -798,6 +795,10 @@ msgstr ""
 #: ./templates/Customers/view.php:804
 #: ./templates/Customers/view.php:850
 #: ./templates/Customers/view.php:926
+#: ./templates/DealerCommissions/add.php:10
+#: ./templates/DealerCommissions/edit.php:10
+#: ./templates/DealerCommissions/index.php:23
+#: ./templates/DealerCommissions/view.php:10
 #: ./templates/Emails/add.php:11
 #: ./templates/Emails/edit.php:11
 #: ./templates/Emails/index.php:20
@@ -900,10 +901,8 @@ msgstr ""
 #: ./templates/Billings/edit.php:58
 #: ./templates/BorrowedEquipments/add.php:39
 #: ./templates/BorrowedEquipments/edit.php:47
-#: ./templates/BrokerageDealers/add.php:30
-#: ./templates/BrokerageDealers/edit.php:38
-#: ./templates/Brokerages/add.php:23
-#: ./templates/Brokerages/edit.php:28
+#: ./templates/Commissions/add.php:23
+#: ./templates/Commissions/edit.php:28
 #: ./templates/Contracts/add.php:71
 #: ./templates/Contracts/edit.php:109
 #: ./templates/Contracts/print.php:224
@@ -914,6 +913,8 @@ msgstr ""
 #: ./templates/Customers/add.php:57
 #: ./templates/Customers/edit.php:62
 #: ./templates/Customers/print.php:192
+#: ./templates/DealerCommissions/add.php:30
+#: ./templates/DealerCommissions/edit.php:38
 #: ./templates/Emails/add.php:30
 #: ./templates/Emails/edit.php:35
 #: ./templates/EquipmentTypes/add.php:28
@@ -957,12 +958,10 @@ msgstr ""
 #: ./templates/Billings/index.php:76
 #: ./templates/BorrowedEquipments/edit.php:15
 #: ./templates/BorrowedEquipments/index.php:65
-#: ./templates/BrokerageDealers/edit.php:12
-#: ./templates/BrokerageDealers/index.php:52
-#: ./templates/Brokerages/edit.php:12
-#: ./templates/Brokerages/index.php:32
-#: ./templates/Brokerages/view.php:69
-#: ./templates/Brokerages/view.php:133
+#: ./templates/Commissions/edit.php:12
+#: ./templates/Commissions/index.php:32
+#: ./templates/Commissions/view.php:104
+#: ./templates/Commissions/view.php:192
 #: ./templates/Contracts/edit.php:18
 #: ./templates/Contracts/index.php:83
 #: ./templates/Contracts/view.php:251
@@ -992,6 +991,8 @@ msgstr ""
 #: ./templates/Customers/view.php:828
 #: ./templates/Customers/view.php:874
 #: ./templates/Customers/view.php:946
+#: ./templates/DealerCommissions/edit.php:12
+#: ./templates/DealerCommissions/index.php:52
 #: ./templates/Emails/edit.php:13
 #: ./templates/Emails/index.php:45
 #: ./templates/EquipmentTypes/edit.php:12
@@ -1048,14 +1049,11 @@ msgstr ""
 #: ./templates/BorrowedEquipments/edit.php:18
 #: ./templates/BorrowedEquipments/index.php:67
 #: ./templates/BorrowedEquipments/view.php:20
-#: ./templates/BrokerageDealers/edit.php:15
-#: ./templates/BrokerageDealers/index.php:54
-#: ./templates/BrokerageDealers/view.php:20
-#: ./templates/Brokerages/edit.php:14
-#: ./templates/Brokerages/index.php:34
-#: ./templates/Brokerages/view.php:19
-#: ./templates/Brokerages/view.php:71
-#: ./templates/Brokerages/view.php:135
+#: ./templates/Commissions/edit.php:14
+#: ./templates/Commissions/index.php:34
+#: ./templates/Commissions/view.php:19
+#: ./templates/Commissions/view.php:106
+#: ./templates/Commissions/view.php:194
 #: ./templates/Contracts/edit.php:20
 #: ./templates/Contracts/index.php:85
 #: ./templates/Contracts/view.php:23
@@ -1089,6 +1087,9 @@ msgstr ""
 #: ./templates/Customers/view.php:830
 #: ./templates/Customers/view.php:876
 #: ./templates/Customers/view.php:948
+#: ./templates/DealerCommissions/edit.php:15
+#: ./templates/DealerCommissions/index.php:54
+#: ./templates/DealerCommissions/view.php:20
 #: ./templates/Emails/edit.php:15
 #: ./templates/Emails/index.php:47
 #: ./templates/Emails/view.php:19
@@ -1193,10 +1194,9 @@ msgstr ""
 #: ./templates/Addresses/index.php:73
 #: ./templates/Billings/index.php:69
 #: ./templates/BorrowedEquipments/index.php:58
-#: ./templates/BrokerageDealers/index.php:45
-#: ./templates/Brokerages/index.php:25
-#: ./templates/Brokerages/view.php:60
-#: ./templates/Brokerages/view.php:124
+#: ./templates/Commissions/index.php:25
+#: ./templates/Commissions/view.php:95
+#: ./templates/Commissions/view.php:183
 #: ./templates/Contracts/index.php:76
 #: ./templates/Contracts/view.php:242
 #: ./templates/Contracts/view.php:300
@@ -1222,6 +1222,7 @@ msgstr ""
 #: ./templates/Customers/view.php:819
 #: ./templates/Customers/view.php:865
 #: ./templates/Customers/view.php:937
+#: ./templates/DealerCommissions/index.php:45
 #: ./templates/Emails/index.php:38
 #: ./templates/EquipmentTypes/index.php:31
 #: ./templates/EquipmentTypes/view.php:117
@@ -1258,10 +1259,9 @@ msgstr ""
 #: ./templates/Addresses/index.php:75
 #: ./templates/Billings/index.php:71
 #: ./templates/BorrowedEquipments/index.php:60
-#: ./templates/BrokerageDealers/index.php:47
-#: ./templates/Brokerages/index.php:27
-#: ./templates/Brokerages/view.php:64
-#: ./templates/Brokerages/view.php:128
+#: ./templates/Commissions/index.php:27
+#: ./templates/Commissions/view.php:99
+#: ./templates/Commissions/view.php:187
 #: ./templates/Contracts/index.php:78
 #: ./templates/Contracts/view.php:246
 #: ./templates/Contracts/view.php:304
@@ -1287,6 +1287,7 @@ msgstr ""
 #: ./templates/Customers/view.php:823
 #: ./templates/Customers/view.php:869
 #: ./templates/Customers/view.php:941
+#: ./templates/DealerCommissions/index.php:47
 #: ./templates/Emails/index.php:40
 #: ./templates/EquipmentTypes/index.php:33
 #: ./templates/EquipmentTypes/view.php:121
@@ -1320,12 +1321,12 @@ msgstr ""
 #: ./templates/Addresses/index.php:92
 #: ./templates/Billings/index.php:88
 #: ./templates/BorrowedEquipments/index.php:77
-#: ./templates/BrokerageDealers/index.php:64
-#: ./templates/Brokerages/index.php:44
+#: ./templates/Commissions/index.php:44
 #: ./templates/Contracts/index.php:95
 #: ./templates/Countries/index.php:44
 #: ./templates/CustomerLabels/index.php:64
 #: ./templates/Customers/index.php:99
+#: ./templates/DealerCommissions/index.php:64
 #: ./templates/Emails/index.php:57
 #: ./templates/EquipmentTypes/index.php:50
 #: ./templates/IpNetworks/index.php:59
@@ -1349,12 +1350,12 @@ msgstr ""
 #: ./templates/Addresses/index.php:93
 #: ./templates/Billings/index.php:89
 #: ./templates/BorrowedEquipments/index.php:78
-#: ./templates/BrokerageDealers/index.php:65
-#: ./templates/Brokerages/index.php:45
+#: ./templates/Commissions/index.php:45
 #: ./templates/Contracts/index.php:96
 #: ./templates/Countries/index.php:45
 #: ./templates/CustomerLabels/index.php:65
 #: ./templates/Customers/index.php:100
+#: ./templates/DealerCommissions/index.php:65
 #: ./templates/Emails/index.php:58
 #: ./templates/EquipmentTypes/index.php:51
 #: ./templates/IpNetworks/index.php:60
@@ -1378,12 +1379,12 @@ msgstr ""
 #: ./templates/Addresses/index.php:95
 #: ./templates/Billings/index.php:91
 #: ./templates/BorrowedEquipments/index.php:80
-#: ./templates/BrokerageDealers/index.php:67
-#: ./templates/Brokerages/index.php:47
+#: ./templates/Commissions/index.php:47
 #: ./templates/Contracts/index.php:98
 #: ./templates/Countries/index.php:47
 #: ./templates/CustomerLabels/index.php:67
 #: ./templates/Customers/index.php:102
+#: ./templates/DealerCommissions/index.php:67
 #: ./templates/Emails/index.php:60
 #: ./templates/EquipmentTypes/index.php:53
 #: ./templates/IpNetworks/index.php:62
@@ -1407,12 +1408,12 @@ msgstr ""
 #: ./templates/Addresses/index.php:96
 #: ./templates/Billings/index.php:92
 #: ./templates/BorrowedEquipments/index.php:81
-#: ./templates/BrokerageDealers/index.php:68
-#: ./templates/Brokerages/index.php:48
+#: ./templates/Commissions/index.php:48
 #: ./templates/Contracts/index.php:99
 #: ./templates/Countries/index.php:48
 #: ./templates/CustomerLabels/index.php:68
 #: ./templates/Customers/index.php:103
+#: ./templates/DealerCommissions/index.php:68
 #: ./templates/Emails/index.php:61
 #: ./templates/EquipmentTypes/index.php:54
 #: ./templates/IpNetworks/index.php:63
@@ -1436,12 +1437,12 @@ msgstr ""
 #: ./templates/Addresses/index.php:99
 #: ./templates/Billings/index.php:95
 #: ./templates/BorrowedEquipments/index.php:84
-#: ./templates/BrokerageDealers/index.php:71
-#: ./templates/Brokerages/index.php:51
+#: ./templates/Commissions/index.php:51
 #: ./templates/Contracts/index.php:102
 #: ./templates/Countries/index.php:51
 #: ./templates/CustomerLabels/index.php:71
 #: ./templates/Customers/index.php:106
+#: ./templates/DealerCommissions/index.php:71
 #: ./templates/Emails/index.php:64
 #: ./templates/EquipmentTypes/index.php:57
 #: ./templates/IpNetworks/index.php:66
@@ -1469,6 +1470,7 @@ msgstr ""
 #: ./templates/Addresses/view.php:34
 #: ./templates/Billings/view.php:33
 #: ./templates/BorrowedEquipments/view.php:41
+#: ./templates/Commissions/view.php:122
 #: ./templates/Contracts/print.php:36
 #: ./templates/Contracts/view.php:47
 #: ./templates/Countries/view.php:78
@@ -1550,7 +1552,7 @@ msgid "Street"
 msgstr ""
 
 #: ./templates/Addresses/view.php:73
-#: ./templates/Brokerages/view.php:89
+#: ./templates/Commissions/view.php:123
 #: ./templates/Contracts/print.php:50
 #: ./templates/Contracts/view.php:61
 #: ./templates/Countries/view.php:86
@@ -1596,6 +1598,7 @@ msgstr ""
 #: ./templates/Billings/index.php:67
 #: ./templates/Billings/view.php:88
 #: ./templates/Billings/view.php:92
+#: ./templates/Commissions/view.php:168
 #: ./templates/Contracts/index.php:60
 #: ./templates/Contracts/print.php:92
 #: ./templates/Contracts/view.php:103
@@ -1659,6 +1662,7 @@ msgstr ""
 #: ./templates/Billings/index.php:67
 #: ./templates/Billings/view.php:88
 #: ./templates/Billings/view.php:92
+#: ./templates/Commissions/view.php:168
 #: ./templates/Contracts/index.php:60
 #: ./templates/Contracts/print.php:92
 #: ./templates/Contracts/view.php:103
@@ -1728,10 +1732,9 @@ msgstr ""
 #: ./templates/Addresses/view.php:142
 #: ./templates/Billings/view.php:95
 #: ./templates/BorrowedEquipments/view.php:74
-#: ./templates/BrokerageDealers/view.php:63
-#: ./templates/Brokerages/view.php:34
-#: ./templates/Brokerages/view.php:48
-#: ./templates/Brokerages/view.php:86
+#: ./templates/Commissions/view.php:34
+#: ./templates/Commissions/view.php:76
+#: ./templates/Commissions/view.php:121
 #: ./templates/Contracts/print.php:139
 #: ./templates/Contracts/view.php:150
 #: ./templates/Countries/view.php:35
@@ -1739,6 +1742,7 @@ msgstr ""
 #: ./templates/CustomerLabels/view.php:55
 #: ./templates/Customers/print.php:125
 #: ./templates/Customers/view.php:143
+#: ./templates/DealerCommissions/view.php:63
 #: ./templates/Emails/view.php:53
 #: ./templates/EquipmentTypes/view.php:49
 #: ./templates/EquipmentTypes/view.php:91
@@ -1773,12 +1777,14 @@ msgstr ""
 #: ./templates/Addresses/view.php:146
 #: ./templates/Billings/view.php:99
 #: ./templates/BorrowedEquipments/view.php:78
+#: ./templates/Commissions/view.php:38
 #: ./templates/Contracts/print.php:143
 #: ./templates/Contracts/view.php:154
 #: ./templates/Countries/view.php:39
 #: ./templates/CustomerLabels/view.php:59
 #: ./templates/Customers/print.php:129
 #: ./templates/Customers/view.php:147
+#: ./templates/DealerCommissions/view.php:67
 #: ./templates/Emails/view.php:57
 #: ./templates/EquipmentTypes/view.php:53
 #: ./templates/IpNetworks/view.php:88
@@ -1803,12 +1809,14 @@ msgstr ""
 #: ./templates/Addresses/view.php:150
 #: ./templates/Billings/view.php:103
 #: ./templates/BorrowedEquipments/view.php:82
+#: ./templates/Commissions/view.php:42
 #: ./templates/Contracts/print.php:147
 #: ./templates/Contracts/view.php:158
 #: ./templates/Countries/view.php:43
 #: ./templates/CustomerLabels/view.php:63
 #: ./templates/Customers/print.php:133
 #: ./templates/Customers/view.php:151
+#: ./templates/DealerCommissions/view.php:71
 #: ./templates/Emails/view.php:61
 #: ./templates/EquipmentTypes/view.php:57
 #: ./templates/IpNetworks/view.php:92
@@ -1832,12 +1840,14 @@ msgstr ""
 #: ./templates/Addresses/view.php:162
 #: ./templates/Billings/view.php:115
 #: ./templates/BorrowedEquipments/view.php:94
+#: ./templates/Commissions/view.php:54
 #: ./templates/Contracts/print.php:159
 #: ./templates/Contracts/view.php:170
 #: ./templates/Countries/view.php:55
 #: ./templates/CustomerLabels/view.php:75
 #: ./templates/Customers/print.php:145
 #: ./templates/Customers/view.php:163
+#: ./templates/DealerCommissions/view.php:83
 #: ./templates/Emails/view.php:73
 #: ./templates/EquipmentTypes/view.php:69
 #: ./templates/IpNetworks/view.php:104
@@ -1861,12 +1871,14 @@ msgstr ""
 #: ./templates/Addresses/view.php:166
 #: ./templates/Billings/view.php:119
 #: ./templates/BorrowedEquipments/view.php:98
+#: ./templates/Commissions/view.php:58
 #: ./templates/Contracts/print.php:163
 #: ./templates/Contracts/view.php:174
 #: ./templates/Countries/view.php:59
 #: ./templates/CustomerLabels/view.php:79
 #: ./templates/Customers/print.php:149
 #: ./templates/Customers/view.php:167
+#: ./templates/DealerCommissions/view.php:87
 #: ./templates/Emails/view.php:77
 #: ./templates/EquipmentTypes/view.php:73
 #: ./templates/IpNetworks/view.php:108
@@ -1889,7 +1901,6 @@ msgstr ""
 
 #: ./templates/Addresses/view.php:181
 #: ./templates/Billings/view.php:132
-#: ./templates/Brokerages/view.php:91
 #: ./templates/Contracts/view.php:195
 #: ./templates/Contracts/view.php:222
 #: ./templates/Contracts/view.php:380
@@ -2140,92 +2151,36 @@ msgstr ""
 msgid "Borrowed Until"
 msgstr ""
 
-#: ./templates/BrokerageDealers/add.php:12
-#: ./templates/BrokerageDealers/edit.php:20
-#: ./templates/BrokerageDealers/view.php:25
-#: ./templates/Settings/index.php:102
-msgid "List Brokerage Dealers"
-msgstr ""
-
-#: ./templates/BrokerageDealers/add.php:22
-msgid "Add Brokerage Dealer"
-msgstr ""
-
-#: ./templates/BrokerageDealers/edit.php:30
-#: ./templates/BrokerageDealers/view.php:12
-msgid "Edit Brokerage Dealer"
-msgstr ""
-
-#: ./templates/BrokerageDealers/index.php:9
-#: ./templates/BrokerageDealers/view.php:30
-msgid "New Brokerage Dealer"
-msgstr ""
-
-#: ./templates/BrokerageDealers/index.php:13
-msgid "Brokerage Dealers"
-msgstr ""
-
-#: ./templates/BrokerageDealers/view.php:17
-msgid "Delete Brokerage Dealer"
-msgstr ""
-
-#: ./templates/BrokerageDealers/view.php:41
-#: ./templates/Customers/print.php:101
-#: ./templates/Customers/view.php:119
-#: ./templates/Customers/view.php:925
-#: ./templates/TaskStates/view.php:91
-#: ./templates/TaskTypes/view.php:83
-#: ./templates/Tasks/view.php:66
-msgid "Dealer"
-msgstr ""
-
-#: ./templates/BrokerageDealers/view.php:48
-#: ./templates/Contracts/print.php:84
-#: ./templates/Contracts/view.php:95
-#: ./templates/ServiceTypes/view.php:175
-msgid "Brokerage"
-msgstr ""
-
-#: ./templates/BrokerageDealers/view.php:55
-#: ./templates/Brokerages/view.php:46
-msgid "Fixed"
-msgstr ""
-
-#: ./templates/BrokerageDealers/view.php:59
-#: ./templates/Brokerages/view.php:47
-msgid "Percentage"
-msgstr ""
-
-#: ./templates/Brokerages/add.php:11
-#: ./templates/Brokerages/edit.php:16
-#: ./templates/Brokerages/view.php:21
+#: ./templates/Commissions/add.php:11
+#: ./templates/Commissions/edit.php:16
+#: ./templates/Commissions/view.php:21
 #: ./templates/Settings/index.php:97
-msgid "List Brokerages"
+msgid "List Commissions"
 msgstr ""
 
-#: ./templates/Brokerages/add.php:18
-msgid "Add Brokerage"
+#: ./templates/Commissions/add.php:18
+msgid "Add Commission"
 msgstr ""
 
-#: ./templates/Brokerages/edit.php:23
-#: ./templates/Brokerages/view.php:12
-msgid "Edit Brokerage"
+#: ./templates/Commissions/edit.php:23
+#: ./templates/Commissions/view.php:12
+msgid "Edit Commission"
 msgstr ""
 
-#: ./templates/Brokerages/index.php:8
-#: ./templates/Brokerages/view.php:22
-msgid "New Brokerage"
+#: ./templates/Commissions/index.php:8
+#: ./templates/Commissions/view.php:22
+msgid "New Commission"
 msgstr ""
 
-#: ./templates/Brokerages/index.php:9
-msgid "Brokerages"
+#: ./templates/Commissions/index.php:9
+msgid "Commissions"
 msgstr ""
 
-#: ./templates/Brokerages/view.php:17
-msgid "Delete Brokerage"
+#: ./templates/Commissions/view.php:17
+msgid "Delete Commission"
 msgstr ""
 
-#: ./templates/Brokerages/view.php:30
+#: ./templates/Commissions/view.php:30
 #: ./templates/Countries/view.php:31
 #: ./templates/EquipmentTypes/view.php:41
 #: ./templates/Labels/view.php:30
@@ -2241,86 +2196,47 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: ./templates/Brokerages/view.php:39
-msgid "Related Brokerage Dealers"
+#: ./templates/Commissions/view.php:71
+msgid "Related Dealer Commissions"
 msgstr ""
 
-#: ./templates/Brokerages/view.php:44
-msgid "Dealer Id"
+#: ./templates/Commissions/view.php:77
+#: ./templates/Customers/print.php:101
+#: ./templates/Customers/view.php:119
+#: ./templates/Customers/view.php:925
+#: ./templates/DealerCommissions/view.php:41
+#: ./templates/TaskStates/view.php:91
+#: ./templates/TaskTypes/view.php:83
+#: ./templates/Tasks/view.php:66
+msgid "Dealer"
 msgstr ""
 
-#: ./templates/Brokerages/view.php:45
-#: ./templates/Brokerages/view.php:95
-msgid "Brokerage Id"
+#: ./templates/Commissions/view.php:78
+#: ./templates/DealerCommissions/view.php:55
+msgid "Fixed"
 msgstr ""
 
-#: ./templates/Brokerages/view.php:81
+#: ./templates/Commissions/view.php:79
+#: ./templates/DealerCommissions/view.php:59
+msgid "Percentage"
+msgstr ""
+
+#: ./templates/Commissions/view.php:116
 #: ./templates/ServiceTypes/view.php:157
 msgid "Related Contracts"
 msgstr ""
 
-#: ./templates/Brokerages/view.php:87
-msgid "Customer Id"
+#: ./templates/Commissions/view.php:124
+#: ./templates/Contracts/print.php:43
+#: ./templates/Contracts/view.php:54
+#: ./templates/Customers/view.php:416
+#: ./templates/Overviews/overview_of_active_services.php:47
+#: ./templates/Queues/view.php:111
+#: ./templates/Services/view.php:34
+msgid "Service Type"
 msgstr ""
 
-#: ./templates/Brokerages/view.php:88
-msgid "Installation Address Id"
-msgstr ""
-
-#: ./templates/Brokerages/view.php:90
-msgid "Service Type Id"
-msgstr ""
-
-#: ./templates/Brokerages/view.php:92
-#: ./templates/Contracts/print.php:128
-#: ./templates/Contracts/view.php:139
-#: ./templates/Customers/view.php:422
-#: ./templates/ServiceTypes/view.php:170
-msgid "Obligation Until"
-msgstr ""
-
-#: ./templates/Brokerages/view.php:93
-#: ./templates/Contracts/print.php:91
-#: ./templates/Contracts/view.php:102
-#: ./templates/Customers/view.php:423
-#: ./templates/ServiceTypes/view.php:171
-msgid "Vip"
-msgstr ""
-
-#: ./templates/Brokerages/view.php:94
-msgid "Installation Technician Id"
-msgstr ""
-
-#: ./templates/Brokerages/view.php:96
-#: ./templates/Contracts/print.php:69
-#: ./templates/Contracts/view.php:80
-#: ./templates/Customers/view.php:425
-#: ./templates/ServiceTypes/view.php:173
-msgid "Installation Date"
-msgstr ""
-
-#: ./templates/Brokerages/view.php:97
-#: ./templates/Contracts/view.php:189
-msgid "Access Description"
-msgstr ""
-
-#: ./templates/Brokerages/view.php:98
-#: ./templates/Contracts/print.php:120
-#: ./templates/Contracts/view.php:131
-#: ./templates/Customers/view.php:420
-#: ./templates/ServiceTypes/view.php:168
-msgid "Valid From"
-msgstr ""
-
-#: ./templates/Brokerages/view.php:99
-#: ./templates/Contracts/print.php:124
-#: ./templates/Contracts/view.php:135
-#: ./templates/Customers/view.php:421
-#: ./templates/ServiceTypes/view.php:169
-msgid "Valid Until"
-msgstr ""
-
-#: ./templates/Brokerages/view.php:100
+#: ./templates/Commissions/view.php:126
 #: ./templates/Contracts/print.php:112
 #: ./templates/Contracts/view.php:123
 #: ./templates/Customers/view.php:418
@@ -2328,12 +2244,78 @@ msgstr ""
 msgid "Conclusion Date"
 msgstr ""
 
-#: ./templates/Brokerages/view.php:101
+#: ./templates/Commissions/view.php:127
 #: ./templates/Contracts/print.php:116
 #: ./templates/Contracts/view.php:127
 #: ./templates/Customers/view.php:419
 #: ./templates/ServiceTypes/view.php:167
 msgid "Number Of Amendments"
+msgstr ""
+
+#: ./templates/Commissions/view.php:128
+#: ./templates/Contracts/print.php:120
+#: ./templates/Contracts/view.php:131
+#: ./templates/Customers/view.php:420
+#: ./templates/ServiceTypes/view.php:168
+msgid "Valid From"
+msgstr ""
+
+#: ./templates/Commissions/view.php:129
+#: ./templates/Contracts/print.php:124
+#: ./templates/Contracts/view.php:135
+#: ./templates/Customers/view.php:421
+#: ./templates/ServiceTypes/view.php:169
+msgid "Valid Until"
+msgstr ""
+
+#: ./templates/Commissions/view.php:130
+#: ./templates/Contracts/print.php:128
+#: ./templates/Contracts/view.php:139
+#: ./templates/Customers/view.php:422
+#: ./templates/ServiceTypes/view.php:170
+msgid "Obligation Until"
+msgstr ""
+
+#: ./templates/Commissions/view.php:131
+#: ./templates/Contracts/print.php:91
+#: ./templates/Contracts/view.php:102
+#: ./templates/Customers/view.php:423
+#: ./templates/ServiceTypes/view.php:171
+msgid "Vip"
+msgstr ""
+
+#: ./templates/Commissions/view.php:132
+#: ./templates/Contracts/print.php:65
+#: ./templates/Contracts/view.php:76
+#: ./templates/Contracts/view.php:406
+#: ./templates/Contracts/view.php:468
+#: ./templates/Customers/view.php:424
+#: ./templates/Customers/view.php:694
+#: ./templates/Customers/view.php:757
+#: ./templates/IpNetworks/view.php:68
+#: ./templates/Ips/view.php:69
+#: ./templates/RemovedIpNetworks/view.php:71
+#: ./templates/RemovedIps/view.php:58
+#: ./templates/ServiceTypes/view.php:172
+#: ./templates/TaskStates/view.php:92
+#: ./templates/TaskTypes/view.php:84
+#: ./templates/Tasks/view.php:73
+msgid "Access Point"
+msgstr ""
+
+#: ./templates/Commissions/view.php:133
+#: ./templates/Contracts/print.php:69
+#: ./templates/Contracts/view.php:80
+#: ./templates/Customers/view.php:425
+#: ./templates/ServiceTypes/view.php:173
+msgid "Installation Date"
+msgstr ""
+
+#: ./templates/Commissions/view.php:134
+#: ./templates/Contracts/print.php:73
+#: ./templates/Contracts/view.php:84
+#: ./templates/ServiceTypes/view.php:174
+msgid "Installation Technician"
 msgstr ""
 
 #: ./templates/Contracts/add.php:17
@@ -2371,37 +2353,11 @@ msgstr ""
 msgid "View Contract"
 msgstr ""
 
-#: ./templates/Contracts/print.php:43
-#: ./templates/Contracts/view.php:54
-#: ./templates/Customers/view.php:416
-#: ./templates/Overviews/overview_of_active_services.php:47
-#: ./templates/Queues/view.php:111
-#: ./templates/Services/view.php:34
-msgid "Service Type"
-msgstr ""
-
-#: ./templates/Contracts/print.php:65
-#: ./templates/Contracts/view.php:76
-#: ./templates/Contracts/view.php:406
-#: ./templates/Contracts/view.php:468
-#: ./templates/Customers/view.php:424
-#: ./templates/Customers/view.php:694
-#: ./templates/Customers/view.php:757
-#: ./templates/IpNetworks/view.php:68
-#: ./templates/Ips/view.php:69
-#: ./templates/RemovedIpNetworks/view.php:71
-#: ./templates/RemovedIps/view.php:58
-#: ./templates/ServiceTypes/view.php:172
-#: ./templates/TaskStates/view.php:92
-#: ./templates/TaskTypes/view.php:84
-#: ./templates/Tasks/view.php:73
-msgid "Access Point"
-msgstr ""
-
-#: ./templates/Contracts/print.php:73
-#: ./templates/Contracts/view.php:84
-#: ./templates/ServiceTypes/view.php:174
-msgid "Installation Technician"
+#: ./templates/Contracts/print.php:84
+#: ./templates/Contracts/view.php:95
+#: ./templates/DealerCommissions/view.php:48
+#: ./templates/ServiceTypes/view.php:175
+msgid "Commission"
 msgstr ""
 
 #: ./templates/Contracts/print.php:95
@@ -2451,6 +2407,10 @@ msgstr ""
 #: ./templates/Customers/view.php:32
 #: ./templates/Customers/view.php:41
 msgid "Print to PDF"
+msgstr ""
+
+#: ./templates/Contracts/view.php:189
+msgid "Access Description"
 msgstr ""
 
 #: ./templates/Contracts/view.php:264
@@ -2954,6 +2914,35 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:80
 #: ./templates/Tasks/view.php:47
 msgid "Subject"
+msgstr ""
+
+#: ./templates/DealerCommissions/add.php:12
+#: ./templates/DealerCommissions/edit.php:20
+#: ./templates/DealerCommissions/view.php:25
+#: ./templates/Settings/index.php:102
+msgid "List Dealer Commissions"
+msgstr ""
+
+#: ./templates/DealerCommissions/add.php:22
+msgid "Add Dealer Commission"
+msgstr ""
+
+#: ./templates/DealerCommissions/edit.php:30
+#: ./templates/DealerCommissions/view.php:12
+msgid "Edit Dealer Commission"
+msgstr ""
+
+#: ./templates/DealerCommissions/index.php:9
+#: ./templates/DealerCommissions/view.php:30
+msgid "New Dealer Commission"
+msgstr ""
+
+#: ./templates/DealerCommissions/index.php:13
+msgid "Dealer Commissions"
+msgstr ""
+
+#: ./templates/DealerCommissions/view.php:17
+msgid "Delete Dealer Commission"
 msgstr ""
 
 #: ./templates/Emails/add.php:12
