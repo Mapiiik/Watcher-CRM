@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface $invoice
+ * @var \BookkeepingPohoda\Model\Entity\Invoice $invoice
  */
 ?>
 <div class="row">
@@ -92,20 +92,36 @@
                     <td><?= h($invoice->email_sent) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __d('bookkeeping_pohoda', 'Created') ?></th>
+                    <th><?= __('Created') ?></th>
                     <td><?= h($invoice->created) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __d('bookkeeping_pohoda', 'Created By') ?></th>
-                    <td><?= $this->Number->format($invoice->created_by) ?></td>
+                    <th><?= __('Created By') ?></th>
+                    <td><?= $invoice->has('creator') ? $this->Html->link(
+                        $invoice->creator->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $invoice->creator->id,
+                        ]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __d('bookkeeping_pohoda', 'Modified') ?></th>
+                    <th><?= __('Modified') ?></th>
                     <td><?= h($invoice->modified) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __d('bookkeeping_pohoda', 'Modified By') ?></th>
-                    <td><?= $this->Number->format($invoice->modified_by) ?></td>
+                    <th><?= __('Modified By') ?></th>
+                    <td><?= $invoice->has('modifier') ? $this->Html->link(
+                        $invoice->modifier->username,
+                        [
+                            'plugin' => 'CakeDC/Users',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $invoice->modifier->id,
+                        ]
+                    ) : '' ?></td>
                 </tr>
             </table>
             <div class="text">

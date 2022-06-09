@@ -12,6 +12,8 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
  * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
+ * @property \CakeDC\Users\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Creators
+ * @property \CakeDC\Users\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Modifiers
  * @method \Radius\Model\Entity\Account newEmptyEntity()
  * @method \Radius\Model\Entity\Account newEntity(array $data, array $options = [])
  * @method \Radius\Model\Entity\Account[] newEntities(array $data, array $options = [])
@@ -53,6 +55,16 @@ class AccountsTable extends Table
         ]);
         $this->belongsTo('Contracts', [
             'foreignKey' => 'contract_id',
+            'strategy' => 'select',
+        ]);
+        $this->belongsTo('Creators', [
+            'className' => 'CakeDC/Users.Users',
+            'foreignKey' => 'created_by',
+            'strategy' => 'select',
+        ]);
+        $this->belongsTo('Modifiers', [
+            'className' => 'CakeDC/Users.Users',
+            'foreignKey' => 'modified_by',
             'strategy' => 'select',
         ]);
         $this->hasMany('Radius.Radcheck', [
@@ -119,14 +131,6 @@ class AccountsTable extends Table
         $validator
             ->integer('contract_id')
             ->notEmptyString('contract_id');
-
-        $validator
-            ->integer('created_by')
-            ->notEmptyString('created_by');
-
-        $validator
-            ->integer('modified_by')
-            ->allowEmptyString('modified_by');
 
         return $validator;
     }

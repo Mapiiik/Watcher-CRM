@@ -8,6 +8,12 @@ use Cake\ORM\Entity;
 /**
  * Account Entity
  *
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property int|null $created_by
+ * @property \CakeDC\Users\Model\Entity\User|null $creator
+ * @property \Cake\I18n\FrozenTime|null $modified
+ * @property int|null $modified_by
+ * @property \CakeDC\Users\Model\Entity\User|null $modifier
  * @property int $id
  * @property string $username
  * @property string $password
@@ -15,10 +21,6 @@ use Cake\ORM\Entity;
  * @property bool $active
  * @property int $customer_id
  * @property int $contract_id
- * @property \Cake\I18n\FrozenTime $created
- * @property int $created_by
- * @property \Cake\I18n\FrozenTime|null $modified
- * @property int|null $modified_by
  * @property string $style
  *
  * @property \App\Model\Entity\Customer $customer
@@ -50,16 +52,16 @@ class Account extends Entity
      * @var array<bool>
      */
     protected $_accessible = [
+        'created' => true,
+        'created_by' => true,
+        'modified' => true,
+        'modified_by' => true,
         'username' => true,
         'password' => true,
         'type' => true,
         'active' => true,
         'customer_id' => true,
         'contract_id' => true,
-        'created' => true,
-        'created_by' => true,
-        'modified' => true,
-        'modified_by' => true,
         'customer' => true,
         'contract' => true,
         'radcheck' => true,

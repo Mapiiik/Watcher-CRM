@@ -63,6 +63,8 @@ class AccountsController extends AppController
                 'Radcheck',
                 'Radreply',
                 'Radusergroup',
+                'Creators',
+                'Modifiers',
             ],
         ]);
 
@@ -84,6 +86,8 @@ class AccountsController extends AppController
                 'Contracts',
                 'Radacct' => ['sort' => ['Radacct.acctstarttime' => 'DESC']],
                 'Radpostauth' => ['sort' => ['Radpostauth.authdate' => 'DESC']],
+                'Creators',
+                'Modifiers',
             ],
         ]);
 

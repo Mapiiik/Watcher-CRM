@@ -2,6 +2,8 @@
 /**
  * @var \App\View\AppView $this
  * @var \BookkeepingPohoda\Model\Entity\Invoice[]|\Cake\Collection\CollectionInterface $invoices
+ * @var float $total_debt
+ * @var float $total_overdue_debt
  */
 
 ?>
@@ -46,9 +48,7 @@
                     <th><?= $this->Paginator->sort('send_by_email', __d('bookkeeping_pohoda', 'Send By Email')) ?></th>
                     <th><?= $this->Paginator->sort('email_sent', __d('bookkeeping_pohoda', 'Email Sent')) ?></th>
                     <th><?= $this->Paginator->sort('created', __d('bookkeeping_pohoda', 'Created')) ?></th>
-                    <th><?= $this->Paginator->sort('created_by', __d('bookkeeping_pohoda', 'Created By')) ?></th>
                     <th><?= $this->Paginator->sort('modified', __d('bookkeeping_pohoda', 'Modified')) ?></th>
-                    <th><?= $this->Paginator->sort('modified_by', __d('bookkeeping_pohoda', 'Modified By')) ?></th>
                     <th class="actions"><?= __d('bookkeeping_pohoda', 'Actions') ?></th>
                 </tr>
             </thead>
@@ -73,9 +73,7 @@
                         __d('bookkeeping_pohoda', 'Yes') : __d('bookkeeping_pohoda', 'No'); ?></td>
                     <td><?= h($invoice->email_sent) ?></td>
                     <td><?= h($invoice->created) ?></td>
-                    <td><?= $this->Number->format($invoice->created_by) ?></td>
                     <td><?= h($invoice->modified) ?></td>
-                    <td><?= $this->Number->format($invoice->modified_by) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(
                             __d('bookkeeping_pohoda', 'Download'),

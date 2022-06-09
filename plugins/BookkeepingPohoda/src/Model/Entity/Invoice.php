@@ -9,6 +9,12 @@ use Cake\ORM\Entity;
 /**
  * Invoice Entity
  *
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property int|null $created_by
+ * @property \CakeDC\Users\Model\Entity\User|null $creator
+ * @property \Cake\I18n\FrozenTime|null $modified
+ * @property int|null $modified_by
+ * @property \CakeDC\Users\Model\Entity\User|null $modifier
  * @property int $id
  * @property int|null $customer_id
  * @property int $number
@@ -21,10 +27,6 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenDate|null $payment_date
  * @property bool $send_by_email
  * @property \Cake\I18n\FrozenTime|null $email_sent
- * @property \Cake\I18n\FrozenTime|null $created
- * @property int|null $created_by
- * @property \Cake\I18n\FrozenTime|null $modified
- * @property int|null $modified_by
  * @property \App\Model\Entity\Billing[] $items
  * @property string|null $note
  * @property string|null $internal_note
@@ -44,6 +46,10 @@ class Invoice extends Entity
      * @var array<bool>
      */
     protected $_accessible = [
+        'created' => true,
+        'created_by' => true,
+        'modified' => true,
+        'modified_by' => true,
         'customer_id' => true,
         'number' => true,
         'variable_symbol' => true,
@@ -55,10 +61,6 @@ class Invoice extends Entity
         'payment_date' => true,
         'send_by_email' => true,
         'email_sent' => true,
-        'created' => true,
-        'created_by' => true,
-        'modified' => true,
-        'modified_by' => true,
         'customer' => true,
     ];
 

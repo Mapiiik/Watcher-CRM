@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \Radius\Model\Entity\Account $account
+ * @var bool $details
  */
 
 use Cake\I18n\FrozenTime;
@@ -105,20 +106,36 @@ use Cake\I18n\FrozenTime;
                             <td><?= $this->Number->format($account->id) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __d('radius', 'Created') ?></th>
+                            <th><?= __('Created') ?></th>
                             <td><?= h($account->created) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __d('radius', 'Created By') ?></th>
-                            <td><?= $this->Number->format($account->created_by) ?></td>
+                            <th><?= __('Created By') ?></th>
+                            <td><?= $account->has('creator') ? $this->Html->link(
+                                $account->creator->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $account->creator->id,
+                                ]
+                            ) : '' ?></td>
                         </tr>
                         <tr>
-                            <th><?= __d('radius', 'Modified') ?></th>
+                            <th><?= __('Modified') ?></th>
                             <td><?= h($account->modified) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __d('radius', 'Modified By') ?></th>
-                            <td><?= $this->Number->format($account->modified_by) ?></td>
+                            <th><?= __('Modified By') ?></th>
+                            <td><?= $account->has('modifier') ? $this->Html->link(
+                                $account->modifier->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $account->modifier->id,
+                                ]
+                            ) : '' ?></td>
                         </tr>
                     </table>
                 </div>

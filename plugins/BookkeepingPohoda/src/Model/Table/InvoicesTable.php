@@ -11,6 +11,8 @@ use Cake\Validation\Validator;
  * Invoices Model
  *
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
+ * @property \CakeDC\Users\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Creators
+ * @property \CakeDC\Users\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Modifiers
  * @method \BookkeepingPohoda\Model\Entity\Invoice newEmptyEntity()
  * @method \BookkeepingPohoda\Model\Entity\Invoice newEntity(array $data, array $options = [])
  * @method \BookkeepingPohoda\Model\Entity\Invoice[] newEntities(array $data, array $options = [])
@@ -49,6 +51,14 @@ class InvoicesTable extends Table
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
             'className' => 'Customers',
+        ]);
+        $this->belongsTo('Creators', [
+            'className' => 'CakeDC/Users.Users',
+            'foreignKey' => 'created_by',
+        ]);
+        $this->belongsTo('Modifiers', [
+            'className' => 'CakeDC/Users.Users',
+            'foreignKey' => 'modified_by',
         ]);
     }
 
@@ -102,14 +112,6 @@ class InvoicesTable extends Table
         $validator
             ->dateTime('email_sent')
             ->allowEmptyDateTime('email_sent');
-
-        $validator
-            ->integer('created_by')
-            ->allowEmptyString('created_by');
-
-        $validator
-            ->integer('modified_by')
-            ->allowEmptyString('modified_by');
 
         return $validator;
     }
