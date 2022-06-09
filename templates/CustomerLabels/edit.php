@@ -31,9 +31,11 @@
             <fieldset>
                 <legend><?= __('Edit Customer Label') ?></legend>
                 <?php
-                    echo $this->Form->control('label_id', ['options' => $labels]);
+                echo $this->Form->control('label_id', ['options' => $labels]);
+                if (!isset($customer_id)) {
                     echo $this->Form->control('customer_id', ['options' => $customers]);
-                    echo $this->Form->control('note');
+                }
+                echo $this->Form->control('note');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

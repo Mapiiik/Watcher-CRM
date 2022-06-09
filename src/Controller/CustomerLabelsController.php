@@ -18,8 +18,17 @@ class CustomerLabelsController extends AppController
      */
     public function index()
     {
+        $customer_id = $this->getRequest()->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+
+        $conditions = [];
+        if (isset($customer_id)) {
+            $conditions = ['CustomerLabels.customer_id' => $customer_id];
+        }
+
         $this->paginate = [
             'contain' => ['Labels', 'Customers'],
+            'conditions' => $conditions,
         ];
         $customerLabels = $this->paginate($this->CustomerLabels);
 
@@ -54,7 +63,15 @@ class CustomerLabelsController extends AppController
      */
     public function add()
     {
+        $customer_id = $this->getRequest()->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+
         $customerLabel = $this->CustomerLabels->newEmptyEntity();
+
+        if (isset($customer_id)) {
+            $customerLabel->customer_id = $customer_id;
+        }
+
         if ($this->getRequest()->is('post')) {
             $customerLabel = $this->CustomerLabels->patchEntity($customerLabel, $this->getRequest()->getData());
             if ($this->CustomerLabels->save($customerLabel)) {
@@ -80,6 +97,9 @@ class CustomerLabelsController extends AppController
      */
     public function edit($id = null)
     {
+        $customer_id = $this->getRequest()->getParam('customer_id');
+        $this->set('customer_id', $customer_id);
+
         $customerLabel = $this->CustomerLabels->get($id, [
             'contain' => [],
         ]);

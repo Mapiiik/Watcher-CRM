@@ -186,6 +186,7 @@ return [
                 'Emails', 'Phones', 'Logins', 'Addresses',
                 'Billings', 'BorrowedEquipments', 'SoldEquipments',
                 'Ips', 'IpNetworks',
+                'CustomerLabels',
             ],
             'action' => ['index'],
             'allowed' => function ($user, $role, Cake\Http\ServerRequest $request) {

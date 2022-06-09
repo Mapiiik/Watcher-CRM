@@ -16,8 +16,8 @@
             <thead>
                 <tr>
                 <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('label_id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
+                    <th><?= $this->Paginator->sort('label_id') ?></th>
                     <th><?= $this->Paginator->sort('note') ?></th>
                     <th><?= $this->Paginator->sort('created') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
@@ -28,15 +28,15 @@
                 <tr>
                     <td><?= $this->Number->format($customerLabel->id) ?></td>
                     <td>
-                        <?= $customerLabel->has('label') ? $this->Html->link(
-                            $customerLabel->label->name,
-                            ['controller' => 'Labels', 'action' => 'view', $customerLabel->label->id]
-                        ) : '' ?>
-                    </td>
-                    <td>
                         <?= $customerLabel->has('customer') ? $this->Html->link(
                             $customerLabel->customer->name,
                             ['controller' => 'Customers', 'action' => 'view', $customerLabel->customer->id]
+                        ) : '' ?>
+                    </td>
+                    <td>
+                        <?= $customerLabel->has('label') ? $this->Html->link(
+                            $customerLabel->label->name,
+                            ['controller' => 'Labels', 'action' => 'view', $customerLabel->label->id]
                         ) : '' ?>
                     </td>
                     <td><?= h($customerLabel->note) ?></td>
