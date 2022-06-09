@@ -353,6 +353,16 @@ th {
     border-color: #606c76;
 }
 
+.app-label {
+    font-family: "Raleway", sans-serif;
+    border: 0.1rem solid #d33c43;
+    border-radius: 0.4rem;
+    display: inline-block;
+    padding: 0.6rem 1.5rem;
+    margin-bottom: 1rem;
+    color:white;
+}
+
 .active {
     font-weight: bold;
 }

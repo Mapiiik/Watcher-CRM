@@ -34,6 +34,23 @@ use Cake\I18n\Number;
                 ['class' => 'side-nav-item']
             ) ?>
         </div>
+        <hr>
+        <div>
+            <h4 class="heading"><?= __('Labels') ?></h4>
+            <?php foreach ($customer->customer_labels as $customer_label) : ?>
+                <?= $this->AuthLink->link(
+                    $customer_label->label->name,
+                    ['controller' => 'CustomerLabels', 'action' => 'view', $customer_label->id],
+                    [
+                        'class' => 'app-label win-link',
+                        'title' => $customer_label->label->caption . PHP_EOL
+                            . $customer_label->created . PHP_EOL
+                            . $customer_label->note,
+                        'style' => 'background-color: ' . $customer_label->label->color . ';',
+                    ]
+                ) ?>
+            <?php endforeach ?>
+        </div>
     </aside>
     <div class="column-responsive column-90">
         <div class="customers view content">
