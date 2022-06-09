@@ -67,7 +67,7 @@
                             'action' => 'view',
                             $email->creator->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($email->created_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -83,7 +83,7 @@
                             'action' => 'view',
                             $email->modifier->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($email->modified_by) ?></td>
                 </tr>
             </table>
         </div>

@@ -105,7 +105,7 @@
                             'action' => 'view',
                             $invoice->creator->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($invoice->created_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __d('bookkeeping_pohoda', 'Modified') ?></th>
@@ -121,7 +121,7 @@
                             'action' => 'view',
                             $invoice->modifier->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($invoice->modified_by) ?></td>
                 </tr>
             </table>
             <div class="text">

@@ -98,7 +98,7 @@
                             'action' => 'view',
                             $ipNetwork->creator->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($ipNetwork->created_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -114,7 +114,7 @@
                             'action' => 'view',
                             $ipNetwork->modifier->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($ipNetwork->modified_by) ?></td>
                 </tr>
             </table>
             <div class="text">

@@ -55,7 +55,7 @@
                             'action' => 'view',
                             $phone->creator->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($phone->created_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -71,7 +71,7 @@
                             'action' => 'view',
                             $phone->modifier->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($phone->modified_by) ?></td>
                 </tr>
             </table>
         </div>

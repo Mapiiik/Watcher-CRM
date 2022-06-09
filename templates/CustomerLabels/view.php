@@ -69,7 +69,7 @@
                             'action' => 'view',
                             $customerLabel->creator->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($customerLabel->created_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -85,7 +85,7 @@
                             'action' => 'view',
                             $customerLabel->modifier->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($customerLabel->modified_by) ?></td>
                 </tr>
             </table>
             <div class="text">

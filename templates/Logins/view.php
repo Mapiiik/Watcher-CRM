@@ -80,7 +80,7 @@
                             'action' => 'view',
                             $login->creator->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($login->created_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -96,7 +96,7 @@
                             'action' => 'view',
                             $login->modifier->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($login->modified_by) ?></td>
                 </tr>
             </table>
         </div>

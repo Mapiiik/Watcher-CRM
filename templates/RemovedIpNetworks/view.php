@@ -101,7 +101,7 @@
                             'action' => 'view',
                             $removedIpNetwork->creator->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($removedIpNetwork->created_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -117,7 +117,7 @@
                             'action' => 'view',
                             $removedIpNetwork->modifier->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($removedIpNetwork->modified_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Removed') ?></th>
@@ -132,7 +132,7 @@
                                     'controller' => 'Users',
                                     'action' => 'view',
                                     $removedIpNetwork->remover->id]
-                    ) : '' ?></td>
+                    ) : h($removedIpNetwork->removed_by) ?></td>
                 </tr>
             </table>
             <div class="text">

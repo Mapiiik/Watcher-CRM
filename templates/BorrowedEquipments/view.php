@@ -88,7 +88,7 @@
                             'action' => 'view',
                             $borrowedEquipment->creator->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($borrowedEquipment->created_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -104,7 +104,7 @@
                             'action' => 'view',
                             $borrowedEquipment->modifier->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($borrowedEquipment->modified_by) ?></td>
                 </tr>
             </table>
         </div>

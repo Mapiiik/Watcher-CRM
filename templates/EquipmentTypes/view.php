@@ -63,7 +63,7 @@
                             'action' => 'view',
                             $equipmentType->creator->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($equipmentType->created_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -79,7 +79,7 @@
                             'action' => 'view',
                             $equipmentType->modifier->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($equipmentType->modified_by) ?></td>
                 </tr>
             </table>
             <div class="related">

@@ -115,7 +115,7 @@
                                     'action' => 'view',
                                     $account->creator->id,
                                 ]
-                            ) : '' ?></td>
+                            ) : h($account->created_by) ?></td>
                         </tr>
                         <tr>
                             <th><?= __d('radius', 'Modified') ?></th>
@@ -131,7 +131,7 @@
                                     'action' => 'view',
                                     $account->modifier->id,
                                 ]
-                            ) : '' ?></td>
+                            ) : h($account->modified_by) ?></td>
                         </tr>
                     </table>
                 </div>

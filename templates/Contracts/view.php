@@ -164,7 +164,7 @@ use Cake\I18n\Number;
                                     'action' => 'view',
                                     $contract->creator->id,
                                 ]
-                            ) : '' ?></td>
+                            ) : h($contract->created_by) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Modified') ?></th>
@@ -180,7 +180,7 @@ use Cake\I18n\Number;
                                     'action' => 'view',
                                     $contract->modifier->id,
                                 ]
-                            ) : '' ?></td>
+                            ) : h($contract->modified_by) ?></td>
                         </tr>
                     </table>
                 </div>

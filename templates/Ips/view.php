@@ -99,7 +99,7 @@
                             'action' => 'view',
                             $ip->creator->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($ip->created_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -115,7 +115,7 @@
                             'action' => 'view',
                             $ip->modifier->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($ip->modified_by) ?></td>
                 </tr>
             </table>
             <div class="text">

@@ -56,7 +56,7 @@
                             'action' => 'view',
                             $taxRate->creator->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($taxRate->created_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -72,7 +72,7 @@
                             'action' => 'view',
                             $taxRate->modifier->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($taxRate->modified_by) ?></td>
                 </tr>
             </table>
             <div class="related">

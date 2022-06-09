@@ -80,7 +80,7 @@
                             'action' => 'view',
                             $queue->creator->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($queue->created_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -96,7 +96,7 @@
                             'action' => 'view',
                             $queue->modifier->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($queue->modified_by) ?></td>
                 </tr>
             </table>
             <div class="related">

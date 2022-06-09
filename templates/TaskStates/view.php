@@ -57,7 +57,7 @@
                             'action' => 'view',
                             $taskState->creator->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($taskState->created_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -73,7 +73,7 @@
                             'action' => 'view',
                             $taskState->modifier->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($taskState->modified_by) ?></td>
                 </tr>
             </table>
             <div class="related">

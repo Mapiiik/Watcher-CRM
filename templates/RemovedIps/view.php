@@ -88,7 +88,7 @@
                             'action' => 'view',
                             $removedIp->creator->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($removedIp->created_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -104,7 +104,7 @@
                             'action' => 'view',
                             $removedIp->modifier->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($removedIp->modified_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Removed') ?></th>
@@ -119,7 +119,7 @@
                                     'controller' => 'Users',
                                     'action' => 'view',
                                     $removedIp->remover->id]
-                    ) : '' ?></td>
+                    ) : h($removedIp->removed_by) ?></td>
                 </tr>
             </table>
             <div class="text">

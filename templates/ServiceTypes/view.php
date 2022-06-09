@@ -87,7 +87,7 @@
                             'action' => 'view',
                             $serviceType->creator->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($serviceType->created_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -103,7 +103,7 @@
                             'action' => 'view',
                             $serviceType->modifier->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($serviceType->modified_by) ?></td>
                 </tr>
             </table>
             <div class="related">

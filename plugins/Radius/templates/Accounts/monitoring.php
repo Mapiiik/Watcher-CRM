@@ -119,7 +119,7 @@ use Cake\I18n\FrozenTime;
                                     'action' => 'view',
                                     $account->creator->id,
                                 ]
-                            ) : '' ?></td>
+                            ) : h($account->created_by) ?></td>
                         </tr>
                         <tr>
                             <th><?= __d('radius', 'Modified') ?></th>
@@ -135,7 +135,7 @@ use Cake\I18n\FrozenTime;
                                     'action' => 'view',
                                     $account->modifier->id,
                                 ]
-                            ) : '' ?></td>
+                            ) : h($account->modified_by) ?></td>
                         </tr>
                     </table>
                 </div>

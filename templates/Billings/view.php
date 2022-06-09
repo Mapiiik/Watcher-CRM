@@ -109,7 +109,7 @@ use Cake\I18n\Number;
                             'action' => 'view',
                             $billing->creator->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($billing->created_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -125,7 +125,7 @@ use Cake\I18n\Number;
                             'action' => 'view',
                             $billing->modifier->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($billing->modified_by) ?></td>
                 </tr>
             </table>
             <div class="text">

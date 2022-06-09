@@ -139,7 +139,7 @@
                                     'action' => 'view',
                                     $customer->creator->id,
                                 ]
-                            ) : '' ?></td>
+                            ) : h($customer->created_by) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Modified') ?></th>
@@ -155,7 +155,7 @@
                                     'action' => 'view',
                                     $customer->modifier->id,
                                 ]
-                            ) : '' ?></td>
+                            ) : h($customer->modified_by) ?></td>
                         </tr>
 
                     </table>

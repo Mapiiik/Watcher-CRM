@@ -153,7 +153,7 @@
                                     'action' => 'view',
                                     $contract->creator->id,
                                 ]
-                            ) : '' ?></td>
+                            ) : h($contract->created_by) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Modified') ?></th>
@@ -169,7 +169,7 @@
                                     'action' => 'view',
                                     $contract->modifier->id,
                                 ]
-                            ) : '' ?></td>
+                            ) : h($contract->modified_by) ?></td>
                         </tr>
                     </table>
                 </div>

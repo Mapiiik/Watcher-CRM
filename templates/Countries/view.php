@@ -49,7 +49,7 @@
                             'action' => 'view',
                              $country->creator->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($country->created_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -65,7 +65,7 @@
                             'action' => 'view',
                             $country->modifier->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($country->modified_by) ?></td>
                 </tr>
             </table>
             <div class="related">

@@ -156,7 +156,7 @@
                                     'action' => 'view',
                                     $address->creator->id,
                                 ]
-                            ) : '' ?></td>
+                            ) : h($address->created_by) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Modified') ?></th>
@@ -172,7 +172,7 @@
                                     'action' => 'view',
                                     $address->modifier->id,
                                 ]
-                            ) : '' ?></td>
+                            ) : h($address->modified_by) ?></td>
                         </tr>
                     </table>
                 </div>

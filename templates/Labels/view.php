@@ -64,7 +64,7 @@
                             'action' => 'view',
                             $label->creator->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($label->created_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -80,7 +80,7 @@
                             'action' => 'view',
                             $label->modifier->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($label->modified_by) ?></td>
                 </tr>
             </table>
             <div class="text">

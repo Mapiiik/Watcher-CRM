@@ -111,7 +111,7 @@
                                     'action' => 'view',
                                     $task->creator->id,
                                 ]
-                            ) : '' ?></td>
+                            ) : h($task->created_by) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Modified') ?></th>
@@ -127,7 +127,7 @@
                                     'action' => 'view',
                                     $task->modifier->id,
                                 ]
-                            ) : '' ?></td>
+                            ) : h($task->modified_by) ?></td>
                         </tr>
                     </table>
                 </div>

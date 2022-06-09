@@ -84,7 +84,7 @@
                             'action' => 'view',
                             $soldEquipment->creator->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($soldEquipment->created_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -100,7 +100,7 @@
                             'action' => 'view',
                             $soldEquipment->modifier->id,
                         ]
-                    ) : '' ?></td>
+                    ) : h($soldEquipment->modified_by) ?></td>
                 </tr>
             </table>
         </div>
