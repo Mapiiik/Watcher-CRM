@@ -38,7 +38,7 @@ use Cake\I18n\Number;
         <div>
             <h4 class="heading"><?= __('Labels') ?></h4>
             <?php foreach ($customer->customer_labels as $customer_label) : ?>
-                <?= $this->AuthLink->link(
+                <?= $this->Html->link(
                     $customer_label->label->name,
                     ['controller' => 'CustomerLabels', 'action' => 'view', $customer_label->id],
                     [
