@@ -57,6 +57,14 @@
                                 ['controller' => 'Addresses', 'action' => 'view', $contract->installation_address->id]
                             ) : '' ?></td>
                         </tr>
+                    </table>
+                </div>
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Access Point') ?></th>
+                            <td><?= $contract->has('access_point') ? h($contract->access_point->name) : '' ?></td>
+                        </tr>
                         <tr>
                             <th><?= __('Installation Date') ?></th>
                             <td><?= h($contract->installation_date) ?></td>
@@ -72,8 +80,32 @@
                                 ]
                             ) : '' ?></td>
                         </tr>
+                        <tr>
+                            <th><?= __('Brokerage') ?></th>
+                            <td><?= $contract->has('brokerage') ? $this->Html->link(
+                                $contract->brokerage->name,
+                                ['controller' => 'Brokerages', 'action' => 'view', $contract->brokerage->id]
+                            ) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Vip') ?></th>
+                            <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Activation Fee') ?></th>
+                            <td><?= h($contract->activation_fee) ?><?= $contract->has('service_type') ?
+                                ' (' . h($contract->service_type->activation_fee) . ')' : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Activation Fee With Obligation') ?></th>
+                            <td><?= h($contract->activation_fee_with_obligation) ?><?= $contract->has('service_type') ?
+                                ' (' . h($contract->service_type->activation_fee_with_obligation) . ')' : '' ?></td>
+                        </tr>
                     </table>
                 </div>
+            </div>
+            <br />
+            <div class="row">
                 <div class="column-responsive">
                     <table>
                         <tr>
@@ -99,15 +131,45 @@
                                     'color: red;' : ''
                             ?>"><?= h($contract->obligation_until) ?></td>
                         </tr>
+                    </table>
+                </div>
+                <div class="column-responsive">
+                    <table>
                         <tr>
-                            <th><?= __('Activation Fee') ?></th>
-                            <td><?= h($contract->activation_fee) ?><?= $contract->has('service_type') ?
-                                ' (' . h($contract->service_type->activation_fee) . ')' : '' ?></td>
+                            <th><?= __('Id') ?></th>
+                            <td><?= $this->Number->format($contract->id) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Activation Fee With Obligation') ?></th>
-                            <td><?= h($contract->activation_fee_with_obligation) ?><?= $contract->has('service_type') ?
-                                ' (' . h($contract->service_type->activation_fee_with_obligation) . ')' : '' ?></td>
+                            <th><?= __('Created') ?></th>
+                            <td><?= h($contract->created) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created By') ?></th>
+                            <td><?= $contract->has('creator') ? $this->Html->link(
+                                $contract->creator->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $contract->creator->id,
+                                ]
+                            ) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified') ?></th>
+                            <td><?= h($contract->modified) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified By') ?></th>
+                            <td><?= $contract->has('modifier') ? $this->Html->link(
+                                $contract->modifier->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $contract->modifier->id,
+                                ]
+                            ) : '' ?></td>
                         </tr>
                     </table>
                 </div>

@@ -233,22 +233,15 @@ class CustomersController extends AppController
             'contain' => [
                 'TaxRates',
                 'Addresses' => ['Countries'],
-                'Billings' => ['Contracts', 'Services'],
-                'BorrowedEquipments' => ['Contracts', 'EquipmentTypes'],
-                'Contracts' => ['ServiceTypes', 'InstallationAddresses'],
                 'Emails',
-                'Ips' => ['Contracts'],
-                'CustomerLabels',
-                'Logins',
                 'Phones',
-                'RemovedIps' => ['Contracts'],
-                'SoldEquipments' => ['Contracts', 'EquipmentTypes'],
-                'Tasks' => ['TaskTypes', 'TaskStates', 'Dealers']],
+                'Creators',
+                'Modifiers',
+            ],
         ]);
 
         $invoice_delivery_types = $this->Customers->invoice_delivery_types;
         $address_types = $this->Customers->Addresses->types;
-        $login_rights = $this->Customers->Logins->rights;
 
         $query = $this->getRequest()->getQuery();
         if (isset($query['document_type'])) {

@@ -23,9 +23,7 @@
                     <th><?= $this->Paginator->sort('active', __d('radius', 'Active')) ?></th>
                     <th><?= $this->Paginator->sort('type', __d('radius', 'Type')) ?></th>
                     <th><?= $this->Paginator->sort('created', __d('radius', 'Created')) ?></th>
-                    <th><?= $this->Paginator->sort('created_by', __d('radius', 'Created By')) ?></th>
                     <th><?= $this->Paginator->sort('modified', __d('radius', 'Modified')) ?></th>
-                    <th><?= $this->Paginator->sort('modified_by', __d('radius', 'Modified By')) ?></th>
                     <th class="actions"><?= __d('radius', 'Actions') ?></th>
                 </tr>
             </thead>
@@ -56,9 +54,7 @@
                     <td><?= $account->active ? __d('radius', 'Yes') : __d('radius', 'No'); ?></td>
                     <td><?= h($account->getType()) ?></td>
                     <td><?= h($account->created) ?></td>
-                    <td><?= $this->Number->format($account->created_by) ?></td>
                     <td><?= h($account->modified) ?></td>
-                    <td><?= $this->Number->format($account->modified_by) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__d('radius', 'Monitoring'), ['action' => 'monitoring', $account->id]) ?>
                         <?= $this->Html->link(__d('radius', 'View'), ['action' => 'view', $account->id]) ?>

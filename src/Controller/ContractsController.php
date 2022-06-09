@@ -286,6 +286,8 @@ class ContractsController extends AppController
                 'SoldEquipments.EquipmentTypes' => function (Query $query) {
                     return $query->where(['SoldEquipments.date_of_sale IS NULL']);
                 },
+                'Creators',
+                'Modifiers',
             ],
         ]);
 

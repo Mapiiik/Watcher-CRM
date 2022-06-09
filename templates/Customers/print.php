@@ -58,10 +58,9 @@
                         </tr>
                         <tr>
                             <th><?= __('Ic') ?></th>
-                            <td><?= $customer->has('ic') ?
-                                h($customer->ic) . ' (' . (
-                                    $customer->ic_verified ? __('OK') : __('Invalid')
-                                ) . ')' : '' ?></td>
+                            <td><?= $customer->has('ic') ? (
+                                h($customer->ic) . ' (' . ($customer->ic_verified ? __('OK') : __('Invalid')) . ')'
+                            ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Dic') ?></th>
@@ -122,6 +121,43 @@
                             <th><?= __('Agree Mailing Commercial') ?></th>
                             <td><?= $customer->agree_mailing_commercial ? __('Yes') : __('No'); ?></td>
                         </tr>
+                        <tr>
+                            <th><?= __('Id') ?></th>
+                            <td><?= $this->Number->format($customer->id) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created') ?></th>
+                            <td><?= h($customer->created) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created By') ?></th>
+                            <td><?= $customer->has('creator') ? $this->Html->link(
+                                $customer->creator->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $customer->creator->id,
+                                ]
+                            ) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified') ?></th>
+                            <td><?= h($customer->modified) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified By') ?></th>
+                            <td><?= $customer->has('modifier') ? $this->Html->link(
+                                $customer->modifier->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $customer->modifier->id,
+                                ]
+                            ) : '' ?></td>
+                        </tr>
+
                     </table>
                 </div>
             </div>
