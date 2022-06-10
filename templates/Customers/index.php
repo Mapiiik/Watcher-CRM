@@ -31,7 +31,7 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
+                    <th><?= $this->Paginator->sort('id', __('Number')) ?></th>
                     <th><?= $this->Paginator->sort('dealer') ?></th>
                     <th><?= $this->Paginator->sort('tax_rate_id') ?></th>
                     <th><?= $this->Paginator->sort('company') ?></th>
@@ -39,9 +39,6 @@
                     <th><?= $this->Paginator->sort('first_name') ?></th>
                     <th><?= $this->Paginator->sort('last_name') ?></th>
                     <th><?= $this->Paginator->sort('suffix') ?></th>
-                    <th><?= $this->Paginator->sort('date_of_birth') ?></th>
-                    <th><?= $this->Paginator->sort('ic') ?></th>
-                    <th><?= $this->Paginator->sort('dic') ?></th>
                     <th><?= __('Contracts') ?></th>
                     <th><?= __('Ips') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
@@ -50,7 +47,7 @@
             <tbody>
                 <?php foreach ($customers as $customer) : ?>
                 <tr>
-                    <td><?= $this->Number->format($customer->id) ?></td>
+                    <td><?= h($customer->number) ?></td>
                     <td><?= $customer->dealer ? __('Yes') : __('No'); ?></td>
                     <td>
                         <?= $customer->has('tax_rate') ? $this->Html->link(
@@ -63,9 +60,6 @@
                     <td><?= h($customer->first_name) ?></td>
                     <td><?= h($customer->last_name) ?></td>
                     <td><?= h($customer->suffix) ?></td>
-                    <td><?= h($customer->date_of_birth) ?></td>
-                    <td><?= h($customer->ic) ?></td>
-                    <td><?= h($customer->dic) ?></td>
                     <td>
                         <?php foreach ($customer->contracts as $contract) {
                             echo h($contract->number) . '<br />';
