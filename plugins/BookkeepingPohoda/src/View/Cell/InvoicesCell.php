@@ -42,15 +42,17 @@ class InvoicesCell extends Cell
      */
     public function display(array $conditions = [])
     {
-        $invoices = $this->fetchTable('BookkeepingPohoda.Invoices')->find('all', [
-            'conditions' => $conditions,
-            'contain' => [
-                'Customers',
-            ],
-            'order' => [
-                'Invoices.id' => 'DESC',
-            ],
-        ]);
+        $invoices = $this->fetchTable('BookkeepingPohoda.Invoices')
+            ->find('all', [
+                'conditions' => $conditions,
+                'contain' => [
+                    'Customers',
+                ],
+                'order' => [
+                    'Invoices.id' => 'DESC',
+                ],
+            ])
+            ->all();
 
         $this->set(compact('invoices'));
         $this->set('show_customers', $this->show_customers);

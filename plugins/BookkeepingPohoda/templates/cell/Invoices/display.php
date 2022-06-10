@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \BookkeepingPohoda\Model\Entity\Invoice[]|\Cake\Collection\CollectionInterface $invoices
+ * @var bool $show_customers
  */
 
 use Cake\I18n\FrozenDate;

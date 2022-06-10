@@ -84,6 +84,7 @@ class TasksController extends AppController
         $tasks = $this->paginate($this->Tasks);
         $dealers = $this->Tasks->Dealers
             ->find('all')
+            ->all()
             ->sortBy(function ($dealer) {
                 return ($dealer->active ? '##' : '__') . $dealer->first_name . '-' . $dealer->last_name;
             }, SORT_ASC, SORT_LOCALE_STRING)

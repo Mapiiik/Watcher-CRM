@@ -45,20 +45,22 @@ class AccountsCell extends Cell
     {
         try {
             //Try to load RADIUS accounts
-            $accounts = $this->fetchTable('Radius.Accounts')->find('all', [
-                'conditions' => $conditions,
-                'contain' => [
-                    'Contracts',
-                    'Radreply',
-                    'Radusergroup',
-                    'Radacct' => ['sort' => ['Radacct.acctstarttime' => 'DESC']],
-                ],
-                'order' => [
-                    'Accounts.active' => 'DESC',
-                    'Accounts.contract_id' => 'DESC',
-                    'Accounts.username',
-                ],
-            ]);
+            $accounts = $this->fetchTable('Radius.Accounts')
+                ->find('all', [
+                    'conditions' => $conditions,
+                    'contain' => [
+                        'Contracts',
+                        'Radreply',
+                        'Radusergroup',
+                        'Radacct' => ['sort' => ['Radacct.acctstarttime' => 'DESC']],
+                    ],
+                    'order' => [
+                        'Accounts.active' => 'DESC',
+                        'Accounts.contract_id' => 'DESC',
+                        'Accounts.username',
+                    ],
+                ])
+                ->all();
         } catch (MissingConnectionException $connectionError) {
             //Couldn't connect
             $accounts = null;
