@@ -1,3 +1,33 @@
+/* Select2 overrides */
+.select2-container {
+    color: black;
+    margin-bottom: 1rem;
+}
+
+.select2-container
+.select2-selection {
+    height: 3rem;
+    font-family: inherit;
+    font-size: 100%;
+    line-height: 1.15;
+}
+.select2-container
+.select2-selection
+.select2-selection__rendered {
+    line-height: inherit;
+    padding: 0.6rem 1rem;
+}
+.select2-results__options {
+    padding: 0.6rem 1rem;
+}
+.select2-results__option {
+    min-height: 2.5rem;
+    margin-bottom: 0;
+}
+.select2-container .select2-results>.select2-results__options {
+    max-height: 300px;
+}
+
 /* Miligram overrides */
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;

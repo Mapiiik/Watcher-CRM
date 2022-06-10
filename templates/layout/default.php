@@ -30,10 +30,19 @@ $request = $this->getRequest();
 
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
 
+    <?= $this->Html->script(['https://code.jquery.com/jquery.min.js', 'links.js']) ?>
+
+    <?php if (filter_var(env('ENABLE_SELECT2', false), FILTER_VALIDATE_BOOLEAN)) : ?>
+        <?= $this->Html->css(['https://cdn.jsdelivr.net/npm/select2/dist/css/select2.min.css']) ?>
+        <?= $this->Html->script([
+            'https://cdn.jsdelivr.net/npm/select2/dist/js/select2.min.js',
+            'select2-settings.js',
+        ]) ?>
+    <?php endif ?>
+
     <?= $this->Html->css(['normalize.min', 'milligram.min', 'cake']) ?>
     <?= $request->getSession()->read('Config.high-contrast') ? $this->Html->css(['high-contrast']) : '' ?>
 
-    <?= $this->Html->script(['https://code.jquery.com/jquery.min.js', 'links.js']) ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
