@@ -14,6 +14,8 @@
  * @var \App\View\AppView $this
  */
 
+use App\Controller\AppController;
+
 $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
 $request = $this->getRequest();
 ?>
@@ -182,6 +184,10 @@ $request = $this->getRequest();
     <footer>
         <br>
         <div class="container">
+            <div class="float-right" title="<?= __('Changelog') . ': ' . PHP_EOL . AppController::getChangelog() ?>">
+                <?= __('Version') . ': ' . AppController::getVersion() ?>
+            </div>
+            <br><br>
             <div class="float-right">
             <?= $this->Form->create(null, ['type' => 'get']) ?>
                 <?= $this->Form->control('high-contrast', [

@@ -16,6 +16,7 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
+use Cake\Cache\Cache;
 use Cake\Controller\Controller;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
@@ -195,5 +196,71 @@ class AppController extends Controller
         }
         // done!
         return $password;
+    }
+
+    /**
+     * Check if Git binary is callable.
+     *
+     * @return bool
+     */
+    public static function gitBinaryCallable(): bool
+    {
+        exec('git > /dev/null 2>&1', $response, $exit_code);
+
+        return $exit_code === 1;
+    }
+
+    /**
+     * Check if Git repository is present.
+     *
+     * @return bool
+     */
+    public static function gitRepositoryPresent(): bool
+    {
+        return file_exists(ROOT . '/.git');
+    }
+
+    /**
+     * Get application version if installed from Git.
+     *
+     * @return string
+     */
+    public static function getVersion(): string
+    {
+        return Cache::remember(
+            'app_version',
+            function () {
+                if (AppController::gitRepositoryPresent() && AppController::gitBinaryCallable()) {
+                    $version = rtrim(shell_exec('git describe --tags 2>/dev/null'));
+                    if ($version) {
+                        return $version;
+                    }
+                }
+
+                return 'Not installed via Git';
+            }
+        );
+    }
+
+    /**
+     * Get application changelog if installed from Git.
+     *
+     * @return string
+     */
+    public static function getChangelog(): string
+    {
+        return Cache::remember(
+            'app_changelog',
+            function () {
+                if (AppController::gitRepositoryPresent() && AppController::gitBinaryCallable()) {
+                    $changelog = rtrim(shell_exec('git log -10 --decorate=short'));
+                    if ($changelog) {
+                        return $changelog;
+                    }
+                }
+
+                return 'Not installed via Git';
+            }
+        );
     }
 }
