@@ -56,9 +56,7 @@ class PagesControllerTest extends TestCase
     {
         $this->login();
         $this->get('/');
-        debug($this);
         $this->assertResponseOk();
-        debug($this);
         $this->get('/');
         $this->assertResponseOk();
     }
