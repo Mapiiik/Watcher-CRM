@@ -217,7 +217,7 @@ class AppController extends Controller
      */
     public static function gitRepositoryPresent(): bool
     {
-        return file_exists(ROOT . '/.git');
+        return file_exists(dirname(__DIR__, 2) . '/.git');
     }
 
     /**
