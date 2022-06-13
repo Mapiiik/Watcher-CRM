@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\ApiClient;
 use Cake\I18n\FrozenTime;
+use Cake\Mailer\Mailer;
 
 /**
  * Tasks Controller
@@ -155,6 +156,14 @@ class TasksController extends AppController
         if ($this->getRequest()->is('post')) {
             $task = $this->Tasks->patchEntity($task, $this->getRequest()->getData());
             if ($this->Tasks->save($task)) {
+                // send email notification
+                if (
+                    $task->has('dealer')
+                    && $task->dealer->id != $this->getRequest()->getSession()->read('Auth.customer_id')
+                ) {
+                    $this->sendNotificationEmail(strval($task->id), true);
+                }
+
                 $this->Flash->success(__('The task has been saved.'));
 
                 return $this->redirect(['action' => 'view', $task->id]);
@@ -253,6 +262,14 @@ class TasksController extends AppController
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $task = $this->Tasks->patchEntity($task, $this->getRequest()->getData());
             if ($this->Tasks->save($task)) {
+                // send email notification
+                if (
+                    $task->has('dealer')
+                    && $task->dealer->id != $this->getRequest()->getSession()->read('Auth.customer_id')
+                ) {
+                    $this->sendNotificationEmail(strval($task->id), false);
+                }
+
                 $this->Flash->success(__('The task has been saved.'));
 
                 return $this->redirect(['action' => 'view', $task->id]);
@@ -337,5 +354,58 @@ class TasksController extends AppController
         unset($session);
 
         return $text;
+    }
+
+    /**
+     * Send a task notification email
+     *
+     * @param string|null $id Task id.
+     * @param bool $new This is new task.
+     * @return bool Successfull?
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    private function sendNotificationEmail($id = null, bool $new = false): bool
+    {
+        $task = $this->Tasks->get($id, [
+            'contain' => [
+                'TaskTypes',
+                'TaskStates',
+                'Customers',
+                'Dealers' => ['Emails'],
+                'Creators',
+                'Modifiers',
+            ],
+        ]);
+
+        $mailer = new Mailer('default');
+
+        foreach ($task->dealer->emails as $email) {
+            $mailer->addTo($email->email, $task->dealer->name);
+        }
+
+        if ($new) {
+            $title = __('You have a new task # {0}', $task->id);
+        } else {
+            $title = __('You have changes in task # {0}', $task->id);
+        }
+
+        $mailer->setSubject($title . ' - ' . $task->subject);
+        $mailer->setEmailFormat('html');
+
+        $mailer->viewBuilder()
+            ->setLayout('default')
+            ->setTemplate('task-notification');
+
+        $mailer->setViewVars(['title' => $title, 'task' => $task, 'priorities' => $this->Tasks->priorities]);
+
+        try {
+            $mailer->deliver();
+
+            return true;
+        } catch (\Exception $e) {
+            $this->Flash->error(__('The notification email could not be sent.') . ' . (' . $e->getMessage() . ')');
+
+            return false;
+        }
     }
 }
