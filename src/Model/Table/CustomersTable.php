@@ -65,7 +65,7 @@ class CustomersTable extends AppTable
         ];
 
         $this->setTable('customers');
-        $this->setDisplayField('name');
+        $this->setDisplayField('name_for_lists');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');

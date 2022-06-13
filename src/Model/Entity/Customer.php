@@ -66,6 +66,7 @@ use Cake\ORM\Entity;
  *
  * @property string $full_name
  * @property string $name
+ * @property string $name_for_lists
  */
 class Customer extends Entity
 {
@@ -189,6 +190,16 @@ class Customer extends Entity
         }
 
         return $name;
+    }
+
+    /**
+     * getter for full name with company and with customer number for lists
+     *
+     * @return string
+     */
+    protected function _getNameForLists(): string
+    {
+        return $this->name . ' (' . $this->number . ')';
     }
 
     /**
