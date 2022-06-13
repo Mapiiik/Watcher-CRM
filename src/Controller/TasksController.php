@@ -165,6 +165,7 @@ class TasksController extends AppController
         $customers = $this->Tasks->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $dealers = $this->Tasks->Dealers
             ->find('all')
+            ->all()
             ->sortBy(function ($dealer) {
                 return ($dealer->active ? '##' : '__') . $dealer->first_name . '-' . $dealer->last_name;
             }, SORT_ASC, SORT_LOCALE_STRING)
@@ -262,6 +263,7 @@ class TasksController extends AppController
         $customers = $this->Tasks->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
         $dealers = $this->Tasks->Dealers
             ->find('all')
+            ->all()
             ->sortBy(function ($dealer) {
                 return ($dealer->active ? '##' : '__') . $dealer->first_name . '-' . $dealer->last_name;
             }, SORT_ASC, SORT_LOCALE_STRING)

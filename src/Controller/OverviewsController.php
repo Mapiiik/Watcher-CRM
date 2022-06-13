@@ -86,6 +86,7 @@ class OverviewsController extends AppController
             );
 
         $services = $servicesQuery
+            ->find('all')
             ->all()
             ->filter(function ($service) {
                 return $service->number_of_uses > 0;
