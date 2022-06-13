@@ -35,7 +35,7 @@ use Cake\I18n\Number;
             ) ?>
         </div>
         <hr>
-        <div>
+        <div class="side-labels">
             <h4 class="heading"><?= __('Labels') ?></h4>
             <?php foreach ($customer->customer_labels as $customer_label) : ?>
                 <?= $this->Html->link(
@@ -50,6 +50,13 @@ use Cake\I18n\Number;
                     ]
                 ) ?>
             <?php endforeach ?>
+        </div>
+        <div class="side-nav">
+            <?= $this->AuthLink->link(
+                __('New Customer Label'),
+                ['controller' => 'CustomerLabels', 'action' => 'add'],
+                ['class' => 'side-nav-item win-link']
+            ) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
