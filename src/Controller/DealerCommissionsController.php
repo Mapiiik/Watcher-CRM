@@ -66,8 +66,12 @@ class DealerCommissionsController extends AppController
             }
             $this->Flash->error(__('The dealer commission could not be saved. Please, try again.'));
         }
-        $dealers = $this->DealerCommissions->Dealers->find('list', ['limit' => 200]);
-        $commissions = $this->DealerCommissions->Commissions->find('list', ['limit' => 200]);
+        $dealers = $this->DealerCommissions->Dealers->find('list', [
+            'order' => ['company', 'first_name', 'last_name'],
+        ]);
+        $commissions = $this->DealerCommissions->Commissions->find('list', [
+            'order' => ['name'],
+        ]);
         $this->set(compact('dealerCommission', 'dealers', 'commissions'));
     }
 
@@ -94,8 +98,12 @@ class DealerCommissionsController extends AppController
             }
             $this->Flash->error(__('The dealer commission could not be saved. Please, try again.'));
         }
-        $dealers = $this->DealerCommissions->Dealers->find('list', ['limit' => 200]);
-        $commissions = $this->DealerCommissions->Commissions->find('list', ['limit' => 200]);
+        $dealers = $this->DealerCommissions->Dealers->find('list', [
+            'order' => ['company', 'first_name', 'last_name'],
+        ]);
+        $commissions = $this->DealerCommissions->Commissions->find('list', [
+            'order' => ['name'],
+        ]);
         $this->set(compact('dealerCommission', 'dealers', 'commissions'));
     }
 
