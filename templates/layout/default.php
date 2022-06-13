@@ -184,8 +184,8 @@ $request = $this->getRequest();
     <footer>
         <br>
         <div class="container">
-            <div class="float-right" title="<?= __('Changelog') . ': ' . PHP_EOL . AppController::getChangelog() ?>">
-                <?= __('Version') . ': ' . AppController::getVersion() ?>
+            <div class="float-right" title="<?= __('Changelog') . ': ' . PHP_EOL . h(AppController::getChangelog()) ?>">
+                <?= __('Version') . ': ' . h(AppController::getVersion()) ?>
             </div>
             <br><br>
             <div class="float-right">
