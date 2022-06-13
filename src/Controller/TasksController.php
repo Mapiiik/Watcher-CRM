@@ -158,8 +158,8 @@ class TasksController extends AppController
             if ($this->Tasks->save($task)) {
                 // send email notification
                 if (
-                    $task->has('dealer')
-                    && $task->dealer->id != $this->getRequest()->getSession()->read('Auth.customer_id')
+                    $task->has('dealer_id')
+                    && $task->dealer_id != $this->getRequest()->getSession()->read('Auth.customer_id')
                 ) {
                     $this->sendNotificationEmail(strval($task->id), true);
                 }
@@ -264,8 +264,8 @@ class TasksController extends AppController
             if ($this->Tasks->save($task)) {
                 // send email notification
                 if (
-                    $task->has('dealer')
-                    && $task->dealer->id != $this->getRequest()->getSession()->read('Auth.customer_id')
+                    $task->has('dealer_id')
+                    && $task->dealer_id != $this->getRequest()->getSession()->read('Auth.customer_id')
                 ) {
                     $this->sendNotificationEmail(strval($task->id), false);
                 }
@@ -400,10 +400,11 @@ class TasksController extends AppController
 
         try {
             $mailer->deliver();
+            $this->Flash->success(__('Notification email sent.') . ' (' . $task->dealer->email . ')');
 
             return true;
         } catch (\Exception $e) {
-            $this->Flash->error(__('The notification email could not be sent.') . ' . (' . $e->getMessage() . ')');
+            $this->Flash->error(__('The notification email could not be sent.') . ' (' . $e->getMessage() . ')');
 
             return false;
         }

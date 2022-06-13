@@ -13,8 +13,14 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  * @var \App\View\AppView $this
  */
+use Cake\Routing\Router;
 
-$this->assign('title', $title)
+// set title
+$this->assign('title', $title);
+
+// temporarily remove query parameters in Router
+$request = Router::getRequest();
+Router::setRequest($request->withQueryParams([]));
 ?>
 
 <style>
@@ -61,8 +67,7 @@ table {
                     <th><?= __('Customer') ?></th>
                     <td><?= $task->has('customer') ? $this->Html->link(
                         $task->customer->name,
-                        ['controller' => 'Customers', 'action' => 'view', $task->customer->id],
-                        ['fullBase' => true]
+                        ['controller' => 'Customers', 'action' => 'view', $task->customer->id, '_full' => true]
                     ) : '' ?></td>
                 </tr>
                 <tr>
@@ -119,8 +124,7 @@ table {
 </table>
 <?= $this->Html->link(
     __('View Task'),
-    ['controller' => 'Tasks', 'action' => 'view', $task->id],
-    ['fullBase' => true]
+    ['controller' => 'Tasks', 'action' => 'view', $task->id, '_full' => true]
 ) ?>
 <div class="text">
     <strong><?= __('Text') ?></strong>
@@ -128,3 +132,7 @@ table {
         <?= $this->Text->autoParagraph(h($task->text)); ?>
     </blockquote>
 </div>
+<?php
+// put query parameters back to Router
+Router::setRequest($request);
+?>

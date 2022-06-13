@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-06-13 14:40+0200\n"
+"POT-Creation-Date: 2022-06-13 16:42+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -126,8 +126,8 @@ msgstr ""
 #: ./src/Controller/ContractsController.php:195
 #: ./src/Controller/OverviewsController.php:103
 #: ./src/Controller/TasksController.php:110
-#: ./src/Controller/TasksController.php:236
-#: ./src/Controller/TasksController.php:303
+#: ./src/Controller/TasksController.php:242
+#: ./src/Controller/TasksController.php:315
 msgid "The access points list could not be loaded. Please, try again."
 msgstr ""
 
@@ -561,17 +561,17 @@ msgstr ""
 msgid "The task type could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:161
-#: ./src/Controller/TasksController.php:261
+#: ./src/Controller/TasksController.php:167
+#: ./src/Controller/TasksController.php:273
 msgid "The task has been saved."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:165
-#: ./src/Controller/TasksController.php:265
+#: ./src/Controller/TasksController.php:171
+#: ./src/Controller/TasksController.php:277
 msgid "The task could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:210
+#: ./src/Controller/TasksController.php:216
 #: ./templates/Customers/view.php:229
 #: ./templates/Emails/view.php:37
 #: ./templates/TaskStates/view.php:93
@@ -581,7 +581,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:211
+#: ./src/Controller/TasksController.php:217
 #: ./templates/Customers/view.php:274
 #: ./templates/Phones/view.php:37
 #: ./templates/TaskStates/view.php:94
@@ -591,23 +591,27 @@ msgstr ""
 msgid "Phone"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:320
+#: ./src/Controller/TasksController.php:332
 msgid "The task has been deleted."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:322
+#: ./src/Controller/TasksController.php:334
 msgid "The task could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:375
+#: ./src/Controller/TasksController.php:387
 msgid "You have a new task # {0}"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:377
+#: ./src/Controller/TasksController.php:389
 msgid "You have changes in task # {0}"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:394
+#: ./src/Controller/TasksController.php:403
+msgid "Notification email sent."
+msgstr ""
+
+#: ./src/Controller/TasksController.php:407
 msgid "The notification email could not be sent."
 msgstr ""
 
@@ -1787,7 +1791,7 @@ msgstr ""
 #: ./templates/Tasks/view.php:97
 #: ./templates/TaxRates/view.php:42
 #: ./templates/TaxRates/view.php:84
-#: ./templates/email/html/task_notification.php:97
+#: ./templates/email/html/task_notification.php:96
 msgid "Id"
 msgstr ""
 
@@ -1820,7 +1824,7 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:39
 #: ./templates/Tasks/view.php:101
 #: ./templates/TaxRates/view.php:46
-#: ./templates/email/html/task_notification.php:101
+#: ./templates/email/html/task_notification.php:100
 msgid "Created"
 msgstr ""
 
@@ -1852,7 +1856,7 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:43
 #: ./templates/Tasks/view.php:105
 #: ./templates/TaxRates/view.php:50
-#: ./templates/email/html/task_notification.php:105
+#: ./templates/email/html/task_notification.php:104
 msgid "Created By"
 msgstr ""
 
@@ -1884,7 +1888,7 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:55
 #: ./templates/Tasks/view.php:117
 #: ./templates/TaxRates/view.php:62
-#: ./templates/email/html/task_notification.php:109
+#: ./templates/email/html/task_notification.php:108
 msgid "Modified"
 msgstr ""
 
@@ -1916,7 +1920,7 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:59
 #: ./templates/Tasks/view.php:121
 #: ./templates/TaxRates/view.php:66
-#: ./templates/email/html/task_notification.php:113
+#: ./templates/email/html/task_notification.php:112
 msgid "Modified By"
 msgstr ""
 
@@ -2010,7 +2014,7 @@ msgstr ""
 #: ./templates/TaskStates/view.php:89
 #: ./templates/TaskTypes/view.php:81
 #: ./templates/Tasks/view.php:136
-#: ./templates/email/html/task_notification.php:126
+#: ./templates/email/html/task_notification.php:124
 msgid "Text"
 msgstr ""
 
@@ -2230,7 +2234,7 @@ msgstr ""
 #: ./templates/TaskStates/view.php:91
 #: ./templates/TaskTypes/view.php:83
 #: ./templates/Tasks/view.php:66
-#: ./templates/email/html/task_notification.php:69
+#: ./templates/email/html/task_notification.php:68
 msgid "Dealer"
 msgstr ""
 
@@ -2323,7 +2327,7 @@ msgstr ""
 #: ./templates/TaskStates/view.php:92
 #: ./templates/TaskTypes/view.php:84
 #: ./templates/Tasks/view.php:73
-#: ./templates/email/html/task_notification.php:73
+#: ./templates/email/html/task_notification.php:72
 msgid "Access Point"
 msgstr ""
 
@@ -3625,28 +3629,28 @@ msgstr ""
 #: ./templates/TaskStates/view.php:95
 #: ./templates/TaskTypes/view.php:87
 #: ./templates/Tasks/view.php:81
-#: ./templates/email/html/task_notification.php:81
+#: ./templates/email/html/task_notification.php:80
 msgid "Start Date"
 msgstr ""
 
 #: ./templates/TaskStates/view.php:96
 #: ./templates/TaskTypes/view.php:88
 #: ./templates/Tasks/view.php:85
-#: ./templates/email/html/task_notification.php:85
+#: ./templates/email/html/task_notification.php:84
 msgid "Estimated Date"
 msgstr ""
 
 #: ./templates/TaskStates/view.php:97
 #: ./templates/TaskTypes/view.php:89
 #: ./templates/Tasks/view.php:89
-#: ./templates/email/html/task_notification.php:89
+#: ./templates/email/html/task_notification.php:88
 msgid "Critical Date"
 msgstr ""
 
 #: ./templates/TaskStates/view.php:98
 #: ./templates/TaskTypes/view.php:90
 #: ./templates/Tasks/view.php:93
-#: ./templates/email/html/task_notification.php:93
+#: ./templates/email/html/task_notification.php:92
 msgid "Finish Date"
 msgstr ""
 
@@ -3725,7 +3729,7 @@ msgstr ""
 msgid "Related Customers"
 msgstr ""
 
-#: ./templates/email/html/task_notification.php:121
+#: ./templates/email/html/task_notification.php:120
 msgid "View Task"
 msgstr ""
 

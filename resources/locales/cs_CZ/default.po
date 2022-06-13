@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-06-13 14:40+0200\n"
-"PO-Revision-Date: 2022-06-13 14:56+0200\n"
+"POT-Creation-Date: 2022-06-13 16:42+0200\n"
+"PO-Revision-Date: 2022-06-13 16:44+0200\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -127,8 +127,8 @@ msgstr "Smlouvu nelze uložit. Opakujte akci."
 #: src/Controller/ContractsController.php:195
 #: src/Controller/OverviewsController.php:103
 #: src/Controller/TasksController.php:110
-#: src/Controller/TasksController.php:236
-#: src/Controller/TasksController.php:303
+#: src/Controller/TasksController.php:242
+#: src/Controller/TasksController.php:315
 msgid "The access points list could not be loaded. Please, try again."
 msgstr "Seznam přístupových bodů nelze načíst. Zkuste to prosím znovu."
 
@@ -571,47 +571,51 @@ msgstr "Typ úkolu byl odstraněn."
 msgid "The task type could not be deleted. Please, try again."
 msgstr "Typ úkolu nelze odstranit. Prosím, zkuste to znovu."
 
-#: src/Controller/TasksController.php:161
-#: src/Controller/TasksController.php:261
+#: src/Controller/TasksController.php:167
+#: src/Controller/TasksController.php:273
 msgid "The task has been saved."
 msgstr "Úkol byl uložen."
 
-#: src/Controller/TasksController.php:165
-#: src/Controller/TasksController.php:265
+#: src/Controller/TasksController.php:171
+#: src/Controller/TasksController.php:277
 msgid "The task could not be saved. Please, try again."
 msgstr "Úkol nelze uložit. Prosím, zkuste to znovu."
 
-#: src/Controller/TasksController.php:210 templates/Customers/view.php:229
+#: src/Controller/TasksController.php:216 templates/Customers/view.php:229
 #: templates/Emails/view.php:37 templates/TaskStates/view.php:93
 #: templates/TaskTypes/view.php:85 templates/Tasks/view.php:51
 #: templates/email/html/task_notification.php:53
 msgid "Email"
 msgstr "E-mail"
 
-#: src/Controller/TasksController.php:211 templates/Customers/view.php:274
+#: src/Controller/TasksController.php:217 templates/Customers/view.php:274
 #: templates/Phones/view.php:37 templates/TaskStates/view.php:94
 #: templates/TaskTypes/view.php:86 templates/Tasks/view.php:55
 #: templates/email/html/task_notification.php:57
 msgid "Phone"
 msgstr "Telefon"
 
-#: src/Controller/TasksController.php:320
+#: src/Controller/TasksController.php:332
 msgid "The task has been deleted."
 msgstr "Úkol byl odstraněn."
 
-#: src/Controller/TasksController.php:322
+#: src/Controller/TasksController.php:334
 msgid "The task could not be deleted. Please, try again."
 msgstr "Úkol nelze odstranit. Prosím, zkuste to znovu."
 
-#: src/Controller/TasksController.php:375
+#: src/Controller/TasksController.php:387
 msgid "You have a new task # {0}"
 msgstr "Máte nový úkol č. {0}"
 
-#: src/Controller/TasksController.php:377
+#: src/Controller/TasksController.php:389
 msgid "You have changes in task # {0}"
 msgstr "Máte změny v úkolu č. {0}"
 
-#: src/Controller/TasksController.php:394
+#: src/Controller/TasksController.php:403
+msgid "Notification email sent."
+msgstr "E-mail s oznámením odeslán."
+
+#: src/Controller/TasksController.php:407
 msgid "The notification email could not be sent."
 msgstr "E-mail s oznámením se nepodařilo odeslat."
 
@@ -1351,7 +1355,7 @@ msgstr ""
 #: templates/TaskStates/view.php:85 templates/TaskTypes/view.php:35
 #: templates/TaskTypes/view.php:77 templates/Tasks/view.php:97
 #: templates/TaxRates/view.php:42 templates/TaxRates/view.php:84
-#: templates/email/html/task_notification.php:97
+#: templates/email/html/task_notification.php:96
 msgid "Id"
 msgstr "ID"
 
@@ -1370,7 +1374,7 @@ msgstr "ID"
 #: templates/SoldEquipments/view.php:74 templates/TaskStates/view.php:47
 #: templates/TaskTypes/view.php:39 templates/Tasks/view.php:101
 #: templates/TaxRates/view.php:46
-#: templates/email/html/task_notification.php:101
+#: templates/email/html/task_notification.php:100
 msgid "Created"
 msgstr "Vytvořeno"
 
@@ -1388,7 +1392,7 @@ msgstr "Vytvořeno"
 #: templates/Services/view.php:64 templates/SoldEquipments/view.php:78
 #: templates/TaskStates/view.php:51 templates/TaskTypes/view.php:43
 #: templates/Tasks/view.php:105 templates/TaxRates/view.php:50
-#: templates/email/html/task_notification.php:105
+#: templates/email/html/task_notification.php:104
 msgid "Created By"
 msgstr "Vytvořil"
 
@@ -1406,7 +1410,7 @@ msgstr "Vytvořil"
 #: templates/Services/view.php:76 templates/SoldEquipments/view.php:90
 #: templates/TaskStates/view.php:63 templates/TaskTypes/view.php:55
 #: templates/Tasks/view.php:117 templates/TaxRates/view.php:62
-#: templates/email/html/task_notification.php:109
+#: templates/email/html/task_notification.php:108
 msgid "Modified"
 msgstr "Upraveno"
 
@@ -1424,7 +1428,7 @@ msgstr "Upraveno"
 #: templates/Services/view.php:80 templates/SoldEquipments/view.php:94
 #: templates/TaskStates/view.php:67 templates/TaskTypes/view.php:59
 #: templates/Tasks/view.php:121 templates/TaxRates/view.php:66
-#: templates/email/html/task_notification.php:113
+#: templates/email/html/task_notification.php:112
 msgid "Modified By"
 msgstr "Upravil"
 
@@ -1489,7 +1493,7 @@ msgstr "Služba"
 #: templates/Customers/view.php:502 templates/Customers/view.php:948
 #: templates/Services/view.php:101 templates/TaskStates/view.php:89
 #: templates/TaskTypes/view.php:81 templates/Tasks/view.php:136
-#: templates/email/html/task_notification.php:126
+#: templates/email/html/task_notification.php:124
 msgid "Text"
 msgstr "Text"
 
@@ -1657,7 +1661,7 @@ msgstr "Související provize dealerů"
 #: templates/Customers/view.php:143 templates/Customers/view.php:949
 #: templates/DealerCommissions/view.php:41 templates/TaskStates/view.php:91
 #: templates/TaskTypes/view.php:83 templates/Tasks/view.php:66
-#: templates/email/html/task_notification.php:69
+#: templates/email/html/task_notification.php:68
 msgid "Dealer"
 msgstr "Dealer"
 
@@ -1724,7 +1728,7 @@ msgstr "VIP"
 #: templates/RemovedIpNetworks/view.php:71 templates/RemovedIps/view.php:58
 #: templates/ServiceTypes/view.php:172 templates/TaskStates/view.php:92
 #: templates/TaskTypes/view.php:84 templates/Tasks/view.php:73
-#: templates/email/html/task_notification.php:73
+#: templates/email/html/task_notification.php:72
 msgid "Access Point"
 msgstr "Přístupový bod"
 
@@ -2853,22 +2857,22 @@ msgid "Priority"
 msgstr "Priorita"
 
 #: templates/TaskStates/view.php:95 templates/TaskTypes/view.php:87
-#: templates/Tasks/view.php:81 templates/email/html/task_notification.php:81
+#: templates/Tasks/view.php:81 templates/email/html/task_notification.php:80
 msgid "Start Date"
 msgstr "Datum přijetí"
 
 #: templates/TaskStates/view.php:96 templates/TaskTypes/view.php:88
-#: templates/Tasks/view.php:85 templates/email/html/task_notification.php:85
+#: templates/Tasks/view.php:85 templates/email/html/task_notification.php:84
 msgid "Estimated Date"
 msgstr "Přepokládaný datum řešení"
 
 #: templates/TaskStates/view.php:97 templates/TaskTypes/view.php:89
-#: templates/Tasks/view.php:89 templates/email/html/task_notification.php:89
+#: templates/Tasks/view.php:89 templates/email/html/task_notification.php:88
 msgid "Critical Date"
 msgstr "Nutné dořešit do"
 
 #: templates/TaskStates/view.php:98 templates/TaskTypes/view.php:90
-#: templates/Tasks/view.php:93 templates/email/html/task_notification.php:93
+#: templates/Tasks/view.php:93 templates/email/html/task_notification.php:92
 msgid "Finish Date"
 msgstr "Datum vyřízení"
 
@@ -2941,7 +2945,7 @@ msgstr "Přenesení daňové povinnosti"
 msgid "Related Customers"
 msgstr "Související zákazníci"
 
-#: templates/email/html/task_notification.php:121
+#: templates/email/html/task_notification.php:120
 msgid "View Task"
 msgstr "Zobrazit úkol"
 
