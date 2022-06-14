@@ -1,6 +1,7 @@
 $(document).ready(function() {
     $('select:not(.button)').select2({
         minimumResultsForSearch: 10,
+        width: '100%',
         templateResult: function (data) {    
             // We only really care if there is an element to pull classes and styles from
             if (!data.element) {
