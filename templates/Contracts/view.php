@@ -285,111 +285,6 @@ use Cake\I18n\Number;
             </div>
             <div class="related">
                 <?= $this->AuthLink->link(
-                    __('New RADIUS Account'),
-                    ['plugin' => 'Radius', 'controller' => 'Accounts', 'action' => 'add'],
-                    ['class' => 'button button-small float-right win-link']
-                ) ?>
-                <h4><?= __('RADIUS Accounts') ?></h4>
-                <?= $this->cell(
-                    'Radius.Accounts',
-                    [['Accounts.contract_id' => $contract->id]],
-                    ['show_contracts' => false]
-                ) ?>
-            </div>
-            <div class="related">
-                <?= $this->AuthLink->link(
-                    __('New Borrowed Equipment'),
-                    ['controller' => 'BorrowedEquipments', 'action' => 'add'],
-                    ['class' => 'button button-small float-right win-link']
-                ) ?>
-                <h4><?= __('Borrowed Equipments') ?></h4>
-                <?php if (!empty($contract->borrowed_equipments)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __('Equipment Type') ?></th>
-                            <th><?= __('Serial Number') ?></th>
-                            <th><?= __('Borrowed From') ?></th>
-                            <th><?= __('Borrowed Until') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                        <?php foreach ($contract->borrowed_equipments as $borrowedEquipment) : ?>
-                        <tr style="<?= $borrowedEquipment->style ?>">
-                            <td><?= h($borrowedEquipment->equipment_type->name) ?></td>
-                            <td><?= h($borrowedEquipment->serial_number) ?></td>
-                            <td><?= h($borrowedEquipment->borrowed_from) ?></td>
-                            <td><?= h($borrowedEquipment->borrowed_until) ?></td>
-                            <td class="actions">
-                                <?= $this->AuthLink->link(
-                                    __('View'),
-                                    ['controller' => 'BorrowedEquipments', 'action' => 'view', $borrowedEquipment->id]
-                                ) ?>
-                                <?= $this->AuthLink->link(
-                                    __('Edit'),
-                                    ['controller' => 'BorrowedEquipments', 'action' => 'edit', $borrowedEquipment->id],
-                                    ['class' => 'win-link']
-                                ) ?>
-                                <?= $this->AuthLink->postLink(
-                                    __('Delete'),
-                                    [
-                                        'controller' => 'BorrowedEquipments',
-                                        'action' => 'delete',
-                                        $borrowedEquipment->id,
-                                    ],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id)]
-                                ) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
-                <?php endif; ?>
-            </div>
-            <div class="related">
-                <?= $this->AuthLink->link(
-                    __('New Sold Equipment'),
-                    ['controller' => 'SoldEquipments', 'action' => 'add'],
-                    ['class' => 'button button-small float-right win-link']
-                ) ?>
-                <h4><?= __('Sold Equipments') ?></h4>
-                <?php if (!empty($contract->sold_equipments)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __('Equipment Type') ?></th>
-                            <th><?= __('Serial Number') ?></th>
-                            <th><?= __('Date Of Sale') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                        <?php foreach ($contract->sold_equipments as $soldEquipment) : ?>
-                        <tr style="<?= $soldEquipment->style ?>">
-                            <td><?= h($soldEquipment->equipment_type->name) ?></td>
-                            <td><?= h($soldEquipment->serial_number) ?></td>
-                            <td><?= h($soldEquipment->date_of_sale) ?></td>
-                            <td class="actions">
-                                <?= $this->AuthLink->link(
-                                    __('View'),
-                                    ['controller' => 'SoldEquipments', 'action' => 'view', $soldEquipment->id]
-                                ) ?>
-                                <?= $this->AuthLink->link(
-                                    __('Edit'),
-                                    ['controller' => 'SoldEquipments', 'action' => 'edit', $soldEquipment->id],
-                                    ['class' => 'win-link']
-                                ) ?>
-                                <?= $this->AuthLink->postLink(
-                                    __('Delete'),
-                                    ['controller' => 'SoldEquipments', 'action' => 'delete', $soldEquipment->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id)]
-                                ) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
-                <?php endif; ?>
-            </div>
-            <div class="related">
-                <?= $this->AuthLink->link(
                     __('New Ip'),
                     ['controller' => 'Ips', 'action' => 'add'],
                     ['class' => 'button button-small float-right win-link']
@@ -517,6 +412,111 @@ use Cake\I18n\Number;
                                     __('Delete'),
                                     ['controller' => 'IpNetworks', 'action' => 'delete', $ipNetwork->id],
                                     ['confirm' => __('Are you sure you want to delete # {0}?', $ipNetwork->ip_network)]
+                                ) ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+                <?php endif; ?>
+            </div>
+            <div class="related">
+                <?= $this->AuthLink->link(
+                    __('New RADIUS Account'),
+                    ['plugin' => 'Radius', 'controller' => 'Accounts', 'action' => 'add'],
+                    ['class' => 'button button-small float-right win-link']
+                ) ?>
+                <h4><?= __('RADIUS Accounts') ?></h4>
+                <?= $this->cell(
+                    'Radius.Accounts',
+                    [['Accounts.contract_id' => $contract->id]],
+                    ['show_contracts' => false]
+                ) ?>
+            </div>
+            <div class="related">
+                <?= $this->AuthLink->link(
+                    __('New Borrowed Equipment'),
+                    ['controller' => 'BorrowedEquipments', 'action' => 'add'],
+                    ['class' => 'button button-small float-right win-link']
+                ) ?>
+                <h4><?= __('Borrowed Equipments') ?></h4>
+                <?php if (!empty($contract->borrowed_equipments)) : ?>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Equipment Type') ?></th>
+                            <th><?= __('Serial Number') ?></th>
+                            <th><?= __('Borrowed From') ?></th>
+                            <th><?= __('Borrowed Until') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                        <?php foreach ($contract->borrowed_equipments as $borrowedEquipment) : ?>
+                        <tr style="<?= $borrowedEquipment->style ?>">
+                            <td><?= h($borrowedEquipment->equipment_type->name) ?></td>
+                            <td><?= h($borrowedEquipment->serial_number) ?></td>
+                            <td><?= h($borrowedEquipment->borrowed_from) ?></td>
+                            <td><?= h($borrowedEquipment->borrowed_until) ?></td>
+                            <td class="actions">
+                                <?= $this->AuthLink->link(
+                                    __('View'),
+                                    ['controller' => 'BorrowedEquipments', 'action' => 'view', $borrowedEquipment->id]
+                                ) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Edit'),
+                                    ['controller' => 'BorrowedEquipments', 'action' => 'edit', $borrowedEquipment->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->AuthLink->postLink(
+                                    __('Delete'),
+                                    [
+                                        'controller' => 'BorrowedEquipments',
+                                        'action' => 'delete',
+                                        $borrowedEquipment->id,
+                                    ],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id)]
+                                ) ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+                <?php endif; ?>
+            </div>
+            <div class="related">
+                <?= $this->AuthLink->link(
+                    __('New Sold Equipment'),
+                    ['controller' => 'SoldEquipments', 'action' => 'add'],
+                    ['class' => 'button button-small float-right win-link']
+                ) ?>
+                <h4><?= __('Sold Equipments') ?></h4>
+                <?php if (!empty($contract->sold_equipments)) : ?>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Equipment Type') ?></th>
+                            <th><?= __('Serial Number') ?></th>
+                            <th><?= __('Date Of Sale') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                        <?php foreach ($contract->sold_equipments as $soldEquipment) : ?>
+                        <tr style="<?= $soldEquipment->style ?>">
+                            <td><?= h($soldEquipment->equipment_type->name) ?></td>
+                            <td><?= h($soldEquipment->serial_number) ?></td>
+                            <td><?= h($soldEquipment->date_of_sale) ?></td>
+                            <td class="actions">
+                                <?= $this->AuthLink->link(
+                                    __('View'),
+                                    ['controller' => 'SoldEquipments', 'action' => 'view', $soldEquipment->id]
+                                ) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Edit'),
+                                    ['controller' => 'SoldEquipments', 'action' => 'edit', $soldEquipment->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->AuthLink->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'SoldEquipments', 'action' => 'delete', $soldEquipment->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id)]
                                 ) ?>
                             </td>
                         </tr>
