@@ -68,7 +68,11 @@ class AppController extends Controller
     public function paginate($object = null, $settings = [])
     {
         try {
-            $this->paginate['maxLimit'] = 1000;
+            // set maximal limit
+            $this->paginate['maxLimit'] = 10000;
+
+            // load limit from session
+            $this->paginate['limit'] = $this->getRequest()->getSession()->read('Config.limit', 20);
 
             return parent::paginate($object, $settings);
         } catch (NotFoundException $e) {
@@ -109,6 +113,14 @@ class AppController extends Controller
             $this->getRequest()->getSession()->write(
                 'Config.high-contrast',
                 (int)$this->getRequest()->getQuery('high-contrast') == 1
+            );
+        }
+
+        # We check if we have a paginate limit set
+        if (is_numeric($this->getRequest()->getQuery('limit'))) {
+            $this->getRequest()->getSession()->write(
+                'Config.limit',
+                (int)$this->getRequest()->getQuery('limit')
             );
         }
 

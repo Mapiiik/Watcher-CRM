@@ -6,8 +6,6 @@
  */
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
-<?= $this->getRequest()->getQuery('limit') ? $this->Form->hidden('limit') : '' ?>
-
 <div class="row">
     <div class="column-responsive">
         <?= $this->Form->control('search', [

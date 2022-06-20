@@ -137,15 +137,15 @@ $request = $this->getRequest();
 
             <?php if ($request->getParam('action') == 'index') : ?>
             <select name="limit" class="button button-small button-outline" onchange="location = this.value;">
-                <option <?= (int)$request->getQuery('limit') == 20 ? 'selected="selected"' : '' ?>
+                <option <?= $request->getSession()->read('Config.limit') == 20 ? 'selected="selected"' : '' ?>
                     value="<?= $urlWithQuery(['limit' => 20]) ?>">20</option>
-                <option <?= (int)$request->getQuery('limit') == 50 ? 'selected="selected"' : '' ?>
+                <option <?= $request->getSession()->read('Config.limit') == 50 ? 'selected="selected"' : '' ?>
                     value="<?= $urlWithQuery(['limit' => 50]) ?>">50</option>
-                <option <?= (int)$request->getQuery('limit') == 100 ? 'selected="selected"' : '' ?>
+                <option <?= $request->getSession()->read('Config.limit') == 100 ? 'selected="selected"' : '' ?>
                     value="<?= $urlWithQuery(['limit' => 100]) ?>">100</option>
-                <option <?= (int)$request->getQuery('limit') == 500 ? 'selected="selected"' : '' ?>
+                <option <?= $request->getSession()->read('Config.limit') == 500 ? 'selected="selected"' : '' ?>
                     value="<?= $urlWithQuery(['limit' => 500]) ?>">500</option>
-                <option <?= (int)$request->getQuery('limit') == 1000 ? 'selected="selected"' : '' ?>
+                <option <?= $request->getSession()->read('Config.limit') == 1000 ? 'selected="selected"' : '' ?>
                     value="<?= $urlWithQuery(['limit' => 1000]) ?>">1000</option>
             </select>
             <?php endif; ?>

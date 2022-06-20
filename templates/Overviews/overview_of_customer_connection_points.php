@@ -30,7 +30,6 @@
                 . $month_to_display->i18nFormat('LLLL yyyy') ?></h3>
 
             <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
-            <?= $this->getRequest()->getQuery('limit') ? $this->Form->hidden('limit') : '' ?>
             <div class="row">
                 <div class="column-responsive">
                     <?= $this->Form->control('month_to_display', [
