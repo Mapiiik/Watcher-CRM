@@ -3,9 +3,10 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Task[]|\Cake\Collection\CollectionInterface $tasks
  * @var string[]|\Cake\Collection\CollectionInterface $priorities
+ * @var \Cake\Form\Form $filterForm
  */
 ?>
-<?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
+<?= $this->Form->create($filterForm, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
 <div class="row">
     <div class="column-responsive">
         <?= $this->Form->control('dealer_id', [

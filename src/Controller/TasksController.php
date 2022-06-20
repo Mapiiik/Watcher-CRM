@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\ApiClient;
+use Cake\Form\Form;
 use Cake\I18n\FrozenTime;
 use Cake\Mailer\Mailer;
 
@@ -25,6 +26,33 @@ class TasksController extends AppController
         $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
+        // persistent filter data
+        if (!is_null($this->getRequest()->getQuery('dealer_id'))) {
+            $this->getRequest()->getSession()->write(
+                'Config.Tasks.filter.dealer_id',
+                $this->getRequest()->getQuery('dealer_id')
+            );
+        }
+        if (!is_null($this->getRequest()->getQuery('task_type_id'))) {
+            $this->getRequest()->getSession()->write(
+                'Config.Tasks.filter.task_type_id',
+                $this->getRequest()->getQuery('task_type_id')
+            );
+        }
+        if (!is_null($this->getRequest()->getQuery('access_point_id'))) {
+            $this->getRequest()->getSession()->write(
+                'Config.Tasks.filter.access_point_id',
+                $this->getRequest()->getQuery('access_point_id')
+            );
+        }
+        if (!is_null($this->getRequest()->getQuery('search'))) {
+            $this->getRequest()->getSession()->write(
+                'Config.Tasks.filter.search',
+                $this->getRequest()->getQuery('search')
+            );
+        }
+        $filter = $this->getRequest()->getSession()->read('Config.Tasks.filter');
+
         // filter
         $conditions = [];
         if (isset($customer_id)) {
@@ -32,25 +60,46 @@ class TasksController extends AppController
                 'Tasks.customer_id' => $customer_id,
             ];
         }
-        $dealer_id = $this->getRequest()->getQuery('dealer_id');
+
+        $dealer_id = $filter['dealer_id'] ?? $this->getRequest()->getSession()->read('Auth.customer_id') ?? null;
         if (!empty($dealer_id)) {
             $conditions[] = [
                 'Tasks.dealer_id' => $dealer_id,
             ];
         }
-        $task_type_id = $this->getRequest()->getQuery('task_type_id');
+        $task_type_id = $filter['task_type_id'] ?? null;
         if (!empty($task_type_id)) {
             $conditions[] = [
                 'Tasks.task_type_id' => $task_type_id,
             ];
         }
-        $access_point_id = $this->getRequest()->getQuery('access_point_id');
+        $access_point_id = $filter['access_point_id'] ?? null;
         if (!empty($access_point_id)) {
             $conditions[] = [
                 'Tasks.access_point_id' => $access_point_id,
             ];
         }
+        $search = $filter['search'] ?? null;
+        if (!empty($search)) {
+            $conditions[] = [
+                'OR' => [
+                    'Tasks.subject ILIKE' => '%' . trim($search) . '%',
+                    'Tasks.text ILIKE' => '%' . trim($search) . '%',
+                ],
+            ];
+        }
 
+        // filter form
+        $filterForm = new Form();
+        $filterForm->setData([
+            'dealer_id' => $dealer_id,
+            'task_type_id' => $task_type_id,
+            'access_point_id' => $access_point_id,
+            'search' => $search,
+        ]);
+        $this->set('filterForm', $filterForm);
+
+        /*
         // initially load only own tasks if assigned Auth.customer_id
         if (is_null($dealer_id)) {
             if ($this->getRequest()->getSession()->read('Auth.customer_id') !== null) {
@@ -61,17 +110,7 @@ class TasksController extends AppController
                 ]);
             }
         }
-
-        // search
-        $search = $this->getRequest()->getQuery('search');
-        if (!empty($search)) {
-            $conditions[] = [
-                'OR' => [
-                    'Tasks.subject ILIKE' => '%' . trim($search) . '%',
-                    'Tasks.text ILIKE' => '%' . trim($search) . '%',
-                ],
-            ];
-        }
+        */
 
         $this->paginate = [
             'contain' => ['TaskTypes', 'Customers', 'Dealers', 'TaskStates'],
