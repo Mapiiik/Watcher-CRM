@@ -16,9 +16,11 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
+use AuditStash\Meta\RequestMetadata;
 use Cake\Cache\Cache;
 use Cake\Controller\Controller;
 use Cake\Event\EventInterface;
+use Cake\Event\EventManager;
 use Cake\Http\Exception\NotFoundException;
 use Cake\I18n\I18n;
 
@@ -127,6 +129,14 @@ class AppController extends Controller
         # Disable SecurityComponent POST validation for CakeDC/Users
         if ($this->getRequest()->getParam('plugin') === 'CakeDC/Users') {
             $this->Security->setConfig('validatePost', false);
+        }
+
+        // Persisting audit log - current user
+        $identity = $this->getRequest()->getAttribute('identity');
+        if ($identity != null) {
+            EventManager::instance()->on(
+                new RequestMetadata($this->getRequest(), $identity['username'])
+            );
         }
 
         parent::beforeFilter($event);

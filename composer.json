@@ -20,6 +20,7 @@
         "cakephp/cakephp": "^4.4",
         "cakephp/migrations": "^3.2",
         "cakephp/plugin-installer": "^1.3",
+        "kdesilva/audit-trail": "^4.4",
         "league/oauth2-google": "@stable",
         "mapik/pohoda-xml": "^1.16",
         "mapik/routeros-api": "^1.6",

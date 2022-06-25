@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use AuditStash\Persister\TablePersister;
 use Cake\ORM\Table;
 
 /**
@@ -23,6 +24,17 @@ class AppTable extends Table
     public function initialize(array $config): void
     {
         parent::initialize($config);
+
+        // Persisting audit log
+        $this->addBehavior('AuditStash.AuditLog');
+        /** @var \AuditStash\Model\Behavior\AuditLogBehavior $auditLog */
+        $auditLog = $this->getBehavior('AuditLog');
+        /** @var \AuditStash\Persister\TablePersister $auditLogPersister */
+        $auditLogPersister = $auditLog->persister();
+        $auditLogPersister->setConfig([
+            'serializeFields' => false,
+            'primaryKeyExtractionStrategy' => TablePersister::STRATEGY_RAW,
+        ]);
 
         if ($this->hasField('created_by')) {
             $this->belongsTo('Creators', [

@@ -78,6 +78,9 @@ class Application extends BaseApplication
         $this->addPlugin(\CakeDC\Users\Plugin::class);
         Configure::write('Users.config', ['users']);
 
+        // Persisting audit log
+        $this->addPlugin('AuditStash');
+
         // Set time and date format if specified in environment
         if (!empty(env('APP_TIME_FORMAT'))) {
             FrozenTime::setToStringFormat(env('APP_TIME_FORMAT'));

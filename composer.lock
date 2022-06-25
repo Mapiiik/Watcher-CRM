@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b149fcc00ed78715eba0263f6120fdac",
+    "content-hash": "6b95a1d149e414146229973bfdd30e26",
     "packages": [
         {
             "name": "cakedc/auth",
@@ -962,6 +962,52 @@
                 }
             ],
             "time": "2022-06-20T21:43:11+00:00"
+        },
+        {
+            "name": "kdesilva/audit-trail",
+            "version": "4.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kkdesilva/audit-trail.git",
+                "reference": "dd9f0ddcae18606f2d1b049c78b8cbc223b194a4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kkdesilva/audit-trail/zipball/dd9f0ddcae18606f2d1b049c78b8cbc223b194a4",
+                "reference": "dd9f0ddcae18606f2d1b049c78b8cbc223b194a4",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/orm": "^4.0",
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "cakephp/cakephp": "^4.0",
+                "cakephp/cakephp-codesniffer": "^4.0.0",
+                "cakephp/elastic-search": "^3.0",
+                "friendsofcake/process-mq": "dev-master",
+                "phpunit/phpunit": "^8.0"
+            },
+            "suggest": {
+                "cakephp/elastic-search": "The default persister engine for audit-stash is elastic search and requires this plugin",
+                "friendsofcake/crud": "audit-stash provide Crud Action classes for displaying audit logs",
+                "friendsofcake/process-mq": "Use this package if you prefer sending the audit events to RabbitMQ"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "AuditStash\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Flexible and rock solid audit log tracking plugin for cakephp",
+            "support": {
+                "source": "https://github.com/kkdesilva/audit-trail/tree/4.4.2"
+            },
+            "time": "2022-02-14T09:59:04+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",

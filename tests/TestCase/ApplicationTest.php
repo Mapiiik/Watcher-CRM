@@ -40,7 +40,7 @@ class ApplicationTest extends IntegrationTestCase
         $app->bootstrap();
         $plugins = $app->getPlugins();
 
-        $this->assertCount(8, $plugins);
+        $this->assertCount(9, $plugins);
         $this->assertSame('Cake/Repl', $plugins->get('Cake/Repl')->getName());
         $this->assertSame('Bake', $plugins->get('Bake')->getName());
         $this->assertSame('DebugKit', $plugins->get('DebugKit')->getName());
