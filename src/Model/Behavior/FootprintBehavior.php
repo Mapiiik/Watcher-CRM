@@ -20,7 +20,7 @@ class FootprintBehavior extends Behavior
      * @var array<string, mixed>
      */
     protected $_defaultConfig = [
-        'session_key' => 'Auth.id',
+        'identity_key' => 'id',
         'column_creator' => 'created_by',
         'column_modifier' => 'modified_by',
     ];
@@ -52,15 +52,15 @@ class FootprintBehavior extends Behavior
     {
         $request = Router::getRequest();
 
-        if ($request) {
-            $session = $request->getSession();
+        if ($request != null) {
+            $identity = $request->getAttribute('identity');
 
-            if ($this->fieldsExist($event)) {
+            if ($identity != null && $this->fieldsExist($event)) {
                 if ($entity->isNew()) {
-                    $entity->set($this->_config['column_creator'], $session->read($this->_config['session_key']));
-                    $entity->set($this->_config['column_modifier'], $session->read($this->_config['session_key']));
+                    $entity->set($this->_config['column_creator'], $identity[$this->_config['identity_key']]);
+                    $entity->set($this->_config['column_modifier'], $identity[$this->_config['identity_key']]);
                 } else {
-                    $entity->set($this->_config['column_modifier'], $session->read($this->_config['session_key']));
+                    $entity->set($this->_config['column_modifier'], $identity[$this->_config['identity_key']]);
                 }
             }
         }

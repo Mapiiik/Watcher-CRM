@@ -61,7 +61,7 @@ class TasksController extends AppController
             ];
         }
 
-        $dealer_id = $filter['dealer_id'] ?? $this->getRequest()->getSession()->read('Auth.customer_id') ?? null;
+        $dealer_id = $filter['dealer_id'] ?? $this->getRequest()->getAttribute('identity')['customer_id'] ?? null;
         if (!empty($dealer_id)) {
             $conditions[] = [
                 'Tasks.dealer_id' => $dealer_id,
@@ -98,19 +98,6 @@ class TasksController extends AppController
             'search' => $search,
         ]);
         $this->set('filterForm', $filterForm);
-
-        /*
-        // initially load only own tasks if assigned Auth.customer_id
-        if (is_null($dealer_id)) {
-            if ($this->getRequest()->getSession()->read('Auth.customer_id') !== null) {
-                return $this->redirect([
-                    '?' => [
-                        'dealer_id' => $this->getRequest()->getSession()->read('Auth.customer_id'),
-                    ] + $this->getRequest()->getQueryParams(),
-                ]);
-            }
-        }
-        */
 
         $this->paginate = [
             'contain' => ['TaskTypes', 'Customers', 'Dealers', 'TaskStates'],
@@ -198,7 +185,7 @@ class TasksController extends AppController
                 // send email notification
                 if (
                     $task->has('dealer_id')
-                    && $task->dealer_id != $this->getRequest()->getSession()->read('Auth.customer_id')
+                    && $task->dealer_id != $this->getRequest()->getAttribute('identity')['customer_id'] ?? null
                 ) {
                     $this->sendNotificationEmail(strval($task->id), true);
                 }
@@ -263,7 +250,7 @@ class TasksController extends AppController
         }
         // preset dealer
         if (empty($task->dealer_id)) {
-            $task->dealer_id = $this->getRequest()->getSession()->read('Auth.customer_id');
+            $task->dealer_id = $this->getRequest()->getAttribute('identity')['customer_id'] ?? null;
         }
 
         // add task text header
@@ -304,7 +291,7 @@ class TasksController extends AppController
                 // send email notification
                 if (
                     $task->has('dealer_id')
-                    && $task->dealer_id != $this->getRequest()->getSession()->read('Auth.customer_id')
+                    && $task->dealer_id != $this->getRequest()->getAttribute('identity')['customer_id'] ?? null
                 ) {
                     $this->sendNotificationEmail(strval($task->id), false);
                 }
@@ -385,12 +372,12 @@ class TasksController extends AppController
     {
         $text = '';
 
-        $session = $this->getRequest()->getSession();
+        $identity = $this->getRequest()->getAttribute('identity');
         $text .= '------------------------------------------------------------' . PHP_EOL;
-        $text .= ' ' . $session->read('Auth.first_name') . ' ' . $session->read('Auth.last_name');
+        $text .= ' ' . ($identity['first_name'] ?? '') . ' ' . ($identity['last_name'] ?? '');
         $text .= ' (' . FrozenTime::create() . ')' . PHP_EOL;
         $text .= '------------------------------------------------------------' . PHP_EOL;
-        unset($session);
+        unset($identity);
 
         return $text;
     }

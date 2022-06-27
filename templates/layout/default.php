@@ -160,7 +160,7 @@ $request = $this->getRequest();
                     value="<?= $urlWithQuery(['language' => 'en_US']) ?>">English</option>
             </select>
 
-            <?= !is_null($request->getSession()->read('Auth.id')) ? $this->AuthLink->link(
+            <?= ($this->getRequest()->getAttribute('identity') != null) ? $this->AuthLink->link(
                 __('Logout'),
                 ['controller' => 'Users', 'action' => 'logout', 'plugin' => 'CakeDC/Users'],
                 ['class' => 'button button-small button-outline']

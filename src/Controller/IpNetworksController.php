@@ -215,7 +215,7 @@ class IpNetworksController extends AppController
 
         // TODO - add who and when deleted this
         $removedIpNetwork->removed = FrozenTime::now();
-        $removedIpNetwork->removed_by = $this->getRequest()->getSession()->read('Auth.id');
+        $removedIpNetwork->removed_by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
 
         if ($removedIpNetworksTable->save($removedIpNetwork)) {
             $this->Flash->success(__('The removed IP network has been saved.'));

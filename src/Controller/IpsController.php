@@ -214,7 +214,7 @@ class IpsController extends AppController
 
         // TODO - add who and when deleted this
         $removedIp->removed = FrozenTime::now();
-        $removedIp->removed_by = $this->getRequest()->getSession()->read('Auth.id');
+        $removedIp->removed_by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
 
         if ($removedIpsTable->save($removedIp)) {
             $this->Flash->success(__('The removed ip has been saved.'));

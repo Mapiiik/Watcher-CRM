@@ -24,7 +24,7 @@ class CustomersController extends AppController
         // search
         $search = $this->getRequest()->getQuery('search');
         $advanced_search = $this->getRequest()->getQuery('advanced_search');
-        $is_admin = in_array($this->getRequest()->getSession()->read('Auth.role'), ['admin']);
+        $is_admin = in_array($this->getRequest()->getAttribute('identity')['role'] ?? null, ['admin']);
 
         if ($is_admin && $advanced_search && !empty($search)) {
             $filter = 'to_tsvector('
