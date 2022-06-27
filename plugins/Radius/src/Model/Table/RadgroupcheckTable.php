@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Radius\Model\Table;
 
-use Cake\ORM\Table;
+use App\Model\Table\AppTable;
 use Cake\Validation\Validator;
 
 /**
@@ -23,7 +23,7 @@ use Cake\Validation\Validator;
  * @method \Radius\Model\Entity\Radgroupcheck[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \Radius\Model\Entity\Radgroupcheck[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
-class RadgroupcheckTable extends Table
+class RadgroupcheckTable extends AppTable
 {
     /**
      * Initialize method

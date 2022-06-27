@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Radius\Model\Table;
 
-use Cake\ORM\Table;
+use App\Model\Table\AppTable;
 use Cake\Validation\Validator;
 
 /**
@@ -23,7 +23,7 @@ use Cake\Validation\Validator;
  * @method \Radius\Model\Entity\Nas[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \Radius\Model\Entity\Nas[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
-class NasTable extends Table
+class NasTable extends AppTable
 {
     /**
      * Initialize method
@@ -36,7 +36,7 @@ class NasTable extends Table
         parent::initialize($config);
 
         $this->setTable('nas');
-        $this->setDisplayField('nasname');
+        $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');

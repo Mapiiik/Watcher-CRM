@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Radius\Model\Table;
 
+use App\Model\Table\AppTable;
 use Cake\ORM\RulesChecker;
-use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
@@ -29,7 +29,7 @@ use Cake\Validation\Validator;
  * @method \Radius\Model\Entity\Account[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class AccountsTable extends Table
+class AccountsTable extends AppTable
 {
     /**
      * Initialize method

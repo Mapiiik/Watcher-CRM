@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Radius\Model\Table;
 
+use App\Model\Table\AppTable;
 use Cake\ORM\RulesChecker;
-use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
@@ -25,7 +25,7 @@ use Cake\Validation\Validator;
  * @method \Radius\Model\Entity\Radpostauth[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \Radius\Model\Entity\Radpostauth[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  */
-class RadpostauthTable extends Table
+class RadpostauthTable extends AppTable
 {
     /**
      * Initialize method
