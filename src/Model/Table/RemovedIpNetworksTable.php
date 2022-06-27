@@ -51,7 +51,7 @@ class RemovedIpNetworksTable extends AppTable
         ];
 
         $this->setTable('removed_ip_networks');
-        $this->setDisplayField('id');
+        $this->setDisplayField('ip_network');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('StringModifications');

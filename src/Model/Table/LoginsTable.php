@@ -54,7 +54,7 @@ class LoginsTable extends AppTable
         ];
 
         $this->setTable('logins');
-        $this->setDisplayField('id');
+        $this->setDisplayField('login');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');

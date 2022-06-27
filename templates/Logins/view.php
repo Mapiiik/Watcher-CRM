@@ -25,7 +25,7 @@
     </aside>
     <div class="column-responsive column-90">
         <div class="logins view content">
-            <h3><?= h($login->id) ?></h3>
+            <h3><?= h($login->login) ?></h3>
             <table>
                 <tr>
                     <th><?= __('Customer') ?></th>
