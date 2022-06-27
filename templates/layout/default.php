@@ -126,7 +126,16 @@ $request = $this->getRequest();
                 ])]
             ) ?>
 
-            <?= $this->Html->link(__('Legacy'), '/legacy', ['class' => 'button button-small']) ?>
+            <?php if (file_exists(WWW_ROOT . 'legacy' . DS) && is_dir(WWW_ROOT . 'legacy' . DS)) : ?>
+                <?= $request->getParam('customer_id') ?
+                    $this->Html->link(
+                        __('Legacy UI'),
+                        '/legacy/redirect.php?customer_id=' . $request->getParam('customer_id'),
+                        ['class' => 'button button-small']
+                    ) :
+                    $this->Html->link(__('Legacy UI'), '/legacy', ['class' => 'button button-small'])
+                ?>
+            <?php endif; ?>
 
             <?= env('WATCHER_NMS_URL') ?
                 $this->Html->link(
@@ -160,7 +169,7 @@ $request = $this->getRequest();
                     value="<?= $urlWithQuery(['language' => 'en_US']) ?>">English</option>
             </select>
 
-            <?= ($this->getRequest()->getAttribute('identity') != null) ? $this->AuthLink->link(
+            <?= $this->getRequest()->getAttribute('identity') != null ? $this->AuthLink->link(
                 __('Logout'),
                 ['controller' => 'Users', 'action' => 'logout', 'plugin' => 'CakeDC/Users'],
                 ['class' => 'button button-small button-outline']
