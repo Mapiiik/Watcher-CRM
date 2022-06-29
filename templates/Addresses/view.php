@@ -99,28 +99,31 @@
             <div class="row">
                 <div class="column-responsive">
                     <table>
-                        <?php if ($address->has('gps_x') && $address->has('gps_y')) : ?>
                         <tr>
-                            <th><?= __('Maps') ?></th>
+                            <th><?= __('RÚIAN') ?></th>
+                            <td><?= $address->has('ruian_gid') ?
+                                $this->Number->format($address->ruian_gid) :
+                                '<span style="color: red;">' . __('unknown') . '</span>'
+                            ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Map location') ?></th>
                             <td>
-                                <?= $this->Html->link(
+                                <?= $address->has('gps_x') && $address->has('gps_y') ?
+                                    '' : '<span style="color: red;">' . __('unknown') . '</span>' ?>
+                                <?= $address->has('gps_x') && $address->has('gps_y') ? $this->Html->link(
                                     __('Google Maps'),
-                                    'https://maps.google.com/maps?q=' . h("{$address->gps_y},{$address->gps_x}"),
+                                    'https://maps.google.com/maps?q='
+                                        . h("{$address->gps_y},{$address->gps_x}"),
                                     ['target' => '_blank']
-                                ) ?>
-                                ,
-                                <?= $this->Html->link(
+                                ) : '' ?>
+                                <?= $address->has('gps_x') && $address->has('gps_y') ? $this->Html->link(
                                     __('Mapy.cz'),
                                     'https://mapy.cz/zakladni?source=coor&id='
-                                    . h("{$address->gps_x},{$address->gps_y}"),
+                                        . h("{$address->gps_x},{$address->gps_y}"),
                                     ['target' => '_blank']
-                                ) ?>
+                                ) : ''?>
                             </td>
-                        </tr>
-                        <?php endif; ?>
-                        <tr>
-                            <th><?= __('Ruian Gid') ?></th>
-                            <td><?= $this->Number->format($address->ruian_gid) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Manual Coordinate Setting') ?></th>

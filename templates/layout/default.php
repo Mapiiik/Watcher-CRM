@@ -108,7 +108,7 @@ $request = $this->getRequest();
                 ])]
             ) ?>
             <?= $this->AuthLink->link(
-                __('RUIAN'),
+                __('RÚIAN'),
                 ['controller' => 'Addresses', 'action' => 'index', 'plugin' => 'Ruian'],
                 ['class' => 'button button-small' . $buttonSelected(['Addresses'])]
             ) ?>

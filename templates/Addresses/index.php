@@ -25,8 +25,8 @@
                     <th><?= $this->Paginator->sort('city') ?></th>
                     <th><?= $this->Paginator->sort('zip') ?></th>
                     <th><?= $this->Paginator->sort('country_id') ?></th>
-                    <th><?= $this->Paginator->sort('ruian_gid') ?></th>
-                    <th class="actions"><?= __('Maps') ?></th>
+                    <th><?= $this->Paginator->sort('ruian_gid', __('RÚIAN')) ?></th>
+                    <th class="actions"><?= __('Map location') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -56,16 +56,23 @@
                             ['controller' => 'Countries', 'action' => 'view', $address->country->id]
                         ) : '' ?>
                     </td>
-                    <td><?= $this->Number->format($address->ruian_gid) ?></td>
+                    <td><?= $address->has('ruian_gid') ?
+                        $this->Number->format($address->ruian_gid) :
+                        '<span style="color: red;">' . __('unknown') . '</span>'
+                    ?></td>
                     <td class="actions">
+                        <?= $address->has('gps_x') && $address->has('gps_y') ?
+                            '' : '<span style="color: red;">' . __('unknown') . '</span>' ?>
                         <?= $address->has('gps_x') && $address->has('gps_y') ? $this->Html->link(
                             __('Google Maps'),
-                            'https://maps.google.com/maps?q=' . h("{$address->gps_y},{$address->gps_x}"),
+                            'https://maps.google.com/maps?q='
+                                . h("{$address->gps_y},{$address->gps_x}"),
                             ['target' => '_blank']
                         ) : '' ?>
                         <?= $address->has('gps_x') && $address->has('gps_y') ? $this->Html->link(
                             __('Mapy.cz'),
-                            'https://mapy.cz/zakladni?source=coor&id=' . h("{$address->gps_x},{$address->gps_y}"),
+                            'https://mapy.cz/zakladni?source=coor&id='
+                                . h("{$address->gps_x},{$address->gps_y}"),
                             ['target' => '_blank']
                         ) : ''?>
                     </td>

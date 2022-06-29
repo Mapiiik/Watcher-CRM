@@ -372,8 +372,8 @@ use Cake\I18n\Number;
                             <th><?= __('City') ?></th>
                             <th><?= __('Zip') ?></th>
                             <th><?= __('Country') ?></th>
-                            <th><?= __('Ruian Gid') ?></th>
-                            <th class="actions"><?= __('Maps') ?></th>
+                            <th><?= __('RÚIAN') ?></th>
+                            <th class="actions"><?= __('Map location') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($customer->addresses as $address) : ?>
@@ -389,17 +389,23 @@ use Cake\I18n\Number;
                             <td><?= h($address->city) ?></td>
                             <td><?= h($address->zip) ?></td>
                             <td><?= $address->has('country') ? h($address->country->name) : '' ?></td>
-                            <td><?= $this->Number->format($address->ruian_gid) ?></td>
+                            <td><?= $address->has('ruian_gid') ?
+                                $this->Number->format($address->ruian_gid) :
+                                '<span style="color: red;">' . __('unknown') . '</span>'
+                            ?></td>
                             <td class="actions">
+                                <?= $address->has('gps_x') && $address->has('gps_y') ?
+                                    '' : '<span style="color: red;">' . __('unknown') . '</span>' ?>
                                 <?= $address->has('gps_x') && $address->has('gps_y') ? $this->Html->link(
                                     __('Google Maps'),
-                                    'https://maps.google.com/maps?q=' . h("{$address->gps_y},{$address->gps_x}"),
+                                    'https://maps.google.com/maps?q='
+                                        . h("{$address->gps_y},{$address->gps_x}"),
                                     ['target' => '_blank']
                                 ) : '' ?>
                                 <?= $address->has('gps_x') && $address->has('gps_y') ? $this->Html->link(
                                     __('Mapy.cz'),
                                     'https://mapy.cz/zakladni?source=coor&id='
-                                    . h("{$address->gps_x},{$address->gps_y}"),
+                                        . h("{$address->gps_x},{$address->gps_y}"),
                                     ['target' => '_blank']
                                 ) : ''?>
                             </td>
