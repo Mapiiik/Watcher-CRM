@@ -64,6 +64,12 @@ $routes->scope('/admin/', function (RouteBuilder $builder) {
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}/print', 'Contracts::print')
         ->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+'])
         ->setPass(['contract_id']);
+    $builder->connect(
+        '/customers/{customer_id}/contracts/{contract_id}/terminate-related-billings',
+        'Contracts::terminateRelatedBillings'
+    )
+        ->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+'])
+        ->setPass(['contract_id']);
 
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}', ['action' => 'index'])
         ->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+']);

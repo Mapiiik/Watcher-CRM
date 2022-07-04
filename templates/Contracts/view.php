@@ -227,6 +227,19 @@ use Cake\I18n\Number;
                     ['controller' => 'Billings', 'action' => 'add'],
                     ['class' => 'button button-small float-right win-link']
                 ) ?>
+                <?php if ($contract->has('valid_until')) : ?>
+                    <?= $this->AuthLink->postLink(
+                        __('Terminate Related Billings'),
+                        ['action' => 'terminateRelatedBillings', $contract->id],
+                        [
+                            'confirm' => __(
+                                'Are you sure you want to terminate related billings for contract # {0}?',
+                                $contract->number
+                            ),
+                            'class' => 'button button-small float-right',
+                        ]
+                    ) ?>
+                <?php endif ?>
                 <h4><?= __('Billings') ?></h4>
                 <?php if (!empty($contract->billings)) : ?>
                 <div class="table-responsive">

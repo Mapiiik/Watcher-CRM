@@ -251,6 +251,54 @@ class ContractsController extends AppController
     }
 
     /**
+     * Terminate related billings
+     *
+     * @param string|null $id Contract id.
+     * @return \Cake\Http\Response|null|void Redirects to view.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function terminateRelatedBillings($id = null)
+    {
+        $this->getRequest()->allowMethod(['post']);
+
+        $contract = $this->Contracts->get($id, [
+            'contain' => [
+                'Billings' => [
+                    'Services',
+                ],
+            ],
+        ]);
+
+        $billings = new Collection($contract->billings);
+
+        $billings_to_update = $billings->match(['billing_until' => null]);
+
+        if (!$contract->has('valid_until')) {
+            $this->Flash->error(__('Please set a date until which the contract is valid.'));
+        } elseif ($billings_to_update->isEmpty()) {
+            $this->Flash->warning(__('No related billings to terminate.'));
+        } else {
+            foreach ($billings_to_update as $billing) {
+                $billing = $this->Contracts->Billings->patchEntity($billing, [
+                    'billing_until' => $contract->valid_until,
+                ]);
+
+                if ($this->Contracts->Billings->save($billing)) {
+                    $this->Flash->success(
+                        $billing->name . ' - ' . __('The billing has been saved.')
+                    );
+                } else {
+                    $this->Flash->error(
+                        $billing->name . ' - ' . __('The billing could not be saved. Please, try again.')
+                    );
+                }
+            }
+        }
+
+        return $this->redirect(['action' => 'view', $id]);
+    }
+
+    /**
      * Print method
      *
      * @param string|null $id Contract id.
