@@ -61,7 +61,7 @@ use Cake\I18n\Number;
             <?= $this->AuthLink->link(
                 __('Print to PDF'),
                 ['action' => 'print', $contract->id],
-                ['class' => 'button button float-right']
+                ['class' => 'button float-right']
             ) ?>
             <h3><?= h($contract->number) ?></h3>
             <div class="row">

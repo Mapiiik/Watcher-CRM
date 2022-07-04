@@ -42,14 +42,14 @@ use Cake\I18n\FrozenTime;
             <?= $this->Html->link(
                 __d('radius', 'View RADIUS Account'),
                 ['action' => 'view', $account->id],
-                ['class' => 'button button float-right']
+                ['class' => 'button float-right']
             ) ?>
             <?= $this->Form->postLink(
                 __d('radius', 'RADIUS Disconnect Request'),
                 ['action' => 'disconnectRequest', $account->id],
                 [
                     'confirm' => __d('radius', 'Are you sure you want to disconnect {0}?', $account->username),
-                    'class' => 'button button float-right',
+                    'class' => 'button float-right',
                 ]
             ) ?>
             <h3><?= h($account->username) ?></h3>

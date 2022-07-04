@@ -22,7 +22,7 @@
                         $cto_category,
                         '?' => ['month_to_display' => $month_to_display->i18nFormat('yyyy-MM')],
                     ],
-                    ['class' => 'button button float-right']
+                    ['class' => 'button float-right']
                 ) ?>
             <?php endforeach; ?>
             <h3><?= __('Overview of customer connection points')

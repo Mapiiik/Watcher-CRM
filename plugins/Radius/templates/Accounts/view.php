@@ -38,14 +38,14 @@
             <?= $this->Html->link(
                 __d('radius', 'RADIUS Account Monitoring'),
                 ['action' => 'monitoring', $account->id],
-                ['class' => 'button button float-right']
+                ['class' => 'button float-right']
             ) ?>
             <?= $this->Form->postLink(
                 __d('radius', 'Update Related Records'),
                 ['action' => 'updateRelatedRecords', $account->id],
                 [
                     'confirm' => __d('radius', 'Are you sure you want to update related records?'),
-                    'class' => 'button button float-right',
+                    'class' => 'button float-right',
                 ]
             ) ?>
             <h3><?= h($account->username) ?></h3>
