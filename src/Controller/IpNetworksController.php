@@ -208,6 +208,7 @@ class IpNetworksController extends AppController
     {
         $ip = $this->IpNetworks->get($id);
 
+        /** @var \App\Model\Table\RemovedIpNetworksTable $removedIpNetworksTable */
         $removedIpNetworksTable = $this->fetchTable('RemovedIpNetworks');
 
         $removedIpNetwork = $removedIpNetworksTable->newEmptyEntity();

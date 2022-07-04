@@ -491,6 +491,7 @@ class AccountsController extends AppController
      */
     private function autoRadreplyData(\Radius\Model\Entity\Account $account): array
     {
+        /** @var \App\Model\Entity\Contract $contract */
         $contract = $this->fetchTable('Contracts')->get($account->contract_id, [
             'contain' => ['Ips', 'IpNetworks'],
         ]);

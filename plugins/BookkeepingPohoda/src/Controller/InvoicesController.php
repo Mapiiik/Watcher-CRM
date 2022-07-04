@@ -356,6 +356,8 @@ class InvoicesController extends AppController
         // DOWNLOAD INVOICES
         if ($this->request->getParam('_ext') === 'dbf' || $this->request->getParam('_ext') === 'xml') {
             $invoiced_month = new FrozenDate($this->request->getQuery('invoiced_month'));
+
+            /** @var \App\Model\Entity\TaxRate $tax_rate */
             $tax_rate = $this->fetchTable('TaxRates')->get($this->request->getQuery('tax_rate_id'));
 
             if ($tax_rate->reverse_charge) {

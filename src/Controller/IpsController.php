@@ -207,6 +207,7 @@ class IpsController extends AppController
     {
         $ip = $this->Ips->get($id);
 
+        /** @var \App\Model\Table\RemovedIpsTable $removedIpsTable */
         $removedIpsTable = $this->fetchTable('RemovedIps');
 
         $removedIp = $removedIpsTable->newEmptyEntity();

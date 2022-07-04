@@ -80,6 +80,7 @@ class DebtorsController extends AppController
     {
         $result = '';
 
+        /** @var \App\Model\Entity\Customer $customer */
         $customer = $this->fetchTable('Customers')->get($id, [
             'contain' => [
                 'Ips' => ['Contracts'],

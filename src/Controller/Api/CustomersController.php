@@ -165,6 +165,7 @@ class CustomersController extends AppController
                                 if (is_numeric($key)) {
                                     // Try to load RUIAN record if RUIAN GID is set
                                     try {
+                                        /** @var \App\Model\Entity\Address $address */
                                         $address = $this->fetchTable('Ruian.Addresses')->get($key, [
                                             'fields' => [
                                                 'ulice_nazev',
