@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-06-09 11:33+0200\n"
-"PO-Revision-Date: 2022-06-09 11:35+0200\n"
+"POT-Creation-Date: 2022-07-04 16:46+0200\n"
+"PO-Revision-Date: 2022-07-04 16:50+0200\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -53,16 +53,16 @@ msgstr "Účet RADIUS byl aktualizován."
 msgid "The RADIUS account could not be updated. Please, try again."
 msgstr "Účet RADIUS nelze aktualizovat. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/AccountsController.php:558
+#: plugins/Radius/src/Controller/AccountsController.php:559
 msgid ""
 "The RADIUS replies could not be found automatically. Please, set it manually."
 msgstr "Odpovědi RADIUS nebyly nalezeny automaticky. Nastavte je prosím ručně."
 
-#: plugins/Radius/src/Controller/AccountsController.php:560
+#: plugins/Radius/src/Controller/AccountsController.php:561
 msgid "The IP addresses for the contract are probably not set correctly."
 msgstr "IP adresy pro smlouvu pravděpodobně nejsou správně nastaveny."
 
-#: plugins/Radius/src/Controller/AccountsController.php:618
+#: plugins/Radius/src/Controller/AccountsController.php:619
 msgid ""
 "The RADIUS user groups could not be found automatically. Please, set it "
 "manually."
@@ -70,7 +70,7 @@ msgstr ""
 "Skupiny uživatelů RADIUS nebyly nalezeny automaticky. Nastavte je prosím "
 "ručně."
 
-#: plugins/Radius/src/Controller/AccountsController.php:620
+#: plugins/Radius/src/Controller/AccountsController.php:621
 msgid ""
 "The billings for the contract for the current or upcoming period are "
 "probably not set correctly."

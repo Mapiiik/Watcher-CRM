@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-06-13 14:38+0200\n"
-"PO-Revision-Date: 2022-06-13 14:52+0200\n"
+"POT-Creation-Date: 2022-07-04 16:47+0200\n"
+"PO-Revision-Date: 2022-07-04 16:50+0200\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.1\n"
 
 #: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:116
 msgid "Email was successfully sent."
@@ -33,19 +33,19 @@ msgstr "Směrovače byly aktualizovány."
 msgid "Nothing has changed."
 msgstr "Nic se nezměnilo."
 
-#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:136
+#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:137
 msgid "Removed IPv4 record {0} from {1}."
 msgstr "Odebrán záznam IPv4 {0} z {1}."
 
-#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:155
+#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:156
 msgid "Added IPv4 record {0} to {1}."
 msgstr "Přidán záznam IPv4 {0} do {1}."
 
-#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:176
+#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:177
 msgid "Removed IPv6 record {0} from {1}."
 msgstr "Odebrán záznam IPv6 {0} z {1}."
 
-#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:195
+#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:196
 msgid "Added IPv6 record {0} to {1}."
 msgstr "Přidán záznam IPv6 {0} do {1}."
 
@@ -76,15 +76,15 @@ msgid "No invoices could be marked to be sent by email. Please, try again."
 msgstr ""
 "Žádné faktury nelze označit k odeslání e-mailem. Zkuste to prosím znovu."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:510
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:512
 msgid "The import file is missing some required columns."
 msgstr "V souboru importu chybí některé povinné sloupce."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:546
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:548
 msgid "Invoice {0} could not be loaded."
 msgstr "Fakturu {0} nelze načíst."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:555
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:557
 msgid ""
 "Successfully imported {0} invoices. Created {1}, modified {2} and skipped "
 "{3} records."
