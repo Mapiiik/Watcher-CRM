@@ -5,6 +5,18 @@
  * @var string[]|\Cake\Collection\CollectionInterface $rights
  */
 ?>
+<?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
+<div class="row">
+    <div class="column-responsive">
+        <?= $this->Form->control('search', [
+            'label' => __('Search'),
+            'type' => 'search',
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+    </div>
+</div>
+<?= $this->Form->end() ?>
+
 <div class="logins index content">
     <?= $this->AuthLink->link(__('New Login'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
     <h3><?= __('Logins') ?></h3>

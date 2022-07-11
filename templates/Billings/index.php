@@ -3,9 +3,20 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Billing[]|\Cake\Collection\CollectionInterface $billings
  */
-
 use Cake\I18n\Number;
 ?>
+<?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
+<div class="row">
+    <div class="column-responsive">
+        <?= $this->Form->control('search', [
+            'label' => __('Search'),
+            'type' => 'search',
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+    </div>
+</div>
+<?= $this->Form->end() ?>
+
 <div class="billings index content">
     <?= $this->AuthLink->link(__('New Billing'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
     <h3><?= __('Billings') ?></h3>

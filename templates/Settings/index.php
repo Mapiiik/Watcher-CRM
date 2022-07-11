@@ -42,7 +42,7 @@
                 ) ?>
                 <?= $this->AuthLink->link(
                     __('List Tax Rates'),
-                    ['controller' => 'Tax Rates', 'action' => 'index', 'plugin' => null],
+                    ['controller' => 'TaxRates', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item']
                 ) ?>
             </div>
@@ -84,7 +84,7 @@
                 ) ?>
                 <?= $this->AuthLink->link(
                     __('List Task Types'),
-                    ['controller' => 'Task Types', 'action' => 'index', 'plugin' => null],
+                    ['controller' => 'TaskTypes', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item']
                 ) ?>
             </div>

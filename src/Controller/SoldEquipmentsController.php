@@ -24,6 +24,7 @@ class SoldEquipmentsController extends AppController
         $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
+        // filter
         $conditions = [];
         if (isset($customer_id)) {
             $conditions += ['SoldEquipments.customer_id' => $customer_id];
@@ -32,8 +33,21 @@ class SoldEquipmentsController extends AppController
             $conditions += ['SoldEquipments.contract_id' => $contract_id];
         }
 
+        // search
+        $search = $this->request->getQuery('search');
+        if (!empty($search)) {
+            $conditions[] = [
+                'OR' => [
+                    'SoldEquipments.serial_number ILIKE' => '%' . trim($search) . '%',
+                    'EquipmentTypes.name ILIKE' => '%' . trim($search) . '%',
+                    'Contracts.number ILIKE' => '%' . trim($search) . '%',
+                ],
+            ];
+        }
+
         $this->paginate = [
             'contain' => ['Customers', 'Contracts', 'EquipmentTypes'],
+            'order' => ['id' => 'DESC'],
             'conditions' => $conditions,
         ];
         $soldEquipments = $this->paginate($this->SoldEquipments);

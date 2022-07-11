@@ -18,6 +18,24 @@ class CommissionsController extends AppController
      */
     public function index()
     {
+        // filter
+        $conditions = [];
+
+        // search
+        $search = $this->request->getQuery('search');
+        if (!empty($search)) {
+            $conditions[] = [
+                'OR' => [
+                    'Commissions.name ILIKE' => '%' . trim($search) . '%',
+                ],
+            ];
+        }
+
+        $this->paginate = [
+            'order' => ['name' => 'ASC'],
+            'conditions' => $conditions,
+        ];
+
         $commissions = $this->paginate($this->Commissions);
 
         $this->set(compact('commissions'));

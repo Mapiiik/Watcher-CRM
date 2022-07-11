@@ -18,6 +18,24 @@ class ServiceTypesController extends AppController
      */
     public function index()
     {
+        // filter
+        $conditions = [];
+
+        // search
+        $search = $this->request->getQuery('search');
+        if (!empty($search)) {
+            $conditions[] = [
+                'OR' => [
+                    'ServiceTypes.name ILIKE' => '%' . trim($search) . '%',
+                ],
+            ];
+        }
+
+        $this->paginate = [
+            'order' => ['name' => 'ASC'],
+            'conditions' => $conditions,
+        ];
+
         $serviceTypes = $this->paginate($this->ServiceTypes);
 
         $this->set(compact('serviceTypes'));

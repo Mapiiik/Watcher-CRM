@@ -18,8 +18,25 @@ class LabelsController extends AppController
      */
     public function index()
     {
+        // filter
+        $conditions = [];
+
+        // search
+        $search = $this->request->getQuery('search');
+        if (!empty($search)) {
+            $conditions[] = [
+                'OR' => [
+                    'Labels.name ILIKE' => '%' . trim($search) . '%',
+                    'Labels.caption ILIKE' => '%' . trim($search) . '%',
+                    'Labels.dynamic_sql ILIKE' => '%' . trim($search) . '%',
+                ],
+            ];
+        }
+
         $this->paginate = [
             'contain' => ['CustomerLabels'],
+            'order' => ['name' => 'ASC'],
+            'conditions' => $conditions,
         ];
         $labels = $this->paginate($this->Labels);
 

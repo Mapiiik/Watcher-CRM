@@ -18,6 +18,24 @@ class TaskTypesController extends AppController
      */
     public function index()
     {
+        // filter
+        $conditions = [];
+
+        // search
+        $search = $this->request->getQuery('search');
+        if (!empty($search)) {
+            $conditions[] = [
+                'OR' => [
+                    'TaskTypes.name ILIKE' => '%' . trim($search) . '%',
+                ],
+            ];
+        }
+
+        $this->paginate = [
+            'order' => ['name' => 'ASC'],
+            'conditions' => $conditions,
+        ];
+
         $taskTypes = $this->paginate($this->TaskTypes);
 
         $this->set(compact('taskTypes'));

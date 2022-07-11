@@ -18,6 +18,24 @@ class TaskStatesController extends AppController
      */
     public function index()
     {
+        // filter
+        $conditions = [];
+
+        // search
+        $search = $this->request->getQuery('search');
+        if (!empty($search)) {
+            $conditions[] = [
+                'OR' => [
+                    'TaskStates.name ILIKE' => '%' . trim($search) . '%',
+                ],
+            ];
+        }
+
+        $this->paginate = [
+            'order' => ['name' => 'ASC'],
+            'conditions' => $conditions,
+        ];
+
         $taskStates = $this->paginate($this->TaskStates);
 
         $this->set(compact('taskStates'));

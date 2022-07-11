@@ -18,9 +18,25 @@ class DealerCommissionsController extends AppController
      */
     public function index()
     {
+        // filter
+        $conditions = [];
+
+        // search
+        $search = $this->request->getQuery('search');
+        if (!empty($search)) {
+            $conditions[] = [
+                'OR' => [
+                    'Commissions.name ILIKE' => '%' . trim($search) . '%',
+                ],
+            ];
+        }
+
         $this->paginate = [
             'contain' => ['Dealers', 'Commissions'],
+            'order' => ['id' => 'DESC'],
+            'conditions' => $conditions,
         ];
+
         $dealerCommissions = $this->paginate($this->DealerCommissions);
 
         $this->set(compact('dealerCommissions'));

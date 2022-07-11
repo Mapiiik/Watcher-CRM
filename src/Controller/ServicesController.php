@@ -18,9 +18,25 @@ class ServicesController extends AppController
      */
     public function index()
     {
+        // filter
+        $conditions = [];
+
+        // search
+        $search = $this->request->getQuery('search');
+        if (!empty($search)) {
+            $conditions[] = [
+                'OR' => [
+                    'Services.name ILIKE' => '%' . trim($search) . '%',
+                ],
+            ];
+        }
+
         $this->paginate = [
             'contain' => ['ServiceTypes', 'Queues'],
+            'order' => ['name' => 'ASC'],
+            'conditions' => $conditions,
         ];
+
         $services = $this->paginate($this->Services);
 
         $this->set(compact('services'));

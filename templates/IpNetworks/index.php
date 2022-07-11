@@ -5,6 +5,18 @@
  * @var string[]|\Cake\Collection\CollectionInterface $types_of_use
  */
 ?>
+<?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
+<div class="row">
+    <div class="column-responsive">
+        <?= $this->Form->control('search', [
+            'label' => __('Search'),
+            'type' => 'search',
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+    </div>
+</div>
+<?= $this->Form->end() ?>
+
 <div class="ipNetworks index content">
     <?= $this->Html->link(__('New Ip Network'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Ip Networks') ?></h3>

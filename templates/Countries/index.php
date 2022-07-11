@@ -4,6 +4,18 @@
  * @var \App\Model\Entity\Country[]|\Cake\Collection\CollectionInterface $countries
  */
 ?>
+<?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
+<div class="row">
+    <div class="column-responsive">
+        <?= $this->Form->control('search', [
+            'label' => __('Search'),
+            'type' => 'search',
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+    </div>
+</div>
+<?= $this->Form->end() ?>
+
 <div class="countries index content">
     <?= $this->AuthLink->link(__('New Country'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
     <h3><?= __('Countries') ?></h3>

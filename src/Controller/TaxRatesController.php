@@ -18,6 +18,24 @@ class TaxRatesController extends AppController
      */
     public function index()
     {
+        // filter
+        $conditions = [];
+
+        // search
+        $search = $this->request->getQuery('search');
+        if (!empty($search)) {
+            $conditions[] = [
+                'OR' => [
+                    'TaxRates.name ILIKE' => '%' . trim($search) . '%',
+                ],
+            ];
+        }
+
+        $this->paginate = [
+            'order' => ['name' => 'ASC'],
+            'conditions' => $conditions,
+        ];
+
         $taxRates = $this->paginate($this->TaxRates);
 
         $this->set(compact('taxRates'));

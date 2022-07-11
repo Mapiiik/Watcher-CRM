@@ -27,7 +27,7 @@
             <div>
                 <?= $this->AuthLink->link(
                     __('List Customer Labels'),
-                    ['controller' => 'Customer Labels', 'action' => 'index', 'plugin' => null],
+                    ['controller' => 'CustomerLabels', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item']
                 ) ?>
                 <?= $this->AuthLink->link(

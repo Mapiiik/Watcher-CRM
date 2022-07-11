@@ -21,13 +21,25 @@ class PhonesController extends AppController
         $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
+        // filter
         $conditions = [];
         if (isset($customer_id)) {
             $conditions = ['Phones.customer_id' => $customer_id];
         }
 
+        // search
+        $search = $this->request->getQuery('search');
+        if (!empty($search)) {
+            $conditions[] = [
+                'OR' => [
+                    'Phones.phone ILIKE' => '%' . trim($search) . '%',
+                ],
+            ];
+        }
+
         $this->paginate = [
             'contain' => ['Customers'],
+            'order' => ['id' => 'DESC'],
             'conditions' => $conditions,
         ];
         $phones = $this->paginate($this->Phones);

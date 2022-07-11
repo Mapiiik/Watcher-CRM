@@ -24,6 +24,7 @@ class BillingsController extends AppController
         $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
+        // filter
         $conditions = [];
         if (isset($customer_id)) {
             $conditions += ['Billings.customer_id' => $customer_id];
@@ -32,8 +33,21 @@ class BillingsController extends AppController
             $conditions += ['Billings.contract_id' => $contract_id];
         }
 
+        // search
+        $search = $this->request->getQuery('search');
+        if (!empty($search)) {
+            $conditions[] = [
+                'OR' => [
+                    'Billings.text ILIKE' => '%' . trim($search) . '%',
+                    'Services.name ILIKE' => '%' . trim($search) . '%',
+                    'Contracts.number ILIKE' => '%' . trim($search) . '%',
+                ],
+            ];
+        }
+
         $this->paginate = [
             'contain' => ['Customers', 'Services', 'Contracts'],
+            'order' => ['id' => 'DESC'],
             'conditions' => $conditions,
         ];
         $billings = $this->paginate($this->Billings);

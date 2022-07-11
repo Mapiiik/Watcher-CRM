@@ -26,6 +26,7 @@ class IpNetworksController extends AppController
         $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
+        // filter
         $conditions = [];
         if (isset($customer_id)) {
             $conditions += ['IpNetworks.customer_id' => $customer_id];
@@ -34,8 +35,20 @@ class IpNetworksController extends AppController
             $conditions += ['IpNetworks.contract_id' => $contract_id];
         }
 
+        // search
+        $search = $this->request->getQuery('search');
+        if (!empty($search)) {
+            $conditions[] = [
+                'OR' => [
+                    'IpNetworks.ip_network::character varying ILIKE' => '%' . trim($search) . '%',
+                    'Contracts.number ILIKE' => '%' . trim($search) . '%',
+                ],
+            ];
+        }
+
         $this->paginate = [
             'contain' => ['Customers', 'Contracts'],
+            'order' => ['id' => 'DESC'],
             'conditions' => $conditions,
         ];
         $ipNetworks = $this->paginate($this->IpNetworks);

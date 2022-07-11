@@ -21,13 +21,25 @@ class CustomerLabelsController extends AppController
         $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
+        // filter
         $conditions = [];
         if (isset($customer_id)) {
             $conditions = ['CustomerLabels.customer_id' => $customer_id];
         }
 
+        // search
+        $search = $this->request->getQuery('search');
+        if (!empty($search)) {
+            $conditions[] = [
+                'OR' => [
+                    'Labels.name ILIKE' => '%' . trim($search) . '%',
+                ],
+            ];
+        }
+
         $this->paginate = [
             'contain' => ['Labels', 'Customers'],
+            'order' => ['id' => 'DESC'],
             'conditions' => $conditions,
         ];
         $customerLabels = $this->paginate($this->CustomerLabels);

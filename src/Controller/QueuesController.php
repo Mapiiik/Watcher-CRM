@@ -18,6 +18,25 @@ class QueuesController extends AppController
      */
     public function index()
     {
+        // filter
+        $conditions = [];
+
+        // search
+        $search = $this->request->getQuery('search');
+        if (!empty($search)) {
+            $conditions[] = [
+                'OR' => [
+                    'Queues.name ILIKE' => '%' . trim($search) . '%',
+                    'Queues.caption ILIKE' => '%' . trim($search) . '%',
+                ],
+            ];
+        }
+
+        $this->paginate = [
+            'order' => ['name' => 'ASC'],
+            'conditions' => $conditions,
+        ];
+
         $queues = $this->paginate($this->Queues);
 
         $this->set(compact('queues'));

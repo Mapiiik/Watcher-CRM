@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\I18n\FrozenTime;
+
 /**
  * RemovedIpNetworks Controller
  *
@@ -24,6 +26,7 @@ class RemovedIpNetworksController extends AppController
         $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
+        // filter
         $conditions = [];
         if (isset($customer_id)) {
             $conditions += ['RemovedIpNetworks.customer_id' => $customer_id];
@@ -32,8 +35,20 @@ class RemovedIpNetworksController extends AppController
             $conditions += ['RemovedIpNetworks.contract_id' => $contract_id];
         }
 
+        // search
+        $search = $this->request->getQuery('search');
+        if (!empty($search)) {
+            $conditions[] = [
+                'OR' => [
+                    'RemovedIpNetworks.ip_network::character varying ILIKE' => '%' . trim($search) . '%',
+                    'Contracts.number ILIKE' => '%' . trim($search) . '%',
+                ],
+            ];
+        }
+
         $this->paginate = [
             'contain' => ['Customers', 'Contracts'],
+            'order' => ['id' => 'DESC'],
             'conditions' => $conditions,
         ];
         $removedIpNetworks = $this->paginate($this->RemovedIpNetworks);

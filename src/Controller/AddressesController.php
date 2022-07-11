@@ -23,13 +23,33 @@ class AddressesController extends AppController
         $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
+        // filter
         $conditions = [];
         if (isset($customer_id)) {
             $conditions = ['Addresses.customer_id' => $customer_id];
         }
 
+        // search
+        $search = $this->request->getQuery('search');
+        if (!empty($search)) {
+            $conditions[] = [
+                'OR' => [
+                    'Addresses.company ILIKE' => '%' . trim($search) . '%',
+                    'Addresses.title ILIKE' => '%' . trim($search) . '%',
+                    'Addresses.first_name ILIKE' => '%' . trim($search) . '%',
+                    'Addresses.last_name ILIKE' => '%' . trim($search) . '%',
+                    'Addresses.suffix ILIKE' => '%' . trim($search) . '%',
+                    'Addresses.street ILIKE' => '%' . trim($search) . '%',
+                    'Addresses.number ILIKE' => '%' . trim($search) . '%',
+                    'Addresses.city ILIKE' => '%' . trim($search) . '%',
+                    'Addresses.zip ILIKE' => '%' . trim($search) . '%',
+                ],
+            ];
+        }
+
         $this->paginate = [
             'contain' => ['Customers', 'Countries'],
+            'order' => ['id' => 'DESC'],
             'conditions' => $conditions,
         ];
 

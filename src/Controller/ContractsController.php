@@ -28,9 +28,20 @@ class ContractsController extends AppController
         $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
+        // filter
         $conditions = [];
         if (isset($customer_id)) {
             $conditions = ['Contracts.customer_id' => $customer_id];
+        }
+
+        // search
+        $search = $this->request->getQuery('search');
+        if (!empty($search)) {
+            $conditions[] = [
+                'OR' => [
+                    'Contracts.number ILIKE' => '%' . trim($search) . '%',
+                ],
+            ];
         }
 
         $this->paginate = [
@@ -41,6 +52,7 @@ class ContractsController extends AppController
                 'InstallationTechnicians',
                 'Commissions',
             ],
+            'order' => ['id' => 'DESC'],
             'conditions' => $conditions,
         ];
         $contracts = $this->paginate($this->Contracts);

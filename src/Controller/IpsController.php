@@ -26,6 +26,7 @@ class IpsController extends AppController
         $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
+        // filter
         $conditions = [];
         if (isset($customer_id)) {
             $conditions += ['Ips.customer_id' => $customer_id];
@@ -34,8 +35,20 @@ class IpsController extends AppController
             $conditions += ['Ips.contract_id' => $contract_id];
         }
 
+        // search
+        $search = $this->request->getQuery('search');
+        if (!empty($search)) {
+            $conditions[] = [
+                'OR' => [
+                    'Ips.ip::character varying ILIKE' => '%' . trim($search) . '%',
+                    'Contracts.number ILIKE' => '%' . trim($search) . '%',
+                ],
+            ];
+        }
+
         $this->paginate = [
             'contain' => ['Customers', 'Contracts'],
+            'order' => ['id' => 'DESC'],
             'conditions' => $conditions,
         ];
         $ips = $this->paginate($this->Ips);

@@ -5,6 +5,18 @@
  * @var string[]|\Cake\Collection\CollectionInterface $types_of_use
  */
 ?>
+<?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
+<div class="row">
+    <div class="column-responsive">
+        <?= $this->Form->control('search', [
+            'label' => __('Search'),
+            'type' => 'search',
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+    </div>
+</div>
+<?= $this->Form->end() ?>
+
 <div class="removedIps index content">
     <?= $this->AuthLink->link(__('New Removed Ip'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
     <h3><?= __('Removed Ips') ?></h3>
