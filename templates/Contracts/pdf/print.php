@@ -343,8 +343,13 @@ class ContractPDF extends TCPDF
 
                 $this->SetFont('DejaVuSerif', '', 8);
                 foreach ($contract->ips as $ip) {
-                    if ($ip->type_of_use != 00 && isset($ip->ip_address_ranges)) {
+                    // load range for customer address set manually
+                    if ($ip->type_of_use == 10 && isset($ip->ip_address_ranges)) {
                         $range = $ip->ip_address_ranges->first();
+                    }
+                    // skip processing for technology address set manually
+                    if ($ip->type_of_use == 20) {
+                        continue 1;
                     }
                     $this->Cell(4, 5);
                     $this->Cell(60, 5, $ip->ip, 1, 0, 'C');
