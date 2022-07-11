@@ -322,9 +322,9 @@ class ContractPDF extends TCPDF
 
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Cell(4, 5);
-            $this->Cell(60, 5, $technical_details->access_point ?? '', 1, 0, 'C');
-            $this->Cell(60, 5, $technical_details->radius_username ?? '', 1, 0, 'C');
-            $this->Cell(60, 5, $technical_details->radius_password ?? '', 1, 0, 'C');
+            $this->Cell(60, 5, $technical_details->access_point ?? '-', 1, 0, 'C');
+            $this->Cell(60, 5, $technical_details->radius_username ?? '-', 1, 0, 'C');
+            $this->Cell(60, 5, $technical_details->radius_password ?? '-', 1, 0, 'C');
             $this->Ln();
 
             $this->Ln(1);
@@ -343,13 +343,13 @@ class ContractPDF extends TCPDF
 
                 $this->SetFont('DejaVuSerif', '', 8);
                 foreach ($contract->ips as $ip) {
-                    if (isset($ip->ip_address_ranges)) {
+                    if ($ip->type_of_use != 00 && isset($ip->ip_address_ranges)) {
                         $range = $ip->ip_address_ranges->first();
                     }
                     $this->Cell(4, 5);
                     $this->Cell(60, 5, $ip->ip, 1, 0, 'C');
-                    $this->Cell(60, 5, $range['ip_network'] ?? '', 1, 0, 'C');
-                    $this->Cell(60, 5, $range['ip_gateway'] ?? '', 1, 0, 'C');
+                    $this->Cell(60, 5, $range['ip_network'] ?? '-', 1, 0, 'C');
+                    $this->Cell(60, 5, $range['ip_gateway'] ?? '-', 1, 0, 'C');
                     $this->Ln();
 
                     unset($range);
