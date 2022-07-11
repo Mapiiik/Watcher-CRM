@@ -93,6 +93,10 @@ class RemovedIpNetworksController extends AppController
             $removedIpNetwork = $this->RemovedIpNetworks
                 ->patchEntity($removedIpNetwork, $this->getRequest()->getData());
 
+            // TODO - add who and when deleted this
+            $removedIpNetwork->removed = FrozenTime::now();
+            $removedIpNetwork->removed_by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
+
             if ($this->RemovedIpNetworks->save($removedIpNetwork)) {
                 $this->Flash->success(__('The removed IP network has been saved.'));
 
