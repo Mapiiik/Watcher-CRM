@@ -344,7 +344,7 @@ class ContractsController extends AppController
                 'Commissions',
                 'Billings' => ['Services'],
                 'Ips',
-                'RemovedIps',
+                'IpNetworks',
                 'BorrowedEquipments.EquipmentTypes' => function (Query $query) {
                     return $query->where(['BorrowedEquipments.borrowed_until IS NULL']);
                 },

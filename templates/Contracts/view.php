@@ -346,7 +346,7 @@ use Cake\I18n\Number;
                                         env('WATCHER_NMS_URL') . '/ip-address-ranges/view/' . $range['id'],
                                         ['target' => '_blank']
                                     ) . '<br>' : '';
-                                    unset($range);
+                                unset($range);
                             }
                             ?></td>
                             <td class="actions">

@@ -315,21 +315,60 @@ class ContractPDF extends TCPDF
 
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(4, 5);
-            $this->Cell(45, 5, 'Přístupový bod / SSID', 1, 0, 'C');
-            $this->Cell(45, 5, 'Přidělená IP adresa', 1, 0, 'C');
-            $this->Cell(45, 5, 'Uživatelské jméno', 1, 0, 'C');
-            $this->Cell(45, 5, 'Heslo', 1, 0, 'C');
+            $this->Cell(60, 5, __('Access Point') . ' / ' . __('SSID'), 1, 0, 'C');
+            $this->Cell(60, 5, __('Username'), 1, 0, 'C');
+            $this->Cell(60, 5, __('Password'), 1, 0, 'C');
             $this->Ln();
 
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Cell(4, 5);
-            $this->Cell(45, 5, $technical_details->access_point ?? '', 1, 0, 'C');
-            $this->Cell(45, 5, implode(', ', array_column($contract->ips, 'ip')), 1, 0, 'C');
-            $this->Cell(45, 5, $technical_details->radius_username ?? '', 1, 0, 'C');
-            $this->Cell(45, 5, $technical_details->radius_password ?? '', 1, 0, 'C');
+            $this->Cell(60, 5, $technical_details->access_point ?? '', 1, 0, 'C');
+            $this->Cell(60, 5, $technical_details->radius_username ?? '', 1, 0, 'C');
+            $this->Cell(60, 5, $technical_details->radius_password ?? '', 1, 0, 'C');
             $this->Ln();
 
             $this->Ln(1);
+
+            if (!empty($contract->ips)) {
+                $this->SetFont('DejaVuSerif', '', 8);
+                $this->Write(4, __('Assigned IP Addresses') . ':');
+                $this->Ln(5);
+
+                $this->SetFont('DejaVuSerif', 'B', 8);
+                $this->Cell(4, 5);
+                $this->Cell(60, 5, __('IP Address'), 1, 0, 'C');
+                $this->Cell(60, 5, __('IP Network'), 1, 0, 'C');
+                $this->Cell(60, 5, __('IP Gateway'), 1, 0, 'C');
+                $this->Ln();
+
+                $this->SetFont('DejaVuSerif', '', 8);
+                foreach ($contract->ips as $ip) {
+                    if (isset($ip->ip_address_ranges)) {
+                        $range = $ip->ip_address_ranges->first();
+                    }
+                    $this->Cell(4, 5);
+                    $this->Cell(60, 5, $ip->ip, 1, 0, 'C');
+                    $this->Cell(60, 5, $range['ip_network'] ?? '', 1, 0, 'C');
+                    $this->Cell(60, 5, $range['ip_gateway'] ?? '', 1, 0, 'C');
+                    $this->Ln();
+
+                    unset($range);
+                }
+
+                $this->Ln(1);
+            }
+
+            if (!empty($contract->ip_networks)) {
+                $this->SetFont('DejaVuSerif', '', 8);
+                $this->Write(4, __('Assigned IP Networks') . ':');
+                $this->Ln(5);
+
+                $this->SetFont('DejaVuSerif', '', 8);
+                $this->Cell(4, 5);
+                $this->MultiCell(180, 4, implode(', ', array_column($contract->ip_networks, 'ip_network')), 1, 'J');
+
+                $this->Ln(1);
+            }
 
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Write(4, 'Nastavení zařízení ve vnitřní síti Uživatele:');
@@ -337,20 +376,30 @@ class ContractPDF extends TCPDF
 
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(4, 5);
-            $this->Cell(36, 5, 'IPv4 rozsah', 1, 0, 'C');
-            $this->Cell(36, 5, 'IPv4 brána', 1, 0, 'C');
-            $this->Cell(36, 5, 'DNS servery', 1, 0, 'C');
-            $this->Cell(36, 5, 'WiFi - SSID', 1, 0, 'C');
-            $this->Cell(36, 5, 'WiFi - Heslo', 1, 0, 'C');
+            $this->Cell(60, 5, __('IP Network'), 1, 0, 'C');
+            $this->Cell(60, 5, __('IP Gateway'), 1, 0, 'C');
+            $this->Cell(60, 5, __('DNS Servers'), 1, 0, 'C');
             $this->Ln();
 
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Cell(4, 5);
-            $this->Cell(36, 5, '192.168.1.0/24', 1, 0, 'C');
-            $this->Cell(36, 5, '192.168.1.1', 1, 0, 'C');
-            $this->Cell(36, 5, '79.98.156.2, 79.98.152.2', 1, 0, 'C');
-            $this->Cell(36, 5, '', 1, 0, 'C');
-            $this->Cell(36, 5, '', 1, 0, 'C');
+            $this->Cell(60, 5, '192.168.1.0/24', 1, 0, 'C');
+            $this->Cell(60, 5, '192.168.1.1', 1, 0, 'C');
+            $this->Cell(60, 5, '79.98.156.2, 79.98.152.2', 1, 0, 'C');
+            $this->Ln();
+
+            $this->Ln(1);
+
+            $this->SetFont('DejaVuSerif', 'B', 8);
+            $this->Cell(4, 5);
+            $this->Cell(90, 5, __('WiFi - SSID'), 1, 0, 'C');
+            $this->Cell(90, 5, __('WiFi - Password'), 1, 0, 'C');
+            $this->Ln();
+
+            $this->SetFont('DejaVuSerif', '', 8);
+            $this->Cell(4, 5);
+            $this->Cell(90, 5, '', 1, 0, 'C');
+            $this->Cell(90, 5, '', 1, 0, 'C');
             $this->Ln();
 
             $this->Ln(1);
@@ -403,9 +452,19 @@ class ContractPDF extends TCPDF
                 $this->SetFont('DejaVuSerif', '', 8);
                 $this->MultiCell(180, 4, 'Uživatel je povinen tato zařízení Poskytovateli vrátit bez zbytečných odkladů nejpozději po zániku Smlouvy.' . PHP_EOL, 0, 'J');
                 $this->Ln(2);
-
-                $this->SetFont('DejaVuSerif', 'B', 8);
             }
+
+            // CROSS
+            $this->Ln(5);
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY()); // --
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, 285); // \
+            $this->Line($this->GetX(), 285, $this->GetX() + 187, $this->GetY()); // /
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), 285); // |
+            $this->Line($this->GetX() + 187, $this->GetY(), $this->GetX() + 187, 285); // |
+            $this->Line($this->GetX(), 285, $this->GetX() + 187, 285); // --
+
+            // add a page
+            $this->AddPage();
 
             // SOLD EQUIPMENTS
             $this->SetFont('DejaVuSerif', 'B', 9);
@@ -474,17 +533,7 @@ class ContractPDF extends TCPDF
             $this->Cell(25, 5, Number::currency($subtotal), 1, 0, 'R');
             $this->Ln();
 
-            // CROSS
-            $this->Ln(5);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY()); // --
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, 285); // \
-            $this->Line($this->GetX(), 285, $this->GetX() + 187, $this->GetY()); // /
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), 285); // |
-            $this->Line($this->GetX() + 187, $this->GetY(), $this->GetX() + 187, 285); // |
-            $this->Line($this->GetX(), 285, $this->GetX() + 187, 285); // --
-
-            // add a page
-            $this->AddPage();
+            $this->Ln(6);
 
             // CASH PAYMENT
             $this->SetFont('DejaVuSerif', 'B', 9);
