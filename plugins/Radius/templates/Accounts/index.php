@@ -4,6 +4,18 @@
  * @var \Radius\Model\Entity\Account[]|\Cake\Collection\CollectionInterface $accounts
  */
 ?>
+<?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
+<div class="row">
+    <div class="column-responsive">
+        <?= $this->Form->control('search', [
+            'label' => __('Search'),
+            'type' => 'search',
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+    </div>
+</div>
+<?= $this->Form->end() ?>
+
 <div class="accounts index content">
     <?= $this->Html->link(
         __d('radius', 'New RADIUS Account'),

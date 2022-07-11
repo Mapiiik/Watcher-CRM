@@ -27,6 +27,7 @@ class AccountsController extends AppController
         $contract_id = $this->request->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
+        // filter
         $conditions = [];
         if (isset($customer_id)) {
             $conditions += ['Accounts.customer_id' => $customer_id];
@@ -35,12 +36,20 @@ class AccountsController extends AppController
             $conditions += ['Accounts.contract_id' => $contract_id];
         }
 
+        // search
+        $search = $this->request->getQuery('search');
+        if (!empty($search)) {
+            $conditions[] = [
+                'OR' => [
+                    'Accounts.username ILIKE' => '%' . trim($search) . '%',
+                ],
+            ];
+        }
+
         $this->paginate = [
             'contain' => ['Customers', 'Contracts'],
+            'order' => ['id' => 'DESC'],
             'conditions' => $conditions,
-            'order' => [
-                'Accounts.id' => 'DESC',
-            ],
         ];
         $accounts = $this->paginate($this->Accounts);
 
