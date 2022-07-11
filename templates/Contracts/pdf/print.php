@@ -365,7 +365,7 @@ class ContractPDF extends TCPDF
 
                 $this->SetFont('DejaVuSerif', '', 8);
                 $this->Cell(4, 5);
-                $this->MultiCell(180, 4, implode(', ', array_column($contract->ip_networks, 'ip_network')), 1, 'J');
+                $this->MultiCell(180, 4, implode(', ', array_column($contract->ip_networks, 'ip_network')), 1, 'L');
 
                 $this->Ln(1);
             }
