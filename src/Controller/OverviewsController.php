@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\ApiClient;
+use App\Model\Entity\Commission;
+use App\Model\Entity\Contract;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 use Cake\I18n\FrozenDate;
@@ -260,5 +262,61 @@ class OverviewsController extends AppController
         }
 
         $this->set(compact('cto_categories', 'month_to_display'));
+    }
+
+    /**
+     * Overview of dealer commissions
+     *
+     * @return \Cake\Http\Response|null|void Renders view
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function overviewOfDealerCommissions()
+    {
+        $month_to_display = new FrozenDate($this->getRequest()->getQuery('month_to_display'));
+
+        $dealerCommissionsQuery = $this->fetchTable('DealerCommissions')->find()
+            ->contain('Dealers')
+            ->contain('Commissions', function (Query $q) use ($month_to_display) {
+                return $q->contain('Contracts', function (Query $q) use ($month_to_display) {
+                    return $q
+                        ->contain('Customers')
+                        ->contain('Billings', function (Query $q) use ($month_to_display) {
+                            return $q
+                                ->where([
+                                    'Billings.billing_from <=' => $month_to_display->lastOfMonth(), //last day of month
+                                ])
+                                ->andWhere([
+                                    'OR' => [
+                                        'Billings.billing_until IS NULL',
+                                        'Billings.billing_until >=' => $month_to_display->firstOfMonth(), //first day of month
+                                    ],
+                                ])
+                                ->contain(['Services']);
+                        })
+                        ->formatResults(function (CollectionInterface $contracts) {
+                            return $contracts->map(function (Contract $contract) {
+                                $contract['total_price'] = (new Collection($contract->billings))->sumOf('total_price');
+
+                                return $contract;
+                            });
+                        });
+                })
+                ->formatResults(function (CollectionInterface $commissions) {
+                    return $commissions->map(function (Commission $commission) {
+                        $commission['total_price'] = (new Collection($commission->contracts))->sumOf('total_price');
+
+                        return $commission;
+                    });
+                });
+            });
+
+        $dealers = $dealerCommissionsQuery
+            ->all()
+            ->groupBy(function ($dealerCommission) {
+                return ($dealerCommission->dealer->name ?? __('unknown dealer'))
+                    . ' [ID: ' . $dealerCommission->dealer_id . ']';
+            });
+
+        $this->set(compact('dealers', 'month_to_display'));
     }
 }

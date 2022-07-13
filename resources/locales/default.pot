@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-07-11 16:29+0200\n"
+"POT-Creation-Date: 2022-07-13 14:47+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -126,7 +126,7 @@ msgstr ""
 
 #: ./src/Controller/ContractsController.php:152
 #: ./src/Controller/ContractsController.php:207
-#: ./src/Controller/OverviewsController.php:103
+#: ./src/Controller/OverviewsController.php:105
 #: ./src/Controller/TasksController.php:136
 #: ./src/Controller/TasksController.php:268
 #: ./src/Controller/TasksController.php:341
@@ -426,6 +426,10 @@ msgstr ""
 msgid "The login could not be deleted. Please, try again."
 msgstr ""
 
+#: ./src/Controller/OverviewsController.php:316
+msgid "unknown dealer"
+msgstr ""
+
 #: ./src/Controller/PhonesController.php:89
 #: ./src/Controller/PhonesController.php:126
 msgid "The phone has been saved."
@@ -644,7 +648,7 @@ msgstr ""
 #: ./src/Model/Table/AddressesTable.php:56
 #: ./templates/Commissions/view.php:125
 #: ./templates/Contracts/pdf/print.php:274
-#: ./templates/Contracts/pdf/print.php:1023
+#: ./templates/Contracts/pdf/print.php:1028
 #: ./templates/Contracts/print.php:54
 #: ./templates/Contracts/view.php:89
 #: ./templates/Customers/view.php:447
@@ -654,19 +658,19 @@ msgstr ""
 
 #: ./src/Model/Table/AddressesTable.php:57
 #: ./templates/Contracts/pdf/print.php:192
-#: ./templates/Contracts/pdf/print.php:940
+#: ./templates/Contracts/pdf/print.php:945
 msgid "Billing Address"
 msgstr ""
 
 #: ./src/Model/Table/AddressesTable.php:58
 #: ./templates/Contracts/pdf/print.php:283
-#: ./templates/Contracts/pdf/print.php:1032
+#: ./templates/Contracts/pdf/print.php:1037
 msgid "Delivery Address"
 msgstr ""
 
 #: ./src/Model/Table/AddressesTable.php:59
 #: ./templates/Contracts/pdf/print.php:291
-#: ./templates/Contracts/pdf/print.php:1040
+#: ./templates/Contracts/pdf/print.php:1045
 msgid "Permanent Address"
 msgstr ""
 
@@ -856,6 +860,8 @@ msgstr ""
 #: ./templates/Overviews/overview_of_active_services.php:55
 #: ./templates/Overviews/overview_of_customer_connection_points.php:11
 #: ./templates/Overviews/overview_of_customer_connection_points.php:63
+#: ./templates/Overviews/overview_of_dealer_commissions.php:11
+#: ./templates/Overviews/overview_of_dealer_commissions.php:63
 #: ./templates/Phones/add.php:11
 #: ./templates/Phones/edit.php:11
 #: ./templates/Phones/index.php:29
@@ -918,7 +924,7 @@ msgstr ""
 #: ./templates/Addresses/add.php:14
 #: ./templates/Addresses/edit.php:19
 #: ./templates/Addresses/view.php:23
-#: ./templates/Overviews/index.php:49
+#: ./templates/Overviews/index.php:54
 msgid "List Addresses"
 msgstr ""
 
@@ -1322,6 +1328,7 @@ msgstr ""
 #: ./templates/Logins/index.php:57
 #: ./templates/Overviews/overview_of_active_services.php:82
 #: ./templates/Overviews/overview_of_customer_connection_points.php:83
+#: ./templates/Overviews/overview_of_dealer_commissions.php:98
 #: ./templates/Phones/index.php:44
 #: ./templates/Queues/index.php:53
 #: ./templates/Queues/view.php:129
@@ -1579,6 +1586,7 @@ msgstr ""
 #: ./templates/Ips/view.php:27
 #: ./templates/Labels/view.php:99
 #: ./templates/Logins/view.php:31
+#: ./templates/Overviews/overview_of_dealer_commissions.php:53
 #: ./templates/Phones/view.php:30
 #: ./templates/RemovedIpNetworks/view.php:42
 #: ./templates/RemovedIps/view.php:31
@@ -2042,7 +2050,7 @@ msgstr ""
 #: ./templates/Billings/add.php:14
 #: ./templates/Billings/edit.php:19
 #: ./templates/Billings/view.php:24
-#: ./templates/Overviews/index.php:65
+#: ./templates/Overviews/index.php:70
 msgid "List Billings"
 msgstr ""
 
@@ -2083,6 +2091,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/view.php:149
 #: ./templates/IpNetworks/view.php:47
 #: ./templates/Ips/view.php:34
+#: ./templates/Overviews/overview_of_dealer_commissions.php:54
 #: ./templates/RemovedIpNetworks/view.php:50
 #: ./templates/RemovedIps/view.php:38
 #: ./templates/Services/view.php:100
@@ -2111,6 +2120,7 @@ msgstr ""
 #: ./templates/Billings/view.php:58
 #: ./templates/Contracts/view.php:250
 #: ./templates/Customers/view.php:509
+#: ./templates/Overviews/overview_of_dealer_commissions.php:56
 #: ./templates/Services/view.php:102
 msgid "Quantity"
 msgstr ""
@@ -2122,6 +2132,7 @@ msgstr ""
 #: ./templates/Customers/view.php:510
 #: ./templates/EquipmentTypes/view.php:45
 #: ./templates/Overviews/overview_of_active_services.php:45
+#: ./templates/Overviews/overview_of_dealer_commissions.php:57
 #: ./templates/Queues/view.php:110
 #: ./templates/ServiceTypes/view.php:117
 #: ./templates/Services/view.php:48
@@ -2132,6 +2143,7 @@ msgstr ""
 #: ./templates/Billings/view.php:67
 #: ./templates/Contracts/view.php:252
 #: ./templates/Customers/view.php:511
+#: ./templates/Overviews/overview_of_dealer_commissions.php:58
 #: ./templates/Services/view.php:104
 msgid "Fixed Discount"
 msgstr ""
@@ -2139,6 +2151,7 @@ msgstr ""
 #: ./templates/Billings/view.php:71
 #: ./templates/Contracts/view.php:253
 #: ./templates/Customers/view.php:512
+#: ./templates/Overviews/overview_of_dealer_commissions.php:59
 #: ./templates/Services/view.php:105
 msgid "Percentage Discount"
 msgstr ""
@@ -2146,6 +2159,7 @@ msgstr ""
 #: ./templates/Billings/view.php:75
 #: ./templates/Contracts/view.php:254
 #: ./templates/Customers/view.php:513
+#: ./templates/Overviews/overview_of_dealer_commissions.php:60
 #: ./templates/Services/view.php:106
 msgid "Total Price"
 msgstr ""
@@ -2153,6 +2167,7 @@ msgstr ""
 #: ./templates/Billings/view.php:79
 #: ./templates/Contracts/view.php:255
 #: ./templates/Customers/view.php:514
+#: ./templates/Overviews/overview_of_dealer_commissions.php:61
 #: ./templates/Services/view.php:107
 msgid "Billing From"
 msgstr ""
@@ -2160,6 +2175,7 @@ msgstr ""
 #: ./templates/Billings/view.php:83
 #: ./templates/Contracts/view.php:256
 #: ./templates/Customers/view.php:515
+#: ./templates/Overviews/overview_of_dealer_commissions.php:62
 #: ./templates/Services/view.php:108
 msgid "Billing Until"
 msgstr ""
@@ -2207,7 +2223,7 @@ msgstr ""
 #: ./templates/BorrowedEquipments/add.php:15
 #: ./templates/BorrowedEquipments/edit.php:23
 #: ./templates/BorrowedEquipments/view.php:25
-#: ./templates/Overviews/index.php:70
+#: ./templates/Overviews/index.php:75
 msgid "List Borrowed Equipments"
 msgstr ""
 
@@ -2303,6 +2319,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/view.php:41
 #: ./templates/Labels/view.php:30
 #: ./templates/Overviews/overview_of_active_services.php:44
+#: ./templates/Overviews/overview_of_dealer_commissions.php:55
 #: ./templates/Queues/view.php:30
 #: ./templates/Queues/view.php:109
 #: ./templates/ServiceTypes/view.php:33
@@ -2332,11 +2349,13 @@ msgstr ""
 
 #: ./templates/Commissions/view.php:78
 #: ./templates/DealerCommissions/view.php:55
+#: ./templates/Overviews/overview_of_dealer_commissions.php:40
 msgid "Fixed"
 msgstr ""
 
 #: ./templates/Commissions/view.php:79
 #: ./templates/DealerCommissions/view.php:59
+#: ./templates/Overviews/overview_of_dealer_commissions.php:42
 msgid "Percentage"
 msgstr ""
 
@@ -2443,7 +2462,7 @@ msgstr ""
 #: ./templates/Contracts/edit.php:22
 #: ./templates/Contracts/print.php:23
 #: ./templates/Contracts/view.php:25
-#: ./templates/Overviews/index.php:54
+#: ./templates/Overviews/index.php:59
 msgid "List Contracts"
 msgstr ""
 
@@ -2493,28 +2512,28 @@ msgid "IP Address"
 msgstr ""
 
 #: ./templates/Contracts/pdf/print.php:340
-#: ./templates/Contracts/pdf/print.php:379
+#: ./templates/Contracts/pdf/print.php:384
 msgid "IP Network"
 msgstr ""
 
 #: ./templates/Contracts/pdf/print.php:341
-#: ./templates/Contracts/pdf/print.php:380
+#: ./templates/Contracts/pdf/print.php:385
 msgid "IP Gateway"
 msgstr ""
 
-#: ./templates/Contracts/pdf/print.php:363
+#: ./templates/Contracts/pdf/print.php:368
 msgid "Assigned IP Networks"
 msgstr ""
 
-#: ./templates/Contracts/pdf/print.php:381
+#: ./templates/Contracts/pdf/print.php:386
 msgid "DNS Servers"
 msgstr ""
 
-#: ./templates/Contracts/pdf/print.php:395
+#: ./templates/Contracts/pdf/print.php:400
 msgid "WiFi - SSID"
 msgstr ""
 
-#: ./templates/Contracts/pdf/print.php:396
+#: ./templates/Contracts/pdf/print.php:401
 msgid "WiFi - Password"
 msgstr ""
 
@@ -2772,7 +2791,7 @@ msgstr ""
 #: ./templates/CustomerLabels/add.php:14
 #: ./templates/CustomerLabels/edit.php:22
 #: ./templates/CustomerLabels/view.php:25
-#: ./templates/Overviews/index.php:29
+#: ./templates/Overviews/index.php:34
 msgid "List Customer Labels"
 msgstr ""
 
@@ -3131,7 +3150,7 @@ msgstr ""
 #: ./templates/Emails/add.php:12
 #: ./templates/Emails/edit.php:17
 #: ./templates/Emails/view.php:21
-#: ./templates/Overviews/index.php:34
+#: ./templates/Overviews/index.php:39
 msgid "List Emails"
 msgstr ""
 
@@ -3180,7 +3199,7 @@ msgstr ""
 #: ./templates/IpNetworks/add.php:14
 #: ./templates/IpNetworks/edit.php:19
 #: ./templates/IpNetworks/view.php:23
-#: ./templates/Overviews/index.php:85
+#: ./templates/Overviews/index.php:90
 msgid "List Ip Networks"
 msgstr ""
 
@@ -3209,7 +3228,7 @@ msgstr ""
 #: ./templates/Ips/add.php:14
 #: ./templates/Ips/edit.php:19
 #: ./templates/Ips/view.php:18
-#: ./templates/Overviews/index.php:80
+#: ./templates/Overviews/index.php:85
 msgid "List Ips"
 msgstr ""
 
@@ -3284,7 +3303,7 @@ msgstr ""
 #: ./templates/Logins/add.php:14
 #: ./templates/Logins/edit.php:17
 #: ./templates/Logins/view.php:22
-#: ./templates/Overviews/index.php:44
+#: ./templates/Overviews/index.php:49
 msgid "List Logins"
 msgstr ""
 
@@ -3325,36 +3344,41 @@ msgstr ""
 msgid "Overview of customer connection points"
 msgstr ""
 
-#: ./templates/Overviews/index.php:26
+#: ./templates/Overviews/index.php:23
+#: ./templates/Overviews/overview_of_dealer_commissions.php:17
+msgid "Overview of dealer commissions"
+msgstr ""
+
+#: ./templates/Overviews/index.php:31
 msgid "Customer Related"
 msgstr ""
 
-#: ./templates/Overviews/index.php:39
+#: ./templates/Overviews/index.php:44
 #: ./templates/Phones/add.php:12
 #: ./templates/Phones/edit.php:17
 #: ./templates/Phones/view.php:21
 msgid "List Phones"
 msgstr ""
 
-#: ./templates/Overviews/index.php:62
+#: ./templates/Overviews/index.php:67
 msgid "Contract Related"
 msgstr ""
 
-#: ./templates/Overviews/index.php:75
+#: ./templates/Overviews/index.php:80
 #: ./templates/SoldEquipments/add.php:15
 #: ./templates/SoldEquipments/edit.php:23
 #: ./templates/SoldEquipments/view.php:25
 msgid "List Sold Equipments"
 msgstr ""
 
-#: ./templates/Overviews/index.php:90
+#: ./templates/Overviews/index.php:95
 #: ./templates/RemovedIps/add.php:14
 #: ./templates/RemovedIps/edit.php:19
 #: ./templates/RemovedIps/view.php:22
 msgid "List Removed Ips"
 msgstr ""
 
-#: ./templates/Overviews/index.php:95
+#: ./templates/Overviews/index.php:100
 #: ./templates/RemovedIpNetworks/add.php:15
 #: ./templates/RemovedIpNetworks/edit.php:23
 #: ./templates/RemovedIpNetworks/view.php:26
@@ -3363,11 +3387,13 @@ msgstr ""
 
 #: ./templates/Overviews/overview_of_active_services.php:12
 #: ./templates/Overviews/overview_of_customer_connection_points.php:12
+#: ./templates/Overviews/overview_of_dealer_commissions.php:12
 msgid "List Overviews"
 msgstr ""
 
 #: ./templates/Overviews/overview_of_active_services.php:25
 #: ./templates/Overviews/overview_of_customer_connection_points.php:36
+#: ./templates/Overviews/overview_of_dealer_commissions.php:25
 msgid "Month To Display"
 msgstr ""
 
