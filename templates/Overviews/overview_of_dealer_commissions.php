@@ -45,7 +45,7 @@
                         <br>
 
                         <?php if (!empty($dealerCommission->commission->contracts)) : ?>
-                        <div><?= __d('bookkeeping_pohoda', 'Total Price') . ': '
+                        <div><?= __('Total Price') . ': '
                             . $this->Number->currency($dealerCommission->commission->total_price) ?></div>
                         <div class="table-responsive">
                             <table>
