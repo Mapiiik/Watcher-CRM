@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-07-13 14:47+0200\n"
+"POT-Creation-Date: 2022-07-18 09:55+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -2159,6 +2159,7 @@ msgstr ""
 #: ./templates/Billings/view.php:75
 #: ./templates/Contracts/view.php:254
 #: ./templates/Customers/view.php:513
+#: ./templates/Overviews/overview_of_dealer_commissions.php:48
 #: ./templates/Overviews/overview_of_dealer_commissions.php:60
 #: ./templates/Services/view.php:106
 msgid "Total Price"
