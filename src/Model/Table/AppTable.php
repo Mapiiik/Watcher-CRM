@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use AuditStash\Persister\TablePersister;
+use AuditLog\Persister\TablePersister;
 use Cake\ORM\Table;
 
 /**
@@ -26,10 +26,10 @@ class AppTable extends Table
         parent::initialize($config);
 
         // Persisting audit log
-        $this->addBehavior('AuditStash.AuditLog');
-        /** @var \AuditStash\Model\Behavior\AuditLogBehavior $auditLog */
+        $this->addBehavior('AuditLog.AuditLog');
+        /** @var \AuditLog\Model\Behavior\AuditLogBehavior $auditLog */
         $auditLog = $this->getBehavior('AuditLog');
-        /** @var \AuditStash\Persister\TablePersister $auditLogPersister */
+        /** @var \AuditLog\Persister\TablePersister $auditLogPersister */
         $auditLogPersister = $auditLog->persister();
         $auditLogPersister->setConfig([
             'serializeFields' => false,

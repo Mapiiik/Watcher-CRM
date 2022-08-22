@@ -16,7 +16,7 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
-use AuditStash\Meta\RequestMetadata;
+use AuditLog\Meta\RequestMetadata;
 use Cake\Cache\Cache;
 use Cake\Controller\Controller;
 use Cake\Event\EventInterface;

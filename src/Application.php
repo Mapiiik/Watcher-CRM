@@ -79,7 +79,7 @@ class Application extends BaseApplication
         Configure::write('Users.config', ['users']);
 
         // Persisting audit log
-        $this->addPlugin('AuditStash');
+        $this->addPlugin('AuditLog');
 
         // Set time and date format if specified in environment
         if (!empty(env('APP_TIME_FORMAT'))) {
