@@ -1338,16 +1338,16 @@
         },
         {
             "name": "mapik/audit-log",
-            "version": "1.0.0-RC1",
+            "version": "1.0.0-RC2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Mapiiik/audit-log.git",
-                "reference": "ea311f1b364b421d86bde0f427f643aff5da05d5"
+                "reference": "9de229cab95212317b0a62acac52f5b18859ec8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Mapiiik/audit-log/zipball/ea311f1b364b421d86bde0f427f643aff5da05d5",
-                "reference": "ea311f1b364b421d86bde0f427f643aff5da05d5",
+                "url": "https://api.github.com/repos/Mapiiik/audit-log/zipball/9de229cab95212317b0a62acac52f5b18859ec8e",
+                "reference": "9de229cab95212317b0a62acac52f5b18859ec8e",
                 "shasum": ""
             },
             "require": {
@@ -1382,9 +1382,9 @@
             ],
             "description": "Flexible and rock solid audit log tracking plugin for CakePHP",
             "support": {
-                "source": "https://github.com/Mapiiik/audit-log/tree/1.0.0-RC1"
+                "source": "https://github.com/Mapiiik/audit-log/tree/1.0.0-RC2"
             },
-            "time": "2022-08-22T09:00:14+00:00"
+            "time": "2022-08-22T13:27:43+00:00"
         },
         {
             "name": "mapik/pohoda-xml",
