@@ -558,18 +558,21 @@ class AccountsController extends AppController
         }
 
         if (empty($radreply)) {
-            // return current radusergroup records
-            if (is_array($account->radreply)) {
-                foreach ($account->radreply as $current_radreply) {
-                    $radreply[] = $current_radreply->toArray();
-                }
-            }
             $this->Flash->warning(
                 __d('radius', 'The RADIUS replies could not be found automatically. Please, set it manually.')
                 . ' ('
                 . __d('radius', 'The IP addresses for the contract are probably not set correctly.')
                 . ')'
             );
+        }
+
+        if (empty($radreply)) {
+            // return current radusergroup records
+            if (is_array($account->radreply)) {
+                foreach ($account->radreply as $current_radreply) {
+                    $radreply[] = $current_radreply->toArray();
+                }
+            }
         }
 
         return $radreply;
@@ -618,12 +621,6 @@ class AccountsController extends AppController
         }
 
         if (empty($radusergroup)) {
-            // return current radusergroup records if exists
-            if (is_array($account->radusergroup)) {
-                foreach ($account->radusergroup as $current_radusergroup) {
-                    $radusergroup[] = $current_radusergroup->toArray();
-                }
-            }
             $this->Flash->warning(
                 __d('radius', 'The RADIUS user groups could not be found automatically. Please, set it manually.')
                 . ' ('
@@ -633,6 +630,26 @@ class AccountsController extends AppController
                 )
                 . ')'
             );
+        }
+
+        if (empty($radusergroup) && env('RADIUS_DEFAULT_USER_GROUP')) {
+            // return radusergroup record with default user group if set in configuration
+            $radusergroup[] = $this->fetchTable('Radius.Radusergroup')
+                ->findOrCreate([
+                    'username' => $account->username,
+                    'groupname' => env('RADIUS_DEFAULT_USER_GROUP'),
+                    'priority' => 0,
+                ])
+                ->toArray();
+        }
+
+        if (empty($radusergroup)) {
+            // return current radusergroup records if exists
+            if (is_array($account->radusergroup)) {
+                foreach ($account->radusergroup as $current_radusergroup) {
+                    $radusergroup[] = $current_radusergroup->toArray();
+                }
+            }
         }
 
         return $radusergroup;
