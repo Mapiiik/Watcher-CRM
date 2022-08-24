@@ -127,14 +127,21 @@ $request = $this->getRequest();
             ) ?>
 
             <?php if (file_exists(WWW_ROOT . 'legacy' . DS) && is_dir(WWW_ROOT . 'legacy' . DS)) : ?>
-                <?= $request->getParam('customer_id') ?
-                    $this->Html->link(
+                <?php if ($request->getParam('customer_id')) { ?>
+                    <?= $this->Html->link(
                         __('Legacy UI'),
                         '/legacy/redirect.php?customer_id=' . $request->getParam('customer_id'),
                         ['class' => 'button button-small']
-                    ) :
-                    $this->Html->link(__('Legacy UI'), '/legacy', ['class' => 'button button-small'])
-                ?>
+                    ) ?>
+                <?php } elseif ($this->getName() == 'Tasks' && $request->getParam('id')) { ?>
+                    <?= $this->Html->link(
+                        __('Legacy UI'),
+                        '/legacy/redirect.php?task_id=' . $request->getParam('id'),
+                        ['class' => 'button button-small']
+                    ) ?>
+                <?php } else { ?>
+                    <?= $this->Html->link(__('Legacy UI'), '/legacy', ['class' => 'button button-small']) ?>
+                <?php } ?>
             <?php endif; ?>
 
             <?= env('WATCHER_NMS_URL') ?
