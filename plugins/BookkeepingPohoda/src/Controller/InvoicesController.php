@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace BookkeepingPohoda\Controller;
 
 use Cake\Collection\CollectionInterface;
-use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\I18n\FrozenDate;
 use Cake\ORM\Query;
 use stdClass;
@@ -521,11 +520,11 @@ class InvoicesController extends AppController
                         ((int)env('CUSTOMER_SERIES', '0') < (int)$record['VARSYM']) &&
                         ((int)$record['VARSYM'] < (int)env('CUSTOMER_SERIES', '0') + 50000)
                     ) {
-                        try {
-                            $invoice = $this->Invoices->setPrimaryKey('number')->get($record['CISLO']);
-                        } catch (RecordNotFoundException $e) {
-                            $invoice = $this->Invoices->newEntity(['number' => $record['CISLO']]);
-                        }
+                        /** @var \BookkeepingPohoda\Model\Entity\Invoice $invoice */
+                        $invoice =
+                            $this->Invoices->find()->where(['number' => $record['CISLO']])->first()
+                            ??
+                            $this->Invoices->newEntity(['number' => $record['CISLO']]);
 
                         $invoice->customer_id = (int)$record['VARSYM'] - (int)env('CUSTOMER_SERIES', '0');
                         $invoice->variable_symbol = (int)$record['VARSYM'];
