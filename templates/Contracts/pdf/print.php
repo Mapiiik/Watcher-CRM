@@ -24,6 +24,11 @@ FrozenDate::setToStringFormat('dd.MM.yyyy');
 
 class ContractPDF extends TCPDF
 {
+    public function Cell($w, $h = 0, $txt = '', $border = 0, $ln = 0, $align = '', $fill = false, $link = '', $stretch = 0, $ignore_min_height = false, $calign = 'T', $valign = null) {
+        $valign = $valign ?? ($border == 0 ? 'T' : 'M');
+        parent::Cell($w, $h, $txt, $border, $ln, $align, $fill, $link, $stretch, $ignore_min_height, $calign, $valign);
+    }
+
     private function contractDurationBefore(?int $duration): string
     {
         if ($duration <= 0) {
@@ -84,6 +89,7 @@ class ContractPDF extends TCPDF
 
         $this->Ln(4);
         $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+        $this->Ln(0.5);
 
         switch ($type) {
             case 'handover-protocol-installation':
@@ -184,6 +190,7 @@ class ContractPDF extends TCPDF
         $this->Ln();
 
         $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+        $this->Ln(0.5);
 
         $addressStartY = $this->GetY();
 
@@ -230,11 +237,7 @@ class ContractPDF extends TCPDF
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Cell(10, 4, 'IČ:');
         $this->SetFont('DejaVuSerif', 'B', 8);
-        if (is_null($contract->customer->ic)) {
-            $this->Cell(60, 4, 'X');
-        } else {
-            $this->Cell(60, 4, $contract->customer->ic);
-        }
+        $this->Cell(60, 4, $contract->customer->ic ?? 'X');
         $this->Ln();
 
         $this->Cell(105);
@@ -245,11 +248,7 @@ class ContractPDF extends TCPDF
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Cell(10, 4, 'DIČ:');
         $this->SetFont('DejaVuSerif', 'B', 8);
-        if (is_null($contract->customer->dic)) {
-            $this->Cell(60, 4, 'X');
-        } else {
-            $this->Cell(60, 4, $contract->customer->dic);
-        }
+        $this->Cell(60, 4, $contract->customer->dic ?? 'X');
         $this->Ln();
 
         // CONTACT
@@ -275,7 +274,7 @@ class ContractPDF extends TCPDF
             $this->Ln();
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(30, 4);
-            $this->MultiCell(180, 4, $contract->installation_address->full_address, '', 'L');
+            $this->MultiCell(160, 4, $contract->installation_address->full_address, '', 'L');
         }
         // DELIVERY ADDRESS
         if ($contract->has('delivery_address')) {
@@ -283,7 +282,7 @@ class ContractPDF extends TCPDF
             $this->Cell(30, 4, __('Delivery Address') . ': ', '', 0, 'L');
             $this->Ln();
             $this->Cell(30, 4);
-            $this->MultiCell(180, 4, $contract->delivery_address->full_address, '', 'L');
+            $this->MultiCell(160, 4, $contract->delivery_address->full_address, '', 'L');
         }
         // PERMANENT ADDRESS
         if ($contract->has('permanent_address')) {
@@ -291,7 +290,7 @@ class ContractPDF extends TCPDF
             $this->Cell(30, 4, __('Permanent Address') . ': ', '', 0, 'L');
             $this->Ln();
             $this->Cell(30, 4);
-            $this->MultiCell(180, 4, $contract->permanent_address->full_address, '', 'L');
+            $this->MultiCell(160, 4, $contract->permanent_address->full_address, '', 'L');
         }
 
         $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
@@ -811,6 +810,7 @@ class ContractPDF extends TCPDF
 
         $this->Ln(4);
         $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+        $this->Ln(0.5);
 
         switch ($type) {
             case 'contract-new':
@@ -937,6 +937,7 @@ class ContractPDF extends TCPDF
         $this->Ln();
 
         $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+        $this->Ln(0.5);
 
         $addressStartY = $this->GetY();
 
@@ -983,11 +984,7 @@ class ContractPDF extends TCPDF
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Cell(10, 4, 'IČ:');
         $this->SetFont('DejaVuSerif', 'B', 8);
-        if (is_null($contract->customer->ic)) {
-            $this->Cell(60, 4, 'X');
-        } else {
-            $this->Cell(60, 4, $contract->customer->ic);
-        }
+        $this->Cell(60, 4, $contract->customer->ic ?? 'X');
         $this->Ln();
 
         $this->Cell(105);
@@ -998,11 +995,7 @@ class ContractPDF extends TCPDF
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Cell(10, 4, 'DIČ:');
         $this->SetFont('DejaVuSerif', 'B', 8);
-        if (is_null($contract->customer->dic)) {
-            $this->Cell(60, 4, 'X');
-        } else {
-            $this->Cell(60, 4, $contract->customer->dic);
-        }
+        $this->Cell(60, 4, $contract->customer->dic ?? 'X');
 
         $this->Ln();
 
@@ -1029,7 +1022,7 @@ class ContractPDF extends TCPDF
             $this->Ln();
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(30, 4);
-            $this->MultiCell(180, 4, $contract->installation_address->full_address, '', 'L');
+            $this->MultiCell(160, 4, $contract->installation_address->full_address, '', 'L');
         }
         // DELIVERY ADDRESS
         if ($contract->has('delivery_address')) {
@@ -1037,7 +1030,7 @@ class ContractPDF extends TCPDF
             $this->Cell(30, 4, __('Delivery Address') . ': ');
             $this->Ln();
             $this->Cell(30, 4);
-            $this->MultiCell(180, 4, $contract->delivery_address->full_address, '', 'L');
+            $this->MultiCell(160, 4, $contract->delivery_address->full_address, '', 'L');
         }
         // PERMANENT ADDRESS
         if ($contract->has('permanent_address')) {
@@ -1045,7 +1038,7 @@ class ContractPDF extends TCPDF
             $this->Cell(30, 4, __('Permanent Address') . ': ');
             $this->Ln();
             $this->Cell(30, 4);
-            $this->MultiCell(180, 4, $contract->permanent_address->full_address, '', 'L');
+            $this->MultiCell(160, 4, $contract->permanent_address->full_address, '', 'L');
         }
 
         $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());

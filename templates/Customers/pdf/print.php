@@ -22,6 +22,11 @@ FrozenDate::setToStringFormat('dd.MM.yyyy');
 
 class CustomerPDF extends TCPDF
 {
+    public function Cell($w, $h = 0, $txt = '', $border = 0, $ln = 0, $align = '', $fill = false, $link = '', $stretch = 0, $ignore_min_height = false, $calign = 'T', $valign = null) {
+        $valign = $valign ?? ($border == 0 ? 'T' : 'M');
+        parent::Cell($w, $h, $txt, $border, $ln, $align, $fill, $link, $stretch, $ignore_min_height, $calign, $valign);
+    }
+
     public function generateGDPRAgreement(Customer $customer, string $type = 'gdpr-new', bool $signed = false, ?array $address_types = null)
     {
         $this->setPrintHeader(false);
@@ -43,6 +48,7 @@ class CustomerPDF extends TCPDF
 
         $this->Ln(4);
         $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+        $this->Ln(0.5);
 
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Cell(62, 4, 'nový / změna:', 0, 0, 'C');
@@ -65,7 +71,7 @@ class CustomerPDF extends TCPDF
         }
         $this->Ln();
 
-        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+        $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
         $this->Ln(3);
 
         $this->SetFont('DejaVuSerif', 'B', 9);
@@ -134,6 +140,7 @@ class CustomerPDF extends TCPDF
         $this->Ln();
 
         $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+        $this->Ln(0.5);
 
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->Cell(90, 4, 'Osobní údaje:', 0, 0, 'L');
@@ -148,7 +155,7 @@ class CustomerPDF extends TCPDF
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Cell(30, 4, 'firma:', 0, 0, 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(60, 4, $customer->billing_address->company, '', 'L');
+        $this->MultiCell(60, 4, $customer->billing_address->company ?? 'X', '', 'L');
 
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Cell(30, 4, 'datum narození:', 0, 0, 'R');
@@ -158,7 +165,7 @@ class CustomerPDF extends TCPDF
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Cell(30, 4, 'IČ:', 0, 0, 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(60, 4, $customer->ic);
+        $this->Cell(60, 4, $customer->ic ?? 'X');
         $this->Ln();
 
         $this->SetFont('DejaVuSerif', '', 8);
@@ -169,7 +176,7 @@ class CustomerPDF extends TCPDF
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Cell(30, 4, 'DIČ:', 0, 0, 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(60, 4, $customer->dic);
+        $this->Cell(60, 4, $customer->dic ?? 'X');
         $this->Ln();
 
         $this->SetFont('DejaVuSerif', '', 8);
@@ -191,7 +198,7 @@ class CustomerPDF extends TCPDF
             $this->MultiCell(160, 4, $address->full_address, '', 'L');
         }
 
-        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+        $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
 
         $this->SetFont('DejaVuSerif', '', 7);
         $this->Write(3, '
