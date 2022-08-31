@@ -18,6 +18,7 @@ use Cake\Validation\Validator;
  * @method \Radius\Model\Entity\Radusergroup[] newEntities(array $data, array $options = [])
  * @method \Radius\Model\Entity\Radusergroup get($primaryKey, $options = [])
  * @method \Radius\Model\Entity\Radusergroup findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \Radius\Model\Entity\Radusergroup findOrNewEntity($search)
  * @method \Radius\Model\Entity\Radusergroup patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \Radius\Model\Entity\Radusergroup[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \Radius\Model\Entity\Radusergroup|false save(\Cake\Datasource\EntityInterface $entity, $options = [])

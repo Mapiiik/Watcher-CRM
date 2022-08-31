@@ -72,18 +72,21 @@ class AccountsTable extends AppTable
             'bindingKey' => 'username',
             'dependent' => true,
             'saveStrategy' => 'replace',
+            'cascadeCallbacks' => true,
         ]);
         $this->hasMany('Radius.Radreply', [
             'foreignKey' => 'username',
             'bindingKey' => 'username',
             'dependent' => true,
             'saveStrategy' => 'replace',
+            'cascadeCallbacks' => true,
         ]);
         $this->HasMany('Radius.Radusergroup', [
             'foreignKey' => 'username',
             'bindingKey' => 'username',
             'dependent' => true,
             'saveStrategy' => 'replace',
+            'cascadeCallbacks' => true,
         ]);
         $this->hasMany('Radius.Radpostauth', [
             'foreignKey' => 'username',

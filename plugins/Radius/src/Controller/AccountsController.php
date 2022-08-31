@@ -135,11 +135,9 @@ class AccountsController extends AppController
             } else {
                 if (!$account->hasErrors()) {
                     // autogenerate related records
-                    $account = $this->Accounts->patchEntity($account, [
-                        'radcheck' => $this->autoRadcheckData($account),
-                        'radreply' => $this->autoRadreplyData($account),
-                        'radusergroup' => $this->autoRadusergroupData($account),
-                    ]);
+                    $account->radcheck = $this->autoRadcheckData($account);
+                    $account->radreply = $this->autoRadreplyData($account);
+                    $account->radusergroup = $this->autoRadusergroupData($account);
                 }
 
                 if ($this->Accounts->save($account)) {
@@ -238,9 +236,7 @@ class AccountsController extends AppController
             } else {
                 if (!$account->hasErrors()) {
                     // autogenerate related records
-                    $account = $this->Accounts->patchEntity($account, [
-                        'radcheck' => $this->autoRadcheckData($account),
-                    ]);
+                    $account->radcheck = $this->autoRadcheckData($account);
                 }
 
                 if ($this->Accounts->save($account)) {
@@ -445,11 +441,9 @@ class AccountsController extends AppController
         ]);
 
         // autogenerate related records
-        $account = $this->Accounts->patchEntity($account, [
-            'radcheck' => $this->autoRadcheckData($account),
-            'radreply' => $this->autoRadreplyData($account),
-            'radusergroup' => $this->autoRadusergroupData($account),
-        ]);
+        $account->radcheck = $this->autoRadcheckData($account);
+        $account->radreply = $this->autoRadreplyData($account);
+        $account->radusergroup = $this->autoRadusergroupData($account);
 
         if ($this->Accounts->save($account)) {
             $this->Flash->success(__d('radius', 'The RADIUS account has been updated.'));
@@ -464,29 +458,27 @@ class AccountsController extends AppController
      * generate data for radcheck table for customer
      *
      * @param \Radius\Model\Entity\Account $account RADIUS account entity
-     * @return array
+     * @return \Radius\Model\Entity\Radcheck[]
      */
     private function autoRadcheckData(\Radius\Model\Entity\Account $account): array
     {
         $radcheck = [];
 
         $radcheck[] = $this->fetchTable('Radius.Radcheck')
-            ->findOrCreate([
+            ->findOrNewEntity([
                 'username' => $account->username,
                 'attribute' => 'Cleartext-Password',
                 'op' => ':=',
                 'value' => $account->password,
-            ])
-            ->toArray();
+            ]);
         if (!$account->active) {
             $radcheck[] = $this->fetchTable('Radius.Radcheck')
-                ->findOrCreate([
+                ->findOrNewEntity([
                     'username' => $account->username,
                     'attribute' => 'Auth-Type',
                     'op' => ':=',
                     'value' => 'Reject',
-                ])
-                ->toArray();
+                ]);
         }
 
         return $radcheck;
@@ -496,7 +488,7 @@ class AccountsController extends AppController
      * generate data for radreply table for customer
      *
      * @param \Radius\Model\Entity\Account $account RADIUS account entity
-     * @return array
+     * @return \Radius\Model\Entity\Radreply[]
      */
     private function autoRadreplyData(\Radius\Model\Entity\Account $account): array
     {
@@ -512,23 +504,21 @@ class AccountsController extends AppController
 
             if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
                 $radreply[] = $this->fetchTable('Radius.Radreply')
-                    ->findOrCreate([
+                    ->findOrNewEntity([
                         'username' => $account->username,
                         'attribute' => 'Framed-IP-Address',
                         'op' => '=',
                         'value' => $address,
-                    ])
-                    ->toArray();
+                    ]);
             }
             if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
                 $radreply[] = $this->fetchTable('Radius.Radreply')
-                    ->findOrCreate([
+                    ->findOrNewEntity([
                         'username' => $account->username,
                         'attribute' => 'Framed-IPv6-Address',
                         'op' => '=',
                         'value' => $address,
-                    ])
-                    ->toArray();
+                    ]);
             }
         }
 
@@ -537,23 +527,21 @@ class AccountsController extends AppController
 
             if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
                 $radreply[] = $this->fetchTable('Radius.Radreply')
-                    ->findOrCreate([
+                    ->findOrNewEntity([
                         'username' => $account->username,
                         'attribute' => 'Framed-Route',
                         'op' => '=',
                         'value' => $address . '/' . $mask,
-                    ])
-                    ->toArray();
+                    ]);
             }
             if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
                 $radreply[] = $this->fetchTable('Radius.Radreply')
-                    ->findOrCreate([
+                    ->findOrNewEntity([
                         'username' => $account->username,
                         'attribute' => 'Framed-IPv6-Prefix',
                         'op' => '=',
                         'value' => $address . '/' . $mask,
-                    ])
-                    ->toArray();
+                    ]);
             }
         }
 
@@ -570,7 +558,7 @@ class AccountsController extends AppController
             // return current radusergroup records
             if (is_array($account->radreply)) {
                 foreach ($account->radreply as $current_radreply) {
-                    $radreply[] = $current_radreply->toArray();
+                    $radreply[] = $current_radreply;
                 }
             }
         }
@@ -582,7 +570,7 @@ class AccountsController extends AppController
      * generate data for radusergroup table for customer
      *
      * @param \Radius\Model\Entity\Account $account RADIUS account entity
-     * @return array
+     * @return \Radius\Model\Entity\Radusergroup[]
      */
     private function autoRadusergroupData(\Radius\Model\Entity\Account $account): array
     {
@@ -612,12 +600,11 @@ class AccountsController extends AppController
         if (isset($contract->billings[0])) {
             // return radusergroup record with current (or the near future) queue name as groupname
             $radusergroup[] = $this->fetchTable('Radius.Radusergroup')
-                ->findOrCreate([
+                ->findOrNewEntity([
                     'username' => $account->username,
                     'groupname' => $contract->billings[0]->service->queue->name,
                     'priority' => 0,
-                ])
-                ->toArray();
+                ]);
         }
 
         if (empty($radusergroup)) {
@@ -635,19 +622,18 @@ class AccountsController extends AppController
         if (empty($radusergroup) && env('RADIUS_DEFAULT_USER_GROUP')) {
             // return radusergroup record with default user group if set in configuration
             $radusergroup[] = $this->fetchTable('Radius.Radusergroup')
-                ->findOrCreate([
+                ->findOrNewEntity([
                     'username' => $account->username,
                     'groupname' => env('RADIUS_DEFAULT_USER_GROUP'),
                     'priority' => 0,
-                ])
-                ->toArray();
+                ]);
         }
 
         if (empty($radusergroup)) {
             // return current radusergroup records if exists
             if (is_array($account->radusergroup)) {
                 foreach ($account->radusergroup as $current_radusergroup) {
-                    $radusergroup[] = $current_radusergroup->toArray();
+                    $radusergroup[] = $current_radusergroup;
                 }
             }
         }
