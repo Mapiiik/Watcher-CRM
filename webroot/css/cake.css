@@ -129,7 +129,7 @@ tr:hover td {
     background:#ddf0ff;
 }
 
-th, td {
+th, td, iframe {
     border: 0.1rem solid #aaaaaa;
     vertical-align: baseline;
     padding: 0.5rem 0.5rem;
