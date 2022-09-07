@@ -137,7 +137,7 @@ class AddressesTable extends AppTable
             ->allowEmptyString('city');
 
         $validator
-            ->scalar('zip')
+            ->integer('zip')
             ->allowEmptyString('zip');
 
         $validator

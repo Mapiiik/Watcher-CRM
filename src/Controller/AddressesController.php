@@ -106,7 +106,7 @@ class AddressesController extends AppController
         if ($this->getRequest()->is('post')) {
             $address = $this->Addresses->patchEntity($address, $this->getRequest()->getData());
 
-            if ($this->getRequest()->getData('refresh') == 'refresh') {
+            if ($this->getRequest()->getData('refresh') == 'refresh' || $address->hasErrors()) {
                 // only refresh
             } else {
                 // update RUIAN data
@@ -161,7 +161,7 @@ class AddressesController extends AppController
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $address = $this->Addresses->patchEntity($address, $this->getRequest()->getData());
 
-            if ($this->getRequest()->getData('refresh') == 'refresh') {
+            if ($this->getRequest()->getData('refresh') == 'refresh' || $address->hasErrors()) {
                 // only refresh
             } else {
                 // update RUIAN data
