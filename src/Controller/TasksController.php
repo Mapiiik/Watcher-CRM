@@ -181,20 +181,25 @@ class TasksController extends AppController
 
         if ($this->getRequest()->is('post')) {
             $task = $this->Tasks->patchEntity($task, $this->getRequest()->getData());
-            if ($this->Tasks->save($task)) {
-                // send email notification
-                if (
-                    $task->has('dealer_id')
-                    && $task->dealer_id != ($this->getRequest()->getAttribute('identity')['customer_id'] ?? null)
-                ) {
-                    $this->sendNotificationEmail(strval($task->id), true);
+
+            if ($this->getRequest()->getData('refresh') == 'refresh') {
+                // only refresh
+            } else {
+                if ($this->Tasks->save($task)) {
+                    // send email notification
+                    if (
+                        $task->has('dealer_id')
+                        && $task->dealer_id != ($this->getRequest()->getAttribute('identity')['customer_id'] ?? null)
+                    ) {
+                        $this->sendNotificationEmail(strval($task->id), true);
+                    }
+
+                    $this->Flash->success(__('The task has been saved.'));
+
+                    return $this->redirect(['action' => 'view', $task->id]);
                 }
-
-                $this->Flash->success(__('The task has been saved.'));
-
-                return $this->redirect(['action' => 'view', $task->id]);
+                $this->Flash->error(__('The task could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__('The task could not be saved. Please, try again.'));
         }
         $taskTypes = $this->Tasks->TaskTypes->find('list', ['order' => 'name']);
         $customers = $this->Tasks->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
