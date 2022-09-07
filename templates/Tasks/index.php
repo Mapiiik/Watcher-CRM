@@ -47,10 +47,10 @@
                     <th><?= $this->Paginator->sort('task_type_id') ?></th>
                     <th><?= $this->Paginator->sort('priority') ?></th>
                     <th><?= $this->Paginator->sort('task_state_id') ?></th>
+                    <th><?= $this->Paginator->sort('dealer_id') ?></th>
                     <th><?= $this->Paginator->sort('subject') ?></th>
                     <th><?= $this->Paginator->sort('text') ?></th>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
-                    <th><?= $this->Paginator->sort('dealer_id') ?></th>
                     <th><?= $this->Paginator->sort('access_point_id') ?></th>
                     <th><?= $this->Paginator->sort('start_date') ?></th>
                     <th><?= $this->Paginator->sort('estimated_date') ?></th>
@@ -76,6 +76,12 @@
                             ['controller' => 'TaskStates', 'action' => 'view', $task->task_state->id]
                         ) : '' ?>
                     </td>
+                    <td>
+                        <?= $task->has('dealer') ? $this->Html->link(
+                            $task->dealer->name,
+                            ['controller' => 'Customers', 'action' => 'view', $task->dealer->id]
+                        ) : '' ?>
+                    </td>
                     <td><?= h($task->subject) ?></td>
                     <td><?= nl2br($task->text) ?></td>
                     <td>
@@ -84,13 +90,7 @@
                             ['controller' => 'Customers', 'action' => 'view', $task->customer->id]
                         ) : '' ?>
                     </td>
-                    <td>
-                        <?= $task->has('dealer') ? $this->Html->link(
-                            $task->dealer->name,
-                            ['controller' => 'Customers', 'action' => 'view', $task->dealer->id]
-                        ) : '' ?>
-                    </td>
-                    <td><?= $task->has('access_point') ? h($task->access_point->name) : '' ?></td>
+                    <td><?= $task->has('access_point') ? h($task->access_point['name']) : '' ?></td>
                     <td><?= h($task->start_date) ?></td>
                     <td><?= h($task->estimated_date) ?></td>
                     <td><?= h($task->critical_date) ?></td>

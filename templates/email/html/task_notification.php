@@ -12,6 +12,9 @@
  * @since         0.10.0
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  * @var \App\View\AppView $this
+ * @var string $title
+ * @var \App\Model\Entity\Task $task
+ * @var string[] $priorities
  */
 use Cake\Routing\Router;
 
@@ -52,6 +55,10 @@ table {
                     <td><?= $task->has('task_state') ? h($task->task_state->name) : '' ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('Dealer') ?></th>
+                    <td><?= $task->has('dealer') ? h($task->dealer->name) : '' ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Subject') ?></th>
                     <td><?= h($task->subject) ?></td>
                 </tr>
@@ -69,10 +76,6 @@ table {
                         $task->customer->name,
                         ['controller' => 'Customers', 'action' => 'view', $task->customer->id, '_full' => true]
                     ) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Dealer') ?></th>
-                    <td><?= $task->has('dealer') ? h($task->dealer->name) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Access Point') ?></th>

@@ -44,6 +44,13 @@
                             ) : '' ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Dealer') ?></th>
+                            <td><?= $task->has('dealer') ? $this->Html->link(
+                                $task->dealer->name,
+                                ['controller' => 'Customers', 'action' => 'view', $task->dealer->id]
+                            ) : '' ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Subject') ?></th>
                             <td><?= h($task->subject) ?></td>
                         </tr>
@@ -60,13 +67,6 @@
                             <td><?= $task->has('customer') ? $this->Html->link(
                                 $task->customer->name,
                                 ['controller' => 'Customers', 'action' => 'view', $task->customer->id]
-                            ) : '' ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Dealer') ?></th>
-                            <td><?= $task->has('dealer') ? $this->Html->link(
-                                $task->dealer->name,
-                                ['controller' => 'Customers', 'action' => 'view', $task->dealer->id]
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -138,6 +138,18 @@
                     <?= $this->Text->autoParagraph(h($task->text)); ?>
                 </blockquote>
             </div>
+
+            <?php if ($task->has('customer_id')) : ?>
+                <br>
+                <div>
+                    <iframe width="100%" height="500"  src="<?= $this->Url->build([
+                        'controller' => 'Customers',
+                        'action' => 'view',
+                        $task->customer_id,
+                        '?' => ['win-link' => 'true'],
+                    ]) ?>"></iframe>
+                </div>
+            <?php endif ?>
         </div>
     </div>
 </div>

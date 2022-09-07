@@ -85,13 +85,13 @@
                             <th><?= __('Id') ?></th>
                             <th><?= __('Task Type') ?></th>
                             <th><?= __('Priority') ?></th>
+                            <th><?= __('Dealer') ?></th>
                             <th><?= __('Subject') ?></th>
                             <th><?= __('Text') ?></th>
-                            <th><?= __('Customer') ?></th>
-                            <th><?= __('Dealer') ?></th>
-                            <th><?= __('Access Point') ?></th>
                             <th><?= __('Email') ?></th>
                             <th><?= __('Phone') ?></th>
+                            <th><?= __('Customer') ?></th>
+                            <th><?= __('Access Point') ?></th>
                             <th><?= __('Start Date') ?></th>
                             <th><?= __('Estimated Date') ?></th>
                             <th><?= __('Critical Date') ?></th>
@@ -108,23 +108,23 @@
                                 ) : '' ?>
                             </td>
                             <td><?= $priorities[$task->priority] ?></td>
-                            <td><?= h($task->subject) ?></td>
-                            <td><?= nl2br($task->text) ?></td>
-                            <td><?= $task->has('customer') ?
-                                $this->Html->link(
-                                    $task->customer->name,
-                                    ['controller' => 'Customers', 'action' => 'view', $task->customer->id]
-                                ) : '' ?>
-                            </td>
                             <td><?= $task->has('dealer') ?
                                 $this->Html->link(
                                     $task->dealer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $task->dealer->id]
                                 ) : '' ?>
                             </td>
-                            <td><?= $task->has('access_point') ? h($task->access_point['name']) : '' ?></td>
+                            <td><?= h($task->subject) ?></td>
+                            <td><?= nl2br($task->text) ?></td>
                             <td><?= h($task->email) ?></td>
                             <td><?= h($task->phone) ?></td>
+                            <td><?= $task->has('customer') ?
+                                $this->Html->link(
+                                    $task->customer->name,
+                                    ['controller' => 'Customers', 'action' => 'view', $task->customer->id]
+                                ) : '' ?>
+                            </td>
+                            <td><?= $task->has('access_point') ? h($task->access_point['name']) : '' ?></td>
                             <td><?= h($task->start_date) ?></td>
                             <td><?= h($task->estimated_date) ?></td>
                             <td><?= h($task->critical_date) ?></td>

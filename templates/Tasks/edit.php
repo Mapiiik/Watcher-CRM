@@ -27,25 +27,69 @@
             <?= $this->Form->create($task) ?>
             <fieldset>
                 <legend><?= __('Edit Task') ?></legend>
+                <div class="row">
+                    <div class="column-responsive">
+                        <?php
+                        echo $this->Form->control('task_type_id', ['options' => $taskTypes]);
+                        echo $this->Form->control('priority');
+                        echo $this->Form->control('task_state_id', ['options' => $taskStates]);
+                        echo $this->Form->control('dealer_id', ['options' => $dealers, 'empty' => true]);
+                        ?>
+                    </div>
+                    <div class="column-responsive">
+                        <?php
+                        echo $this->Form->control('email', ['multiple' => 'multiple']);
+                        echo $this->Form->control('phone', ['multiple' => 'multiple']);
+                        echo $this->Form->control('customer_id', [
+                            'options' => $customers,
+                            'empty' => true,
+                            'onchange' => '
+                                var refresh = document.createElement("input");
+                                refresh.type = "hidden";
+                                refresh.name = "refresh";
+                                refresh.value = "refresh";
+                                this.form.appendChild(refresh);
+                                this.form.submit();
+                            ',
+                        ]);
+                        $this->Form->unlockField('refresh'); //disable form security check
+                        echo $this->Form->control('access_point_id', ['options' => $accessPoints, 'empty' => true]);
+                        ?>
+                    </div>
+                </div>
                 <?php
-                    echo $this->Form->control('task_type_id', ['options' => $taskTypes]);
-                    echo $this->Form->control('priority');
-                    echo $this->Form->control('task_state_id', ['options' => $taskStates]);
                     echo $this->Form->control('subject');
                     echo $this->Form->control('text', ['style' => 'height: 30.0rem']);
-                    echo $this->Form->control('email', ['multiple' => 'multiple']);
-                    echo $this->Form->control('phone', ['multiple' => 'multiple']);
-                    echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
-                    echo $this->Form->control('dealer_id', ['options' => $dealers, 'empty' => true]);
-                    echo $this->Form->control('access_point_id', ['options' => $accessPoints, 'empty' => true]);
-                    echo $this->Form->control('start_date', ['empty' => true]);
-                    echo $this->Form->control('estimated_date', ['empty' => true]);
-                    echo $this->Form->control('critical_date', ['empty' => true]);
-                    echo $this->Form->control('finish_date', ['empty' => true]);
                 ?>
+                <div class="row">
+                    <div class="column-responsive">
+                        <?php
+                        echo $this->Form->control('start_date', ['empty' => true]);
+                        echo $this->Form->control('estimated_date', ['empty' => true]);
+                        ?>
+                    </div>
+                    <div class="column-responsive">
+                        <?php
+                        echo $this->Form->control('critical_date', ['empty' => true]);
+                        echo $this->Form->control('finish_date', ['empty' => true]);
+                        ?>
+                    </div>
+                </div>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>
+
+            <?php if ($task->has('customer_id')) : ?>
+                <br>
+                <div>
+                    <iframe width="100%" height="500"  src="<?= $this->Url->build([
+                        'controller' => 'Customers',
+                        'action' => 'view',
+                        $task->customer_id,
+                        '?' => ['win-link' => 'true'],
+                    ]) ?>"></iframe>
+                </div>
+            <?php endif ?>
         </div>
     </div>
 </div>
