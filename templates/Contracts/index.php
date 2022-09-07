@@ -70,7 +70,7 @@
                     <td><?= h($contract->valid_until) ?></td>
                     <td><?= h($contract->obligation_until) ?></td>
                     <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
-                    <td><?= $contract->has('access_point') ? h($contract->access_point->name) : '' ?></td>
+                    <td><?= $contract->has('access_point') ? h($contract->access_point['name']) : '' ?></td>
                     <td><?= h($contract->installation_date) ?></td>
                     <td>
                         <?= $contract->has('installation_technician') ? $this->Html->link(

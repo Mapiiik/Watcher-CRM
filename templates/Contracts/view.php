@@ -98,7 +98,7 @@ use Cake\I18n\Number;
                     <table>
                         <tr>
                             <th><?= __('Access Point') ?></th>
-                            <td><?= $contract->has('access_point') ? h($contract->access_point->name) : '' ?></td>
+                            <td><?= $contract->has('access_point') ? h($contract->access_point['name']) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Installation Date') ?></th>

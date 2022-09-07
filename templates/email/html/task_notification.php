@@ -76,7 +76,7 @@ table {
                 </tr>
                 <tr>
                     <th><?= __('Access Point') ?></th>
-                    <td><?= $task->has('access_point') ? h($task->access_point->name) : '' ?></td>
+                    <td><?= $task->has('access_point') ? h($task->access_point['name']) : '' ?></td>
                 </tr>
             </table>
         </td>

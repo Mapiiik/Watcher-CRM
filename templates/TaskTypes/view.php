@@ -114,7 +114,7 @@
                                     ['controller' => 'Customers', 'action' => 'view', $task->dealer->id]
                                 ) : '' ?>
                             </td>
-                            <td><?= $task->has('access_point') ? h($task->access_point->name) : '' ?></td>
+                            <td><?= $task->has('access_point') ? h($task->access_point['name']) : '' ?></td>
                             <td><?= h($task->email) ?></td>
                             <td><?= h($task->phone) ?></td>
                             <td><?= h($task->start_date) ?></td>
