@@ -148,7 +148,7 @@ class AccountsController extends AppController
                 $this->Flash->error(__d('radius', 'The RADIUS account could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->Accounts->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $customers = $this->Accounts->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
         $contracts = $this->Accounts->Contracts->find('list', [
             'order' => 'Contracts.number',
             'contain' => ['ServiceTypes', 'InstallationAddresses'],
@@ -247,7 +247,7 @@ class AccountsController extends AppController
                 $this->Flash->error(__d('radius', 'The RADIUS account could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->Accounts->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $customers = $this->Accounts->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
         $contracts = $this->Accounts->Contracts->find('list', [
             'order' => 'Contracts.number',
             'contain' => ['ServiceTypes', 'InstallationAddresses'],

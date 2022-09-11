@@ -111,7 +111,7 @@ class InvoicesController extends AppController
             }
             $this->Flash->error(__d('bookkeeping_pohoda', 'The invoice could not be saved. Please, try again.'));
         }
-        $customers = $this->Invoices->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $customers = $this->Invoices->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
         $this->set(compact('invoice', 'customers'));
     }
 
@@ -136,7 +136,7 @@ class InvoicesController extends AppController
             }
             $this->Flash->error(__d('bookkeeping_pohoda', 'The invoice could not be saved. Please, try again.'));
         }
-        $customers = $this->Invoices->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $customers = $this->Invoices->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
         $this->set(compact('invoice', 'customers'));
     }
 

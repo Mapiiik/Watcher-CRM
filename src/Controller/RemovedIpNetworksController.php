@@ -120,7 +120,7 @@ class RemovedIpNetworksController extends AppController
             $this->Flash->error(__('The removed IP network could not be saved. Please, try again.'));
         }
         $customers = $this->RemovedIpNetworks->Customers->find('list', [
-            'order' => ['company', 'first_name', 'last_name'],
+            'order' => ['company', 'last_name', 'first_name'],
         ]);
         $contracts = $this->RemovedIpNetworks->Contracts->find('list', [
             'order' => 'Contracts.number',
@@ -170,7 +170,7 @@ class RemovedIpNetworksController extends AppController
             $this->Flash->error(__('The removed IP network could not be saved. Please, try again.'));
         }
         $customers = $this->RemovedIpNetworks->Customers->find('list', [
-            'order' => ['company', 'first_name', 'last_name'],
+            'order' => ['company', 'last_name', 'first_name'],
         ]);
         $contracts = $this->RemovedIpNetworks->Contracts->find('list', [
             'order' => 'Contracts.number',

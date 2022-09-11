@@ -95,7 +95,7 @@ class CustomerLabelsController extends AppController
         }
         $labels = $this->CustomerLabels->Labels->find('list', ['order' => 'name']);
         $customers = $this->CustomerLabels->Customers->find('list', [
-            'order' => ['company', 'first_name', 'last_name'],
+            'order' => ['company', 'last_name', 'first_name'],
         ]);
         $this->set(compact('customerLabel', 'labels', 'customers'));
     }
@@ -126,7 +126,7 @@ class CustomerLabelsController extends AppController
         }
         $labels = $this->CustomerLabels->Labels->find('list', ['order' => 'name']);
         $customers = $this->CustomerLabels->Customers->find('list', [
-            'order' => ['company', 'first_name', 'last_name'],
+            'order' => ['company', 'last_name', 'first_name'],
         ]);
         $this->set(compact('customerLabel', 'labels', 'customers'));
     }

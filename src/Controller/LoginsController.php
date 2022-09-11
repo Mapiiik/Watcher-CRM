@@ -102,7 +102,7 @@ class LoginsController extends AppController
             }
             $this->Flash->error(__('The login could not be saved. Please, try again.'));
         }
-        $customers = $this->Logins->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $customers = $this->Logins->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
 
         $new_login = '';
         if (isset($customer_id)) {
@@ -169,7 +169,7 @@ class LoginsController extends AppController
             }
             $this->Flash->error(__('The login could not be saved. Please, try again.'));
         }
-        $customers = $this->Logins->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $customers = $this->Logins->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
 
         if (isset($customer_id)) {
             $customers->where(['id' => $customer_id]);

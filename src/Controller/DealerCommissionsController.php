@@ -83,7 +83,7 @@ class DealerCommissionsController extends AppController
             $this->Flash->error(__('The dealer commission could not be saved. Please, try again.'));
         }
         $dealers = $this->DealerCommissions->Dealers->find('list', [
-            'order' => ['company', 'first_name', 'last_name'],
+            'order' => ['company', 'last_name', 'first_name'],
         ]);
         $commissions = $this->DealerCommissions->Commissions->find('list', [
             'order' => ['name'],
@@ -115,7 +115,7 @@ class DealerCommissionsController extends AppController
             $this->Flash->error(__('The dealer commission could not be saved. Please, try again.'));
         }
         $dealers = $this->DealerCommissions->Dealers->find('list', [
-            'order' => ['company', 'first_name', 'last_name'],
+            'order' => ['company', 'last_name', 'first_name'],
         ]);
         $commissions = $this->DealerCommissions->Commissions->find('list', [
             'order' => ['name'],

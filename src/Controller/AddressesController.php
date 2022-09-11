@@ -130,7 +130,7 @@ class AddressesController extends AppController
                 $this->Flash->error(__('The address could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->Addresses->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $customers = $this->Addresses->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
         $countries = $this->Addresses->Countries->find('list', ['order' => 'name']);
 
         if (isset($customer_id)) {
@@ -185,7 +185,7 @@ class AddressesController extends AppController
                 $this->Flash->error(__('The address could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->Addresses->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $customers = $this->Addresses->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
         $countries = $this->Addresses->Countries->find('list', ['order' => 'name']);
 
         if (isset($customer_id)) {

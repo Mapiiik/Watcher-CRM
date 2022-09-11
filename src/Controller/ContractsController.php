@@ -126,14 +126,24 @@ class ContractsController extends AppController
             }
             $this->Flash->error(__('The contract could not be saved. Please, try again.'));
         }
-        $customers = $this->Contracts->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $customers = $this->Contracts->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
         $installationAddresses = $this->Contracts->InstallationAddresses->find('list', [
-            'order' => ['company', 'first_name', 'last_name'],
+            'order' => ['company', 'last_name', 'first_name'],
         ]);
         $serviceTypes = $this->Contracts->ServiceTypes->find('list', ['order' => 'id']);
-        $installationTechnicians = $this->Contracts->InstallationTechnicians->find('list', [
-            'order' => ['company', 'first_name', 'last_name'],
-        ]);
+        $installationTechnicians = $this->Contracts->InstallationTechnicians
+            ->find('all')
+            ->all()
+            ->sortBy(function ($dealer) {
+                return ($dealer->active ? '##' : '__') . $dealer->last_name . '-' . $dealer->first_name;
+            }, SORT_ASC, SORT_LOCALE_STRING)
+            ->map(function ($dealer) {
+                return [
+                    'value' => $dealer->id,
+                    'text' => $dealer->name_for_lists,
+                    'style' => $dealer->active ? null : 'color: gray;',
+                ];
+            });
         $commissions = $this->Contracts->Commissions->find('list', ['order' => 'name']);
 
         if (isset($customer_id)) {
@@ -181,14 +191,24 @@ class ContractsController extends AppController
             }
             $this->Flash->error(__('The contract could not be saved. Please, try again.'));
         }
-        $customers = $this->Contracts->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $customers = $this->Contracts->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
         $installationAddresses = $this->Contracts->InstallationAddresses->find('list', [
-            'order' => ['company', 'first_name', 'last_name'],
+            'order' => ['company', 'last_name', 'first_name'],
         ]);
         $serviceTypes = $this->Contracts->ServiceTypes->find('list', ['order' => 'id']);
-        $installationTechnicians = $this->Contracts->InstallationTechnicians->find('list', [
-            'order' => ['company', 'first_name', 'last_name'],
-        ]);
+        $installationTechnicians = $this->Contracts->InstallationTechnicians
+            ->find('all')
+            ->all()
+            ->sortBy(function ($dealer) {
+                return ($dealer->active ? '##' : '__') . $dealer->last_name . '-' . $dealer->first_name;
+            }, SORT_ASC, SORT_LOCALE_STRING)
+            ->map(function ($dealer) {
+                return [
+                    'value' => $dealer->id,
+                    'text' => $dealer->name_for_lists,
+                    'style' => $dealer->active ? null : 'color: gray;',
+                ];
+            });
         $commissions = $this->Contracts->Commissions->find('list', ['order' => 'name']);
 
         if (isset($customer_id)) {

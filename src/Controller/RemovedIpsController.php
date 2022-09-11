@@ -119,7 +119,7 @@ class RemovedIpsController extends AppController
             $this->Flash->error(__('The removed ip could not be saved. Please, try again.'));
         }
         $customers = $this->RemovedIps->Customers->find('list', [
-            'order' => ['company', 'first_name', 'last_name'],
+            'order' => ['company', 'last_name', 'first_name'],
         ]);
         $contracts = $this->RemovedIps->Contracts->find('list', [
             'order' => 'Contracts.number',
@@ -167,7 +167,7 @@ class RemovedIpsController extends AppController
             }
             $this->Flash->error(__('The removed ip could not be saved. Please, try again.'));
         }
-        $customers = $this->RemovedIps->Customers->find('list', ['order' => ['company', 'first_name', 'last_name']]);
+        $customers = $this->RemovedIps->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
         $contracts = $this->RemovedIps->Contracts->find('list', [
             'order' => 'Contracts.number',
             'contain' => ['ServiceTypes', 'InstallationAddresses'],

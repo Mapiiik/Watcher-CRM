@@ -111,7 +111,7 @@ class SoldEquipmentsController extends AppController
             $this->Flash->error(__('The sold equipment could not be saved. Please, try again.'));
         }
         $customers = $this->SoldEquipments->Customers->find('list', [
-            'order' => ['company', 'first_name', 'last_name'],
+            'order' => ['company', 'last_name', 'first_name'],
         ]);
         $contracts = $this->SoldEquipments->Contracts->find('list', [
             'order' => 'Contracts.number',
@@ -162,7 +162,7 @@ class SoldEquipmentsController extends AppController
         }
         $customers = $this->SoldEquipments->Customers->find(
             'list',
-            ['order' => ['company', 'first_name', 'last_name']]
+            ['order' => ['company', 'last_name', 'first_name']]
         );
         $contracts = $this->SoldEquipments->Contracts->find('list', [
             'order' => 'Contracts.number',

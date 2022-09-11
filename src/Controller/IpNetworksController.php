@@ -113,7 +113,7 @@ class IpNetworksController extends AppController
             $this->Flash->error(__('The IP network could not be saved. Please, try again.'));
         }
         $customers = $this->IpNetworks->Customers->find('list', [
-            'order' => ['company', 'first_name', 'last_name'],
+            'order' => ['company', 'last_name', 'first_name'],
         ]);
         $contracts = $this->IpNetworks->Contracts->find('list', [
             'order' => 'Contracts.number',
@@ -161,7 +161,7 @@ class IpNetworksController extends AppController
             $this->Flash->error(__('The IP network could not be saved. Please, try again.'));
         }
         $customers = $this->IpNetworks->Customers->find('list', [
-            'order' => ['company', 'first_name', 'last_name'],
+            'order' => ['company', 'last_name', 'first_name'],
         ]);
         $contracts = $this->IpNetworks->Contracts->find('list', [
             'order' => 'Contracts.number',

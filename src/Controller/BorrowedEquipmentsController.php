@@ -111,7 +111,7 @@ class BorrowedEquipmentsController extends AppController
             $this->Flash->error(__('The borrowed equipment could not be saved. Please, try again.'));
         }
         $customers = $this->BorrowedEquipments->Customers->find('list', [
-            'order' => ['company', 'first_name', 'last_name'],
+            'order' => ['company', 'last_name', 'first_name'],
         ]);
         $contracts = $this->BorrowedEquipments->Contracts->find('list', [
             'order' => 'Contracts.number',
@@ -161,7 +161,7 @@ class BorrowedEquipmentsController extends AppController
             $this->Flash->error(__('The borrowed equipment could not be saved. Please, try again.'));
         }
         $customers = $this->BorrowedEquipments->Customers->find('list', [
-            'order' => ['company', 'first_name', 'last_name'],
+            'order' => ['company', 'last_name', 'first_name'],
         ]);
         $contracts = $this->BorrowedEquipments->Contracts->find('list', [
             'order' => 'Contracts.number',
