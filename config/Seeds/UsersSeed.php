@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractSeed;
+namespace Migrations;
 
 /**
  * Users seed.

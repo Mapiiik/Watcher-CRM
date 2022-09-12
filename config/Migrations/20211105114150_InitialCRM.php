@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
-
 require_once __DIR__ . '/../Seeds/UsersSeed.php';
+
+use Migrations\AbstractMigration;
+use Migrations\UsersSeed;
 
 class InitialCRM extends AbstractMigration
 {
