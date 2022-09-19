@@ -500,6 +500,11 @@ class AccountsController extends AppController
         $radreply = [];
 
         foreach ($contract->ips as $ip) {
+            // Skip IP addresses without RADIUS usage type
+            if (!($ip->type_of_use === 00)) {
+                continue;
+            }
+
             [$address] = explode('/', $ip->ip);
 
             if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
@@ -523,6 +528,11 @@ class AccountsController extends AppController
         }
 
         foreach ($contract->ip_networks as $ipNetwork) {
+            // Skip IP networks without RADIUS usage type
+            if (!($ipNetwork->type_of_use === 00)) {
+                continue;
+            }
+
             [$address, $mask] = explode('/', $ipNetwork->ip_network);
 
             if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
