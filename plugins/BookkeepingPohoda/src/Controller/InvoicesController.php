@@ -281,7 +281,7 @@ class InvoicesController extends AppController
                     $customer_number = trim($parsed_line[0]);
 
                     if (!is_numeric($customer_number)) {
-                        continue; // if there is no customer cumber in first column, skip the line
+                        continue; // if there is no customer number in the first column, skip the line
                     }
 
                     if (!isset($verification_data[$customer_number])) {
