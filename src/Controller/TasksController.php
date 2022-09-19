@@ -39,6 +39,12 @@ class TasksController extends AppController
                 $this->getRequest()->getQuery('task_type_id')
             );
         }
+        if (!is_null($this->getRequest()->getQuery('task_state_id'))) {
+            $this->getRequest()->getSession()->write(
+                'Config.Tasks.filter.task_state_id',
+                $this->getRequest()->getQuery('task_state_id')
+            );
+        }
         if (!is_null($this->getRequest()->getQuery('access_point_id'))) {
             $this->getRequest()->getSession()->write(
                 'Config.Tasks.filter.access_point_id',
@@ -73,6 +79,12 @@ class TasksController extends AppController
                 'Tasks.task_type_id' => $task_type_id,
             ];
         }
+        $task_state_id = $filter['task_state_id'] ?? null;
+        if (!empty($task_state_id)) {
+            $conditions[] = [
+                'Tasks.task_state_id' => $task_state_id,
+            ];
+        }
         $access_point_id = $filter['access_point_id'] ?? null;
         if (!empty($access_point_id)) {
             $conditions[] = [
@@ -94,13 +106,14 @@ class TasksController extends AppController
         $filterForm->setData([
             'dealer_id' => $dealer_id,
             'task_type_id' => $task_type_id,
+            'task_state_id' => $task_state_id,
             'access_point_id' => $access_point_id,
             'search' => $search,
         ]);
         $this->set('filterForm', $filterForm);
 
         $this->paginate = [
-            'contain' => ['TaskTypes', 'Customers', 'Dealers', 'TaskStates'],
+            'contain' => ['Customers', 'Dealers', 'TaskTypes', 'TaskStates'],
             'order' => [
                 'Tasks.task_state_id' => 'ASC',
                 'Tasks.id' => 'DESC',
@@ -123,8 +136,9 @@ class TasksController extends AppController
                 ];
             });
         $taskTypes = $this->Tasks->TaskTypes->find('list', ['order' => 'name']);
+        $taskStates = $this->Tasks->TaskStates->find('list', ['order' => 'name']);
 
-        $this->set(compact('tasks', 'taskTypes', 'dealers'));
+        $this->set(compact('tasks', 'taskTypes', 'taskStates', 'dealers'));
 
         $this->set('priorities', $this->Tasks->priorities);
 

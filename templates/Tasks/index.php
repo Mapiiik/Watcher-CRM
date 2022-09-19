@@ -21,6 +21,12 @@
         ]) ?>
     </div>
     <div class="column-responsive">
+        <?= $this->Form->control('task_state_id', [
+            'empty' => true,
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+    </div>
+    <div class="column-responsive">
         <?= $this->Form->control('access_point_id', [
             'empty' => true,
             'onchange' => 'this.form.submit();',
