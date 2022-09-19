@@ -8,7 +8,7 @@
 <div class="row">
     <div class="column-responsive">
         <?= $this->Form->control('search', [
-            'label' => __('Search'),
+            'label' => __d('radius', 'Search'),
             'type' => 'search',
             'onchange' => 'this.form.submit();',
         ]) ?>

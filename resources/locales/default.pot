@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-07-18 09:55+0200\n"
+"POT-Creation-Date: 2022-09-19 16:56+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -13,6 +13,30 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: ./src/Command/UpdateCustomerLabelsCommand.php:64
+msgid "Processing"
+msgstr ""
+
+#: ./src/Command/UpdateCustomerLabelsCommand.php:84
+msgid "The dynamic SQL query could not be processed for label."
+msgstr ""
+
+#: ./src/Command/UpdateCustomerLabelsCommand.php:96
+msgid "dynamic"
+msgstr ""
+
+#: ./src/Command/UpdateCustomerLabelsCommand.php:135
+msgid "The related dynamic customer labels could not be saved. Please, try again."
+msgstr ""
+
+#: ./src/Command/UpdateCustomerLabelsCommand.php:149
+msgid "The related dynamic customer labels could not be deleted. Please, try again."
+msgstr ""
+
+#: ./src/Command/UpdateCustomerLabelsCommand.php:165
+msgid "The related static customer labels could not be deleted. Please, try again."
+msgstr ""
 
 #: ./src/Controller/AddressesController.php:122
 #: ./src/Controller/AddressesController.php:177
@@ -60,13 +84,13 @@ msgstr ""
 
 #: ./src/Controller/BillingsController.php:122
 #: ./src/Controller/BillingsController.php:198
-#: ./src/Controller/ContractsController.php:300
+#: ./src/Controller/ContractsController.php:320
 msgid "The billing has been saved."
 msgstr ""
 
 #: ./src/Controller/BillingsController.php:126
 #: ./src/Controller/BillingsController.php:202
-#: ./src/Controller/ContractsController.php:304
+#: ./src/Controller/ContractsController.php:324
 msgid "The billing could not be saved. Please, try again."
 msgstr ""
 
@@ -115,97 +139,97 @@ msgid "The commission could not be deleted. Please, try again."
 msgstr ""
 
 #: ./src/Controller/ContractsController.php:121
-#: ./src/Controller/ContractsController.php:176
+#: ./src/Controller/ContractsController.php:186
 msgid "The contract has been saved."
 msgstr ""
 
 #: ./src/Controller/ContractsController.php:127
-#: ./src/Controller/ContractsController.php:182
+#: ./src/Controller/ContractsController.php:192
 msgid "The contract could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:152
-#: ./src/Controller/ContractsController.php:207
+#: ./src/Controller/ContractsController.php:162
+#: ./src/Controller/ContractsController.php:227
 #: ./src/Controller/OverviewsController.php:105
-#: ./src/Controller/TasksController.php:136
-#: ./src/Controller/TasksController.php:268
-#: ./src/Controller/TasksController.php:341
+#: ./src/Controller/TasksController.php:150
+#: ./src/Controller/TasksController.php:287
+#: ./src/Controller/TasksController.php:365
 msgid "The access points list could not be loaded. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:226
+#: ./src/Controller/ContractsController.php:246
 msgid "The contract has been deleted."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:228
+#: ./src/Controller/ContractsController.php:248
 msgid "The contract could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:255
+#: ./src/Controller/ContractsController.php:275
 msgid "The contract number has been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:260
+#: ./src/Controller/ContractsController.php:280
 msgid "The contract number could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:289
-#: ./src/Controller/ContractsController.php:382
-#: ./src/Controller/ContractsController.php:426
+#: ./src/Controller/ContractsController.php:309
+#: ./src/Controller/ContractsController.php:402
+#: ./src/Controller/ContractsController.php:446
 msgid "Please set a date until which the contract is valid."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:291
+#: ./src/Controller/ContractsController.php:311
 msgid "No related billings to terminate."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:327
+#: ./src/Controller/ContractsController.php:347
 msgid "Contract for the provision of services"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:328
+#: ./src/Controller/ContractsController.php:348
 msgid "Contract for the provision of services (with termination of the original contract)"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:330
+#: ./src/Controller/ContractsController.php:350
 msgid "Amendment to the contract for the provision of services"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:331
+#: ./src/Controller/ContractsController.php:351
 msgid "Agreement to terminate contract for the provision of services"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:333
+#: ./src/Controller/ContractsController.php:353
 msgid "Handover protocol - Installation of internet connection"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:334
+#: ./src/Controller/ContractsController.php:354
 msgid "Handover protocol - Internet connection uninstallation"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:371
+#: ./src/Controller/ContractsController.php:391
 msgid "A borrowed equipment is not assigned, although it should normally be for this type of service. Please confirm that the customer has their own equipment or add it."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:390
+#: ./src/Controller/ContractsController.php:410
 msgid "Please enter the effective date of the amendment."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:400
+#: ./src/Controller/ContractsController.php:420
 msgid "Please set the date of conclusion of the original contract."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:406
-#: ./src/Controller/ContractsController.php:432
+#: ./src/Controller/ContractsController.php:426
+#: ./src/Controller/ContractsController.php:452
 msgid "Please enter the number of the contract to be terminated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:417
-#: ./src/Controller/ContractsController.php:443
+#: ./src/Controller/ContractsController.php:437
+#: ./src/Controller/ContractsController.php:463
 msgid "Please set the date from which the contract is valid."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:486
+#: ./src/Controller/ContractsController.php:505
 #: ./src/Controller/CustomersController.php:261
 msgid "Invalid type of document requested."
 msgstr ""
@@ -390,22 +414,35 @@ msgstr ""
 msgid "The removed ip could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/LabelsController.php:77
-#: ./src/Controller/LabelsController.php:101
+#: ./src/Controller/LabelsController.php:84
+#: ./src/Controller/LabelsController.php:118
+msgid "An expression for data modification was detected in the SQL query, which is forbidden."
+msgstr ""
+
+#: ./src/Controller/LabelsController.php:89
+#: ./src/Controller/LabelsController.php:123
 msgid "The label has been saved."
 msgstr ""
 
-#: ./src/Controller/LabelsController.php:81
-#: ./src/Controller/LabelsController.php:105
+#: ./src/Controller/LabelsController.php:94
+#: ./src/Controller/LabelsController.php:128
 msgid "The label could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/LabelsController.php:122
+#: ./src/Controller/LabelsController.php:145
 msgid "The label has been deleted."
 msgstr ""
 
-#: ./src/Controller/LabelsController.php:124
+#: ./src/Controller/LabelsController.php:147
 msgid "The label could not be deleted. Please, try again."
+msgstr ""
+
+#: ./src/Controller/LabelsController.php:190
+msgid "The related customer labels has been updated."
+msgstr ""
+
+#: ./src/Controller/LabelsController.php:192
+msgid "The related customer labels could not be updated. Please, try again."
 msgstr ""
 
 #: ./src/Controller/LoginsController.php:95
@@ -572,58 +609,58 @@ msgstr ""
 msgid "The task type could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:193
-#: ./src/Controller/TasksController.php:299
+#: ./src/Controller/TasksController.php:211
+#: ./src/Controller/TasksController.php:322
 msgid "The task has been saved."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:197
-#: ./src/Controller/TasksController.php:303
+#: ./src/Controller/TasksController.php:215
+#: ./src/Controller/TasksController.php:326
 msgid "The task could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:242
+#: ./src/Controller/TasksController.php:261
 #: ./templates/Customers/view.php:229
 #: ./templates/Emails/view.php:37
-#: ./templates/TaskStates/view.php:93
-#: ./templates/TaskTypes/view.php:85
-#: ./templates/Tasks/view.php:51
-#: ./templates/email/html/task_notification.php:59
+#: ./templates/TaskStates/view.php:91
+#: ./templates/TaskTypes/view.php:83
+#: ./templates/Tasks/view.php:58
+#: ./templates/email/html/task_notification.php:66
 #: ./templates/plugin/CakeDC/Users/Users/view.php:28
 msgid "Email"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:243
+#: ./src/Controller/TasksController.php:262
 #: ./templates/Customers/view.php:274
 #: ./templates/Phones/view.php:37
-#: ./templates/TaskStates/view.php:94
-#: ./templates/TaskTypes/view.php:86
-#: ./templates/Tasks/view.php:55
-#: ./templates/email/html/task_notification.php:63
+#: ./templates/TaskStates/view.php:92
+#: ./templates/TaskTypes/view.php:84
+#: ./templates/Tasks/view.php:62
+#: ./templates/email/html/task_notification.php:70
 msgid "Phone"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:358
+#: ./src/Controller/TasksController.php:382
 msgid "The task has been deleted."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:360
+#: ./src/Controller/TasksController.php:384
 msgid "The task could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:413
+#: ./src/Controller/TasksController.php:437
 msgid "You have a new task # {0}"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:415
+#: ./src/Controller/TasksController.php:439
 msgid "You have changes in task # {0}"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:429
+#: ./src/Controller/TasksController.php:453
 msgid "Notification email sent."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:433
+#: ./src/Controller/TasksController.php:457
 msgid "The notification email could not be sent."
 msgstr ""
 
@@ -647,8 +684,8 @@ msgstr ""
 
 #: ./src/Model/Table/AddressesTable.php:56
 #: ./templates/Commissions/view.php:125
-#: ./templates/Contracts/pdf/print.php:274
-#: ./templates/Contracts/pdf/print.php:1028
+#: ./templates/Contracts/pdf/print.php:273
+#: ./templates/Contracts/pdf/print.php:1021
 #: ./templates/Contracts/print.php:54
 #: ./templates/Contracts/view.php:89
 #: ./templates/Customers/view.php:447
@@ -657,20 +694,20 @@ msgid "Installation Address"
 msgstr ""
 
 #: ./src/Model/Table/AddressesTable.php:57
-#: ./templates/Contracts/pdf/print.php:192
-#: ./templates/Contracts/pdf/print.php:945
+#: ./templates/Contracts/pdf/print.php:199
+#: ./templates/Contracts/pdf/print.php:946
 msgid "Billing Address"
 msgstr ""
 
 #: ./src/Model/Table/AddressesTable.php:58
-#: ./templates/Contracts/pdf/print.php:283
-#: ./templates/Contracts/pdf/print.php:1037
+#: ./templates/Contracts/pdf/print.php:282
+#: ./templates/Contracts/pdf/print.php:1030
 msgid "Delivery Address"
 msgstr ""
 
 #: ./src/Model/Table/AddressesTable.php:59
-#: ./templates/Contracts/pdf/print.php:291
-#: ./templates/Contracts/pdf/print.php:1045
+#: ./templates/Contracts/pdf/print.php:290
+#: ./templates/Contracts/pdf/print.php:1038
 msgid "Permanent Address"
 msgstr ""
 
@@ -851,7 +888,7 @@ msgstr ""
 #: ./templates/Labels/edit.php:10
 #: ./templates/Labels/index.php:33
 #: ./templates/Labels/view.php:10
-#: ./templates/Labels/view.php:102
+#: ./templates/Labels/view.php:110
 #: ./templates/Logins/add.php:13
 #: ./templates/Logins/edit.php:11
 #: ./templates/Logins/index.php:36
@@ -906,7 +943,7 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:91
 #: ./templates/Tasks/add.php:16
 #: ./templates/Tasks/edit.php:16
-#: ./templates/Tasks/index.php:59
+#: ./templates/Tasks/index.php:65
 #: ./templates/Tasks/view.php:11
 #: ./templates/TaxRates/add.php:10
 #: ./templates/TaxRates/edit.php:10
@@ -982,8 +1019,8 @@ msgstr ""
 #: ./templates/TaskStates/edit.php:30
 #: ./templates/TaskTypes/add.php:23
 #: ./templates/TaskTypes/edit.php:28
-#: ./templates/Tasks/add.php:42
-#: ./templates/Tasks/edit.php:47
+#: ./templates/Tasks/add.php:74
+#: ./templates/Tasks/edit.php:79
 #: ./templates/TaxRates/add.php:25
 #: ./templates/TaxRates/edit.php:30
 #: ./templates/plugin/CakeDC/Users/Users/add.php:31
@@ -1043,8 +1080,8 @@ msgstr ""
 #: ./templates/Ips/edit.php:15
 #: ./templates/Ips/index.php:61
 #: ./templates/Labels/edit.php:12
-#: ./templates/Labels/index.php:54
-#: ./templates/Labels/view.php:125
+#: ./templates/Labels/index.php:62
+#: ./templates/Labels/view.php:133
 #: ./templates/Logins/edit.php:13
 #: ./templates/Logins/index.php:64
 #: ./templates/Phones/edit.php:13
@@ -1072,7 +1109,7 @@ msgstr ""
 #: ./templates/TaskTypes/index.php:44
 #: ./templates/TaskTypes/view.php:135
 #: ./templates/Tasks/edit.php:18
-#: ./templates/Tasks/index.php:106
+#: ./templates/Tasks/index.php:112
 #: ./templates/TaxRates/edit.php:12
 #: ./templates/TaxRates/index.php:48
 #: ./templates/TaxRates/view.php:129
@@ -1147,9 +1184,9 @@ msgstr ""
 #: ./templates/Ips/index.php:63
 #: ./templates/Ips/view.php:16
 #: ./templates/Labels/edit.php:14
-#: ./templates/Labels/index.php:56
+#: ./templates/Labels/index.php:64
 #: ./templates/Labels/view.php:19
-#: ./templates/Labels/view.php:127
+#: ./templates/Labels/view.php:135
 #: ./templates/Logins/edit.php:15
 #: ./templates/Logins/index.php:66
 #: ./templates/Logins/view.php:20
@@ -1187,7 +1224,7 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:20
 #: ./templates/TaskTypes/view.php:137
 #: ./templates/Tasks/edit.php:20
-#: ./templates/Tasks/index.php:108
+#: ./templates/Tasks/index.php:114
 #: ./templates/Tasks/view.php:16
 #: ./templates/TaxRates/edit.php:14
 #: ./templates/TaxRates/index.php:50
@@ -1229,7 +1266,7 @@ msgstr ""
 #: ./templates/SoldEquipments/index.php:11
 #: ./templates/TaskStates/index.php:11
 #: ./templates/TaskTypes/index.php:11
-#: ./templates/Tasks/index.php:31
+#: ./templates/Tasks/index.php:37
 #: ./templates/TaxRates/index.php:11
 msgid "Search"
 msgstr ""
@@ -1323,8 +1360,8 @@ msgstr ""
 #: ./templates/EquipmentTypes/view.php:171
 #: ./templates/IpNetworks/index.php:52
 #: ./templates/Ips/index.php:54
-#: ./templates/Labels/index.php:47
-#: ./templates/Labels/view.php:116
+#: ./templates/Labels/index.php:55
+#: ./templates/Labels/view.php:124
 #: ./templates/Logins/index.php:57
 #: ./templates/Overviews/overview_of_active_services.php:82
 #: ./templates/Overviews/overview_of_customer_connection_points.php:83
@@ -1344,7 +1381,7 @@ msgstr ""
 #: ./templates/TaskStates/view.php:134
 #: ./templates/TaskTypes/index.php:37
 #: ./templates/TaskTypes/view.php:126
-#: ./templates/Tasks/index.php:99
+#: ./templates/Tasks/index.php:105
 #: ./templates/TaxRates/index.php:41
 #: ./templates/TaxRates/view.php:120
 #: ./templates/plugin/CakeDC/Users/Users/index.php:43
@@ -1391,8 +1428,8 @@ msgstr ""
 #: ./templates/EquipmentTypes/view.php:175
 #: ./templates/IpNetworks/index.php:54
 #: ./templates/Ips/index.php:56
-#: ./templates/Labels/index.php:49
-#: ./templates/Labels/view.php:120
+#: ./templates/Labels/index.php:57
+#: ./templates/Labels/view.php:128
 #: ./templates/Logins/index.php:59
 #: ./templates/Phones/index.php:46
 #: ./templates/Queues/index.php:55
@@ -1409,7 +1446,7 @@ msgstr ""
 #: ./templates/TaskStates/view.php:138
 #: ./templates/TaskTypes/index.php:39
 #: ./templates/TaskTypes/view.php:130
-#: ./templates/Tasks/index.php:101
+#: ./templates/Tasks/index.php:107
 #: ./templates/TaxRates/index.php:43
 #: ./templates/TaxRates/view.php:124
 #: ./templates/plugin/CakeDC/Users/Users/index.php:45
@@ -1430,7 +1467,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/index.php:62
 #: ./templates/IpNetworks/index.php:71
 #: ./templates/Ips/index.php:73
-#: ./templates/Labels/index.php:66
+#: ./templates/Labels/index.php:74
 #: ./templates/Logins/index.php:76
 #: ./templates/Phones/index.php:63
 #: ./templates/Queues/index.php:72
@@ -1441,7 +1478,7 @@ msgstr ""
 #: ./templates/SoldEquipments/index.php:83
 #: ./templates/TaskStates/index.php:60
 #: ./templates/TaskTypes/index.php:56
-#: ./templates/Tasks/index.php:118
+#: ./templates/Tasks/index.php:124
 #: ./templates/TaxRates/index.php:60
 #: ./templates/plugin/CakeDC/Users/Users/index.php:55
 msgid "first"
@@ -1460,7 +1497,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/index.php:63
 #: ./templates/IpNetworks/index.php:72
 #: ./templates/Ips/index.php:74
-#: ./templates/Labels/index.php:67
+#: ./templates/Labels/index.php:75
 #: ./templates/Logins/index.php:77
 #: ./templates/Phones/index.php:64
 #: ./templates/Queues/index.php:73
@@ -1471,7 +1508,7 @@ msgstr ""
 #: ./templates/SoldEquipments/index.php:84
 #: ./templates/TaskStates/index.php:61
 #: ./templates/TaskTypes/index.php:57
-#: ./templates/Tasks/index.php:119
+#: ./templates/Tasks/index.php:125
 #: ./templates/TaxRates/index.php:61
 #: ./templates/plugin/CakeDC/Users/Users/index.php:56
 msgid "previous"
@@ -1490,7 +1527,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/index.php:65
 #: ./templates/IpNetworks/index.php:74
 #: ./templates/Ips/index.php:76
-#: ./templates/Labels/index.php:69
+#: ./templates/Labels/index.php:77
 #: ./templates/Logins/index.php:79
 #: ./templates/Phones/index.php:66
 #: ./templates/Queues/index.php:75
@@ -1501,7 +1538,7 @@ msgstr ""
 #: ./templates/SoldEquipments/index.php:86
 #: ./templates/TaskStates/index.php:63
 #: ./templates/TaskTypes/index.php:59
-#: ./templates/Tasks/index.php:121
+#: ./templates/Tasks/index.php:127
 #: ./templates/TaxRates/index.php:63
 #: ./templates/plugin/CakeDC/Users/Users/index.php:58
 msgid "next"
@@ -1520,7 +1557,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/index.php:66
 #: ./templates/IpNetworks/index.php:75
 #: ./templates/Ips/index.php:77
-#: ./templates/Labels/index.php:70
+#: ./templates/Labels/index.php:78
 #: ./templates/Logins/index.php:80
 #: ./templates/Phones/index.php:67
 #: ./templates/Queues/index.php:76
@@ -1531,7 +1568,7 @@ msgstr ""
 #: ./templates/SoldEquipments/index.php:87
 #: ./templates/TaskStates/index.php:64
 #: ./templates/TaskTypes/index.php:60
-#: ./templates/Tasks/index.php:122
+#: ./templates/Tasks/index.php:128
 #: ./templates/TaxRates/index.php:64
 #: ./templates/plugin/CakeDC/Users/Users/index.php:59
 msgid "last"
@@ -1550,7 +1587,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/index.php:69
 #: ./templates/IpNetworks/index.php:78
 #: ./templates/Ips/index.php:80
-#: ./templates/Labels/index.php:73
+#: ./templates/Labels/index.php:81
 #: ./templates/Logins/index.php:83
 #: ./templates/Phones/index.php:70
 #: ./templates/Queues/index.php:79
@@ -1561,7 +1598,7 @@ msgstr ""
 #: ./templates/SoldEquipments/index.php:90
 #: ./templates/TaskStates/index.php:67
 #: ./templates/TaskTypes/index.php:63
-#: ./templates/Tasks/index.php:125
+#: ./templates/Tasks/index.php:131
 #: ./templates/TaxRates/index.php:67
 #: ./templates/plugin/CakeDC/Users/Users/index.php:61
 msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
@@ -1584,7 +1621,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/view.php:148
 #: ./templates/IpNetworks/view.php:39
 #: ./templates/Ips/view.php:27
-#: ./templates/Labels/view.php:99
+#: ./templates/Labels/view.php:107
 #: ./templates/Logins/view.php:31
 #: ./templates/Overviews/overview_of_dealer_commissions.php:53
 #: ./templates/Phones/view.php:30
@@ -1593,10 +1630,10 @@ msgstr ""
 #: ./templates/ServiceTypes/view.php:163
 #: ./templates/Services/view.php:99
 #: ./templates/SoldEquipments/view.php:41
-#: ./templates/TaskStates/view.php:90
-#: ./templates/TaskTypes/view.php:82
-#: ./templates/Tasks/view.php:59
-#: ./templates/email/html/task_notification.php:67
+#: ./templates/TaskStates/view.php:93
+#: ./templates/TaskTypes/view.php:85
+#: ./templates/Tasks/view.php:66
+#: ./templates/email/html/task_notification.php:74
 msgid "Customer"
 msgstr ""
 
@@ -1732,7 +1769,7 @@ msgstr ""
 #: ./templates/Emails/view.php:46
 #: ./templates/Emails/view.php:50
 #: ./templates/Labels/index.php:44
-#: ./templates/Labels/view.php:47
+#: ./templates/Labels/view.php:55
 #: ./templates/Logins/index.php:51
 #: ./templates/Logins/view.php:47
 #: ./templates/Overviews/overview_of_customer_connection_points.php:80
@@ -1801,7 +1838,7 @@ msgstr ""
 #: ./templates/Emails/view.php:46
 #: ./templates/Emails/view.php:50
 #: ./templates/Labels/index.php:44
-#: ./templates/Labels/view.php:47
+#: ./templates/Labels/view.php:55
 #: ./templates/Logins/index.php:51
 #: ./templates/Logins/view.php:47
 #: ./templates/Overviews/overview_of_customer_connection_points.php:80
@@ -1862,8 +1899,8 @@ msgstr ""
 #: ./templates/EquipmentTypes/view.php:147
 #: ./templates/IpNetworks/view.php:84
 #: ./templates/Ips/view.php:85
-#: ./templates/Labels/view.php:50
-#: ./templates/Labels/view.php:98
+#: ./templates/Labels/view.php:58
+#: ./templates/Labels/view.php:106
 #: ./templates/Logins/view.php:66
 #: ./templates/Overviews/overview_of_active_services.php:43
 #: ./templates/Phones/view.php:41
@@ -1884,7 +1921,7 @@ msgstr ""
 #: ./templates/Tasks/view.php:97
 #: ./templates/TaxRates/view.php:42
 #: ./templates/TaxRates/view.php:84
-#: ./templates/email/html/task_notification.php:102
+#: ./templates/email/html/task_notification.php:105
 #: ./templates/plugin/CakeDC/Users/Users/view.php:102
 msgid "Id"
 msgstr ""
@@ -1904,8 +1941,8 @@ msgstr ""
 #: ./templates/EquipmentTypes/view.php:53
 #: ./templates/IpNetworks/view.php:88
 #: ./templates/Ips/view.php:89
-#: ./templates/Labels/view.php:54
-#: ./templates/Labels/view.php:101
+#: ./templates/Labels/view.php:62
+#: ./templates/Labels/view.php:109
 #: ./templates/Logins/view.php:70
 #: ./templates/Phones/view.php:45
 #: ./templates/Queues/view.php:70
@@ -1918,7 +1955,7 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:39
 #: ./templates/Tasks/view.php:101
 #: ./templates/TaxRates/view.php:46
-#: ./templates/email/html/task_notification.php:106
+#: ./templates/email/html/task_notification.php:109
 #: ./templates/plugin/CakeDC/Users/Users/view.php:88
 #: ./templates/plugin/CakeDC/Users/Users/view.php:114
 msgid "Created"
@@ -1939,7 +1976,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/view.php:57
 #: ./templates/IpNetworks/view.php:92
 #: ./templates/Ips/view.php:93
-#: ./templates/Labels/view.php:58
+#: ./templates/Labels/view.php:66
 #: ./templates/Logins/view.php:74
 #: ./templates/Phones/view.php:49
 #: ./templates/Queues/view.php:74
@@ -1952,7 +1989,7 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:43
 #: ./templates/Tasks/view.php:105
 #: ./templates/TaxRates/view.php:50
-#: ./templates/email/html/task_notification.php:110
+#: ./templates/email/html/task_notification.php:113
 msgid "Created By"
 msgstr ""
 
@@ -1971,7 +2008,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/view.php:69
 #: ./templates/IpNetworks/view.php:104
 #: ./templates/Ips/view.php:105
-#: ./templates/Labels/view.php:70
+#: ./templates/Labels/view.php:78
 #: ./templates/Logins/view.php:86
 #: ./templates/Phones/view.php:61
 #: ./templates/Queues/view.php:86
@@ -1984,7 +2021,7 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:55
 #: ./templates/Tasks/view.php:117
 #: ./templates/TaxRates/view.php:62
-#: ./templates/email/html/task_notification.php:114
+#: ./templates/email/html/task_notification.php:117
 #: ./templates/plugin/CakeDC/Users/Users/view.php:92
 #: ./templates/plugin/CakeDC/Users/Users/view.php:115
 msgid "Modified"
@@ -2005,7 +2042,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/view.php:73
 #: ./templates/IpNetworks/view.php:108
 #: ./templates/Ips/view.php:109
-#: ./templates/Labels/view.php:74
+#: ./templates/Labels/view.php:82
 #: ./templates/Logins/view.php:90
 #: ./templates/Phones/view.php:65
 #: ./templates/Queues/view.php:90
@@ -2018,7 +2055,7 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:59
 #: ./templates/Tasks/view.php:121
 #: ./templates/TaxRates/view.php:66
-#: ./templates/email/html/task_notification.php:118
+#: ./templates/email/html/task_notification.php:121
 msgid "Modified By"
 msgstr ""
 
@@ -2040,7 +2077,7 @@ msgstr ""
 #: ./templates/Customers/view.php:878
 #: ./templates/IpNetworks/view.php:121
 #: ./templates/Ips/view.php:122
-#: ./templates/Labels/view.php:100
+#: ./templates/Labels/view.php:108
 #: ./templates/RemovedIpNetworks/view.php:139
 #: ./templates/RemovedIps/view.php:126
 #: ./templates/Services/view.php:111
@@ -2110,10 +2147,10 @@ msgstr ""
 #: ./templates/Customers/view.php:508
 #: ./templates/Customers/view.php:954
 #: ./templates/Services/view.php:101
-#: ./templates/TaskStates/view.php:89
-#: ./templates/TaskTypes/view.php:81
+#: ./templates/TaskStates/view.php:90
+#: ./templates/TaskTypes/view.php:82
 #: ./templates/Tasks/view.php:136
-#: ./templates/email/html/task_notification.php:130
+#: ./templates/email/html/task_notification.php:133
 msgid "Text"
 msgstr ""
 
@@ -2318,7 +2355,7 @@ msgstr ""
 #: ./templates/Commissions/view.php:30
 #: ./templates/Countries/view.php:31
 #: ./templates/EquipmentTypes/view.php:41
-#: ./templates/Labels/view.php:30
+#: ./templates/Labels/view.php:38
 #: ./templates/Overviews/overview_of_active_services.php:44
 #: ./templates/Overviews/overview_of_dealer_commissions.php:55
 #: ./templates/Queues/view.php:30
@@ -2341,10 +2378,10 @@ msgstr ""
 #: ./templates/Customers/view.php:143
 #: ./templates/Customers/view.php:955
 #: ./templates/DealerCommissions/view.php:41
-#: ./templates/TaskStates/view.php:91
-#: ./templates/TaskTypes/view.php:83
-#: ./templates/Tasks/view.php:66
-#: ./templates/email/html/task_notification.php:74
+#: ./templates/TaskStates/view.php:88
+#: ./templates/TaskTypes/view.php:80
+#: ./templates/Tasks/view.php:47
+#: ./templates/email/html/task_notification.php:58
 msgid "Dealer"
 msgstr ""
 
@@ -2424,7 +2461,7 @@ msgid "Vip"
 msgstr ""
 
 #: ./templates/Commissions/view.php:132
-#: ./templates/Contracts/pdf/print.php:318
+#: ./templates/Contracts/pdf/print.php:317
 #: ./templates/Contracts/print.php:65
 #: ./templates/Contracts/view.php:100
 #: ./templates/Contracts/view.php:338
@@ -2437,10 +2474,10 @@ msgstr ""
 #: ./templates/RemovedIpNetworks/view.php:71
 #: ./templates/RemovedIps/view.php:58
 #: ./templates/ServiceTypes/view.php:172
-#: ./templates/TaskStates/view.php:92
-#: ./templates/TaskTypes/view.php:84
+#: ./templates/TaskStates/view.php:94
+#: ./templates/TaskTypes/view.php:86
 #: ./templates/Tasks/view.php:73
-#: ./templates/email/html/task_notification.php:78
+#: ./templates/email/html/task_notification.php:81
 msgid "Access Point"
 msgstr ""
 
@@ -2490,51 +2527,51 @@ msgstr ""
 msgid "Contracts"
 msgstr ""
 
-#: ./templates/Contracts/pdf/print.php:318
+#: ./templates/Contracts/pdf/print.php:317
 msgid "SSID"
 msgstr ""
 
-#: ./templates/Contracts/pdf/print.php:319
+#: ./templates/Contracts/pdf/print.php:318
 #: ./templates/plugin/CakeDC/Users/Users/view.php:24
 #: ./templates/plugin/CakeDC/Users/Users/view.php:104
 msgid "Username"
 msgstr ""
 
-#: ./templates/Contracts/pdf/print.php:320
+#: ./templates/Contracts/pdf/print.php:319
 msgid "Password"
 msgstr ""
 
-#: ./templates/Contracts/pdf/print.php:334
+#: ./templates/Contracts/pdf/print.php:333
 msgid "Assigned IP Addresses"
 msgstr ""
 
-#: ./templates/Contracts/pdf/print.php:339
+#: ./templates/Contracts/pdf/print.php:338
 msgid "IP Address"
+msgstr ""
+
+#: ./templates/Contracts/pdf/print.php:339
+#: ./templates/Contracts/pdf/print.php:383
+msgid "IP Network"
 msgstr ""
 
 #: ./templates/Contracts/pdf/print.php:340
 #: ./templates/Contracts/pdf/print.php:384
-msgid "IP Network"
-msgstr ""
-
-#: ./templates/Contracts/pdf/print.php:341
-#: ./templates/Contracts/pdf/print.php:385
 msgid "IP Gateway"
 msgstr ""
 
-#: ./templates/Contracts/pdf/print.php:368
+#: ./templates/Contracts/pdf/print.php:367
 msgid "Assigned IP Networks"
 msgstr ""
 
-#: ./templates/Contracts/pdf/print.php:386
+#: ./templates/Contracts/pdf/print.php:385
 msgid "DNS Servers"
 msgstr ""
 
-#: ./templates/Contracts/pdf/print.php:400
+#: ./templates/Contracts/pdf/print.php:399
 msgid "WiFi - SSID"
 msgstr ""
 
-#: ./templates/Contracts/pdf/print.php:401
+#: ./templates/Contracts/pdf/print.php:400
 msgid "WiFi - Password"
 msgstr ""
 
@@ -3086,13 +3123,13 @@ msgid "Invoices"
 msgstr ""
 
 #: ./templates/Customers/view.php:942
-#: ./templates/Tasks/index.php:40
+#: ./templates/Tasks/index.php:46
 #: ./templates/Tasks/view.php:19
 msgid "New Task"
 msgstr ""
 
 #: ./templates/Customers/view.php:946
-#: ./templates/Tasks/index.php:41
+#: ./templates/Tasks/index.php:47
 #: ./templates/layout/default.php:86
 msgid "Tasks"
 msgstr ""
@@ -3100,22 +3137,22 @@ msgstr ""
 #: ./templates/Customers/view.php:951
 #: ./templates/TaskStates/view.php:86
 #: ./templates/Tasks/view.php:29
-#: ./templates/email/html/task_notification.php:43
+#: ./templates/email/html/task_notification.php:46
 msgid "Task Type"
 msgstr ""
 
 #: ./templates/Customers/view.php:952
 #: ./templates/TaskTypes/view.php:79
 #: ./templates/Tasks/view.php:40
-#: ./templates/email/html/task_notification.php:51
+#: ./templates/email/html/task_notification.php:54
 msgid "Task State"
 msgstr ""
 
 #: ./templates/Customers/view.php:953
-#: ./templates/TaskStates/view.php:88
-#: ./templates/TaskTypes/view.php:80
-#: ./templates/Tasks/view.php:47
-#: ./templates/email/html/task_notification.php:55
+#: ./templates/TaskStates/view.php:89
+#: ./templates/TaskTypes/view.php:81
+#: ./templates/Tasks/view.php:54
+#: ./templates/email/html/task_notification.php:62
 msgid "Subject"
 msgstr ""
 
@@ -3271,33 +3308,46 @@ msgstr ""
 msgid "Number Of Uses"
 msgstr ""
 
+#: ./templates/Labels/index.php:49
+msgid "Update"
+msgstr ""
+
+#: ./templates/Labels/index.php:51
+#: ./templates/Labels/view.php:31
+msgid "Are you sure you want to update related customer labels # {0}?"
+msgstr ""
+
 #: ./templates/Labels/view.php:17
 msgid "Delete Label"
 msgstr ""
 
-#: ./templates/Labels/view.php:34
+#: ./templates/Labels/view.php:28
+msgid "Update Related Customer Labels"
+msgstr ""
+
+#: ./templates/Labels/view.php:42
 #: ./templates/Queues/view.php:34
 msgid "Caption"
 msgstr ""
 
-#: ./templates/Labels/view.php:38
+#: ./templates/Labels/view.php:46
 #: ./templates/TaskStates/view.php:35
 msgid "Color"
 msgstr ""
 
-#: ./templates/Labels/view.php:42
+#: ./templates/Labels/view.php:50
 msgid "Validity"
 msgstr ""
 
-#: ./templates/Labels/view.php:46
+#: ./templates/Labels/view.php:54
 msgid "Dynamic"
 msgstr ""
 
-#: ./templates/Labels/view.php:87
+#: ./templates/Labels/view.php:95
 msgid "Dynamic Sql"
 msgstr ""
 
-#: ./templates/Labels/view.php:93
+#: ./templates/Labels/view.php:101
 msgid "Related Customer Labels"
 msgstr ""
 
@@ -3797,35 +3847,35 @@ msgstr ""
 #: ./templates/TaskStates/view.php:87
 #: ./templates/TaskTypes/view.php:78
 #: ./templates/Tasks/view.php:36
-#: ./templates/email/html/task_notification.php:47
+#: ./templates/email/html/task_notification.php:50
 msgid "Priority"
 msgstr ""
 
 #: ./templates/TaskStates/view.php:95
 #: ./templates/TaskTypes/view.php:87
 #: ./templates/Tasks/view.php:81
-#: ./templates/email/html/task_notification.php:86
+#: ./templates/email/html/task_notification.php:89
 msgid "Start Date"
 msgstr ""
 
 #: ./templates/TaskStates/view.php:96
 #: ./templates/TaskTypes/view.php:88
 #: ./templates/Tasks/view.php:85
-#: ./templates/email/html/task_notification.php:90
+#: ./templates/email/html/task_notification.php:93
 msgid "Estimated Date"
 msgstr ""
 
 #: ./templates/TaskStates/view.php:97
 #: ./templates/TaskTypes/view.php:89
 #: ./templates/Tasks/view.php:89
-#: ./templates/email/html/task_notification.php:94
+#: ./templates/email/html/task_notification.php:97
 msgid "Critical Date"
 msgstr ""
 
 #: ./templates/TaskStates/view.php:98
 #: ./templates/TaskTypes/view.php:90
 #: ./templates/Tasks/view.php:93
-#: ./templates/email/html/task_notification.php:98
+#: ./templates/email/html/task_notification.php:101
 msgid "Finish Date"
 msgstr ""
 
@@ -3904,7 +3954,7 @@ msgstr ""
 msgid "Related Customers"
 msgstr ""
 
-#: ./templates/email/html/task_notification.php:126
+#: ./templates/email/html/task_notification.php:129
 msgid "View Task"
 msgstr ""
 
@@ -3917,27 +3967,28 @@ msgid "RADIUS"
 msgstr ""
 
 #: ./templates/layout/default.php:132
-#: ./templates/layout/default.php:136
+#: ./templates/layout/default.php:138
+#: ./templates/layout/default.php:143
 msgid "Legacy UI"
 msgstr ""
 
-#: ./templates/layout/default.php:142
+#: ./templates/layout/default.php:149
 msgid "Network Management System"
 msgstr ""
 
-#: ./templates/layout/default.php:173
+#: ./templates/layout/default.php:180
 msgid "Logout"
 msgstr ""
 
-#: ./templates/layout/default.php:196
+#: ./templates/layout/default.php:203
 msgid "Changelog"
 msgstr ""
 
-#: ./templates/layout/default.php:197
+#: ./templates/layout/default.php:204
 msgid "Version"
 msgstr ""
 
-#: ./templates/layout/default.php:203
+#: ./templates/layout/default.php:210
 msgid "High Contrast"
 msgstr ""
 

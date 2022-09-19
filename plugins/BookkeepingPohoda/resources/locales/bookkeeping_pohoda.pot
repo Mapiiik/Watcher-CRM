@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-07-04 16:47+0200\n"
+"POT-Creation-Date: 2022-09-19 16:56+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -48,41 +48,41 @@ msgstr ""
 msgid "Added IPv6 record {0} to {1}."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:109
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:134
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:108
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:133
 msgid "The invoice has been saved."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:113
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:138
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:112
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:137
 msgid "The invoice could not be saved. Please, try again."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:156
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:155
 msgid "The invoice has been deleted."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:158
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:157
 msgid "The invoice could not be deleted. Please, try again."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:183
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:182
 msgid "The invoices has been marked to be sent by email ({0})."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:191
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:190
 msgid "No invoices could be marked to be sent by email. Please, try again."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:512
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:511
 msgid "The import file is missing some required columns."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:548
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:547
 msgid "Invoice {0} could not be loaded."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:557
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:556
 msgid "Successfully imported {0} invoices. Created {1}, modified {2} and skipped {3} records."
 msgstr ""
 
