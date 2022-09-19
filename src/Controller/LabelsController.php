@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Application;
+use Cake\Console\CommandRunner;
+
 /**
  * Labels Controller
  *
@@ -73,10 +76,20 @@ class LabelsController extends AppController
         $label = $this->Labels->newEmptyEntity();
         if ($this->getRequest()->is('post')) {
             $label = $this->Labels->patchEntity($label, $this->getRequest()->getData());
-            if ($this->Labels->save($label)) {
-                $this->Flash->success(__('The label has been saved.'));
+            // check if not bad SQL
+            if ($this->isBadSQL($this->getRequest()->getData('dynamic_sql'))) {
+                // bad SQL - set error
+                $label->setError(
+                    'dynamic_sql',
+                    __('An expression for data modification was detected in the SQL query, which is forbidden.')
+                );
+            } else {
+                // good SQL - proceed
+                if ($this->Labels->save($label)) {
+                    $this->Flash->success(__('The label has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                    return $this->redirect(['action' => 'view', $label->id]);
+                }
             }
             $this->Flash->error(__('The label could not be saved. Please, try again.'));
         }
@@ -97,10 +110,20 @@ class LabelsController extends AppController
         ]);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $label = $this->Labels->patchEntity($label, $this->getRequest()->getData());
-            if ($this->Labels->save($label)) {
-                $this->Flash->success(__('The label has been saved.'));
+            // check if not bad SQL
+            if ($this->isBadSQL($this->getRequest()->getData('dynamic_sql'))) {
+                // bad SQL - set error
+                $label->setError(
+                    'dynamic_sql',
+                    __('An expression for data modification was detected in the SQL query, which is forbidden.')
+                );
+            } else {
+                // good SQL - proceed
+                if ($this->Labels->save($label)) {
+                    $this->Flash->success(__('The label has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                    return $this->redirect(['action' => 'view', $label->id]);
+                }
             }
             $this->Flash->error(__('The label could not be saved. Please, try again.'));
         }
@@ -124,6 +147,51 @@ class LabelsController extends AppController
             $this->Flash->error(__('The label could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect($this->referer(['action' => 'index']));
+    }
+
+    /**
+     * Is bad SQL method
+     *
+     * Checks if SQL does not contain expressions for data modification
+     *
+     * @param string|null $sql SQL string to be checked.
+     * @return bool Return false if SQL OK, true if SQL contains expressions for data modification.
+     */
+    public function isBadSQL(?string $sql): bool
+    {
+        $not_modifications = (
+            stripos($sql, 'insert') === false
+            && stripos($sql, 'update') === false
+            && stripos($sql, 'delete') === false
+            && stripos($sql, 'alter') === false
+            && stripos($sql, 'drop') === false
+            && stripos($sql, 'truncate') === false
+            && stripos($sql, 'set') === false
+        );
+
+        return !$not_modifications;
+    }
+
+    /**
+     * Update related customer labels method
+     *
+     * @param string|null $id Label id.
+     * @return \Cake\Http\Response|null|void Redirects to view.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function updateRelatedCustomerLabels($id = null)
+    {
+        $this->getRequest()->allowMethod(['post']);
+        $label = $this->Labels->get($id);
+
+        $runner = new CommandRunner(new Application(dirname(__DIR__, 2) . '/config'), 'cake');
+        if ($runner->run(['cake', 'update_customer_labels', strval($label->id)]) === 0) {
+            $this->Flash->success(__('The related customer labels has been updated.'));
+        } else {
+            $this->Flash->error(__('The related customer labels could not be updated. Please, try again.'));
+        }
+
+        return $this->redirect(['action' => 'view', $label->id]);
     }
 }

@@ -24,6 +24,14 @@
     </aside>
     <div class="column-responsive column-90">
         <div class="labels view content">
+            <?= $this->Form->postLink(
+                __('Update Related Customer Labels'),
+                ['action' => 'updateRelatedCustomerLabels', $label->id],
+                [
+                    'confirm' => __('Are you sure you want to update related customer labels # {0}?', $label->id),
+                    'class' => 'button float-right',
+                ]
+            ) ?>
             <h3><?= h($label->name) ?></h3>
             <table>
                 <tr>
