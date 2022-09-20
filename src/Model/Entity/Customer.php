@@ -42,7 +42,6 @@ use Cake\ORM\Entity;
  * @property string $phone
  * @property string $number
  * @property bool $ic_verified
- * @property bool $active
  *
  * @property \App\Model\Entity\TaxRate $tax_rate
  * @property \App\Model\Entity\Address[] $addresses
@@ -121,20 +120,6 @@ class Customer extends Entity
         'sold_equipments' => true,
         'tasks' => true,
     ];
-
-    /**
-     * getter for active (NEED REWORK)
-     *
-     * @return bool
-     */
-    protected function _getActive(): bool
-    {
-        if ($this->tax_rate_id == 0) {
-            return true;
-        }
-
-        return false;
-    }
 
     /**
      * getter for full name of person
