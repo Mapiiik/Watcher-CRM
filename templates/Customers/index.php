@@ -46,7 +46,7 @@
                 <?php foreach ($customers as $customer) : ?>
                 <tr>
                     <td><?= h($customer->number) ?></td>
-                    <td><?= $customer->dealer ? __('Yes') : __('No'); ?></td>
+                    <td><?= $customer->getDealerState() ?></td>
                     <td>
                         <?= $customer->has('tax_rate') ? $this->Html->link(
                             $customer->tax_rate->name,

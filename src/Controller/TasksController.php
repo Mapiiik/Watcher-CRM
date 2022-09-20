@@ -124,15 +124,13 @@ class TasksController extends AppController
         $tasks = $this->paginate($this->Tasks);
         $dealers = $this->Tasks->Dealers
             ->find('all')
+            ->order(['dealer', 'company', 'last_name', 'first_name'])
             ->all()
-            ->sortBy(function ($dealer) {
-                return ($dealer->active ? '##' : '__') . $dealer->last_name . '-' . $dealer->first_name;
-            }, SORT_ASC, SORT_LOCALE_STRING)
             ->map(function ($dealer) {
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
-                    'style' => $dealer->active ? null : 'color: gray;',
+                    'style' => $dealer->dealer === 1 ? null : 'color: gray;',
                 ];
             });
         $taskTypes = $this->Tasks->TaskTypes->find('list', ['order' => 'name']);
@@ -219,15 +217,13 @@ class TasksController extends AppController
         $customers = $this->Tasks->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
         $dealers = $this->Tasks->Dealers
             ->find('all')
+            ->order(['dealer', 'company', 'last_name', 'first_name'])
             ->all()
-            ->sortBy(function ($dealer) {
-                return ($dealer->active ? '##' : '__') . $dealer->last_name . '-' . $dealer->first_name;
-            }, SORT_ASC, SORT_LOCALE_STRING)
             ->map(function ($dealer) {
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
-                    'style' => $dealer->active ? null : 'color: gray;',
+                    'style' => $dealer->dealer === 1 ? null : 'color: gray;',
                 ];
             });
         $taskStates = $this->Tasks->TaskStates->find('list', ['order' => 'name']);
@@ -330,15 +326,13 @@ class TasksController extends AppController
         $customers = $this->Tasks->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
         $dealers = $this->Tasks->Dealers
             ->find('all')
+            ->order(['dealer', 'company', 'last_name', 'first_name'])
             ->all()
-            ->sortBy(function ($dealer) {
-                return ($dealer->active ? '##' : '__') . $dealer->last_name . '-' . $dealer->first_name;
-            }, SORT_ASC, SORT_LOCALE_STRING)
             ->map(function ($dealer) {
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
-                    'style' => $dealer->active ? null : 'color: gray;',
+                    'style' => $dealer->dealer === 1 ? null : 'color: gray;',
                 ];
             });
         $taskStates = $this->Tasks->TaskStates->find('list', ['order' => 'name']);

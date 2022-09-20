@@ -417,4 +417,28 @@ class Customer extends Entity
 
         return (int)$ic[7] === $c;
     }
+
+    /**
+     * Get dealer state options method
+     *
+     * @return array<int, string>
+     */
+    public function getDealerStateOptions(): array
+    {
+        return [
+            0 => __('No'),
+            1 => __('Yes') . ' (' . __('current') . ')',
+            2 => __('Yes') . ' (' . __('former') . ')',
+        ];
+    }
+
+    /**
+     * Get dealer state method
+     *
+     * @return string
+     */
+    public function getDealerState(): string
+    {
+        return $this->getDealerStateOptions()[$this->dealer];
+    }
 }

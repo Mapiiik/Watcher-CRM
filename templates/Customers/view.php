@@ -141,7 +141,7 @@ use Cake\I18n\Number;
                         </tr>
                         <tr>
                             <th><?= __('Dealer') ?></th>
-                            <td><?= $customer->dealer ? __('Yes') : __('No'); ?></td>
+                            <td><?= $customer->getDealerState() ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Invoice Delivery Type') ?></th>

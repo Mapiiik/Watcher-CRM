@@ -72,7 +72,7 @@ class ContractsTable extends AppTable
         $this->belongsTo('InstallationTechnicians', [
             'className' => 'Customers',
             'foreignKey' => 'installation_technician_id',
-            'conditions' => ['InstallationTechnicians.dealer' => 1],
+            'conditions' => ['InstallationTechnicians.dealer IN' => [1, 2]],
         ]);
         $this->belongsTo('Commissions', [
             'foreignKey' => 'commission_id',

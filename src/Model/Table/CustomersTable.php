@@ -189,8 +189,7 @@ class CustomersTable extends AppTable
             ->allowEmptyString('id', null, 'create');
 
         $validator
-            ->boolean('dealer')
-            ->allowEmptyString('dealer');
+            ->notEmptyString('dealer');
 
         $validator
             ->scalar('title')

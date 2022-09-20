@@ -48,7 +48,7 @@ class DealerCommissionsTable extends AppTable
         $this->belongsTo('Dealers', [
             'className' => 'Customers',
             'foreignKey' => 'dealer_id',
-            'conditions' => ['Dealers.dealer' => 1],
+            'conditions' => ['Dealers.dealer IN' => [1, 2]],
         ]);
         $this->belongsTo('Commissions', [
             'foreignKey' => 'commission_id',

@@ -133,15 +133,13 @@ class ContractsController extends AppController
         $serviceTypes = $this->Contracts->ServiceTypes->find('list', ['order' => 'id']);
         $installationTechnicians = $this->Contracts->InstallationTechnicians
             ->find('all')
+            ->order(['dealer', 'company', 'last_name', 'first_name'])
             ->all()
-            ->sortBy(function ($dealer) {
-                return ($dealer->active ? '##' : '__') . $dealer->last_name . '-' . $dealer->first_name;
-            }, SORT_ASC, SORT_LOCALE_STRING)
             ->map(function ($dealer) {
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
-                    'style' => $dealer->active ? null : 'color: gray;',
+                    'style' => $dealer->dealer === 1 ? null : 'color: gray;',
                 ];
             });
         $commissions = $this->Contracts->Commissions->find('list', ['order' => 'name']);
@@ -198,15 +196,13 @@ class ContractsController extends AppController
         $serviceTypes = $this->Contracts->ServiceTypes->find('list', ['order' => 'id']);
         $installationTechnicians = $this->Contracts->InstallationTechnicians
             ->find('all')
+            ->order(['dealer', 'company', 'last_name', 'first_name'])
             ->all()
-            ->sortBy(function ($dealer) {
-                return ($dealer->active ? '##' : '__') . $dealer->last_name . '-' . $dealer->first_name;
-            }, SORT_ASC, SORT_LOCALE_STRING)
             ->map(function ($dealer) {
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
-                    'style' => $dealer->active ? null : 'color: gray;',
+                    'style' => $dealer->dealer === 1 ? null : 'color: gray;',
                 ];
             });
         $commissions = $this->Contracts->Commissions->find('list', ['order' => 'name']);
