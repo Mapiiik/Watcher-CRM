@@ -22,7 +22,7 @@
                     echo $this->Form->control('color', ['type' => 'color']);
                     echo $this->Form->control('validity');
                     echo $this->Form->control('dynamic');
-                    echo $this->Form->control('dynamic_sql');
+                    echo $this->Form->control('dynamic_sql', ['value' => SqlFormatter::format($label->dynamic_sql, false)]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

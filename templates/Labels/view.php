@@ -93,9 +93,7 @@
             </table>
             <div class="text">
                 <strong><?= __('Dynamic Sql') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($label->dynamic_sql)); ?>
-                </blockquote>
+                <?= SqlFormatter::format($label->dynamic_sql); ?>
             </div>
             <div class="related">
                 <h4><?= __('Related Customer Labels') ?></h4>
