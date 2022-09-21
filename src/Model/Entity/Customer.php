@@ -424,6 +424,6 @@ class Customer extends Entity
      */
     public function getDealerState(): string
     {
-        return $this->getDealerStateOptions()[$this->dealer];
+        return $this->getDealerStateOptions()[$this->dealer] ?? $this->dealer;
     }
 }
