@@ -1,5 +1,6 @@
 <?php
 return [
+    'Users.table' => 'AppUsers',
     'Users.Registration.active' => false,
     'Users.Superuser.allowedToChangePasswords' => true,
     'Users.Social.login' => false,

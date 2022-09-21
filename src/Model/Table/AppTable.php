@@ -10,9 +10,9 @@ use Cake\ORM\Table;
 /**
  * Single database table
  *
- * @property \CakeDC\Users\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Creators
- * @property \CakeDC\Users\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Modifiers
- * @property \CakeDC\Users\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Removers
+ * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Creators
+ * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Modifiers
+ * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Removers
  */
 class AppTable extends Table
 {
@@ -39,19 +39,19 @@ class AppTable extends Table
 
         if ($this->hasField('created_by')) {
             $this->belongsTo('Creators', [
-                'className' => 'CakeDC/Users.Users',
+                'className' => 'AppUsers',
                 'foreignKey' => 'created_by',
             ]);
         }
         if ($this->hasField('modified_by')) {
             $this->belongsTo('Modifiers', [
-                'className' => 'CakeDC/Users.Users',
+                'className' => 'AppUsers',
                 'foreignKey' => 'modified_by',
             ]);
         }
         if ($this->hasField('removed_by')) {
             $this->belongsTo('Removers', [
-                'className' => 'CakeDC/Users.Users',
+                'className' => 'AppUsers',
                 'foreignKey' => 'removed_by',
             ]);
         }

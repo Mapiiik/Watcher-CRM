@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface $user
+ * @var \App\Model\Entity\AppUser $user
  */
 
 $user = ${$tableAlias};
@@ -23,22 +23,31 @@ $user = ${$tableAlias};
             <?= $this->Form->create($user) ?>
             <fieldset>
                 <legend><?= __('Edit User') ?></legend>
-                <?php
-                    echo $this->Form->control('username');
-                    echo $this->Form->control('email');
-                    echo $this->Form->control('first_name');
-                    echo $this->Form->control('last_name');
-                    echo $this->Form->control('active');
-                    echo $this->Form->control('role');
-                    echo $this->Form->control('api_token');
-                    echo $this->Form->control('token');
-                    echo $this->Form->control('token_expires');
-                    echo $this->Form->control('activation_date');
-                    echo $this->Form->control('tos_date');
-                    echo $this->Form->control('secret');
-                    echo $this->Form->control('secret_verified');
-                    echo $this->Form->control('additional_data');
-                ?>
+                <div class="row">
+                    <div class="column-responsive">
+                    <?php
+                        echo $this->Form->control('username');
+                        echo $this->Form->control('email');
+                        echo $this->Form->control('first_name');
+                        echo $this->Form->control('last_name');
+                        echo $this->Form->control('role', ['options' => $user->getRoleOptions()]);
+                        echo $this->Form->control('customer_id', ['type' => 'text']);
+                        echo $this->Form->control('active');
+                    ?>
+                    </div>
+                    <div class="column-responsive">
+                    <?php
+                        echo $this->Form->control('api_token');
+                        echo $this->Form->control('token');
+                        echo $this->Form->control('token_expires');
+                        echo $this->Form->control('activation_date');
+                        echo $this->Form->control('tos_date');
+                        echo $this->Form->control('secret');
+                        echo $this->Form->control('secret_verified');
+                        echo $this->Form->control('additional_data');
+                    ?>
+                    </div>
+                </div>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>

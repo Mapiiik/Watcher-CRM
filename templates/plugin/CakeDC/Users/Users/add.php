@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface $user
+ * @var \App\Model\Entity\AppUser $user
  */
 
 $user = ${$tableAlias};
@@ -24,8 +24,9 @@ $user = ${$tableAlias};
                     echo $this->Form->control('password');
                     echo $this->Form->control('first_name');
                     echo $this->Form->control('last_name');
+                    echo $this->Form->control('role', ['options' => $user->getRoleOptions()]);
+                    echo $this->Form->control('customer_id', ['type' => 'text']);
                     echo $this->Form->control('active');
-                    echo $this->Form->control('role');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

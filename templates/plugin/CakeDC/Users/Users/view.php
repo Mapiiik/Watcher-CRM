@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface $user
+ * @var \App\Model\Entity\AppUser $user
  */
 
 $user = ${$tableAlias};
@@ -19,80 +19,92 @@ $user = ${$tableAlias};
     <div class="column-responsive column-90">
         <div class="users view content">
             <h3><?= h($user->username) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __('Username') ?></th>
-                    <td><?= h($user->username) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Email') ?></th>
-                    <td><?= h($user->email) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('First Name') ?></th>
-                    <td><?= h($user->first_name) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Last Name') ?></th>
-                    <td><?= h($user->last_name) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Active') ?></th>
-                    <td><?= $user->active ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Is Superuser') ?></th>
-                    <td><?= $user->is_superuser ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Role') ?></th>
-                    <td><?= h($user->role) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Api Token') ?></th>
-                    <td><?= h($user->api_token) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Token') ?></th>
-                    <td><?= h($user->token) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Token Expires') ?></th>
-                    <td><?= h($user->token_expires) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Activation Date') ?></th>
-                    <td><?= h($user->activation_date) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Tos Date') ?></th>
-                    <td><?= h($user->tos_date) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Secret') ?></th>
-                    <td><?= h($user->secret) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Secret Verified') ?></th>
-                    <td><?= $user->secret_verified ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Additional Data') ?></th>
-                    <td><?= h($user->additional_data) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Last Login') ?></th>
-                    <td><?= h($user->last_login) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($user->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($user->modified) ?></td>
-                </tr>
-            </table>
+            <div class="row">
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Username') ?></th>
+                            <td><?= h($user->username) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Email') ?></th>
+                            <td><?= h($user->email) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('First Name') ?></th>
+                            <td><?= h($user->first_name) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Last Name') ?></th>
+                            <td><?= h($user->last_name) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Role') ?></th>
+                            <td><?= h($user->getRoleName()) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Is Superuser') ?></th>
+                            <td><?= $user->is_superuser ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Customer Id') ?></th>
+                            <td><?= h($user->customer_id) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Active') ?></th>
+                            <td><?= $user->active ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Api Token') ?></th>
+                            <td><?= h($user->api_token) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Token') ?></th>
+                            <td><?= h($user->token) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Token Expires') ?></th>
+                            <td><?= h($user->token_expires) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Activation Date') ?></th>
+                            <td><?= h($user->activation_date) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Tos Date') ?></th>
+                            <td><?= h($user->tos_date) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Secret') ?></th>
+                            <td><?= h($user->secret) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Secret Verified') ?></th>
+                            <td><?= $user->secret_verified ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Additional Data') ?></th>
+                            <td><?= h($user->additional_data) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Last Login') ?></th>
+                            <td><?= h($user->last_login) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created') ?></th>
+                            <td><?= h($user->created) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified') ?></th>
+                            <td><?= h($user->modified) ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
             <div class="related">
                 <h4><?= __('Related Social Accounts') ?></h4>
                 <?php if (!empty($user->social_accounts)) : ?>
