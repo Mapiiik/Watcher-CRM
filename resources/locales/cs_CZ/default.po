@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-09-20 21:22+0200\n"
-"PO-Revision-Date: 2022-09-20 21:26+0200\n"
+"POT-Creation-Date: 2022-09-21 21:04+0200\n"
+"PO-Revision-Date: 2022-09-21 21:08+0200\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -646,7 +646,7 @@ msgstr "Úkol nelze uložit. Prosím, zkuste to znovu."
 #: templates/Emails/view.php:37 templates/TaskStates/view.php:91
 #: templates/TaskTypes/view.php:83 templates/Tasks/view.php:58
 #: templates/email/html/task_notification.php:66
-#: templates/plugin/CakeDC/Users/Users/view.php:28
+#: templates/plugin/CakeDC/Users/Users/view.php:30
 msgid "Email"
 msgstr "E-mail"
 
@@ -699,7 +699,31 @@ msgstr "Sazba daně byla odstraněna."
 msgid "The tax rate could not be deleted. Please, try again."
 msgstr "Sazbu daně nelze odstranit. Zkuste to prosím znovu."
 
-#: src/Model/Entity/Customer.php:429 templates/Addresses/view.php:130
+#: src/Model/Entity/AppUser.php:33 src/Model/Table/LoginsTable.php:50
+msgid "User"
+msgstr "Uživatel"
+
+#: src/Model/Entity/AppUser.php:34 src/Model/Table/LoginsTable.php:51
+msgid "Technician"
+msgstr "Technik"
+
+#: src/Model/Entity/AppUser.php:35
+msgid "Manager"
+msgstr "Manažer"
+
+#: src/Model/Entity/AppUser.php:36
+msgid "Bookkeeper"
+msgstr "Účetní"
+
+#: src/Model/Entity/AppUser.php:37
+msgid "Admin"
+msgstr "Admin"
+
+#: src/Model/Entity/AppUser.php:38
+msgid "API"
+msgstr "API"
+
+#: src/Model/Entity/Customer.php:414 templates/Addresses/view.php:130
 #: templates/Billings/index.php:77 templates/Billings/index.php:78
 #: templates/Billings/view.php:88 templates/Billings/view.php:92
 #: templates/Commissions/view.php:168 templates/Contracts/index.php:72
@@ -730,15 +754,15 @@ msgstr "Sazbu daně nelze odstranit. Zkuste to prosím znovu."
 #: templates/Services/view.php:137 templates/TaskStates/index.php:39
 #: templates/TaskStates/view.php:40 templates/TaxRates/index.php:39
 #: templates/TaxRates/view.php:39
-#: templates/plugin/CakeDC/Users/Users/index.php:36
 #: templates/plugin/CakeDC/Users/Users/index.php:37
-#: templates/plugin/CakeDC/Users/Users/view.php:41
-#: templates/plugin/CakeDC/Users/Users/view.php:45
-#: templates/plugin/CakeDC/Users/Users/view.php:77
+#: templates/plugin/CakeDC/Users/Users/index.php:38
+#: templates/plugin/CakeDC/Users/Users/view.php:47
+#: templates/plugin/CakeDC/Users/Users/view.php:55
+#: templates/plugin/CakeDC/Users/Users/view.php:87
 msgid "No"
 msgstr "Ne"
 
-#: src/Model/Entity/Customer.php:430 src/Model/Entity/Customer.php:431
+#: src/Model/Entity/Customer.php:415 src/Model/Entity/Customer.php:416
 #: templates/Addresses/view.php:130 templates/Billings/index.php:77
 #: templates/Billings/index.php:78 templates/Billings/view.php:88
 #: templates/Billings/view.php:92 templates/Commissions/view.php:168
@@ -769,19 +793,19 @@ msgstr "Ne"
 #: templates/Services/view.php:137 templates/TaskStates/index.php:39
 #: templates/TaskStates/view.php:40 templates/TaxRates/index.php:39
 #: templates/TaxRates/view.php:39
-#: templates/plugin/CakeDC/Users/Users/index.php:36
 #: templates/plugin/CakeDC/Users/Users/index.php:37
-#: templates/plugin/CakeDC/Users/Users/view.php:41
-#: templates/plugin/CakeDC/Users/Users/view.php:45
-#: templates/plugin/CakeDC/Users/Users/view.php:77
+#: templates/plugin/CakeDC/Users/Users/index.php:38
+#: templates/plugin/CakeDC/Users/Users/view.php:47
+#: templates/plugin/CakeDC/Users/Users/view.php:55
+#: templates/plugin/CakeDC/Users/Users/view.php:87
 msgid "Yes"
 msgstr "Ano"
 
-#: src/Model/Entity/Customer.php:430
+#: src/Model/Entity/Customer.php:415
 msgid "current"
 msgstr "aktuální"
 
-#: src/Model/Entity/Customer.php:431
+#: src/Model/Entity/Customer.php:416
 msgid "former"
 msgstr "bývalý"
 
@@ -866,14 +890,6 @@ msgstr "Adresa technologie nastavená ručně"
 msgid "Guest"
 msgstr "Host"
 
-#: src/Model/Table/LoginsTable.php:50
-msgid "User"
-msgstr "Uživatel"
-
-#: src/Model/Table/LoginsTable.php:51
-msgid "Technician"
-msgstr "Technik"
-
 #: src/Model/Table/LoginsTable.php:52
 msgid "Administrator"
 msgstr "Administrátor"
@@ -942,7 +958,7 @@ msgstr "Naléhavé"
 #: templates/Ips/edit.php:13 templates/Ips/index.php:32
 #: templates/Ips/view.php:11 templates/Labels/add.php:10
 #: templates/Labels/edit.php:10 templates/Labels/index.php:33
-#: templates/Labels/view.php:10 templates/Labels/view.php:110
+#: templates/Labels/view.php:10 templates/Labels/view.php:108
 #: templates/Logins/add.php:13 templates/Logins/edit.php:11
 #: templates/Logins/index.php:36 templates/Logins/view.php:11
 #: templates/Overviews/overview_of_active_services.php:11
@@ -980,9 +996,9 @@ msgstr "Naléhavé"
 #: templates/TaxRates/view.php:95
 #: templates/plugin/CakeDC/Users/Users/add.php:12
 #: templates/plugin/CakeDC/Users/Users/edit.php:12
-#: templates/plugin/CakeDC/Users/Users/index.php:26
+#: templates/plugin/CakeDC/Users/Users/index.php:27
 #: templates/plugin/CakeDC/Users/Users/view.php:12
-#: templates/plugin/CakeDC/Users/Users/view.php:116
+#: templates/plugin/CakeDC/Users/Users/view.php:128
 msgid "Actions"
 msgstr "Akce"
 
@@ -1023,8 +1039,8 @@ msgstr "Přidat adresu"
 #: templates/TaskTypes/edit.php:28 templates/Tasks/add.php:74
 #: templates/Tasks/edit.php:79 templates/TaxRates/add.php:25
 #: templates/TaxRates/edit.php:30
-#: templates/plugin/CakeDC/Users/Users/add.php:31
-#: templates/plugin/CakeDC/Users/Users/edit.php:43
+#: templates/plugin/CakeDC/Users/Users/add.php:32
+#: templates/plugin/CakeDC/Users/Users/edit.php:52
 msgid "Submit"
 msgstr "Potvrdit"
 
@@ -1055,7 +1071,7 @@ msgstr "Potvrdit"
 #: templates/EquipmentTypes/view.php:180 templates/IpNetworks/edit.php:15
 #: templates/IpNetworks/index.php:59 templates/Ips/edit.php:15
 #: templates/Ips/index.php:61 templates/Labels/edit.php:12
-#: templates/Labels/index.php:62 templates/Labels/view.php:133
+#: templates/Labels/index.php:62 templates/Labels/view.php:131
 #: templates/Logins/edit.php:13 templates/Logins/index.php:64
 #: templates/Phones/edit.php:13 templates/Phones/index.php:51
 #: templates/Queues/edit.php:12 templates/Queues/index.php:60
@@ -1073,8 +1089,8 @@ msgstr "Potvrdit"
 #: templates/TaxRates/edit.php:12 templates/TaxRates/index.php:48
 #: templates/TaxRates/view.php:129
 #: templates/plugin/CakeDC/Users/Users/edit.php:14
-#: templates/plugin/CakeDC/Users/Users/index.php:46
-#: templates/plugin/CakeDC/Users/Users/view.php:137
+#: templates/plugin/CakeDC/Users/Users/index.php:48
+#: templates/plugin/CakeDC/Users/Users/view.php:149
 msgid "Delete"
 msgstr "Odstranit"
 
@@ -1113,7 +1129,7 @@ msgstr "Odstranit"
 #: templates/Ips/edit.php:17 templates/Ips/index.php:63
 #: templates/Ips/view.php:16 templates/Labels/edit.php:14
 #: templates/Labels/index.php:64 templates/Labels/view.php:19
-#: templates/Labels/view.php:135 templates/Logins/edit.php:15
+#: templates/Labels/view.php:133 templates/Logins/edit.php:15
 #: templates/Logins/index.php:66 templates/Logins/view.php:20
 #: templates/Phones/edit.php:15 templates/Phones/index.php:53
 #: templates/Phones/view.php:19 templates/Queues/edit.php:14
@@ -1137,9 +1153,9 @@ msgstr "Odstranit"
 #: templates/TaxRates/index.php:50 templates/TaxRates/view.php:19
 #: templates/TaxRates/view.php:131
 #: templates/plugin/CakeDC/Users/Users/edit.php:16
-#: templates/plugin/CakeDC/Users/Users/index.php:46
+#: templates/plugin/CakeDC/Users/Users/index.php:48
 #: templates/plugin/CakeDC/Users/Users/view.php:14
-#: templates/plugin/CakeDC/Users/Users/view.php:137
+#: templates/plugin/CakeDC/Users/Users/view.php:149
 msgid "Are you sure you want to delete # {0}?"
 msgstr "Opravdu chcete odstranit # {0}?"
 
@@ -1219,7 +1235,7 @@ msgstr "Mapy.cz"
 #: templates/Emails/index.php:50 templates/EquipmentTypes/index.php:43
 #: templates/EquipmentTypes/view.php:117 templates/EquipmentTypes/view.php:171
 #: templates/IpNetworks/index.php:52 templates/Ips/index.php:54
-#: templates/Labels/index.php:55 templates/Labels/view.php:124
+#: templates/Labels/index.php:55 templates/Labels/view.php:122
 #: templates/Logins/index.php:57
 #: templates/Overviews/overview_of_active_services.php:82
 #: templates/Overviews/overview_of_customer_connection_points.php:83
@@ -1233,8 +1249,8 @@ msgstr "Mapy.cz"
 #: templates/TaskStates/view.php:134 templates/TaskTypes/index.php:37
 #: templates/TaskTypes/view.php:126 templates/Tasks/index.php:105
 #: templates/TaxRates/index.php:41 templates/TaxRates/view.php:120
-#: templates/plugin/CakeDC/Users/Users/index.php:43
-#: templates/plugin/CakeDC/Users/Users/view.php:135
+#: templates/plugin/CakeDC/Users/Users/index.php:45
+#: templates/plugin/CakeDC/Users/Users/view.php:147
 #: vendor/cakephp/cakephp/src/View/Helper/PaginatorHelper.php:1260
 msgid "View"
 msgstr "Zobrazit"
@@ -1258,7 +1274,7 @@ msgstr "Zobrazit"
 #: templates/Emails/index.php:52 templates/EquipmentTypes/index.php:45
 #: templates/EquipmentTypes/view.php:121 templates/EquipmentTypes/view.php:175
 #: templates/IpNetworks/index.php:54 templates/Ips/index.php:56
-#: templates/Labels/index.php:57 templates/Labels/view.php:128
+#: templates/Labels/index.php:57 templates/Labels/view.php:126
 #: templates/Logins/index.php:59 templates/Phones/index.php:46
 #: templates/Queues/index.php:55 templates/Queues/view.php:133
 #: templates/RemovedIpNetworks/index.php:56 templates/RemovedIps/index.php:58
@@ -1269,8 +1285,8 @@ msgstr "Zobrazit"
 #: templates/TaskTypes/index.php:39 templates/TaskTypes/view.php:130
 #: templates/Tasks/index.php:107 templates/TaxRates/index.php:43
 #: templates/TaxRates/view.php:124
-#: templates/plugin/CakeDC/Users/Users/index.php:45
-#: templates/plugin/CakeDC/Users/Users/view.php:136
+#: templates/plugin/CakeDC/Users/Users/index.php:47
+#: templates/plugin/CakeDC/Users/Users/view.php:148
 msgid "Edit"
 msgstr "Upravit"
 
@@ -1287,7 +1303,7 @@ msgstr "Upravit"
 #: templates/Services/index.php:74 templates/SoldEquipments/index.php:83
 #: templates/TaskStates/index.php:60 templates/TaskTypes/index.php:56
 #: templates/Tasks/index.php:124 templates/TaxRates/index.php:60
-#: templates/plugin/CakeDC/Users/Users/index.php:55
+#: templates/plugin/CakeDC/Users/Users/index.php:57
 msgid "first"
 msgstr "první"
 
@@ -1304,7 +1320,7 @@ msgstr "první"
 #: templates/Services/index.php:75 templates/SoldEquipments/index.php:84
 #: templates/TaskStates/index.php:61 templates/TaskTypes/index.php:57
 #: templates/Tasks/index.php:125 templates/TaxRates/index.php:61
-#: templates/plugin/CakeDC/Users/Users/index.php:56
+#: templates/plugin/CakeDC/Users/Users/index.php:58
 msgid "previous"
 msgstr "předchozí"
 
@@ -1321,7 +1337,7 @@ msgstr "předchozí"
 #: templates/Services/index.php:77 templates/SoldEquipments/index.php:86
 #: templates/TaskStates/index.php:63 templates/TaskTypes/index.php:59
 #: templates/Tasks/index.php:127 templates/TaxRates/index.php:63
-#: templates/plugin/CakeDC/Users/Users/index.php:58
+#: templates/plugin/CakeDC/Users/Users/index.php:60
 msgid "next"
 msgstr "další"
 
@@ -1338,7 +1354,7 @@ msgstr "další"
 #: templates/Services/index.php:78 templates/SoldEquipments/index.php:87
 #: templates/TaskStates/index.php:64 templates/TaskTypes/index.php:60
 #: templates/Tasks/index.php:128 templates/TaxRates/index.php:64
-#: templates/plugin/CakeDC/Users/Users/index.php:59
+#: templates/plugin/CakeDC/Users/Users/index.php:61
 msgid "last"
 msgstr "poslední"
 
@@ -1355,7 +1371,7 @@ msgstr "poslední"
 #: templates/Services/index.php:81 templates/SoldEquipments/index.php:90
 #: templates/TaskStates/index.php:67 templates/TaskTypes/index.php:63
 #: templates/Tasks/index.php:131 templates/TaxRates/index.php:67
-#: templates/plugin/CakeDC/Users/Users/index.php:61
+#: templates/plugin/CakeDC/Users/Users/index.php:63
 msgid ""
 "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} "
 "total"
@@ -1373,7 +1389,7 @@ msgstr "Odstranit adresu"
 #: templates/Countries/view.php:78 templates/CustomerLabels/view.php:48
 #: templates/Emails/view.php:30 templates/EquipmentTypes/view.php:92
 #: templates/EquipmentTypes/view.php:148 templates/IpNetworks/view.php:39
-#: templates/Ips/view.php:27 templates/Labels/view.php:107
+#: templates/Ips/view.php:27 templates/Labels/view.php:105
 #: templates/Logins/view.php:31
 #: templates/Overviews/overview_of_dealer_commissions.php:53
 #: templates/Phones/view.php:30 templates/RemovedIpNetworks/view.php:42
@@ -1404,14 +1420,14 @@ msgstr "Titul"
 #: templates/Addresses/view.php:53 templates/Countries/view.php:82
 #: templates/Customers/print.php:40 templates/Customers/view.php:82
 #: templates/Customers/view.php:367 templates/TaxRates/view.php:87
-#: templates/plugin/CakeDC/Users/Users/view.php:32
+#: templates/plugin/CakeDC/Users/Users/view.php:34
 msgid "First Name"
 msgstr "Jméno"
 
 #: templates/Addresses/view.php:57 templates/Countries/view.php:83
 #: templates/Customers/print.php:44 templates/Customers/view.php:86
 #: templates/Customers/view.php:368 templates/TaxRates/view.php:88
-#: templates/plugin/CakeDC/Users/Users/view.php:36
+#: templates/plugin/CakeDC/Users/Users/view.php:38
 msgid "Last Name"
 msgstr "Příjmení"
 
@@ -1474,7 +1490,7 @@ msgstr "GPS X"
 #: templates/Emails/view.php:53 templates/EquipmentTypes/view.php:49
 #: templates/EquipmentTypes/view.php:91 templates/EquipmentTypes/view.php:147
 #: templates/IpNetworks/view.php:84 templates/Ips/view.php:85
-#: templates/Labels/view.php:58 templates/Labels/view.php:106
+#: templates/Labels/view.php:58 templates/Labels/view.php:104
 #: templates/Logins/view.php:66
 #: templates/Overviews/overview_of_active_services.php:43
 #: templates/Phones/view.php:41 templates/Queues/view.php:66
@@ -1487,7 +1503,7 @@ msgstr "GPS X"
 #: templates/TaskTypes/view.php:77 templates/Tasks/view.php:97
 #: templates/TaxRates/view.php:42 templates/TaxRates/view.php:84
 #: templates/email/html/task_notification.php:105
-#: templates/plugin/CakeDC/Users/Users/view.php:102
+#: templates/plugin/CakeDC/Users/Users/view.php:114
 msgid "Id"
 msgstr "ID"
 
@@ -1499,7 +1515,7 @@ msgstr "ID"
 #: templates/DealerCommissions/view.php:67 templates/Emails/view.php:57
 #: templates/EquipmentTypes/view.php:53 templates/IpNetworks/view.php:88
 #: templates/Ips/view.php:89 templates/Labels/view.php:62
-#: templates/Labels/view.php:109 templates/Logins/view.php:70
+#: templates/Labels/view.php:107 templates/Logins/view.php:70
 #: templates/Phones/view.php:45 templates/Queues/view.php:70
 #: templates/RemovedIpNetworks/view.php:91 templates/RemovedIps/view.php:78
 #: templates/ServiceTypes/view.php:77 templates/Services/view.php:60
@@ -1507,8 +1523,8 @@ msgstr "ID"
 #: templates/TaskTypes/view.php:39 templates/Tasks/view.php:101
 #: templates/TaxRates/view.php:46
 #: templates/email/html/task_notification.php:109
-#: templates/plugin/CakeDC/Users/Users/view.php:88
-#: templates/plugin/CakeDC/Users/Users/view.php:114
+#: templates/plugin/CakeDC/Users/Users/view.php:98
+#: templates/plugin/CakeDC/Users/Users/view.php:126
 msgid "Created"
 msgstr "Vytvořeno"
 
@@ -1545,8 +1561,8 @@ msgstr "Vytvořil"
 #: templates/TaskStates/view.php:63 templates/TaskTypes/view.php:55
 #: templates/Tasks/view.php:117 templates/TaxRates/view.php:62
 #: templates/email/html/task_notification.php:117
-#: templates/plugin/CakeDC/Users/Users/view.php:92
-#: templates/plugin/CakeDC/Users/Users/view.php:115
+#: templates/plugin/CakeDC/Users/Users/view.php:102
+#: templates/plugin/CakeDC/Users/Users/view.php:127
 msgid "Modified"
 msgstr "Upraveno"
 
@@ -1577,7 +1593,7 @@ msgstr "Upravil"
 #: templates/Customers/view.php:693 templates/Customers/view.php:769
 #: templates/Customers/view.php:832 templates/Customers/view.php:878
 #: templates/IpNetworks/view.php:121 templates/Ips/view.php:122
-#: templates/Labels/view.php:108 templates/RemovedIpNetworks/view.php:139
+#: templates/Labels/view.php:106 templates/RemovedIpNetworks/view.php:139
 #: templates/RemovedIps/view.php:126 templates/Services/view.php:111
 msgid "Note"
 msgstr "Poznámka"
@@ -1689,8 +1705,8 @@ msgstr "Fakturovat do"
 
 #: templates/Billings/view.php:87 templates/Contracts/view.php:257
 #: templates/Customers/view.php:516 templates/Services/view.php:109
-#: templates/plugin/CakeDC/Users/Users/view.php:40
-#: templates/plugin/CakeDC/Users/Users/view.php:105
+#: templates/plugin/CakeDC/Users/Users/view.php:54
+#: templates/plugin/CakeDC/Users/Users/view.php:117
 msgid "Active"
 msgstr "Aktivní"
 
@@ -1929,8 +1945,8 @@ msgid "SSID"
 msgstr "SSID"
 
 #: templates/Contracts/pdf/print.php:318
-#: templates/plugin/CakeDC/Users/Users/view.php:24
-#: templates/plugin/CakeDC/Users/Users/view.php:104
+#: templates/plugin/CakeDC/Users/Users/view.php:26
+#: templates/plugin/CakeDC/Users/Users/view.php:116
 msgid "Username"
 msgstr "Uživatelské jméno"
 
@@ -2625,7 +2641,7 @@ msgstr "Dynamický"
 msgid "Dynamic Sql"
 msgstr "Dynamické SQL"
 
-#: templates/Labels/view.php:101
+#: templates/Labels/view.php:99
 msgid "Related Customer Labels"
 msgstr "Související štítky zákazníků"
 
@@ -2999,7 +3015,7 @@ msgid "User Related"
 msgstr "Související s uživatelem"
 
 #: templates/Settings/index.php:13
-#: templates/plugin/CakeDC/Users/Users/index.php:44
+#: templates/plugin/CakeDC/Users/Users/index.php:46
 msgid "Change Password"
 msgstr "Změnit heslo"
 
@@ -3238,81 +3254,85 @@ msgstr "Uživatelé"
 msgid "Delete User"
 msgstr "Smazat uživatele"
 
-#: templates/plugin/CakeDC/Users/Users/view.php:44
-msgid "Is Superuser"
-msgstr "Je superuživatel"
-
-#: templates/plugin/CakeDC/Users/Users/view.php:48
+#: templates/plugin/CakeDC/Users/Users/view.php:42
 msgid "Role"
 msgstr "Role"
 
-#: templates/plugin/CakeDC/Users/Users/view.php:52
+#: templates/plugin/CakeDC/Users/Users/view.php:46
+msgid "Is Superuser"
+msgstr "Je superuživatel"
+
+#: templates/plugin/CakeDC/Users/Users/view.php:50
+msgid "Customer Id"
+msgstr "ID zákazníka"
+
+#: templates/plugin/CakeDC/Users/Users/view.php:62
 msgid "Api Token"
 msgstr "Token rozhraní API"
 
-#: templates/plugin/CakeDC/Users/Users/view.php:56
-#: templates/plugin/CakeDC/Users/Users/view.php:110
+#: templates/plugin/CakeDC/Users/Users/view.php:66
+#: templates/plugin/CakeDC/Users/Users/view.php:122
 msgid "Token"
 msgstr "Token"
 
-#: templates/plugin/CakeDC/Users/Users/view.php:60
-#: templates/plugin/CakeDC/Users/Users/view.php:112
+#: templates/plugin/CakeDC/Users/Users/view.php:70
+#: templates/plugin/CakeDC/Users/Users/view.php:124
 msgid "Token Expires"
 msgstr "Platnost tokenu vyprší"
 
-#: templates/plugin/CakeDC/Users/Users/view.php:64
+#: templates/plugin/CakeDC/Users/Users/view.php:74
 msgid "Activation Date"
 msgstr "Datum aktivace"
 
-#: templates/plugin/CakeDC/Users/Users/view.php:68
+#: templates/plugin/CakeDC/Users/Users/view.php:78
 msgid "Tos Date"
 msgstr "Tos Datum"
 
-#: templates/plugin/CakeDC/Users/Users/view.php:72
+#: templates/plugin/CakeDC/Users/Users/view.php:82
 msgid "Secret"
 msgstr "Tajemství"
 
-#: templates/plugin/CakeDC/Users/Users/view.php:76
+#: templates/plugin/CakeDC/Users/Users/view.php:86
 msgid "Secret Verified"
 msgstr "Tajemství ověřeno"
 
-#: templates/plugin/CakeDC/Users/Users/view.php:80
+#: templates/plugin/CakeDC/Users/Users/view.php:90
 msgid "Additional Data"
 msgstr "Doplňující údaje"
 
-#: templates/plugin/CakeDC/Users/Users/view.php:84
+#: templates/plugin/CakeDC/Users/Users/view.php:94
 msgid "Last Login"
 msgstr "Poslední přihlášení"
 
-#: templates/plugin/CakeDC/Users/Users/view.php:97
+#: templates/plugin/CakeDC/Users/Users/view.php:109
 msgid "Related Social Accounts"
 msgstr "Související sociální účty"
 
-#: templates/plugin/CakeDC/Users/Users/view.php:103
+#: templates/plugin/CakeDC/Users/Users/view.php:115
 msgid "Provider"
 msgstr "Poskytovatel"
 
-#: templates/plugin/CakeDC/Users/Users/view.php:106
+#: templates/plugin/CakeDC/Users/Users/view.php:118
 msgid "Reference"
 msgstr "Reference"
 
-#: templates/plugin/CakeDC/Users/Users/view.php:107
+#: templates/plugin/CakeDC/Users/Users/view.php:119
 msgid "Avatar"
 msgstr "Profilový obrázek"
 
-#: templates/plugin/CakeDC/Users/Users/view.php:108
+#: templates/plugin/CakeDC/Users/Users/view.php:120
 msgid "Description"
 msgstr "Popis"
 
-#: templates/plugin/CakeDC/Users/Users/view.php:109
+#: templates/plugin/CakeDC/Users/Users/view.php:121
 msgid "Link"
 msgstr "Odkaz"
 
-#: templates/plugin/CakeDC/Users/Users/view.php:111
+#: templates/plugin/CakeDC/Users/Users/view.php:123
 msgid "Token Secret"
 msgstr "Tajemství tokenu"
 
-#: templates/plugin/CakeDC/Users/Users/view.php:113
+#: templates/plugin/CakeDC/Users/Users/view.php:125
 msgid "Data"
 msgstr "Data"
 
@@ -3327,9 +3347,6 @@ msgstr "Data"
 
 #~ msgid "Brokerage"
 #~ msgstr "Provize"
-
-#~ msgid "Customer Id"
-#~ msgstr "ID zákazníka"
 
 #~ msgid "Installation Address Id"
 #~ msgstr "ID adresy instalace"
