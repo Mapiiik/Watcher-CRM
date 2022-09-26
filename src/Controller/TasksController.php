@@ -217,6 +217,7 @@ class TasksController extends AppController
         $customers = $this->Tasks->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
         $dealers = $this->Tasks->Dealers
             ->find('all')
+            ->where(['dealer' => 1]) // only current dealers
             ->order(['dealer', 'company', 'last_name', 'first_name'])
             ->all()
             ->map(function ($dealer) {

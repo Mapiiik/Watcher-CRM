@@ -133,6 +133,7 @@ class ContractsController extends AppController
         $serviceTypes = $this->Contracts->ServiceTypes->find('list', ['order' => 'id']);
         $installationTechnicians = $this->Contracts->InstallationTechnicians
             ->find('all')
+            ->where(['dealer' => 1]) // only current dealers
             ->order(['dealer', 'company', 'last_name', 'first_name'])
             ->all()
             ->map(function ($dealer) {

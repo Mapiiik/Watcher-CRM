@@ -84,6 +84,7 @@ class DealerCommissionsController extends AppController
         }
         $dealers = $this->DealerCommissions->Dealers
             ->find('all')
+            ->where(['dealer' => 1]) // only current dealers
             ->order(['dealer', 'company', 'last_name', 'first_name'])
             ->all()
             ->map(function ($dealer) {
