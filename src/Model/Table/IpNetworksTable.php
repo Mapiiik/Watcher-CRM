@@ -89,7 +89,11 @@ class IpNetworksTable extends AppTable
             ->scalar('ip_network')
             ->requirePresence('ip_network', 'create')
             ->notEmptyString('ip_network')
-            ->add('ip_network', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->add('ip_network', 'unique', [
+                'rule' => 'validateUnique',
+                'provider' => 'table',
+                'message' => __('This IP network is already in use.'),
+            ]);
 
         $validator
             ->integer('type_of_use')

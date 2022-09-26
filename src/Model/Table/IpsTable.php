@@ -90,11 +90,14 @@ class IpsTable extends AppTable
             ->notEmptyString('contract_id');
 
         $validator
-            ->scalar('ip')
-            ->maxLength('ip', 39)
+            ->ip('ip')
             ->requirePresence('ip', 'create')
             ->notEmptyString('ip')
-            ->add('ip', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->add('ip', 'unique', [
+                'rule' => 'validateUnique',
+                'provider' => 'table',
+                'message' => __('This IP address is already in use.'),
+            ]);
 
         $validator
             ->scalar('note')

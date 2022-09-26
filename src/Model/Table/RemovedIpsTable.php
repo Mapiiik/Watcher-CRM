@@ -95,8 +95,7 @@ class RemovedIpsTable extends AppTable
             ->notEmptyDateTime('removed');
 
         $validator
-            ->scalar('ip')
-            ->maxLength('ip', 39)
+            ->ip('ip')
             ->requirePresence('ip', 'create')
             ->notEmptyString('ip');
 
