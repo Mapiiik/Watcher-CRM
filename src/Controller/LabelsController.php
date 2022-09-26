@@ -183,15 +183,21 @@ class LabelsController extends AppController
     public function updateRelatedCustomerLabels($id = null)
     {
         $this->getRequest()->allowMethod(['post']);
-        $label = $this->Labels->get($id);
+
+        if (is_null($id)) {
+            $param = null;
+        } else {
+            $label = $this->Labels->get($id);
+            $param = strval($label->id);
+        }
 
         $runner = new CommandRunner(new Application(dirname(__DIR__, 2) . '/config'), 'cake');
-        if ($runner->run(['cake', 'update_customer_labels', strval($label->id)]) === 0) {
+        if ($runner->run(['cake', 'update_customer_labels', $param]) === 0) {
             $this->Flash->success(__('The related customer labels has been updated.'));
         } else {
             $this->Flash->error(__('The related customer labels could not be updated. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'view', $label->id]);
+        return $this->redirect($this->referer(['action' => 'index']));
     }
 }

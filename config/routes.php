@@ -106,6 +106,8 @@ $routes->scope('/admin/', function (RouteBuilder $builder) {
         ->setPatterns(['customer_id' => '[0-9]+', 'id' => '[0-9]+'])
         ->setPass(['id']);
 
+    $builder->connect('/labels/update-related-customer-labels', 'Labels::updateRelatedCustomerLabels');
+
     $builder->connect('/overviews/{action}/*', ['controller' => 'Overviews'])
         ->setExtensions(['csv']);
 

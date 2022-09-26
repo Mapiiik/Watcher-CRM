@@ -18,6 +18,14 @@
 
 <div class="labels index content">
     <?= $this->AuthLink->link(__('New Label'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
+    <?= $this->Form->postLink(
+        __('Update Related Customer Labels'),
+        ['action' => 'updateRelatedCustomerLabels'],
+        [
+            'confirm' => __('Are you sure you want to update related customer labels # {0}?', __('All')),
+            'class' => 'button float-right',
+        ]
+    ) ?>
     <h3><?= __('Labels') ?></h3>
     <div class="table-responsive">
         <table>
@@ -48,7 +56,10 @@
                         <?= $this->AuthLink->postLink(
                             __('Update'),
                             ['action' => 'updateRelatedCustomerLabels', $label->id],
-                            ['confirm' => __('Are you sure you want to update related customer labels # {0}?', $label->id)]
+                            ['confirm' => __(
+                                'Are you sure you want to update related customer labels # {0}?',
+                                $label->id
+                            )]
                         ) ?>
                     </td>
                     <td class="actions">
