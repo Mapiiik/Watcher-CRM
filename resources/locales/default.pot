@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-09-21 21:04+0200\n"
+"POT-Creation-Date: 2022-09-26 15:48+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -84,13 +84,13 @@ msgstr ""
 
 #: ./src/Controller/BillingsController.php:122
 #: ./src/Controller/BillingsController.php:198
-#: ./src/Controller/ContractsController.php:316
+#: ./src/Controller/ContractsController.php:317
 msgid "The billing has been saved."
 msgstr ""
 
 #: ./src/Controller/BillingsController.php:126
 #: ./src/Controller/BillingsController.php:202
-#: ./src/Controller/ContractsController.php:320
+#: ./src/Controller/ContractsController.php:321
 msgid "The billing could not be saved. Please, try again."
 msgstr ""
 
@@ -139,97 +139,97 @@ msgid "The commission could not be deleted. Please, try again."
 msgstr ""
 
 #: ./src/Controller/ContractsController.php:121
-#: ./src/Controller/ContractsController.php:184
+#: ./src/Controller/ContractsController.php:185
 msgid "The contract has been saved."
 msgstr ""
 
 #: ./src/Controller/ContractsController.php:127
-#: ./src/Controller/ContractsController.php:190
+#: ./src/Controller/ContractsController.php:191
 msgid "The contract could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:160
-#: ./src/Controller/ContractsController.php:223
+#: ./src/Controller/ContractsController.php:161
+#: ./src/Controller/ContractsController.php:224
 #: ./src/Controller/OverviewsController.php:105
 #: ./src/Controller/TasksController.php:148
-#: ./src/Controller/TasksController.php:283
-#: ./src/Controller/TasksController.php:359
+#: ./src/Controller/TasksController.php:284
+#: ./src/Controller/TasksController.php:360
 msgid "The access points list could not be loaded. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:242
+#: ./src/Controller/ContractsController.php:243
 msgid "The contract has been deleted."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:244
+#: ./src/Controller/ContractsController.php:245
 msgid "The contract could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:271
+#: ./src/Controller/ContractsController.php:272
 msgid "The contract number has been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:276
+#: ./src/Controller/ContractsController.php:277
 msgid "The contract number could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:305
-#: ./src/Controller/ContractsController.php:398
-#: ./src/Controller/ContractsController.php:442
+#: ./src/Controller/ContractsController.php:306
+#: ./src/Controller/ContractsController.php:399
+#: ./src/Controller/ContractsController.php:443
 msgid "Please set a date until which the contract is valid."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:307
+#: ./src/Controller/ContractsController.php:308
 msgid "No related billings to terminate."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:343
+#: ./src/Controller/ContractsController.php:344
 msgid "Contract for the provision of services"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:344
+#: ./src/Controller/ContractsController.php:345
 msgid "Contract for the provision of services (with termination of the original contract)"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:346
+#: ./src/Controller/ContractsController.php:347
 msgid "Amendment to the contract for the provision of services"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:347
+#: ./src/Controller/ContractsController.php:348
 msgid "Agreement to terminate contract for the provision of services"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:349
+#: ./src/Controller/ContractsController.php:350
 msgid "Handover protocol - Installation of internet connection"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:350
+#: ./src/Controller/ContractsController.php:351
 msgid "Handover protocol - Internet connection uninstallation"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:387
+#: ./src/Controller/ContractsController.php:388
 msgid "A borrowed equipment is not assigned, although it should normally be for this type of service. Please confirm that the customer has their own equipment or add it."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:406
+#: ./src/Controller/ContractsController.php:407
 msgid "Please enter the effective date of the amendment."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:416
+#: ./src/Controller/ContractsController.php:417
 msgid "Please set the date of conclusion of the original contract."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:422
-#: ./src/Controller/ContractsController.php:448
+#: ./src/Controller/ContractsController.php:423
+#: ./src/Controller/ContractsController.php:449
 msgid "Please enter the number of the contract to be terminated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:433
-#: ./src/Controller/ContractsController.php:459
+#: ./src/Controller/ContractsController.php:434
+#: ./src/Controller/ContractsController.php:460
 msgid "Please set the date from which the contract is valid."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:501
+#: ./src/Controller/ContractsController.php:502
 #: ./src/Controller/CustomersController.php:261
 msgid "Invalid type of document requested."
 msgstr ""
@@ -301,20 +301,20 @@ msgid "Consent to the processing of personal data (change)"
 msgstr ""
 
 #: ./src/Controller/DealerCommissionsController.php:79
-#: ./src/Controller/DealerCommissionsController.php:119
+#: ./src/Controller/DealerCommissionsController.php:120
 msgid "The dealer commission has been saved."
 msgstr ""
 
 #: ./src/Controller/DealerCommissionsController.php:83
-#: ./src/Controller/DealerCommissionsController.php:123
+#: ./src/Controller/DealerCommissionsController.php:124
 msgid "The dealer commission could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/DealerCommissionsController.php:154
+#: ./src/Controller/DealerCommissionsController.php:155
 msgid "The dealer commission has been deleted."
 msgstr ""
 
-#: ./src/Controller/DealerCommissionsController.php:156
+#: ./src/Controller/DealerCommissionsController.php:157
 msgid "The dealer commission could not be deleted. Please, try again."
 msgstr ""
 
@@ -437,11 +437,11 @@ msgstr ""
 msgid "The label could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/LabelsController.php:190
+#: ./src/Controller/LabelsController.php:196
 msgid "The related customer labels has been updated."
 msgstr ""
 
-#: ./src/Controller/LabelsController.php:192
+#: ./src/Controller/LabelsController.php:198
 msgid "The related customer labels could not be updated. Please, try again."
 msgstr ""
 
@@ -610,16 +610,16 @@ msgid "The task type could not be deleted. Please, try again."
 msgstr ""
 
 #: ./src/Controller/TasksController.php:209
-#: ./src/Controller/TasksController.php:318
+#: ./src/Controller/TasksController.php:319
 msgid "The task has been saved."
 msgstr ""
 
 #: ./src/Controller/TasksController.php:213
-#: ./src/Controller/TasksController.php:322
+#: ./src/Controller/TasksController.php:323
 msgid "The task could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:257
+#: ./src/Controller/TasksController.php:258
 #: ./templates/Customers/view.php:229
 #: ./templates/Emails/view.php:37
 #: ./templates/TaskStates/view.php:91
@@ -630,7 +630,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:258
+#: ./src/Controller/TasksController.php:259
 #: ./templates/Customers/view.php:274
 #: ./templates/Phones/view.php:37
 #: ./templates/TaskStates/view.php:92
@@ -640,27 +640,27 @@ msgstr ""
 msgid "Phone"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:376
+#: ./src/Controller/TasksController.php:377
 msgid "The task has been deleted."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:378
+#: ./src/Controller/TasksController.php:379
 msgid "The task could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:431
+#: ./src/Controller/TasksController.php:432
 msgid "You have a new task # {0}"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:433
+#: ./src/Controller/TasksController.php:434
 msgid "You have changes in task # {0}"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:447
+#: ./src/Controller/TasksController.php:448
 msgid "Notification email sent."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:451
+#: ./src/Controller/TasksController.php:452
 msgid "The notification email could not be sent."
 msgstr ""
 
@@ -741,7 +741,7 @@ msgstr ""
 #: ./templates/Emails/view.php:42
 #: ./templates/Emails/view.php:46
 #: ./templates/Emails/view.php:50
-#: ./templates/Labels/index.php:44
+#: ./templates/Labels/index.php:52
 #: ./templates/Labels/view.php:55
 #: ./templates/Logins/index.php:51
 #: ./templates/Logins/view.php:47
@@ -809,7 +809,7 @@ msgstr ""
 #: ./templates/Emails/view.php:42
 #: ./templates/Emails/view.php:46
 #: ./templates/Emails/view.php:50
-#: ./templates/Labels/index.php:44
+#: ./templates/Labels/index.php:52
 #: ./templates/Labels/view.php:55
 #: ./templates/Logins/index.php:51
 #: ./templates/Logins/view.php:47
@@ -923,6 +923,10 @@ msgstr ""
 msgid "Technology network set manually"
 msgstr ""
 
+#: ./src/Model/Table/IpNetworksTable.php:95
+msgid "This IP network is already in use."
+msgstr ""
+
 #: ./src/Model/Table/IpsTable.php:49
 #: ./src/Model/Table/RemovedIpsTable.php:48
 msgid "Customer address set via RADIUS"
@@ -936,6 +940,10 @@ msgstr ""
 #: ./src/Model/Table/IpsTable.php:51
 #: ./src/Model/Table/RemovedIpsTable.php:50
 msgid "Technology address set manually"
+msgstr ""
+
+#: ./src/Model/Table/IpsTable.php:99
+msgid "This IP address is already in use."
 msgstr ""
 
 #: ./src/Model/Table/LoginsTable.php:49
@@ -1023,8 +1031,8 @@ msgstr ""
 #: ./templates/Customers/view.php:834
 #: ./templates/Customers/view.php:880
 #: ./templates/Customers/view.php:956
-#: ./templates/DealerCommissions/add.php:10
-#: ./templates/DealerCommissions/edit.php:10
+#: ./templates/DealerCommissions/add.php:12
+#: ./templates/DealerCommissions/edit.php:12
 #: ./templates/DealerCommissions/index.php:35
 #: ./templates/DealerCommissions/view.php:10
 #: ./templates/Emails/add.php:11
@@ -1047,7 +1055,7 @@ msgstr ""
 #: ./templates/Ips/view.php:11
 #: ./templates/Labels/add.php:10
 #: ./templates/Labels/edit.php:10
-#: ./templates/Labels/index.php:33
+#: ./templates/Labels/index.php:41
 #: ./templates/Labels/view.php:10
 #: ./templates/Labels/view.php:108
 #: ./templates/Logins/add.php:13
@@ -1148,8 +1156,8 @@ msgstr ""
 #: ./templates/Customers/add.php:57
 #: ./templates/Customers/edit.php:62
 #: ./templates/Customers/print.php:192
-#: ./templates/DealerCommissions/add.php:30
-#: ./templates/DealerCommissions/edit.php:38
+#: ./templates/DealerCommissions/add.php:32
+#: ./templates/DealerCommissions/edit.php:40
 #: ./templates/Emails/add.php:30
 #: ./templates/Emails/edit.php:35
 #: ./templates/EquipmentTypes/add.php:28
@@ -1158,8 +1166,8 @@ msgstr ""
 #: ./templates/IpNetworks/edit.php:39
 #: ./templates/Ips/add.php:34
 #: ./templates/Ips/edit.php:39
-#: ./templates/Labels/add.php:28
-#: ./templates/Labels/edit.php:33
+#: ./templates/Labels/add.php:30
+#: ./templates/Labels/edit.php:35
 #: ./templates/Logins/add.php:30
 #: ./templates/Logins/edit.php:34
 #: ./templates/Phones/add.php:27
@@ -1228,7 +1236,7 @@ msgstr ""
 #: ./templates/Customers/view.php:858
 #: ./templates/Customers/view.php:904
 #: ./templates/Customers/view.php:976
-#: ./templates/DealerCommissions/edit.php:12
+#: ./templates/DealerCommissions/edit.php:14
 #: ./templates/DealerCommissions/index.php:64
 #: ./templates/Emails/edit.php:13
 #: ./templates/Emails/index.php:57
@@ -1241,7 +1249,7 @@ msgstr ""
 #: ./templates/Ips/edit.php:15
 #: ./templates/Ips/index.php:61
 #: ./templates/Labels/edit.php:12
-#: ./templates/Labels/index.php:62
+#: ./templates/Labels/index.php:73
 #: ./templates/Labels/view.php:131
 #: ./templates/Logins/edit.php:13
 #: ./templates/Logins/index.php:64
@@ -1327,7 +1335,7 @@ msgstr ""
 #: ./templates/Customers/view.php:860
 #: ./templates/Customers/view.php:906
 #: ./templates/Customers/view.php:978
-#: ./templates/DealerCommissions/edit.php:15
+#: ./templates/DealerCommissions/edit.php:17
 #: ./templates/DealerCommissions/index.php:66
 #: ./templates/DealerCommissions/view.php:20
 #: ./templates/Emails/edit.php:15
@@ -1345,7 +1353,7 @@ msgstr ""
 #: ./templates/Ips/index.php:63
 #: ./templates/Ips/view.php:16
 #: ./templates/Labels/edit.php:14
-#: ./templates/Labels/index.php:64
+#: ./templates/Labels/index.php:75
 #: ./templates/Labels/view.php:19
 #: ./templates/Labels/view.php:133
 #: ./templates/Logins/edit.php:15
@@ -1521,7 +1529,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/view.php:171
 #: ./templates/IpNetworks/index.php:52
 #: ./templates/Ips/index.php:54
-#: ./templates/Labels/index.php:55
+#: ./templates/Labels/index.php:66
 #: ./templates/Labels/view.php:122
 #: ./templates/Logins/index.php:57
 #: ./templates/Overviews/overview_of_active_services.php:82
@@ -1589,7 +1597,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/view.php:175
 #: ./templates/IpNetworks/index.php:54
 #: ./templates/Ips/index.php:56
-#: ./templates/Labels/index.php:57
+#: ./templates/Labels/index.php:68
 #: ./templates/Labels/view.php:126
 #: ./templates/Logins/index.php:59
 #: ./templates/Phones/index.php:46
@@ -1628,7 +1636,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/index.php:62
 #: ./templates/IpNetworks/index.php:71
 #: ./templates/Ips/index.php:73
-#: ./templates/Labels/index.php:74
+#: ./templates/Labels/index.php:85
 #: ./templates/Logins/index.php:76
 #: ./templates/Phones/index.php:63
 #: ./templates/Queues/index.php:72
@@ -1658,7 +1666,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/index.php:63
 #: ./templates/IpNetworks/index.php:72
 #: ./templates/Ips/index.php:74
-#: ./templates/Labels/index.php:75
+#: ./templates/Labels/index.php:86
 #: ./templates/Logins/index.php:77
 #: ./templates/Phones/index.php:64
 #: ./templates/Queues/index.php:73
@@ -1688,7 +1696,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/index.php:65
 #: ./templates/IpNetworks/index.php:74
 #: ./templates/Ips/index.php:76
-#: ./templates/Labels/index.php:77
+#: ./templates/Labels/index.php:88
 #: ./templates/Logins/index.php:79
 #: ./templates/Phones/index.php:66
 #: ./templates/Queues/index.php:75
@@ -1718,7 +1726,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/index.php:66
 #: ./templates/IpNetworks/index.php:75
 #: ./templates/Ips/index.php:77
-#: ./templates/Labels/index.php:78
+#: ./templates/Labels/index.php:89
 #: ./templates/Logins/index.php:80
 #: ./templates/Phones/index.php:67
 #: ./templates/Queues/index.php:76
@@ -1748,7 +1756,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/index.php:69
 #: ./templates/IpNetworks/index.php:78
 #: ./templates/Ips/index.php:80
-#: ./templates/Labels/index.php:81
+#: ./templates/Labels/index.php:92
 #: ./templates/Logins/index.php:83
 #: ./templates/Phones/index.php:70
 #: ./templates/Queues/index.php:79
@@ -2660,7 +2668,7 @@ msgstr ""
 
 #: ./templates/Contracts/view.php:36
 #: ./templates/Customers/view.php:39
-#: ./templates/Labels/index.php:21
+#: ./templates/Labels/index.php:29
 msgid "Labels"
 msgstr ""
 
@@ -3179,18 +3187,18 @@ msgstr ""
 msgid "Subject"
 msgstr ""
 
-#: ./templates/DealerCommissions/add.php:12
-#: ./templates/DealerCommissions/edit.php:20
+#: ./templates/DealerCommissions/add.php:14
+#: ./templates/DealerCommissions/edit.php:22
 #: ./templates/DealerCommissions/view.php:25
 #: ./templates/Settings/index.php:102
 msgid "List Dealer Commissions"
 msgstr ""
 
-#: ./templates/DealerCommissions/add.php:22
+#: ./templates/DealerCommissions/add.php:24
 msgid "Add Dealer Commission"
 msgstr ""
 
-#: ./templates/DealerCommissions/edit.php:30
+#: ./templates/DealerCommissions/edit.php:32
 #: ./templates/DealerCommissions/view.php:12
 msgid "Edit Dealer Commission"
 msgstr ""
@@ -3327,25 +3335,31 @@ msgstr ""
 msgid "New Label"
 msgstr ""
 
-#: ./templates/Labels/index.php:32
-msgid "Number Of Uses"
+#: ./templates/Labels/index.php:22
+#: ./templates/Labels/view.php:28
+msgid "Update Related Customer Labels"
 msgstr ""
 
-#: ./templates/Labels/index.php:49
-msgid "Update"
-msgstr ""
-
-#: ./templates/Labels/index.php:51
+#: ./templates/Labels/index.php:25
+#: ./templates/Labels/index.php:59
 #: ./templates/Labels/view.php:31
 msgid "Are you sure you want to update related customer labels # {0}?"
 msgstr ""
 
-#: ./templates/Labels/view.php:17
-msgid "Delete Label"
+#: ./templates/Labels/index.php:25
+msgid "All"
 msgstr ""
 
-#: ./templates/Labels/view.php:28
-msgid "Update Related Customer Labels"
+#: ./templates/Labels/index.php:40
+msgid "Number Of Uses"
+msgstr ""
+
+#: ./templates/Labels/index.php:57
+msgid "Update"
+msgstr ""
+
+#: ./templates/Labels/view.php:17
+msgid "Delete Label"
 msgstr ""
 
 #: ./templates/Labels/view.php:42
