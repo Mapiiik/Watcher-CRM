@@ -2,6 +2,8 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\DealerCommission $dealerCommission
+ * @var string[]|\Cake\Collection\CollectionInterface $commissions
+ * @var string[]|\Cake\Collection\CollectionInterface $dealers
  */
 ?>
 <div class="row">
