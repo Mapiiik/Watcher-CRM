@@ -25,7 +25,7 @@
                 <div class="row">
                     <div class="column-responsive">
                         <?php
-                        echo $this->Form->control('task_type_id', ['options' => $taskTypes]);
+                        echo $this->Form->control('task_type_id', ['options' => $taskTypes, 'empty' => true]);
                         echo $this->Form->control('priority');
                         echo $this->Form->control('task_state_id', ['options' => $taskStates]);
                         echo $this->Form->control('dealer_id', ['options' => $dealers, 'empty' => true]);

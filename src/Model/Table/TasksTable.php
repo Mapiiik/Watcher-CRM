@@ -133,6 +133,14 @@ class TasksTable extends AppTable
             ->uuid('access_point_id')
             ->allowEmptyString('access_point_id');
 
+        $validator
+            ->integer('task_type_id')
+            ->notEmptyString('task_type_id');
+
+        $validator
+            ->integer('task_state_id')
+            ->notEmptyString('task_state_id');
+
         return $validator;
     }
 
