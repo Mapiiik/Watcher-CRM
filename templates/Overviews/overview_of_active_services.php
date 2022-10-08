@@ -23,6 +23,7 @@
                 <div class="column-responsive">
                     <?= $this->Form->control('month_to_display', [
                         'label' => __('Month To Display'),
+                        'placeholder' => __('YYYY-MM'),
                         'type' => 'month',
                         'onchange' => 'this.form.submit();',
                     ]) ?>
