@@ -61,7 +61,11 @@ tr:hover td {
     background:#ddf0ff;
 }
 
-th, td, iframe {
+th, td {
+    border: 0.1rem solid #000000;
+}
+
+iframe {
     border: 0.1rem solid #000000;
 }
 

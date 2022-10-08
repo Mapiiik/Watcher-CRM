@@ -129,10 +129,14 @@ tr:hover td {
     background:#ddf0ff;
 }
 
-th, td, iframe {
+th, td {
     border: 0.1rem solid #aaaaaa;
     vertical-align: baseline;
     padding: 0.5rem 0.5rem;
+}
+
+iframe {
+    border: 0.1rem solid #aaaaaa;
 }
 
 td:first-child,
