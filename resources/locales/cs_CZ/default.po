@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-09-26 15:48+0200\n"
-"PO-Revision-Date: 2022-09-26 15:54+0200\n"
+"POT-Creation-Date: 2022-10-08 19:48+0200\n"
+"PO-Revision-Date: 2022-10-08 19:50+0200\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -742,7 +742,7 @@ msgstr "API"
 #: templates/Emails/view.php:50 templates/Labels/index.php:52
 #: templates/Labels/view.php:55 templates/Logins/index.php:51
 #: templates/Logins/view.php:47
-#: templates/Overviews/overview_of_customer_connection_points.php:80
+#: templates/Overviews/overview_of_customer_connection_points.php:81
 #: templates/Queues/view.php:126 templates/ServiceTypes/index.php:53
 #: templates/ServiceTypes/index.php:54 templates/ServiceTypes/index.php:55
 #: templates/ServiceTypes/index.php:56 templates/ServiceTypes/index.php:57
@@ -781,7 +781,7 @@ msgstr "Ne"
 #: templates/Emails/view.php:46 templates/Emails/view.php:50
 #: templates/Labels/index.php:52 templates/Labels/view.php:55
 #: templates/Logins/index.php:51 templates/Logins/view.php:47
-#: templates/Overviews/overview_of_customer_connection_points.php:80
+#: templates/Overviews/overview_of_customer_connection_points.php:81
 #: templates/Queues/view.php:126 templates/ServiceTypes/index.php:53
 #: templates/ServiceTypes/index.php:54 templates/ServiceTypes/index.php:55
 #: templates/ServiceTypes/index.php:56 templates/ServiceTypes/index.php:57
@@ -970,11 +970,11 @@ msgstr "Naléhavé"
 #: templates/Logins/add.php:13 templates/Logins/edit.php:11
 #: templates/Logins/index.php:36 templates/Logins/view.php:11
 #: templates/Overviews/overview_of_active_services.php:11
-#: templates/Overviews/overview_of_active_services.php:55
+#: templates/Overviews/overview_of_active_services.php:56
 #: templates/Overviews/overview_of_customer_connection_points.php:11
-#: templates/Overviews/overview_of_customer_connection_points.php:63
+#: templates/Overviews/overview_of_customer_connection_points.php:64
 #: templates/Overviews/overview_of_dealer_commissions.php:11
-#: templates/Overviews/overview_of_dealer_commissions.php:63
+#: templates/Overviews/overview_of_dealer_commissions.php:64
 #: templates/Phones/add.php:11 templates/Phones/edit.php:11
 #: templates/Phones/index.php:29 templates/Phones/view.php:10
 #: templates/Queues/add.php:10 templates/Queues/edit.php:10
@@ -1245,9 +1245,9 @@ msgstr "Mapy.cz"
 #: templates/IpNetworks/index.php:52 templates/Ips/index.php:54
 #: templates/Labels/index.php:66 templates/Labels/view.php:122
 #: templates/Logins/index.php:57
-#: templates/Overviews/overview_of_active_services.php:82
-#: templates/Overviews/overview_of_customer_connection_points.php:83
-#: templates/Overviews/overview_of_dealer_commissions.php:98
+#: templates/Overviews/overview_of_active_services.php:83
+#: templates/Overviews/overview_of_customer_connection_points.php:84
+#: templates/Overviews/overview_of_dealer_commissions.php:99
 #: templates/Phones/index.php:44 templates/Queues/index.php:53
 #: templates/Queues/view.php:129 templates/RemovedIpNetworks/index.php:54
 #: templates/RemovedIps/index.php:56 templates/ServiceTypes/index.php:59
@@ -1399,7 +1399,7 @@ msgstr "Odstranit adresu"
 #: templates/EquipmentTypes/view.php:148 templates/IpNetworks/view.php:39
 #: templates/Ips/view.php:27 templates/Labels/view.php:105
 #: templates/Logins/view.php:31
-#: templates/Overviews/overview_of_dealer_commissions.php:53
+#: templates/Overviews/overview_of_dealer_commissions.php:54
 #: templates/Phones/view.php:30 templates/RemovedIpNetworks/view.php:42
 #: templates/RemovedIps/view.php:31 templates/ServiceTypes/view.php:163
 #: templates/Services/view.php:99 templates/SoldEquipments/view.php:41
@@ -1500,7 +1500,7 @@ msgstr "GPS X"
 #: templates/IpNetworks/view.php:84 templates/Ips/view.php:85
 #: templates/Labels/view.php:58 templates/Labels/view.php:104
 #: templates/Logins/view.php:66
-#: templates/Overviews/overview_of_active_services.php:43
+#: templates/Overviews/overview_of_active_services.php:44
 #: templates/Phones/view.php:41 templates/Queues/view.php:66
 #: templates/Queues/view.php:108 templates/RemovedIpNetworks/view.php:87
 #: templates/RemovedIps/view.php:74 templates/ServiceTypes/view.php:73
@@ -1639,7 +1639,7 @@ msgstr "Odstranit fakturaci"
 #: templates/Customers/view.php:875 templates/EquipmentTypes/view.php:93
 #: templates/EquipmentTypes/view.php:149 templates/IpNetworks/view.php:47
 #: templates/Ips/view.php:34
-#: templates/Overviews/overview_of_dealer_commissions.php:54
+#: templates/Overviews/overview_of_dealer_commissions.php:55
 #: templates/RemovedIpNetworks/view.php:50 templates/RemovedIps/view.php:38
 #: templates/Services/view.php:100 templates/SoldEquipments/view.php:48
 msgid "Contract"
@@ -1660,7 +1660,7 @@ msgstr "Text"
 
 #: templates/Billings/view.php:58 templates/Contracts/view.php:250
 #: templates/Customers/view.php:509
-#: templates/Overviews/overview_of_dealer_commissions.php:56
+#: templates/Overviews/overview_of_dealer_commissions.php:57
 #: templates/Services/view.php:102
 msgid "Quantity"
 msgstr "Počet"
@@ -1668,8 +1668,8 @@ msgstr "Počet"
 #: templates/Billings/view.php:62 templates/Billings/view.php:154
 #: templates/Billings/view.php:191 templates/Contracts/view.php:251
 #: templates/Customers/view.php:510 templates/EquipmentTypes/view.php:45
-#: templates/Overviews/overview_of_active_services.php:45
-#: templates/Overviews/overview_of_dealer_commissions.php:57
+#: templates/Overviews/overview_of_active_services.php:46
+#: templates/Overviews/overview_of_dealer_commissions.php:58
 #: templates/Queues/view.php:110 templates/ServiceTypes/view.php:117
 #: templates/Services/view.php:48 templates/Services/view.php:103
 msgid "Price"
@@ -1677,36 +1677,36 @@ msgstr "Cena"
 
 #: templates/Billings/view.php:67 templates/Contracts/view.php:252
 #: templates/Customers/view.php:511
-#: templates/Overviews/overview_of_dealer_commissions.php:58
+#: templates/Overviews/overview_of_dealer_commissions.php:59
 #: templates/Services/view.php:104
 msgid "Fixed Discount"
 msgstr "Pevná sleva"
 
 #: templates/Billings/view.php:71 templates/Contracts/view.php:253
 #: templates/Customers/view.php:512
-#: templates/Overviews/overview_of_dealer_commissions.php:59
+#: templates/Overviews/overview_of_dealer_commissions.php:60
 #: templates/Services/view.php:105
 msgid "Percentage Discount"
 msgstr "Procentuální sleva"
 
 #: templates/Billings/view.php:75 templates/Contracts/view.php:254
 #: templates/Customers/view.php:513
-#: templates/Overviews/overview_of_dealer_commissions.php:48
-#: templates/Overviews/overview_of_dealer_commissions.php:60
+#: templates/Overviews/overview_of_dealer_commissions.php:49
+#: templates/Overviews/overview_of_dealer_commissions.php:61
 #: templates/Services/view.php:106
 msgid "Total Price"
 msgstr "Celková cena"
 
 #: templates/Billings/view.php:79 templates/Contracts/view.php:255
 #: templates/Customers/view.php:514
-#: templates/Overviews/overview_of_dealer_commissions.php:61
+#: templates/Overviews/overview_of_dealer_commissions.php:62
 #: templates/Services/view.php:107
 msgid "Billing From"
 msgstr "Fakturovat od"
 
 #: templates/Billings/view.php:83 templates/Contracts/view.php:256
 #: templates/Customers/view.php:515
-#: templates/Overviews/overview_of_dealer_commissions.php:62
+#: templates/Overviews/overview_of_dealer_commissions.php:63
 #: templates/Services/view.php:108
 msgid "Billing Until"
 msgstr "Fakturovat do"
@@ -1822,8 +1822,8 @@ msgstr "Smazat provizi"
 
 #: templates/Commissions/view.php:30 templates/Countries/view.php:31
 #: templates/EquipmentTypes/view.php:41 templates/Labels/view.php:38
-#: templates/Overviews/overview_of_active_services.php:44
-#: templates/Overviews/overview_of_dealer_commissions.php:55
+#: templates/Overviews/overview_of_active_services.php:45
+#: templates/Overviews/overview_of_dealer_commissions.php:56
 #: templates/Queues/view.php:30 templates/Queues/view.php:109
 #: templates/ServiceTypes/view.php:33 templates/ServiceTypes/view.php:116
 #: templates/Services/view.php:30 templates/TaskStates/view.php:31
@@ -1844,12 +1844,12 @@ msgid "Dealer"
 msgstr "Dealer"
 
 #: templates/Commissions/view.php:78 templates/DealerCommissions/view.php:55
-#: templates/Overviews/overview_of_dealer_commissions.php:40
+#: templates/Overviews/overview_of_dealer_commissions.php:41
 msgid "Fixed"
 msgstr "Pevná"
 
 #: templates/Commissions/view.php:79 templates/DealerCommissions/view.php:59
-#: templates/Overviews/overview_of_dealer_commissions.php:42
+#: templates/Overviews/overview_of_dealer_commissions.php:43
 msgid "Percentage"
 msgstr "Procentuální"
 
@@ -1859,7 +1859,7 @@ msgstr "Související smlouvy"
 
 #: templates/Commissions/view.php:124 templates/Contracts/print.php:43
 #: templates/Contracts/view.php:78 templates/Customers/view.php:446
-#: templates/Overviews/overview_of_active_services.php:46
+#: templates/Overviews/overview_of_active_services.php:47
 #: templates/Queues/view.php:111 templates/Services/view.php:34
 msgid "Service Type"
 msgstr "Typ služby"
@@ -2743,37 +2743,43 @@ msgstr "Seznam přehledů"
 msgid "Month To Display"
 msgstr "Měsíc k zobrazení"
 
-#: templates/Overviews/overview_of_active_services.php:47
+#: templates/Overviews/overview_of_active_services.php:26
+#: templates/Overviews/overview_of_customer_connection_points.php:37
+#: templates/Overviews/overview_of_dealer_commissions.php:26
+msgid "YYYY-MM"
+msgstr "RRRR-MM"
+
+#: templates/Overviews/overview_of_active_services.php:48
 #: templates/ServiceTypes/view.php:118 templates/Services/view.php:41
 msgid "Queue"
 msgstr "Fronta"
 
-#: templates/Overviews/overview_of_active_services.php:48
+#: templates/Overviews/overview_of_active_services.php:49
 msgid "Number of Uses"
 msgstr "Počet použití"
 
-#: templates/Overviews/overview_of_active_services.php:49
+#: templates/Overviews/overview_of_active_services.php:50
 msgid "Number of Uses (nonbusiness)"
 msgstr "Počet použití (neobchodní)"
 
-#: templates/Overviews/overview_of_active_services.php:50
+#: templates/Overviews/overview_of_active_services.php:51
 msgid "Sum"
 msgstr "Součet"
 
-#: templates/Overviews/overview_of_active_services.php:51
+#: templates/Overviews/overview_of_active_services.php:52
 msgid "Fixed Discount Sum"
 msgstr "Součet pevných slev"
 
-#: templates/Overviews/overview_of_active_services.php:52
+#: templates/Overviews/overview_of_active_services.php:53
 msgid "Percentage Discount Sum"
 msgstr "Součet procentuálních slev"
 
-#: templates/Overviews/overview_of_active_services.php:53
-#: templates/Overviews/overview_of_active_services.php:94
+#: templates/Overviews/overview_of_active_services.php:54
+#: templates/Overviews/overview_of_active_services.php:95
 msgid "Total Sum"
 msgstr "Celkový součet"
 
-#: templates/Overviews/overview_of_active_services.php:54
+#: templates/Overviews/overview_of_active_services.php:55
 msgid "Total Sum (nonbusiness)"
 msgstr "Celkový součet (neobchodní)"
 
@@ -2781,55 +2787,55 @@ msgstr "Celkový součet (neobchodní)"
 msgid "Export"
 msgstr "Export"
 
-#: templates/Overviews/overview_of_customer_connection_points.php:50
+#: templates/Overviews/overview_of_customer_connection_points.php:51
 msgid "RUIAN GID"
 msgstr "RUIAN GID"
 
-#: templates/Overviews/overview_of_customer_connection_points.php:51
+#: templates/Overviews/overview_of_customer_connection_points.php:52
 msgid "Active Connections"
 msgstr "Aktivní připojení"
 
-#: templates/Overviews/overview_of_customer_connection_points.php:52
+#: templates/Overviews/overview_of_customer_connection_points.php:53
 msgid "Active Connections (nonbusiness)"
 msgstr "Aktivní připojení (neobchodní)"
 
-#: templates/Overviews/overview_of_customer_connection_points.php:53
+#: templates/Overviews/overview_of_customer_connection_points.php:54
 msgid "Active 0-30 Mbps"
 msgstr "Aktivní 0-30 Mb/s"
 
-#: templates/Overviews/overview_of_customer_connection_points.php:54
+#: templates/Overviews/overview_of_customer_connection_points.php:55
 msgid "Active 30-100 Mbps"
 msgstr "Aktivní 30-100 Mb/s"
 
-#: templates/Overviews/overview_of_customer_connection_points.php:55
+#: templates/Overviews/overview_of_customer_connection_points.php:56
 msgid "Active 100+ Mbps"
 msgstr "Aktivní 100+ Mb/s"
 
-#: templates/Overviews/overview_of_customer_connection_points.php:56
+#: templates/Overviews/overview_of_customer_connection_points.php:57
 msgid "Available 0-30 Mbps"
 msgstr "K dispozici 0-30 Mbps"
 
-#: templates/Overviews/overview_of_customer_connection_points.php:57
+#: templates/Overviews/overview_of_customer_connection_points.php:58
 msgid "Available 30-100 Mbps"
 msgstr "K dispozici 30-100 Mbps"
 
-#: templates/Overviews/overview_of_customer_connection_points.php:58
+#: templates/Overviews/overview_of_customer_connection_points.php:59
 msgid "Available 100-300 Mbps"
 msgstr "K dispozici 100-300 Mbps"
 
-#: templates/Overviews/overview_of_customer_connection_points.php:59
+#: templates/Overviews/overview_of_customer_connection_points.php:60
 msgid "Available 300-1000 Mbps"
 msgstr "K dispozici 300-1000 Mbps"
 
-#: templates/Overviews/overview_of_customer_connection_points.php:60
+#: templates/Overviews/overview_of_customer_connection_points.php:61
 msgid "Available 1000+ Mbps"
 msgstr "K dispozici 1000+ Mb/s"
 
-#: templates/Overviews/overview_of_customer_connection_points.php:61
+#: templates/Overviews/overview_of_customer_connection_points.php:62
 msgid "VHCN"
 msgstr "VHCN"
 
-#: templates/Overviews/overview_of_customer_connection_points.php:62
+#: templates/Overviews/overview_of_customer_connection_points.php:63
 msgid "Address"
 msgstr "Adresa"
 
