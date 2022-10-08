@@ -218,6 +218,13 @@ return [
             ],
             'action' => ['delete'],
         ],
+        //allow some reports for managers and bookkeepers
+        [
+            'role' => ['manager', 'bookkeeper'],
+            'plugin' => null,
+            'controller' => 'Overviews',
+            'action' => ['index', 'overviewOfActiveServices'],
+        ],
         //allow invoice view/download for managers
         [
             'role' => ['manager'],
