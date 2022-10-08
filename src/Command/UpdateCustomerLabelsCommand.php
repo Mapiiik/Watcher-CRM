@@ -85,7 +85,6 @@ class UpdateCustomerLabelsCommand extends Command
                             . '- ID: ' . $label->id . PHP_EOL
                             . '- ' . $e->getMessage()
                         );
-                        exit;
                     }
 
                     foreach ($dynamic_sql_results as $dynamic_sql_result) {
