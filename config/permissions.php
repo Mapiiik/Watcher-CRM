@@ -249,7 +249,6 @@ return [
                 'add',
                 'edit',
                 'monitoring',
-                'disconnectRequestPECL',
                 'disconnectRequest',
                 'updateRelatedRecords',
             ],
