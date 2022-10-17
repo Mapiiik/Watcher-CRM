@@ -45,6 +45,14 @@ use Cake\I18n\FrozenTime;
                 ['class' => 'button float-right']
             ) ?>
             <?= $this->Form->postLink(
+                __d('radius', 'RADIUS Disconnect Request') . ' (PECL-RADIUS)',
+                ['action' => 'disconnectRequestPECL', $account->id],
+                [
+                    'confirm' => __d('radius', 'Are you sure you want to disconnect {0}?', $account->username),
+                    'class' => 'button float-right',
+                ]
+            ) ?>
+            <?= $this->Form->postLink(
                 __d('radius', 'RADIUS Disconnect Request'),
                 ['action' => 'disconnectRequest', $account->id],
                 [

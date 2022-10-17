@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace Radius\Controller;
 
+use Boo\Radius\Client;
+use Boo\Radius\Exceptions\ClientException;
+use Boo\Radius\Packet;
+use Boo\Radius\PacketType;
 use Cake\Database\Query;
 use Cake\I18n\FrozenDate;
 
@@ -294,7 +298,7 @@ class AccountsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects always to monitoring.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function disconnectRequest($id = null)
+    public function disconnectRequestPECL($id = null)
     {
         $this->request->allowMethod(['post']);
         $account = $this->Accounts->get($id, [
@@ -402,6 +406,149 @@ class AccountsController extends AppController
             }
 
             radius_close($radius);
+
+            if ($disconnected) {
+                $this->Flash->success(__d(
+                    'radius',
+                    'The RADIUS session started on {0} has been disconnected ({1}).',
+                    $session->acctstarttime,
+                    $error ? $result . ' - ' . $error : $result
+                ));
+            } else {
+                $this->Flash->error(__d(
+                    'radius',
+                    'The RADIUS session started on {0} could not be disconnected ({1}).',
+                    $session->acctstarttime,
+                    $error ? $result . ' - ' . $error : $result
+                ));
+            }
+        }
+
+        // wait one second for RADIUS records to update
+        sleep(1);
+
+        return $this->redirect(['action' => 'monitoring', $account->id]);
+    }
+
+    /**
+     * Disconnect request method
+     *
+     * @param string|null $id Account id.
+     * @return \Cake\Http\Response|null|void Redirects always to monitoring.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function disconnectRequest($id = null)
+    {
+        $this->request->allowMethod(['post']);
+        $account = $this->Accounts->get($id, [
+            'contain' => [
+                'Radacct' => ['conditions' => ['Radacct.acctstoptime IS' => null]],
+            ],
+        ]);
+
+        if (empty($account->radacct)) {
+            $this->Flash->warning(__d(
+                'radius',
+                'No active RADIUS session found.'
+            ));
+
+            return $this->redirect(['action' => 'monitoring', $account->id]);
+        }
+
+        foreach ($account->radacct as $session) {
+            $disconnected = false;
+
+            $client = new Client('udp://' . $session->nasipaddress . ':1700', /* timeout */ 3);
+            try {
+                $response = $client->send(new Packet(PacketType::DISCONNECT_REQUEST(), /* secret */ env('RADIUS_SECRET'), [
+                    'User-Name' => $session->username,
+                    'Acct-Session-Id' => $session->acctsessionid,
+                    'Framed-IP-Address' => $session->framedipaddress,
+                    'NAS-IP-Address' => $session->nasipaddress,
+                ]));
+            } catch (ClientException $e) {
+                $this->Flash->error(__d(
+                    'radius',
+                    'The RADIUS session started on {0} could not be disconnected ({1}).',
+                    $session->acctstarttime,
+                    $e->getMessage()
+                ));
+
+                return $this->redirect(['action' => 'monitoring', $account->id]);
+            }
+
+            switch ($response->getType()) {
+                case PacketType::COA_ACK():
+                    $result = 'CoA-ACK';
+                    $disconnected = true;
+                    break;
+                case PacketType::DISCONNECT_ACK():
+                    $result = 'Disconnect-ACK';
+                    $disconnected = true;
+                    break;
+                case PacketType::COA_NAK():
+                    $result = 'CoA-NAK';
+                    break;
+                case PacketType::DISCONNECT_NAK():
+                    $result = 'Disconnect-NAK';
+                    break;
+                default:
+                    $result = 'Unsupported reply';
+            }
+
+            $errors = [];
+            foreach ($response->getAttribute('Error-Cause') as $error_code) {
+                switch ($error_code) {
+                    case 401:
+                        $errors[] = 'Unsupported Attribute';
+                        break;
+                    case 402:
+                        $errors[] = 'Missing Attribute';
+                        break;
+                    case 403:
+                        $errors[] = 'NAS Identification Mismatch';
+                        break;
+                    case 404:
+                        $errors[] = 'Invalid Request';
+                        break;
+                    case 405:
+                        $errors[] = 'Unsupported Service';
+                        break;
+                    case 406:
+                        $errors[] = 'Unsupported Extension';
+                        break;
+                    case 407:
+                        $errors[] = 'Invalid Attribute Value';
+                        break;
+                    case 501:
+                        $errors[] = 'Administratively Prohibited';
+                        break;
+                    case 502:
+                        $errors[] = 'Request Not Routable (Proxy)';
+                        break;
+                    case 503:
+                        $errors[] = 'Session Context Not Found';
+                        break;
+                    case 504:
+                        $errors[] = 'Session Context Not Removable';
+                        break;
+                    case 505:
+                        $errors[] = 'Other Proxy Processing Error';
+                        break;
+                    case 506:
+                        $errors[] = 'Resources Unavailable';
+                        break;
+                    case 507:
+                        $errors[] = 'Request Initiated';
+                        break;
+                    case 508:
+                        $errors[] = 'Multiple Session Selection Unsupported';
+                        break;
+                    default:
+                        $errors[] = 'Unsupported Error-Cause';
+                }
+            }
+            $error = implode(', ', $errors);
 
             if ($disconnected) {
                 $this->Flash->success(__d(
