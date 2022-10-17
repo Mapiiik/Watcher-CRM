@@ -479,6 +479,7 @@ class AccountsController extends AppController
                 return $this->redirect(['action' => 'monitoring', $account->id]);
             }
 
+            // detect response type
             switch ($response->getType()) {
                 case PacketType::COA_ACK():
                     $result = 'CoA-ACK';
@@ -498,56 +499,60 @@ class AccountsController extends AppController
                     $result = 'Unsupported reply';
             }
 
+            // detect error causes
             $errors = [];
-            foreach ($response->getAttribute('Error-Cause') as $error_code) {
-                switch ($error_code) {
-                    case 401:
-                        $errors[] = 'Unsupported Attribute';
-                        break;
-                    case 402:
-                        $errors[] = 'Missing Attribute';
-                        break;
-                    case 403:
-                        $errors[] = 'NAS Identification Mismatch';
-                        break;
-                    case 404:
-                        $errors[] = 'Invalid Request';
-                        break;
-                    case 405:
-                        $errors[] = 'Unsupported Service';
-                        break;
-                    case 406:
-                        $errors[] = 'Unsupported Extension';
-                        break;
-                    case 407:
-                        $errors[] = 'Invalid Attribute Value';
-                        break;
-                    case 501:
-                        $errors[] = 'Administratively Prohibited';
-                        break;
-                    case 502:
-                        $errors[] = 'Request Not Routable (Proxy)';
-                        break;
-                    case 503:
-                        $errors[] = 'Session Context Not Found';
-                        break;
-                    case 504:
-                        $errors[] = 'Session Context Not Removable';
-                        break;
-                    case 505:
-                        $errors[] = 'Other Proxy Processing Error';
-                        break;
-                    case 506:
-                        $errors[] = 'Resources Unavailable';
-                        break;
-                    case 507:
-                        $errors[] = 'Request Initiated';
-                        break;
-                    case 508:
-                        $errors[] = 'Multiple Session Selection Unsupported';
-                        break;
-                    default:
-                        $errors[] = 'Unsupported Error-Cause';
+            $attributes = $response->getAttributes();
+            if (isset($attributes['Error-Cause']) && is_array($attributes['Error-Cause'])) {
+                foreach ($attributes['Error-Cause'] as $error_code) {
+                    switch ($error_code) {
+                        case 401:
+                            $errors[] = 'Unsupported Attribute';
+                            break;
+                        case 402:
+                            $errors[] = 'Missing Attribute';
+                            break;
+                        case 403:
+                            $errors[] = 'NAS Identification Mismatch';
+                            break;
+                        case 404:
+                            $errors[] = 'Invalid Request';
+                            break;
+                        case 405:
+                            $errors[] = 'Unsupported Service';
+                            break;
+                        case 406:
+                            $errors[] = 'Unsupported Extension';
+                            break;
+                        case 407:
+                            $errors[] = 'Invalid Attribute Value';
+                            break;
+                        case 501:
+                            $errors[] = 'Administratively Prohibited';
+                            break;
+                        case 502:
+                            $errors[] = 'Request Not Routable (Proxy)';
+                            break;
+                        case 503:
+                            $errors[] = 'Session Context Not Found';
+                            break;
+                        case 504:
+                            $errors[] = 'Session Context Not Removable';
+                            break;
+                        case 505:
+                            $errors[] = 'Other Proxy Processing Error';
+                            break;
+                        case 506:
+                            $errors[] = 'Resources Unavailable';
+                            break;
+                        case 507:
+                            $errors[] = 'Request Initiated';
+                            break;
+                        case 508:
+                            $errors[] = 'Multiple Session Selection Unsupported';
+                            break;
+                        default:
+                            $errors[] = 'Unsupported Error-Cause';
+                    }
                 }
             }
             $error = implode(', ', $errors);
