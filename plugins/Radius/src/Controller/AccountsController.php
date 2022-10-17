@@ -460,12 +460,14 @@ class AccountsController extends AppController
 
             $client = new Client('udp://' . $session->nasipaddress . ':1700', /* timeout */ 3);
             try {
-                $response = $client->send(new Packet(PacketType::DISCONNECT_REQUEST(), /* secret */ env('RADIUS_SECRET'), [
-                    'User-Name' => $session->username,
-                    'Acct-Session-Id' => $session->acctsessionid,
-                    'Framed-IP-Address' => $session->framedipaddress,
-                    'NAS-IP-Address' => $session->nasipaddress,
-                ]));
+                $response = $client->send(
+                    new Packet(PacketType::DISCONNECT_REQUEST(), /* secret */ env('RADIUS_SECRET'), [
+                        'User-Name' => $session->username,
+                        'Acct-Session-Id' => $session->acctsessionid,
+                        'Framed-IP-Address' => $session->framedipaddress,
+                        'NAS-IP-Address' => $session->nasipaddress,
+                    ])
+                );
             } catch (ClientException $e) {
                 $this->Flash->error(__d(
                     'radius',
