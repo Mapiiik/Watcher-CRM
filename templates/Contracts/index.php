@@ -43,7 +43,7 @@
             </thead>
             <tbody>
                 <?php foreach ($contracts as $contract) : ?>
-                <tr>
+                <tr style="<?= $contract->style ?>">
                     <td><?= $this->Number->format($contract->id) ?></td>
                     <td>
                         <?= $contract->has('customer') ? $this->Html->link(

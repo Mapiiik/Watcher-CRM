@@ -457,7 +457,7 @@ use Cake\I18n\Number;
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($customer->contracts as $contract) : ?>
-                        <tr>
+                        <tr style="<?= $contract->style ?>">
                             <td><?= h($contract->number) ?></td>
                             <td><?= $contract->has('service_type') ? h($contract->service_type->name) : '' ?></td>
                             <td><?= $contract->has('installation_address') ?

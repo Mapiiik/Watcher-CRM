@@ -135,7 +135,7 @@
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($commission->contracts as $contract) : ?>
-                        <tr>
+                        <tr style="<?= $contract->style ?>">
                             <td><?= $this->Number->format($contract->id) ?></td>
                             <td>
                                 <?= $contract->has('customer') ? $this->Html->link(
