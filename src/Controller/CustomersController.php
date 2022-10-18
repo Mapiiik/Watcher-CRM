@@ -18,15 +18,15 @@ class CustomersController extends AppController
      */
     public function index()
     {
-        // filter
-        $conditions = [];
-
         // search
         $search = $this->getRequest()->getQuery('search');
         $advanced_search = $this->getRequest()->getQuery('advanced_search');
         $is_admin = in_array($this->getRequest()->getAttribute('identity')['role'] ?? null, ['admin']);
 
+        $customersQuery = $this->Customers->find();
+
         if ($is_admin && $advanced_search && !empty($search)) {
+            // advanced search
             $filter = 'to_tsvector('
                     . "Customers.id || ' ' || "
                     . 'Customers.id + ' . (int)env('CUSTOMER_SERIES', '0') . " || ' ' || "
@@ -47,7 +47,7 @@ class CustomersController extends AppController
                     . "COALESCE(Customers.ic, '') || ' ' || "
                     . "COALESCE(Customers.dic, '') || ' ' || "
                     . "COALESCE(Ips.ip, '0.0.0.0'::inet)"
-                . ") @@ plainto_tsquery('" . pg_escape_string(trim($search)) . "')";
+                . ') @@ plainto_tsquery(:search)';
             $filter = '('
                     . 'SELECT customers.id FROM customers '
                     . 'LEFT JOIN contracts ON (customers.id = contracts.customer_id) '
@@ -58,26 +58,32 @@ class CustomersController extends AppController
                     . 'WHERE ' . $filter . ' GROUP BY customers.id'
                 . ')';
 
-            $conditions[] = [
+            $customersQuery->where([
                 'OR' => [
                     'Customers.company ILIKE' => '%' . trim($search) . '%',
                     'Customers.first_name ILIKE' => '%' . trim($search) . '%',
                     'Customers.last_name ILIKE' => '%' . trim($search) . '%',
                     'Customers.id IN ' . $filter,
                 ],
-            ];
+            ]);
+            $customersQuery->bind(':search', trim($search), 'string');
+
             unset($filter);
         } elseif (is_numeric($search)) {
-            $conditions[] = [
+            // search by customer number
+            $customersQuery->where([
                 'OR' => [
-                    'Customers.id' => (int)$search,
-                    '(Customers.id + ' . (int)env('CUSTOMER_SERIES', '0') . ') =' => (int)$search,
-                    'Customers.ic' => $search,
+                    'Customers.id' => (int)trim($search),
+                    '(Customers.id + ' . (int)env('CUSTOMER_SERIES', '0') . ') =' => (int)trim($search),
+                    'Customers.ic' => trim($search),
                 ],
-            ];
+            ]);
         } elseif (!empty($search) || !$is_admin) {
+            // notify the required use of the customer number
             $this->Flash->set(__('Please use the customer number or company identification number in the search.'));
-            $conditions = ['false'];
+            $customersQuery->where([
+                'false',
+            ]);
         }
 
         $this->paginate = [
@@ -85,10 +91,9 @@ class CustomersController extends AppController
             'order' => [
                 'Customers.id' => 'DESC',
             ],
-            'conditions' => $conditions,
         ];
 
-        $customers = $this->paginate($this->Customers);
+        $customers = $this->paginate($customersQuery);
 
         $invoice_delivery_types = $this->Customers->invoice_delivery_types;
 
