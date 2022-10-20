@@ -1,3 +1,10 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\Customer $customer
+ * @var bool $compact
+ */
+?>
 <div class="container nav-container">
     <div class="content nav-content top-nav">
         <div class="nav-content-left">

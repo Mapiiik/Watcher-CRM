@@ -39,6 +39,7 @@ use Cake\ORM\Entity;
  * @property int|null $activation_fee_with_obligation_sum
  * @property string|null $number_of_the_contract_to_be_terminated
  * @property string|null $access_point_id
+ * @property string $name
  * @property string $style
  * @property bool $active
  *
