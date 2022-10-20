@@ -202,7 +202,7 @@ class ContractPDF extends TCPDF
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Cell(30, 4, 'firma:', '', 0, 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(60, 4, $contract->billing_address->company, '', 'L');
+        $this->MultiCell(60, 4, $contract->billing_address->company ?? '', '', 'L');
 
         $this->SetFont('DejaVuSerif', '', 8);
         if (is_null($contract->billing_address->company)) {
@@ -949,7 +949,7 @@ class ContractPDF extends TCPDF
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Cell(30, 4, 'firma:', '', 0, 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(60, 4, $contract->billing_address->company, '', 'L');
+        $this->MultiCell(60, 4, $contract->billing_address->company ?? '', '', 'L');
 
         $this->SetFont('DejaVuSerif', '', 8);
         if (is_null($contract->billing_address->company)) {
