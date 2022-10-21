@@ -47,6 +47,9 @@ h1, h2, h3, h4, h5, h6 {
 h4 {
     font-size: 2rem;
     padding-bottom: 0.3rem;
+}
+
+.main h4 {
     border-bottom: 0.1rem #c0e0ff solid;
 }
 
