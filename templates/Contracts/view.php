@@ -31,7 +31,7 @@ use Cake\I18n\Number;
                 ['class' => 'side-nav-item']
             ) ?>
         </div>
-        <hr>
+        <br>
         <div class="side-labels">
             <h4 class="heading"><?= __('Labels') ?></h4>
             <?php foreach ($contract->customer->customer_labels as $customer_label) : ?>
