@@ -37,7 +37,7 @@
                         ]);
                         echo $this->Form->control('invoiced_month', [
                             'label' => __d('bookkeeping_pohoda', 'Invoiced Month'),
-                            'placeholder' => __('YYYY-MM'),
+                            'placeholder' => __d('bookkeeping_pohoda', 'YYYY-MM'),
                             'type' => 'month',
                             'empty' => true,
                             'required' => true,

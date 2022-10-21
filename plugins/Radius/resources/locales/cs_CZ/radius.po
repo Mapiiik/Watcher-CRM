@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-09-19 17:02+0200\n"
-"PO-Revision-Date: 2022-09-19 17:03+0200\n"
+"POT-Creation-Date: 2022-10-21 19:04+0200\n"
+"PO-Revision-Date: 2022-10-21 19:08+0200\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -15,54 +15,55 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 "X-Generator: Poedit 3.1.1\n"
 
-#: plugins/Radius/src/Controller/AccountsController.php:144
-#: plugins/Radius/src/Controller/AccountsController.php:243
+#: plugins/Radius/src/Controller/AccountsController.php:148
+#: plugins/Radius/src/Controller/AccountsController.php:247
 msgid "The RADIUS account has been saved."
 msgstr "Účet RADIUS byl uložen."
 
-#: plugins/Radius/src/Controller/AccountsController.php:148
-#: plugins/Radius/src/Controller/AccountsController.php:247
+#: plugins/Radius/src/Controller/AccountsController.php:152
+#: plugins/Radius/src/Controller/AccountsController.php:251
 msgid "The RADIUS account could not be saved. Please, try again."
 msgstr "Účet RADIUS nelze uložit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/AccountsController.php:282
+#: plugins/Radius/src/Controller/AccountsController.php:286
 msgid "The RADIUS account has been deleted."
 msgstr "Účet RADIUS byl odstraněn."
 
-#: plugins/Radius/src/Controller/AccountsController.php:284
+#: plugins/Radius/src/Controller/AccountsController.php:288
 msgid "The RADIUS account could not be deleted. Please, try again."
 msgstr "Účet RADIUS nelze odstranit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/AccountsController.php:307
+#: plugins/Radius/src/Controller/AccountsController.php:311
 msgid "No active RADIUS session found."
 msgstr "Nebyla nalezena žádná aktivní relace RADIUS."
 
-#: plugins/Radius/src/Controller/AccountsController.php:407
-msgid "The RADIUS session started on {0} has been disconnected ({1})."
-msgstr "Relace RADIUS zahájená {0} byla odpojena ({1})."
-
-#: plugins/Radius/src/Controller/AccountsController.php:414
+#: plugins/Radius/src/Controller/AccountsController.php:333
+#: plugins/Radius/src/Controller/AccountsController.php:429
 msgid "The RADIUS session started on {0} could not be disconnected ({1})."
 msgstr "Relaci RADIUS zahájenou {0} nelze odpojit ({1})."
 
-#: plugins/Radius/src/Controller/AccountsController.php:449
+#: plugins/Radius/src/Controller/AccountsController.php:422
+msgid "The RADIUS session started on {0} has been disconnected ({1})."
+msgstr "Relace RADIUS zahájená {0} byla odpojena ({1})."
+
+#: plugins/Radius/src/Controller/AccountsController.php:464
 msgid "The RADIUS account has been updated."
 msgstr "Účet RADIUS byl aktualizován."
 
-#: plugins/Radius/src/Controller/AccountsController.php:451
+#: plugins/Radius/src/Controller/AccountsController.php:466
 msgid "The RADIUS account could not be updated. Please, try again."
 msgstr "Účet RADIUS nelze aktualizovat. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/AccountsController.php:560
+#: plugins/Radius/src/Controller/AccountsController.php:575
 msgid ""
 "The RADIUS replies could not be found automatically. Please, set it manually."
 msgstr "Odpovědi RADIUS nebyly nalezeny automaticky. Nastavte je prosím ručně."
 
-#: plugins/Radius/src/Controller/AccountsController.php:562
+#: plugins/Radius/src/Controller/AccountsController.php:577
 msgid "The IP addresses for the contract are probably not set correctly."
 msgstr "IP adresy pro smlouvu pravděpodobně nejsou správně nastaveny."
 
-#: plugins/Radius/src/Controller/AccountsController.php:622
+#: plugins/Radius/src/Controller/AccountsController.php:637
 msgid ""
 "The RADIUS user groups could not be found automatically. Please, set it "
 "manually."
@@ -70,7 +71,7 @@ msgstr ""
 "Skupiny uživatelů RADIUS nebyly nalezeny automaticky. Nastavte je prosím "
 "ručně."
 
-#: plugins/Radius/src/Controller/AccountsController.php:624
+#: plugins/Radius/src/Controller/AccountsController.php:639
 msgid ""
 "The billings for the contract for the current or upcoming period are "
 "probably not set correctly."

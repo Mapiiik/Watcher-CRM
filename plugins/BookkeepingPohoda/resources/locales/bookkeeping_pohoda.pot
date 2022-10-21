@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-09-19 16:56+0200\n"
+"POT-Creation-Date: 2022-10-21 19:07+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -74,15 +74,15 @@ msgstr ""
 msgid "No invoices could be marked to be sent by email. Please, try again."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:511
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:512
 msgid "The import file is missing some required columns."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:547
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:548
 msgid "Invoice {0} could not be loaded."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:556
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:557
 msgid "Successfully imported {0} invoices. Created {1}, modified {2} and skipped {3} records."
 msgstr ""
 
@@ -112,7 +112,7 @@ msgstr ""
 
 #: ./plugins/BookkeepingPohoda/templates/Invoices/add.php:26
 #: ./plugins/BookkeepingPohoda/templates/Invoices/edit.php:34
-#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:71
+#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:72
 #: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:37
 #: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:47
 #: ./plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:15
@@ -161,8 +161,8 @@ msgstr ""
 
 #: ./plugins/BookkeepingPohoda/templates/Invoices/add.php:48
 #: ./plugins/BookkeepingPohoda/templates/Invoices/edit.php:56
-#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:110
-#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:132
+#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:111
+#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:133
 #: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:45
 #: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:74
 #: ./plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:23
@@ -204,7 +204,7 @@ msgstr ""
 
 #: ./plugins/BookkeepingPohoda/templates/Invoices/add.php:65
 #: ./plugins/BookkeepingPohoda/templates/Invoices/edit.php:73
-#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:61
+#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:62
 #: ./plugins/BookkeepingPohoda/templates/Invoices/import_from_d_b_f.php:42
 #: ./plugins/BookkeepingPohoda/templates/Invoices/send_by_email.php:37
 msgid "Submit"
@@ -239,21 +239,25 @@ msgstr ""
 msgid "Invoiced Month"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:45
+#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:40
+msgid "YYYY-MM"
+msgstr ""
+
+#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:46
 msgid "Output Format"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:51
+#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:52
 msgid "CSV for verification"
-msgstr ""
-
-#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:97
-#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:119
-msgid "Name"
 msgstr ""
 
 #: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:98
 #: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:120
+msgid "Name"
+msgstr ""
+
+#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:99
+#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:121
 msgid "Price"
 msgstr ""
 
