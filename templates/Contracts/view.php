@@ -209,17 +209,23 @@ use Cake\I18n\Number;
                     </table>
                 </div>
             </div>
-            <div class="text">
-                <strong><?= __('Access Description') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($contract->access_description)); ?>
-                </blockquote>
-            </div>
-            <div class="text">
-                <strong><?= __('Note') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($contract->note)); ?>
-                </blockquote>
+            <div class="row">
+                <div class="column-responsive">
+                    <div class="text">
+                        <strong><?= __('Access Description') ?></strong>
+                        <blockquote>
+                            <?= $this->Text->autoParagraph(h($contract->access_description)); ?>
+                        </blockquote>
+                    </div>
+                </div>
+                <div class="column-responsive">
+                    <div class="text">
+                        <strong><?= __('Note') ?></strong>
+                        <blockquote>
+                            <?= $this->Text->autoParagraph(h($contract->note)); ?>
+                        </blockquote>
+                    </div>
+                </div>
             </div>
             <div class="related">
                 <?= $this->AuthLink->link(
@@ -298,143 +304,6 @@ use Cake\I18n\Number;
             </div>
             <div class="related">
                 <?= $this->AuthLink->link(
-                    __('New Ip'),
-                    ['controller' => 'Ips', 'action' => 'add'],
-                    ['class' => 'button button-small float-right win-link']
-                ) ?>
-                <h4><?= __('Ips') ?></h4>
-                <?php if (!empty($contract->ips)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __('Ip') ?></th>
-                            <th><?= __('Type Of Use') ?></th>
-                            <th><?= __('Note') ?></th>
-                            <th><?= __('Device') ?></th>
-                            <th><?= __('Range') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                        <?php foreach ($contract->ips as $ip) : ?>
-                        <tr style="<?= $ip->style ?>">
-                            <td><?= h($ip->ip) ?></td>
-                            <td><?= h($ip_address_types_of_use[$ip->type_of_use]) ?></td>
-                            <td><?= h($ip->note) ?></td>
-                            <td><?php
-                            if (isset($ip->routeros_devices)) {
-                                $device = $ip->routeros_devices->first();
-                                echo isset($device['id']) ?
-                                    $this->Html->link(
-                                        $device['system_description'],
-                                        env('WATCHER_NMS_URL') . '/routeros-devices/view/' . $device['id'],
-                                        ['target' => '_blank']
-                                    ) . '<br>' : '';
-                                unset($device);
-                            }
-                            ?></td>
-                            <td><?php
-                            if (isset($ip->ip_address_ranges)) {
-                                $range = $ip->ip_address_ranges->first();
-                                echo isset($range['access_point']['id']) ?
-                                    __('Access Point') . ': ' . $this->Html->link(
-                                        $range['access_point']['name'],
-                                        env('WATCHER_NMS_URL') . '/access-points/view/' . $range['access_point']['id'],
-                                        ['target' => '_blank']
-                                    ) . '<br>' : '';
-                                echo isset($range['id']) ?
-                                    __('Range') . ': ' . $this->Html->link(
-                                        $range['name'],
-                                        env('WATCHER_NMS_URL') . '/ip-address-ranges/view/' . $range['id'],
-                                        ['target' => '_blank']
-                                    ) . '<br>' : '';
-                                unset($range);
-                            }
-                            ?></td>
-                            <td class="actions">
-                                <?= $this->AuthLink->link(
-                                    __('View'),
-                                    ['controller' => 'Ips', 'action' => 'view', $ip->id]
-                                ) ?>
-                                <?= $this->AuthLink->link(
-                                    __('Edit'),
-                                    ['controller' => 'Ips', 'action' => 'edit', $ip->id],
-                                    ['class' => 'win-link']
-                                ) ?>
-                                <?= $this->AuthLink->postLink(
-                                    __('Delete'),
-                                    ['controller' => 'Ips', 'action' => 'delete', $ip->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $ip->ip)]
-                                ) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
-                <?php endif; ?>
-            </div>
-            <div class="related">
-                <?= $this->AuthLink->link(
-                    __('New IP Network'),
-                    ['controller' => 'IpNetworks', 'action' => 'add'],
-                    ['class' => 'button button-small float-right win-link']
-                ) ?>
-            <h4><?= __('IP Networks') ?></h4>
-                <?php if (!empty($contract->ip_networks)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __('Ip Network') ?></th>
-                            <th><?= __('Type Of Use') ?></th>
-                            <th><?= __('Note') ?></th>
-                            <th><?= __('Range') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                        <?php foreach ($contract->ip_networks as $ipNetwork) : ?>
-                        <tr style="<?= $ipNetwork->style ?>">
-                            <td><?= h($ipNetwork->ip_network) ?></td>
-                            <td><?= h($ip_network_types_of_use[$ipNetwork->type_of_use]) ?></td>
-                            <td><?= h($ipNetwork->note) ?></td>
-                            <td><?php
-                            if (isset($ipNetwork->ip_address_ranges)) {
-                                $range = $ipNetwork->ip_address_ranges->first();
-                                echo isset($range['access_point']['id']) ?
-                                    __('Access Point') . ': ' . $this->Html->link(
-                                        $range['access_point']['name'],
-                                        env('WATCHER_NMS_URL') . '/access-points/view/' . $range['access_point']['id'],
-                                        ['target' => '_blank']
-                                    ) . '<br>' : '';
-                                echo isset($range['id']) ?
-                                    __('Range') . ': ' . $this->Html->link(
-                                        $range['name'],
-                                        env('WATCHER_NMS_URL') . '/ip-address-ranges/view/' . $range['id'],
-                                        ['target' => '_blank']
-                                    ) . '<br>' : '';
-                                unset($range);
-                            }
-                            ?></td>
-                            <td class="actions">
-                                <?= $this->AuthLink->link(
-                                    __('View'),
-                                    ['controller' => 'IpNetworks', 'action' => 'view', $ipNetwork->id]
-                                ) ?>
-                                <?= $this->AuthLink->link(
-                                    __('Edit'),
-                                    ['controller' => 'IpNetworks', 'action' => 'edit', $ipNetwork->id],
-                                    ['class' => 'win-link']
-                                ) ?>
-                                <?= $this->AuthLink->postLink(
-                                    __('Delete'),
-                                    ['controller' => 'IpNetworks', 'action' => 'delete', $ipNetwork->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $ipNetwork->ip_network)]
-                                ) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
-                <?php endif; ?>
-            </div>
-            <div class="related">
-                <?= $this->AuthLink->link(
                     __('New RADIUS Account'),
                     ['plugin' => 'Radius', 'controller' => 'Accounts', 'action' => 'add'],
                     ['class' => 'button button-small float-right win-link']
@@ -446,187 +315,342 @@ use Cake\I18n\Number;
                     ['show_contracts' => false]
                 ) ?>
             </div>
-            <div class="related">
-                <?= $this->AuthLink->link(
-                    __('New Borrowed Equipment'),
-                    ['controller' => 'BorrowedEquipments', 'action' => 'add'],
-                    ['class' => 'button button-small float-right win-link']
-                ) ?>
-                <h4><?= __('Borrowed Equipments') ?></h4>
-                <?php if (!empty($contract->borrowed_equipments)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __('Equipment Type') ?></th>
-                            <th><?= __('Serial Number') ?></th>
-                            <th><?= __('Borrowed From') ?></th>
-                            <th><?= __('Borrowed Until') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                        <?php foreach ($contract->borrowed_equipments as $borrowedEquipment) : ?>
-                        <tr style="<?= $borrowedEquipment->style ?>">
-                            <td><?= h($borrowedEquipment->equipment_type->name) ?></td>
-                            <td><?= h($borrowedEquipment->serial_number) ?></td>
-                            <td><?= h($borrowedEquipment->borrowed_from) ?></td>
-                            <td><?= h($borrowedEquipment->borrowed_until) ?></td>
-                            <td class="actions">
-                                <?= $this->AuthLink->link(
-                                    __('View'),
-                                    ['controller' => 'BorrowedEquipments', 'action' => 'view', $borrowedEquipment->id]
-                                ) ?>
-                                <?= $this->AuthLink->link(
-                                    __('Edit'),
-                                    ['controller' => 'BorrowedEquipments', 'action' => 'edit', $borrowedEquipment->id],
-                                    ['class' => 'win-link']
-                                ) ?>
-                                <?= $this->AuthLink->postLink(
-                                    __('Delete'),
-                                    [
-                                        'controller' => 'BorrowedEquipments',
-                                        'action' => 'delete',
-                                        $borrowedEquipment->id,
-                                    ],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id)]
-                                ) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
+            <div class="row">
+                <div class="column-responsive">
+                    <div class="related">
+                        <?= $this->AuthLink->link(
+                            __('New Borrowed Equipment'),
+                            ['controller' => 'BorrowedEquipments', 'action' => 'add'],
+                            ['class' => 'button button-small float-right win-link']
+                        ) ?>
+                        <h4><?= __('Borrowed Equipments') ?></h4>
+                        <?php if (!empty($contract->borrowed_equipments)) : ?>
+                        <div class="table-responsive">
+                            <table>
+                                <tr>
+                                    <th><?= __('Equipment Type') ?></th>
+                                    <th><?= __('Serial Number') ?></th>
+                                    <th><?= __('Borrowed From') ?></th>
+                                    <th><?= __('Borrowed Until') ?></th>
+                                    <th class="actions"><?= __('Actions') ?></th>
+                                </tr>
+                                <?php foreach ($contract->borrowed_equipments as $borrowedEquipment) : ?>
+                                <tr style="<?= $borrowedEquipment->style ?>">
+                                    <td><?= h($borrowedEquipment->equipment_type->name) ?></td>
+                                    <td><?= h($borrowedEquipment->serial_number) ?></td>
+                                    <td><?= h($borrowedEquipment->borrowed_from) ?></td>
+                                    <td><?= h($borrowedEquipment->borrowed_until) ?></td>
+                                    <td class="actions">
+                                        <?= $this->AuthLink->link(
+                                            __('View'),
+                                            ['controller' => 'BorrowedEquipments', 'action' => 'view', $borrowedEquipment->id]
+                                        ) ?>
+                                        <?= $this->AuthLink->link(
+                                            __('Edit'),
+                                            ['controller' => 'BorrowedEquipments', 'action' => 'edit', $borrowedEquipment->id],
+                                            ['class' => 'win-link']
+                                        ) ?>
+                                        <?= $this->AuthLink->postLink(
+                                            __('Delete'),
+                                            [
+                                                'controller' => 'BorrowedEquipments',
+                                                'action' => 'delete',
+                                                $borrowedEquipment->id,
+                                            ],
+                                            ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id)]
+                                        ) ?>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </table>
+                        </div>
+                        <?php endif; ?>
+                    </div>
                 </div>
-                <?php endif; ?>
+                <div class="column-responsive">
+                    <div class="related">
+                        <?= $this->AuthLink->link(
+                            __('New Sold Equipment'),
+                            ['controller' => 'SoldEquipments', 'action' => 'add'],
+                            ['class' => 'button button-small float-right win-link']
+                        ) ?>
+                        <h4><?= __('Sold Equipments') ?></h4>
+                        <?php if (!empty($contract->sold_equipments)) : ?>
+                        <div class="table-responsive">
+                            <table>
+                                <tr>
+                                    <th><?= __('Equipment Type') ?></th>
+                                    <th><?= __('Serial Number') ?></th>
+                                    <th><?= __('Date Of Sale') ?></th>
+                                    <th class="actions"><?= __('Actions') ?></th>
+                                </tr>
+                                <?php foreach ($contract->sold_equipments as $soldEquipment) : ?>
+                                <tr style="<?= $soldEquipment->style ?>">
+                                    <td><?= h($soldEquipment->equipment_type->name) ?></td>
+                                    <td><?= h($soldEquipment->serial_number) ?></td>
+                                    <td><?= h($soldEquipment->date_of_sale) ?></td>
+                                    <td class="actions">
+                                        <?= $this->AuthLink->link(
+                                            __('View'),
+                                            ['controller' => 'SoldEquipments', 'action' => 'view', $soldEquipment->id]
+                                        ) ?>
+                                        <?= $this->AuthLink->link(
+                                            __('Edit'),
+                                            ['controller' => 'SoldEquipments', 'action' => 'edit', $soldEquipment->id],
+                                            ['class' => 'win-link']
+                                        ) ?>
+                                        <?= $this->AuthLink->postLink(
+                                            __('Delete'),
+                                            ['controller' => 'SoldEquipments', 'action' => 'delete', $soldEquipment->id],
+                                            ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id)]
+                                        ) ?>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </table>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
             </div>
-            <div class="related">
-                <?= $this->AuthLink->link(
-                    __('New Sold Equipment'),
-                    ['controller' => 'SoldEquipments', 'action' => 'add'],
-                    ['class' => 'button button-small float-right win-link']
-                ) ?>
-                <h4><?= __('Sold Equipments') ?></h4>
-                <?php if (!empty($contract->sold_equipments)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __('Equipment Type') ?></th>
-                            <th><?= __('Serial Number') ?></th>
-                            <th><?= __('Date Of Sale') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                        <?php foreach ($contract->sold_equipments as $soldEquipment) : ?>
-                        <tr style="<?= $soldEquipment->style ?>">
-                            <td><?= h($soldEquipment->equipment_type->name) ?></td>
-                            <td><?= h($soldEquipment->serial_number) ?></td>
-                            <td><?= h($soldEquipment->date_of_sale) ?></td>
-                            <td class="actions">
-                                <?= $this->AuthLink->link(
-                                    __('View'),
-                                    ['controller' => 'SoldEquipments', 'action' => 'view', $soldEquipment->id]
-                                ) ?>
-                                <?= $this->AuthLink->link(
-                                    __('Edit'),
-                                    ['controller' => 'SoldEquipments', 'action' => 'edit', $soldEquipment->id],
-                                    ['class' => 'win-link']
-                                ) ?>
-                                <?= $this->AuthLink->postLink(
-                                    __('Delete'),
-                                    ['controller' => 'SoldEquipments', 'action' => 'delete', $soldEquipment->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id)]
-                                ) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
+            <div class="row">
+                <div class="column-responsive">
+                    <div class="related">
+                        <?= $this->AuthLink->link(
+                            __('New Ip'),
+                            ['controller' => 'Ips', 'action' => 'add'],
+                            ['class' => 'button button-small float-right win-link']
+                        ) ?>
+                        <h4><?= __('Ips') ?></h4>
+                        <?php if (!empty($contract->ips)) : ?>
+                        <div class="table-responsive">
+                            <table>
+                                <tr>
+                                    <th><?= __('Ip') ?></th>
+                                    <th><?= __('Type Of Use') ?></th>
+                                    <th><?= __('Note') ?></th>
+                                    <th><?= __('Device') ?></th>
+                                    <th><?= __('Range') ?></th>
+                                    <th class="actions"><?= __('Actions') ?></th>
+                                </tr>
+                                <?php foreach ($contract->ips as $ip) : ?>
+                                <tr style="<?= $ip->style ?>">
+                                    <td><?= h($ip->ip) ?></td>
+                                    <td><?= h($ip_address_types_of_use[$ip->type_of_use]) ?></td>
+                                    <td><?= h($ip->note) ?></td>
+                                    <td><?php
+                                    if (isset($ip->routeros_devices)) {
+                                        $device = $ip->routeros_devices->first();
+                                        echo isset($device['id']) ?
+                                            $this->Html->link(
+                                                $device['system_description'],
+                                                env('WATCHER_NMS_URL') . '/routeros-devices/view/' . $device['id'],
+                                                ['target' => '_blank']
+                                            ) . '<br>' : '';
+                                        unset($device);
+                                    }
+                                    ?></td>
+                                    <td><?php
+                                    if (isset($ip->ip_address_ranges)) {
+                                        $range = $ip->ip_address_ranges->first();
+                                        echo isset($range['access_point']['id']) ?
+                                            __('Access Point') . ': ' . $this->Html->link(
+                                                $range['access_point']['name'],
+                                                env('WATCHER_NMS_URL') . '/access-points/view/' . $range['access_point']['id'],
+                                                ['target' => '_blank']
+                                            ) . '<br>' : '';
+                                        echo isset($range['id']) ?
+                                            __('Range') . ': ' . $this->Html->link(
+                                                $range['name'],
+                                                env('WATCHER_NMS_URL') . '/ip-address-ranges/view/' . $range['id'],
+                                                ['target' => '_blank']
+                                            ) . '<br>' : '';
+                                        unset($range);
+                                    }
+                                    ?></td>
+                                    <td class="actions">
+                                        <?= $this->AuthLink->link(
+                                            __('View'),
+                                            ['controller' => 'Ips', 'action' => 'view', $ip->id]
+                                        ) ?>
+                                        <?= $this->AuthLink->link(
+                                            __('Edit'),
+                                            ['controller' => 'Ips', 'action' => 'edit', $ip->id],
+                                            ['class' => 'win-link']
+                                        ) ?>
+                                        <?= $this->AuthLink->postLink(
+                                            __('Delete'),
+                                            ['controller' => 'Ips', 'action' => 'delete', $ip->id],
+                                            ['confirm' => __('Are you sure you want to delete # {0}?', $ip->ip)]
+                                        ) ?>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </table>
+                        </div>
+                        <?php endif; ?>
+                    </div>
                 </div>
-                <?php endif; ?>
+                <div class="column-responsive">
+                    <div class="related">
+                        <?= $this->AuthLink->link(
+                            __('New IP Network'),
+                            ['controller' => 'IpNetworks', 'action' => 'add'],
+                            ['class' => 'button button-small float-right win-link']
+                        ) ?>
+                    <h4><?= __('IP Networks') ?></h4>
+                        <?php if (!empty($contract->ip_networks)) : ?>
+                        <div class="table-responsive">
+                            <table>
+                                <tr>
+                                    <th><?= __('Ip Network') ?></th>
+                                    <th><?= __('Type Of Use') ?></th>
+                                    <th><?= __('Note') ?></th>
+                                    <th><?= __('Range') ?></th>
+                                    <th class="actions"><?= __('Actions') ?></th>
+                                </tr>
+                                <?php foreach ($contract->ip_networks as $ipNetwork) : ?>
+                                <tr style="<?= $ipNetwork->style ?>">
+                                    <td><?= h($ipNetwork->ip_network) ?></td>
+                                    <td><?= h($ip_network_types_of_use[$ipNetwork->type_of_use]) ?></td>
+                                    <td><?= h($ipNetwork->note) ?></td>
+                                    <td><?php
+                                    if (isset($ipNetwork->ip_address_ranges)) {
+                                        $range = $ipNetwork->ip_address_ranges->first();
+                                        echo isset($range['access_point']['id']) ?
+                                            __('Access Point') . ': ' . $this->Html->link(
+                                                $range['access_point']['name'],
+                                                env('WATCHER_NMS_URL') . '/access-points/view/' . $range['access_point']['id'],
+                                                ['target' => '_blank']
+                                            ) . '<br>' : '';
+                                        echo isset($range['id']) ?
+                                            __('Range') . ': ' . $this->Html->link(
+                                                $range['name'],
+                                                env('WATCHER_NMS_URL') . '/ip-address-ranges/view/' . $range['id'],
+                                                ['target' => '_blank']
+                                            ) . '<br>' : '';
+                                        unset($range);
+                                    }
+                                    ?></td>
+                                    <td class="actions">
+                                        <?= $this->AuthLink->link(
+                                            __('View'),
+                                            ['controller' => 'IpNetworks', 'action' => 'view', $ipNetwork->id]
+                                        ) ?>
+                                        <?= $this->AuthLink->link(
+                                            __('Edit'),
+                                            ['controller' => 'IpNetworks', 'action' => 'edit', $ipNetwork->id],
+                                            ['class' => 'win-link']
+                                        ) ?>
+                                        <?= $this->AuthLink->postLink(
+                                            __('Delete'),
+                                            ['controller' => 'IpNetworks', 'action' => 'delete', $ipNetwork->id],
+                                            ['confirm' => __('Are you sure you want to delete # {0}?', $ipNetwork->ip_network)]
+                                        ) ?>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </table>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
             </div>
-            <div class="related">
-                <?= $this->AuthLink->link(
-                    __('New Removed Ip'),
-                    ['controller' => 'RemovedIps', 'action' => 'add'],
-                    ['class' => 'button button-small float-right win-link']
-                ) ?>
-                <h4><?= __('Removed Ips') ?></h4>
-                <?php if (!empty($contract->removed_ips)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __('Ip') ?></th>
-                            <th><?= __('Type Of Use') ?></th>
-                            <th><?= __('Note') ?></th>
-                            <th><?= __('Removed') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                        <?php foreach ($contract->removed_ips as $removedIp) : ?>
-                        <tr style="<?= $removedIp->style ?>">
-                            <td><?= h($removedIp->ip) ?></td>
-                            <td><?= h($ip_address_types_of_use[$removedIp->type_of_use]) ?></td>
-                            <td><?= h($removedIp->note) ?></td>
-                            <td><?= h($removedIp->removed) ?></td>
-                            <td class="actions">
-                                <?= $this->AuthLink->link(
-                                    __('View'),
-                                    ['controller' => 'RemovedIps', 'action' => 'view', $removedIp->id]
-                                ) ?>
-                                <?= $this->AuthLink->link(
-                                    __('Edit'),
-                                    ['controller' => 'RemovedIps', 'action' => 'edit', $removedIp->id],
-                                    ['class' => 'win-link']
-                                ) ?>
-                                <?= $this->AuthLink->postLink(
-                                    __('Delete'),
-                                    ['controller' => 'RemovedIps', 'action' => 'delete', $removedIp->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $removedIp->id)]
-                                ) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
+            <div class="row">
+                <div class="column-responsive">
+                    <div class="related">
+                        <?= $this->AuthLink->link(
+                            __('New Removed Ip'),
+                            ['controller' => 'RemovedIps', 'action' => 'add'],
+                            ['class' => 'button button-small float-right win-link']
+                        ) ?>
+                        <h4><?= __('Removed Ips') ?></h4>
+                        <?php if (!empty($contract->removed_ips)) : ?>
+                        <div class="table-responsive">
+                            <table>
+                                <tr>
+                                    <th><?= __('Ip') ?></th>
+                                    <th><?= __('Type Of Use') ?></th>
+                                    <th><?= __('Note') ?></th>
+                                    <th><?= __('Removed') ?></th>
+                                    <th class="actions"><?= __('Actions') ?></th>
+                                </tr>
+                                <?php foreach ($contract->removed_ips as $removedIp) : ?>
+                                <tr style="<?= $removedIp->style ?>">
+                                    <td><?= h($removedIp->ip) ?></td>
+                                    <td><?= h($ip_address_types_of_use[$removedIp->type_of_use]) ?></td>
+                                    <td><?= h($removedIp->note) ?></td>
+                                    <td><?= h($removedIp->removed) ?></td>
+                                    <td class="actions">
+                                        <?= $this->AuthLink->link(
+                                            __('View'),
+                                            ['controller' => 'RemovedIps', 'action' => 'view', $removedIp->id]
+                                        ) ?>
+                                        <?= $this->AuthLink->link(
+                                            __('Edit'),
+                                            ['controller' => 'RemovedIps', 'action' => 'edit', $removedIp->id],
+                                            ['class' => 'win-link']
+                                        ) ?>
+                                        <?= $this->AuthLink->postLink(
+                                            __('Delete'),
+                                            ['controller' => 'RemovedIps', 'action' => 'delete', $removedIp->id],
+                                            ['confirm' => __('Are you sure you want to delete # {0}?', $removedIp->id)]
+                                        ) ?>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </table>
+                        </div>
+                        <?php endif; ?>
+                    </div>
                 </div>
-                <?php endif; ?>
-            </div>
-            <div class="related">
-                <?= $this->AuthLink->link(
-                    __('New Removed IP Network'),
-                    ['controller' => 'RemovedIpNetworks', 'action' => 'add'],
-                    ['class' => 'button button-small float-right win-link']
-                ) ?>
-                <h4><?= __('Removed IP Networks') ?></h4>
-                <?php if (!empty($contract->removed_ip_networks)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __('Ip') ?></th>
-                            <th><?= __('Type Of Use') ?></th>
-                            <th><?= __('Note') ?></th>
-                            <th><?= __('Removed') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                        <?php foreach ($contract->removed_ip_networks as $removedIpNetork) : ?>
-                        <tr style="<?= $removedIpNetork->style ?>">
-                            <td><?= h($removedIpNetork->ip_network) ?></td>
-                            <td><?= h($ip_network_types_of_use[$removedIpNetork->type_of_use]) ?></td>
-                            <td><?= h($removedIpNetork->note) ?></td>
-                            <td><?= h($removedIpNetork->removed) ?></td>
-                            <td class="actions">
-                                <?= $this->AuthLink->link(
-                                    __('View'),
-                                    ['controller' => 'RemovedIpNetworks', 'action' => 'view', $removedIpNetork->id]
-                                ) ?>
-                                <?= $this->AuthLink->link(
-                                    __('Edit'),
-                                    ['controller' => 'RemovedIpNetworks', 'action' => 'edit', $removedIpNetork->id],
-                                    ['class' => 'win-link']
-                                ) ?>
-                                <?= $this->AuthLink->postLink(
-                                    __('Delete'),
-                                    ['controller' => 'RemovedIpNetworks', 'action' => 'delete', $removedIpNetork->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $removedIpNetork->id)]
-                                ) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
+                <div class="column-responsive">
+                    <div class="related">
+                        <?= $this->AuthLink->link(
+                            __('New Removed IP Network'),
+                            ['controller' => 'RemovedIpNetworks', 'action' => 'add'],
+                            ['class' => 'button button-small float-right win-link']
+                        ) ?>
+                        <h4><?= __('Removed IP Networks') ?></h4>
+                        <?php if (!empty($contract->removed_ip_networks)) : ?>
+                        <div class="table-responsive">
+                            <table>
+                                <tr>
+                                    <th><?= __('Ip') ?></th>
+                                    <th><?= __('Type Of Use') ?></th>
+                                    <th><?= __('Note') ?></th>
+                                    <th><?= __('Removed') ?></th>
+                                    <th class="actions"><?= __('Actions') ?></th>
+                                </tr>
+                                <?php foreach ($contract->removed_ip_networks as $removedIpNetork) : ?>
+                                <tr style="<?= $removedIpNetork->style ?>">
+                                    <td><?= h($removedIpNetork->ip_network) ?></td>
+                                    <td><?= h($ip_network_types_of_use[$removedIpNetork->type_of_use]) ?></td>
+                                    <td><?= h($removedIpNetork->note) ?></td>
+                                    <td><?= h($removedIpNetork->removed) ?></td>
+                                    <td class="actions">
+                                        <?= $this->AuthLink->link(
+                                            __('View'),
+                                            ['controller' => 'RemovedIpNetworks', 'action' => 'view', $removedIpNetork->id]
+                                        ) ?>
+                                        <?= $this->AuthLink->link(
+                                            __('Edit'),
+                                            ['controller' => 'RemovedIpNetworks', 'action' => 'edit', $removedIpNetork->id],
+                                            ['class' => 'win-link']
+                                        ) ?>
+                                        <?= $this->AuthLink->postLink(
+                                            __('Delete'),
+                                            ['controller' => 'RemovedIpNetworks', 'action' => 'delete', $removedIpNetork->id],
+                                            ['confirm' => __('Are you sure you want to delete # {0}?', $removedIpNetork->id)]
+                                        ) ?>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </table>
+                        </div>
+                        <?php endif; ?>
+                    </div>
                 </div>
-                <?php endif; ?>
             </div>
         </div>
     </div>
