@@ -31,8 +31,9 @@ class AppUser extends User
     {
         return [
             'user' => __('User'),
-            'technician' => __('Technician'),
-            'manager' => __('Manager'),
+            'customer-service-technician' => __('Customer Service Technician'),
+            'sales-representative' => __('Sales Representative'),
+            'sales-manager' => __('Sales Manager'),
             'bookkeeper' => __('Bookkeeper'),
             'admin' => __('Admin'),
             'api' => __('API'),

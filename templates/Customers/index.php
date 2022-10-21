@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Customer[]|\Cake\Collection\CollectionInterface $customers
- * @var bool $is_admin
+ * @var bool $allow_advanced_search
  */
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
@@ -13,7 +13,7 @@
             'type' => 'search',
             'onchange' => 'this.form.submit();',
         ]) ?>
-        <?= $is_admin ? $this->Form->control('advanced_search', [
+        <?= $allow_advanced_search ? $this->Form->control('advanced_search', [
             'label' => __('Advanced Search'),
             'type' => 'checkbox',
             'onchange' => 'this.form.submit();',

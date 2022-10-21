@@ -21,11 +21,14 @@ class CustomersController extends AppController
         // search
         $search = $this->getRequest()->getQuery('search');
         $advanced_search = $this->getRequest()->getQuery('advanced_search');
-        $is_admin = in_array($this->getRequest()->getAttribute('identity')['role'] ?? null, ['admin']);
+        $allow_advanced_search = in_array($this->getRequest()->getAttribute('identity')['role'] ?? null, [
+            'admin',
+            'sales-manager',
+        ]);
 
         $customersQuery = $this->Customers->find();
 
-        if ($is_admin && $advanced_search && !empty($search)) {
+        if ($allow_advanced_search && $advanced_search && !empty($search)) {
             // advanced search
             $filter = 'to_tsvector('
                     . "Customers.id || ' ' || "
@@ -78,7 +81,7 @@ class CustomersController extends AppController
                     'Customers.ic' => trim($search),
                 ],
             ]);
-        } elseif (!empty($search) || !$is_admin) {
+        } elseif (!empty($search) || !$allow_advanced_search) {
             // notify the required use of the customer number
             $this->Flash->set(__('Please use the customer number or company identification number in the search.'));
             $customersQuery->where([
@@ -97,7 +100,7 @@ class CustomersController extends AppController
 
         $invoice_delivery_types = $this->Customers->invoice_delivery_types;
 
-        $this->set(compact('customers', 'invoice_delivery_types', 'is_admin'));
+        $this->set(compact('customers', 'invoice_delivery_types', 'allow_advanced_search'));
     }
 
     /**
