@@ -421,6 +421,11 @@ use Cake\I18n\Number;
                             ['controller' => 'Ips', 'action' => 'add'],
                             ['class' => 'button button-small float-right win-link']
                         ) ?>
+                        <?= $contract->has('access_point') ? $this->AuthLink->link(
+                            __('New IP Address From Range'),
+                            ['controller' => 'Ips', 'action' => 'addFromRange'],
+                            ['class' => 'button button-small float-right win-link']
+                        ) : '' ?>
                         <h4><?= __('Ips') ?></h4>
                         <?php if (!empty($contract->ips)) : ?>
                         <div class="table-responsive">
