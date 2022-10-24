@@ -37,6 +37,7 @@ class OverviewsController extends AppController
     public function overviewOfActiveServices()
     {
         $month_to_display = new FrozenDate($this->getRequest()->getQuery('month_to_display'));
+        $service_type_id = $this->getRequest()->getQuery('service_type_id');
         $access_point_id = $this->getRequest()->getQuery('access_point_id');
 
         $servicesQuery = $this->fetchTable('Services')->find()
@@ -55,6 +56,7 @@ class OverviewsController extends AppController
                     ->contain(['Services'])
                     ->contain(['Customers'])
                     ->contain('Contracts', function (Query $q) use ($access_point_id) {
+                        // filter by access point
                         return !empty($access_point_id) ?
                             $q->where(['Contracts.access_point_id' => $access_point_id]) :
                             $q;
@@ -87,6 +89,12 @@ class OverviewsController extends AppController
                 }
             );
 
+        // filter by service type
+        if (!empty($service_type_id)) {
+            $servicesQuery->where(['service_type_id' => $service_type_id]);
+        }
+
+        // load services
         $services = $servicesQuery
             ->find('all')
             ->all()
@@ -96,6 +104,9 @@ class OverviewsController extends AppController
             ->sortBy('number_of_uses');
 
         $this->set(compact('services', 'month_to_display'));
+
+        // load service types
+        $this->set('serviceTypes', $this->fetchTable('ServiceTypes')->find('list', ['order' => 'name']));
 
         // load access points from NMS if possible
         $accessPoints = ApiClient::getAccessPoints();
