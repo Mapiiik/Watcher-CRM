@@ -61,6 +61,7 @@
                     ',
                 ]);
                 echo $this->Form->control('ip_address_range', [
+                    'label' => __('IP Address Range'),
                     'empty' => true,
                     'onchange' => '
                         var refresh = document.createElement("input");

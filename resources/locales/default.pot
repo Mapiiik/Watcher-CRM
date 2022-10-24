@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-10-24 13:46+0200\n"
+"POT-Creation-Date: 2022-10-24 13:52+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1183,7 +1183,7 @@ msgstr ""
 #: ./templates/IpNetworks/add.php:34
 #: ./templates/IpNetworks/edit.php:39
 #: ./templates/Ips/add.php:34
-#: ./templates/Ips/add_from_range.php:82
+#: ./templates/Ips/add_from_range.php:83
 #: ./templates/Ips/edit.php:39
 #: ./templates/Labels/add.php:30
 #: ./templates/Labels/edit.php:35
@@ -2789,6 +2789,7 @@ msgstr ""
 #: ./templates/Customers/view.php:715
 #: ./templates/Customers/view.php:792
 #: ./templates/IpNetworks/view.php:63
+#: ./templates/Ips/add_from_range.php:64
 #: ./templates/Ips/view.php:64
 #: ./templates/RemovedIpNetworks/view.php:66
 #: ./templates/RemovedIps/view.php:53
