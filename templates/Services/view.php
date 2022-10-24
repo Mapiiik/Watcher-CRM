@@ -3,6 +3,9 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Service $service
  */
+
+use Cake\Collection\Collection;
+
 ?>
 <div class="row">
     <aside class="column">
@@ -155,6 +158,15 @@
                         </tr>
                         <?php endforeach; ?>
                     </table>
+                </div>
+                <div>
+                    <?= __('Total sum of active') . ': ' . $this->Number->currency(
+                        (new Collection($service->billings))
+                            ->filter(function ($billing) {
+                                return $billing->active;
+                            })
+                            ->sumOf('total_price')
+                    ) ?><br>
                 </div>
                 <?php endif; ?>
             </div>
