@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-10-24 13:52+0200\n"
-"PO-Revision-Date: 2022-10-24 13:53+0200\n"
+"POT-Creation-Date: 2022-10-24 16:40+0200\n"
+"PO-Revision-Date: 2022-10-24 16:41+0200\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -160,7 +160,7 @@ msgstr "Smlouvu nelze uložit. Opakujte akci."
 
 #: src/Controller/ContractsController.php:161
 #: src/Controller/ContractsController.php:224
-#: src/Controller/OverviewsController.php:105
+#: src/Controller/OverviewsController.php:116
 #: src/Controller/TasksController.php:148
 #: src/Controller/TasksController.php:284
 #: src/Controller/TasksController.php:360
@@ -492,7 +492,7 @@ msgstr "Přihlášení bylo odstraněno."
 msgid "The login could not be deleted. Please, try again."
 msgstr "Přihlášení nelze odstranit. Prosím, zkuste to znovu."
 
-#: src/Controller/OverviewsController.php:316
+#: src/Controller/OverviewsController.php:327
 msgid "unknown dealer"
 msgstr "neznámý dealer"
 
@@ -764,8 +764,8 @@ msgstr "API"
 #: templates/ServiceTypes/view.php:62 templates/ServiceTypes/view.php:66
 #: templates/ServiceTypes/view.php:70 templates/ServiceTypes/view.php:133
 #: templates/ServiceTypes/view.php:203 templates/Services/index.php:53
-#: templates/Services/view.php:53 templates/Services/view.php:136
-#: templates/Services/view.php:137 templates/TaskStates/index.php:39
+#: templates/Services/view.php:56 templates/Services/view.php:139
+#: templates/Services/view.php:140 templates/TaskStates/index.php:39
 #: templates/TaskStates/view.php:40 templates/TaxRates/index.php:39
 #: templates/TaxRates/view.php:39
 #: templates/plugin/CakeDC/Users/Users/index.php:37
@@ -803,8 +803,8 @@ msgstr "Ne"
 #: templates/ServiceTypes/view.php:62 templates/ServiceTypes/view.php:66
 #: templates/ServiceTypes/view.php:70 templates/ServiceTypes/view.php:133
 #: templates/ServiceTypes/view.php:203 templates/Services/index.php:53
-#: templates/Services/view.php:53 templates/Services/view.php:136
-#: templates/Services/view.php:137 templates/TaskStates/index.php:39
+#: templates/Services/view.php:56 templates/Services/view.php:139
+#: templates/Services/view.php:140 templates/TaskStates/index.php:39
 #: templates/TaskStates/view.php:40 templates/TaxRates/index.php:39
 #: templates/TaxRates/view.php:39
 #: templates/plugin/CakeDC/Users/Users/index.php:37
@@ -989,7 +989,7 @@ msgstr "Naléhavé"
 #: templates/Logins/edit.php:11 templates/Logins/index.php:36
 #: templates/Logins/view.php:11
 #: templates/Overviews/overview_of_active_services.php:11
-#: templates/Overviews/overview_of_active_services.php:56
+#: templates/Overviews/overview_of_active_services.php:62
 #: templates/Overviews/overview_of_customer_connection_points.php:11
 #: templates/Overviews/overview_of_customer_connection_points.php:64
 #: templates/Overviews/overview_of_dealer_commissions.php:11
@@ -1008,7 +1008,7 @@ msgstr "Naléhavé"
 #: templates/ServiceTypes/view.php:10 templates/ServiceTypes/view.php:120
 #: templates/ServiceTypes/view.php:176 templates/Services/add.php:12
 #: templates/Services/edit.php:12 templates/Services/index.php:32
-#: templates/Services/view.php:10 templates/Services/view.php:112
+#: templates/Services/view.php:13 templates/Services/view.php:115
 #: templates/SoldEquipments/add.php:13 templates/SoldEquipments/edit.php:13
 #: templates/SoldEquipments/index.php:36 templates/SoldEquipments/view.php:10
 #: templates/TaskStates/add.php:10 templates/TaskStates/edit.php:10
@@ -1108,7 +1108,7 @@ msgstr "Potvrdit"
 #: templates/RemovedIps/index.php:63 templates/ServiceTypes/edit.php:12
 #: templates/ServiceTypes/index.php:66 templates/ServiceTypes/view.php:145
 #: templates/ServiceTypes/view.php:233 templates/Services/edit.php:14
-#: templates/Services/index.php:62 templates/Services/view.php:150
+#: templates/Services/index.php:62 templates/Services/view.php:153
 #: templates/SoldEquipments/edit.php:15 templates/SoldEquipments/index.php:71
 #: templates/TaskStates/edit.php:12 templates/TaskStates/index.php:48
 #: templates/TaskStates/view.php:143 templates/TaskTypes/edit.php:12
@@ -1169,8 +1169,8 @@ msgstr "Odstranit"
 #: templates/ServiceTypes/edit.php:15 templates/ServiceTypes/index.php:68
 #: templates/ServiceTypes/view.php:20 templates/ServiceTypes/view.php:147
 #: templates/ServiceTypes/view.php:235 templates/Services/edit.php:16
-#: templates/Services/index.php:64 templates/Services/view.php:19
-#: templates/Services/view.php:152 templates/SoldEquipments/edit.php:18
+#: templates/Services/index.php:64 templates/Services/view.php:22
+#: templates/Services/view.php:155 templates/SoldEquipments/edit.php:18
 #: templates/SoldEquipments/index.php:73 templates/SoldEquipments/view.php:20
 #: templates/TaskStates/edit.php:14 templates/TaskStates/index.php:50
 #: templates/TaskStates/view.php:20 templates/TaskStates/view.php:145
@@ -1265,14 +1265,14 @@ msgstr "Mapy.cz"
 #: templates/IpNetworks/index.php:52 templates/Ips/index.php:54
 #: templates/Labels/index.php:66 templates/Labels/view.php:122
 #: templates/Logins/index.php:57
-#: templates/Overviews/overview_of_active_services.php:83
+#: templates/Overviews/overview_of_active_services.php:89
 #: templates/Overviews/overview_of_customer_connection_points.php:84
 #: templates/Overviews/overview_of_dealer_commissions.php:99
 #: templates/Phones/index.php:44 templates/Queues/index.php:53
 #: templates/Queues/view.php:129 templates/RemovedIpNetworks/index.php:54
 #: templates/RemovedIps/index.php:56 templates/ServiceTypes/index.php:59
 #: templates/ServiceTypes/view.php:136 templates/ServiceTypes/view.php:224
-#: templates/Services/index.php:55 templates/Services/view.php:141
+#: templates/Services/index.php:55 templates/Services/view.php:144
 #: templates/SoldEquipments/index.php:64 templates/TaskStates/index.php:41
 #: templates/TaskStates/view.php:134 templates/TaskTypes/index.php:37
 #: templates/TaskTypes/view.php:126 templates/Tasks/index.php:105
@@ -1308,7 +1308,7 @@ msgstr "Zobrazit"
 #: templates/RemovedIpNetworks/index.php:56 templates/RemovedIps/index.php:58
 #: templates/ServiceTypes/index.php:61 templates/ServiceTypes/view.php:140
 #: templates/ServiceTypes/view.php:228 templates/Services/index.php:57
-#: templates/Services/view.php:145 templates/SoldEquipments/index.php:66
+#: templates/Services/view.php:148 templates/SoldEquipments/index.php:66
 #: templates/TaskStates/index.php:43 templates/TaskStates/view.php:138
 #: templates/TaskTypes/index.php:39 templates/TaskTypes/view.php:130
 #: templates/Tasks/index.php:107 templates/TaxRates/index.php:43
@@ -1422,7 +1422,7 @@ msgstr "Odstranit adresu"
 #: templates/Overviews/overview_of_dealer_commissions.php:54
 #: templates/Phones/view.php:30 templates/RemovedIpNetworks/view.php:42
 #: templates/RemovedIps/view.php:31 templates/ServiceTypes/view.php:163
-#: templates/Services/view.php:99 templates/SoldEquipments/view.php:41
+#: templates/Services/view.php:102 templates/SoldEquipments/view.php:41
 #: templates/TaskStates/view.php:93 templates/TaskTypes/view.php:85
 #: templates/Tasks/view.php:66 templates/email/html/task_notification.php:74
 msgid "Customer"
@@ -1520,12 +1520,12 @@ msgstr "GPS X"
 #: templates/IpNetworks/view.php:84 templates/Ips/view.php:85
 #: templates/Labels/view.php:58 templates/Labels/view.php:104
 #: templates/Logins/view.php:66
-#: templates/Overviews/overview_of_active_services.php:44
+#: templates/Overviews/overview_of_active_services.php:50
 #: templates/Phones/view.php:41 templates/Queues/view.php:66
 #: templates/Queues/view.php:108 templates/RemovedIpNetworks/view.php:87
 #: templates/RemovedIps/view.php:74 templates/ServiceTypes/view.php:73
 #: templates/ServiceTypes/view.php:115 templates/ServiceTypes/view.php:162
-#: templates/Services/view.php:56 templates/Services/view.php:98
+#: templates/Services/view.php:59 templates/Services/view.php:101
 #: templates/SoldEquipments/view.php:70 templates/TaskStates/view.php:43
 #: templates/TaskStates/view.php:85 templates/TaskTypes/view.php:35
 #: templates/TaskTypes/view.php:77 templates/Tasks/view.php:97
@@ -1546,7 +1546,7 @@ msgstr "ID"
 #: templates/Labels/view.php:107 templates/Logins/view.php:70
 #: templates/Phones/view.php:45 templates/Queues/view.php:70
 #: templates/RemovedIpNetworks/view.php:91 templates/RemovedIps/view.php:78
-#: templates/ServiceTypes/view.php:77 templates/Services/view.php:60
+#: templates/ServiceTypes/view.php:77 templates/Services/view.php:63
 #: templates/SoldEquipments/view.php:74 templates/TaskStates/view.php:47
 #: templates/TaskTypes/view.php:39 templates/Tasks/view.php:101
 #: templates/TaxRates/view.php:46
@@ -1567,7 +1567,7 @@ msgstr "Vytvořeno"
 #: templates/Logins/view.php:74 templates/Phones/view.php:49
 #: templates/Queues/view.php:74 templates/RemovedIpNetworks/view.php:95
 #: templates/RemovedIps/view.php:82 templates/ServiceTypes/view.php:81
-#: templates/Services/view.php:64 templates/SoldEquipments/view.php:78
+#: templates/Services/view.php:67 templates/SoldEquipments/view.php:78
 #: templates/TaskStates/view.php:51 templates/TaskTypes/view.php:43
 #: templates/Tasks/view.php:105 templates/TaxRates/view.php:50
 #: templates/email/html/task_notification.php:113
@@ -1585,7 +1585,7 @@ msgstr "Vytvořil"
 #: templates/Logins/view.php:86 templates/Phones/view.php:61
 #: templates/Queues/view.php:86 templates/RemovedIpNetworks/view.php:107
 #: templates/RemovedIps/view.php:94 templates/ServiceTypes/view.php:93
-#: templates/Services/view.php:76 templates/SoldEquipments/view.php:90
+#: templates/Services/view.php:79 templates/SoldEquipments/view.php:90
 #: templates/TaskStates/view.php:63 templates/TaskTypes/view.php:55
 #: templates/Tasks/view.php:117 templates/TaxRates/view.php:62
 #: templates/email/html/task_notification.php:117
@@ -1605,7 +1605,7 @@ msgstr "Upraveno"
 #: templates/Logins/view.php:90 templates/Phones/view.php:65
 #: templates/Queues/view.php:90 templates/RemovedIpNetworks/view.php:111
 #: templates/RemovedIps/view.php:98 templates/ServiceTypes/view.php:97
-#: templates/Services/view.php:80 templates/SoldEquipments/view.php:94
+#: templates/Services/view.php:83 templates/SoldEquipments/view.php:94
 #: templates/TaskStates/view.php:67 templates/TaskTypes/view.php:59
 #: templates/Tasks/view.php:121 templates/TaxRates/view.php:66
 #: templates/email/html/task_notification.php:121
@@ -1622,7 +1622,7 @@ msgstr "Upravil"
 #: templates/Customers/view.php:858 templates/Customers/view.php:906
 #: templates/IpNetworks/view.php:121 templates/Ips/view.php:122
 #: templates/Labels/view.php:106 templates/RemovedIpNetworks/view.php:139
-#: templates/RemovedIps/view.php:126 templates/Services/view.php:111
+#: templates/RemovedIps/view.php:126 templates/Services/view.php:114
 msgid "Note"
 msgstr "Poznámka"
 
@@ -1661,7 +1661,7 @@ msgstr "Odstranit fakturaci"
 #: templates/Ips/view.php:34
 #: templates/Overviews/overview_of_dealer_commissions.php:55
 #: templates/RemovedIpNetworks/view.php:50 templates/RemovedIps/view.php:38
-#: templates/Services/view.php:100 templates/SoldEquipments/view.php:48
+#: templates/Services/view.php:103 templates/SoldEquipments/view.php:48
 msgid "Contract"
 msgstr "Smlouva"
 
@@ -1672,7 +1672,7 @@ msgstr "Služba"
 
 #: templates/Billings/view.php:54 templates/Contracts/view.php:255
 #: templates/Customers/view.php:520 templates/Customers/view.php:984
-#: templates/Services/view.php:101 templates/TaskStates/view.php:90
+#: templates/Services/view.php:104 templates/TaskStates/view.php:90
 #: templates/TaskTypes/view.php:82 templates/Tasks/view.php:136
 #: templates/email/html/task_notification.php:133
 msgid "Text"
@@ -1681,31 +1681,31 @@ msgstr "Text"
 #: templates/Billings/view.php:58 templates/Contracts/view.php:256
 #: templates/Customers/view.php:521
 #: templates/Overviews/overview_of_dealer_commissions.php:57
-#: templates/Services/view.php:102
+#: templates/Services/view.php:105
 msgid "Quantity"
 msgstr "Počet"
 
 #: templates/Billings/view.php:62 templates/Billings/view.php:154
 #: templates/Billings/view.php:191 templates/Contracts/view.php:257
 #: templates/Customers/view.php:522 templates/EquipmentTypes/view.php:45
-#: templates/Overviews/overview_of_active_services.php:46
+#: templates/Overviews/overview_of_active_services.php:52
 #: templates/Overviews/overview_of_dealer_commissions.php:58
 #: templates/Queues/view.php:110 templates/ServiceTypes/view.php:117
-#: templates/Services/view.php:48 templates/Services/view.php:103
+#: templates/Services/view.php:51 templates/Services/view.php:106
 msgid "Price"
 msgstr "Cena"
 
 #: templates/Billings/view.php:67 templates/Contracts/view.php:258
 #: templates/Customers/view.php:523
 #: templates/Overviews/overview_of_dealer_commissions.php:59
-#: templates/Services/view.php:104
+#: templates/Services/view.php:107
 msgid "Fixed Discount"
 msgstr "Pevná sleva"
 
 #: templates/Billings/view.php:71 templates/Contracts/view.php:259
 #: templates/Customers/view.php:524
 #: templates/Overviews/overview_of_dealer_commissions.php:60
-#: templates/Services/view.php:105
+#: templates/Services/view.php:108
 msgid "Percentage Discount"
 msgstr "Procentuální sleva"
 
@@ -1713,26 +1713,26 @@ msgstr "Procentuální sleva"
 #: templates/Customers/view.php:525
 #: templates/Overviews/overview_of_dealer_commissions.php:49
 #: templates/Overviews/overview_of_dealer_commissions.php:61
-#: templates/Services/view.php:106
+#: templates/Services/view.php:109
 msgid "Total Price"
 msgstr "Celková cena"
 
 #: templates/Billings/view.php:79 templates/Contracts/view.php:261
 #: templates/Customers/view.php:526
 #: templates/Overviews/overview_of_dealer_commissions.php:62
-#: templates/Services/view.php:107
+#: templates/Services/view.php:110
 msgid "Billing From"
 msgstr "Fakturovat od"
 
 #: templates/Billings/view.php:83 templates/Contracts/view.php:262
 #: templates/Customers/view.php:527
 #: templates/Overviews/overview_of_dealer_commissions.php:63
-#: templates/Services/view.php:108
+#: templates/Services/view.php:111
 msgid "Billing Until"
 msgstr "Fakturovat do"
 
 #: templates/Billings/view.php:87 templates/Contracts/view.php:263
-#: templates/Customers/view.php:528 templates/Services/view.php:109
+#: templates/Customers/view.php:528 templates/Services/view.php:112
 #: templates/plugin/CakeDC/Users/Users/view.php:54
 #: templates/plugin/CakeDC/Users/Users/view.php:117
 msgid "Active"
@@ -1740,7 +1740,7 @@ msgstr "Aktivní"
 
 #: templates/Billings/view.php:91 templates/Contracts/view.php:264
 #: templates/Customers/view.php:529 templates/ServiceTypes/view.php:53
-#: templates/Services/view.php:110
+#: templates/Services/view.php:113
 msgid "Separate Invoice"
 msgstr "Samostatná faktura"
 
@@ -1842,11 +1842,11 @@ msgstr "Smazat provizi"
 
 #: templates/Commissions/view.php:30 templates/Countries/view.php:31
 #: templates/EquipmentTypes/view.php:41 templates/Labels/view.php:38
-#: templates/Overviews/overview_of_active_services.php:45
+#: templates/Overviews/overview_of_active_services.php:51
 #: templates/Overviews/overview_of_dealer_commissions.php:56
 #: templates/Queues/view.php:30 templates/Queues/view.php:109
 #: templates/ServiceTypes/view.php:33 templates/ServiceTypes/view.php:116
-#: templates/Services/view.php:30 templates/TaskStates/view.php:31
+#: templates/Services/view.php:33 templates/TaskStates/view.php:31
 #: templates/TaskTypes/view.php:31 templates/TaxRates/view.php:30
 msgid "Name"
 msgstr "Jméno"
@@ -1879,8 +1879,8 @@ msgstr "Související smlouvy"
 
 #: templates/Commissions/view.php:124 templates/Contracts/print.php:43
 #: templates/Contracts/view.php:78 templates/Customers/view.php:458
-#: templates/Overviews/overview_of_active_services.php:47
-#: templates/Queues/view.php:111 templates/Services/view.php:34
+#: templates/Overviews/overview_of_active_services.php:53
+#: templates/Queues/view.php:111 templates/Services/view.php:37
 msgid "Service Type"
 msgstr "Typ služby"
 
@@ -2428,7 +2428,7 @@ msgstr "Naposledy odepřeno"
 msgid "Last Denied Ip"
 msgstr "Poslední odepřená IP"
 
-#: templates/Customers/view.php:513 templates/Services/view.php:93
+#: templates/Customers/view.php:513 templates/Services/view.php:96
 msgid "Related Billings"
 msgstr "Související fakturace"
 
@@ -2781,37 +2781,37 @@ msgstr "Měsíc k zobrazení"
 msgid "YYYY-MM"
 msgstr "RRRR-MM"
 
-#: templates/Overviews/overview_of_active_services.php:48
-#: templates/ServiceTypes/view.php:118 templates/Services/view.php:41
+#: templates/Overviews/overview_of_active_services.php:54
+#: templates/ServiceTypes/view.php:118 templates/Services/view.php:44
 msgid "Queue"
 msgstr "Fronta"
 
-#: templates/Overviews/overview_of_active_services.php:49
+#: templates/Overviews/overview_of_active_services.php:55
 msgid "Number of Uses"
 msgstr "Počet použití"
 
-#: templates/Overviews/overview_of_active_services.php:50
+#: templates/Overviews/overview_of_active_services.php:56
 msgid "Number of Uses (nonbusiness)"
 msgstr "Počet použití (neobchodní)"
 
-#: templates/Overviews/overview_of_active_services.php:51
+#: templates/Overviews/overview_of_active_services.php:57
 msgid "Sum"
 msgstr "Součet"
 
-#: templates/Overviews/overview_of_active_services.php:52
+#: templates/Overviews/overview_of_active_services.php:58
 msgid "Fixed Discount Sum"
 msgstr "Součet pevných slev"
 
-#: templates/Overviews/overview_of_active_services.php:53
+#: templates/Overviews/overview_of_active_services.php:59
 msgid "Percentage Discount Sum"
 msgstr "Součet procentuálních slev"
 
-#: templates/Overviews/overview_of_active_services.php:54
-#: templates/Overviews/overview_of_active_services.php:95
+#: templates/Overviews/overview_of_active_services.php:60
+#: templates/Overviews/overview_of_active_services.php:101
 msgid "Total Sum"
 msgstr "Celkový součet"
 
-#: templates/Overviews/overview_of_active_services.php:55
+#: templates/Overviews/overview_of_active_services.php:61
 msgid "Total Sum (nonbusiness)"
 msgstr "Celkový součet (neobchodní)"
 
@@ -2941,7 +2941,7 @@ msgid "Related Services"
 msgstr "Související služby"
 
 #: templates/Queues/view.php:112 templates/ServiceTypes/view.php:119
-#: templates/Services/view.php:52
+#: templates/Services/view.php:55
 msgid "Not For New Customers"
 msgstr "Ne pro nové zákazníky"
 
@@ -3033,7 +3033,7 @@ msgid "Normally With Borrowed Equipment"
 msgstr "Obvykle se zapůjčeným zařízením"
 
 #: templates/Services/add.php:13 templates/Services/edit.php:18
-#: templates/Services/view.php:21 templates/Settings/index.php:55
+#: templates/Services/view.php:24 templates/Settings/index.php:55
 msgid "List Services"
 msgstr "Seznam služeb"
 
@@ -3041,11 +3041,11 @@ msgstr "Seznam služeb"
 msgid "Add Service"
 msgstr "Přidat službu"
 
-#: templates/Services/edit.php:25 templates/Services/view.php:12
+#: templates/Services/edit.php:25 templates/Services/view.php:15
 msgid "Edit Service"
 msgstr "Upravit službu"
 
-#: templates/Services/index.php:20 templates/Services/view.php:22
+#: templates/Services/index.php:20 templates/Services/view.php:25
 msgid "New Service"
 msgstr "Nová služba"
 
@@ -3053,9 +3053,13 @@ msgstr "Nová služba"
 msgid "Services"
 msgstr "Služby"
 
-#: templates/Services/view.php:17
+#: templates/Services/view.php:20
 msgid "Delete Service"
 msgstr "Odstranit službu"
+
+#: templates/Services/view.php:163
+msgid "Total sum of active"
+msgstr "Celkový součet aktivních"
 
 #: templates/Settings/index.php:7 templates/layout/default.php:121
 msgid "Settings"
