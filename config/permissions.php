@@ -138,126 +138,221 @@ return [
         ],
         //API access
         [
-            'role' => ['api'],
+            'role' => [
+                'api',
+            ],
             'prefix' => 'Api',
             'plugin' => null,
-            'controller' => ['Customers'],
-            'action' => ['index', 'view', 'customerPoints'],
+            'controller' => [
+                'Customers',
+            ],
+            'action' => [
+                'index',
+                'view',
+                'customerPoints',
+            ],
         ],
-        //users access
+        //all roles access
         [
-            'role' => ['user', 'customer-service-technician', 'sales-representative', 'sales-manager', 'bookkeeper'],
-            'plugin' => null,
-            'controller' => ['Customers', 'Settings'],
-            'action' => ['index'],
-        ],
-        [
-            'role' => ['user', 'customer-service-technician', 'sales-representative', 'sales-manager', 'bookkeeper'],
-            'plugin' => null,
-            'controller' => ['Customers', 'Contracts'],
-            'action' => ['view'],
-        ],
-        //allow tasks for technicians, sales and bookkeepers
-        [
-            'role' => ['customer-service-technician', 'sales-representative', 'sales-manager', 'bookkeeper'],
-            'plugin' => null,
-            'controller' => ['Tasks'],
-            'action' => ['index', 'view', 'add', 'edit'],
-        ],
-        //allow technicians, sales and bookkeepers to view some more details
-        [
-            'role' => ['customer-service-technician', 'sales-representative', 'sales-manager', 'bookkeeper'],
+            'role' => '*',
             'plugin' => null,
             'controller' => [
-                'Emails', 'Phones', 'Logins', 'Addresses',
-                'Billings', 'BorrowedEquipments', 'SoldEquipments',
-                'Ips', 'IpNetworks',
-                'RemovedIps', 'RemovedIpNetworks',
-                'CustomerLabels',
+                'Settings',
             ],
-            'action' => ['view'],
+            'action' => [
+                'index',
+            ],
         ],
-        //allow index when customer_id is set for sales and bookkeepers
         [
-            'role' => ['sales-representative', 'bookkeeper'],
+            'role' => '*',
+            'plugin' => null,
+            'controller' => [
+                'Customers',
+            ],
+            'action' => [
+                'index',
+                'view',
+            ],
+        ],
+        [
+            'role' => '*',
             'plugin' => null,
             'controller' => [
                 'Contracts',
-                'Emails', 'Phones', 'Logins', 'Addresses',
-                'Billings', 'BorrowedEquipments', 'SoldEquipments',
-                'Ips', 'IpNetworks',
+                'Emails',
+                'Phones',
+                'Logins',
+                'Addresses',
+                'Billings',
+                'BorrowedEquipments',
+                'SoldEquipments',
+                'Ips',
+                'IpNetworks',
+                'RemovedIps',
+                'RemovedIpNetworks',
                 'CustomerLabels',
             ],
-            'action' => ['index'],
+            'action' => [
+                'view',
+            ],
+        ],
+        //allow tasks for technicians, sales and bookkeepers
+        [
+            'role' => [
+                'customer-service-technician',
+                'network-technician',
+                'sales-representative',
+                'sales-manager',
+                'bookkeeper',
+            ],
+            'plugin' => null,
+            'controller' => [
+                'Tasks',
+            ],
+            'action' => [
+                'index',
+                'view',
+                'add',
+                'edit',
+            ],
+        ],
+        //allow index when customer_id is set for sales and bookkeepers
+        [
+            'role' => [
+                'sales-representative',
+                'bookkeeper',
+            ],
+            'plugin' => null,
+            'controller' => [
+                'Contracts',
+                'Emails',
+                'Phones',
+                'Logins',
+                'Addresses',
+                'Billings',
+                'BorrowedEquipments',
+                'SoldEquipments',
+                'Ips',
+                'IpNetworks',
+                'RemovedIps',
+                'RemovedIpNetworks',
+                'CustomerLabels',
+            ],
+            'action' => [
+                'index',
+            ],
             'allowed' => function ($user, $role, Cake\Http\ServerRequest $request) {
                 return is_numeric($request->getParam('customer_id'));
             },
         ],
         //allow all indexes and views for sales-managers
         [
-            'role' => ['sales-manager'],
+            'role' => [
+                'sales-manager',
+            ],
             'plugin' => null,
             'controller' => '*',
-            'action' => ['index', 'view'],
+            'action' => [
+                'index',
+                'view',
+            ],
         ],
         //allow add/edit for sales and bookkeepers
         [
-            'role' => ['sales-representative', 'sales-manager', 'bookkeeper'],
+            'role' => [
+                'sales-representative',
+                'sales-manager',
+                'bookkeeper',
+            ],
             'plugin' => null,
             'controller' => [
-                'Customers', 'Contracts',
-                'Emails', 'Phones', 'Logins', 'Addresses',
-                'Billings', 'BorrowedEquipments', 'SoldEquipments',
-                'Ips', 'IpNetworks',
+                'Customers',
+                'Contracts',
+                'Emails',
+                'Phones',
+                'Logins',
+                'Addresses',
+                'Billings',
+                'BorrowedEquipments',
+                'SoldEquipments',
+                'Ips',
+                'IpNetworks',
                 'CustomerLabels',
             ],
-            'action' => ['add', 'edit', 'print'],
+            'action' => [
+                'add',
+                'edit',
+                'print',
+            ],
         ],
         //allow delete of some items for sales and bookkeepers
         [
-            'role' => ['sales-representative', 'sales-manager', 'bookkeeper'],
+            'role' => [
+                'sales-representative',
+                'sales-manager',
+                'bookkeeper',
+            ],
             'plugin' => null,
             'controller' => [
-                'Emails', 'Phones', 'Logins',
-                'BorrowedEquipments', 'SoldEquipments',
-                'Ips', 'IpNetworks',
+                'Emails',
+                'Phones',
+                'Logins',
+                'BorrowedEquipments',
+                'SoldEquipments',
+                'Ips',
+                'IpNetworks',
                 'CustomerLabels',
             ],
-            'action' => ['delete'],
-        ],
-        //allow some overviews for sales and bookkeepers
-        [
-            'role' => ['sales-representative', 'sales-manager', 'bookkeeper'],
-            'plugin' => null,
-            'controller' => 'Overviews',
-            'action' => ['index', 'overviewOfActiveServices'],
+            'action' => [
+                'delete',
+            ],
         ],
         //allow all in overviews for sales-managers
         [
-            'role' => ['sales-manager'],
+            'role' => [
+                'sales-manager',
+            ],
             'plugin' => null,
-            'controller' => 'Overviews',
+            'controller' => [
+                'Overviews',
+            ],
             'action' => '*',
         ],
         //allow invoice view/download for sales
         [
-            'role' => ['sales-representative'],
-            'plugin' => ['BookkeepingPohoda'],
-            'controller' => 'Invoices',
-            'action' => ['view', 'download'],
+            'role' => [
+                'sales-representative',
+            ],
+            'plugin' => 'BookkeepingPohoda',
+            'controller' => [
+                'Invoices',
+            ],
+            'action' => [
+                'view',
+                'download',
+            ],
         ],
         //allow all in bookkeeping plugin for sales-managers and bookkeepers
         [
-            'role' => ['bookkeeper', 'sales-manager'],
-            'plugin' => ['BookkeepingPohoda'],
+            'role' => [
+                'sales-manager',
+                'bookkeeper',
+            ],
+            'plugin' => 'BookkeepingPohoda',
             'controller' => '*',
             'action' => '*',
         ],
         //allow standard account operations in RADIUS plugin for sales and bookkeepers
         [
-            'role' => ['sales-representative', 'sales-manager', 'bookkeeper'],
-            'plugin' => ['Radius'],
-            'controller' => ['Accounts'],
+            'role' => [
+                'sales-representative',
+                'sales-manager',
+                'bookkeeper',
+            ],
+            'plugin' => 'Radius',
+            'controller' => [
+                'Accounts',
+            ],
             'action' => [
                 'view',
                 'add',
