@@ -281,6 +281,7 @@ return [
             ],
             'action' => [
                 'add',
+                'addFromRange',
                 'edit',
                 'print',
             ],
