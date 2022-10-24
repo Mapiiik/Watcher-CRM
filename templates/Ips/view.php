@@ -61,7 +61,7 @@
                     ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Range') ?></th>
+                    <th><?= __('IP Address Range') ?></th>
                     <td><?php
                     if (isset($ip->ip_address_ranges)) {
                         $range = $ip->ip_address_ranges->first();

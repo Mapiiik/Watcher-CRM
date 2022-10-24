@@ -63,7 +63,7 @@
                     <td><?= h($types_of_use[$removedIpNetwork->type_of_use]) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Range') ?></th>
+                    <th><?= __('IP Address Range') ?></th>
                     <td><?php
                     if (isset($removedIpNetwork->ip_address_ranges)) {
                         $range = $removedIpNetwork->ip_address_ranges->first();

@@ -435,7 +435,7 @@ use Cake\I18n\Number;
                                     <th><?= __('Type Of Use') ?></th>
                                     <th><?= __('Note') ?></th>
                                     <th><?= __('Device') ?></th>
-                                    <th><?= __('Range') ?></th>
+                                    <th><?= __('IP Address Range') ?></th>
                                     <th class="actions"><?= __('Actions') ?></th>
                                 </tr>
                                 <?php foreach ($contract->ips as $ip) : ?>
@@ -511,7 +511,7 @@ use Cake\I18n\Number;
                                     <th><?= __('Ip Network') ?></th>
                                     <th><?= __('Type Of Use') ?></th>
                                     <th><?= __('Note') ?></th>
-                                    <th><?= __('Range') ?></th>
+                                    <th><?= __('IP Address Range') ?></th>
                                     <th class="actions"><?= __('Actions') ?></th>
                                 </tr>
                                 <?php foreach ($contract->ip_networks as $ipNetwork) : ?>
