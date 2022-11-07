@@ -21,6 +21,7 @@ $xml_filename = TMP . uniqid('invoices-', true) . '.xml';
 $pohoda->open($xml_filename, $invoiced_month->i18nFormat('yyyy-MM'), 'Import invoices');
 
 foreach ($invoices as $invoice) {
+    /** @var \BookkeepingPohoda\Model\Entity\Invoice $invoice */
     $invoiceRecord = $pohoda->createInvoice([
         'invoiceType' => 'issuedInvoice',
         'number' => [
@@ -37,16 +38,16 @@ foreach ($invoices as $invoice) {
         'classificationVAT' => [
             'ids' => $tax_rate->reverse_charge ? 'UDpdp' : 'UD',
         ],
-        'text' => $invoice->text,
+        'text' => $invoice->text ?? '',
         'partnerIdentity' => [
             'address' => [
-                'company' => $invoice->customer->billing_address->company,
-                'name' => $invoice->customer->billing_address->full_name,
-                'city' => $invoice->customer->billing_address->city,
-                'street' => $invoice->customer->billing_address->street_and_number,
-                'zip' => $invoice->customer->billing_address->zip,
-                'ico' => $invoice->customer->ic,
-                'dic' => $invoice->customer->dic,
+                'company' => $invoice->customer->billing_address->company ?? '',
+                'name' => $invoice->customer->billing_address->full_name ?? '',
+                'city' => $invoice->customer->billing_address->city ?? '',
+                'street' => $invoice->customer->billing_address->street_and_number ?? '',
+                'zip' => $invoice->customer->billing_address->zip ?? '',
+                'ico' => $invoice->customer->ic ?? '',
+                'dic' => $invoice->customer->dic ?? '',
             ],
         ],
         'paymentType' => [
@@ -59,8 +60,8 @@ foreach ($invoices as $invoice) {
         'activity' => [
             'ids' => 'internet',
         ],
-        'note' => $invoice->note,
-        'intNote' => $invoice->internal_note,
+        'note' => $invoice->note ?? '',
+        'intNote' => $invoice->internal_note ?? '',
     ]);
 
     // add items
