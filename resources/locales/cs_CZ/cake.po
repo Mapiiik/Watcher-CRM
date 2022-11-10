@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CakePHP 4.2.4\n"
-"POT-Creation-Date: 2022-10-08 19:48+0200\n"
-"PO-Revision-Date: 2022-10-08 19:50+0200\n"
+"POT-Creation-Date: 2022-11-10 16:36+0100\n"
+"PO-Revision-Date: 2022-11-10 16:38+0100\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2\n"
 
 #: templates/Error/error400.php:39 templates/Error/error500.php:43
 msgid "Error"
@@ -287,6 +287,6 @@ msgstr "Upravit {0}"
 msgid "New {0}"
 msgstr "Nový {0}"
 
-#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1917
+#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1916
 msgid "Submit"
 msgstr "Potvrdit"
