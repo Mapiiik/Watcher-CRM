@@ -117,6 +117,7 @@ $routes->scope('/admin/', function (RouteBuilder $builder) {
 
     $builder->connect('/{controller}', ['action' => 'index']);
     $builder->connect('/{controller}/add', ['action' => 'add']);
+    $builder->connect('/{controller}/add-from-range', ['action' => 'addFromRange']);
     $builder->connect('/{controller}/{id}', ['action' => 'view'])
         ->setPatterns(['id' => '[0-9]+'])
         ->setPass(['id']);
