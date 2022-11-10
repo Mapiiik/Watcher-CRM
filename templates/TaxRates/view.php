@@ -81,7 +81,6 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Company') ?></th>
                             <th><?= __('Title') ?></th>
                             <th><?= __('First Name') ?></th>
@@ -96,7 +95,6 @@
                         </tr>
                         <?php foreach ($taxRate->customers as $customer) : ?>
                         <tr>
-                            <td><?= $this->Number->format($customer->id) ?></td>
                             <td><?= h($customer->company) ?></td>
                             <td><?= h($customer->title) ?></td>
                             <td><?= h($customer->first_name) ?></td>
