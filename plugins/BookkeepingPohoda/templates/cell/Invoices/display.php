@@ -13,6 +13,7 @@ use Cake\I18n\FrozenDate;
         <tr>
             <?php if ($show_customers) : ?>
             <th><?= __d('bookkeeping_pohoda', 'Customer') ?></th>
+            <th><?= __d('bookkeeping_pohoda', 'Customer Number') ?></th>
             <?php endif; ?>
             <th><?= __d('bookkeeping_pohoda', 'Number') ?></th>
             <th><?= __d('bookkeeping_pohoda', 'Variable Symbol') ?></th>
@@ -35,6 +36,7 @@ use Cake\I18n\FrozenDate;
                     ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $invoice->customer->id]
                 ) : '' ?>
             </td>
+            <td><?= $invoice->has('customer') ? h($invoice->customer->number) : '' ?></td>
             <?php endif; ?>
             <td><?= $this->Number->format($invoice->number) ?></td>
             <td><?= h($invoice->variable_symbol) ?></td>

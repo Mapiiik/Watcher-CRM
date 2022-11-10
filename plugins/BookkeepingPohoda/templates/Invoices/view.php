@@ -51,8 +51,8 @@
                     ) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __d('bookkeeping_pohoda', 'Id') ?></th>
-                    <td><?= $this->Number->format($invoice->id) ?></td>
+                    <th><?= __d('bookkeeping_pohoda', 'Customer Number') ?></th>
+                    <td><?= $invoice->has('customer') ? h($invoice->customer->number) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __d('bookkeeping_pohoda', 'Number') ?></th>
@@ -72,11 +72,11 @@
                 </tr>
                 <tr>
                     <th><?= __d('bookkeeping_pohoda', 'Total') ?></th>
-                    <td><?= $this->Number->format($invoice->total) ?></td>
+                    <td><?= $this->Number->currency($invoice->total) ?></td>
                 </tr>
                 <tr>
                     <th><?= __d('bookkeeping_pohoda', 'Debt') ?></th>
-                    <td><?= $this->Number->format($invoice->debt) ?></td>
+                    <td><?= $this->Number->currency($invoice->debt) ?></td>
                 </tr>
                 <tr>
                     <th><?= __d('bookkeeping_pohoda', 'Payment Date') ?></th>
@@ -90,6 +90,12 @@
                 <tr>
                     <th><?= __d('bookkeeping_pohoda', 'Email Sent') ?></th>
                     <td><?= h($invoice->email_sent) ?></td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <th><?= __d('bookkeeping_pohoda', 'Id') ?></th>
+                    <td><?= $this->Number->format($invoice->id) ?></td>
                 </tr>
                 <tr>
                     <th><?= __d('bookkeeping_pohoda', 'Created') ?></th>

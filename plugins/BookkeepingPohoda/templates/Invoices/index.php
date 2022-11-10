@@ -33,8 +33,8 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id', __d('bookkeeping_pohoda', 'Id')) ?></th>
                     <th><?= $this->Paginator->sort('customer_id', __d('bookkeeping_pohoda', 'Customer')) ?></th>
+                    <th><?= $this->Paginator->sort('customer_id', __d('bookkeeping_pohoda', 'Customer Number')) ?></th>
                     <th><?= $this->Paginator->sort('number', __d('bookkeeping_pohoda', 'Number')) ?></th>
                     <th><?= $this->Paginator->sort(
                         'variable_symbol',
@@ -55,13 +55,13 @@
             <tbody>
                 <?php foreach ($invoices as $invoice) : ?>
                 <tr style="<?= $invoice->style ?>">
-                    <td><?= $this->Number->format($invoice->id) ?></td>
                     <td>
                         <?= $invoice->has('customer') ? $this->Html->link(
                             $invoice->customer->name,
                             ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $invoice->customer->id]
                         ) : '' ?>
                     </td>
+                    <td><?= $invoice->has('customer') ? h($invoice->customer->number) : '' ?></td>
                     <td><?= $this->Number->format($invoice->number) ?></td>
                     <td><?= h($invoice->variable_symbol) ?></td>
                     <td><?= h($invoice->creation_date) ?></td>
