@@ -66,7 +66,7 @@ use Cake\I18n\Number;
                 ['action' => 'print', $customer->id],
                 ['class' => 'button float-right']
             ) ?>
-            <h3><?= h($customer->name) ?></h3>
+            <h3><?= h($customer->name) . ' (' . h($customer->number) . ')' ?></h3>
             <div class="row">
                 <div class="column-responsive">
                     <table>
