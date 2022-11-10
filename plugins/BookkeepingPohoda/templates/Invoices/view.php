@@ -42,94 +42,105 @@
     <div class="column-responsive column-90">
         <div class="invoices view content">
             <h3><?= h($invoice->number) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __d('bookkeeping_pohoda', 'Customer') ?></th>
-                    <td><?= $invoice->has('customer') ? $this->Html->link(
-                        $invoice->customer->name,
-                        ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $invoice->customer->id]
-                    ) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __d('bookkeeping_pohoda', 'Customer Number') ?></th>
-                    <td><?= $invoice->has('customer') ? h($invoice->customer->number) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __d('bookkeeping_pohoda', 'Number') ?></th>
-                    <td><?= $this->Number->format($invoice->number) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __d('bookkeeping_pohoda', 'Variable Symbol') ?></th>
-                    <td><?= h($invoice->variable_symbol) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __d('bookkeeping_pohoda', 'Creation Date') ?></th>
-                    <td><?= h($invoice->creation_date) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __d('bookkeeping_pohoda', 'Due Date') ?></th>
-                    <td><?= h($invoice->due_date) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __d('bookkeeping_pohoda', 'Total') ?></th>
-                    <td><?= $this->Number->currency($invoice->total) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __d('bookkeeping_pohoda', 'Debt') ?></th>
-                    <td><?= $this->Number->currency($invoice->debt) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __d('bookkeeping_pohoda', 'Payment Date') ?></th>
-                    <td><?= h($invoice->payment_date) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __d('bookkeeping_pohoda', 'Send By Email') ?></th>
-                    <td><?= $invoice->send_by_email ?
-                        __d('bookkeeping_pohoda', 'Yes') : __d('bookkeeping_pohoda', 'No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __d('bookkeeping_pohoda', 'Email Sent') ?></th>
-                    <td><?= h($invoice->email_sent) ?></td>
-                </tr>
-            </table>
-            <table>
-                <tr>
-                    <th><?= __d('bookkeeping_pohoda', 'Id') ?></th>
-                    <td><?= $this->Number->format($invoice->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __d('bookkeeping_pohoda', 'Created') ?></th>
-                    <td><?= h($invoice->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __d('bookkeeping_pohoda', 'Created By') ?></th>
-                    <td><?= $invoice->has('creator') ? $this->Html->link(
-                        $invoice->creator->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $invoice->creator->id,
-                        ]
-                    ) : h($invoice->created_by) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __d('bookkeeping_pohoda', 'Modified') ?></th>
-                    <td><?= h($invoice->modified) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __d('bookkeeping_pohoda', 'Modified By') ?></th>
-                    <td><?= $invoice->has('modifier') ? $this->Html->link(
-                        $invoice->modifier->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $invoice->modifier->id,
-                        ]
-                    ) : h($invoice->modified_by) ?></td>
-                </tr>
-            </table>
+            <div class="row">
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __d('bookkeeping_pohoda', 'Customer') ?></th>
+                            <td><?= $invoice->has('customer') ? $this->Html->link(
+                                $invoice->customer->name,
+                                [
+                                    'plugin' => null,
+                                    'controller' => 'Customers',
+                                    'action' => 'view',
+                                    $invoice->customer->id,
+                                ]
+                            ) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('bookkeeping_pohoda', 'Customer Number') ?></th>
+                            <td><?= $invoice->has('customer') ? h($invoice->customer->number) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('bookkeeping_pohoda', 'Number') ?></th>
+                            <td><?= $this->Number->format($invoice->number) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('bookkeeping_pohoda', 'Variable Symbol') ?></th>
+                            <td><?= h($invoice->variable_symbol) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('bookkeeping_pohoda', 'Creation Date') ?></th>
+                            <td><?= h($invoice->creation_date) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('bookkeeping_pohoda', 'Due Date') ?></th>
+                            <td><?= h($invoice->due_date) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('bookkeeping_pohoda', 'Total') ?></th>
+                            <td><?= $this->Number->currency($invoice->total) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('bookkeeping_pohoda', 'Debt') ?></th>
+                            <td><?= $this->Number->currency($invoice->debt) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('bookkeeping_pohoda', 'Payment Date') ?></th>
+                            <td><?= h($invoice->payment_date) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('bookkeeping_pohoda', 'Send By Email') ?></th>
+                            <td><?= $invoice->send_by_email ?
+                                __d('bookkeeping_pohoda', 'Yes') : __d('bookkeeping_pohoda', 'No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('bookkeeping_pohoda', 'Email Sent') ?></th>
+                            <td><?= h($invoice->email_sent) ?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __d('bookkeeping_pohoda', 'Id') ?></th>
+                            <td><?= $this->Number->format($invoice->id) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('bookkeeping_pohoda', 'Created') ?></th>
+                            <td><?= h($invoice->created) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('bookkeeping_pohoda', 'Created By') ?></th>
+                            <td><?= $invoice->has('creator') ? $this->Html->link(
+                                $invoice->creator->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $invoice->creator->id,
+                                ]
+                            ) : h($invoice->created_by) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('bookkeeping_pohoda', 'Modified') ?></th>
+                            <td><?= h($invoice->modified) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('bookkeeping_pohoda', 'Modified By') ?></th>
+                            <td><?= $invoice->has('modifier') ? $this->Html->link(
+                                $invoice->modifier->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $invoice->modifier->id,
+                                ]
+                            ) : h($invoice->modified_by) ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
             <div class="text">
                 <strong><?= __d('bookkeeping_pohoda', 'Text') ?></strong>
                 <blockquote>
