@@ -25,48 +25,56 @@
     <div class="column-responsive column-90">
         <div class="commissions view content">
             <h3><?= h($commission->name) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __('Name') ?></th>
-                    <td><?= h($commission->name) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($commission->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($commission->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created By') ?></th>
-                    <td><?= $commission->has('creator') ? $this->Html->link(
-                        $commission->creator->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                             $commission->creator->id,
-                        ]
-                    ) : h($commission->created_by) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($commission->modified) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified By') ?></th>
-                    <td><?= $commission->has('modifier') ? $this->Html->link(
-                        $commission->modifier->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $commission->modifier->id,
-                        ]
-                    ) : h($commission->modified_by) ?></td>
-                </tr>
-            </table>
+            <div class="row">
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Name') ?></th>
+                            <td><?= h($commission->name) ?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Id') ?></th>
+                            <td><?= $this->Number->format($commission->id) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created') ?></th>
+                            <td><?= h($commission->created) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created By') ?></th>
+                            <td><?= $commission->has('creator') ? $this->Html->link(
+                                $commission->creator->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $commission->creator->id,
+                                ]
+                            ) : h($commission->created_by) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified') ?></th>
+                            <td><?= h($commission->modified) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified By') ?></th>
+                            <td><?= $commission->has('modifier') ? $this->Html->link(
+                                $commission->modifier->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $commission->modifier->id,
+                                ]
+                            ) : h($commission->modified_by) ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
             <div class="related">
                 <h4><?= __('Related Dealer Commissions') ?></h4>
                 <?php if (!empty($commission->dealer_commissions)) : ?>

@@ -25,56 +25,64 @@
     <div class="column-responsive column-90">
         <div class="taxRates view content">
             <h3><?= h($taxRate->name) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __('Name') ?></th>
-                    <td><?= h($taxRate->name) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Vat Rate') ?></th>
-                    <td><?= $this->Number->format($taxRate->vat_rate) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Reverse Charge') ?></th>
-                    <td><?= $taxRate->reverse_charge ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($taxRate->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($taxRate->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created By') ?></th>
-                    <td><?= $taxRate->has('creator') ? $this->Html->link(
-                        $taxRate->creator->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $taxRate->creator->id,
-                        ]
-                    ) : h($taxRate->created_by) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($taxRate->modified) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified By') ?></th>
-                    <td><?= $taxRate->has('modifier') ? $this->Html->link(
-                        $taxRate->modifier->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $taxRate->modifier->id,
-                        ]
-                    ) : h($taxRate->modified_by) ?></td>
-                </tr>
-            </table>
+            <div class="row">
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Name') ?></th>
+                            <td><?= h($taxRate->name) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Vat Rate') ?></th>
+                            <td><?= $this->Number->format($taxRate->vat_rate) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Reverse Charge') ?></th>
+                            <td><?= $taxRate->reverse_charge ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Id') ?></th>
+                            <td><?= $this->Number->format($taxRate->id) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created') ?></th>
+                            <td><?= h($taxRate->created) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created By') ?></th>
+                            <td><?= $taxRate->has('creator') ? $this->Html->link(
+                                $taxRate->creator->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $taxRate->creator->id,
+                                ]
+                            ) : h($taxRate->created_by) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified') ?></th>
+                            <td><?= h($taxRate->modified) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified By') ?></th>
+                            <td><?= $taxRate->has('modifier') ? $this->Html->link(
+                                $taxRate->modifier->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $taxRate->modifier->id,
+                                ]
+                            ) : h($taxRate->modified_by) ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
             <div class="related">
                 <h4><?= __('Related Customers') ?></h4>
                 <?php if (!empty($taxRate->customers)) : ?>
@@ -86,9 +94,7 @@
                             <th><?= __('First Name') ?></th>
                             <th><?= __('Last Name') ?></th>
                             <th><?= __('Suffix') ?></th>
-                            <th><?= __('Date Of Birth') ?></th>
-                            <th><?= __('Ic') ?></th>
-                            <th><?= __('Dic') ?></th>
+                            <th><?= __('Number') ?></th>
                             <th><?= __('Contracts') ?></th>
                             <th><?= __('Ips') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
@@ -100,9 +106,7 @@
                             <td><?= h($customer->first_name) ?></td>
                             <td><?= h($customer->last_name) ?></td>
                             <td><?= h($customer->suffix) ?></td>
-                            <td><?= h($customer->date_of_birth) ?></td>
-                            <td><?= h($customer->ic) ?></td>
-                            <td><?= h($customer->dic) ?></td>
+                            <td><?= h($customer->number) ?></td>
                             <td>
                                 <?php foreach ($customer->contracts as $contract) {
                                     echo h($contract->number) . '<br />';

@@ -27,107 +27,115 @@ use Cake\I18n\Number;
     </aside>
     <div class="column-responsive column-90">
         <div class="billings view content">
-            <h3><?= h($billing->id) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __('Customer') ?></th>
-                    <td><?= $billing->has('customer') ? $this->Html->link(
-                        $billing->customer->name,
-                        ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]
-                    ) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Contract') ?></th>
-                    <td><?= $billing->has('contract') ? $this->Html->link(
-                        $billing->contract->number,
-                        ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]
-                    ) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Service') ?></th>
-                    <td><?= $billing->has('service') ? $this->Html->link(
-                        $billing->service->name,
-                        ['controller' => 'Services', 'action' => 'view', $billing->service->id]
-                    ) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Text') ?></th>
-                    <td><?= h($billing->text) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Quantity') ?></th>
-                    <td><?= $this->Number->format($billing->quantity) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Price') ?></th>
-                    <td><?= h($billing->price) ?><?= $billing->has('service') ?
-                        ' (' . h($billing->service->price) . ')' : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Fixed Discount') ?></th>
-                    <td><?= h($billing->fixed_discount) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Percentage Discount') ?></th>
-                    <td><?= h($billing->percentage_discount) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Total Price') ?></th>
-                    <td><?= Number::currency($billing->total_price) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Billing From') ?></th>
-                    <td><?= h($billing->billing_from) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Billing Until') ?></th>
-                    <td><?= h($billing->billing_until) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Active') ?></th>
-                    <td><?= $billing->active ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Separate Invoice') ?></th>
-                    <td><?= $billing->separate_invoice ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($billing->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($billing->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created By') ?></th>
-                    <td><?= $billing->has('creator') ? $this->Html->link(
-                        $billing->creator->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $billing->creator->id,
-                        ]
-                    ) : h($billing->created_by) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($billing->modified) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified By') ?></th>
-                    <td><?= $billing->has('modifier') ? $this->Html->link(
-                        $billing->modifier->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $billing->modifier->id,
-                        ]
-                    ) : h($billing->modified_by) ?></td>
-                </tr>
-            </table>
+            <h3><?= h($billing->name) ?></h3>
+            <div class="row">
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Customer') ?></th>
+                            <td><?= $billing->has('customer') ? $this->Html->link(
+                                $billing->customer->name,
+                                ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]
+                            ) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Contract') ?></th>
+                            <td><?= $billing->has('contract') ? $this->Html->link(
+                                $billing->contract->number,
+                                ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]
+                            ) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Service') ?></th>
+                            <td><?= $billing->has('service') ? $this->Html->link(
+                                $billing->service->name,
+                                ['controller' => 'Services', 'action' => 'view', $billing->service->id]
+                            ) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Text') ?></th>
+                            <td><?= h($billing->text) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Quantity') ?></th>
+                            <td><?= $this->Number->format($billing->quantity) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Price') ?></th>
+                            <td><?= h($billing->price) ?><?= $billing->has('service') ?
+                                ' (' . h($billing->service->price) . ')' : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Fixed Discount') ?></th>
+                            <td><?= h($billing->fixed_discount) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Percentage Discount') ?></th>
+                            <td><?= h($billing->percentage_discount) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Total Price') ?></th>
+                            <td><?= Number::currency($billing->total_price) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Billing From') ?></th>
+                            <td><?= h($billing->billing_from) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Billing Until') ?></th>
+                            <td><?= h($billing->billing_until) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Active') ?></th>
+                            <td><?= $billing->active ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Separate Invoice') ?></th>
+                            <td><?= $billing->separate_invoice ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Id') ?></th>
+                            <td><?= $this->Number->format($billing->id) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created') ?></th>
+                            <td><?= h($billing->created) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created By') ?></th>
+                            <td><?= $billing->has('creator') ? $this->Html->link(
+                                $billing->creator->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $billing->creator->id,
+                                ]
+                            ) : h($billing->created_by) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified') ?></th>
+                            <td><?= h($billing->modified) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified By') ?></th>
+                            <td><?= $billing->has('modifier') ? $this->Html->link(
+                                $billing->modifier->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $billing->modifier->id,
+                                ]
+                            ) : h($billing->modified_by) ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
             <div class="text">
                 <strong><?= __('Note') ?></strong>
                 <blockquote>

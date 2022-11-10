@@ -26,56 +26,64 @@
     <div class="column-responsive column-90">
         <div class="taskStates view content">
             <h3><?= h($taskState->name) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __('Name') ?></th>
-                    <td><?= h($taskState->name) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Color') ?></th>
-                    <td style="background-color: <?= h($taskState->color) ?>;"><?= h($taskState->color) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Completed') ?></th>
-                    <td><?= $taskState->completed ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($taskState->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($taskState->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created By') ?></th>
-                    <td><?= $taskState->has('creator') ? $this->Html->link(
-                        $taskState->creator->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $taskState->creator->id,
-                        ]
-                    ) : h($taskState->created_by) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($taskState->modified) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified By') ?></th>
-                    <td><?= $taskState->has('modifier') ? $this->Html->link(
-                        $taskState->modifier->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $taskState->modifier->id,
-                        ]
-                    ) : h($taskState->modified_by) ?></td>
-                </tr>
-            </table>
+            <div class="row">
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Name') ?></th>
+                            <td><?= h($taskState->name) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Color') ?></th>
+                            <td style="background-color: <?= h($taskState->color) ?>;"><?= h($taskState->color) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Completed') ?></th>
+                            <td><?= $taskState->completed ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Id') ?></th>
+                            <td><?= $this->Number->format($taskState->id) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created') ?></th>
+                            <td><?= h($taskState->created) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created By') ?></th>
+                            <td><?= $taskState->has('creator') ? $this->Html->link(
+                                $taskState->creator->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $taskState->creator->id,
+                                ]
+                            ) : h($taskState->created_by) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified') ?></th>
+                            <td><?= h($taskState->modified) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified By') ?></th>
+                            <td><?= $taskState->has('modifier') ? $this->Html->link(
+                                $taskState->modifier->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $taskState->modifier->id,
+                                ]
+                            ) : h($taskState->modified_by) ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
             <div class="related">
                 <h4><?= __('Related Tasks') ?></h4>
                 <?php if (!empty($taskState->tasks)) : ?>

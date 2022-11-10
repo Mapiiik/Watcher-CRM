@@ -28,70 +28,78 @@ use Cake\Collection\Collection;
     <div class="column-responsive column-90">
         <div class="services view content">
             <h3><?= h($service->name) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __('Name') ?></th>
-                    <td><?= h($service->name) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Service Type') ?></th>
-                    <td><?= $service->has('service_type') ? $this->Html->link(
-                        $service->service_type->name,
-                        ['controller' => 'ServiceTypes', 'action' => 'view', $service->service_type->id]
-                    ) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Queue') ?></th>
-                    <td><?= $service->has('queue') ? $this->Html->link(
-                        $service->queue->name,
-                        ['controller' => 'Queues', 'action' => 'view', $service->queue->id]
-                    ) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Price') ?></th>
-                    <td><?= $this->Number->format($service->price) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Not For New Customers') ?></th>
-                    <td><?= $service->not_for_new_customers ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($service->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($service->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created By') ?></th>
-                    <td><?= $service->has('creator') ? $this->Html->link(
-                        $service->creator->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $service->creator->id,
-                        ]
-                    ) : h($service->created_by) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($service->modified) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified By') ?></th>
-                    <td><?= $service->has('modifier') ? $this->Html->link(
-                        $service->modifier->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $service->modifier->id,
-                        ]
-                    ) : h($service->modified_by) ?></td>
-                </tr>
-            </table>
+            <div class="row">
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Name') ?></th>
+                            <td><?= h($service->name) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Service Type') ?></th>
+                            <td><?= $service->has('service_type') ? $this->Html->link(
+                                $service->service_type->name,
+                                ['controller' => 'ServiceTypes', 'action' => 'view', $service->service_type->id]
+                            ) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Queue') ?></th>
+                            <td><?= $service->has('queue') ? $this->Html->link(
+                                $service->queue->name,
+                                ['controller' => 'Queues', 'action' => 'view', $service->queue->id]
+                            ) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Price') ?></th>
+                            <td><?= $this->Number->format($service->price) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Not For New Customers') ?></th>
+                            <td><?= $service->not_for_new_customers ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Id') ?></th>
+                            <td><?= $this->Number->format($service->id) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created') ?></th>
+                            <td><?= h($service->created) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created By') ?></th>
+                            <td><?= $service->has('creator') ? $this->Html->link(
+                                $service->creator->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $service->creator->id,
+                                ]
+                            ) : h($service->created_by) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified') ?></th>
+                            <td><?= h($service->modified) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified By') ?></th>
+                            <td><?= $service->has('modifier') ? $this->Html->link(
+                                $service->modifier->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $service->modifier->id,
+                                ]
+                            ) : h($service->modified_by) ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
             <div class="related">
                 <h4><?= __('Related Billings') ?></h4>
                 <?php if (!empty($service->billings)) : ?>

@@ -25,67 +25,75 @@
     <div class="column-responsive column-90">
         <div class="emails view content">
             <h3><?= h($email->email) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __('Customer') ?></th>
-                    <td><?= $email->has('customer') ? $this->Html->link(
-                        $email->customer->name,
-                        ['controller' => 'Customers', 'action' => 'view', $email->customer->id]
-                    ) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Email') ?></th>
-                    <td><?= h($email->email) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Use For Billing') ?></th>
-                    <td><?= $email->use_for_billing ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Use For Outages') ?></th>
-                    <td><?= $email->use_for_outages ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Use For Commercial') ?></th>
-                    <td><?= $email->use_for_commercial ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($email->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($email->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created By') ?></th>
-                    <td><?= $email->has('creator') ? $this->Html->link(
-                        $email->creator->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $email->creator->id,
-                        ]
-                    ) : h($email->created_by) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($email->modified) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified By') ?></th>
-                    <td><?= $email->has('modifier') ? $this->Html->link(
-                        $email->modifier->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $email->modifier->id,
-                        ]
-                    ) : h($email->modified_by) ?></td>
-                </tr>
-            </table>
+            <div class="row">
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Customer') ?></th>
+                            <td><?= $email->has('customer') ? $this->Html->link(
+                                $email->customer->name,
+                                ['controller' => 'Customers', 'action' => 'view', $email->customer->id]
+                            ) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Email') ?></th>
+                            <td><?= h($email->email) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Use For Billing') ?></th>
+                            <td><?= $email->use_for_billing ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Use For Outages') ?></th>
+                            <td><?= $email->use_for_outages ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Use For Commercial') ?></th>
+                            <td><?= $email->use_for_commercial ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Id') ?></th>
+                            <td><?= $this->Number->format($email->id) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created') ?></th>
+                            <td><?= h($email->created) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created By') ?></th>
+                            <td><?= $email->has('creator') ? $this->Html->link(
+                                $email->creator->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $email->creator->id,
+                                ]
+                            ) : h($email->created_by) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified') ?></th>
+                            <td><?= h($email->modified) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified By') ?></th>
+                            <td><?= $email->has('modifier') ? $this->Html->link(
+                                $email->modifier->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $email->modifier->id,
+                                ]
+                            ) : h($email->modified_by) ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>

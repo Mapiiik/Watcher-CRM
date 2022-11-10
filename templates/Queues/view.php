@@ -25,80 +25,88 @@
     <div class="column-responsive column-90">
         <div class="queues view content">
             <h3><?= h($queue->name) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __('Name') ?></th>
-                    <td><?= h($queue->name) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Caption') ?></th>
-                    <td><?= h($queue->caption) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Fup') ?></th>
-                    <td><?= $this->Number->format($queue->fup) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Limit') ?></th>
-                    <td><?= $this->Number->format($queue->limit) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Overlimit Fragment') ?></th>
-                    <td><?= $this->Number->format($queue->overlimit_fragment) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Overlimit Cost') ?></th>
-                    <td><?= $this->Number->currency($queue->overlimit_cost) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Speed Up') ?></th>
-                    <td><?= $this->Number->format($queue->speed_up) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Speed Down') ?></th>
-                    <td><?= $this->Number->format($queue->speed_down) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Cto Category') ?></th>
-                    <td><?= h($queue->cto_category) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($queue->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($queue->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created By') ?></th>
-                    <td><?= $queue->has('creator') ? $this->Html->link(
-                        $queue->creator->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $queue->creator->id,
-                        ]
-                    ) : h($queue->created_by) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($queue->modified) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified By') ?></th>
-                    <td><?= $queue->has('modifier') ? $this->Html->link(
-                        $queue->modifier->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $queue->modifier->id,
-                        ]
-                    ) : h($queue->modified_by) ?></td>
-                </tr>
-            </table>
+            <div class="row">
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Name') ?></th>
+                            <td><?= h($queue->name) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Caption') ?></th>
+                            <td><?= h($queue->caption) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Fup') ?></th>
+                            <td><?= $this->Number->format($queue->fup) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Limit') ?></th>
+                            <td><?= $this->Number->format($queue->limit) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Overlimit Fragment') ?></th>
+                            <td><?= $this->Number->format($queue->overlimit_fragment) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Overlimit Cost') ?></th>
+                            <td><?= $this->Number->currency($queue->overlimit_cost) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Speed Up') ?></th>
+                            <td><?= $this->Number->format($queue->speed_up) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Speed Down') ?></th>
+                            <td><?= $this->Number->format($queue->speed_down) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Cto Category') ?></th>
+                            <td><?= h($queue->cto_category) ?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Id') ?></th>
+                            <td><?= $this->Number->format($queue->id) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created') ?></th>
+                            <td><?= h($queue->created) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created By') ?></th>
+                            <td><?= $queue->has('creator') ? $this->Html->link(
+                                $queue->creator->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $queue->creator->id,
+                                ]
+                            ) : h($queue->created_by) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified') ?></th>
+                            <td><?= h($queue->modified) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified By') ?></th>
+                            <td><?= $queue->has('modifier') ? $this->Html->link(
+                                $queue->modifier->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $queue->modifier->id,
+                                ]
+                            ) : h($queue->modified_by) ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
             <div class="related">
                 <h4><?= __('Related Services') ?></h4>
                 <?php if (!empty($queue->services)) : ?>

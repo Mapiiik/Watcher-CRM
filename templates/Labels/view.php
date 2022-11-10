@@ -33,64 +33,72 @@
                 ]
             ) ?>
             <h3><?= h($label->name) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __('Name') ?></th>
-                    <td><?= h($label->name) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Caption') ?></th>
-                    <td><?= h($label->caption) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Color') ?></th>
-                    <td style="background-color: <?= h($label->color) ?>;"><?= h($label->color) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Validity') ?></th>
-                    <td><?= $this->Number->format($label->validity) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Dynamic') ?></th>
-                    <td><?= $label->dynamic ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($label->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($label->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created By') ?></th>
-                    <td><?= $label->has('creator') ? $this->Html->link(
-                        $label->creator->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $label->creator->id,
-                        ]
-                    ) : h($label->created_by) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($label->modified) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified By') ?></th>
-                    <td><?= $label->has('modifier') ? $this->Html->link(
-                        $label->modifier->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $label->modifier->id,
-                        ]
-                    ) : h($label->modified_by) ?></td>
-                </tr>
-            </table>
+            <div class="row">
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Name') ?></th>
+                            <td><?= h($label->name) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Caption') ?></th>
+                            <td><?= h($label->caption) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Color') ?></th>
+                            <td style="background-color: <?= h($label->color) ?>;"><?= h($label->color) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Validity') ?></th>
+                            <td><?= $this->Number->format($label->validity) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Dynamic') ?></th>
+                            <td><?= $label->dynamic ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Id') ?></th>
+                            <td><?= $this->Number->format($label->id) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created') ?></th>
+                            <td><?= h($label->created) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created By') ?></th>
+                            <td><?= $label->has('creator') ? $this->Html->link(
+                                $label->creator->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $label->creator->id,
+                                ]
+                            ) : h($label->created_by) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified') ?></th>
+                            <td><?= h($label->modified) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified By') ?></th>
+                            <td><?= $label->has('modifier') ? $this->Html->link(
+                                $label->modifier->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $label->modifier->id,
+                                ]
+                            ) : h($label->modified_by) ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
             <div class="text">
                 <strong><?= __('Dynamic Sql') ?></strong>
                 <?= SqlFormatter::format($label->dynamic_sql); ?>

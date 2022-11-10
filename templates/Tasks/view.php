@@ -50,6 +50,8 @@
                                 ['controller' => 'Customers', 'action' => 'view', $task->dealer->id]
                             ) : '' ?></td>
                         </tr>
+                    </table>
+                    <table>
                         <tr>
                             <th><?= __('Subject') ?></th>
                             <td><?= h($task->subject) ?></td>
@@ -93,6 +95,8 @@
                             <th><?= __('Finish Date') ?></th>
                             <td><?= h($task->finish_date) ?></td>
                         </tr>
+                    </table>
+                    <table>
                         <tr>
                             <th><?= __('Id') ?></th>
                             <td><?= $this->Number->format($task->id) ?></td>

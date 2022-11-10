@@ -36,66 +36,74 @@
     <div class="column-responsive column-90">
         <div class="dealerCommissions view content">
             <h3><?= h($dealerCommission->id) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __('Dealer') ?></th>
-                    <td><?= $dealerCommission->has('dealer') ? $this->Html->link(
-                        $dealerCommission->dealer->name,
-                        ['controller' => 'Customers', 'action' => 'view', $dealerCommission->dealer->id]
-                    ) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Commission') ?></th>
-                    <td><?= $dealerCommission->has('commission') ? $this->Html->link(
-                        $dealerCommission->commission->name,
-                        ['controller' => 'Commissions', 'action' => 'view', $dealerCommission->commission->id]
-                    ) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Fixed') ?></th>
-                    <td><?= $this->Number->format($dealerCommission->fixed) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Percentage') ?></th>
-                    <td><?= $this->Number->format($dealerCommission->percentage) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($dealerCommission->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($dealerCommission->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created By') ?></th>
-                    <td><?= $dealerCommission->has('creator') ? $this->Html->link(
-                        $dealerCommission->creator->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                             $dealerCommission->creator->id,
-                        ]
-                    ) : h($dealerCommission->created_by) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($dealerCommission->modified) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified By') ?></th>
-                    <td><?= $dealerCommission->has('modifier') ? $this->Html->link(
-                        $dealerCommission->modifier->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $dealerCommission->modifier->id,
-                        ]
-                    ) : h($dealerCommission->modified_by) ?></td>
-                </tr>
-            </table>
+            <div class="row">
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Dealer') ?></th>
+                            <td><?= $dealerCommission->has('dealer') ? $this->Html->link(
+                                $dealerCommission->dealer->name,
+                                ['controller' => 'Customers', 'action' => 'view', $dealerCommission->dealer->id]
+                            ) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Commission') ?></th>
+                            <td><?= $dealerCommission->has('commission') ? $this->Html->link(
+                                $dealerCommission->commission->name,
+                                ['controller' => 'Commissions', 'action' => 'view', $dealerCommission->commission->id]
+                            ) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Fixed') ?></th>
+                            <td><?= $this->Number->format($dealerCommission->fixed) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Percentage') ?></th>
+                            <td><?= $this->Number->format($dealerCommission->percentage) ?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Id') ?></th>
+                            <td><?= $this->Number->format($dealerCommission->id) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created') ?></th>
+                            <td><?= h($dealerCommission->created) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created By') ?></th>
+                            <td><?= $dealerCommission->has('creator') ? $this->Html->link(
+                                $dealerCommission->creator->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $dealerCommission->creator->id,
+                                ]
+                            ) : h($dealerCommission->created_by) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified') ?></th>
+                            <td><?= h($dealerCommission->modified) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified By') ?></th>
+                            <td><?= $dealerCommission->has('modifier') ? $this->Html->link(
+                                $dealerCommission->modifier->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $dealerCommission->modifier->id,
+                                ]
+                            ) : h($dealerCommission->modified_by) ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>

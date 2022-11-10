@@ -343,11 +343,19 @@ use Cake\I18n\Number;
                                     <td class="actions">
                                         <?= $this->AuthLink->link(
                                             __('View'),
-                                            ['controller' => 'BorrowedEquipments', 'action' => 'view', $borrowedEquipment->id]
+                                            [
+                                                'controller' => 'BorrowedEquipments',
+                                                'action' => 'view',
+                                                $borrowedEquipment->id,
+                                            ]
                                         ) ?>
                                         <?= $this->AuthLink->link(
                                             __('Edit'),
-                                            ['controller' => 'BorrowedEquipments', 'action' => 'edit', $borrowedEquipment->id],
+                                            [
+                                                'controller' => 'BorrowedEquipments',
+                                                'action' => 'edit',
+                                                $borrowedEquipment->id,
+                                            ],
                                             ['class' => 'win-link']
                                         ) ?>
                                         <?= $this->AuthLink->postLink(
@@ -357,7 +365,12 @@ use Cake\I18n\Number;
                                                 'action' => 'delete',
                                                 $borrowedEquipment->id,
                                             ],
-                                            ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id)]
+                                            [
+                                                'confirm' => __(
+                                                    'Are you sure you want to delete # {0}?',
+                                                    $borrowedEquipment->id
+                                                ),
+                                            ]
                                         ) ?>
                                     </td>
                                 </tr>
@@ -401,8 +414,17 @@ use Cake\I18n\Number;
                                         ) ?>
                                         <?= $this->AuthLink->postLink(
                                             __('Delete'),
-                                            ['controller' => 'SoldEquipments', 'action' => 'delete', $soldEquipment->id],
-                                            ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id)]
+                                            [
+                                                'controller' => 'SoldEquipments',
+                                                'action' => 'delete',
+                                                $soldEquipment->id,
+                                            ],
+                                            [
+                                                'confirm' => __(
+                                                    'Are you sure you want to delete # {0}?',
+                                                    $soldEquipment->id
+                                                ),
+                                            ]
                                         ) ?>
                                     </td>
                                 </tr>
@@ -550,7 +572,12 @@ use Cake\I18n\Number;
                                         <?= $this->AuthLink->postLink(
                                             __('Delete'),
                                             ['controller' => 'IpNetworks', 'action' => 'delete', $ipNetwork->id],
-                                            ['confirm' => __('Are you sure you want to delete # {0}?', $ipNetwork->ip_network)]
+                                            [
+                                                'confirm' => __(
+                                                    'Are you sure you want to delete # {0}?',
+                                                    $ipNetwork->ip_network
+                                                ),
+                                            ]
                                         ) ?>
                                     </td>
                                 </tr>
@@ -636,17 +663,34 @@ use Cake\I18n\Number;
                                     <td class="actions">
                                         <?= $this->AuthLink->link(
                                             __('View'),
-                                            ['controller' => 'RemovedIpNetworks', 'action' => 'view', $removedIpNetork->id]
+                                            [
+                                                'controller' => 'RemovedIpNetworks',
+                                                'action' => 'view',
+                                                $removedIpNetork->id,
+                                            ]
                                         ) ?>
                                         <?= $this->AuthLink->link(
                                             __('Edit'),
-                                            ['controller' => 'RemovedIpNetworks', 'action' => 'edit', $removedIpNetork->id],
+                                            [
+                                                'controller' => 'RemovedIpNetworks',
+                                                'action' => 'edit',
+                                                $removedIpNetork->id,
+                                            ],
                                             ['class' => 'win-link']
                                         ) ?>
                                         <?= $this->AuthLink->postLink(
                                             __('Delete'),
-                                            ['controller' => 'RemovedIpNetworks', 'action' => 'delete', $removedIpNetork->id],
-                                            ['confirm' => __('Are you sure you want to delete # {0}?', $removedIpNetork->id)]
+                                            [
+                                                'controller' => 'RemovedIpNetworks',
+                                                'action' => 'delete',
+                                                $removedIpNetork->id,
+                                            ],
+                                            [
+                                                'confirm' => __(
+                                                    'Are you sure you want to delete # {0}?',
+                                                    $removedIpNetork->id
+                                                ),
+                                            ]
                                         ) ?>
                                     </td>
                                 </tr>

@@ -36,58 +36,66 @@
     <div class="column-responsive column-90">
         <div class="customerLabels view content">
             <h3><?= h($customerLabel->id) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __('Label') ?></th>
-                    <td><?= $customerLabel->has('label') ? $this->Html->link(
-                        $customerLabel->label->name,
-                        ['controller' => 'Labels', 'action' => 'view', $customerLabel->label->id]
-                    ) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Customer') ?></th>
-                    <td><?= $customerLabel->has('customer') ? $this->Html->link(
-                        $customerLabel->customer->name,
-                        ['controller' => 'Customers', 'action' => 'view', $customerLabel->customer->id]
-                    ) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($customerLabel->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($customerLabel->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created By') ?></th>
-                    <td><?= $customerLabel->has('creator') ? $this->Html->link(
-                        $customerLabel->creator->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $customerLabel->creator->id,
-                        ]
-                    ) : h($customerLabel->created_by) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($customerLabel->modified) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified By') ?></th>
-                    <td><?= $customerLabel->has('modifier') ? $this->Html->link(
-                        $customerLabel->modifier->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $customerLabel->modifier->id,
-                        ]
-                    ) : h($customerLabel->modified_by) ?></td>
-                </tr>
-            </table>
+            <div class="row">
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Label') ?></th>
+                            <td><?= $customerLabel->has('label') ? $this->Html->link(
+                                $customerLabel->label->name,
+                                ['controller' => 'Labels', 'action' => 'view', $customerLabel->label->id]
+                            ) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Customer') ?></th>
+                            <td><?= $customerLabel->has('customer') ? $this->Html->link(
+                                $customerLabel->customer->name,
+                                ['controller' => 'Customers', 'action' => 'view', $customerLabel->customer->id]
+                            ) : '' ?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Id') ?></th>
+                            <td><?= $this->Number->format($customerLabel->id) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created') ?></th>
+                            <td><?= h($customerLabel->created) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created By') ?></th>
+                            <td><?= $customerLabel->has('creator') ? $this->Html->link(
+                                $customerLabel->creator->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $customerLabel->creator->id,
+                                ]
+                            ) : h($customerLabel->created_by) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified') ?></th>
+                            <td><?= h($customerLabel->modified) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified By') ?></th>
+                            <td><?= $customerLabel->has('modifier') ? $this->Html->link(
+                                $customerLabel->modifier->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $customerLabel->modifier->id,
+                                ]
+                            ) : h($customerLabel->modified_by) ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
             <div class="text">
                 <strong><?= __('Note') ?></strong>
                 <blockquote>

@@ -36,52 +36,60 @@
     <div class="column-responsive column-90">
         <div class="equipmentTypes view content">
             <h3><?= h($equipmentType->name) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __('Name') ?></th>
-                    <td><?= h($equipmentType->name) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Price') ?></th>
-                    <td><?= $this->Number->currency($equipmentType->price) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($equipmentType->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($equipmentType->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created By') ?></th>
-                    <td><?= $equipmentType->has('creator') ? $this->Html->link(
-                        $equipmentType->creator->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $equipmentType->creator->id,
-                        ]
-                    ) : h($equipmentType->created_by) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($equipmentType->modified) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified By') ?></th>
-                    <td><?= $equipmentType->has('modifier') ? $this->Html->link(
-                        $equipmentType->modifier->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $equipmentType->modifier->id,
-                        ]
-                    ) : h($equipmentType->modified_by) ?></td>
-                </tr>
-            </table>
+            <div class="row">
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Name') ?></th>
+                            <td><?= h($equipmentType->name) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Price') ?></th>
+                            <td><?= $this->Number->currency($equipmentType->price) ?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Id') ?></th>
+                            <td><?= $this->Number->format($equipmentType->id) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created') ?></th>
+                            <td><?= h($equipmentType->created) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created By') ?></th>
+                            <td><?= $equipmentType->has('creator') ? $this->Html->link(
+                                $equipmentType->creator->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $equipmentType->creator->id,
+                                ]
+                            ) : h($equipmentType->created_by) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified') ?></th>
+                            <td><?= h($equipmentType->modified) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified By') ?></th>
+                            <td><?= $equipmentType->has('modifier') ? $this->Html->link(
+                                $equipmentType->modifier->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $equipmentType->modifier->id,
+                                ]
+                            ) : h($equipmentType->modified_by) ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
             <div class="related">
                 <h4><?= __('Related Borrowed Equipments') ?></h4>
                 <?php if (!empty($equipmentType->borrowed_equipments)) : ?>

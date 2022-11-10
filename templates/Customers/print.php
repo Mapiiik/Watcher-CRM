@@ -48,6 +48,8 @@
                             <th><?= __('Suffix') ?></th>
                             <td><?= h($customer->suffix) ?></td>
                         </tr>
+                    </table>
+                    <table>
                         <tr>
                             <th><?= __('Date Of Birth') ?></th>
                             <td><?= h($customer->date_of_birth) ?></td>
@@ -66,6 +68,8 @@
                             <th><?= __('Dic') ?></th>
                             <td><?= h($customer->dic) ?></td>
                         </tr>
+                    </table>
+                    <table>
                         <tr>
                             <th><?= __('Www') ?></th>
                             <td><?= h($customer->www) ?></td>
@@ -105,6 +109,8 @@
                             <th><?= __('Invoice Delivery Type') ?></th>
                             <td><?= h($invoice_delivery_types[$customer->invoice_delivery_type]) ?></td>
                         </tr>
+                    </table>
+                    <table>
                         <tr>
                             <th><?= __('Agree Gdpr') ?></th>
                             <td><?= $customer->agree_gdpr ? __('Yes') : __('No'); ?></td>
@@ -121,6 +127,8 @@
                             <th><?= __('Agree Mailing Commercial') ?></th>
                             <td><?= $customer->agree_mailing_commercial ? __('Yes') : __('No'); ?></td>
                         </tr>
+                    </table>
+                    <table>
                         <tr>
                             <th><?= __('Id') ?></th>
                             <td><?= $this->Number->format($customer->id) ?></td>

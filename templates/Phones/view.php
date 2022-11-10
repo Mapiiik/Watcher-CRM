@@ -25,55 +25,63 @@
     <div class="column-responsive column-90">
         <div class="phones view content">
             <h3><?= h($phone->phone) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __('Customer') ?></th>
-                    <td><?= $phone->has('customer') ? $this->Html->link(
-                        $phone->customer->name,
-                        ['controller' => 'Customers', 'action' => 'view', $phone->customer->id]
-                    ) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Phone') ?></th>
-                    <td><?= h($phone->phone) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($phone->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($phone->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created By') ?></th>
-                    <td><?= $phone->has('creator') ? $this->Html->link(
-                        $phone->creator->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $phone->creator->id,
-                        ]
-                    ) : h($phone->created_by) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($phone->modified) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified By') ?></th>
-                    <td><?= $phone->has('modifier') ? $this->Html->link(
-                        $phone->modifier->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $phone->modifier->id,
-                        ]
-                    ) : h($phone->modified_by) ?></td>
-                </tr>
-            </table>
+            <div class="row">
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Customer') ?></th>
+                            <td><?= $phone->has('customer') ? $this->Html->link(
+                                $phone->customer->name,
+                                ['controller' => 'Customers', 'action' => 'view', $phone->customer->id]
+                            ) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Phone') ?></th>
+                            <td><?= h($phone->phone) ?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Id') ?></th>
+                            <td><?= $this->Number->format($phone->id) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created') ?></th>
+                            <td><?= h($phone->created) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created By') ?></th>
+                            <td><?= $phone->has('creator') ? $this->Html->link(
+                                $phone->creator->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $phone->creator->id,
+                                ]
+                            ) : h($phone->created_by) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified') ?></th>
+                            <td><?= h($phone->modified) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified By') ?></th>
+                            <td><?= $phone->has('modifier') ? $this->Html->link(
+                                $phone->modifier->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $phone->modifier->id,
+                                ]
+                            ) : h($phone->modified_by) ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -28,84 +28,92 @@
     <div class="column-responsive column-90">
         <div class="serviceTypes view content">
             <h3><?= h($serviceType->name) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __('Name') ?></th>
-                    <td><?= h($serviceType->name) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Contract Number Format') ?></th>
-                    <td><?= h($serviceType->contract_number_format) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Activation Fee') ?></th>
-                    <td><?= h($serviceType->activation_fee) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Activation Fee With Obligation') ?></th>
-                    <td><?= h($serviceType->activation_fee_with_obligation) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Invoice Text') ?></th>
-                    <td><?= h($serviceType->invoice_text) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Separate Invoice') ?></th>
-                    <td><?= $serviceType->separate_invoice ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Invoice With Items') ?></th>
-                    <td><?= $serviceType->invoice_with_items ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Installation Address Required') ?></th>
-                    <td><?= $serviceType->installation_address_required ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Access Point Required') ?></th>
-                    <td><?= $serviceType->access_point_required ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Normally With Borrowed Equipment') ?></th>
-                    <td><?= $serviceType->normally_with_borrowed_equipment ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($serviceType->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($serviceType->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created By') ?></th>
-                    <td><?= $serviceType->has('creator') ? $this->Html->link(
-                        $serviceType->creator->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $serviceType->creator->id,
-                        ]
-                    ) : h($serviceType->created_by) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($serviceType->modified) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified By') ?></th>
-                    <td><?= $serviceType->has('modifier') ? $this->Html->link(
-                        $serviceType->modifier->username,
-                        [
-                            'plugin' => 'CakeDC/Users',
-                            'controller' => 'Users',
-                            'action' => 'view',
-                            $serviceType->modifier->id,
-                        ]
-                    ) : h($serviceType->modified_by) ?></td>
-                </tr>
-            </table>
+            <div class="row">
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Name') ?></th>
+                            <td><?= h($serviceType->name) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Contract Number Format') ?></th>
+                            <td><?= h($serviceType->contract_number_format) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Activation Fee') ?></th>
+                            <td><?= h($serviceType->activation_fee) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Activation Fee With Obligation') ?></th>
+                            <td><?= h($serviceType->activation_fee_with_obligation) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Invoice Text') ?></th>
+                            <td><?= h($serviceType->invoice_text) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Separate Invoice') ?></th>
+                            <td><?= $serviceType->separate_invoice ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Invoice With Items') ?></th>
+                            <td><?= $serviceType->invoice_with_items ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Installation Address Required') ?></th>
+                            <td><?= $serviceType->installation_address_required ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Access Point Required') ?></th>
+                            <td><?= $serviceType->access_point_required ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Normally With Borrowed Equipment') ?></th>
+                            <td><?= $serviceType->normally_with_borrowed_equipment ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="column-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Id') ?></th>
+                            <td><?= $this->Number->format($serviceType->id) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created') ?></th>
+                            <td><?= h($serviceType->created) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created By') ?></th>
+                            <td><?= $serviceType->has('creator') ? $this->Html->link(
+                                $serviceType->creator->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $serviceType->creator->id,
+                                ]
+                            ) : h($serviceType->created_by) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified') ?></th>
+                            <td><?= h($serviceType->modified) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified By') ?></th>
+                            <td><?= $serviceType->has('modifier') ? $this->Html->link(
+                                $serviceType->modifier->username,
+                                [
+                                    'plugin' => 'CakeDC/Users',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                    $serviceType->modifier->id,
+                                ]
+                            ) : h($serviceType->modified_by) ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
             <div class="related">
                 <h4><?= __('Related Services') ?></h4>
                 <?php if (!empty($serviceType->services)) : ?>

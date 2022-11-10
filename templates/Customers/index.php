@@ -29,35 +29,28 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id', __('Number')) ?></th>
-                    <th><?= $this->Paginator->sort('dealer') ?></th>
-                    <th><?= $this->Paginator->sort('tax_rate_id') ?></th>
                     <th><?= $this->Paginator->sort('company') ?></th>
                     <th><?= $this->Paginator->sort('title') ?></th>
                     <th><?= $this->Paginator->sort('first_name') ?></th>
                     <th><?= $this->Paginator->sort('last_name') ?></th>
                     <th><?= $this->Paginator->sort('suffix') ?></th>
+                    <th><?= $this->Paginator->sort('id', __('Number')) ?></th>
                     <th><?= __('Contracts') ?></th>
                     <th><?= __('Ips') ?></th>
+                    <th><?= $this->Paginator->sort('tax_rate_id') ?></th>
+                    <th><?= $this->Paginator->sort('dealer') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($customers as $customer) : ?>
                 <tr>
-                    <td><?= h($customer->number) ?></td>
-                    <td><?= $customer->getDealerState() ?></td>
-                    <td>
-                        <?= $customer->has('tax_rate') ? $this->Html->link(
-                            $customer->tax_rate->name,
-                            ['controller' => 'TaxRates', 'action' => 'view', $customer->tax_rate->id]
-                        ) : '' ?>
-                    </td>
                     <td><?= h($customer->company) ?></td>
                     <td><?= h($customer->title) ?></td>
                     <td><?= h($customer->first_name) ?></td>
                     <td><?= h($customer->last_name) ?></td>
                     <td><?= h($customer->suffix) ?></td>
+                    <td><?= h($customer->number) ?></td>
                     <td>
                         <?php foreach ($customer->contracts as $contract) {
                             echo h($contract->number) . '<br />';
@@ -68,6 +61,13 @@
                             echo h($ip->ip) . '<br />';
                         } ?>
                     </td>
+                    <td>
+                        <?= $customer->has('tax_rate') ? $this->Html->link(
+                            $customer->tax_rate->name,
+                            ['controller' => 'TaxRates', 'action' => 'view', $customer->tax_rate->id]
+                        ) : '' ?>
+                    </td>
+                    <td><?= $customer->getDealerState() ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $customer->id]) ?>
                         <?= $this->AuthLink->link(
