@@ -24,6 +24,7 @@
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
+                    <th><?= $this->Paginator->sort('customer_id', __('Customer Number')) ?></th>
                     <th><?= $this->Paginator->sort('phone') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
@@ -37,6 +38,7 @@
                             ['controller' => 'Customers', 'action' => 'view', $phone->customer->id]
                         ) : '' ?>
                     </td>
+                    <td><?= $phone->has('customer') ? h($phone->customer->number) : '' ?></td>
                     <td><?= h($phone->phone) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $phone->id]) ?>

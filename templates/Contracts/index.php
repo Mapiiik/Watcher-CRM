@@ -24,6 +24,7 @@
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
+                    <th><?= $this->Paginator->sort('customer_id', __('Customer Number')) ?></th>
                     <th><?= $this->Paginator->sort('service_type_id') ?></th>
                     <th><?= $this->Paginator->sort('number') ?></th>
                     <th><?= $this->Paginator->sort('installation_address_id') ?></th>
@@ -49,6 +50,7 @@
                             ['controller' => 'Customers', 'action' => 'view', $contract->customer->id]
                         ) : '' ?>
                     </td>
+                    <td><?= $contract->has('customer') ? h($contract->customer->number) : '' ?></td>
                     <td>
                         <?= $contract->has('service_type') ? $this->Html->link(
                             $contract->service_type->name,

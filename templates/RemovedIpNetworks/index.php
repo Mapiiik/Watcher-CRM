@@ -25,6 +25,7 @@
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
+                    <th><?= $this->Paginator->sort('customer_id', __('Customer Number')) ?></th>
                     <th><?= $this->Paginator->sort('contract_id') ?></th>
                     <th><?= $this->Paginator->sort('ip_network') ?></th>
                     <th><?= $this->Paginator->sort('type_of_use') ?></th>
@@ -40,6 +41,7 @@
                             $removedIpNetwork->customer->name,
                             ['controller' => 'Customers', 'action' => 'view', $removedIpNetwork->customer->id]
                         ) : '' ?></td>
+                    <td><?= $removedIpNetwork->has('customer') ? h($removedIpNetwork->customer->number) : '' ?></td>
                     <td><?= $removedIpNetwork->has('contract') ?
                         $this->Html->link(
                             $removedIpNetwork->contract->number,

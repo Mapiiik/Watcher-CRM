@@ -25,6 +25,7 @@
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
+                    <th><?= $this->Paginator->sort('customer_id', __('Customer Number')) ?></th>
                     <th><?= $this->Paginator->sort('login') ?></th>
                     <th><?= $this->Paginator->sort('rights') ?></th>
                     <th><?= $this->Paginator->sort('locked') ?></th>
@@ -44,6 +45,7 @@
                             ['controller' => 'Customers', 'action' => 'view', $login->customer->id]
                         ) : '' ?>
                     </td>
+                    <td><?= $login->has('customer') ? h($login->customer->number) : '' ?></td>
                     <td><?= h($login->login) ?></td>
                     <td><?= $rights[$login->rights] ?></td>
                     <td><?= $login->locked ? __('Yes') : __('No'); ?></td>

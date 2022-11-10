@@ -25,6 +25,7 @@ use Cake\I18n\Number;
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
+                    <th><?= $this->Paginator->sort('customer_id', __('Customer Number')) ?></th>
                     <th><?= $this->Paginator->sort('contract_id') ?></th>
                     <th><?= $this->Paginator->sort('service_id') ?></th>
                     <th><?= $this->Paginator->sort('text') ?></th>
@@ -49,6 +50,7 @@ use Cake\I18n\Number;
                             ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]
                         ) : '' ?>
                     </td>
+                    <td><?= $billing->has('customer') ? h($billing->customer->number) : '' ?></td>
                     <td>
                         <?= $billing->has('contract') ? $this->Html->link(
                             $billing->contract->number,

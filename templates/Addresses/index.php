@@ -25,6 +25,7 @@
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
+                    <th><?= $this->Paginator->sort('customer_id', __('Customer Number')) ?></th>
                     <th><?= $this->Paginator->sort('type') ?></th>
                     <th><?= $this->Paginator->sort('company') ?></th>
                     <th><?= $this->Paginator->sort('title') ?></th>
@@ -50,6 +51,7 @@
                             ['controller' => 'Customers', 'action' => 'view', $address->customer->id]
                         ) : '' ?>
                     </td>
+                    <td><?= $address->has('customer') ? h($address->customer->number) : '' ?></td>
                     <td><?= h($types[$address->type]) ?></td>
                     <td><?= h($address->company) ?></td>
                     <td><?= h($address->title) ?></td>

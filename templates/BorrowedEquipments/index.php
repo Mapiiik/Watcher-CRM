@@ -28,6 +28,7 @@
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
+                    <th><?= $this->Paginator->sort('customer_id', __('Customer Number')) ?></th>
                     <th><?= $this->Paginator->sort('contract_id') ?></th>
                     <th><?= $this->Paginator->sort('equipment_type_id') ?></th>
                     <th><?= $this->Paginator->sort('serial_number') ?></th>
@@ -45,6 +46,7 @@
                             ['controller' => 'Customers', 'action' => 'view', $borrowedEquipment->customer->id]
                         ) : '' ?>
                     </td>
+                    <td><?= $borrowedEquipment->has('customer') ? h($borrowedEquipment->customer->number) : '' ?></td>
                     <td>
                         <?= $borrowedEquipment->has('contract') ? $this->Html->link(
                             $borrowedEquipment->contract->number,
