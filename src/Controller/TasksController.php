@@ -27,6 +27,12 @@ class TasksController extends AppController
         $this->set('customer_id', $customer_id);
 
         // persistent filter data
+        if (!is_null($this->getRequest()->getQuery('show_completed'))) {
+            $this->getRequest()->getSession()->write(
+                'Config.Tasks.filter.show_completed',
+                $this->getRequest()->getQuery('show_completed')
+            );
+        }
         if (!is_null($this->getRequest()->getQuery('dealer_id'))) {
             $this->getRequest()->getSession()->write(
                 'Config.Tasks.filter.dealer_id',
@@ -67,6 +73,12 @@ class TasksController extends AppController
             ];
         }
 
+        $show_completed = $filter['show_completed'] ?? null;
+        if (empty($show_completed)) {
+            $conditions[] = [
+                'TaskStates.completed' => 0,
+            ];
+        }
         $dealer_id = $filter['dealer_id'] ?? $this->getRequest()->getAttribute('identity')['customer_id'] ?? null;
         if (!empty($dealer_id)) {
             $conditions[] = [
@@ -104,6 +116,7 @@ class TasksController extends AppController
         // filter form
         $filterForm = new Form();
         $filterForm->setData([
+            'show_completed' => $show_completed,
             'dealer_id' => $dealer_id,
             'task_type_id' => $task_type_id,
             'task_state_id' => $task_state_id,

@@ -13,6 +13,11 @@
             'empty' => true,
             'onchange' => 'this.form.submit();',
         ]) ?>
+        <?= $this->Form->control('show_completed', [
+            'label' => __('Show Completed'),
+            'type' => 'checkbox',
+            'onchange' => 'this.form.submit();',
+        ]) ?>
     </div>
     <div class="column-responsive">
         <?= $this->Form->control('task_type_id', [
