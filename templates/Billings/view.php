@@ -39,6 +39,10 @@ use Cake\I18n\Number;
                             ) : '' ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Customer Number') ?></th>
+                            <td><?= $billing->has('customer') ? h($billing->customer->number) : '' ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Contract') ?></th>
                             <td><?= $billing->has('contract') ? $this->Html->link(
                                 $billing->contract->number,
@@ -56,6 +60,30 @@ use Cake\I18n\Number;
                             <th><?= __('Text') ?></th>
                             <td><?= h($billing->text) ?></td>
                         </tr>
+                    </table>
+                    <table>
+                        <tr>
+                            <th><?= __('Billing From') ?></th>
+                            <td><?= h($billing->billing_from) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Billing Until') ?></th>
+                            <td><?= h($billing->billing_until) ?></td>
+                        </tr>
+                    </table>
+                    <table>
+                        <tr>
+                            <th><?= __('Active') ?></th>
+                            <td><?= $billing->active ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Separate Invoice') ?></th>
+                            <td><?= $billing->separate_invoice ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="column-responsive">
+                    <table>
                         <tr>
                             <th><?= __('Quantity') ?></th>
                             <td><?= $this->Number->format($billing->quantity) ?></td>
@@ -77,25 +105,7 @@ use Cake\I18n\Number;
                             <th><?= __('Total Price') ?></th>
                             <td><?= Number::currency($billing->total_price) ?></td>
                         </tr>
-                        <tr>
-                            <th><?= __('Billing From') ?></th>
-                            <td><?= h($billing->billing_from) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Billing Until') ?></th>
-                            <td><?= h($billing->billing_until) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Active') ?></th>
-                            <td><?= $billing->active ? __('Yes') : __('No'); ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Separate Invoice') ?></th>
-                            <td><?= $billing->separate_invoice ? __('Yes') : __('No'); ?></td>
-                        </tr>
                     </table>
-                </div>
-                <div class="column-responsive">
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
