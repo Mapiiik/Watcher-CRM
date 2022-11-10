@@ -80,6 +80,10 @@ table {
                     ) : '' ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('Customer Number') ?></th>
+                    <td><?= $task->has('customer') ? h($task->customer->number) : '' ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Access Point') ?></th>
                     <td><?= $task->has('access_point') ? h($task->access_point['name']) : '' ?></td>
                 </tr>

@@ -47,6 +47,10 @@
                             ) : '' ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Customer Number') ?></th>
+                            <td><?= $soldEquipment->has('customer') ? h($soldEquipment->customer->number) : '' ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Contract') ?></th>
                             <td><?= $soldEquipment->has('contract') ? $this->Html->link(
                                 $soldEquipment->contract->number,

@@ -97,6 +97,7 @@
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
+                            <th><?= __('Customer Number') ?></th>
                             <th><?= __('Contract') ?></th>
                             <th><?= __('Serial Number') ?></th>
                             <th><?= __('Borrowed From') ?></th>
@@ -110,6 +111,7 @@
                                     $borrowedEquipment->customer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $borrowedEquipment->customer->id]
                                 ) : '' ?></td>
+                            <td><?= $borrowedEquipment->has('customer') ? h($borrowedEquipment->customer->number) : '' ?></td>
                             <td><?= $borrowedEquipment->has('contract') ?
                                 $this->Html->link(
                                     $borrowedEquipment->contract->number,
@@ -151,6 +153,7 @@
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
+                            <th><?= __('Customer Number') ?></th>
                             <th><?= __('Contract') ?></th>
                             <th><?= __('Serial Number') ?></th>
                             <th><?= __('Date Of Sale') ?></th>
@@ -163,6 +166,7 @@
                                     $soldEquipment->customer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $soldEquipment->customer->id]
                                 ) : '' ?></td>
+                            <td><?= $soldEquipment->has('customer') ? h($soldEquipment->customer->number) : '' ?></td>
                             <td><?= $soldEquipment->has('contract') ?
                                 $this->Html->link(
                                     $soldEquipment->contract->number,

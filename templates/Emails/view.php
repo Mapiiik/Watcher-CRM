@@ -36,6 +36,10 @@
                             ) : '' ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Customer Number') ?></th>
+                            <td><?= $email->has('customer') ? h($email->customer->number) : '' ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Email') ?></th>
                             <td><?= h($email->email) ?></td>
                         </tr>

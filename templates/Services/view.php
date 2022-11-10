@@ -107,6 +107,7 @@ use Cake\Collection\Collection;
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
+                            <th><?= __('Customer Number') ?></th>
                             <th><?= __('Contract') ?></th>
                             <th><?= __('Text') ?></th>
                             <th><?= __('Quantity') ?></th>
@@ -128,6 +129,7 @@ use Cake\Collection\Collection;
                                     $billing->customer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]
                                 ) : '' ?></td>
+                            <td><?= $billing->has('customer') ? h($billing->customer->number) : '' ?></td>
                             <td><?= $billing->has('contract') ?
                                 $this->Html->link(
                                     $billing->contract->number,

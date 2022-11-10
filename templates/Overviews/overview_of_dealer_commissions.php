@@ -52,6 +52,7 @@
                             <table>
                                 <tr>
                                     <th><?= __('Customer') ?></th>
+                                    <th><?= __('Customer Number') ?></th>
                                     <th><?= __('Contract') ?></th>
                                     <th><?= __('Name') ?></th>
                                     <th><?= __('Quantity') ?></th>
@@ -75,6 +76,7 @@
                                                     $contract->customer->id,
                                                 ]
                                             ) : '' ?></td>
+                                        <td><?= $contract->has('customer') ? h($contract->customer->number) : '' ?></td>
                                         <td><?=
                                             $this->Html->link(
                                                 $contract->number,

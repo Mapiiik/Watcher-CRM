@@ -125,6 +125,7 @@
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
+                            <th><?= __('Customer Number') ?></th>
                             <th><?= __('Number') ?></th>
                             <th><?= __('Service Type') ?></th>
                             <th><?= __('Installation Address') ?></th>
@@ -147,6 +148,7 @@
                                     ['controller' => 'Customers', 'action' => 'view', $contract->customer->id]
                                 ) : '' ?>
                             </td>
+                            <td><?= $contract->has('customer') ? h($contract->customer->number) : '' ?></td>
                             <td><?= h($contract->number) ?></td>
                             <td>
                                 <?= $contract->has('service_type') ? $this->Html->link(

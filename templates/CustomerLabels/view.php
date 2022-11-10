@@ -40,17 +40,21 @@
                 <div class="column-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Label') ?></th>
-                            <td><?= $customerLabel->has('label') ? $this->Html->link(
-                                $customerLabel->label->name,
-                                ['controller' => 'Labels', 'action' => 'view', $customerLabel->label->id]
-                            ) : '' ?></td>
-                        </tr>
-                        <tr>
                             <th><?= __('Customer') ?></th>
                             <td><?= $customerLabel->has('customer') ? $this->Html->link(
                                 $customerLabel->customer->name,
                                 ['controller' => 'Customers', 'action' => 'view', $customerLabel->customer->id]
+                            ) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Customer Number') ?></th>
+                            <td><?= $customerLabel->has('customer') ? h($customerLabel->customer->number) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Label') ?></th>
+                            <td><?= $customerLabel->has('label') ? $this->Html->link(
+                                $customerLabel->label->name,
+                                ['controller' => 'Labels', 'action' => 'view', $customerLabel->label->id]
                             ) : '' ?></td>
                         </tr>
                     </table>

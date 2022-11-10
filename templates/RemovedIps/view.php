@@ -37,6 +37,10 @@
                             ) : '' ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Customer Number') ?></th>
+                            <td><?= $removedIp->has('customer') ? h($removedIp->customer->number) : '' ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Contract') ?></th>
                             <td><?= $removedIp->has('contract') ? $this->Html->link(
                                 $removedIp->contract->number,

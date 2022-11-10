@@ -40,6 +40,10 @@
                             ) : '' ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Customer Number') ?></th>
+                            <td><?= $contract->has('customer') ? h($contract->customer->number) : '' ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Service Type') ?></th>
                             <td><?= $contract->has('service_type') ? $this->Html->link(
                                 $contract->service_type->name,

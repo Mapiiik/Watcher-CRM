@@ -38,6 +38,10 @@
                             ) : '' ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Customer Number') ?></th>
+                            <td><?= $address->has('customer') ? h($address->customer->number) : '' ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Type') ?></th>
                             <td><?= h($types[$address->type]) ?></td>
                         </tr>

@@ -37,6 +37,10 @@
                             ) : '' ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Customer Number') ?></th>
+                            <td><?= $login->has('customer') ? h($login->customer->number) : '' ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Login') ?></th>
                             <td><?= h($login->login) ?></td>
                         </tr>

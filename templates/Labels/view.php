@@ -110,6 +110,7 @@
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
+                            <th><?= __('Customer Number') ?></th>
                             <th><?= __('Note') ?></th>
                             <th><?= __('Created') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
@@ -121,6 +122,7 @@
                                     $customerLabel->customer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $customerLabel->customer->id]
                                 ) : '' ?></td>
+                            <td><?= $customerLabel->has('customer') ? h($customerLabel->customer->number) : '' ?></td>
                             <td><?= h($customerLabel->note) ?></td>
                             <td><?= h($customerLabel->created) ?></td>
                             <td class="actions">

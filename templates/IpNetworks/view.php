@@ -46,6 +46,10 @@
                                 ) : '' ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Customer Number') ?></th>
+                            <td><?= $ipNetwork->has('customer') ? h($ipNetwork->customer->number) : '' ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Contract') ?></th>
                             <td><?= $ipNetwork->has('contract') ?
                                 $this->Html->link(

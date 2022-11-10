@@ -36,6 +36,10 @@
                             ) : '' ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Customer Number') ?></th>
+                            <td><?= $phone->has('customer') ? h($phone->customer->number) : '' ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Phone') ?></th>
                             <td><?= h($phone->phone) ?></td>
                         </tr>

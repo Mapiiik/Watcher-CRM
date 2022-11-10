@@ -33,6 +33,10 @@
                             ) : '' ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Customer Number') ?></th>
+                            <td><?= $ip->has('customer') ? h($ip->customer->number) : '' ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Contract') ?></th>
                             <td><?= $ip->has('contract') ? $this->Html->link(
                                 $ip->contract->number,

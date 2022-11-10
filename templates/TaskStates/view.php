@@ -98,6 +98,7 @@
                             <th><?= __('Email') ?></th>
                             <th><?= __('Phone') ?></th>
                             <th><?= __('Customer') ?></th>
+                            <th><?= __('Customer Number') ?></th>
                             <th><?= __('Access Point') ?></th>
                             <th><?= __('Start Date') ?></th>
                             <th><?= __('Estimated Date') ?></th>
@@ -130,6 +131,7 @@
                                     ['controller' => 'Customers', 'action' => 'view', $task->customer->id]
                                 ) : '' ?>
                             </td>
+                            <td><?= $task->has('customer') ? h($task->customer->number) : '' ?></td>
                             <td><?= $task->has('access_point') ? h($task->access_point['name']) : '' ?></td>
                             <td><?= h($task->start_date) ?></td>
                             <td><?= h($task->estimated_date) ?></td>

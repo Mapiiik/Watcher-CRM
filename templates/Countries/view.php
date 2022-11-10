@@ -83,6 +83,7 @@
                 <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
+                            <th><?= __('Customer Number') ?></th>
                             <th><?= __('Type') ?></th>
                             <th><?= __('Company') ?></th>
                             <th><?= __('Title') ?></th>
@@ -105,6 +106,7 @@
                                     ['controller' => 'Customers', 'action' => 'view', $address->customer->id]
                                 ) : '' ?>
                             </td>
+                            <td><?= $address->has('customer') ? h($address->customer->number) : '' ?></td>
                             <td><?= h($address_types[$address->type]) ?></td>
                             <td><?= h($address->company) ?></td>
                             <td><?= h($address->title) ?></td>
