@@ -111,7 +111,6 @@ $user = ${$tableAlias};
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Provider') ?></th>
                             <th><?= __('Username') ?></th>
                             <th><?= __('Active') ?></th>
@@ -129,7 +128,6 @@ $user = ${$tableAlias};
                         </tr>
                         <?php foreach ($user->social_accounts as $socialAccounts) : ?>
                         <tr>
-                            <td><?= h($socialAccounts->id) ?></td>
                             <td><?= h($socialAccounts->provider) ?></td>
                             <td><?= h($socialAccounts->username) ?></td>
                             <td><?= h($socialAccounts->active) ?></td>

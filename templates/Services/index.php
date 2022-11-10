@@ -23,7 +23,6 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('price') ?></th>
                     <th><?= $this->Paginator->sort('service_type_id') ?></th>
@@ -35,7 +34,6 @@
             <tbody>
                 <?php foreach ($services as $service) : ?>
                 <tr>
-                    <td><?= $this->Number->format($service->id) ?></td>
                     <td><?= h($service->name) ?></td>
                     <td><?= $this->Number->format($service->price) ?></td>
                     <td>

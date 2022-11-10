@@ -24,7 +24,6 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('login') ?></th>
                     <th><?= $this->Paginator->sort('rights') ?></th>
@@ -39,7 +38,6 @@
             <tbody>
                 <?php foreach ($logins as $login) : ?>
                 <tr>
-                    <td><?= $this->Number->format($login->id) ?></td>
                     <td>
                         <?= $login->has('customer') ? $this->Html->link(
                             $login->customer->name,

@@ -82,7 +82,6 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Task Type') ?></th>
                             <th><?= __('Priority') ?></th>
                             <th><?= __('Dealer') ?></th>
@@ -100,7 +99,6 @@
                         </tr>
                         <?php foreach ($taskState->tasks as $task) : ?>
                         <tr style="<?= $task->style ?>">
-                            <td><?= h($task->id) ?></td>
                             <td><?= $task->has('task_type') ?
                                 $this->Html->link(
                                     $task->task_type->name,

@@ -27,7 +27,6 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('contract_id') ?></th>
                     <th><?= $this->Paginator->sort('equipment_type_id') ?></th>
@@ -40,7 +39,6 @@
             <tbody>
                 <?php foreach ($borrowedEquipments as $borrowedEquipment) : ?>
                 <tr style="<?= $borrowedEquipment->style ?>">
-                    <td><?= $this->Number->format($borrowedEquipment->id) ?></td>
                     <td>
                         <?= $borrowedEquipment->has('customer') ? $this->Html->link(
                             $borrowedEquipment->customer->name,

@@ -24,7 +24,6 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('type') ?></th>
                     <th><?= $this->Paginator->sort('company') ?></th>
@@ -45,7 +44,6 @@
             <tbody>
                 <?php foreach ($addresses as $address) : ?>
                 <tr>
-                    <td><?= $this->Number->format($address->id) ?></td>
                     <td>
                         <?= $address->has('customer') ? $this->Html->link(
                             $address->customer->name,

@@ -74,7 +74,6 @@
                 <div class="table-responsive">
                 <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Customer') ?></th>
                             <th><?= __('Type') ?></th>
                             <th><?= __('Company') ?></th>
@@ -92,7 +91,6 @@
                         </tr>
                         <?php foreach ($country->addresses as $address) : ?>
                         <tr>
-                            <td><?= $this->Number->format($address->id) ?></td>
                             <td>
                                 <?= $address->has('customer') ? $this->Html->link(
                                     $address->customer->name,

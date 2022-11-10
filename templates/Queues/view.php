@@ -105,7 +105,6 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Name') ?></th>
                             <th><?= __('Price') ?></th>
                             <th><?= __('Service Type') ?></th>
@@ -114,7 +113,6 @@
                         </tr>
                         <?php foreach ($queue->services as $service) : ?>
                         <tr>
-                            <td><?= $this->Number->format($service->id) ?></td>
                             <td><?= h($service->name) ?></td>
                             <td><?= $this->Number->currency($service->price) ?></td>
                             <td>

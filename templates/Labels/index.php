@@ -31,7 +31,6 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('caption') ?></th>
                     <th><?= $this->Paginator->sort('color') ?></th>
@@ -44,7 +43,6 @@
             <tbody>
                 <?php foreach ($labels as $label) : ?>
                 <tr>
-                    <td><?= $this->Number->format($label->id) ?></td>
                     <td><?= h($label->name) ?></td>
                     <td><?= h($label->caption) ?></td>
                     <td style="background-color: <?= h($label->color) ?>;"><?= h($label->color) ?></td>

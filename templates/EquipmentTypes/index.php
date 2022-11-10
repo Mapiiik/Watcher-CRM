@@ -27,7 +27,6 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('price') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
@@ -36,7 +35,6 @@
             <tbody>
                 <?php foreach ($equipmentTypes as $equipmentType) : ?>
                 <tr>
-                    <td><?= $this->Number->format($equipmentType->id) ?></td>
                     <td><?= h($equipmentType->name) ?></td>
                     <td><?= $this->Number->currency($equipmentType->price) ?></td>
                     <td class="actions">

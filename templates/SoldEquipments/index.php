@@ -27,7 +27,6 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('contract_id') ?></th>
                     <th><?= $this->Paginator->sort('equipment_type_id') ?></th>
@@ -39,7 +38,6 @@
             <tbody>
                 <?php foreach ($soldEquipments as $soldEquipment) : ?>
                 <tr style="<?= $soldEquipment->style ?>">
-                    <td><?= $this->Number->format($soldEquipment->id) ?></td>
                     <td>
                         <?= $soldEquipment->has('customer') ? $this->Html->link(
                             $soldEquipment->customer->name,

@@ -27,7 +27,6 @@
         <table>
             <thead>
                 <tr>
-                <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('label_id') ?></th>
                     <th><?= $this->Paginator->sort('note') ?></th>
@@ -38,7 +37,6 @@
             <tbody>
                 <?php foreach ($customerLabels as $customerLabel) : ?>
                 <tr>
-                    <td><?= $this->Number->format($customerLabel->id) ?></td>
                     <td>
                         <?= $customerLabel->has('customer') ? $this->Html->link(
                             $customerLabel->customer->name,

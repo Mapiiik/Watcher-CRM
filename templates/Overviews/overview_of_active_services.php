@@ -47,7 +47,6 @@
                 <table>
                     <thead>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Name') ?></th>
                             <th><?= __('Price') ?></th>
                             <th><?= __('Service Type') ?></th>
@@ -65,7 +64,6 @@
                     <tbody>
                         <?php foreach ($services as $service) : ?>
                         <tr>
-                            <td><?= $this->Number->format($service->id) ?></td>
                             <td><?= h($service->name) ?></td>
                             <td><?= $this->Number->currency($service->price) ?></td>
                             <td><?= $service->has('service_type') ? $this->Html->link($service->service_type->name, [

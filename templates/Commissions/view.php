@@ -73,7 +73,6 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Dealer') ?></th>
                             <th><?= __('Fixed') ?></th>
                             <th><?= __('Percentage') ?></th>
@@ -81,7 +80,6 @@
                         </tr>
                         <?php foreach ($commission->dealer_commissions as $dealerCommission) : ?>
                         <tr>
-                            <td><?= $this->Number->format($dealerCommission->id) ?></td>
                             <td>
                                 <?= $dealerCommission->has('dealer') ? $this->Html->link(
                                     $dealerCommission->dealer->name,
@@ -118,7 +116,6 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Customer') ?></th>
                             <th><?= __('Number') ?></th>
                             <th><?= __('Service Type') ?></th>
@@ -136,7 +133,6 @@
                         </tr>
                         <?php foreach ($commission->contracts as $contract) : ?>
                         <tr style="<?= $contract->style ?>">
-                            <td><?= $this->Number->format($contract->id) ?></td>
                             <td>
                                 <?= $contract->has('customer') ? $this->Html->link(
                                     $contract->customer->name,

@@ -23,7 +23,6 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('service_type_id') ?></th>
                     <th><?= $this->Paginator->sort('number') ?></th>
@@ -44,7 +43,6 @@
             <tbody>
                 <?php foreach ($contracts as $contract) : ?>
                 <tr style="<?= $contract->style ?>">
-                    <td><?= $this->Number->format($contract->id) ?></td>
                     <td>
                         <?= $contract->has('customer') ? $this->Html->link(
                             $contract->customer->name,

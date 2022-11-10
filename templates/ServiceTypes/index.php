@@ -27,7 +27,6 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('contract_number_format') ?></th>
                     <th><?= $this->Paginator->sort('activation_fee') ?></th>
@@ -44,7 +43,6 @@
             <tbody>
                 <?php foreach ($serviceTypes as $serviceType) : ?>
                 <tr>
-                    <td><?= $this->Number->format($serviceType->id) ?></td>
                     <td><?= h($serviceType->name) ?></td>
                     <td><?= h($serviceType->contract_number_format) ?></td>
                     <td><?= h($serviceType->activation_fee) ?></td>

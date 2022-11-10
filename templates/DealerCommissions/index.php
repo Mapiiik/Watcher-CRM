@@ -27,7 +27,6 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('dealer_id') ?></th>
                     <th><?= $this->Paginator->sort('commission_id') ?></th>
                     <th><?= $this->Paginator->sort('fixed') ?></th>
@@ -38,7 +37,6 @@
             <tbody>
                 <?php foreach ($dealerCommissions as $dealerCommission) : ?>
                 <tr>
-                    <td><?= $this->Number->format($dealerCommission->id) ?></td>
                     <td>
                         <?= $dealerCommission->has('dealer') ? $this->Html->link(
                             $dealerCommission->dealer->name,

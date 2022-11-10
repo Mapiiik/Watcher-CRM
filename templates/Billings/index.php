@@ -24,7 +24,6 @@ use Cake\I18n\Number;
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('contract_id') ?></th>
                     <th><?= $this->Paginator->sort('service_id') ?></th>
@@ -44,7 +43,6 @@ use Cake\I18n\Number;
             <tbody>
                 <?php foreach ($billings as $billing) : ?>
                 <tr style="<?= $billing->style ?>">
-                    <td><?= $this->Number->format($billing->id) ?></td>
                     <td>
                         <?= $billing->has('customer') ? $this->Html->link(
                             $billing->customer->name,

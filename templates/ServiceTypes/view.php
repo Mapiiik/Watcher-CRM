@@ -112,7 +112,6 @@
                 <div class="table-responsive">
                 <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Name') ?></th>
                             <th><?= __('Price') ?></th>
                             <th><?= __('Queue') ?></th>
@@ -121,7 +120,6 @@
                         </tr>
                         <?php foreach ($serviceType->services as $service) : ?>
                         <tr>
-                            <td><?= $this->Number->format($service->id) ?></td>
                             <td><?= h($service->name) ?></td>
                             <td><?= $this->Number->currency($service->price) ?></td>
                             <td>
@@ -159,7 +157,6 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Customer') ?></th>
                             <th><?= __('Number') ?></th>
                             <th><?= __('Installation Address') ?></th>
@@ -177,7 +174,6 @@
                         </tr>
                         <?php foreach ($serviceType->contracts as $contract) : ?>
                         <tr style="<?= $contract->style ?>">
-                            <td><?= $this->Number->format($contract->id) ?></td>
                             <td>
                                 <?= $contract->has('customer') ? $this->Html->link(
                                     $contract->customer->name,

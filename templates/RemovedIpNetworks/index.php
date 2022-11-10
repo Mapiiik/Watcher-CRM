@@ -24,7 +24,6 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('contract_id') ?></th>
                     <th><?= $this->Paginator->sort('ip_network') ?></th>
@@ -36,7 +35,6 @@
             <tbody>
                 <?php foreach ($removedIpNetworks as $removedIpNetwork) : ?>
                 <tr>
-                    <td><?= $this->Number->format($removedIpNetwork->id) ?></td>
                     <td><?= $removedIpNetwork->has('customer') ?
                         $this->Html->link(
                             $removedIpNetwork->customer->name,

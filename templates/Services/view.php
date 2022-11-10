@@ -98,7 +98,6 @@ use Cake\Collection\Collection;
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Customer') ?></th>
                             <th><?= __('Contract') ?></th>
                             <th><?= __('Text') ?></th>
@@ -116,7 +115,6 @@ use Cake\Collection\Collection;
                         </tr>
                         <?php foreach ($service->billings as $billing) : ?>
                         <tr style="<?= $billing->style ?>">
-                            <td><?= $this->Number->format($billing->id) ?></td>
                             <td><?= $billing->has('customer') ?
                                 $this->Html->link(
                                     $billing->customer->name,

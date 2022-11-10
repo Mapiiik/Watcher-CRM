@@ -54,7 +54,6 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('task_type_id') ?></th>
                     <th><?= $this->Paginator->sort('priority') ?></th>
                     <th><?= $this->Paginator->sort('task_state_id') ?></th>
@@ -73,7 +72,6 @@
             <tbody>
                 <?php foreach ($tasks as $task) : ?>
                 <tr style="<?= $task->style ?>">
-                    <td><?= $this->Number->format($task->id) ?></td>
                     <td>
                         <?= $task->has('task_type') ? $this->Html->link(
                             $task->task_type->name,

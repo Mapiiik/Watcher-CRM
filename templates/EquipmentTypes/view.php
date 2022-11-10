@@ -88,7 +88,6 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Customer') ?></th>
                             <th><?= __('Contract') ?></th>
                             <th><?= __('Serial Number') ?></th>
@@ -98,7 +97,6 @@
                         </tr>
                         <?php foreach ($equipmentType->borrowed_equipments as $borrowedEquipment) : ?>
                         <tr style="<?= $borrowedEquipment->style ?>">
-                            <td><?= $this->Number->format($borrowedEquipment->id) ?></td>
                             <td><?= $borrowedEquipment->has('customer') ?
                                 $this->Html->link(
                                     $borrowedEquipment->customer->name,
@@ -144,7 +142,6 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Customer') ?></th>
                             <th><?= __('Contract') ?></th>
                             <th><?= __('Serial Number') ?></th>
@@ -153,7 +150,6 @@
                         </tr>
                         <?php foreach ($equipmentType->sold_equipments as $soldEquipment) : ?>
                         <tr style="<?= $soldEquipment->style ?>">
-                            <td><?= $this->Number->format($soldEquipment->id) ?></td>
                             <td><?= $soldEquipment->has('customer') ?
                                 $this->Html->link(
                                     $soldEquipment->customer->name,

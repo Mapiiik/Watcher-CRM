@@ -101,7 +101,6 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Id') ?></th>
                             <th><?= __('Customer') ?></th>
                             <th><?= __('Note') ?></th>
                             <th><?= __('Created') ?></th>
@@ -109,7 +108,6 @@
                         </tr>
                         <?php foreach ($label->customer_labels as $customerLabel) : ?>
                         <tr>
-                        <td><?= h($customerLabel->id) ?></td>
                             <td><?= $customerLabel->has('customer') ?
                                 $this->Html->link(
                                     $customerLabel->customer->name,

@@ -24,7 +24,6 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('contract_id') ?></th>
                     <th><?= $this->Paginator->sort('ip') ?></th>
@@ -35,7 +34,6 @@
             <tbody>
                 <?php foreach ($ips as $ip) : ?>
                 <tr style="<?= $ip->style ?>">
-                    <td><?= $this->Number->format($ip->id) ?></td>
                     <td>
                         <?= $ip->has('customer') ? $this->Html->link(
                             $ip->customer->name,

@@ -23,7 +23,6 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('caption') ?></th>
                     <th><?= $this->Paginator->sort('fup') ?></th>
@@ -39,7 +38,6 @@
             <tbody>
                 <?php foreach ($queues as $queue) : ?>
                 <tr>
-                    <td><?= $this->Number->format($queue->id) ?></td>
                     <td><?= h($queue->name) ?></td>
                     <td><?= h($queue->caption) ?></td>
                     <td><?= $this->Number->format($queue->fup) ?></td>

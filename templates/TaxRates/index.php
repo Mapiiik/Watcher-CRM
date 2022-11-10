@@ -23,7 +23,6 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('vat_rate') ?></th>
                     <th><?= $this->Paginator->sort('reverse_charge') ?></th>
@@ -33,7 +32,6 @@
             <tbody>
                 <?php foreach ($taxRates as $taxRate) : ?>
                 <tr>
-                    <td><?= $this->Number->format($taxRate->id) ?></td>
                     <td><?= h($taxRate->name) ?></td>
                     <td><?= $this->Number->format($taxRate->vat_rate) ?></td>
                     <td><?= $taxRate->reverse_charge ? __('Yes') : __('No'); ?></td>

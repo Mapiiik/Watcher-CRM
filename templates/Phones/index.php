@@ -23,7 +23,6 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('phone') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
@@ -32,7 +31,6 @@
             <tbody>
                 <?php foreach ($phones as $phone) : ?>
                 <tr>
-                    <td><?= $this->Number->format($phone->id) ?></td>
                     <td>
                         <?= $phone->has('customer') ? $this->Html->link(
                             $phone->customer->name,
