@@ -15,7 +15,6 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('username') ?></th>
                     <th><?= $this->Paginator->sort('pass') ?></th>
                     <th><?= $this->Paginator->sort('reply') ?></th>
@@ -28,7 +27,6 @@
             <tbody>
                 <?php foreach ($radpostauths as $radpostauth) : ?>
                 <tr>
-                    <td><?= $this->Number->format($radpostauth->id) ?></td>
                     <td><?= h($radpostauth->username) ?></td>
                     <td><?= h($radpostauth->pass) ?></td>
                     <td><?= h($radpostauth->reply) ?></td>

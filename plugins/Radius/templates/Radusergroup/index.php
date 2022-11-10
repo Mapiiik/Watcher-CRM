@@ -15,7 +15,6 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('username') ?></th>
                     <th><?= $this->Paginator->sort('groupname') ?></th>
                     <th><?= $this->Paginator->sort('priority') ?></th>
@@ -25,7 +24,6 @@
             <tbody>
                 <?php foreach ($radusergroups as $radusergroup) : ?>
                 <tr>
-                    <td><?= $this->Number->format($radusergroup->id) ?></td>
                     <td><?= h($radusergroup->username) ?></td>
                     <td><?= h($radusergroup->groupname) ?></td>
                     <td><?= $this->Number->format($radusergroup->priority) ?></td>

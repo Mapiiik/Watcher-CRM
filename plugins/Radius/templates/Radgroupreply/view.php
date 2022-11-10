@@ -64,7 +64,6 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __d('radius', 'Id') ?></th>
                             <th><?= __d('radius', 'Username') ?></th>
                             <th><?= __d('radius', 'Groupname') ?></th>
                             <th><?= __d('radius', 'Priority') ?></th>
@@ -72,7 +71,6 @@
                         </tr>
                         <?php foreach ($radgroupreply->radusergroup as $radusergroup) : ?>
                         <tr>
-                            <td><?= h($radusergroup->id) ?></td>
                             <td><?= h($radusergroup->username) ?></td>
                             <td><?= h($radusergroup->groupname) ?></td>
                             <td><?= h($radusergroup->priority) ?></td>

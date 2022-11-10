@@ -27,8 +27,8 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id', __d('radius', 'Id')) ?></th>
                     <th><?= $this->Paginator->sort('customer_id', __d('radius', 'Customer')) ?></th>
+                    <th><?= $this->Paginator->sort('customer_id', __d('radius', 'Customer Number')) ?></th>
                     <th><?= $this->Paginator->sort('contract_id', __d('radius', 'Contract')) ?></th>
                     <th><?= $this->Paginator->sort('username', __d('radius', 'Username')) ?></th>
                     <th><?= $this->Paginator->sort('password', __d('radius', 'Password')) ?></th>
@@ -42,13 +42,13 @@
             <tbody>
                 <?php foreach ($accounts as $account) : ?>
                 <tr>
-                    <td><?= $this->Number->format($account->id) ?></td>
                     <td>
                         <?= $account->has('customer') ? $this->Html->link(
                             $account->customer->name,
                             ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $account->customer->id]
                         ) : '' ?>
                     </td>
+                    <td><?= $account->has('customer') ? h($account->customer->number) : '' ?></td>
                     <td>
                         <?= $account->has('contract') ? $this->Html->link(
                             $account->contract->number,

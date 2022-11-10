@@ -35,7 +35,7 @@
     </aside>
     <div class="column-responsive column-90">
         <div class="radcheck view content">
-            <h3><?= h($radcheck->username) ?></h3>
+            <h3><?= h($radcheck->id) ?></h3>
             <table>
                 <tr>
                     <th><?= __d('radius', 'Username') ?></th>

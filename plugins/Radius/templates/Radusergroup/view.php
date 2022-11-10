@@ -63,7 +63,6 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __d('radius', 'Id') ?></th>
                             <th><?= __d('radius', 'Groupname') ?></th>
                             <th><?= __d('radius', 'Attribute') ?></th>
                             <th><?= __d('radius', 'Op') ?></th>
@@ -72,7 +71,6 @@
                         </tr>
                         <?php foreach ($radusergroup->radgroupcheck as $radgroupcheck) : ?>
                         <tr>
-                            <td><?= h($radgroupcheck->id) ?></td>
                             <td><?= h($radgroupcheck->groupname) ?></td>
                             <td><?= h($radgroupcheck->attribute) ?></td>
                             <td><?= h($radgroupcheck->op) ?></td>
@@ -109,7 +107,6 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __d('radius', 'Id') ?></th>
                             <th><?= __d('radius', 'Groupname') ?></th>
                             <th><?= __d('radius', 'Attribute') ?></th>
                             <th><?= __d('radius', 'Op') ?></th>
@@ -118,7 +115,6 @@
                         </tr>
                         <?php foreach ($radusergroup->radgroupreply as $radgroupreply) : ?>
                         <tr>
-                            <td><?= h($radgroupreply->id) ?></td>
                             <td><?= h($radgroupreply->groupname) ?></td>
                             <td><?= h($radgroupreply->attribute) ?></td>
                             <td><?= h($radgroupreply->op) ?></td>

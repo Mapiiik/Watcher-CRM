@@ -15,7 +15,6 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('groupname') ?></th>
                     <th><?= $this->Paginator->sort('attribute') ?></th>
                     <th><?= $this->Paginator->sort('op') ?></th>
@@ -26,7 +25,6 @@
             <tbody>
                 <?php foreach ($radgroupchecks as $radgroupcheck) : ?>
                 <tr>
-                    <td><?= $this->Number->format($radgroupcheck->id) ?></td>
                     <td><?= h($radgroupcheck->groupname) ?></td>
                     <td><?= h($radgroupcheck->attribute) ?></td>
                     <td><?= h($radgroupcheck->op) ?></td>

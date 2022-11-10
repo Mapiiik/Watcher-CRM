@@ -15,7 +15,6 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('username') ?></th>
                     <th><?= $this->Paginator->sort('attribute') ?></th>
                     <th><?= $this->Paginator->sort('op') ?></th>
@@ -26,7 +25,6 @@
             <tbody>
                 <?php foreach ($radchecks as $radcheck) : ?>
                 <tr>
-                    <td><?= $this->Number->format($radcheck->id) ?></td>
                     <td>
                         <?= $radcheck->has('account') ? $this->Html->link(
                             $radcheck->account->username,

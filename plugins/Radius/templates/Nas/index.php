@@ -15,7 +15,6 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('nasname') ?></th>
                     <th><?= $this->Paginator->sort('shortname') ?></th>
                     <th><?= $this->Paginator->sort('type') ?></th>
@@ -30,7 +29,6 @@
             <tbody>
                 <?php foreach ($nases as $nas) : ?>
                 <tr>
-                    <td><?= $this->Number->format($nas->id) ?></td>
                     <td><?= h($nas->nasname) ?></td>
                     <td><?= h($nas->shortname) ?></td>
                     <td><?= h($nas->type) ?></td>

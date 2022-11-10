@@ -38,12 +38,12 @@
             <h3><?= h($nas->nasname) ?></h3>
             <table>
                 <tr>
-                    <th><?= __d('radius', 'Id') ?></th>
-                    <td><?= $this->Number->format($nas->id) ?></td>
-                </tr>
-                <tr>
                     <th><?= __d('radius', 'Ports') ?></th>
                     <td><?= $this->Number->format($nas->ports) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __d('radius', 'Id') ?></th>
+                    <td><?= $this->Number->format($nas->id) ?></td>
                 </tr>
             </table>
             <div class="text">

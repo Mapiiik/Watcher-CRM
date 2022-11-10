@@ -65,6 +65,10 @@
                             ) : '' ?></td>
                         </tr>
                         <tr>
+                            <th><?= __d('radius', 'Customer Number') ?></th>
+                            <td><?= $account->has('customer') ? h($account->customer->number) : '' ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __d('radius', 'Contract') ?></th>
                             <td><?= $account->has('contract') ? $this->Html->link(
                                 $account->contract->number,

@@ -45,12 +45,12 @@
                     ) : $radpostauth->username ?></td>
                 </tr>
                 <tr>
-                    <th><?= __d('radius', 'Id') ?></th>
-                    <td><?= $this->Number->format($radpostauth->id) ?></td>
-                </tr>
-                <tr>
                     <th><?= __d('radius', 'Authentication Date') ?></th>
                     <td><?= h($radpostauth->authdate) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __d('radius', 'Id') ?></th>
+                    <td><?= $this->Number->format($radpostauth->id) ?></td>
                 </tr>
             </table>
             <div class="text">
