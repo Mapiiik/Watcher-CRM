@@ -89,24 +89,24 @@
                 <div class="table-responsive">
                     <table>
                         <tr>
+                            <th><?= __('Number') ?></th>
                             <th><?= __('Company') ?></th>
                             <th><?= __('Title') ?></th>
                             <th><?= __('First Name') ?></th>
                             <th><?= __('Last Name') ?></th>
                             <th><?= __('Suffix') ?></th>
-                            <th><?= __('Number') ?></th>
                             <th><?= __('Contracts') ?></th>
                             <th><?= __('Ips') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($taxRate->customers as $customer) : ?>
                         <tr>
+                            <td><?= h($customer->number) ?></td>
                             <td><?= h($customer->company) ?></td>
                             <td><?= h($customer->title) ?></td>
                             <td><?= h($customer->first_name) ?></td>
                             <td><?= h($customer->last_name) ?></td>
                             <td><?= h($customer->suffix) ?></td>
-                            <td><?= h($customer->number) ?></td>
                             <td>
                                 <?php foreach ($customer->contracts as $contract) {
                                     echo h($contract->number) . '<br />';

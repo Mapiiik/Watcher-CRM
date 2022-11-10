@@ -29,12 +29,12 @@
         <table>
             <thead>
                 <tr>
+                    <th><?= $this->Paginator->sort('id', __('Number')) ?></th>
                     <th><?= $this->Paginator->sort('company') ?></th>
                     <th><?= $this->Paginator->sort('title') ?></th>
                     <th><?= $this->Paginator->sort('first_name') ?></th>
                     <th><?= $this->Paginator->sort('last_name') ?></th>
                     <th><?= $this->Paginator->sort('suffix') ?></th>
-                    <th><?= $this->Paginator->sort('id', __('Number')) ?></th>
                     <th><?= __('Contracts') ?></th>
                     <th><?= __('Ips') ?></th>
                     <th><?= $this->Paginator->sort('tax_rate_id') ?></th>
@@ -45,12 +45,12 @@
             <tbody>
                 <?php foreach ($customers as $customer) : ?>
                 <tr>
+                    <td><?= h($customer->number) ?></td>
                     <td><?= h($customer->company) ?></td>
                     <td><?= h($customer->title) ?></td>
                     <td><?= h($customer->first_name) ?></td>
                     <td><?= h($customer->last_name) ?></td>
                     <td><?= h($customer->suffix) ?></td>
-                    <td><?= h($customer->number) ?></td>
                     <td>
                         <?php foreach ($customer->contracts as $contract) {
                             echo h($contract->number) . '<br />';
