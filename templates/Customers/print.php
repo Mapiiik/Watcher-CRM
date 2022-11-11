@@ -24,7 +24,7 @@
     </aside>
     <div class="column-responsive column-90">
         <div class="contracts form content">
-            <h3><?= h($customer->name) ?></h3>
+            <h3><?= h($customer->name) . ' (' . h($customer->number) . ')' ?></h3>
             <div class="row">
                 <div class="column-responsive">
                     <table>
