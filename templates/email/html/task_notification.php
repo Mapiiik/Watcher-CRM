@@ -75,11 +75,7 @@ table {
                     <td><?= $task->has('customer') ? $this->Html->link(
                         $task->customer->name,
                         ['controller' => 'Customers', 'action' => 'view', $task->customer->id, '_full' => true]
-                    ) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Customer Number') ?></th>
-                    <td><?= $task->has('customer') ? h($task->customer->number) : '' ?></td>
+                    ) . ' / ' . h($task->customer->number) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Access Point') ?></th>
