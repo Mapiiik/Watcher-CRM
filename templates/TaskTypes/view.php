@@ -114,7 +114,7 @@
                                 ) : '' ?>
                             </td>
                             <td><?= h($task->subject) ?></td>
-                            <td><?= nl2br($task->text) ?></td>
+                            <td><?= nl2br($task->text ?? '') ?></td>
                             <td><?= h($task->email) ?></td>
                             <td><?= h($task->phone) ?></td>
                             <td><?= $task->has('customer') ?
