@@ -101,7 +101,7 @@
             </div>
             <div class="text">
                 <strong><?= __('Dynamic Sql') ?></strong>
-                <?= SqlFormatter::format($label->dynamic_sql); ?>
+                <?= SqlFormatter::format($label->dynamic_sql ?? ''); ?>
             </div>
             <div class="related">
                 <h4><?= __('Related Customer Labels') ?></h4>

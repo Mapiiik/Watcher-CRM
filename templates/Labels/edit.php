@@ -28,7 +28,7 @@
                 echo $this->Form->control('validity');
                 echo $this->Form->control('dynamic');
                 echo $this->Form->control('dynamic_sql', [
-                    'value' => SqlFormatter::format($label->dynamic_sql, false),
+                    'value' => SqlFormatter::format($label->dynamic_sql ?? '', false),
                 ]);
                 ?>
             </fieldset>
