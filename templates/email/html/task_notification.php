@@ -58,10 +58,6 @@ table {
                     <td><?= $task->has('dealer') ? h($task->dealer->name) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Subject') ?></th>
-                    <td><?= h($task->subject) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Email') ?></th>
                     <td><?= h($task->email) ?></td>
                 </tr>
