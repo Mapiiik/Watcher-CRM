@@ -62,6 +62,7 @@
                     <th><?= $this->Paginator->sort('text') ?></th>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id', __('Customer Number')) ?></th>
+                    <th><?= $this->Paginator->sort('contract_id') ?></th>
                     <th><?= $this->Paginator->sort('access_point_id') ?></th>
                     <th><?= $this->Paginator->sort('start_date') ?></th>
                     <th><?= $this->Paginator->sort('estimated_date') ?></th>
@@ -101,6 +102,17 @@
                         ) : '' ?>
                     </td>
                     <td><?= $task->has('customer') ? h($task->customer->number) : '' ?></td>
+                    <td><?=
+                        $task->has('contract') ? $this->Html->link(
+                            $task->contract->name,
+                            [
+                                'controller' => 'Contracts',
+                                'action' => 'view',
+                                $task->contract->id,
+                                'customer_id' => $task->contract->customer_id,
+                            ]
+                        ) : '' ?>
+                    </td>
                     <td><?= $task->has('access_point') ? h($task->access_point['name']) : '' ?></td>
                     <td><?= h($task->start_date) ?></td>
                     <td><?= h($task->estimated_date) ?></td>

@@ -11,6 +11,7 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\TaskTypesTable&\Cake\ORM\Association\BelongsTo $TaskTypes
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
+ * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Dealers
  * @property \App\Model\Table\TaskStatesTable&\Cake\ORM\Association\BelongsTo $TaskStates
  * @method \App\Model\Entity\Task newEmptyEntity()
@@ -68,6 +69,9 @@ class TasksTable extends AppTable
         ]);
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
+        ]);
+        $this->belongsTo('Contracts', [
+            'foreignKey' => 'contract_id',
         ]);
         $this->belongsTo('Dealers', [
             'className' => 'Customers',
@@ -156,6 +160,7 @@ class TasksTable extends AppTable
         $rules->add($rules->isUnique(['id']), ['errorField' => 'id']);
         $rules->add($rules->existsIn(['task_type_id'], 'TaskTypes'), ['errorField' => 'task_type_id']);
         $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
+        $rules->add($rules->existsIn(['contract_id'], 'Contracts'), ['errorField' => 'contract_id']);
         $rules->add($rules->existsIn(['dealer_id'], 'Dealers'), ['errorField' => 'dealer_id']);
         $rules->add($rules->existsIn(['task_state_id'], 'TaskStates'), ['errorField' => 'task_state_id']);
 

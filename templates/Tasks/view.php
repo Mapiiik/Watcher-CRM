@@ -53,10 +53,6 @@
                     </table>
                     <table>
                         <tr>
-                            <th><?= __('Subject') ?></th>
-                            <td><?= h($task->subject) ?></td>
-                        </tr>
-                        <tr>
                             <th><?= __('Email') ?></th>
                             <td><?= h($task->email) ?></td>
                         </tr>
@@ -65,10 +61,18 @@
                             <td><?= h($task->phone) ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Access Point') ?></th>
+                            <td><?= $task->has('access_point') ? h($task->access_point['name']) : '' ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Customer') ?></th>
                             <td><?= $task->has('customer') ? $this->Html->link(
                                 $task->customer->name,
-                                ['controller' => 'Customers', 'action' => 'view', $task->customer->id]
+                                [
+                                    'controller' => 'Customers',
+                                    'action' => 'view',
+                                    $task->customer->id,
+                                ]
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -76,8 +80,16 @@
                             <td><?= $task->has('customer') ? h($task->customer->number) : '' ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Access Point') ?></th>
-                            <td><?= $task->has('access_point') ? h($task->access_point['name']) : '' ?></td>
+                            <th><?= __('Contract') ?></th>
+                            <td><?= $task->has('contract') ? $this->Html->link(
+                                $task->contract->name,
+                                [
+                                    'controller' => 'Contracts',
+                                    'action' => 'view',
+                                    $task->contract->id,
+                                    'customer_id' => $task->contract->customer_id,
+                                ]
+                            ) : '' ?></td>
                         </tr>
                     </table>
                 </div>
@@ -141,19 +153,36 @@
                 </div>
             </div>
             <div class="text">
+                <strong><?= __('Subject') ?></strong>
+                <h4><?= h($task->subject) ?></h4>
+            </div>
+            <div class="text">
                 <strong><?= __('Text') ?></strong>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($task->text)); ?>
                 </blockquote>
             </div>
 
-            <?php if ($task->has('customer_id')) : ?>
+            <?php if ($task->has('customer_id') && !$task->has('contract_id')) : ?>
                 <br>
                 <div>
                     <iframe width="100%" height="500"  src="<?= $this->Url->build([
                         'controller' => 'Customers',
                         'action' => 'view',
                         $task->customer_id,
+                        '?' => ['win-link' => 'true'],
+                    ]) ?>"></iframe>
+                </div>
+            <?php endif ?>
+
+            <?php if ($task->has('customer_id') && $task->has('contract_id')) : ?>
+                <br>
+                <div>
+                    <iframe width="100%" height="500"  src="<?= $this->Url->build([
+                        'controller' => 'Contracts',
+                        'action' => 'view',
+                        $task->contract_id,
+                        'customer_id' => $task->customer_id,
                         '?' => ['win-link' => 'true'],
                     ]) ?>"></iframe>
                 </div>

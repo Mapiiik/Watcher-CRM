@@ -37,7 +37,6 @@ table {
 }
 </style>
 <h2><?= $this->fetch('title') ?></h2>
-<h4><?= h($task->subject) ?></h4>
 <table>
     <tr>
         <td>
@@ -71,15 +70,33 @@ table {
                     <td><?= h($task->phone) ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('Access Point') ?></th>
+                    <td><?= $task->has('access_point') ? h($task->access_point['name']) : '' ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Customer') ?></th>
                     <td><?= $task->has('customer') ? $this->Html->link(
                         $task->customer->name,
-                        ['controller' => 'Customers', 'action' => 'view', $task->customer->id, '_full' => true]
-                    ) . ' / ' . h($task->customer->number) : '' ?></td>
+                        [
+                            'controller' => 'Customers',
+                            'action' => 'view',
+                            $task->customer->id,
+                            '_full' => true,
+                        ]
+                    ) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Access Point') ?></th>
-                    <td><?= $task->has('access_point') ? h($task->access_point['name']) : '' ?></td>
+                    <th><?= __('Contract') ?></th>
+                    <td><?= $task->has('contract') ? $this->Html->link(
+                        $task->contract->name,
+                        [
+                            'controller' => 'Contracts',
+                            'action' => 'view',
+                            $task->contract->id,
+                            'customer_id' => $task->contract->customer_id,
+                            '_full' => true,
+                        ]
+                    ) : '' ?></td>
                 </tr>
             </table>
         </td>
@@ -129,6 +146,10 @@ table {
     __('View Task'),
     ['controller' => 'Tasks', 'action' => 'view', $task->id, '_full' => true]
 ) ?>
+<div class="text">
+    <strong><?= __('Subject') ?></strong>
+    <h4><?= h($task->subject) ?></h4>
+</div>
 <div class="text">
     <strong><?= __('Text') ?></strong>
     <blockquote>

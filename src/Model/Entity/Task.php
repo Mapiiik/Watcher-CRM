@@ -21,6 +21,7 @@ use Cake\ORM\Entity;
  * @property string|null $text
  * @property int $priority
  * @property int|null $customer_id
+ * @property int|null $contract_id
  * @property int|null $dealer_id
  * @property string|null $email
  * @property string|null $phone
@@ -34,6 +35,7 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\TaskType $task_type
  * @property \App\Model\Entity\Customer $customer
+ * @property \App\Model\Entity\Contract $contract
  * @property \App\Model\Entity\Customer $dealer
  * @property \App\Model\Entity\TaskState $task_state
  * @property \Cake\ORM\Entity|null $access_point
@@ -59,6 +61,7 @@ class Task extends Entity
         'text' => true,
         'priority' => true,
         'customer_id' => true,
+        'contract_id' => true,
         'dealer_id' => true,
         'email' => true,
         'phone' => true,
@@ -69,6 +72,7 @@ class Task extends Entity
         'critical_date' => true,
         'task_type' => true,
         'customer' => true,
+        'contract' => true,
         'dealer' => true,
         'task_state' => true,
         'access_point_id' => true,

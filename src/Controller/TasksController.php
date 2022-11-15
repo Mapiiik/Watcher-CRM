@@ -26,6 +26,9 @@ class TasksController extends AppController
         $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
+        $contract_id = $this->getRequest()->getParam('contract_id');
+        $this->set('contract_id', $contract_id);
+
         // persistent filter data
         if (!is_null($this->getRequest()->getQuery('show_completed'))) {
             $this->getRequest()->getSession()->write(
@@ -70,6 +73,11 @@ class TasksController extends AppController
         if (isset($customer_id)) {
             $conditions[] = [
                 'Tasks.customer_id' => $customer_id,
+            ];
+        }
+        if (isset($contract_id)) {
+            $conditions[] = [
+                'Tasks.contract_id' => $contract_id,
             ];
         }
 
@@ -126,7 +134,7 @@ class TasksController extends AppController
         $this->set('filterForm', $filterForm);
 
         $this->paginate = [
-            'contain' => ['Customers', 'Dealers', 'TaskTypes', 'TaskStates'],
+            'contain' => ['Customers', 'Contracts', 'Dealers', 'TaskTypes', 'TaskStates'],
             'order' => [
                 'Tasks.task_state_id' => 'ASC',
                 'Tasks.id' => 'DESC',
@@ -176,6 +184,7 @@ class TasksController extends AppController
             'contain' => [
                 'TaskTypes',
                 'Customers',
+                'Contracts',
                 'Dealers',
                 'TaskStates',
                 'Creators',
@@ -198,10 +207,17 @@ class TasksController extends AppController
         $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
+        $contract_id = $this->getRequest()->getParam('contract_id');
+        $this->set('contract_id', $contract_id);
+
         $task = $this->Tasks->newEmptyEntity();
 
         if (isset($customer_id)) {
             $task->customer_id = $customer_id;
+        }
+
+        if (isset($contract_id)) {
+            $task->contract_id = $contract_id;
         }
 
         if ($this->getRequest()->is('post')) {
@@ -228,6 +244,7 @@ class TasksController extends AppController
         }
         $taskTypes = $this->Tasks->TaskTypes->find('list', ['order' => 'name']);
         $customers = $this->Tasks->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
+        $contracts = [];
         $dealers = $this->Tasks->Dealers
             ->find('all')
             ->where(['dealer' => 1]) // only current dealers
@@ -242,10 +259,17 @@ class TasksController extends AppController
             });
         $taskStates = $this->Tasks->TaskStates->find('list', ['order' => 'name']);
 
-        if (isset($customer_id)) {
-            $customers->where(['id' => $customer_id]);
+        if (isset($task->customer_id)) {
+            $contracts = $this->Tasks->Contracts
+                ->find('list', [
+                    'order' => 'Contracts.number',
+                    'contain' => ['ServiceTypes', 'InstallationAddresses'],
+                ])
+                ->where(['Contracts.customer_id' => $task->customer_id]);
 
-            $customer = $this->Tasks->Customers->get($customer_id, ['contain' => ['Addresses', 'Phones', 'Emails']]);
+            $customer = $this->Tasks->Customers->get($task->customer_id, [
+                'contain' => ['Addresses', 'Phones', 'Emails'],
+            ]);
 
             // preset subject
             if (empty($task->subject)) {
@@ -261,16 +285,36 @@ class TasksController extends AppController
             }
             // add customer details to text
             if (empty($task->text)) {
-                foreach ($customer->addresses as $address) {
-                    // list all installation addresses
-                    if ($address->type == 0) {
-                        $task->text .= $this->Tasks->Customers->Addresses->types[$address->type] . ': ';
-                        $task->text .= $address->full_address . PHP_EOL;
+                if (isset($task->contract_id)) {
+                    // contract assigned
+                    $contract = $this->Tasks->Contracts->get($task->contract_id, [
+                        'contain' => ['InstallationAddresses'],
+                    ]);
+                    if (isset($contract->installation_address)) {
+                        // list installation address
+                        $task->text .= __('Installation Address') . ': ';
+                        $task->text .= $contract->installation_address->full_address . PHP_EOL;
+                    }
+                } else {
+                    // contract unknown
+                    foreach ($customer->addresses as $address) {
+                        // list all installation addresses
+                        if ($address->type === 0) {
+                            $task->text .= $this->Tasks->Customers->Addresses->types[$address->type] . ': ';
+                            $task->text .= $address->full_address . PHP_EOL;
+                        }
                     }
                 }
                 $task->text .= __('Email') . ': ' . $customer->email . PHP_EOL;
                 $task->text .= __('Phone') . ': ' . $customer->phone . PHP_EOL;
             }
+        }
+
+        if (isset($customer_id)) {
+            $customers->where(['Customers.id' => $customer_id]);
+        }
+        if (isset($contract_id)) {
+            $contracts->where(['Contracts.id' => $contract_id]);
         }
 
         // preset start date
@@ -285,7 +329,7 @@ class TasksController extends AppController
         // add task text header
         $task->text .= $this->taskTextHeader();
 
-        $this->set(compact('task', 'taskTypes', 'customers', 'dealers', 'taskStates'));
+        $this->set(compact('task', 'taskTypes', 'customers', 'contracts', 'dealers', 'taskStates'));
 
         $this->set('priorities', $this->Tasks->priorities);
 
@@ -310,6 +354,9 @@ class TasksController extends AppController
     {
         $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
+
+        $contract_id = $this->getRequest()->getParam('contract_id');
+        $this->set('contract_id', $contract_id);
 
         $task = $this->Tasks->get($id, [
             'contain' => [],
@@ -338,6 +385,7 @@ class TasksController extends AppController
         }
         $taskTypes = $this->Tasks->TaskTypes->find('list', ['order' => 'name']);
         $customers = $this->Tasks->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
+        $contracts = [];
         $dealers = $this->Tasks->Dealers
             ->find('all')
             ->order(['dealer', 'company', 'last_name', 'first_name'])
@@ -351,8 +399,21 @@ class TasksController extends AppController
             });
         $taskStates = $this->Tasks->TaskStates->find('list', ['order' => 'name']);
 
+        if (isset($task->customer_id)) {
+            $contracts = $this->Tasks->Contracts
+                ->find('list', [
+                    'order' => 'Contracts.number',
+                    'contain' => ['ServiceTypes', 'InstallationAddresses'],
+                ])
+                ->where(['Contracts.customer_id' => $task->customer_id]);
+        }
+
         if (isset($customer_id)) {
-            $customers->where(['id' => $customer_id]);
+            $customers->where(['Customers.id' => $customer_id]);
+        }
+
+        if (isset($contract_id)) {
+            $contracts->where(['Contracts.id' => $contract_id]);
         }
 
         // add task text header
@@ -361,7 +422,7 @@ class TasksController extends AppController
         }
         $task->text .= $this->taskTextHeader();
 
-        $this->set(compact('task', 'taskTypes', 'customers', 'dealers', 'taskStates'));
+        $this->set(compact('task', 'taskTypes', 'customers', 'contracts', 'dealers', 'taskStates'));
 
         $this->set('priorities', $this->Tasks->priorities);
 
@@ -429,6 +490,7 @@ class TasksController extends AppController
                 'TaskTypes',
                 'TaskStates',
                 'Customers',
+                'Contracts',
                 'Dealers' => ['Emails'],
                 'Creators',
                 'Modifiers',

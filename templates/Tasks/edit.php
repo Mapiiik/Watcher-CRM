@@ -6,6 +6,7 @@
  * @var string[]|\Cake\Collection\CollectionInterface $taskStates
  * @var string[]|\Cake\Collection\CollectionInterface $priorities
  * @var string[]|\Cake\Collection\CollectionInterface $customers
+ * @var string[]|\Cake\Collection\CollectionInterface $contracts
  * @var string[]|\Cake\Collection\CollectionInterface $dealers
  * @var string[]|\Cake\Collection\CollectionInterface $accessPoints
  */
@@ -40,6 +41,7 @@
                         <?php
                         echo $this->Form->control('email', ['multiple' => 'multiple']);
                         echo $this->Form->control('phone', ['multiple' => 'multiple']);
+                        echo $this->Form->control('access_point_id', ['options' => $accessPoints, 'empty' => true]);
                         echo $this->Form->control('customer_id', [
                             'options' => $customers,
                             'empty' => true,
@@ -52,14 +54,27 @@
                                 this.form.submit();
                             ',
                         ]);
+                        if (isset($task->customer_id)) {
+                            echo $this->Form->control('contract_id', [
+                                'options' => $contracts,
+                                'empty' => true,
+                                'onchange' => '
+                                    var refresh = document.createElement("input");
+                                    refresh.type = "hidden";
+                                    refresh.name = "refresh";
+                                    refresh.value = "refresh";
+                                    this.form.appendChild(refresh);
+                                    this.form.submit();
+                                ',
+                            ]);
+                        }
                         $this->Form->unlockField('refresh'); //disable form security check
-                        echo $this->Form->control('access_point_id', ['options' => $accessPoints, 'empty' => true]);
                         ?>
                     </div>
                 </div>
                 <?php
-                    echo $this->Form->control('subject');
-                    echo $this->Form->control('text', ['style' => 'height: 30.0rem']);
+                echo $this->Form->control('subject');
+                echo $this->Form->control('text', ['style' => 'height: 30.0rem']);
                 ?>
                 <div class="row">
                     <div class="column-responsive">
@@ -79,13 +94,26 @@
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>
 
-            <?php if ($task->has('customer_id')) : ?>
+            <?php if ($task->has('customer_id') && !$task->has('contract_id')) : ?>
                 <br>
                 <div>
                     <iframe width="100%" height="500"  src="<?= $this->Url->build([
                         'controller' => 'Customers',
                         'action' => 'view',
                         $task->customer_id,
+                        '?' => ['win-link' => 'true'],
+                    ]) ?>"></iframe>
+                </div>
+            <?php endif ?>
+
+            <?php if ($task->has('customer_id') && $task->has('contract_id')) : ?>
+                <br>
+                <div>
+                    <iframe width="100%" height="500"  src="<?= $this->Url->build([
+                        'controller' => 'Contracts',
+                        'action' => 'view',
+                        $task->contract_id,
+                        'customer_id' => $task->customer_id,
                         '?' => ['win-link' => 'true'],
                     ]) ?>"></iframe>
                 </div>
