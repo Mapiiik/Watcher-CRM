@@ -28,7 +28,11 @@
     </aside>
     <div class="column-responsive column-90">
         <div class="contracts form content">
-            <h3><?= h($contract->number) ?></h3>
+            <?= __('Contract No.') ?><h3><?= h($contract->number) ?></h3>
+            <h5><?=
+                ($contract->has('service_type') ? $contract->service_type->name : '') .
+                ($contract->has('installation_address') ? ' - ' . $contract->installation_address->address : '')
+            ?></h5>
             <div class="row">
                 <div class="column-responsive">
                     <table>

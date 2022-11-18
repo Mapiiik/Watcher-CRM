@@ -9,7 +9,7 @@
     <div class="content nav-content top-nav">
         <div class="nav-content-left">
             <?= $this->AuthLink->link(
-                '<h4>' . h($customer->name) . ' (' . h($customer->number) . ')' . '</h4>',
+                '<h4>' . h($customer->name) . '</h4>',
                 ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $customer->id],
                 ['escape' => false, 'class' => '']
             ) ?>
