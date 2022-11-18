@@ -79,6 +79,10 @@ class EmailsTable extends AppTable
             ->boolean('use_for_commercial')
             ->notEmptyString('use_for_commercial');
 
+        $validator
+            ->scalar('note')
+            ->allowEmptyString('note');
+
         return $validator;
     }
 

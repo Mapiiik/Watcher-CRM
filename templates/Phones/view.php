@@ -43,6 +43,18 @@
                             <th><?= __('Phone') ?></th>
                             <td><?= h($phone->phone) ?></td>
                         </tr>
+                        <tr>
+                            <th><?= __('Use For Billing') ?></th>
+                            <td><?= $phone->use_for_billing ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Use For Outages') ?></th>
+                            <td><?= $phone->use_for_outages ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Use For Commercial') ?></th>
+                            <td><?= $phone->use_for_commercial ? __('Yes') : __('No'); ?></td>
+                        </tr>
                     </table>
                 </div>
                 <div class="column-responsive">
@@ -85,6 +97,12 @@
                         </tr>
                     </table>
                 </div>
+            </div>
+            <div class="text">
+                <strong><?= __('Note') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($phone->note)); ?>
+                </blockquote>
             </div>
         </div>
     </div>

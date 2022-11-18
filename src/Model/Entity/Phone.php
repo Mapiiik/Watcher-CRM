@@ -38,6 +38,10 @@ class Phone extends Entity
         'modified_by' => true,
         'customer_id' => true,
         'phone' => true,
+        'use_for_billing' => true,
+        'use_for_outages' => true,
+        'use_for_commercial' => true,
+        'note' => true,
         'customer' => true,
     ];
 }

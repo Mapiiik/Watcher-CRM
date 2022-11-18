@@ -98,6 +98,12 @@
                     </table>
                 </div>
             </div>
+        <div class="text">
+            <strong><?= __('Note') ?></strong>
+            <blockquote>
+                <?= $this->Text->autoParagraph(h($email->note)); ?>
+            </blockquote>
+        </div>
         </div>
     </div>
 </div>

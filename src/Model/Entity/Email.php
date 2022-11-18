@@ -20,6 +20,7 @@ use Cake\ORM\Entity;
  * @property bool $use_for_billing
  * @property bool $use_for_outages
  * @property bool $use_for_commercial
+ * @property string|null $note
  *
  * @property \App\Model\Entity\Customer $customer
  */
@@ -44,6 +45,7 @@ class Email extends Entity
         'use_for_billing' => true,
         'use_for_outages' => true,
         'use_for_commercial' => true,
+        'note' => true,
         'customer' => true,
     ];
 }

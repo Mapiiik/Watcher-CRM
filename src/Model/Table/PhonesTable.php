@@ -69,6 +69,22 @@ class PhonesTable extends AppTable
             ->requirePresence('phone', 'create')
             ->notEmptyString('phone');
 
+        $validator
+            ->boolean('use_for_billing')
+            ->notEmptyString('use_for_billing');
+
+        $validator
+            ->boolean('use_for_outages')
+            ->notEmptyString('use_for_outages');
+
+        $validator
+            ->boolean('use_for_commercial')
+            ->notEmptyString('use_for_commercial');
+
+        $validator
+            ->scalar('note')
+            ->allowEmptyString('note');
+
         return $validator;
     }
 

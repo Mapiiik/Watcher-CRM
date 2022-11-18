@@ -30,6 +30,7 @@
                 echo $this->Form->control('use_for_billing');
                 echo $this->Form->control('use_for_outages');
                 echo $this->Form->control('use_for_commercial');
+                echo $this->Form->control('note');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

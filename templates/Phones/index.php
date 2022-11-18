@@ -26,6 +26,9 @@
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id', __('Customer Number')) ?></th>
                     <th><?= $this->Paginator->sort('phone') ?></th>
+                    <th><?= $this->Paginator->sort('use_for_billing') ?></th>
+                    <th><?= $this->Paginator->sort('use_for_outages') ?></th>
+                    <th><?= $this->Paginator->sort('use_for_commercial') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -40,6 +43,9 @@
                     </td>
                     <td><?= $phone->has('customer') ? h($phone->customer->number) : '' ?></td>
                     <td><?= h($phone->phone) ?></td>
+                    <td><?= $phone->use_for_billing ? __('Yes') : __('No'); ?></td>
+                    <td><?= $phone->use_for_outages ? __('Yes') : __('No'); ?></td>
+                    <td><?= $phone->use_for_commercial ? __('Yes') : __('No'); ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $phone->id]) ?>
                         <?= $this->AuthLink->link(
