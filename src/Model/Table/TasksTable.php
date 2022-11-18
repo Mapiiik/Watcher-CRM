@@ -178,7 +178,7 @@ class TasksTable extends AppTable
             'isRequiredCustomerFilled',
             [
                 'errorField' => 'customer_id',
-                'message' => __('The specified service type requires the assignment of an customer.'),
+                'message' => __('The specified task type requires the assignment of an customer.'),
             ]
         );
 
@@ -196,7 +196,7 @@ class TasksTable extends AppTable
             'isRequiredContractFilled',
             [
                 'errorField' => 'contract_id',
-                'message' => __('The specified service type requires the assignment of an contract.'),
+                'message' => __('The specified task type requires the assignment of an contract.'),
             ]
         );
 
