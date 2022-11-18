@@ -259,21 +259,39 @@ class TasksController extends AppController
             });
         $taskStates = $this->Tasks->TaskStates->find('list', ['order' => 'name']);
 
+        // load customer data
         if (isset($task->customer_id)) {
+            $customer = $this->Tasks->Customers->get($task->customer_id, [
+                'contain' => ['Addresses', 'Phones', 'Emails'],
+            ]);
+
+            // retrieve list of customer contracts
             $contracts = $this->Tasks->Contracts
                 ->find('list', [
                     'order' => 'Contracts.number',
                     'contain' => ['ServiceTypes', 'InstallationAddresses'],
                 ])
                 ->where(['Contracts.customer_id' => $task->customer_id]);
+        }
 
-            $customer = $this->Tasks->Customers->get($task->customer_id, [
-                'contain' => ['Addresses', 'Phones', 'Emails'],
+        // load contract data
+        if (isset($task->contract_id)) {
+            $contract = $this->Tasks->Contracts->get($task->contract_id, [
+                'contain' => ['InstallationAddresses'],
             ]);
+        }
 
+        if (isset($customer)) {
             // preset subject
             if (empty($task->subject)) {
-                $task->subject = $customer->number . ' - ' . $customer->name;
+                $task->subject = isset($contract) ?
+                    $contract->number
+                    . ' - ' . ($contract->installation_address->full_address ?? $customer->name)
+                    . ', ' . $customer->phone
+                    :
+                    $customer->number
+                    . ' - ' . $customer->name
+                    . ', ' . $customer->phone;
             }
             // preset email
             if (empty($task->email)) {
@@ -285,20 +303,17 @@ class TasksController extends AppController
             }
             // add customer details to text
             if (empty($task->text)) {
-                if (isset($task->contract_id)) {
+                if (isset($contract)) {
                     // contract assigned
-                    $contract = $this->Tasks->Contracts->get($task->contract_id, [
-                        'contain' => ['InstallationAddresses'],
-                    ]);
                     if (isset($contract->installation_address)) {
-                        // list installation address
+                        // add the installation address from the contract to the text
                         $task->text .= __('Installation Address') . ': ';
                         $task->text .= $contract->installation_address->full_address . PHP_EOL;
                     }
                 } else {
                     // contract unknown
                     foreach ($customer->addresses as $address) {
-                        // list all installation addresses
+                        // add all customer installation addresses to the text
                         if ($address->type === 0) {
                             $task->text .= $this->Tasks->Customers->Addresses->types[$address->type] . ': ';
                             $task->text .= $address->full_address . PHP_EOL;
@@ -309,6 +324,10 @@ class TasksController extends AppController
                 $task->text .= __('Phone') . ': ' . $customer->phone . PHP_EOL;
             }
         }
+
+        // clear customer/contract variables
+        unset($customer);
+        unset($contract);
 
         if (isset($customer_id)) {
             $customers->where(['Customers.id' => $customer_id]);
