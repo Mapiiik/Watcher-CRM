@@ -154,7 +154,7 @@
             </div>
             <div class="text">
                 <strong><?= __('Subject') ?></strong>
-                <h4><?= h($task->subject) ?></h4>
+                <h5><?= h($task->subject) ?></h5>
             </div>
             <div class="text">
                 <strong><?= __('Text') ?></strong>
