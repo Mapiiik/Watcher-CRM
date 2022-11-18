@@ -1046,6 +1046,7 @@ use Cake\I18n\Number;
                             <th><?= __('Task State') ?></th>
                             <th><?= __('Subject') ?></th>
                             <th><?= __('Text') ?></th>
+                            <th><?= __('Contract') ?></th>
                             <th><?= __('Dealer') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
@@ -1055,6 +1056,17 @@ use Cake\I18n\Number;
                             <td><?= $task->has('task_state') ? h($task->task_state->name) : '' ?></td>
                             <td><?= h($task->subject) ?></td>
                             <td><?= nl2br($task->text ?? '') ?></td>
+                            <td><?=
+                                $task->has('contract') ? $this->Html->link(
+                                    $task->contract->name,
+                                    [
+                                        'controller' => 'Contracts',
+                                        'action' => 'view',
+                                        $task->contract->id,
+                                        'customer_id' => $task->contract->customer_id,
+                                    ]
+                                ) : '' ?>
+                            </td>
                             <td><?= $task->has('dealer') ? h($task->dealer->name) : '' ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(

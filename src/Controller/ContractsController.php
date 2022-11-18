@@ -88,6 +88,7 @@ class ContractsController extends AppController
                 'IpNetworks',
                 'RemovedIpNetworks',
                 'SoldEquipments' => ['EquipmentTypes'],
+                'Tasks' => ['TaskTypes', 'TaskStates', 'Dealers'],
                 'Creators',
                 'Modifiers',
             ],

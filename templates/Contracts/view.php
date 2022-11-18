@@ -705,6 +705,53 @@ use Cake\I18n\Number;
                     </div>
                 </div>
             </div>
+            <div class="related">
+                <?= $this->AuthLink->link(
+                    __('New Task'),
+                    ['controller' => 'Tasks', 'action' => 'add'],
+                    ['class' => 'button button-small float-right win-link']
+                ) ?>
+                <h4><?= __('Tasks') ?></h4>
+                <?php if (!empty($contract->tasks)) : ?>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Task Type') ?></th>
+                            <th><?= __('Task State') ?></th>
+                            <th><?= __('Subject') ?></th>
+                            <th><?= __('Text') ?></th>
+                            <th><?= __('Dealer') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                        <?php foreach ($contract->tasks as $task) : ?>
+                        <tr style="<?= $task->style ?>">
+                            <td><?= $task->has('task_type') ? h($task->task_type->name) : '' ?></td>
+                            <td><?= $task->has('task_state') ? h($task->task_state->name) : '' ?></td>
+                            <td><?= h($task->subject) ?></td>
+                            <td><?= nl2br($task->text ?? '') ?></td>
+                            <td><?= $task->has('dealer') ? h($task->dealer->name) : '' ?></td>
+                            <td class="actions">
+                                <?= $this->AuthLink->link(
+                                    __('View'),
+                                    ['controller' => 'Tasks', 'action' => 'view', $task->id]
+                                ) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Edit'),
+                                    ['controller' => 'Tasks', 'action' => 'edit', $task->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->AuthLink->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'Tasks', 'action' => 'delete', $task->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]
+                                ) ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 </div>

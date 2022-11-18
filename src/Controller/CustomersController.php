@@ -127,7 +127,7 @@ class CustomersController extends AppController
                 'Logins',
                 'Phones',
                 'SoldEquipments' => ['Contracts', 'EquipmentTypes'],
-                'Tasks' => ['TaskTypes', 'TaskStates', 'Dealers'],
+                'Tasks' => ['Contracts', 'TaskTypes', 'TaskStates', 'Dealers'],
                 'Ips' => ['Contracts'],
                 'RemovedIps' => ['Contracts'],
                 'IpNetworks' => ['Contracts'],

@@ -21,6 +21,7 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\IpNetworksTable&\Cake\ORM\Association\HasMany $IpNetworks
  * @property \App\Model\Table\RemovedIpNetworksTable&\Cake\ORM\Association\HasMany $RemovedIpNetworks
  * @property \App\Model\Table\SoldEquipmentsTable&\Cake\ORM\Association\HasMany $SoldEquipments
+ * @property \App\Model\Table\TasksTable&\Cake\ORM\Association\HasMany $Tasks
  * @method \App\Model\Entity\Contract newEmptyEntity()
  * @method \App\Model\Entity\Contract newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Contract[] newEntities(array $data, array $options = [])
@@ -100,6 +101,13 @@ class ContractsTable extends AppTable
         ]);
         $this->hasMany('SoldEquipments', [
             'foreignKey' => 'contract_id',
+        ]);
+        $this->hasMany('Tasks', [
+            'foreignKey' => 'contract_id',
+            'sort' => [
+                'Tasks.task_state_id',
+                'Tasks.id' => 'DESC',
+            ],
         ]);
     }
 
