@@ -164,6 +164,42 @@ class TasksTable extends AppTable
         $rules->add($rules->existsIn(['dealer_id'], 'Dealers'), ['errorField' => 'dealer_id']);
         $rules->add($rules->existsIn(['task_state_id'], 'TaskStates'), ['errorField' => 'task_state_id']);
 
+        $rules->add(
+            function ($entity, $options) {
+                // load task type
+                $task_type = $this->TaskTypes->get($entity->task_type_id);
+                // check if customer required for this task type
+                if ($task_type->customer_required) {
+                    return is_numeric($entity->customer_id);
+                } else {
+                    return true;
+                }
+            },
+            'isRequiredCustomerFilled',
+            [
+                'errorField' => 'customer_id',
+                'message' => __('The specified service type requires the assignment of an customer.'),
+            ]
+        );
+
+        $rules->add(
+            function ($entity, $options) {
+                // load task type
+                $task_type = $this->TaskTypes->get($entity->task_type_id);
+                // check if contract required for this task type
+                if ($task_type->contract_required) {
+                    return is_numeric($entity->contract_id);
+                } else {
+                    return true;
+                }
+            },
+            'isRequiredContractFilled',
+            [
+                'errorField' => 'contract_id',
+                'message' => __('The specified service type requires the assignment of an contract.'),
+            ]
+        );
+
         return $rules;
     }
 }

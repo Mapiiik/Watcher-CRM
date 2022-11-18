@@ -16,6 +16,8 @@ use Cake\ORM\Entity;
  * @property \CakeDC\Users\Model\Entity\User|null $modifier
  * @property int $id
  * @property string|null $name
+ * @property bool $customer_required
+ * @property bool $contract_required
  *
  * @property \App\Model\Entity\Task[] $tasks
  */
@@ -36,6 +38,8 @@ class TaskType extends Entity
         'modified' => true,
         'modified_by' => true,
         'name' => true,
+        'customer_required' => true,
+        'contract_required' => true,
         'tasks' => true,
     ];
 }

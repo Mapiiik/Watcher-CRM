@@ -23,6 +23,8 @@
                 <legend><?= __('Edit Task Type') ?></legend>
                 <?php
                     echo $this->Form->control('name');
+                    echo $this->Form->control('customer_required');
+                    echo $this->Form->control('contract_required');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

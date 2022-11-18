@@ -68,6 +68,14 @@ class TaskTypesTable extends AppTable
             ->scalar('name')
             ->allowEmptyString('name');
 
+        $validator
+            ->boolean('customer_required')
+            ->notEmptyString('customer_required');
+
+        $validator
+            ->boolean('contract_required')
+            ->notEmptyString('contract_required');
+
         return $validator;
     }
 }

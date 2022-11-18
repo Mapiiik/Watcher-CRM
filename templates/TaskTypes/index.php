@@ -24,6 +24,8 @@
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('name') ?></th>
+                    <th><?= $this->Paginator->sort('customer_required') ?></th>
+                    <th><?= $this->Paginator->sort('contract_required') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -31,6 +33,8 @@
                 <?php foreach ($taskTypes as $taskType) : ?>
                 <tr>
                     <td><?= h($taskType->name) ?></td>
+                    <td><?= $taskType->customer_required ? __('Yes') : __('No'); ?></td>
+                    <td><?= $taskType->contract_required ? __('Yes') : __('No'); ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $taskType->id]) ?>
                         <?= $this->AuthLink->link(

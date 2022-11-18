@@ -33,6 +33,14 @@
                             <th><?= __('Name') ?></th>
                             <td><?= h($taskType->name) ?></td>
                         </tr>
+                        <tr>
+                            <th><?= __('Customer Required') ?></th>
+                            <td><?= $taskType->customer_required ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Contract Required') ?></th>
+                            <td><?= $taskType->contract_required ? __('Yes') : __('No'); ?></td>
+                        </tr>
                     </table>
                 </div>
                 <div class="column-responsive">

@@ -226,7 +226,7 @@ class ContractsTable extends AppTable
             'isRequiredInstallationAdressFilled',
             [
                 'errorField' => 'installation_address_id',
-                'message' => __('The specified service type requires the installation address to be set.'),
+                'message' => __('The specified service type requires the assignment of an installation address.'),
             ]
         );
 
@@ -244,7 +244,7 @@ class ContractsTable extends AppTable
             'isRequiredAccessPointFilled',
             [
                 'errorField' => 'access_point_id',
-                'message' => __('The specified service type requires the access point to be set.'),
+                'message' => __('The specified service type requires the assignment of an access point.'),
             ]
         );
 
