@@ -74,21 +74,45 @@ class ContractsController extends AppController
                 'Customers' => [
                     'CustomerLabels' => [
                         'Labels',
-                        'sort' => ['Labels.name'],
+                        'sort' => [
+                            'Labels.name',
+                        ],
+                    ],
+                    'Tasks' => [
+                        'TaskTypes',
+                        'TaskStates',
+                        'Contracts',
+                        'Dealers',
+                        'conditions' => [
+                            'OR' => [
+                                'Tasks.contract_id !=' => $id,
+                                'Tasks.contract_id IS' => null,
+                            ],
+                        ],
                     ],
                 ],
                 'InstallationAddresses',
                 'ServiceTypes',
                 'InstallationTechnicians',
                 'Commissions',
-                'Billings' => ['Services'],
-                'BorrowedEquipments' => ['EquipmentTypes'],
+                'Billings' => [
+                    'Services',
+                ],
+                'BorrowedEquipments' => [
+                    'EquipmentTypes',
+                ],
                 'Ips',
                 'RemovedIps',
                 'IpNetworks',
                 'RemovedIpNetworks',
-                'SoldEquipments' => ['EquipmentTypes'],
-                'Tasks' => ['TaskTypes', 'TaskStates', 'Dealers'],
+                'SoldEquipments' => [
+                    'EquipmentTypes',
+                ],
+                'Tasks' => [
+                    'TaskTypes',
+                    'TaskStates',
+                    'Dealers',
+                ],
                 'Creators',
                 'Modifiers',
             ],

@@ -785,6 +785,60 @@ use Cake\I18n\Number;
                 </div>
                 <?php endif; ?>
             </div>
+            <div class="related">
+                <h4><?= __('Other Customer Tasks') ?></h4>
+                <?php if (!empty($contract->customer->tasks)) : ?>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Task Type') ?></th>
+                            <th><?= __('Task State') ?></th>
+                            <th><?= __('Subject') ?></th>
+                            <th><?= __('Text') ?></th>
+                            <th><?= __('Contract') ?></th>
+                            <th><?= __('Dealer') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                        <?php foreach ($contract->customer->tasks as $task) : ?>
+                        <tr style="<?= $task->style ?>">
+                            <td><?= $task->has('task_type') ? h($task->task_type->name) : '' ?></td>
+                            <td><?= $task->has('task_state') ? h($task->task_state->name) : '' ?></td>
+                            <td><?= h($task->subject) ?></td>
+                            <td><?= nl2br($task->text ?? '') ?></td>
+                            <td><?=
+                                $task->has('contract') ? $this->Html->link(
+                                    $task->contract->name,
+                                    [
+                                        'controller' => 'Contracts',
+                                        'action' => 'view',
+                                        $task->contract->id,
+                                        'customer_id' => $task->contract->customer_id,
+                                    ]
+                                ) : '' ?>
+                            </td>
+                            <td><?= $task->has('dealer') ? h($task->dealer->name) : '' ?></td>
+                            <td class="actions">
+                                <?= $this->AuthLink->link(
+                                    __('View'),
+                                    ['controller' => 'Tasks', 'action' => 'view', $task->id]
+                                ) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Edit'),
+                                    ['controller' => 'Tasks', 'action' => 'edit', $task->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->AuthLink->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'Tasks', 'action' => 'delete', $task->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]
+                                ) ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 </div>
