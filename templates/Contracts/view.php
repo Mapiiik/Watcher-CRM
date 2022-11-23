@@ -30,6 +30,35 @@ use Cake\I18n\Number;
                 ['action' => 'print', $contract->id],
                 ['class' => 'side-nav-item']
             ) ?>
+
+            <br>
+
+            <h4 class="heading"><?= __('Sections') ?></h4>
+            <?= $this->AuthLink->link(
+                __('Billings'),
+                ['action' => 'view', $contract->id, '#' => 'billings'],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('RADIUS Accounts'),
+                ['action' => 'view', $contract->id, '#' => 'radius-accounts'],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Equipments'),
+                ['action' => 'view', $contract->id, '#' => 'borrowed-equipments'],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Ips'),
+                ['action' => 'view', $contract->id, '#' => 'ips'],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Tasks'),
+                ['action' => 'view', $contract->id, '#' => 'tasks'],
+                ['class' => 'side-nav-item']
+            ) ?>
         </div>
         <br>
         <div class="side-labels">
@@ -254,7 +283,7 @@ use Cake\I18n\Number;
                         ]
                     ) ?>
                 <?php endif ?>
-                <h4><?= __('Billings') ?></h4>
+                <h4 id="billings"><?= __('Billings') ?></h4>
                 <?php if (!empty($contract->billings)) : ?>
                 <div class="table-responsive">
                     <table>
@@ -316,7 +345,7 @@ use Cake\I18n\Number;
                     ['plugin' => 'Radius', 'controller' => 'Accounts', 'action' => 'add'],
                     ['class' => 'button button-small float-right win-link']
                 ) ?>
-                <h4><?= __('RADIUS Accounts') ?></h4>
+                <h4 id="radius-accounts"><?= __('RADIUS Accounts') ?></h4>
                 <?= $this->cell(
                     'Radius.Accounts',
                     [['Accounts.contract_id' => $contract->id]],
@@ -331,7 +360,7 @@ use Cake\I18n\Number;
                             ['controller' => 'BorrowedEquipments', 'action' => 'add'],
                             ['class' => 'button button-small float-right win-link']
                         ) ?>
-                        <h4><?= __('Borrowed Equipments') ?></h4>
+                        <h4 id="borrowed-equipments"><?= __('Borrowed Equipments') ?></h4>
                         <?php if (!empty($contract->borrowed_equipments)) : ?>
                         <div class="table-responsive">
                             <table>
@@ -456,7 +485,7 @@ use Cake\I18n\Number;
                             ['controller' => 'Ips', 'action' => 'addFromRange'],
                             ['class' => 'button button-small float-right win-link']
                         ) : '' ?>
-                        <h4><?= __('Ips') ?></h4>
+                        <h4 id="ips"><?= __('Ips') ?></h4>
                         <?php if (!empty($contract->ips)) : ?>
                         <div class="table-responsive">
                             <table>
@@ -715,7 +744,7 @@ use Cake\I18n\Number;
                     ['controller' => 'Tasks', 'action' => 'add'],
                     ['class' => 'button button-small float-right win-link']
                 ) ?>
-                <h4><?= __('Tasks') ?></h4>
+                <h4 id="tasks"><?= __('Tasks') ?></h4>
                 <?php if (!empty($contract->tasks)) : ?>
                 <div class="table-responsive">
                     <table>

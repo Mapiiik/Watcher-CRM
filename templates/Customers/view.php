@@ -33,6 +33,55 @@ use Cake\I18n\Number;
                 ['action' => 'print', $customer->id],
                 ['class' => 'side-nav-item']
             ) ?>
+
+            <br>
+
+            <h4 class="heading"><?= __('Sections') ?></h4>
+            <?= $this->AuthLink->link(
+                __('Logins'),
+                ['action' => 'view', $customer->id, '#' => 'logins'],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Addresses'),
+                ['action' => 'view', $customer->id, '#' => 'addresses'],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Contracts'),
+                ['action' => 'view', $customer->id, '#' => 'contracts'],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Billings'),
+                ['action' => 'view', $customer->id, '#' => 'billings'],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('RADIUS Accounts'),
+                ['action' => 'view', $customer->id, '#' => 'radius-accounts'],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Equipments'),
+                ['action' => 'view', $customer->id, '#' => 'borrowed-equipments'],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Ips'),
+                ['action' => 'view', $customer->id, '#' => 'ips'],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Invoices'),
+                ['action' => 'view', $customer->id, '#' => 'invoices'],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Tasks'),
+                ['action' => 'view', $customer->id, '#' => 'tasks'],
+                ['class' => 'side-nav-item']
+            ) ?>
         </div>
         <br>
         <div class="side-labels">
@@ -336,7 +385,7 @@ use Cake\I18n\Number;
                     ['controller' => 'Logins', 'action' => 'add'],
                     ['class' => 'button button-small float-right win-link']
                 ) ?>
-                <h4><?= __('Logins') ?></h4>
+                <h4 id="logins"><?= __('Logins') ?></h4>
                 <?php if (!empty($customer->logins)) : ?>
                 <div class="table-responsive">
                     <table>
@@ -387,7 +436,7 @@ use Cake\I18n\Number;
                     ['controller' => 'Addresses', 'action' => 'add'],
                     ['class' => 'button button-small float-right win-link']
                 ) ?>
-                <h4><?= __('Addresses') ?></h4>
+                <h4 id="addresses"><?= __('Addresses') ?></h4>
                 <?php if (!empty($customer->addresses)) : ?>
                 <div class="table-responsive">
                     <table>
@@ -468,7 +517,7 @@ use Cake\I18n\Number;
                     ['controller' => 'Contracts', 'action' => 'add'],
                     ['class' => 'button button-small float-right win-link']
                 ) ?>
-                <h4><?= __('Contracts') ?></h4>
+                <h4 id="contracts"><?= __('Contracts') ?></h4>
                 <?php if (!empty($customer->contracts)) : ?>
                 <div class="table-responsive">
                     <table>
@@ -529,7 +578,7 @@ use Cake\I18n\Number;
             </div>
             <hr />
             <div class="related">
-                <h4><?= __('Related Billings') ?></h4>
+                <h4 id="billings"><?= __('Related Billings') ?></h4>
                 <?php if (!empty($customer->billings)) : ?>
                 <div class="table-responsive">
                     <table>
@@ -596,7 +645,7 @@ use Cake\I18n\Number;
                 <?php endif; ?>
             </div>
             <div class="related">
-                <h4><?= __('Related RADIUS Accounts') ?></h4>
+                <h4 id="radius-accounts"><?= __('Related RADIUS Accounts') ?></h4>
                 <?= $this->cell(
                     'Radius.Accounts',
                     [['Accounts.customer_id' => $customer->id]]
@@ -605,7 +654,7 @@ use Cake\I18n\Number;
             <div class="row">
                 <div class="column-responsive">
                     <div class="related">
-                        <h4><?= __('Related Borrowed Equipments') ?></h4>
+                        <h4 id="borrowed-equipments"><?= __('Related Borrowed Equipments') ?></h4>
                         <?php if (!empty($customer->borrowed_equipments)) : ?>
                         <div class="table-responsive">
                             <table>
@@ -751,7 +800,7 @@ use Cake\I18n\Number;
             <div class="row">
                 <div class="column-responsive">
                     <div class="related">
-                        <h4><?= __('Related Ips') ?></h4>
+                        <h4 id="ips"><?= __('Related Ips') ?></h4>
                         <?php if (!empty($customer->ips)) : ?>
                         <div class="table-responsive">
                             <table>
@@ -1035,7 +1084,7 @@ use Cake\I18n\Number;
                         'confirm' => __('Are you sure you want to block # {0}?', $customer->id),
                     ]
                 ) ?>
-                <h4><?= __('Invoices') ?></h4>
+                <h4 id="invoices"><?= __('Invoices') ?></h4>
                 <?= $this->cell(
                     'BookkeepingPohoda.Invoices',
                     [['Invoices.customer_id' => $customer->id]],
@@ -1048,7 +1097,7 @@ use Cake\I18n\Number;
                     ['controller' => 'Tasks', 'action' => 'add'],
                     ['class' => 'button button-small float-right win-link']
                 ) ?>
-                <h4><?= __('Tasks') ?></h4>
+                <h4 id="tasks"><?= __('Tasks') ?></h4>
                 <?php if (!empty($customer->tasks)) : ?>
                 <div class="table-responsive">
                     <table>
