@@ -42,7 +42,7 @@
                         ) : '' ?>
                     </td>
                     <td><?= $email->has('customer') ? h($email->customer->number) : '' ?></td>
-                    <td><?= h($email->email) ?></td>
+                    <td><?= $this->Html->link(h($email->email), 'mailto:' . $email->email) ?></td>
                     <td><?= $email->use_for_billing ? __('Yes') : __('No'); ?></td>
                     <td><?= $email->use_for_outages ? __('Yes') : __('No'); ?></td>
                     <td><?= $email->use_for_commercial ? __('Yes') : __('No'); ?></td>

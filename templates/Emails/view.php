@@ -41,7 +41,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Email') ?></th>
-                            <td><?= h($email->email) ?></td>
+                            <td><?= $this->Html->link(h($email->email), 'mailto:' . $email->email) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Use For Billing') ?></th>
