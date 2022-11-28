@@ -26,9 +26,7 @@ class ContractsTableTest extends TestCase
     protected $fixtures = [
         'app.Contracts',
         'app.Customers',
-        'app.InstallationAddresses',
         'app.ServiceTypes',
-        'app.InstallationTechnicians',
         'app.Commissions',
         'app.ContractStates',
         'app.Billings',
