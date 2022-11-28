@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-11-23 14:34+0100\n"
-"PO-Revision-Date: 2022-11-23 14:37+0100\n"
+"POT-Creation-Date: 2022-11-28 16:51+0100\n"
+"PO-Revision-Date: 2022-11-28 16:59+0100\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -94,13 +94,13 @@ msgstr "Typ služby neodpovídá vybrané smlouvě."
 
 #: src/Controller/BillingsController.php:122
 #: src/Controller/BillingsController.php:198
-#: src/Controller/ContractsController.php:342
+#: src/Controller/ContractsController.php:358
 msgid "The billing has been saved."
 msgstr "Fakturace byla uložena."
 
 #: src/Controller/BillingsController.php:126
 #: src/Controller/BillingsController.php:202
-#: src/Controller/ContractsController.php:346
+#: src/Controller/ContractsController.php:362
 msgid "The billing could not be saved. Please, try again."
 msgstr "Fakturace nelze uložit. Opakujte akci."
 
@@ -130,36 +130,54 @@ msgstr "Zapůjčené zařízení bylo odstraněno."
 msgid "The borrowed equipment could not be deleted. Please, try again."
 msgstr "Zapůjčené zařízení nelze odstranit. Opakujte akci."
 
-#: src/Controller/CommissionsController.php:81
-#: src/Controller/CommissionsController.php:105
+#: src/Controller/CommissionsController.php:82
+#: src/Controller/CommissionsController.php:106
 msgid "The commission has been saved."
 msgstr "Provize byla uložena."
 
-#: src/Controller/CommissionsController.php:85
-#: src/Controller/CommissionsController.php:109
+#: src/Controller/CommissionsController.php:86
+#: src/Controller/CommissionsController.php:110
 msgid "The commission could not be saved. Please, try again."
 msgstr "Provizi se nepodařilo uložit. Prosím zkuste to znovu."
 
-#: src/Controller/CommissionsController.php:126
+#: src/Controller/CommissionsController.php:127
 msgid "The commission has been deleted."
 msgstr "Provize byla smazána."
 
-#: src/Controller/CommissionsController.php:128
+#: src/Controller/CommissionsController.php:129
 msgid "The commission could not be deleted. Please, try again."
 msgstr "Provizi se nepodařilo smazat. Prosím zkuste to znovu."
 
-#: src/Controller/ContractsController.php:146
-#: src/Controller/ContractsController.php:210
+#: src/Controller/ContractStatesController.php:81
+#: src/Controller/ContractStatesController.php:107
+msgid "The contract state has been saved."
+msgstr "Stav smlouvy byl uložen."
+
+#: src/Controller/ContractStatesController.php:85
+#: src/Controller/ContractStatesController.php:111
+msgid "The contract state could not be saved. Please, try again."
+msgstr "Stav smlouvy nelze uložit. Prosím, zkuste to znovu."
+
+#: src/Controller/ContractStatesController.php:130
+msgid "The contract state has been deleted."
+msgstr "Stav smlouvy byl odstraněn."
+
+#: src/Controller/ContractStatesController.php:132
+msgid "The contract state could not be deleted. Please, try again."
+msgstr "Stav smlouvy nelze odstranit. Prosím, zkuste to znovu."
+
+#: src/Controller/ContractsController.php:148
+#: src/Controller/ContractsController.php:219
 msgid "The contract has been saved."
 msgstr "Smlouva byla uložena."
 
-#: src/Controller/ContractsController.php:152
-#: src/Controller/ContractsController.php:216
+#: src/Controller/ContractsController.php:154
+#: src/Controller/ContractsController.php:225
 msgid "The contract could not be saved. Please, try again."
 msgstr "Smlouvu nelze uložit. Opakujte akci."
 
-#: src/Controller/ContractsController.php:186
-#: src/Controller/ContractsController.php:249
+#: src/Controller/ContractsController.php:195
+#: src/Controller/ContractsController.php:265
 #: src/Controller/OverviewsController.php:116
 #: src/Controller/TasksController.php:169
 #: src/Controller/TasksController.php:360
@@ -167,59 +185,59 @@ msgstr "Smlouvu nelze uložit. Opakujte akci."
 msgid "The access points list could not be loaded. Please, try again."
 msgstr "Seznam přístupových bodů nelze načíst. Zkuste to prosím znovu."
 
-#: src/Controller/ContractsController.php:268
+#: src/Controller/ContractsController.php:284
 msgid "The contract has been deleted."
 msgstr "Smlouva byla odstraněna."
 
-#: src/Controller/ContractsController.php:270
+#: src/Controller/ContractsController.php:286
 msgid "The contract could not be deleted. Please, try again."
 msgstr "Smlouvu nelze odstranit. Opakujte akci."
 
-#: src/Controller/ContractsController.php:297
+#: src/Controller/ContractsController.php:313
 msgid "The contract number has been updated."
 msgstr "Číslo smlouvy bylo aktualizováno."
 
-#: src/Controller/ContractsController.php:302
+#: src/Controller/ContractsController.php:318
 msgid "The contract number could not be updated. Please, try again."
 msgstr "Číslo smlouvy nelze aktualizovat. Opakujte akci."
 
-#: src/Controller/ContractsController.php:331
-#: src/Controller/ContractsController.php:424
-#: src/Controller/ContractsController.php:468
+#: src/Controller/ContractsController.php:347
+#: src/Controller/ContractsController.php:441
+#: src/Controller/ContractsController.php:485
 msgid "Please set a date until which the contract is valid."
 msgstr "Nastavte prosím datum, do kterého je smlouva platná."
 
-#: src/Controller/ContractsController.php:333
+#: src/Controller/ContractsController.php:349
 msgid "No related billings to terminate."
 msgstr "Žádné související fakturace k ukončení."
 
-#: src/Controller/ContractsController.php:369
+#: src/Controller/ContractsController.php:385
 msgid "Contract for the provision of services"
 msgstr "Smlouva o poskytování služeb"
 
-#: src/Controller/ContractsController.php:370
+#: src/Controller/ContractsController.php:386
 msgid ""
 "Contract for the provision of services (with termination of the original "
 "contract)"
 msgstr "Smlouva o poskytování služeb (s ukončením původní smlouvy)"
 
-#: src/Controller/ContractsController.php:372
+#: src/Controller/ContractsController.php:388
 msgid "Amendment to the contract for the provision of services"
 msgstr "Dodatek ke smlouvě o poskytování služeb"
 
-#: src/Controller/ContractsController.php:373
+#: src/Controller/ContractsController.php:389
 msgid "Agreement to terminate contract for the provision of services"
 msgstr "Dohoda o ukončení smlouvy o poskytování služeb"
 
-#: src/Controller/ContractsController.php:375
+#: src/Controller/ContractsController.php:391
 msgid "Handover protocol - Installation of internet connection"
 msgstr "Předávací protokol - Instalace připojení k internetu"
 
-#: src/Controller/ContractsController.php:376
+#: src/Controller/ContractsController.php:392
 msgid "Handover protocol - Internet connection uninstallation"
 msgstr "Předávací protokol - Deinstalace připojení k internetu"
 
-#: src/Controller/ContractsController.php:413
+#: src/Controller/ContractsController.php:430
 msgid ""
 "A borrowed equipment is not assigned, although it should normally be for "
 "this type of service. Please confirm that the customer has their own "
@@ -228,26 +246,26 @@ msgstr ""
 "Zapůjčené zařízení není přiděleno, ačkoli by normálně mělo být pro tento typ "
 "služby. Potvrďte prosím, že zákazník má vlastní zařízení, nebo jej přidejte."
 
-#: src/Controller/ContractsController.php:432
+#: src/Controller/ContractsController.php:449
 msgid "Please enter the effective date of the amendment."
 msgstr "Zadejte prosím datum účinnosti dodatku."
 
-#: src/Controller/ContractsController.php:442
+#: src/Controller/ContractsController.php:459
 msgid "Please set the date of conclusion of the original contract."
 msgstr "Nastavte prosím datum uzavření původní smlouvy."
 
-#: src/Controller/ContractsController.php:448
-#: src/Controller/ContractsController.php:474
+#: src/Controller/ContractsController.php:465
+#: src/Controller/ContractsController.php:491
 msgid "Please enter the number of the contract to be terminated."
 msgstr "Zadejte prosím číslo smlouvy, která má být ukončena."
 
-#: src/Controller/ContractsController.php:459
-#: src/Controller/ContractsController.php:485
+#: src/Controller/ContractsController.php:476
+#: src/Controller/ContractsController.php:502
 msgid "Please set the date from which the contract is valid."
 msgstr "Nastavte prosím datum, od kterého je smlouva platná."
 
-#: src/Controller/ContractsController.php:527
-#: src/Controller/CustomersController.php:269
+#: src/Controller/ContractsController.php:544
+#: src/Controller/CustomersController.php:273
 msgid "Invalid type of document requested."
 msgstr "Neplatný typ požadovaného dokumentu."
 
@@ -295,29 +313,29 @@ msgstr ""
 "Při vyhledávání prosím použijte zákaznické číslo nebo identifikační číslo "
 "společnosti."
 
-#: src/Controller/CustomersController.php:166
-#: src/Controller/CustomersController.php:194
+#: src/Controller/CustomersController.php:170
+#: src/Controller/CustomersController.php:198
 msgid "The customer has been saved."
 msgstr "Zákazník byl uložen."
 
-#: src/Controller/CustomersController.php:170
-#: src/Controller/CustomersController.php:198
+#: src/Controller/CustomersController.php:174
+#: src/Controller/CustomersController.php:202
 msgid "The customer could not be saved. Please, try again."
 msgstr "Zákazníka nelze uložit. Opakujte akci."
 
-#: src/Controller/CustomersController.php:219
+#: src/Controller/CustomersController.php:223
 msgid "The customer has been deleted."
 msgstr "Zákazník byl odstraněn."
 
-#: src/Controller/CustomersController.php:221
+#: src/Controller/CustomersController.php:225
 msgid "The customer could not be deleted. Please, try again."
 msgstr "Zákazníka nelze odstranit. Opakujte akci."
 
-#: src/Controller/CustomersController.php:238
+#: src/Controller/CustomersController.php:242
 msgid "Consent to the processing of personal data"
 msgstr "Souhlas se zpracováním osobních údajů"
 
-#: src/Controller/CustomersController.php:239
+#: src/Controller/CustomersController.php:243
 msgid "Consent to the processing of personal data (change)"
 msgstr "Souhlas se zpracováním osobních údajů (změna)"
 
@@ -548,21 +566,21 @@ msgstr "Odebraná IP adresa byla odstraněna."
 msgid "The removed ip could not be deleted. Please, try again."
 msgstr "Odebranou IP adresu nelze odstranit. Opakujte akci."
 
-#: src/Controller/ServiceTypesController.php:81
-#: src/Controller/ServiceTypesController.php:105
+#: src/Controller/ServiceTypesController.php:82
+#: src/Controller/ServiceTypesController.php:106
 msgid "The service type has been saved."
 msgstr "Typ služby byl uložen."
 
-#: src/Controller/ServiceTypesController.php:85
-#: src/Controller/ServiceTypesController.php:109
+#: src/Controller/ServiceTypesController.php:86
+#: src/Controller/ServiceTypesController.php:110
 msgid "The service type could not be saved. Please, try again."
 msgstr "Typ služby nelze uložit. Opakujte akci."
 
-#: src/Controller/ServiceTypesController.php:126
+#: src/Controller/ServiceTypesController.php:127
 msgid "The service type has been deleted."
 msgstr "Typ služby byl odstraněn."
 
-#: src/Controller/ServiceTypesController.php:128
+#: src/Controller/ServiceTypesController.php:129
 msgid "The service type could not be deleted. Please, try again."
 msgstr "Typ služby nelze odstranit. Opakujte akci."
 
@@ -649,10 +667,10 @@ msgid "The task could not be saved. Please, try again."
 msgstr "Úkol nelze uložit. Prosím, zkuste to znovu."
 
 #: src/Controller/TasksController.php:310 src/Model/Table/AddressesTable.php:56
-#: templates/Commissions/view.php:131 templates/Contracts/pdf/print.php:273
-#: templates/Contracts/pdf/print.php:1021 templates/Contracts/print.php:62
-#: templates/Contracts/view.php:131 templates/Customers/view.php:532
-#: templates/ServiceTypes/view.php:171
+#: templates/Commissions/view.php:132 templates/ContractStates/view.php:117
+#: templates/Contracts/pdf/print.php:273 templates/Contracts/pdf/print.php:1021
+#: templates/Contracts/print.php:69 templates/Contracts/view.php:138
+#: templates/Customers/view.php:533 templates/ServiceTypes/view.php:172
 msgid "Installation Address"
 msgstr "Adresa instalace"
 
@@ -748,23 +766,27 @@ msgstr "API"
 #: src/Model/Entity/Customer.php:414 templates/Addresses/view.php:134
 #: templates/Billings/index.php:77 templates/Billings/index.php:78
 #: templates/Billings/view.php:77 templates/Billings/view.php:81
-#: templates/Commissions/view.php:174 templates/Contracts/index.php:72
-#: templates/Contracts/print.php:100 templates/Contracts/view.php:169
-#: templates/Contracts/view.php:322 templates/Contracts/view.php:323
-#: templates/Customers/print.php:117 templates/Customers/print.php:121
-#: templates/Customers/print.php:125 templates/Customers/print.php:129
-#: templates/Customers/view.php:213 templates/Customers/view.php:217
-#: templates/Customers/view.php:221 templates/Customers/view.php:225
-#: templates/Customers/view.php:310 templates/Customers/view.php:311
-#: templates/Customers/view.php:312 templates/Customers/view.php:359
-#: templates/Customers/view.php:360 templates/Customers/view.php:361
-#: templates/Customers/view.php:411 templates/Customers/view.php:558
-#: templates/Customers/view.php:627 templates/Customers/view.php:628
-#: templates/Emails/index.php:46 templates/Emails/index.php:47
-#: templates/Emails/index.php:48 templates/Emails/view.php:48
-#: templates/Emails/view.php:52 templates/Emails/view.php:56
-#: templates/Labels/index.php:50 templates/Labels/view.php:57
-#: templates/Logins/index.php:51 templates/Logins/view.php:53
+#: templates/Commissions/view.php:184 templates/ContractStates/index.php:27
+#: templates/ContractStates/index.php:28 templates/ContractStates/index.php:29
+#: templates/ContractStates/view.php:54 templates/ContractStates/view.php:58
+#: templates/ContractStates/view.php:62 templates/ContractStates/view.php:162
+#: templates/Contracts/index.php:75 templates/Contracts/print.php:107
+#: templates/Contracts/view.php:176 templates/Contracts/view.php:329
+#: templates/Contracts/view.php:330 templates/Customers/print.php:117
+#: templates/Customers/print.php:121 templates/Customers/print.php:125
+#: templates/Customers/print.php:129 templates/Customers/view.php:213
+#: templates/Customers/view.php:217 templates/Customers/view.php:221
+#: templates/Customers/view.php:225 templates/Customers/view.php:310
+#: templates/Customers/view.php:311 templates/Customers/view.php:312
+#: templates/Customers/view.php:359 templates/Customers/view.php:360
+#: templates/Customers/view.php:361 templates/Customers/view.php:411
+#: templates/Customers/view.php:561 templates/Customers/view.php:630
+#: templates/Customers/view.php:631 templates/Emails/index.php:46
+#: templates/Emails/index.php:47 templates/Emails/index.php:48
+#: templates/Emails/view.php:48 templates/Emails/view.php:52
+#: templates/Emails/view.php:56 templates/Labels/index.php:50
+#: templates/Labels/view.php:57 templates/Logins/index.php:51
+#: templates/Logins/view.php:53
 #: templates/Overviews/overview_of_customer_connection_points.php:81
 #: templates/Phones/index.php:46 templates/Phones/index.php:47
 #: templates/Phones/index.php:48 templates/Phones/view.php:48
@@ -775,7 +797,7 @@ msgstr "API"
 #: templates/ServiceTypes/view.php:56 templates/ServiceTypes/view.php:60
 #: templates/ServiceTypes/view.php:64 templates/ServiceTypes/view.php:68
 #: templates/ServiceTypes/view.php:72 templates/ServiceTypes/view.php:139
-#: templates/ServiceTypes/view.php:209 templates/Services/index.php:51
+#: templates/ServiceTypes/view.php:217 templates/Services/index.php:51
 #: templates/Services/view.php:58 templates/Services/view.php:147
 #: templates/Services/view.php:148 templates/TaskStates/index.php:37
 #: templates/TaskStates/view.php:42 templates/TaskTypes/index.php:36
@@ -793,24 +815,27 @@ msgstr "Ne"
 #: src/Model/Entity/Customer.php:415 src/Model/Entity/Customer.php:416
 #: templates/Addresses/view.php:134 templates/Billings/index.php:77
 #: templates/Billings/index.php:78 templates/Billings/view.php:77
-#: templates/Billings/view.php:81 templates/Commissions/view.php:174
-#: templates/Contracts/index.php:72 templates/Contracts/print.php:100
-#: templates/Contracts/view.php:169 templates/Contracts/view.php:322
-#: templates/Contracts/view.php:323 templates/Customers/print.php:117
-#: templates/Customers/print.php:121 templates/Customers/print.php:125
-#: templates/Customers/print.php:129 templates/Customers/view.php:213
-#: templates/Customers/view.php:217 templates/Customers/view.php:221
-#: templates/Customers/view.php:225 templates/Customers/view.php:310
-#: templates/Customers/view.php:311 templates/Customers/view.php:312
-#: templates/Customers/view.php:359 templates/Customers/view.php:360
-#: templates/Customers/view.php:361 templates/Customers/view.php:411
-#: templates/Customers/view.php:558 templates/Customers/view.php:627
-#: templates/Customers/view.php:628 templates/Emails/index.php:46
-#: templates/Emails/index.php:47 templates/Emails/index.php:48
-#: templates/Emails/view.php:48 templates/Emails/view.php:52
-#: templates/Emails/view.php:56 templates/Labels/index.php:50
-#: templates/Labels/view.php:57 templates/Logins/index.php:51
-#: templates/Logins/view.php:53
+#: templates/Billings/view.php:81 templates/Commissions/view.php:184
+#: templates/ContractStates/index.php:27 templates/ContractStates/index.php:28
+#: templates/ContractStates/index.php:29 templates/ContractStates/view.php:54
+#: templates/ContractStates/view.php:58 templates/ContractStates/view.php:62
+#: templates/ContractStates/view.php:162 templates/Contracts/index.php:75
+#: templates/Contracts/print.php:107 templates/Contracts/view.php:176
+#: templates/Contracts/view.php:329 templates/Contracts/view.php:330
+#: templates/Customers/print.php:117 templates/Customers/print.php:121
+#: templates/Customers/print.php:125 templates/Customers/print.php:129
+#: templates/Customers/view.php:213 templates/Customers/view.php:217
+#: templates/Customers/view.php:221 templates/Customers/view.php:225
+#: templates/Customers/view.php:310 templates/Customers/view.php:311
+#: templates/Customers/view.php:312 templates/Customers/view.php:359
+#: templates/Customers/view.php:360 templates/Customers/view.php:361
+#: templates/Customers/view.php:411 templates/Customers/view.php:561
+#: templates/Customers/view.php:630 templates/Customers/view.php:631
+#: templates/Emails/index.php:46 templates/Emails/index.php:47
+#: templates/Emails/index.php:48 templates/Emails/view.php:48
+#: templates/Emails/view.php:52 templates/Emails/view.php:56
+#: templates/Labels/index.php:50 templates/Labels/view.php:57
+#: templates/Logins/index.php:51 templates/Logins/view.php:53
 #: templates/Overviews/overview_of_customer_connection_points.php:81
 #: templates/Phones/index.php:46 templates/Phones/index.php:47
 #: templates/Phones/index.php:48 templates/Phones/view.php:48
@@ -821,7 +846,7 @@ msgstr "Ne"
 #: templates/ServiceTypes/view.php:56 templates/ServiceTypes/view.php:60
 #: templates/ServiceTypes/view.php:64 templates/ServiceTypes/view.php:68
 #: templates/ServiceTypes/view.php:72 templates/ServiceTypes/view.php:139
-#: templates/ServiceTypes/view.php:209 templates/Services/index.php:51
+#: templates/ServiceTypes/view.php:217 templates/Services/index.php:51
 #: templates/Services/view.php:58 templates/Services/view.php:147
 #: templates/Services/view.php:148 templates/TaskStates/index.php:37
 #: templates/TaskStates/view.php:42 templates/TaskTypes/index.php:36
@@ -867,13 +892,13 @@ msgstr "Číslo popisné"
 msgid "Registration Number"
 msgstr "Evidenční číslo"
 
-#: src/Model/Table/ContractsTable.php:229
+#: src/Model/Table/ContractsTable.php:248
 msgid ""
 "The specified service type requires the assignment of an installation "
 "address."
 msgstr "Zadaný typ služby vyžaduje přiřazení instalační adresy."
 
-#: src/Model/Table/ContractsTable.php:247
+#: src/Model/Table/ContractsTable.php:266
 msgid "The specified service type requires the assignment of an access point."
 msgstr "Zadaný typ služby vyžaduje přiřazení přístupového bodu."
 
@@ -974,28 +999,30 @@ msgstr "Zadaný typ úkolu vyžaduje přiřazení smlouvy."
 #: templates/BorrowedEquipments/view.php:10 templates/Commissions/add.php:10
 #: templates/Commissions/edit.php:10 templates/Commissions/index.php:27
 #: templates/Commissions/view.php:10 templates/Commissions/view.php:87
-#: templates/Commissions/view.php:141 templates/Contracts/add.php:16
-#: templates/Contracts/edit.php:16 templates/Contracts/index.php:41
-#: templates/Contracts/print.php:11 templates/Contracts/view.php:14
-#: templates/Contracts/view.php:308 templates/Contracts/view.php:377
-#: templates/Contracts/view.php:440 templates/Contracts/view.php:503
-#: templates/Contracts/view.php:579 templates/Contracts/view.php:650
-#: templates/Contracts/view.php:697 templates/Contracts/view.php:762
-#: templates/Contracts/view.php:805 templates/Countries/add.php:10
-#: templates/Countries/edit.php:10 templates/Countries/index.php:27
-#: templates/Countries/view.php:11 templates/Countries/view.php:99
-#: templates/CustomerLabels/add.php:12 templates/CustomerLabels/edit.php:12
-#: templates/CustomerLabels/index.php:35 templates/CustomerLabels/view.php:10
-#: templates/Customers/add.php:12 templates/Customers/edit.php:12
-#: templates/Customers/index.php:42 templates/Customers/print.php:12
-#: templates/Customers/view.php:17 templates/Customers/view.php:305
-#: templates/Customers/view.php:354 templates/Customers/view.php:405
-#: templates/Customers/view.php:462 templates/Customers/view.php:542
-#: templates/Customers/view.php:604 templates/Customers/view.php:672
-#: templates/Customers/view.php:748 templates/Customers/view.php:819
-#: templates/Customers/view.php:896 templates/Customers/view.php:968
-#: templates/Customers/view.php:1016 templates/Customers/view.php:1116
-#: templates/DealerCommissions/add.php:12
+#: templates/Commissions/view.php:142 templates/ContractStates/add.php:12
+#: templates/ContractStates/edit.php:12 templates/ContractStates/index.php:19
+#: templates/ContractStates/view.php:10 templates/ContractStates/view.php:128
+#: templates/Contracts/add.php:16 templates/Contracts/edit.php:16
+#: templates/Contracts/index.php:42 templates/Contracts/print.php:11
+#: templates/Contracts/view.php:14 templates/Contracts/view.php:315
+#: templates/Contracts/view.php:384 templates/Contracts/view.php:447
+#: templates/Contracts/view.php:510 templates/Contracts/view.php:586
+#: templates/Contracts/view.php:657 templates/Contracts/view.php:704
+#: templates/Contracts/view.php:769 templates/Contracts/view.php:812
+#: templates/Countries/add.php:10 templates/Countries/edit.php:10
+#: templates/Countries/index.php:27 templates/Countries/view.php:11
+#: templates/Countries/view.php:99 templates/CustomerLabels/add.php:12
+#: templates/CustomerLabels/edit.php:12 templates/CustomerLabels/index.php:35
+#: templates/CustomerLabels/view.php:10 templates/Customers/add.php:12
+#: templates/Customers/edit.php:12 templates/Customers/index.php:42
+#: templates/Customers/print.php:12 templates/Customers/view.php:17
+#: templates/Customers/view.php:305 templates/Customers/view.php:354
+#: templates/Customers/view.php:405 templates/Customers/view.php:462
+#: templates/Customers/view.php:543 templates/Customers/view.php:607
+#: templates/Customers/view.php:675 templates/Customers/view.php:751
+#: templates/Customers/view.php:822 templates/Customers/view.php:899
+#: templates/Customers/view.php:971 templates/Customers/view.php:1019
+#: templates/Customers/view.php:1119 templates/DealerCommissions/add.php:12
 #: templates/DealerCommissions/edit.php:12
 #: templates/DealerCommissions/index.php:34
 #: templates/DealerCommissions/view.php:10 templates/Emails/add.php:11
@@ -1031,7 +1058,7 @@ msgstr "Zadaný typ úkolu vyžaduje přiřazení smlouvy."
 #: templates/RemovedIps/view.php:11 templates/ServiceTypes/add.php:10
 #: templates/ServiceTypes/edit.php:10 templates/ServiceTypes/index.php:40
 #: templates/ServiceTypes/view.php:10 templates/ServiceTypes/view.php:127
-#: templates/ServiceTypes/view.php:182 templates/Services/add.php:12
+#: templates/ServiceTypes/view.php:183 templates/Services/add.php:12
 #: templates/Services/edit.php:12 templates/Services/index.php:31
 #: templates/Services/view.php:13 templates/Services/view.php:123
 #: templates/SoldEquipments/add.php:13 templates/SoldEquipments/edit.php:13
@@ -1067,8 +1094,9 @@ msgstr "Přidat adresu"
 #: templates/Billings/add.php:63 templates/Billings/edit.php:68
 #: templates/BorrowedEquipments/add.php:39
 #: templates/BorrowedEquipments/edit.php:47 templates/Commissions/add.php:23
-#: templates/Commissions/edit.php:28 templates/Contracts/add.php:71
-#: templates/Contracts/edit.php:109 templates/Contracts/print.php:232
+#: templates/Commissions/edit.php:28 templates/ContractStates/add.php:29
+#: templates/ContractStates/edit.php:37 templates/Contracts/add.php:72
+#: templates/Contracts/edit.php:110 templates/Contracts/print.php:239
 #: templates/Countries/add.php:23 templates/Countries/edit.php:28
 #: templates/CustomerLabels/add.php:33 templates/CustomerLabels/edit.php:41
 #: templates/Customers/add.php:57 templates/Customers/edit.php:62
@@ -1102,23 +1130,24 @@ msgstr "Potvrdit"
 #: templates/BorrowedEquipments/edit.php:15
 #: templates/BorrowedEquipments/index.php:77 templates/Commissions/edit.php:12
 #: templates/Commissions/index.php:42 templates/Commissions/view.php:110
-#: templates/Commissions/view.php:198 templates/Contracts/edit.php:18
-#: templates/Contracts/index.php:95 templates/Contracts/view.php:336
-#: templates/Contracts/view.php:404 templates/Contracts/view.php:458
-#: templates/Contracts/view.php:551 templates/Contracts/view.php:615
-#: templates/Contracts/view.php:669 templates/Contracts/view.php:724
-#: templates/Contracts/view.php:782 templates/Contracts/view.php:836
-#: templates/Countries/edit.php:12 templates/Countries/index.php:42
-#: templates/Countries/view.php:151 templates/CustomerLabels/edit.php:14
-#: templates/CustomerLabels/index.php:64 templates/Customers/edit.php:14
-#: templates/Customers/index.php:79 templates/Customers/view.php:325
-#: templates/Customers/view.php:374 templates/Customers/view.php:427
-#: templates/Customers/view.php:508 templates/Customers/view.php:573
-#: templates/Customers/view.php:641 templates/Customers/view.php:716
-#: templates/Customers/view.php:783 templates/Customers/view.php:872
-#: templates/Customers/view.php:937 templates/Customers/view.php:992
-#: templates/Customers/view.php:1052 templates/Customers/view.php:1147
-#: templates/DealerCommissions/edit.php:14
+#: templates/Commissions/view.php:208 templates/ContractStates/edit.php:14
+#: templates/ContractStates/index.php:41 templates/ContractStates/view.php:190
+#: templates/Contracts/edit.php:18 templates/Contracts/index.php:96
+#: templates/Contracts/view.php:343 templates/Contracts/view.php:411
+#: templates/Contracts/view.php:465 templates/Contracts/view.php:558
+#: templates/Contracts/view.php:622 templates/Contracts/view.php:676
+#: templates/Contracts/view.php:731 templates/Contracts/view.php:789
+#: templates/Contracts/view.php:843 templates/Countries/edit.php:12
+#: templates/Countries/index.php:42 templates/Countries/view.php:151
+#: templates/CustomerLabels/edit.php:14 templates/CustomerLabels/index.php:64
+#: templates/Customers/edit.php:14 templates/Customers/index.php:79
+#: templates/Customers/view.php:325 templates/Customers/view.php:374
+#: templates/Customers/view.php:427 templates/Customers/view.php:508
+#: templates/Customers/view.php:576 templates/Customers/view.php:644
+#: templates/Customers/view.php:719 templates/Customers/view.php:786
+#: templates/Customers/view.php:875 templates/Customers/view.php:940
+#: templates/Customers/view.php:995 templates/Customers/view.php:1055
+#: templates/Customers/view.php:1150 templates/DealerCommissions/edit.php:14
 #: templates/DealerCommissions/index.php:62 templates/Emails/edit.php:13
 #: templates/Emails/index.php:57 templates/EquipmentTypes/edit.php:12
 #: templates/EquipmentTypes/index.php:48 templates/EquipmentTypes/view.php:134
@@ -1133,7 +1162,7 @@ msgstr "Potvrdit"
 #: templates/RemovedIpNetworks/index.php:61 templates/RemovedIps/edit.php:15
 #: templates/RemovedIps/index.php:63 templates/ServiceTypes/edit.php:12
 #: templates/ServiceTypes/index.php:64 templates/ServiceTypes/view.php:151
-#: templates/ServiceTypes/view.php:239 templates/Services/edit.php:14
+#: templates/ServiceTypes/view.php:245 templates/Services/edit.php:14
 #: templates/Services/index.php:60 templates/Services/view.php:161
 #: templates/SoldEquipments/edit.php:15 templates/SoldEquipments/index.php:71
 #: templates/TaskStates/edit.php:12 templates/TaskStates/index.php:46
@@ -1155,13 +1184,15 @@ msgstr "Odstranit"
 #: templates/BorrowedEquipments/index.php:79
 #: templates/BorrowedEquipments/view.php:20 templates/Commissions/edit.php:14
 #: templates/Commissions/index.php:44 templates/Commissions/view.php:19
-#: templates/Commissions/view.php:112 templates/Commissions/view.php:200
-#: templates/Contracts/edit.php:20 templates/Contracts/index.php:97
-#: templates/Contracts/view.php:23 templates/Contracts/view.php:338
-#: templates/Contracts/view.php:411 templates/Contracts/view.php:465
-#: templates/Contracts/view.php:553 templates/Contracts/view.php:618
-#: templates/Contracts/view.php:671 templates/Contracts/view.php:731
-#: templates/Contracts/view.php:784 templates/Contracts/view.php:838
+#: templates/Commissions/view.php:112 templates/Commissions/view.php:210
+#: templates/ContractStates/edit.php:17 templates/ContractStates/index.php:43
+#: templates/ContractStates/view.php:20 templates/ContractStates/view.php:192
+#: templates/Contracts/edit.php:20 templates/Contracts/index.php:98
+#: templates/Contracts/view.php:23 templates/Contracts/view.php:345
+#: templates/Contracts/view.php:418 templates/Contracts/view.php:472
+#: templates/Contracts/view.php:560 templates/Contracts/view.php:625
+#: templates/Contracts/view.php:678 templates/Contracts/view.php:738
+#: templates/Contracts/view.php:791 templates/Contracts/view.php:845
 #: templates/Countries/edit.php:14 templates/Countries/index.php:44
 #: templates/Countries/view.php:20 templates/Countries/view.php:153
 #: templates/CustomerLabels/edit.php:17 templates/CustomerLabels/index.php:66
@@ -1169,11 +1200,11 @@ msgstr "Odstranit"
 #: templates/Customers/index.php:81 templates/Customers/view.php:26
 #: templates/Customers/view.php:327 templates/Customers/view.php:376
 #: templates/Customers/view.php:429 templates/Customers/view.php:510
-#: templates/Customers/view.php:575 templates/Customers/view.php:643
-#: templates/Customers/view.php:723 templates/Customers/view.php:790
-#: templates/Customers/view.php:874 templates/Customers/view.php:940
-#: templates/Customers/view.php:994 templates/Customers/view.php:1059
-#: templates/Customers/view.php:1149 templates/DealerCommissions/edit.php:17
+#: templates/Customers/view.php:578 templates/Customers/view.php:646
+#: templates/Customers/view.php:726 templates/Customers/view.php:793
+#: templates/Customers/view.php:877 templates/Customers/view.php:943
+#: templates/Customers/view.php:997 templates/Customers/view.php:1062
+#: templates/Customers/view.php:1152 templates/DealerCommissions/edit.php:17
 #: templates/DealerCommissions/index.php:64
 #: templates/DealerCommissions/view.php:20 templates/Emails/edit.php:15
 #: templates/Emails/index.php:59 templates/Emails/view.php:19
@@ -1195,7 +1226,7 @@ msgstr "Odstranit"
 #: templates/RemovedIps/index.php:65 templates/RemovedIps/view.php:20
 #: templates/ServiceTypes/edit.php:15 templates/ServiceTypes/index.php:66
 #: templates/ServiceTypes/view.php:20 templates/ServiceTypes/view.php:153
-#: templates/ServiceTypes/view.php:241 templates/Services/edit.php:16
+#: templates/ServiceTypes/view.php:247 templates/Services/edit.php:16
 #: templates/Services/index.php:62 templates/Services/view.php:22
 #: templates/Services/view.php:163 templates/SoldEquipments/edit.php:18
 #: templates/SoldEquipments/index.php:73 templates/SoldEquipments/view.php:20
@@ -1248,15 +1279,15 @@ msgstr "Adresy"
 #: templates/Billings/index.php:28 templates/Billings/view.php:42
 #: templates/BorrowedEquipments/index.php:31
 #: templates/BorrowedEquipments/view.php:50 templates/Commissions/view.php:128
-#: templates/Contracts/index.php:27 templates/Contracts/print.php:47
-#: templates/Contracts/view.php:116 templates/Countries/view.php:86
-#: templates/CustomerLabels/index.php:31 templates/CustomerLabels/view.php:50
-#: templates/Emails/index.php:27 templates/Emails/view.php:39
-#: templates/EquipmentTypes/view.php:100 templates/EquipmentTypes/view.php:156
-#: templates/IpNetworks/index.php:28 templates/IpNetworks/view.php:49
-#: templates/Ips/index.php:28 templates/Ips/view.php:36
-#: templates/Labels/view.php:113 templates/Logins/index.php:28
-#: templates/Logins/view.php:40
+#: templates/ContractStates/view.php:114 templates/Contracts/index.php:27
+#: templates/Contracts/print.php:47 templates/Contracts/view.php:116
+#: templates/Countries/view.php:86 templates/CustomerLabels/index.php:31
+#: templates/CustomerLabels/view.php:50 templates/Emails/index.php:27
+#: templates/Emails/view.php:39 templates/EquipmentTypes/view.php:100
+#: templates/EquipmentTypes/view.php:156 templates/IpNetworks/index.php:28
+#: templates/IpNetworks/view.php:49 templates/Ips/index.php:28
+#: templates/Ips/view.php:36 templates/Labels/view.php:113
+#: templates/Logins/index.php:28 templates/Logins/view.php:40
 #: templates/Overviews/overview_of_dealer_commissions.php:55
 #: templates/Phones/index.php:27 templates/Phones/view.php:39
 #: templates/RemovedIpNetworks/index.php:28
@@ -1299,21 +1330,22 @@ msgstr "Mapy.cz"
 
 #: templates/Addresses/index.php:92 templates/Billings/index.php:80
 #: templates/BorrowedEquipments/index.php:70 templates/Commissions/index.php:35
-#: templates/Commissions/view.php:101 templates/Commissions/view.php:189
-#: templates/Contracts/index.php:88 templates/Contracts/view.php:327
-#: templates/Contracts/view.php:387 templates/Contracts/view.php:449
-#: templates/Contracts/view.php:542 templates/Contracts/view.php:606
-#: templates/Contracts/view.php:660 templates/Contracts/view.php:707
-#: templates/Contracts/view.php:773 templates/Contracts/view.php:827
+#: templates/Commissions/view.php:101 templates/Commissions/view.php:199
+#: templates/ContractStates/index.php:32 templates/ContractStates/view.php:181
+#: templates/Contracts/index.php:89 templates/Contracts/view.php:334
+#: templates/Contracts/view.php:394 templates/Contracts/view.php:456
+#: templates/Contracts/view.php:549 templates/Contracts/view.php:613
+#: templates/Contracts/view.php:667 templates/Contracts/view.php:714
+#: templates/Contracts/view.php:780 templates/Contracts/view.php:834
 #: templates/Countries/index.php:35 templates/Countries/view.php:142
 #: templates/CustomerLabels/index.php:57 templates/Customers/index.php:72
 #: templates/Customers/view.php:316 templates/Customers/view.php:365
 #: templates/Customers/view.php:418 templates/Customers/view.php:499
-#: templates/Customers/view.php:564 templates/Customers/view.php:632
-#: templates/Customers/view.php:699 templates/Customers/view.php:774
-#: templates/Customers/view.php:863 templates/Customers/view.php:928
-#: templates/Customers/view.php:983 templates/Customers/view.php:1035
-#: templates/Customers/view.php:1138 templates/DealerCommissions/index.php:55
+#: templates/Customers/view.php:567 templates/Customers/view.php:635
+#: templates/Customers/view.php:702 templates/Customers/view.php:777
+#: templates/Customers/view.php:866 templates/Customers/view.php:931
+#: templates/Customers/view.php:986 templates/Customers/view.php:1038
+#: templates/Customers/view.php:1141 templates/DealerCommissions/index.php:55
 #: templates/Emails/index.php:50 templates/EquipmentTypes/index.php:41
 #: templates/EquipmentTypes/view.php:125 templates/EquipmentTypes/view.php:179
 #: templates/IpNetworks/index.php:52 templates/Ips/index.php:54
@@ -1325,7 +1357,7 @@ msgstr "Mapy.cz"
 #: templates/Phones/index.php:50 templates/Queues/index.php:51
 #: templates/Queues/view.php:135 templates/RemovedIpNetworks/index.php:54
 #: templates/RemovedIps/index.php:56 templates/ServiceTypes/index.php:57
-#: templates/ServiceTypes/view.php:142 templates/ServiceTypes/view.php:230
+#: templates/ServiceTypes/view.php:142 templates/ServiceTypes/view.php:236
 #: templates/Services/index.php:53 templates/Services/view.php:152
 #: templates/SoldEquipments/index.php:64 templates/TaskStates/index.php:39
 #: templates/TaskStates/view.php:142 templates/TaskTypes/index.php:39
@@ -1339,21 +1371,22 @@ msgstr "Zobrazit"
 
 #: templates/Addresses/index.php:94 templates/Billings/index.php:82
 #: templates/BorrowedEquipments/index.php:72 templates/Commissions/index.php:37
-#: templates/Commissions/view.php:105 templates/Commissions/view.php:193
-#: templates/Contracts/index.php:90 templates/Contracts/view.php:331
-#: templates/Contracts/view.php:395 templates/Contracts/view.php:453
-#: templates/Contracts/view.php:546 templates/Contracts/view.php:610
-#: templates/Contracts/view.php:664 templates/Contracts/view.php:715
-#: templates/Contracts/view.php:777 templates/Contracts/view.php:831
+#: templates/Commissions/view.php:105 templates/Commissions/view.php:203
+#: templates/ContractStates/index.php:36 templates/ContractStates/view.php:185
+#: templates/Contracts/index.php:91 templates/Contracts/view.php:338
+#: templates/Contracts/view.php:402 templates/Contracts/view.php:460
+#: templates/Contracts/view.php:553 templates/Contracts/view.php:617
+#: templates/Contracts/view.php:671 templates/Contracts/view.php:722
+#: templates/Contracts/view.php:784 templates/Contracts/view.php:838
 #: templates/Countries/index.php:37 templates/Countries/view.php:146
 #: templates/CustomerLabels/index.php:59 templates/Customers/index.php:74
 #: templates/Customers/view.php:320 templates/Customers/view.php:369
 #: templates/Customers/view.php:422 templates/Customers/view.php:503
-#: templates/Customers/view.php:568 templates/Customers/view.php:636
-#: templates/Customers/view.php:707 templates/Customers/view.php:778
-#: templates/Customers/view.php:867 templates/Customers/view.php:932
-#: templates/Customers/view.php:987 templates/Customers/view.php:1043
-#: templates/Customers/view.php:1142 templates/DealerCommissions/index.php:57
+#: templates/Customers/view.php:571 templates/Customers/view.php:639
+#: templates/Customers/view.php:710 templates/Customers/view.php:781
+#: templates/Customers/view.php:870 templates/Customers/view.php:935
+#: templates/Customers/view.php:990 templates/Customers/view.php:1046
+#: templates/Customers/view.php:1145 templates/DealerCommissions/index.php:57
 #: templates/Emails/index.php:52 templates/EquipmentTypes/index.php:43
 #: templates/EquipmentTypes/view.php:129 templates/EquipmentTypes/view.php:183
 #: templates/IpNetworks/index.php:54 templates/Ips/index.php:56
@@ -1362,7 +1395,7 @@ msgstr "Zobrazit"
 #: templates/Queues/index.php:53 templates/Queues/view.php:139
 #: templates/RemovedIpNetworks/index.php:56 templates/RemovedIps/index.php:58
 #: templates/ServiceTypes/index.php:59 templates/ServiceTypes/view.php:146
-#: templates/ServiceTypes/view.php:234 templates/Services/index.php:55
+#: templates/ServiceTypes/view.php:240 templates/Services/index.php:55
 #: templates/Services/view.php:156 templates/SoldEquipments/index.php:66
 #: templates/TaskStates/index.php:41 templates/TaskStates/view.php:146
 #: templates/TaskTypes/index.php:41 templates/TaskTypes/view.php:146
@@ -1375,85 +1408,90 @@ msgstr "Upravit"
 
 #: templates/Addresses/index.php:111 templates/Billings/index.php:99
 #: templates/BorrowedEquipments/index.php:89 templates/Commissions/index.php:54
-#: templates/Contracts/index.php:107 templates/Countries/index.php:54
-#: templates/CustomerLabels/index.php:76 templates/Customers/index.php:91
-#: templates/DealerCommissions/index.php:74 templates/Emails/index.php:69
-#: templates/EquipmentTypes/index.php:60 templates/IpNetworks/index.php:71
-#: templates/Ips/index.php:73 templates/Labels/index.php:83
-#: templates/Logins/index.php:76 templates/Phones/index.php:69
-#: templates/Queues/index.php:70 templates/RemovedIpNetworks/index.php:73
-#: templates/RemovedIps/index.php:75 templates/ServiceTypes/index.php:76
-#: templates/Services/index.php:72 templates/SoldEquipments/index.php:83
-#: templates/TaskStates/index.php:58 templates/TaskTypes/index.php:58
-#: templates/Tasks/index.php:141 templates/TaxRates/index.php:58
+#: templates/ContractStates/index.php:53 templates/Contracts/index.php:108
+#: templates/Countries/index.php:54 templates/CustomerLabels/index.php:76
+#: templates/Customers/index.php:91 templates/DealerCommissions/index.php:74
+#: templates/Emails/index.php:69 templates/EquipmentTypes/index.php:60
+#: templates/IpNetworks/index.php:71 templates/Ips/index.php:73
+#: templates/Labels/index.php:83 templates/Logins/index.php:76
+#: templates/Phones/index.php:69 templates/Queues/index.php:70
+#: templates/RemovedIpNetworks/index.php:73 templates/RemovedIps/index.php:75
+#: templates/ServiceTypes/index.php:76 templates/Services/index.php:72
+#: templates/SoldEquipments/index.php:83 templates/TaskStates/index.php:58
+#: templates/TaskTypes/index.php:58 templates/Tasks/index.php:141
+#: templates/TaxRates/index.php:58
 #: templates/plugin/CakeDC/Users/Users/index.php:57
 msgid "first"
 msgstr "první"
 
 #: templates/Addresses/index.php:112 templates/Billings/index.php:100
 #: templates/BorrowedEquipments/index.php:90 templates/Commissions/index.php:55
-#: templates/Contracts/index.php:108 templates/Countries/index.php:55
-#: templates/CustomerLabels/index.php:77 templates/Customers/index.php:92
-#: templates/DealerCommissions/index.php:75 templates/Emails/index.php:70
-#: templates/EquipmentTypes/index.php:61 templates/IpNetworks/index.php:72
-#: templates/Ips/index.php:74 templates/Labels/index.php:84
-#: templates/Logins/index.php:77 templates/Phones/index.php:70
-#: templates/Queues/index.php:71 templates/RemovedIpNetworks/index.php:74
-#: templates/RemovedIps/index.php:76 templates/ServiceTypes/index.php:77
-#: templates/Services/index.php:73 templates/SoldEquipments/index.php:84
-#: templates/TaskStates/index.php:59 templates/TaskTypes/index.php:59
-#: templates/Tasks/index.php:142 templates/TaxRates/index.php:59
+#: templates/ContractStates/index.php:54 templates/Contracts/index.php:109
+#: templates/Countries/index.php:55 templates/CustomerLabels/index.php:77
+#: templates/Customers/index.php:92 templates/DealerCommissions/index.php:75
+#: templates/Emails/index.php:70 templates/EquipmentTypes/index.php:61
+#: templates/IpNetworks/index.php:72 templates/Ips/index.php:74
+#: templates/Labels/index.php:84 templates/Logins/index.php:77
+#: templates/Phones/index.php:70 templates/Queues/index.php:71
+#: templates/RemovedIpNetworks/index.php:74 templates/RemovedIps/index.php:76
+#: templates/ServiceTypes/index.php:77 templates/Services/index.php:73
+#: templates/SoldEquipments/index.php:84 templates/TaskStates/index.php:59
+#: templates/TaskTypes/index.php:59 templates/Tasks/index.php:142
+#: templates/TaxRates/index.php:59
 #: templates/plugin/CakeDC/Users/Users/index.php:58
 msgid "previous"
 msgstr "předchozí"
 
 #: templates/Addresses/index.php:114 templates/Billings/index.php:102
 #: templates/BorrowedEquipments/index.php:92 templates/Commissions/index.php:57
-#: templates/Contracts/index.php:110 templates/Countries/index.php:57
-#: templates/CustomerLabels/index.php:79 templates/Customers/index.php:94
-#: templates/DealerCommissions/index.php:77 templates/Emails/index.php:72
-#: templates/EquipmentTypes/index.php:63 templates/IpNetworks/index.php:74
-#: templates/Ips/index.php:76 templates/Labels/index.php:86
-#: templates/Logins/index.php:79 templates/Phones/index.php:72
-#: templates/Queues/index.php:73 templates/RemovedIpNetworks/index.php:76
-#: templates/RemovedIps/index.php:78 templates/ServiceTypes/index.php:79
-#: templates/Services/index.php:75 templates/SoldEquipments/index.php:86
-#: templates/TaskStates/index.php:61 templates/TaskTypes/index.php:61
-#: templates/Tasks/index.php:144 templates/TaxRates/index.php:61
+#: templates/ContractStates/index.php:56 templates/Contracts/index.php:111
+#: templates/Countries/index.php:57 templates/CustomerLabels/index.php:79
+#: templates/Customers/index.php:94 templates/DealerCommissions/index.php:77
+#: templates/Emails/index.php:72 templates/EquipmentTypes/index.php:63
+#: templates/IpNetworks/index.php:74 templates/Ips/index.php:76
+#: templates/Labels/index.php:86 templates/Logins/index.php:79
+#: templates/Phones/index.php:72 templates/Queues/index.php:73
+#: templates/RemovedIpNetworks/index.php:76 templates/RemovedIps/index.php:78
+#: templates/ServiceTypes/index.php:79 templates/Services/index.php:75
+#: templates/SoldEquipments/index.php:86 templates/TaskStates/index.php:61
+#: templates/TaskTypes/index.php:61 templates/Tasks/index.php:144
+#: templates/TaxRates/index.php:61
 #: templates/plugin/CakeDC/Users/Users/index.php:60
 msgid "next"
 msgstr "další"
 
 #: templates/Addresses/index.php:115 templates/Billings/index.php:103
 #: templates/BorrowedEquipments/index.php:93 templates/Commissions/index.php:58
-#: templates/Contracts/index.php:111 templates/Countries/index.php:58
-#: templates/CustomerLabels/index.php:80 templates/Customers/index.php:95
-#: templates/DealerCommissions/index.php:78 templates/Emails/index.php:73
-#: templates/EquipmentTypes/index.php:64 templates/IpNetworks/index.php:75
-#: templates/Ips/index.php:77 templates/Labels/index.php:87
-#: templates/Logins/index.php:80 templates/Phones/index.php:73
-#: templates/Queues/index.php:74 templates/RemovedIpNetworks/index.php:77
-#: templates/RemovedIps/index.php:79 templates/ServiceTypes/index.php:80
-#: templates/Services/index.php:76 templates/SoldEquipments/index.php:87
-#: templates/TaskStates/index.php:62 templates/TaskTypes/index.php:62
-#: templates/Tasks/index.php:145 templates/TaxRates/index.php:62
+#: templates/ContractStates/index.php:57 templates/Contracts/index.php:112
+#: templates/Countries/index.php:58 templates/CustomerLabels/index.php:80
+#: templates/Customers/index.php:95 templates/DealerCommissions/index.php:78
+#: templates/Emails/index.php:73 templates/EquipmentTypes/index.php:64
+#: templates/IpNetworks/index.php:75 templates/Ips/index.php:77
+#: templates/Labels/index.php:87 templates/Logins/index.php:80
+#: templates/Phones/index.php:73 templates/Queues/index.php:74
+#: templates/RemovedIpNetworks/index.php:77 templates/RemovedIps/index.php:79
+#: templates/ServiceTypes/index.php:80 templates/Services/index.php:76
+#: templates/SoldEquipments/index.php:87 templates/TaskStates/index.php:62
+#: templates/TaskTypes/index.php:62 templates/Tasks/index.php:145
+#: templates/TaxRates/index.php:62
 #: templates/plugin/CakeDC/Users/Users/index.php:61
 msgid "last"
 msgstr "poslední"
 
 #: templates/Addresses/index.php:118 templates/Billings/index.php:106
 #: templates/BorrowedEquipments/index.php:96 templates/Commissions/index.php:61
-#: templates/Contracts/index.php:114 templates/Countries/index.php:61
-#: templates/CustomerLabels/index.php:83 templates/Customers/index.php:98
-#: templates/DealerCommissions/index.php:81 templates/Emails/index.php:76
-#: templates/EquipmentTypes/index.php:67 templates/IpNetworks/index.php:78
-#: templates/Ips/index.php:80 templates/Labels/index.php:90
-#: templates/Logins/index.php:83 templates/Phones/index.php:76
-#: templates/Queues/index.php:77 templates/RemovedIpNetworks/index.php:80
-#: templates/RemovedIps/index.php:82 templates/ServiceTypes/index.php:83
-#: templates/Services/index.php:79 templates/SoldEquipments/index.php:90
-#: templates/TaskStates/index.php:65 templates/TaskTypes/index.php:65
-#: templates/Tasks/index.php:148 templates/TaxRates/index.php:65
+#: templates/ContractStates/index.php:60 templates/Contracts/index.php:115
+#: templates/Countries/index.php:61 templates/CustomerLabels/index.php:83
+#: templates/Customers/index.php:98 templates/DealerCommissions/index.php:81
+#: templates/Emails/index.php:76 templates/EquipmentTypes/index.php:67
+#: templates/IpNetworks/index.php:78 templates/Ips/index.php:80
+#: templates/Labels/index.php:90 templates/Logins/index.php:83
+#: templates/Phones/index.php:76 templates/Queues/index.php:77
+#: templates/RemovedIpNetworks/index.php:80 templates/RemovedIps/index.php:82
+#: templates/ServiceTypes/index.php:83 templates/Services/index.php:79
+#: templates/SoldEquipments/index.php:90 templates/TaskStates/index.php:65
+#: templates/TaskTypes/index.php:65 templates/Tasks/index.php:148
+#: templates/TaxRates/index.php:65
 #: templates/plugin/CakeDC/Users/Users/index.php:63
 msgid ""
 "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} "
@@ -1468,12 +1506,13 @@ msgstr "Odstranit adresu"
 
 #: templates/Addresses/view.php:34 templates/Billings/view.php:35
 #: templates/BorrowedEquipments/view.php:43 templates/Commissions/view.php:127
-#: templates/Contracts/print.php:40 templates/Contracts/view.php:109
-#: templates/Countries/view.php:85 templates/CustomerLabels/view.php:43
-#: templates/Customers/view.php:64 templates/Emails/view.php:32
-#: templates/EquipmentTypes/view.php:99 templates/EquipmentTypes/view.php:155
-#: templates/IpNetworks/view.php:41 templates/Ips/view.php:29
-#: templates/Labels/view.php:112 templates/Logins/view.php:33
+#: templates/ContractStates/view.php:113 templates/Contracts/print.php:40
+#: templates/Contracts/view.php:109 templates/Countries/view.php:85
+#: templates/CustomerLabels/view.php:43 templates/Customers/view.php:64
+#: templates/Emails/view.php:32 templates/EquipmentTypes/view.php:99
+#: templates/EquipmentTypes/view.php:155 templates/IpNetworks/view.php:41
+#: templates/Ips/view.php:29 templates/Labels/view.php:112
+#: templates/Logins/view.php:33
 #: templates/Overviews/overview_of_dealer_commissions.php:54
 #: templates/Phones/view.php:32 templates/RemovedIpNetworks/view.php:44
 #: templates/RemovedIps/view.php:33 templates/ServiceTypes/view.php:168
@@ -1526,10 +1565,11 @@ msgid "Street"
 msgstr "Ulice"
 
 #: templates/Addresses/view.php:77 templates/Commissions/view.php:129
-#: templates/Contracts/print.php:58 templates/Contracts/view.php:127
-#: templates/Countries/view.php:94 templates/Customers/index.php:32
-#: templates/Customers/view.php:456 templates/Customers/view.php:530
-#: templates/ServiceTypes/view.php:170 templates/TaxRates/view.php:92
+#: templates/ContractStates/view.php:115 templates/Contracts/print.php:65
+#: templates/Contracts/view.php:134 templates/Countries/view.php:94
+#: templates/Customers/index.php:32 templates/Customers/view.php:456
+#: templates/Customers/view.php:530 templates/ServiceTypes/view.php:170
+#: templates/TaxRates/view.php:92
 msgid "Number"
 msgstr "Číslo"
 
@@ -1565,37 +1605,38 @@ msgstr "GPS X"
 
 #: templates/Addresses/view.php:149 templates/Billings/view.php:111
 #: templates/BorrowedEquipments/view.php:88 templates/Commissions/view.php:40
-#: templates/Contracts/print.php:147 templates/Contracts/view.php:216
-#: templates/Countries/view.php:41 templates/CustomerLabels/view.php:65
-#: templates/Customers/print.php:134 templates/Customers/view.php:230
-#: templates/DealerCommissions/view.php:69 templates/Emails/view.php:63
-#: templates/EquipmentTypes/view.php:55 templates/IpNetworks/view.php:94
-#: templates/Ips/view.php:95 templates/Labels/view.php:64
-#: templates/Logins/view.php:78 templates/Phones/view.php:63
-#: templates/Queues/view.php:72 templates/RemovedIpNetworks/view.php:97
-#: templates/RemovedIps/view.php:84 templates/ServiceTypes/view.php:79
-#: templates/Services/view.php:65 templates/SoldEquipments/view.php:80
-#: templates/TaskStates/view.php:49 templates/TaskTypes/view.php:49
-#: templates/Tasks/view.php:117 templates/TaxRates/view.php:48
+#: templates/ContractStates/view.php:69 templates/Contracts/print.php:154
+#: templates/Contracts/view.php:223 templates/Countries/view.php:41
+#: templates/CustomerLabels/view.php:65 templates/Customers/print.php:134
+#: templates/Customers/view.php:230 templates/DealerCommissions/view.php:69
+#: templates/Emails/view.php:63 templates/EquipmentTypes/view.php:55
+#: templates/IpNetworks/view.php:94 templates/Ips/view.php:95
+#: templates/Labels/view.php:64 templates/Logins/view.php:78
+#: templates/Phones/view.php:63 templates/Queues/view.php:72
+#: templates/RemovedIpNetworks/view.php:97 templates/RemovedIps/view.php:84
+#: templates/ServiceTypes/view.php:79 templates/Services/view.php:65
+#: templates/SoldEquipments/view.php:80 templates/TaskStates/view.php:49
+#: templates/TaskTypes/view.php:49 templates/Tasks/view.php:117
+#: templates/TaxRates/view.php:48
 #: templates/email/html/task_notification.php:118
 msgid "Id"
 msgstr "ID"
 
 #: templates/Addresses/view.php:153 templates/Billings/view.php:115
 #: templates/BorrowedEquipments/view.php:92 templates/Commissions/view.php:44
-#: templates/Contracts/print.php:151 templates/Contracts/view.php:220
-#: templates/Countries/view.php:45 templates/CustomerLabels/view.php:69
-#: templates/Customers/print.php:138 templates/Customers/view.php:234
-#: templates/DealerCommissions/view.php:73 templates/Emails/view.php:67
-#: templates/EquipmentTypes/view.php:59 templates/IpNetworks/view.php:98
-#: templates/Ips/view.php:99 templates/Labels/view.php:68
-#: templates/Labels/view.php:115 templates/Logins/view.php:82
-#: templates/Phones/view.php:67 templates/Queues/view.php:76
-#: templates/RemovedIpNetworks/view.php:101 templates/RemovedIps/view.php:88
-#: templates/ServiceTypes/view.php:83 templates/Services/view.php:69
-#: templates/SoldEquipments/view.php:84 templates/TaskStates/view.php:53
-#: templates/TaskTypes/view.php:53 templates/Tasks/view.php:121
-#: templates/TaxRates/view.php:52
+#: templates/ContractStates/view.php:73 templates/Contracts/print.php:158
+#: templates/Contracts/view.php:227 templates/Countries/view.php:45
+#: templates/CustomerLabels/view.php:69 templates/Customers/print.php:138
+#: templates/Customers/view.php:234 templates/DealerCommissions/view.php:73
+#: templates/Emails/view.php:67 templates/EquipmentTypes/view.php:59
+#: templates/IpNetworks/view.php:98 templates/Ips/view.php:99
+#: templates/Labels/view.php:68 templates/Labels/view.php:115
+#: templates/Logins/view.php:82 templates/Phones/view.php:67
+#: templates/Queues/view.php:76 templates/RemovedIpNetworks/view.php:101
+#: templates/RemovedIps/view.php:88 templates/ServiceTypes/view.php:83
+#: templates/Services/view.php:69 templates/SoldEquipments/view.php:84
+#: templates/TaskStates/view.php:53 templates/TaskTypes/view.php:53
+#: templates/Tasks/view.php:121 templates/TaxRates/view.php:52
 #: templates/email/html/task_notification.php:122
 #: templates/plugin/CakeDC/Users/Users/view.php:98
 #: templates/plugin/CakeDC/Users/Users/view.php:125
@@ -1604,36 +1645,38 @@ msgstr "Vytvořeno"
 
 #: templates/Addresses/view.php:157 templates/Billings/view.php:119
 #: templates/BorrowedEquipments/view.php:96 templates/Commissions/view.php:48
-#: templates/Contracts/print.php:155 templates/Contracts/view.php:224
-#: templates/Countries/view.php:49 templates/CustomerLabels/view.php:73
-#: templates/Customers/print.php:142 templates/Customers/view.php:238
-#: templates/DealerCommissions/view.php:77 templates/Emails/view.php:71
-#: templates/EquipmentTypes/view.php:63 templates/IpNetworks/view.php:102
-#: templates/Ips/view.php:103 templates/Labels/view.php:72
-#: templates/Logins/view.php:86 templates/Phones/view.php:71
-#: templates/Queues/view.php:80 templates/RemovedIpNetworks/view.php:105
-#: templates/RemovedIps/view.php:92 templates/ServiceTypes/view.php:87
-#: templates/Services/view.php:73 templates/SoldEquipments/view.php:88
-#: templates/TaskStates/view.php:57 templates/TaskTypes/view.php:57
-#: templates/Tasks/view.php:125 templates/TaxRates/view.php:56
+#: templates/ContractStates/view.php:77 templates/Contracts/print.php:162
+#: templates/Contracts/view.php:231 templates/Countries/view.php:49
+#: templates/CustomerLabels/view.php:73 templates/Customers/print.php:142
+#: templates/Customers/view.php:238 templates/DealerCommissions/view.php:77
+#: templates/Emails/view.php:71 templates/EquipmentTypes/view.php:63
+#: templates/IpNetworks/view.php:102 templates/Ips/view.php:103
+#: templates/Labels/view.php:72 templates/Logins/view.php:86
+#: templates/Phones/view.php:71 templates/Queues/view.php:80
+#: templates/RemovedIpNetworks/view.php:105 templates/RemovedIps/view.php:92
+#: templates/ServiceTypes/view.php:87 templates/Services/view.php:73
+#: templates/SoldEquipments/view.php:88 templates/TaskStates/view.php:57
+#: templates/TaskTypes/view.php:57 templates/Tasks/view.php:125
+#: templates/TaxRates/view.php:56
 #: templates/email/html/task_notification.php:126
 msgid "Created By"
 msgstr "Vytvořil"
 
 #: templates/Addresses/view.php:169 templates/Billings/view.php:131
 #: templates/BorrowedEquipments/view.php:108 templates/Commissions/view.php:60
-#: templates/Contracts/print.php:167 templates/Contracts/view.php:236
-#: templates/Countries/view.php:61 templates/CustomerLabels/view.php:85
-#: templates/Customers/print.php:154 templates/Customers/view.php:250
-#: templates/DealerCommissions/view.php:89 templates/Emails/view.php:83
-#: templates/EquipmentTypes/view.php:75 templates/IpNetworks/view.php:114
-#: templates/Ips/view.php:115 templates/Labels/view.php:84
-#: templates/Logins/view.php:98 templates/Phones/view.php:83
-#: templates/Queues/view.php:92 templates/RemovedIpNetworks/view.php:117
-#: templates/RemovedIps/view.php:104 templates/ServiceTypes/view.php:99
-#: templates/Services/view.php:85 templates/SoldEquipments/view.php:100
-#: templates/TaskStates/view.php:69 templates/TaskTypes/view.php:69
-#: templates/Tasks/view.php:137 templates/TaxRates/view.php:68
+#: templates/ContractStates/view.php:89 templates/Contracts/print.php:174
+#: templates/Contracts/view.php:243 templates/Countries/view.php:61
+#: templates/CustomerLabels/view.php:85 templates/Customers/print.php:154
+#: templates/Customers/view.php:250 templates/DealerCommissions/view.php:89
+#: templates/Emails/view.php:83 templates/EquipmentTypes/view.php:75
+#: templates/IpNetworks/view.php:114 templates/Ips/view.php:115
+#: templates/Labels/view.php:84 templates/Logins/view.php:98
+#: templates/Phones/view.php:83 templates/Queues/view.php:92
+#: templates/RemovedIpNetworks/view.php:117 templates/RemovedIps/view.php:104
+#: templates/ServiceTypes/view.php:99 templates/Services/view.php:85
+#: templates/SoldEquipments/view.php:100 templates/TaskStates/view.php:69
+#: templates/TaskTypes/view.php:69 templates/Tasks/view.php:137
+#: templates/TaxRates/view.php:68
 #: templates/email/html/task_notification.php:130
 #: templates/plugin/CakeDC/Users/Users/view.php:102
 #: templates/plugin/CakeDC/Users/Users/view.php:126
@@ -1642,31 +1685,32 @@ msgstr "Upraveno"
 
 #: templates/Addresses/view.php:173 templates/Billings/view.php:135
 #: templates/BorrowedEquipments/view.php:112 templates/Commissions/view.php:64
-#: templates/Contracts/print.php:171 templates/Contracts/view.php:240
-#: templates/Countries/view.php:65 templates/CustomerLabels/view.php:89
-#: templates/Customers/print.php:158 templates/Customers/view.php:254
-#: templates/DealerCommissions/view.php:93 templates/Emails/view.php:87
-#: templates/EquipmentTypes/view.php:79 templates/IpNetworks/view.php:118
-#: templates/Ips/view.php:119 templates/Labels/view.php:88
-#: templates/Logins/view.php:102 templates/Phones/view.php:87
-#: templates/Queues/view.php:96 templates/RemovedIpNetworks/view.php:121
-#: templates/RemovedIps/view.php:108 templates/ServiceTypes/view.php:103
-#: templates/Services/view.php:89 templates/SoldEquipments/view.php:104
-#: templates/TaskStates/view.php:73 templates/TaskTypes/view.php:73
-#: templates/Tasks/view.php:141 templates/TaxRates/view.php:72
+#: templates/ContractStates/view.php:93 templates/Contracts/print.php:178
+#: templates/Contracts/view.php:247 templates/Countries/view.php:65
+#: templates/CustomerLabels/view.php:89 templates/Customers/print.php:158
+#: templates/Customers/view.php:254 templates/DealerCommissions/view.php:93
+#: templates/Emails/view.php:87 templates/EquipmentTypes/view.php:79
+#: templates/IpNetworks/view.php:118 templates/Ips/view.php:119
+#: templates/Labels/view.php:88 templates/Logins/view.php:102
+#: templates/Phones/view.php:87 templates/Queues/view.php:96
+#: templates/RemovedIpNetworks/view.php:121 templates/RemovedIps/view.php:108
+#: templates/ServiceTypes/view.php:103 templates/Services/view.php:89
+#: templates/SoldEquipments/view.php:104 templates/TaskStates/view.php:73
+#: templates/TaskTypes/view.php:73 templates/Tasks/view.php:141
+#: templates/TaxRates/view.php:72
 #: templates/email/html/task_notification.php:134
 msgid "Modified By"
 msgstr "Upravil"
 
 #: templates/Addresses/view.php:188 templates/Billings/view.php:150
-#: templates/Contracts/view.php:265 templates/Contracts/view.php:307
-#: templates/Contracts/view.php:500 templates/Contracts/view.php:577
-#: templates/Contracts/view.php:648 templates/Contracts/view.php:695
+#: templates/Contracts/view.php:272 templates/Contracts/view.php:314
+#: templates/Contracts/view.php:507 templates/Contracts/view.php:584
+#: templates/Contracts/view.php:655 templates/Contracts/view.php:702
 #: templates/CustomerLabels/view.php:104 templates/Customers/view.php:272
 #: templates/Customers/view.php:304 templates/Customers/view.php:353
-#: templates/Customers/view.php:541 templates/Customers/view.php:603
-#: templates/Customers/view.php:816 templates/Customers/view.php:894
-#: templates/Customers/view.php:966 templates/Customers/view.php:1014
+#: templates/Customers/view.php:542 templates/Customers/view.php:606
+#: templates/Customers/view.php:819 templates/Customers/view.php:897
+#: templates/Customers/view.php:969 templates/Customers/view.php:1017
 #: templates/Emails/view.php:102 templates/IpNetworks/view.php:133
 #: templates/Ips/view.php:134 templates/Labels/view.php:114
 #: templates/Phones/view.php:102 templates/RemovedIpNetworks/view.php:151
@@ -1688,12 +1732,12 @@ msgid "Edit Billing"
 msgstr "Upravit fakturaci"
 
 #: templates/Billings/index.php:21 templates/Billings/view.php:25
-#: templates/Contracts/view.php:274
+#: templates/Contracts/view.php:281
 msgid "New Billing"
 msgstr "Nová fakturace"
 
 #: templates/Billings/index.php:22 templates/Contracts/view.php:66
-#: templates/Contracts/view.php:291 templates/Customers/view.php:84
+#: templates/Contracts/view.php:298 templates/Customers/view.php:84
 msgid "Billings"
 msgstr "Fakturace"
 
@@ -1702,11 +1746,11 @@ msgid "Delete Billing"
 msgstr "Odstranit fakturaci"
 
 #: templates/Billings/view.php:46 templates/BorrowedEquipments/view.php:54
-#: templates/Contracts/view.php:61 templates/Contracts/view.php:803
-#: templates/Customers/view.php:591 templates/Customers/view.php:667
-#: templates/Customers/view.php:744 templates/Customers/view.php:813
-#: templates/Customers/view.php:891 templates/Customers/view.php:963
-#: templates/Customers/view.php:1011 templates/Customers/view.php:1114
+#: templates/Contracts/view.php:61 templates/Contracts/view.php:810
+#: templates/Customers/view.php:594 templates/Customers/view.php:670
+#: templates/Customers/view.php:747 templates/Customers/view.php:816
+#: templates/Customers/view.php:894 templates/Customers/view.php:966
+#: templates/Customers/view.php:1014 templates/Customers/view.php:1117
 #: templates/EquipmentTypes/view.php:101 templates/EquipmentTypes/view.php:157
 #: templates/IpNetworks/view.php:53 templates/Ips/view.php:40
 #: templates/Overviews/overview_of_dealer_commissions.php:56
@@ -1716,57 +1760,58 @@ msgstr "Odstranit fakturaci"
 msgid "Contract"
 msgstr "Smlouva"
 
-#: templates/Billings/view.php:53 templates/Contracts/view.php:296
-#: templates/Customers/view.php:592
+#: templates/Billings/view.php:53 templates/Contracts/view.php:303
+#: templates/Customers/view.php:595
 msgid "Service"
 msgstr "Služba"
 
-#: templates/Billings/view.php:60 templates/Contracts/view.php:297
-#: templates/Contracts/view.php:760 templates/Contracts/view.php:802
-#: templates/Customers/view.php:593 templates/Customers/view.php:1113
+#: templates/Billings/view.php:60 templates/Contracts/view.php:304
+#: templates/Contracts/view.php:767 templates/Contracts/view.php:809
+#: templates/Customers/view.php:596 templates/Customers/view.php:1116
 #: templates/Services/view.php:112 templates/TaskStates/view.php:97
 #: templates/TaskTypes/view.php:97 templates/Tasks/view.php:160
 #: templates/email/html/task_notification.php:150
 msgid "Text"
 msgstr "Text"
 
-#: templates/Billings/view.php:66 templates/Contracts/view.php:303
-#: templates/Customers/view.php:599
+#: templates/Billings/view.php:66 templates/Contracts/view.php:310
+#: templates/Customers/view.php:602
 #: templates/Overviews/overview_of_dealer_commissions.php:63
 #: templates/Services/view.php:118
 msgid "Billing From"
 msgstr "Fakturovat od"
 
-#: templates/Billings/view.php:70 templates/Contracts/view.php:304
-#: templates/Customers/view.php:600
+#: templates/Billings/view.php:70 templates/Contracts/view.php:311
+#: templates/Customers/view.php:603
 #: templates/Overviews/overview_of_dealer_commissions.php:64
 #: templates/Services/view.php:119
 msgid "Billing Until"
 msgstr "Fakturovat do"
 
-#: templates/Billings/view.php:76 templates/Contracts/view.php:305
-#: templates/Customers/view.php:601 templates/Services/view.php:120
+#: templates/Billings/view.php:76 templates/ContractStates/view.php:53
+#: templates/Contracts/view.php:312 templates/Customers/view.php:604
+#: templates/Services/view.php:120
 #: templates/plugin/CakeDC/Users/Users/view.php:54
 #: templates/plugin/CakeDC/Users/Users/view.php:116
 msgid "Active"
 msgstr "Aktivní"
 
-#: templates/Billings/view.php:80 templates/Contracts/view.php:306
-#: templates/Customers/view.php:602 templates/ServiceTypes/view.php:55
+#: templates/Billings/view.php:80 templates/Contracts/view.php:313
+#: templates/Customers/view.php:605 templates/ServiceTypes/view.php:55
 #: templates/Services/view.php:121
 msgid "Separate Invoice"
 msgstr "Samostatná faktura"
 
-#: templates/Billings/view.php:88 templates/Contracts/view.php:298
-#: templates/Customers/view.php:594
+#: templates/Billings/view.php:88 templates/Contracts/view.php:305
+#: templates/Customers/view.php:597
 #: templates/Overviews/overview_of_dealer_commissions.php:58
 #: templates/Services/view.php:113
 msgid "Quantity"
 msgstr "Počet"
 
 #: templates/Billings/view.php:92 templates/Billings/view.php:172
-#: templates/Billings/view.php:209 templates/Contracts/view.php:299
-#: templates/Customers/view.php:595 templates/EquipmentTypes/view.php:47
+#: templates/Billings/view.php:209 templates/Contracts/view.php:306
+#: templates/Customers/view.php:598 templates/EquipmentTypes/view.php:47
 #: templates/Overviews/overview_of_active_services.php:51
 #: templates/Overviews/overview_of_dealer_commissions.php:59
 #: templates/Queues/view.php:117 templates/ServiceTypes/view.php:124
@@ -1774,22 +1819,22 @@ msgstr "Počet"
 msgid "Price"
 msgstr "Cena"
 
-#: templates/Billings/view.php:97 templates/Contracts/view.php:300
-#: templates/Customers/view.php:596
+#: templates/Billings/view.php:97 templates/Contracts/view.php:307
+#: templates/Customers/view.php:599
 #: templates/Overviews/overview_of_dealer_commissions.php:60
 #: templates/Services/view.php:115
 msgid "Fixed Discount"
 msgstr "Pevná sleva"
 
-#: templates/Billings/view.php:101 templates/Contracts/view.php:301
-#: templates/Customers/view.php:597
+#: templates/Billings/view.php:101 templates/Contracts/view.php:308
+#: templates/Customers/view.php:600
 #: templates/Overviews/overview_of_dealer_commissions.php:61
 #: templates/Services/view.php:116
 msgid "Percentage Discount"
 msgstr "Procentuální sleva"
 
-#: templates/Billings/view.php:105 templates/Contracts/view.php:302
-#: templates/Customers/view.php:598
+#: templates/Billings/view.php:105 templates/Contracts/view.php:309
+#: templates/Customers/view.php:601
 #: templates/Overviews/overview_of_dealer_commissions.php:49
 #: templates/Overviews/overview_of_dealer_commissions.php:62
 #: templates/Services/view.php:117
@@ -1832,11 +1877,11 @@ msgid "Edit Borrowed Equipment"
 msgstr "Upravit zapůjčené zařízení"
 
 #: templates/BorrowedEquipments/index.php:21
-#: templates/BorrowedEquipments/view.php:30 templates/Contracts/view.php:364
+#: templates/BorrowedEquipments/view.php:30 templates/Contracts/view.php:371
 msgid "New Borrowed Equipment"
 msgstr "Nové zapůjčené zařízení"
 
-#: templates/BorrowedEquipments/index.php:25 templates/Contracts/view.php:368
+#: templates/BorrowedEquipments/index.php:25 templates/Contracts/view.php:375
 msgid "Borrowed Equipments"
 msgstr "Zapůjčená zařízení"
 
@@ -1844,31 +1889,31 @@ msgstr "Zapůjčená zařízení"
 msgid "Delete Borrowed Equipment"
 msgstr "Odstranit zapůjčené zařízení"
 
-#: templates/BorrowedEquipments/view.php:61 templates/Contracts/view.php:373
-#: templates/Contracts/view.php:437 templates/Customers/view.php:668
-#: templates/Customers/view.php:745 templates/SoldEquipments/view.php:61
+#: templates/BorrowedEquipments/view.php:61 templates/Contracts/view.php:380
+#: templates/Contracts/view.php:444 templates/Customers/view.php:671
+#: templates/Customers/view.php:748 templates/SoldEquipments/view.php:61
 msgid "Equipment Type"
 msgstr "Typ zařízení"
 
-#: templates/BorrowedEquipments/view.php:72 templates/Contracts/view.php:374
-#: templates/Contracts/view.php:438 templates/Customers/view.php:669
-#: templates/Customers/view.php:746 templates/EquipmentTypes/view.php:102
+#: templates/BorrowedEquipments/view.php:72 templates/Contracts/view.php:381
+#: templates/Contracts/view.php:445 templates/Customers/view.php:672
+#: templates/Customers/view.php:749 templates/EquipmentTypes/view.php:102
 #: templates/EquipmentTypes/view.php:158 templates/SoldEquipments/view.php:68
 msgid "Serial Number"
 msgstr "Sériové číslo"
 
-#: templates/BorrowedEquipments/view.php:76 templates/Contracts/view.php:375
-#: templates/Customers/view.php:670 templates/EquipmentTypes/view.php:103
+#: templates/BorrowedEquipments/view.php:76 templates/Contracts/view.php:382
+#: templates/Customers/view.php:673 templates/EquipmentTypes/view.php:103
 msgid "Borrowed From"
 msgstr "Zapůjčené od"
 
-#: templates/BorrowedEquipments/view.php:80 templates/Contracts/view.php:376
-#: templates/Customers/view.php:671 templates/EquipmentTypes/view.php:104
+#: templates/BorrowedEquipments/view.php:80 templates/Contracts/view.php:383
+#: templates/Customers/view.php:674 templates/EquipmentTypes/view.php:104
 msgid "Borrowed Until"
 msgstr "Zapůjčené do"
 
 #: templates/Commissions/add.php:11 templates/Commissions/edit.php:16
-#: templates/Commissions/view.php:21 templates/Settings/index.php:97
+#: templates/Commissions/view.php:21 templates/Settings/index.php:108
 msgid "List Commissions"
 msgstr "Seznam provizí"
 
@@ -1892,8 +1937,9 @@ msgstr "Provize"
 msgid "Delete Commission"
 msgstr "Smazat provizi"
 
-#: templates/Commissions/view.php:32 templates/Countries/view.php:33
-#: templates/EquipmentTypes/view.php:43 templates/Labels/view.php:40
+#: templates/Commissions/view.php:32 templates/ContractStates/view.php:43
+#: templates/Countries/view.php:33 templates/EquipmentTypes/view.php:43
+#: templates/Labels/view.php:40
 #: templates/Overviews/overview_of_active_services.php:50
 #: templates/Overviews/overview_of_dealer_commissions.php:57
 #: templates/Queues/view.php:32 templates/Queues/view.php:116
@@ -1907,9 +1953,9 @@ msgstr "Jméno"
 msgid "Related Dealer Commissions"
 msgstr "Související provize dealerů"
 
-#: templates/Commissions/view.php:84 templates/Contracts/view.php:761
-#: templates/Contracts/view.php:804 templates/Customers/print.php:106
-#: templates/Customers/view.php:202 templates/Customers/view.php:1115
+#: templates/Commissions/view.php:84 templates/Contracts/view.php:768
+#: templates/Contracts/view.php:811 templates/Customers/print.php:106
+#: templates/Customers/view.php:202 templates/Customers/view.php:1118
 #: templates/DealerCommissions/view.php:43 templates/TaskStates/view.php:95
 #: templates/TaskTypes/view.php:95 templates/Tasks/view.php:47
 #: templates/email/html/task_notification.php:57
@@ -1926,75 +1972,129 @@ msgstr "Pevná"
 msgid "Percentage"
 msgstr "Procentuální"
 
-#: templates/Commissions/view.php:122 templates/ServiceTypes/view.php:163
+#: templates/Commissions/view.php:122 templates/ContractStates/view.php:108
+#: templates/ServiceTypes/view.php:163
 msgid "Related Contracts"
 msgstr "Související smlouvy"
 
 #: templates/Commissions/view.php:130 templates/Contracts/print.php:51
 #: templates/Contracts/view.php:120 templates/Customers/view.php:531
+#: templates/ServiceTypes/view.php:171
+msgid "Contract State"
+msgstr "Stav smlouvy"
+
+#: templates/Commissions/view.php:131 templates/ContractStates/view.php:116
+#: templates/Contracts/print.php:58 templates/Contracts/view.php:127
+#: templates/Customers/view.php:532
 #: templates/Overviews/overview_of_active_services.php:52
 #: templates/Queues/view.php:118 templates/Services/view.php:39
 msgid "Service Type"
 msgstr "Typ služby"
 
-#: templates/Commissions/view.php:132 templates/Contracts/print.php:120
-#: templates/Contracts/view.php:189 templates/Customers/view.php:533
-#: templates/ServiceTypes/view.php:172
+#: templates/Commissions/view.php:133 templates/ContractStates/view.php:118
+#: templates/Contracts/print.php:127 templates/Contracts/view.php:196
+#: templates/Customers/view.php:534 templates/ServiceTypes/view.php:173
 msgid "Conclusion Date"
 msgstr "Datum uzavření"
 
-#: templates/Commissions/view.php:133 templates/Contracts/print.php:124
-#: templates/Contracts/view.php:193 templates/Customers/view.php:534
-#: templates/ServiceTypes/view.php:173
+#: templates/Commissions/view.php:134 templates/ContractStates/view.php:119
+#: templates/Contracts/print.php:131 templates/Contracts/view.php:200
+#: templates/Customers/view.php:535 templates/ServiceTypes/view.php:174
 msgid "Number Of Amendments"
 msgstr "Počet dodatků"
 
-#: templates/Commissions/view.php:134 templates/Contracts/print.php:128
-#: templates/Contracts/view.php:197 templates/Customers/view.php:535
-#: templates/ServiceTypes/view.php:174
+#: templates/Commissions/view.php:135 templates/ContractStates/view.php:120
+#: templates/Contracts/print.php:135 templates/Contracts/view.php:204
+#: templates/Customers/view.php:536 templates/ServiceTypes/view.php:175
 msgid "Valid From"
 msgstr "Platnost od"
 
-#: templates/Commissions/view.php:135 templates/Contracts/print.php:132
-#: templates/Contracts/view.php:201 templates/Customers/view.php:536
-#: templates/ServiceTypes/view.php:175
+#: templates/Commissions/view.php:136 templates/ContractStates/view.php:121
+#: templates/Contracts/print.php:139 templates/Contracts/view.php:208
+#: templates/Customers/view.php:537 templates/ServiceTypes/view.php:176
 msgid "Valid Until"
 msgstr "Platnost do"
 
-#: templates/Commissions/view.php:136 templates/Contracts/print.php:136
-#: templates/Contracts/view.php:205 templates/Customers/view.php:537
-#: templates/ServiceTypes/view.php:176
+#: templates/Commissions/view.php:137 templates/ContractStates/view.php:122
+#: templates/Contracts/print.php:143 templates/Contracts/view.php:212
+#: templates/Customers/view.php:538 templates/ServiceTypes/view.php:177
 msgid "Obligation Until"
 msgstr "Závazek do"
 
-#: templates/Commissions/view.php:137 templates/Contracts/print.php:99
-#: templates/Contracts/view.php:168 templates/Customers/view.php:538
-#: templates/ServiceTypes/view.php:177
+#: templates/Commissions/view.php:138 templates/ContractStates/view.php:123
+#: templates/Contracts/print.php:106 templates/Contracts/view.php:175
+#: templates/Customers/view.php:539 templates/ServiceTypes/view.php:178
 msgid "Vip"
 msgstr "VIP"
 
-#: templates/Commissions/view.php:138 templates/Contracts/pdf/print.php:317
-#: templates/Contracts/print.php:73 templates/Contracts/view.php:142
-#: templates/Contracts/view.php:526 templates/Contracts/view.php:590
-#: templates/Customers/view.php:539 templates/Customers/view.php:847
-#: templates/Customers/view.php:912 templates/IpNetworks/view.php:74
-#: templates/Ips/view.php:75 templates/RemovedIpNetworks/view.php:77
-#: templates/RemovedIps/view.php:64 templates/ServiceTypes/view.php:178
-#: templates/TaskStates/view.php:102 templates/TaskTypes/view.php:102
-#: templates/Tasks/view.php:64 templates/email/html/task_notification.php:69
+#: templates/Commissions/view.php:139 templates/ContractStates/view.php:124
+#: templates/Contracts/pdf/print.php:317 templates/Contracts/print.php:80
+#: templates/Contracts/view.php:149 templates/Contracts/view.php:533
+#: templates/Contracts/view.php:597 templates/Customers/view.php:540
+#: templates/Customers/view.php:850 templates/Customers/view.php:915
+#: templates/IpNetworks/view.php:74 templates/Ips/view.php:75
+#: templates/RemovedIpNetworks/view.php:77 templates/RemovedIps/view.php:64
+#: templates/ServiceTypes/view.php:179 templates/TaskStates/view.php:102
+#: templates/TaskTypes/view.php:102 templates/Tasks/view.php:64
+#: templates/email/html/task_notification.php:69
 msgid "Access Point"
 msgstr "Přístupový bod"
 
-#: templates/Commissions/view.php:139 templates/Contracts/print.php:77
-#: templates/Contracts/view.php:146 templates/Customers/view.php:540
-#: templates/ServiceTypes/view.php:179
+#: templates/Commissions/view.php:140 templates/ContractStates/view.php:125
+#: templates/Contracts/print.php:84 templates/Contracts/view.php:153
+#: templates/Customers/view.php:541 templates/ServiceTypes/view.php:180
 msgid "Installation Date"
 msgstr "Datum instalace"
 
-#: templates/Commissions/view.php:140 templates/Contracts/print.php:81
-#: templates/Contracts/view.php:150 templates/ServiceTypes/view.php:180
+#: templates/Commissions/view.php:141 templates/ContractStates/view.php:126
+#: templates/Contracts/print.php:88 templates/Contracts/view.php:157
+#: templates/ServiceTypes/view.php:181
 msgid "Installation Technician"
 msgstr "Instalační technik"
+
+#: templates/ContractStates/add.php:13 templates/ContractStates/edit.php:21
+#: templates/ContractStates/view.php:25 templates/Settings/index.php:55
+msgid "List Contract States"
+msgstr "Seznam stavů smlouvy"
+
+#: templates/ContractStates/add.php:20
+msgid "Add Contract State"
+msgstr "Přidat stav smlouvy"
+
+#: templates/ContractStates/edit.php:28 templates/ContractStates/view.php:12
+msgid "Edit Contract State"
+msgstr "Upravit stav smlouvy"
+
+#: templates/ContractStates/index.php:8 templates/ContractStates/view.php:30
+msgid "New Contract State"
+msgstr "Nový stav smlouvy"
+
+#: templates/ContractStates/index.php:9
+msgid "Contract States"
+msgstr "Stavy smlouvy"
+
+#: templates/ContractStates/view.php:17
+msgid "Delete Contract State"
+msgstr "Odstranit stav smlouvy"
+
+#: templates/ContractStates/view.php:47 templates/Labels/view.php:48
+#: templates/TaskStates/view.php:37
+msgid "Color"
+msgstr "Barva"
+
+#: templates/ContractStates/view.php:57
+msgid "Billed"
+msgstr "Účtováno"
+
+#: templates/ContractStates/view.php:61
+msgid "Blocked"
+msgstr "Blokováno"
+
+#: templates/ContractStates/view.php:127 templates/Contracts/print.php:99
+#: templates/Contracts/view.php:168 templates/DealerCommissions/view.php:50
+#: templates/ServiceTypes/view.php:182
+msgid "Commission"
+msgstr "Provize"
 
 #: templates/Contracts/add.php:17 templates/Contracts/edit.php:22
 #: templates/Contracts/print.php:23 templates/Contracts/view.php:25
@@ -2076,42 +2176,37 @@ msgstr "Zobrazit smlouvu"
 msgid "Contract No."
 msgstr "Smlouva č."
 
-#: templates/Contracts/print.php:92 templates/Contracts/view.php:161
-#: templates/DealerCommissions/view.php:50 templates/ServiceTypes/view.php:181
-msgid "Commission"
-msgstr "Provize"
-
-#: templates/Contracts/print.php:103 templates/Contracts/view.php:172
+#: templates/Contracts/print.php:110 templates/Contracts/view.php:179
 #: templates/ServiceTypes/view.php:43
 msgid "Activation Fee"
 msgstr "Aktivační poplatek"
 
-#: templates/Contracts/print.php:108 templates/Contracts/view.php:177
+#: templates/Contracts/print.php:115 templates/Contracts/view.php:184
 #: templates/ServiceTypes/view.php:47
 msgid "Activation Fee With Obligation"
 msgstr "Aktivační poplatek se závazkem"
 
-#: templates/Contracts/print.php:197 templates/Customers/print.php:185
+#: templates/Contracts/print.php:204 templates/Customers/print.php:185
 msgid "Print Documents"
 msgstr "Tisk dokumentů"
 
-#: templates/Contracts/print.php:202 templates/Customers/print.php:190
+#: templates/Contracts/print.php:209 templates/Customers/print.php:190
 msgid "Document Type"
 msgstr "Typ dokumentu"
 
-#: templates/Contracts/print.php:208
+#: templates/Contracts/print.php:215
 msgid "The customer has his own equipment"
 msgstr "Zákazník má vlastní zařízení"
 
-#: templates/Contracts/print.php:211
+#: templates/Contracts/print.php:218
 msgid "Signed"
 msgstr "Podepsaný"
 
-#: templates/Contracts/print.php:217
+#: templates/Contracts/print.php:224
 msgid "Effective date of the amendment"
 msgstr "Datum účinnosti dodatku"
 
-#: templates/Contracts/print.php:222
+#: templates/Contracts/print.php:229
 msgid "The number of the contract to be terminated"
 msgstr "Číslo smlouvy, která má být ukončena"
 
@@ -2138,7 +2233,7 @@ msgstr "Nový štítek zákazníka"
 msgid "Sections"
 msgstr "Sekce"
 
-#: templates/Contracts/view.php:71 templates/Contracts/view.php:353
+#: templates/Contracts/view.php:71 templates/Contracts/view.php:360
 #: templates/Customers/view.php:89
 msgid "RADIUS Accounts"
 msgstr "Účty RADIUS"
@@ -2147,155 +2242,155 @@ msgstr "Účty RADIUS"
 msgid "Equipments"
 msgstr "Zařízení"
 
-#: templates/Contracts/view.php:81 templates/Contracts/view.php:493
+#: templates/Contracts/view.php:81 templates/Contracts/view.php:500
 #: templates/Customers/index.php:39 templates/Customers/view.php:99
 #: templates/Ips/index.php:22 templates/TaxRates/view.php:99
 msgid "Ips"
 msgstr "IP adresy"
 
-#: templates/Contracts/view.php:86 templates/Contracts/view.php:752
-#: templates/Customers/view.php:109 templates/Customers/view.php:1105
+#: templates/Contracts/view.php:86 templates/Contracts/view.php:759
+#: templates/Customers/view.php:109 templates/Customers/view.php:1108
 #: templates/Tasks/index.php:52 templates/layout/default.php:86
 msgid "Tasks"
 msgstr "Úkoly"
 
-#: templates/Contracts/view.php:257
+#: templates/Contracts/view.php:264
 msgid "Access Description"
 msgstr "Popis přístupu"
 
-#: templates/Contracts/view.php:280
+#: templates/Contracts/view.php:287
 msgid "Terminate Related Billings"
 msgstr "Ukončit související fakturace"
 
-#: templates/Contracts/view.php:283
+#: templates/Contracts/view.php:290
 msgid "Are you sure you want to terminate related billings for contract # {0}?"
 msgstr "Opravdu chcete ukončit související fakturace pro smlouvu č. {0}?"
 
-#: templates/Contracts/view.php:349
+#: templates/Contracts/view.php:356
 msgid "New RADIUS Account"
 msgstr "Nový účet RADIUS"
 
-#: templates/Contracts/view.php:428 templates/SoldEquipments/index.php:21
+#: templates/Contracts/view.php:435 templates/SoldEquipments/index.php:21
 #: templates/SoldEquipments/view.php:30
 msgid "New Sold Equipment"
 msgstr "Nové prodané zařízení"
 
-#: templates/Contracts/view.php:432 templates/SoldEquipments/index.php:25
+#: templates/Contracts/view.php:439 templates/SoldEquipments/index.php:25
 msgid "Sold Equipments"
 msgstr "Prodaná zařízení"
 
-#: templates/Contracts/view.php:439 templates/Customers/view.php:747
+#: templates/Contracts/view.php:446 templates/Customers/view.php:750
 #: templates/EquipmentTypes/view.php:159 templates/SoldEquipments/view.php:72
 msgid "Date Of Sale"
 msgstr "Datum prodeje"
 
-#: templates/Contracts/view.php:484 templates/Ips/index.php:21
+#: templates/Contracts/view.php:491 templates/Ips/index.php:21
 #: templates/Ips/view.php:19
 msgid "New Ip"
 msgstr "Nová IP adresa"
 
-#: templates/Contracts/view.php:489
+#: templates/Contracts/view.php:496
 msgid "New IP Address From Range"
 msgstr "Nová IP adresa z rozsahu"
 
-#: templates/Contracts/view.php:498 templates/Contracts/view.php:646
-#: templates/Contracts/view.php:693 templates/Customers/view.php:814
-#: templates/Customers/view.php:964 templates/Ips/view.php:47
+#: templates/Contracts/view.php:505 templates/Contracts/view.php:653
+#: templates/Contracts/view.php:700 templates/Customers/view.php:817
+#: templates/Customers/view.php:967 templates/Ips/view.php:47
 #: templates/RemovedIps/view.php:51
 msgid "Ip"
 msgstr "IP"
 
-#: templates/Contracts/view.php:499 templates/Contracts/view.php:576
-#: templates/Contracts/view.php:647 templates/Contracts/view.php:694
-#: templates/Customers/view.php:815 templates/Customers/view.php:893
-#: templates/Customers/view.php:965 templates/Customers/view.php:1013
+#: templates/Contracts/view.php:506 templates/Contracts/view.php:583
+#: templates/Contracts/view.php:654 templates/Contracts/view.php:701
+#: templates/Customers/view.php:818 templates/Customers/view.php:896
+#: templates/Customers/view.php:968 templates/Customers/view.php:1016
 #: templates/IpNetworks/view.php:65 templates/Ips/view.php:51
 #: templates/RemovedIpNetworks/view.php:68 templates/RemovedIps/view.php:55
 msgid "Type Of Use"
 msgstr "Typ použití"
 
-#: templates/Contracts/view.php:501 templates/Customers/view.php:817
+#: templates/Contracts/view.php:508 templates/Customers/view.php:820
 #: templates/Ips/view.php:55
 msgid "Device"
 msgstr "Zařízení"
 
-#: templates/Contracts/view.php:502 templates/Contracts/view.php:578
-#: templates/Customers/view.php:818 templates/Customers/view.php:895
+#: templates/Contracts/view.php:509 templates/Contracts/view.php:585
+#: templates/Customers/view.php:821 templates/Customers/view.php:898
 #: templates/IpNetworks/view.php:69 templates/Ips/add_from_range.php:64
 #: templates/Ips/view.php:70 templates/RemovedIpNetworks/view.php:72
 #: templates/RemovedIps/view.php:59
 msgid "IP Address Range"
 msgstr "Rozsah IP adres"
 
-#: templates/Contracts/view.php:532 templates/Contracts/view.php:596
-#: templates/Customers/view.php:853 templates/Customers/view.php:918
+#: templates/Contracts/view.php:539 templates/Contracts/view.php:603
+#: templates/Customers/view.php:856 templates/Customers/view.php:921
 #: templates/IpNetworks/view.php:80 templates/Ips/view.php:81
 #: templates/RemovedIpNetworks/view.php:83 templates/RemovedIps/view.php:70
 msgid "Range"
 msgstr "Rozsah"
 
-#: templates/Contracts/view.php:566
+#: templates/Contracts/view.php:573
 msgid "New IP Network"
 msgstr "Nová IP síť"
 
-#: templates/Contracts/view.php:570
+#: templates/Contracts/view.php:577
 msgid "IP Networks"
 msgstr "IP sítě"
 
-#: templates/Contracts/view.php:575 templates/Customers/view.php:892
-#: templates/Customers/view.php:1012 templates/IpNetworks/view.php:61
+#: templates/Contracts/view.php:582 templates/Customers/view.php:895
+#: templates/Customers/view.php:1015 templates/IpNetworks/view.php:61
 #: templates/RemovedIpNetworks/view.php:64
 msgid "Ip Network"
 msgstr "IP síť"
 
-#: templates/Contracts/view.php:637 templates/RemovedIps/index.php:21
+#: templates/Contracts/view.php:644 templates/RemovedIps/index.php:21
 #: templates/RemovedIps/view.php:23
 msgid "New Removed Ip"
 msgstr "Nová odebraná IP adresa"
 
-#: templates/Contracts/view.php:641 templates/RemovedIps/index.php:22
+#: templates/Contracts/view.php:648 templates/RemovedIps/index.php:22
 msgid "Removed Ips"
 msgstr "Odebrané IP adresy"
 
-#: templates/Contracts/view.php:649 templates/Contracts/view.php:696
-#: templates/Customers/view.php:967 templates/Customers/view.php:1015
+#: templates/Contracts/view.php:656 templates/Contracts/view.php:703
+#: templates/Customers/view.php:970 templates/Customers/view.php:1018
 #: templates/RemovedIpNetworks/view.php:133 templates/RemovedIps/view.php:120
 msgid "Removed"
 msgstr "Odstraněno"
 
-#: templates/Contracts/view.php:684
+#: templates/Contracts/view.php:691
 msgid "New Removed IP Network"
 msgstr "Nová odebraná IP síť"
 
-#: templates/Contracts/view.php:688
+#: templates/Contracts/view.php:695
 msgid "Removed IP Networks"
 msgstr "Odebrané IP sítě"
 
-#: templates/Contracts/view.php:748 templates/Customers/view.php:1101
+#: templates/Contracts/view.php:755 templates/Customers/view.php:1104
 #: templates/Tasks/index.php:51 templates/Tasks/view.php:19
 msgid "New Task"
 msgstr "Nový úkol"
 
-#: templates/Contracts/view.php:757 templates/Contracts/view.php:799
-#: templates/Customers/view.php:1110 templates/TaskStates/view.php:93
+#: templates/Contracts/view.php:764 templates/Contracts/view.php:806
+#: templates/Customers/view.php:1113 templates/TaskStates/view.php:93
 #: templates/Tasks/view.php:29 templates/email/html/task_notification.php:45
 msgid "Task Type"
 msgstr "Typ úkolu"
 
-#: templates/Contracts/view.php:758 templates/Contracts/view.php:800
-#: templates/Customers/view.php:1111 templates/TaskTypes/view.php:94
+#: templates/Contracts/view.php:765 templates/Contracts/view.php:807
+#: templates/Customers/view.php:1114 templates/TaskTypes/view.php:94
 #: templates/Tasks/view.php:40 templates/email/html/task_notification.php:53
 msgid "Task State"
 msgstr "Stav úkolu"
 
-#: templates/Contracts/view.php:759 templates/Contracts/view.php:801
-#: templates/Customers/view.php:1112 templates/TaskStates/view.php:96
+#: templates/Contracts/view.php:766 templates/Contracts/view.php:808
+#: templates/Customers/view.php:1115 templates/TaskStates/view.php:96
 #: templates/TaskTypes/view.php:96 templates/Tasks/view.php:156
 #: templates/email/html/task_notification.php:146
 msgid "Subject"
 msgstr "Předmět"
 
-#: templates/Contracts/view.php:794
+#: templates/Contracts/view.php:801
 msgid "Other Customer Tasks"
 msgstr "Další úkoly zákazníka"
 
@@ -2465,7 +2560,7 @@ msgstr "Odstranit zákazníka"
 msgid "Logins"
 msgstr "Přihlášení"
 
-#: templates/Customers/view.php:104 templates/Customers/view.php:1092
+#: templates/Customers/view.php:104 templates/Customers/view.php:1095
 msgid "Invoices"
 msgstr "Faktury"
 
@@ -2539,57 +2634,57 @@ msgstr "Naposledy odepřeno"
 msgid "Last Denied Ip"
 msgstr "Poslední odepřená IP"
 
-#: templates/Customers/view.php:586 templates/Services/view.php:104
+#: templates/Customers/view.php:589 templates/Services/view.php:104
 msgid "Related Billings"
 msgstr "Související fakturace"
 
-#: templates/Customers/view.php:653
+#: templates/Customers/view.php:656
 msgid "Related RADIUS Accounts"
 msgstr "Související účty RADIUS"
 
-#: templates/Customers/view.php:662 templates/EquipmentTypes/view.php:94
+#: templates/Customers/view.php:665 templates/EquipmentTypes/view.php:94
 msgid "Related Borrowed Equipments"
 msgstr "Související zapůjčená zařízení"
 
-#: templates/Customers/view.php:739 templates/EquipmentTypes/view.php:150
+#: templates/Customers/view.php:742 templates/EquipmentTypes/view.php:150
 msgid "Related Sold Equipments"
 msgstr "Související prodaná zařízení"
 
-#: templates/Customers/view.php:808
+#: templates/Customers/view.php:811
 msgid "Related Ips"
 msgstr "Související IP adresy"
 
-#: templates/Customers/view.php:886
+#: templates/Customers/view.php:889
 msgid "Related IP Networks"
 msgstr "Související IP sítě"
 
-#: templates/Customers/view.php:958
+#: templates/Customers/view.php:961
 msgid "Related Removed Ips"
 msgstr "Související odebrané IP adresy"
 
-#: templates/Customers/view.php:1006
+#: templates/Customers/view.php:1009
 msgid "Related Removed IP Networks"
 msgstr "Související odebrané IP sítě"
 
-#: templates/Customers/view.php:1077
+#: templates/Customers/view.php:1080
 msgid "Unblock Debtor"
 msgstr "Odblokovat dlužníka"
 
-#: templates/Customers/view.php:1081
+#: templates/Customers/view.php:1084
 msgid "Are you sure you want to unblock # {0}?"
 msgstr "Opravdu chcete odblokovat # {0}?"
 
-#: templates/Customers/view.php:1085
+#: templates/Customers/view.php:1088
 msgid "Block Debtor"
 msgstr "Blokovat dlužníka"
 
-#: templates/Customers/view.php:1089
+#: templates/Customers/view.php:1092
 msgid "Are you sure you want to block # {0}?"
 msgstr "Opravdu chcete blokovat # {0}?"
 
 #: templates/DealerCommissions/add.php:14
 #: templates/DealerCommissions/edit.php:22
-#: templates/DealerCommissions/view.php:25 templates/Settings/index.php:102
+#: templates/DealerCommissions/view.php:25 templates/Settings/index.php:113
 msgid "List Dealer Commissions"
 msgstr "Seznam provizí dealerů"
 
@@ -2633,7 +2728,7 @@ msgid "Delete Email"
 msgstr "Odstranit e-mail"
 
 #: templates/EquipmentTypes/add.php:12 templates/EquipmentTypes/edit.php:20
-#: templates/EquipmentTypes/view.php:25 templates/Settings/index.php:70
+#: templates/EquipmentTypes/view.php:25 templates/Settings/index.php:81
 msgid "List Equipment Types"
 msgstr "Seznam typů zařízení"
 
@@ -2751,10 +2846,6 @@ msgstr "Odstranit štítek"
 msgid "Caption"
 msgstr "Rozšířený popis"
 
-#: templates/Labels/view.php:48 templates/TaskStates/view.php:37
-msgid "Color"
-msgstr "Barva"
-
 #: templates/Labels/view.php:52
 msgid "Validity"
 msgstr "Platnost"
@@ -2796,7 +2887,7 @@ msgstr "Smazat přihlášení"
 msgid "Overviews"
 msgstr "Přehledy"
 
-#: templates/Overviews/index.php:10 templates/Settings/index.php:52
+#: templates/Overviews/index.php:10 templates/Settings/index.php:63
 msgid "Service Related"
 msgstr "Související se službou"
 
@@ -2824,7 +2915,7 @@ msgstr "Související se zákazníkem"
 msgid "List Phones"
 msgstr "Seznam telefonů"
 
-#: templates/Overviews/index.php:67
+#: templates/Overviews/index.php:67 templates/Settings/index.php:52
 msgid "Contract Related"
 msgstr "Související se smlouvou"
 
@@ -2965,7 +3056,7 @@ msgid "Delete Phone"
 msgstr "Odstranit telefon"
 
 #: templates/Queues/add.php:11 templates/Queues/edit.php:16
-#: templates/Queues/view.php:21 templates/Settings/index.php:65
+#: templates/Queues/view.php:21 templates/Settings/index.php:76
 msgid "List Queues"
 msgstr "Seznam front"
 
@@ -3065,7 +3156,7 @@ msgid "Delete Removed Ip"
 msgstr "Odstranit odebranou IP adresu"
 
 #: templates/ServiceTypes/add.php:11 templates/ServiceTypes/edit.php:19
-#: templates/ServiceTypes/view.php:24 templates/Settings/index.php:60
+#: templates/ServiceTypes/view.php:24 templates/Settings/index.php:71
 msgid "List Service Types"
 msgstr "Seznam typů služeb"
 
@@ -3114,7 +3205,7 @@ msgid "Normally With Borrowed Equipment"
 msgstr "Obvykle se zapůjčeným zařízením"
 
 #: templates/Services/add.php:13 templates/Services/edit.php:18
-#: templates/Services/view.php:24 templates/Settings/index.php:55
+#: templates/Services/view.php:24 templates/Settings/index.php:66
 msgid "List Services"
 msgstr "Seznam služeb"
 
@@ -3175,21 +3266,21 @@ msgstr "Související se systémem"
 msgid "List Tax Rates"
 msgstr "Seznam daňových sazeb"
 
-#: templates/Settings/index.php:78
+#: templates/Settings/index.php:89
 msgid "Task Related"
 msgstr "Související s úkolem"
 
-#: templates/Settings/index.php:81 templates/TaskStates/add.php:11
+#: templates/Settings/index.php:92 templates/TaskStates/add.php:11
 #: templates/TaskStates/edit.php:16 templates/TaskStates/view.php:22
 msgid "List Task States"
 msgstr "Seznam stavů úkolů"
 
-#: templates/Settings/index.php:86 templates/TaskTypes/add.php:11
+#: templates/Settings/index.php:97 templates/TaskTypes/add.php:11
 #: templates/TaskTypes/edit.php:16 templates/TaskTypes/view.php:22
 msgid "List Task Types"
 msgstr "Seznam typů úkolů"
 
-#: templates/Settings/index.php:94
+#: templates/Settings/index.php:105
 msgid "Commission Related"
 msgstr "Související s provizí"
 
