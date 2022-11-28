@@ -4,6 +4,18 @@
  * @var iterable<\App\Model\Entity\ContractState> $contractStates
  */
 ?>
+<?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
+<div class="row">
+    <div class="column-responsive">
+        <?= $this->Form->control('search', [
+            'label' => __('Search'),
+            'type' => 'search',
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+    </div>
+</div>
+<?= $this->Form->end() ?>
+
 <div class="contractStates index content">
     <?= $this->Html->link(__('New Contract State'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
     <h3><?= __('Contract States') ?></h3>
