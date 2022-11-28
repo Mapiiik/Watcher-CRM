@@ -118,7 +118,11 @@ class CustomersController extends AppController
                 'Addresses' => ['Countries'],
                 'Billings' => ['Contracts', 'Services'],
                 'BorrowedEquipments' => ['Contracts', 'EquipmentTypes'],
-                'Contracts' => ['ServiceTypes', 'InstallationAddresses'],
+                'Contracts' => [
+                    'ContractStates',
+                    'ServiceTypes',
+                    'InstallationAddresses',
+                ],
                 'Emails',
                 'CustomerLabels' => [
                     'Labels',

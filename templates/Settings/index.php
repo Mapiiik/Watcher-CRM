@@ -49,6 +49,17 @@
         </div>
 
         <div class="related">
+            <h4><?= __('Contract Related') ?></h4>
+            <div>
+                <?= $this->AuthLink->link(
+                    __('List Contract States'),
+                    ['controller' => 'ContractStates', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+            </div>
+        </div>
+
+        <div class="related">
             <h4><?= __('Service Related') ?></h4>
             <div>
                 <?= $this->AuthLink->link(

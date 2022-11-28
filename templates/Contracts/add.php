@@ -26,6 +26,7 @@ use Cake\I18n\FrozenDate;
                 if (!isset($customer_id)) {
                     echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
                 }
+                echo $this->Form->control('contract_state_id', ['options' => $contractStates, 'empty' => true]);
                 echo $this->Form->control('service_type_id', ['options' => $serviceTypes, 'empty' => true]);
                 echo $this->Form->control('installation_address_id', [
                     'options' => $installationAddresses,

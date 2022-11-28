@@ -39,6 +39,7 @@ use Cake\ORM\Entity;
  * @property int|null $activation_fee_with_obligation_sum
  * @property string|null $number_of_the_contract_to_be_terminated
  * @property string|null $access_point_id
+ * @property string $contract_state_id
  * @property string $name
  * @property string $style
  * @property bool $active
@@ -51,6 +52,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\ServiceType $service_type
  * @property \App\Model\Entity\Customer $installation_technician
  * @property \App\Model\Entity\Commission $commission
+ * @property \App\Model\Entity\ContractState $contract_state
  * @property \App\Model\Entity\Billing[] $billings
  * @property \App\Model\Entity\BorrowedEquipment[] $borrowed_equipments
  * @property \App\Model\Entity\Ip[] $ips
@@ -58,6 +60,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\IpNetwork[] $ip_networks
  * @property \App\Model\Entity\RemovedIpNetwork[] $removed_ip_networks
  * @property \App\Model\Entity\SoldEquipment[] $sold_equipments
+ * @property \App\Model\Entity\Task[] $tasks
  * @property \App\Model\Entity\Billing[] $individual_billings
  * @property \App\Model\Entity\Billing[] $standard_billings
  * @property \Cake\ORM\Entity|null $access_point
@@ -93,20 +96,26 @@ class Contract extends Entity
         'valid_until' => true,
         'conclusion_date' => true,
         'number_of_amendments' => true,
+        'activation_fee' => true,
+        'activation_fee_with_obligation' => true,
+        'access_point_id' => true,
+        'contract_state_id' => true,
+        'creator' => true,
+        'modifier' => true,
         'customer' => true,
         'installation_address' => true,
         'service_type' => true,
         'installation_technician' => true,
         'commission' => true,
+        'contract_state' => true,
         'billings' => true,
         'borrowed_equipments' => true,
         'ips' => true,
         'removed_ips' => true,
+        'ip_networks' => true,
+        'removed_ip_networks' => true,
         'sold_equipments' => true,
-        'activation_fee' => true,
-        'activation_fee_with_obligation' => true,
-        'access_point_id' => true,
-        'access_point' => true,
+        'tasks' => true,
     ];
 
     /**

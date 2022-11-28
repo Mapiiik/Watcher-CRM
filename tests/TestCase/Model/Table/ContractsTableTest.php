@@ -16,24 +16,29 @@ class ContractsTableTest extends TestCase
      *
      * @var \App\Model\Table\ContractsTable
      */
-    protected $ContractsTable;
+    protected $Contracts;
 
     /**
      * Fixtures
      *
-     * @var array
+     * @var array<string>
      */
     protected $fixtures = [
         'app.Contracts',
         'app.Customers',
-        'app.Addresses',
+        'app.InstallationAddresses',
         'app.ServiceTypes',
+        'app.InstallationTechnicians',
         'app.Commissions',
+        'app.ContractStates',
         'app.Billings',
         'app.BorrowedEquipments',
         'app.Ips',
         'app.RemovedIps',
+        'app.IpNetworks',
+        'app.RemovedIpNetworks',
         'app.SoldEquipments',
+        'app.Tasks',
     ];
 
     /**
@@ -41,11 +46,11 @@ class ContractsTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Contracts') ? [] : ['className' => ContractsTable::class];
-        $this->ContractsTable = $this->fetchTable('Contracts', $config);
+        $this->Contracts = $this->getTableLocator()->get('Contracts', $config);
     }
 
     /**
@@ -53,9 +58,9 @@ class ContractsTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
-        unset($this->ContractsTable);
+        unset($this->Contracts);
 
         parent::tearDown();
     }

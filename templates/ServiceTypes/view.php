@@ -168,6 +168,7 @@
                             <th><?= __('Customer') ?></th>
                             <th><?= __('Customer Number') ?></th>
                             <th><?= __('Number') ?></th>
+                            <th><?= __('Contract State') ?></th>
                             <th><?= __('Installation Address') ?></th>
                             <th><?= __('Conclusion Date') ?></th>
                             <th><?= __('Number Of Amendments') ?></th>
@@ -183,24 +184,31 @@
                         </tr>
                         <?php foreach ($serviceType->contracts as $contract) : ?>
                         <tr style="<?= $contract->style ?>">
-                            <td>
-                                <?= $contract->has('customer') ? $this->Html->link(
+                            <td><?=
+                                $contract->has('customer') ? $this->Html->link(
                                     $contract->customer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $contract->customer->id]
-                                ) : '' ?>
-                            </td>
+                                ) : '' ?></td>
                             <td><?= $contract->has('customer') ? h($contract->customer->number) : '' ?></td>
                             <td><?= h($contract->number) ?></td>
-                            <td>
-                                <?= $contract->has('installation_address') ? $this->Html->link(
+                            <td><?=
+                                $contract->has('contract_state') ? $this->Html->link(
+                                    $contract->contract_state->name,
+                                    [
+                                        'controller' => 'ContractStates',
+                                        'action' => 'view',
+                                        $contract->contract_state->id,
+                                    ]
+                                ) : '' ?></td>
+                            <td><?=
+                                $contract->has('installation_address') ? $this->Html->link(
                                     $contract->installation_address->full_address,
                                     [
                                         'controller' => 'Addresses',
                                         'action' => 'view',
                                         $contract->installation_address->id,
                                     ]
-                                ) : '' ?>
-                            </td>
+                                ) : '' ?></td>
                             <td><?= h($contract->conclusion_date) ?></td>
                             <td><?= $this->Number->format($contract->number_of_amendments) ?></td>
                             <td><?= h($contract->valid_from) ?></td>
@@ -209,22 +217,20 @@
                             <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
                             <td><?= $contract->has('access_point') ? h($contract->access_point['name']) : '' ?></td>
                             <td><?= h($contract->installation_date) ?></td>
-                            <td>
-                                <?= $contract->has('installation_technician') ? $this->Html->link(
+                            <td><?=
+                                $contract->has('installation_technician') ? $this->Html->link(
                                     $contract->installation_technician->name,
                                     [
                                         'controller' => 'Customers',
                                         'action' => 'view',
                                         $contract->installation_technician->id,
                                     ]
-                                ) : '' ?>
-                            </td>
-                            <td>
-                                <?= $contract->has('commission') ? $this->Html->link(
+                                ) : '' ?></td>
+                            <td><?=
+                                $contract->has('commission') ? $this->Html->link(
                                     $contract->commission->name,
                                     ['controller' => 'Commissions', 'action' => 'view', $contract->commission->id]
-                                ) : '' ?>
-                            </td>
+                                ) : '' ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),

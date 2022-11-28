@@ -55,6 +55,7 @@ class CommissionsController extends AppController
                 'DealerCommissions' => ['Dealers'],
                 'Contracts' => [
                     'Customers',
+                    'ContractStates',
                     'ServiceTypes',
                     'InstallationAddresses',
                     'InstallationTechnicians',

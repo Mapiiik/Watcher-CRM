@@ -54,6 +54,7 @@ class ServiceTypesController extends AppController
             'contain' => [
                 'Contracts' => [
                     'Customers',
+                    'ContractStates',
                     'InstallationAddresses',
                     'InstallationTechnicians',
                     'Commissions',

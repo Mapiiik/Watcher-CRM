@@ -47,6 +47,7 @@ class ContractsController extends AppController
         $this->paginate = [
             'contain' => [
                 'Customers',
+                'ContractStates',
                 'InstallationAddresses',
                 'ServiceTypes',
                 'InstallationTechnicians',
@@ -91,6 +92,7 @@ class ContractsController extends AppController
                         ],
                     ],
                 ],
+                'ContractStates',
                 'InstallationAddresses',
                 'ServiceTypes',
                 'InstallationTechnicians',
@@ -152,6 +154,7 @@ class ContractsController extends AppController
             $this->Flash->error(__('The contract could not be saved. Please, try again.'));
         }
         $customers = $this->Contracts->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
+        $contractStates = $this->Contracts->ContractStates->find('list', ['order' => 'name']);
         $installationAddresses = $this->Contracts->InstallationAddresses->find('list', [
             'order' => ['company', 'last_name', 'first_name'],
         ]);
@@ -176,7 +179,13 @@ class ContractsController extends AppController
         }
 
         $this->set(compact('contract', 'customers'));
-        $this->set(compact('installationAddresses', 'serviceTypes', 'installationTechnicians', 'commissions'));
+        $this->set(compact(
+            'contractStates',
+            'installationAddresses',
+            'serviceTypes',
+            'installationTechnicians',
+            'commissions'
+        ));
 
         // load access points from NMS if possible
         $accessPoints = ApiClient::getAccessPoints();
@@ -216,6 +225,7 @@ class ContractsController extends AppController
             $this->Flash->error(__('The contract could not be saved. Please, try again.'));
         }
         $customers = $this->Contracts->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
+        $contractStates = $this->Contracts->ContractStates->find('list', ['order' => 'name']);
         $installationAddresses = $this->Contracts->InstallationAddresses->find('list', [
             'order' => ['company', 'last_name', 'first_name'],
         ]);
@@ -239,7 +249,13 @@ class ContractsController extends AppController
         }
 
         $this->set(compact('contract', 'customers'));
-        $this->set(compact('installationAddresses', 'serviceTypes', 'installationTechnicians', 'commissions'));
+        $this->set(compact(
+            'contractStates',
+            'installationAddresses',
+            'serviceTypes',
+            'installationTechnicians',
+            'commissions'
+        ));
 
         // load access points from NMS if possible
         $accessPoints = ApiClient::getAccessPoints();
@@ -380,6 +396,7 @@ class ContractsController extends AppController
         $contract = $this->Contracts->get($id, [
             'contain' => [
                 'Customers' => ['Emails', 'Phones', 'Addresses', 'TaxRates'],
+                'ContractStates',
                 'InstallationAddresses',
                 'ServiceTypes',
                 'InstallationTechnicians',

@@ -528,6 +528,7 @@ use Cake\I18n\Number;
                     <table>
                         <tr>
                             <th><?= __('Number') ?></th>
+                            <th><?= __('Contract State') ?></th>
                             <th><?= __('Service Type') ?></th>
                             <th><?= __('Installation Address') ?></th>
                             <th><?= __('Conclusion Date') ?></th>
@@ -544,6 +545,8 @@ use Cake\I18n\Number;
                         <?php foreach ($customer->contracts as $contract) : ?>
                         <tr style="<?= $contract->style ?>">
                             <td><?= h($contract->number) ?></td>
+                            <td><?=
+                                $contract->has('contract_state') ? h($contract->contract_state->name) : '' ?></td>
                             <td><?= $contract->has('service_type') ? h($contract->service_type->name) : '' ?></td>
                             <td><?= $contract->has('installation_address') ?
                                 h($contract->installation_address->full_address) : '' ?></td>

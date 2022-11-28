@@ -124,6 +124,12 @@ $routes->scope('/admin/', function (RouteBuilder $builder) {
     $builder->connect('/{controller}/{id}/{action}/*', [])
         ->setPatterns(['id' => '[0-9]+'])
         ->setPass(['id']);
+    $builder->connect('/{controller}/{id}', ['action' => 'view'])
+        ->setPatterns(['id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}'])
+        ->setPass(['id']);
+    $builder->connect('/{controller}/{id}/{action}/*', [])
+        ->setPatterns(['id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}'])
+        ->setPass(['id']);
 
 //    $builder->fallbacks();
 });

@@ -14,6 +14,7 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\ServiceTypesTable&\Cake\ORM\Association\BelongsTo $ServiceTypes
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $InstallationTechnicians
  * @property \App\Model\Table\CommissionsTable&\Cake\ORM\Association\BelongsTo $Commissions
+ * @property \App\Model\Table\ContractStatesTable&\Cake\ORM\Association\BelongsTo $ContractStates
  * @property \App\Model\Table\BillingsTable&\Cake\ORM\Association\HasMany $Billings
  * @property \App\Model\Table\BorrowedEquipmentsTable&\Cake\ORM\Association\HasMany $BorrowedEquipments
  * @property \App\Model\Table\IpsTable&\Cake\ORM\Association\HasMany $Ips
@@ -78,6 +79,10 @@ class ContractsTable extends AppTable
         $this->belongsTo('Commissions', [
             'foreignKey' => 'commission_id',
         ]);
+        $this->belongsTo('ContractStates', [
+            'foreignKey' => 'contract_state_id',
+            'joinType' => 'INNER',
+        ]);
         $this->hasMany('Billings', [
             'foreignKey' => 'contract_id',
             'sort' => [
@@ -120,21 +125,22 @@ class ContractsTable extends AppTable
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->integer('id')
-            ->allowEmptyString('id', null, 'create');
-
-        $validator
             ->integer('customer_id')
             ->notEmptyString('customer_id');
 
         $validator
-            ->integer('service_type_id')
-            ->notEmptyString('service_type_id');
+            ->integer('installation_address_id')
+            ->allowEmptyString('installation_address_id');
 
         $validator
             ->scalar('number')
+            ->maxLength('number', 255)
             ->allowEmptyString('number')
             ->add('number', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+
+        $validator
+            ->integer('service_type_id')
+            ->notEmptyString('service_type_id');
 
         $validator
             ->scalar('note')
@@ -147,6 +153,14 @@ class ContractsTable extends AppTable
         $validator
             ->boolean('vip')
             ->allowEmptyString('vip');
+
+        $validator
+            ->integer('installation_technician_id')
+            ->allowEmptyString('installation_technician_id');
+
+        $validator
+            ->integer('commission_id')
+            ->allowEmptyString('commission_id');
 
         $validator
             ->date('installation_date')
@@ -184,6 +198,10 @@ class ContractsTable extends AppTable
             ->uuid('access_point_id')
             ->allowEmptyString('access_point_id');
 
+        $validator
+            ->uuid('contract_state_id')
+            ->notEmptyString('contract_state_id');
+
         return $validator;
     }
 
@@ -211,6 +229,7 @@ class ContractsTable extends AppTable
             ['errorField' => 'installation_technician_id']
         );
         $rules->add($rules->existsIn(['commission_id'], 'Commissions'), ['errorField' => 'commission_id']);
+        $rules->add($rules->existsIn(['contract_state_id'], 'ContractStates'), ['errorField' => 'contract_state_id']);
 
         $rules->add(
             function ($entity, $options) {

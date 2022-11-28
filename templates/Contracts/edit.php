@@ -40,6 +40,7 @@
                         if (!isset($customer_id)) {
                             echo $this->Form->control('customer_id', ['options' => $customers]);
                         }
+                        echo $this->Form->control('contract_state_id', ['options' => $contractStates, 'empty' => true]);
                         echo $this->Form->control('service_type_id', ['options' => $serviceTypes, 'disabled' => true]);
                         echo $this->Form->control('number');
                         echo $this->Form->control('installation_address_id', [

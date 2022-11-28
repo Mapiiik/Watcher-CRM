@@ -48,6 +48,13 @@
                             <td><?= $contract->has('customer') ? h($contract->customer->number) : '' ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Contract State') ?></th>
+                            <td><?= $contract->has('contract_state') ? $this->Html->link(
+                                $contract->contract_state->name,
+                                ['controller' => 'ContractStates', 'action' => 'view', $contract->contract_state->id]
+                            ) : '' ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Service Type') ?></th>
                             <td><?= $contract->has('service_type') ? $this->Html->link(
                                 $contract->service_type->name,
