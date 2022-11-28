@@ -42,7 +42,7 @@ class ContractsFixture extends TestFixture
                 'activation_fee' => 1,
                 'activation_fee_with_obligation' => 1,
                 'access_point_id' => 'feedb343-cea8-423f-a409-de4331354217',
-                'contract_state_id' => 1,
+                'contract_state_id' => '3fc51c92-5dbb-4bd4-9a47-237169c2755c',
             ],
         ];
         parent::init();

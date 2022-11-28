@@ -19,7 +19,7 @@ class ContractStatesFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
+                'id' => '3fc51c92-5dbb-4bd4-9a47-237169c2755c',
                 'name' => 'Lorem ipsum dolor sit amet',
                 'color' => 'Lorem',
                 'active' => 1,
