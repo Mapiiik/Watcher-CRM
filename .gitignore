@@ -23,6 +23,8 @@ Thumbs.db
 #######################
 # PHPUnit
 .phpunit.result.cache
+# Docker Compose
+docker-compose.yml
 # vim
 *~
 *.swp
