@@ -425,6 +425,7 @@ class ContractsController extends AppController
             'contain' => [
                 'Customers' => ['Emails', 'Phones', 'Addresses', 'TaxRates'],
                 'ContractStates',
+                'ContractVersions',
                 'InstallationAddresses',
                 'ServiceTypes',
                 'InstallationTechnicians',
@@ -444,9 +445,28 @@ class ContractsController extends AppController
             ],
         ]);
 
+        $contractVersions = collection($contract->contract_versions)->map(function ($contract_version) {
+            return [
+                'value' => $contract_version->id,
+                'text' => $contract_version->valid_from
+                    . ' - '
+                    . ($contract_version->valid_until ? $contract_version->valid_until : __('indefinitely')),
+            ];
+        })->toArray();
+
         $query = $this->getRequest()->getQuery();
         if (isset($query['document_type'])) {
             $type = $query['document_type'];
+        }
+        if (isset($query['contract_version_id'])) {
+            $contract_version_id = $query['contract_version_id'];
+            $contract_version = collection($contract->contract_versions)->firstMatch(['id' => $contract_version_id]);
+        }
+        if (isset($query['contract_version_to_be_replaced_id'])) {
+            $contract_version_to_be_replaced_id = $query['contract_version_to_be_replaced_id'];
+            $contract_version_to_be_replaced = collection($contract->contract_versions)->firstMatch([
+                'id' => $contract_version_to_be_replaced_id,
+            ]);
         }
 
         if ($this->getRequest()->getParam('_ext') === 'pdf') {
@@ -464,74 +484,145 @@ class ContractsController extends AppController
                 return $this->redirect(['action' => 'print', $id, '?' => $query]);
             }
 
-            switch ($type) {
-                case 'contract-termination':
-                    if (!$contract->has('valid_until')) {
-                        $this->Flash->error(__('Please set a date until which the contract is valid.'));
+            if (empty($contract_version)) {
+                $this->Flash->error(__('Invalid contract version requested.'));
 
-                        return $this->redirect(['action' => 'edit', $id]);
-                    }
-
-                    // no break - checks will continue
-                case 'contract-amendment':
-                    if ($type == 'contract-amendment' && empty($query['effective_date_of_the_amendment'])) {
-                        $this->Flash->error(__('Please enter the effective date of the amendment.'));
+                return $this->redirect(['action' => 'print', $id, '?' => $query]);
+            } else {
+                if (!empty($contract_version_to_be_replaced)) {
+                    if ($contract_version_id == $contract_version_to_be_replaced_id) {
+                        $this->Flash->error(__('Invalid contract version to be replaced requested.'));
 
                         return $this->redirect(['action' => 'print', $id, '?' => $query]);
-                    } else {
-                        $contract->valid_from = new FrozenDate($query['effective_date_of_the_amendment']);
                     }
 
-                    // no break - checks will continue
-                case 'contract-new-x':
-                    if (!$contract->has('conclusion_date')) {
-                        $this->Flash->error(__('Please set the date of conclusion of the original contract.'));
+                    $contract_version->old = $contract_version_to_be_replaced;
+                }
+                $this->set('contract_version', $contract_version);
+            }
 
-                        return $this->redirect(['action' => 'edit', $id]);
+            switch ($type) {
+                case 'contract-termination':
+                    if (!$contract_version->has('valid_until')) {
+                        $this->Flash->error(__('Please set the date until which the contract version is valid.'));
+
+                        return $this->redirect([
+                            'controller' => 'ContractVersions',
+                            'action' => 'edit',
+                            $contract_version->id,
+                        ]);
                     }
 
-                    if ($type != 'contract-amendment' && empty($query['number_of_the_contract_to_be_terminated'])) {
+                    if (!$contract_version->has('conclusion_date')) {
+                        $this->Flash->error(__('Please set the date of conclusion of the contract version.'));
+
+                        return $this->redirect([
+                            'controller' => 'ContractVersions',
+                            'action' => 'edit',
+                            $contract_version->id,
+                        ]);
+                    }
+
+                    if (empty($query['number_of_the_contract_to_be_terminated'])) {
                         $this->Flash->error(__('Please enter the number of the contract to be terminated.'));
 
                         return $this->redirect(['action' => 'print', $id, '?' => $query]);
                     } else {
-                        $contract->number_of_the_contract_to_be_terminated
+                        $contract_version->number_of_the_contract_to_be_terminated
                             = $query['number_of_the_contract_to_be_terminated'];
-                    }
-
-                    // no break - checks will continue
-                case 'contract-new':
-                    if (!$contract->has('valid_from')) {
-                        $this->Flash->error(__('Please set the date from which the contract is valid.'));
-
-                        return $this->redirect(['action' => 'edit', $id]);
                     }
 
                     break;
 
-                case 'handover-protocol-uninstallation':
-                    if (!$contract->has('valid_until')) {
-                        $this->Flash->error(__('Please set a date until which the contract is valid.'));
+                case 'contract-amendment':
+                    if (empty($query['effective_date_of_the_amendment'])) {
+                        $this->Flash->error(__('Please enter the effective date of the amendment.'));
 
-                        return $this->redirect(['action' => 'edit', $id]);
+                        return $this->redirect(['action' => 'print', $id, '?' => $query]);
+                    } else {
+                        $contract_version->valid_from = new FrozenDate($query['effective_date_of_the_amendment']);
                     }
 
-                    if ($type != 'contract-amendment' && empty($query['number_of_the_contract_to_be_terminated'])) {
+                    if (!$contract_version->has('conclusion_date')) {
+                        $this->Flash->error(__('Please set the date of conclusion of the contract version.'));
+
+                        return $this->redirect([
+                            'controller' => 'ContractVersions',
+                            'action' => 'edit',
+                            $contract_version->id,
+                        ]);
+                    }
+
+                    break;
+
+                case 'contract-new-x':
+                    if (empty($contract_version->old)) {
+                        $this->Flash->error(__('Please select the contract version to be replaced.'));
+
+                        return $this->redirect(['action' => 'print', $id, '?' => $query]);
+                    }
+
+                    if (!$contract_version->old->has('conclusion_date')) {
+                        $this->Flash->error(__('Please set the date of conclusion of the original contract version.'));
+
+                        return $this->redirect([
+                            'controller' => 'ContractVersions',
+                            'action' => 'edit',
+                            $contract_version->old->id,
+                        ]);
+                    }
+
+                    if (empty($query['number_of_the_contract_to_be_terminated'])) {
                         $this->Flash->error(__('Please enter the number of the contract to be terminated.'));
 
                         return $this->redirect(['action' => 'print', $id, '?' => $query]);
                     } else {
-                        $contract->number_of_the_contract_to_be_terminated
+                        $contract_version->number_of_the_contract_to_be_terminated
+                            = $query['number_of_the_contract_to_be_terminated'];
+                    }
+
+                    break;
+
+                case 'contract-new':
+                    /*
+                    if (!$contract_version->has('valid_from')) {
+                        $this->Flash->error(__('Please set the date from which the contract version is valid.'));
+
+                        return $this->redirect(['action' => 'view', $id]);
+                    }
+                    */
+
+                    break;
+
+                case 'handover-protocol-uninstallation':
+                    if (!$contract_version->has('valid_until')) {
+                        $this->Flash->error(__('Please set a date until which the contract version is valid.'));
+
+                        return $this->redirect([
+                            'controller' => 'ContractVersions',
+                            'action' => 'edit',
+                            $contract_version->id,
+                        ]);
+                    }
+
+                    if (empty($query['number_of_the_contract_to_be_terminated'])) {
+                        $this->Flash->error(__('Please enter the number of the contract to be terminated.'));
+
+                        return $this->redirect(['action' => 'print', $id, '?' => $query]);
+                    } else {
+                        $contract_version->number_of_the_contract_to_be_terminated
                             = $query['number_of_the_contract_to_be_terminated'];
                     }
 
                     // no break - checks will continue
                 case 'handover-protocol-installation':
-                    if (!$contract->has('valid_from')) {
-                        $this->Flash->error(__('Please set the date from which the contract is valid.'));
+                    /*
+                    if (!$contract_version->has('valid_from')) {
+                        $this->Flash->error(__('Please set the date from which the contract version is valid.'));
 
-                        return $this->redirect(['action' => 'edit', $id]);
+                        return $this->redirect(['action' => 'view', $id]);
                     }
+                    */
 
                     try {
                         //Try to load lastly added RADIUS account
@@ -577,10 +668,12 @@ class ContractsController extends AppController
 
             $billings_collection = new Collection($contract->billings);
 
-            $active_billings_collection = $billings_collection->reject(function ($billing, $key) use ($contract) {
-                return ($billing->has('billing_from') && $billing->billing_from > $contract->valid_from)
-                    || ($billing->has('billing_until') && $billing->billing_until < $contract->valid_from);
-            });
+            $active_billings_collection = $billings_collection->reject(
+                function ($billing, $key) use ($contract_version) {
+                    return ($billing->has('billing_from') && $billing->billing_from > $contract_version->valid_from)
+                        || ($billing->has('billing_until') && $billing->billing_until < $contract_version->valid_from);
+                }
+            );
 
             $contract->individual_billings = $active_billings_collection->filter(function ($billing, $key) {
                 return $billing->has('price');
@@ -590,6 +683,11 @@ class ContractsController extends AppController
                 return !$billing->has('price');
             })->toArray();
         }
-        $this->set(compact('contract', 'type', 'query'));
+        $this->set(compact(
+            'contract',
+            'contractVersions',
+            'type',
+            'query'
+        ));
     }
 }

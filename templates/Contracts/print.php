@@ -181,6 +181,60 @@
                     </table>
                 </div>
             </div>
+            <div class="related">
+                <?= $this->AuthLink->link(
+                    __('New Contract Version'),
+                    ['controller' => 'ContractVersions', 'action' => 'add'],
+                    ['class' => 'button button-small float-right win-link']
+                ) ?>
+                <h4><?= __('Contract Versions') ?></h4>
+                <?php if (!empty($contract->contract_versions)) : ?>
+                <div class="table-responsive">
+                    <table>
+                    <thead>
+                        <tr>
+                            <th><?= __('Valid From') ?></th>
+                            <th><?= __('Valid Until') ?></th>
+                            <th><?= __('Obligation Until') ?></th>
+                            <th><?= __('Conclusion Date') ?></th>
+                            <th><?= __('Number Of Amendments') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($contract->contract_versions as $contractVersion) : ?>
+                        <tr>
+                            <td><?= h($contractVersion->valid_from) ?></td>
+                            <td><?= h($contractVersion->valid_until) ?></td>
+                            <td style="<?=
+                                isset($contractVersion->obligation_until)
+                                && $contractVersion->obligation_until->isFuture() ?
+                                    'color: red;' : ''
+                            ?>"><?= h($contractVersion->obligation_until) ?></td>
+                            <td><?= h($contractVersion->conclusion_date) ?></td>
+                            <td><?= $this->Number->format($contractVersion->number_of_amendments) ?></td>
+                            <td class="actions">
+                                <?= $this->Html->link(
+                                    __('View'),
+                                    ['controller' => 'ContractVersions', 'action' => 'view', $contractVersion->id]
+                                ) ?>
+                                <?= $this->Html->link(
+                                    __('Edit'),
+                                    ['controller' => 'ContractVersions', 'action' => 'edit', $contractVersion->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->Form->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'ContractVersions', 'action' => 'delete', $contractVersion->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $contractVersion->id)]
+                                ) ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+                <?php endif; ?>
+            </div>
             <br />
             <?= $this->Form->create(null, [
                 'type' => 'get',
@@ -203,6 +257,11 @@
                             'empty' => true,
                             'required' => true,
                         ]);
+                        echo $this->Form->control('contract_version_id', [
+                            'options' => $contractVersions,
+                            'empty' => true,
+                            'required' => true,
+                        ]);
                         echo $this->Form->control('own_equipment', [
                             'label' => __('The customer has his own equipment'),
                             'type' => 'checkbox',
@@ -216,6 +275,12 @@
                             'label' => __('Effective date of the amendment'),
                             'empty' => true,
                             'type' => 'date',
+                        ]);
+                        echo $this->Form->control('contract_version_to_be_replaced_id', [
+                            'label' => __('Contract Version To Be Replaced'),
+                            'options' => $contractVersions,
+                            'empty' => true,
+                            'required' => false,
                         ]);
                         echo $this->Form->control('number_of_the_contract_to_be_terminated', [
                             'label' => __('The number of the contract to be terminated'),

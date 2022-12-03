@@ -838,7 +838,8 @@ use Cake\I18n\Number;
                                         echo isset($range['access_point']['id']) ?
                                             __('Access Point') . ': ' . $this->Html->link(
                                                 $range['access_point']['name'],
-                                                env('WATCHER_NMS_URL') . '/access-points/view/' . $range['access_point']['id'],
+                                                env('WATCHER_NMS_URL')
+                                                    . '/access-points/view/' . $range['access_point']['id'],
                                                 ['target' => '_blank']
                                             ) . '<br>' : '';
                                         echo isset($range['id']) ?
@@ -903,7 +904,8 @@ use Cake\I18n\Number;
                                         echo isset($range['access_point']['id']) ?
                                             __('Access Point') . ': ' . $this->Html->link(
                                                 $range['access_point']['name'],
-                                                env('WATCHER_NMS_URL') . '/access-points/view/' . $range['access_point']['id'],
+                                                env('WATCHER_NMS_URL')
+                                                    . '/access-points/view/' . $range['access_point']['id'],
                                                 ['target' => '_blank']
                                             ) . '<br>' : '';
                                         echo isset($range['id']) ?
