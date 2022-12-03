@@ -22,52 +22,43 @@ use Cake\I18n\FrozenDate;
             <?= $this->Form->create($contract) ?>
             <fieldset>
                 <legend><?= __('Add Contract') ?></legend>
-                <?php
-                if (!isset($customer_id)) {
-                    echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
-                }
-                echo $this->Form->control('contract_state_id', ['options' => $contractStates, 'empty' => true]);
-                echo $this->Form->control('service_type_id', ['options' => $serviceTypes, 'empty' => true]);
-                echo $this->Form->control('installation_address_id', [
-                    'options' => $installationAddresses,
-                    'empty' => true,
-                ]);
-                echo $this->Form->control('access_point_id', ['options' => $accessPoints, 'empty' => true]);
-                echo $this->Form->control('valid_from', ['empty' => true]);
-
-                echo $this->Form->control('enable_valid_until', [
-                    'label' => false,
-                    'type' => 'checkbox',
-                    'templates' => [
-                        'inputContainer' => '<div class="float-left">{{content}}&nbsp;</div>',
-                    ],
-                    'onclick' => 'document.getElementById("valid-until").disabled = !this.checked;',
-                ]);
-                echo $this->Form->hidden('valid_until', ['value' => '']); //return null if not enabled
-                echo $this->Form->control('valid_until', [
-                    'empty' => true,
-                    'disabled' => !$contract->has('valid_until'),
-                ]);
-                $this->Form->unlockField('valid_until'); //disable form security check
-
-                echo $this->Form->control('enable_obligation_until', [
-                    'label' => false,
-                    'type' => 'checkbox',
-                    'templates' => [
-                        'inputContainer' => '<div class="float-left">{{content}}&nbsp;</div>',
-                    ],
-                    'onclick' => 'document.getElementById("obligation-until").disabled = !this.checked;',
-                ]);
-                echo $this->Form->hidden('obligation_until', ['value' => '']); //return null if not enabled
-                echo $this->Form->control('obligation_until', [
-                    'empty' => true,
-                    'disabled' => !$contract->has('obligation_until'),
-                    'default' => FrozenDate::now()->addMonth(24)->lastOfMonth(),
-                ]);
-                $this->Form->unlockField('obligation_until'); //disable form security check
-
-                echo $this->Form->control('note');
-                ?>
+                <div class="row">
+                    <div class="column-responsive">
+                        <datalist id="access-descriptions">
+                            <option value="žebřík není potřeba">
+                            <option value="skládačka 3,6m">
+                            <option value="žebřík 6m">
+                            <option value="žebřík 8m">
+                            <option value="žebřík 11m">
+                        </datalist>                        
+                        <?php
+                        if (!isset($customer_id)) {
+                            echo $this->Form->control('customer_id', ['options' => $customers]);
+                        }
+                        echo $this->Form->control('contract_state_id', ['options' => $contractStates, 'empty' => true]);
+                        echo $this->Form->control('service_type_id', ['options' => $serviceTypes, 'empty' => true]);
+                        echo $this->Form->control('number');
+                        echo $this->Form->control('installation_address_id', [
+                            'options' => $installationAddresses,
+                            'empty' => true,
+                        ]);
+                        echo $this->Form->control('commission_id', ['options' => $commissions, 'empty' => true]);
+                        echo $this->Form->control('vip');
+                        ?>
+                    </div>
+                    <div class="column-responsive">
+                        <?php
+                        echo $this->Form->control('access_point_id', ['options' => $accessPoints, 'empty' => true]);
+                        echo $this->Form->control('access_description', [
+                            'type' => 'text',
+                            'list' => 'access-descriptions',
+                        ]);
+                        echo $this->Form->control('activation_fee', ['empty' => true]);
+                        echo $this->Form->control('activation_fee_with_obligation', ['empty' => true]);
+                        echo $this->Form->control('note');
+                        ?>
+                    </div>
+                </div>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>

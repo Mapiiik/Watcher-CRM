@@ -59,6 +59,7 @@ class CommissionsController extends AppController
                     'ServiceTypes',
                     'InstallationAddresses',
                     'InstallationTechnicians',
+                    'UninstallationTechnicians',
                 ],
                 'Creators',
                 'Modifiers',

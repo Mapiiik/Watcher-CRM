@@ -101,6 +101,9 @@ class ContractsTable extends AppTable
         ]);
         $this->hasMany('ContractVersions', [
             'foreignKey' => 'contract_id',
+            'sort' => [
+                'ContractVersions.valid_from' => 'DESC',
+            ],
         ]);
         $this->hasMany('Ips', [
             'foreignKey' => 'contract_id',

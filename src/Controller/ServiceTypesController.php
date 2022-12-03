@@ -57,6 +57,7 @@ class ServiceTypesController extends AppController
                     'ContractStates',
                     'InstallationAddresses',
                     'InstallationTechnicians',
+                    'UninstallationTechnicians',
                     'Commissions',
                 ],
                 'Services' => ['Queues'],

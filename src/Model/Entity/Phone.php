@@ -17,6 +17,10 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $customer_id
  * @property string|null $phone
+ * @property bool $use_for_billing
+ * @property bool $use_for_outages
+ * @property bool $use_for_commercial
+ * @property string|null $note
  *
  * @property \App\Model\Entity\Customer $customer
  */

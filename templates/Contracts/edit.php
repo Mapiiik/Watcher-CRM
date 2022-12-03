@@ -7,6 +7,7 @@
  * @var string[]|\Cake\Collection\CollectionInterface $installationAddresses
  * @var string[]|\Cake\Collection\CollectionInterface $accessPoints
  * @var string[]|\Cake\Collection\CollectionInterface $installationTechnicians
+ * @var string[]|\Cake\Collection\CollectionInterface $uninstallationTechnicians
  * @var string[]|\Cake\Collection\CollectionInterface $commissions
  */
 ?>
@@ -47,62 +48,62 @@
                             'options' => $installationAddresses,
                             'empty' => true,
                         ]);
-                        echo $this->Form->control('conclusion_date', ['empty' => true, 'max' => date('Y-m-d')]);
-                        echo $this->Form->control('number_of_amendments');
-                        echo $this->Form->control('valid_from', ['empty' => true]);
-
-                        echo $this->Form->control('enable_valid_until', [
-                            'label' => false,
-                            'checked' => $contract->has('valid_until'),
-                            'type' => 'checkbox',
-                            'templates' => [
-                                'inputContainer' => '<div class="float-left">{{content}}&nbsp;</div>',
-                            ],
-                            'onclick' => 'document.getElementById("valid-until").disabled = !this.checked;',
-                        ]);
-                        echo $this->Form->hidden('valid_until', ['value' => '']); //return null if not enabled
-                        echo $this->Form->control('valid_until', [
-                            'empty' => true,
-                            'disabled' => !$contract->has('valid_until'),
-                        ]);
-                        $this->Form->unlockField('valid_until'); //disable form security check
-
-                        echo $this->Form->control('enable_obligation_until', [
-                            'label' => false,
-                            'checked' => $contract->has('obligation_until'),
-                            'type' => 'checkbox',
-                            'templates' => [
-                                'inputContainer' => '<div class="float-left">{{content}}&nbsp;</div>',
-                            ],
-                            'onclick' => 'document.getElementById("obligation-until").disabled = !this.checked;',
-                        ]);
-                        echo $this->Form->hidden('obligation_until', ['value' => '']); //return null if not enabled
-                        echo $this->Form->control('obligation_until', [
-                            'empty' => true,
-                            'disabled' => !$contract->has('obligation_until'),
-                            'default' => $contract->has('valid_from') ?
-                                $contract->valid_from->addMonth(24)->subDay(1) : null,
-                        ]);
-                        $this->Form->unlockField('obligation_until'); //disable form security check
+                        echo $this->Form->control('commission_id', ['options' => $commissions, 'empty' => true]);
+                        echo $this->Form->control('vip');
                         ?>
                     </div>
                     <div class="column-responsive">
                         <?php
                         echo $this->Form->control('access_point_id', ['options' => $accessPoints, 'empty' => true]);
+                        echo $this->Form->control('access_description', [
+                            'type' => 'text',
+                            'list' => 'access-descriptions',
+                        ]);
+                        echo $this->Form->control('activation_fee', ['empty' => true]);
+                        echo $this->Form->control('activation_fee_with_obligation', ['empty' => true]);
+                        echo $this->Form->control('note');
+                        ?>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column-responsive">
+                        <?php
                         echo $this->Form->control('installation_date', ['empty' => true]);
                         echo $this->Form->control('installation_technician_id', [
                             'options' => $installationTechnicians,
                             'empty' => true,
                         ]);
-                        echo $this->Form->control('access_description', [
-                            'type' => 'text',
-                            'list' => 'access-descriptions',
+                        ?>
+                    </div>
+                    <div class="column-responsive">
+                        <?php
+                        echo $this->Form->control('enable_uninstallation', [
+                            'label' => false,
+                            'checked' => $contract->has('uninstallation_date'),
+                            'type' => 'checkbox',
+                            'templates' => [
+                                'inputContainer' => '<div class="float-left">{{content}}&nbsp;</div>',
+                            ],
+                            'onclick' => '
+                                document.getElementById("uninstallation-date").disabled = !this.checked;
+                                document.getElementById("uninstallation-technician-id").disabled = !this.checked;
+                            ',
                         ]);
-                        echo $this->Form->control('commission_id', ['options' => $commissions, 'empty' => true]);
-                        echo $this->Form->control('vip');
-                        echo $this->Form->control('activation_fee', ['empty' => true]);
-                        echo $this->Form->control('activation_fee_with_obligation', ['empty' => true]);
-                        echo $this->Form->control('note');
+
+                        echo $this->Form->hidden('uninstallation_date', ['value' => '']); //return null if not enabled
+                        echo $this->Form->control('uninstallation_date', [
+                            'empty' => true,
+                            'disabled' => !$contract->has('uninstallation_date'),
+                        ]);
+                        $this->Form->unlockField('uninstallation_date'); //disable form security check
+
+                        echo $this->Form->hidden('uninstallation_technician_id', ['value' => '']); //return null if not enabled
+                        echo $this->Form->control('uninstallation_technician_id', [
+                            'options' => $uninstallationTechnicians,
+                            'empty' => true,
+                            'disabled' => !$contract->has('uninstallation_date'),
+                        ]);
+                        $this->Form->unlockField('uninstallation_technician_id'); //disable form security check
                         ?>
                     </div>
                 </div>

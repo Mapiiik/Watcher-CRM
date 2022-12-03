@@ -130,15 +130,12 @@
                             <th><?= __('Contract State') ?></th>
                             <th><?= __('Service Type') ?></th>
                             <th><?= __('Installation Address') ?></th>
-                            <th><?= __('Conclusion Date') ?></th>
-                            <th><?= __('Number Of Amendments') ?></th>
-                            <th><?= __('Valid From') ?></th>
-                            <th><?= __('Valid Until') ?></th>
-                            <th><?= __('Obligation Until') ?></th>
                             <th><?= __('Vip') ?></th>
                             <th><?= __('Access Point') ?></th>
                             <th><?= __('Installation Date') ?></th>
                             <th><?= __('Installation Technician') ?></th>
+                            <th><?= __('Uninstallation Date') ?></th>
+                            <th><?= __('Uninstallation Technician') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($commission->contracts as $contract) : ?>
@@ -176,11 +173,6 @@
                                     ]
                                 ) : '' ?>
                             </td>
-                            <td><?= h($contract->conclusion_date) ?></td>
-                            <td><?= $this->Number->format($contract->number_of_amendments) ?></td>
-                            <td><?= h($contract->valid_from) ?></td>
-                            <td><?= h($contract->valid_until) ?></td>
-                            <td><?= h($contract->obligation_until) ?></td>
                             <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
                             <td><?= $contract->has('access_point') ? h($contract->access_point['name']) : '' ?></td>
                             <td><?= h($contract->installation_date) ?></td>
@@ -194,6 +186,16 @@
                                     ]
                                 ) : '' ?>
                             </td>
+                            <td><?= h($contract->uninstallation_date) ?></td>
+                            <td><?=
+                                $contract->has('uninstallation_technician') ? $this->Html->link(
+                                    $contract->uninstallation_technician->name,
+                                    [
+                                        'controller' => 'Customers',
+                                        'action' => 'view',
+                                        $contract->uninstallation_technician->id,
+                                    ]
+                                ) : '' ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),

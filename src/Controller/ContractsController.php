@@ -51,6 +51,7 @@ class ContractsController extends AppController
                 'InstallationAddresses',
                 'ServiceTypes',
                 'InstallationTechnicians',
+                'UninstallationTechnicians',
                 'Commissions',
             ],
             'order' => ['id' => 'DESC'],
@@ -97,6 +98,7 @@ class ContractsController extends AppController
                 'InstallationAddresses',
                 'ServiceTypes',
                 'InstallationTechnicians',
+                'UninstallationTechnicians',
                 'Commissions',
                 'Billings' => [
                     'Services',
@@ -172,6 +174,18 @@ class ContractsController extends AppController
                     'style' => $dealer->dealer === 1 ? null : 'color: gray;',
                 ];
             });
+        $uninstallationTechnicians = $this->Contracts->UninstallationTechnicians
+            ->find('all')
+            ->where(['dealer' => 1]) // only current dealers
+            ->order(['dealer', 'company', 'last_name', 'first_name'])
+            ->all()
+            ->map(function ($dealer) {
+                return [
+                    'value' => $dealer->id,
+                    'text' => $dealer->name_for_lists,
+                    'style' => $dealer->dealer === 1 ? null : 'color: gray;',
+                ];
+            });
         $commissions = $this->Contracts->Commissions->find('list', ['order' => 'name']);
 
         if (isset($customer_id)) {
@@ -185,6 +199,7 @@ class ContractsController extends AppController
             'installationAddresses',
             'serviceTypes',
             'installationTechnicians',
+            'uninstallationTechnicians',
             'commissions'
         ));
 
@@ -242,6 +257,17 @@ class ContractsController extends AppController
                     'style' => $dealer->dealer === 1 ? null : 'color: gray;',
                 ];
             });
+        $uninstallationTechnicians = $this->Contracts->UninstallationTechnicians
+            ->find('all')
+            ->order(['dealer', 'company', 'last_name', 'first_name'])
+            ->all()
+            ->map(function ($dealer) {
+                return [
+                    'value' => $dealer->id,
+                    'text' => $dealer->name_for_lists,
+                    'style' => $dealer->dealer === 1 ? null : 'color: gray;',
+                ];
+            });
         $commissions = $this->Contracts->Commissions->find('list', ['order' => 'name']);
 
         if (isset($customer_id)) {
@@ -255,6 +281,7 @@ class ContractsController extends AppController
             'installationAddresses',
             'serviceTypes',
             'installationTechnicians',
+            'uninstallationTechnicians',
             'commissions'
         ));
 
@@ -401,6 +428,7 @@ class ContractsController extends AppController
                 'InstallationAddresses',
                 'ServiceTypes',
                 'InstallationTechnicians',
+                'UninstallationTechnicians',
                 'Commissions',
                 'Billings' => ['Services'],
                 'Ips',

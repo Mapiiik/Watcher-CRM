@@ -57,6 +57,7 @@ class ContractStatesController extends AppController
                     'Customers',
                     'InstallationAddresses',
                     'InstallationTechnicians',
+                    'UninstallationTechnicians',
                     'ServiceTypes',
                 ],
                 'Creators',

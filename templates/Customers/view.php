@@ -531,14 +531,10 @@ use Cake\I18n\Number;
                             <th><?= __('Contract State') ?></th>
                             <th><?= __('Service Type') ?></th>
                             <th><?= __('Installation Address') ?></th>
-                            <th><?= __('Conclusion Date') ?></th>
-                            <th><?= __('Number Of Amendments') ?></th>
-                            <th><?= __('Valid From') ?></th>
-                            <th><?= __('Valid Until') ?></th>
-                            <th><?= __('Obligation Until') ?></th>
                             <th><?= __('Vip') ?></th>
                             <th><?= __('Access Point') ?></th>
                             <th><?= __('Installation Date') ?></th>
+                            <th><?= __('Uninstallation Date') ?></th>
                             <th><?= __('Note') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
@@ -550,17 +546,10 @@ use Cake\I18n\Number;
                             <td><?= $contract->has('service_type') ? h($contract->service_type->name) : '' ?></td>
                             <td><?= $contract->has('installation_address') ?
                                 h($contract->installation_address->full_address) : '' ?></td>
-                            <td><?= h($contract->conclusion_date) ?></td>
-                            <td><?= h($contract->number_of_amendments) ?></td>
-                            <td><?= h($contract->valid_from) ?></td>
-                            <td><?= h($contract->valid_until) ?></td>
-                            <td style="<?=
-                                isset($contract->obligation_until) && $contract->obligation_until->isFuture() ?
-                                    'color: red;' : ''
-                            ?>"><?= h($contract->obligation_until) ?></td>
                             <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
                             <td><?= $contract->has('access_point') ? h($contract->access_point['name']) : '' ?></td>
                             <td><?= h($contract->installation_date) ?></td>
+                            <td><?= h($contract->uninstallation_date) ?></td>
                             <td><?= h($contract->note) ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(

@@ -155,21 +155,6 @@ use Cake\I18n\Number;
                             <td><?= $contract->has('access_point') ? h($contract->access_point['name']) : '' ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Installation Date') ?></th>
-                            <td><?= h($contract->installation_date) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Installation Technician') ?></th>
-                            <td><?= $contract->has('installation_technician') ? $this->Html->link(
-                                $contract->installation_technician->name,
-                                [
-                                    'controller' => 'Customers',
-                                    'action' => 'view',
-                                    $contract->installation_technician->id,
-                                ]
-                            ) : '' ?></td>
-                        </tr>
-                        <tr>
                             <th><?= __('Commission') ?></th>
                             <td><?= $contract->has('commission') ? $this->Html->link(
                                 $contract->commission->name,
@@ -198,27 +183,34 @@ use Cake\I18n\Number;
                 <div class="column-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Conclusion Date') ?></th>
-                            <td><?= h($contract->conclusion_date) ?></td>
+                            <th><?= __('Installation Date') ?></th>
+                            <td><?= h($contract->installation_date) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Number Of Amendments') ?></th>
-                            <td><?= $this->Number->format($contract->number_of_amendments) ?></td>
+                            <th><?= __('Installation Technician') ?></th>
+                            <td><?= $contract->has('installation_technician') ? $this->Html->link(
+                                $contract->installation_technician->name,
+                                [
+                                    'controller' => 'Customers',
+                                    'action' => 'view',
+                                    $contract->installation_technician->id,
+                                ]
+                            ) : '' ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Valid From') ?></th>
-                            <td><?= h($contract->valid_from) ?></td>
+                            <th><?= __('Uninstallation Date') ?></th>
+                            <td><?= h($contract->uninstallation_date) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Valid Until') ?></th>
-                            <td><?= h($contract->valid_until) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Obligation Until') ?></th>
-                            <td style="<?=
-                                isset($contract->obligation_until) && $contract->obligation_until->isFuture() ?
-                                    'color: red;' : ''
-                            ?>"><?= h($contract->obligation_until) ?></td>
+                            <th><?= __('Uninstallation Technician') ?></th>
+                            <td><?= $contract->has('uninstallation_technician') ? $this->Html->link(
+                                $contract->uninstallation_technician->name,
+                                [
+                                    'controller' => 'Customers',
+                                    'action' => 'view',
+                                    $contract->uninstallation_technician->id,
+                                ]
+                            ) : '' ?></td>
                         </tr>
                     </table>
                 </div>
@@ -306,7 +298,11 @@ use Cake\I18n\Number;
                         <tr>
                             <td><?= h($contractVersion->valid_from) ?></td>
                             <td><?= h($contractVersion->valid_until) ?></td>
-                            <td><?= h($contractVersion->obligation_until) ?></td>
+                            <td style="<?=
+                                isset($contractVersion->obligation_until)
+                                && $contractVersion->obligation_until->isFuture() ?
+                                    'color: red;' : ''
+                            ?>"><?= h($contractVersion->obligation_until) ?></td>
                             <td><?= h($contractVersion->conclusion_date) ?></td>
                             <td><?= $this->Number->format($contractVersion->number_of_amendments) ?></td>
                             <td class="actions">
