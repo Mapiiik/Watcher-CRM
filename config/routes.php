@@ -52,6 +52,27 @@ $routes->scope('/admin/', function (RouteBuilder $builder) {
 
     $builder->setExtensions(['pdf']);
 
+    // UUID routes
+    $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/{action}/{id}', [])
+        ->setPatterns([
+            'customer_id' => '[0-9]+',
+            'contract_id' => '[0-9]+',
+            'id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+        ])
+        ->setPass(['id']);
+
+    $builder->connect('/customers/{customer_id}/{controller}/{action}/{id}', [])
+        ->setPatterns([
+            'customer_id' => '[0-9]+',
+            'id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+        ])
+        ->setPass(['id']);
+
+    // other routes
+    $builder->connect('/{controller}/{action}/{id}', [])
+        ->setPatterns(['id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}'])
+        ->setPass(['id']);
+
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}', 'Contracts::view')
         ->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+'])
         ->setPass(['contract_id']);
@@ -124,14 +145,8 @@ $routes->scope('/admin/', function (RouteBuilder $builder) {
     $builder->connect('/{controller}/{id}/{action}/*', [])
         ->setPatterns(['id' => '[0-9]+'])
         ->setPass(['id']);
-    $builder->connect('/{controller}/{id}', ['action' => 'view'])
-        ->setPatterns(['id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}'])
-        ->setPass(['id']);
-    $builder->connect('/{controller}/{id}/{action}/*', [])
-        ->setPatterns(['id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}'])
-        ->setPass(['id']);
 
-//    $builder->fallbacks();
+    //$builder->fallbacks();
 });
 
 $routes->scope('/', function (RouteBuilder $builder) {

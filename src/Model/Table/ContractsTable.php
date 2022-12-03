@@ -13,10 +13,12 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\AddressesTable&\Cake\ORM\Association\BelongsTo $InstallationAddresses
  * @property \App\Model\Table\ServiceTypesTable&\Cake\ORM\Association\BelongsTo $ServiceTypes
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $InstallationTechnicians
+ * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $UninstallationTechnicians
  * @property \App\Model\Table\CommissionsTable&\Cake\ORM\Association\BelongsTo $Commissions
  * @property \App\Model\Table\ContractStatesTable&\Cake\ORM\Association\BelongsTo $ContractStates
  * @property \App\Model\Table\BillingsTable&\Cake\ORM\Association\HasMany $Billings
  * @property \App\Model\Table\BorrowedEquipmentsTable&\Cake\ORM\Association\HasMany $BorrowedEquipments
+ * @property \App\Model\Table\ContractVersionsTable&\Cake\ORM\Association\HasMany $ContractVersions
  * @property \App\Model\Table\IpsTable&\Cake\ORM\Association\HasMany $Ips
  * @property \App\Model\Table\RemovedIpsTable&\Cake\ORM\Association\HasMany $RemovedIps
  * @property \App\Model\Table\IpNetworksTable&\Cake\ORM\Association\HasMany $IpNetworks
@@ -76,6 +78,11 @@ class ContractsTable extends AppTable
             'foreignKey' => 'installation_technician_id',
             'conditions' => ['InstallationTechnicians.dealer IN' => [1, 2]],
         ]);
+        $this->belongsTo('UninstallationTechnicians', [
+            'className' => 'Customers',
+            'foreignKey' => 'uninstallation_technician_id',
+            'conditions' => ['UninstallationTechnicians.dealer IN' => [1, 2]],
+        ]);
         $this->belongsTo('Commissions', [
             'foreignKey' => 'commission_id',
         ]);
@@ -90,6 +97,9 @@ class ContractsTable extends AppTable
             ],
         ]);
         $this->hasMany('BorrowedEquipments', [
+            'foreignKey' => 'contract_id',
+        ]);
+        $this->hasMany('ContractVersions', [
             'foreignKey' => 'contract_id',
         ]);
         $this->hasMany('Ips', [
@@ -147,16 +157,16 @@ class ContractsTable extends AppTable
             ->allowEmptyString('note');
 
         $validator
-            ->date('obligation_until')
-            ->allowEmptyDate('obligation_until');
-
-        $validator
             ->boolean('vip')
             ->allowEmptyString('vip');
 
         $validator
             ->integer('installation_technician_id')
             ->allowEmptyString('installation_technician_id');
+
+        $validator
+            ->integer('uninstallation_technician_id')
+            ->allowEmptyString('uninstallation_technician_id');
 
         $validator
             ->integer('commission_id')
@@ -167,24 +177,12 @@ class ContractsTable extends AppTable
             ->allowEmptyDate('installation_date');
 
         $validator
+            ->date('uninstallation_date')
+            ->allowEmptyDate('uninstallation_date');
+
+        $validator
             ->scalar('access_description')
             ->allowEmptyString('access_description');
-
-        $validator
-            ->date('valid_from')
-            ->allowEmptyDate('valid_from');
-
-        $validator
-            ->date('valid_until')
-            ->allowEmptyDate('valid_until');
-
-        $validator
-            ->date('conclusion_date')
-            ->allowEmptyDate('conclusion_date');
-
-        $validator
-            ->integer('number_of_amendments')
-            ->allowEmptyString('number_of_amendments');
 
         $validator
             ->integer('activation_fee')
@@ -227,6 +225,10 @@ class ContractsTable extends AppTable
         $rules->add(
             $rules->existsIn(['installation_technician_id'], 'InstallationTechnicians'),
             ['errorField' => 'installation_technician_id']
+        );
+        $rules->add(
+            $rules->existsIn(['uninstallation_technician_id'], 'UninstallationTechnicians'),
+            ['errorField' => 'uninstallation_technician_id']
         );
         $rules->add($rules->existsIn(['commission_id'], 'Commissions'), ['errorField' => 'commission_id']);
         $rules->add($rules->existsIn(['contract_state_id'], 'ContractStates'), ['errorField' => 'contract_state_id']);

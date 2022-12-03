@@ -22,17 +22,13 @@ use Cake\ORM\Entity;
  * @property string|null $number
  * @property int $service_type_id
  * @property string|null $note
- * @property \Cake\I18n\FrozenDate|null $obligation_until
  * @property bool|null $vip
  * @property int|null $installation_technician_id
+ * @property int|null $uninstallation_technician_id
  * @property int|null $commission_id
  * @property \Cake\I18n\FrozenDate|null $installation_date
+ * @property \Cake\I18n\FrozenDate|null $uninstallation_date
  * @property string|null $access_description
- * @property \Cake\I18n\FrozenDate|null $valid_from
- * @property \Cake\I18n\FrozenDate|null $valid_until
- * @property \Cake\I18n\FrozenDate|null $conclusion_date
- * @property int|null $number_of_amendments
- * @property int|null $minimum_duration
  * @property int|null $activation_fee
  * @property int|null $activation_fee_with_obligation
  * @property int|null $activation_fee_sum
@@ -51,10 +47,12 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Address $permanent_address
  * @property \App\Model\Entity\ServiceType $service_type
  * @property \App\Model\Entity\Customer $installation_technician
+ * @property \App\Model\Entity\Customer $uninstallation_technician
  * @property \App\Model\Entity\Commission $commission
  * @property \App\Model\Entity\ContractState $contract_state
  * @property \App\Model\Entity\Billing[] $billings
  * @property \App\Model\Entity\BorrowedEquipment[] $borrowed_equipments
+ * @property \App\Model\Entity\ContractVersion[] $contract_versions
  * @property \App\Model\Entity\Ip[] $ips
  * @property \App\Model\Entity\RemovedIp[] $removed_ips
  * @property \App\Model\Entity\IpNetwork[] $ip_networks
@@ -86,16 +84,13 @@ class Contract extends Entity
         'number' => true,
         'service_type_id' => true,
         'note' => true,
-        'obligation_until' => true,
         'vip' => true,
         'installation_technician_id' => true,
+        'uninstallation_technician_id' => true,
         'commission_id' => true,
         'installation_date' => true,
+        'uninstallation_date' => true,
         'access_description' => true,
-        'valid_from' => true,
-        'valid_until' => true,
-        'conclusion_date' => true,
-        'number_of_amendments' => true,
         'activation_fee' => true,
         'activation_fee_with_obligation' => true,
         'access_point_id' => true,
@@ -106,10 +101,12 @@ class Contract extends Entity
         'installation_address' => true,
         'service_type' => true,
         'installation_technician' => true,
+        'uninstallation_technician' => true,
         'commission' => true,
         'contract_state' => true,
         'billings' => true,
         'borrowed_equipments' => true,
+        'contract_versions' => true,
         'ips' => true,
         'removed_ips' => true,
         'ip_networks' => true,
@@ -117,22 +114,6 @@ class Contract extends Entity
         'sold_equipments' => true,
         'tasks' => true,
     ];
-
-    /**
-     * getter for minumum duration of contract in months (based on valid_from a obligation_until params)
-     *
-     * @return int|null
-     */
-    protected function _getMinimumDuration(): ?int
-    {
-        $minimum_duration = null;
-
-        if (isset($this->obligation_until) && ($this->valid_from < $this->obligation_until)) {
-            $minimum_duration = $this->valid_from->diffInMonths($this->obligation_until->addDay(1));
-        }
-
-        return $minimum_duration;
-    }
 
     /**
      * getter for activation_fee (local or from service_type)

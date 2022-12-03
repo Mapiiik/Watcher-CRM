@@ -93,6 +93,7 @@ class ContractsController extends AppController
                     ],
                 ],
                 'ContractStates',
+                'ContractVersions',
                 'InstallationAddresses',
                 'ServiceTypes',
                 'InstallationTechnicians',

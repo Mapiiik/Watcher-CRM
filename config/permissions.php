@@ -225,6 +225,7 @@ return [
             'plugin' => null,
             'controller' => [
                 'Contracts',
+                'ContractVersions',
                 'Emails',
                 'Phones',
                 'Logins',
@@ -268,6 +269,7 @@ return [
             'controller' => [
                 'Customers',
                 'Contracts',
+                'ContractVersions',
                 'Emails',
                 'Phones',
                 'Logins',

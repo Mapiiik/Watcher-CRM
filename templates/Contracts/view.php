@@ -63,6 +63,11 @@ use Cake\I18n\Number;
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->AuthLink->link(
+                __('Contract Versions'),
+                ['action' => 'view', $contract->id, '#' => 'contract-versions'],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->link(
                 __('Billings'),
                 ['action' => 'view', $contract->id, '#' => 'billings'],
                 ['class' => 'side-nav-item']
@@ -275,6 +280,56 @@ use Cake\I18n\Number;
                         </blockquote>
                     </div>
                 </div>
+            </div>
+            <div class="related">
+                <?= $this->AuthLink->link(
+                    __('New Contract Version'),
+                    ['controller' => 'ContractVersions', 'action' => 'add'],
+                    ['class' => 'button button-small float-right win-link']
+                ) ?>
+                <h4 id="contract-versions"><?= __('Contract Versions') ?></h4>
+                <?php if (!empty($contract->contract_versions)) : ?>
+                <div class="table-responsive">
+                    <table>
+                    <thead>
+                        <tr>
+                            <th><?= __('Valid From') ?></th>
+                            <th><?= __('Valid Until') ?></th>
+                            <th><?= __('Obligation Until') ?></th>
+                            <th><?= __('Conclusion Date') ?></th>
+                            <th><?= __('Number Of Amendments') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($contract->contract_versions as $contractVersion) : ?>
+                        <tr>
+                            <td><?= h($contractVersion->valid_from) ?></td>
+                            <td><?= h($contractVersion->valid_until) ?></td>
+                            <td><?= h($contractVersion->obligation_until) ?></td>
+                            <td><?= h($contractVersion->conclusion_date) ?></td>
+                            <td><?= $this->Number->format($contractVersion->number_of_amendments) ?></td>
+                            <td class="actions">
+                                <?= $this->Html->link(
+                                    __('View'),
+                                    ['controller' => 'ContractVersions', 'action' => 'view', $contractVersion->id]
+                                ) ?>
+                                <?= $this->Html->link(
+                                    __('Edit'),
+                                    ['controller' => 'ContractVersions', 'action' => 'edit', $contractVersion->id],
+                                    ['class' => 'win-link']
+                                ) ?>
+                                <?= $this->Form->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'ContractVersions', 'action' => 'delete', $contractVersion->id],
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $contractVersion->id)]
+                                ) ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+                <?php endif; ?>
             </div>
             <div class="related">
                 <?= $this->AuthLink->link(
