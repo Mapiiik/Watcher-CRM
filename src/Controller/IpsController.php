@@ -199,13 +199,13 @@ class IpsController extends AppController
         }
         switch ($ip->type_of_use ?? $this->Ips->getSchema()->getColumn('type_of_use')['default'] ?? null) {
             case 00:
-                $ip_address_ranges_filter['for_customer_addresses_set_via_radius'] = true;
+                $ip_address_ranges_filter['for_customer_addresses_set_via_radius'] = '1';
                 break;
             case 10:
-                $ip_address_ranges_filter['for_customer_addresses_set_manually'] = true;
+                $ip_address_ranges_filter['for_customer_addresses_set_manually'] = '1';
                 break;
             case 20:
-                $ip_address_ranges_filter['for_technology_addresses_set_manually'] = true;
+                $ip_address_ranges_filter['for_technology_addresses_set_manually'] = '1';
                 break;
         }
         $ip_address_ranges = ApiClient::searchIpAddressRanges($ip_address_ranges_filter);
