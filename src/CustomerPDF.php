@@ -7,16 +7,28 @@ use App\Model\Entity\Customer;
 use TCPDF;
 
 //set image path for TCPDF
-define('K_PATH_IMAGES', WWW_ROOT . 'legacy' . DS . 'images' . DS);
+define('K_PATH_IMAGES', dirname(__DIR__) . DS . 'webroot' . DS . 'legacy' . DS . 'images' . DS);
 
 class CustomerPDF extends TCPDF
 {
     /**
      * @inheritDoc
      */
-    public function cell($w, $h = 0, $txt = '', $border = 0, $ln = 0, $align = '', $fill = false, $link = '', $stretch = 0, $ignore_min_height = false, $calign = 'T', $valign = null)
-    {
-        $valign = $valign ?? ($border == 0 ? 'T' : 'M');
+    public function cell(
+        mixed $w,
+        mixed $h = 0,
+        mixed $txt = '',
+        mixed $border = 0,
+        mixed $ln = 0,
+        mixed $align = '',
+        mixed $fill = false,
+        mixed $link = '',
+        mixed $stretch = 0,
+        mixed $ignore_min_height = false,
+        mixed $calign = 'T',
+        mixed $valign = ''
+    ): void {
+        $valign = $valign == '' ? ($border == 0 ? 'T' : 'M') : $valign;
         parent::Cell($w, $h, $txt, $border, $ln, $align, $fill, $link, $stretch, $ignore_min_height, $calign, $valign);
     }
 

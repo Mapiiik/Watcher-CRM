@@ -11,16 +11,28 @@ use stdClass;
 use TCPDF;
 
 //set image path for TCPDF
-define('K_PATH_IMAGES', WWW_ROOT . 'legacy' . DS . 'images' . DS);
+define('K_PATH_IMAGES', dirname(__DIR__) . DS . 'webroot' . DS . 'legacy' . DS . 'images' . DS);
 
 class ContractPDF extends TCPDF
 {
     /**
      * @inheritDoc
      */
-    public function cell($w, $h = 0, $txt = '', $border = 0, $ln = 0, $align = '', $fill = false, $link = '', $stretch = 0, $ignore_min_height = false, $calign = 'T', $valign = null)
-    {
-        $valign = $valign ?? ($border == 0 ? 'T' : 'M');
+    public function cell(
+        mixed $w,
+        mixed $h = 0,
+        mixed $txt = '',
+        mixed $border = 0,
+        mixed $ln = 0,
+        mixed $align = '',
+        mixed $fill = false,
+        mixed $link = '',
+        mixed $stretch = 0,
+        mixed $ignore_min_height = false,
+        mixed $calign = 'T',
+        mixed $valign = ''
+    ): void {
+        $valign = $valign == '' ? ($border == 0 ? 'T' : 'M') : $valign;
         parent::Cell($w, $h, $txt, $border, $ln, $align, $fill, $link, $stretch, $ignore_min_height, $calign, $valign);
     }
 
@@ -127,7 +139,7 @@ class ContractPDF extends TCPDF
                 $this->Cell(90, 4, 'datum ukončení poskytování služeb:', '', 0, 'C');
                 $this->Ln();
                 $this->SetFont('DejaVuSerif', 'B', 8);
-                $this->Cell(90, 4, $contract_version->number_of_the_contract_to_be_terminated, '', 0, 'C');
+                $this->Cell(90, 4, $contract_version['number_of_the_contract_to_be_terminated'], '', 0, 'C');
                 $this->Cell(90, 4, (string)$contract_version->valid_until, '', 0, 'C');
                 $this->Ln();
 
@@ -424,7 +436,7 @@ class ContractPDF extends TCPDF
                 '<strong>Přístup do Uživatelského portálu je možné zřídit na Webu Poskytovatele:</strong><br />' . PHP_EOL
                 . '<u>https://netair.cz/internet/uzivatelsky-portal</u>' . PHP_EOL,
                 true,
-                0,
+                false,
                 false,
                 true,
                 ''
@@ -877,8 +889,8 @@ class ContractPDF extends TCPDF
                 $this->Cell(60, 4, 'datum uzavření smlouvy:', '', 0, 'C');
                 $this->Cell(60, 4, 'datum ukončení poskytování služeb:', '', 0, 'C');
                 $this->Ln();
-                $this->SetFont('DejaVuSerif', 'B', '8');
-                $this->Cell(60, 4, $contract_version->number_of_the_contract_to_be_terminated, '', 0, 'C');
+                $this->SetFont('DejaVuSerif', 'B', 8);
+                $this->Cell(60, 4, $contract_version['number_of_the_contract_to_be_terminated'], '', 0, 'C');
                 $this->Cell(60, 4, $contract_version->conclusion_date, '', 0, 'C');
                 $this->Cell(60, 4, $contract_version->valid_until, '', 0, 'C');
                 $this->Ln();
@@ -1064,7 +1076,7 @@ class ContractPDF extends TCPDF
 
         if ($type === 'contract-termination') {
             $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Write(4, 'Smluvní strany ujednávají ukončení smlouvy o poskytování služeb č. ' . $contract_version->number_of_the_contract_to_be_terminated . ' ze dne ' . $contract_version->conclusion_date . ' (ve znění případných pozdějších dodatků) ke dni ' . $contract_version->valid_until . '.');
+            $this->Write(4, 'Smluvní strany ujednávají ukončení smlouvy o poskytování služeb č. ' . $contract_version['number_of_the_contract_to_be_terminated'] . ' ze dne ' . $contract_version->conclusion_date . ' (ve znění případných pozdějších dodatků) ke dni ' . $contract_version->valid_until . '.');
             $this->Ln();
             $this->Ln();
             $this->SetFont('DejaVuSerif', '', 8);
@@ -1081,7 +1093,7 @@ class ContractPDF extends TCPDF
             $this->Ln();
 
             if ($type === 'contract-new-x') {
-                $this->Write(4, 'Smluvní strany zároveň ujednávají, že předchozí smlouva o poskytování služeb č. ' . $contract_version->number_of_the_contract_to_be_terminated . ' ze dne ' . $contract_version->old->conclusion_date . ' (ve znění případných pozdějších dodatků) zaniká ke dni ' . $contract_version->valid_from->subDay(1) . '.');
+                $this->Write(4, 'Smluvní strany zároveň ujednávají, že předchozí smlouva o poskytování služeb č. ' . $contract_version['number_of_the_contract_to_be_terminated'] . ' ze dne ' . $contract_version['old']->conclusion_date . ' (ve znění případných pozdějších dodatků) zaniká ke dni ' . $contract_version->valid_from->subDay(1) . '.');
                 $this->Ln();
                 $this->Ln();
             }
@@ -1294,7 +1306,7 @@ class ContractPDF extends TCPDF
                 if ($type === 'contract-new') {
                     $this->Write(4, 'Poskytovatel poskytne Uživateli pro dobu trvání této smlouvy bezúplatně tato zařízení:');
                 } else {
-                    $this->Write(4, 'Na základě uvedené předchozí smlouvy ze dne ' . $contract->conclusion_date . ' poskytl Poskytovatel Uživateli bezúplatně tato zařízení:');
+                    $this->Write(4, 'Na základě uvedené předchozí smlouvy ze dne ' . $contract_version['old']->conclusion_date . ' poskytl Poskytovatel Uživateli bezúplatně tato zařízení:');
                 }
 
                 $this->Ln(5);

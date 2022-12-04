@@ -459,13 +459,13 @@ class ContractsController extends AppController
             $type = $query['document_type'];
         }
         if (isset($query['contract_version_id'])) {
-            $contract_version_id = $query['contract_version_id'];
-            $contract_version = collection($contract->contract_versions)->firstMatch(['id' => $contract_version_id]);
+            $contract_version = collection($contract->contract_versions)->firstMatch([
+                'id' => $query['contract_version_id'],
+            ]);
         }
         if (isset($query['contract_version_to_be_replaced_id'])) {
-            $contract_version_to_be_replaced_id = $query['contract_version_to_be_replaced_id'];
             $contract_version_to_be_replaced = collection($contract->contract_versions)->firstMatch([
-                'id' => $contract_version_to_be_replaced_id,
+                'id' => $query['contract_version_to_be_replaced_id'],
             ]);
         }
 
@@ -490,13 +490,13 @@ class ContractsController extends AppController
                 return $this->redirect(['action' => 'print', $id, '?' => $query]);
             } else {
                 if (!empty($contract_version_to_be_replaced)) {
-                    if ($contract_version_id == $contract_version_to_be_replaced_id) {
+                    if ($contract_version->id == $contract_version_to_be_replaced->id) {
                         $this->Flash->error(__('Invalid contract version to be replaced requested.'));
 
                         return $this->redirect(['action' => 'print', $id, '?' => $query]);
                     }
 
-                    $contract_version->old = $contract_version_to_be_replaced;
+                    $contract_version['old'] = $contract_version_to_be_replaced;
                 }
                 $this->set('contract_version', $contract_version);
             }
@@ -528,7 +528,7 @@ class ContractsController extends AppController
 
                         return $this->redirect(['action' => 'print', $id, '?' => $query]);
                     } else {
-                        $contract_version->number_of_the_contract_to_be_terminated
+                        $contract_version['number_of_the_contract_to_be_terminated']
                             = $query['number_of_the_contract_to_be_terminated'];
                     }
 
@@ -556,19 +556,19 @@ class ContractsController extends AppController
                     break;
 
                 case 'contract-new-x':
-                    if (empty($contract_version->old)) {
+                    if (empty($contract_version['old'])) {
                         $this->Flash->error(__('Please select the contract version to be replaced.'));
 
                         return $this->redirect(['action' => 'print', $id, '?' => $query]);
                     }
 
-                    if (!$contract_version->old->has('conclusion_date')) {
+                    if (!$contract_version['old']->has('conclusion_date')) {
                         $this->Flash->error(__('Please set the date of conclusion of the original contract version.'));
 
                         return $this->redirect([
                             'controller' => 'ContractVersions',
                             'action' => 'edit',
-                            $contract_version->old->id,
+                            $contract_version['old']->id,
                         ]);
                     }
 
@@ -577,7 +577,7 @@ class ContractsController extends AppController
 
                         return $this->redirect(['action' => 'print', $id, '?' => $query]);
                     } else {
-                        $contract_version->number_of_the_contract_to_be_terminated
+                        $contract_version['number_of_the_contract_to_be_terminated']
                             = $query['number_of_the_contract_to_be_terminated'];
                     }
 
@@ -610,7 +610,7 @@ class ContractsController extends AppController
 
                         return $this->redirect(['action' => 'print', $id, '?' => $query]);
                     } else {
-                        $contract_version->number_of_the_contract_to_be_terminated
+                        $contract_version['number_of_the_contract_to_be_terminated']
                             = $query['number_of_the_contract_to_be_terminated'];
                     }
 
