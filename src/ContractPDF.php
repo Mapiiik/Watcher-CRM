@@ -891,8 +891,8 @@ class ContractPDF extends TCPDF
                 $this->Ln();
                 $this->SetFont('DejaVuSerif', 'B', 8);
                 $this->Cell(60, 4, $contract_version['number_of_the_contract_to_be_terminated'], '', 0, 'C');
-                $this->Cell(60, 4, $contract_version->conclusion_date, '', 0, 'C');
-                $this->Cell(60, 4, $contract_version->valid_until, '', 0, 'C');
+                $this->Cell(60, 4, (string)$contract_version->conclusion_date, '', 0, 'C');
+                $this->Cell(60, 4, (string)$contract_version->valid_until, '', 0, 'C');
                 $this->Ln();
 
                 $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
