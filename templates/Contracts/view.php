@@ -333,7 +333,7 @@ use Cake\I18n\Number;
                     ['controller' => 'Billings', 'action' => 'add'],
                     ['class' => 'button button-small float-right win-link']
                 ) ?>
-                <?php if ($contract->has('valid_until')) : ?>
+                <?php if (isset($contract->contract_versions[0]) && $contract->contract_versions[0]->has('valid_until')) : ?>
                     <?= $this->AuthLink->postLink(
                         __('Terminate Related Billings'),
                         ['action' => 'terminateRelatedBillings', $contract->id],

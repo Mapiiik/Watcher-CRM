@@ -364,6 +364,7 @@ class ContractsController extends AppController
                 'Billings' => [
                     'Services',
                 ],
+                'ContractVersions',
             ],
         ]);
 
@@ -371,26 +372,28 @@ class ContractsController extends AppController
 
         $billings_to_update = $billings->match(['billing_until' => null]);
 
-        if (!$contract->has('valid_until')) {
-            $this->Flash->error(__('Please set a date until which the contract is valid.'));
-        } elseif ($billings_to_update->isEmpty()) {
-            $this->Flash->warning(__('No related billings to terminate.'));
-        } else {
-            foreach ($billings_to_update as $billing) {
-                $billing = $this->Contracts->Billings->patchEntity($billing, [
-                    'billing_until' => $contract->valid_until,
-                ]);
+        if (isset($contract->contract_versions[0]) && $contract->contract_versions[0]->has('valid_until')) {
+            if ($billings_to_update->isEmpty()) {
+                $this->Flash->warning(__('No related billings to terminate.'));
+            } else {
+                foreach ($billings_to_update as $billing) {
+                    $billing = $this->Contracts->Billings->patchEntity($billing, [
+                        'billing_until' => $contract->contract_versions[0]->valid_until,
+                    ]);
 
-                if ($this->Contracts->Billings->save($billing)) {
-                    $this->Flash->success(
-                        $billing->name . ' - ' . __('The billing has been saved.')
-                    );
-                } else {
-                    $this->Flash->error(
-                        $billing->name . ' - ' . __('The billing could not be saved. Please, try again.')
-                    );
+                    if ($this->Contracts->Billings->save($billing)) {
+                        $this->Flash->success(
+                            $billing->name . ' - ' . __('The billing has been saved.')
+                        );
+                    } else {
+                        $this->Flash->error(
+                            $billing->name . ' - ' . __('The billing could not be saved. Please, try again.')
+                        );
+                    }
                 }
             }
+        } else {
+            $this->Flash->error(__('Please set a date until which the contract is valid.'));
         }
 
         return $this->redirect(['action' => 'view', $id]);
