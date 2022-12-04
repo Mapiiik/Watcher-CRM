@@ -629,6 +629,7 @@ class ContractsController extends AppController
 
                     try {
                         //Try to load lastly added RADIUS account
+                        /** @var \Radius\Model\Entity\Account $radius_account */
                         $radius_account = $this->fetchTable('Radius.Accounts')
                             ->find()
                             ->where(['contract_id' => $contract->id, 'active' => true])
@@ -648,24 +649,18 @@ class ContractsController extends AppController
                         $technical_details->access_point = $query['access_point'];
                     } elseif ($contract->has('access_point')) {
                         $technical_details->access_point = $contract->access_point['name'];
-                    } else {
-                        $technical_details->access_point = '';
                     }
 
                     if (!empty($query['radius_username'])) {
                         $technical_details->radius_username = $query['radius_username'];
                     } elseif ($radius_connected && isset($radius_account->username)) {
                         $technical_details->radius_username = $radius_account->username;
-                    } else {
-                        $technical_details->radius_username = '';
                     }
 
                     if (!empty($query['radius_password'])) {
                         $technical_details->radius_password = $query['radius_password'];
                     } elseif ($radius_connected && isset($radius_account->password)) {
                         $technical_details->radius_password = $radius_account->password;
-                    } else {
-                        $technical_details->radius_password = '';
                     }
 
                     $this->set('technical_details', $technical_details);
