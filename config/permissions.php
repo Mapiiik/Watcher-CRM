@@ -179,6 +179,7 @@ return [
             'plugin' => null,
             'controller' => [
                 'Contracts',
+                'ContractVersions',
                 'Emails',
                 'Phones',
                 'Logins',
