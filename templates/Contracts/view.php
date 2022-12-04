@@ -109,7 +109,7 @@ use Cake\I18n\Number;
             ?></h5>
             <div class="row">
                 <div class="column-responsive">
-                    <table>
+                    <table style="<?= $contract->style ?>">
                         <tr>
                             <th><?= __('Customer') ?></th>
                             <td><?= $contract->has('customer') ? $this->Html->link(
