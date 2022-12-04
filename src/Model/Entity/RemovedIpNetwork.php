@@ -66,11 +66,10 @@ class RemovedIpNetwork extends Entity
      */
     protected function _getStyle(): string
     {
-        $style = 'background-color: #bbbbbb;';
-        $now = new FrozenDate();
+        $style = 'color: darkgray; text-decoration: line-through;';
 
-        if (isset($this->contract->valid_until) && $this->contract->valid_until < $now) {
-            $style = 'background-color: #ffaaaa;';
+        if (isset($this->contract->style)) {
+            $style .= ' ' . $this->contract->style;
         }
 
         return $style;

@@ -61,10 +61,9 @@ class SoldEquipment extends Entity
     protected function _getStyle(): string
     {
         $style = '';
-        $now = new FrozenDate();
 
-        if (isset($this->contract->valid_until) && $this->contract->valid_until < $now) {
-            $style = 'background-color: #ffaaaa;';
+        if (isset($this->contract->style)) {
+            $style .= ' ' . $this->contract->style;
         }
 
         return $style;

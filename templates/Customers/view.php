@@ -602,11 +602,7 @@ use Cake\I18n\Number;
                                     $billing->contract->number,
                                     ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]
                                 ) : '' ?></td>
-                            <td><?= $billing->has('service') ?
-                                $this->Html->link(
-                                    $billing->service->name,
-                                    ['controller' => 'Services', 'action' => 'view', $billing->service->id]
-                                ) : '' ?></td>
+                            <td><?= $billing->has('service') ? h($billing->service->name) : '' ?></td>
                             <td><?= h($billing->text) ?></td>
                             <td><?= h($billing->quantity) ?></td>
                             <td><?= h($billing->price) ?><?= $billing->has('service') ?
@@ -675,14 +671,8 @@ use Cake\I18n\Number;
                                             ]
                                         ) : '' ?></td>
                                     <td><?= $borrowedEquipment->has('equipment_type') ?
-                                        $this->Html->link(
-                                            $borrowedEquipment->equipment_type->name,
-                                            [
-                                                'controller' => 'EquipmentTypes',
-                                                'action' => 'view',
-                                                $borrowedEquipment->equipment_type->id,
-                                            ]
-                                        ) : '' ?></td>
+                                        h($borrowedEquipment->equipment_type->name) : ''
+                                    ?></td>
                                     <td><?= h($borrowedEquipment->serial_number) ?></td>
                                     <td><?= h($borrowedEquipment->borrowed_from) ?></td>
                                     <td><?= h($borrowedEquipment->borrowed_until) ?></td>

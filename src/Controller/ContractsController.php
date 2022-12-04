@@ -171,7 +171,7 @@ class ContractsController extends AppController
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
-                    'style' => $dealer->dealer === 1 ? null : 'color: gray;',
+                    'style' => $dealer->dealer === 1 ? null : 'color: darkgray;',
                 ];
             });
         $uninstallationTechnicians = $this->Contracts->UninstallationTechnicians
@@ -183,7 +183,7 @@ class ContractsController extends AppController
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
-                    'style' => $dealer->dealer === 1 ? null : 'color: gray;',
+                    'style' => $dealer->dealer === 1 ? null : 'color: darkgray;',
                 ];
             });
         $commissions = $this->Contracts->Commissions->find('list', ['order' => 'name']);
@@ -254,7 +254,7 @@ class ContractsController extends AppController
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
-                    'style' => $dealer->dealer === 1 ? null : 'color: gray;',
+                    'style' => $dealer->dealer === 1 ? null : 'color: darkgray;',
                 ];
             });
         $uninstallationTechnicians = $this->Contracts->UninstallationTechnicians
@@ -265,7 +265,7 @@ class ContractsController extends AppController
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
-                    'style' => $dealer->dealer === 1 ? null : 'color: gray;',
+                    'style' => $dealer->dealer === 1 ? null : 'color: darkgray;',
                 ];
             });
         $commissions = $this->Contracts->Commissions->find('list', ['order' => 'name']);

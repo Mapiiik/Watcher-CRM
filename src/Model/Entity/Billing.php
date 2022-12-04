@@ -255,15 +255,15 @@ class Billing extends Entity
         $now = new FrozenDate();
 
         if (isset($this->billing_from) && $this->billing_from > $now) {
-            $style = 'background-color: #ffbc80;';
+            $style = 'color: darkorange;';
         }
 
         if (isset($this->billing_until) && $this->billing_until < $now) {
-            $style = 'background-color: #bbbbbb;';
+            $style = 'color: darkgray; text-decoration: line-through;';
         }
 
-        if (isset($this->contract->valid_until) && $this->contract->valid_until < $now) {
-            $style = 'background-color: #ffaaaa;';
+        if (isset($this->contract->style)) {
+            $style .= ' ' . $this->contract->style;
         }
 
         return $style;

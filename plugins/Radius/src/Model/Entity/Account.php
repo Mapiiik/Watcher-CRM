@@ -90,7 +90,11 @@ class Account extends Entity
         $style = '';
 
         if (!$this->active) {
-            $style = 'background-color: #bbbbbb;';
+            $style = 'color: darkgray; text-decoration: line-through;';
+        }
+
+        if (isset($this->contract->style)) {
+            $style .= ' ' . $this->contract->style;
         }
 
         return $style;

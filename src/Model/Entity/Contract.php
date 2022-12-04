@@ -6,6 +6,7 @@ namespace App\Model\Entity;
 use App\ApiClient;
 use Cake\I18n\FrozenDate;
 use Cake\ORM\Entity;
+use Exception;
 
 /**
  * Contract Entity
@@ -39,6 +40,8 @@ use Cake\ORM\Entity;
  * @property string $name
  * @property string $style
  * @property bool $active
+ * @property bool $billed
+ * @property bool $blocked
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Address $installation_address
@@ -257,10 +260,9 @@ class Contract extends Entity
     protected function _getStyle(): string
     {
         $style = '';
-        $now = new FrozenDate();
 
-        if (isset($this->valid_until) && $this->valid_until < $now) {
-            $style = 'background-color: #ffaaaa;';
+        if (isset($this->contract_state)) {
+            $style = 'background-color: ' . $this->contract_state->color . ';';
         }
 
         return $style;
@@ -275,10 +277,42 @@ class Contract extends Entity
     {
         $now = new FrozenDate();
 
-        if (isset($this->valid_until) && $this->valid_until < $now) {
-            return false;
+        if (isset($this->contract_state)) {
+            return $this->contract_state->active;
         }
 
-        return true;
+        throw new Exception(__('Contract state data not available.'));
+    }
+
+    /**
+     * getter for billed
+     *
+     * @return bool
+     */
+    protected function _getBilled(): bool
+    {
+        $now = new FrozenDate();
+
+        if (isset($this->contract_state)) {
+            return $this->contract_state->billed;
+        }
+
+        throw new Exception(__('Contract state data not available.'));
+    }
+
+    /**
+     * getter for blocked
+     *
+     * @return bool
+     */
+    protected function _getBlocked(): bool
+    {
+        $now = new FrozenDate();
+
+        if (isset($this->contract_state)) {
+            return $this->contract_state->blocked;
+        }
+
+        throw new Exception(__('Contract state data not available.'));
     }
 }

@@ -151,7 +151,7 @@ class TasksController extends AppController
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
-                    'style' => $dealer->dealer === 1 ? null : 'color: gray;',
+                    'style' => $dealer->dealer === 1 ? null : 'color: darkgray;',
                 ];
             });
         $taskTypes = $this->Tasks->TaskTypes->find('list', ['order' => 'name']);
@@ -254,7 +254,7 @@ class TasksController extends AppController
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
-                    'style' => $dealer->dealer === 1 ? null : 'color: gray;',
+                    'style' => $dealer->dealer === 1 ? null : 'color: darkgray;',
                 ];
             });
         $taskStates = $this->Tasks->TaskStates->find('list', ['order' => 'name']);
@@ -413,7 +413,7 @@ class TasksController extends AppController
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
-                    'style' => $dealer->dealer === 1 ? null : 'color: gray;',
+                    'style' => $dealer->dealer === 1 ? null : 'color: darkgray;',
                 ];
             });
         $taskStates = $this->Tasks->TaskStates->find('list', ['order' => 'name']);
