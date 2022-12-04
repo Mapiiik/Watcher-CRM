@@ -599,7 +599,7 @@ class ContractsController extends AppController
 
                 case 'handover-protocol-uninstallation':
                     if (!$contract_version->has('valid_until')) {
-                        $this->Flash->error(__('Please set a date until which the contract version is valid.'));
+                        $this->Flash->error(__('Please set the date until which the contract version is valid.'));
 
                         return $this->redirect([
                             'controller' => 'ContractVersions',

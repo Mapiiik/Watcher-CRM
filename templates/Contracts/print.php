@@ -258,6 +258,7 @@
                             'required' => true,
                         ]);
                         echo $this->Form->control('contract_version_id', [
+                            'label' => __('Contract Version'),
                             'options' => $contractVersions,
                             'empty' => true,
                             'required' => true,
