@@ -5,7 +5,6 @@ namespace App\Model\Entity;
 
 use App\ApiClient;
 use Cake\Collection\CollectionInterface;
-use Cake\I18n\FrozenDate;
 use Cake\ORM\Entity;
 
 /**

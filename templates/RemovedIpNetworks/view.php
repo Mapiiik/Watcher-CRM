@@ -50,7 +50,9 @@
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $removedIpNetwork->has('customer') ? h($removedIpNetwork->customer->number) : '' ?></td>
+                            <td><?= $removedIpNetwork->has('customer') ?
+                                h($removedIpNetwork->customer->number) : ''
+                            ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Contract') ?></th>

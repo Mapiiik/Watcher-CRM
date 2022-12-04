@@ -77,6 +77,11 @@ class ContractPDF extends TCPDF
     /**
      * generate PDF document - hanover protocol
      *
+     * @param \App\Model\Entity\Contract $contract Contract with all related data
+     * @param \App\Model\Entity\ContractVersion $contract_version Contract version for dates
+     * @param string $type Type of requested document
+     * @param bool $signed Create signed document?
+     * @param \stdClass|null $technical_details Technical details about service
      * @return void
      */
     public function generateHandoverProtocol(Contract $contract, ContractVersion $contract_version, string $type = 'handover-protocol-installation', bool $signed = false, ?stdClass $technical_details = null): void
@@ -793,6 +798,10 @@ class ContractPDF extends TCPDF
     /**
      * generate PDF document - contract
      *
+     * @param \App\Model\Entity\Contract $contract Contract with all related data
+     * @param \App\Model\Entity\ContractVersion $contract_version Contract version for dates
+     * @param string $type Type of requested document
+     * @param bool $signed Create signed document?
      * @return void
      */
     public function generateContract(Contract $contract, ContractVersion $contract_version, string $type = 'contract-new', bool $signed = false): void

@@ -48,7 +48,9 @@
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $borrowedEquipment->has('customer') ? h($borrowedEquipment->customer->number) : '' ?></td>
+                            <td><?= $borrowedEquipment->has('customer') ?
+                                h($borrowedEquipment->customer->number) : ''
+                            ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Contract') ?></th>

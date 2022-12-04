@@ -8,7 +8,6 @@
  * @var string[]|\Cake\Collection\CollectionInterface $accessPoints
  */
 
-use Cake\I18n\FrozenDate;
 ?>
 <div class="row">
     <aside class="column">

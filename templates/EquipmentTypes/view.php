@@ -111,7 +111,9 @@
                                     $borrowedEquipment->customer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $borrowedEquipment->customer->id]
                                 ) : '' ?></td>
-                            <td><?= $borrowedEquipment->has('customer') ? h($borrowedEquipment->customer->number) : '' ?></td>
+                            <td><?= $borrowedEquipment->has('customer') ?
+                                h($borrowedEquipment->customer->number) : ''
+                            ?></td>
                             <td><?= $borrowedEquipment->has('contract') ?
                                 $this->Html->link(
                                     $borrowedEquipment->contract->number,

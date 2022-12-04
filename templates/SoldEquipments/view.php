@@ -61,7 +61,11 @@
                             <th><?= __('Equipment Type') ?></th>
                             <td><?= $soldEquipment->has('equipment_type') ? $this->Html->link(
                                 $soldEquipment->equipment_type->name,
-                                ['controller' => 'EquipmentTypes', 'action' => 'view', $soldEquipment->equipment_type->id]
+                                [
+                                    'controller' => 'EquipmentTypes',
+                                    'action' => 'view',
+                                    $soldEquipment->equipment_type->id,
+                                ]
                             ) : '' ?></td>
                         </tr>
                         <tr>
