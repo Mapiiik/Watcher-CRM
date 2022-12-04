@@ -27,7 +27,10 @@
                     echo $this->AuthLink->link(
                         $contract->name,
                         ['plugin' => null, 'controller' => 'Contracts', 'action' => 'view', $contract->id],
-                        ['class' => 'button button-small']
+                        [
+                            'class' => 'button button-small',
+                            'style' => $contract->style . ' color: inherit;',
+                        ]
                     );
                 }
                 ?>
