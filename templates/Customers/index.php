@@ -5,7 +5,7 @@
  * @var bool $allow_advanced_search
  */
 ?>
-<?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
+<?= $this->Form->create($filterForm, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
 <div class="row">
     <div class="column-responsive">
         <?= $this->Form->control('search', [
@@ -19,6 +19,15 @@
             'onchange' => 'this.form.submit();',
         ]) : '' ?>
     </div>
+    <?php if ($allow_advanced_search) : ?>
+    <div class="column-responsive">
+        <?= $this->Form->control('labels', [
+            'multiple' => 'multiple',
+            'style' => 'height: 100px;',
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+    </div>
+    <?php endif; ?>
 </div>
 <?= $this->Form->end() ?>
 

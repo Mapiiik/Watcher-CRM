@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Form\Form;
+
 /**
  * Customers Controller
  *
@@ -18,9 +20,40 @@ class CustomersController extends AppController
      */
     public function index()
     {
-        // search
-        $search = $this->getRequest()->getQuery('search');
-        $advanced_search = $this->getRequest()->getQuery('advanced_search');
+        // persistent filter data
+        if (!is_null($this->getRequest()->getQuery('advanced_search'))) {
+            $this->getRequest()->getSession()->write(
+                'Config.Customers.filter.advanced_search',
+                $this->getRequest()->getQuery('advanced_search')
+            );
+        }
+        if (!is_null($this->getRequest()->getQuery('search'))) {
+            $this->getRequest()->getSession()->write(
+                'Config.Customers.filter.search',
+                $this->getRequest()->getQuery('search')
+            );
+        }
+        if (!is_null($this->getRequest()->getQuery('labels'))) {
+            $labels = [];
+            if (is_array($this->getRequest()->getQuery('labels'))) {
+                foreach ($this->getRequest()->getQuery('labels') as $label) {
+                    if (is_numeric($label)) {
+                        $labels[] = $label;
+                    }
+                }
+            }
+            $this->getRequest()->getSession()->write(
+                'Config.Customers.filter.labels',
+                $labels
+            );
+            unset($labels);
+        }
+        $filter = $this->getRequest()->getSession()->read('Config.Customers.filter');
+
+        // filter
+        $advanced_search = $filter['advanced_search'] ?? null;
+        $search = $filter['search'] ?? null;
+        $labels = $filter['labels'] ?? null;
         $allow_advanced_search = in_array($this->getRequest()->getAttribute('identity')['role'] ?? null, [
             'admin',
             'sales-manager',
@@ -89,6 +122,26 @@ class CustomersController extends AppController
             ]);
         }
 
+        // filter labels
+        if ($labels) {
+            $customersQuery->where([
+                'Customers.id IN ('
+                . ' SELECT customer_id FROM customer_labels '
+                . 'GROUP BY customer_id '
+                . 'HAVING array_agg(label_id) @> ARRAY[' . implode(',', $labels) . ']'
+                . ')',
+            ]);
+        }
+
+        // filter form
+        $filterForm = new Form();
+        $filterForm->setData([
+            'advanced_search' => $advanced_search,
+            'search' => $search,
+            'labels' => $labels,
+        ]);
+        $this->set('filterForm', $filterForm);
+
         $this->paginate = [
             'contain' => [
                 'TaxRates',
@@ -100,10 +153,11 @@ class CustomersController extends AppController
         ];
 
         $customers = $this->paginate($customersQuery);
+        $labels = $this->Customers->CustomerLabels->Labels->find('list', ['order' => 'name']);
 
         $invoice_delivery_types = $this->Customers->invoice_delivery_types;
 
-        $this->set(compact('customers', 'invoice_delivery_types', 'allow_advanced_search'));
+        $this->set(compact('customers', 'labels', 'invoice_delivery_types', 'allow_advanced_search'));
     }
 
     /**
