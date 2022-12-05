@@ -12,10 +12,15 @@
     line-height: 1.15;
 }
 .select2-container
-.select2-selection
+.select2-selection--single
 .select2-selection__rendered {
     line-height: inherit;
     padding: 0.6rem 1rem;
+}
+.select2-container
+.select2-selection--multiple
+.select2-selection__rendered {
+    line-height: inherit;
 }
 .select2-results__options {
     padding: 0.6rem 1rem;
