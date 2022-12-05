@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-12-04 23:30+0100\n"
+"POT-Creation-Date: 2022-12-05 10:43+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -96,8 +96,8 @@ msgid "SSID"
 msgstr ""
 
 #: ./src/ContractPDF.php:347
-#: ./templates/plugin/CakeDC/Users/Users/view.php:42
-#: ./templates/plugin/CakeDC/Users/Users/view.php:131
+#: ./templates/plugin/CakeDC/Users/Users/view.php:43
+#: ./templates/plugin/CakeDC/Users/Users/view.php:132
 msgid "Username"
 msgstr ""
 
@@ -790,7 +790,7 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:98
 #: ./templates/Tasks/view.php:56
 #: ./templates/email/html/task_notification.php:61
-#: ./templates/plugin/CakeDC/Users/Users/view.php:46
+#: ./templates/plugin/CakeDC/Users/Users/view.php:47
 msgid "Email"
 msgstr ""
 
@@ -846,36 +846,36 @@ msgstr ""
 msgid "The tax rate could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:33
+#: ./src/Model/Entity/AppUser.php:44
 #: ./src/Model/Table/LoginsTable.php:50
 msgid "User"
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:34
+#: ./src/Model/Entity/AppUser.php:45
 msgid "Customer Service Technician"
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:35
+#: ./src/Model/Entity/AppUser.php:46
 msgid "Network Technician"
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:36
+#: ./src/Model/Entity/AppUser.php:47
 msgid "Sales Representative"
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:37
+#: ./src/Model/Entity/AppUser.php:48
 msgid "Sales Manager"
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:38
+#: ./src/Model/Entity/AppUser.php:49
 msgid "Bookkeeper"
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:39
+#: ./src/Model/Entity/AppUser.php:50
 msgid "Admin"
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:40
+#: ./src/Model/Entity/AppUser.php:51
 msgid "API"
 msgstr ""
 
@@ -964,11 +964,11 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:42
 #: ./templates/TaxRates/index.php:37
 #: ./templates/TaxRates/view.php:41
-#: ./templates/plugin/CakeDC/Users/Users/index.php:37
 #: ./templates/plugin/CakeDC/Users/Users/index.php:38
-#: ./templates/plugin/CakeDC/Users/Users/view.php:63
-#: ./templates/plugin/CakeDC/Users/Users/view.php:71
-#: ./templates/plugin/CakeDC/Users/Users/view.php:103
+#: ./templates/plugin/CakeDC/Users/Users/index.php:39
+#: ./templates/plugin/CakeDC/Users/Users/view.php:64
+#: ./templates/plugin/CakeDC/Users/Users/view.php:72
+#: ./templates/plugin/CakeDC/Users/Users/view.php:104
 msgid "No"
 msgstr ""
 
@@ -1052,11 +1052,11 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:42
 #: ./templates/TaxRates/index.php:37
 #: ./templates/TaxRates/view.php:41
-#: ./templates/plugin/CakeDC/Users/Users/index.php:37
 #: ./templates/plugin/CakeDC/Users/Users/index.php:38
-#: ./templates/plugin/CakeDC/Users/Users/view.php:63
-#: ./templates/plugin/CakeDC/Users/Users/view.php:71
-#: ./templates/plugin/CakeDC/Users/Users/view.php:103
+#: ./templates/plugin/CakeDC/Users/Users/index.php:39
+#: ./templates/plugin/CakeDC/Users/Users/view.php:64
+#: ./templates/plugin/CakeDC/Users/Users/view.php:72
+#: ./templates/plugin/CakeDC/Users/Users/view.php:104
 msgid "Yes"
 msgstr ""
 
@@ -1333,11 +1333,11 @@ msgstr ""
 #: ./templates/TaxRates/index.php:29
 #: ./templates/TaxRates/view.php:10
 #: ./templates/TaxRates/view.php:100
-#: ./templates/plugin/CakeDC/Users/Users/add.php:12
-#: ./templates/plugin/CakeDC/Users/Users/edit.php:12
-#: ./templates/plugin/CakeDC/Users/Users/index.php:27
-#: ./templates/plugin/CakeDC/Users/Users/view.php:12
-#: ./templates/plugin/CakeDC/Users/Users/view.php:143
+#: ./templates/plugin/CakeDC/Users/Users/add.php:13
+#: ./templates/plugin/CakeDC/Users/Users/edit.php:13
+#: ./templates/plugin/CakeDC/Users/Users/index.php:28
+#: ./templates/plugin/CakeDC/Users/Users/view.php:13
+#: ./templates/plugin/CakeDC/Users/Users/view.php:144
 msgid "Actions"
 msgstr ""
 
@@ -1411,8 +1411,8 @@ msgstr ""
 #: ./templates/Tasks/edit.php:94
 #: ./templates/TaxRates/add.php:25
 #: ./templates/TaxRates/edit.php:30
-#: ./templates/plugin/CakeDC/Users/Users/add.php:32
-#: ./templates/plugin/CakeDC/Users/Users/edit.php:52
+#: ./templates/plugin/CakeDC/Users/Users/add.php:33
+#: ./templates/plugin/CakeDC/Users/Users/edit.php:53
 msgid "Submit"
 msgstr ""
 
@@ -1510,9 +1510,9 @@ msgstr ""
 #: ./templates/TaxRates/edit.php:12
 #: ./templates/TaxRates/index.php:46
 #: ./templates/TaxRates/view.php:131
-#: ./templates/plugin/CakeDC/Users/Users/edit.php:14
-#: ./templates/plugin/CakeDC/Users/Users/index.php:60
-#: ./templates/plugin/CakeDC/Users/Users/view.php:170
+#: ./templates/plugin/CakeDC/Users/Users/edit.php:15
+#: ./templates/plugin/CakeDC/Users/Users/index.php:61
+#: ./templates/plugin/CakeDC/Users/Users/view.php:171
 msgid "Delete"
 msgstr ""
 
@@ -1638,10 +1638,10 @@ msgstr ""
 #: ./templates/TaxRates/index.php:48
 #: ./templates/TaxRates/view.php:19
 #: ./templates/TaxRates/view.php:133
-#: ./templates/plugin/CakeDC/Users/Users/edit.php:16
-#: ./templates/plugin/CakeDC/Users/Users/index.php:62
-#: ./templates/plugin/CakeDC/Users/Users/view.php:21
-#: ./templates/plugin/CakeDC/Users/Users/view.php:172
+#: ./templates/plugin/CakeDC/Users/Users/edit.php:17
+#: ./templates/plugin/CakeDC/Users/Users/index.php:63
+#: ./templates/plugin/CakeDC/Users/Users/view.php:22
+#: ./templates/plugin/CakeDC/Users/Users/view.php:173
 msgid "Are you sure you want to delete # {0}?"
 msgstr ""
 
@@ -1845,8 +1845,8 @@ msgstr ""
 #: ./templates/Tasks/index.php:122
 #: ./templates/TaxRates/index.php:39
 #: ./templates/TaxRates/view.php:122
-#: ./templates/plugin/CakeDC/Users/Users/index.php:46
-#: ./templates/plugin/CakeDC/Users/Users/view.php:162
+#: ./templates/plugin/CakeDC/Users/Users/index.php:47
+#: ./templates/plugin/CakeDC/Users/Users/view.php:163
 #: ./vendor/cakephp/cakephp/src/View/Helper/PaginatorHelper.php:1260
 msgid "View"
 msgstr ""
@@ -1917,8 +1917,8 @@ msgstr ""
 #: ./templates/Tasks/index.php:124
 #: ./templates/TaxRates/index.php:41
 #: ./templates/TaxRates/view.php:126
-#: ./templates/plugin/CakeDC/Users/Users/index.php:55
-#: ./templates/plugin/CakeDC/Users/Users/view.php:166
+#: ./templates/plugin/CakeDC/Users/Users/index.php:56
+#: ./templates/plugin/CakeDC/Users/Users/view.php:167
 msgid "Edit"
 msgstr ""
 
@@ -1950,7 +1950,7 @@ msgstr ""
 #: ./templates/TaskTypes/index.php:58
 #: ./templates/Tasks/index.php:141
 #: ./templates/TaxRates/index.php:58
-#: ./templates/plugin/CakeDC/Users/Users/index.php:72
+#: ./templates/plugin/CakeDC/Users/Users/index.php:73
 msgid "first"
 msgstr ""
 
@@ -1982,7 +1982,7 @@ msgstr ""
 #: ./templates/TaskTypes/index.php:59
 #: ./templates/Tasks/index.php:142
 #: ./templates/TaxRates/index.php:59
-#: ./templates/plugin/CakeDC/Users/Users/index.php:73
+#: ./templates/plugin/CakeDC/Users/Users/index.php:74
 msgid "previous"
 msgstr ""
 
@@ -2014,7 +2014,7 @@ msgstr ""
 #: ./templates/TaskTypes/index.php:61
 #: ./templates/Tasks/index.php:144
 #: ./templates/TaxRates/index.php:61
-#: ./templates/plugin/CakeDC/Users/Users/index.php:75
+#: ./templates/plugin/CakeDC/Users/Users/index.php:76
 msgid "next"
 msgstr ""
 
@@ -2046,7 +2046,7 @@ msgstr ""
 #: ./templates/TaskTypes/index.php:62
 #: ./templates/Tasks/index.php:145
 #: ./templates/TaxRates/index.php:62
-#: ./templates/plugin/CakeDC/Users/Users/index.php:76
+#: ./templates/plugin/CakeDC/Users/Users/index.php:77
 msgid "last"
 msgstr ""
 
@@ -2078,7 +2078,7 @@ msgstr ""
 #: ./templates/TaskTypes/index.php:65
 #: ./templates/Tasks/index.php:148
 #: ./templates/TaxRates/index.php:65
-#: ./templates/plugin/CakeDC/Users/Users/index.php:79
+#: ./templates/plugin/CakeDC/Users/Users/index.php:80
 msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
 msgstr ""
 
@@ -2147,7 +2147,7 @@ msgstr ""
 #: ./templates/Customers/view.php:137
 #: ./templates/Customers/view.php:452
 #: ./templates/TaxRates/view.php:95
-#: ./templates/plugin/CakeDC/Users/Users/view.php:50
+#: ./templates/plugin/CakeDC/Users/Users/view.php:51
 msgid "First Name"
 msgstr ""
 
@@ -2157,7 +2157,7 @@ msgstr ""
 #: ./templates/Customers/view.php:141
 #: ./templates/Customers/view.php:453
 #: ./templates/TaxRates/view.php:96
-#: ./templates/plugin/CakeDC/Users/Users/view.php:54
+#: ./templates/plugin/CakeDC/Users/Users/view.php:55
 msgid "Last Name"
 msgstr ""
 
@@ -2289,8 +2289,8 @@ msgstr ""
 #: ./templates/Tasks/view.php:121
 #: ./templates/TaxRates/view.php:52
 #: ./templates/email/html/task_notification.php:122
-#: ./templates/plugin/CakeDC/Users/Users/view.php:114
-#: ./templates/plugin/CakeDC/Users/Users/view.php:141
+#: ./templates/plugin/CakeDC/Users/Users/view.php:115
+#: ./templates/plugin/CakeDC/Users/Users/view.php:142
 msgid "Created"
 msgstr ""
 
@@ -2359,8 +2359,8 @@ msgstr ""
 #: ./templates/Tasks/view.php:137
 #: ./templates/TaxRates/view.php:68
 #: ./templates/email/html/task_notification.php:130
-#: ./templates/plugin/CakeDC/Users/Users/view.php:118
-#: ./templates/plugin/CakeDC/Users/Users/view.php:142
+#: ./templates/plugin/CakeDC/Users/Users/view.php:119
+#: ./templates/plugin/CakeDC/Users/Users/view.php:143
 msgid "Modified"
 msgstr ""
 
@@ -2529,8 +2529,8 @@ msgstr ""
 #: ./templates/Contracts/view.php:367
 #: ./templates/Customers/view.php:593
 #: ./templates/Services/view.php:120
-#: ./templates/plugin/CakeDC/Users/Users/view.php:70
-#: ./templates/plugin/CakeDC/Users/Users/view.php:132
+#: ./templates/plugin/CakeDC/Users/Users/view.php:71
+#: ./templates/plugin/CakeDC/Users/Users/view.php:133
 msgid "Active"
 msgstr ""
 
@@ -4218,7 +4218,7 @@ msgid "User Related"
 msgstr ""
 
 #: ./templates/Settings/index.php:13
-#: ./templates/plugin/CakeDC/Users/Users/index.php:50
+#: ./templates/plugin/CakeDC/Users/Users/index.php:51
 msgid "Change Password"
 msgstr ""
 
@@ -4227,9 +4227,9 @@ msgid "User Profile"
 msgstr ""
 
 #: ./templates/Settings/index.php:23
-#: ./templates/plugin/CakeDC/Users/Users/add.php:13
-#: ./templates/plugin/CakeDC/Users/Users/edit.php:18
-#: ./templates/plugin/CakeDC/Users/Users/view.php:24
+#: ./templates/plugin/CakeDC/Users/Users/add.php:14
+#: ./templates/plugin/CakeDC/Users/Users/edit.php:19
+#: ./templates/plugin/CakeDC/Users/Users/view.php:25
 msgid "List Users"
 msgstr ""
 
@@ -4474,107 +4474,107 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/add.php:20
+#: ./templates/plugin/CakeDC/Users/Users/add.php:21
 msgid "Add User"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/edit.php:25
-#: ./templates/plugin/CakeDC/Users/Users/view.php:14
+#: ./templates/plugin/CakeDC/Users/Users/edit.php:26
+#: ./templates/plugin/CakeDC/Users/Users/view.php:15
 msgid "Edit User"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/index.php:10
-#: ./templates/plugin/CakeDC/Users/Users/view.php:29
+#: ./templates/plugin/CakeDC/Users/Users/index.php:11
+#: ./templates/plugin/CakeDC/Users/Users/view.php:30
 msgid "New User"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/index.php:11
+#: ./templates/plugin/CakeDC/Users/Users/index.php:12
 msgid "Users"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/view.php:19
+#: ./templates/plugin/CakeDC/Users/Users/view.php:20
 msgid "Delete User"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/view.php:58
+#: ./templates/plugin/CakeDC/Users/Users/view.php:59
 msgid "Role"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/view.php:62
+#: ./templates/plugin/CakeDC/Users/Users/view.php:63
 msgid "Is Superuser"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/view.php:66
+#: ./templates/plugin/CakeDC/Users/Users/view.php:67
 msgid "Customer Id"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/view.php:78
+#: ./templates/plugin/CakeDC/Users/Users/view.php:79
 msgid "Api Token"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/view.php:82
-#: ./templates/plugin/CakeDC/Users/Users/view.php:137
+#: ./templates/plugin/CakeDC/Users/Users/view.php:83
+#: ./templates/plugin/CakeDC/Users/Users/view.php:138
 msgid "Token"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/view.php:86
-#: ./templates/plugin/CakeDC/Users/Users/view.php:139
+#: ./templates/plugin/CakeDC/Users/Users/view.php:87
+#: ./templates/plugin/CakeDC/Users/Users/view.php:140
 msgid "Token Expires"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/view.php:90
+#: ./templates/plugin/CakeDC/Users/Users/view.php:91
 msgid "Activation Date"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/view.php:94
+#: ./templates/plugin/CakeDC/Users/Users/view.php:95
 msgid "Tos Date"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/view.php:98
+#: ./templates/plugin/CakeDC/Users/Users/view.php:99
 msgid "Secret"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/view.php:102
+#: ./templates/plugin/CakeDC/Users/Users/view.php:103
 msgid "Secret Verified"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/view.php:106
+#: ./templates/plugin/CakeDC/Users/Users/view.php:107
 msgid "Additional Data"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/view.php:110
+#: ./templates/plugin/CakeDC/Users/Users/view.php:111
 msgid "Last Login"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/view.php:125
+#: ./templates/plugin/CakeDC/Users/Users/view.php:126
 msgid "Related Social Accounts"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/view.php:130
+#: ./templates/plugin/CakeDC/Users/Users/view.php:131
 msgid "Provider"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/view.php:133
+#: ./templates/plugin/CakeDC/Users/Users/view.php:134
 msgid "Reference"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/view.php:134
+#: ./templates/plugin/CakeDC/Users/Users/view.php:135
 msgid "Avatar"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/view.php:135
+#: ./templates/plugin/CakeDC/Users/Users/view.php:136
 msgid "Description"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/view.php:136
+#: ./templates/plugin/CakeDC/Users/Users/view.php:137
 msgid "Link"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/view.php:138
+#: ./templates/plugin/CakeDC/Users/Users/view.php:139
 msgid "Token Secret"
 msgstr ""
 
-#: ./templates/plugin/CakeDC/Users/Users/view.php:140
+#: ./templates/plugin/CakeDC/Users/Users/view.php:141
 msgid "Data"
 msgstr ""
 
