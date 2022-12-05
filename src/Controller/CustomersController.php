@@ -90,7 +90,10 @@ class CustomersController extends AppController
         }
 
         $this->paginate = [
-            'contain' => ['TaxRates', 'Contracts', 'Ips' => ['Contracts']],
+            'contain' => [
+                'TaxRates',
+                'Contracts' => ['ContractStates'],
+                'Ips' => ['Contracts']],
             'order' => [
                 'Customers.id' => 'DESC',
             ],

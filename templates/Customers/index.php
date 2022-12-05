@@ -52,14 +52,24 @@
                     <td><?= h($customer->last_name) ?></td>
                     <td><?= h($customer->suffix) ?></td>
                     <td>
-                        <?php foreach ($customer->contracts as $contract) {
-                            echo h($contract->number) . '<br />';
-                        } ?>
+                        <?php foreach ($customer->contracts as $contract) : ?>
+                        <span style="<?= $contract->style ?>">
+                            <?= $this->Html->link(
+                                $contract->number,
+                                [
+                                    'controller' => 'Contracts',
+                                    'action' => 'view',
+                                    'customer_id' => $customer->id,
+                                    $contract->id,
+                                ]
+                            ) ?>
+                        </span><br />
+                        <?php endforeach; ?>
                     </td>
                     <td>
-                        <?php foreach ($customer->ips as $ip) {
-                            echo h($ip->ip) . '<br />';
-                        } ?>
+                        <?php foreach ($customer->ips as $ip) : ?>
+                        <span><?= h($ip->ip) ?></span><br />
+                        <?php endforeach; ?>
                     </td>
                     <td>
                         <?= $customer->has('tax_rate') ? $this->Html->link(
