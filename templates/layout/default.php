@@ -35,9 +35,9 @@ $request = $this->getRequest();
     <?= $this->Html->script(['https://code.jquery.com/jquery.min.js', 'links.js']) ?>
 
     <?php if (filter_var(env('ENABLE_SELECT2', false), FILTER_VALIDATE_BOOLEAN)) : ?>
-        <?= $this->Html->css(['https://cdn.jsdelivr.net/npm/select2/dist/css/select2.min.css']) ?>
+        <?= $this->Html->css(['https://cdn.jsdelivr.net/npm/select2@4.0/dist/css/select2.min.css']) ?>
         <?= $this->Html->script([
-            'https://cdn.jsdelivr.net/npm/select2/dist/js/select2.min.js',
+            'https://cdn.jsdelivr.net/npm/select2@4.0/dist/js/select2.min.js',
             'select2-settings.js',
         ]) ?>
     <?php endif ?>
