@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\AppUser $user
+ * @var string $tableAlias
  */
 
 $user = ${$tableAlias};

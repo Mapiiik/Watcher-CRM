@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\AppUser[]|\Cake\Collection\CollectionInterface $users
+ * @var string $tableAlias
  */
 
 $users = ${$tableAlias};

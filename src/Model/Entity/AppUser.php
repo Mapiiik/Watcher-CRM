@@ -7,6 +7,17 @@ use CakeDC\Users\Model\Entity\User;
 
 /**
  * Application specific User Entity with non plugin conform field(s)
+ *
+ * @property string|null $first_name
+ * @property string|null $last_name
+ * @property bool $active
+ * @property \Cake\I18n\FrozenDate|null $activation_date
+ * @property \Cake\I18n\FrozenDate|null $tos_date
+ * @property string|null $secret
+ * @property bool $secret_verified
+ * @property \Cake\I18n\FrozenDate|null $last_login
+ * @property \Cake\I18n\FrozenDate $created
+ * @property \Cake\I18n\FrozenDate $modified
  */
 class AppUser extends User
 {
