@@ -24,13 +24,13 @@ class CustomersController extends AppController
         if (!is_null($this->getRequest()->getQuery('advanced_search'))) {
             $this->getRequest()->getSession()->write(
                 'Config.Customers.filter.advanced_search',
-                $this->getRequest()->getQuery('advanced_search')
+                $this->getRequest()->getQuery('advanced_search') == '1'
             );
         }
         if (!is_null($this->getRequest()->getQuery('search'))) {
             $this->getRequest()->getSession()->write(
                 'Config.Customers.filter.search',
-                $this->getRequest()->getQuery('search')
+                trim($this->getRequest()->getQuery('search'))
             );
         }
         if (!is_null($this->getRequest()->getQuery('labels'))) {
@@ -38,7 +38,7 @@ class CustomersController extends AppController
             if (is_array($this->getRequest()->getQuery('labels'))) {
                 foreach ($this->getRequest()->getQuery('labels') as $label) {
                     if (is_numeric($label)) {
-                        $labels[] = $label;
+                        $labels[] = (int)$label;
                     }
                 }
             }
@@ -51,9 +51,9 @@ class CustomersController extends AppController
         $filter = $this->getRequest()->getSession()->read('Config.Customers.filter');
 
         // filter
-        $advanced_search = $filter['advanced_search'] ?? null;
-        $search = $filter['search'] ?? null;
-        $labels = $filter['labels'] ?? null;
+        $advanced_search = $filter['advanced_search'] ?? false;
+        $search = (string)($filter['search'] ?? '');
+        $labels = $filter['labels'] ?? [];
         $allow_advanced_search = in_array($this->getRequest()->getAttribute('identity')['role'] ?? null, [
             'admin',
             'sales-manager',
@@ -105,7 +105,7 @@ class CustomersController extends AppController
             $customersQuery->bind(':search', trim($search), 'string');
 
             unset($filter);
-        } elseif (is_numeric(trim($search))) {
+        } elseif (is_numeric($search)) {
             // search by customer number
             $customersQuery->where([
                 'OR' => [
