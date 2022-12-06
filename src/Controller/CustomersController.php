@@ -105,7 +105,7 @@ class CustomersController extends AppController
             $customersQuery->bind(':search', trim($search), 'string');
 
             unset($filter);
-        } elseif (is_numeric($search)) {
+        } elseif (is_numeric(trim($search))) {
             // search by customer number
             $customersQuery->where([
                 'OR' => [
