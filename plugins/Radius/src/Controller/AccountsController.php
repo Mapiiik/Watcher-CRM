@@ -337,7 +337,7 @@ class AccountsController extends AppController
                     $e->getMessage()
                 ));
 
-                return $this->redirect(['action' => 'monitoring', $account->id]);
+                return $this->redirect($this->referer(['action' => 'monitoring', $account->id]));
             }
 
             // detect response type
@@ -438,7 +438,7 @@ class AccountsController extends AppController
         // wait one second for RADIUS records to update
         sleep(1);
 
-        return $this->redirect(['action' => 'monitoring', $account->id]);
+        return $this->redirect($this->referer(['action' => 'monitoring', $account->id]));
     }
 
     /**
@@ -466,7 +466,7 @@ class AccountsController extends AppController
             $this->Flash->error(__d('radius', 'The RADIUS account could not be updated. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'view', $account->id]);
+        return $this->redirect($this->referer(['action' => 'view', $account->id]));
     }
 
     /**

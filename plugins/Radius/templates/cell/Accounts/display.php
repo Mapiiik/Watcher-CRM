@@ -73,15 +73,6 @@
             ?></td>
             <td class="actions">
                 <?= $this->AuthLink->link(
-                    __d('radius', 'Monitoring'),
-                    [
-                        'plugin' => 'Radius',
-                        'controller' => 'Accounts',
-                        'action' => 'monitoring',
-                        $account->id,
-                    ]
-                ) ?>
-                <?= $this->AuthLink->link(
                     __d('radius', 'View'),
                     [
                         'plugin' => 'Radius',
@@ -109,6 +100,40 @@
                         $account->id,
                     ],
                     ['confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $account->username)]
+                ) ?>
+                <br />
+                <?= $this->AuthLink->link(
+                    __d('radius', 'Monitoring'),
+                    [
+                        'plugin' => 'Radius',
+                        'controller' => 'Accounts',
+                        'action' => 'monitoring',
+                        $account->id,
+                    ]
+                ) ?>
+                <?= $this->Form->postLink(
+                    __d('radius', 'Update'),
+                    [
+                        'plugin' => 'Radius',
+                        'controller' => 'Accounts',
+                        'action' => 'updateRelatedRecords',
+                        $account->id,
+                    ],
+                    [
+                        'confirm' => __d('radius', 'Are you sure you want to update related records?'),
+                    ]
+                ) ?>
+                <?= $this->Form->postLink(
+                    __d('radius', 'Disconnect'),
+                    [
+                        'plugin' => 'Radius',
+                        'controller' => 'Accounts',
+                        'action' => 'disconnectRequest',
+                        $account->id,
+                    ],
+                    [
+                        'confirm' => __d('radius', 'Are you sure you want to disconnect {0}?', $account->username),
+                    ]
                 ) ?>
             </td>
         </tr>
