@@ -64,9 +64,7 @@ class CustomersController extends AppController
         if ($allow_advanced_search && $advanced_search && !empty($search)) {
             // advanced search
             $filter = 'to_tsvector('
-                    . "Customers.id || ' ' || "
                     . 'Customers.id + ' . (int)env('CUSTOMER_SERIES', '0') . " || ' ' || "
-                    . "COALESCE(Contracts.id::text, '') || ' ' || "
                     . "COALESCE(Contracts.number, '') || ' ' || "
                     . "COALESCE(Customers.first_name, '') || ' ' || "
                     . "COALESCE(Customers.last_name, '') || ' ' || "
@@ -109,7 +107,6 @@ class CustomersController extends AppController
             // search by customer number
             $customersQuery->where([
                 'OR' => [
-                    'Customers.id::bigint' => (int)trim($search),
                     '(Customers.id::bigint + ' . (int)env('CUSTOMER_SERIES', '0') . ') =' => (int)trim($search),
                     'Customers.ic' => trim($search),
                 ],
