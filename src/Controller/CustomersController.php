@@ -109,8 +109,8 @@ class CustomersController extends AppController
             // search by customer number
             $customersQuery->where([
                 'OR' => [
-                    'Customers.id' => (int)trim($search),
-                    '(Customers.id + ' . (int)env('CUSTOMER_SERIES', '0') . ') =' => (int)trim($search),
+                    'Customers.id::bigint' => (int)trim($search),
+                    '(Customers.id::bigint + ' . (int)env('CUSTOMER_SERIES', '0') . ') =' => (int)trim($search),
                     'Customers.ic' => trim($search),
                 ],
             ]);
