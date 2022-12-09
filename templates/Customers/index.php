@@ -72,6 +72,8 @@
                                     $contract->id,
                                 ]
                             ) ?>
+                            <?= $contract->has('contract_state') ?
+                                '(' . h($contract->contract_state->name) . ')' : '' ?>
                         </span><br />
                         <?php endforeach; ?>
                     </td>
