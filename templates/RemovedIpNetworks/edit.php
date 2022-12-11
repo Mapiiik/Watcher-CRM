@@ -38,7 +38,7 @@
                 if (!isset($contract_id)) {
                     echo $this->Form->control('contract_id', ['options' => $contracts, 'empty' => true]);
                 }
-                echo $this->Form->control('ip_network', ['disabled' => true]);
+                echo $this->Form->control('ip_network', ['label' => __('IP Network'), 'disabled' => true]);
                 echo $this->Form->control('type_of_use', ['options' => $types_of_use]);
                 echo $this->Form->control('note');
                 ?>

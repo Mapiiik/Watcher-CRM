@@ -27,7 +27,7 @@
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id', __('Customer Number')) ?></th>
                     <th><?= $this->Paginator->sort('contract_id') ?></th>
-                    <th><?= $this->Paginator->sort('ip_network') ?></th>
+                    <th><?= $this->Paginator->sort('ip_network', __('IP Network')) ?></th>
                     <th><?= $this->Paginator->sort('type_of_use') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>

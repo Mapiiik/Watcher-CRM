@@ -9,7 +9,11 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->AuthLink->link(__('Edit IP Address'), ['action' => 'edit', $ip->id], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __('Edit IP Address'),
+                ['action' => 'edit', $ip->id],
+                ['class' => 'side-nav-item']
+            ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete IP Address'),
                 ['action' => 'delete', $ip->id],

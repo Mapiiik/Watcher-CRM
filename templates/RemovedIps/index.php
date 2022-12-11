@@ -18,7 +18,11 @@
 <?= $this->Form->end() ?>
 
 <div class="removedIps index content">
-    <?= $this->AuthLink->link(__('New Removed IP Address'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
+    <?= $this->AuthLink->link(
+        __('New Removed IP Address'),
+        ['action' => 'add'],
+        ['class' => 'button float-right win-link']
+    ) ?>
     <h3><?= __('Removed IP Addresses') ?></h3>
     <div class="table-responsive">
         <table>
@@ -27,7 +31,7 @@
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id', __('Customer Number')) ?></th>
                     <th><?= $this->Paginator->sort('contract_id') ?></th>
-                    <th><?= $this->Paginator->sort('ip') ?></th>
+                    <th><?= $this->Paginator->sort('ip', __('IP Address')) ?></th>
                     <th><?= $this->Paginator->sort('type_of_use') ?></th>
                     <th><?= $this->Paginator->sort('removed') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>

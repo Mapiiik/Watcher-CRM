@@ -75,6 +75,7 @@
                 $this->Form->unlockField('refresh'); //disable form security check
 
                 echo $this->Form->control('ip', [
+                    'label' => __('IP Address'),
                     'empty' => true,
                 ]);
                 echo $this->Form->control('note');
