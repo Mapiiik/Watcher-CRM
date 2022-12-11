@@ -233,46 +233,55 @@ class AddressesController extends AppController
     private function findRuianData(Address $address): array
     {
         $typ_so = $address->number_type == 1 ? 'č.ev.' : 'č.p.';
+        $cislo = explode('/', $address->number ?? '');
+        $cislo_domovni = isset($cislo[0]) ? (int)$cislo[0] : null;
+        $cislo_orientacni = isset($cislo[1]) ? (int)$cislo[1] : null;
+        unset($cislo);
 
         $conditionsForSearches = [
             // search in RUIAN
-            0 => [
+            [
                 'ulice_nazev IS' => $address->street,
                 'typ_so' => $typ_so,
-                'cislo_domovni' => (int)$address->number,
+                'cislo_domovni IS' => $cislo_domovni,
+                'cislo_orientacni IS' => $cislo_orientacni,
                 'obec_nazev IS' => $address->city,
                 'psc IS' => $address->zip,
             ],
             // search in RUIAN with city as MOP
-            1 => [
+            [
                 'ulice_nazev IS' => $address->street,
                 'typ_so' => $typ_so,
-                'cislo_domovni' => (int)$address->number,
+                'cislo_domovni IS' => $cislo_domovni,
+                'cislo_orientacni IS' => $cislo_orientacni,
                 'mop_nazev IS' => $address->city,
                 'psc IS' => $address->zip,
             ],
             // search in RUIAN with city as MOMC
-            2 => [
+            [
                 'ulice_nazev IS' => $address->street,
                 'typ_so' => $typ_so,
-                'cislo_domovni' => (int)$address->number,
+                'cislo_domovni IS' => $cislo_domovni,
+                'cislo_orientacni IS' => $cislo_orientacni,
                 'momc_nazev IS' => $address->city,
                 'psc IS' => $address->zip,
             ],
             // search in RUIAN with city as city part
-            3 => [
+            [
                 'ulice_nazev IS' => $address->street,
                 'typ_so' => $typ_so,
-                'cislo_domovni' => (int)$address->number,
+                'cislo_domovni IS' => $cislo_domovni,
+                'cislo_orientacni IS' => $cislo_orientacni,
                 'cast_obce_nazev IS' => $address->city,
                 'psc IS' => $address->zip,
             ],
             // search in RUIAN with street as city part
-            4 => [
+            [
                 'ulice_nazev' => '',
                 'cast_obce_nazev IS' => $address->street,
                 'typ_so' => $typ_so,
-                'cislo_domovni' => (int)$address->number,
+                'cislo_domovni IS' => $cislo_domovni,
+                'cislo_orientacni IS' => $cislo_orientacni,
                 'obec_nazev IS' => $address->city,
                 'psc IS' => $address->zip,
             ],
