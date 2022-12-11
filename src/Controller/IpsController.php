@@ -108,11 +108,11 @@ class IpsController extends AppController
         if ($this->getRequest()->is('post')) {
             $ip = $this->Ips->patchEntity($ip, $this->getRequest()->getData());
             if ($this->Ips->save($ip)) {
-                $this->Flash->success(__('The ip has been saved.'));
+                $this->Flash->success(__('The IP address has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The ip could not be saved. Please, try again.'));
+            $this->Flash->error(__('The IP address could not be saved. Please, try again.'));
         }
         $customers = $this->Ips->Customers->find('list', [
             'order' => ['company', 'last_name', 'first_name'],
@@ -164,11 +164,11 @@ class IpsController extends AppController
                 // only refresh
             } else {
                 if ($this->Ips->save($ip)) {
-                    $this->Flash->success(__('The ip has been saved.'));
+                    $this->Flash->success(__('The IP address has been saved.'));
 
                     return $this->redirect(['action' => 'index']);
                 }
-                $this->Flash->error(__('The ip could not be saved. Please, try again.'));
+                $this->Flash->error(__('The IP address could not be saved. Please, try again.'));
             }
         }
         $customers = $this->Ips->Customers->find('list', [
@@ -287,11 +287,11 @@ class IpsController extends AppController
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $ip = $this->Ips->patchEntity($ip, $this->getRequest()->getData());
             if ($this->Ips->save($ip)) {
-                $this->Flash->success(__('The ip has been saved.'));
+                $this->Flash->success(__('The IP address has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The ip could not be saved. Please, try again.'));
+            $this->Flash->error(__('The IP address could not be saved. Please, try again.'));
         }
         $customers = $this->Ips->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
         $contracts = $this->Ips->Contracts->find('list', [
@@ -329,9 +329,9 @@ class IpsController extends AppController
 
         if ($this->addToRemovedIps($id)) {
             if ($this->Ips->delete($ip)) {
-                $this->Flash->success(__('The ip has been deleted.'));
+                $this->Flash->success(__('The IP address has been deleted.'));
             } else {
-                $this->Flash->error(__('The ip could not be deleted. Please, try again.'));
+                $this->Flash->error(__('The IP address could not be deleted. Please, try again.'));
             }
         }
 
@@ -363,12 +363,12 @@ class IpsController extends AppController
         $removedIp->removed_by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
 
         if ($removedIpsTable->save($removedIp)) {
-            $this->Flash->success(__('The removed ip has been saved.'));
+            $this->Flash->success(__('The removed IP address has been saved.'));
 
             return true;
         }
 
-        $this->Flash->error(__('The removed ip could not be saved. Please, try again.'));
+        $this->Flash->error(__('The removed IP address could not be saved. Please, try again.'));
 
         return false;
     }

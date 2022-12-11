@@ -83,7 +83,7 @@ use Cake\I18n\Number;
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->AuthLink->link(
-                __('Ips'),
+                __('IP Addresses'),
                 ['action' => 'view', $contract->id, '#' => 'ips'],
                 ['class' => 'side-nav-item']
             ) ?>
@@ -550,7 +550,7 @@ use Cake\I18n\Number;
                 <div class="column-responsive">
                     <div class="related">
                         <?= $this->AuthLink->link(
-                            __('New Ip'),
+                            __('New IP Address'),
                             ['controller' => 'Ips', 'action' => 'add'],
                             ['class' => 'button button-small float-right win-link']
                         ) ?>
@@ -559,12 +559,12 @@ use Cake\I18n\Number;
                             ['controller' => 'Ips', 'action' => 'addFromRange'],
                             ['class' => 'button button-small float-right win-link']
                         ) : '' ?>
-                        <h4 id="ips"><?= __('Ips') ?></h4>
+                        <h4 id="ips"><?= __('IP Addresses') ?></h4>
                         <?php if (!empty($contract->ips)) : ?>
                         <div class="table-responsive">
                             <table>
                                 <tr>
-                                    <th><?= __('Ip') ?></th>
+                                    <th><?= __('IP Address') ?></th>
                                     <th><?= __('Type Of Use') ?></th>
                                     <th><?= __('Note') ?></th>
                                     <th><?= __('Device') ?></th>
@@ -642,7 +642,7 @@ use Cake\I18n\Number;
                         <div class="table-responsive">
                             <table>
                                 <tr>
-                                    <th><?= __('Ip Network') ?></th>
+                                    <th><?= __('IP Network') ?></th>
                                     <th><?= __('Type Of Use') ?></th>
                                     <th><?= __('Note') ?></th>
                                     <th><?= __('IP Address Range') ?></th>
@@ -705,16 +705,16 @@ use Cake\I18n\Number;
                 <div class="column-responsive">
                     <div class="related">
                         <?= $this->AuthLink->link(
-                            __('New Removed Ip'),
+                            __('New Removed IP Address'),
                             ['controller' => 'RemovedIps', 'action' => 'add'],
                             ['class' => 'button button-small float-right win-link']
                         ) ?>
-                        <h4><?= __('Removed Ips') ?></h4>
+                        <h4><?= __('Removed IP Addresses') ?></h4>
                         <?php if (!empty($contract->removed_ips)) : ?>
                         <div class="table-responsive">
                             <table>
                                 <tr>
-                                    <th><?= __('Ip') ?></th>
+                                    <th><?= __('IP Address') ?></th>
                                     <th><?= __('Type Of Use') ?></th>
                                     <th><?= __('Note') ?></th>
                                     <th><?= __('Removed') ?></th>
@@ -761,7 +761,7 @@ use Cake\I18n\Number;
                         <div class="table-responsive">
                             <table>
                                 <tr>
-                                    <th><?= __('Ip') ?></th>
+                                    <th><?= __('IP Network') ?></th>
                                     <th><?= __('Type Of Use') ?></th>
                                     <th><?= __('Note') ?></th>
                                     <th><?= __('Removed') ?></th>

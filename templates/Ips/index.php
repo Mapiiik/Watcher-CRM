@@ -18,8 +18,8 @@
 <?= $this->Form->end() ?>
 
 <div class="ips index content">
-    <?= $this->AuthLink->link(__('New Ip'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
-    <h3><?= __('Ips') ?></h3>
+    <?= $this->AuthLink->link(__('New IP Address'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
+    <h3><?= __('IP Addresses') ?></h3>
     <div class="table-responsive">
         <table>
             <thead>

@@ -16,14 +16,14 @@
                 ['action' => 'delete', $ipNetwork->id],
                 ['confirm' => __('Are you sure you want to delete # {0}?', $ipNetwork->id), 'class' => 'side-nav-item']
             ) ?>
-            <?= $this->Html->link(__('List Ip Networks'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('List IP Networks'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
         <div class="ipNetworks form content">
             <?= $this->Form->create($ipNetwork) ?>
             <fieldset>
-                <legend><?= __('Edit Ip Network') ?></legend>
+                <legend><?= __('Edit IP Network') ?></legend>
                 <?php
                 if (!isset($customer_id)) {
                     echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);

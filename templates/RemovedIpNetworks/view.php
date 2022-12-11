@@ -10,12 +10,12 @@
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->Html->link(
-                __('Edit Removed Ip Network'),
+                __('Edit Removed IP Network'),
                 ['action' => 'edit', $removedIpNetwork->id],
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->Form->postLink(
-                __('Delete Removed Ip Network'),
+                __('Delete Removed IP Network'),
                 ['action' => 'delete', $removedIpNetwork->id],
                 [
                     'confirm' => __('Are you sure you want to delete # {0}?', $removedIpNetwork->id),
@@ -23,12 +23,12 @@
                 ]
             ) ?>
             <?= $this->Html->link(
-                __('List Removed Ip Networks'),
+                __('List Removed IP Networks'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->Html->link(
-                __('New Removed Ip Network'),
+                __('New Removed IP Network'),
                 ['action' => 'add'],
                 ['class' => 'side-nav-item']
             ) ?>
@@ -63,7 +63,7 @@
                                 ) : '' ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Ip Network') ?></th>
+                            <th><?= __('IP Network') ?></th>
                             <td><?= h($removedIpNetwork->ip_network) ?></td>
                         </tr>
                         <tr>

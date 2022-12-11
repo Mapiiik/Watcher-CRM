@@ -10,22 +10,22 @@
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->Html->link(
-                __('Edit Ip Network'),
+                __('Edit IP Network'),
                 ['action' => 'edit', $ipNetwork->id],
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->Form->postLink(
-                __('Delete Ip Network'),
+                __('Delete IP Network'),
                 ['action' => 'delete', $ipNetwork->id],
                 ['confirm' => __('Are you sure you want to delete # {0}?', $ipNetwork->id), 'class' => 'side-nav-item']
             ) ?>
             <?= $this->Html->link(
-                __('List Ip Networks'),
+                __('List IP Networks'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->Html->link(
-                __('New Ip Network'),
+                __('New IP Network'),
                 ['action' => 'add'],
                 ['class' => 'side-nav-item']
             ) ?>
@@ -58,7 +58,7 @@
                                 ) : '' ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Ip Network') ?></th>
+                            <th><?= __('IP Network') ?></th>
                             <td><?= h($ipNetwork->ip_network) ?></td>
                         </tr>
                         <tr>

@@ -96,7 +96,7 @@
                             <th><?= __('Last Name') ?></th>
                             <th><?= __('Suffix') ?></th>
                             <th><?= __('Contracts') ?></th>
-                            <th><?= __('Ips') ?></th>
+                            <th><?= __('IP Addresses') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($taxRate->customers as $customer) : ?>

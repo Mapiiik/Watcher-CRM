@@ -10,17 +10,17 @@
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->AuthLink->link(
-                __('Edit Removed Ip'),
+                __('Edit Removed IP Address'),
                 ['action' => 'edit', $removedIp->id],
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->AuthLink->postLink(
-                __('Delete Removed Ip'),
+                __('Delete Removed IP Address'),
                 ['action' => 'delete', $removedIp->id],
                 ['confirm' => __('Are you sure you want to delete # {0}?', $removedIp->id), 'class' => 'side-nav-item']
             ) ?>
-            <?= $this->AuthLink->link(__('List Removed Ips'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->link(__('New Removed Ip'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('List Removed IP Addresses'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('New Removed IP Address'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column-responsive column-90">
@@ -48,7 +48,7 @@
                             ) : '' ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Ip') ?></th>
+                            <th><?= __('IP Address') ?></th>
                             <td><?= h($removedIp->ip) ?></td>
                         </tr>
                         <tr>

@@ -20,7 +20,7 @@
                 ]
             ) ?>
             <?= $this->Html->link(
-                __('List Removed Ip Networks'),
+                __('List Removed IP Networks'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item']
             ) ?>
@@ -30,7 +30,7 @@
         <div class="removedIpNetworks form content">
             <?= $this->Form->create($removedIpNetwork) ?>
             <fieldset>
-                <legend><?= __('Edit Removed Ip Network') ?></legend>
+                <legend><?= __('Edit Removed IP Network') ?></legend>
                 <?php
                 if (!isset($customer_id)) {
                     echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);

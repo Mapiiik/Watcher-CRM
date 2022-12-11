@@ -59,7 +59,7 @@
                             <td><?= h($login->last_granted) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Last Granted Ip') ?></th>
+                            <th><?= __('Last Granted IP Address') ?></th>
                             <td><?= h($login->last_granted_ip) ?></td>
                         </tr>
                         <tr>
@@ -67,7 +67,7 @@
                             <td><?= h($login->last_denied) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Last Denied Ip') ?></th>
+                            <th><?= __('Last Denied IP Address') ?></th>
                             <td><?= h($login->last_denied_ip) ?></td>
                         </tr>
                     </table>

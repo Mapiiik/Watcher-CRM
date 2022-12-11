@@ -87,22 +87,22 @@
                     ['class' => 'side-nav-item']
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __('List Ips'),
+                    __('List IP Addresses'),
                     ['controller' => 'Ips', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item']
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __('List Ip Networks'),
+                    __('List IP Networks'),
                     ['controller' => 'IpNetworks', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item']
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __('List Removed Ips'),
+                    __('List Removed IP Addresses'),
                     ['controller' => 'RemovedIps', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item']
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __('List Removed Ip Networks'),
+                    __('List Removed IP Networks'),
                     ['controller' => 'RemovedIpNetworks', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item']
                 ) ?>

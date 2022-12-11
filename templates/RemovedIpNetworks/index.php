@@ -18,8 +18,8 @@
 <?= $this->Form->end() ?>
 
 <div class="removedIpNetworks index content">
-    <?= $this->Html->link(__('New Removed Ip Network'), ['action' => 'add'], ['class' => 'button float-right']) ?>
-    <h3><?= __('Removed Ip Networks') ?></h3>
+    <?= $this->Html->link(__('New Removed IP Network'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <h3><?= __('Removed IP Networks') ?></h3>
     <div class="table-responsive">
         <table>
             <thead>

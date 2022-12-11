@@ -112,11 +112,11 @@ class RemovedIpsController extends AppController
             $removedIp->removed_by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
 
             if ($this->RemovedIps->save($removedIp)) {
-                $this->Flash->success(__('The removed ip has been saved.'));
+                $this->Flash->success(__('The removed IP address has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The removed ip could not be saved. Please, try again.'));
+            $this->Flash->error(__('The removed IP address could not be saved. Please, try again.'));
         }
         $customers = $this->RemovedIps->Customers->find('list', [
             'order' => ['company', 'last_name', 'first_name'],
@@ -161,11 +161,11 @@ class RemovedIpsController extends AppController
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $removedIp = $this->RemovedIps->patchEntity($removedIp, $this->getRequest()->getData());
             if ($this->RemovedIps->save($removedIp)) {
-                $this->Flash->success(__('The removed ip has been saved.'));
+                $this->Flash->success(__('The removed IP address has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The removed ip could not be saved. Please, try again.'));
+            $this->Flash->error(__('The removed IP address could not be saved. Please, try again.'));
         }
         $customers = $this->RemovedIps->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
         $contracts = $this->RemovedIps->Contracts->find('list', [
@@ -201,9 +201,9 @@ class RemovedIpsController extends AppController
         $this->getRequest()->allowMethod(['post', 'delete']);
         $removedIp = $this->RemovedIps->get($id);
         if ($this->RemovedIps->delete($removedIp)) {
-            $this->Flash->success(__('The removed ip has been deleted.'));
+            $this->Flash->success(__('The removed IP address has been deleted.'));
         } else {
-            $this->Flash->error(__('The removed ip could not be deleted. Please, try again.'));
+            $this->Flash->error(__('The removed IP address could not be deleted. Please, try again.'));
         }
 
         if (isset($contract_id)) {

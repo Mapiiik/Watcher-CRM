@@ -96,7 +96,7 @@ use Cake\I18n\Number;
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->AuthLink->link(
-                __('Ips'),
+                __('IP Addresses'),
                 ['action' => 'view', $customer->id, '#' => 'ips'],
                 ['class' => 'side-nav-item']
             ) ?>
@@ -399,9 +399,9 @@ use Cake\I18n\Number;
                             <th><?= __('Rights') ?></th>
                             <th><?= __('Locked') ?></th>
                             <th><?= __('Last Granted') ?></th>
-                            <th><?= __('Last Granted Ip') ?></th>
+                            <th><?= __('Last Granted IP Address') ?></th>
                             <th><?= __('Last Denied') ?></th>
-                            <th><?= __('Last Denied Ip') ?></th>
+                            <th><?= __('Last Denied IP Address') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($customer->logins as $login) : ?>
@@ -787,13 +787,13 @@ use Cake\I18n\Number;
             <div class="row">
                 <div class="column-responsive">
                     <div class="related">
-                        <h4 id="ips"><?= __('Related Ips') ?></h4>
+                        <h4 id="ips"><?= __('Related IP Addresses') ?></h4>
                         <?php if (!empty($customer->ips)) : ?>
                         <div class="table-responsive">
                             <table>
                                 <tr>
                                     <th><?= __('Contract') ?></th>
-                                    <th><?= __('Ip') ?></th>
+                                    <th><?= __('IP Address') ?></th>
                                     <th><?= __('Type Of Use') ?></th>
                                     <th><?= __('Note') ?></th>
                                     <th><?= __('Device') ?></th>
@@ -872,7 +872,7 @@ use Cake\I18n\Number;
                             <table>
                                 <tr>
                                     <th><?= __('Contract') ?></th>
-                                    <th><?= __('Ip Network') ?></th>
+                                    <th><?= __('IP Network') ?></th>
                                     <th><?= __('Type Of Use') ?></th>
                                     <th><?= __('Note') ?></th>
                                     <th><?= __('IP Address Range') ?></th>
@@ -939,13 +939,13 @@ use Cake\I18n\Number;
             <div class="row">
                 <div class="column-responsive">
                     <div class="related">
-                        <h4><?= __('Related Removed Ips') ?></h4>
+                        <h4><?= __('Related Removed IP Addresses') ?></h4>
                         <?php if (!empty($customer->removed_ips)) : ?>
                         <div class="table-responsive">
                             <table>
                                 <tr>
                                     <th><?= __('Contract') ?></th>
-                                    <th><?= __('Ip') ?></th>
+                                    <th><?= __('IP Address') ?></th>
                                     <th><?= __('Type Of Use') ?></th>
                                     <th><?= __('Note') ?></th>
                                     <th><?= __('Removed') ?></th>
@@ -993,7 +993,7 @@ use Cake\I18n\Number;
                             <table>
                                 <tr>
                                     <th><?= __('Contract') ?></th>
-                                    <th><?= __('Ip Network') ?></th>
+                                    <th><?= __('IP Network') ?></th>
                                     <th><?= __('Type Of Use') ?></th>
                                     <th><?= __('Note') ?></th>
                                     <th><?= __('Removed') ?></th>

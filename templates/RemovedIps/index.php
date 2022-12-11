@@ -18,8 +18,8 @@
 <?= $this->Form->end() ?>
 
 <div class="removedIps index content">
-    <?= $this->AuthLink->link(__('New Removed Ip'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
-    <h3><?= __('Removed Ips') ?></h3>
+    <?= $this->AuthLink->link(__('New Removed IP Address'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
+    <h3><?= __('Removed IP Addresses') ?></h3>
     <div class="table-responsive">
         <table>
             <thead>
