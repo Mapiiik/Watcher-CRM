@@ -143,7 +143,13 @@ class CustomersController extends AppController
             'contain' => [
                 'TaxRates',
                 'Contracts' => ['ContractStates'],
-                'Ips' => ['Contracts']],
+                'CustomerLabels' => [
+                    'Labels',
+                    'sort' => ['Labels.name'],
+                ],
+                'Ips' => ['Contracts'],
+                'IpNetworks' => ['Contracts'],
+            ],
             'order' => [
                 'Customers.id' => 'DESC',
             ],

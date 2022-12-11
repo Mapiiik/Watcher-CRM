@@ -45,7 +45,8 @@
                     <th><?= $this->Paginator->sort('last_name') ?></th>
                     <th><?= $this->Paginator->sort('suffix') ?></th>
                     <th><?= __('Contracts') ?></th>
-                    <th><?= __('Ips') ?></th>
+                    <th><?= __('IP Addresses') ?></th>
+                    <th><?= __('Customer Labels') ?></th>
                     <th><?= $this->Paginator->sort('tax_rate_id') ?></th>
                     <th><?= $this->Paginator->sort('dealer') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
@@ -80,6 +81,26 @@
                     <td>
                         <?php foreach ($customer->ips as $ip) : ?>
                         <span><?= h($ip->ip) ?></span><br />
+                        <?php endforeach; ?>
+                        <?php foreach ($customer->ip_networks as $ip_network) : ?>
+                        <span><?= h($ip_network->ip_network) ?></span><br />
+                        <?php endforeach; ?>
+                    </td>
+                    <td>
+                        <?php foreach ($customer->customer_labels as $customer_label) : ?>
+                        <span>
+                            <?= $this->Html->link(
+                                $customer_label->label->name,
+                                ['controller' => 'CustomerLabels', 'action' => 'view', $customer_label->id],
+                                [
+                                    'class' => 'win-link',
+                                    'title' => $customer_label->label->caption . PHP_EOL
+                                        . $customer_label->created . PHP_EOL
+                                        . $customer_label->note,
+                                    'style' => 'color: white; background-color: ' . $customer_label->label->color . ';',
+                                ]
+                            ) ?>
+                        </span><br>
                         <?php endforeach; ?>
                     </td>
                     <td>
