@@ -432,6 +432,24 @@ use Cake\I18n\Number;
                             ['controller' => 'BorrowedEquipments', 'action' => 'add'],
                             ['class' => 'button button-small float-right win-link']
                         ) ?>
+                        <?php
+                        if (
+                            $contract->has('installation_date')
+                            || $contract->has('uninstallation_date')
+                        ) : ?>
+                            <?= $this->AuthLink->postLink(
+                                __('Set dates for related borrowed equipments'),
+                                ['action' => 'setDatesForRelatedBorrowedEquipments', $contract->id],
+                                [
+                                    'confirm' => __(
+                                        'Are you sure you want to set dates'
+                                        . ' for related borrowed equipments for contract # {0}?',
+                                        $contract->number
+                                    ),
+                                    'class' => 'button button-small float-right',
+                                ]
+                            ) ?>
+                        <?php endif ?>
                         <h4 id="borrowed-equipments"><?= __('Borrowed Equipments') ?></h4>
                         <?php if (!empty($contract->borrowed_equipments)) : ?>
                         <div class="table-responsive">

@@ -349,6 +349,85 @@ class ContractsController extends AppController
     }
 
     /**
+     * Set dates for related borrowed equipments
+     *
+     * @param string|null $id Contract id.
+     * @return \Cake\Http\Response|null|void Redirects to view.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function setDatesForRelatedBorrowedEquipments($id = null)
+    {
+        $this->getRequest()->allowMethod(['post']);
+
+        $contract = $this->Contracts->get($id, [
+            'contain' => [
+                'BorrowedEquipments' => [
+                    'EquipmentTypes',
+                ],
+            ],
+        ]);
+
+        $borrowed_equipments = new Collection($contract->borrowed_equipments);
+
+        $borrowed_equipments_to_install = $borrowed_equipments->match(['borrowed_from' => null]);
+        $borrowed_equipments_to_uninstall = $borrowed_equipments->match(['borrowed_until' => null]);
+
+        if ($contract->has('installation_date')) {
+            if ($borrowed_equipments_to_install->isEmpty()) {
+                $this->Flash->warning(__('No related borrowed equipments to install.'));
+            } else {
+                foreach ($borrowed_equipments_to_install as $borrowed_equipment) {
+                    $borrowed_equipment = $this->Contracts->BorrowedEquipments->patchEntity($borrowed_equipment, [
+                        'borrowed_from' => $contract->installation_date,
+                    ]);
+
+                    if ($this->Contracts->BorrowedEquipments->save($borrowed_equipment)) {
+                        $this->Flash->success(
+                            __('Installation') . ': '
+                            . $borrowed_equipment->equipment_type->name
+                            . ' - ' . __('The borrowed equipment has been saved.')
+                        );
+                    } else {
+                        $this->Flash->error(
+                            __('Installation') . ': '
+                            . $borrowed_equipment->equipment_type->name
+                            . ' - ' . __('The borrowed equipment could not be saved. Please, try again.')
+                        );
+                    }
+                }
+            }
+        }
+
+        if ($contract->has('uninstallation_date')) {
+            if ($borrowed_equipments_to_uninstall->isEmpty()) {
+                $this->Flash->warning(__('No related borrowed equipments to uninstall.'));
+            } else {
+                foreach ($borrowed_equipments_to_uninstall as $borrowed_equipment) {
+                    $borrowed_equipment = $this->Contracts->BorrowedEquipments->patchEntity($borrowed_equipment, [
+                        'borrowed_until' => $contract->uninstallation_date,
+                    ]);
+
+                    if ($this->Contracts->BorrowedEquipments->save($borrowed_equipment)) {
+                        $this->Flash->success(
+                            __('Uninstallation') . ': '
+                            . $borrowed_equipment->equipment_type->name
+                            . ' - ' . __('The borrowed equipment has been saved.')
+                        );
+                    } else {
+                        $this->Flash->error(
+                            __('Uninstallation') . ': '
+                            . $borrowed_equipment->equipment_type->name
+                            . ' - ' . __('The borrowed equipment could not be saved. Please, try again.')
+                        );
+                    }
+                }
+            }
+        }
+
+        return $this->redirect(['action' => 'view', $id]);
+    }
+
+    /**
      * Terminate related billings
      *
      * @param string|null $id Contract id.
