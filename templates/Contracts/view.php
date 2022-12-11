@@ -273,6 +273,7 @@ use Cake\I18n\Number;
                     </div>
                 </div>
             </div>
+            <?php if ($contract->has('service_type') && $contract->service_type->have_contract_versions) : ?>
             <div class="related">
                 <?= $this->AuthLink->link(
                     __('New Contract Version'),
@@ -327,6 +328,7 @@ use Cake\I18n\Number;
                 </div>
                 <?php endif; ?>
             </div>
+            <?php endif; ?>
             <div class="related">
                 <?= $this->AuthLink->link(
                     __('New Billing'),
@@ -406,6 +408,7 @@ use Cake\I18n\Number;
                 </div>
                 <?php endif; ?>
             </div>
+            <?php if ($contract->has('service_type') && $contract->service_type->have_radius_accounts) : ?>
             <div class="related">
                 <?= $this->AuthLink->link(
                     __('New RADIUS Account'),
@@ -419,6 +422,8 @@ use Cake\I18n\Number;
                     ['show_contracts' => false]
                 ) ?>
             </div>
+            <?php endif; ?>
+            <?php if ($contract->has('service_type') && $contract->service_type->have_equipments) : ?>
             <div class="row">
                 <div class="column-responsive">
                     <div class="related">
@@ -539,6 +544,8 @@ use Cake\I18n\Number;
                     </div>
                 </div>
             </div>
+            <?php endif; ?>
+            <?php if ($contract->has('service_type') && $contract->service_type->have_ip_addresses) : ?>
             <div class="row">
                 <div class="column-responsive">
                     <div class="related">
@@ -807,6 +814,7 @@ use Cake\I18n\Number;
                     </div>
                 </div>
             </div>
+            <?php endif; ?>
             <div class="related">
                 <?= $this->AuthLink->link(
                     __('New Task'),

@@ -62,16 +62,63 @@ class ServiceTypesTable extends AppTable
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->integer('id')
-            ->allowEmptyString('id', null, 'create');
-
-        $validator
             ->scalar('name')
+            ->maxLength('name', 255)
             ->allowEmptyString('name');
 
         $validator
             ->scalar('contract_number_format')
+            ->maxLength('contract_number_format', 255)
             ->allowEmptyString('contract_number_format');
+
+        $validator
+            ->integer('activation_fee')
+            ->allowEmptyString('activation_fee');
+
+        $validator
+            ->integer('activation_fee_with_obligation')
+            ->allowEmptyString('activation_fee_with_obligation');
+
+        $validator
+            ->boolean('separate_invoice')
+            ->notEmptyString('separate_invoice');
+
+        $validator
+            ->boolean('invoice_with_items')
+            ->notEmptyString('invoice_with_items');
+
+        $validator
+            ->scalar('invoice_text')
+            ->maxLength('invoice_text', 255)
+            ->allowEmptyString('invoice_text');
+
+        $validator
+            ->boolean('installation_address_required')
+            ->notEmptyString('installation_address_required');
+
+        $validator
+            ->boolean('access_point_required')
+            ->notEmptyString('access_point_required');
+
+        $validator
+            ->boolean('normally_with_borrowed_equipment')
+            ->notEmptyString('normally_with_borrowed_equipment');
+
+        $validator
+            ->boolean('have_contract_versions')
+            ->notEmptyString('have_contract_versions');
+
+            $validator
+            ->boolean('have_equipments')
+            ->notEmptyString('have_equipments');
+
+        $validator
+            ->boolean('have_ip_addresses')
+            ->notEmptyString('have_ip_addresses');
+
+        $validator
+            ->boolean('have_radius_accounts')
+            ->notEmptyString('have_radius_accounts');
 
         return $validator;
     }

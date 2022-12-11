@@ -25,6 +25,10 @@ use Cake\ORM\Entity;
  * @property bool $installation_address_required
  * @property bool $access_point_required
  * @property bool $normally_with_borrowed_equipment
+ * @property bool $have_contract_versions
+ * @property bool $have_equipments
+ * @property bool $have_ip_addresses
+ * @property bool $have_radius_accounts
  *
  * @property \App\Model\Entity\Contract[] $contracts
  * @property \App\Model\Entity\Service[] $services
@@ -55,6 +59,10 @@ class ServiceType extends Entity
         'installation_address_required' => true,
         'access_point_required' => true,
         'normally_with_borrowed_equipment' => true,
+        'have_contract_versions' => true,
+        'have_equipments' => true,
+        'have_ip_addresses' => true,
+        'have_radius_accounts' => true,
         'contracts' => true,
         'services' => true,
     ];

@@ -35,6 +35,10 @@
                     echo $this->Form->control('installation_address_required');
                     echo $this->Form->control('access_point_required');
                     echo $this->Form->control('normally_with_borrowed_equipment');
+                    echo $this->Form->control('have_contract_versions');
+                    echo $this->Form->control('have_equipments');
+                    echo $this->Form->control('have_ip_addresses');
+                    echo $this->Form->control('have_radius_accounts');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

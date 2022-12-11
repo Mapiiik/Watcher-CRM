@@ -37,6 +37,10 @@
                     <th><?= $this->Paginator->sort('installation_address_required') ?></th>
                     <th><?= $this->Paginator->sort('access_point_required') ?></th>
                     <th><?= $this->Paginator->sort('normally_with_borrowed_equipment') ?></th>
+                    <th><?= $this->Paginator->sort('have_contract_versions') ?></th>
+                    <th><?= $this->Paginator->sort('have_equipments') ?></th>
+                    <th><?= $this->Paginator->sort('have_ip_addresses') ?></th>
+                    <th><?= $this->Paginator->sort('have_radius_accounts') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -53,6 +57,10 @@
                     <td><?= $serviceType->installation_address_required ? __('Yes') : __('No'); ?></td>
                     <td><?= $serviceType->access_point_required ? __('Yes') : __('No'); ?></td>
                     <td><?= $serviceType->normally_with_borrowed_equipment ? __('Yes') : __('No'); ?></td>
+                    <td><?= $serviceType->have_contract_versions ? __('Yes') : __('No'); ?></td>
+                    <td><?= $serviceType->have_equipments ? __('Yes') : __('No'); ?></td>
+                    <td><?= $serviceType->have_ip_addresses ? __('Yes') : __('No'); ?></td>
+                    <td><?= $serviceType->have_radius_accounts ? __('Yes') : __('No'); ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $serviceType->id]) ?>
                         <?= $this->AuthLink->link(

@@ -16,12 +16,12 @@ class ServiceTypesTableTest extends TestCase
      *
      * @var \App\Model\Table\ServiceTypesTable
      */
-    protected $ServiceTypesTable;
+    protected $ServiceTypes;
 
     /**
      * Fixtures
      *
-     * @var array
+     * @var array<string>
      */
     protected $fixtures = [
         'app.ServiceTypes',
@@ -34,11 +34,11 @@ class ServiceTypesTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('ServiceTypes') ? [] : ['className' => ServiceTypesTable::class];
-        $this->ServiceTypesTable = $this->fetchTable('ServiceTypes', $config);
+        $this->ServiceTypes = $this->getTableLocator()->get('ServiceTypes', $config);
     }
 
     /**
@@ -46,9 +46,9 @@ class ServiceTypesTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
-        unset($this->ServiceTypesTable);
+        unset($this->ServiceTypes);
 
         parent::tearDown();
     }

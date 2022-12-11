@@ -71,6 +71,22 @@
                             <th><?= __('Normally With Borrowed Equipment') ?></th>
                             <td><?= $serviceType->normally_with_borrowed_equipment ? __('Yes') : __('No'); ?></td>
                         </tr>
+                        <tr>
+                            <th><?= __('Have Contract Versions') ?></th>
+                            <td><?= $serviceType->have_contract_versions ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Have Equipments') ?></th>
+                            <td><?= $serviceType->have_equipments ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Have IP Addresses') ?></th>
+                            <td><?= $serviceType->have_ip_addresses ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Have RADIUS Accounts') ?></th>
+                            <td><?= $serviceType->have_radius_accounts ? __('Yes') : __('No'); ?></td>
+                        </tr>
                     </table>
                 </div>
                 <div class="column-responsive">

@@ -181,6 +181,7 @@
                     </table>
                 </div>
             </div>
+            <?php if ($contract->has('service_type') && $contract->service_type->have_contract_versions) : ?>
             <div class="related">
                 <?= $this->AuthLink->link(
                     __('New Contract Version'),
@@ -236,6 +237,7 @@
                 <?php endif; ?>
             </div>
             <br />
+            <?php endif; ?>
             <?= $this->Form->create(null, [
                 'type' => 'get',
                 'valueSources' => ['query'],
