@@ -39,8 +39,8 @@
                     <th><?= $this->Paginator->sort('normally_with_borrowed_equipment') ?></th>
                     <th><?= $this->Paginator->sort('have_contract_versions') ?></th>
                     <th><?= $this->Paginator->sort('have_equipments') ?></th>
-                    <th><?= $this->Paginator->sort('have_ip_addresses') ?></th>
-                    <th><?= $this->Paginator->sort('have_radius_accounts') ?></th>
+                    <th><?= $this->Paginator->sort('have_ip_addresses', __('Have IP Addresses')) ?></th>
+                    <th><?= $this->Paginator->sort('have_radius_accounts', __('Have RADIUS Accounts')) ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>

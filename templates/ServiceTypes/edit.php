@@ -37,8 +37,8 @@
                     echo $this->Form->control('normally_with_borrowed_equipment');
                     echo $this->Form->control('have_contract_versions');
                     echo $this->Form->control('have_equipments');
-                    echo $this->Form->control('have_ip_addresses');
-                    echo $this->Form->control('have_radius_accounts');
+                    echo $this->Form->control('have_ip_addresses', ['label' => __('Have IP Addresses')]);
+                    echo $this->Form->control('have_radius_accounts', ['label' => __('Have RADIUS Accounts')]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
