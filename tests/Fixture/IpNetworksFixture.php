@@ -19,7 +19,6 @@ class IpNetworksFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
                 'customer_id' => 1,
                 'contract_id' => 1,
                 'ip_network' => '10.0.0.0/8',

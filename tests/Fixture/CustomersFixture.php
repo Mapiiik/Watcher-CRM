@@ -19,7 +19,6 @@ class CustomersFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
                 'dealer' => 1,
                 'title' => 'Lorem ipsum dolor sit amet',
                 'first_name' => 'Lorem ipsum dolor sit amet',

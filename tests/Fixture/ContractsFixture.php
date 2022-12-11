@@ -19,7 +19,6 @@ class ContractsFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
                 'customer_id' => 1,
                 'installation_address_id' => 1,
                 'number' => 'Lorem ipsum dolor sit amet',

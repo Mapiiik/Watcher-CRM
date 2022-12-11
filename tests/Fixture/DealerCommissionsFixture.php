@@ -23,7 +23,6 @@ class DealerCommissionsFixture extends TestFixture
                 'commission_id' => 1,
                 'fixed' => 1,
                 'percentage' => 1,
-                'id' => 1,
             ],
         ];
         parent::init();

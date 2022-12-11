@@ -19,7 +19,6 @@ class TaxRatesFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
                 'name' => 'Lorem ipsum dolor sit amet',
                 'vat_rate' => 1,
                 'reverse_charge' => 1,

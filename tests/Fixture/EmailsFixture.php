@@ -19,7 +19,6 @@ class EmailsFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
                 'customer_id' => 1,
                 'email' => 'Lorem ipsum dolor sit amet',
                 'use_for_billing' => 1,

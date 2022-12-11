@@ -19,7 +19,6 @@ class PhonesFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
                 'customer_id' => 1,
                 'phone' => 'Lorem ipsum dolor sit amet',
             ],

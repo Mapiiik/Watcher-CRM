@@ -19,7 +19,6 @@ class SoldEquipmentsFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
                 'customer_id' => 1,
                 'contract_id' => 1,
                 'equipment_type_id' => 1,

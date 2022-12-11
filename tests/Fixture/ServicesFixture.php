@@ -19,7 +19,6 @@ class ServicesFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
                 'created' => 1636113926,
                 'modified' => 1636113926,
                 'name' => 'Lorem ipsum dolor sit amet',

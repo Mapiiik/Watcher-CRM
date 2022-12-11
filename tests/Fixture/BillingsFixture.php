@@ -19,7 +19,6 @@ class BillingsFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
                 'customer_id' => 1,
                 'text' => 'Lorem ipsum dolor sit amet',
                 'price' => 1,

@@ -19,7 +19,6 @@ class RemovedIpsFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
                 'removed_by' => 1,
                 'removed' => 1636113697,
                 'ip' => '192.168.11.11',
