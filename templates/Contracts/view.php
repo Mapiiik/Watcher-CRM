@@ -212,6 +212,10 @@ use Cake\I18n\Number;
                                 ]
                             ) : '' ?></td>
                         </tr>
+                        <tr>
+                            <th><?= __('Termination Date') ?></th>
+                            <td><?= h($contract->termination_date) ?></td>
+                        </tr>
                     </table>
                 </div>
                 <div class="column-responsive">

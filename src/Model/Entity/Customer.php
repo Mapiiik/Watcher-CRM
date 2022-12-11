@@ -33,7 +33,6 @@ use Cake\ORM\Entity;
  * @property string|null $note
  * @property string|null $identity_card_number
  * @property \Cake\I18n\FrozenDate|null $date_of_birth
- * @property \Cake\I18n\FrozenDate|null $termination_date
  * @property bool|null $agree_gdpr
  * @property bool|null $agree_mailing_outages
  * @property bool|null $agree_mailing_commercial
@@ -101,7 +100,6 @@ class Customer extends Entity
         'note' => true,
         'identity_card_number' => true,
         'date_of_birth' => true,
-        'termination_date' => true,
         'agree_gdpr' => true,
         'agree_mailing_outages' => true,
         'agree_mailing_commercial' => true,

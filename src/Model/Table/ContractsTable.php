@@ -184,6 +184,10 @@ class ContractsTable extends AppTable
             ->allowEmptyDate('uninstallation_date');
 
         $validator
+            ->date('termination_date')
+            ->allowEmptyDate('termination_date');
+
+        $validator
             ->scalar('access_description')
             ->allowEmptyString('access_description');
 

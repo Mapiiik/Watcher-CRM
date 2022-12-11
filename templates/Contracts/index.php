@@ -35,6 +35,7 @@
                     <th><?= $this->Paginator->sort('installation_technician_id') ?></th>
                     <th><?= $this->Paginator->sort('uninstallation_date') ?></th>
                     <th><?= $this->Paginator->sort('uninstallation_technician_id') ?></th>
+                    <th><?= $this->Paginator->sort('termination_date') ?></th>
                     <th><?= $this->Paginator->sort('commission_id') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
@@ -82,6 +83,7 @@
                                 $contract->uninstallation_technician->id,
                             ]
                         ) : '' ?></td>
+                    <td><?= h($contract->termination_date) ?></td>
                     <td><?=
                         $contract->has('commission') ? $this->Html->link(
                             $contract->commission->name,

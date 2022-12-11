@@ -195,10 +195,6 @@ use Cake\I18n\Number;
                             ) : '' ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Termination Date') ?></th>
-                            <td><?= h($customer->termination_date) ?></td>
-                        </tr>
-                        <tr>
                             <th><?= __('Dealer') ?></th>
                             <td><?= $customer->getDealerState() ?></td>
                         </tr>
@@ -535,6 +531,7 @@ use Cake\I18n\Number;
                             <th><?= __('Access Point') ?></th>
                             <th><?= __('Installation Date') ?></th>
                             <th><?= __('Uninstallation Date') ?></th>
+                            <th><?= __('Termination Date') ?></th>
                             <th><?= __('Note') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
@@ -550,6 +547,7 @@ use Cake\I18n\Number;
                             <td><?= $contract->has('access_point') ? h($contract->access_point['name']) : '' ?></td>
                             <td><?= h($contract->installation_date) ?></td>
                             <td><?= h($contract->uninstallation_date) ?></td>
+                            <td><?= h($contract->termination_date) ?></td>
                             <td><?= h($contract->note) ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(

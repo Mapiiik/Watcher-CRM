@@ -99,10 +99,6 @@
                             ) : '' ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Termination Date') ?></th>
-                            <td><?= h($customer->termination_date) ?></td>
-                        </tr>
-                        <tr>
                             <th><?= __('Dealer') ?></th>
                             <td><?= $customer->getDealerState() ?></td>
                         </tr>

@@ -136,6 +136,7 @@
                             <th><?= __('Installation Technician') ?></th>
                             <th><?= __('Uninstallation Date') ?></th>
                             <th><?= __('Uninstallation Technician') ?></th>
+                            <th><?= __('Termination Date') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($commission->contracts as $contract) : ?>
@@ -196,6 +197,7 @@
                                         $contract->uninstallation_technician->id,
                                     ]
                                 ) : '' ?></td>
+                            <td><?= h($contract->termination_date) ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),

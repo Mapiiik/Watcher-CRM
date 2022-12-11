@@ -121,6 +121,7 @@
                             <th><?= __('Installation Technician') ?></th>
                             <th><?= __('Uninstallation Date') ?></th>
                             <th><?= __('Uninstallation Technician') ?></th>
+                            <th><?= __('Termination Date') ?></th>
                             <th><?= __('Commission') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
@@ -173,6 +174,7 @@
                                         $contract->uninstallation_technician->id,
                                     ]
                                 ) : '' ?></td>
+                            <td><?= h($contract->termination_date) ?></td>
                             <td><?=
                                 $contract->has('commission') ? $this->Html->link(
                                     $contract->commission->name,

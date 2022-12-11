@@ -259,10 +259,6 @@ class CustomersTable extends AppTable
             ->allowEmptyDate('date_of_birth');
 
         $validator
-            ->date('termination_date')
-            ->allowEmptyDate('termination_date');
-
-        $validator
             ->boolean('agree_gdpr')
             ->allowEmptyString('agree_gdpr');
 

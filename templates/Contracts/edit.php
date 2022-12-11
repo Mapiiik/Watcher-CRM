@@ -104,6 +104,23 @@
                             'disabled' => !$contract->has('uninstallation_date'),
                         ]);
                         $this->Form->unlockField('uninstallation_technician_id'); //disable form security check
+
+                        echo $this->Form->control('enable_termination', [
+                            'label' => false,
+                            'checked' => $contract->has('termination_date'),
+                            'type' => 'checkbox',
+                            'templates' => [
+                                'inputContainer' => '<div class="float-left">{{content}}&nbsp;</div>',
+                            ],
+                            'onclick' => 'document.getElementById("termination-date").disabled = !this.checked;',
+                        ]);
+
+                        echo $this->Form->hidden('termination_date', ['value' => '']); //return null if not enabled
+                        echo $this->Form->control('termination_date', [
+                            'empty' => true,
+                            'disabled' => !$contract->has('termination_date'),
+                        ]);
+                        $this->Form->unlockField('termination_date'); //disable form security check
                         ?>
                     </div>
                 </div>

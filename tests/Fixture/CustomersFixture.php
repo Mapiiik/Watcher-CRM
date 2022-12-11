@@ -41,7 +41,6 @@ class CustomersFixture extends TestFixture
                 'note' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
                 'identity_card_number' => 'Lorem ipsu',
                 'date_of_birth' => '2021-11-05',
-                'termination_date' => '2021-11-05',
                 'agree_gdpr' => 1,
                 'agree_mailing_outages' => 1,
                 'agree_mailing_commercial' => 1,

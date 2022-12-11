@@ -29,6 +29,7 @@ use Exception;
  * @property int|null $commission_id
  * @property \Cake\I18n\FrozenDate|null $installation_date
  * @property \Cake\I18n\FrozenDate|null $uninstallation_date
+ * @property \Cake\I18n\FrozenDate|null $termination_date
  * @property string|null $access_description
  * @property int|null $activation_fee
  * @property int|null $activation_fee_with_obligation
@@ -93,6 +94,7 @@ class Contract extends Entity
         'commission_id' => true,
         'installation_date' => true,
         'uninstallation_date' => true,
+        'termination_date' => true,
         'access_description' => true,
         'activation_fee' => true,
         'activation_fee_with_obligation' => true,
