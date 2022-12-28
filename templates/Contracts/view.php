@@ -589,6 +589,7 @@ use Cake\I18n\Number;
                                     <th><?= __('IP Address') ?></th>
                                     <th><?= __('Type Of Use') ?></th>
                                     <th><?= __('Note') ?></th>
+                                    <th><?= __('Status') ?></th>
                                     <th><?= __('Device') ?></th>
                                     <th><?= __('IP Address Range') ?></th>
                                     <th class="actions"><?= __('Actions') ?></th>
@@ -598,6 +599,11 @@ use Cake\I18n\Number;
                                     <td><?= h($ip->ip) ?></td>
                                     <td><?= h($ip_address_types_of_use[$ip->type_of_use]) ?></td>
                                     <td><?= h($ip->note) ?></td>
+                                    <td class="to-center"><?=
+                                        $this->Html->image('ping/status.png.php?host=' . h($ip->ip), [
+                                            'class' => 'ping-status',
+                                            'onclick' => 'this.src = this.src',
+                                        ]) ?></td>
                                     <td><?php
                                     if (isset($ip->routeros_devices)) {
                                         $device = $ip->routeros_devices->first();

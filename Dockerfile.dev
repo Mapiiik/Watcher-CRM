@@ -18,6 +18,11 @@ RUN set -x \
  && docker-run-bootstrap \
  && docker-image-cleanup
 
+# Install ping command
+RUN apt-get update -y \
+ && apt-get install iputils-ping -y \
+ && docker-image-cleanup
+
 # Add on-start commands
 RUN echo '# Composer oprations' >> /opt/docker/provision/entrypoint.d/99-composer.sh \
  && echo 'gosu "${APPLICATION_USER}" composer install -d /app' >> /opt/docker/provision/entrypoint.d/99-composer.sh \
