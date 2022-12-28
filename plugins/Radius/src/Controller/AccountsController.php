@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace Radius\Controller;
 
-use Boo\Radius\Client;
-use Boo\Radius\Exceptions\ClientException;
-use Boo\Radius\Packet;
-use Boo\Radius\PacketType;
 use Cake\Database\Query;
 use Cake\I18n\FrozenDate;
+use Mapik\RadiusClient\Client;
+use Mapik\RadiusClient\Exceptions\ClientException;
+use Mapik\RadiusClient\Packet;
+use Mapik\RadiusClient\PacketType;
 
 /**
  * Accounts Controller
