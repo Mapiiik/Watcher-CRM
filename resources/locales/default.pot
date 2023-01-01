@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-01-01 15:18+0100\n"
+"POT-Creation-Date: 2023-01-01 18:52+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -198,47 +198,47 @@ msgstr ""
 msgid "Unable to find results on page {0}. Redirect to page 1."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:110
-#: ./src/Controller/BillingsController.php:186
+#: ./src/Controller/BillingsController.php:114
+#: ./src/Controller/BillingsController.php:190
 msgid "Billing text must be entered or service selected."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:119
-#: ./src/Controller/BillingsController.php:195
+#: ./src/Controller/BillingsController.php:123
+#: ./src/Controller/BillingsController.php:199
 msgid "The service type does not match the selected contract."
-msgstr ""
-
-#: ./src/Controller/BillingsController.php:122
-#: ./src/Controller/BillingsController.php:198
-#: ./src/Controller/ContractsController.php:465
-msgid "The billing has been saved."
 msgstr ""
 
 #: ./src/Controller/BillingsController.php:126
 #: ./src/Controller/BillingsController.php:202
-#: ./src/Controller/ContractsController.php:469
+#: ./src/Controller/ContractsController.php:466
+msgid "The billing has been saved."
+msgstr ""
+
+#: ./src/Controller/BillingsController.php:130
+#: ./src/Controller/BillingsController.php:206
+#: ./src/Controller/ContractsController.php:470
 msgid "The billing could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:247
+#: ./src/Controller/BillingsController.php:251
 msgid "The billing has been deleted."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:249
+#: ./src/Controller/BillingsController.php:253
 msgid "The billing could not be deleted. Please, try again."
 msgstr ""
 
 #: ./src/Controller/BorrowedEquipmentsController.php:107
 #: ./src/Controller/BorrowedEquipmentsController.php:157
-#: ./src/Controller/ContractsController.php:388
-#: ./src/Controller/ContractsController.php:414
+#: ./src/Controller/ContractsController.php:389
+#: ./src/Controller/ContractsController.php:415
 msgid "The borrowed equipment has been saved."
 msgstr ""
 
 #: ./src/Controller/BorrowedEquipmentsController.php:111
 #: ./src/Controller/BorrowedEquipmentsController.php:161
-#: ./src/Controller/ContractsController.php:394
-#: ./src/Controller/ContractsController.php:420
+#: ./src/Controller/ContractsController.php:395
+#: ./src/Controller/ContractsController.php:421
 msgid "The borrowed equipment could not be saved. Please, try again."
 msgstr ""
 
@@ -304,137 +304,137 @@ msgstr ""
 msgid "The contract version could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:151
-#: ./src/Controller/ContractsController.php:235
+#: ./src/Controller/ContractsController.php:152
+#: ./src/Controller/ContractsController.php:236
 msgid "The contract has been saved."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:157
-#: ./src/Controller/ContractsController.php:241
+#: ./src/Controller/ContractsController.php:158
+#: ./src/Controller/ContractsController.php:242
 msgid "The contract could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:211
-#: ./src/Controller/ContractsController.php:293
-#: ./src/Controller/OverviewsController.php:116
+#: ./src/Controller/ContractsController.php:212
+#: ./src/Controller/ContractsController.php:294
+#: ./src/Controller/OverviewsController.php:121
 #: ./src/Controller/TasksController.php:169
 #: ./src/Controller/TasksController.php:360
 #: ./src/Controller/TasksController.php:453
 msgid "The access points list could not be loaded. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:312
+#: ./src/Controller/ContractsController.php:313
 msgid "The contract has been deleted."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:314
+#: ./src/Controller/ContractsController.php:315
 msgid "The contract could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:341
+#: ./src/Controller/ContractsController.php:342
 msgid "The contract number has been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:346
+#: ./src/Controller/ContractsController.php:347
 msgid "The contract number could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:377
+#: ./src/Controller/ContractsController.php:378
 msgid "No related borrowed equipments to install."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:386
-#: ./src/Controller/ContractsController.php:392
+#: ./src/Controller/ContractsController.php:387
+#: ./src/Controller/ContractsController.php:393
 msgid "Installation"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:403
+#: ./src/Controller/ContractsController.php:404
 msgid "No related borrowed equipments to uninstall."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:412
-#: ./src/Controller/ContractsController.php:418
+#: ./src/Controller/ContractsController.php:413
+#: ./src/Controller/ContractsController.php:419
 msgid "Uninstallation"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:456
+#: ./src/Controller/ContractsController.php:457
 msgid "No related billings to terminate."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:475
+#: ./src/Controller/ContractsController.php:476
 msgid "Please set a date until which the contract is valid."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:495
+#: ./src/Controller/ContractsController.php:496
 msgid "Contract for the provision of services"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:496
+#: ./src/Controller/ContractsController.php:497
 msgid "Contract for the provision of services (with termination of the original contract)"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:498
+#: ./src/Controller/ContractsController.php:499
 msgid "Amendment to the contract for the provision of services"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:499
+#: ./src/Controller/ContractsController.php:500
 msgid "Agreement to terminate contract for the provision of services"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:501
+#: ./src/Controller/ContractsController.php:502
 msgid "Handover protocol - Installation of internet connection"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:502
+#: ./src/Controller/ContractsController.php:503
 msgid "Handover protocol - Internet connection uninstallation"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:535
+#: ./src/Controller/ContractsController.php:536
 #: ./templates/ContractVersions/view.php:40
 msgid "indefinitely"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:561
+#: ./src/Controller/ContractsController.php:562
 msgid "A borrowed equipment is not assigned, although it should normally be for this type of service. Please confirm that the customer has their own equipment or add it."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:570
+#: ./src/Controller/ContractsController.php:571
 msgid "Invalid contract version requested."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:576
+#: ./src/Controller/ContractsController.php:577
 msgid "Invalid contract version to be replaced requested."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:589
-#: ./src/Controller/ContractsController.php:681
+#: ./src/Controller/ContractsController.php:590
+#: ./src/Controller/ContractsController.php:682
 msgid "Please set the date until which the contract version is valid."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:599
-#: ./src/Controller/ContractsController.php:629
+#: ./src/Controller/ContractsController.php:600
+#: ./src/Controller/ContractsController.php:630
 msgid "Please set the date of conclusion of the contract version."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:609
-#: ./src/Controller/ContractsController.php:658
-#: ./src/Controller/ContractsController.php:691
+#: ./src/Controller/ContractsController.php:610
+#: ./src/Controller/ContractsController.php:659
+#: ./src/Controller/ContractsController.php:692
 msgid "Please enter the number of the contract to be terminated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:621
+#: ./src/Controller/ContractsController.php:622
 msgid "Please enter the effective date of the amendment."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:642
+#: ./src/Controller/ContractsController.php:643
 msgid "Please select the contract version to be replaced."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:648
+#: ./src/Controller/ContractsController.php:649
 msgid "Please set the date of conclusion of the original contract version."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:749
+#: ./src/Controller/ContractsController.php:750
 #: ./src/Controller/CustomersController.php:333
 msgid "Invalid type of document requested."
 msgstr ""
@@ -674,7 +674,7 @@ msgstr ""
 msgid "The login could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:327
+#: ./src/Controller/OverviewsController.php:337
 msgid "unknown dealer"
 msgstr ""
 
@@ -748,21 +748,21 @@ msgstr ""
 msgid "The service type could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ServicesController.php:78
-#: ./src/Controller/ServicesController.php:104
+#: ./src/Controller/ServicesController.php:82
+#: ./src/Controller/ServicesController.php:108
 msgid "The service has been saved."
 msgstr ""
 
-#: ./src/Controller/ServicesController.php:82
-#: ./src/Controller/ServicesController.php:108
+#: ./src/Controller/ServicesController.php:86
+#: ./src/Controller/ServicesController.php:112
 msgid "The service could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ServicesController.php:127
+#: ./src/Controller/ServicesController.php:131
 msgid "The service has been deleted."
 msgstr ""
 
-#: ./src/Controller/ServicesController.php:129
+#: ./src/Controller/ServicesController.php:133
 msgid "The service could not be deleted. Please, try again."
 msgstr ""
 
@@ -926,9 +926,13 @@ msgstr ""
 msgid "API"
 msgstr ""
 
-#: ./src/Model/Entity/Contract.php:286
-#: ./src/Model/Entity/Contract.php:302
-#: ./src/Model/Entity/Contract.php:318
+#: ./src/Model/Entity/Billing.php:295
+msgid "Contract data not available."
+msgstr ""
+
+#: ./src/Model/Entity/Contract.php:284
+#: ./src/Model/Entity/Contract.php:299
+#: ./src/Model/Entity/Contract.php:314
 msgid "Contract state data not available."
 msgstr ""
 
@@ -1340,7 +1344,7 @@ msgstr ""
 #: ./templates/Logins/index.php:36
 #: ./templates/Logins/view.php:11
 #: ./templates/Overviews/overview_of_active_services.php:11
-#: ./templates/Overviews/overview_of_active_services.php:61
+#: ./templates/Overviews/overview_of_active_services.php:62
 #: ./templates/Overviews/overview_of_customer_connection_points.php:11
 #: ./templates/Overviews/overview_of_customer_connection_points.php:64
 #: ./templates/Overviews/overview_of_dealer_commissions.php:11
@@ -1887,7 +1891,7 @@ msgstr ""
 #: ./templates/Labels/index.php:64
 #: ./templates/Labels/view.php:130
 #: ./templates/Logins/index.php:57
-#: ./templates/Overviews/overview_of_active_services.php:87
+#: ./templates/Overviews/overview_of_active_services.php:89
 #: ./templates/Overviews/overview_of_customer_connection_points.php:84
 #: ./templates/Overviews/overview_of_dealer_commissions.php:101
 #: ./templates/Phones/index.php:50
@@ -3997,12 +4001,16 @@ msgid "Percentage Discount Sum"
 msgstr ""
 
 #: ./templates/Overviews/overview_of_active_services.php:59
-#: ./templates/Overviews/overview_of_active_services.php:99
+#: ./templates/Overviews/overview_of_active_services.php:101
 msgid "Total Sum"
 msgstr ""
 
 #: ./templates/Overviews/overview_of_active_services.php:60
 msgid "Total Sum (nonbusiness)"
+msgstr ""
+
+#: ./templates/Overviews/overview_of_active_services.php:61
+msgid "Total Sum (unbilled)"
 msgstr ""
 
 #: ./templates/Overviews/overview_of_customer_connection_points.php:19

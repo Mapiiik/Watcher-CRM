@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-01-01 15:18+0100\n"
-"PO-Revision-Date: 2023-01-01 15:18+0100\n"
+"POT-Creation-Date: 2023-01-01 18:52+0100\n"
+"PO-Revision-Date: 2023-01-01 18:57+0100\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -177,47 +177,47 @@ msgstr "Adresa nebyla v RUIAN nalezena."
 msgid "Unable to find results on page {0}. Redirect to page 1."
 msgstr "Nelze najít výsledky na stránce {0}. Přesměrování na stranu 1."
 
-#: src/Controller/BillingsController.php:110
-#: src/Controller/BillingsController.php:186
+#: src/Controller/BillingsController.php:114
+#: src/Controller/BillingsController.php:190
 msgid "Billing text must be entered or service selected."
 msgstr "Je nutné zadat fakturační text nebo vybrat službu."
 
-#: src/Controller/BillingsController.php:119
-#: src/Controller/BillingsController.php:195
+#: src/Controller/BillingsController.php:123
+#: src/Controller/BillingsController.php:199
 msgid "The service type does not match the selected contract."
 msgstr "Typ služby neodpovídá vybrané smlouvě."
 
-#: src/Controller/BillingsController.php:122
-#: src/Controller/BillingsController.php:198
-#: src/Controller/ContractsController.php:465
+#: src/Controller/BillingsController.php:126
+#: src/Controller/BillingsController.php:202
+#: src/Controller/ContractsController.php:466
 msgid "The billing has been saved."
 msgstr "Fakturace byla uložena."
 
-#: src/Controller/BillingsController.php:126
-#: src/Controller/BillingsController.php:202
-#: src/Controller/ContractsController.php:469
+#: src/Controller/BillingsController.php:130
+#: src/Controller/BillingsController.php:206
+#: src/Controller/ContractsController.php:470
 msgid "The billing could not be saved. Please, try again."
 msgstr "Fakturace nelze uložit. Opakujte akci."
 
-#: src/Controller/BillingsController.php:247
+#: src/Controller/BillingsController.php:251
 msgid "The billing has been deleted."
 msgstr "Fakturace byla odstraněna."
 
-#: src/Controller/BillingsController.php:249
+#: src/Controller/BillingsController.php:253
 msgid "The billing could not be deleted. Please, try again."
 msgstr "Fakturace nelze odstranit. Opakujte akci."
 
 #: src/Controller/BorrowedEquipmentsController.php:107
 #: src/Controller/BorrowedEquipmentsController.php:157
-#: src/Controller/ContractsController.php:388
-#: src/Controller/ContractsController.php:414
+#: src/Controller/ContractsController.php:389
+#: src/Controller/ContractsController.php:415
 msgid "The borrowed equipment has been saved."
 msgstr "Zapůjčené zařízení bylo uloženo."
 
 #: src/Controller/BorrowedEquipmentsController.php:111
 #: src/Controller/BorrowedEquipmentsController.php:161
-#: src/Controller/ContractsController.php:394
-#: src/Controller/ContractsController.php:420
+#: src/Controller/ContractsController.php:395
+#: src/Controller/ContractsController.php:421
 msgid "The borrowed equipment could not be saved. Please, try again."
 msgstr "Zapůjčené zařízení nelze uložit. Opakujte akci."
 
@@ -283,99 +283,99 @@ msgstr "Verze smlouvy byla odstraněna."
 msgid "The contract version could not be deleted. Please, try again."
 msgstr "Verzi smlouvy nebylo možné odstranit. Zkuste to prosím znovu."
 
-#: src/Controller/ContractsController.php:151
-#: src/Controller/ContractsController.php:235
+#: src/Controller/ContractsController.php:152
+#: src/Controller/ContractsController.php:236
 msgid "The contract has been saved."
 msgstr "Smlouva byla uložena."
 
-#: src/Controller/ContractsController.php:157
-#: src/Controller/ContractsController.php:241
+#: src/Controller/ContractsController.php:158
+#: src/Controller/ContractsController.php:242
 msgid "The contract could not be saved. Please, try again."
 msgstr "Smlouvu nelze uložit. Opakujte akci."
 
-#: src/Controller/ContractsController.php:211
-#: src/Controller/ContractsController.php:293
-#: src/Controller/OverviewsController.php:116
+#: src/Controller/ContractsController.php:212
+#: src/Controller/ContractsController.php:294
+#: src/Controller/OverviewsController.php:121
 #: src/Controller/TasksController.php:169
 #: src/Controller/TasksController.php:360
 #: src/Controller/TasksController.php:453
 msgid "The access points list could not be loaded. Please, try again."
 msgstr "Seznam přístupových bodů nelze načíst. Zkuste to prosím znovu."
 
-#: src/Controller/ContractsController.php:312
+#: src/Controller/ContractsController.php:313
 msgid "The contract has been deleted."
 msgstr "Smlouva byla odstraněna."
 
-#: src/Controller/ContractsController.php:314
+#: src/Controller/ContractsController.php:315
 msgid "The contract could not be deleted. Please, try again."
 msgstr "Smlouvu nelze odstranit. Opakujte akci."
 
-#: src/Controller/ContractsController.php:341
+#: src/Controller/ContractsController.php:342
 msgid "The contract number has been updated."
 msgstr "Číslo smlouvy bylo aktualizováno."
 
-#: src/Controller/ContractsController.php:346
+#: src/Controller/ContractsController.php:347
 msgid "The contract number could not be updated. Please, try again."
 msgstr "Číslo smlouvy nelze aktualizovat. Opakujte akci."
 
-#: src/Controller/ContractsController.php:377
+#: src/Controller/ContractsController.php:378
 msgid "No related borrowed equipments to install."
 msgstr "Žádná související zapůjčená zařízení k instalaci."
 
-#: src/Controller/ContractsController.php:386
-#: src/Controller/ContractsController.php:392
+#: src/Controller/ContractsController.php:387
+#: src/Controller/ContractsController.php:393
 msgid "Installation"
 msgstr "Instalace"
 
-#: src/Controller/ContractsController.php:403
+#: src/Controller/ContractsController.php:404
 msgid "No related borrowed equipments to uninstall."
 msgstr "Žádná související zapůjčená zařízení k deinstalaci."
 
-#: src/Controller/ContractsController.php:412
-#: src/Controller/ContractsController.php:418
+#: src/Controller/ContractsController.php:413
+#: src/Controller/ContractsController.php:419
 msgid "Uninstallation"
 msgstr "Deinstalace"
 
-#: src/Controller/ContractsController.php:456
+#: src/Controller/ContractsController.php:457
 msgid "No related billings to terminate."
 msgstr "Žádné související fakturace k ukončení."
 
-#: src/Controller/ContractsController.php:475
+#: src/Controller/ContractsController.php:476
 msgid "Please set a date until which the contract is valid."
 msgstr "Nastavte prosím datum, do kterého je smlouva platná."
 
-#: src/Controller/ContractsController.php:495
+#: src/Controller/ContractsController.php:496
 msgid "Contract for the provision of services"
 msgstr "Smlouva o poskytování služeb"
 
-#: src/Controller/ContractsController.php:496
+#: src/Controller/ContractsController.php:497
 msgid ""
 "Contract for the provision of services (with termination of the original "
 "contract)"
 msgstr "Smlouva o poskytování služeb (s ukončením původní smlouvy)"
 
-#: src/Controller/ContractsController.php:498
+#: src/Controller/ContractsController.php:499
 msgid "Amendment to the contract for the provision of services"
 msgstr "Dodatek ke smlouvě o poskytování služeb"
 
-#: src/Controller/ContractsController.php:499
+#: src/Controller/ContractsController.php:500
 msgid "Agreement to terminate contract for the provision of services"
 msgstr "Dohoda o ukončení smlouvy o poskytování služeb"
 
-#: src/Controller/ContractsController.php:501
+#: src/Controller/ContractsController.php:502
 msgid "Handover protocol - Installation of internet connection"
 msgstr "Předávací protokol - Instalace připojení k internetu"
 
-#: src/Controller/ContractsController.php:502
+#: src/Controller/ContractsController.php:503
 msgid "Handover protocol - Internet connection uninstallation"
 msgstr "Předávací protokol - Deinstalace připojení k internetu"
 
-#: src/Controller/ContractsController.php:535
+#: src/Controller/ContractsController.php:536
 #: templates/ContractVersions/view.php:40
 msgid "indefinitely"
 msgstr "na dobu neurčitou"
 
-#: src/Controller/ContractsController.php:561
+#: src/Controller/ContractsController.php:562
 msgid ""
 "A borrowed equipment is not assigned, although it should normally be for "
 "this type of service. Please confirm that the customer has their own "
@@ -384,43 +384,43 @@ msgstr ""
 "Zapůjčené zařízení není přiděleno, ačkoli by normálně mělo být pro tento typ "
 "služby. Potvrďte prosím, že zákazník má vlastní zařízení, nebo jej přidejte."
 
-#: src/Controller/ContractsController.php:570
+#: src/Controller/ContractsController.php:571
 msgid "Invalid contract version requested."
 msgstr "Požadována neplatná verze smlouvy."
 
-#: src/Controller/ContractsController.php:576
+#: src/Controller/ContractsController.php:577
 msgid "Invalid contract version to be replaced requested."
 msgstr "Požadována neplatná verze smlouvy, která má být nahrazena."
 
-#: src/Controller/ContractsController.php:589
-#: src/Controller/ContractsController.php:681
+#: src/Controller/ContractsController.php:590
+#: src/Controller/ContractsController.php:682
 msgid "Please set the date until which the contract version is valid."
 msgstr "Nastavte prosím datum, do kterého je verze smlouvy platná."
 
-#: src/Controller/ContractsController.php:599
-#: src/Controller/ContractsController.php:629
+#: src/Controller/ContractsController.php:600
+#: src/Controller/ContractsController.php:630
 msgid "Please set the date of conclusion of the contract version."
 msgstr "Nastavte prosím datum uzavření verze smlouvy."
 
-#: src/Controller/ContractsController.php:609
-#: src/Controller/ContractsController.php:658
-#: src/Controller/ContractsController.php:691
+#: src/Controller/ContractsController.php:610
+#: src/Controller/ContractsController.php:659
+#: src/Controller/ContractsController.php:692
 msgid "Please enter the number of the contract to be terminated."
 msgstr "Zadejte prosím číslo smlouvy, která má být ukončena."
 
-#: src/Controller/ContractsController.php:621
+#: src/Controller/ContractsController.php:622
 msgid "Please enter the effective date of the amendment."
 msgstr "Zadejte prosím datum účinnosti dodatku."
 
-#: src/Controller/ContractsController.php:642
+#: src/Controller/ContractsController.php:643
 msgid "Please select the contract version to be replaced."
 msgstr "Vyberte verzi smlouvy, která má být nahrazena."
 
-#: src/Controller/ContractsController.php:648
+#: src/Controller/ContractsController.php:649
 msgid "Please set the date of conclusion of the original contract version."
 msgstr "Nastavte prosím datum uzavření původní verze smlouvy."
 
-#: src/Controller/ContractsController.php:749
+#: src/Controller/ContractsController.php:750
 #: src/Controller/CustomersController.php:333
 msgid "Invalid type of document requested."
 msgstr "Neplatný typ požadovaného dokumentu."
@@ -666,7 +666,7 @@ msgstr "Přihlášení bylo odstraněno."
 msgid "The login could not be deleted. Please, try again."
 msgstr "Přihlášení nelze odstranit. Prosím, zkuste to znovu."
 
-#: src/Controller/OverviewsController.php:327
+#: src/Controller/OverviewsController.php:337
 msgid "unknown dealer"
 msgstr "neznámý dealer"
 
@@ -740,21 +740,21 @@ msgstr "Typ služby byl odstraněn."
 msgid "The service type could not be deleted. Please, try again."
 msgstr "Typ služby nelze odstranit. Opakujte akci."
 
-#: src/Controller/ServicesController.php:78
-#: src/Controller/ServicesController.php:104
+#: src/Controller/ServicesController.php:82
+#: src/Controller/ServicesController.php:108
 msgid "The service has been saved."
 msgstr "Služba byla uložena."
 
-#: src/Controller/ServicesController.php:82
-#: src/Controller/ServicesController.php:108
+#: src/Controller/ServicesController.php:86
+#: src/Controller/ServicesController.php:112
 msgid "The service could not be saved. Please, try again."
 msgstr "Službu nelze uložit. Opakujte akci."
 
-#: src/Controller/ServicesController.php:127
+#: src/Controller/ServicesController.php:131
 msgid "The service has been deleted."
 msgstr "Služba byla odstraněna."
 
-#: src/Controller/ServicesController.php:129
+#: src/Controller/ServicesController.php:133
 msgid "The service could not be deleted. Please, try again."
 msgstr "Službu nelze odstranit. Opakujte akci."
 
@@ -911,8 +911,12 @@ msgstr "Admin"
 msgid "API"
 msgstr "API"
 
-#: src/Model/Entity/Contract.php:286 src/Model/Entity/Contract.php:302
-#: src/Model/Entity/Contract.php:318
+#: src/Model/Entity/Billing.php:295
+msgid "Contract data not available."
+msgstr "Údaje o smlouvě nejsou k dispozici."
+
+#: src/Model/Entity/Contract.php:284 src/Model/Entity/Contract.php:299
+#: src/Model/Entity/Contract.php:314
 msgid "Contract state data not available."
 msgstr "Údaje o stavu smlouvy nejsou k dispozici."
 
@@ -1191,7 +1195,7 @@ msgstr "Zadaný typ úkolu vyžaduje přiřazení smlouvy."
 #: templates/Logins/edit.php:11 templates/Logins/index.php:36
 #: templates/Logins/view.php:11
 #: templates/Overviews/overview_of_active_services.php:11
-#: templates/Overviews/overview_of_active_services.php:61
+#: templates/Overviews/overview_of_active_services.php:62
 #: templates/Overviews/overview_of_customer_connection_points.php:11
 #: templates/Overviews/overview_of_customer_connection_points.php:64
 #: templates/Overviews/overview_of_dealer_commissions.php:11
@@ -1512,7 +1516,7 @@ msgstr "Mapy.cz"
 #: templates/EquipmentTypes/view.php:181 templates/IpNetworks/index.php:52
 #: templates/Ips/index.php:54 templates/Labels/index.php:64
 #: templates/Labels/view.php:130 templates/Logins/index.php:57
-#: templates/Overviews/overview_of_active_services.php:87
+#: templates/Overviews/overview_of_active_services.php:89
 #: templates/Overviews/overview_of_customer_connection_points.php:84
 #: templates/Overviews/overview_of_dealer_commissions.php:101
 #: templates/Phones/index.php:50 templates/Queues/index.php:51
@@ -2229,7 +2233,7 @@ msgstr "Barva"
 
 #: templates/ContractStates/view.php:57
 msgid "Billed"
-msgstr "Účtováno"
+msgstr "Fakturováno"
 
 #: templates/ContractStates/view.php:61
 msgid "Blocked"
@@ -3134,13 +3138,17 @@ msgid "Percentage Discount Sum"
 msgstr "Součet procentuálních slev"
 
 #: templates/Overviews/overview_of_active_services.php:59
-#: templates/Overviews/overview_of_active_services.php:99
+#: templates/Overviews/overview_of_active_services.php:101
 msgid "Total Sum"
 msgstr "Celkový součet"
 
 #: templates/Overviews/overview_of_active_services.php:60
 msgid "Total Sum (nonbusiness)"
 msgstr "Celkový součet (neobchodní)"
+
+#: templates/Overviews/overview_of_active_services.php:61
+msgid "Total Sum (unbilled)"
+msgstr "Celkový součet (nefakturováno)"
 
 #: templates/Overviews/overview_of_customer_connection_points.php:19
 msgid "Export"
