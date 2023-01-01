@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   testsuite:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
@@ -84,7 +84,7 @@ jobs:
 
   cs-stan:
     name: Coding Standard & Static Analysis
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout
@@ -119,7 +119,7 @@ jobs:
           mv composer.backup composer.json
 
       - name: Run PHP CodeSniffer
-        run: vendor/bin/phpcs --colors -p src/ templates/ tests/ plugins/
+        run: vendor/bin/phpcs --report=checkstyle src/ templates/ tests/ plugins/ | cs2pr
 
       - name: Run psalm
         if: success() || failure()
