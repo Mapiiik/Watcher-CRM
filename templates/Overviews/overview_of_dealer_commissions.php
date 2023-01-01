@@ -54,6 +54,7 @@
                                     <th><?= __('Customer') ?></th>
                                     <th><?= __('Customer Number') ?></th>
                                     <th><?= __('Contract') ?></th>
+                                    <th><?= __('Contract State') ?></th>
                                     <th><?= __('Name') ?></th>
                                     <th><?= __('Quantity') ?></th>
                                     <th><?= __('Price') ?></th>
@@ -66,7 +67,7 @@
                                 </tr>
                                 <?php foreach ($dealerCommission->commission->contracts as $contract) : ?>
                                     <?php foreach ($contract->billings as $billing) : ?>
-                                    <tr style="<?= $billing->style ?>">
+                                    <tr>
                                         <td><?= $contract->has('customer') ?
                                             $this->Html->link(
                                                 $contract->customer->name,
@@ -87,6 +88,8 @@
                                                     $contract->id,
                                                 ]
                                             ) ?></td>
+                                        <td><?= $contract->has('contract_state') ?
+                                            h($contract->contract_state->name) : '' ?></td>
                                         <td><?= h($billing->name) ?></td>
                                         <td><?= h($billing->quantity) ?></td>
                                         <td><?= h($billing->price) ?><?= $billing->has('service') ?

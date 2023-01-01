@@ -310,8 +310,6 @@ class OverviewsController extends AppController
                                     ],
                                 ]);
                         })
-                        // only contracts with billed states
-                        ->where(['ContractStates.billed' => true])
                         // format results
                         ->formatResults(function (CollectionInterface $contracts) {
                             return $contracts->map(function (Contract $contract) {
