@@ -27,7 +27,7 @@
         "mapik/radius-client": "dev-master",
         "mapik/routeros-api": "^1.6",
         "mlocati/ip-lib": "^1.18",
-        "mobiledetect/mobiledetectlib": "^2.8",
+        "mobiledetect/mobiledetectlib": "^3.74",
         "tecnickcom/tcpdf": "^6.4"
     },
     "require-dev": {
