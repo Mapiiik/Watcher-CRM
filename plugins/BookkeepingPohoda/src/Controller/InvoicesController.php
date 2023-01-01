@@ -204,55 +204,47 @@ class InvoicesController extends AppController
     private function getQueryForBillingDataForMonth(FrozenDate $invoiced_month, int $tax_rate_id): Query
     {
         return $this->fetchTable('Customers')
-                ->find()
-                ->order('Customers.id')
-                ->where(['Customers.tax_rate_id' => $tax_rate_id])
-                ->contain('Addresses')
-                ->contain('Contracts', function (Query $q) use ($invoiced_month) {
-                    return $q
-                            ->order('Contracts.id')
-/* ignore for now, use only dates from billings (sometimes we want to bill even without contract)
+            ->find()
+            ->contain('Addresses')
+            ->contain('Contracts', function (Query $q) use ($invoiced_month) {
+                return $q
+                    ->contain('ContractStates')
+                    ->contain('ServiceTypes')
+                    ->contain('Billings', function (Query $q) use ($invoiced_month) {
+                        return $q
+                            ->contain(['Services'])
                             ->where([
-                                'OR' => [
-                                    'Contracts.valid_from IS NULL',
-                                    'Contracts.valid_from <=' => $invoiced_month->lastOfMonth(), //last day of month
-                                ],
+                                'Billings.billing_from <=' => $invoiced_month->lastOfMonth(), //last day of month
                             ])
                             ->andWhere([
                                 'OR' => [
-                                    'Contracts.valid_until IS NULL',
-                                    'Contracts.valid_until >=' => $invoiced_month->firstOfMonth(), //first day of month
+                                    'Billings.billing_until IS NULL',
+                                    'Billings.billing_until >=' => $invoiced_month->firstOfMonth(), //first day of month
                                 ],
                             ])
-*/
-                            ->contain('ServiceTypes')
-                            ->contain('Billings', function (Query $q) use ($invoiced_month) {
-                                return $q
-                                        ->order('Billings.id')
-                                        ->where([
-                                            'Billings.billing_from <=' => $invoiced_month->lastOfMonth(), //last day of month
-                                        ])
-                                        ->andWhere([
-                                            'OR' => [
-                                                'Billings.billing_until IS NULL',
-                                                'Billings.billing_until >=' => $invoiced_month->firstOfMonth(), //first day of month
-                                            ],
-                                        ])
-                                        ->formatResults(
-                                            function (CollectionInterface $billings) use ($invoiced_month) {
-                                                return $billings->map(function ($billing) use ($invoiced_month) {
-                                                    $billing['period_total'] = $billing->periodTotal(
-                                                        $invoiced_month->firstOfMonth(),
-                                                        $invoiced_month->lastOfMonth()
-                                                    );
+                            ->order('Billings.id')
+                            ->formatResults(
+                                function (CollectionInterface $billings) use ($invoiced_month) {
+                                    return $billings->map(function ($billing) use ($invoiced_month) {
+                                        $billing['period_total'] = $billing->periodTotal(
+                                            $invoiced_month->firstOfMonth(),
+                                            $invoiced_month->lastOfMonth()
+                                        );
 
-                                                    return $billing;
-                                                });
-                                            }
-                                        )
-                                        ->contain(['Services']);
-                            });
-                });
+                                        return $billing;
+                                    });
+                                }
+                            );
+                    })
+                    // only contracts with billed states
+                    ->where(['ContractStates.billed' => true])
+                    // order by contract ID
+                    ->order('Contracts.id');
+            })
+            // only customers with the selected tax rate
+            ->where(['Customers.tax_rate_id' => $tax_rate_id])
+            // order by customer ID
+            ->order('Customers.id');
     }
 
     /**

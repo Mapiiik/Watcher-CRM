@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use App\ApiClient;
-use Cake\I18n\FrozenDate;
 use Cake\ORM\Entity;
 use Exception;
 
@@ -274,11 +273,10 @@ class Contract extends Entity
      * getter for active
      *
      * @return bool
+     * @throws \Exception When contract state data not available.
      */
     protected function _getActive(): bool
     {
-        $now = new FrozenDate();
-
         if (isset($this->contract_state)) {
             return $this->contract_state->active;
         }
@@ -290,11 +288,10 @@ class Contract extends Entity
      * getter for billed
      *
      * @return bool
+     * @throws \Exception When contract state data not available.
      */
     protected function _getBilled(): bool
     {
-        $now = new FrozenDate();
-
         if (isset($this->contract_state)) {
             return $this->contract_state->billed;
         }
@@ -306,11 +303,10 @@ class Contract extends Entity
      * getter for blocked
      *
      * @return bool
+     * @throws \Exception When contract state data not available.
      */
     protected function _getBlocked(): bool
     {
-        $now = new FrozenDate();
-
         if (isset($this->contract_state)) {
             return $this->contract_state->blocked;
         }

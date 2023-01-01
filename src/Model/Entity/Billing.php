@@ -5,6 +5,7 @@ namespace App\Model\Entity;
 
 use Cake\I18n\FrozenDate;
 use Cake\ORM\Entity;
+use Exception;
 
 /**
  * Billing Entity
@@ -273,6 +274,7 @@ class Billing extends Entity
      * getter for active
      *
      * @return bool
+     * @throws \Exception When contract data not available.
      */
     protected function _getActive(): bool
     {
@@ -286,6 +288,10 @@ class Billing extends Entity
             return false;
         }
 
-        return true;
+        if (isset($this->contract)) {
+            return $this->contract->billed;
+        }
+
+        throw new Exception(__('Contract data not available.'));
     }
 }

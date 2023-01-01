@@ -101,6 +101,7 @@ class ContractsController extends AppController
                 'UninstallationTechnicians',
                 'Commissions',
                 'Billings' => [
+                    'Contracts' => ['ContractStates'],
                     'Services',
                 ],
                 'BorrowedEquipments' => [

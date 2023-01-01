@@ -46,7 +46,11 @@ class BillingsController extends AppController
         }
 
         $this->paginate = [
-            'contain' => ['Customers', 'Services', 'Contracts'],
+            'contain' => [
+                'Contracts' => ['ContractStates'],
+                'Customers',
+                'Services',
+            ],
             'order' => ['id' => 'DESC'],
             'conditions' => $conditions,
         ];
@@ -66,9 +70,9 @@ class BillingsController extends AppController
     {
         $billing = $this->Billings->get($id, [
             'contain' => [
+                'Contracts' => ['ContractStates'],
                 'Customers',
                 'Services',
-                'Contracts',
                 'Creators',
                 'Modifiers',
             ],
