@@ -222,7 +222,9 @@ class InvoicesController extends AppController
                                     'Billings.billing_until >=' => $invoiced_month->firstOfMonth(), //first day of month
                                 ],
                             ])
+                            // order by billing ID
                             ->order('Billings.id')
+                            // format results
                             ->formatResults(
                                 function (CollectionInterface $billings) use ($invoiced_month) {
                                     return $billings->map(function ($billing) use ($invoiced_month) {

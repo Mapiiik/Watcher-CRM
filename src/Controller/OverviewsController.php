@@ -44,6 +44,15 @@ class OverviewsController extends AppController
             ->contain('ServiceTypes')
             ->contain('Billings', function (Query $q) use ($month_to_display, $access_point_id) {
                 return $q
+                    ->contain('Services')
+                    ->contain('Customers')
+                    ->contain('Contracts', function (Query $q) use ($access_point_id) {
+                        $q->contain('ContractStates');
+                        // filter by access point
+                        return !empty($access_point_id) ?
+                            $q->where(['Contracts.access_point_id' => $access_point_id]) :
+                            $q;
+                    })
                     ->where([
                         'Billings.billing_from <=' => $month_to_display->lastOfMonth(), //last day of month
                     ])
@@ -52,15 +61,7 @@ class OverviewsController extends AppController
                             'Billings.billing_until IS NULL',
                             'Billings.billing_until >=' => $month_to_display->firstOfMonth(), //first day of month
                         ],
-                    ])
-                    ->contain(['Services'])
-                    ->contain(['Customers'])
-                    ->contain('Contracts', function (Query $q) use ($access_point_id) {
-                        // filter by access point
-                        return !empty($access_point_id) ?
-                            $q->where(['Contracts.access_point_id' => $access_point_id]) :
-                            $q;
-                    });
+                    ]);
             })
             ->formatResults(
                 function (CollectionInterface $services) {
@@ -83,6 +84,10 @@ class OverviewsController extends AppController
 
                         $service['total_sum_nonbusiness'] = (new Collection($service['billings']))
                             ->match(['customer.ic' => null])->sumOf('total_price');
+
+                        $service['total_sum_unbilled'] = (new Collection($service['billings']))
+                            ->match(['contract.billed' => false])
+                            ->sumOf('total_price');
 
                         return $service;
                     });
@@ -290,9 +295,11 @@ class OverviewsController extends AppController
             ->contain('Commissions', function (Query $q) use ($month_to_display) {
                 return $q->contain('Contracts', function (Query $q) use ($month_to_display) {
                     return $q
+                        ->contain('ContractStates')
                         ->contain('Customers')
                         ->contain('Billings', function (Query $q) use ($month_to_display) {
                             return $q
+                                ->contain('Services')
                                 ->where([
                                     'Billings.billing_from <=' => $month_to_display->lastOfMonth(), //last day of month
                                 ])
@@ -301,9 +308,11 @@ class OverviewsController extends AppController
                                         'Billings.billing_until IS NULL',
                                         'Billings.billing_until >=' => $month_to_display->firstOfMonth(), //first day of month
                                     ],
-                                ])
-                                ->contain(['Services']);
+                                ]);
                         })
+                        // only contracts with billed states
+                        ->where(['ContractStates.billed' => true])
+                        // format results
                         ->formatResults(function (CollectionInterface $contracts) {
                             return $contracts->map(function (Contract $contract) {
                                 $contract['total_price'] = (new Collection($contract->billings))->sumOf('total_price');
@@ -312,6 +321,7 @@ class OverviewsController extends AppController
                             });
                         });
                 })
+                // format results
                 ->formatResults(function (CollectionInterface $commissions) {
                     return $commissions->map(function (Commission $commission) {
                         $commission['total_price'] = (new Collection($commission->contracts))->sumOf('total_price');

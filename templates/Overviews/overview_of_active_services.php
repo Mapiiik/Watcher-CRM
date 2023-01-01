@@ -58,6 +58,7 @@
                             <th><?= __('Percentage Discount Sum') ?></th>
                             <th><?= __('Total Sum') ?></th>
                             <th><?= __('Total Sum (nonbusiness)') ?></th>
+                            <th><?= __('Total Sum (unbilled)') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                     </thead>
@@ -83,6 +84,7 @@
                             <td><?= $this->Number->currency($service->percentage_discount_sum) ?></td>
                             <td><?= $this->Number->currency($service->total_sum) ?></td>
                             <td><?= $this->Number->currency($service->total_sum_nonbusiness) ?></td>
+                            <td><?= $this->Number->currency($service->total_sum_unbilled) ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(__('View'), [
                                     'controller' => 'Services',
