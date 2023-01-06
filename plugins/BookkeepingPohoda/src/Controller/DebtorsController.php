@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace BookkeepingPohoda\Controller;
 
-use Exception;
-use Mapiiik\RouterosAPI;
+use RouterOS\Client;
+use RouterOS\Query;
 
 /**
  * Invoices Controller
@@ -88,9 +88,6 @@ class DebtorsController extends AppController
             ],
         ]);
 
-        $api = new RouterosAPI();
-        $api->debug = false;
-
         $ipv4s = [];
         $ipv6s = [];
 
@@ -117,23 +114,29 @@ class DebtorsController extends AppController
 
         $routers = explode(' ', env('DEBTORS_ROUTERS_IP_ADDRESSES', ''));
         foreach ($routers as $router) {
-            $api->connect($router, env('DEBTORS_ROUTERS_USERNAME', ''), env('DEBTORS_ROUTERS_PASSWORD', ''));
-            if (!$api->connected) {
-                throw new Exception('Could not connect to ' . $router);
-            }
+            $client = new Client([
+                'host' => $router,
+                'user' => env('DEBTORS_ROUTERS_USERNAME', ''),
+                'pass' => env('DEBTORS_ROUTERS_PASSWORD', ''),
+            ]);
 
             foreach ($ipv4s as $ipv4) {
-                $api->write('/ip/firewall/address-list/print', false);
-                $api->write('?address=' . $ipv4, false);
-                $api->write('?list=' . env('DEBTORS_ADDRESS_LIST', ''), false);
-                $api->write('=.proplist=.id');
-                $reply = $api->read();
+                $query = new Query('/ip/firewall/address-list/print');
+                $query
+                    ->where('address', $ipv4)
+                    ->where('list', env('DEBTORS_ADDRESS_LIST', ''))
+                    ->equal('.proplist', '.id');
 
-                foreach ($reply as $item) {
-                    $api->write('/ip/firewall/address-list/remove', false);
-                    $api->write('=.id=' . $item['.id']);
-                    $reply = $api->read();
-                    if (empty($reply)) {
+                $response = $client->query($query)->read();
+
+                foreach ($response as $item) {
+                    $query = new Query('/ip/firewall/address-list/remove');
+                    $query->equal('.id', $item['.id']);
+
+                    $response = $client->query($query)->read();
+
+                    // check if no error message
+                    if (empty($response)) {
                         $result .= __d(
                             'bookkeeping_pohoda',
                             'Removed IPv4 record {0} from {1}.',
@@ -144,15 +147,21 @@ class DebtorsController extends AppController
                 }
 
                 if ($block) {
-                    $api->write('/ip/firewall/address-list/add', false);
-                    $api->write('=address=' . $ipv4, false);
-                    $api->write('=list=' . env('DEBTORS_ADDRESS_LIST', ''), false);
-                    $api->write('=comment=' . addslashes($this->removeAccents(
-                        'MANUAL ENTRY - ' . $customer->number . ' - ' . $customer->name
-                    )));
-                    $reply = $api->read();
-                    /* @phpstan-ignore-next-line */
-                    if (is_string($reply)) {
+                    $query = new Query('/ip/firewall/address-list/add');
+                    $query
+                        ->equal('address', $ipv4)
+                        ->equal('list', env('DEBTORS_ADDRESS_LIST', ''))
+                        ->equal(
+                            'comment',
+                            addslashes($this->removeAccents(
+                                'MANUAL ENTRY - ' . $customer->number . ' - ' . $customer->name
+                            ))
+                        );
+
+                    $response = $client->query($query)->read();
+
+                    // check if added
+                    if (isset($response['after']['ret'])) {
                         $result .= __d(
                             'bookkeeping_pohoda',
                             'Added IPv4 record {0} to {1}.',
@@ -163,17 +172,22 @@ class DebtorsController extends AppController
                 }
             }
             foreach ($ipv6s as $ipv6) {
-                $api->write('/ipv6/firewall/address-list/print', false);
-                $api->write('?address=' . $ipv6, false);
-                $api->write('?list=' . env('DEBTORS_ADDRESS_LIST', ''), false);
-                $api->write('=.proplist=.id');
-                $reply = $api->read();
+                $query = new Query('/ipv6/firewall/address-list/print');
+                $query
+                    ->where('address', $ipv6)
+                    ->where('list', env('DEBTORS_ADDRESS_LIST', ''))
+                    ->equal('.proplist', '.id');
 
-                foreach ($reply as $item) {
-                    $api->write('/ipv6/firewall/address-list/remove', false);
-                    $api->write('=.id=' . $item['.id']);
-                    $reply = $api->read();
-                    if (empty($reply)) {
+                $response = $client->query($query)->read();
+
+                foreach ($response as $item) {
+                    $query = new Query('/ipv6/firewall/address-list/remove');
+                    $query->equal('.id', $item['.id']);
+
+                    $response = $client->query($query)->read();
+
+                    // check if no error message
+                    if (empty($response)) {
                         $result .= __d(
                             'bookkeeping_pohoda',
                             'Removed IPv6 record {0} from {1}.',
@@ -184,15 +198,21 @@ class DebtorsController extends AppController
                 }
 
                 if ($block) {
-                    $api->write('/ipv6/firewall/address-list/add', false);
-                    $api->write('=address=' . $ipv6, false);
-                    $api->write('=list=' . env('DEBTORS_ADDRESS_LIST', ''), false);
-                    $api->write('=comment=' . addslashes($this->removeAccents(
-                        'MANUAL ENTRY - ' . $customer->number . ' - ' . $customer->name
-                    )));
-                    $reply = $api->read();
-                    /* @phpstan-ignore-next-line */
-                    if (is_string($reply)) {
+                    $query = new Query('/ipv6/firewall/address-list/add');
+                    $query
+                        ->equal('address', $ipv6)
+                        ->equal('list', env('DEBTORS_ADDRESS_LIST', ''))
+                        ->equal(
+                            'comment',
+                            addslashes($this->removeAccents(
+                                'MANUAL ENTRY - ' . $customer->number . ' - ' . $customer->name
+                            ))
+                        );
+
+                    $response = $client->query($query)->read();
+
+                    // check if added
+                    if (isset($response['after']['ret'])) {
                         $result .= __d(
                             'bookkeeping_pohoda',
                             'Added IPv6 record {0} to {1}.',
@@ -202,7 +222,6 @@ class DebtorsController extends AppController
                     }
                 }
             }
-            $api->disconnect();
         }
 
         return $result;
