@@ -25,7 +25,7 @@
         "league/oauth2-google": "^4.0",
         "mapik/audit-log": "^1.0",
         "mapik/pohoda-xml": "^1.16",
-        "mapik/radius-client": "dev-master",
+        "mapik/radius-client": "^1.0",
         "mlocati/ip-lib": "^1.18",
         "mobiledetect/mobiledetectlib": "^3.74",
         "tecnickcom/tcpdf": "^6.4"
