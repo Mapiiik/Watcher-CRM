@@ -1063,7 +1063,12 @@ use Cake\I18n\Number;
             <div class="related">
                 <?= $this->AuthLink->postLink(
                     __('Unblock Debtor'),
-                    ['plugin' => 'BookkeepingPohoda', 'controller' => 'Debtors', 'action' => 'unblock', $customer->id],
+                    [
+                        'plugin' => 'BookkeepingPohoda',
+                        'controller' => 'Debtors',
+                        'action' => 'unblock',
+                        $customer->id,
+                    ],
                     [
                         'class' => 'button button-small float-right',
                         'confirm' => __('Are you sure you want to unblock # {0}?', $customer->id),
@@ -1071,7 +1076,12 @@ use Cake\I18n\Number;
                 ) ?>
                 <?= $this->AuthLink->postLink(
                     __('Block Debtor'),
-                    ['plugin' => 'BookkeepingPohoda', 'controller' => 'Debtors', 'action' => 'block', $customer->id],
+                    [
+                        'plugin' => 'BookkeepingPohoda',
+                        'controller' => 'Debtors',
+                        'action' => 'block',
+                        $customer->id,
+                    ],
                     [
                         'class' => 'button button-small float-right',
                         'confirm' => __('Are you sure you want to block # {0}?', $customer->id),

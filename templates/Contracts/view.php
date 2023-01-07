@@ -88,6 +88,11 @@ use Cake\I18n\Number;
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->AuthLink->link(
+                __('Invoices'),
+                ['action' => 'view', $contract->id, '#' => 'invoices'],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->link(
                 __('Tasks'),
                 ['action' => 'view', $contract->id, '#' => 'tasks'],
                 ['class' => 'side-nav-item']
@@ -865,6 +870,41 @@ use Cake\I18n\Number;
                 </div>
             </div>
             <?php endif; ?>
+            <hr />
+            <div class="related">
+                <?= $this->AuthLink->postLink(
+                    __('Unblock Debtor'),
+                    [
+                        'plugin' => 'BookkeepingPohoda',
+                        'controller' => 'Debtors',
+                        'action' => 'unblock',
+                        $contract->customer->id,
+                    ],
+                    [
+                        'class' => 'button button-small float-right',
+                        'confirm' => __('Are you sure you want to unblock # {0}?', $contract->customer->id),
+                    ]
+                ) ?>
+                <?= $this->AuthLink->postLink(
+                    __('Block Debtor'),
+                    [
+                        'plugin' => 'BookkeepingPohoda',
+                        'controller' => 'Debtors',
+                        'action' => 'block',
+                        $contract->customer->id,
+                    ],
+                    [
+                        'class' => 'button button-small float-right',
+                        'confirm' => __('Are you sure you want to block # {0}?', $contract->customer->id),
+                    ]
+                ) ?>
+                <h4 id="invoices"><?= __('Invoices') ?></h4>
+                <?= $this->cell(
+                    'BookkeepingPohoda.Invoices',
+                    [['Invoices.customer_id' => $contract->customer->id]],
+                    ['show_customers' => false]
+                ) ?>
+            </div>
             <div class="related">
                 <?= $this->AuthLink->link(
                     __('New Task'),
