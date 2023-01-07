@@ -44,7 +44,9 @@ class InvoicesCell extends Cell
     {
         $invoices = $this->fetchTable('BookkeepingPohoda.Invoices')
             ->find('all', [
-                'conditions' => $conditions,
+                'conditions' => $conditions + (
+                    $this->request->getQuery('show_also_paid_invoices') === '1' ? [] : ['Invoices.debt !=' => 0]
+                ),
                 'contain' => [
                     'Customers',
                 ],

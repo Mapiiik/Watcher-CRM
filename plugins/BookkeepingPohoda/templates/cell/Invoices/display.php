@@ -7,8 +7,8 @@
 
 use Cake\I18n\FrozenDate;
 ?>
-<?php if (is_object($invoices) && !$invoices->isEmpty()) : ?>
 <div class="table-responsive">
+    <?php if (is_object($invoices) && !$invoices->isEmpty()) : ?>
     <table>
         <tr>
             <?php if ($show_customers) : ?>
@@ -59,18 +59,27 @@ use Cake\I18n\FrozenDate;
         </tr>
         <?php endforeach; ?>
     </table>
+    <?php endif; ?>
+    <div class="float-right">
+        <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query']]) ?>
+        <?= $this->Form->control('show_also_paid_invoices', [
+            'label' => __d('bookkeeping_pohoda', 'Show also paid invoices'),
+            'type' => 'checkbox',
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+        <?= $this->Form->end() ?>
+    </div>
+    <div>
+        <?= __d('bookkeeping_pohoda', 'Total Debt') . ': '
+            . $this->Number->currency($invoices->sumOf('debt')) ?><br>
+        <?= __d('bookkeeping_pohoda', 'Total Overdue Debt') . ': '
+            . $this->Number->currency(
+                $invoices
+                    ->filter(function ($value, $key) {
+                        return $value->due_date < FrozenDate::create();
+                    })
+                    ->sumOf('debt')
+            )
+        ?>
+    </div>
 </div>
-<div>
-    <?= __d('bookkeeping_pohoda', 'Total Debt') . ': '
-        . $this->Number->currency($invoices->sumOf('debt')) ?><br>
-    <?= __d('bookkeeping_pohoda', 'Total Overdue Debt') . ': '
-        . $this->Number->currency(
-            $invoices
-                ->filter(function ($value, $key) {
-                    return $value->due_date < FrozenDate::create();
-                })
-                ->sumOf('debt')
-        )
-    ?><br>
-</div>
-<?php endif; ?>
