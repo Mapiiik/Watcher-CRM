@@ -257,6 +257,36 @@ class IpsController extends AppController
 
                     // add IP address for selection
                     $ips[$ip_from_range->toString()] = $ip_from_range->toString();
+
+                    // retrieve previous IP address usage
+                    /** @var \App\Model\Entity\RemovedIp|null $previous_ip_address_usage */
+                    $previous_ip_address_usage = $this->fetchTable('RemovedIps')->find('all')
+                    ->contain([
+                        'Contracts',
+                        'Customers',
+                    ])
+                    ->where([
+                        'RemovedIps.ip' => $ip_from_range->toString(),
+                    ])
+                    ->order([
+                        'RemovedIps.removed' => 'DESC',
+                    ])
+                    ->first();
+
+                    // add retrieved previous IP address usage to description
+                    if ($previous_ip_address_usage) {
+                        $ips[$ip_from_range->toString()] .=
+                            ' ('
+                            . __(
+                                'last used until {0} by {1}',
+                                $previous_ip_address_usage->removed->i18nFormat(),
+                                $previous_ip_address_usage->contract->number
+                                ?? $previous_ip_address_usage->customer->number
+                                ?? __('unknown customer')
+                            )
+                            . ')';
+                    }
+                    unset($previous_ip_address_usage);
                 }
             }
         }
