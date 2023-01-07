@@ -25,7 +25,7 @@
                 <tr>
                     <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('color') ?></th>
-                    <th><?= $this->Paginator->sort('active') ?></th>
+                    <th><?= $this->Paginator->sort('active_services') ?></th>
                     <th><?= $this->Paginator->sort('billed') ?></th>
                     <th><?= $this->Paginator->sort('blocked') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
@@ -36,7 +36,7 @@
                 <tr>
                     <td><?= h($contractState->name) ?></td>
                     <td style="background-color: <?= h($contractState->color) ?>;"><?= h($contractState->color) ?></td>
-                    <td><?= $contractState->active ? __('Yes') : __('No'); ?></td>
+                    <td><?= $contractState->active_services ? __('Yes') : __('No'); ?></td>
                     <td><?= $contractState->billed ? __('Yes') : __('No'); ?></td>
                     <td><?= $contractState->blocked ? __('Yes') : __('No'); ?></td>
                     <td class="actions">

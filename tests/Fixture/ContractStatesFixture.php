@@ -22,7 +22,7 @@ class ContractStatesFixture extends TestFixture
                 'id' => '3fc51c92-5dbb-4bd4-9a47-237169c2755c',
                 'name' => 'Lorem ipsum dolor sit amet',
                 'color' => 'Lorem',
-                'active' => 1,
+                'active_services' => 1,
                 'billed' => 1,
                 'blocked' => 1,
                 'created' => 1669643075,

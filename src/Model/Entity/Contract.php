@@ -39,7 +39,7 @@ use Exception;
  * @property string $contract_state_id
  * @property string $name
  * @property string $style
- * @property bool $active
+ * @property bool $active_services
  * @property bool $billed
  * @property bool $blocked
  *
@@ -270,7 +270,7 @@ class Contract extends Entity
     }
 
     /**
-     * getter for active
+     * getter for active_services
      *
      * @return bool
      * @throws \Exception When contract state data not available.
@@ -278,7 +278,7 @@ class Contract extends Entity
     protected function _getActive(): bool
     {
         if (isset($this->contract_state)) {
-            return $this->contract_state->active;
+            return $this->contract_state->active_services;
         }
 
         throw new Exception(__('Contract state data not available.'));

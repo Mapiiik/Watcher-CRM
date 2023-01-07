@@ -50,8 +50,8 @@
                         ?></td>
                     </tr>
                     <tr>
-                        <th><?= __('Active') ?></th>
-                        <td><?= $contractState->active ? __('Yes') : __('No'); ?></td>
+                        <th><?= __('Active Services') ?></th>
+                        <td><?= $contractState->active_services ? __('Yes') : __('No'); ?></td>
                     </tr>
                     <tr>
                         <th><?= __('Billed') ?></th>
@@ -103,6 +103,12 @@
                         </tr>
                     </table>
                 </div>
+            </div>
+            <div class="text">
+                <strong><?= __('Note') ?></strong>
+                <blockquote>
+                    <?= $this->Text->autoParagraph(h($contractState->note)); ?>
+                </blockquote>
             </div>
             <div class="related">
                 <h4><?= __('Related Contracts') ?></h4>

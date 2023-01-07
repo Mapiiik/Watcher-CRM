@@ -17,11 +17,14 @@ use Cake\ORM\Entity;
  * @property string $id
  * @property string $name
  * @property string $color
- * @property bool $active
+ * @property bool $active_services
  * @property bool $billed
  * @property bool $blocked
+ * @property string|null $note
  *
  * @property \App\Model\Entity\Contract[] $contracts
+ *
+ * @property string $name_for_lists
  */
 class ContractState extends Entity
 {
@@ -37,9 +40,10 @@ class ContractState extends Entity
     protected $_accessible = [
         'name' => true,
         'color' => true,
-        'active' => true,
+        'active_services' => true,
         'billed' => true,
         'blocked' => true,
+        'note' => true,
         'created' => true,
         'created_by' => true,
         'modified' => true,
@@ -48,4 +52,20 @@ class ContractState extends Entity
         'modifier' => true,
         'contracts' => true,
     ];
+
+    /**
+     * getter for name with notes for lists
+     *
+     * @return string
+     */
+    protected function _getNameForLists(): string
+    {
+        $name = $this->name;
+
+        if (isset($this->note)) {
+            $name .= ' (' . $this->note . ')';
+        }
+
+        return $name;
+    }
 }

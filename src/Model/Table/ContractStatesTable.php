@@ -37,7 +37,7 @@ class ContractStatesTable extends AppTable
         parent::initialize($config);
 
         $this->setTable('contract_states');
-        $this->setDisplayField('name');
+        $this->setDisplayField('name_for_lists');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
@@ -69,9 +69,9 @@ class ContractStatesTable extends AppTable
             ->notEmptyString('color');
 
         $validator
-            ->boolean('active')
-            ->requirePresence('active', 'create')
-            ->notEmptyString('active');
+            ->boolean('active_services')
+            ->requirePresence('active_services', 'create')
+            ->notEmptyString('active_services');
 
         $validator
             ->boolean('billed')
@@ -82,6 +82,10 @@ class ContractStatesTable extends AppTable
             ->boolean('blocked')
             ->requirePresence('blocked', 'create')
             ->notEmptyString('blocked');
+
+        $validator
+            ->scalar('note')
+            ->allowEmptyString('note');
 
         return $validator;
     }
