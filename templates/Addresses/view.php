@@ -104,15 +104,8 @@
                 <div class="column-responsive">
                     <table>
                         <tr>
-                            <th><?= __('RÚIAN') ?></th>
-                            <td><?= $address->has('ruian_gid') ?
-                                $this->Number->format($address->ruian_gid) :
-                                '<span style="color: red;">' . __('unknown') . '</span>'
-                            ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Map location') ?></th>
-                            <td>
+                            <th class="actions"><?= __('Map location') ?></th>
+                            <td class="actions">
                                 <?= $address->has('gps_x') && $address->has('gps_y') ?
                                     '' : '<span style="color: red;">' . __('unknown') . '</span>' ?>
                                 <?= $address->has('gps_x') && $address->has('gps_y') ? $this->Html->link(
@@ -128,6 +121,13 @@
                                     ['target' => '_blank']
                                 ) : ''?>
                             </td>
+                        </tr>
+                        <tr>
+                            <th><?= __('RÚIAN') ?></th>
+                            <td><?= $address->has('ruian_gid') ?
+                                $this->Number->format($address->ruian_gid) :
+                                '<span style="color: red;">' . __('unknown') . '</span>'
+                            ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Manual Coordinate Setting') ?></th>
