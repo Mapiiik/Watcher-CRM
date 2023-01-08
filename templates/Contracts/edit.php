@@ -68,7 +68,10 @@
                 <div class="row">
                     <div class="column-responsive">
                         <?php
-                        echo $this->Form->control('installation_date', ['empty' => true]);
+                        echo $this->Form->control('installation_date', [
+                            'label' => __('Installation/Establishment Date'),
+                            'empty' => true,
+                        ]);
                         echo $this->Form->control('installation_technician_id', [
                             'options' => $installationTechnicians,
                             'empty' => true,
@@ -92,6 +95,7 @@
 
                         echo $this->Form->hidden('uninstallation_date', ['value' => '']); //return null if not enabled
                         echo $this->Form->control('uninstallation_date', [
+                            'label' => __('Uninstallation/Cancellation Date'),
                             'empty' => true,
                             'disabled' => !$contract->has('uninstallation_date'),
                         ]);
@@ -117,6 +121,7 @@
 
                         echo $this->Form->hidden('termination_date', ['value' => '']); //return null if not enabled
                         echo $this->Form->control('termination_date', [
+                            'label' => __('Date of Termination of Services'),
                             'empty' => true,
                             'disabled' => !$contract->has('termination_date'),
                         ]);

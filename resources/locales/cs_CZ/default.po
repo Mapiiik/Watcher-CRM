@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-01-08 16:21+0100\n"
-"PO-Revision-Date: 2023-01-08 16:22+0100\n"
+"POT-Creation-Date: 2023-01-08 16:43+0100\n"
+"PO-Revision-Date: 2023-01-08 16:44+0100\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -935,7 +935,7 @@ msgstr "Údaje o stavu smlouvy nejsou k dispozici."
 #: templates/ContractStates/index.php:40 templates/ContractStates/index.php:41
 #: templates/ContractStates/view.php:54 templates/ContractStates/view.php:58
 #: templates/ContractStates/view.php:62 templates/ContractStates/view.php:161
-#: templates/Contracts/index.php:68 templates/Contracts/print.php:92
+#: templates/Contracts/index.php:71 templates/Contracts/print.php:92
 #: templates/Contracts/view.php:193 templates/Contracts/view.php:417
 #: templates/Contracts/view.php:418 templates/Customers/print.php:113
 #: templates/Customers/print.php:117 templates/Customers/print.php:121
@@ -988,7 +988,7 @@ msgstr "Ne"
 #: templates/ContractStates/index.php:39 templates/ContractStates/index.php:40
 #: templates/ContractStates/index.php:41 templates/ContractStates/view.php:54
 #: templates/ContractStates/view.php:58 templates/ContractStates/view.php:62
-#: templates/ContractStates/view.php:161 templates/Contracts/index.php:68
+#: templates/ContractStates/view.php:161 templates/Contracts/index.php:71
 #: templates/Contracts/print.php:92 templates/Contracts/view.php:193
 #: templates/Contracts/view.php:417 templates/Contracts/view.php:418
 #: templates/Customers/print.php:113 templates/Customers/print.php:117
@@ -1163,7 +1163,7 @@ msgstr "Zadaný typ úkolu vyžaduje přiřazení smlouvy."
 #: templates/ContractVersions/add.php:14 templates/ContractVersions/edit.php:11
 #: templates/ContractVersions/index.php:36
 #: templates/ContractVersions/view.php:10 templates/Contracts/add.php:15
-#: templates/Contracts/edit.php:17 templates/Contracts/index.php:40
+#: templates/Contracts/edit.php:17 templates/Contracts/index.php:43
 #: templates/Contracts/print.php:11 templates/Contracts/print.php:206
 #: templates/Contracts/view.php:14 templates/Contracts/view.php:325
 #: templates/Contracts/view.php:403 templates/Contracts/view.php:493
@@ -1259,7 +1259,7 @@ msgstr "Přidat adresu"
 #: templates/Commissions/edit.php:28 templates/ContractStates/add.php:30
 #: templates/ContractStates/edit.php:38 templates/ContractVersions/add.php:65
 #: templates/ContractVersions/edit.php:72 templates/Contracts/add.php:62
-#: templates/Contracts/edit.php:128 templates/Contracts/print.php:303
+#: templates/Contracts/edit.php:133 templates/Contracts/print.php:303
 #: templates/Countries/add.php:23 templates/Countries/edit.php:28
 #: templates/CustomerLabels/add.php:33 templates/CustomerLabels/edit.php:41
 #: templates/Customers/add.php:56 templates/Customers/edit.php:61
@@ -1297,7 +1297,7 @@ msgstr "Potvrdit"
 #: templates/ContractStates/index.php:53 templates/ContractStates/view.php:200
 #: templates/ContractVersions/edit.php:13
 #: templates/ContractVersions/index.php:63 templates/Contracts/edit.php:19
-#: templates/Contracts/index.php:100 templates/Contracts/print.php:232
+#: templates/Contracts/index.php:103 templates/Contracts/print.php:232
 #: templates/Contracts/view.php:351 templates/Contracts/view.php:431
 #: templates/Contracts/view.php:520 templates/Contracts/view.php:574
 #: templates/Contracts/view.php:676 templates/Contracts/view.php:741
@@ -1356,7 +1356,7 @@ msgstr "Odstranit"
 #: templates/ContractVersions/edit.php:16
 #: templates/ContractVersions/index.php:65
 #: templates/ContractVersions/view.php:20 templates/Contracts/edit.php:21
-#: templates/Contracts/index.php:102 templates/Contracts/print.php:234
+#: templates/Contracts/index.php:105 templates/Contracts/print.php:234
 #: templates/Contracts/view.php:23 templates/Contracts/view.php:353
 #: templates/Contracts/view.php:433 templates/Contracts/view.php:527
 #: templates/Contracts/view.php:581 templates/Contracts/view.php:678
@@ -1508,7 +1508,7 @@ msgstr "Mapy.cz"
 #: templates/BorrowedEquipments/index.php:70 templates/Commissions/index.php:35
 #: templates/Commissions/view.php:101 templates/Commissions/view.php:203
 #: templates/ContractStates/index.php:44 templates/ContractStates/view.php:191
-#: templates/ContractVersions/index.php:54 templates/Contracts/index.php:93
+#: templates/ContractVersions/index.php:54 templates/Contracts/index.php:96
 #: templates/Contracts/print.php:223 templates/Contracts/view.php:342
 #: templates/Contracts/view.php:422 templates/Contracts/view.php:503
 #: templates/Contracts/view.php:565 templates/Contracts/view.php:667
@@ -1550,7 +1550,7 @@ msgstr "Zobrazit"
 #: templates/BorrowedEquipments/index.php:72 templates/Commissions/index.php:37
 #: templates/Commissions/view.php:105 templates/Commissions/view.php:207
 #: templates/ContractStates/index.php:48 templates/ContractStates/view.php:195
-#: templates/ContractVersions/index.php:58 templates/Contracts/index.php:95
+#: templates/ContractVersions/index.php:58 templates/Contracts/index.php:98
 #: templates/Contracts/print.php:227 templates/Contracts/view.php:346
 #: templates/Contracts/view.php:426 templates/Contracts/view.php:511
 #: templates/Contracts/view.php:569 templates/Contracts/view.php:671
@@ -1587,7 +1587,7 @@ msgstr "Upravit"
 #: templates/Addresses/index.php:111 templates/Billings/index.php:99
 #: templates/BorrowedEquipments/index.php:89 templates/Commissions/index.php:54
 #: templates/ContractStates/index.php:65
-#: templates/ContractVersions/index.php:75 templates/Contracts/index.php:112
+#: templates/ContractVersions/index.php:75 templates/Contracts/index.php:115
 #: templates/Countries/index.php:54 templates/CustomerLabels/index.php:76
 #: templates/Customers/index.php:133 templates/DealerCommissions/index.php:74
 #: templates/Emails/index.php:69 templates/EquipmentTypes/index.php:60
@@ -1606,7 +1606,7 @@ msgstr "první"
 #: templates/Addresses/index.php:112 templates/Billings/index.php:100
 #: templates/BorrowedEquipments/index.php:90 templates/Commissions/index.php:55
 #: templates/ContractStates/index.php:66
-#: templates/ContractVersions/index.php:76 templates/Contracts/index.php:113
+#: templates/ContractVersions/index.php:76 templates/Contracts/index.php:116
 #: templates/Countries/index.php:55 templates/CustomerLabels/index.php:77
 #: templates/Customers/index.php:134 templates/DealerCommissions/index.php:75
 #: templates/Emails/index.php:70 templates/EquipmentTypes/index.php:61
@@ -1625,7 +1625,7 @@ msgstr "předchozí"
 #: templates/Addresses/index.php:114 templates/Billings/index.php:102
 #: templates/BorrowedEquipments/index.php:92 templates/Commissions/index.php:57
 #: templates/ContractStates/index.php:68
-#: templates/ContractVersions/index.php:78 templates/Contracts/index.php:115
+#: templates/ContractVersions/index.php:78 templates/Contracts/index.php:118
 #: templates/Countries/index.php:57 templates/CustomerLabels/index.php:79
 #: templates/Customers/index.php:136 templates/DealerCommissions/index.php:77
 #: templates/Emails/index.php:72 templates/EquipmentTypes/index.php:63
@@ -1644,7 +1644,7 @@ msgstr "další"
 #: templates/Addresses/index.php:115 templates/Billings/index.php:103
 #: templates/BorrowedEquipments/index.php:93 templates/Commissions/index.php:58
 #: templates/ContractStates/index.php:69
-#: templates/ContractVersions/index.php:79 templates/Contracts/index.php:116
+#: templates/ContractVersions/index.php:79 templates/Contracts/index.php:119
 #: templates/Countries/index.php:58 templates/CustomerLabels/index.php:80
 #: templates/Customers/index.php:137 templates/DealerCommissions/index.php:78
 #: templates/Emails/index.php:73 templates/EquipmentTypes/index.php:64
@@ -1663,7 +1663,7 @@ msgstr "poslední"
 #: templates/Addresses/index.php:118 templates/Billings/index.php:106
 #: templates/BorrowedEquipments/index.php:96 templates/Commissions/index.php:61
 #: templates/ContractStates/index.php:72
-#: templates/ContractVersions/index.php:82 templates/Contracts/index.php:119
+#: templates/ContractVersions/index.php:82 templates/Contracts/index.php:122
 #: templates/Countries/index.php:61 templates/CustomerLabels/index.php:83
 #: templates/Customers/index.php:140 templates/DealerCommissions/index.php:81
 #: templates/Emails/index.php:76 templates/EquipmentTypes/index.php:67
@@ -2185,6 +2185,7 @@ msgid "Vip"
 msgstr "VIP"
 
 #: templates/Commissions/view.php:135 templates/ContractStates/view.php:126
+#: templates/Contracts/edit.php:72 templates/Contracts/index.php:34
 #: templates/Contracts/print.php:112 templates/Contracts/view.php:213
 #: templates/Customers/view.php:532 templates/ServiceTypes/view.php:191
 msgid "Installation/Establishment Date"
@@ -2197,6 +2198,7 @@ msgid "Installation Technician"
 msgstr "Instalační technik"
 
 #: templates/Commissions/view.php:137 templates/ContractStates/view.php:128
+#: templates/Contracts/edit.php:98 templates/Contracts/index.php:38
 #: templates/Contracts/print.php:127 templates/Contracts/view.php:228
 #: templates/Customers/view.php:533 templates/ServiceTypes/view.php:193
 msgid "Uninstallation/Cancellation Date"
@@ -2209,10 +2211,11 @@ msgid "Uninstallation Technician"
 msgstr "Technik pro deinstalaci"
 
 #: templates/Commissions/view.php:139 templates/ContractStates/view.php:130
+#: templates/Contracts/edit.php:124 templates/Contracts/index.php:41
 #: templates/Contracts/print.php:142 templates/Contracts/view.php:243
 #: templates/Customers/view.php:534 templates/ServiceTypes/view.php:195
-msgid "Termination Date"
-msgstr "Datum ukončení"
+msgid "Date of Termination of Services"
+msgstr "Datum ukončení poskytování služeb"
 
 #: templates/ContractStates/add.php:13 templates/ContractStates/edit.php:21
 #: templates/ContractStates/view.php:25 templates/Settings/index.php:55
@@ -3764,6 +3767,9 @@ msgstr "Tajemství tokenu"
 #: templates/plugin/CakeDC/Users/Users/view.php:141
 msgid "Data"
 msgstr "Data"
+
+#~ msgid "Termination Date"
+#~ msgstr "Datum ukončení"
 
 #~ msgid "The ip has been saved."
 #~ msgstr "IP adresa byla uložena."

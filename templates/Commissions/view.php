@@ -136,7 +136,7 @@
                             <th><?= __('Installation Technician') ?></th>
                             <th><?= __('Uninstallation/Cancellation Date') ?></th>
                             <th><?= __('Uninstallation Technician') ?></th>
-                            <th><?= __('Termination Date') ?></th>
+                            <th><?= __('Date of Termination of Services') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($commission->contracts as $contract) : ?>

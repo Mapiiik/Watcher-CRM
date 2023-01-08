@@ -531,7 +531,7 @@ use Cake\I18n\Number;
                             <th><?= __('Access Point') ?></th>
                             <th><?= __('Installation/Establishment Date') ?></th>
                             <th><?= __('Uninstallation/Cancellation Date') ?></th>
-                            <th><?= __('Termination Date') ?></th>
+                            <th><?= __('Date of Termination of Services') ?></th>
                             <th><?= __('Note') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>

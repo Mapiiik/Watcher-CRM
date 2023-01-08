@@ -139,7 +139,7 @@
                             ) : '' ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Termination Date') ?></th>
+                            <th><?= __('Date of Termination of Services') ?></th>
                             <td><?= h($contract->termination_date) ?></td>
                         </tr>
                     </table>
