@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-01-08 16:43+0100\n"
-"PO-Revision-Date: 2023-01-08 16:44+0100\n"
+"POT-Creation-Date: 2023-01-08 17:06+0100\n"
+"PO-Revision-Date: 2023-01-08 17:09+0100\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -2747,20 +2747,19 @@ msgid "Invoice Delivery Type"
 msgstr "Typ doručení faktury"
 
 #: templates/Customers/print.php:112 templates/Customers/view.php:208
-msgid "Agree Gdpr"
+msgid "Agrees to Processing of Personal Data"
 msgstr "Souhlasí se zpracováním osobních údajů"
 
 #: templates/Customers/print.php:116 templates/Customers/view.php:212
-msgid "Agree Mailing Billing"
-msgstr ""
-"Souhlasí se zasíláním veškeré korespondence spojené s měsíčním vyúčtováním"
+msgid "Agrees to Receive All Correspondence Related to Billing"
+msgstr "Souhlasí se zasíláním veškeré korespondence související s vyúčtováním"
 
 #: templates/Customers/print.php:120 templates/Customers/view.php:216
-msgid "Agree Mailing Outages"
-msgstr "Souhlasí se zasíláním informací o odstávkách a poruchách"
+msgid "Agrees to Receive Information About Outages And Malfunctions"
+msgstr "Souhlasí se zasíláním informací o výpadcích a poruchách"
 
 #: templates/Customers/print.php:124 templates/Customers/view.php:220
-msgid "Agree Mailing Commercial"
+msgid "Agrees to Receive Commercial Communications"
 msgstr "Souhlasí se zasíláním obchodních sdělení"
 
 #: templates/Customers/view.php:24
@@ -3767,6 +3766,19 @@ msgstr "Tajemství tokenu"
 #: templates/plugin/CakeDC/Users/Users/view.php:141
 msgid "Data"
 msgstr "Data"
+
+#~ msgid "Agree Gdpr"
+#~ msgstr "Souhlasí se zpracováním osobních údajů"
+
+#~ msgid "Agree Mailing Billing"
+#~ msgstr ""
+#~ "Souhlasí se zasíláním veškeré korespondence spojené s měsíčním vyúčtováním"
+
+#~ msgid "Agree Mailing Outages"
+#~ msgstr "Souhlasí se zasíláním informací o odstávkách a poruchách"
+
+#~ msgid "Agree Mailing Commercial"
+#~ msgstr "Souhlasí se zasíláním obchodních sdělení"
 
 #~ msgid "Termination Date"
 #~ msgstr "Datum ukončení"

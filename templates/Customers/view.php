@@ -205,19 +205,19 @@ use Cake\I18n\Number;
                     </table>
                     <table>
                         <tr>
-                            <th><?= __('Agree Gdpr') ?></th>
+                            <th><?= __('Agrees to Processing of Personal Data') ?></th>
                             <td><?= $customer->agree_gdpr ? __('Yes') : __('No'); ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Agree Mailing Billing') ?></th>
+                            <th><?= __('Agrees to Receive All Correspondence Related to Billing') ?></th>
                             <td><?= $customer->agree_mailing_billing ? __('Yes') : __('No'); ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Agree Mailing Outages') ?></th>
+                            <th><?= __('Agrees to Receive Information About Outages And Malfunctions') ?></th>
                             <td><?= $customer->agree_mailing_outages ? __('Yes') : __('No'); ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Agree Mailing Commercial') ?></th>
+                            <th><?= __('Agrees to Receive Commercial Communications') ?></th>
                             <td><?= $customer->agree_mailing_commercial ? __('Yes') : __('No'); ?></td>
                         </tr>
                     </table>

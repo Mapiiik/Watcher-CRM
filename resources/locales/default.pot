@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-01-08 16:43+0100\n"
+"POT-Creation-Date: 2023-01-08 17:06+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -3560,22 +3560,22 @@ msgstr ""
 
 #: ./templates/Customers/print.php:112
 #: ./templates/Customers/view.php:208
-msgid "Agree Gdpr"
+msgid "Agrees to Processing of Personal Data"
 msgstr ""
 
 #: ./templates/Customers/print.php:116
 #: ./templates/Customers/view.php:212
-msgid "Agree Mailing Billing"
+msgid "Agrees to Receive All Correspondence Related to Billing"
 msgstr ""
 
 #: ./templates/Customers/print.php:120
 #: ./templates/Customers/view.php:216
-msgid "Agree Mailing Outages"
+msgid "Agrees to Receive Information About Outages And Malfunctions"
 msgstr ""
 
 #: ./templates/Customers/print.php:124
 #: ./templates/Customers/view.php:220
-msgid "Agree Mailing Commercial"
+msgid "Agrees to Receive Commercial Communications"
 msgstr ""
 
 #: ./templates/Customers/view.php:24
