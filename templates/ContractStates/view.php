@@ -123,9 +123,9 @@
                             <th><?= __('Installation Address') ?></th>
                             <th><?= __('Vip') ?></th>
                             <th><?= __('Access Point') ?></th>
-                            <th><?= __('Installation Date') ?></th>
+                            <th><?= __('Installation/Establishment Date') ?></th>
                             <th><?= __('Installation Technician') ?></th>
-                            <th><?= __('Uninstallation Date') ?></th>
+                            <th><?= __('Uninstallation/Cancellation Date') ?></th>
                             <th><?= __('Uninstallation Technician') ?></th>
                             <th><?= __('Termination Date') ?></th>
                             <th><?= __('Commission') ?></th>

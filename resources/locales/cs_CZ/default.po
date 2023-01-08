@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-01-07 23:38+0100\n"
-"PO-Revision-Date: 2023-01-07 23:42+0100\n"
+"POT-Creation-Date: 2023-01-08 16:21+0100\n"
+"PO-Revision-Date: 2023-01-08 16:22+0100\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -2187,8 +2187,8 @@ msgstr "VIP"
 #: templates/Commissions/view.php:135 templates/ContractStates/view.php:126
 #: templates/Contracts/print.php:112 templates/Contracts/view.php:213
 #: templates/Customers/view.php:532 templates/ServiceTypes/view.php:191
-msgid "Installation Date"
-msgstr "Datum instalace"
+msgid "Installation/Establishment Date"
+msgstr "Datum instalace/zřízení"
 
 #: templates/Commissions/view.php:136 templates/ContractStates/view.php:127
 #: templates/Contracts/print.php:116 templates/Contracts/view.php:217
@@ -2199,8 +2199,8 @@ msgstr "Instalační technik"
 #: templates/Commissions/view.php:137 templates/ContractStates/view.php:128
 #: templates/Contracts/print.php:127 templates/Contracts/view.php:228
 #: templates/Customers/view.php:533 templates/ServiceTypes/view.php:193
-msgid "Uninstallation Date"
-msgstr "Datum deinstalace"
+msgid "Uninstallation/Cancellation Date"
+msgstr "Datum deinstalace/zrušení"
 
 #: templates/Commissions/view.php:138 templates/ContractStates/view.php:129
 #: templates/Contracts/print.php:131 templates/Contracts/view.php:232

@@ -210,7 +210,7 @@ use Cake\I18n\Number;
                 <div class="column-responsive">
                     <table>
                         <tr>
-                            <th><?= __('Installation Date') ?></th>
+                            <th><?= __('Installation/Establishment Date') ?></th>
                             <td><?= h($contract->installation_date) ?></td>
                         </tr>
                         <tr>
@@ -225,7 +225,7 @@ use Cake\I18n\Number;
                             ) : '' ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Uninstallation Date') ?></th>
+                            <th><?= __('Uninstallation/Cancellation Date') ?></th>
                             <td><?= h($contract->uninstallation_date) ?></td>
                         </tr>
                         <tr>

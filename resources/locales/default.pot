@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-01-07 23:38+0100\n"
+"POT-Creation-Date: 2023-01-08 16:21+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -2875,7 +2875,7 @@ msgstr ""
 #: ./templates/Contracts/view.php:213
 #: ./templates/Customers/view.php:532
 #: ./templates/ServiceTypes/view.php:191
-msgid "Installation Date"
+msgid "Installation/Establishment Date"
 msgstr ""
 
 #: ./templates/Commissions/view.php:136
@@ -2892,7 +2892,7 @@ msgstr ""
 #: ./templates/Contracts/view.php:228
 #: ./templates/Customers/view.php:533
 #: ./templates/ServiceTypes/view.php:193
-msgid "Uninstallation Date"
+msgid "Uninstallation/Cancellation Date"
 msgstr ""
 
 #: ./templates/Commissions/view.php:138
