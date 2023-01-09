@@ -46,10 +46,18 @@
                         echo $this->Form->control('tax_rate_id', ['options' => $taxRates]);
                         echo $this->Form->control('dealer', ['options' => $customer->getDealerStateOptions()]);
                         echo $this->Form->control('invoice_delivery_type', ['options' => $invoice_delivery_types]);
-                        echo $this->Form->control('agree_gdpr');
-                        echo $this->Form->control('agree_mailing_billing');
-                        echo $this->Form->control('agree_mailing_outages');
-                        echo $this->Form->control('agree_mailing_commercial');
+                        echo $this->Form->control('agree_gdpr', [
+                            'label' => __('Agrees to Processing of Personal Data'),
+                        ]);
+                        echo $this->Form->control('agree_mailing_billing', [
+                            'label' => __('Agrees to Receive All Correspondence Related to Billing'),
+                        ]);
+                        echo $this->Form->control('agree_mailing_outages', [
+                            'label' => __('Agrees to Receive Information About Outages And Malfunctions'),
+                        ]);
+                        echo $this->Form->control('agree_mailing_commercial', [
+                            'label' => __('Agrees to Receive Commercial Communications'),
+                        ]);
                     ?>
                     </div>
                 </div>
