@@ -121,10 +121,6 @@ class AddressesController extends AppController
                 if ($this->Addresses->save($address)) {
                     $this->Flash->success(__('The address has been saved.'));
 
-                    if (isset($customer_id)) {
-                        return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
-                    }
-
                     return $this->redirect(['action' => 'index']);
                 }
                 $this->Flash->error(__('The address could not be saved. Please, try again.'));
@@ -175,10 +171,6 @@ class AddressesController extends AppController
 
                 if ($this->Addresses->save($address)) {
                     $this->Flash->success(__('The address has been saved.'));
-
-                    if (isset($customer_id)) {
-                        return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
-                    }
 
                     return $this->redirect(['action' => 'index']);
                 }

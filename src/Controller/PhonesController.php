@@ -88,10 +88,6 @@ class PhonesController extends AppController
             if ($this->Phones->save($phone)) {
                 $this->Flash->success(__('The phone has been saved.'));
 
-                if (isset($customer_id)) {
-                    return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
-                }
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The phone could not be saved. Please, try again.'));
@@ -124,10 +120,6 @@ class PhonesController extends AppController
             $phone = $this->Phones->patchEntity($phone, $this->getRequest()->getData());
             if ($this->Phones->save($phone)) {
                 $this->Flash->success(__('The phone has been saved.'));
-
-                if (isset($customer_id)) {
-                    return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
-                }
 
                 return $this->redirect(['action' => 'index']);
             }

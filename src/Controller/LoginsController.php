@@ -94,10 +94,6 @@ class LoginsController extends AppController
             if ($this->Logins->save($login)) {
                 $this->Flash->success(__('The login has been saved.'));
 
-                if (isset($customer_id)) {
-                    return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
-                }
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The login could not be saved. Please, try again.'));
@@ -160,10 +156,6 @@ class LoginsController extends AppController
             $login = $this->Logins->patchEntity($login, $this->getRequest()->getData());
             if ($this->Logins->save($login)) {
                 $this->Flash->success(__('The login has been saved.'));
-
-                if (isset($customer_id)) {
-                    return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
-                }
 
                 return $this->redirect(['action' => 'index']);
             }
