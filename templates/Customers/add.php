@@ -20,7 +20,7 @@
                 <legend><?= __('Add Customer') ?></legend>
                 <div class="row">
                     <div class="column-responsive">
-                    <?php
+                        <?php
                         echo $this->Form->control('company');
                         echo $this->Form->control('title');
                         echo $this->Form->control('first_name');
@@ -31,10 +31,10 @@
                         echo $this->Form->control('ic');
                         echo $this->Form->control('dic');
                         echo $this->Form->control('www');
-                    ?>
+                        ?>
                     </div>
                     <div class="column-responsive">
-                    <?php
+                        <?php
                         echo $this->Form->control('bank_account');
                         echo $this->Form->control('bank_code');
                         echo $this->Form->control('bank_name');
@@ -53,12 +53,12 @@
                         echo $this->Form->control('agree_mailing_commercial', [
                             'label' => __('Agrees to Receive Commercial Communications'),
                         ]);
-                    ?>
+                        ?>
                     </div>
                 </div>
                 <?php
-                    echo $this->Form->control('note');
-                    echo $this->Form->control('internal_note');
+                echo $this->Form->control('note');
+                echo $this->Form->control('internal_note');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
