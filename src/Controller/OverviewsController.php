@@ -425,10 +425,22 @@ class OverviewsController extends AppController
 
                                     $address['available_speeds'] = new Entity(
                                         [
-                                            'maximal_download_category' => $categoryFinder($maximal_download, $cto_category),
-                                            'effective_download_category' => $categoryFinder($effective_download, $cto_category),
-                                            'maximal_upload_category' => $categoryFinder($maximal_download, $cto_category),
-                                            'effective_upload_category' => $categoryFinder($effective_upload, $cto_category),
+                                            'maximal_download_category' => $categoryFinder(
+                                                $maximal_download,
+                                                $cto_category
+                                            ),
+                                            'effective_download_category' => $categoryFinder(
+                                                $effective_download,
+                                                $cto_category
+                                            ),
+                                            'maximal_upload_category' => $categoryFinder(
+                                                $maximal_download,
+                                                $cto_category
+                                            ),
+                                            'effective_upload_category' => $categoryFinder(
+                                                $effective_upload,
+                                                $cto_category
+                                            ),
                                         ]
                                     );
 
