@@ -45,6 +45,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\TaxRate $tax_rate
  * @property \App\Model\Entity\Address[] $addresses
  * @property \App\Model\Entity\Billing[] $billings
+ * @property \App\Model\Entity\Address $installation_address
  * @property \App\Model\Entity\Address $billing_address
  * @property \App\Model\Entity\Address $delivery_address
  * @property \App\Model\Entity\Address $permanent_address
