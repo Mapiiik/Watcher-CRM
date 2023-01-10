@@ -49,6 +49,24 @@ $request = $this->getRequest();
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
+
+    <?php
+    // automatic closing of the window after 3 seconds
+    if (
+        $request->getQuery('win-link') == 'true'
+        && $request->getQuery('auto-close') == 'true'
+    ) : ?>
+    <script>
+        window.onload = function(){
+            setTimeout(
+                function(){
+                    window.close();
+                },
+                3000
+            );
+        };
+    </script>
+    <?php endif; ?>
 </head>
 <body>
     <nav class="top-nav">
