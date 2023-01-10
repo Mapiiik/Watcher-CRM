@@ -8,6 +8,7 @@ use App\Model\Entity\Commission;
 use App\Model\Entity\Contract;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
+use Cake\Database\Exception\MissingConnectionException;
 use Cake\I18n\FrozenDate;
 use Cake\ORM\Entity;
 use Cake\ORM\Query;
@@ -124,17 +125,30 @@ class OverviewsController extends AppController
     }
 
     /**
-     * Overview of connection points method
+     * Overview of connection points method (obsolete)
      *
      * @param string|null $category Optional parameter, CTO category.
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function overviewOfCustomerConnectionPoints($category = null)
+    public function overviewOfCustomerConnectionPointsObsolete($category = null)
     {
         $month_to_display = new FrozenDate($this->getRequest()->getQuery('month_to_display'));
 
         $cto_categories = $this->fetchTable('Billings')->find()
+            ->contain('Customers')
+            ->contain([
+                'Contracts' => [
+                    'InstallationAddresses',
+                ],
+            ])
+            ->contain([
+                'Services' => [
+                    'ServiceTypes',
+                    'Queues',
+                ],
+            ])
+
             ->where([
                 'Billings.billing_from <=' => $month_to_display->lastOfMonth(), //last day of month
             ])
@@ -145,17 +159,14 @@ class OverviewsController extends AppController
                 ],
             ])
 
-            ->where(['Queues.speed_up IS NOT NULL'])
             ->where(['Queues.speed_down IS NOT NULL'])
+            ->where(['Queues.speed_up IS NOT NULL'])
             ->where(['Queues.cto_category IS NOT NULL'])
             ->where(['InstallationAddresses.ruian_gid IS NOT NULL'])
 
             ->order('Queues.cto_category')
             ->order('InstallationAddresses.ruian_gid')
 
-            ->contain('Customers')
-            ->contain(['Contracts' => ['InstallationAddresses']])
-            ->contain(['Services' => ['ServiceTypes', 'Queues']])
             ->formatResults(
                 function (CollectionInterface $billings) {
                     return $billings
@@ -171,9 +182,15 @@ class OverviewsController extends AppController
                                     $address['billings'] = $billings_collection;
 
                                     $address['ruian_gid'] = $ruian_gid;
-                                    $address['ruian_address'] = $this->fetchTable('Ruian.Addresses')
-                                        ->get($ruian_gid)
-                                        ->address;
+
+                                    // retrieve full address if RUIAN is connected
+                                    try {
+                                        $address['ruian_address'] = $this->fetchTable('Ruian.Addresses')
+                                            ->get($ruian_gid)
+                                            ->address;
+                                    } catch (MissingConnectionException $missingConnectionError) {
+                                        $address['ruian_address'] = null;
+                                    }
 
                                     $address['cto_category'] = $cto_category;
 
@@ -253,8 +270,8 @@ class OverviewsController extends AppController
 
             foreach ($cto_categories->toArray()[$category] as $connection_point) {
                 $csv_data .= ''
-                . $connection_point->ruian_gid . ';'
-                . $connection_point->cto_category . ';'
+                . h($connection_point->ruian_gid) . ';'
+                . h($connection_point->cto_category) . ';'
                 . (int)$connection_point->active_connections . ';'
                 . (int)$connection_point->active_speeds->speed_30_100 . ';'
                 . (int)$connection_point->active_speeds->speed_100_plus . ';'
@@ -265,6 +282,7 @@ class OverviewsController extends AppController
                 . (int)$connection_point->available_speeds->speed_300_1000 . ';'
                 . (int)$connection_point->available_speeds->speed_1000_plus . ';'
                 . ($connection_point->vhcn ? 'ANO' : 'NE') . ';'
+                . h($connection_point->ruian_address)
                 . PHP_EOL;
             }
 
@@ -272,8 +290,197 @@ class OverviewsController extends AppController
                 ->withStringBody(iconv('UTF-8', 'CP1250', $csv_data))
                 ->withType('csv')
                 ->withDownload(
-                    $category
-                    . '_' . $month_to_display->i18nFormat('yyyy-MM') . '.csv'
+                    $category . '.csv'
+                );
+        }
+
+        $this->set(compact('cto_categories', 'month_to_display'));
+    }
+
+    /**
+     * Overview of connection points method
+     *
+     * @param string|null $category Optional parameter, CTO category.
+     * @return \Cake\Http\Response|null|void Renders view
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function overviewOfCustomerConnectionPoints($category = null)
+    {
+        $month_to_display = new FrozenDate($this->getRequest()->getQuery('month_to_display'));
+
+        $cto_categories = $this->fetchTable('Billings')->find()
+            ->contain('Customers')
+            ->contain([
+                'Contracts' => [
+                    'InstallationAddresses',
+                ],
+            ])
+            ->contain([
+                'Services' => [
+                    'ServiceTypes',
+                    'Queues',
+                ],
+            ])
+
+            ->where([
+                'Billings.billing_from <=' => $month_to_display->lastOfMonth(), //last day of month
+            ])
+            ->andWhere([
+                'OR' => [
+                    'Billings.billing_until IS NULL',
+                    'Billings.billing_until >=' => $month_to_display->firstOfMonth(), //first day of month
+                ],
+            ])
+
+            ->where(['Queues.speed_down IS NOT NULL'])
+            ->where(['Queues.speed_up IS NOT NULL'])
+            ->where(['Queues.cto_category IS NOT NULL'])
+            ->where(['InstallationAddresses.ruian_gid IS NOT NULL'])
+
+            ->order('Queues.cto_category')
+            ->order('InstallationAddresses.ruian_gid')
+
+            ->formatResults(
+                function (CollectionInterface $billings) {
+                    return $billings
+                        ->groupBy('service.queue.cto_category')
+                        ->map(function ($category_billings, $cto_category) {
+                            return (new Collection($category_billings))
+                                ->groupBy('contract.installation_address.ruian_gid')
+                                ->map(function ($billings, $ruian_gid) use ($cto_category) {
+                                    $billings_collection = (new Collection($billings));
+
+                                    $address = new Entity();
+
+                                    $address['billings'] = $billings_collection;
+
+                                    $address['ruian_gid'] = $ruian_gid;
+
+                                    // retrieve full address if RUIAN is connected
+                                    try {
+                                        $address['ruian_address'] = $this->fetchTable('Ruian.Addresses')
+                                            ->get($ruian_gid)
+                                            ->address;
+                                    } catch (MissingConnectionException $missingConnectionError) {
+                                        $address['ruian_address'] = null;
+                                    }
+
+                                    $address['cto_category'] = $cto_category;
+
+                                    $address['active_connections'] = $billings_collection->count();
+                                    $address['active_connections_nonbusiness'] = $billings_collection
+                                        ->match(['customer.ic' => null])
+                                        ->count();
+
+                                    $address['active_speeds'] = new Entity(
+                                        $billings_collection
+                                        ->countBy(function ($billing) {
+                                            $commonly_available_download_speed
+                                                = $billing->service->queue->speed_down * 0.6;
+
+                                            if ($commonly_available_download_speed < 30720) {
+                                                return 'speed_0_30';
+                                            } elseif ($commonly_available_download_speed < 102400) {
+                                                return 'speed_30_100';
+                                            } else {
+                                                return 'speed_100_plus';
+                                            }
+                                        })
+                                        ->toArray()
+                                    );
+
+                                    $categoryFinder = function ($speed, $cto_category) {
+                                        if (in_array($cto_category, ['s2_wifi'])) {
+                                            if ($speed >= 1024000) {
+                                                return '1000';
+                                            } elseif ($speed >= 307200) {
+                                                return '300_1000';
+                                            } elseif ($speed >= 102400) {
+                                                return '100_300';
+                                            } else {
+                                                return '30_100';
+                                            }
+                                        } elseif (in_array($cto_category, ['s2_fttb', 's2_ftth'])) {
+                                            if ($speed >= 1024000) {
+                                                return '1000';
+                                            } else {
+                                                return '300_1000';
+                                            }
+                                        } else {
+                                            return 'unknown';
+                                        }
+                                    };
+
+                                    $address['available_connections'] = $billings_collection->count();
+
+                                    $maximal_download = $billings_collection
+                                        ->max('billing.service.queue.speed_down')
+                                        ->service->queue->speed_down;
+                                    $effective_download = $maximal_download * 0.6;
+
+                                    $maximal_upload = $billings_collection
+                                        ->max('billing.service.queue.speed_up')
+                                        ->service->queue->speed_up;
+                                    $effective_upload = $maximal_upload * 0.6;
+
+                                    $address['available_speeds'] = new Entity(
+                                        [
+                                            'maximal_download_category' => $categoryFinder($maximal_download, $cto_category),
+                                            'effective_download_category' => $categoryFinder($effective_download, $cto_category),
+                                            'maximal_upload_category' => $categoryFinder($maximal_download, $cto_category),
+                                            'effective_upload_category' => $categoryFinder($effective_upload, $cto_category),
+                                        ]
+                                    );
+
+                                    $address['vhcn_category'] = in_array($cto_category, ['s2_fttb', 's2_ftth']) ? 1 : 0;
+
+                                    return $address;
+                                });
+                        });
+                }
+            );
+
+        // DOWNLOAD CSV FOR CATEGORY
+        if ($this->getRequest()->getParam('_ext') === 'csv' && isset($category)) {
+            $csv_data = ''
+            . 'AdmIdent;'
+            . 'AdmPriloha;'
+            . 'Přístupy běžně dostupná rychlost (download) do 30Mb (počet);'
+            . 'Přístupy běžně dostupná rychlost (download) 30-100Mb (počet);'
+            . 'Přístupy běžně dostupná rychlost (download) nad 100Mb (počet);'
+            . 'Přístupy nepodnikajících osob (počet);'
+            . 'Disp. přípojky (počet);'
+            . 'Disp. přípojky efektivní rychlost download (interval);'
+            . 'Disp. přípojky efektivní rychlost upload (interval);'
+            . 'Disp. přípojky max. dosažitelná rychlost download (interval);'
+            . 'Disp. přípojky max. dosažitelná rychlost upload (interval);'
+            . 'VHCN síť (kategorie);'
+            . 'Adresa'
+            . PHP_EOL;
+
+            foreach ($cto_categories->toArray()[$category] as $connection_point) {
+                $csv_data .= ''
+                . h($connection_point->ruian_gid) . ';'
+                . h($connection_point->cto_category) . ';'
+                . (int)$connection_point->active_speeds->speed_0_30 . ';'
+                . (int)$connection_point->active_speeds->speed_30_100 . ';'
+                . (int)$connection_point->active_speeds->speed_100_plus . ';'
+                . (int)$connection_point->active_connections_nonbusiness . ';'
+                . (int)$connection_point->available_connections . ';'
+                . h($connection_point->available_speeds->effective_download_category) . ';'
+                . h($connection_point->available_speeds->effective_upload_category) . ';'
+                . h($connection_point->available_speeds->maximal_download_category) . ';'
+                . h($connection_point->available_speeds->maximal_upload_category) . ';'
+                . (int)$connection_point->vhcn_category . ';'
+                . h($connection_point->ruian_address)
+                . PHP_EOL;
+            }
+
+            return $this->response
+                ->withStringBody(iconv('UTF-8', 'CP1250', $csv_data))
+                ->withType('csv')
+                ->withDownload(
+                    $category . '.csv'
                 );
         }
 

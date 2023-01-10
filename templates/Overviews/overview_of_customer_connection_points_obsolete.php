@@ -54,12 +54,12 @@
                             <th><?= __('Active 0-30 Mbps') ?></th>
                             <th><?= __('Active 30-100 Mbps') ?></th>
                             <th><?= __('Active 100+ Mbps') ?></th>
-                            <th><?= __('Available Connections') ?></th>
-                            <th><?= __('Available Effective Download Category') ?></th>
-                            <th><?= __('Available Effective Upload Category') ?></th>
-                            <th><?= __('Available Maximal Download Category') ?></th>
-                            <th><?= __('Available Maximal Upload Category') ?></th>
-                            <th><?= __('VHCN Network Category') ?></th>
+                            <th><?= __('Available 0-30 Mbps') ?></th>
+                            <th><?= __('Available 30-100 Mbps') ?></th>
+                            <th><?= __('Available 100-300 Mbps') ?></th>
+                            <th><?= __('Available 300-1000 Mbps') ?></th>
+                            <th><?= __('Available 1000+ Mbps') ?></th>
+                            <th><?= __('VHCN') ?></th>
                             <th><?= __('Address') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
@@ -73,12 +73,12 @@
                             <td><?= $this->Number->format($connection_point->active_speeds->speed_0_30) ?></td>
                             <td><?= $this->Number->format($connection_point->active_speeds->speed_30_100) ?></td>
                             <td><?= $this->Number->format($connection_point->active_speeds->speed_100_plus) ?></td>
-                            <td><?= $this->Number->format($connection_point->available_connections) ?></td>
-                            <td><?= h($connection_point->available_speeds->effective_download_category) ?></td>
-                            <td><?= h($connection_point->available_speeds->effective_upload_category) ?></td>
-                            <td><?= h($connection_point->available_speeds->maximal_download_category) ?></td>
-                            <td><?= h($connection_point->available_speeds->maximal_upload_category) ?></td>
-                            <td><?= $this->Number->format($connection_point->vhcn_category) ?></td>
+                            <td><?= $this->Number->format($connection_point->available_speeds->speed_0_30) ?></td>
+                            <td><?= $this->Number->format($connection_point->available_speeds->speed_30_100) ?></td>
+                            <td><?= $this->Number->format($connection_point->available_speeds->speed_100_300) ?></td>
+                            <td><?= $this->Number->format($connection_point->available_speeds->speed_300_1000) ?></td>
+                            <td><?= $this->Number->format($connection_point->available_speeds->speed_1000_plus) ?></td>
+                            <td><?= $connection_point->vhcn ? __('Yes') : __('No'); ?></td>
                             <td><?= h($connection_point->ruian_address) ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(__('View'), [

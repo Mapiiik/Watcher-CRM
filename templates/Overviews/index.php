@@ -20,6 +20,11 @@
                     ['class' => 'side-nav-item']
                 ) ?>
                 <?= $this->AuthLink->link(
+                    __('Overview of customer connection points (obsolete)'),
+                    ['action' => 'overviewOfCustomerConnectionPointsObsolete'],
+                    ['class' => 'side-nav-item']
+                ) ?>
+                <?= $this->AuthLink->link(
                     __('Overview of dealer commissions'),
                     ['action' => 'overviewOfDealerCommissions'],
                     ['class' => 'side-nav-item']
