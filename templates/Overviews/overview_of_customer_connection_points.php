@@ -55,10 +55,10 @@
                             <th><?= __('Active 30-100 Mbps') ?></th>
                             <th><?= __('Active 100+ Mbps') ?></th>
                             <th><?= __('Available Connections') ?></th>
-                            <th><?= __('Available Effective Download Category') ?></th>
-                            <th><?= __('Available Effective Upload Category') ?></th>
-                            <th><?= __('Available Maximal Download Category') ?></th>
-                            <th><?= __('Available Maximal Upload Category') ?></th>
+                            <th><?= __('Available Effective Download Speed Category') ?></th>
+                            <th><?= __('Available Effective Upload Speed Category') ?></th>
+                            <th><?= __('Available Maximal Download Speed Category') ?></th>
+                            <th><?= __('Available Maximal Upload Speed Category') ?></th>
                             <th><?= __('VHCN Network Category') ?></th>
                             <th><?= __('Address') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>

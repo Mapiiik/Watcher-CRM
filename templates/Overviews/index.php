@@ -10,22 +10,22 @@
             <h4><?= __('Service Related') ?></h4>
             <div>
                 <?= $this->AuthLink->link(
-                    __('Overview of active services'),
+                    __('Overview of Active Services'),
                     ['action' => 'overviewOfActiveServices'],
                     ['class' => 'side-nav-item']
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __('Overview of customer connection points'),
+                    __('Overview of Customer Connection Points') . ' (' . __('Reports for CTO') . ')',
                     ['action' => 'overviewOfCustomerConnectionPoints'],
                     ['class' => 'side-nav-item']
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __('Overview of customer connection points (obsolete)'),
+                    __('Overview of Customer Connection Points (Obsolete)') . ' (' . __('Reports for CTO') . ')',
                     ['action' => 'overviewOfCustomerConnectionPointsObsolete'],
                     ['class' => 'side-nav-item']
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __('Overview of dealer commissions'),
+                    __('Overview of Dealer Commissions'),
                     ['action' => 'overviewOfDealerCommissions'],
                     ['class' => 'side-nav-item']
                 ) ?>
