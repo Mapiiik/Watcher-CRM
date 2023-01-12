@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-01-10 16:34+0100\n"
-"PO-Revision-Date: 2023-01-10 16:35+0100\n"
+"POT-Creation-Date: 2023-01-12 15:13+0100\n"
+"PO-Revision-Date: 2023-01-12 15:18+0100\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -54,7 +54,7 @@ msgid "Billing Address"
 msgstr "Fakturační adresa"
 
 #: src/ContractPDF.php:302 src/ContractPDF.php:1059
-#: src/Controller/TasksController.php:310 src/Model/Table/AddressesTable.php:56
+#: src/Controller/TasksController.php:360 src/Model/Table/AddressesTable.php:56
 #: templates/Commissions/view.php:132 templates/ContractStates/view.php:123
 #: templates/Contracts/print.php:69 templates/Contracts/view.php:148
 #: templates/Customers/view.php:529 templates/ServiceTypes/view.php:188
@@ -296,9 +296,9 @@ msgstr "Smlouvu nelze uložit. Opakujte akci."
 #: src/Controller/ContractsController.php:212
 #: src/Controller/ContractsController.php:294
 #: src/Controller/OverviewsController.php:122
-#: src/Controller/TasksController.php:169
-#: src/Controller/TasksController.php:360
-#: src/Controller/TasksController.php:453
+#: src/Controller/TasksController.php:219
+#: src/Controller/TasksController.php:410
+#: src/Controller/TasksController.php:503
 msgid "The access points list could not be loaded. Please, try again."
 msgstr "Seznam přístupových bodů nelze načíst. Zkuste to prosím znovu."
 
@@ -820,17 +820,21 @@ msgstr "Typ úkolu byl odstraněn."
 msgid "The task type could not be deleted. Please, try again."
 msgstr "Typ úkolu nelze odstranit. Prosím, zkuste to znovu."
 
-#: src/Controller/TasksController.php:238
-#: src/Controller/TasksController.php:398
+#: src/Controller/TasksController.php:168
+msgid "none"
+msgstr "žádný"
+
+#: src/Controller/TasksController.php:288
+#: src/Controller/TasksController.php:448
 msgid "The task has been saved."
 msgstr "Úkol byl uložen."
 
-#: src/Controller/TasksController.php:242
-#: src/Controller/TasksController.php:402
+#: src/Controller/TasksController.php:292
+#: src/Controller/TasksController.php:452
 msgid "The task could not be saved. Please, try again."
 msgstr "Úkol nelze uložit. Prosím, zkuste to znovu."
 
-#: src/Controller/TasksController.php:323 templates/Customers/view.php:296
+#: src/Controller/TasksController.php:373 templates/Customers/view.php:296
 #: templates/Emails/view.php:43 templates/TaskStates/view.php:98
 #: templates/TaskTypes/view.php:98 templates/Tasks/view.php:56
 #: templates/email/html/task_notification.php:61
@@ -838,36 +842,47 @@ msgstr "Úkol nelze uložit. Prosím, zkuste to znovu."
 msgid "Email"
 msgstr "E-mail"
 
-#: src/Controller/TasksController.php:324 templates/Customers/view.php:345
+#: src/Controller/TasksController.php:374 templates/Customers/view.php:345
 #: templates/Phones/view.php:43 templates/TaskStates/view.php:99
 #: templates/TaskTypes/view.php:99 templates/Tasks/view.php:60
 #: templates/email/html/task_notification.php:65
 msgid "Phone"
 msgstr "Telefon"
 
-#: src/Controller/TasksController.php:470
+#: src/Controller/TasksController.php:520
 msgid "The task has been deleted."
 msgstr "Úkol byl odstraněn."
 
-#: src/Controller/TasksController.php:472
+#: src/Controller/TasksController.php:522
 msgid "The task could not be deleted. Please, try again."
 msgstr "Úkol nelze odstranit. Prosím, zkuste to znovu."
 
-#: src/Controller/TasksController.php:526
+#: src/Controller/TasksController.php:576
 msgid "You have a new task # {0}"
 msgstr "Máte nový úkol č. {0}"
 
-#: src/Controller/TasksController.php:528
+#: src/Controller/TasksController.php:578
 msgid "You have changes in task # {0}"
 msgstr "Máte změny v úkolu č. {0}"
 
-#: src/Controller/TasksController.php:542
+#: src/Controller/TasksController.php:592
 msgid "Notification email sent."
 msgstr "E-mail s oznámením odeslán."
 
-#: src/Controller/TasksController.php:546
+#: src/Controller/TasksController.php:596
 msgid "The notification email could not be sent."
 msgstr "E-mail s oznámením se nepodařilo odeslat."
+
+#: src/Controller/TasksController.php:187
+msgid ""
+"There was {0} unfinished task found that does not have a dealer assigned."
+msgid_plural ""
+"There were {0} unfinished tasks found that do not have a dealer assigned."
+msgstr[0] "Byl nalezen {0} nedokončený úkol, který nemá přiřazeného dealera."
+msgstr[1] ""
+"Byly nalezeny {0} nedokončené úkoly, které nemají přiřazeného dealera."
+msgstr[2] ""
+"Bylo nalezeno {0} nedokončených úkolů, které nemají přiřazeného dealera."
 
 #: src/Controller/TaxRatesController.php:79
 #: src/Controller/TaxRatesController.php:103

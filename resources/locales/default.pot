@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-01-10 16:34+0100\n"
+"POT-Creation-Date: 2023-01-12 15:13+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -46,7 +46,7 @@ msgstr ""
 
 #: ./src/ContractPDF.php:302
 #: ./src/ContractPDF.php:1059
-#: ./src/Controller/TasksController.php:310
+#: ./src/Controller/TasksController.php:360
 #: ./src/Model/Table/AddressesTable.php:56
 #: ./templates/Commissions/view.php:132
 #: ./templates/ContractStates/view.php:123
@@ -317,9 +317,9 @@ msgstr ""
 #: ./src/Controller/ContractsController.php:212
 #: ./src/Controller/ContractsController.php:294
 #: ./src/Controller/OverviewsController.php:122
-#: ./src/Controller/TasksController.php:169
-#: ./src/Controller/TasksController.php:360
-#: ./src/Controller/TasksController.php:453
+#: ./src/Controller/TasksController.php:219
+#: ./src/Controller/TasksController.php:410
+#: ./src/Controller/TasksController.php:503
 msgid "The access points list could not be loaded. Please, try again."
 msgstr ""
 
@@ -828,17 +828,21 @@ msgstr ""
 msgid "The task type could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:238
-#: ./src/Controller/TasksController.php:398
+#: ./src/Controller/TasksController.php:168
+msgid "none"
+msgstr ""
+
+#: ./src/Controller/TasksController.php:288
+#: ./src/Controller/TasksController.php:448
 msgid "The task has been saved."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:242
-#: ./src/Controller/TasksController.php:402
+#: ./src/Controller/TasksController.php:292
+#: ./src/Controller/TasksController.php:452
 msgid "The task could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:323
+#: ./src/Controller/TasksController.php:373
 #: ./templates/Customers/view.php:296
 #: ./templates/Emails/view.php:43
 #: ./templates/TaskStates/view.php:98
@@ -849,7 +853,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:324
+#: ./src/Controller/TasksController.php:374
 #: ./templates/Customers/view.php:345
 #: ./templates/Phones/view.php:43
 #: ./templates/TaskStates/view.php:99
@@ -859,29 +863,35 @@ msgstr ""
 msgid "Phone"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:470
+#: ./src/Controller/TasksController.php:520
 msgid "The task has been deleted."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:472
+#: ./src/Controller/TasksController.php:522
 msgid "The task could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:526
+#: ./src/Controller/TasksController.php:576
 msgid "You have a new task # {0}"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:528
+#: ./src/Controller/TasksController.php:578
 msgid "You have changes in task # {0}"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:542
+#: ./src/Controller/TasksController.php:592
 msgid "Notification email sent."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:546
+#: ./src/Controller/TasksController.php:596
 msgid "The notification email could not be sent."
 msgstr ""
+
+#: ./src/Controller/TasksController.php:187
+msgid "There was {0} unfinished task found that does not have a dealer assigned."
+msgid_plural "There were {0} unfinished tasks found that do not have a dealer assigned."
+msgstr[0] ""
+msgstr[1] ""
 
 #: ./src/Controller/TaxRatesController.php:79
 #: ./src/Controller/TaxRatesController.php:103
