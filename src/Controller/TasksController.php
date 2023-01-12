@@ -172,7 +172,7 @@ class TasksController extends AppController
         // get the number of unassigned tasks
         $number_of_unassigned_tasks = $this->Tasks
             ->find()
-            ->matching('TaskStates', function(Query $query) {
+            ->matching('TaskStates', function (Query $query) {
                 return $query->where([
                     'TaskStates.completed' => false,
                 ]);
