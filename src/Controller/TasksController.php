@@ -89,9 +89,15 @@ class TasksController extends AppController
         }
         $dealer_id = $filter['dealer_id'] ?? $this->getRequest()->getAttribute('identity')['customer_id'] ?? null;
         if (!empty($dealer_id)) {
-            $conditions[] = [
-                'Tasks.dealer_id' => $dealer_id,
-            ];
+            if ($dealer_id === 'none') {
+                $conditions[] = [
+                    'Dealers.id IS' => null,
+                ];
+            } else {
+                $conditions[] = [
+                    'Dealers.id' => $dealer_id,
+                ];
+            }
         }
         $task_type_id = $filter['task_type_id'] ?? null;
         if (!empty($task_type_id)) {
@@ -153,7 +159,13 @@ class TasksController extends AppController
                     'text' => $dealer->name_for_lists,
                     'style' => $dealer->dealer === 1 ? null : 'color: darkgray;',
                 ];
-            });
+            })
+            ->appendItem([
+                'value' => 'none',
+                'text' => '(' . __('none') . ')',
+                'style' => 'color: darkgray;',
+            ]);
+
         $taskTypes = $this->Tasks->TaskTypes->find('list', ['order' => 'name']);
         $taskStates = $this->Tasks->TaskStates->find('list', ['order' => 'name']);
 
