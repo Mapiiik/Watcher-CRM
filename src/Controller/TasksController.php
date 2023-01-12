@@ -4,9 +4,12 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\ApiClient;
+use Cake\Database\Query;
 use Cake\Form\Form;
 use Cake\I18n\FrozenTime;
 use Cake\Mailer\Mailer;
+use Cake\View\Helper\HtmlHelper;
+use Cake\View\View;
 
 /**
  * Tasks Controller
@@ -165,6 +168,41 @@ class TasksController extends AppController
                 'text' => '(' . __('none') . ')',
                 'style' => 'color: darkgray;',
             ]);
+
+        // get the number of unassigned tasks
+        $number_of_unassigned_tasks = $this->Tasks
+            ->find()
+            ->matching('TaskStates', function(Query $query) {
+                return $query->where([
+                    'TaskStates.completed' => false,
+                ]);
+            })
+            ->notMatching('Dealers')
+            ->count();
+
+        // show warning if there are some unassigned tasks
+        if ($number_of_unassigned_tasks > 0) {
+            $this->Flash->warning(
+                (new HtmlHelper(new View($this->request)))->link(
+                    __n(
+                        'There was {0} unfinished task found that does not have a dealer assigned.',
+                        'There were {0} unfinished tasks found that do not have a dealer assigned.',
+                        $number_of_unassigned_tasks,
+                        $number_of_unassigned_tasks,
+                    ),
+                    ['?' => [
+                        'dealer_id' => 'none',
+                        'task_type_id' => '',
+                        'task_state_id' => '',
+                        'access_point_id' => '',
+                        'show_completed' => 0,
+                    ]]
+                ),
+                [
+                    'escape' => false,
+                ]
+            );
+        }
 
         $taskTypes = $this->Tasks->TaskTypes->find('list', ['order' => 'name']);
         $taskStates = $this->Tasks->TaskStates->find('list', ['order' => 'name']);
