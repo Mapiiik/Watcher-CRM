@@ -493,14 +493,17 @@ class ContractsController extends AppController
         $this->set('customer_id', $customer_id);
 
         $documentTypes = [
-            'contract-new' => __('Contract for the provision of services'),
-            'contract-new-x' => __('Contract for the provision of services '
-                . '(with termination of the original contract)'),
-            'contract-amendment' => __('Amendment to the contract for the provision of services'),
-            'contract-termination' => __('Agreement to terminate contract for the provision of services'),
-            '--' => '--',
-            'handover-protocol-installation' => __('Handover protocol - Installation of internet connection'),
-            'handover-protocol-uninstallation' => __('Handover protocol - Internet connection uninstallation'),
+            __('Contracts') => [
+                'contract-new' => __('Contract for the provision of services'),
+                'contract-new-x' => __('Contract for the provision of services '
+                    . '(with termination of the original contract)'),
+                'contract-amendment' => __('Amendment to the contract for the provision of services'),
+                'contract-termination' => __('Agreement to terminate contract for the provision of services'),
+            ],
+            __('Handover Protocols') => [
+                'handover-protocol-installation' => __('Handover protocol - Installation of internet connection'),
+                'handover-protocol-uninstallation' => __('Handover protocol - Internet connection uninstallation'),
+            ],
         ];
         $this->set('documentTypes', $documentTypes);
 
