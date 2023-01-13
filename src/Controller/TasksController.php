@@ -163,11 +163,12 @@ class TasksController extends AppController
                     'style' => $dealer->dealer === 1 ? null : 'color: darkgray;',
                 ];
             })
-            ->appendItem([
+            ->prependItem([
                 'value' => 'none',
                 'text' => '(' . __('none') . ')',
                 'style' => 'color: darkgray;',
-            ]);
+            ])
+            ->toList();
 
         // get the number of unassigned tasks
         $number_of_unassigned_tasks = $this->Tasks
