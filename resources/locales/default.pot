@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-01-12 15:13+0100\n"
+"POT-Creation-Date: 2023-01-17 20:18+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -46,7 +46,7 @@ msgstr ""
 
 #: ./src/ContractPDF.php:302
 #: ./src/ContractPDF.php:1059
-#: ./src/Controller/TasksController.php:360
+#: ./src/Controller/TasksController.php:361
 #: ./src/Model/Table/AddressesTable.php:56
 #: ./templates/Commissions/view.php:132
 #: ./templates/ContractStates/view.php:123
@@ -317,9 +317,9 @@ msgstr ""
 #: ./src/Controller/ContractsController.php:212
 #: ./src/Controller/ContractsController.php:294
 #: ./src/Controller/OverviewsController.php:122
-#: ./src/Controller/TasksController.php:219
-#: ./src/Controller/TasksController.php:410
-#: ./src/Controller/TasksController.php:503
+#: ./src/Controller/TasksController.php:220
+#: ./src/Controller/TasksController.php:411
+#: ./src/Controller/TasksController.php:504
 msgid "The access points list could not be loaded. Please, try again."
 msgstr ""
 
@@ -366,75 +366,88 @@ msgid "Please set a date until which the contract is valid."
 msgstr ""
 
 #: ./src/Controller/ContractsController.php:496
-msgid "Contract for the provision of services"
+#: ./templates/Contracts/index.php:21
+#: ./templates/Customers/index.php:47
+#: ./templates/Customers/view.php:79
+#: ./templates/Customers/view.php:521
+#: ./templates/TaxRates/view.php:98
+msgid "Contracts"
 msgstr ""
 
 #: ./src/Controller/ContractsController.php:497
+msgid "Contract for the provision of services"
+msgstr ""
+
+#: ./src/Controller/ContractsController.php:498
 msgid "Contract for the provision of services (with termination of the original contract)"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:499
+#: ./src/Controller/ContractsController.php:500
 msgid "Amendment to the contract for the provision of services"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:500
+#: ./src/Controller/ContractsController.php:501
 msgid "Agreement to terminate contract for the provision of services"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:502
+#: ./src/Controller/ContractsController.php:503
+msgid "Handover Protocols"
+msgstr ""
+
+#: ./src/Controller/ContractsController.php:504
 msgid "Handover protocol - Installation of internet connection"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:503
+#: ./src/Controller/ContractsController.php:505
 msgid "Handover protocol - Internet connection uninstallation"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:536
+#: ./src/Controller/ContractsController.php:539
 #: ./templates/ContractVersions/view.php:40
 msgid "indefinitely"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:562
+#: ./src/Controller/ContractsController.php:565
 msgid "A borrowed equipment is not assigned, although it should normally be for this type of service. Please confirm that the customer has their own equipment or add it."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:571
+#: ./src/Controller/ContractsController.php:574
 msgid "Invalid contract version requested."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:577
+#: ./src/Controller/ContractsController.php:580
 msgid "Invalid contract version to be replaced requested."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:590
-#: ./src/Controller/ContractsController.php:682
+#: ./src/Controller/ContractsController.php:593
+#: ./src/Controller/ContractsController.php:685
 msgid "Please set the date until which the contract version is valid."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:600
-#: ./src/Controller/ContractsController.php:630
+#: ./src/Controller/ContractsController.php:603
+#: ./src/Controller/ContractsController.php:633
 msgid "Please set the date of conclusion of the contract version."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:610
-#: ./src/Controller/ContractsController.php:659
-#: ./src/Controller/ContractsController.php:692
+#: ./src/Controller/ContractsController.php:613
+#: ./src/Controller/ContractsController.php:662
+#: ./src/Controller/ContractsController.php:695
 msgid "Please enter the number of the contract to be terminated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:622
+#: ./src/Controller/ContractsController.php:625
 msgid "Please enter the effective date of the amendment."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:643
+#: ./src/Controller/ContractsController.php:646
 msgid "Please select the contract version to be replaced."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:649
+#: ./src/Controller/ContractsController.php:652
 msgid "Please set the date of conclusion of the original contract version."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:750
+#: ./src/Controller/ContractsController.php:753
 #: ./src/Controller/CustomersController.php:333
 msgid "Invalid type of document requested."
 msgstr ""
@@ -832,17 +845,17 @@ msgstr ""
 msgid "none"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:288
-#: ./src/Controller/TasksController.php:448
+#: ./src/Controller/TasksController.php:289
+#: ./src/Controller/TasksController.php:449
 msgid "The task has been saved."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:292
-#: ./src/Controller/TasksController.php:452
+#: ./src/Controller/TasksController.php:293
+#: ./src/Controller/TasksController.php:453
 msgid "The task could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:373
+#: ./src/Controller/TasksController.php:374
 #: ./templates/Customers/view.php:296
 #: ./templates/Emails/view.php:43
 #: ./templates/TaskStates/view.php:98
@@ -853,7 +866,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:374
+#: ./src/Controller/TasksController.php:375
 #: ./templates/Customers/view.php:345
 #: ./templates/Phones/view.php:43
 #: ./templates/TaskStates/view.php:99
@@ -863,31 +876,31 @@ msgstr ""
 msgid "Phone"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:520
+#: ./src/Controller/TasksController.php:521
 msgid "The task has been deleted."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:522
+#: ./src/Controller/TasksController.php:523
 msgid "The task could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:576
+#: ./src/Controller/TasksController.php:577
 msgid "You have a new task # {0}"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:578
+#: ./src/Controller/TasksController.php:579
 msgid "You have changes in task # {0}"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:592
+#: ./src/Controller/TasksController.php:593
 msgid "Notification email sent."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:596
+#: ./src/Controller/TasksController.php:597
 msgid "The notification email could not be sent."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:187
+#: ./src/Controller/TasksController.php:188
 msgid "There was {0} unfinished task found that does not have a dealer assigned."
 msgid_plural "There were {0} unfinished tasks found that do not have a dealer assigned."
 msgstr[0] ""
@@ -3083,14 +3096,6 @@ msgstr ""
 #: ./templates/Contracts/view.php:26
 #: ./templates/Customers/view.php:517
 msgid "New Contract"
-msgstr ""
-
-#: ./templates/Contracts/index.php:21
-#: ./templates/Customers/index.php:47
-#: ./templates/Customers/view.php:79
-#: ./templates/Customers/view.php:521
-#: ./templates/TaxRates/view.php:98
-msgid "Contracts"
 msgstr ""
 
 #: ./templates/Contracts/print.php:13
