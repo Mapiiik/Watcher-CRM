@@ -445,4 +445,12 @@ return [
         'defaults' => 'database',
         'timeout' => 1440,
     ],
+
+    /*
+     * Database Migrations
+     */
+    'Migrations' => [
+        'unsigned_primary_keys' => true,
+        'column_null_default' => true,
+    ],
 ];
