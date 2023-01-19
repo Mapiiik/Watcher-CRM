@@ -263,4 +263,7 @@ if (!(php_sapi_name() == 'cli')) {
 
         return $params;
     });
+} else {
+    // ui-mode default state preset for CLI
+    $params['ui-mode'] = 'default';
 }
