@@ -189,7 +189,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
      * You can remove these routes once you've connected the
      * routes you want in your application.
      */
-//    $builder->fallbacks();
+    //$builder->fallbacks();
 });
 
 /*
@@ -264,6 +264,10 @@ if (!(php_sapi_name() == 'cli')) {
         return $params;
     });
 } else {
-    // ui-mode default state preset for CLI
-    $params['ui-mode'] = 'default';
+    // ui-mode default state preset for CLI ($request is null)
+    Router::addUrlFilter(function (array $params, $request) {
+        $params['ui-mode'] = 'default';
+
+        return $params;
+    });
 }
