@@ -24,6 +24,7 @@ class TasksControllerTest extends TestCase
         'app.Tasks',
         'app.TaskTypes',
         'app.Customers',
+        'app.Contracts',
         'app.TaskStates',
     ];
 
