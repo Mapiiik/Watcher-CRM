@@ -46,8 +46,8 @@ use Cake\Routing\Router;
 /** @var \Cake\Routing\RouteBuilder $routes */
 $routes->setRouteClass(DashedRoute::class);
 
-$routes->scope('/admin/', function (RouteBuilder $builder) {
-
+// UI Routes Funtion
+$uiRoutes = function (RouteBuilder $builder) {
     $builder->setRouteClass(DashedRoute::class);
 
     $builder->setExtensions(['pdf']);
@@ -155,7 +155,13 @@ $routes->scope('/admin/', function (RouteBuilder $builder) {
         ->setPass(['id']);
 
     //$builder->fallbacks();
-});
+};
+
+// Legacy UI
+$routes->scope('/legacy/', ['ui-mode' => 'legacy'], $uiRoutes);
+
+// Default UI
+$routes->scope('/admin/', ['ui-mode' => 'default'], $uiRoutes);
 
 $routes->scope('/', function (RouteBuilder $builder) {
     /*
@@ -202,6 +208,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
  * ```
  */
 
+// API access
 $routes->prefix('Api', function (RouteBuilder $builder) {
     $builder->setExtensions(['json']);
 
@@ -218,6 +225,14 @@ $routes->prefix('Api', function (RouteBuilder $builder) {
 //apply URL filters only if not called from console
 if (!(php_sapi_name() == 'cli')) {
     Router::addUrlFilter(function (array $params, ServerRequest $request) {
+        // persistent ui-mode and default state preset
+        if ($request->getParam('ui-mode') && !isset($params['ui-mode'])) {
+            $params['ui-mode'] = $request->getParam('ui-mode');
+        } else {
+            $params['ui-mode'] = 'default';
+        }
+
+        // persistent win-link
         if ($request->getQuery('win-link') == 'true') {
             $params['?']['win-link'] = 'true';
         }
