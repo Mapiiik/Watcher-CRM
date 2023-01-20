@@ -57,7 +57,10 @@ class AppController extends Controller
         $this->loadComponent('FormProtection');
 
         // switch to Legacy UI layout if requested
-        if ($this->getRequest()->getParam('ui-mode') === 'legacy') {
+        if (
+            $this->getRequest()->getParam('ui-mode') === 'legacy'
+            && $this->getRequest()->getParam('_ext') === null
+        ) {
             $this->viewBuilder()->setLayout('legacy');
         }
     }
