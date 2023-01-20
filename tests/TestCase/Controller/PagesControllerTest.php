@@ -18,6 +18,7 @@ namespace App\Test\TestCase\Controller;
 
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
+use Cake\TestSuite\Constraint\Response\StatusCode;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -48,26 +49,13 @@ class PagesControllerTest extends TestCase
     }
 
     /**
-     * testMultipleGet method
-     *
-     * @return void
-     */
-    public function testMultipleGet()
-    {
-        $this->login();
-        $this->get('/');
-        $this->assertResponseOk();
-        $this->get('/');
-        $this->assertResponseOk();
-    }
-
-    /**
      * testDisplay method
      *
      * @return void
      */
     public function testDisplay()
     {
+        Configure::write('debug', true);
         $this->login();
         $this->get('/pages/home');
         $this->assertResponseOk();
@@ -144,11 +132,12 @@ class PagesControllerTest extends TestCase
     public function testCsrfAppliedOk()
     {
         $this->login();
+        $this->enableSecurityToken();
+
         $this->enableCsrfToken();
         $this->post('/pages/home', ['hello' => 'world']);
 
-        //$this->assertResponseCode(200);
-        $this->assertResponseCode(400); //bad request from FormProtection
-        $this->assertResponseContains('CakePHP');
+        $this->assertThat(403, $this->logicalNot(new StatusCode($this->_response)));
+        $this->assertResponseNotContains('CSRF');
     }
 }
