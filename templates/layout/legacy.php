@@ -51,6 +51,46 @@ $request = $this->getRequest();
     <?= $this->fetch('script') ?>
 </head>
 <body>
+<nav class="top-nav">
+        <?php if (!($request->getQuery('win-link') == 'true')) : ?>
+        <div class="top-nav-links to-right">
+            <?php
+            $urlWithQuery = function ($query = []) use ($request) {
+                return $this->Url->build(
+                    ['?' => $query + $request->getQueryParams()] + $request->getParam('pass')
+                );
+            }; ?>
+
+            <?php if ($request->getParam('action') == 'index') : ?>
+            <select name="limit" class="button button-small button-outline" onchange="location = this.value;">
+                <option <?= $request->getSession()->read('Config.limit') == 20 ? 'selected="selected"' : '' ?>
+                    value="<?= $urlWithQuery(['limit' => 20]) ?>">20</option>
+                <option <?= $request->getSession()->read('Config.limit') == 50 ? 'selected="selected"' : '' ?>
+                    value="<?= $urlWithQuery(['limit' => 50]) ?>">50</option>
+                <option <?= $request->getSession()->read('Config.limit') == 100 ? 'selected="selected"' : '' ?>
+                    value="<?= $urlWithQuery(['limit' => 100]) ?>">100</option>
+                <option <?= $request->getSession()->read('Config.limit') == 500 ? 'selected="selected"' : '' ?>
+                    value="<?= $urlWithQuery(['limit' => 500]) ?>">500</option>
+                <option <?= $request->getSession()->read('Config.limit') == 1000 ? 'selected="selected"' : '' ?>
+                    value="<?= $urlWithQuery(['limit' => 1000]) ?>">1000</option>
+                <option <?= $request->getSession()->read('Config.limit') == 10000 ? 'selected="selected"' : '' ?>
+                    value="<?= $urlWithQuery(['limit' => 10000]) ?>">10000</option>
+            </select>
+            <?php endif; ?>
+            
+            <?php
+            $language = $request->getSession()->read('Config.language', Cake\I18n\I18n::getDefaultLocale());
+            ?>
+            <select name="language" class="button button-small button-outline" onchange="location = this.value;">
+                <option <?= $language == 'cs_CZ' ? 'selected="selected"' : '' ?>
+                    value="<?= $urlWithQuery(['language' => 'cs_CZ']) ?>">Čeština</option>
+                <option <?= $language == 'en_US' ? 'selected="selected"' : '' ?>
+                    value="<?= $urlWithQuery(['language' => 'en_US']) ?>">English</option>
+            </select>
+        </div>
+        <?php endif; ?>
+    </nav>
+
     <?= $request->getParam('customer_id') ? $this->cell(
         'Customer',
         [$request->getParam('customer_id')],

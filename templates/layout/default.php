@@ -181,11 +181,13 @@ $request = $this->getRequest();
                     value="<?= $urlWithQuery(['limit' => 500]) ?>">500</option>
                 <option <?= $request->getSession()->read('Config.limit') == 1000 ? 'selected="selected"' : '' ?>
                     value="<?= $urlWithQuery(['limit' => 1000]) ?>">1000</option>
+                <option <?= $request->getSession()->read('Config.limit') == 10000 ? 'selected="selected"' : '' ?>
+                    value="<?= $urlWithQuery(['limit' => 10000]) ?>">10000</option>
             </select>
             <?php endif; ?>
             
-            <?php $language = $request
-                ->getSession()->read('Config.language', Cake\I18n\I18n::getDefaultLocale());
+            <?php
+            $language = $request->getSession()->read('Config.language', Cake\I18n\I18n::getDefaultLocale());
             ?>
             <select name="language" class="button button-small button-outline" onchange="location = this.value;">
                 <option <?= $language == 'cs_CZ' ? 'selected="selected"' : '' ?>
