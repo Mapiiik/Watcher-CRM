@@ -154,6 +154,9 @@ $uiRoutes = function (RouteBuilder $builder) {
         ->setPatterns(['id' => '[0-9]+'])
         ->setPass(['id']);
 
+    // Default redirect
+    $builder->redirect('/', ['controller' => 'Customers', 'action' => 'index']);
+
     //$builder->fallbacks();
 };
 
@@ -164,12 +167,8 @@ $routes->scope('/legacy/', ['ui-mode' => 'legacy'], $uiRoutes);
 $routes->scope('/admin/', ['ui-mode' => 'default'], $uiRoutes);
 
 $routes->scope('/', function (RouteBuilder $builder) {
-    /*
-     * Here, we are connecting '/' (base path) to a controller called 'Pages',
-     * its action called 'display', and we pass a param to select the view file
-     * to use (in this case, templates/Pages/home.php)...
-     */
-    $builder->connect('/', ['controller' => 'Customers', 'action' => 'index']);
+    // Default redirect
+    $builder->redirect('/', ['controller' => 'Customers', 'action' => 'index']);
 
     /*
      * ...and connect the rest of 'Pages' controller's URLs.
