@@ -73,6 +73,8 @@ $request = $this->getRequest();
                     value="<?= $urlWithQuery(['limit' => 500]) ?>">500</option>
                 <option <?= $request->getSession()->read('Config.limit') == 1000 ? 'selected="selected"' : '' ?>
                     value="<?= $urlWithQuery(['limit' => 1000]) ?>">1000</option>
+                <option <?= $request->getSession()->read('Config.limit') == 5000 ? 'selected="selected"' : '' ?>
+                    value="<?= $urlWithQuery(['limit' => 5000]) ?>">5000</option>
                 <option <?= $request->getSession()->read('Config.limit') == 10000 ? 'selected="selected"' : '' ?>
                     value="<?= $urlWithQuery(['limit' => 10000]) ?>">10000</option>
             </select>
