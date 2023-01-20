@@ -264,7 +264,7 @@ class AppController extends Controller
                     }
                 }
 
-                return 'Not installed via Git';
+                return __('Not installed via Git');
             }
         );
     }
@@ -286,7 +286,7 @@ class AppController extends Controller
                     }
                 }
 
-                return 'Not installed via Git';
+                return __('Not installed via Git');
             }
         );
     }
