@@ -119,16 +119,11 @@
                     <td><?= h($task->critical_date) ?></td>
                     <td><?= h($task->finish_date) ?></td>
                     <td class="actions">
-                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $task->id]) ?>
-                        <?= $this->AuthLink->link(
+                        <?= $this->Html->link(__('View'), ['action' => 'view', $task->id]) ?>
+                        <?= $this->Html->link(
                             __('Edit'),
                             ['action' => 'edit', $task->id],
                             ['class' => 'win-link']
-                        ) ?>
-                        <?= $this->AuthLink->postLink(
-                            __('Delete'),
-                            ['action' => 'delete', $task->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]
                         ) ?>
                     </td>
                 </tr>

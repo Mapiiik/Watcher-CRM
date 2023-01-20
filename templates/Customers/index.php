@@ -103,24 +103,14 @@
                         </span><br>
                         <?php endforeach; ?>
                     </td>
-                    <td>
-                        <?= $customer->has('tax_rate') ? $this->Html->link(
-                            $customer->tax_rate->name,
-                            ['controller' => 'TaxRates', 'action' => 'view', $customer->tax_rate->id]
-                        ) : '' ?>
-                    </td>
+                    <td><?= $customer->has('tax_rate') ? h($customer->tax_rate->name) : '' ?></td>
                     <td><?= $customer->getDealerState() ?></td>
                     <td class="actions">
-                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $customer->id]) ?>
-                        <?= $this->AuthLink->link(
+                        <?= $this->Html->link(__('View'), ['action' => 'view', $customer->id]) ?>
+                        <?= $this->Html->link(
                             __('Edit'),
                             ['action' => 'edit', $customer->id],
                             ['class' => 'win-link']
-                        ) ?>
-                        <?= $this->AuthLink->postLink(
-                            __('Delete'),
-                            ['action' => 'delete', $customer->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id)]
                         ) ?>
                     </td>
                 </tr>
