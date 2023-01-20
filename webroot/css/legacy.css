@@ -378,11 +378,13 @@ tr:hover td {
     cursor:pointer;
     display:inline-block;
     font-weight:700;
-    padding:0 3.0rem;
+    padding: 0 1.5rem;
     text-align:center;
     text-decoration:none;
     text-transform:uppercase;
-    white-space:nowrap 
+    white-space:nowrap;
+    margin-left: 0.5rem;
+    width: auto;
 }
 .button:focus,.button:hover,button:focus,button:hover,input[type='button']:focus,input[type='button']:hover,input[type='reset']:focus,input[type='reset']:hover,input[type='submit']:focus,input[type='submit']:hover{
     background-color:#606c76;
@@ -428,6 +430,7 @@ tr:hover td {
 input[type='email'],input[type='number'],input[type='password'],input[type='search'],input[type='tel'],input[type='text'],input[type='url'],input[type='color'],input[type='date'],input[type='month'],input[type='week'],input[type='datetime'],input[type='datetime-local'],input:not([type]),textarea,select{
     box-sizing:inherit;
     padding:.2rem .2rem;
+    height: 28px;
     width:100% 
 }
 input[type='email']:focus,input[type='number']:focus,input[type='password']:focus,input[type='search']:focus,input[type='tel']:focus,input[type='text']:focus,input[type='url']:focus,input[type='color']:focus,input[type='date']:focus,input[type='month']:focus,input[type='week']:focus,input[type='datetime']:focus,input[type='datetime-local']:focus,input:not([type]):focus,textarea:focus,select:focus{
