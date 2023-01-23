@@ -1,6 +1,6 @@
 /* * Legacy UI */
-*,*:after,*:before{
-    box-sizing:inherit 
+*, *:after, *:before {
+    box-sizing: inherit 
 }
 html {
     box-sizing: border-box;
@@ -55,14 +55,35 @@ a:hover {
 a:focus {
     text-decoration: none;
 }
+.content {
+    padding: 5px 10px;
+    box-shadow: 0 7px 14px 0 rgb(60 66 87 / 20%), 0 3px 6px 0 rgb(0 0 0 / 14%);
+}
+/* Navigation */
+.nav-container {
+    padding-left: 0px;
+}
+.nav-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+}
+.nav-content-left {
+    min-width: 20rem;
+}
+.nav-content-right {
+    text-align: right;
+}
 /* Tables */
 table {
-    border-collapse:collapse;
+    border-collapse: collapse;
     margin-left: 4px;
     margin-top: 0px;
     margin-bottom: 8px;
     background-color: #ffffff;
-    border-radius: 0.4rem;
     box-shadow: 0 7px 14px 0 rgba(60, 66, 87, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
     width: 100%;
 }
@@ -79,7 +100,7 @@ th {
     color: #000000;
 }
 tr:hover td {
-    background:#ddf0ff;
+    background: #ddf0ff;
 }
 .menu table tr:hover td {
     background-color: #ffec90;
@@ -108,12 +129,12 @@ tr:hover td {
     vertical-align: middle;
 }
 /* Float left */
-.float-left{
-    float:left 
+.float-left {
+    float: left 
 }
 /* Float right */
-.float-right{
-    float:right 
+.float-right {
+    float: right 
 }
 /* Side Navigation */
 .side-nav-item {
@@ -176,194 +197,195 @@ tr:hover td {
     color: #cc1f1a;
 }
 /* Arrangement of DIVs */
-.container{
-    margin:0 auto;
+.container {
+    margin: 0 auto;
+    padding: 10px;
     max-width: none;
-    position:relative;
-    width:calc(100% - 50px);
+    position: relative;
+    width: 100%;
 }
-.row{
-    display:flex;
-    flex-direction:column;
-    padding:0;
-    width:100% 
+.row {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    width: 100% 
 }
-.row.row-no-padding{
-    padding:0 
+.row.row-no-padding {
+    padding: 0 
 }
-.row.row-no-padding>.column{
-    padding:0 
+.row.row-no-padding>.column {
+    padding: 0 
 }
-.row.row-wrap{
-    flex-wrap:wrap 
+.row.row-wrap {
+    flex-wrap: wrap 
 }
-.row.row-top{
-    align-items:flex-start 
+.row.row-top {
+    align-items: flex-start 
 }
-.row.row-bottom{
-    align-items:flex-end 
+.row.row-bottom {
+    align-items: flex-end 
 }
-.row.row-center{
-    align-items:center 
+.row.row-center {
+    align-items: center 
 }
-.row.row-stretch{
-    align-items:stretch 
+.row.row-stretch {
+    align-items: stretch 
 }
-.row.row-baseline{
-    align-items:baseline 
+.row.row-baseline {
+    align-items: baseline 
 }
-.row .column{
-    display:block;
-    flex:1 1 auto;
-    margin-left:0;
-    max-width:100%;
-    width:100% 
+.row .column {
+    display: block;
+    flex: 1 1 auto;
+    margin-left: 0;
+    max-width: 100%;
+    width: 100% 
 }
-.row .column.column-offset-10{
-    margin-left:10% 
+.row .column.column-offset-10 {
+    margin-left: 10% 
 }
-.row .column.column-offset-20{
-    margin-left:20% 
+.row .column.column-offset-20 {
+    margin-left: 20% 
 }
-.row .column.column-offset-25{
-    margin-left:25% 
+.row .column.column-offset-25 {
+    margin-left: 25% 
 }
-.row .column.column-offset-33,.row .column.column-offset-34{
-    margin-left:33.3333% 
+.row .column.column-offset-33, .row .column.column-offset-34 {
+    margin-left: 33.3333% 
 }
-.row .column.column-offset-50{
-    margin-left:50% 
+.row .column.column-offset-50 {
+    margin-left: 50% 
 }
-.row .column.column-offset-66,.row .column.column-offset-67{
-    margin-left:66.6666% 
+.row .column.column-offset-66, .row .column.column-offset-67 {
+    margin-left: 66.6666% 
 }
-.row .column.column-offset-75{
-    margin-left:75% 
+.row .column.column-offset-75 {
+    margin-left: 75% 
 }
-.row .column.column-offset-80{
-    margin-left:80% 
+.row .column.column-offset-80 {
+    margin-left: 80% 
 }
-.row .column.column-offset-90{
-    margin-left:90% 
+.row .column.column-offset-90 {
+    margin-left: 90% 
 }
-.row .column.column-10{
-    flex:0 0 10%;
-    max-width:10% 
+.row .column.column-10 {
+    flex: 0 0 10%;
+    max-width: 10% 
 }
-.row .column.column-20{
-    flex:0 0 20%;
-    max-width:20% 
+.row .column.column-20 {
+    flex: 0 0 20%;
+    max-width: 20% 
 }
-.row .column.column-25{
-    flex:0 0 25%;
-    max-width:25% 
+.row .column.column-25 {
+    flex: 0 0 25%;
+    max-width: 25% 
 }
-.row .column.column-33,.row .column.column-34{
-    flex:0 0 33.3333%;
-    max-width:33.3333% 
+.row .column.column-33, .row .column.column-34 {
+    flex: 0 0 33.3333%;
+    max-width: 33.3333% 
 }
-.row .column.column-40{
-    flex:0 0 40%;
-    max-width:40% 
+.row .column.column-40 {
+    flex: 0 0 40%;
+    max-width: 40% 
 }
-.row .column.column-50{
-    flex:0 0 50%;
-    max-width:50% 
+.row .column.column-50 {
+    flex: 0 0 50%;
+    max-width: 50% 
 }
-.row .column.column-60{
-    flex:0 0 60%;
-    max-width:60% 
+.row .column.column-60 {
+    flex: 0 0 60%;
+    max-width: 60% 
 }
-.row .column.column-66,.row .column.column-67{
-    flex:0 0 66.6666%;
-    max-width:66.6666% 
+.row .column.column-66, .row .column.column-67 {
+    flex: 0 0 66.6666%;
+    max-width: 66.6666% 
 }
-.row .column.column-75{
-    flex:0 0 75%;
-    max-width:75% 
+.row .column.column-75 {
+    flex: 0 0 75%;
+    max-width: 75% 
 }
-.row .column.column-80{
-    flex:0 0 80%;
-    max-width:80% 
+.row .column.column-80 {
+    flex: 0 0 80%;
+    max-width: 80% 
 }
-.row .column.column-90{
-    flex:0 0 90%;
-    max-width:90% 
+.row .column.column-90 {
+    flex: 0 0 90%;
+    max-width: 90% 
 }
-.row .column .column-top{
-    align-self:flex-start 
+.row .column .column-top {
+    align-self: flex-start 
 }
-.row .column .column-bottom{
-    align-self:flex-end 
+.row .column .column-bottom {
+    align-self: flex-end 
 }
-.row .column .column-center{
-    -ms-grid-row-align:center;
-    align-self:center 
+.row .column .column-center {
+    -ms-grid-row-align: center;
+    align-self: center 
 }
-.row .column-responsive{
-    display:block;
-    flex:1 1 auto;
-    margin-left:0;
-    max-width:100%;
-    width:100% 
+.row .column-responsive {
+    display: block;
+    flex: 1 1 auto;
+    margin-left: 0;
+    max-width: 100%;
+    width: 100% 
 }
-@media (min-width: 640px){
-    .row{
-        flex-direction:row;
-        margin-left:-1.0rem;
-        width:calc(100% + 2.0rem) 
+@media (min-width: 640px) {
+    .row {
+        flex-direction: row;
+        margin-left: -1.0rem;
+        width: calc(100% + 2.0rem) 
    }
-    .row .column{
-        margin-bottom:inherit;
-        padding:0 1.0rem 
+    .row .column {
+        margin-bottom: inherit;
+        padding: 0 1.0rem 
    }
-    .row .column-responsive{
-        margin-bottom:inherit;
-        padding:0 1.0rem 
+    .row .column-responsive {
+        margin-bottom: inherit;
+        padding: 0 1.0rem 
    }
-    .row .column-responsive.column-10{
-        flex:0 0 10%;
-        max-width:10% 
+    .row .column-responsive.column-10 {
+        flex: 0 0 10%;
+        max-width: 10% 
    }
-    .row .column-responsive.column-20{
-        flex:0 0 20%;
-        max-width:20% 
+    .row .column-responsive.column-20 {
+        flex: 0 0 20%;
+        max-width: 20% 
    }
-    .row .column-responsive.column-25{
-        flex:0 0 25%;
-        max-width:25% 
+    .row .column-responsive.column-25 {
+        flex: 0 0 25%;
+        max-width: 25% 
    }
-    .row .column-responsive.column-33,.row .column-responsive.column-34{
-        flex:0 0 33.3333%;
-        max-width:33.3333% 
+    .row .column-responsive.column-33, .row .column-responsive.column-34 {
+        flex: 0 0 33.3333%;
+        max-width: 33.3333% 
    }
-    .row .column-responsive.column-40{
-        flex:0 0 40%;
-        max-width:40% 
+    .row .column-responsive.column-40 {
+        flex: 0 0 40%;
+        max-width: 40% 
    }
-    .row .column-responsive.column-50{
-        flex:0 0 50%;
-        max-width:50% 
+    .row .column-responsive.column-50 {
+        flex: 0 0 50%;
+        max-width: 50% 
    }
-    .row .column-responsive.column-60{
-        flex:0 0 60%;
-        max-width:60% 
+    .row .column-responsive.column-60 {
+        flex: 0 0 60%;
+        max-width: 60% 
    }
-    .row .column-responsive.column-66,.row .column-responsive.column-67{
-        flex:0 0 66.6666%;
-        max-width:66.6666% 
+    .row .column-responsive.column-66, .row .column-responsive.column-67 {
+        flex: 0 0 66.6666%;
+        max-width: 66.6666% 
    }
-    .row .column-responsive.column-75{
-        flex:0 0 75%;
-        max-width:75% 
+    .row .column-responsive.column-75 {
+        flex: 0 0 75%;
+        max-width: 75% 
    }
-    .row .column-responsive.column-80{
-        flex:0 0 80%;
-        max-width:80% 
+    .row .column-responsive.column-80 {
+        flex: 0 0 80%;
+        max-width: 80% 
    }
-    .row .column-responsive.column-90{
-        flex:0 0 90%;
-        max-width:90% 
+    .row .column-responsive.column-90 {
+        flex: 0 0 90%;
+        max-width: 90% 
    }
 }
 /* Buttons */
@@ -371,75 +393,83 @@ tr:hover td {
     background-color: #606c76;
     border-color: #606c76;
 }
-.button,button,input[type='button'],input[type='reset'],input[type='submit']{
-    background-color:#d33c43;
-    border:0.1rem solid #d33c43;
-    color:#fff;
-    cursor:pointer;
-    display:inline-block;
-    font-weight:700;
-    padding: 0 1.5rem;
-    text-align:center;
-    text-decoration:none;
-    text-transform:uppercase;
-    white-space:nowrap;
+.button, button, input[type='button'], input[type='reset'], input[type='submit'] {
+    background-color: #d33c43;
+    border: 0.1rem solid #d33c43;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 700;
+    padding: 0.1rem 1.0rem;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    white-space: nowrap;
     margin-left: 0.5rem;
     width: auto;
 }
-.button:focus,.button:hover,button:focus,button:hover,input[type='button']:focus,input[type='button']:hover,input[type='reset']:focus,input[type='reset']:hover,input[type='submit']:focus,input[type='submit']:hover{
-    background-color:#606c76;
-    border-color:#606c76;
-    color:#fff;
-    outline:0 
+.button:focus, .button:hover, button:focus, button:hover, input[type='button']:focus, input[type='button']:hover, input[type='reset']:focus, input[type='reset']:hover, input[type='submit']:focus, input[type='submit']:hover {
+    background-color: #606c76;
+    border-color: #606c76;
+    color: #fff;
+    outline: 0 
 }
-.button[disabled],button[disabled],input[type='button'][disabled],input[type='reset'][disabled],input[type='submit'][disabled]{
-    cursor:default;
-    opacity:.5 
+.button[disabled], button[disabled], input[type='button'][disabled], input[type='reset'][disabled], input[type='submit'][disabled] {
+    cursor: default;
+    opacity: .5 
 }
-.button[disabled]:focus,.button[disabled]:hover,button[disabled]:focus,button[disabled]:hover,input[type='button'][disabled]:focus,input[type='button'][disabled]:hover,input[type='reset'][disabled]:focus,input[type='reset'][disabled]:hover,input[type='submit'][disabled]:focus,input[type='submit'][disabled]:hover{
-    background-color:#d33c43;
-    border-color:#d33c43 
+.button[disabled]:focus, .button[disabled]:hover, button[disabled]:focus, button[disabled]:hover, input[type='button'][disabled]:focus, input[type='button'][disabled]:hover, input[type='reset'][disabled]:focus, input[type='reset'][disabled]:hover, input[type='submit'][disabled]:focus, input[type='submit'][disabled]:hover {
+    background-color: #d33c43;
+    border-color: #d33c43 
 }
-.button.button-outline,button.button-outline,input[type='button'].button-outline,input[type='reset'].button-outline,input[type='submit'].button-outline{
-    background-color:transparent;
-    color:#d33c43 
+.button.button-outline, button.button-outline, input[type='button'].button-outline, input[type='reset'].button-outline, input[type='submit'].button-outline {
+    background-color: transparent;
+    color: #d33c43 
 }
-.button.button-outline:focus,.button.button-outline:hover,button.button-outline:focus,button.button-outline:hover,input[type='button'].button-outline:focus,input[type='button'].button-outline:hover,input[type='reset'].button-outline:focus,input[type='reset'].button-outline:hover,input[type='submit'].button-outline:focus,input[type='submit'].button-outline:hover{
-    background-color:transparent;
-    border-color:#606c76;
-    color:#606c76 
+.button.button-outline:focus, .button.button-outline:hover, button.button-outline:focus, button.button-outline:hover, input[type='button'].button-outline:focus, input[type='button'].button-outline:hover, input[type='reset'].button-outline:focus, input[type='reset'].button-outline:hover, input[type='submit'].button-outline:focus, input[type='submit'].button-outline:hover {
+    background-color: transparent;
+    border-color: #606c76;
+    color: #606c76 
 }
-.button.button-outline[disabled]:focus,.button.button-outline[disabled]:hover,button.button-outline[disabled]:focus,button.button-outline[disabled]:hover,input[type='button'].button-outline[disabled]:focus,input[type='button'].button-outline[disabled]:hover,input[type='reset'].button-outline[disabled]:focus,input[type='reset'].button-outline[disabled]:hover,input[type='submit'].button-outline[disabled]:focus,input[type='submit'].button-outline[disabled]:hover{
-    border-color:inherit;
-    color:#d33c43 
+.button.button-outline[disabled]:focus, .button.button-outline[disabled]:hover, button.button-outline[disabled]:focus, button.button-outline[disabled]:hover, input[type='button'].button-outline[disabled]:focus, input[type='button'].button-outline[disabled]:hover, input[type='reset'].button-outline[disabled]:focus, input[type='reset'].button-outline[disabled]:hover, input[type='submit'].button-outline[disabled]:focus, input[type='submit'].button-outline[disabled]:hover {
+    border-color: inherit;
+    color: #d33c43 
 }
-.button.button-clear,button.button-clear,input[type='button'].button-clear,input[type='reset'].button-clear,input[type='submit'].button-clear{
-    background-color:transparent;
-    border-color:transparent;
-    color:#d33c43 
+.button.button-clear, button.button-clear, input[type='button'].button-clear, input[type='reset'].button-clear, input[type='submit'].button-clear {
+    background-color: transparent;
+    border-color: transparent;
+    color: #d33c43 
 }
-.button.button-clear:focus,.button.button-clear:hover,button.button-clear:focus,button.button-clear:hover,input[type='button'].button-clear:focus,input[type='button'].button-clear:hover,input[type='reset'].button-clear:focus,input[type='reset'].button-clear:hover,input[type='submit'].button-clear:focus,input[type='submit'].button-clear:hover{
-    background-color:transparent;
-    border-color:transparent;
-    color:#606c76 
+.button.button-clear:focus, .button.button-clear:hover, button.button-clear:focus, button.button-clear:hover, input[type='button'].button-clear:focus, input[type='button'].button-clear:hover, input[type='reset'].button-clear:focus, input[type='reset'].button-clear:hover, input[type='submit'].button-clear:focus, input[type='submit'].button-clear:hover {
+    background-color: transparent;
+    border-color: transparent;
+    color: #606c76 
 }
-.button.button-clear[disabled]:focus,.button.button-clear[disabled]:hover,button.button-clear[disabled]:focus,button.button-clear[disabled]:hover,input[type='button'].button-clear[disabled]:focus,input[type='button'].button-clear[disabled]:hover,input[type='reset'].button-clear[disabled]:focus,input[type='reset'].button-clear[disabled]:hover,input[type='submit'].button-clear[disabled]:focus,input[type='submit'].button-clear[disabled]:hover{
-    color:#d33c43 
+.button.button-clear[disabled]:focus, .button.button-clear[disabled]:hover, button.button-clear[disabled]:focus, button.button-clear[disabled]:hover, input[type='button'].button-clear[disabled]:focus, input[type='button'].button-clear[disabled]:hover, input[type='reset'].button-clear[disabled]:focus, input[type='reset'].button-clear[disabled]:hover, input[type='submit'].button-clear[disabled]:focus, input[type='submit'].button-clear[disabled]:hover {
+    color: #d33c43 
+}
+/* Labels */
+.app-label {
+    border: 0.1rem solid #d33c43;
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    margin-bottom: 0.5rem;
+    color: white;
 }
 /* Inputs */
-input[type='email'],input[type='number'],input[type='password'],input[type='search'],input[type='tel'],input[type='text'],input[type='url'],input[type='color'],input[type='date'],input[type='month'],input[type='week'],input[type='datetime'],input[type='datetime-local'],input:not([type]),textarea,select{
-    box-sizing:inherit;
-    padding:.2rem .2rem;
+input[type='email'], input[type='number'], input[type='password'], input[type='search'], input[type='tel'], input[type='text'], input[type='url'], input[type='color'], input[type='date'], input[type='month'], input[type='week'], input[type='datetime'], input[type='datetime-local'], input:not([type]), textarea, select {
+    box-sizing: inherit;
+    padding: .2rem .2rem;
     height: 28px;
-    width:100% 
+    width: 100% 
 }
-input[type='email']:focus,input[type='number']:focus,input[type='password']:focus,input[type='search']:focus,input[type='tel']:focus,input[type='text']:focus,input[type='url']:focus,input[type='color']:focus,input[type='date']:focus,input[type='month']:focus,input[type='week']:focus,input[type='datetime']:focus,input[type='datetime-local']:focus,input:not([type]):focus,textarea:focus,select:focus{
-    border-color:#606c76;
-    outline:0 
+input[type='email']:focus, input[type='number']:focus, input[type='password']:focus, input[type='search']:focus, input[type='tel']:focus, input[type='text']:focus, input[type='url']:focus, input[type='color']:focus, input[type='date']:focus, input[type='month']:focus, input[type='week']:focus, input[type='datetime']:focus, input[type='datetime-local']:focus, input:not([type]):focus, textarea:focus, select:focus {
+    border-color: #606c76;
+    outline: 0 
 }
-select{
-    padding-right:3.0rem 
+select {
+    padding-right: 3.0rem 
 }
-textarea{
-    min-height:6.5rem 
+textarea {
+    min-height: 6.5rem 
 }
