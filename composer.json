@@ -16,7 +16,7 @@
     },
     "require": {
         "php": ">=7.4",
-        "cakedc/users": "^11.1",
+        "cakedc/users": "dev-11.next-cake4",
         "cakephp/cakephp": "^4.4",
         "cakephp/migrations": "^3.2",
         "cakephp/plugin-installer": "^1.3",
@@ -90,6 +90,12 @@
         "stan": "phpstan analyse",
         "test": "phpunit --colors=always"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Mapiiik/users.git"
+        }
+    ],    
     "prefer-stable": true,
     "config": {
         "sort-packages": true,

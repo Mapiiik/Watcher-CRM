@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "be027467eca51287b848020733ac1fd8",
+    "content-hash": "0b4623490ce69e93a3b27aee97c9f8ce",
     "packages": [
         {
             "name": "cakedc/auth",
@@ -77,16 +77,16 @@
         },
         {
             "name": "cakedc/users",
-            "version": "11.2.0",
+            "version": "dev-11.next-cake4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/CakeDC/users.git",
-                "reference": "33af43401e2fab89b37175d6cdc3c3720ac6d14d"
+                "url": "https://github.com/Mapiiik/users.git",
+                "reference": "35606ba8dd800b5962c3944a64a1efbaa2ffe4ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CakeDC/users/zipball/33af43401e2fab89b37175d6cdc3c3720ac6d14d",
-                "reference": "33af43401e2fab89b37175d6cdc3c3720ac6d14d",
+                "url": "https://api.github.com/repos/Mapiiik/users/zipball/35606ba8dd800b5962c3944a64a1efbaa2ffe4ea",
+                "reference": "35606ba8dd800b5962c3944a64a1efbaa2ffe4ea",
                 "shasum": ""
             },
             "require": {
@@ -124,13 +124,64 @@
                 "robthree/twofactorauth": "Provides Google Authenticator functionality",
                 "thenetworg/oauth2-azure": "Provides Social Authentication with MS Azure"
             },
+            "default-branch": true,
             "type": "cakephp-plugin",
             "autoload": {
                 "psr-4": {
                     "CakeDC\\Users\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "CakeDC\\Users\\Test\\": "tests",
+                    "CakeDC\\Users\\Test\\Fixture\\": "tests",
+                    "TestApp\\": "tests/test_app/TestApp/"
+                }
+            },
+            "scripts": {
+                "analyse": [
+                    "@stan",
+                    "@psalm"
+                ],
+                "check": [
+                    "@cs-check",
+                    "@test",
+                    "@analyse"
+                ],
+                "cs-check": [
+                    "phpcs -n -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests"
+                ],
+                "cs-fix": [
+                    "phpcbf --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests"
+                ],
+                "test": [
+                    "phpunit --stderr"
+                ],
+                "stan": [
+                    "phpstan analyse src/"
+                ],
+                "psalm": [
+                    "php vendor/psalm/phar/psalm.phar --show-info=false src/ "
+                ],
+                "stan-setup": [
+                    "cp composer.json composer.backup && composer require --dev phpstan/phpstan:0.12.94 psalm/phar:~4.9.2 && mv composer.backup composer.json"
+                ],
+                "stan-rebuild-baseline": [
+                    "phpstan analyse --configuration phpstan.neon --error-format baselineNeon src/ > phpstan-baseline.neon"
+                ],
+                "psalm-rebuild-baseline": [
+                    "php vendor/psalm/phar/psalm.phar --show-info=false  --set-baseline=psalm-baseline.xml  src/"
+                ],
+                "rector": [
+                    "rector process src/"
+                ],
+                "rector-setup": [
+                    "cp composer.json composer.backup && composer require --dev rector/rector:^0.11.2 && mv composer.backup composer.json"
+                ],
+                "coverage-test": [
+                    "phpunit --stderr --coverage-clover=clover.xml"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -148,8 +199,8 @@
             "description": "Users Plugin for CakePHP",
             "homepage": "https://github.com/CakeDC/users",
             "keywords": [
-                "Authentication",
                 "auth",
+                "authentication",
                 "cakedc",
                 "cakephp",
                 "oauth2"
@@ -158,7 +209,7 @@
                 "issues": "https://github.com/CakeDC/users/issues",
                 "source": "https://github.com/CakeDC/users"
             },
-            "time": "2022-12-07T14:05:03+00:00"
+            "time": "2023-01-23T10:06:25+00:00"
         },
         {
             "name": "cakephp/authentication",
@@ -2540,16 +2591,16 @@
         },
         {
             "name": "spatie/ssh",
-            "version": "1.8.1",
+            "version": "1.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/ssh.git",
-                "reference": "ba5fc61f0da98dfc683fd6544d925a9e9c2a7a14"
+                "reference": "d3576bea064dddb512daee9884eb01daaf8df9dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/ssh/zipball/ba5fc61f0da98dfc683fd6544d925a9e9c2a7a14",
-                "reference": "ba5fc61f0da98dfc683fd6544d925a9e9c2a7a14",
+                "url": "https://api.github.com/repos/spatie/ssh/zipball/d3576bea064dddb512daee9884eb01daaf8df9dd",
+                "reference": "d3576bea064dddb512daee9884eb01daaf8df9dd",
                 "shasum": ""
             },
             "require": {
@@ -2557,8 +2608,8 @@
                 "symfony/process": "^4.4|^5.3|^6.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^9.5",
-                "spatie/phpunit-snapshot-assertions": "^4.2",
+                "pestphp/pest": "^1.22",
+                "spatie/pest-plugin-snapshots": "^1.1",
                 "symfony/var-dumper": "^5.3|6.0"
             },
             "type": "library",
@@ -2587,7 +2638,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/ssh/issues",
-                "source": "https://github.com/spatie/ssh/tree/1.8.1"
+                "source": "https://github.com/spatie/ssh/tree/1.8.2"
             },
             "funding": [
                 {
@@ -2595,7 +2646,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2023-01-09T08:55:35+00:00"
+            "time": "2023-01-17T16:49:02+00:00"
         },
         {
             "name": "symfony/config",
@@ -3605,16 +3656,16 @@
     "packages-dev": [
         {
             "name": "brick/varexporter",
-            "version": "0.3.7",
+            "version": "0.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brick/varexporter.git",
-                "reference": "3e263cd718d242594c52963760fee2059fd5833c"
+                "reference": "b5853edea6204ff8fa10633c3a4cccc4058410ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brick/varexporter/zipball/3e263cd718d242594c52963760fee2059fd5833c",
-                "reference": "3e263cd718d242594c52963760fee2059fd5833c",
+                "url": "https://api.github.com/repos/brick/varexporter/zipball/b5853edea6204ff8fa10633c3a4cccc4058410ed",
+                "reference": "b5853edea6204ff8fa10633c3a4cccc4058410ed",
                 "shasum": ""
             },
             "require": {
@@ -3642,7 +3693,7 @@
             ],
             "support": {
                 "issues": "https://github.com/brick/varexporter/issues",
-                "source": "https://github.com/brick/varexporter/tree/0.3.7"
+                "source": "https://github.com/brick/varexporter/tree/0.3.8"
             },
             "funding": [
                 {
@@ -3650,7 +3701,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-06-29T23:37:57+00:00"
+            "time": "2023-01-21T23:05:38+00:00"
         },
         {
             "name": "cakedc/cakephp-phpstan",
@@ -5273,16 +5324,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.9.12",
+            "version": "1.9.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "44a338ff0d5572c13fd77dfd91addb96e48c29f8"
+                "reference": "e5fcc96289cf737304286a9b505fbed091f02e58"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/44a338ff0d5572c13fd77dfd91addb96e48c29f8",
-                "reference": "44a338ff0d5572c13fd77dfd91addb96e48c29f8",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/e5fcc96289cf737304286a9b505fbed091f02e58",
+                "reference": "e5fcc96289cf737304286a9b505fbed091f02e58",
                 "shasum": ""
             },
             "require": {
@@ -5312,7 +5363,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/1.9.12"
+                "source": "https://github.com/phpstan/phpstan/tree/1.9.14"
             },
             "funding": [
                 {
@@ -5328,7 +5379,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-17T10:44:04+00:00"
+            "time": "2023-01-19T10:47:09+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -7790,7 +7841,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "cakedc/users": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
