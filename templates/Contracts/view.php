@@ -55,6 +55,7 @@ use Cake\I18n\Number;
                 ['class' => 'side-nav-item win-link']
             ) ?>
         </div>
+        <?php if (!($this->getRequest()->getQuery('win-link') == 'true')) : ?>
         <div class="side-nav" style="position: fixed; bottom: 1rem;">
             <h4 class="heading"><?= __('Sections') ?></h4>
             <?= $this->AuthLink->link(
@@ -98,6 +99,7 @@ use Cake\I18n\Number;
                 ['class' => 'side-nav-item']
             ) ?>
         </div>
+        <?php endif; ?>
     </aside>
     <div class="column-responsive column-90">
         <div class="contracts view content">
