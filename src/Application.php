@@ -23,6 +23,7 @@ use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
 use Cake\Http\Middleware\BodyParserMiddleware;
 use Cake\Http\Middleware\CsrfProtectionMiddleware;
+use Cake\Http\Middleware\SecurityHeadersMiddleware;
 use Cake\Http\MiddlewareQueue;
 use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
@@ -123,6 +124,17 @@ class Application extends BaseApplication
             // available as array through $request->getData()
             // https://book.cakephp.org/4/en/controllers/middleware.html#body-parser-middleware
             ->add(new BodyParserMiddleware())
+
+            // Security Headers Middleware
+            ->add(
+                (new SecurityHeadersMiddleware())
+                    ->setCrossDomainPolicy()
+                    ->setReferrerPolicy()
+                    ->setXFrameOptions()
+                    ->setXssProtection()
+                    ->noOpen()
+                    ->noSniff()
+            )
 
             // Cross Site Request Forgery (CSRF) Protection Middleware
             // https://book.cakephp.org/4/en/security/csrf.html#cross-site-request-forgery-csrf-middleware
