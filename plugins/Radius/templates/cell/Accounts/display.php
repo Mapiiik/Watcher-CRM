@@ -18,6 +18,7 @@
             <th><?= __d('radius', 'IP Addresses') ?></th>
             <th><?= __d('radius', 'RADIUS User Groups') ?></th>
             <th><?= __d('radius', 'RADIUS Replies') ?></th>
+            <th><?= __d('radius', 'NAS IP Address') ?></th>
             <th><?= __d('radius', 'Network Access Server') ?></th>
             <th class="actions"><?= __d('radius', 'Actions') ?></th>
         </tr>
@@ -53,6 +54,7 @@
                     . '<br />';
             }
             ?></td>
+            <td><?= h($account->radacct[0]->nasipaddress ?? '') ?></td>
             <td><?php
             if (isset($account->radacct[0]->routeros_devices_for_nas)) {
                 $device = $account->radacct[0]->routeros_devices_for_nas->first();
@@ -67,7 +69,7 @@
                         $device['name'],
                         env('WATCHER_NMS_URL') . '/routeros-devices/view/' . $device['id'],
                         ['target' => '_blank']
-                    ) . ' (' . $device['ip_address'] . ')' . '<br>' : '';
+                    ) . '<br>' : '';
                 unset($device);
             }
             ?></td>
