@@ -634,11 +634,11 @@
                             ['controller' => 'Ips', 'action' => 'add'],
                             ['class' => 'button button-small float-right win-link']
                         ) ?>
-                        <?= $contract->has('access_point') ? $this->AuthLink->link(
+                        <?= $this->AuthLink->link(
                             __('New IP Address From Range'),
                             ['controller' => 'Ips', 'action' => 'addFromRange'],
                             ['class' => 'button button-small float-right win-link']
-                        ) : '' ?>
+                        ) ?>
                         <h4 id="ips"><?= __('Related IP Addresses') ?></h4>
                         <?= $this->element('Contracts/IpAddresses', [
                             'ip_addresses' => $customer->ips,
