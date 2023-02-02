@@ -122,7 +122,7 @@ $request = $this->getRequest();
                 ])]
             ) ?>
 
-            <?= $this->Html->link(__('Default UI'), ['ui-mode' => 'default'], ['class' => 'button button-small']) ?>
+            <?= $this->Html->link(__('Default UI'), '/admin', ['class' => 'button button-small']) ?>
 
             <?= env('WATCHER_NMS_URL') ?
                 $this->Html->link(
