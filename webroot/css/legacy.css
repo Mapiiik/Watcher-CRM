@@ -389,10 +389,6 @@ tr:hover td {
    }
 }
 /* Buttons */
-.button-selected {
-    background-color: #606c76;
-    border-color: #606c76;
-}
 .button, button, input[type='button'], input[type='reset'], input[type='submit'] {
     background-color: #d33c43;
     border: 0.1rem solid #d33c43;
@@ -447,6 +443,10 @@ tr:hover td {
 }
 .button.button-clear[disabled]:focus, .button.button-clear[disabled]:hover, button.button-clear[disabled]:focus, button.button-clear[disabled]:hover, input[type='button'].button-clear[disabled]:focus, input[type='button'].button-clear[disabled]:hover, input[type='reset'].button-clear[disabled]:focus, input[type='reset'].button-clear[disabled]:hover, input[type='submit'].button-clear[disabled]:focus, input[type='submit'].button-clear[disabled]:hover {
     color: #d33c43 
+}
+.button-selected {
+    background-color: #606c76;
+    border-color: #606c76;
 }
 /* Labels */
 .app-label {
