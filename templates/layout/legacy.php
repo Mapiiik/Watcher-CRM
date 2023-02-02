@@ -55,11 +55,81 @@ $request = $this->getRequest();
         <?php if (!($request->getQuery('win-link') == 'true')) : ?>
         <div class="top-nav-links to-right">
             <?php
+            $controller = $this->getName();
+            $action = $request->getParam('action');
+            $buttonSelected = function ($haystack = []) use ($controller, $action) {
+                if (in_array($controller, $haystack)) {
+                    return ' button-selected';
+                } elseif (in_array($action, $haystack)) {
+                    return ' button-selected';
+                } else {
+                    return '';
+                }
+            };
+
             $urlWithQuery = function ($query = []) use ($request) {
                 return $this->Url->build(
                     ['?' => $query + $request->getQueryParams()] + $request->getParam('pass')
                 );
             }; ?>
+
+            <?= $this->AuthLink->link(
+                __('Customers'),
+                ['controller' => 'Customers', 'action' => 'index', 'plugin' => null],
+                ['class' => 'button button-small' . $buttonSelected(['Customers'])]
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Tasks'),
+                ['controller' => 'Tasks', 'action' => 'index', 'plugin' => null, 'customer_id' => false],
+                ['class' => 'button button-small' . $buttonSelected(['Tasks'])]
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Bookkeeping'),
+                ['controller' => 'Invoices', 'action' => 'index', 'plugin' => 'BookkeepingPohoda'],
+                ['class' => 'button button-small' . $buttonSelected(['Invoices'])]
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('RADIUS'),
+                ['controller' => 'Accounts', 'action' => 'index', 'plugin' => 'Radius', 'customer_id' => false],
+                ['class' => 'button button-small' . $buttonSelected([
+                    'Accounts',
+                    'Nass',
+                    'Radacct',
+                    'Radcheck',
+                    'Radgroupcheck',
+                    'Radgroupreply',
+                    'Radpostauth',
+                    'Radreply',
+                    'Radusergroup',
+                ])]
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('RÚIAN'),
+                ['controller' => 'Addresses', 'action' => 'index', 'plugin' => 'Ruian'],
+                ['class' => 'button button-small' . $buttonSelected(['Addresses'])]
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Overviews'),
+                ['controller' => 'Overviews', 'action' => 'index', 'plugin' => null, 'customer_id' => false],
+                ['class' => 'button button-small' . $buttonSelected(['Overviews'])]
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Settings'),
+                ['controller' => 'Settings', 'action' => 'index', 'plugin' => null, 'customer_id' => false],
+                ['class' => 'button button-small' . $buttonSelected([
+                    'Settings',
+                    'Users',
+                ])]
+            ) ?>
+
+            <?= $this->Html->link(__('Default UI'), ['ui-mode' => 'default'], ['class' => 'button button-small']) ?>
+
+            <?= env('WATCHER_NMS_URL') ?
+                $this->Html->link(
+                    __('Network Management System'),
+                    env('WATCHER_NMS_URL'),
+                    ['class' => 'button button-small']
+                ) : '' ?>
 
             <?php if ($request->getParam('action') == 'index') : ?>
             <select name="limit" class="button button-small button-outline" onchange="location = this.value;">
@@ -89,6 +159,12 @@ $request = $this->getRequest();
                 <option <?= $language == 'en_US' ? 'selected="selected"' : '' ?>
                     value="<?= $urlWithQuery(['language' => 'en_US']) ?>">English</option>
             </select>
+
+            <?= $this->getRequest()->getAttribute('identity') != null ? $this->AuthLink->link(
+                __('Logout'),
+                ['controller' => 'Users', 'action' => 'logout', 'plugin' => 'CakeDC/Users'],
+                ['class' => 'button button-small button-outline']
+            ) : '' ?>
         </div>
         <?php endif; ?>
     </nav>
