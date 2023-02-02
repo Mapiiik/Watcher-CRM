@@ -32,8 +32,11 @@ h2 {
 img {
     border: 0px;
 }
+.main h4 {
+    border-bottom: 1px solid #c0e0ff;
+}
 hr {
-    border-top: black;
+    border-top: 1px solid #363637;
 }
 a:link {
     color: #000099;
