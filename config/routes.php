@@ -132,6 +132,8 @@ $uiRoutes = function (RouteBuilder $builder) {
         ->setPatterns(['customer_id' => '[0-9]+']);
     $builder->connect('/customers/{customer_id}/{controller}/add', ['action' => 'add'])
         ->setPatterns(['customer_id' => '[0-9]+']);
+    $builder->connect('/customers/{customer_id}/{controller}/add-from-range', ['action' => 'addFromRange'])
+        ->setPatterns(['customer_id' => '[0-9]+']);
     $builder->connect('/customers/{customer_id}/{controller}/{id}', ['action' => 'view'])
         ->setPatterns(['customer_id' => '[0-9]+', 'id' => '[0-9]+'])
         ->setPass(['id']);
