@@ -1,17 +1,19 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Contract $contract
- * @var string[]|\Cake\Collection\CollectionInterface $ip_address_types_of_use
- * @var string[]|\Cake\Collection\CollectionInterface $ip_network_types_of_use
+ * @var \App\Model\Entity\Billing[] $billings
+ * @var bool $contract_column
  */
 
 use Cake\I18n\Number;
 ?>
-<?php if (!empty($contract->billings)) : ?>
+<?php if (!empty($billings)) : ?>
 <div class="table-responsive">
     <table>
         <tr>
+            <?php if (!empty($contract_column)) : ?>
+            <th><?= __('Contract') ?></th>
+            <?php endif; ?>
             <th><?= __('Service') ?></th>
             <th><?= __('Text') ?></th>
             <th><?= __('Quantity') ?></th>
@@ -26,8 +28,15 @@ use Cake\I18n\Number;
             <th><?= __('Note') ?></th>
             <th class="actions"><?= __('Actions') ?></th>
         </tr>
-        <?php foreach ($contract->billings as $billing) : ?>
+        <?php foreach ($billings as $billing) : ?>
         <tr style="<?= $billing->style ?>">
+            <?php if (!empty($contract_column)) : ?>
+            <td><?= $billing->has('contract') ?
+                $this->Html->link(
+                    $billing->contract->number,
+                    ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]
+                ) : '' ?></td>
+            <?php endif; ?>
             <td><?= $billing->has('service') ? h($billing->service->name) : '' ?></td>
             <td><?= h($billing->text) ?></td>
             <td><?= h($billing->quantity) ?></td>

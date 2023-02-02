@@ -1,22 +1,33 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Contract $contract
+ * @var \App\Model\Entity\RemovedIp[] $removed_ip_addresses
  * @var string[]|\Cake\Collection\CollectionInterface $ip_address_types_of_use
+ * @var bool $contract_column
  */
 ?>
-<?php if (!empty($contract->removed_ips)) : ?>
+<?php if (!empty($removed_ip_addresses)) : ?>
 <div class="table-responsive">
     <table>
         <tr>
+            <?php if (!empty($contract_column)) : ?>
+            <th><?= __('Contract') ?></th>
+            <?php endif; ?>
             <th><?= __('IP Address') ?></th>
             <th><?= __('Type Of Use') ?></th>
             <th><?= __('Note') ?></th>
             <th><?= __('Removed') ?></th>
             <th class="actions"><?= __('Actions') ?></th>
         </tr>
-        <?php foreach ($contract->removed_ips as $removedIp) : ?>
+        <?php foreach ($removed_ip_addresses as $removedIp) : ?>
         <tr style="<?= $removedIp->style ?>">
+            <?php if (!empty($contract_column)) : ?>
+            <td><?= $removedIp->has('contract') ?
+                $this->Html->link(
+                    $removedIp->contract->number,
+                    ['controller' => 'Contracts', 'action' => 'view', $removedIp->contract->id]
+                ) : '' ?></td>
+            <?php endif; ?>
             <td><?= h($removedIp->ip) ?></td>
             <td><?= h($ip_address_types_of_use[$removedIp->type_of_use]) ?></td>
             <td><?= h($removedIp->note) ?></td>

@@ -1,22 +1,33 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Contract $contract
+ * @var \App\Model\Entity\IpNetwork[] $ip_networks
  * @var string[]|\Cake\Collection\CollectionInterface $ip_network_types_of_use
+ * @var bool $contract_column
  */
 ?>
-<?php if (!empty($contract->ip_networks)) : ?>
+<?php if (!empty($ip_networks)) : ?>
 <div class="table-responsive">
     <table>
         <tr>
+            <?php if (!empty($contract_column)) : ?>
+            <th><?= __('Contract') ?></th>
+            <?php endif; ?>
             <th><?= __('IP Network') ?></th>
             <th><?= __('Type Of Use') ?></th>
             <th><?= __('Note') ?></th>
             <th><?= __('IP Address Range') ?></th>
             <th class="actions"><?= __('Actions') ?></th>
         </tr>
-        <?php foreach ($contract->ip_networks as $ipNetwork) : ?>
+        <?php foreach ($ip_networks as $ipNetwork) : ?>
         <tr style="<?= $ipNetwork->style ?>">
+            <?php if (!empty($contract_column)) : ?>
+            <td><?= $ipNetwork->has('contract') ?
+                $this->Html->link(
+                    $ipNetwork->contract->number,
+                    ['controller' => 'Contracts', 'action' => 'view', $ipNetwork->contract->id]
+                ) : '' ?></td>
+            <?php endif; ?>
             <td><?= h($ipNetwork->ip_network) ?></td>
             <td><?= h($ip_network_types_of_use[$ipNetwork->type_of_use]) ?></td>
             <td><?= h($ipNetwork->note) ?></td>

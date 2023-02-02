@@ -1,14 +1,18 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Contract $contract
+ * @var \App\Model\Entity\Ip[] $ip_addresses
  * @var string[]|\Cake\Collection\CollectionInterface $ip_address_types_of_use
+ * @var bool $contract_column
  */
 ?>
-<?php if (!empty($contract->ips)) : ?>
+<?php if (!empty($ip_addresses)) : ?>
 <div class="table-responsive">
     <table>
         <tr>
+            <?php if (!empty($contract_column)) : ?>
+            <th><?= __('Contract') ?></th>
+            <?php endif; ?>
             <th><?= __('IP Address') ?></th>
             <th><?= __('Type Of Use') ?></th>
             <th><?= __('Note') ?></th>
@@ -17,8 +21,15 @@
             <th><?= __('IP Address Range') ?></th>
             <th class="actions"><?= __('Actions') ?></th>
         </tr>
-        <?php foreach ($contract->ips as $ip) : ?>
+        <?php foreach ($ip_addresses as $ip) : ?>
         <tr style="<?= $ip->style ?>">
+            <?php if (!empty($contract_column)) : ?>
+            <td><?= $ip->has('contract') ?
+                $this->Html->link(
+                    $ip->contract->number,
+                    ['controller' => 'Contracts', 'action' => 'view', $ip->contract->id]
+                ) : '' ?></td>
+            <?php endif; ?>
             <td><?= h($ip->ip) ?></td>
             <td><?= h($ip_address_types_of_use[$ip->type_of_use]) ?></td>
             <td><?= h($ip->note) ?></td>

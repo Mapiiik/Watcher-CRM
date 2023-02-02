@@ -1,10 +1,10 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Contract $contract
+ * @var \App\Model\Entity\ContractVersion[] $contract_versions
  */
 ?>
-<?php if (!empty($contract->contract_versions)) : ?>
+<?php if (!empty($contract_versions)) : ?>
 <div class="table-responsive">
     <table>
     <thead>
@@ -18,7 +18,7 @@
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($contract->contract_versions as $contractVersion) : ?>
+        <?php foreach ($contract_versions as $contractVersion) : ?>
         <tr>
             <td><?= h($contractVersion->valid_from) ?></td>
             <td><?= h($contractVersion->valid_until) ?></td>

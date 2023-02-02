@@ -1,33 +1,48 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Contract $contract
+ * @var \App\Model\Entity\RemovedIpNetwork[] $removed_ip_networks
  * @var string[]|\Cake\Collection\CollectionInterface $ip_network_types_of_use
+ * @var bool $contract_column
  */
 ?>
-<?php if (!empty($contract->removed_ip_networks)) : ?>
+<?php if (!empty($removed_ip_networks)) : ?>
 <div class="table-responsive">
     <table>
         <tr>
+            <?php if (!empty($contract_column)) : ?>
+            <th><?= __('Contract') ?></th>
+            <?php endif; ?>
             <th><?= __('IP Network') ?></th>
             <th><?= __('Type Of Use') ?></th>
             <th><?= __('Note') ?></th>
             <th><?= __('Removed') ?></th>
             <th class="actions"><?= __('Actions') ?></th>
         </tr>
-        <?php foreach ($contract->removed_ip_networks as $removedIpNetork) : ?>
-        <tr style="<?= $removedIpNetork->style ?>">
-            <td><?= h($removedIpNetork->ip_network) ?></td>
-            <td><?= h($ip_network_types_of_use[$removedIpNetork->type_of_use]) ?></td>
-            <td><?= h($removedIpNetork->note) ?></td>
-            <td><?= h($removedIpNetork->removed) ?></td>
+        <?php foreach ($removed_ip_networks as $removedIpNetwork) : ?>
+        <tr style="<?= $removedIpNetwork->style ?>">
+            <?php if (!empty($contract_column)) : ?>
+            <td><?= $removedIpNetwork->has('contract') ?
+                $this->Html->link(
+                    $removedIpNetwork->contract->number,
+                    [
+                        'controller' => 'Contracts',
+                        'action' => 'view',
+                        $removedIpNetwork->contract->id,
+                    ]
+                ) : '' ?></td>
+            <?php endif; ?>
+            <td><?= h($removedIpNetwork->ip_network) ?></td>
+            <td><?= h($ip_network_types_of_use[$removedIpNetwork->type_of_use]) ?></td>
+            <td><?= h($removedIpNetwork->note) ?></td>
+            <td><?= h($removedIpNetwork->removed) ?></td>
             <td class="actions">
                 <?= $this->AuthLink->link(
                     __('View'),
                     [
                         'controller' => 'RemovedIpNetworks',
                         'action' => 'view',
-                        $removedIpNetork->id,
+                        $removedIpNetwork->id,
                     ]
                 ) ?>
                 <?= $this->AuthLink->link(
@@ -35,7 +50,7 @@
                     [
                         'controller' => 'RemovedIpNetworks',
                         'action' => 'edit',
-                        $removedIpNetork->id,
+                        $removedIpNetwork->id,
                     ],
                     ['class' => 'win-link']
                 ) ?>
@@ -44,12 +59,12 @@
                     [
                         'controller' => 'RemovedIpNetworks',
                         'action' => 'delete',
-                        $removedIpNetork->id,
+                        $removedIpNetwork->id,
                     ],
                     [
                         'confirm' => __(
                             'Are you sure you want to delete # {0}?',
-                            $removedIpNetork->id
+                            $removedIpNetwork->id
                         ),
                     ]
                 ) ?>

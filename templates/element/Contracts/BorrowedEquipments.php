@@ -1,22 +1,39 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Contract $contract
+ * @var \App\Model\Entity\BorrowedEquipment[] $borrowed_equipments
+ * @var bool $contract_column
  */
 ?>
-<?php if (!empty($contract->borrowed_equipments)) : ?>
+<?php if (!empty($borrowed_equipments)) : ?>
 <div class="table-responsive">
     <table>
         <tr>
+            <?php if (!empty($contract_column)) : ?>
+            <th><?= __('Contract') ?></th>
+            <?php endif; ?>
             <th><?= __('Equipment Type') ?></th>
             <th><?= __('Serial Number') ?></th>
             <th><?= __('Borrowed From') ?></th>
             <th><?= __('Borrowed Until') ?></th>
             <th class="actions"><?= __('Actions') ?></th>
         </tr>
-        <?php foreach ($contract->borrowed_equipments as $borrowedEquipment) : ?>
+        <?php foreach ($borrowed_equipments as $borrowedEquipment) : ?>
         <tr style="<?= $borrowedEquipment->style ?>">
-            <td><?= h($borrowedEquipment->equipment_type->name) ?></td>
+            <?php if (!empty($contract_column)) : ?>
+            <td><?= $borrowedEquipment->has('contract') ?
+                $this->Html->link(
+                    $borrowedEquipment->contract->number,
+                    [
+                        'controller' => 'Contracts',
+                        'action' => 'view',
+                        $borrowedEquipment->contract->id,
+                    ]
+                ) : '' ?></td>
+            <?php endif; ?>
+            <td><?= $borrowedEquipment->has('equipment_type') ?
+                h($borrowedEquipment->equipment_type->name) : ''
+            ?></td>
             <td><?= h($borrowedEquipment->serial_number) ?></td>
             <td><?= h($borrowedEquipment->borrowed_from) ?></td>
             <td><?= h($borrowedEquipment->borrowed_until) ?></td>

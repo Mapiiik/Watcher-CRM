@@ -312,7 +312,9 @@
                     ['class' => 'button button-small float-right win-link']
                 ) ?>
                 <h4 id="contract-versions"><?= __('Contract Versions') ?></h4>
-                <?= $this->element('Contracts/ContractVersions') ?>
+                <?= $this->element('Contracts/ContractVersions', [
+                    'contract_versions' => $contract->contract_versions,
+                ]) ?>
             </div>
             <?php endif; ?>
             <div class="related">
@@ -339,7 +341,9 @@
                     ) ?>
                 <?php endif ?>
                 <h4 id="billings"><?= __('Billings') ?></h4>
-                <?= $this->element('Contracts/Billings') ?>
+                <?= $this->element('Contracts/Billings', [
+                    'billings' => $contract->billings,
+                ]) ?>
             </div>
             <?php if ($contract->has('service_type') && $contract->service_type->have_radius_accounts) : ?>
             <div class="related">
@@ -384,7 +388,9 @@
                             ) ?>
                         <?php endif ?>
                         <h4 id="borrowed-equipments"><?= __('Borrowed Equipments') ?></h4>
-                        <?= $this->element('Contracts/BorrowedEquipments') ?>
+                        <?= $this->element('Contracts/BorrowedEquipments', [
+                            'borrowed_equipments' => $contract->borrowed_equipments,
+                        ]) ?>
                     </div>
                 </div>
                 <div class="column-responsive">
@@ -395,7 +401,9 @@
                             ['class' => 'button button-small float-right win-link']
                         ) ?>
                         <h4><?= __('Sold Equipments') ?></h4>
-                        <?= $this->element('Contracts/SoldEquipments') ?>
+                        <?= $this->element('Contracts/SoldEquipments', [
+                            'sold_equipments' => $contract->sold_equipments,
+                        ]) ?>
                     </div>
                 </div>
             </div>
@@ -415,7 +423,9 @@
                             ['class' => 'button button-small float-right win-link']
                         ) : '' ?>
                         <h4 id="ips"><?= __('IP Addresses') ?></h4>
-                        <?= $this->element('Contracts/IpAddresses') ?>
+                        <?= $this->element('Contracts/IpAddresses', [
+                            'ip_addresses' => $contract->ips,
+                        ]) ?>
                     </div>
                 </div>
                 <div class="column-responsive">
@@ -426,7 +436,9 @@
                             ['class' => 'button button-small float-right win-link']
                         ) ?>
                         <h4><?= __('IP Networks') ?></h4>
-                        <?= $this->element('Contracts/IpNetworks') ?>
+                        <?= $this->element('Contracts/IpNetworks', [
+                            'ip_networks' => $contract->ip_networks,
+                        ]) ?>
                     </div>
                 </div>
             </div>
@@ -439,7 +451,9 @@
                             ['class' => 'button button-small float-right win-link']
                         ) ?>
                         <h4><?= __('Removed IP Addresses') ?></h4>
-                        <?= $this->element('Contracts/RemovedIpAddresses') ?>
+                        <?= $this->element('Contracts/RemovedIpAddresses', [
+                            'removed_ip_addresses' => $contract->removed_ips,
+                        ]) ?>
                     </div>
                 </div>
                 <div class="column-responsive">
@@ -450,7 +464,9 @@
                             ['class' => 'button button-small float-right win-link']
                         ) ?>
                         <h4><?= __('Removed IP Networks') ?></h4>
-                        <?= $this->element('Contracts/RemovedIpNetworks') ?>
+                        <?= $this->element('Contracts/RemovedIpNetworks', [
+                            'removed_ip_networks' => $contract->removed_ip_networks,
+                        ]) ?>
                     </div>
                 </div>
             </div>
