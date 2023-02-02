@@ -395,7 +395,7 @@ tr:hover td {
 .button, button, input[type='button'], input[type='reset'], input[type='submit'] {
     background-color: #ffec90;
     border: 1px solid #000000;
-    color: #fff;
+    color: #000000;
     cursor: pointer;
     display: inline-block;
     font-weight: 700;
