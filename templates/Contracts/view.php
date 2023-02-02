@@ -5,8 +5,6 @@
  * @var string[]|\Cake\Collection\CollectionInterface $ip_address_types_of_use
  * @var string[]|\Cake\Collection\CollectionInterface $ip_network_types_of_use
  */
-
-use Cake\I18n\Number;
 ?>
 <div class="row">
     <aside class="column">
@@ -314,52 +312,7 @@ use Cake\I18n\Number;
                     ['class' => 'button button-small float-right win-link']
                 ) ?>
                 <h4 id="contract-versions"><?= __('Contract Versions') ?></h4>
-                <?php if (!empty($contract->contract_versions)) : ?>
-                <div class="table-responsive">
-                    <table>
-                    <thead>
-                        <tr>
-                            <th><?= __('Valid From') ?></th>
-                            <th><?= __('Valid Until') ?></th>
-                            <th><?= __('Obligation Until') ?></th>
-                            <th><?= __('Conclusion Date') ?></th>
-                            <th><?= __('Number Of Amendments') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($contract->contract_versions as $contractVersion) : ?>
-                        <tr>
-                            <td><?= h($contractVersion->valid_from) ?></td>
-                            <td><?= h($contractVersion->valid_until) ?></td>
-                            <td style="<?=
-                                isset($contractVersion->obligation_until)
-                                && $contractVersion->obligation_until->isFuture() ?
-                                    'color: red;' : ''
-                            ?>"><?= h($contractVersion->obligation_until) ?></td>
-                            <td><?= h($contractVersion->conclusion_date) ?></td>
-                            <td><?= $this->Number->format($contractVersion->number_of_amendments) ?></td>
-                            <td class="actions">
-                                <?= $this->Html->link(
-                                    __('View'),
-                                    ['controller' => 'ContractVersions', 'action' => 'view', $contractVersion->id]
-                                ) ?>
-                                <?= $this->Html->link(
-                                    __('Edit'),
-                                    ['controller' => 'ContractVersions', 'action' => 'edit', $contractVersion->id],
-                                    ['class' => 'win-link']
-                                ) ?>
-                                <?= $this->Form->postLink(
-                                    __('Delete'),
-                                    ['controller' => 'ContractVersions', 'action' => 'delete', $contractVersion->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $contractVersion->id)]
-                                ) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
-                <?php endif; ?>
+                <?= $this->element('Contracts/ContractVersions') ?>
             </div>
             <?php endif; ?>
             <div class="related">
@@ -386,60 +339,7 @@ use Cake\I18n\Number;
                     ) ?>
                 <?php endif ?>
                 <h4 id="billings"><?= __('Billings') ?></h4>
-                <?php if (!empty($contract->billings)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __('Service') ?></th>
-                            <th><?= __('Text') ?></th>
-                            <th><?= __('Quantity') ?></th>
-                            <th><?= __('Price') ?></th>
-                            <th><?= __('Fixed Discount') ?></th>
-                            <th><?= __('Percentage Discount') ?></th>
-                            <th><?= __('Total Price') ?></th>
-                            <th><?= __('Billing From') ?></th>
-                            <th><?= __('Billing Until') ?></th>
-                            <th><?= __('Active') ?></th>
-                            <th><?= __('Separate Invoice') ?></th>
-                            <th><?= __('Note') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                        <?php foreach ($contract->billings as $billing) : ?>
-                        <tr style="<?= $billing->style ?>">
-                            <td><?= $billing->has('service') ? h($billing->service->name) : '' ?></td>
-                            <td><?= h($billing->text) ?></td>
-                            <td><?= h($billing->quantity) ?></td>
-                            <td><?= h($billing->price) ?><?= $billing->has('service') ?
-                                ' (' . h($billing->service->price) . ')' : '' ?></td>
-                            <td><?= h($billing->fixed_discount) ?></td>
-                            <td><?= h($billing->percentage_discount) ?></td>
-                            <td><?= Number::currency($billing->total_price) ?></td>
-                            <td><?= h($billing->billing_from) ?></td>
-                            <td><?= h($billing->billing_until) ?></td>
-                            <td><?= $billing->active ? __('Yes') : __('No'); ?></td>
-                            <td><?= $billing->separate_invoice ? __('Yes') : __('No'); ?></td>
-                            <td><?= h($billing->note) ?></td>
-                            <td class="actions">
-                                <?= $this->AuthLink->link(
-                                    __('View'),
-                                    ['controller' => 'Billings', 'action' => 'view', $billing->id]
-                                ) ?>
-                                <?= $this->AuthLink->link(
-                                    __('Edit'),
-                                    ['controller' => 'Billings', 'action' => 'edit', $billing->id],
-                                    ['class' => 'win-link']
-                                ) ?>
-                                <?= $this->AuthLink->postLink(
-                                    __('Delete'),
-                                    ['controller' => 'Billings', 'action' => 'delete', $billing->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id)]
-                                ) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
-                <?php endif; ?>
+                <?= $this->element('Contracts/Billings') ?>
             </div>
             <?php if ($contract->has('service_type') && $contract->service_type->have_radius_accounts) : ?>
             <div class="related">
@@ -484,60 +384,7 @@ use Cake\I18n\Number;
                             ) ?>
                         <?php endif ?>
                         <h4 id="borrowed-equipments"><?= __('Borrowed Equipments') ?></h4>
-                        <?php if (!empty($contract->borrowed_equipments)) : ?>
-                        <div class="table-responsive">
-                            <table>
-                                <tr>
-                                    <th><?= __('Equipment Type') ?></th>
-                                    <th><?= __('Serial Number') ?></th>
-                                    <th><?= __('Borrowed From') ?></th>
-                                    <th><?= __('Borrowed Until') ?></th>
-                                    <th class="actions"><?= __('Actions') ?></th>
-                                </tr>
-                                <?php foreach ($contract->borrowed_equipments as $borrowedEquipment) : ?>
-                                <tr style="<?= $borrowedEquipment->style ?>">
-                                    <td><?= h($borrowedEquipment->equipment_type->name) ?></td>
-                                    <td><?= h($borrowedEquipment->serial_number) ?></td>
-                                    <td><?= h($borrowedEquipment->borrowed_from) ?></td>
-                                    <td><?= h($borrowedEquipment->borrowed_until) ?></td>
-                                    <td class="actions">
-                                        <?= $this->AuthLink->link(
-                                            __('View'),
-                                            [
-                                                'controller' => 'BorrowedEquipments',
-                                                'action' => 'view',
-                                                $borrowedEquipment->id,
-                                            ]
-                                        ) ?>
-                                        <?= $this->AuthLink->link(
-                                            __('Edit'),
-                                            [
-                                                'controller' => 'BorrowedEquipments',
-                                                'action' => 'edit',
-                                                $borrowedEquipment->id,
-                                            ],
-                                            ['class' => 'win-link']
-                                        ) ?>
-                                        <?= $this->AuthLink->postLink(
-                                            __('Delete'),
-                                            [
-                                                'controller' => 'BorrowedEquipments',
-                                                'action' => 'delete',
-                                                $borrowedEquipment->id,
-                                            ],
-                                            [
-                                                'confirm' => __(
-                                                    'Are you sure you want to delete # {0}?',
-                                                    $borrowedEquipment->id
-                                                ),
-                                            ]
-                                        ) ?>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                            </table>
-                        </div>
-                        <?php endif; ?>
+                        <?= $this->element('Contracts/BorrowedEquipments') ?>
                     </div>
                 </div>
                 <div class="column-responsive">
@@ -548,50 +395,7 @@ use Cake\I18n\Number;
                             ['class' => 'button button-small float-right win-link']
                         ) ?>
                         <h4><?= __('Sold Equipments') ?></h4>
-                        <?php if (!empty($contract->sold_equipments)) : ?>
-                        <div class="table-responsive">
-                            <table>
-                                <tr>
-                                    <th><?= __('Equipment Type') ?></th>
-                                    <th><?= __('Serial Number') ?></th>
-                                    <th><?= __('Date Of Sale') ?></th>
-                                    <th class="actions"><?= __('Actions') ?></th>
-                                </tr>
-                                <?php foreach ($contract->sold_equipments as $soldEquipment) : ?>
-                                <tr style="<?= $soldEquipment->style ?>">
-                                    <td><?= h($soldEquipment->equipment_type->name) ?></td>
-                                    <td><?= h($soldEquipment->serial_number) ?></td>
-                                    <td><?= h($soldEquipment->date_of_sale) ?></td>
-                                    <td class="actions">
-                                        <?= $this->AuthLink->link(
-                                            __('View'),
-                                            ['controller' => 'SoldEquipments', 'action' => 'view', $soldEquipment->id]
-                                        ) ?>
-                                        <?= $this->AuthLink->link(
-                                            __('Edit'),
-                                            ['controller' => 'SoldEquipments', 'action' => 'edit', $soldEquipment->id],
-                                            ['class' => 'win-link']
-                                        ) ?>
-                                        <?= $this->AuthLink->postLink(
-                                            __('Delete'),
-                                            [
-                                                'controller' => 'SoldEquipments',
-                                                'action' => 'delete',
-                                                $soldEquipment->id,
-                                            ],
-                                            [
-                                                'confirm' => __(
-                                                    'Are you sure you want to delete # {0}?',
-                                                    $soldEquipment->id
-                                                ),
-                                            ]
-                                        ) ?>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                            </table>
-                        </div>
-                        <?php endif; ?>
+                        <?= $this->element('Contracts/SoldEquipments') ?>
                     </div>
                 </div>
             </div>
@@ -611,80 +415,7 @@ use Cake\I18n\Number;
                             ['class' => 'button button-small float-right win-link']
                         ) : '' ?>
                         <h4 id="ips"><?= __('IP Addresses') ?></h4>
-                        <?php if (!empty($contract->ips)) : ?>
-                        <div class="table-responsive">
-                            <table>
-                                <tr>
-                                    <th><?= __('IP Address') ?></th>
-                                    <th><?= __('Type Of Use') ?></th>
-                                    <th><?= __('Note') ?></th>
-                                    <th><?= __('Status') ?></th>
-                                    <th><?= __('Device') ?></th>
-                                    <th><?= __('IP Address Range') ?></th>
-                                    <th class="actions"><?= __('Actions') ?></th>
-                                </tr>
-                                <?php foreach ($contract->ips as $ip) : ?>
-                                <tr style="<?= $ip->style ?>">
-                                    <td><?= h($ip->ip) ?></td>
-                                    <td><?= h($ip_address_types_of_use[$ip->type_of_use]) ?></td>
-                                    <td><?= h($ip->note) ?></td>
-                                    <td class="to-center"><?=
-                                        $this->Html->image('ping/status.png.php?host=' . h($ip->ip), [
-                                            'class' => 'ping-status',
-                                            'onclick' => 'this.src = this.src',
-                                        ]) ?></td>
-                                    <td><?php
-                                    if (isset($ip->routeros_devices)) {
-                                        $device = $ip->routeros_devices->first();
-                                        echo isset($device['id']) ?
-                                            $this->Html->link(
-                                                $device['system_description'],
-                                                env('WATCHER_NMS_URL') . '/routeros-devices/view/' . $device['id'],
-                                                ['target' => '_blank']
-                                            ) . '<br>' : '';
-                                        unset($device);
-                                    }
-                                    ?></td>
-                                    <td><?php
-                                    if (isset($ip->ip_address_ranges)) {
-                                        $range = $ip->ip_address_ranges->first();
-                                        echo isset($range['access_point']['id']) ?
-                                            __('Access Point') . ': ' . $this->Html->link(
-                                                $range['access_point']['name'],
-                                                env('WATCHER_NMS_URL')
-                                                    . '/access-points/view/' . $range['access_point']['id'],
-                                                ['target' => '_blank']
-                                            ) . '<br>' : '';
-                                        echo isset($range['id']) ?
-                                            __('Range') . ': ' . $this->Html->link(
-                                                $range['name'],
-                                                env('WATCHER_NMS_URL') . '/ip-address-ranges/view/' . $range['id'],
-                                                ['target' => '_blank']
-                                            ) . '<br>' : '';
-                                        unset($range);
-                                    }
-                                    ?></td>
-                                    <td class="actions">
-                                        <?= $this->AuthLink->link(
-                                            __('View'),
-                                            ['controller' => 'Ips', 'action' => 'view', $ip->id]
-                                        ) ?>
-                                        <?= $this->AuthLink->link(
-                                            __('Edit'),
-                                            ['controller' => 'Ips', 'action' => 'edit', $ip->id],
-                                            ['class' => 'win-link']
-                                        ) ?>
-                                        <?= $this->AuthLink->postLink(
-                                            __('Delete'),
-                                            ['controller' => 'Ips', 'action' => 'delete', $ip->id],
-                                            ['confirm' => __('Are you sure you want to delete # {0}?', $ip->ip)]
-                                        ) ?>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                            </table>
-                        </div>
-                        <?php endif; ?>
+                        <?= $this->element('Contracts/IpAddresses') ?>
                     </div>
                 </div>
                 <div class="column-responsive">
@@ -694,67 +425,8 @@ use Cake\I18n\Number;
                             ['controller' => 'IpNetworks', 'action' => 'add'],
                             ['class' => 'button button-small float-right win-link']
                         ) ?>
-                    <h4><?= __('IP Networks') ?></h4>
-                        <?php if (!empty($contract->ip_networks)) : ?>
-                        <div class="table-responsive">
-                            <table>
-                                <tr>
-                                    <th><?= __('IP Network') ?></th>
-                                    <th><?= __('Type Of Use') ?></th>
-                                    <th><?= __('Note') ?></th>
-                                    <th><?= __('IP Address Range') ?></th>
-                                    <th class="actions"><?= __('Actions') ?></th>
-                                </tr>
-                                <?php foreach ($contract->ip_networks as $ipNetwork) : ?>
-                                <tr style="<?= $ipNetwork->style ?>">
-                                    <td><?= h($ipNetwork->ip_network) ?></td>
-                                    <td><?= h($ip_network_types_of_use[$ipNetwork->type_of_use]) ?></td>
-                                    <td><?= h($ipNetwork->note) ?></td>
-                                    <td><?php
-                                    if (isset($ipNetwork->ip_address_ranges)) {
-                                        $range = $ipNetwork->ip_address_ranges->first();
-                                        echo isset($range['access_point']['id']) ?
-                                            __('Access Point') . ': ' . $this->Html->link(
-                                                $range['access_point']['name'],
-                                                env('WATCHER_NMS_URL')
-                                                    . '/access-points/view/' . $range['access_point']['id'],
-                                                ['target' => '_blank']
-                                            ) . '<br>' : '';
-                                        echo isset($range['id']) ?
-                                            __('Range') . ': ' . $this->Html->link(
-                                                $range['name'],
-                                                env('WATCHER_NMS_URL') . '/ip-address-ranges/view/' . $range['id'],
-                                                ['target' => '_blank']
-                                            ) . '<br>' : '';
-                                        unset($range);
-                                    }
-                                    ?></td>
-                                    <td class="actions">
-                                        <?= $this->AuthLink->link(
-                                            __('View'),
-                                            ['controller' => 'IpNetworks', 'action' => 'view', $ipNetwork->id]
-                                        ) ?>
-                                        <?= $this->AuthLink->link(
-                                            __('Edit'),
-                                            ['controller' => 'IpNetworks', 'action' => 'edit', $ipNetwork->id],
-                                            ['class' => 'win-link']
-                                        ) ?>
-                                        <?= $this->AuthLink->postLink(
-                                            __('Delete'),
-                                            ['controller' => 'IpNetworks', 'action' => 'delete', $ipNetwork->id],
-                                            [
-                                                'confirm' => __(
-                                                    'Are you sure you want to delete # {0}?',
-                                                    $ipNetwork->ip_network
-                                                ),
-                                            ]
-                                        ) ?>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                            </table>
-                        </div>
-                        <?php endif; ?>
+                        <h4><?= __('IP Networks') ?></h4>
+                        <?= $this->element('Contracts/IpNetworks') ?>
                     </div>
                 </div>
             </div>
@@ -767,43 +439,7 @@ use Cake\I18n\Number;
                             ['class' => 'button button-small float-right win-link']
                         ) ?>
                         <h4><?= __('Removed IP Addresses') ?></h4>
-                        <?php if (!empty($contract->removed_ips)) : ?>
-                        <div class="table-responsive">
-                            <table>
-                                <tr>
-                                    <th><?= __('IP Address') ?></th>
-                                    <th><?= __('Type Of Use') ?></th>
-                                    <th><?= __('Note') ?></th>
-                                    <th><?= __('Removed') ?></th>
-                                    <th class="actions"><?= __('Actions') ?></th>
-                                </tr>
-                                <?php foreach ($contract->removed_ips as $removedIp) : ?>
-                                <tr style="<?= $removedIp->style ?>">
-                                    <td><?= h($removedIp->ip) ?></td>
-                                    <td><?= h($ip_address_types_of_use[$removedIp->type_of_use]) ?></td>
-                                    <td><?= h($removedIp->note) ?></td>
-                                    <td><?= h($removedIp->removed) ?></td>
-                                    <td class="actions">
-                                        <?= $this->AuthLink->link(
-                                            __('View'),
-                                            ['controller' => 'RemovedIps', 'action' => 'view', $removedIp->id]
-                                        ) ?>
-                                        <?= $this->AuthLink->link(
-                                            __('Edit'),
-                                            ['controller' => 'RemovedIps', 'action' => 'edit', $removedIp->id],
-                                            ['class' => 'win-link']
-                                        ) ?>
-                                        <?= $this->AuthLink->postLink(
-                                            __('Delete'),
-                                            ['controller' => 'RemovedIps', 'action' => 'delete', $removedIp->id],
-                                            ['confirm' => __('Are you sure you want to delete # {0}?', $removedIp->id)]
-                                        ) ?>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                            </table>
-                        </div>
-                        <?php endif; ?>
+                        <?= $this->element('Contracts/RemovedIpAddresses') ?>
                     </div>
                 </div>
                 <div class="column-responsive">
@@ -814,60 +450,7 @@ use Cake\I18n\Number;
                             ['class' => 'button button-small float-right win-link']
                         ) ?>
                         <h4><?= __('Removed IP Networks') ?></h4>
-                        <?php if (!empty($contract->removed_ip_networks)) : ?>
-                        <div class="table-responsive">
-                            <table>
-                                <tr>
-                                    <th><?= __('IP Network') ?></th>
-                                    <th><?= __('Type Of Use') ?></th>
-                                    <th><?= __('Note') ?></th>
-                                    <th><?= __('Removed') ?></th>
-                                    <th class="actions"><?= __('Actions') ?></th>
-                                </tr>
-                                <?php foreach ($contract->removed_ip_networks as $removedIpNetork) : ?>
-                                <tr style="<?= $removedIpNetork->style ?>">
-                                    <td><?= h($removedIpNetork->ip_network) ?></td>
-                                    <td><?= h($ip_network_types_of_use[$removedIpNetork->type_of_use]) ?></td>
-                                    <td><?= h($removedIpNetork->note) ?></td>
-                                    <td><?= h($removedIpNetork->removed) ?></td>
-                                    <td class="actions">
-                                        <?= $this->AuthLink->link(
-                                            __('View'),
-                                            [
-                                                'controller' => 'RemovedIpNetworks',
-                                                'action' => 'view',
-                                                $removedIpNetork->id,
-                                            ]
-                                        ) ?>
-                                        <?= $this->AuthLink->link(
-                                            __('Edit'),
-                                            [
-                                                'controller' => 'RemovedIpNetworks',
-                                                'action' => 'edit',
-                                                $removedIpNetork->id,
-                                            ],
-                                            ['class' => 'win-link']
-                                        ) ?>
-                                        <?= $this->AuthLink->postLink(
-                                            __('Delete'),
-                                            [
-                                                'controller' => 'RemovedIpNetworks',
-                                                'action' => 'delete',
-                                                $removedIpNetork->id,
-                                            ],
-                                            [
-                                                'confirm' => __(
-                                                    'Are you sure you want to delete # {0}?',
-                                                    $removedIpNetork->id
-                                                ),
-                                            ]
-                                        ) ?>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                            </table>
-                        </div>
-                        <?php endif; ?>
+                        <?= $this->element('Contracts/RemovedIpNetworks') ?>
                     </div>
                 </div>
             </div>
