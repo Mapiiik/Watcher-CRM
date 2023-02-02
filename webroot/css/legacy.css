@@ -72,7 +72,7 @@ a:focus {
     padding-left: 5px;
 }
 .nav-content-left {
-    min-width: 20rem;
+    min-width: 10%;
 }
 .nav-content-right {
     text-align: right;
@@ -390,18 +390,19 @@ tr:hover td {
 }
 /* Buttons */
 .button, button, input[type='button'], input[type='reset'], input[type='submit'] {
-    background-color: #d33c43;
-    border: 0.1rem solid #d33c43;
+    background-color: #ffec90;
+    border: 1px solid #000000;
     color: #fff;
     cursor: pointer;
     display: inline-block;
     font-weight: 700;
-    padding: 0.1rem 1.0rem;
+    padding: 0.2rem 0.5rem;
     text-align: center;
     text-decoration: none;
     text-transform: uppercase;
     white-space: nowrap;
     margin-left: 0.5rem;
+    margin-bottom: 0.2rem;
     width: auto;
 }
 .button:focus, .button:hover, button:focus, button:hover, input[type='button']:focus, input[type='button']:hover, input[type='reset']:focus, input[type='reset']:hover, input[type='submit']:focus, input[type='submit']:hover {

@@ -399,6 +399,7 @@ th {
     margin-left: 0.5rem;
     padding:0 1.5rem;
     width: auto;
+    margin-bottom: 0.5rem;
 }
 
 .button-small {
@@ -443,7 +444,7 @@ th {
 }
 
 .nav-content-left {
-    min-width: 20rem;
+    min-width: 10%;
 }
 
 .nav-content-right {
