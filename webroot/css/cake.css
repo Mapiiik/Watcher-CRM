@@ -224,12 +224,19 @@ th {
 }
 
 /* Nav bar */
+nav.top-nav {
+    top: 0;
+    z-index: 100;
+    border-bottom: 0.1rem solid #d33c43;
+    background-color: #ffec90;
+    margin-bottom: 1.5rem;
+}
 .top-nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 2rem;
-    margin: 0 auto 0rem;
+    padding: 0.5rem 2rem;
+    margin: 0 auto;
 }
 
 .top-nav-title a {

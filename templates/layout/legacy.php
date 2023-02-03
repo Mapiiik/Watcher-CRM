@@ -51,7 +51,11 @@ $request = $this->getRequest();
     <?= $this->fetch('script') ?>
 </head>
 <body>
-<nav class="top-nav">
+    <nav class="top-nav" style="<?= $request->getQuery('win-link') == 'true' ? '' : 'position: sticky;' ?>">
+        <div class="top-nav-title">
+            <a href="<?= $this->Url->build('/') ?>"><span>Watcher</span> CRM</a>
+        </div>
+
         <?php if (!($request->getQuery('win-link') == 'true')) : ?>
         <div class="top-nav-links to-right">
             <?php

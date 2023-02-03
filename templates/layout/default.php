@@ -69,7 +69,7 @@ $request = $this->getRequest();
     <?php endif; ?>
 </head>
 <body>
-    <nav class="top-nav">
+    <nav class="top-nav" style="<?= $request->getQuery('win-link') == 'true' ? '' : 'position: sticky;' ?>">
         <div class="top-nav-title">
             <a href="<?= $this->Url->build('/') ?>"><span>Watcher</span> CRM</a>
         </div>
