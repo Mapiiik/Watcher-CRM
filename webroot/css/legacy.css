@@ -63,13 +63,14 @@ nav.top-nav {
     z-index: 100;
     border-bottom: 1px solid;
     background-color: #ffec90;
+    margin-bottom: 5px;
 }
 .top-nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 5px 20px;
-    margin: 0 auto 15px;
+    margin: 0 auto;
 }
 .top-nav-title a {
     font-size: 1.5rem;
