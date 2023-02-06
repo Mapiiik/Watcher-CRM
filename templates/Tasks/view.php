@@ -158,7 +158,7 @@
             </div>
             <div class="text">
                 <strong><?= __('Text') ?></strong>
-                <blockquote>
+                <blockquote style="overflow-wrap: break-word;">
                     <?= $this->Text->autoParagraph(h($task->text)); ?>
                 </blockquote>
             </div>

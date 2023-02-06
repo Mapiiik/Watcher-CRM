@@ -94,7 +94,7 @@
                         ) : '' ?>
                     </td>
                     <td><?= h($task->subject) ?></td>
-                    <td><?= nl2br($task->text ?? '') ?></td>
+                    <td style="overflow-wrap: break-word; max-width: 600px;"><?= nl2br($task->text ?? '') ?></td>
                     <td>
                         <?= $task->has('customer') ? $this->Html->link(
                             $task->customer->name,
