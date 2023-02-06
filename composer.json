@@ -90,12 +90,6 @@
         "stan": "phpstan analyse",
         "test": "phpunit --colors=always"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/Mapiiik/users.git"
-        }
-    ],    
     "prefer-stable": true,
     "config": {
         "sort-packages": true,
