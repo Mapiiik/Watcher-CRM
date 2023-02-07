@@ -529,7 +529,9 @@
                             <td><?= $task->has('task_type') ? h($task->task_type->name) : '' ?></td>
                             <td><?= $task->has('task_state') ? h($task->task_state->name) : '' ?></td>
                             <td><?= h($task->subject) ?></td>
-                            <td style="overflow-wrap: break-word; max-width: 600px;"><?= nl2br($task->text ?? '') ?></td>
+                            <td style="overflow-wrap: break-word; max-width: 600px;">
+                                <?= nl2br($task->text ?? '') ?>
+                            </td>
                             <td><?= $task->has('dealer') ? h($task->dealer->name) : '' ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
@@ -572,7 +574,9 @@
                             <td><?= $task->has('task_type') ? h($task->task_type->name) : '' ?></td>
                             <td><?= $task->has('task_state') ? h($task->task_state->name) : '' ?></td>
                             <td><?= h($task->subject) ?></td>
-                            <td style="overflow-wrap: break-word; max-width: 600px;"><?= nl2br($task->text ?? '') ?></td>
+                            <td style="overflow-wrap: break-word; max-width: 600px;">
+                                <?= nl2br($task->text ?? '') ?>
+                            </td>
                             <td><?=
                                 $task->has('contract') ? $this->Html->link(
                                     $task->contract->name,

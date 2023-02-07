@@ -122,7 +122,9 @@
                                 ) : '' ?>
                             </td>
                             <td><?= h($task->subject) ?></td>
-                            <td style="overflow-wrap: break-word; max-width: 600px;"><?= nl2br($task->text ?? '') ?></td>
+                            <td style="overflow-wrap: break-word; max-width: 600px;">
+                                <?= nl2br($task->text ?? '') ?>
+                            </td>
                             <td><?= h($task->email) ?></td>
                             <td><?= h($task->phone) ?></td>
                             <td><?= $task->has('customer') ?
