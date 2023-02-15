@@ -5,6 +5,99 @@ namespace App\Controller;
 
 use Cake\Form\Form;
 
+// filter for fulltext search
+const CUSTOMERS_FULLTEXT_SEARCH_FILTER = "SELECT
+    Customers.id
+FROM
+    Customers
+    LEFT JOIN (
+        SELECT
+            Contracts.customer_id,
+            STRING_AGG(Contracts.number, ' ') AS txt
+        FROM
+            Contracts
+        GROUP BY
+            1
+    ) Contracts ON (
+        Contracts.customer_id = Customers.id
+    ) 
+    LEFT JOIN (
+        SELECT 
+            Addresses.customer_id, 
+            STRING_AGG(
+                CONCAT_WS(
+                    ' ',
+                    Addresses.first_name,
+                    Addresses.last_name,
+                    Addresses.company,
+                    Addresses.street, 
+                    Addresses.number,
+                    Addresses.city,
+                    Addresses.zip
+                ), 
+                ' '
+            ) AS txt 
+        FROM 
+            Addresses 
+        GROUP BY 
+            1
+    ) Addresses ON (
+        Addresses.customer_id = Customers.id
+    ) 
+    LEFT JOIN (
+        SELECT 
+            Emails.customer_id, 
+            STRING_AGG(Emails.email, ' ') AS txt 
+        FROM 
+            Emails 
+        GROUP BY 
+            1
+    ) Emails ON (
+        Emails.customer_id = Customers.id
+    ) 
+    LEFT JOIN (
+        SELECT 
+            Phones.customer_id, 
+            STRING_AGG(Phones.phone, ' ') AS txt 
+        FROM 
+            Phones 
+        GROUP BY 
+            1
+    ) Phones ON (
+        Phones.customer_id = Customers.id
+    ) 
+    LEFT JOIN (
+        SELECT 
+            Ips.customer_id, 
+            STRING_AGG(Ips.ip :: character varying, ' ') AS txt 
+        FROM 
+            Ips
+        GROUP BY 
+            1
+    ) Ips ON (
+        Ips.customer_id = Customers.id
+    ) 
+WHERE 
+    to_tsvector (
+        CONCAT_WS(
+            ' ',
+            Customers.id + :customer_series,
+            Customers.ic,
+            Customers.dic,
+            Customers.first_name, 
+            Customers.last_name,
+            Customers.company, 
+            Contracts.txt,
+            Addresses.txt,
+            Emails.txt,
+            Phones.txt, 
+            Ips.txt
+        )
+    ) @@ websearch_to_tsquery(:search) 
+GROUP BY 
+    Customers.id
+";
+
 /**
  * Customers Controller
  *
@@ -63,46 +156,16 @@ class CustomersController extends AppController
 
         if ($allow_advanced_search && $advanced_search && !empty($search)) {
             // advanced search
-            $filter = 'to_tsvector('
-                    . 'Customers.id + ' . (int)env('CUSTOMER_SERIES', '0') . " || ' ' || "
-                    . "COALESCE(Contracts.number, '') || ' ' || "
-                    . "COALESCE(Customers.first_name, '') || ' ' || "
-                    . "COALESCE(Customers.last_name, '') || ' ' || "
-                    . "COALESCE(Customers.company, '')  || "
-                    . "COALESCE(Addresses.first_name, '') || ' ' || "
-                    . "COALESCE(Addresses.last_name, '') || ' ' || "
-                    . "COALESCE(Addresses.company, '') || ' ' || "
-                    . "COALESCE(Addresses.street, '') || ' ' || "
-                    . "COALESCE(Addresses.number, '') || ' ' || "
-                    . "COALESCE(Addresses.city, '') || ' ' || "
-                    . "COALESCE(Addresses.zip, '') || ' ' || "
-                    . "COALESCE(Emails.email, '') || ' ' || "
-                    . "COALESCE(Phones.phone, '') || ' ' || "
-                    . "COALESCE(Customers.ic, '') || ' ' || "
-                    . "COALESCE(Customers.dic, '') || ' ' || "
-                    . "COALESCE(Ips.ip, '0.0.0.0'::inet)"
-                . ') @@ plainto_tsquery(:search)';
-            $filter = '('
-                    . 'SELECT customers.id FROM customers '
-                    . 'LEFT JOIN contracts ON (customers.id = contracts.customer_id) '
-                    . 'LEFT JOIN emails ON (customers.id = emails.customer_id) '
-                    . 'LEFT JOIN phones ON (customers.id = phones.customer_id) '
-                    . 'LEFT JOIN addresses ON (customers.id = addresses.customer_id) '
-                    . 'LEFT JOIN ips ON (customers.id = ips.customer_id) '
-                    . 'WHERE ' . $filter . ' GROUP BY customers.id'
-                . ')';
-
             $customersQuery->where([
                 'OR' => [
                     'Customers.company ILIKE' => '%' . trim($search) . '%',
                     'Customers.first_name ILIKE' => '%' . trim($search) . '%',
                     'Customers.last_name ILIKE' => '%' . trim($search) . '%',
-                    'Customers.id IN ' . $filter,
+                    'Customers.id IN (' . CUSTOMERS_FULLTEXT_SEARCH_FILTER . ')',
                 ],
             ]);
+            $customersQuery->bind(':customer_series', (int)env('CUSTOMER_SERIES', '0'), 'integer');
             $customersQuery->bind(':search', trim($search), 'string');
-
-            unset($filter);
         } elseif (is_numeric($search)) {
             // search by customer number
             $customersQuery->where([
