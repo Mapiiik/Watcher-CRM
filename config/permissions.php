@@ -287,6 +287,8 @@ return [
                 'addFromRange',
                 'edit',
                 'print',
+                'setDatesForRelatedBorrowedEquipments',
+                'terminateRelatedBillings',
             ],
         ],
         //allow delete of some items for sales and bookkeepers
