@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CakePHP 4.2.4\n"
-"POT-Creation-Date: 2023-01-07 23:38+0100\n"
-"PO-Revision-Date: 2023-01-07 23:40+0100\n"
+"POT-Creation-Date: 2023-02-18 15:19+0100\n"
+"PO-Revision-Date: 2023-02-18 15:21+0100\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -262,7 +262,7 @@ msgstr "Nelze upravit řádek: omezení pro asociaci `{0}` selhalo."
 msgid "The count does not match {0}{1}"
 msgstr "Součet nesedí {0}{1}"
 
-#: vendor/cakephp/cakephp/src/Utility/Text.php:924
+#: vendor/cakephp/cakephp/src/Utility/Text.php:916
 msgid "and"
 msgstr "a"
 
