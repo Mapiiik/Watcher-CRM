@@ -1,3 +1,6 @@
+/* Import fonts */
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;700&display=swap');
+
 /* Ping status */
 .ping-status {
     vertical-align: top;
@@ -52,13 +55,14 @@
 
 /* Miligram overrides */
 body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 400;
 }
 
+.top-nav-title,
 .top-nav-links,
 .side-nav,
 h1, h2, h3, h4, h5, h6 {
-    font-family: "Raleway", sans-serif;
+    font-family: "Exo 2", sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -96,7 +100,8 @@ a:active  {
 .side-nav a,
 th a,
 .actions a {
-    font-family: "Raleway", sans-serif;
+    font-family: "Exo 2", sans-serif;
+    font-size: 1.05em;
     color: #606c76;
 }
 
@@ -109,15 +114,15 @@ th a,
 
 /* Labels */
 label {
-    font-family: "Raleway", sans-serif;
-    font-size: 1.35rem;
+    font-family: "Exo 2", sans-serif;
+    font-size: 1.05em;
     font-weight: 500;
     margin-bottom: 0.3rem;
 }
 
 /* Legend */
 legend {
-    font-family: "Raleway", sans-serif;
+    font-family: "Exo 2", sans-serif;
     font-weight: 500;
     color: #363637;
     letter-spacing: -.08rem;
@@ -404,7 +409,8 @@ nav.top-nav {
 }
 
 .button {
-    font-family: "Raleway", sans-serif;
+    font-family: "Exo 2", sans-serif;
+    font-size: 1.2rem;
     margin-left: 0.5rem;
     padding:0 1.5rem;
     width: auto;
@@ -429,7 +435,8 @@ nav.top-nav {
 }
 
 .app-label {
-    font-family: "Raleway", sans-serif;
+    font-family: "Exo 2", sans-serif;
+    font-size: 1.2rem;
     border: 0.1rem solid #d33c43;
     border-radius: 0.4rem;
     display: inline-block;

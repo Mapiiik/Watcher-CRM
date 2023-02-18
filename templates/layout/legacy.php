@@ -30,8 +30,6 @@ $request = $this->getRequest();
     </title>
     <?= $this->Html->meta('icon') ?>
 
-    <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
-
     <?= $this->Html->script(['https://code.jquery.com/jquery.min.js', 'links.js']) ?>
 
     <?php if (filter_var(env('ENABLE_SELECT2', false), FILTER_VALIDATE_BOOLEAN)) : ?>
