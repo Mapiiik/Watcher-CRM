@@ -354,7 +354,12 @@ tr:hover td {
     max-width: 100%;
     width: 100% 
 }
-@media (min-width: 640px) {
+@media screen and (min-height: 800px) {
+    .top-nav {
+        position: sticky;
+    }
+}
+@media screen and (min-width: 640px) {
     .row {
         flex-direction: row;
         margin-left: -1.0rem;

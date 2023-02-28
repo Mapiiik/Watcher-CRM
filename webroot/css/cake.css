@@ -513,6 +513,12 @@ input[type='color'] {
     justify-content: center;
 }
 
+@media screen and (min-height: 800px) {
+    .top-nav {
+        position: sticky;
+    }
+}
+
 @media screen and (max-width: 640px) {
     /* Fix milligram not having a responsive column system */
     .row .column[class*='column-'] {
