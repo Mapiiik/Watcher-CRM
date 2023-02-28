@@ -18,13 +18,13 @@
             <?= $this->AuthLink->link(__('List Tasks'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="tasks form content">
             <?= $this->Form->create($task) ?>
             <fieldset>
                 <legend><?= __('Add Task') ?></legend>
                 <div class="row">
-                    <div class="column-responsive">
+                    <div class="column">
                         <?php
                         echo $this->Form->control('task_type_id', ['options' => $taskTypes, 'empty' => true]);
                         echo $this->Form->control('priority');
@@ -32,7 +32,7 @@
                         echo $this->Form->control('dealer_id', ['options' => $dealers, 'empty' => true]);
                         ?>
                     </div>
-                    <div class="column-responsive">
+                    <div class="column">
                         <?php
                         echo $this->Form->control('email', ['multiple' => 'multiple']);
                         echo $this->Form->control('phone', ['multiple' => 'multiple']);
@@ -72,13 +72,13 @@
                 echo $this->Form->control('text', ['style' => 'height: 30.0rem']);
                 ?>
                 <div class="row">
-                    <div class="column-responsive">
+                    <div class="column">
                         <?php
                         echo $this->Form->control('start_date', ['empty' => true]);
                         echo $this->Form->control('estimated_date', ['empty' => true]);
                         ?>
                     </div>
-                    <div class="column-responsive">
+                    <div class="column">
                         <?php
                         echo $this->Form->control('critical_date', ['empty' => true]);
                         echo $this->Form->control('finish_date', ['empty' => true]);

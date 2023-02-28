@@ -19,11 +19,11 @@
             <?= $this->AuthLink->link(__('New Task'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="tasks view content">
             <h3><?= h($task->id) ?></h3>
             <div class="row">
-                <div class="column-responsive">
+                <div class="column">
                     <table>
                         <tr>
                             <th><?= __('Task Type') ?></th>
@@ -93,7 +93,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="column-responsive">
+                <div class="column">
                     <table>
                         <tr>
                             <th><?= __('Start Date') ?></th>

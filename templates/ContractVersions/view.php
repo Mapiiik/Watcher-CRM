@@ -33,7 +33,7 @@
             ) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="contractVersions view content">
             <?= __('Contract No.') ?><h3><?= h($contractVersion->contract->number) ?></h3>
             <?= __('Validity') ?><h3><?= h($contractVersion->valid_from) ?> - <?= $contractVersion->valid_until ?
@@ -53,7 +53,7 @@
                 ?></h5>
             <?php endif; ?>
             <div class="row">
-                <div class="column-responsive">
+                <div class="column">
                     <table>
                         <tr>
                             <th><?= __('Contract') ?></th>
@@ -84,7 +84,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="column-responsive">
+                <div class="column">
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>

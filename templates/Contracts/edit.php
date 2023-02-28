@@ -23,13 +23,13 @@
             <?= $this->AuthLink->link(__('List Contracts'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="contracts form content">
             <?= $this->Form->create($contract) ?>
             <fieldset>
                 <legend><?= __('Edit Contract') ?></legend>
                 <div class="row">
-                    <div class="column-responsive">
+                    <div class="column">
                         <datalist id="access-descriptions">
                             <option value="žebřík není potřeba">
                             <option value="skládačka 3,6m">
@@ -52,7 +52,7 @@
                         echo $this->Form->control('vip');
                         ?>
                     </div>
-                    <div class="column-responsive">
+                    <div class="column">
                         <?php
                         echo $this->Form->control('access_point_id', ['options' => $accessPoints, 'empty' => true]);
                         echo $this->Form->control('access_description', [
@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="column-responsive">
+                    <div class="column">
                         <?php
                         echo $this->Form->control('installation_date', [
                             'label' => __('Installation/Establishment Date'),
@@ -78,7 +78,7 @@
                         ]);
                         ?>
                     </div>
-                    <div class="column-responsive">
+                    <div class="column">
                         <?php
                         echo $this->Form->control('enable_uninstallation', [
                             'label' => false,

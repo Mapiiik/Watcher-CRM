@@ -19,7 +19,7 @@
             <?= $this->AuthLink->link(__('List IP Addresses'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="ips form content">
             <?= $this->Form->create($ip) ?>
             <fieldset>

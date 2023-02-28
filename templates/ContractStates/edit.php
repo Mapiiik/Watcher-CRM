@@ -21,7 +21,7 @@
             <?= $this->Html->link(__('List Contract States'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="contractStates form content">
             <?= $this->Form->create($contractState) ?>
             <fieldset>

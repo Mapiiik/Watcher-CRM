@@ -33,7 +33,7 @@
             ) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="radreply view content">
             <h3><?= h($radreply->id) ?></h3>
             <table>

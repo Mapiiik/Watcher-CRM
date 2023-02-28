@@ -6,7 +6,7 @@
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
 <div class="row">
-    <div class="column-responsive">
+    <div class="column">
         <?= $this->Form->control('search', [
             'label' => __d('radius', 'Search'),
             'type' => 'search',

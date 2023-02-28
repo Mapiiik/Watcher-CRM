@@ -26,7 +26,7 @@
             ) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="contracts form content">
             <?= __('Contract No.') ?><h3><?= h($contract->number) ?></h3>
             <h5><?=
@@ -34,7 +34,7 @@
                 ($contract->has('installation_address') ? ' - ' . $contract->installation_address->address : '')
             ?></h5>
             <div class="row">
-                <div class="column-responsive">
+                <div class="column">
                     <table style="<?= $contract->style ?>">
                         <tr>
                             <th><?= __('Customer') ?></th>
@@ -74,7 +74,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="column-responsive">
+                <div class="column">
                     <table>
                         <tr>
                             <th><?= __('Access Point') ?></th>
@@ -106,7 +106,7 @@
             </div>
             <br />
             <div class="row">
-                <div class="column-responsive">
+                <div class="column">
                     <table>
                         <tr>
                             <th><?= __('Installation/Establishment Date') ?></th>
@@ -144,7 +144,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="column-responsive">
+                <div class="column">
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
@@ -255,7 +255,7 @@
             <fieldset>
                 <legend><?= __('Print Documents') ?></legend>
                 <div class="row">
-                    <div class="column-responsive">
+                    <div class="column">
                         <?php
                         echo $this->Form->control('document_type', [
                             'label' => __('Document Type'),
@@ -276,7 +276,7 @@
                         echo $this->Form->control('signed', ['label' => __('Signed'), 'type' => 'checkbox']);
                         ?>
                     </div>
-                    <div class="column-responsive">
+                    <div class="column">
                         <?php
                         echo $this->Form->control('effective_date_of_the_amendment', [
                             'label' => __('Effective date of the amendment'),

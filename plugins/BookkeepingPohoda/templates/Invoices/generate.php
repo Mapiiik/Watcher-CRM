@@ -15,7 +15,7 @@
             ) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="invoices form content">
             <?= $this->Form->create(null, [
                 'type' => 'file',
@@ -27,7 +27,7 @@
             <fieldset>
                 <legend><?= __d('bookkeeping_pohoda', 'Generate Invoices') ?></legend>
                 <div class="row">
-                    <div class="column-responsive">
+                    <div class="column">
                     <?php
                         echo $this->Form->control('tax_rate_id', [
                             'label' => __d('bookkeeping_pohoda', 'Tax Rate'),
@@ -55,7 +55,7 @@
                         ]);
                         ?>
                     </div>
-                    <div class="column-responsive">
+                    <div class="column">
                     </div>
                 </div>
             </fieldset>

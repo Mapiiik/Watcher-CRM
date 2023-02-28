@@ -8,7 +8,7 @@
 ?>
 <?= $this->Form->create($filterForm, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
 <div class="row">
-    <div class="column-responsive">
+    <div class="column">
         <?= $this->Form->control('dealer_id', [
             'empty' => true,
             'onchange' => 'this.form.submit();',
@@ -19,25 +19,25 @@
             'onchange' => 'this.form.submit();',
         ]) ?>
     </div>
-    <div class="column-responsive">
+    <div class="column">
         <?= $this->Form->control('task_type_id', [
             'empty' => true,
             'onchange' => 'this.form.submit();',
         ]) ?>
     </div>
-    <div class="column-responsive">
+    <div class="column">
         <?= $this->Form->control('task_state_id', [
             'empty' => true,
             'onchange' => 'this.form.submit();',
         ]) ?>
     </div>
-    <div class="column-responsive">
+    <div class="column">
         <?= $this->Form->control('access_point_id', [
             'empty' => true,
             'onchange' => 'this.form.submit();',
         ]) ?>
     </div>
-    <div class="column-responsive">
+    <div class="column">
         <?= $this->Form->control('search', [
             'label' => __('Search'),
             'type' => 'search',

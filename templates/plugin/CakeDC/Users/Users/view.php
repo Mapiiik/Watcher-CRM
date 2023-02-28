@@ -33,11 +33,11 @@ $user = ${$tableAlias};
             ) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="users view content">
             <h3><?= h($user->username) ?></h3>
             <div class="row">
-                <div class="column-responsive">
+                <div class="column">
                     <table>
                         <tr>
                             <th><?= __('Username') ?></th>
@@ -73,7 +73,7 @@ $user = ${$tableAlias};
                         </tr>
                     </table>
                 </div>
-                <div class="column-responsive">
+                <div class="column">
                     <table>
                         <tr>
                             <th><?= __('Api Token') ?></th>

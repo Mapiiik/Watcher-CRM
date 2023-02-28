@@ -112,7 +112,7 @@
         </div>
         <?php endif; ?>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="customers view content">
             <?= $this->AuthLink->link(
                 __('Print to PDF'),
@@ -123,7 +123,7 @@
             <?= __('Customer No.') ?><h3><?= h($customer->number) ?></h3>
             <h5><?= h($customer->name) ?></h5>
             <div class="row">
-                <div class="column-responsive">
+                <div class="column">
                     <table>
                         <tr>
                             <th><?= __('Company') ?></th>
@@ -185,7 +185,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="column-responsive">
+                <div class="column">
                     <table>
                         <tr>
                             <th><?= __('Tax Rate') ?></th>
@@ -263,7 +263,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="column-responsive">
+                <div class="column">
                     <div class="text">
                         <strong><?= __('Note') ?></strong>
                         <blockquote>
@@ -271,7 +271,7 @@
                         </blockquote>
                     </div>
                 </div>
-                <div class="column-responsive">
+                <div class="column">
                     <div class="text">
                         <strong><?= __('Internal Note') ?></strong>
                         <blockquote>
@@ -281,7 +281,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="column-responsive">
+                <div class="column">
                     <div class="related">
                         <?= $this->AuthLink->link(
                             __('New Email'),
@@ -330,7 +330,7 @@
                         <?php endif; ?>
                     </div>
                 </div>
-                <div class="column-responsive">
+                <div class="column">
                     <div class="related">
                         <?= $this->AuthLink->link(
                             __('New Phone'),
@@ -597,7 +597,7 @@
                 ) ?>
             </div>
             <div class="row">
-                <div class="column-responsive">
+                <div class="column">
                     <div class="related">
                         <?= $this->AuthLink->link(
                             __('New Borrowed Equipment'),
@@ -611,7 +611,7 @@
                         ]) ?>
                     </div>
                 </div>
-                <div class="column-responsive">
+                <div class="column">
                     <div class="related">
                         <?= $this->AuthLink->link(
                             __('New Sold Equipment'),
@@ -627,7 +627,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="column-responsive">
+                <div class="column">
                     <div class="related">
                         <?= $this->AuthLink->link(
                             __('New IP Address'),
@@ -646,7 +646,7 @@
                         ]) ?>
                     </div>
                 </div>
-                <div class="column-responsive">
+                <div class="column">
                     <div class="related">
                         <?= $this->AuthLink->link(
                             __('New IP Network'),
@@ -662,7 +662,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="column-responsive">
+                <div class="column">
                     <div class="related">
                         <?= $this->AuthLink->link(
                             __('New Removed IP Address'),
@@ -676,7 +676,7 @@
                         ]) ?>
                 </div>
                 </div>
-                <div class="column-responsive">
+                <div class="column">
                     <div class="related">
                         <?= $this->AuthLink->link(
                             __('New Removed IP Network'),

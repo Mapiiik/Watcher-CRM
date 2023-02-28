@@ -12,7 +12,7 @@
             <?= $this->AuthLink->link(__('List Overviews'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="overviews index content">
             <?php foreach ($cto_categories as $cto_category => $connection_points) : ?>
                 <?= $this->AuthLink->link(
@@ -31,7 +31,7 @@
 
             <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
             <div class="row">
-                <div class="column-responsive">
+                <div class="column">
                     <?= $this->Form->control('month_to_display', [
                         'label' => __('Month To Display'),
                         'placeholder' => __('YYYY-MM'),

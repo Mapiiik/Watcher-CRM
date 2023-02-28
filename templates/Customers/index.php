@@ -7,7 +7,7 @@
 ?>
 <?= $this->Form->create($filterForm, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
 <div class="row">
-    <div class="column-responsive">
+    <div class="column">
         <?= $this->Form->control('search', [
             'label' => __('Search'),
             'type' => 'search',
@@ -20,7 +20,7 @@
         ]) : '' ?>
     </div>
     <?php if ($allow_advanced_search) : ?>
-    <div class="column-responsive">
+    <div class="column">
         <?= $this->Form->control('labels', [
             'multiple' => 'multiple',
             'style' => 'height: 100px;',

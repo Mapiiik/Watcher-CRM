@@ -23,7 +23,7 @@
             ) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="accounts form content">
             <?= $this->Form->create($account) ?>
             <fieldset>

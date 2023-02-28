@@ -11,7 +11,7 @@
             <?= $this->AuthLink->link(__('List Countries'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="countries form content">
             <?= $this->Form->create($country) ?>
             <fieldset>

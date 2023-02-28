@@ -16,7 +16,7 @@
             <?= $this->AuthLink->link(__('List Commissions'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="commissions form content">
             <?= $this->Form->create($commission) ?>
             <fieldset>

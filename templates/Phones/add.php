@@ -12,7 +12,7 @@
             <?= $this->AuthLink->link(__('List Phones'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="phones form content">
             <?= $this->Form->create($phone) ?>
             <fieldset>

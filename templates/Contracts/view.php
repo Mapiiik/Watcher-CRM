@@ -99,7 +99,7 @@
         </div>
         <?php endif; ?>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="contracts view content">
             <?= $this->AuthLink->link(
                 __('Print to PDF'),
@@ -113,7 +113,7 @@
                 ($contract->has('installation_address') ? ' - ' . $contract->installation_address->address : '')
             ?></h5>
             <div class="row">
-                <div class="column-responsive">
+                <div class="column">
                     <table style="<?= $contract->style ?>">
                         <tr>
                             <th><?= __('Customer') ?></th>
@@ -175,7 +175,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="column-responsive">
+                <div class="column">
                     <table>
                         <tr>
                             <th><?= __('Access Point') ?></th>
@@ -207,7 +207,7 @@
             </div>
             <br />
             <div class="row">
-                <div class="column-responsive">
+                <div class="column">
                     <table>
                         <tr>
                             <th><?= __('Installation/Establishment Date') ?></th>
@@ -245,7 +245,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="column-responsive">
+                <div class="column">
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
@@ -287,7 +287,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="column-responsive">
+                <div class="column">
                     <div class="text">
                         <strong><?= __('Access Description') ?></strong>
                         <blockquote>
@@ -295,7 +295,7 @@
                         </blockquote>
                     </div>
                 </div>
-                <div class="column-responsive">
+                <div class="column">
                     <div class="text">
                         <strong><?= __('Note') ?></strong>
                         <blockquote>
@@ -362,7 +362,7 @@
             <?php endif; ?>
             <?php if ($contract->has('service_type') && $contract->service_type->have_equipments) : ?>
             <div class="row">
-                <div class="column-responsive">
+                <div class="column">
                     <div class="related">
                         <?= $this->AuthLink->link(
                             __('New Borrowed Equipment'),
@@ -393,7 +393,7 @@
                         ]) ?>
                     </div>
                 </div>
-                <div class="column-responsive">
+                <div class="column">
                     <div class="related">
                         <?= $this->AuthLink->link(
                             __('New Sold Equipment'),
@@ -410,7 +410,7 @@
             <?php endif; ?>
             <?php if ($contract->has('service_type') && $contract->service_type->have_ip_addresses) : ?>
             <div class="row">
-                <div class="column-responsive">
+                <div class="column">
                     <div class="related">
                         <?= $this->AuthLink->link(
                             __('New IP Address'),
@@ -428,7 +428,7 @@
                         ]) ?>
                     </div>
                 </div>
-                <div class="column-responsive">
+                <div class="column">
                     <div class="related">
                         <?= $this->AuthLink->link(
                             __('New IP Network'),
@@ -443,7 +443,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="column-responsive">
+                <div class="column">
                     <div class="related">
                         <?= $this->AuthLink->link(
                             __('New Removed IP Address'),
@@ -456,7 +456,7 @@
                         ]) ?>
                     </div>
                 </div>
-                <div class="column-responsive">
+                <div class="column">
                     <div class="related">
                         <?= $this->AuthLink->link(
                             __('New Removed IP Network'),

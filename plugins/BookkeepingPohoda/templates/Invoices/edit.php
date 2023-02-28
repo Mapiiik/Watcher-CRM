@@ -24,7 +24,7 @@
             ) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="invoices form content">
             <?= $this->Form->create($invoice) ?>
             <fieldset>

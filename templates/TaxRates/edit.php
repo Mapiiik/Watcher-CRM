@@ -16,7 +16,7 @@
             <?= $this->Html->link(__('List Tax Rates'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="taxRates form content">
             <?= $this->Form->create($taxRate) ?>
             <fieldset>

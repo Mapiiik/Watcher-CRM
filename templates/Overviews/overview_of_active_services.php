@@ -12,7 +12,7 @@
             <?= $this->AuthLink->link(__('List Overviews'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="overviews index content">
             <h3><?= __('Overview of active services')
                 . ' - '
@@ -20,7 +20,7 @@
 
             <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
             <div class="row">
-                <div class="column-responsive">
+                <div class="column">
                     <?= $this->Form->control('month_to_display', [
                         'label' => __('Month To Display'),
                         'placeholder' => __('YYYY-MM'),
@@ -28,13 +28,13 @@
                         'onchange' => 'this.form.submit();',
                     ]) ?>
                 </div>
-                <div class="column-responsive">
+                <div class="column">
                     <?= $this->Form->control('service_type_id', [
                         'empty' => true,
                         'onchange' => 'this.form.submit();',
                     ]) ?>
                 </div>
-                <div class="column-responsive">
+                <div class="column">
                     <?= $this->Form->control('access_point_id', [
                         'empty' => true,
                         'onchange' => 'this.form.submit();',

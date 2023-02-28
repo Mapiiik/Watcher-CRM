@@ -18,13 +18,13 @@
             <?= $this->AuthLink->link(__('List Customers'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="customers form content">
             <?= $this->Form->create($customer) ?>
             <fieldset>
                 <legend><?= __('Edit Customer') ?></legend>
                 <div class="row">
-                    <div class="column-responsive">
+                    <div class="column">
                         <?php
                         echo $this->Form->control('company');
                         echo $this->Form->control('title');
@@ -38,7 +38,7 @@
                         echo $this->Form->control('www');
                         ?>
                     </div>
-                    <div class="column-responsive">
+                    <div class="column">
                         <?php
                         echo $this->Form->control('bank_account');
                         echo $this->Form->control('bank_code');

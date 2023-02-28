@@ -25,11 +25,11 @@ use Cake\I18n\Number;
             <?= $this->AuthLink->link(__('New Billing'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="billings view content">
             <h3><?= h($billing->name) ?></h3>
             <div class="row">
-                <div class="column-responsive">
+                <div class="column">
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
@@ -82,7 +82,7 @@ use Cake\I18n\Number;
                         </tr>
                     </table>
                 </div>
-                <div class="column-responsive">
+                <div class="column">
                     <table>
                         <tr>
                             <th><?= __('Quantity') ?></th>

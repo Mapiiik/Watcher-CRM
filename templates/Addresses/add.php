@@ -14,13 +14,13 @@
             <?= $this->AuthLink->link(__('List Addresses'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="addresses form content">
             <?= $this->Form->create($address) ?>
             <fieldset>
                 <legend><?= __('Add Address') ?></legend>
                 <div class="row">
-                    <div class="column-responsive">
+                    <div class="column">
                         <?php
                         if (!isset($customer_id)) {
                             echo $this->Form->control('customer_id', ['options' => $customers]);
@@ -33,7 +33,7 @@
                         echo $this->Form->control('suffix');
                         ?>
                     </div>
-                    <div class="column-responsive">
+                    <div class="column">
                         <?php
                         echo $this->Form->control('street');
                         echo $this->Form->control('number');

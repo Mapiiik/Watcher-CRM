@@ -347,7 +347,7 @@ tr:hover td {
     -ms-grid-row-align: center;
     align-self: center 
 }
-.row .column-responsive {
+.row .column {
     display: block;
     flex: 1 1 auto;
     margin-left: 0;
@@ -364,51 +364,51 @@ tr:hover td {
         margin-bottom: inherit;
         padding: 0 1.0rem 
    }
-    .row .column-responsive {
+    .row .column {
         margin-bottom: inherit;
         padding: 0 1.0rem 
    }
-    .row .column-responsive.column-10 {
+    .row .column.column-10 {
         flex: 0 0 10%;
         max-width: 10% 
    }
-    .row .column-responsive.column-20 {
+    .row .column.column-20 {
         flex: 0 0 20%;
         max-width: 20% 
    }
-    .row .column-responsive.column-25 {
+    .row .column.column-25 {
         flex: 0 0 25%;
         max-width: 25% 
    }
-    .row .column-responsive.column-33, .row .column-responsive.column-34 {
+    .row .column.column-33, .row .column.column-34 {
         flex: 0 0 33.3333%;
         max-width: 33.3333% 
    }
-    .row .column-responsive.column-40 {
+    .row .column.column-40 {
         flex: 0 0 40%;
         max-width: 40% 
    }
-    .row .column-responsive.column-50 {
+    .row .column.column-50 {
         flex: 0 0 50%;
         max-width: 50% 
    }
-    .row .column-responsive.column-60 {
+    .row .column.column-60 {
         flex: 0 0 60%;
         max-width: 60% 
    }
-    .row .column-responsive.column-66, .row .column-responsive.column-67 {
+    .row .column.column-66, .row .column.column-67 {
         flex: 0 0 66.6666%;
         max-width: 66.6666% 
    }
-    .row .column-responsive.column-75 {
+    .row .column.column-75 {
         flex: 0 0 75%;
         max-width: 75% 
    }
-    .row .column-responsive.column-80 {
+    .row .column.column-80 {
         flex: 0 0 80%;
         max-width: 80% 
    }
-    .row .column-responsive.column-90 {
+    .row .column.column-90 {
         flex: 0 0 90%;
         max-width: 90% 
    }

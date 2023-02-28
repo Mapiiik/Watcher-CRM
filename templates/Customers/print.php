@@ -22,12 +22,12 @@
             ) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="contracts form content">
             <?= __('Customer No.') ?><h3><?= h($customer->number) ?></h3>
             <h5><?= h($customer->name) ?></h5>
             <div class="row">
-                <div class="column-responsive">
+                <div class="column">
                     <table>
                         <tr>
                             <th><?= __('Company') ?></th>
@@ -89,7 +89,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="column-responsive">
+                <div class="column">
                     <table>
                         <tr>
                             <th><?= __('Tax Rate') ?></th>
@@ -180,7 +180,7 @@
             <fieldset>
                 <legend><?= __('Print Documents') ?></legend>
                 <div class="row">
-                    <div class="column-responsive">
+                    <div class="column">
                         <?php
                         echo $this->Form->control('document_type', [
                             'label' => __('Document Type'),
@@ -190,7 +190,7 @@
                         ]);
                         ?>
                     </div>
-                    <div class="column-responsive">
+                    <div class="column">
                     </div>
                 </div>
             </fieldset>

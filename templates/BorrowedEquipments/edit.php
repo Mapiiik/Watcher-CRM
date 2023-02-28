@@ -26,7 +26,7 @@
             ) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="borrowedEquipments form content">
             <?= $this->Form->create($borrowedEquipment) ?>
             <fieldset>

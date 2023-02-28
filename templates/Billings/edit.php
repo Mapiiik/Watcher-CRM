@@ -19,13 +19,13 @@
             <?= $this->AuthLink->link(__('List Billings'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="billings form content">
             <?= $this->Form->create($billing) ?>
             <fieldset>
                 <legend><?= __('Edit Billing') ?></legend>
                 <div class="row">
-                    <div class="column-responsive">
+                    <div class="column">
                         <?php
                         if (!isset($customer_id)) {
                             echo $this->Form->control('customer_id', ['options' => $customers]);
@@ -49,7 +49,7 @@
                         echo $this->Form->control('text');
                         ?>
                     </div>
-                    <div class="column-responsive">
+                    <div class="column">
                         <?php
                         echo $this->Form->control('quantity');
                         echo $this->Form->control('price');

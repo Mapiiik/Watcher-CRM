@@ -15,7 +15,7 @@
             ) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="addresses form content">
             <?= $this->Form->create($address) ?>
             <fieldset>

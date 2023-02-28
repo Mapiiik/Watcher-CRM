@@ -16,7 +16,7 @@
             <?= $this->AuthLink->link(__('List Queues'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="queues form content">
             <?= $this->Form->create($queue) ?>
             <fieldset>

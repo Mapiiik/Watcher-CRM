@@ -37,7 +37,7 @@ use Cake\I18n\FrozenTime;
             ) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="accounts view content">
             <?= $this->Html->link(
                 __d('radius', 'View RADIUS Account'),
@@ -54,7 +54,7 @@ use Cake\I18n\FrozenTime;
             ) ?>
             <h3><?= h($account->username) ?></h3>
             <div class="row">
-                <div class="column-responsive">
+                <div class="column">
                     <table>
                         <tr>
                             <th><?= __d('radius', 'Customer') ?></th>
@@ -103,7 +103,7 @@ use Cake\I18n\FrozenTime;
                         </tr>
                     </table>
                 </div>
-                <div class="column-responsive">
+                <div class="column">
                     <table>
                         <tr>
                             <th><?= __d('radius', 'Id') ?></th>

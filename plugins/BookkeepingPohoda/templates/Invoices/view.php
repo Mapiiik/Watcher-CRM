@@ -39,11 +39,11 @@
             ) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="invoices view content">
             <h3><?= h($invoice->number) ?></h3>
             <div class="row">
-                <div class="column-responsive">
+                <div class="column">
                     <table>
                         <tr>
                             <th><?= __d('bookkeeping_pohoda', 'Customer') ?></th>
@@ -100,7 +100,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="column-responsive">
+                <div class="column">
                     <table>
                         <tr>
                             <th><?= __d('bookkeeping_pohoda', 'Id') ?></th>

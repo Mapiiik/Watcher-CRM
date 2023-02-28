@@ -17,7 +17,7 @@
             ) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="customerLabels form content">
             <?= $this->Form->create($customerLabel) ?>
             <fieldset>

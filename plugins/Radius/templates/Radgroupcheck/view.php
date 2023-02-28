@@ -33,7 +33,7 @@
             ) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="radgroupcheck view content">
             <h3><?= h($radgroupcheck->id) ?></h3>
             <table>

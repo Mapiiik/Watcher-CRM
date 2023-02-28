@@ -14,13 +14,13 @@
             ) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="invoices form content">
             <?= $this->Form->create(null) ?>
             <fieldset>
                 <legend><?= __d('bookkeeping_pohoda', 'Send by email') ?></legend>
                 <div class="row">
-                    <div class="column-responsive">
+                    <div class="column">
                         <?php
                         echo $this->Form->control('creation_date', [
                             'label' => __d('bookkeeping_pohoda', 'Creation Date'),
@@ -30,7 +30,7 @@
                         ]);
                         ?>
                     </div>
-                    <div class="column-responsive">
+                    <div class="column">
                     </div>
                 </div>
             </fieldset>

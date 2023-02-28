@@ -33,7 +33,7 @@
             ) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="Nas view content">
             <h3><?= h($nas->nasname) ?></h3>
             <table>

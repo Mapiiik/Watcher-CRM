@@ -15,7 +15,7 @@ use Cake\I18n\FrozenDate;
             <?= $this->Html->link(__('List Contract Versions'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="contractVersions form content">
             <?= $this->Form->create($contractVersion) ?>
             <fieldset>

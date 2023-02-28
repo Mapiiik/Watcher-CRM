@@ -19,13 +19,13 @@ $user = ${$tableAlias};
             <?= $this->Html->link(__('List Users'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
-    <div class="column-responsive column-90">
+    <div class="column column-90">
         <div class="users form content">
             <?= $this->Form->create($user) ?>
             <fieldset>
                 <legend><?= __('Edit User') ?></legend>
                 <div class="row">
-                    <div class="column-responsive">
+                    <div class="column">
                     <?php
                         echo $this->Form->control('username');
                         echo $this->Form->control('email');
@@ -36,7 +36,7 @@ $user = ${$tableAlias};
                         echo $this->Form->control('active');
                     ?>
                     </div>
-                    <div class="column-responsive">
+                    <div class="column">
                     <?php
                         echo $this->Form->control('api_token');
                         echo $this->Form->control('token');
