@@ -69,6 +69,9 @@
     --color-links: var(--color-cakephp-blue);
     --color-links-active: #2a6496;
     --color-headings: #363637;
+    --color-content-bg: #fbfcff;
+    --color-table-borders: #aaaaaa;
+    --color-table-headings-bg: #c0e0ff;
 
     --color-message-success-bg: #e3fcec;
     --color-message-success-text: #1f9d55;
@@ -167,7 +170,7 @@ h4 {
 }
 
 .main h4 {
-    border-bottom: 0.1rem #c0e0ff solid;
+    border-bottom: 0.1rem solid var(--color-table-headings-bg);
 }
 
 hr {
@@ -181,7 +184,7 @@ a {
 
 a:hover,
 a:focus,
-a:active  {
+a:active {
     color: var(--color-links-active);
     transition: color 0.2s ease-out;
 }
@@ -237,7 +240,7 @@ input:not([type]),
 textarea,
 select {
     height: 3.0rem;
-    background-color: #ffffff;
+    background-color: var(--color-white);
 }
 
 /* Tables */
@@ -246,7 +249,7 @@ table {
     width: calc(100% - 3px);
     margin-bottom: 6px;
     margin-right: 3px;
-    background-color: #ffffff;
+    background-color: var(--color-white);
 
     border-radius: 0.4rem;
     box-shadow: 0 3px 6px 0 rgba(60, 66, 87, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.05);
@@ -257,13 +260,13 @@ tr:hover td {
 }
 
 th, td {
-    border: 0.1rem solid #aaaaaa;
+    border: 0.1rem solid var(--color-table-borders);
     vertical-align: baseline;
     padding: 0.3rem 0.3rem;
 }
 
 iframe {
-    border: 0.1rem solid #aaaaaa;
+    border: 0.1rem solid var(--color-table-borders);
 }
 
 td:first-child,
@@ -288,11 +291,6 @@ fieldset, input, select, textarea {
     -webkit-overflow-scrolling: touch;
 }
 
-/* Flex */
-.flex {
-    display: flex;
-}
-
 /* Main */
 body {
     font-size: 1.3em;
@@ -301,7 +299,7 @@ body {
 
 .content {
     padding: 2rem;
-    background: var(--color-white);
+    background: var(--color-content-bg);
     border-radius: 0.4rem;
     /* Thanks Stripe */
     box-shadow: 0 7px 14px 0 rgba(60, 66, 87, 0.1),
@@ -318,16 +316,13 @@ body {
 }
 
 th {
-/*    white-space: nowrap; */
-    background: #c0e0ff;
+    background: var(--color-table-headings-bg);
 }
 
 /* Nav bar */
 nav.top-nav {
     top: 0;
     z-index: 100;
-    /*border-bottom: 0.1rem solid #d33c43;*/
-    /*background-color: #ffec90;*/
     margin-bottom: 1.5rem;
     box-shadow: 0 7px 14px 0 rgb(60 66 87 / 10%), 0 3px 6px 0 rgb(0 0 0 / 7%);
     background-color: var(--color-main-bg);
@@ -401,10 +396,6 @@ nav.top-nav {
     background: var(--color-message-error-bg);
     color: var(--color-message-error-text);
     border-color: var(--color-message-error-border);
-}
-
-.error-message {
-    color: #cc1f1a;
 }
 
 /* Forms */
@@ -576,19 +567,19 @@ input[type='color'] {
 }
 
 .button-selected {
-    background-color: #606c76;
-    border-color: #606c76;
+    background-color: var(--color-lightgray);
+    border-color: var(--color-lightgray);
 }
 
 .app-label {
     font-family: "Exo 2", sans-serif;
     font-size: 1.2rem;
-    border: 0.1rem solid #d33c43;
+    border: 0.1rem solid  var(--color-cakephp-red);
     border-radius: 0.4rem;
     display: inline-block;
     padding: 0.6rem 1.5rem;
     margin-bottom: 0.5rem;
-    color:white;
+    color: var(--color-white);
 }
 
 .active {

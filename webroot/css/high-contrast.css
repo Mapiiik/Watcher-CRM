@@ -112,10 +112,6 @@ th {
     border-color: #ef5753;
 }
 
-.error-message {
-    color: #cc1f1a;
-}
-
 .prev.disabled a,
 .next.disabled a {
     color: #000000;

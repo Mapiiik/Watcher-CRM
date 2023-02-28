@@ -218,9 +218,6 @@ tr:hover td {
     color: #cc1f1a;
     border-color: #ef5753;
 }
-.error-message {
-    color: #cc1f1a;
-}
 /* Arrangement of DIVs */
 .container {
     margin: 0 auto;
