@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-03-01 13:59+0100\n"
-"PO-Revision-Date: 2023-03-01 14:04+0100\n"
+"POT-Creation-Date: 2023-03-01 14:49+0100\n"
+"PO-Revision-Date: 2023-03-01 14:50+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -49,42 +49,42 @@ msgstr "Odebrán záznam IPv6 {0} z {1}."
 msgid "Added IPv6 record {0} to {1}."
 msgstr "Přidán záznam IPv6 {0} do {1}."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:126
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:151
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:146
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:171
 msgid "The invoice has been saved."
 msgstr "Faktura byla uložena."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:130
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:155
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:150
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:175
 msgid "The invoice could not be saved. Please, try again."
 msgstr "Fakturu nelze uložit. Zkuste to prosím znovu."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:173
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:193
 msgid "The invoice has been deleted."
 msgstr "Faktura byla odstraněna."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:175
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:195
 msgid "The invoice could not be deleted. Please, try again."
 msgstr "Fakturu nelze odstranit. Zkuste to prosím znovu."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:200
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:220
 msgid "The invoices has been marked to be sent by email ({0})."
 msgstr "Faktury byly označeny k odeslání e-mailem ({0})."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:208
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:228
 msgid "No invoices could be marked to be sent by email. Please, try again."
 msgstr ""
 "Žádné faktury nelze označit k odeslání e-mailem. Zkuste to prosím znovu."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:524
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:544
 msgid "The import file is missing some required columns."
 msgstr "V souboru importu chybí některé povinné sloupce."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:560
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:580
 msgid "Invoice {0} could not be loaded."
 msgstr "Fakturu {0} nelze načíst."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:569
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:589
 msgid ""
 "Successfully imported {0} invoices. Created {1}, modified {2} and skipped "
 "{3} records."
@@ -92,7 +92,7 @@ msgstr ""
 "Počet úspěšně importovaných faktur: {0}. Vytvořeno {1}, upraveno {2} a "
 "přeskočeno {3} záznamů."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:43
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:63
 msgid "Invoice to send in the queue, {0} email left."
 msgid_plural "Invoices to send in the queue, {0} emails left."
 msgstr[0] "Faktura k odeslání ve frontě, zbývá {0} e-mail."
@@ -103,7 +103,7 @@ msgstr[2] "Faktury k odeslání ve frontě, zbývá {0} e-mailů."
 #: plugins/BookkeepingPohoda/templates/Invoices/edit.php:11
 #: plugins/BookkeepingPohoda/templates/Invoices/generate.php:10
 #: plugins/BookkeepingPohoda/templates/Invoices/import_from_d_b_f.php:9
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:52
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:63
 #: plugins/BookkeepingPohoda/templates/Invoices/send_by_email.php:9
 #: plugins/BookkeepingPohoda/templates/Invoices/view.php:10
 #: plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:28
@@ -126,7 +126,7 @@ msgstr "Přidat fakturu"
 #: plugins/BookkeepingPohoda/templates/Invoices/add.php:26
 #: plugins/BookkeepingPohoda/templates/Invoices/edit.php:34
 #: plugins/BookkeepingPohoda/templates/Invoices/generate.php:72
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:36
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:47
 #: plugins/BookkeepingPohoda/templates/Invoices/view.php:49
 #: plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:15
 msgid "Customer"
@@ -134,7 +134,7 @@ msgstr "Zákazník"
 
 #: plugins/BookkeepingPohoda/templates/Invoices/add.php:31
 #: plugins/BookkeepingPohoda/templates/Invoices/edit.php:39
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:38
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:49
 #: plugins/BookkeepingPohoda/templates/Invoices/view.php:65
 #: plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:18
 msgid "Number"
@@ -142,7 +142,7 @@ msgstr "Číslo"
 
 #: plugins/BookkeepingPohoda/templates/Invoices/add.php:34
 #: plugins/BookkeepingPohoda/templates/Invoices/edit.php:42
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:41
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:52
 #: plugins/BookkeepingPohoda/templates/Invoices/view.php:69
 #: plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:19
 msgid "Variable Symbol"
@@ -150,7 +150,7 @@ msgstr "Variabilní symbol"
 
 #: plugins/BookkeepingPohoda/templates/Invoices/add.php:37
 #: plugins/BookkeepingPohoda/templates/Invoices/edit.php:45
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:43
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:54
 #: plugins/BookkeepingPohoda/templates/Invoices/send_by_email.php:26
 #: plugins/BookkeepingPohoda/templates/Invoices/view.php:73
 #: plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:20
@@ -159,7 +159,7 @@ msgstr "Datum vytvoření"
 
 #: plugins/BookkeepingPohoda/templates/Invoices/add.php:41
 #: plugins/BookkeepingPohoda/templates/Invoices/edit.php:49
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:44
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:55
 #: plugins/BookkeepingPohoda/templates/Invoices/view.php:77
 #: plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:21
 msgid "Due Date"
@@ -176,7 +176,7 @@ msgstr "Text"
 #: plugins/BookkeepingPohoda/templates/Invoices/edit.php:56
 #: plugins/BookkeepingPohoda/templates/Invoices/generate.php:111
 #: plugins/BookkeepingPohoda/templates/Invoices/generate.php:133
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:45
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:56
 #: plugins/BookkeepingPohoda/templates/Invoices/view.php:81
 #: plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:24
 msgid "Total"
@@ -184,7 +184,7 @@ msgstr "Celkem"
 
 #: plugins/BookkeepingPohoda/templates/Invoices/add.php:51
 #: plugins/BookkeepingPohoda/templates/Invoices/edit.php:59
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:46
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:57
 #: plugins/BookkeepingPohoda/templates/Invoices/view.php:85
 #: plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:25
 msgid "Debt"
@@ -192,7 +192,7 @@ msgstr "Dluh"
 
 #: plugins/BookkeepingPohoda/templates/Invoices/add.php:54
 #: plugins/BookkeepingPohoda/templates/Invoices/edit.php:62
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:47
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:58
 #: plugins/BookkeepingPohoda/templates/Invoices/view.php:89
 #: plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:22
 msgid "Payment Date"
@@ -200,8 +200,8 @@ msgstr "Datum platby"
 
 #: plugins/BookkeepingPohoda/templates/Invoices/add.php:58
 #: plugins/BookkeepingPohoda/templates/Invoices/edit.php:66
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:17
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:48
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:28
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:59
 #: plugins/BookkeepingPohoda/templates/Invoices/view.php:93
 #: plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:26
 msgid "Send By Email"
@@ -209,7 +209,7 @@ msgstr "Odeslat e-mailem"
 
 #: plugins/BookkeepingPohoda/templates/Invoices/add.php:61
 #: plugins/BookkeepingPohoda/templates/Invoices/edit.php:69
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:49
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:60
 #: plugins/BookkeepingPohoda/templates/Invoices/view.php:98
 #: plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:27
 msgid "Email Sent"
@@ -224,12 +224,12 @@ msgid "Submit"
 msgstr "Potvrdit"
 
 #: plugins/BookkeepingPohoda/templates/Invoices/edit.php:13
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:90
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:101
 msgid "Delete"
 msgstr "Odstranit"
 
 #: plugins/BookkeepingPohoda/templates/Invoices/edit.php:16
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:92
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:103
 #: plugins/BookkeepingPohoda/templates/Invoices/view.php:20
 msgid "Are you sure you want to delete # {0}?"
 msgstr "Opravdu chcete odstranit # {0}?"
@@ -240,7 +240,7 @@ msgid "Edit Invoice"
 msgstr "Upravit fakturu"
 
 #: plugins/BookkeepingPohoda/templates/Invoices/generate.php:28
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:22
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:33
 msgid "Generate Invoices"
 msgstr "Generovat faktury"
 
@@ -275,7 +275,7 @@ msgid "Price"
 msgstr "Cena"
 
 #: plugins/BookkeepingPohoda/templates/Invoices/import_from_d_b_f.php:27
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:27
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:38
 msgid "Import Invoices from DBF"
 msgstr "Import faktur z DBF"
 
@@ -283,83 +283,87 @@ msgstr "Import faktur z DBF"
 msgid "DBF for import"
 msgstr "DBF pro import"
 
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:12
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:13
+msgid "Search"
+msgstr "Hledat"
+
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:23
 #: plugins/BookkeepingPohoda/templates/Invoices/view.php:30
 msgid "New Invoice"
 msgstr "Nová faktura"
 
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:31
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:42
 msgid "Invoices"
 msgstr "Faktury"
 
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:37
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:48
 #: plugins/BookkeepingPohoda/templates/Invoices/view.php:61
 #: plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:16
 msgid "Customer Number"
 msgstr "Číslo zákazníka"
 
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:50
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:61
 #: plugins/BookkeepingPohoda/templates/Invoices/view.php:110
 msgid "Created"
 msgstr "Vytvořeno"
 
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:51
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:62
 #: plugins/BookkeepingPohoda/templates/Invoices/view.php:126
 msgid "Modified"
 msgstr "Upraveno"
 
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:73
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:84
 #: plugins/BookkeepingPohoda/templates/Invoices/view.php:95
 #: plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:50
 msgid "Yes"
 msgstr "Ano"
 
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:73
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:84
 #: plugins/BookkeepingPohoda/templates/Invoices/view.php:95
 #: plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:50
 msgid "No"
 msgstr "Ne"
 
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:79
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:90
 #: plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:54
 msgid "Download"
 msgstr "Stáhnout"
 
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:83
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:94
 msgid "View"
 msgstr "Zobrazit"
 
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:85
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:96
 msgid "Edit"
 msgstr "Upravit"
 
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:105
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:116
 #: plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:73
 msgid "Total Debt"
 msgstr "Celkový dluh"
 
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:106
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:117
 #: plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:75
 msgid "Total Overdue Debt"
 msgstr "Celkový dluh po splatnosti"
 
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:110
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:121
 msgid "first"
 msgstr "první"
 
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:111
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:122
 msgid "previous"
 msgstr "předchozí"
 
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:113
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:124
 msgid "next"
 msgstr "další"
 
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:114
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:125
 msgid "last"
 msgstr "poslední"
 
-#: plugins/BookkeepingPohoda/templates/Invoices/index.php:117
+#: plugins/BookkeepingPohoda/templates/Invoices/index.php:128
 msgid ""
 "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} "
 "total"

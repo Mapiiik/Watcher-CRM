@@ -5,8 +5,19 @@
  * @var float $total_debt
  * @var float $total_overdue_debt
  */
-
 ?>
+<?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
+<div class="row">
+    <div class="column">
+        <?= $this->Form->control('search', [
+            'label' => __d('bookkeeping_pohoda', 'Search'),
+            'type' => 'search',
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+    </div>
+</div>
+<?= $this->Form->end() ?>
+
 <div class="invoices index content">
     <?= $this->Html->link(
         __d('bookkeeping_pohoda', 'New Invoice'),

@@ -23,11 +23,31 @@ class InvoicesController extends AppController
      */
     public function index()
     {
+        // filter
+        $conditions = [];
+
+        // search
+        $search = $this->request->getQuery('search');
+        if (!empty($search)) {
+            $conditions[] = [
+                'OR' => [
+                    'Customers.company ILIKE' => '%' . trim($search) . '%',
+                    'Customers.title ILIKE' => '%' . trim($search) . '%',
+                    'Customers.first_name ILIKE' => '%' . trim($search) . '%',
+                    'Customers.last_name ILIKE' => '%' . trim($search) . '%',
+                    'Customers.suffix ILIKE' => '%' . trim($search) . '%',
+                    'Invoices.number::text ILIKE' => '%' . trim($search) . '%',
+                    'Invoices.variable_symbol::text ILIKE' => '%' . trim($search) . '%',
+                ],
+            ];
+        }
+
         $this->paginate = [
             'contain' => ['Customers'],
             'order' => [
                 'Invoices.id' => 'DESC',
             ],
+            'conditions' => $conditions,
         ];
         $invoices = $this->paginate($this->Invoices);
 
