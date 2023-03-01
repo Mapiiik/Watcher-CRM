@@ -31,6 +31,24 @@ class InvoicesController extends AppController
         ];
         $invoices = $this->paginate($this->Invoices);
 
+        // notify about unsent invoices
+        $unsent_invoices = $this->Invoices->find()
+            ->where([
+                'send_by_email' => true,
+                'email_sent IS NULL',
+            ])
+            ->count();
+
+        if ($unsent_invoices > 0) {
+            $this->Flash->warning(__dn(
+                'bookkeeping_pohoda',
+                'Invoice to send in the queue, {0} email left.',
+                'Invoices to send in the queue, {0} emails left.',
+                $unsent_invoices,
+                $unsent_invoices,
+            ));
+        }
+
         // get debts
         $query = $this->Invoices->find();
         $query = $query

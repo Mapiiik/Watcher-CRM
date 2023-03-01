@@ -4,9 +4,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-01-07 23:38+0100\n"
-"PO-Revision-Date: 2023-01-07 23:40+0100\n"
-"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2023-03-01 13:59+0100\n"
+"PO-Revision-Date: 2023-03-01 14:04+0100\n"
+"Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
@@ -49,48 +49,55 @@ msgstr "Odebrán záznam IPv6 {0} z {1}."
 msgid "Added IPv6 record {0} to {1}."
 msgstr "Přidán záznam IPv6 {0} do {1}."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:108
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:133
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:126
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:151
 msgid "The invoice has been saved."
 msgstr "Faktura byla uložena."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:112
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:137
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:130
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:155
 msgid "The invoice could not be saved. Please, try again."
 msgstr "Fakturu nelze uložit. Zkuste to prosím znovu."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:155
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:173
 msgid "The invoice has been deleted."
 msgstr "Faktura byla odstraněna."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:157
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:175
 msgid "The invoice could not be deleted. Please, try again."
 msgstr "Fakturu nelze odstranit. Zkuste to prosím znovu."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:182
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:200
 msgid "The invoices has been marked to be sent by email ({0})."
 msgstr "Faktury byly označeny k odeslání e-mailem ({0})."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:190
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:208
 msgid "No invoices could be marked to be sent by email. Please, try again."
 msgstr ""
 "Žádné faktury nelze označit k odeslání e-mailem. Zkuste to prosím znovu."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:506
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:524
 msgid "The import file is missing some required columns."
 msgstr "V souboru importu chybí některé povinné sloupce."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:542
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:560
 msgid "Invoice {0} could not be loaded."
 msgstr "Fakturu {0} nelze načíst."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:551
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:569
 msgid ""
 "Successfully imported {0} invoices. Created {1}, modified {2} and skipped "
 "{3} records."
 msgstr ""
 "Počet úspěšně importovaných faktur: {0}. Vytvořeno {1}, upraveno {2} a "
 "přeskočeno {3} záznamů."
+
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:43
+msgid "Invoice to send in the queue, {0} email left."
+msgid_plural "Invoices to send in the queue, {0} emails left."
+msgstr[0] "Faktura k odeslání ve frontě, zbývá {0} e-mail."
+msgstr[1] "Faktury k odeslání ve frontě, zbývají {0} e-maily."
+msgstr[2] "Faktury k odeslání ve frontě, zbývá {0} e-mailů."
 
 #: plugins/BookkeepingPohoda/templates/Invoices/add.php:11
 #: plugins/BookkeepingPohoda/templates/Invoices/edit.php:11
