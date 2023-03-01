@@ -33,7 +33,7 @@ foreach ($invoices as $invoice) {
         'dateAccounting' => $invoice->creation_date->i18nFormat('yyyy-MM-dd'),
         'dateDue' => $invoice->due_date->i18nFormat('yyyy-MM-dd'),
         'accounting' => [
-            'ids' => '2Fv',
+            'ids' => $tax_rate->accounting_assignment_code ?? '2Fv',
         ],
         'classificationVAT' => [
             'ids' => $tax_rate->reverse_charge ? 'UDpdp' : 'UD',
@@ -54,11 +54,11 @@ foreach ($invoices as $invoice) {
             'paymentType' => 'draft',
         ],
         'account' => [
-            'ids' => 'KB',
+            'ids' => $tax_rate->bank_account_code ?? 'KB',
         ],
         'symConst' => '0308',
         'activity' => [
-            'ids' => 'internet',
+            'ids' => $tax_rate->activity_code ?? 'internet',
         ],
         'note' => $invoice->note ?? '',
         'intNote' => $invoice->internal_note ?? '',

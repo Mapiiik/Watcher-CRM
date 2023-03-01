@@ -22,6 +22,13 @@ class TaxRatesFixture extends TestFixture
                 'name' => 'Lorem ipsum dolor sit amet',
                 'vat_rate' => 1,
                 'reverse_charge' => 1,
+                'created' => 1677660090,
+                'created_by' => 1,
+                'modified' => 1677660090,
+                'modified_by' => 1,
+                'accounting_assignment_code' => 'Lorem ipsum dolor sit amet',
+                'bank_account_code' => 'Lorem ipsum dolor sit amet',
+                'activity_code' => 'Lorem ipsum dolor sit amet',
             ],
         ];
         parent::init();

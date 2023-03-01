@@ -40,6 +40,18 @@
                             <th><?= __('Reverse Charge') ?></th>
                             <td><?= $taxRate->reverse_charge ? __('Yes') : __('No'); ?></td>
                         </tr>
+                        <tr>
+                            <th><?= __('Accounting Assignment Code') ?></th>
+                            <td><?= h($taxRate->accounting_assignment_code) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Bank Account Code') ?></th>
+                            <td><?= h($taxRate->bank_account_code) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Activity Code') ?></th>
+                            <td><?= h($taxRate->activity_code) ?></td>
+                        </tr>
                     </table>
                 </div>
                 <div class="column">

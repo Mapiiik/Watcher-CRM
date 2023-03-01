@@ -18,6 +18,9 @@ use Cake\ORM\Entity;
  * @property string $name
  * @property float $vat_rate
  * @property bool $reverse_charge
+ * @property string|null $accounting_assignment_code
+ * @property string|null $bank_account_code
+ * @property string|null $activity_code
  *
  * @property \App\Model\Entity\Customer[] $customers
  */
@@ -33,13 +36,18 @@ class TaxRate extends Entity
      * @var array<string, bool>
      */
     protected $_accessible = [
+        'name' => true,
+        'vat_rate' => true,
+        'reverse_charge' => true,
         'created' => true,
         'created_by' => true,
         'modified' => true,
         'modified_by' => true,
-        'name' => true,
-        'vat_rate' => true,
-        'reverse_charge' => true,
+        'accounting_assignment_code' => true,
+        'bank_account_code' => true,
+        'activity_code' => true,
+        'creator' => true,
+        'modifier' => true,
         'customers' => true,
     ];
 }

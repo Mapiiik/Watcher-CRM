@@ -70,6 +70,21 @@ class TaxRatesTable extends AppTable
             ->boolean('reverse_charge')
             ->notEmptyString('reverse_charge');
 
+        $validator
+            ->scalar('accounting_assignment_code')
+            ->maxLength('accounting_assignment_code', 255)
+            ->allowEmptyString('accounting_assignment_code');
+
+        $validator
+            ->scalar('bank_account_code')
+            ->maxLength('bank_account_code', 255)
+            ->allowEmptyString('bank_account_code');
+
+        $validator
+            ->scalar('activity_code')
+            ->maxLength('activity_code', 255)
+            ->allowEmptyString('activity_code');
+
         return $validator;
     }
 }
