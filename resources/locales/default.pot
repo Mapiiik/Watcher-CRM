@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-02-18 15:19+0100\n"
+"POT-Creation-Date: 2023-03-01 12:27+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -369,7 +369,7 @@ msgstr ""
 #: ./templates/Customers/index.php:47
 #: ./templates/Customers/view.php:78
 #: ./templates/Customers/view.php:521
-#: ./templates/TaxRates/view.php:98
+#: ./templates/TaxRates/view.php:110
 msgid "Contracts"
 msgstr ""
 
@@ -1047,7 +1047,7 @@ msgstr ""
 #: ./templates/TaskTypes/index.php:37
 #: ./templates/TaskTypes/view.php:38
 #: ./templates/TaskTypes/view.php:42
-#: ./templates/TaxRates/index.php:37
+#: ./templates/TaxRates/index.php:40
 #: ./templates/TaxRates/view.php:41
 #: ./templates/element/Contracts/Billings.php:50
 #: ./templates/element/Contracts/Billings.php:51
@@ -1141,7 +1141,7 @@ msgstr ""
 #: ./templates/TaskTypes/index.php:37
 #: ./templates/TaskTypes/view.php:38
 #: ./templates/TaskTypes/view.php:42
-#: ./templates/TaxRates/index.php:37
+#: ./templates/TaxRates/index.php:40
 #: ./templates/TaxRates/view.php:41
 #: ./templates/element/Contracts/Billings.php:50
 #: ./templates/element/Contracts/Billings.php:51
@@ -1410,9 +1410,9 @@ msgstr ""
 #: ./templates/Tasks/view.php:11
 #: ./templates/TaxRates/add.php:10
 #: ./templates/TaxRates/edit.php:10
-#: ./templates/TaxRates/index.php:29
+#: ./templates/TaxRates/index.php:32
 #: ./templates/TaxRates/view.php:10
-#: ./templates/TaxRates/view.php:100
+#: ./templates/TaxRates/view.php:112
 #: ./templates/element/Contracts/Billings.php:29
 #: ./templates/element/Contracts/BorrowedEquipments.php:19
 #: ./templates/element/Contracts/ContractVersions.php:17
@@ -1497,8 +1497,8 @@ msgstr ""
 #: ./templates/TaskTypes/edit.php:30
 #: ./templates/Tasks/add.php:89
 #: ./templates/Tasks/edit.php:94
-#: ./templates/TaxRates/add.php:25
-#: ./templates/TaxRates/edit.php:30
+#: ./templates/TaxRates/add.php:28
+#: ./templates/TaxRates/edit.php:33
 #: ./templates/plugin/CakeDC/Users/Users/add.php:33
 #: ./templates/plugin/CakeDC/Users/Users/edit.php:53
 msgid "Submit"
@@ -1579,8 +1579,8 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:153
 #: ./templates/Tasks/edit.php:19
 #: ./templates/TaxRates/edit.php:12
-#: ./templates/TaxRates/index.php:46
-#: ./templates/TaxRates/view.php:131
+#: ./templates/TaxRates/index.php:52
+#: ./templates/TaxRates/view.php:143
 #: ./templates/element/Contracts/Billings.php:64
 #: ./templates/element/Contracts/BorrowedEquipments.php:59
 #: ./templates/element/Contracts/ContractVersions.php:43
@@ -1697,9 +1697,9 @@ msgstr ""
 #: ./templates/Tasks/edit.php:21
 #: ./templates/Tasks/view.php:16
 #: ./templates/TaxRates/edit.php:14
-#: ./templates/TaxRates/index.php:48
+#: ./templates/TaxRates/index.php:54
 #: ./templates/TaxRates/view.php:19
-#: ./templates/TaxRates/view.php:133
+#: ./templates/TaxRates/view.php:145
 #: ./templates/element/Contracts/Billings.php:66
 #: ./templates/element/Contracts/BorrowedEquipments.php:66
 #: ./templates/element/Contracts/ContractVersions.php:45
@@ -1904,8 +1904,8 @@ msgstr ""
 #: ./templates/TaskTypes/index.php:39
 #: ./templates/TaskTypes/view.php:144
 #: ./templates/Tasks/index.php:122
-#: ./templates/TaxRates/index.php:39
-#: ./templates/TaxRates/view.php:122
+#: ./templates/TaxRates/index.php:45
+#: ./templates/TaxRates/view.php:134
 #: ./templates/element/Contracts/Billings.php:55
 #: ./templates/element/Contracts/BorrowedEquipments.php:42
 #: ./templates/element/Contracts/ContractVersions.php:34
@@ -1969,8 +1969,8 @@ msgstr ""
 #: ./templates/TaskTypes/index.php:41
 #: ./templates/TaskTypes/view.php:148
 #: ./templates/Tasks/index.php:124
-#: ./templates/TaxRates/index.php:41
-#: ./templates/TaxRates/view.php:126
+#: ./templates/TaxRates/index.php:47
+#: ./templates/TaxRates/view.php:138
 #: ./templates/element/Contracts/Billings.php:59
 #: ./templates/element/Contracts/BorrowedEquipments.php:50
 #: ./templates/element/Contracts/ContractVersions.php:38
@@ -2011,7 +2011,7 @@ msgstr ""
 #: ./templates/TaskStates/index.php:58
 #: ./templates/TaskTypes/index.php:58
 #: ./templates/Tasks/index.php:136
-#: ./templates/TaxRates/index.php:58
+#: ./templates/TaxRates/index.php:64
 #: ./templates/plugin/CakeDC/Users/Users/index.php:73
 msgid "first"
 msgstr ""
@@ -2043,7 +2043,7 @@ msgstr ""
 #: ./templates/TaskStates/index.php:59
 #: ./templates/TaskTypes/index.php:59
 #: ./templates/Tasks/index.php:137
-#: ./templates/TaxRates/index.php:59
+#: ./templates/TaxRates/index.php:65
 #: ./templates/plugin/CakeDC/Users/Users/index.php:74
 msgid "previous"
 msgstr ""
@@ -2075,7 +2075,7 @@ msgstr ""
 #: ./templates/TaskStates/index.php:61
 #: ./templates/TaskTypes/index.php:61
 #: ./templates/Tasks/index.php:139
-#: ./templates/TaxRates/index.php:61
+#: ./templates/TaxRates/index.php:67
 #: ./templates/plugin/CakeDC/Users/Users/index.php:76
 msgid "next"
 msgstr ""
@@ -2107,7 +2107,7 @@ msgstr ""
 #: ./templates/TaskStates/index.php:62
 #: ./templates/TaskTypes/index.php:62
 #: ./templates/Tasks/index.php:140
-#: ./templates/TaxRates/index.php:62
+#: ./templates/TaxRates/index.php:68
 #: ./templates/plugin/CakeDC/Users/Users/index.php:77
 msgid "last"
 msgstr ""
@@ -2139,7 +2139,7 @@ msgstr ""
 #: ./templates/TaskStates/index.php:65
 #: ./templates/TaskTypes/index.php:65
 #: ./templates/Tasks/index.php:143
-#: ./templates/TaxRates/index.php:65
+#: ./templates/TaxRates/index.php:71
 #: ./templates/plugin/CakeDC/Users/Users/index.php:80
 msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
 msgstr ""
@@ -2190,7 +2190,7 @@ msgstr ""
 #: ./templates/Customers/print.php:33
 #: ./templates/Customers/view.php:129
 #: ./templates/Customers/view.php:446
-#: ./templates/TaxRates/view.php:93
+#: ./templates/TaxRates/view.php:105
 msgid "Company"
 msgstr ""
 
@@ -2199,7 +2199,7 @@ msgstr ""
 #: ./templates/Customers/print.php:37
 #: ./templates/Customers/view.php:133
 #: ./templates/Customers/view.php:447
-#: ./templates/TaxRates/view.php:94
+#: ./templates/TaxRates/view.php:106
 msgid "Title"
 msgstr ""
 
@@ -2208,7 +2208,7 @@ msgstr ""
 #: ./templates/Customers/print.php:41
 #: ./templates/Customers/view.php:137
 #: ./templates/Customers/view.php:448
-#: ./templates/TaxRates/view.php:95
+#: ./templates/TaxRates/view.php:107
 #: ./templates/plugin/CakeDC/Users/Users/view.php:51
 msgid "First Name"
 msgstr ""
@@ -2218,7 +2218,7 @@ msgstr ""
 #: ./templates/Customers/print.php:45
 #: ./templates/Customers/view.php:141
 #: ./templates/Customers/view.php:449
-#: ./templates/TaxRates/view.php:96
+#: ./templates/TaxRates/view.php:108
 #: ./templates/plugin/CakeDC/Users/Users/view.php:55
 msgid "Last Name"
 msgstr ""
@@ -2228,7 +2228,7 @@ msgstr ""
 #: ./templates/Customers/print.php:49
 #: ./templates/Customers/view.php:145
 #: ./templates/Customers/view.php:450
-#: ./templates/TaxRates/view.php:97
+#: ./templates/TaxRates/view.php:109
 msgid "Suffix"
 msgstr ""
 
@@ -2248,7 +2248,7 @@ msgstr ""
 #: ./templates/Customers/view.php:452
 #: ./templates/Customers/view.php:526
 #: ./templates/ServiceTypes/view.php:186
-#: ./templates/TaxRates/view.php:92
+#: ./templates/TaxRates/view.php:104
 msgid "Number"
 msgstr ""
 
@@ -2314,7 +2314,7 @@ msgstr ""
 #: ./templates/TaskStates/view.php:49
 #: ./templates/TaskTypes/view.php:49
 #: ./templates/Tasks/view.php:117
-#: ./templates/TaxRates/view.php:48
+#: ./templates/TaxRates/view.php:60
 #: ./templates/email/html/task_notification.php:118
 msgid "Id"
 msgstr ""
@@ -2349,7 +2349,7 @@ msgstr ""
 #: ./templates/TaskStates/view.php:53
 #: ./templates/TaskTypes/view.php:53
 #: ./templates/Tasks/view.php:121
-#: ./templates/TaxRates/view.php:52
+#: ./templates/TaxRates/view.php:64
 #: ./templates/email/html/task_notification.php:122
 #: ./templates/plugin/CakeDC/Users/Users/view.php:115
 #: ./templates/plugin/CakeDC/Users/Users/view.php:142
@@ -2385,7 +2385,7 @@ msgstr ""
 #: ./templates/TaskStates/view.php:57
 #: ./templates/TaskTypes/view.php:57
 #: ./templates/Tasks/view.php:125
-#: ./templates/TaxRates/view.php:56
+#: ./templates/TaxRates/view.php:68
 #: ./templates/email/html/task_notification.php:126
 msgid "Created By"
 msgstr ""
@@ -2419,7 +2419,7 @@ msgstr ""
 #: ./templates/TaskStates/view.php:69
 #: ./templates/TaskTypes/view.php:69
 #: ./templates/Tasks/view.php:137
-#: ./templates/TaxRates/view.php:68
+#: ./templates/TaxRates/view.php:80
 #: ./templates/email/html/task_notification.php:130
 #: ./templates/plugin/CakeDC/Users/Users/view.php:119
 #: ./templates/plugin/CakeDC/Users/Users/view.php:143
@@ -2455,7 +2455,7 @@ msgstr ""
 #: ./templates/TaskStates/view.php:73
 #: ./templates/TaskTypes/view.php:73
 #: ./templates/Tasks/view.php:141
-#: ./templates/TaxRates/view.php:72
+#: ./templates/TaxRates/view.php:84
 #: ./templates/email/html/task_notification.php:134
 msgid "Modified By"
 msgstr ""
@@ -3130,7 +3130,7 @@ msgstr ""
 #: ./templates/Customers/index.php:48
 #: ./templates/Customers/view.php:98
 #: ./templates/Ips/index.php:22
-#: ./templates/TaxRates/view.php:99
+#: ./templates/TaxRates/view.php:111
 msgid "IP Addresses"
 msgstr ""
 
@@ -4549,7 +4549,19 @@ msgstr ""
 msgid "Reverse Charge"
 msgstr ""
 
-#: ./templates/TaxRates/view.php:87
+#: ./templates/TaxRates/view.php:44
+msgid "Accounting Assignment Code"
+msgstr ""
+
+#: ./templates/TaxRates/view.php:48
+msgid "Bank Account Code"
+msgstr ""
+
+#: ./templates/TaxRates/view.php:52
+msgid "Activity Code"
+msgstr ""
+
+#: ./templates/TaxRates/view.php:99
 msgid "Related Customers"
 msgstr ""
 
