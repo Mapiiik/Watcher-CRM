@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-03-07 14:24+0000\n"
+"POT-Creation-Date: 2023-03-06 11:26+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,27 +14,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ./plugins/Ruian/src/Controller/AddressesController.php:59
-#: ./plugins/Ruian/src/Controller/AddressesController.php:83
+#: ./plugins/Ruian/src/Controller/AddressesController.php:80
+#: ./plugins/Ruian/src/Controller/AddressesController.php:104
 msgid "The address has been saved."
 msgstr ""
 
-#: ./plugins/Ruian/src/Controller/AddressesController.php:63
-#: ./plugins/Ruian/src/Controller/AddressesController.php:87
+#: ./plugins/Ruian/src/Controller/AddressesController.php:84
+#: ./plugins/Ruian/src/Controller/AddressesController.php:108
 msgid "The address could not be saved. Please, try again."
 msgstr ""
 
-#: ./plugins/Ruian/src/Controller/AddressesController.php:104
+#: ./plugins/Ruian/src/Controller/AddressesController.php:125
 msgid "The address has been deleted."
 msgstr ""
 
-#: ./plugins/Ruian/src/Controller/AddressesController.php:106
+#: ./plugins/Ruian/src/Controller/AddressesController.php:127
 msgid "The address could not be deleted. Please, try again."
 msgstr ""
 
 #: ./plugins/Ruian/templates/Addresses/add.php:10
 #: ./plugins/Ruian/templates/Addresses/edit.php:10
-#: ./plugins/Ruian/templates/Addresses/index.php:37
+#: ./plugins/Ruian/templates/Addresses/index.php:49
 #: ./plugins/Ruian/templates/Addresses/view.php:10
 msgid "Actions"
 msgstr ""
@@ -55,12 +55,12 @@ msgid "Submit"
 msgstr ""
 
 #: ./plugins/Ruian/templates/Addresses/edit.php:12
-#: ./plugins/Ruian/templates/Addresses/index.php:70
+#: ./plugins/Ruian/templates/Addresses/index.php:82
 msgid "Delete"
 msgstr ""
 
 #: ./plugins/Ruian/templates/Addresses/edit.php:15
-#: ./plugins/Ruian/templates/Addresses/index.php:72
+#: ./plugins/Ruian/templates/Addresses/index.php:84
 #: ./plugins/Ruian/templates/Addresses/view.php:20
 msgid "Are you sure you want to delete # {0}?"
 msgstr ""
@@ -70,40 +70,44 @@ msgstr ""
 msgid "Edit Address"
 msgstr ""
 
-#: ./plugins/Ruian/templates/Addresses/index.php:9
+#: ./plugins/Ruian/templates/Addresses/index.php:11
+msgid "Search"
+msgstr ""
+
+#: ./plugins/Ruian/templates/Addresses/index.php:21
 #: ./plugins/Ruian/templates/Addresses/view.php:30
 msgid "New Address"
 msgstr ""
 
-#: ./plugins/Ruian/templates/Addresses/index.php:13
+#: ./plugins/Ruian/templates/Addresses/index.php:25
 msgid "Addresses"
 msgstr ""
 
-#: ./plugins/Ruian/templates/Addresses/index.php:63
+#: ./plugins/Ruian/templates/Addresses/index.php:75
 msgid "View"
 msgstr ""
 
-#: ./plugins/Ruian/templates/Addresses/index.php:65
+#: ./plugins/Ruian/templates/Addresses/index.php:77
 msgid "Edit"
 msgstr ""
 
-#: ./plugins/Ruian/templates/Addresses/index.php:82
+#: ./plugins/Ruian/templates/Addresses/index.php:94
 msgid "first"
 msgstr ""
 
-#: ./plugins/Ruian/templates/Addresses/index.php:83
+#: ./plugins/Ruian/templates/Addresses/index.php:95
 msgid "previous"
 msgstr ""
 
-#: ./plugins/Ruian/templates/Addresses/index.php:85
+#: ./plugins/Ruian/templates/Addresses/index.php:97
 msgid "next"
 msgstr ""
 
-#: ./plugins/Ruian/templates/Addresses/index.php:86
+#: ./plugins/Ruian/templates/Addresses/index.php:98
 msgid "last"
 msgstr ""
 
-#: ./plugins/Ruian/templates/Addresses/index.php:89
+#: ./plugins/Ruian/templates/Addresses/index.php:101
 msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
 msgstr ""
 

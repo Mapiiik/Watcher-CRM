@@ -4,38 +4,38 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2022-03-07 14:24+0000\n"
-"PO-Revision-Date: 2022-03-07 16:20+0100\n"
-"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2023-03-06 11:26+0100\n"
+"PO-Revision-Date: 2023-03-06 11:28+0100\n"
+"Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
-#: plugins/Ruian/src/Controller/AddressesController.php:59
-#: plugins/Ruian/src/Controller/AddressesController.php:83
+#: plugins/Ruian/src/Controller/AddressesController.php:80
+#: plugins/Ruian/src/Controller/AddressesController.php:104
 msgid "The address has been saved."
 msgstr "Adresa byla uložena."
 
-#: plugins/Ruian/src/Controller/AddressesController.php:63
-#: plugins/Ruian/src/Controller/AddressesController.php:87
+#: plugins/Ruian/src/Controller/AddressesController.php:84
+#: plugins/Ruian/src/Controller/AddressesController.php:108
 msgid "The address could not be saved. Please, try again."
 msgstr "Adresu nelze uložit. Opakujte akci."
 
-#: plugins/Ruian/src/Controller/AddressesController.php:104
+#: plugins/Ruian/src/Controller/AddressesController.php:125
 msgid "The address has been deleted."
 msgstr "Adresa byla odstraněna."
 
-#: plugins/Ruian/src/Controller/AddressesController.php:106
+#: plugins/Ruian/src/Controller/AddressesController.php:127
 msgid "The address could not be deleted. Please, try again."
 msgstr "Adresu nelze odstranit. Opakujte akci."
 
 #: plugins/Ruian/templates/Addresses/add.php:10
 #: plugins/Ruian/templates/Addresses/edit.php:10
-#: plugins/Ruian/templates/Addresses/index.php:37
+#: plugins/Ruian/templates/Addresses/index.php:49
 #: plugins/Ruian/templates/Addresses/view.php:10
 msgid "Actions"
 msgstr "Akce"
@@ -56,12 +56,12 @@ msgid "Submit"
 msgstr "Potvrdit"
 
 #: plugins/Ruian/templates/Addresses/edit.php:12
-#: plugins/Ruian/templates/Addresses/index.php:70
+#: plugins/Ruian/templates/Addresses/index.php:82
 msgid "Delete"
 msgstr "Odstranit"
 
 #: plugins/Ruian/templates/Addresses/edit.php:15
-#: plugins/Ruian/templates/Addresses/index.php:72
+#: plugins/Ruian/templates/Addresses/index.php:84
 #: plugins/Ruian/templates/Addresses/view.php:20
 msgid "Are you sure you want to delete # {0}?"
 msgstr "Opravdu chcete odstranit # {0}?"
@@ -71,40 +71,44 @@ msgstr "Opravdu chcete odstranit # {0}?"
 msgid "Edit Address"
 msgstr "Upravit adresu"
 
-#: plugins/Ruian/templates/Addresses/index.php:9
+#: plugins/Ruian/templates/Addresses/index.php:11
+msgid "Search"
+msgstr "Hledat"
+
+#: plugins/Ruian/templates/Addresses/index.php:21
 #: plugins/Ruian/templates/Addresses/view.php:30
 msgid "New Address"
 msgstr "Nová adresa"
 
-#: plugins/Ruian/templates/Addresses/index.php:13
+#: plugins/Ruian/templates/Addresses/index.php:25
 msgid "Addresses"
 msgstr "Adresy"
 
-#: plugins/Ruian/templates/Addresses/index.php:63
+#: plugins/Ruian/templates/Addresses/index.php:75
 msgid "View"
 msgstr "Zobrazit"
 
-#: plugins/Ruian/templates/Addresses/index.php:65
+#: plugins/Ruian/templates/Addresses/index.php:77
 msgid "Edit"
 msgstr "Upravit"
 
-#: plugins/Ruian/templates/Addresses/index.php:82
+#: plugins/Ruian/templates/Addresses/index.php:94
 msgid "first"
 msgstr "první"
 
-#: plugins/Ruian/templates/Addresses/index.php:83
+#: plugins/Ruian/templates/Addresses/index.php:95
 msgid "previous"
 msgstr "předchozí"
 
-#: plugins/Ruian/templates/Addresses/index.php:85
+#: plugins/Ruian/templates/Addresses/index.php:97
 msgid "next"
 msgstr "další"
 
-#: plugins/Ruian/templates/Addresses/index.php:86
+#: plugins/Ruian/templates/Addresses/index.php:98
 msgid "last"
 msgstr "poslední"
 
-#: plugins/Ruian/templates/Addresses/index.php:89
+#: plugins/Ruian/templates/Addresses/index.php:101
 msgid ""
 "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} "
 "total"
