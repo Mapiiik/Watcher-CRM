@@ -18,10 +18,31 @@ class AddressesController extends AppController
      */
     public function index()
     {
+        // filter
+        $conditions = [];
+
+        // search
+        $search = $this->request->getQuery('search');
+        if (!empty($search)) {
+            $conditions[] = [
+                'OR' => [
+                    'Addresses.kod_adm::text ILIKE' => '%' . trim($search) . '%',
+                    'Addresses.obec_nazev ILIKE' => '%' . trim($search) . '%',
+                    'Addresses.momc_nazev ILIKE' => '%' . trim($search) . '%',
+                    'Addresses.mop_nazev ILIKE' => '%' . trim($search) . '%',
+                    'Addresses.cast_obce_nazev ILIKE' => '%' . trim($search) . '%',
+                    'Addresses.ulice_nazev ILIKE' => '%' . trim($search) . '%',
+                    'Addresses.cislo_domovni::text ILIKE' => '%' . trim($search) . '%',
+                    'Addresses.psc::text ILIKE' => '%' . trim($search) . '%',
+                ],
+            ];
+        }
+
         $this->paginate = [
             'order' => [
                 'Addresses.id' => 'DESC',
             ],
+            'conditions' => $conditions,
         ];
 
         $addresses = $this->paginate($this->Addresses);

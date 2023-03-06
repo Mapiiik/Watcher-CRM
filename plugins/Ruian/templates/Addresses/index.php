@@ -4,6 +4,18 @@
  * @var \Cake\Datasource\EntityInterface[]|\Cake\Collection\CollectionInterface $addresses
  */
 ?>
+<?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
+<div class="row">
+    <div class="column">
+        <?= $this->Form->control('search', [
+            'label' => __d('ruian', 'Search'),
+            'type' => 'search',
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+    </div>
+</div>
+<?= $this->Form->end() ?>
+
 <div class="addresses index content">
     <?= $this->Html->link(
         __d('ruian', 'New Address'),
