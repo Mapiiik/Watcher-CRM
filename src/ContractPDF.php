@@ -569,6 +569,7 @@ class ContractPDF extends TCPDF
             $this->Ln(6);
 
             // CASH PAYMENT
+            /*
             $this->SetFont('DejaVuSerif', 'B', 9);
             $this->Write(4, 'Úhrada v hotovosti');
             $this->Ln();
@@ -581,6 +582,7 @@ class ContractPDF extends TCPDF
             $this->Ln(4);
             $this->MultiCell(180, 4, 'Placeno hotově: ____________________,- Kč, podpis příjemce: ____________________' . PHP_EOL, 0, 'J');
             $this->Ln(6);
+            */
 
             // CONNECTION POINT STATE
             $this->SetFont('DejaVuSerif', 'B', 9);
@@ -622,7 +624,7 @@ class ContractPDF extends TCPDF
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', '', 8);
-            $this->MultiCell(180, 4, 'Uživatel svým podpisem stvrzuje, že výše uvedená zařízení převzal nainstalovaná a plně funkční, a zároveň se zavazuje uhradit částku aktivačního poplatku i cenu dodaných zařízení a příslušenství a prací nad rámec aktivačního poplatku nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené výše).' . PHP_EOL, 0, 'J');
+            $this->MultiCell(180, 4, 'Uživatel svým podpisem stvrzuje, že výše uvedená zařízení převzal nainstalovaná a plně funkční, a zároveň se zavazuje uhradit částku aktivačního poplatku i cenu dodaných zařízení a příslušenství a prací nad rámec aktivačního poplatku nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené příjmovým pokladním dokladem).' . PHP_EOL, 0, 'J');
             $this->Ln(3);
             $this->MultiCell(180, 4, 'Uživatel dále potvrzuje, že  souhlasí s provedenou instalací a nemá vůči ní žádné námitky a zároveň prohlašuje, že objednané služby jsou plně funkční.' . PHP_EOL, 0, 'J');
             $this->Ln(3);
