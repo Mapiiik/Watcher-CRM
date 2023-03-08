@@ -375,7 +375,7 @@
                             || $contract->has('uninstallation_date')
                         ) : ?>
                             <?= $this->AuthLink->postLink(
-                                __('Set dates for related borrowed equipments'),
+                                __('Set Dates Automatically'),
                                 ['action' => 'setDatesForRelatedBorrowedEquipments', $contract->id],
                                 [
                                     'confirm' => __(
