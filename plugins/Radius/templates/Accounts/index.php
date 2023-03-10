@@ -68,7 +68,10 @@
                     <td><?= h($account->created) ?></td>
                     <td><?= h($account->modified) ?></td>
                     <td class="actions">
-                        <?= $this->AuthLink->link(__d('radius', 'Monitoring'), ['action' => 'monitoring', $account->id]) ?>
+                        <?= $this->AuthLink->link(
+                            __d('radius', 'Monitoring'),
+                            ['action' => 'monitoring', $account->id]
+                        ) ?>
                         <?= $this->AuthLink->link(__d('radius', 'View'), ['action' => 'view', $account->id]) ?>
                         <?= $this->AuthLink->link(
                             __d('radius', 'Edit'),

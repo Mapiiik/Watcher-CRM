@@ -91,7 +91,10 @@
                             ['action' => 'download', $invoice->id],
                             ['target' => '_blank']
                         ) ?>
-                        <?= $this->AuthLink->link(__d('bookkeeping_pohoda', 'View'), ['action' => 'view', $invoice->id]) ?>
+                        <?= $this->AuthLink->link(
+                            __d('bookkeeping_pohoda', 'View'),
+                            ['action' => 'view', $invoice->id]
+                        ) ?>
                         <?= $this->AuthLink->link(
                             __d('bookkeeping_pohoda', 'Edit'),
                             ['action' => 'edit', $invoice->id],
