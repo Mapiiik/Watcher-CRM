@@ -17,7 +17,7 @@
 <?= $this->Form->end() ?>
 
 <div class="taxRates index content">
-    <?= $this->Html->link(__('New Tax Rate'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
+    <?= $this->AuthLink->link(__('New Tax Rate'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
     <h3><?= __('Tax Rates') ?></h3>
     <div class="table-responsive">
         <table>
@@ -42,13 +42,13 @@
                     <td><?= h($taxRate->bank_account_code) ?></td>
                     <td><?= h($taxRate->activity_code) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $taxRate->id]) ?>
-                        <?= $this->Html->link(
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $taxRate->id]) ?>
+                        <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $taxRate->id],
                             ['class' => 'win-link']
                         ) ?>
-                        <?= $this->Form->postLink(
+                        <?= $this->AuthLink->postLink(
                             __('Delete'),
                             ['action' => 'delete', $taxRate->id],
                             ['confirm' => __('Are you sure you want to delete # {0}?', $taxRate->id)]

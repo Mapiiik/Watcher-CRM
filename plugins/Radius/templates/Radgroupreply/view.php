@@ -8,12 +8,12 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __d('radius', 'Actions') ?></h4>
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __d('radius', 'Edit RADIUS Group Reply'),
                 ['action' => 'edit', $radgroupreply->id],
                 ['class' => 'side-nav-item']
             ) ?>
-            <?= $this->Form->postLink(
+            <?= $this->AuthLink->postLink(
                 __d('radius', 'Delete RADIUS Group Reply'),
                 ['action' => 'delete', $radgroupreply->id],
                 [
@@ -21,12 +21,12 @@
                     'class' => 'side-nav-item',
                 ]
             ) ?>
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __d('radius', 'List RADIUS Group Replies'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item']
             ) ?>
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __d('radius', 'New RADIUS Group Reply'),
                 ['action' => 'add'],
                 ['class' => 'side-nav-item']
@@ -75,16 +75,16 @@
                             <td><?= h($radusergroup->groupname) ?></td>
                             <td><?= h($radusergroup->priority) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(
+                                <?= $this->AuthLink->link(
                                     __d('radius', 'View'),
                                     ['controller' => 'Radusergroup', 'action' => 'view', $radusergroup->id]
                                 ) ?>
-                                <?= $this->Html->link(
+                                <?= $this->AuthLink->link(
                                     __d('radius', 'Edit'),
                                     ['controller' => 'Radusergroup', 'action' => 'edit', $radusergroup->id],
                                     ['class' => 'win-link']
                                 ) ?>
-                                <?= $this->Form->postLink(
+                                <?= $this->AuthLink->postLink(
                                     __d('radius', 'Delete'),
                                     ['controller' => 'Radusergroup', 'action' => 'delete', $radusergroup->id],
                                     ['confirm' => __d(

@@ -17,8 +17,12 @@
 <?= $this->Form->end() ?>
 
 <div class="labels index content">
-    <?= $this->AuthLink->link(__('New Label'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
-    <?= $this->Form->postLink(
+    <?= $this->AuthLink->link(
+        __('New Label'),
+        ['action' => 'add'],
+        ['class' => 'button float-right win-link']
+    ) ?>
+    <?= $this->AuthLink->postLink(
         __('Update Related Customer Labels'),
         ['action' => 'updateRelatedCustomerLabels'],
         [

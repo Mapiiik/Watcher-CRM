@@ -9,12 +9,12 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __('Edit Removed IP Network'),
                 ['action' => 'edit', $removedIpNetwork->id],
                 ['class' => 'side-nav-item']
             ) ?>
-            <?= $this->Form->postLink(
+            <?= $this->AuthLink->postLink(
                 __('Delete Removed IP Network'),
                 ['action' => 'delete', $removedIpNetwork->id],
                 [
@@ -22,12 +22,12 @@
                     'class' => 'side-nav-item',
                 ]
             ) ?>
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __('List Removed IP Networks'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item']
             ) ?>
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __('New Removed IP Network'),
                 ['action' => 'add'],
                 ['class' => 'side-nav-item']

@@ -19,22 +19,22 @@
 <?= $this->Form->end() ?>
 
 <div class="invoices index content">
-    <?= $this->Html->link(
+    <?= $this->AuthLink->link(
         __d('bookkeeping_pohoda', 'New Invoice'),
         ['action' => 'add'],
         ['class' => 'button float-right win-link']
     ) ?>
-    <?= $this->Html->link(
+    <?= $this->AuthLink->link(
         __d('bookkeeping_pohoda', 'Send By Email'),
         ['action' => 'sendByEmail'],
         ['class' => 'button float-right']
     ) ?>
-    <?= $this->Html->link(
+    <?= $this->AuthLink->link(
         __d('bookkeeping_pohoda', 'Generate Invoices'),
         ['action' => 'generate'],
         ['class' => 'button float-right']
     ) ?>
-    <?= $this->Html->link(
+    <?= $this->AuthLink->link(
         __d('bookkeeping_pohoda', 'Import Invoices from DBF'),
         ['action' => 'importFromDBF'],
         ['class' => 'button float-right']
@@ -86,18 +86,18 @@
                     <td><?= h($invoice->created) ?></td>
                     <td><?= h($invoice->modified) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(
+                        <?= $this->AuthLink->link(
                             __d('bookkeeping_pohoda', 'Download'),
                             ['action' => 'download', $invoice->id],
                             ['target' => '_blank']
                         ) ?>
-                        <?= $this->Html->link(__d('bookkeeping_pohoda', 'View'), ['action' => 'view', $invoice->id]) ?>
-                        <?= $this->Html->link(
+                        <?= $this->AuthLink->link(__d('bookkeeping_pohoda', 'View'), ['action' => 'view', $invoice->id]) ?>
+                        <?= $this->AuthLink->link(
                             __d('bookkeeping_pohoda', 'Edit'),
                             ['action' => 'edit', $invoice->id],
                             ['class' => 'win-link']
                         ) ?>
-                        <?= $this->Form->postLink(
+                        <?= $this->AuthLink->postLink(
                             __d('bookkeeping_pohoda', 'Delete'),
                             ['action' => 'delete', $invoice->id],
                             ['confirm' => __d(

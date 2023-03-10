@@ -11,7 +11,7 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Form->postLink(
+            <?= $this->AuthLink->postLink(
                 __('Delete'),
                 ['action' => 'delete', $removedIpNetwork->id],
                 [
@@ -19,7 +19,7 @@
                     'class' => 'side-nav-item',
                 ]
             ) ?>
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __('List Removed IP Networks'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item']

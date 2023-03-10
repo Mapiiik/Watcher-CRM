@@ -8,7 +8,7 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __d('radius', 'Actions') ?></h4>
-            <?= $this->Form->postLink(
+            <?= $this->AuthLink->postLink(
                 __d('radius', 'Delete RADIUS User Group'),
                 ['action' => 'delete', $radusergroup->id],
                 [
@@ -16,7 +16,7 @@
                     'class' => 'side-nav-item',
                 ]
             ) ?>
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __d('radius', 'List RADIUS User Groups'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item']

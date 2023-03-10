@@ -8,12 +8,12 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __('Edit Contract State'),
                 ['action' => 'edit', $contractState->id],
                 ['class' => 'side-nav-item']
             ) ?>
-            <?= $this->Form->postLink(
+            <?= $this->AuthLink->postLink(
                 __('Delete Contract State'),
                 ['action' => 'delete', $contractState->id],
                 [
@@ -21,12 +21,12 @@
                     'class' => 'side-nav-item',
                 ]
             ) ?>
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __('List Contract States'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item']
             ) ?>
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __('New Contract State'),
                 ['action' => 'add'],
                 ['class' => 'side-nav-item']

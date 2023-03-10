@@ -8,7 +8,7 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __d('radius', 'Actions') ?></h4>
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __d('radius', 'List RADIUS Post Authentications'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item']

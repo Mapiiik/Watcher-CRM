@@ -8,7 +8,7 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __d('ruian', 'Actions') ?></h4>
-            <?= $this->Form->postLink(
+            <?= $this->AuthLink->postLink(
                 __d('ruian', 'Delete'),
                 ['action' => 'delete', $address->kod_adm],
                 [
@@ -16,7 +16,7 @@
                     'class' => 'side-nav-item',
                 ]
             ) ?>
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __d('ruian', 'List Addresses'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item']

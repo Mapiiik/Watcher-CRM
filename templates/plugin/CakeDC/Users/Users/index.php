@@ -8,7 +8,11 @@
 $users = ${$tableAlias};
 ?>
 <div class="users index content">
-    <?= $this->Html->link(__('New User'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(
+        __('New User'),
+        ['action' => 'add'],
+        ['class' => 'button float-right win-link']
+    ) ?>
     <h3><?= __('Users') ?></h3>
     <div class="table-responsive">
         <table>
@@ -43,21 +47,21 @@ $users = ${$tableAlias};
                     <td><?= h($user->created) ?></td>
                     <td><?= h($user->modified) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(
+                        <?= $this->AuthLink->link(
                             __('View'),
                             ['action' => 'view', $user->id]
                         ) ?>
-                        <?= $this->Html->link(
+                        <?= $this->AuthLink->link(
                             __('Change Password'),
                             ['action' => 'changePassword', $user->id],
                             ['class' => 'win-link']
                         ) ?>
-                        <?= $this->Html->link(
+                        <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $user->id],
                             ['class' => 'win-link']
                         ) ?>
-                        <?= $this->Form->postLink(
+                        <?= $this->AuthLink->postLink(
                             __('Delete'),
                             ['action' => 'delete', $user->id],
                             ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]

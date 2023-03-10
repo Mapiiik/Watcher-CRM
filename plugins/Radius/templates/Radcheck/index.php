@@ -5,7 +5,7 @@
  */
 ?>
 <div class="radcheck index content">
-    <?= $this->Html->link(
+    <?= $this->AuthLink->link(
         __d('radius', 'New RADIUS Check'),
         ['action' => 'add'],
         ['class' => 'button float-right win-link']
@@ -35,13 +35,13 @@
                     <td><?= h($radcheck->op) ?></td>
                     <td><?= h($radcheck->value) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__d('radius', 'View'), ['action' => 'view', $radcheck->id]) ?>
-                        <?= $this->Html->link(
+                        <?= $this->AuthLink->link(__d('radius', 'View'), ['action' => 'view', $radcheck->id]) ?>
+                        <?= $this->AuthLink->link(
                             __d('radius', 'Edit'),
                             ['action' => 'edit', $radcheck->id],
                             ['class' => 'win-link']
                         ) ?>
-                        <?= $this->Form->postLink(
+                        <?= $this->AuthLink->postLink(
                             __d('radius', 'Delete'),
                             ['action' => 'delete', $radcheck->id],
                             ['confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radcheck->id)]

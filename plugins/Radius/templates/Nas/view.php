@@ -8,12 +8,12 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __d('radius', 'Actions') ?></h4>
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __d('radius', 'Edit RADIUS NAS'),
                 ['action' => 'edit', $nas->id],
                 ['class' => 'side-nav-item']
             ) ?>
-            <?= $this->Form->postLink(
+            <?= $this->AuthLink->postLink(
                 __d('radius', 'Delete RADIUS NAS'),
                 ['action' => 'delete', $nas->id],
                 [
@@ -21,12 +21,12 @@
                     'class' => 'side-nav-item',
                 ]
             ) ?>
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __d('radius', 'List RADIUS NAS'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item']
             ) ?>
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __d('radius', 'New RADIUS NAS'),
                 ['action' => 'add'],
                 ['class' => 'side-nav-item']

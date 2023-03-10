@@ -113,7 +113,7 @@
                         $account->id,
                     ]
                 ) ?>
-                <?= $this->Form->postLink(
+                <?= $this->AuthLink->postLink(
                     __d('radius', 'Update'),
                     [
                         'plugin' => 'Radius',
@@ -125,7 +125,7 @@
                         'confirm' => __d('radius', 'Are you sure you want to update related records?'),
                     ]
                 ) ?>
-                <?= $this->Form->postLink(
+                <?= $this->AuthLink->postLink(
                     __d('radius', 'Disconnect'),
                     [
                         'plugin' => 'Radius',

@@ -50,7 +50,7 @@ use Cake\I18n\FrozenDate;
                 __d('bookkeeping_pohoda', 'Yes') : __d('bookkeeping_pohoda', 'No'); ?></td>
             <td><?= h($invoice->email_sent) ?></td>
             <td class="actions">
-                <?= $this->Html->link(
+                <?= $this->AuthLink->link(
                     __d('bookkeeping_pohoda', 'Download'),
                     ['plugin' => 'BookkeepingPohoda', 'controller' => 'Invoices', 'action' => 'download', $invoice->id],
                     ['target' => '_blank']

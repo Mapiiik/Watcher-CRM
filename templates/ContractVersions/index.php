@@ -17,7 +17,7 @@
 <?= $this->Form->end() ?>
 
 <div class="contractVersions index content">
-    <?= $this->Html->link(
+    <?= $this->AuthLink->link(
         __('New Contract Version'),
         ['action' => 'add'],
         ['class' => 'button float-right win-link']
@@ -50,16 +50,16 @@
                     <td><?= h($contractVersion->conclusion_date) ?></td>
                     <td><?= $this->Number->format($contractVersion->number_of_amendments) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(
+                        <?= $this->AuthLink->link(
                             __('View'),
                             ['action' => 'view', $contractVersion->id]
                         ) ?>
-                        <?= $this->Html->link(
+                        <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $contractVersion->id],
                             ['class' => 'win-link']
                         ) ?>
-                        <?= $this->Form->postLink(
+                        <?= $this->AuthLink->postLink(
                             __('Delete'),
                             ['action' => 'delete', $contractVersion->id],
                             ['confirm' => __('Are you sure you want to delete # {0}?', $contractVersion->id)]

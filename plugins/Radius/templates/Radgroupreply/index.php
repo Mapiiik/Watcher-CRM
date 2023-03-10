@@ -5,7 +5,7 @@
  */
 ?>
 <div class="radgroupreply index content">
-    <?= $this->Html->link(
+    <?= $this->AuthLink->link(
         __d('radius', 'New RADIUS Group Reply'),
         ['action' => 'add'],
         ['class' => 'button float-right win-link']
@@ -30,13 +30,13 @@
                     <td><?= h($radgroupreply->op) ?></td>
                     <td><?= h($radgroupreply->value) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__d('radius', 'View'), ['action' => 'view', $radgroupreply->id]) ?>
-                        <?= $this->Html->link(
+                        <?= $this->AuthLink->link(__d('radius', 'View'), ['action' => 'view', $radgroupreply->id]) ?>
+                        <?= $this->AuthLink->link(
                             __d('radius', 'Edit'),
                             ['action' => 'edit', $radgroupreply->id],
                             ['class' => 'win-link']
                         ) ?>
-                        <?= $this->Form->postLink(
+                        <?= $this->AuthLink->postLink(
                             __d('radius', 'Delete'),
                             ['action' => 'delete', $radgroupreply->id],
                             ['confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radgroupreply->id)]

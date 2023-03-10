@@ -9,7 +9,7 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __d('bookkeeping_pohoda', 'Actions') ?></h4>
-            <?= $this->Form->postLink(
+            <?= $this->AuthLink->postLink(
                 __d('bookkeeping_pohoda', 'Delete'),
                 ['action' => 'delete', $invoice->id],
                 [
@@ -17,7 +17,7 @@
                     'class' => 'side-nav-item',
                 ]
             ) ?>
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __d('bookkeeping_pohoda', 'List Invoices'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item']

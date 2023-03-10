@@ -17,7 +17,7 @@
 <?= $this->Form->end() ?>
 
 <div class="accounts index content">
-    <?= $this->Html->link(
+    <?= $this->AuthLink->link(
         __d('radius', 'New RADIUS Account'),
         ['action' => 'add'],
         ['class' => 'button float-right win-link']
@@ -68,14 +68,14 @@
                     <td><?= h($account->created) ?></td>
                     <td><?= h($account->modified) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__d('radius', 'Monitoring'), ['action' => 'monitoring', $account->id]) ?>
-                        <?= $this->Html->link(__d('radius', 'View'), ['action' => 'view', $account->id]) ?>
-                        <?= $this->Html->link(
+                        <?= $this->AuthLink->link(__d('radius', 'Monitoring'), ['action' => 'monitoring', $account->id]) ?>
+                        <?= $this->AuthLink->link(__d('radius', 'View'), ['action' => 'view', $account->id]) ?>
+                        <?= $this->AuthLink->link(
                             __d('radius', 'Edit'),
                             ['action' => 'edit', $account->id],
                             ['class' => 'win-link']
                         ) ?>
-                        <?= $this->Form->postLink(
+                        <?= $this->AuthLink->postLink(
                             __d('radius', 'Delete'),
                             ['action' => 'delete', $account->id],
                             ['confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $account->id)]

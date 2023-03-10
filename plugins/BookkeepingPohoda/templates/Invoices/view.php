@@ -8,12 +8,12 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __d('bookkeeping_pohoda', 'Actions') ?></h4>
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __d('bookkeeping_pohoda', 'Edit Invoice'),
                 ['action' => 'edit', $invoice->id],
                 ['class' => 'side-nav-item']
             ) ?>
-            <?= $this->Form->postLink(
+            <?= $this->AuthLink->postLink(
                 __d('bookkeeping_pohoda', 'Delete Invoice'),
                 ['action' => 'delete', $invoice->id],
                 [
@@ -21,18 +21,18 @@
                     'class' => 'side-nav-item',
                 ]
             ) ?>
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __d('bookkeeping_pohoda', 'List Invoices'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item']
             ) ?>
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __d('bookkeeping_pohoda', 'New Invoice'),
                 ['action' => 'add'],
                 ['class' => 'side-nav-item']
             ) ?>
             <br />
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __d('bookkeeping_pohoda', 'Download Invoice'),
                 ['action' => 'download', $invoice->id],
                 ['class' => 'side-nav-item', 'target' => '_blank']

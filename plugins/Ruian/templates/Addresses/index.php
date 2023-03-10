@@ -17,7 +17,7 @@
 <?= $this->Form->end() ?>
 
 <div class="addresses index content">
-    <?= $this->Html->link(
+    <?= $this->AuthLink->link(
         __d('ruian', 'New Address'),
         ['action' => 'add'],
         ['class' => 'button float-right win-link']
@@ -72,13 +72,13 @@
                     <td><?= h($address->geometry) ?></td>
                     <td><?= h($address->geometry_jtsk) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__d('ruian', 'View'), ['action' => 'view', $address->kod_adm]) ?>
-                        <?= $this->Html->link(
+                        <?= $this->AuthLink->link(__d('ruian', 'View'), ['action' => 'view', $address->kod_adm]) ?>
+                        <?= $this->AuthLink->link(
                             __d('ruian', 'Edit'),
                             ['action' => 'edit', $address->kod_adm],
                             ['class' => 'win-link']
                         ) ?>
-                        <?= $this->Form->postLink(
+                        <?= $this->AuthLink->postLink(
                             __d('ruian', 'Delete'),
                             ['action' => 'delete', $address->kod_adm],
                             ['confirm' => __d('ruian', 'Are you sure you want to delete # {0}?', $address->kod_adm)]

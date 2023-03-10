@@ -18,7 +18,11 @@
 <?= $this->Form->end() ?>
 
 <div class="ipNetworks index content">
-    <?= $this->Html->link(__('New IP Network'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->AuthLink->link(
+        __('New IP Network'),
+        ['action' => 'add'],
+        ['class' => 'button float-right']
+    ) ?>
     <h3><?= __('IP Networks') ?></h3>
     <div class="table-responsive">
         <table>
@@ -49,13 +53,16 @@
                     <td><?= h($ipNetwork->ip_network) ?></td>
                     <td><?= h($types_of_use[$ipNetwork->type_of_use]) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $ipNetwork->id]) ?>
-                        <?= $this->Html->link(
+                        <?= $this->AuthLink->link(
+                            __('View'),
+                            ['action' => 'view', $ipNetwork->id]
+                        ) ?>
+                        <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $ipNetwork->id],
                             ['class' => 'win-link']
                         ) ?>
-                        <?= $this->Form->postLink(
+                        <?= $this->AuthLink->postLink(
                             __('Delete'),
                             ['action' => 'delete', $ipNetwork->id],
                             ['confirm' => __('Are you sure you want to delete # {0}?', $ipNetwork->id)]

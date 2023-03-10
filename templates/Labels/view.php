@@ -24,7 +24,7 @@
     </aside>
     <div class="column column-90">
         <div class="labels view content">
-            <?= $this->Form->postLink(
+            <?= $this->AuthLink->postLink(
                 __('Update Related Customer Labels'),
                 ['action' => 'updateRelatedCustomerLabels', $label->id],
                 [

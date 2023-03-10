@@ -17,7 +17,11 @@
 <?= $this->Form->end() ?>
 
 <div class="contractStates index content">
-    <?= $this->Html->link(__('New Contract State'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
+    <?= $this->AuthLink->link(
+        __('New Contract State'),
+        ['action' => 'add'],
+        ['class' => 'button float-right win-link']
+    ) ?>
     <h3><?= __('Contract States') ?></h3>
     <div class="table-responsive">
         <table>
@@ -40,16 +44,16 @@
                     <td><?= $contractState->billed ? __('Yes') : __('No'); ?></td>
                     <td><?= $contractState->blocked ? __('Yes') : __('No'); ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(
+                        <?= $this->AuthLink->link(
                             __('View'),
                             ['action' => 'view', $contractState->id]
                         ) ?>
-                        <?= $this->Html->link(
+                        <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $contractState->id],
                             ['class' => 'win-link']
                         ) ?>
-                        <?= $this->Form->postLink(
+                        <?= $this->AuthLink->postLink(
                             __('Delete'),
                             ['action' => 'delete', $contractState->id],
                             ['confirm' => __('Are you sure you want to delete # {0}?', $contractState->id)]

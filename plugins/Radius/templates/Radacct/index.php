@@ -5,7 +5,7 @@
  */
 ?>
 <div class="radacct index content">
-    <?= $this->Html->link(
+    <?= $this->AuthLink->link(
         __d('radius', 'New RADIUS Accounting'),
         ['action' => 'add'],
         ['class' => 'button float-right win-link']
@@ -76,13 +76,13 @@
                     <td><?= h($radacct->framedipv6prefix) ?></td>
                     <td><?= h($radacct->delegatedipv6prefix) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__d('radius', 'View'), ['action' => 'view', $radacct->radacctid]) ?>
-                        <?= $this->Html->link(
+                        <?= $this->AuthLink->link(__d('radius', 'View'), ['action' => 'view', $radacct->radacctid]) ?>
+                        <?= $this->AuthLink->link(
                             __d('radius', 'Edit'),
                             ['action' => 'edit', $radacct->radacctid],
                             ['class' => 'win-link']
                         ) ?>
-                        <?= $this->Form->postLink(
+                        <?= $this->AuthLink->postLink(
                             __d('radius', 'Delete'),
                             ['action' => 'delete', $radacct->radacctid],
                             ['confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radacct->radacctid)]

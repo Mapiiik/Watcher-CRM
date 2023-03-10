@@ -5,7 +5,7 @@
  */
 ?>
 <div class="radusergroup index content">
-    <?= $this->Html->link(
+    <?= $this->AuthLink->link(
         __d('radius', 'New RADIUS User Group'),
         ['action' => 'add'],
         ['class' => 'button float-right win-link']
@@ -28,13 +28,13 @@
                     <td><?= h($radusergroup->groupname) ?></td>
                     <td><?= $this->Number->format($radusergroup->priority) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__d('radius', 'View'), ['action' => 'view', $radusergroup->id]) ?>
-                        <?= $this->Html->link(
+                        <?= $this->AuthLink->link(__d('radius', 'View'), ['action' => 'view', $radusergroup->id]) ?>
+                        <?= $this->AuthLink->link(
                             __d('radius', 'Edit'),
                             ['action' => 'edit', $radusergroup->id],
                             ['class' => 'win-link']
                         ) ?>
-                        <?= $this->Form->postLink(
+                        <?= $this->AuthLink->postLink(
                             __d('radius', 'Delete'),
                             ['action' => 'delete', $radusergroup->id],
                             ['confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radusergroup->id)]

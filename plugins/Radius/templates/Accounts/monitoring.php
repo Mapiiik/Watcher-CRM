@@ -12,12 +12,12 @@ use Cake\I18n\FrozenTime;
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __d('radius', 'Actions') ?></h4>
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __d('radius', 'Edit RADIUS Account'),
                 ['action' => 'edit', $account->id],
                 ['class' => 'side-nav-item']
             ) ?>
-            <?= $this->Form->postLink(
+            <?= $this->AuthLink->postLink(
                 __d('radius', 'Delete RADIUS Account'),
                 ['action' => 'delete', $account->id],
                 [
@@ -25,12 +25,12 @@ use Cake\I18n\FrozenTime;
                     'class' => 'side-nav-item',
                 ]
             ) ?>
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __d('radius', 'List RADIUS Accounts'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item']
             ) ?>
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __d('radius', 'New RADIUS Account'),
                 ['action' => 'add'],
                 ['class' => 'side-nav-item']
@@ -39,12 +39,12 @@ use Cake\I18n\FrozenTime;
     </aside>
     <div class="column column-90">
         <div class="accounts view content">
-            <?= $this->Html->link(
+            <?= $this->AuthLink->link(
                 __d('radius', 'View RADIUS Account'),
                 ['action' => 'view', $account->id],
                 ['class' => 'button float-right']
             ) ?>
-            <?= $this->Form->postLink(
+            <?= $this->AuthLink->postLink(
                 __d('radius', 'RADIUS Disconnect Request'),
                 ['action' => 'disconnectRequest', $account->id],
                 [
@@ -246,16 +246,16 @@ use Cake\I18n\FrozenTime;
                             <td><?= $this->Number->toReadableSize($radacct->acctinputoctets) ?></td>
                             <td><?= $this->Number->toReadableSize($radacct->acctoutputoctets) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(
+                                <?= $this->AuthLink->link(
                                     __d('radius', 'View'),
                                     ['controller' => 'Radacct', 'action' => 'view', $radacct->radacctid]
                                 ) ?>
-                                <?= $this->Html->link(
+                                <?= $this->AuthLink->link(
                                     __d('radius', 'Edit'),
                                     ['controller' => 'Radacct', 'action' => 'edit', $radacct->radacctid],
                                     ['class' => 'win-link']
                                 ) ?>
-                                <?= $this->Form->postLink(
+                                <?= $this->AuthLink->postLink(
                                     __d('radius', 'Delete'),
                                     ['controller' => 'Radacct', 'action' => 'delete', $radacct->radacctid],
                                     ['confirm' => __d(
@@ -296,16 +296,16 @@ use Cake\I18n\FrozenTime;
                             <td><?= h($radpostauth->callingstationid) ?></td>
                             <td><?= h($radpostauth->authdate) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(
+                                <?= $this->AuthLink->link(
                                     __d('radius', 'View'),
                                     ['controller' => 'Radpostauth', 'action' => 'view', $radpostauth->id]
                                 ) ?>
-                                <?= $this->Html->link(
+                                <?= $this->AuthLink->link(
                                     __d('radius', 'Edit'),
                                     ['controller' => 'Radpostauth', 'action' => 'edit', $radpostauth->id],
                                     ['class' => 'win-link']
                                 ) ?>
-                                <?= $this->Form->postLink(
+                                <?= $this->AuthLink->postLink(
                                     __d('radius', 'Delete'),
                                     ['controller' => 'Radpostauth', 'action' => 'delete', $radpostauth->id],
                                     ['confirm' => __d(

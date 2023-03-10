@@ -106,8 +106,11 @@
                     <td><?= $customer->has('tax_rate') ? h($customer->tax_rate->name) : '' ?></td>
                     <td><?= $customer->getDealerState() ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $customer->id]) ?>
-                        <?= $this->Html->link(
+                        <?= $this->AuthLink->link(
+                            __('View'),
+                            ['action' => 'view', $customer->id]
+                        ) ?>
+                        <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $customer->id],
                             ['class' => 'win-link']

@@ -119,8 +119,11 @@
                     <td><?= h($task->critical_date) ?></td>
                     <td><?= h($task->finish_date) ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $task->id]) ?>
-                        <?= $this->Html->link(
+                        <?= $this->AuthLink->link(
+                            __('View'),
+                            ['action' => 'view', $task->id]
+                        ) ?>
+                        <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $task->id],
                             ['class' => 'win-link']
