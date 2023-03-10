@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-03-01 14:49+0100\n"
+"POT-Creation-Date: 2023-03-10 14:21+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -217,12 +217,12 @@ msgid "Submit"
 msgstr ""
 
 #: ./plugins/BookkeepingPohoda/templates/Invoices/edit.php:13
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:101
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:104
 msgid "Delete"
 msgstr ""
 
 #: ./plugins/BookkeepingPohoda/templates/Invoices/edit.php:16
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:103
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:106
 #: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:20
 msgid "Are you sure you want to delete # {0}?"
 msgstr ""
@@ -322,41 +322,41 @@ msgstr ""
 msgid "Download"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:94
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:95
 msgid "View"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:96
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:99
 msgid "Edit"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:116
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:119
 #: ./plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:73
 msgid "Total Debt"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:117
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:120
 #: ./plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:75
 msgid "Total Overdue Debt"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:121
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:124
 msgid "first"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:122
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:125
 msgid "previous"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:124
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:127
 msgid "next"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:125
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:128
 msgid "last"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:128
+#: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:131
 msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
 msgstr ""
 

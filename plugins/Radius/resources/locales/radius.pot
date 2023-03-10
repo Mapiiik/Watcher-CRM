@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-02-06 13:24+0100\n"
+"POT-Creation-Date: 2023-03-10 14:21+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -354,7 +354,7 @@ msgid "Delete RADIUS Account"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/edit.php:15
-#: ./plugins/Radius/templates/Accounts/index.php:81
+#: ./plugins/Radius/templates/Accounts/index.php:84
 #: ./plugins/Radius/templates/Accounts/monitoring.php:24
 #: ./plugins/Radius/templates/Accounts/monitoring.php:261
 #: ./plugins/Radius/templates/Accounts/monitoring.php:311
@@ -453,12 +453,12 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/index.php:71
+#: ./plugins/Radius/templates/Accounts/index.php:72
 #: ./plugins/Radius/templates/cell/Accounts/display.php:108
 msgid "Monitoring"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/index.php:72
+#: ./plugins/Radius/templates/Accounts/index.php:75
 #: ./plugins/Radius/templates/Accounts/monitoring.php:250
 #: ./plugins/Radius/templates/Accounts/monitoring.php:300
 #: ./plugins/Radius/templates/Accounts/view.php:166
@@ -480,7 +480,7 @@ msgstr ""
 msgid "View"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/index.php:74
+#: ./plugins/Radius/templates/Accounts/index.php:77
 #: ./plugins/Radius/templates/Accounts/monitoring.php:254
 #: ./plugins/Radius/templates/Accounts/monitoring.php:304
 #: ./plugins/Radius/templates/Accounts/view.php:170
@@ -502,7 +502,7 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/index.php:79
+#: ./plugins/Radius/templates/Accounts/index.php:82
 #: ./plugins/Radius/templates/Accounts/monitoring.php:259
 #: ./plugins/Radius/templates/Accounts/monitoring.php:309
 #: ./plugins/Radius/templates/Accounts/view.php:175
@@ -524,7 +524,7 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/index.php:91
+#: ./plugins/Radius/templates/Accounts/index.php:94
 #: ./plugins/Radius/templates/Nas/index.php:60
 #: ./plugins/Radius/templates/Radacct/index.php:98
 #: ./plugins/Radius/templates/Radcheck/index.php:57
@@ -536,7 +536,7 @@ msgstr ""
 msgid "first"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/index.php:92
+#: ./plugins/Radius/templates/Accounts/index.php:95
 #: ./plugins/Radius/templates/Nas/index.php:61
 #: ./plugins/Radius/templates/Radacct/index.php:99
 #: ./plugins/Radius/templates/Radcheck/index.php:58
@@ -548,7 +548,7 @@ msgstr ""
 msgid "previous"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/index.php:94
+#: ./plugins/Radius/templates/Accounts/index.php:97
 #: ./plugins/Radius/templates/Nas/index.php:63
 #: ./plugins/Radius/templates/Radacct/index.php:101
 #: ./plugins/Radius/templates/Radcheck/index.php:60
@@ -560,7 +560,7 @@ msgstr ""
 msgid "next"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/index.php:95
+#: ./plugins/Radius/templates/Accounts/index.php:98
 #: ./plugins/Radius/templates/Nas/index.php:64
 #: ./plugins/Radius/templates/Radacct/index.php:102
 #: ./plugins/Radius/templates/Radcheck/index.php:61
@@ -572,7 +572,7 @@ msgstr ""
 msgid "last"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/index.php:98
+#: ./plugins/Radius/templates/Accounts/index.php:101
 #: ./plugins/Radius/templates/Nas/index.php:67
 #: ./plugins/Radius/templates/Radacct/index.php:105
 #: ./plugins/Radius/templates/Radcheck/index.php:64
