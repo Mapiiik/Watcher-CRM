@@ -21,7 +21,7 @@
     <?= $this->AuthLink->link(
         __('New IP Network'),
         ['action' => 'add'],
-        ['class' => 'button float-right']
+        ['class' => 'button float-right win-link']
     ) ?>
     <h3><?= __('IP Networks') ?></h3>
     <div class="table-responsive">
