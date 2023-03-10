@@ -444,7 +444,6 @@ class ContractsController extends AppController
                 'Billings' => [
                     'Services',
                 ],
-                'ContractVersions',
             ],
         ]);
 
@@ -452,13 +451,13 @@ class ContractsController extends AppController
 
         $billings_to_update = $billings->match(['billing_until' => null]);
 
-        if (isset($contract->contract_versions[0]) && $contract->contract_versions[0]->has('valid_until')) {
+        if ($contract->has('termination_date')) {
             if ($billings_to_update->isEmpty()) {
                 $this->Flash->warning(__('No related billings to terminate.'));
             } else {
                 foreach ($billings_to_update as $billing) {
                     $billing = $this->Contracts->Billings->patchEntity($billing, [
-                        'billing_until' => $contract->contract_versions[0]->valid_until,
+                        'billing_until' => $contract->termination_date,
                     ]);
 
                     if ($this->Contracts->Billings->save($billing)) {

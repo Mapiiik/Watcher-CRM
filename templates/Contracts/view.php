@@ -323,11 +323,7 @@
                     ['controller' => 'Billings', 'action' => 'add'],
                     ['class' => 'button button-small float-right win-link']
                 ) ?>
-                <?php
-                if (
-                    isset($contract->contract_versions[0])
-                    && $contract->contract_versions[0]->has('valid_until')
-                ) : ?>
+                <?php if ($contract->has('termination_date')) : ?>
                     <?= $this->AuthLink->postLink(
                         __('Terminate Related Billings'),
                         ['action' => 'terminateRelatedBillings', $contract->id],
