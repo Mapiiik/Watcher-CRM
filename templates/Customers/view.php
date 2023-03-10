@@ -516,7 +516,7 @@
                 <?= $this->AuthLink->link(
                     __('New Contract'),
                     ['controller' => 'Contracts', 'action' => 'add'],
-                    ['class' => 'button button-small float-right win-link']
+                    ['class' => 'button button-small float-right']
                 ) ?>
                 <h4 id="contracts"><?= __('Contracts') ?></h4>
                 <?php if (!empty($customer->contracts)) : ?>
