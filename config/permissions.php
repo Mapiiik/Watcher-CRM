@@ -247,9 +247,10 @@ return [
                 return is_numeric($request->getParam('customer_id'));
             },
         ],
-        //allow all indexes and views for sales-managers
+        //allow all indexes and views for sales-managers and network-technicians
         [
             'role' => [
+                'network-technician',
                 'sales-manager',
             ],
             'plugin' => null,
@@ -313,6 +314,22 @@ return [
                 'delete',
             ],
         ],
+        //allow some overviews for network-technicians
+        [
+            'role' => [
+                'network-technician',
+            ],
+            'plugin' => null,
+            'controller' => [
+                'Overviews',
+            ],
+            'action' => [
+                'index',
+                'overviewOfActiveServices',
+                'overviewOfCustomerConnectionPoints',
+                'overviewOfCustomerConnectionPointsObsolete',
+            ],
+        ],
         //allow all in overviews for sales-managers
         [
             'role' => [
@@ -348,9 +365,25 @@ return [
             'controller' => '*',
             'action' => '*',
         ],
-        //allow standard account operations in RADIUS plugin for sales and bookkeepers
+        //allow view/disconnect operations in RADIUS plugin for customer service technicians
         [
             'role' => [
+                'customer-service-technician',
+            ],
+            'plugin' => 'Radius',
+            'controller' => [
+                'Accounts',
+            ],
+            'action' => [
+                'view',
+                'monitoring',
+                'disconnectRequest',
+            ],
+        ],
+        //allow all standard operations in RADIUS plugin for sales, bookkeepers and network technicians
+        [
+            'role' => [
+                'network-technician',
                 'sales-representative',
                 'sales-manager',
                 'bookkeeper',
