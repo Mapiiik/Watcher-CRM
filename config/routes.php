@@ -100,6 +100,22 @@ $uiRoutes = function (RouteBuilder $builder) {
         ->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+'])
         ->setPass(['contract_id']);
 
+    $builder->connect(
+        '/contracts/update-all-numbers/*',
+        [
+            'controller' => 'Contracts',
+            'action' => 'updateAllNumbers',
+        ]
+    );
+
+    $builder->connect(
+        '/contracts/update-all-subscriber-verification-codes/*',
+        [
+            'controller' => 'Contracts',
+            'action' => 'updateAllSubscriberVerificationCodes',
+        ]
+    );
+
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}', ['action' => 'index'])
         ->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+']);
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/add', ['action' => 'add'])

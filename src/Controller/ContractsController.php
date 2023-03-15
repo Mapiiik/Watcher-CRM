@@ -8,6 +8,7 @@ use Cake\Collection\Collection;
 use Cake\Database\Exception\MissingConnectionException;
 use Cake\Database\Query;
 use Cake\I18n\FrozenDate;
+use Cake\I18n\Number;
 use stdClass;
 
 /**
@@ -40,6 +41,7 @@ class ContractsController extends AppController
             $conditions[] = [
                 'OR' => [
                     'Contracts.number ILIKE' => '%' . trim($search) . '%',
+                    'Contracts.subscriber_verification_code' => trim($search),
                 ],
             ];
         }
@@ -151,7 +153,12 @@ class ContractsController extends AppController
             if ($this->Contracts->save($contract)) {
                 $this->Flash->success(__('The contract has been saved.'));
 
-                $this->updateNumber($contract->id);
+                if (empty($contract->number)) {
+                    $this->updateNumber($contract->id);
+                }
+                if (empty($contract->subscriber_verification_code)) {
+                    $this->updateSubscriberVerificationCode($contract->id);
+                }
 
                 return $this->redirect(['action' => 'view', $contract->id]);
             }
@@ -235,7 +242,12 @@ class ContractsController extends AppController
             if ($this->Contracts->save($contract)) {
                 $this->Flash->success(__('The contract has been saved.'));
 
-                $this->updateNumber($contract->id);
+                if (empty($contract->number)) {
+                    $this->updateNumber($contract->id);
+                }
+                if (empty($contract->subscriber_verification_code)) {
+                    $this->updateSubscriberVerificationCode($contract->id);
+                }
 
                 return $this->redirect(['action' => 'view', $id]);
             }
@@ -323,30 +335,163 @@ class ContractsController extends AppController
     }
 
     /**
-     * Update contract number with format defined in service type
+     * Update contract number according to the format defined in the service type
      *
      * @param string|int|null $id Contract id.
+     * @param bool $flash Enable flash messages
      * @return bool Return true on success false on failure
      */
-    private function updateNumber($id = null)
+    private function updateNumber($id = null, bool $flash = true)
     {
         $contract = $this->Contracts->get($id);
         $service_type = $this->Contracts->ServiceTypes->get($contract->service_type_id);
 
-        $query = $this->Contracts->query();
-        $query->update()
-            ->set(['number = (' . $service_type->contract_number_format . ')'])
-            ->where(['id' => $contract->id]);
-
-        if ($query->execute()->rowCount() == 1) {
-            $this->Flash->success(__('The contract number has been updated.'));
-
+        // skip service types without defined number format
+        if (empty($service_type->contract_number_format)) {
             return true;
         }
 
-        $this->Flash->error(__('The contract number could not be updated. Please, try again.'));
+        // generate number
+        $result = $this->Contracts->query()
+            ->select([
+                'number' => '(' . $service_type->contract_number_format . ')',
+            ])
+            ->where(['id' => $contract->id])
+            ->all();
+
+        if ($result->count() == 1) {
+            // assign a number for the contract
+            $contract->number = $result->first()->number;
+
+            if ($this->Contracts->save($contract)) {
+                if ($flash) {
+                    $this->Flash->success(__('The contract number has been updated.'));
+                }
+
+                return true;
+            }
+        }
+
+        if ($flash) {
+            $this->Flash->error(__('The contract number could not be updated. Please, try again.'));
+        }
 
         return false;
+    }
+
+    /**
+     * Update all contract numbers according to the format defined in the service type
+     *
+     * @param bool $force Update even where already set
+     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @throws \Cake\Http\Exception\MethodNotAllowedException When badly called.
+     */
+    public function updateAllNumbers(bool $force = false)
+    {
+        $this->getRequest()->allowMethod(['post']);
+
+        $contracts = $this->Contracts->find()->all();
+
+        $count = 0;
+
+        foreach ($contracts as $contract) {
+            if ($force || empty($contract->number)) {
+                if ($this->updateNumber($contract->id, false)) {
+                    $count++;
+                } else {
+                    $this->Flash->error(
+                        __('The contract numbers could not be updated. Please, try again.')
+                        . ' (ID: ' . $contract->id . ')'
+                    );
+                }
+            }
+        }
+
+        $this->Flash->success(
+            __('The contract numbers have been updated.') . ' (' . Number::format($count) . ')'
+        );
+
+        return $this->redirect(['action' => 'index']);
+    }
+
+    /**
+     * Update the subscriber verification code for the contract according to the format defined in the service type
+     *
+     * @param string|int|null $id Contract id.
+     * @param bool $flash Enable flash messages
+     * @return bool Return true on success false on failure
+     */
+    private function updateSubscriberVerificationCode($id = null, bool $flash = true)
+    {
+        $contract = $this->Contracts->get($id);
+        $service_type = $this->Contracts->ServiceTypes->get($contract->service_type_id);
+
+        // skip service types without defined subscriber verification code format
+        if (empty($service_type->subscriber_verification_code_format)) {
+            return true;
+        }
+
+        // generate subscriber verification code
+        $result = $this->Contracts->query()
+            ->select([
+                'subscriber_verification_code' => '(' . $service_type->subscriber_verification_code_format . ')',
+            ])
+            ->where(['id' => $contract->id])
+            ->all();
+
+        if ($result->count() == 1) {
+            // assign subscriber verification code for the contract
+            $contract->subscriber_verification_code = $result->first()->subscriber_verification_code;
+
+            if ($this->Contracts->save($contract)) {
+                if ($flash) {
+                    $this->Flash->success(__('The subscriber verification code has been updated.'));
+                }
+
+                return true;
+            }
+        }
+
+        if ($flash) {
+            $this->Flash->error(__('The subscriber verification code could not be updated. Please, try again.'));
+        }
+
+        return false;
+    }
+
+    /**
+     * Update all subscriber verification codes for the contracts according to the format defined in the service type
+     *
+     * @param bool $force Update even where already set
+     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @throws \Cake\Http\Exception\MethodNotAllowedException When badly called.
+     */
+    public function updateAllSubscriberVerificationCodes(bool $force = false)
+    {
+        $this->getRequest()->allowMethod(['post']);
+
+        $contracts = $this->Contracts->find()->all();
+
+        $count = 0;
+
+        foreach ($contracts as $contract) {
+            if ($force || empty($contract->subscriber_verification_code)) {
+                if ($this->updateSubscriberVerificationCode($contract->id, false)) {
+                    $count++;
+                } else {
+                    $this->Flash->error(
+                        __('The subscriber verification codes could not be updated. Please, try again.')
+                        . ' (ID: ' . $contract->id . ')'
+                    );
+                }
+            }
+        }
+
+        $this->Flash->success(
+            __('The subscriber verification codes have been updated.') . ' (' . Number::format($count) . ')'
+        );
+
+        return $this->redirect(['action' => 'index']);
     }
 
     /**

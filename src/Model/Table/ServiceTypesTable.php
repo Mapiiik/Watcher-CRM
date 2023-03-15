@@ -72,6 +72,11 @@ class ServiceTypesTable extends AppTable
             ->allowEmptyString('contract_number_format');
 
         $validator
+            ->scalar('subscriber_verification_code_format')
+            ->maxLength('subscriber_verification_code_format', 255)
+            ->allowEmptyString('subscriber_verification_code_format');
+
+        $validator
             ->integer('activation_fee')
             ->allowEmptyString('activation_fee');
 

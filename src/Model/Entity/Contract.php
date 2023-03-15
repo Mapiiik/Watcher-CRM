@@ -20,6 +20,7 @@ use Exception;
  * @property int $customer_id
  * @property int|null $installation_address_id
  * @property string|null $number
+ * @property string|null $subscriber_verification_code
  * @property int $service_type_id
  * @property string|null $note
  * @property bool|null $vip
@@ -85,6 +86,7 @@ class Contract extends Entity
         'customer_id' => true,
         'installation_address_id' => true,
         'number' => true,
+        'subscriber_verification_code' => true,
         'service_type_id' => true,
         'note' => true,
         'vip' => true,

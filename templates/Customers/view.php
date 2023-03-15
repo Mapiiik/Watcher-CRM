@@ -532,6 +532,7 @@
                             <th><?= __('Installation/Establishment Date') ?></th>
                             <th><?= __('Uninstallation/Cancellation Date') ?></th>
                             <th><?= __('Date of Termination of Services') ?></th>
+                            <th><?= __('Subscriber Verification Code') ?></th>
                             <th><?= __('Note') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
@@ -548,6 +549,7 @@
                             <td><?= h($contract->installation_date) ?></td>
                             <td><?= h($contract->uninstallation_date) ?></td>
                             <td><?= h($contract->termination_date) ?></td>
+                            <td><?= h($contract->subscriber_verification_code) ?></td>
                             <td><?= h($contract->note) ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(

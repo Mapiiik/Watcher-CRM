@@ -56,6 +56,66 @@
                     ['controller' => 'ContractStates', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item']
                 ) ?>
+                <?= $this->AuthLink->postLink(
+                    __('Addition of Contract Numbers'),
+                    [
+                        'controller' => 'Contracts',
+                        'action' => 'updateAllNumbers',
+                        'plugin' => null,
+                        false,
+                    ],
+                    [
+                        'confirm' => __(
+                            'Do you really want to add a contract number for all contracts?'
+                        ),
+                        'class' => 'side-nav-item',
+                    ]
+                ) ?>
+                <?= $this->AuthLink->postLink(
+                    __('Addition of Contract Numbers') . ' (' . __('Force Overwrite') . ')',
+                    [
+                        'controller' => 'Contracts',
+                        'action' => 'updateAllNumbers',
+                        'plugin' => null,
+                        true,
+                    ],
+                    [
+                        'confirm' => __(
+                            'Do you really want to re-set a contract number for all contracts?'
+                        ),
+                        'class' => 'side-nav-item',
+                    ]
+                ) ?>
+                <?= $this->AuthLink->postLink(
+                    __('Addition of Subscriber Verification Codes'),
+                    [
+                        'controller' => 'Contracts',
+                        'action' => 'updateAllSubscriberVerificationCodes',
+                        'plugin' => null,
+                        false,
+                    ],
+                    [
+                        'confirm' => __(
+                            'Do you really want to add a subscriber verification code for all contracts?'
+                        ),
+                        'class' => 'side-nav-item',
+                    ]
+                ) ?>
+                <?= $this->AuthLink->postLink(
+                    __('Addition of Subscriber Verification Codes') . ' (' . __('Force Overwrite') . ')',
+                    [
+                        'controller' => 'Contracts',
+                        'action' => 'updateAllSubscriberVerificationCodes',
+                        'plugin' => null,
+                        true,
+                    ],
+                    [
+                        'confirm' => __(
+                            'Do you really want to re-set a subscriber verification code for all contracts?'
+                        ),
+                        'class' => 'side-nav-item',
+                    ]
+                ) ?>
             </div>
         </div>
 

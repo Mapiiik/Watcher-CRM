@@ -152,6 +152,12 @@ class ContractsTable extends AppTable
             ->add('number', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
+            ->scalar('subscriber_verification_code')
+            ->maxLength('subscriber_verification_code', 255)
+            ->allowEmptyString('subscriber_verification_code')
+            ->add('subscriber_verification_code', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+
+        $validator
             ->integer('service_type_id')
             ->notEmptyString('service_type_id');
 
@@ -220,7 +226,14 @@ class ContractsTable extends AppTable
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->isUnique(['number']), ['errorField' => 'number']);
-        $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
+        $rules->add(
+            $rules->isUnique(['subscriber_verification_code']),
+            ['errorField' => 'subscriber_verification_code']
+        );
+        $rules->add(
+            $rules->existsIn(['customer_id'], 'Customers'),
+            ['errorField' => 'customer_id']
+        );
         $rules->add(
             $rules->existsIn(['installation_address_id'], 'InstallationAddresses'),
             ['errorField' => 'installation_address_id']

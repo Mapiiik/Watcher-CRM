@@ -17,6 +17,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string|null $name
  * @property string|null $contract_number_format
+ * @property string|null $subscriber_verification_code_format
  * @property int|null $activation_fee
  * @property int|null $activation_fee_with_obligation
  * @property bool $separate_invoice
@@ -51,6 +52,7 @@ class ServiceType extends Entity
         'modified_by' => true,
         'name' => true,
         'contract_number_format' => true,
+        'subscriber_verification_code_format' => true,
         'activation_fee' => true,
         'activation_fee_with_obligation' => true,
         'separate_invoice' => true,

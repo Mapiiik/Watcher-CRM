@@ -13,7 +13,14 @@ FROM
     LEFT JOIN (
         SELECT
             Contracts.customer_id,
-            STRING_AGG(Contracts.number, ' ') AS txt
+            STRING_AGG(
+                CONCAT_WS(
+                    ' ',
+                    Contracts.number,
+                    Contracts.subscriber_verification_code
+                ),
+                ' '
+            ) AS txt
         FROM
             Contracts
         GROUP BY

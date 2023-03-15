@@ -145,6 +145,10 @@
                             <td><?= h($contract->number) ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Subscriber Verification Code') ?></th>
+                            <td><?= h($contract->subscriber_verification_code) ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Installation Address') ?></th>
                             <td><?= $contract->has('installation_address') ? $this->Html->link(
                                 $contract->installation_address->full_address,

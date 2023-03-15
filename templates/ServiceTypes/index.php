@@ -29,6 +29,7 @@
                 <tr>
                     <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('contract_number_format') ?></th>
+                    <th><?= $this->Paginator->sort('subscriber_verification_code_format') ?></th>
                     <th><?= $this->Paginator->sort('activation_fee') ?></th>
                     <th><?= $this->Paginator->sort('activation_fee_with_obligation') ?></th>
                     <th><?= $this->Paginator->sort('invoice_text') ?></th>
@@ -49,6 +50,7 @@
                 <tr>
                     <td><?= h($serviceType->name) ?></td>
                     <td><?= h($serviceType->contract_number_format) ?></td>
+                    <td><?= h($serviceType->subscriber_verification_code_format) ?></td>
                     <td><?= h($serviceType->activation_fee) ?></td>
                     <td><?= h($serviceType->activation_fee_with_obligation) ?></td>
                     <td><?= h($serviceType->invoice_text) ?></td>

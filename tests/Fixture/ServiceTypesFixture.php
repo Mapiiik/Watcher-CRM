@@ -23,6 +23,7 @@ class ServiceTypesFixture extends TestFixture
                 'modified' => 1636113918,
                 'name' => 'Lorem ipsum dolor sit amet',
                 'contract_number_format' => 'Lorem ipsum dolor sit amet',
+                'subscriber_verification_code_format' => 'Lorem ipsum dolor sit amet',
                 'activation_fee' => 1,
                 'activation_fee_with_obligation' => 1,
                 'separate_invoice' => 1,

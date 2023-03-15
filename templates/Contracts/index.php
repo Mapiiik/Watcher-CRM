@@ -40,6 +40,7 @@
                     <th><?= $this->Paginator->sort('uninstallation_technician_id') ?></th>
                     <th><?= $this->Paginator->sort('termination_date', __('Date of Termination of Services')) ?></th>
                     <th><?= $this->Paginator->sort('commission_id') ?></th>
+                    <th><?= $this->Paginator->sort('subscriber_verification_code') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -92,6 +93,7 @@
                             $contract->commission->name,
                             ['controller' => 'Commissions', 'action' => 'view', $contract->commission->id]
                         ) : '' ?></td>
+                    <td><?= h($contract->subscriber_verification_code) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $contract->id]) ?>
                         <?= $this->AuthLink->link(

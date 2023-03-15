@@ -974,6 +974,13 @@ class ContractPDF extends TCPDF
             $this->Cell(60, 4, 'právnická osoba');
         }
 
+        // Subscriber Verification Code
+        if (!empty($contract->subscriber_verification_code)) {
+            $this->Cell(60, 4, __('Subscriber Verification Code') . ':', 0, 0, 'R');
+            $this->SetFont('DejaVuSerif', 'B', 8);
+            $this->Cell(60, 4, $contract->subscriber_verification_code);
+        }
+
         $this->Ln();
 
         $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());

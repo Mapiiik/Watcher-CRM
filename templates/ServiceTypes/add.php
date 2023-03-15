@@ -19,6 +19,7 @@
                 <?php
                     echo $this->Form->control('name');
                     echo $this->Form->control('contract_number_format');
+                    echo $this->Form->control('subscriber_verification_code_format');
                     echo $this->Form->control('activation_fee');
                     echo $this->Form->control('activation_fee_with_obligation');
                     echo $this->Form->control('invoice_text');

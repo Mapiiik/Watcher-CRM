@@ -40,6 +40,10 @@
                             <td><?= h($serviceType->contract_number_format) ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Subscriber Verification Code Format') ?></th>
+                            <td><?= h($serviceType->subscriber_verification_code_format) ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Activation Fee') ?></th>
                             <td><?= h($serviceType->activation_fee) ?></td>
                         </tr>

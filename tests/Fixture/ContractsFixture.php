@@ -22,6 +22,7 @@ class ContractsFixture extends TestFixture
                 'customer_id' => 1,
                 'installation_address_id' => 1,
                 'number' => 'Lorem ipsum dolor sit amet',
+                'subscriber_verification_code' => 'Lorem ipsum dolor sit amet',
                 'service_type_id' => 1,
                 'created' => 1669642595,
                 'created_by' => 1,
