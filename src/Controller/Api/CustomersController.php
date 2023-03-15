@@ -165,7 +165,7 @@ class CustomersController extends AppController
                                 if (is_numeric($key)) {
                                     // Try to load RUIAN record if RUIAN GID is set
                                     try {
-                                        /** @var \App\Model\Entity\Address $address */
+                                        /** @var \Ruian\Model\Entity\Address $address */
                                         $address = $this->fetchTable('Ruian.Addresses')->get($key, [
                                             'fields' => [
                                                 'ulice_nazev',
@@ -181,7 +181,7 @@ class CustomersController extends AppController
                                     } catch (RecordNotFoundException $recordNotFoundError) {
                                         $address = new Address([
                                             'gps_y' => $contracts[0]->installation_address->gps_y ?? null,
-                                            'gps_x' => $contracts[0]->installation_address->gps_y ?? null,
+                                            'gps_x' => $contracts[0]->installation_address->gps_x ?? null,
                                         ]);
                                     }
                                 } else {
