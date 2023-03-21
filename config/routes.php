@@ -52,6 +52,57 @@ $uiRoutes = function (RouteBuilder $builder) {
 
     $builder->setExtensions(['pdf']);
 
+    /*
+    // routes for contract related
+    $builder
+        ->connect('/customers/{customer_id}/contracts/{action}/{contract_id}/', [
+            'controller' => 'Contracts',
+        ])
+        ->setPatterns([
+            'customer_id' => '[0-9]+',
+            'contract_id' => '[0-9]+',
+        ])
+        ->setPass(['contract_id']);
+
+    $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/{action}/{id}', [])
+        ->setPatterns([
+            'customer_id' => '[0-9]+',
+            'contract_id' => '[0-9]+',
+        ]);
+
+    $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/{action}/', [])
+        ->setPatterns([
+            'customer_id' => '[0-9]+',
+            'contract_id' => '[0-9]+',
+        ]);
+
+    // routes for customer related
+    $builder
+        ->connect('/customers/{action}/{customer_id}', [
+            'controller' => 'Customers',
+        ])
+        ->setPatterns([
+            'customer_id' => '[0-9]+',
+        ])
+        ->setPass(['customer_id']);
+
+    $builder->connect('/customers/{customer_id}/{controller}/{action}/{id}', [])
+        ->setPatterns([
+            'customer_id' => '[0-9]+',
+        ]);
+
+    $builder->connect('/customers/{customer_id}/{controller}/{action}/', [])
+        ->setPatterns([
+            'customer_id' => '[0-9]+',
+        ]);
+
+    // routes
+    $builder->connect('/{controller}/{action}/{id}', [])
+        ->setPass(['id']);
+
+    $builder->connect('/{controller}/{action}/', []);
+    */
+
     // UUID routes
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/{action}/{id}', [])
         ->setPatterns([
@@ -68,11 +119,13 @@ $uiRoutes = function (RouteBuilder $builder) {
         ])
         ->setPass(['id']);
 
-    // other routes
     $builder->connect('/{controller}/{action}/{id}', [])
-        ->setPatterns(['id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}'])
+        ->setPatterns([
+            'id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+        ])
         ->setPass(['id']);
 
+    // other routes
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}', 'Contracts::view')
         ->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+'])
         ->setPass(['contract_id']);
@@ -173,7 +226,7 @@ $uiRoutes = function (RouteBuilder $builder) {
         ->setPass(['id']);
 
     // Default redirect
-    $builder->redirect('/', ['controller' => 'Customers', 'action' => 'index']);
+    $builder->redirect('/', ['controller' => 'Customers', 'action' => 'index'], ['status' => 303]);
 
     //$builder->fallbacks();
 };
@@ -186,7 +239,7 @@ $routes->scope('/admin/', ['ui-mode' => 'default'], $uiRoutes);
 
 $routes->scope('/', function (RouteBuilder $builder) {
     // Default redirect
-    $builder->redirect('/', ['controller' => 'Customers', 'action' => 'index']);
+    $builder->redirect('/', ['controller' => 'Customers', 'action' => 'index'], ['status' => 303]);
 
     /*
      * ...and connect the rest of 'Pages' controller's URLs.
