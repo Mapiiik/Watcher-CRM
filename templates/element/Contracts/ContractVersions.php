@@ -14,6 +14,7 @@
             <th><?= __('Obligation Until') ?></th>
             <th><?= __('Conclusion Date') ?></th>
             <th><?= __('Number Of Amendments') ?></th>
+            <th><?= __('Note') ?></th>
             <th class="actions"><?= __('Actions') ?></th>
         </tr>
     </thead>
@@ -29,6 +30,7 @@
             ?>"><?= h($contractVersion->obligation_until) ?></td>
             <td><?= h($contractVersion->conclusion_date) ?></td>
             <td><?= $this->Number->format($contractVersion->number_of_amendments) ?></td>
+            <td><?= h($contractVersion->note) ?></td>
             <td class="actions">
                 <?= $this->AuthLink->link(
                     __('View'),
