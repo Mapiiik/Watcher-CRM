@@ -74,6 +74,8 @@
                             <td><?= $contract->has('installation_address') ? $this->Html->link(
                                 $contract->installation_address->full_address,
                                 ['controller' => 'Addresses', 'action' => 'view', $contract->installation_address->id]
+                            ) . ($contract->installation_address->note ?
+                                ' (' . h($contract->installation_address->note) . ')' : ''
                             ) : '' ?></td>
                         </tr>
                     </table>

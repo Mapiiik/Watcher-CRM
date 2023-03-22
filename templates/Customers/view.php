@@ -453,6 +453,7 @@
                             <th><?= __('City') ?></th>
                             <th><?= __('Zip') ?></th>
                             <th><?= __('Country') ?></th>
+                            <th><?= __('Note') ?></th>
                             <th><?= __('RÚIAN') ?></th>
                             <th class="actions"><?= __('Map location') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
@@ -470,6 +471,7 @@
                             <td><?= h($address->city) ?></td>
                             <td><?= h($address->zip) ?></td>
                             <td><?= $address->has('country') ? h($address->country->name) : '' ?></td>
+                            <td><?= h($address->note) ?></td>
                             <td><?= $address->has('ruian_gid') ?
                                 $this->Number->format($address->ruian_gid) :
                                 '<span style="color: red;">' . __('unknown') . '</span>'
