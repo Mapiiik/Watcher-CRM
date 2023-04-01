@@ -8,11 +8,11 @@
 <div class="container nav-container">
     <div class="content nav-content top-nav">
         <div class="nav-content-left">
-            <?= $this->AuthLink->link(
-                '<h4>' . h($customer->name) . '</h4>',
+            <h4><?= $this->AuthLink->link(
+                h($customer->name),
                 ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $customer->id],
                 ['escape' => false, 'class' => '']
-            ) ?>
+            ) ?></h4>
         </div>
         <div class="nav-content-right">
             <?php foreach ($customer->contracts as $contract) : ?>
