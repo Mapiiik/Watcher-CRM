@@ -628,6 +628,8 @@ class ContractPDF extends TCPDF
             $this->Ln(3);
             $this->MultiCell(180, 4, 'Uživatel dále potvrzuje, že  souhlasí s provedenou instalací a nemá vůči ní žádné námitky a zároveň prohlašuje, že objednané služby jsou plně funkční.' . PHP_EOL, 0, 'J');
             $this->Ln(3);
+            $this->MultiCell(180, 4, 'Tento předávací protokol (ke smlouvě č. ' . $contract->number . ') je vyhotoven ve dvou stejnopisech.' . PHP_EOL, 0, 'J');
+            $this->Ln(3);
         endif;
         // END INSTALLATION
 
