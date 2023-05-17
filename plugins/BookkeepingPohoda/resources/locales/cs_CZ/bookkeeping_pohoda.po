@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-03-10 14:21+0100\n"
-"PO-Revision-Date: 2023-03-10 14:23+0100\n"
+"POT-Creation-Date: 2023-05-17 17:32+0200\n"
+"PO-Revision-Date: 2023-05-17 17:37+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.1\n"
 
 #: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:116
 msgid "Email was successfully sent."
@@ -167,7 +167,7 @@ msgstr "Datum splatnosti"
 
 #: plugins/BookkeepingPohoda/templates/Invoices/add.php:45
 #: plugins/BookkeepingPohoda/templates/Invoices/edit.php:53
-#: plugins/BookkeepingPohoda/templates/Invoices/view.php:145
+#: plugins/BookkeepingPohoda/templates/Invoices/view.php:143
 #: plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:23
 msgid "Text"
 msgstr "Text"
@@ -308,7 +308,7 @@ msgid "Created"
 msgstr "Vytvořeno"
 
 #: plugins/BookkeepingPohoda/templates/Invoices/index.php:62
-#: plugins/BookkeepingPohoda/templates/Invoices/view.php:126
+#: plugins/BookkeepingPohoda/templates/Invoices/view.php:125
 msgid "Modified"
 msgstr "Upraveno"
 
@@ -391,7 +391,7 @@ msgstr "ID"
 msgid "Created By"
 msgstr "Vytvořil"
 
-#: plugins/BookkeepingPohoda/templates/Invoices/view.php:130
+#: plugins/BookkeepingPohoda/templates/Invoices/view.php:129
 msgid "Modified By"
 msgstr "Upravil"
 

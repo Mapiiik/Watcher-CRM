@@ -4,16 +4,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CakePHP 4.2.4\n"
-"POT-Creation-Date: 2023-02-18 15:19+0100\n"
-"PO-Revision-Date: 2023-02-18 15:21+0100\n"
-"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2023-05-17 17:31+0200\n"
+"PO-Revision-Date: 2023-05-17 17:38+0200\n"
+"Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.1\n"
 
 #: templates/Error/error400.php:39 templates/Error/error500.php:43
 msgid "Error"
@@ -266,16 +266,16 @@ msgstr "Součet nesedí {0}{1}"
 msgid "and"
 msgstr "a"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2539
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2543
 msgid "This field is required"
 msgstr "Toto pole je povinné"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2559
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2563
 #: vendor/cakephp/cakephp/src/View/Form/ArrayContext.php:249
 msgid "This field cannot be left empty"
 msgstr "Toto pole nelze ponechat prázdné"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2711
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2715
 msgid "The provided value is invalid"
 msgstr "Zadaná hodnota je neplatná"
 
