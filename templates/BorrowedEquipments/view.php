@@ -99,8 +99,7 @@
                             <td><?= $borrowedEquipment->has('creator') ? $this->Html->link(
                                 $borrowedEquipment->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $borrowedEquipment->creator->id,
                                 ]
@@ -115,8 +114,7 @@
                             <td><?= $borrowedEquipment->has('modifier') ? $this->Html->link(
                                 $borrowedEquipment->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $borrowedEquipment->modifier->id,
                                 ]

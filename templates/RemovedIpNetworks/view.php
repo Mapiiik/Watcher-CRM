@@ -108,8 +108,7 @@
                             <td><?= $removedIpNetwork->has('creator') ? $this->Html->link(
                                 $removedIpNetwork->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $removedIpNetwork->creator->id,
                                 ]
@@ -124,8 +123,7 @@
                             <td><?= $removedIpNetwork->has('modifier') ? $this->Html->link(
                                 $removedIpNetwork->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $removedIpNetwork->modifier->id,
                                 ]
@@ -140,10 +138,10 @@
                             <td><?= $removedIpNetwork->has('remover') ? $this->Html->link(
                                 $removedIpNetwork->remover->username,
                                 [
-                                            'plugin' => 'CakeDC/Users',
-                                            'controller' => 'Users',
-                                            'action' => 'view',
-                                            $removedIpNetwork->remover->id]
+                                    'controller' => 'AppUsers',
+                                    'action' => 'view',
+                                    $removedIpNetwork->remover->id,
+                                ]
                             ) : h($removedIpNetwork->removed_by) ?></td>
                         </tr>
                     </table>

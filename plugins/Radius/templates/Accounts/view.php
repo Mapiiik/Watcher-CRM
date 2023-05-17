@@ -114,8 +114,7 @@
                             <td><?= $account->has('creator') ? $this->Html->link(
                                 $account->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $account->creator->id,
                                 ]
@@ -130,8 +129,7 @@
                             <td><?= $account->has('modifier') ? $this->Html->link(
                                 $account->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $account->modifier->id,
                                 ]

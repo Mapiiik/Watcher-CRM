@@ -74,8 +74,7 @@ use Cake\Collection\Collection;
                             <td><?= $service->has('creator') ? $this->Html->link(
                                 $service->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $service->creator->id,
                                 ]
@@ -90,8 +89,7 @@ use Cake\Collection\Collection;
                             <td><?= $service->has('modifier') ? $this->Html->link(
                                 $service->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $service->modifier->id,
                                 ]

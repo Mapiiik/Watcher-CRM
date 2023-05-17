@@ -58,8 +58,7 @@
                             <td><?= $taskState->has('creator') ? $this->Html->link(
                                 $taskState->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $taskState->creator->id,
                                 ]
@@ -74,8 +73,7 @@
                             <td><?= $taskState->has('modifier') ? $this->Html->link(
                                 $taskState->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $taskState->modifier->id,
                                 ]

@@ -93,8 +93,7 @@
                             <td><?= $soldEquipment->has('creator') ? $this->Html->link(
                                 $soldEquipment->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $soldEquipment->creator->id,
                                 ]
@@ -109,8 +108,7 @@
                             <td><?= $soldEquipment->has('modifier') ? $this->Html->link(
                                 $soldEquipment->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $soldEquipment->modifier->id,
                                 ]

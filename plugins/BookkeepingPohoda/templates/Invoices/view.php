@@ -115,8 +115,7 @@
                             <td><?= $invoice->has('creator') ? $this->Html->link(
                                 $invoice->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $invoice->creator->id,
                                 ]
@@ -131,8 +130,7 @@
                             <td><?= $invoice->has('modifier') ? $this->Html->link(
                                 $invoice->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $invoice->modifier->id,
                                 ]

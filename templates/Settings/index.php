@@ -11,17 +11,17 @@
             <div>
                 <?= $this->AuthLink->link(
                     __('Change Password'),
-                    ['controller' => 'Users', 'action' => 'changePassword', 'plugin' => 'CakeDC/Users'],
+                    ['controller' => 'AppUsers', 'action' => 'changePassword'],
                     ['class' => 'side-nav-item']
                 ) ?>
                 <?= $this->AuthLink->link(
                     __('User Profile'),
-                    ['controller' => 'Users', 'action' => 'profile', 'plugin' => 'CakeDC/Users'],
+                    ['controller' => 'AppUsers', 'action' => 'profile'],
                     ['class' => 'side-nav-item']
                 ) ?>
                 <?= $this->AuthLink->link(
                     __('List Users'),
-                    ['controller' => 'Users', 'action' => 'index', 'plugin' => 'CakeDC/Users'],
+                    ['controller' => 'AppUsers', 'action' => 'index'],
                     ['class' => 'side-nav-item']
                 ) ?>
             </div>

@@ -103,8 +103,7 @@
                             <td><?= $ipNetwork->has('creator') ? $this->Html->link(
                                 $ipNetwork->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $ipNetwork->creator->id,
                                 ]
@@ -119,8 +118,7 @@
                             <td><?= $ipNetwork->has('modifier') ? $this->Html->link(
                                 $ipNetwork->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $ipNetwork->modifier->id,
                                 ]

@@ -64,8 +64,7 @@
                             <td><?= $equipmentType->has('creator') ? $this->Html->link(
                                 $equipmentType->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $equipmentType->creator->id,
                                 ]
@@ -80,8 +79,7 @@
                             <td><?= $equipmentType->has('modifier') ? $this->Html->link(
                                 $equipmentType->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $equipmentType->modifier->id,
                                 ]

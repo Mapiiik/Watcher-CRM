@@ -108,8 +108,7 @@
                             <td><?= $serviceType->has('creator') ? $this->Html->link(
                                 $serviceType->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $serviceType->creator->id,
                                 ]
@@ -124,8 +123,7 @@
                             <td><?= $serviceType->has('modifier') ? $this->Html->link(
                                 $serviceType->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $serviceType->modifier->id,
                                 ]

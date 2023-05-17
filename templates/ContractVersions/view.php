@@ -99,8 +99,7 @@
                             <td><?= $contractVersion->has('creator') ? $this->Html->link(
                                 $contractVersion->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $contractVersion->creator->id,
                                 ]
@@ -115,8 +114,7 @@
                             <td><?= $contractVersion->has('modifier') ? $this->Html->link(
                                 $contractVersion->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $contractVersion->modifier->id,
                                 ]

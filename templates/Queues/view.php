@@ -81,8 +81,7 @@
                             <td><?= $queue->has('creator') ? $this->Html->link(
                                 $queue->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $queue->creator->id,
                                 ]
@@ -97,8 +96,7 @@
                             <td><?= $queue->has('modifier') ? $this->Html->link(
                                 $queue->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $queue->modifier->id,
                                 ]

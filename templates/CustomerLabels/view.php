@@ -74,8 +74,7 @@
                             <td><?= $customerLabel->has('creator') ? $this->Html->link(
                                 $customerLabel->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $customerLabel->creator->id,
                                 ]
@@ -90,8 +89,7 @@
                             <td><?= $customerLabel->has('modifier') ? $this->Html->link(
                                 $customerLabel->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $customerLabel->modifier->id,
                                 ]

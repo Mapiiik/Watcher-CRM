@@ -50,8 +50,7 @@
                             <td><?= $country->has('creator') ? $this->Html->link(
                                 $country->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $country->creator->id,
                                 ]
@@ -66,8 +65,7 @@
                             <td><?= $country->has('modifier') ? $this->Html->link(
                                 $country->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $country->modifier->id,
                                 ]

@@ -72,8 +72,7 @@
                             <td><?= $phone->has('creator') ? $this->Html->link(
                                 $phone->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $phone->creator->id,
                                 ]
@@ -88,8 +87,7 @@
                             <td><?= $phone->has('modifier') ? $this->Html->link(
                                 $phone->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $phone->modifier->id,
                                 ]

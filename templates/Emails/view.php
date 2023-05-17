@@ -72,8 +72,7 @@
                             <td><?= $email->has('creator') ? $this->Html->link(
                                 $email->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $email->creator->id,
                                 ]
@@ -88,8 +87,7 @@
                             <td><?= $email->has('modifier') ? $this->Html->link(
                                 $email->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $email->modifier->id,
                                 ]

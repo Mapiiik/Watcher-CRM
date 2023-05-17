@@ -139,8 +139,7 @@
                             <td><?= $customer->has('creator') ? $this->Html->link(
                                 $customer->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $customer->creator->id,
                                 ]
@@ -155,8 +154,7 @@
                             <td><?= $customer->has('modifier') ? $this->Html->link(
                                 $customer->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $customer->modifier->id,
                                 ]

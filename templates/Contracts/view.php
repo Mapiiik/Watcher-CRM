@@ -266,8 +266,7 @@
                             <td><?= $contract->has('creator') ? $this->Html->link(
                                 $contract->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $contract->creator->id,
                                 ]
@@ -282,8 +281,7 @@
                             <td><?= $contract->has('modifier') ? $this->Html->link(
                                 $contract->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $contract->modifier->id,
                                 ]

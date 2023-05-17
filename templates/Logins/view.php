@@ -87,8 +87,7 @@
                             <td><?= $login->has('creator') ? $this->Html->link(
                                 $login->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $login->creator->id,
                                 ]
@@ -103,8 +102,7 @@
                             <td><?= $login->has('modifier') ? $this->Html->link(
                                 $login->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $login->modifier->id,
                                 ]

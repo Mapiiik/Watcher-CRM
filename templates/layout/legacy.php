@@ -164,7 +164,7 @@ $request = $this->getRequest();
 
             <?= $this->getRequest()->getAttribute('identity') != null ? $this->AuthLink->link(
                 __('Logout'),
-                ['controller' => 'Users', 'action' => 'logout', 'plugin' => 'CakeDC/Users'],
+                ['controller' => 'AppUsers', 'action' => 'logout', 'plugin' => null],
                 ['class' => 'button button-small button-outline']
             ) : '' ?>
         </div>

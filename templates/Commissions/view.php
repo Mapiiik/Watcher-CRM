@@ -49,8 +49,7 @@
                             <td><?= $commission->has('creator') ? $this->Html->link(
                                 $commission->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $commission->creator->id,
                                 ]
@@ -65,8 +64,7 @@
                             <td><?= $commission->has('modifier') ? $this->Html->link(
                                 $commission->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $commission->modifier->id,
                                 ]

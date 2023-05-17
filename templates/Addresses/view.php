@@ -158,8 +158,7 @@
                             <td><?= $address->has('creator') ? $this->Html->link(
                                 $address->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $address->creator->id,
                                 ]
@@ -174,8 +173,7 @@
                             <td><?= $address->has('modifier') ? $this->Html->link(
                                 $address->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $address->modifier->id,
                                 ]

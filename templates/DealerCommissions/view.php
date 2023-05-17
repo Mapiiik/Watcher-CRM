@@ -78,8 +78,7 @@
                             <td><?= $dealerCommission->has('creator') ? $this->Html->link(
                                 $dealerCommission->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $dealerCommission->creator->id,
                                 ]
@@ -94,8 +93,7 @@
                             <td><?= $dealerCommission->has('modifier') ? $this->Html->link(
                                 $dealerCommission->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $dealerCommission->modifier->id,
                                 ]

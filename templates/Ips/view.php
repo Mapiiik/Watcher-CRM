@@ -108,8 +108,7 @@
                             <td><?= $ip->has('creator') ? $this->Html->link(
                                 $ip->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $ip->creator->id,
                                 ]
@@ -124,8 +123,7 @@
                             <td><?= $ip->has('modifier') ? $this->Html->link(
                                 $ip->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $ip->modifier->id,
                                 ]

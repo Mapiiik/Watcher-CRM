@@ -120,8 +120,7 @@ use Cake\I18n\Number;
                             <td><?= $billing->has('creator') ? $this->Html->link(
                                 $billing->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $billing->creator->id,
                                 ]
@@ -136,8 +135,7 @@ use Cake\I18n\Number;
                             <td><?= $billing->has('modifier') ? $this->Html->link(
                                 $billing->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $billing->modifier->id,
                                 ]

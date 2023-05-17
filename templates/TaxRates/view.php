@@ -69,8 +69,7 @@
                             <td><?= $taxRate->has('creator') ? $this->Html->link(
                                 $taxRate->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $taxRate->creator->id,
                                 ]
@@ -85,8 +84,7 @@
                             <td><?= $taxRate->has('modifier') ? $this->Html->link(
                                 $taxRate->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $taxRate->modifier->id,
                                 ]

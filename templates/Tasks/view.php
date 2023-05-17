@@ -126,8 +126,7 @@
                             <td><?= $task->has('creator') ? $this->Html->link(
                                 $task->creator->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $task->creator->id,
                                 ]
@@ -142,8 +141,7 @@
                             <td><?= $task->has('modifier') ? $this->Html->link(
                                 $task->modifier->username,
                                 [
-                                    'plugin' => 'CakeDC/Users',
-                                    'controller' => 'Users',
+                                    'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $task->modifier->id,
                                 ]
