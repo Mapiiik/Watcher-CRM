@@ -18,6 +18,8 @@ use CakeDC\Users\Model\Entity\User;
  * @property \Cake\I18n\FrozenDate|null $last_login
  * @property \Cake\I18n\FrozenDate $created
  * @property \Cake\I18n\FrozenDate $modified
+ * @property int $customer_id
+ * @property array|null $user_settings
  */
 class AppUser extends User
 {

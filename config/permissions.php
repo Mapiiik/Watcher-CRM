@@ -54,8 +54,8 @@ return [
         //all bypass
         [
             'prefix' => false,
-            'plugin' => 'CakeDC/Users',
-            'controller' => 'Users',
+            'plugin' => null,
+            'controller' => 'AppUsers',
             'action' => [
                 // LoginTrait
                 'socialLogin',
@@ -104,14 +104,14 @@ return [
         //specific actions allowed for the all roles in Users plugin
         [
             'role' => '*',
-            'plugin' => 'CakeDC/Users',
-            'controller' => 'Users',
+            'plugin' => null,
+            'controller' => 'AppUsers',
             'action' => ['profile', 'logout', 'linkSocial', 'callbackLinkSocial'],
         ],
         [
             'role' => '*',
-            'plugin' => 'CakeDC/Users',
-            'controller' => 'Users',
+            'plugin' => null,
+            'controller' => 'AppUsers',
             'action' => 'resetOneTimePasswordAuthenticator',
             'allowed' => function (array $user, $role, \Cake\Http\ServerRequest $request) {
                 $userId = \Cake\Utility\Hash::get($request->getAttribute('params'), 'pass.0');

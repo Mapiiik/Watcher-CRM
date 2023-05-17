@@ -10,15 +10,19 @@ $user = ${$tableAlias};
 <div class="row">
     <aside class="column">
         <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->AuthLink->link(__('List Users'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <h4 class="heading"><?= __d('app_users', 'Actions') ?></h4>
+            <?= $this->Html->link(
+                __d('app_users', 'List Users'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item']
+            ) ?>
         </div>
     </aside>
     <div class="column column-90">
         <div class="users form content">
             <?= $this->Form->create($user) ?>
             <fieldset>
-                <legend><?= __('Add User') ?></legend>
+                <legend><?= __d('app_users', 'Add User') ?></legend>
                 <?php
                     echo $this->Form->control('username');
                     echo $this->Form->control('email');
@@ -30,7 +34,7 @@ $user = ${$tableAlias};
                     echo $this->Form->control('active');
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__d('app_users', 'Submit')) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>
