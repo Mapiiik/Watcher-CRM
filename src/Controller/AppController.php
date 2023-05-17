@@ -19,6 +19,7 @@ namespace App\Controller;
 use AuditLog\Meta\RequestMetadata;
 use Cake\Cache\Cache;
 use Cake\Controller\Controller;
+use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Event\EventManager;
 use Cake\Http\Exception\NotFoundException;
@@ -81,8 +82,8 @@ class AppController extends Controller
             // set maximal limit
             $this->paginate['maxLimit'] = 10000;
 
-            // load limit from session
-            $this->paginate['limit'] = $this->getRequest()->getSession()->read('Config.limit', 20);
+            // load limit from configurations
+            $this->paginate['limit'] = Configure::read('UI.number_of_rows_per_page');
 
             return parent::paginate($object, $settings);
         } catch (NotFoundException $e) {
@@ -107,32 +108,66 @@ class AppController extends Controller
      */
     public function beforeFilter(EventInterface $event)
     {
-        # We check if we have a language set
+        # Load current user
+        /** @var \Authorization\Identity|null $identity */
+        $identity = $this->getRequest()->getAttribute('identity');
+        $user_settings = $identity['user_settings'] ?? [];
+
+        # Determine if we want to set the language
         if ($this->getRequest()->getQuery('language')) {
-            $this->getRequest()->getSession()->write('Config.language', $this->getRequest()->getQuery('language'));
-        }
-
-        $language = $this->getRequest()->getSession()->read('Config.language', I18n::getDefaultLocale());
-
-        if ($language) {
-            I18n::setLocale($language);
-        }
-
-        # We check if we have a high contrast set
-        if (is_numeric($this->getRequest()->getQuery('high-contrast'))) {
             $this->getRequest()->getSession()->write(
-                'Config.high-contrast',
-                (int)$this->getRequest()->getQuery('high-contrast') == 1
+                'Config.UI.language',
+                $this->getRequest()->getQuery('language')
             );
         }
 
-        # We check if we have a paginate limit set
+        # Set language configurations
+        Configure::write(
+            'UI.language',
+            $this->getRequest()->getSession()->read(
+                'Config.UI.language',
+                $user_settings['language'] ?? I18n::getDefaultLocale()
+            )
+        );
+
+        # Language settings in i18n locale
+        if (Configure::read('UI.language')) {
+            I18n::setLocale(Configure::read('UI.language'));
+        }
+
+        # Determine if we want to set a high contrast
+        if (is_numeric($this->getRequest()->getQuery('high_contrast'))) {
+            $this->getRequest()->getSession()->write(
+                'Config.UI.high_contrast',
+                (int)$this->getRequest()->getQuery('high_contrast') == 1
+            );
+        }
+
+        # Set high contrast configurations
+        Configure::write(
+            'UI.high_contrast',
+            $this->getRequest()->getSession()->read(
+                'Config.UI.high_contrast',
+                ($user_settings['high_contrast'] ?? 0) == 1
+            )
+        );
+
+        # Determine if we want to set a pagination limit
         if (is_numeric($this->getRequest()->getQuery('limit'))) {
             $this->getRequest()->getSession()->write(
-                'Config.limit',
+                'Config.UI.number_of_rows_per_page',
                 (int)$this->getRequest()->getQuery('limit')
             );
         }
+
+        # Set pagination limit configurations
+        Configure::write(
+            'UI.number_of_rows_per_page',
+            $this->getRequest()->getSession()->read(
+                'Config.UI.number_of_rows_per_page',
+                (int)($user_settings['number_of_rows_per_page'] ?? 20)
+            )
+        );
 
         # Disable SecurityComponent POST validation for CakeDC/Users
         if ($this->getRequest()->getParam('plugin') === 'CakeDC/Users') {
@@ -140,7 +175,6 @@ class AppController extends Controller
         }
 
         // Persisting audit log - current user
-        $identity = $this->getRequest()->getAttribute('identity');
         if ($identity != null) {
             EventManager::instance()->on(
                 new RequestMetadata($this->getRequest(), $identity['username'])

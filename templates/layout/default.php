@@ -15,6 +15,7 @@
  */
 
 use App\Controller\AppController;
+use Cake\Core\Configure;
 
 $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
 $request = $this->getRequest();
@@ -41,7 +42,7 @@ $request = $this->getRequest();
     <?php endif ?>
 
     <?= $this->Html->css(['normalize.min', 'milligram.min', 'cake']) ?>
-    <?= $request->getSession()->read('Config.high-contrast') ? $this->Html->css(['high-contrast']) : '' ?>
+    <?= Configure::read('UI.high_contrast') ? $this->Html->css(['high_contrast']) : '' ?>
 
 
     <?= $this->fetch('meta') ?>
@@ -167,36 +168,40 @@ $request = $this->getRequest();
                     ['class' => 'button button-small']
                 ) : '' ?>
 
-            <?php if ($request->getParam('action') == 'index') : ?>
-            <select name="limit" class="button button-small button-outline" onchange="location = this.value;">
-                <option <?= $request->getSession()->read('Config.limit') == 20 ? 'selected="selected"' : '' ?>
-                    value="<?= $urlWithQuery(['limit' => 20]) ?>">20</option>
-                <option <?= $request->getSession()->read('Config.limit') == 50 ? 'selected="selected"' : '' ?>
-                    value="<?= $urlWithQuery(['limit' => 50]) ?>">50</option>
-                <option <?= $request->getSession()->read('Config.limit') == 100 ? 'selected="selected"' : '' ?>
-                    value="<?= $urlWithQuery(['limit' => 100]) ?>">100</option>
-                <option <?= $request->getSession()->read('Config.limit') == 500 ? 'selected="selected"' : '' ?>
-                    value="<?= $urlWithQuery(['limit' => 500]) ?>">500</option>
-                <option <?= $request->getSession()->read('Config.limit') == 1000 ? 'selected="selected"' : '' ?>
-                    value="<?= $urlWithQuery(['limit' => 1000]) ?>">1000</option>
-                <option <?= $request->getSession()->read('Config.limit') == 5000 ? 'selected="selected"' : '' ?>
-                    value="<?= $urlWithQuery(['limit' => 5000]) ?>">5000</option>
-                <option <?= $request->getSession()->read('Config.limit') == 10000 ? 'selected="selected"' : '' ?>
-                    value="<?= $urlWithQuery(['limit' => 10000]) ?>">10000</option>
-            </select>
-            <?php endif; ?>
-            
-            <?php
-            $language = $request->getSession()->read('Config.language', Cake\I18n\I18n::getDefaultLocale());
-            ?>
-            <select name="language" class="button button-small button-outline" onchange="location = this.value;">
-                <option <?= $language == 'cs_CZ' ? 'selected="selected"' : '' ?>
-                    value="<?= $urlWithQuery(['language' => 'cs_CZ']) ?>">Čeština</option>
-                <option <?= $language == 'en_US' ? 'selected="selected"' : '' ?>
-                    value="<?= $urlWithQuery(['language' => 'en_US']) ?>">English</option>
-            </select>
+            <?= $request->getParam('action') == 'index' ? $this->Form->select(
+                'limit',
+                [
+                    $urlWithQuery(['limit' => 20]) => 20,
+                    $urlWithQuery(['limit' => 50]) => 50,
+                    $urlWithQuery(['limit' => 100]) => 100,
+                    $urlWithQuery(['limit' => 500]) => 500,
+                    $urlWithQuery(['limit' => 1000]) => 1000,
+                    $urlWithQuery(['limit' => 5000]) => 5000,
+                    $urlWithQuery(['limit' => 10000]) => 10000,
+                ],
+                [
+                    'value' => $urlWithQuery(['limit' => Configure::read('UI.number_of_rows_per_page')]),
+                    'escape' => false,
+                    'onchange' => 'location = this.value;',
+                    'class' => 'button button-small button-outline',
+                ]
+            ) : '' ?>
 
-            <?= $this->getRequest()->getAttribute('identity') != null ? $this->AuthLink->link(
+            <?= $this->Form->select(
+                'language',
+                [
+                    $urlWithQuery(['language' => 'cs_CZ']) => 'Čeština',
+                    $urlWithQuery(['language' => 'en_US']) => 'English',
+                ],
+                [
+                    'value' => $urlWithQuery(['language' => Configure::read('UI.language')]),
+                    'escape' => false,
+                    'onchange' => 'location = this.value;',
+                    'class' => 'button button-small button-outline',
+                ]
+            ) ?>
+
+            <?= $request->getAttribute('identity') != null ? $this->AuthLink->link(
                 __('Logout'),
                 ['controller' => 'AppUsers', 'action' => 'logout', 'plugin' => null],
                 ['class' => 'button button-small button-outline']
@@ -226,10 +231,10 @@ $request = $this->getRequest();
             <br><br>
             <div class="float-right">
             <?= $this->Form->create(null, ['type' => 'get']) ?>
-                <?= $this->Form->control('high-contrast', [
+                <?= $this->Form->control('high_contrast', [
                     'label' => __('High Contrast'),
                     'type' => 'checkbox',
-                    'checked' => $request->getSession()->read('Config.high-contrast'),
+                    'checked' => Configure::read('UI.high_contrast'),
                     'onchange' => 'this.form.submit();',
                 ]) ?>
             <?= $this->Form->end() ?>
