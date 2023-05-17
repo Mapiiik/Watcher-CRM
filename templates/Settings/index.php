@@ -10,11 +10,6 @@
             <h4><?= __('User Related') ?></h4>
             <div>
                 <?= $this->AuthLink->link(
-                    __('Change Password'),
-                    ['controller' => 'AppUsers', 'action' => 'changePassword'],
-                    ['class' => 'side-nav-item']
-                ) ?>
-                <?= $this->AuthLink->link(
                     __('User Profile'),
                     ['controller' => 'AppUsers', 'action' => 'profile'],
                     ['class' => 'side-nav-item']
