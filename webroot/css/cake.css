@@ -1,6 +1,48 @@
 /* Import fonts */
 @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;700&display=swap');
 
+/* Default UI */
+:root {
+    /* The following are official CakePHP colors */
+    --color-cakephp-red: #d33c43;
+    --color-cakephp-gray: #404041;
+    --color-cakephp-blue: #2f85ae;
+    --color-cakephp-lightblue: #34bdd7;
+
+    /* These are additional colors */
+    --color-lightgray: #606c76;
+    --color-white: #ffffff;
+
+    --color-main: var(--color-lightgray);
+    --color-main-bg: #ddf0ff;
+    --color-links: var(--color-cakephp-blue);
+    --color-links-active: #2a6496;
+    --color-links-active-bg: transparent;
+    --color-nav-links: var(--color-lightgray);
+    --color-nav-links-active: var(--color-links-active);
+    --color-nav-links-active-bg: transparent;
+    --color-headings: #363637;
+    --color-content-bg: #fbfcff;
+    --color-table-borders: #aaaaaa;
+    --color-table-headings-bg: #c0e0ff;
+
+    --color-message-success-bg: #e3fcec;
+    --color-message-success-text: #1f9d55;
+    --color-message-success-border: #51d88a;
+
+    --color-message-warning-bg: #fffabc;
+    --color-message-warning-text: #8d7b00;
+    --color-message-warning-border: #d3b800;
+
+    --color-message-error-bg: #fcebea;
+    --color-message-error-text: #cc1f1a;
+    --color-message-error-border: #ef5753;
+
+    --color-message-info-bg: #eff8ff;
+    --color-message-info-text: #2779bd;
+    --color-message-info-border: #6cb2eb;
+}
+
 /* Ping status */
 .ping-status {
     vertical-align: top;
@@ -54,42 +96,6 @@
 }
 
 /* Milligram overrides */
-:root {
-    /* The following are official CakePHP colors */
-    --color-cakephp-red: #d33c43;
-    --color-cakephp-gray: #404041;
-    --color-cakephp-blue: #2f85ae;
-    --color-cakephp-lightblue: #34bdd7;
-
-    /* These are additional colors */
-    --color-lightgray: #606c76;
-    --color-white: #fff;
-
-    --color-main-bg: #ddf0ff;
-    --color-links: var(--color-cakephp-blue);
-    --color-links-active: #2a6496;
-    --color-headings: #363637;
-    --color-content-bg: #fbfcff;
-    --color-table-borders: #aaaaaa;
-    --color-table-headings-bg: #c0e0ff;
-
-    --color-message-success-bg: #e3fcec;
-    --color-message-success-text: #1f9d55;
-    --color-message-success-border: #51d88a;
-
-    --color-message-warning-bg: #fffabc;
-    --color-message-warning-text: #8d7b00;
-    --color-message-warning-border: #d3b800;
-
-    --color-message-error-bg: #fcebea;
-    --color-message-error-text: #cc1f1a;
-    --color-message-error-border: #ef5753;
-
-    --color-message-info-bg: #eff8ff;
-    --color-message-info-text: #2779bd;
-    --color-message-info-border: #6cb2eb;
-}
-
 .button,
 button,
 input[type='button'],
@@ -149,6 +155,7 @@ ul {
 
 body {
     font-weight: 400;
+    color: var(--color-main);
     background: var(--color-main-bg);
 }
 
@@ -186,6 +193,7 @@ a:hover,
 a:focus,
 a:active {
     color: var(--color-links-active);
+    background-color: var(--color-links-active-bg);
     transition: color 0.2s ease-out;
 }
 
@@ -194,14 +202,15 @@ th a,
 .actions a {
     font-family: "Exo 2", sans-serif;
     font-size: 1.05em;
-    color: var(--color-lightgray);
+    color: var(--color-nav-links);
 }
 
 .side-nav a:hover,
 .side-nav a:focus,
 .actions a:hover,
 .actions a:focus {
-    color: var(--color-links-active);
+    color: var(--color-nav-links-active);
+    background-color: var(--color-nav-links-active-bg);
 }
 
 /* Labels */

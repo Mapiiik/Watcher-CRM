@@ -1,118 +1,41 @@
-/* Cake overrides */
-h1, h2, h3, h4, h5, h6 {
-    color: #000000;
-}
+/* High Contrast */
+:root {
+    /* The following are official CakePHP colors */
+    --color-cakephp-red: #d33c43;
+    --color-cakephp-gray: #404041;
+    --color-cakephp-blue: #2f85ae;
+    --color-cakephp-lightblue: #34bdd7;
 
-.main h4 {
-    border-bottom: 1px #99ccff solid;
-}
+    /* These are additional colors */
+    --color-lightgray: #606c76;
+    --color-white: #ffffff;
 
-a {
-    color: #000099;
-}
+    --color-main: #000000;
+    --color-main-bg: #ddf0ff;
+    --color-links: #000099;
+    --color-links-active: #ffffff;
+    --color-links-active-bg: #40a0f0;
+    --color-nav-links: var(--color-links);
+    --color-nav-links-active: var(--color-links-active);
+    --color-nav-links-active-bg: var(--color-links-active-bg);
+    --color-headings: #000000;
+    --color-content-bg: #fbfcff;
+    --color-table-borders: #000000;
+    --color-table-headings-bg: #99ccff;
 
-a:hover,
-a:focus,
-a:active  {
-    color: #ffffff;
-    background-color: #40a0f0;
-}
+    --color-message-success-bg: #e3fcec;
+    --color-message-success-text: #1f9d55;
+    --color-message-success-border: #51d88a;
 
-.side-nav a,
-th a,
-.actions a {
-    color: #000099;
-}
+    --color-message-warning-bg: #fffabc;
+    --color-message-warning-text: #8d7b00;
+    --color-message-warning-border: #d3b800;
 
-.side-nav a:hover,
-.side-nav a:focus,
-.actions a:hover,
-.actions a:focus {
-    color: #ffffff;
-}
+    --color-message-error-bg: #fcebea;
+    --color-message-error-text: #cc1f1a;
+    --color-message-error-border: #ef5753;
 
-/* Legend */
-legend {
-    color: #000000;
-}
-
-/* Input */
-input[type='email'],
-input[type='number'],
-input[type='password'],
-input[type='search'],
-input[type='tel'],
-input[type='text'],
-input[type='url'],
-input[type='color'],
-input[type='date'],
-input[type='month'],
-input[type='week'],
-input[type='datetime'],
-input[type='datetime-local'],
-input:not([type]),
-textarea,
-select {
-    background-color: #ffffff;
-}
-
-/* Tables */
-table {
-    background-color: #ffffff;
-}
-
-tr:hover td {
-    background:#ddf0ff;
-}
-
-th, td {
-    border: 0.1rem solid #000000;
-}
-
-iframe {
-    border: 0.1rem solid #000000;
-}
-
-/* Main */
-body {
-    color: #000000;
-    background: #ddf0ff;
-}
-
-.content {
-    background: #fbfcff;
-}
-
-th {
-    background: #99ccff;
-}
-
-/* Flash messages */
-.message {
-    background: #eff8ff;
-    color: #2779bd;
-    border-color: #6cb2eb;
-}
-
-.message.success {
-    background: #e3fcec;
-    color: #1f9d55;
-    border-color: #51d88a;
-}
-
-.message.warning {
-    background: #fffabc;
-    color: #8d7b00;
-    border-color: #d3b800;
-}
-
-.message.error {
-    background: #fcebea;
-    color: #cc1f1a;
-    border-color: #ef5753;
-}
-
-.prev.disabled a,
-.next.disabled a {
-    color: #000000;
+    --color-message-info-bg: #eff8ff;
+    --color-message-info-text: #2779bd;
+    --color-message-info-border: #6cb2eb;
 }
