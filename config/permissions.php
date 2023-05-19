@@ -106,7 +106,13 @@ return [
             'role' => '*',
             'plugin' => null,
             'controller' => 'AppUsers',
-            'action' => ['profile', 'logout', 'linkSocial', 'callbackLinkSocial'],
+            'action' => [
+                'profile',
+                'logout',
+                'linkSocial',
+                'callbackLinkSocial',
+                'userSettings',
+            ],
         ],
         [
             'role' => '*',
@@ -202,6 +208,7 @@ return [
             'role' => [
                 'customer-service-technician',
                 'network-technician',
+                'network-manager',
                 'sales-representative',
                 'sales-manager',
                 'bookkeeper',
@@ -247,10 +254,10 @@ return [
                 return is_numeric($request->getParam('customer_id'));
             },
         ],
-        //allow all indexes and views for sales-managers and network-technicians
+        //allow all indexes and views for sales-managers and network-managers
         [
             'role' => [
-                'network-technician',
+                'network-manager',
                 'sales-manager',
             ],
             'plugin' => null,
@@ -314,10 +321,10 @@ return [
                 'delete',
             ],
         ],
-        //allow some overviews for network-technicians
+        //allow some overviews for network-managers
         [
             'role' => [
-                'network-technician',
+                'network-manager',
             ],
             'plugin' => null,
             'controller' => [
@@ -380,10 +387,11 @@ return [
                 'disconnectRequest',
             ],
         ],
-        //allow all standard operations in RADIUS plugin for sales, bookkeepers and network technicians
+        //allow all standard operations in RADIUS plugin for sales, bookkeepers and networks
         [
             'role' => [
                 'network-technician',
+                'network-manager',
                 'sales-representative',
                 'sales-manager',
                 'bookkeeper',
