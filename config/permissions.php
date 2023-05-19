@@ -267,9 +267,10 @@ return [
                 'view',
             ],
         ],
-        //allow add/edit for sales and bookkeepers
+        //allow add/edit for sales and bookkeepers and network-managers
         [
             'role' => [
+                'network-manager',
                 'sales-representative',
                 'sales-manager',
                 'bookkeeper',
@@ -299,9 +300,10 @@ return [
                 'terminateRelatedBillings',
             ],
         ],
-        //allow delete of some items for sales and bookkeepers
+        //allow delete of some items for sales and bookkeepers and network-managers
         [
             'role' => [
+                'network-manager',
                 'sales-representative',
                 'sales-manager',
                 'bookkeeper',

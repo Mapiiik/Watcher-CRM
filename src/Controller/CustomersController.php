@@ -156,7 +156,7 @@ class CustomersController extends AppController
         $labels = $filter['labels'] ?? [];
         $allow_advanced_search = in_array($this->getRequest()->getAttribute('identity')['role'] ?? null, [
             'admin',
-            'network-technician',
+            'network-manager',
             'sales-manager',
         ]);
 
