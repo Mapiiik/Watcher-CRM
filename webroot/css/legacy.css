@@ -20,6 +20,7 @@
     --color-nav-links-active-bg: var(--color-links-active-bg);
     --color-headings: #363637;
     --color-content-bg: #fbfcff;
+    --color-table-bg: #ffffff;
     --color-table-borders: #000000;
     --color-table-headings-bg: #99ccff;
 
@@ -158,7 +159,7 @@ table {
     margin-left: 4px;
     margin-top: 0px;
     margin-bottom: 8px;
-    background-color: var(--color-white);
+    background-color: var(--color-table-bg);
     box-shadow: 0 7px 14px 0 rgba(60, 66, 87, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
     width: 100%;
 }

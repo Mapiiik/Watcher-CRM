@@ -23,6 +23,7 @@
     --color-nav-links-active-bg: transparent;
     --color-headings: #363637;
     --color-content-bg: #fbfcff;
+    --color-table-bg: #ffffff;
     --color-table-borders: #aaaaaa;
     --color-table-headings-bg: #c0e0ff;
 
@@ -258,7 +259,7 @@ table {
     width: calc(100% - 3px);
     margin-bottom: 6px;
     margin-right: 3px;
-    background-color: var(--color-white);
+    background-color: var(--color-table-bg);
 
     border-radius: 0.4rem;
     box-shadow: 0 3px 6px 0 rgba(60, 66, 87, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.05);

@@ -1,20 +1,25 @@
 :root {
+    /* The following are official CakePHP colors */
     --color-cakephp-red: #d33c43;
     --color-cakephp-gray: #404041;
     --color-cakephp-blue: #2f85ae;
     --color-cakephp-lightblue: #34bdd7;
-    --color-lightgray: #96a6b4;
-    --color-white: #000000;
+
+    /* These are additional colors */
+    --color-lightgray: #606c76;
+    --color-white: #ffffff;
+
     --color-main: #ffffff;
     --color-main-bg: #1b252d;
     --color-links: var(--color-cakephp-blue);
     --color-links-active: #2a6496;
     --color-links-active-bg: transparent;
-    --color-nav-links: var(--color-lightgray);
+    --color-nav-links: #dddddd;
     --color-nav-links-active: var(--color-links-active);
     --color-nav-links-active-bg: transparent;
-    --color-headings: #d1d1d1;
+    --color-headings: #dddddd;
     --color-content-bg: #000000;
+    --color-table-bg: var(--color-main-bg);
     --color-table-borders: #aaaaaa;
     --color-table-headings-bg: #395167;
     --color-message-success-bg: #e3fcec;
