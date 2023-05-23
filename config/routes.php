@@ -232,10 +232,10 @@ $uiRoutes = function (RouteBuilder $builder) {
 };
 
 // Legacy UI
-$routes->scope('/legacy/', ['ui-mode' => 'legacy'], $uiRoutes);
+$routes->scope('/legacy/', ['theme-switch' => 'legacy'], $uiRoutes);
 
 // Default UI
-$routes->scope('/admin/', ['ui-mode' => 'default'], $uiRoutes);
+$routes->scope('/admin/', [], $uiRoutes);
 
 $routes->scope('/', function (RouteBuilder $builder) {
     // Default redirect
@@ -295,13 +295,6 @@ $routes->prefix('Api', function (RouteBuilder $builder) {
 //apply URL filters only if not called from console
 if (!(php_sapi_name() == 'cli')) {
     Router::addUrlFilter(function (array $params, ServerRequest $request) {
-        // persistent ui-mode and default state preset
-        if ($request->getParam('ui-mode') && !isset($params['ui-mode'])) {
-            $params['ui-mode'] = $request->getParam('ui-mode');
-        } else {
-            $params['ui-mode'] = 'default';
-        }
-
         // persistent win-link
         if ($request->getQuery('win-link') == 'true') {
             $params['?']['win-link'] = 'true';
@@ -330,13 +323,6 @@ if (!(php_sapi_name() == 'cli')) {
         if (!isset($params['controller']) && $request->getParam('controller') == 'Contracts') {
             unset($params['contract_id']);
         }
-
-        return $params;
-    });
-} else {
-    // ui-mode default state preset for CLI ($request is null)
-    Router::addUrlFilter(function (array $params, $request) {
-        $params['ui-mode'] = 'default';
 
         return $params;
     });

@@ -24,6 +24,7 @@ use Cake\Event\EventInterface;
 use Cake\Event\EventManager;
 use Cake\Http\Exception\NotFoundException;
 use Cake\I18n\I18n;
+use Cake\Routing\Router;
 
 /**
  * Application Controller
@@ -35,6 +36,9 @@ use Cake\I18n\I18n;
  */
 class AppController extends Controller
 {
+    # User settings
+    protected array $user_settings = [];
+
     /**
      * Initialization hook method.
      *
@@ -56,14 +60,6 @@ class AppController extends Controller
          * see https://book.cakephp.org/4/en/controllers/components/form-protection.html
          */
         $this->loadComponent('FormProtection');
-
-        // switch to Legacy UI layout if requested
-        if (
-            $this->getRequest()->getParam('ui-mode') === 'legacy'
-            && $this->getRequest()->getParam('_ext') === null
-        ) {
-            $this->viewBuilder()->setLayout('legacy');
-        }
     }
 
     # App > paginate
@@ -111,7 +107,9 @@ class AppController extends Controller
         # Load current user
         /** @var \Authorization\Identity|null $identity */
         $identity = $this->getRequest()->getAttribute('identity');
-        $user_settings = $identity['user_settings'] ?? [];
+
+        # Load user settings
+        $this->user_settings = $identity['user_settings'] ?? [];
 
         # Determine if we want to set the language
         if ($this->getRequest()->getQuery('language')) {
@@ -126,7 +124,7 @@ class AppController extends Controller
             'UI.language',
             $this->getRequest()->getSession()->read(
                 'Config.UI.language',
-                $user_settings['language'] ?? I18n::getDefaultLocale()
+                $this->user_settings['language'] ?? I18n::getDefaultLocale()
             )
         );
 
@@ -135,20 +133,27 @@ class AppController extends Controller
             I18n::setLocale(Configure::read('UI.language'));
         }
 
-        # Determine if we want to set a high contrast
-        if (is_numeric($this->getRequest()->getQuery('high_contrast'))) {
+        # theme switch redirect (for legacy URLs)
+        if ($this->getRequest()->getParam('theme-switch')) {
+            return $this->redirect($this->urlWithQuery([
+                'theme' => $this->getRequest()->getParam('theme-switch'),
+            ]));
+        }
+
+        # Determine if we want to set a theme
+        if ($this->getRequest()->getQuery('theme')) {
             $this->getRequest()->getSession()->write(
-                'Config.UI.high_contrast',
-                (int)$this->getRequest()->getQuery('high_contrast') == 1
+                'Config.UI.theme',
+                $this->getRequest()->getQuery('theme')
             );
         }
 
-        # Set high contrast configurations
+        # Set theme configurations
         Configure::write(
-            'UI.high_contrast',
+            'UI.theme',
             $this->getRequest()->getSession()->read(
-                'Config.UI.high_contrast',
-                ($user_settings['high_contrast'] ?? 0) == 1
+                'Config.UI.theme',
+                ($this->user_settings['theme'] ?? 'default')
             )
         );
 
@@ -165,7 +170,7 @@ class AppController extends Controller
             'UI.number_of_rows_per_page',
             $this->getRequest()->getSession()->read(
                 'Config.UI.number_of_rows_per_page',
-                (int)($user_settings['number_of_rows_per_page'] ?? 20)
+                (int)($this->user_settings['number_of_rows_per_page'] ?? 20)
             )
         );
 
@@ -260,6 +265,21 @@ class AppController extends Controller
         }
         // done!
         return $password;
+    }
+
+    /**
+     * Generate actual URL with added query paramaters
+     *
+     * @param array $query Query parameters to be added to the URL
+     * @return string
+     */
+    public function urlWithQuery(array $query = [])
+    {
+        $request = $this->getRequest();
+
+        return Router::url(
+            ['?' => $query + $request->getQueryParams()] + $request->getParam('pass')
+        );
     }
 
     /**

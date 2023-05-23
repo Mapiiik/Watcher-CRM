@@ -46,8 +46,17 @@
                         10000 => 10000,
                     ],
                 ]);
-                echo $this->Form->control('user_settings.high_contrast', [
-                    'label' => __d('app_users', 'High Contrast'),
+                echo $this->Form->control('user_settings.theme', [
+                    'label' => __d('app_users', 'Theme'),
+                    'options' => [
+                        'default' => __('Default'),
+                        'contrast' => __('Contrast'),
+                        'legacy' => __('Legacy'),
+                        'dark' => __('Dark') . ' (dev)',
+                    ],
+                ]);
+                echo $this->Form->control('user_settings.customers.advanced_search', [
+                    'label' => __d('app_users', 'Customers') . ' - ' . __d('app_users', 'Advanced Search'),
                     'type' => 'checkbox',
                 ]);
                 ?>

@@ -1,0 +1,32 @@
+:root {
+    --color-cakephp-red: #d33c43;
+    --color-cakephp-gray: #404041;
+    --color-cakephp-blue: #2f85ae;
+    --color-cakephp-lightblue: #34bdd7;
+    --color-lightgray: #96a6b4;
+    --color-white: #000000;
+    --color-main: #ffffff;
+    --color-main-bg: #1b252d;
+    --color-links: var(--color-cakephp-blue);
+    --color-links-active: #2a6496;
+    --color-links-active-bg: transparent;
+    --color-nav-links: var(--color-lightgray);
+    --color-nav-links-active: var(--color-links-active);
+    --color-nav-links-active-bg: transparent;
+    --color-headings: #d1d1d1;
+    --color-content-bg: #000000;
+    --color-table-borders: #aaaaaa;
+    --color-table-headings-bg: #395167;
+    --color-message-success-bg: #e3fcec;
+    --color-message-success-text: #1f9d55;
+    --color-message-success-border: #51d88a;
+    --color-message-warning-bg: #fffabc;
+    --color-message-warning-text: #8d7b00;
+    --color-message-warning-border: #d3b800;
+    --color-message-error-bg: #fcebea;
+    --color-message-error-text: #cc1f1a;
+    --color-message-error-border: #ef5753;
+    --color-message-info-bg: #eff8ff;
+    --color-message-info-text: #2779bd;
+    --color-message-info-border: #6cb2eb;
+}

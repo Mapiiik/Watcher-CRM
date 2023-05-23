@@ -41,9 +41,21 @@ $request = $this->getRequest();
         ]) ?>
     <?php endif ?>
 
-    <?= $this->Html->css(['normalize.min', 'milligram.min', 'cake']) ?>
-    <?= Configure::read('UI.high_contrast') ? $this->Html->css(['high_contrast']) : '' ?>
-
+    <?php
+    switch (Configure::read('UI.theme')) {
+        case 'legacy':
+            echo $this->Html->css(['normalize.min', 'legacy']);
+            break;
+        case 'dark':
+            echo $this->Html->css(['normalize.min', 'milligram.min', 'cake', 'dark']);
+            break;
+        case 'contrast':
+            echo $this->Html->css(['normalize.min', 'milligram.min', 'cake', 'high_contrast']);
+            break;
+        default:
+            echo $this->Html->css(['normalize.min', 'milligram.min', 'cake']);
+    }
+    ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
@@ -146,18 +158,18 @@ $request = $this->getRequest();
             <?php if (file_exists(WWW_ROOT . 'legacy' . DS) && is_dir(WWW_ROOT . 'legacy' . DS)) : ?>
                 <?php if ($request->getParam('customer_id')) { ?>
                     <?= $this->Html->link(
-                        __('Legacy UI'),
+                        __('Old NMS'),
                         '/legacy/redirect.php?customer_id=' . $request->getParam('customer_id'),
                         ['class' => 'button button-small']
                     ) ?>
                 <?php } elseif ($this->getName() == 'Tasks' && $request->getParam('id')) { ?>
                     <?= $this->Html->link(
-                        __('Legacy UI'),
+                        __('Old NMS'),
                         '/legacy/redirect.php?task_id=' . $request->getParam('id'),
                         ['class' => 'button button-small']
                     ) ?>
                 <?php } else { ?>
-                    <?= $this->Html->link(__('Legacy UI'), '/legacy', ['class' => 'button button-small']) ?>
+                    <?= $this->Html->link(__('Old NMS'), '/legacy', ['class' => 'button button-small']) ?>
                 <?php } ?>
             <?php endif; ?>
 
@@ -186,6 +198,22 @@ $request = $this->getRequest();
                     'class' => 'button button-small button-outline',
                 ]
             ) : '' ?>
+
+            <?= $this->Form->select(
+                'theme',
+                [
+                    $urlWithQuery(['theme' => 'default']) => __('Default'),
+                    $urlWithQuery(['theme' => 'contrast']) => __('Contrast'),
+                    $urlWithQuery(['theme' => 'legacy']) => __('Legacy'),
+                    $urlWithQuery(['theme' => 'dark']) => __('Dark') . ' (dev)',
+                ],
+                [
+                    'value' => $urlWithQuery(['theme' => Configure::read('UI.theme')]),
+                    'escape' => false,
+                    'onchange' => 'location = this.value;',
+                    'class' => 'button button-small button-outline',
+                ]
+            ) ?>
 
             <?= $this->Form->select(
                 'language',
@@ -229,16 +257,6 @@ $request = $this->getRequest();
                 <?= __('Version') . ': ' . h(AppController::getVersion()) ?>
             </div>
             <br><br>
-            <div class="float-right">
-            <?= $this->Form->create(null, ['type' => 'get']) ?>
-                <?= $this->Form->control('high_contrast', [
-                    'label' => __('High Contrast'),
-                    'type' => 'checkbox',
-                    'checked' => Configure::read('UI.high_contrast'),
-                    'onchange' => 'this.form.submit();',
-                ]) ?>
-            <?= $this->Form->end() ?>
-            </div>
         </div>
     </footer>
 </body>

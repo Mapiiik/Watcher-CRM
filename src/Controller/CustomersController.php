@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Form\Form;
+use Cake\Utility\Hash;
 
 // filter for fulltext search
 const CUSTOMERS_FULLTEXT_SEARCH_FILTER = "SELECT
@@ -151,7 +152,8 @@ class CustomersController extends AppController
         $filter = $this->getRequest()->getSession()->read('Config.Customers.filter');
 
         // filter
-        $advanced_search = $filter['advanced_search'] ?? false;
+        $advanced_search = $filter['advanced_search']
+            ?? Hash::get($this->user_settings, 'customers.advanced_search', false);
         $search = (string)($filter['search'] ?? '');
         $labels = $filter['labels'] ?? [];
         $allow_advanced_search = in_array($this->getRequest()->getAttribute('identity')['role'] ?? null, [
