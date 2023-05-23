@@ -174,11 +174,6 @@ class AppController extends Controller
             )
         );
 
-        # Disable SecurityComponent POST validation for CakeDC/Users
-        if ($this->getRequest()->getParam('plugin') === 'CakeDC/Users') {
-            $this->Security->setConfig('validatePost', false);
-        }
-
         // Persisting audit log - current user
         if ($identity != null) {
             EventManager::instance()->on(
