@@ -22,15 +22,19 @@
     --color-table-bg: var(--color-main-bg);
     --color-table-borders: #aaaaaa;
     --color-table-headings-bg: #395167;
+
     --color-message-success-bg: #e3fcec;
     --color-message-success-text: #1f9d55;
     --color-message-success-border: #51d88a;
+
     --color-message-warning-bg: #fffabc;
     --color-message-warning-text: #8d7b00;
     --color-message-warning-border: #d3b800;
+
     --color-message-error-bg: #fcebea;
     --color-message-error-text: #cc1f1a;
     --color-message-error-border: #ef5753;
+
     --color-message-info-bg: #eff8ff;
     --color-message-info-text: #2779bd;
     --color-message-info-border: #6cb2eb;
