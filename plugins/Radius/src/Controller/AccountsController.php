@@ -337,7 +337,8 @@ class AccountsController extends AppController
                     $e->getMessage()
                 ));
 
-                return $this->redirect($this->referer(['action' => 'monitoring', $account->id]));
+                // skip further processing and go to the next record
+                continue;
             }
 
             // detect response type
