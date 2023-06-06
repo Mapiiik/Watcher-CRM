@@ -158,6 +158,19 @@ return [
                 'customerPoints',
             ],
         ],
+        //allow invoice download for API
+        [
+            'role' => [
+                'api',
+            ],
+            'plugin' => 'BookkeepingPohoda',
+            'controller' => [
+                'Invoices',
+            ],
+            'action' => [
+                'download',
+            ],
+        ],
         //all roles access
         [
             'role' => '*',
