@@ -143,7 +143,17 @@ class TasksController extends AppController
         $this->set('filterForm', $filterForm);
 
         $this->paginate = [
-            'contain' => ['Customers', 'Contracts', 'Dealers', 'TaskTypes', 'TaskStates'],
+            'contain' => [
+                'Customers' => [
+                    'Addresses',
+                ],
+                'Contracts' => [
+                    'InstallationAddresses',
+                ],
+                'Dealers',
+                'TaskTypes',
+                'TaskStates',
+            ],
             'order' => [
                 'Tasks.task_state_id' => 'ASC',
                 'Tasks.id' => 'DESC',
@@ -234,8 +244,12 @@ class TasksController extends AppController
         $task = $this->Tasks->get($id, [
             'contain' => [
                 'TaskTypes',
-                'Customers',
-                'Contracts',
+                'Customers' => [
+                    'Addresses',
+                ],
+                'Contracts' => [
+                    'InstallationAddresses',
+                ],
                 'Dealers',
                 'TaskStates',
                 'Creators',
@@ -333,17 +347,6 @@ class TasksController extends AppController
         }
 
         if (isset($customer)) {
-            // preset subject
-            if (empty($task->subject)) {
-                $task->subject = isset($contract) ?
-                    $contract->number
-                    . ' - ' . ($contract->installation_address->full_address ?? $customer->name)
-                    . ', ' . $customer->phone
-                    :
-                    $customer->number
-                    . ' - ' . $customer->name
-                    . ', ' . $customer->phone;
-            }
             // preset email
             if (empty($task->email)) {
                 $task->email = $customer->email;

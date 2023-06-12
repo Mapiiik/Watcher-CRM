@@ -31,6 +31,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime|null $estimated_date
  * @property \Cake\I18n\FrozenTime|null $critical_date
  * @property string|null $access_point_id
+ * @property string $summary_text
  * @property string $style
  *
  * @property \App\Model\Entity\TaskType $task_type
@@ -91,6 +92,47 @@ class Task extends Entity
         }
 
         return null;
+    }
+
+    /**
+     * getter for summary text
+     *
+     * @return string
+     */
+    protected function _getSummaryText(): string
+    {
+        $summary_text = '';
+
+        $summary_text .= $this->contract->number ?? $this->customer->number ?? '';
+        $summary_text .= (!empty($summary_text) ? ' - ' : '') . $this->task_type->name;
+
+        if (isset($this->customer)) {
+            $summary_text .= ' - ' . ($this->customer->company ?? $this->customer->last_name ?? '');
+        }
+
+        if (isset($this->contract->installation_address)) {
+            $summary_text .=
+                ', '
+                . $this->contract->installation_address->street_and_number
+                . ', '
+                . $this->contract->installation_address->city;
+        } elseif (isset($this->customer->installation_address)) {
+            $summary_text .=
+                ', '
+                . $this->customer->installation_address->street_and_number
+                . ', '
+                . $this->customer->installation_address->city;
+        } else {
+            // nothing
+        }
+
+        if (isset($this->phone)) {
+            $summary_text .= ', ' . $this->phone;
+        }
+
+        $summary_text .= ' - ' . $this->subject;
+
+        return $summary_text;
     }
 
     /**

@@ -58,7 +58,7 @@
                     <th><?= $this->Paginator->sort('priority') ?></th>
                     <th><?= $this->Paginator->sort('task_state_id') ?></th>
                     <th><?= $this->Paginator->sort('dealer_id') ?></th>
-                    <th><?= $this->Paginator->sort('subject') ?></th>
+                    <th><?= $this->Paginator->sort('subject') ?> / <i><?= __('Summary Text') ?></i></th>
                     <th><?= $this->Paginator->sort('text') ?></th>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id', __('Customer Number')) ?></th>
@@ -93,7 +93,10 @@
                             ['controller' => 'Customers', 'action' => 'view', $task->dealer->id]
                         ) : '' ?>
                     </td>
-                    <td><?= h($task->subject) ?></td>
+                    <td>
+                        <?= h($task->subject) ?>
+                        <blockquote><i><?= h($task->summary_text) ?></i></blockquote>
+                    </td>
                     <td style="overflow-wrap: break-word; max-width: 600px;"><?= nl2br($task->text ?? '') ?></td>
                     <td>
                         <?= $task->has('customer') ? $this->Html->link(
