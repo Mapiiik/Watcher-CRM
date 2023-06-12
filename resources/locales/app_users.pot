@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-05-17 17:31+0200\n"
+"POT-Creation-Date: 2023-06-12 13:06+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -57,7 +57,7 @@ msgstr ""
 #: ./templates/AppUsers/request_reset_password.php:15
 #: ./templates/AppUsers/resend_token_validation.php:16
 #: ./templates/AppUsers/social_email.php:14
-#: ./templates/AppUsers/user_settings.php:55
+#: ./templates/AppUsers/user_settings.php:64
 msgid "Submit"
 msgstr ""
 
@@ -323,7 +323,15 @@ msgid "Number of Rows per Page"
 msgstr ""
 
 #: ./templates/AppUsers/user_settings.php:50
-msgid "High Contrast"
+msgid "Theme"
+msgstr ""
+
+#: ./templates/AppUsers/user_settings.php:59
+msgid "Customers"
+msgstr ""
+
+#: ./templates/AppUsers/user_settings.php:59
+msgid "Advanced Search"
 msgstr ""
 
 #: ./templates/AppUsers/verify.php:21

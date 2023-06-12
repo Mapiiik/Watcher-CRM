@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CakeDC Users\n"
-"POT-Creation-Date: 2023-05-17 17:31+0200\n"
-"PO-Revision-Date: 2023-05-17 17:38+0200\n"
+"POT-Creation-Date: 2023-06-12 13:06+0200\n"
+"PO-Revision-Date: 2023-06-12 13:15+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: Martin Patočka <mapik@mapik.net>\n"
 "Language: cs_CZ\n"
@@ -49,7 +49,7 @@ msgstr "Přidat uživatele"
 #: templates/AppUsers/request_reset_password.php:15
 #: templates/AppUsers/resend_token_validation.php:16
 #: templates/AppUsers/social_email.php:14
-#: templates/AppUsers/user_settings.php:55
+#: templates/AppUsers/user_settings.php:64
 msgid "Submit"
 msgstr "Odeslat"
 
@@ -301,8 +301,16 @@ msgid "Number of Rows per Page"
 msgstr "Počet řádků na stránku"
 
 #: templates/AppUsers/user_settings.php:50
-msgid "High Contrast"
-msgstr "Vysoký kontrast"
+msgid "Theme"
+msgstr "Motiv"
+
+#: templates/AppUsers/user_settings.php:59
+msgid "Customers"
+msgstr "Zákazníci"
+
+#: templates/AppUsers/user_settings.php:59
+msgid "Advanced Search"
+msgstr "Pokročilé vyhledávání"
 
 #: templates/AppUsers/verify.php:21
 msgid "Verification Code"
@@ -411,3 +419,6 @@ msgstr "Data"
 #: templates/AppUsers/webauthn2fa.php:9
 msgid "Two-factor authentication"
 msgstr "Dvoufaktorové ověření"
+
+#~ msgid "High Contrast"
+#~ msgstr "Vysoký kontrast"
