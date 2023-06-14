@@ -9,6 +9,9 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
+use Cake\Http\ServerRequest;
+use Cake\Utility\Hash;
+
 /*
  * This is a quick roles-permissions implementation
  * Rules are evaluated top-down, first matching rule will apply
@@ -118,8 +121,8 @@ $permissions = [
             'plugin' => null,
             'controller' => 'AppUsers',
             'action' => 'resetOneTimePasswordAuthenticator',
-            'allowed' => function (array $user, $role, \Cake\Http\ServerRequest $request) {
-                $userId = \Cake\Utility\Hash::get($request->getAttribute('params'), 'pass.0');
+            'allowed' => function (array $user, $role, ServerRequest $request) {
+                $userId = Hash::get($request->getAttribute('params'), 'pass.0');
                 if (!empty($userId) && !empty($user)) {
                     return $userId === $user['id'];
                 }
@@ -262,7 +265,7 @@ $permissions = [
             'action' => [
                 'index',
             ],
-            'allowed' => function ($user, $role, Cake\Http\ServerRequest $request) {
+            'allowed' => function ($user, $role, ServerRequest $request) {
                 return is_numeric($request->getParam('customer_id'));
             },
         ],
