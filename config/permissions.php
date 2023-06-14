@@ -10,10 +10,6 @@
  */
 
 /*
- * IMPORTANT:
- * This is an example configuration file. Copy this file into your config directory and edit to
- * setup your app permissions.
- *
  * This is a quick roles-permissions implementation
  * Rules are evaluated top-down, first matching rule will apply
  * Each line define
@@ -49,7 +45,10 @@
     ],
  */
 
-return [
+/*
+ * Default permissions
+ */
+$permissions = [
     'CakeDC/Auth.permissions' => [
         //all bypass
         [
@@ -426,3 +425,17 @@ return [
         ],
     ],
 ];
+
+/*
+ * Load local permissions if exists
+ */
+$localPermissionsFile = CONFIG . 'permissions_local.php';
+if (file_exists($localPermissionsFile)) {
+    $localPermissions = include $localPermissionsFile;
+    if (is_array($localPermissions)) {
+        // merge permissions - local first in order
+        $permissions = array_merge_recursive($localPermissions, $permissions);
+    }
+}
+
+return $permissions;
