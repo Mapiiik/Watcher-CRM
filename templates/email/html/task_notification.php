@@ -147,6 +147,12 @@ table {
     <h4><?= h($task->subject) ?></h4>
 </div>
 <div class="text">
+    <strong><?= __('Summary Text') ?></strong>
+    <blockquote>
+        <?= h($task->summary_text) ?>
+    </blockquote>
+</div>
+<div class="text">
     <strong><?= __('Text') ?></strong>
     <blockquote style="overflow-wrap: break-word;">
         <?= $this->Text->autoParagraph(h($task->text)); ?>

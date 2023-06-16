@@ -562,8 +562,12 @@ class TasksController extends AppController
             'contain' => [
                 'TaskTypes',
                 'TaskStates',
-                'Customers',
-                'Contracts',
+                'Customers' => [
+                    'Addresses',
+                ],
+                'Contracts' => [
+                    'InstallationAddresses',
+                ],
                 'Dealers' => ['Emails'],
                 'Creators',
                 'Modifiers',
@@ -582,7 +586,7 @@ class TasksController extends AppController
             $title = __('You have changes in task # {0}', $task->id);
         }
 
-        $mailer->setSubject($title . ' - ' . $task->subject);
+        $mailer->setSubject($title . ' - ' . $task->summary_text);
         $mailer->setEmailFormat('html');
 
         $mailer->viewBuilder()
