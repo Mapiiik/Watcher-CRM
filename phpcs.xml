@@ -5,6 +5,7 @@
         <exclude-pattern>templates/Pages/home.php</exclude-pattern>
         <exclude-pattern>src/ContractPDF.php</exclude-pattern>
         <exclude-pattern>src/CustomerPDF.php</exclude-pattern>
+        <exclude-pattern>config/Migrations/20221211110347_AddHaveContractVersionsAndHaveEquipmentsAndHaveIpAddressesAndHaveRadiusAccountsToServiceTypes.php</exclude-pattern>
     </rule>
     <rule ref="CakePHP"/>
 </ruleset>
