@@ -3,6 +3,8 @@ parameters:
     checkMissingIterableValueType: false
     checkGenericClassInNonGenericObjectType: false
     treatPhpDocTypesAsCertain: false
+    bootstrapFiles:
+       - config/paths.php
     paths:
         - src
         - plugins/BookkeepingPohoda/src
