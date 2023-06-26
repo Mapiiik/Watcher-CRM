@@ -27,6 +27,18 @@ use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 
 /*
+ * Redirect /legacy/ URLs to /admin/ with all paramenters
+ */
+$url =
+    (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http')
+    . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
+if (mb_strpos($url, '/legacy/') !== false) {
+    header('Location: ' . mb_ereg_replace('/legacy/', '/admin/', $url), true, 303);
+    die;
+}
+
+/*
  * The default class to use for all routes
  *
  * The following route classes are supplied with CakePHP and are appropriate
@@ -46,10 +58,7 @@ use Cake\Routing\Router;
 /** @var \Cake\Routing\RouteBuilder $routes */
 $routes->setRouteClass(DashedRoute::class);
 
-// UI Routes Funtion
-$uiRoutes = function (RouteBuilder $builder) {
-    $builder->setRouteClass(DashedRoute::class);
-
+$routes->scope('/admin/', function (RouteBuilder $builder): void {
     $builder->setExtensions(['pdf']);
 
     /*
@@ -229,13 +238,7 @@ $uiRoutes = function (RouteBuilder $builder) {
     $builder->redirect('/', ['controller' => 'Customers', 'action' => 'index'], ['status' => 303]);
 
     //$builder->fallbacks();
-};
-
-// Legacy UI
-$routes->scope('/legacy/', ['theme-switch' => 'legacy'], $uiRoutes);
-
-// Default UI
-$routes->scope('/admin/', [], $uiRoutes);
+});
 
 $routes->scope('/', function (RouteBuilder $builder) {
     // Default redirect

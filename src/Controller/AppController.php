@@ -133,13 +133,6 @@ class AppController extends Controller
             I18n::setLocale(Configure::read('UI.language'));
         }
 
-        # theme switch redirect (for legacy URLs)
-        if ($this->getRequest()->getParam('theme-switch')) {
-            return $this->redirect($this->urlWithQuery([
-                'theme' => $this->getRequest()->getParam('theme-switch'),
-            ]));
-        }
-
         # Determine if we want to set a theme
         if ($this->getRequest()->getQuery('theme')) {
             $this->getRequest()->getSession()->write(
