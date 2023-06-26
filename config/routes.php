@@ -27,7 +27,7 @@ use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 
 /*
- * Redirect /legacy/ URLs to /admin/ with all paramenters
+ * Redirect /legacy/ URLs to /admin/ with all parameters
  */
 $url =
     (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http')
