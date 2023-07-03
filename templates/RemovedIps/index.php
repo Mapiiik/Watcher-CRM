@@ -2,7 +2,6 @@
 /**
  * @var \App\View\AppView $this
  * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\RemovedIp> $removedIps
- * @var \Cake\Collection\CollectionInterface|array<string> $types_of_use
  */
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
@@ -54,7 +53,7 @@
                         ) : '' ?>
                     </td>
                     <td><?= h($removedIp->ip) ?></td>
-                    <td><?= h($types_of_use[$removedIp->type_of_use]) ?></td>
+                    <td><?= h($removedIp->getTypeOfUseName()) ?></td>
                     <td><?= h($removedIp->removed) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $removedIp->id]) ?>

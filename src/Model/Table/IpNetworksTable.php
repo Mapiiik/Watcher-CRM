@@ -29,13 +29,6 @@ use Cake\Validation\Validator;
 class IpNetworksTable extends AppTable
 {
     /**
-     * Type of use
-     *
-     * @var array<string>
-     */
-    public array $types_of_use = [];
-
-    /**
      * Initialize method
      *
      * @param array $config The configuration for the Table.
@@ -44,12 +37,6 @@ class IpNetworksTable extends AppTable
     public function initialize(array $config): void
     {
         parent::initialize($config);
-
-        $this->types_of_use = [
-            00 => __('Customer network set via RADIUS'),
-            10 => __('Customer network set manually'),
-            20 => __('Technology network set manually'),
-        ];
 
         $this->setTable('ip_networks');
         $this->setDisplayField('ip_network');

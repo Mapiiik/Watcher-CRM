@@ -2,7 +2,6 @@
 /**
  * @var \App\View\AppView $this
  * @var array<\App\Model\Entity\IpNetwork> $ip_networks
- * @var \Cake\Collection\CollectionInterface|array<string> $ip_network_types_of_use
  * @var bool $contract_column
  */
 ?>
@@ -29,7 +28,7 @@
                 ) : '' ?></td>
             <?php endif; ?>
             <td><?= h($ipNetwork->ip_network) ?></td>
-            <td><?= h($ip_network_types_of_use[$ipNetwork->type_of_use]) ?></td>
+            <td><?= h($ipNetwork->getTypeOfUseName()) ?></td>
             <td><?= h($ipNetwork->note) ?></td>
             <td><?php
             if (isset($ipNetwork->ip_address_ranges)) {

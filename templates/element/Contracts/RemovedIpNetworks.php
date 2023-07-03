@@ -2,7 +2,6 @@
 /**
  * @var \App\View\AppView $this
  * @var array<\App\Model\Entity\RemovedIpNetwork> $removed_ip_networks
- * @var \Cake\Collection\CollectionInterface|array<string> $ip_network_types_of_use
  * @var bool $contract_column
  */
 ?>
@@ -33,7 +32,7 @@
                 ) : '' ?></td>
             <?php endif; ?>
             <td><?= h($removedIpNetwork->ip_network) ?></td>
-            <td><?= h($ip_network_types_of_use[$removedIpNetwork->type_of_use]) ?></td>
+            <td><?= h($removedIpNetwork->getTypeOfUseName()) ?></td>
             <td><?= h($removedIpNetwork->note) ?></td>
             <td><?= h($removedIpNetwork->removed) ?></td>
             <td class="actions">

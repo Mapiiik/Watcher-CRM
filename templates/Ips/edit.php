@@ -4,7 +4,6 @@
  * @var \App\Model\Entity\Ip $ip
  * @var \Cake\Collection\CollectionInterface|array<string> $customers
  * @var \Cake\Collection\CollectionInterface|array<string> $contracts
- * @var \Cake\Collection\CollectionInterface|array<string> $types_of_use
  */
 ?>
 <div class="row">
@@ -32,7 +31,7 @@
                     echo $this->Form->control('contract_id', ['options' => $contracts]);
                 }
                 echo $this->Form->control('ip', ['label' => __('IP Address'), 'disabled' => true]);
-                echo $this->Form->control('type_of_use', ['options' => $types_of_use]);
+                echo $this->Form->control('type_of_use', ['options' => $ip->getTypeOfUseOptions()]);
                 echo $this->Form->control('note');
                 ?>
             </fieldset>

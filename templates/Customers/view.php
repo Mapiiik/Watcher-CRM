@@ -3,8 +3,6 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Customer $customer
  * @var \Cake\Collection\CollectionInterface|array<string> $invoice_delivery_types
- * @var \Cake\Collection\CollectionInterface|array<string> $ip_address_types_of_use
- * @var \Cake\Collection\CollectionInterface|array<string> $ip_network_types_of_use
  */
 ?>
 <div class="row">

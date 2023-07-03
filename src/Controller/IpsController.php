@@ -62,9 +62,7 @@ class IpsController extends AppController
             conditions: $conditions
         ));
 
-        $types_of_use = $this->Ips->types_of_use;
-
-        $this->set(compact('ips', 'types_of_use'));
+        $this->set(compact('ips'));
     }
 
     /**
@@ -83,9 +81,7 @@ class IpsController extends AppController
             'Modifiers',
         ]);
 
-        $types_of_use = $this->Ips->types_of_use;
-
-        $this->set(compact('ip', 'types_of_use'));
+        $this->set(compact('ip'));
     }
 
     /**
@@ -146,9 +142,7 @@ class IpsController extends AppController
             $contracts->where(['Contracts.id' => $contract_id]);
         }
 
-        $types_of_use = $this->Ips->types_of_use;
-
-        $this->set(compact('ip', 'customers', 'contracts', 'types_of_use'));
+        $this->set(compact('ip', 'customers', 'contracts'));
     }
 
     /**
@@ -213,8 +207,6 @@ class IpsController extends AppController
         if (isset($contract_id)) {
             $contracts->where(['Contracts.id' => $contract_id]);
         }
-
-        $types_of_use = $this->Ips->types_of_use;
 
         // load IP address ranges from NMS
         $ip_address_ranges_filter = [];
@@ -320,7 +312,7 @@ class IpsController extends AppController
         }
         $this->set('ips', $ips);
 
-        $this->set(compact('ip', 'customers', 'contracts', 'types_of_use'));
+        $this->set(compact('ip', 'customers', 'contracts'));
     }
 
     /**
@@ -373,9 +365,7 @@ class IpsController extends AppController
             $contracts->where(['Contracts.id' => $contract_id]);
         }
 
-        $types_of_use = $this->Ips->types_of_use;
-
-        $this->set(compact('ip', 'customers', 'contracts', 'types_of_use'));
+        $this->set(compact('ip', 'customers', 'contracts'));
     }
 
     /**

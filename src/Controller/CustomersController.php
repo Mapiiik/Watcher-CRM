@@ -326,9 +326,6 @@ class CustomersController extends AppController
 
         $invoice_delivery_types = $this->Customers->invoice_delivery_types;
 
-        $this->set('ip_address_types_of_use', $this->Customers->Ips->types_of_use);
-        $this->set('ip_network_types_of_use', $this->Customers->IpNetworks->types_of_use);
-
         $this->set(compact(
             'customer',
             'invoice_delivery_types',

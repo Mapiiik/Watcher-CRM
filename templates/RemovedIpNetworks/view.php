@@ -2,7 +2,6 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\RemovedIpNetwork $removedIpNetwork
- * @var \Cake\Collection\CollectionInterface|array<string> $types_of_use
  */
 ?>
 <div class="row">
@@ -68,7 +67,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Type Of Use') ?></th>
-                            <td><?= h($types_of_use[$removedIpNetwork->type_of_use]) ?></td>
+                            <td><?= h($removedIpNetwork->getTypeOfUseName()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('IP Address Range') ?></th>

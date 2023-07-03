@@ -2,7 +2,6 @@
 /**
  * @var \App\View\AppView $this
  * @var array<\App\Model\Entity\Ip> $ip_addresses
- * @var \Cake\Collection\CollectionInterface|array<string> $ip_address_types_of_use
  * @var bool $contract_column
  */
 ?>
@@ -31,7 +30,7 @@
                 ) : '' ?></td>
             <?php endif; ?>
             <td><?= h($ip->ip) ?></td>
-            <td><?= h($ip_address_types_of_use[$ip->type_of_use]) ?></td>
+            <td><?= h($ip->getTypeOfUseName()) ?></td>
             <td><?= h($ip->note) ?></td>
             <td class="to-center"><?=
                 $this->Html->image('ping/status.png.php?host=' . h($ip->ip), [

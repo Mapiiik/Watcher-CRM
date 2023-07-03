@@ -60,9 +60,7 @@ class IpNetworksController extends AppController
             conditions: $conditions
         ));
 
-        $types_of_use = $this->IpNetworks->types_of_use;
-
-        $this->set(compact('ipNetworks', 'types_of_use'));
+        $this->set(compact('ipNetworks'));
     }
 
     /**
@@ -81,9 +79,7 @@ class IpNetworksController extends AppController
             'Modifiers',
         ]);
 
-        $types_of_use = $this->IpNetworks->types_of_use;
-
-        $this->set(compact('ipNetwork', 'types_of_use'));
+        $this->set(compact('ipNetwork'));
     }
 
     /**
@@ -144,9 +140,7 @@ class IpNetworksController extends AppController
             $contracts->where(['Contracts.id' => $contract_id]);
         }
 
-        $types_of_use = $this->IpNetworks->types_of_use;
-
-        $this->set(compact('ipNetwork', 'customers', 'contracts', 'types_of_use'));
+        $this->set(compact('ipNetwork', 'customers', 'contracts'));
     }
 
     /**
@@ -201,9 +195,7 @@ class IpNetworksController extends AppController
             $contracts->where(['Contracts.id' => $contract_id]);
         }
 
-        $types_of_use = $this->IpNetworks->types_of_use;
-
-        $this->set(compact('ipNetwork', 'customers', 'contracts', 'types_of_use'));
+        $this->set(compact('ipNetwork', 'customers', 'contracts'));
     }
 
     /**

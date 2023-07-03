@@ -4,7 +4,6 @@
  * @var \App\Model\Entity\Ip $ip
  * @var \Cake\Collection\CollectionInterface|array<string> $customers
  * @var \Cake\Collection\CollectionInterface|array<string> $contracts
- * @var \Cake\Collection\CollectionInterface|array<string> $types_of_use
  */
 
 ?>
@@ -50,7 +49,7 @@
                     ]);
                 }
                 echo $this->Form->control('type_of_use', [
-                    'options' => $types_of_use,
+                    'options' => $ip->getTypeOfUseOptions(),
                     'onchange' => '
                         var refresh = document.createElement("input");
                         refresh.type = "hidden";

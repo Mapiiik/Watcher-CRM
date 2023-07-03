@@ -130,9 +130,6 @@ class ContractsController extends AppController
             'Modifiers',
         ]);
 
-        $this->set('ip_address_types_of_use', $this->Contracts->Ips->types_of_use);
-        $this->set('ip_network_types_of_use', $this->Contracts->IpNetworks->types_of_use);
-
         $this->set(compact('contract'));
     }
 

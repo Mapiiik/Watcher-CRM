@@ -28,13 +28,6 @@ use Cake\Validation\Validator;
 class RemovedIpsTable extends AppTable
 {
     /**
-     * Type of use
-     *
-     * @var array<string>
-     */
-    public array $types_of_use = [];
-
-    /**
      * Initialize method
      *
      * @param array $config The configuration for the Table.
@@ -43,12 +36,6 @@ class RemovedIpsTable extends AppTable
     public function initialize(array $config): void
     {
         parent::initialize($config);
-
-        $this->types_of_use = [
-            00 => __('Customer address set via RADIUS'),
-            10 => __('Customer address set manually'),
-            20 => __('Technology address set manually'),
-        ];
 
         $this->setTable('removed_ips');
         $this->setDisplayField('ip');

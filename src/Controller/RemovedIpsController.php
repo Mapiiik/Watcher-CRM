@@ -60,9 +60,7 @@ class RemovedIpsController extends AppController
             conditions: $conditions
         ));
 
-        $types_of_use = $this->RemovedIps->types_of_use;
-
-        $this->set(compact('removedIps', 'types_of_use'));
+        $this->set(compact('removedIps'));
     }
 
     /**
@@ -82,9 +80,7 @@ class RemovedIpsController extends AppController
             'Removers',
         ]);
 
-        $types_of_use = $this->RemovedIps->types_of_use;
-
-        $this->set(compact('removedIp', 'types_of_use'));
+        $this->set(compact('removedIp'));
     }
 
     /**
@@ -150,9 +146,7 @@ class RemovedIpsController extends AppController
             $contracts->where(['Contracts.id' => $contract_id]);
         }
 
-        $types_of_use = $this->RemovedIps->types_of_use;
-
-        $this->set(compact('removedIp', 'customers', 'contracts', 'types_of_use'));
+        $this->set(compact('removedIp', 'customers', 'contracts'));
     }
 
     /**
@@ -205,9 +199,7 @@ class RemovedIpsController extends AppController
             $contracts->where(['Contracts.id' => $contract_id]);
         }
 
-        $types_of_use = $this->RemovedIps->types_of_use;
-
-        $this->set(compact('removedIp', 'customers', 'contracts', 'types_of_use'));
+        $this->set(compact('removedIp', 'customers', 'contracts'));
     }
 
     /**

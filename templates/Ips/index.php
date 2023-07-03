@@ -2,7 +2,6 @@
 /**
  * @var \App\View\AppView $this
  * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\Ip> $ips
- * @var \Cake\Collection\CollectionInterface|array<string> $types_of_use
  */
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
@@ -49,7 +48,7 @@
                         ) : '' ?>
                     </td>
                     <td><?= h($ip->ip) ?></td>
-                    <td><?= h($types_of_use[$ip->type_of_use]) ?></td>
+                    <td><?= h($ip->getTypeOfUseName()) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $ip->id]) ?>
                         <?= $this->AuthLink->link(
