@@ -89,7 +89,7 @@
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>
 
-            <?php if ($task->has('customer_id') && !$task->has('contract_id')) : ?>
+            <?php if ($task->__isset('customer_id') && !$task->__isset('contract_id')) : ?>
                 <br>
                 <div>
                     <iframe width="100%" height="500"  src="<?= $this->Url->build([
@@ -101,7 +101,7 @@
                 </div>
             <?php endif ?>
 
-            <?php if ($task->has('customer_id') && $task->has('contract_id')) : ?>
+            <?php if ($task->__isset('customer_id') && $task->__isset('contract_id')) : ?>
                 <br>
                 <div>
                     <iframe width="100%" height="500"  src="<?= $this->Url->build([

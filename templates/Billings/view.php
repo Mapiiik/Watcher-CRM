@@ -33,25 +33,25 @@ use Cake\I18n\Number;
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $billing->has('customer') ? $this->Html->link(
+                            <td><?= $billing->__isset('customer') ? $this->Html->link(
                                 $billing->customer->name,
                                 ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $billing->has('customer') ? h($billing->customer->number) : '' ?></td>
+                            <td><?= $billing->__isset('customer') ? h($billing->customer->number) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Contract') ?></th>
-                            <td><?= $billing->has('contract') ? $this->Html->link(
+                            <td><?= $billing->__isset('contract') ? $this->Html->link(
                                 $billing->contract->number,
                                 ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Service') ?></th>
-                            <td><?= $billing->has('service') ? $this->Html->link(
+                            <td><?= $billing->__isset('service') ? $this->Html->link(
                                 $billing->service->name,
                                 ['controller' => 'Services', 'action' => 'view', $billing->service->id]
                             ) : '' ?></td>
@@ -90,7 +90,7 @@ use Cake\I18n\Number;
                         </tr>
                         <tr>
                             <th><?= __('Price') ?></th>
-                            <td><?= h($billing->price) ?><?= $billing->has('service') ?
+                            <td><?= h($billing->price) ?><?= $billing->__isset('service') ?
                                 ' (' . h($billing->service->price) . ')' : '' ?></td>
                         </tr>
                         <tr>
@@ -117,7 +117,7 @@ use Cake\I18n\Number;
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $billing->has('creator') ? $this->Html->link(
+                            <td><?= $billing->__isset('creator') ? $this->Html->link(
                                 $billing->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -132,7 +132,7 @@ use Cake\I18n\Number;
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $billing->has('modifier') ? $this->Html->link(
+                            <td><?= $billing->__isset('modifier') ? $this->Html->link(
                                 $billing->modifier->username,
                                 [
                                     'controller' => 'AppUsers',

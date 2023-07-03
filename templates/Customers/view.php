@@ -157,7 +157,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Ic') ?></th>
-                            <td><?= $customer->has('ic') ? (
+                            <td><?= $customer->__isset('ic') ? (
                                 h($customer->ic) . ' (' . ($customer->ic_verified ? __('OK') : __('Invalid')) . ')'
                             ) : '' ?></td>
                         </tr>
@@ -189,7 +189,7 @@
                     <table>
                         <tr>
                             <th><?= __('Tax Rate') ?></th>
-                            <td><?= $customer->has('tax_rate') ? $this->Html->link(
+                            <td><?= $customer->__isset('tax_rate') ? $this->Html->link(
                                 $customer->tax_rate->name,
                                 ['controller' => 'TaxRates', 'action' => 'view', $customer->tax_rate->id]
                             ) : '' ?></td>
@@ -232,7 +232,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $customer->has('creator') ? $this->Html->link(
+                            <td><?= $customer->__isset('creator') ? $this->Html->link(
                                 $customer->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -247,7 +247,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $customer->has('modifier') ? $this->Html->link(
+                            <td><?= $customer->__isset('modifier') ? $this->Html->link(
                                 $customer->modifier->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -468,22 +468,22 @@
                             <td><?= h($address->number) ?></td>
                             <td><?= h($address->city) ?></td>
                             <td><?= h($address->zip) ?></td>
-                            <td><?= $address->has('country') ? h($address->country->name) : '' ?></td>
+                            <td><?= $address->__isset('country') ? h($address->country->name) : '' ?></td>
                             <td><?= h($address->note) ?></td>
-                            <td><?= $address->has('ruian_gid') ?
+                            <td><?= $address->__isset('ruian_gid') ?
                                 $this->Number->format($address->ruian_gid) :
                                 '<span style="color: red;">' . __('unknown') . '</span>'
                             ?></td>
                             <td class="actions">
-                                <?= $address->has('gps_x') && $address->has('gps_y') ?
+                                <?= $address->__isset('gps_x') && $address->__isset('gps_y') ?
                                     '' : '<span style="color: red;">' . __('unknown') . '</span>' ?>
-                                <?= $address->has('gps_x') && $address->has('gps_y') ? $this->Html->link(
+                                <?= $address->__isset('gps_x') && $address->__isset('gps_y') ? $this->Html->link(
                                     __('Google Maps'),
                                     'https://maps.google.com/maps?q='
                                         . h("{$address->gps_y},{$address->gps_x}"),
                                     ['target' => '_blank']
                                 ) : '' ?>
-                                <?= $address->has('gps_x') && $address->has('gps_y') ? $this->Html->link(
+                                <?= $address->__isset('gps_x') && $address->__isset('gps_y') ? $this->Html->link(
                                     __('Mapy.cz'),
                                     'https://mapy.cz/zakladni?source=coor&id='
                                         . h("{$address->gps_x},{$address->gps_y}"),
@@ -540,12 +540,12 @@
                         <tr style="<?= $contract->style ?>">
                             <td><?= h($contract->number) ?></td>
                             <td><?=
-                                $contract->has('contract_state') ? h($contract->contract_state->name) : '' ?></td>
-                            <td><?= $contract->has('service_type') ? h($contract->service_type->name) : '' ?></td>
-                            <td><?= $contract->has('installation_address') ?
+                                $contract->__isset('contract_state') ? h($contract->contract_state->name) : '' ?></td>
+                            <td><?= $contract->__isset('service_type') ? h($contract->service_type->name) : '' ?></td>
+                            <td><?= $contract->__isset('installation_address') ?
                                 h($contract->installation_address->full_address) : '' ?></td>
                             <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
-                            <td><?= $contract->has('access_point') ? h($contract->access_point['name']) : '' ?></td>
+                            <td><?= $contract->__isset('access_point') ? h($contract->access_point['name']) : '' ?></td>
                             <td><?= h($contract->installation_date) ?></td>
                             <td><?= h($contract->uninstallation_date) ?></td>
                             <td><?= h($contract->termination_date) ?></td>
@@ -749,14 +749,14 @@
                         </tr>
                         <?php foreach ($customer->tasks as $task) : ?>
                         <tr style="<?= $task->style ?>">
-                            <td><?= $task->has('task_type') ? h($task->task_type->name) : '' ?></td>
-                            <td><?= $task->has('task_state') ? h($task->task_state->name) : '' ?></td>
+                            <td><?= $task->__isset('task_type') ? h($task->task_type->name) : '' ?></td>
+                            <td><?= $task->__isset('task_state') ? h($task->task_state->name) : '' ?></td>
                             <td><?= h($task->subject) ?></td>
                             <td style="overflow-wrap: break-word; max-width: 600px;">
                                 <?= nl2br($task->text ?? '') ?>
                             </td>
                             <td><?=
-                                $task->has('contract') ? $this->Html->link(
+                                $task->__isset('contract') ? $this->Html->link(
                                     $task->contract->name,
                                     [
                                         'controller' => 'Contracts',
@@ -766,7 +766,7 @@
                                     ]
                                 ) : '' ?>
                             </td>
-                            <td><?= $task->has('dealer') ? h($task->dealer->name) : '' ?></td>
+                            <td><?= $task->__isset('dealer') ? h($task->dealer->name) : '' ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),

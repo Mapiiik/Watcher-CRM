@@ -61,7 +61,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $equipmentType->has('creator') ? $this->Html->link(
+                            <td><?= $equipmentType->__isset('creator') ? $this->Html->link(
                                 $equipmentType->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -76,7 +76,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $equipmentType->has('modifier') ? $this->Html->link(
+                            <td><?= $equipmentType->__isset('modifier') ? $this->Html->link(
                                 $equipmentType->modifier->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -104,15 +104,15 @@
                         </tr>
                         <?php foreach ($equipmentType->borrowed_equipments as $borrowedEquipment) : ?>
                         <tr style="<?= $borrowedEquipment->style ?>">
-                            <td><?= $borrowedEquipment->has('customer') ?
+                            <td><?= $borrowedEquipment->__isset('customer') ?
                                 $this->Html->link(
                                     $borrowedEquipment->customer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $borrowedEquipment->customer->id]
                                 ) : '' ?></td>
-                            <td><?= $borrowedEquipment->has('customer') ?
+                            <td><?= $borrowedEquipment->__isset('customer') ?
                                 h($borrowedEquipment->customer->number) : ''
                             ?></td>
-                            <td><?= $borrowedEquipment->has('contract') ?
+                            <td><?= $borrowedEquipment->__isset('contract') ?
                                 $this->Html->link(
                                     $borrowedEquipment->contract->number,
                                     ['controller' => 'Contracts', 'action' => 'view', $borrowedEquipment->contract->id]
@@ -161,13 +161,13 @@
                         </tr>
                         <?php foreach ($equipmentType->sold_equipments as $soldEquipment) : ?>
                         <tr style="<?= $soldEquipment->style ?>">
-                            <td><?= $soldEquipment->has('customer') ?
+                            <td><?= $soldEquipment->__isset('customer') ?
                                 $this->Html->link(
                                     $soldEquipment->customer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $soldEquipment->customer->id]
                                 ) : '' ?></td>
-                            <td><?= $soldEquipment->has('customer') ? h($soldEquipment->customer->number) : '' ?></td>
-                            <td><?= $soldEquipment->has('contract') ?
+                            <td><?= $soldEquipment->__isset('customer') ? h($soldEquipment->customer->number) : '' ?></td>
+                            <td><?= $soldEquipment->__isset('contract') ?
                                 $this->Html->link(
                                     $soldEquipment->contract->number,
                                     ['controller' => 'Contracts', 'action' => 'view', $soldEquipment->contract->id]

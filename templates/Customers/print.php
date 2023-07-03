@@ -61,7 +61,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Ic') ?></th>
-                            <td><?= $customer->has('ic') ? (
+                            <td><?= $customer->__isset('ic') ? (
                                 h($customer->ic) . ' (' . ($customer->ic_verified ? __('OK') : __('Invalid')) . ')'
                             ) : '' ?></td>
                         </tr>
@@ -93,7 +93,7 @@
                     <table>
                         <tr>
                             <th><?= __('Tax Rate') ?></th>
-                            <td><?= $customer->has('tax_rate') ? $this->Html->link(
+                            <td><?= $customer->__isset('tax_rate') ? $this->Html->link(
                                 $customer->tax_rate->name,
                                 ['controller' => 'TaxRates', 'action' => 'view', $customer->tax_rate->id]
                             ) : '' ?></td>
@@ -136,7 +136,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $customer->has('creator') ? $this->Html->link(
+                            <td><?= $customer->__isset('creator') ? $this->Html->link(
                                 $customer->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -151,7 +151,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $customer->has('modifier') ? $this->Html->link(
+                            <td><?= $customer->__isset('modifier') ? $this->Html->link(
                                 $customer->modifier->username,
                                 [
                                     'controller' => 'AppUsers',

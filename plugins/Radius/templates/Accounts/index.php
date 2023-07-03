@@ -43,14 +43,14 @@
                 <?php foreach ($accounts as $account) : ?>
                 <tr>
                     <td>
-                        <?= $account->has('customer') ? $this->Html->link(
+                        <?= $account->__isset('customer') ? $this->Html->link(
                             $account->customer->name,
                             ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $account->customer->id]
                         ) : '' ?>
                     </td>
-                    <td><?= $account->has('customer') ? h($account->customer->number) : '' ?></td>
+                    <td><?= $account->__isset('customer') ? h($account->customer->number) : '' ?></td>
                     <td>
-                        <?= $account->has('contract') ? $this->Html->link(
+                        <?= $account->__isset('contract') ? $this->Html->link(
                             $account->contract->number,
                             [
                                 'plugin' => null,

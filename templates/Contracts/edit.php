@@ -82,7 +82,7 @@
                         <?php
                         echo $this->Form->control('enable_uninstallation', [
                             'label' => false,
-                            'checked' => $contract->has('uninstallation_date'),
+                            'checked' => $contract->__isset('uninstallation_date'),
                             'type' => 'checkbox',
                             'templates' => [
                                 'inputContainer' => '<div class="float-left">{{content}}&nbsp;</div>',
@@ -97,7 +97,7 @@
                         echo $this->Form->control('uninstallation_date', [
                             'label' => __('Uninstallation/Cancellation Date'),
                             'empty' => true,
-                            'disabled' => !$contract->has('uninstallation_date'),
+                            'disabled' => !$contract->__isset('uninstallation_date'),
                         ]);
                         $this->Form->unlockField('uninstallation_date'); //disable form security check
 
@@ -105,13 +105,13 @@
                         echo $this->Form->control('uninstallation_technician_id', [
                             'options' => $uninstallationTechnicians,
                             'empty' => true,
-                            'disabled' => !$contract->has('uninstallation_date'),
+                            'disabled' => !$contract->__isset('uninstallation_date'),
                         ]);
                         $this->Form->unlockField('uninstallation_technician_id'); //disable form security check
 
                         echo $this->Form->control('enable_termination', [
                             'label' => false,
-                            'checked' => $contract->has('termination_date'),
+                            'checked' => $contract->__isset('termination_date'),
                             'type' => 'checkbox',
                             'templates' => [
                                 'inputContainer' => '<div class="float-left">{{content}}&nbsp;</div>',
@@ -123,7 +123,7 @@
                         echo $this->Form->control('termination_date', [
                             'label' => __('Date of Termination of Services'),
                             'empty' => true,
-                            'disabled' => !$contract->has('termination_date'),
+                            'disabled' => !$contract->__isset('termination_date'),
                         ]);
                         $this->Form->unlockField('termination_date'); //disable form security check
                         ?>

@@ -78,7 +78,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $queue->has('creator') ? $this->Html->link(
+                            <td><?= $queue->__isset('creator') ? $this->Html->link(
                                 $queue->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -93,7 +93,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $queue->has('modifier') ? $this->Html->link(
+                            <td><?= $queue->__isset('modifier') ? $this->Html->link(
                                 $queue->modifier->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -122,7 +122,7 @@
                             <td><?= h($service->name) ?></td>
                             <td><?= $this->Number->currency($service->price) ?></td>
                             <td>
-                                <?= $service->has('service_type') ? $this->Html->link(
+                                <?= $service->__isset('service_type') ? $this->Html->link(
                                     $service->service_type->name,
                                     ['controller' => 'ServiceTypes', 'action' => 'view', $service->service_type->id]
                                 ) : '' ?>

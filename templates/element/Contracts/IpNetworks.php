@@ -22,7 +22,7 @@
         <?php foreach ($ip_networks as $ipNetwork) : ?>
         <tr style="<?= $ipNetwork->style ?>">
             <?php if (!empty($contract_column)) : ?>
-            <td><?= $ipNetwork->has('contract') ?
+            <td><?= $ipNetwork->__isset('contract') ?
                 $this->Html->link(
                     $ipNetwork->contract->number,
                     ['controller' => 'Contracts', 'action' => 'view', $ipNetwork->contract->id]

@@ -39,7 +39,7 @@
             <table>
                 <tr>
                     <th><?= __d('radius', 'Username') ?></th>
-                    <td><?= $radacct->has('account') ? $this->Html->link(
+                    <td><?= $radacct->__isset('account') ? $this->Html->link(
                         $radacct->account->username,
                         ['controller' => 'Accounts', 'action' => 'view', $radacct->account->id]
                     ) : h($radacct->username) ?></td>

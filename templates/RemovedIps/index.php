@@ -41,14 +41,14 @@
                 <?php foreach ($removedIps as $removedIp) : ?>
                 <tr style="<?= $removedIp->style ?>">
                     <td>
-                        <?= $removedIp->has('customer') ? $this->Html->link(
+                        <?= $removedIp->__isset('customer') ? $this->Html->link(
                             $removedIp->customer->name,
                             ['controller' => 'Customers', 'action' => 'view', $removedIp->customer->id]
                         ) : '' ?>
                     </td>
-                    <td><?= $removedIp->has('customer') ? h($removedIp->customer->number) : '' ?></td>
+                    <td><?= $removedIp->__isset('customer') ? h($removedIp->customer->number) : '' ?></td>
                     <td>
-                        <?= $removedIp->has('contract') ? $this->Html->link(
+                        <?= $removedIp->__isset('contract') ? $this->Html->link(
                             $removedIp->contract->number,
                             ['controller' => 'Contracts', 'action' => 'view', $removedIp->contract->id]
                         ) : '' ?>

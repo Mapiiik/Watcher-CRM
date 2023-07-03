@@ -42,7 +42,7 @@
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $removedIpNetwork->has('customer') ?
+                            <td><?= $removedIpNetwork->__isset('customer') ?
                                 $this->Html->link(
                                     $removedIpNetwork->customer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $removedIpNetwork->customer->id]
@@ -50,13 +50,13 @@
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $removedIpNetwork->has('customer') ?
+                            <td><?= $removedIpNetwork->__isset('customer') ?
                                 h($removedIpNetwork->customer->number) : ''
                             ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Contract') ?></th>
-                            <td><?= $removedIpNetwork->has('contract') ?
+                            <td><?= $removedIpNetwork->__isset('contract') ?
                                 $this->Html->link(
                                     $removedIpNetwork->contract->number,
                                     ['controller' => 'Contracts', 'action' => 'view', $removedIpNetwork->contract->id]
@@ -105,7 +105,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $removedIpNetwork->has('creator') ? $this->Html->link(
+                            <td><?= $removedIpNetwork->__isset('creator') ? $this->Html->link(
                                 $removedIpNetwork->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -120,7 +120,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $removedIpNetwork->has('modifier') ? $this->Html->link(
+                            <td><?= $removedIpNetwork->__isset('modifier') ? $this->Html->link(
                                 $removedIpNetwork->modifier->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -135,7 +135,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Removed By') ?></th>
-                            <td><?= $removedIpNetwork->has('remover') ? $this->Html->link(
+                            <td><?= $removedIpNetwork->__isset('remover') ? $this->Html->link(
                                 $removedIpNetwork->remover->username,
                                 [
                                     'controller' => 'AppUsers',

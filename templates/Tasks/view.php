@@ -27,7 +27,7 @@
                     <table>
                         <tr>
                             <th><?= __('Task Type') ?></th>
-                            <td><?= $task->has('task_type') ? $this->Html->link(
+                            <td><?= $task->__isset('task_type') ? $this->Html->link(
                                 $task->task_type->name,
                                 ['controller' => 'TaskTypes', 'action' => 'view', $task->task_type->id]
                             ) : '' ?></td>
@@ -38,14 +38,14 @@
                         </tr>
                         <tr>
                             <th><?= __('Task State') ?></th>
-                            <td><?= $task->has('task_state') ? $this->Html->link(
+                            <td><?= $task->__isset('task_state') ? $this->Html->link(
                                 $task->task_state->name,
                                 ['controller' => 'TaskStates', 'action' => 'view', $task->task_state->id]
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Dealer') ?></th>
-                            <td><?= $task->has('dealer') ? $this->Html->link(
+                            <td><?= $task->__isset('dealer') ? $this->Html->link(
                                 $task->dealer->name,
                                 ['controller' => 'Customers', 'action' => 'view', $task->dealer->id]
                             ) : '' ?></td>
@@ -62,11 +62,11 @@
                         </tr>
                         <tr>
                             <th><?= __('Access Point') ?></th>
-                            <td><?= $task->has('access_point') ? h($task->access_point['name']) : '' ?></td>
+                            <td><?= $task->__isset('access_point') ? h($task->access_point['name']) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $task->has('customer') ? $this->Html->link(
+                            <td><?= $task->__isset('customer') ? $this->Html->link(
                                 $task->customer->name,
                                 [
                                     'controller' => 'Customers',
@@ -77,11 +77,11 @@
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $task->has('customer') ? h($task->customer->number) : '' ?></td>
+                            <td><?= $task->__isset('customer') ? h($task->customer->number) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Contract') ?></th>
-                            <td><?= $task->has('contract') ? $this->Html->link(
+                            <td><?= $task->__isset('contract') ? $this->Html->link(
                                 $task->contract->name,
                                 [
                                     'controller' => 'Contracts',
@@ -123,7 +123,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $task->has('creator') ? $this->Html->link(
+                            <td><?= $task->__isset('creator') ? $this->Html->link(
                                 $task->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -138,7 +138,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $task->has('modifier') ? $this->Html->link(
+                            <td><?= $task->__isset('modifier') ? $this->Html->link(
                                 $task->modifier->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -167,7 +167,7 @@
                 </blockquote>
             </div>
 
-            <?php if ($task->has('customer_id') && !$task->has('contract_id')) : ?>
+            <?php if ($task->__isset('customer_id') && !$task->__isset('contract_id')) : ?>
                 <br>
                 <div>
                     <iframe width="100%" height="500"  src="<?= $this->Url->build([
@@ -179,7 +179,7 @@
                 </div>
             <?php endif ?>
 
-            <?php if ($task->has('customer_id') && $task->has('contract_id')) : ?>
+            <?php if ($task->__isset('customer_id') && $task->__isset('contract_id')) : ?>
                 <br>
                 <div>
                     <iframe width="100%" height="500"  src="<?= $this->Url->build([

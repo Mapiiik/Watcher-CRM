@@ -41,27 +41,27 @@
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $borrowedEquipment->has('customer') ? $this->Html->link(
+                            <td><?= $borrowedEquipment->__isset('customer') ? $this->Html->link(
                                 $borrowedEquipment->customer->name,
                                 ['controller' => 'Customers', 'action' => 'view', $borrowedEquipment->customer->id]
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $borrowedEquipment->has('customer') ?
+                            <td><?= $borrowedEquipment->__isset('customer') ?
                                 h($borrowedEquipment->customer->number) : ''
                             ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Contract') ?></th>
-                            <td><?= $borrowedEquipment->has('contract') ? $this->Html->link(
+                            <td><?= $borrowedEquipment->__isset('contract') ? $this->Html->link(
                                 $borrowedEquipment->contract->number,
                                 ['controller' => 'Contracts', 'action' => 'view', $borrowedEquipment->contract->id]
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Equipment Type') ?></th>
-                            <td><?= $borrowedEquipment->has('equipment_type') ? $this->Html->link(
+                            <td><?= $borrowedEquipment->__isset('equipment_type') ? $this->Html->link(
                                 $borrowedEquipment->equipment_type->name,
                                 [
                                     'controller' => 'EquipmentTypes',
@@ -96,7 +96,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $borrowedEquipment->has('creator') ? $this->Html->link(
+                            <td><?= $borrowedEquipment->__isset('creator') ? $this->Html->link(
                                 $borrowedEquipment->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -111,7 +111,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $borrowedEquipment->has('modifier') ? $this->Html->link(
+                            <td><?= $borrowedEquipment->__isset('modifier') ? $this->Html->link(
                                 $borrowedEquipment->modifier->username,
                                 [
                                     'controller' => 'AppUsers',

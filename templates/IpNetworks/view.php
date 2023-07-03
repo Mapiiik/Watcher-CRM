@@ -39,7 +39,7 @@
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $ipNetwork->has('customer') ?
+                            <td><?= $ipNetwork->__isset('customer') ?
                                 $this->Html->link(
                                     $ipNetwork->customer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $ipNetwork->customer->id]
@@ -47,11 +47,11 @@
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $ipNetwork->has('customer') ? h($ipNetwork->customer->number) : '' ?></td>
+                            <td><?= $ipNetwork->__isset('customer') ? h($ipNetwork->customer->number) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Contract') ?></th>
-                            <td><?= $ipNetwork->has('contract') ?
+                            <td><?= $ipNetwork->__isset('contract') ?
                                 $this->Html->link(
                                     $ipNetwork->contract->number,
                                     ['controller' => 'Contracts', 'action' => 'view', $ipNetwork->contract->id]
@@ -100,7 +100,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $ipNetwork->has('creator') ? $this->Html->link(
+                            <td><?= $ipNetwork->__isset('creator') ? $this->Html->link(
                                 $ipNetwork->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -115,7 +115,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $ipNetwork->has('modifier') ? $this->Html->link(
+                            <td><?= $ipNetwork->__isset('modifier') ? $this->Html->link(
                                 $ipNetwork->modifier->username,
                                 [
                                     'controller' => 'AppUsers',

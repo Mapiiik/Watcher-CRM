@@ -109,33 +109,33 @@
             <a id="contract"></a>
             <?= __('Contract No.') ?><h3><?= h($contract->number) ?></h3>
             <h5><?=
-                ($contract->has('service_type') ? $contract->service_type->name : '') .
-                ($contract->has('installation_address') ? ' - ' . $contract->installation_address->address : '')
+                ($contract->__isset('service_type') ? $contract->service_type->name : '') .
+                ($contract->__isset('installation_address') ? ' - ' . $contract->installation_address->address : '')
             ?></h5>
             <div class="row">
                 <div class="column">
                     <table style="<?= $contract->style ?>">
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $contract->has('customer') ? $this->Html->link(
+                            <td><?= $contract->__isset('customer') ? $this->Html->link(
                                 $contract->customer->name,
                                 ['controller' => 'Customers', 'action' => 'view', $contract->customer->id]
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $contract->has('customer') ? h($contract->customer->number) : '' ?></td>
+                            <td><?= $contract->__isset('customer') ? h($contract->customer->number) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Contract State') ?></th>
-                            <td><?= $contract->has('contract_state') ? $this->Html->link(
+                            <td><?= $contract->__isset('contract_state') ? $this->Html->link(
                                 $contract->contract_state->name,
                                 ['controller' => 'ContractStates', 'action' => 'view', $contract->contract_state->id]
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Service Type') ?></th>
-                            <td><?= $contract->has('service_type') ? $this->Html->link(
+                            <td><?= $contract->__isset('service_type') ? $this->Html->link(
                                 $contract->service_type->name,
                                 ['controller' => 'ServiceTypes', 'action' => 'view', $contract->service_type->id]
                             ) : '' ?></td>
@@ -150,7 +150,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Installation Address') ?></th>
-                            <td><?= $contract->has('installation_address') ? $this->Html->link(
+                            <td><?= $contract->__isset('installation_address') ? $this->Html->link(
                                 $contract->installation_address->full_address,
                                 ['controller' => 'Addresses', 'action' => 'view', $contract->installation_address->id]
                             ) . ($contract->installation_address->note ?
@@ -160,17 +160,17 @@
                         <tr>
                             <th class="actions"><?= __('Map location') ?></th>
                             <td class="actions">
-                                <?php if ($contract->has('installation_address')) : ?>
+                                <?php if ($contract->__isset('installation_address')) : ?>
                                     <?php $address =& $contract->installation_address ?>
-                                    <?= $address->has('gps_x') && $address->has('gps_y') ?
+                                    <?= $address->__isset('gps_x') && $address->__isset('gps_y') ?
                                         '' : '<span style="color: red;">' . __('unknown') . '</span>' ?>
-                                    <?= $address->has('gps_x') && $address->has('gps_y') ? $this->Html->link(
+                                    <?= $address->__isset('gps_x') && $address->__isset('gps_y') ? $this->Html->link(
                                         __('Google Maps'),
                                         'https://maps.google.com/maps?q='
                                             . h("{$address->gps_y},{$address->gps_x}"),
                                         ['target' => '_blank']
                                     ) : '' ?>
-                                    <?= $address->has('gps_x') && $address->has('gps_y') ? $this->Html->link(
+                                    <?= $address->__isset('gps_x') && $address->__isset('gps_y') ? $this->Html->link(
                                         __('Mapy.cz'),
                                         'https://mapy.cz/zakladni?source=coor&id='
                                             . h("{$address->gps_x},{$address->gps_y}"),
@@ -185,11 +185,11 @@
                     <table>
                         <tr>
                             <th><?= __('Access Point') ?></th>
-                            <td><?= $contract->has('access_point') ? h($contract->access_point['name']) : '' ?></td>
+                            <td><?= $contract->__isset('access_point') ? h($contract->access_point['name']) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Commission') ?></th>
-                            <td><?= $contract->has('commission') ? $this->Html->link(
+                            <td><?= $contract->__isset('commission') ? $this->Html->link(
                                 $contract->commission->name,
                                 ['controller' => 'Commissions', 'action' => 'view', $contract->commission->id]
                             ) : '' ?></td>
@@ -200,12 +200,12 @@
                         </tr>
                         <tr>
                             <th><?= __('Activation Fee') ?></th>
-                            <td><?= h($contract->activation_fee) ?><?= $contract->has('service_type') ?
+                            <td><?= h($contract->activation_fee) ?><?= $contract->__isset('service_type') ?
                                 ' (' . h($contract->service_type->activation_fee) . ')' : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Activation Fee With Obligation') ?></th>
-                            <td><?= h($contract->activation_fee_with_obligation) ?><?= $contract->has('service_type') ?
+                            <td><?= h($contract->activation_fee_with_obligation) ?><?= $contract->__isset('service_type') ?
                                 ' (' . h($contract->service_type->activation_fee_with_obligation) . ')' : '' ?></td>
                         </tr>
                     </table>
@@ -221,7 +221,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Installation Technician') ?></th>
-                            <td><?= $contract->has('installation_technician') ? $this->Html->link(
+                            <td><?= $contract->__isset('installation_technician') ? $this->Html->link(
                                 $contract->installation_technician->name,
                                 [
                                     'controller' => 'Customers',
@@ -236,7 +236,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Uninstallation Technician') ?></th>
-                            <td><?= $contract->has('uninstallation_technician') ? $this->Html->link(
+                            <td><?= $contract->__isset('uninstallation_technician') ? $this->Html->link(
                                 $contract->uninstallation_technician->name,
                                 [
                                     'controller' => 'Customers',
@@ -263,7 +263,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $contract->has('creator') ? $this->Html->link(
+                            <td><?= $contract->__isset('creator') ? $this->Html->link(
                                 $contract->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -278,7 +278,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $contract->has('modifier') ? $this->Html->link(
+                            <td><?= $contract->__isset('modifier') ? $this->Html->link(
                                 $contract->modifier->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -308,7 +308,7 @@
                     </div>
                 </div>
             </div>
-            <?php if ($contract->has('service_type') && $contract->service_type->have_contract_versions) : ?>
+            <?php if ($contract->__isset('service_type') && $contract->service_type->have_contract_versions) : ?>
             <div class="related">
                 <?= $this->AuthLink->link(
                     __('New Contract Version'),
@@ -327,7 +327,7 @@
                     ['controller' => 'Billings', 'action' => 'add'],
                     ['class' => 'button button-small float-right win-link']
                 ) ?>
-                <?php if ($contract->has('termination_date')) : ?>
+                <?php if ($contract->__isset('termination_date')) : ?>
                     <?= $this->AuthLink->postLink(
                         __('Terminate Related Billings'),
                         ['action' => 'terminateRelatedBillings', $contract->id],
@@ -345,7 +345,7 @@
                     'billings' => $contract->billings,
                 ]) ?>
             </div>
-            <?php if ($contract->has('service_type') && $contract->service_type->have_radius_accounts) : ?>
+            <?php if ($contract->__isset('service_type') && $contract->service_type->have_radius_accounts) : ?>
             <div class="related">
                 <?= $this->AuthLink->link(
                     __('New RADIUS Account'),
@@ -360,7 +360,7 @@
                 ) ?>
             </div>
             <?php endif; ?>
-            <?php if ($contract->has('service_type') && $contract->service_type->have_equipments) : ?>
+            <?php if ($contract->__isset('service_type') && $contract->service_type->have_equipments) : ?>
             <div class="row">
                 <div class="column">
                     <div class="related">
@@ -371,8 +371,8 @@
                         ) ?>
                         <?php
                         if (
-                            $contract->has('installation_date')
-                            || $contract->has('uninstallation_date')
+                            $contract->__isset('installation_date')
+                            || $contract->__isset('uninstallation_date')
                         ) : ?>
                             <?= $this->AuthLink->postLink(
                                 __('Set Dates Automatically'),
@@ -408,7 +408,7 @@
                 </div>
             </div>
             <?php endif; ?>
-            <?php if ($contract->has('service_type') && $contract->service_type->have_ip_addresses) : ?>
+            <?php if ($contract->__isset('service_type') && $contract->service_type->have_ip_addresses) : ?>
             <div class="row">
                 <div class="column">
                     <div class="related">
@@ -417,7 +417,7 @@
                             ['controller' => 'Ips', 'action' => 'add'],
                             ['class' => 'button button-small float-right win-link']
                         ) ?>
-                        <?= $contract->has('access_point') ? $this->AuthLink->link(
+                        <?= $contract->__isset('access_point') ? $this->AuthLink->link(
                             __('New IP Address From Range'),
                             ['controller' => 'Ips', 'action' => 'addFromRange'],
                             ['class' => 'button button-small float-right win-link']
@@ -526,13 +526,13 @@
                         </tr>
                         <?php foreach ($contract->tasks as $task) : ?>
                         <tr style="<?= $task->style ?>">
-                            <td><?= $task->has('task_type') ? h($task->task_type->name) : '' ?></td>
-                            <td><?= $task->has('task_state') ? h($task->task_state->name) : '' ?></td>
+                            <td><?= $task->__isset('task_type') ? h($task->task_type->name) : '' ?></td>
+                            <td><?= $task->__isset('task_state') ? h($task->task_state->name) : '' ?></td>
                             <td><?= h($task->subject) ?></td>
                             <td style="overflow-wrap: break-word; max-width: 600px;">
                                 <?= nl2br($task->text ?? '') ?>
                             </td>
-                            <td><?= $task->has('dealer') ? h($task->dealer->name) : '' ?></td>
+                            <td><?= $task->__isset('dealer') ? h($task->dealer->name) : '' ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
@@ -571,14 +571,14 @@
                         </tr>
                         <?php foreach ($contract->customer->tasks as $task) : ?>
                         <tr style="<?= $task->style ?>">
-                            <td><?= $task->has('task_type') ? h($task->task_type->name) : '' ?></td>
-                            <td><?= $task->has('task_state') ? h($task->task_state->name) : '' ?></td>
+                            <td><?= $task->__isset('task_type') ? h($task->task_type->name) : '' ?></td>
+                            <td><?= $task->__isset('task_state') ? h($task->task_state->name) : '' ?></td>
                             <td><?= h($task->subject) ?></td>
                             <td style="overflow-wrap: break-word; max-width: 600px;">
                                 <?= nl2br($task->text ?? '') ?>
                             </td>
                             <td><?=
-                                $task->has('contract') ? $this->Html->link(
+                                $task->__isset('contract') ? $this->Html->link(
                                     $task->contract->name,
                                     [
                                         'controller' => 'Contracts',
@@ -588,7 +588,7 @@
                                     ]
                                 ) : '' ?>
                             </td>
-                            <td><?= $task->has('dealer') ? h($task->dealer->name) : '' ?></td>
+                            <td><?= $task->__isset('dealer') ? h($task->dealer->name) : '' ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),

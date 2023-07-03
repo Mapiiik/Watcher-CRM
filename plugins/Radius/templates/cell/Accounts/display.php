@@ -25,7 +25,7 @@
         <?php foreach ($accounts as $account) : ?>
         <tr style="<?= $account->style ?>">
             <?php if ($show_contracts) : ?>
-            <td><?= $account->has('contract') ?
+            <td><?= $account->__isset('contract') ?
                 $this->Html->link(
                     $account->contract->number,
                     ['plugin' => null, 'controller' => 'Contracts', 'action' => 'view', $account->contract->id]

@@ -41,18 +41,18 @@
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $customerLabel->has('customer') ? $this->Html->link(
+                            <td><?= $customerLabel->__isset('customer') ? $this->Html->link(
                                 $customerLabel->customer->name,
                                 ['controller' => 'Customers', 'action' => 'view', $customerLabel->customer->id]
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $customerLabel->has('customer') ? h($customerLabel->customer->number) : '' ?></td>
+                            <td><?= $customerLabel->__isset('customer') ? h($customerLabel->customer->number) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Label') ?></th>
-                            <td><?= $customerLabel->has('label') ? $this->Html->link(
+                            <td><?= $customerLabel->__isset('label') ? $this->Html->link(
                                 $customerLabel->label->name,
                                 ['controller' => 'Labels', 'action' => 'view', $customerLabel->label->id]
                             ) : '' ?></td>
@@ -71,7 +71,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $customerLabel->has('creator') ? $this->Html->link(
+                            <td><?= $customerLabel->__isset('creator') ? $this->Html->link(
                                 $customerLabel->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -86,7 +86,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $customerLabel->has('modifier') ? $this->Html->link(
+                            <td><?= $customerLabel->__isset('modifier') ? $this->Html->link(
                                 $customerLabel->modifier->username,
                                 [
                                     'controller' => 'AppUsers',

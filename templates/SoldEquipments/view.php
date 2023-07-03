@@ -41,25 +41,25 @@
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $soldEquipment->has('customer') ? $this->Html->link(
+                            <td><?= $soldEquipment->__isset('customer') ? $this->Html->link(
                                 $soldEquipment->customer->name,
                                 ['controller' => 'Customers', 'action' => 'view', $soldEquipment->customer->id]
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $soldEquipment->has('customer') ? h($soldEquipment->customer->number) : '' ?></td>
+                            <td><?= $soldEquipment->__isset('customer') ? h($soldEquipment->customer->number) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Contract') ?></th>
-                            <td><?= $soldEquipment->has('contract') ? $this->Html->link(
+                            <td><?= $soldEquipment->__isset('contract') ? $this->Html->link(
                                 $soldEquipment->contract->number,
                                 ['controller' => 'Contracts', 'action' => 'view', $soldEquipment->contract->id]
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Equipment Type') ?></th>
-                            <td><?= $soldEquipment->has('equipment_type') ? $this->Html->link(
+                            <td><?= $soldEquipment->__isset('equipment_type') ? $this->Html->link(
                                 $soldEquipment->equipment_type->name,
                                 [
                                     'controller' => 'EquipmentTypes',
@@ -90,7 +90,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $soldEquipment->has('creator') ? $this->Html->link(
+                            <td><?= $soldEquipment->__isset('creator') ? $this->Html->link(
                                 $soldEquipment->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -105,7 +105,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $soldEquipment->has('modifier') ? $this->Html->link(
+                            <td><?= $soldEquipment->__isset('modifier') ? $this->Html->link(
                                 $soldEquipment->modifier->username,
                                 [
                                     'controller' => 'AppUsers',

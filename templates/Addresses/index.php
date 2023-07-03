@@ -46,12 +46,12 @@
                 <?php foreach ($addresses as $address) : ?>
                 <tr>
                     <td>
-                        <?= $address->has('customer') ? $this->Html->link(
+                        <?= $address->__isset('customer') ? $this->Html->link(
                             $address->customer->name,
                             ['controller' => 'Customers', 'action' => 'view', $address->customer->id]
                         ) : '' ?>
                     </td>
-                    <td><?= $address->has('customer') ? h($address->customer->number) : '' ?></td>
+                    <td><?= $address->__isset('customer') ? h($address->customer->number) : '' ?></td>
                     <td><?= h($types[$address->type]) ?></td>
                     <td><?= h($address->company) ?></td>
                     <td><?= h($address->title) ?></td>
@@ -63,25 +63,25 @@
                     <td><?= h($address->city) ?></td>
                     <td><?= h($address->zip) ?></td>
                     <td>
-                        <?= $address->has('country') ? $this->Html->link(
+                        <?= $address->__isset('country') ? $this->Html->link(
                             $address->country->name,
                             ['controller' => 'Countries', 'action' => 'view', $address->country->id]
                         ) : '' ?>
                     </td>
-                    <td><?= $address->has('ruian_gid') ?
+                    <td><?= $address->__isset('ruian_gid') ?
                         $this->Number->format($address->ruian_gid) :
                         '<span style="color: red;">' . __('unknown') . '</span>'
                     ?></td>
                     <td class="actions">
-                        <?= $address->has('gps_x') && $address->has('gps_y') ?
+                        <?= $address->__isset('gps_x') && $address->__isset('gps_y') ?
                             '' : '<span style="color: red;">' . __('unknown') . '</span>' ?>
-                        <?= $address->has('gps_x') && $address->has('gps_y') ? $this->Html->link(
+                        <?= $address->__isset('gps_x') && $address->__isset('gps_y') ? $this->Html->link(
                             __('Google Maps'),
                             'https://maps.google.com/maps?q='
                                 . h("{$address->gps_y},{$address->gps_x}"),
                             ['target' => '_blank']
                         ) : '' ?>
-                        <?= $address->has('gps_x') && $address->has('gps_y') ? $this->Html->link(
+                        <?= $address->__isset('gps_x') && $address->__isset('gps_y') ? $this->Html->link(
                             __('Mapy.cz'),
                             'https://mapy.cz/zakladni?source=coor&id='
                                 . h("{$address->gps_x},{$address->gps_y}"),

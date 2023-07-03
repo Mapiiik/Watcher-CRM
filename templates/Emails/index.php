@@ -36,12 +36,12 @@
                 <?php foreach ($emails as $email) : ?>
                 <tr>
                     <td>
-                        <?= $email->has('customer') ? $this->Html->link(
+                        <?= $email->__isset('customer') ? $this->Html->link(
                             $email->customer->name,
                             ['controller' => 'Customers', 'action' => 'view', $email->customer->id]
                         ) : '' ?>
                     </td>
-                    <td><?= $email->has('customer') ? h($email->customer->number) : '' ?></td>
+                    <td><?= $email->__isset('customer') ? h($email->customer->number) : '' ?></td>
                     <td><?= $this->Html->link(h($email->email), 'mailto:' . $email->email) ?></td>
                     <td><?= $email->use_for_billing ? __('Yes') : __('No'); ?></td>
                     <td><?= $email->use_for_outages ? __('Yes') : __('No'); ?></td>

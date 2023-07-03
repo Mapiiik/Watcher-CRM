@@ -45,20 +45,20 @@ use Cake\I18n\Number;
                 <?php foreach ($billings as $billing) : ?>
                 <tr style="<?= $billing->style ?>">
                     <td>
-                        <?= $billing->has('customer') ? $this->Html->link(
+                        <?= $billing->__isset('customer') ? $this->Html->link(
                             $billing->customer->name,
                             ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]
                         ) : '' ?>
                     </td>
-                    <td><?= $billing->has('customer') ? h($billing->customer->number) : '' ?></td>
+                    <td><?= $billing->__isset('customer') ? h($billing->customer->number) : '' ?></td>
                     <td>
-                        <?= $billing->has('contract') ? $this->Html->link(
+                        <?= $billing->__isset('contract') ? $this->Html->link(
                             $billing->contract->number,
                             ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]
                         ) : '' ?>
                     </td>
                     <td>
-                        <?= $billing->has('service') ? $this->Html->link(
+                        <?= $billing->__isset('service') ? $this->Html->link(
                             $billing->service->name,
                             ['controller' => 'Services', 'action' => 'view', $billing->service->id]
                         ) : '' ?>
@@ -67,7 +67,7 @@ use Cake\I18n\Number;
                     <td><?= $this->Number->format($billing->quantity) ?></td>
                     <td>
                         <?= h($billing->price) ?>
-                        <?= $billing->has('service') ? '(' . h($billing->service->price) . ')' : '' ?>
+                        <?= $billing->__isset('service') ? '(' . h($billing->service->price) . ')' : '' ?>
                     </td>
                     <td><?= h($billing->fixed_discount) ?></td>
                     <td><?= h($billing->percentage_discount) ?></td>

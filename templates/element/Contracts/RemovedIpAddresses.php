@@ -22,7 +22,7 @@
         <?php foreach ($removed_ip_addresses as $removedIp) : ?>
         <tr style="<?= $removedIp->style ?>">
             <?php if (!empty($contract_column)) : ?>
-            <td><?= $removedIp->has('contract') ?
+            <td><?= $removedIp->__isset('contract') ?
                 $this->Html->link(
                     $removedIp->contract->number,
                     ['controller' => 'Contracts', 'action' => 'view', $removedIp->contract->id]

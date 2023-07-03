@@ -26,7 +26,7 @@
                 <?php foreach ($radchecks as $radcheck) : ?>
                 <tr>
                     <td>
-                        <?= $radcheck->has('account') ? $this->Html->link(
+                        <?= $radcheck->__isset('account') ? $this->Html->link(
                             $radcheck->account->username,
                             ['controller' => 'Accounts', 'action' => 'view', $radcheck->account->id]
                         ) : $radcheck->username ?>

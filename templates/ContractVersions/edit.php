@@ -36,7 +36,7 @@
                 echo $this->Form->control('valid_from');
                 echo $this->Form->control('enable_valid_until', [
                     'label' => false,
-                    'checked' => $contractVersion->has('valid_until'),
+                    'checked' => $contractVersion->__isset('valid_until'),
                     'type' => 'checkbox',
                     'templates' => [
                         'inputContainer' => '<div class="float-left">{{content}}&nbsp;</div>',
@@ -46,13 +46,13 @@
                 echo $this->Form->hidden('valid_until', ['value' => '']); //return null if not enabled
                 echo $this->Form->control('valid_until', [
                     'empty' => true,
-                    'disabled' => !$contractVersion->has('valid_until'),
+                    'disabled' => !$contractVersion->__isset('valid_until'),
                 ]);
                 $this->Form->unlockField('valid_until'); //disable form security check
 
                 echo $this->Form->control('enable_obligation_until', [
                     'label' => false,
-                    'checked' => $contractVersion->has('obligation_until'),
+                    'checked' => $contractVersion->__isset('obligation_until'),
                     'type' => 'checkbox',
                     'templates' => [
                         'inputContainer' => '<div class="float-left">{{content}}&nbsp;</div>',
@@ -62,8 +62,8 @@
                 echo $this->Form->hidden('obligation_until', ['value' => '']); //return null if not enabled
                 echo $this->Form->control('obligation_until', [
                     'empty' => true,
-                    'disabled' => !$contractVersion->has('obligation_until'),
-                    'default' => $contractVersion->has('valid_from') ?
+                    'disabled' => !$contractVersion->__isset('obligation_until'),
+                    'default' => $contractVersion->__isset('valid_from') ?
                         $contractVersion->valid_from->addMonths(24)->subDays(1) : null,
                 ]);
                 $this->Form->unlockField('obligation_until'); //disable form security check

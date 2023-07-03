@@ -30,14 +30,14 @@
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $phone->has('customer') ? $this->Html->link(
+                            <td><?= $phone->__isset('customer') ? $this->Html->link(
                                 $phone->customer->name,
                                 ['controller' => 'Customers', 'action' => 'view', $phone->customer->id]
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $phone->has('customer') ? h($phone->customer->number) : '' ?></td>
+                            <td><?= $phone->__isset('customer') ? h($phone->customer->number) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Phone') ?></th>
@@ -69,7 +69,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $phone->has('creator') ? $this->Html->link(
+                            <td><?= $phone->__isset('creator') ? $this->Html->link(
                                 $phone->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -84,7 +84,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $phone->has('modifier') ? $this->Html->link(
+                            <td><?= $phone->__isset('modifier') ? $this->Html->link(
                                 $phone->modifier->username,
                                 [
                                     'controller' => 'AppUsers',

@@ -31,16 +31,16 @@ use Cake\I18n\Number;
         <?php foreach ($billings as $billing) : ?>
         <tr style="<?= $billing->style ?>">
             <?php if (!empty($contract_column)) : ?>
-            <td><?= $billing->has('contract') ?
+            <td><?= $billing->__isset('contract') ?
                 $this->Html->link(
                     $billing->contract->number,
                     ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]
                 ) : '' ?></td>
             <?php endif; ?>
-            <td><?= $billing->has('service') ? h($billing->service->name) : '' ?></td>
+            <td><?= $billing->__isset('service') ? h($billing->service->name) : '' ?></td>
             <td><?= h($billing->text) ?></td>
             <td><?= h($billing->quantity) ?></td>
-            <td><?= h($billing->price) ?><?= $billing->has('service') ?
+            <td><?= h($billing->price) ?><?= $billing->__isset('service') ?
                 ' (' . h($billing->service->price) . ')' : '' ?></td>
             <td><?= h($billing->fixed_discount) ?></td>
             <td><?= h($billing->percentage_discount) ?></td>

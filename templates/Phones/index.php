@@ -36,12 +36,12 @@
                 <?php foreach ($phones as $phone) : ?>
                 <tr>
                     <td>
-                        <?= $phone->has('customer') ? $this->Html->link(
+                        <?= $phone->__isset('customer') ? $this->Html->link(
                             $phone->customer->name,
                             ['controller' => 'Customers', 'action' => 'view', $phone->customer->id]
                         ) : '' ?>
                     </td>
-                    <td><?= $phone->has('customer') ? h($phone->customer->number) : '' ?></td>
+                    <td><?= $phone->__isset('customer') ? h($phone->customer->number) : '' ?></td>
                     <td><?= h($phone->phone) ?></td>
                     <td><?= $phone->use_for_billing ? __('Yes') : __('No'); ?></td>
                     <td><?= $phone->use_for_outages ? __('Yes') : __('No'); ?></td>

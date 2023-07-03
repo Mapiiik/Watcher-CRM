@@ -40,20 +40,20 @@
                 <?php foreach ($soldEquipments as $soldEquipment) : ?>
                 <tr style="<?= $soldEquipment->style ?>">
                     <td>
-                        <?= $soldEquipment->has('customer') ? $this->Html->link(
+                        <?= $soldEquipment->__isset('customer') ? $this->Html->link(
                             $soldEquipment->customer->name,
                             ['controller' => 'Customers', 'action' => 'view', $soldEquipment->customer->id]
                         ) : '' ?>
                     </td>
-                    <td><?= $soldEquipment->has('customer') ? h($soldEquipment->customer->number) : '' ?></td>
+                    <td><?= $soldEquipment->__isset('customer') ? h($soldEquipment->customer->number) : '' ?></td>
                     <td>
-                        <?= $soldEquipment->has('contract') ? $this->Html->link(
+                        <?= $soldEquipment->__isset('contract') ? $this->Html->link(
                             $soldEquipment->contract->number,
                             ['controller' => 'Contracts', 'action' => 'view', $soldEquipment->contract->id]
                         ) : '' ?>
                     </td>
                     <td>
-                        <?= $soldEquipment->has('equipment_type') ? $this->Html->link(
+                        <?= $soldEquipment->__isset('equipment_type') ? $this->Html->link(
                             $soldEquipment->equipment_type->name,
                             ['controller' => 'EquipmentTypes', 'action' => 'view', $soldEquipment->equipment_type->id]
                         ) : '' ?>

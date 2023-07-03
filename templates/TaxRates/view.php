@@ -66,7 +66,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $taxRate->has('creator') ? $this->Html->link(
+                            <td><?= $taxRate->__isset('creator') ? $this->Html->link(
                                 $taxRate->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -81,7 +81,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $taxRate->has('modifier') ? $this->Html->link(
+                            <td><?= $taxRate->__isset('modifier') ? $this->Html->link(
                                 $taxRate->modifier->username,
                                 [
                                     'controller' => 'AppUsers',

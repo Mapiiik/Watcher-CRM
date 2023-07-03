@@ -31,14 +31,14 @@
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $login->has('customer') ? $this->Html->link(
+                            <td><?= $login->__isset('customer') ? $this->Html->link(
                                 $login->customer->name,
                                 ['controller' => 'Customers', 'action' => 'view', $login->customer->id]
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $login->has('customer') ? h($login->customer->number) : '' ?></td>
+                            <td><?= $login->__isset('customer') ? h($login->customer->number) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Login') ?></th>
@@ -84,7 +84,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $login->has('creator') ? $this->Html->link(
+                            <td><?= $login->__isset('creator') ? $this->Html->link(
                                 $login->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -99,7 +99,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $login->has('modifier') ? $this->Html->link(
+                            <td><?= $login->__isset('modifier') ? $this->Html->link(
                                 $login->modifier->username,
                                 [
                                     'controller' => 'AppUsers',

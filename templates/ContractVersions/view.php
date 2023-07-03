@@ -38,15 +38,15 @@
             <?= __('Contract No.') ?><h3><?= h($contractVersion->contract->number) ?></h3>
             <?= __('Validity') ?><h3><?= h($contractVersion->valid_from) ?> - <?= $contractVersion->valid_until ?
                 h($contractVersion->valid_until) : __('indefinitely') ?></h3>
-            <?php if ($contractVersion->has('contract')) : ?>
+            <?php if ($contractVersion->__isset('contract')) : ?>
             <h5><?=
                 (
-                    $contractVersion->contract->has('service_type') ?
+                    $contractVersion->contract->__isset('service_type') ?
                         $contractVersion->contract->service_type->name :
                         ''
                 )
                 . (
-                    $contractVersion->contract->has('installation_address') ?
+                    $contractVersion->contract->__isset('installation_address') ?
                         ' - ' . $contractVersion->contract->installation_address->address :
                         ''
                 )
@@ -57,7 +57,7 @@
                     <table>
                         <tr>
                             <th><?= __('Contract') ?></th>
-                            <td><?= $contractVersion->has('contract') ? $this->Html->link(
+                            <td><?= $contractVersion->__isset('contract') ? $this->Html->link(
                                 $contractVersion->contract->name,
                                 ['controller' => 'Contracts', 'action' => 'view', $contractVersion->contract->id]
                             ) : '' ?></td>
@@ -96,7 +96,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $contractVersion->has('creator') ? $this->Html->link(
+                            <td><?= $contractVersion->__isset('creator') ? $this->Html->link(
                                 $contractVersion->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -111,7 +111,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $contractVersion->has('modifier') ? $this->Html->link(
+                            <td><?= $contractVersion->__isset('modifier') ? $this->Html->link(
                                 $contractVersion->modifier->username,
                                 [
                                     'controller' => 'AppUsers',

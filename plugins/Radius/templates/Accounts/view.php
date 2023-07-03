@@ -54,7 +54,7 @@
                     <table>
                         <tr>
                             <th><?= __d('radius', 'Customer') ?></th>
-                            <td><?= $account->has('customer') ? $this->Html->link(
+                            <td><?= $account->__isset('customer') ? $this->Html->link(
                                 $account->customer->name,
                                 [
                                     'plugin' => null,
@@ -66,11 +66,11 @@
                         </tr>
                         <tr>
                             <th><?= __d('radius', 'Customer Number') ?></th>
-                            <td><?= $account->has('customer') ? h($account->customer->number) : '' ?></td>
+                            <td><?= $account->__isset('customer') ? h($account->customer->number) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __d('radius', 'Contract') ?></th>
-                            <td><?= $account->has('contract') ? $this->Html->link(
+                            <td><?= $account->__isset('contract') ? $this->Html->link(
                                 $account->contract->number,
                                 [
                                     'plugin' => null,
@@ -111,7 +111,7 @@
                         </tr>
                         <tr>
                             <th><?= __d('radius', 'Created By') ?></th>
-                            <td><?= $account->has('creator') ? $this->Html->link(
+                            <td><?= $account->__isset('creator') ? $this->Html->link(
                                 $account->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -126,7 +126,7 @@
                         </tr>
                         <tr>
                             <th><?= __d('radius', 'Modified By') ?></th>
-                            <td><?= $account->has('modifier') ? $this->Html->link(
+                            <td><?= $account->__isset('modifier') ? $this->Html->link(
                                 $account->modifier->username,
                                 [
                                     'controller' => 'AppUsers',

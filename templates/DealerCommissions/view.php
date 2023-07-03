@@ -41,14 +41,14 @@
                     <table>
                         <tr>
                             <th><?= __('Dealer') ?></th>
-                            <td><?= $dealerCommission->has('dealer') ? $this->Html->link(
+                            <td><?= $dealerCommission->__isset('dealer') ? $this->Html->link(
                                 $dealerCommission->dealer->name,
                                 ['controller' => 'Customers', 'action' => 'view', $dealerCommission->dealer->id]
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Commission') ?></th>
-                            <td><?= $dealerCommission->has('commission') ? $this->Html->link(
+                            <td><?= $dealerCommission->__isset('commission') ? $this->Html->link(
                                 $dealerCommission->commission->name,
                                 ['controller' => 'Commissions', 'action' => 'view', $dealerCommission->commission->id]
                             ) : '' ?></td>
@@ -75,7 +75,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $dealerCommission->has('creator') ? $this->Html->link(
+                            <td><?= $dealerCommission->__isset('creator') ? $this->Html->link(
                                 $dealerCommission->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -90,7 +90,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $dealerCommission->has('modifier') ? $this->Html->link(
+                            <td><?= $dealerCommission->__isset('modifier') ? $this->Html->link(
                                 $dealerCommission->modifier->username,
                                 [
                                     'controller' => 'AppUsers',

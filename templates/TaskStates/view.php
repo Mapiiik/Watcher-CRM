@@ -55,7 +55,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $taskState->has('creator') ? $this->Html->link(
+                            <td><?= $taskState->__isset('creator') ? $this->Html->link(
                                 $taskState->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -70,7 +70,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $taskState->has('modifier') ? $this->Html->link(
+                            <td><?= $taskState->__isset('modifier') ? $this->Html->link(
                                 $taskState->modifier->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -106,14 +106,14 @@
                         </tr>
                         <?php foreach ($taskState->tasks as $task) : ?>
                         <tr style="<?= $task->style ?>">
-                            <td><?= $task->has('task_type') ?
+                            <td><?= $task->__isset('task_type') ?
                                 $this->Html->link(
                                     $task->task_type->name,
                                     ['controller' => 'TaskTypes', 'action' => 'view', $task->task_type->id]
                                 ) : '' ?>
                             </td>
                             <td><?= $priorities[$task->priority] ?></td>
-                            <td><?= $task->has('dealer') ?
+                            <td><?= $task->__isset('dealer') ?
                                 $this->Html->link(
                                     $task->dealer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $task->dealer->id]
@@ -125,14 +125,14 @@
                             </td>
                             <td><?= h($task->email) ?></td>
                             <td><?= h($task->phone) ?></td>
-                            <td><?= $task->has('customer') ?
+                            <td><?= $task->__isset('customer') ?
                                 $this->Html->link(
                                     $task->customer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $task->customer->id]
                                 ) : '' ?>
                             </td>
-                            <td><?= $task->has('customer') ? h($task->customer->number) : '' ?></td>
-                            <td><?= $task->has('access_point') ? h($task->access_point['name']) : '' ?></td>
+                            <td><?= $task->__isset('customer') ? h($task->customer->number) : '' ?></td>
+                            <td><?= $task->__isset('access_point') ? h($task->access_point['name']) : '' ?></td>
                             <td><?= h($task->start_date) ?></td>
                             <td><?= h($task->estimated_date) ?></td>
                             <td><?= h($task->critical_date) ?></td>

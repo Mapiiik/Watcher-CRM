@@ -32,14 +32,14 @@
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $address->has('customer') ? $this->Html->link(
+                            <td><?= $address->__isset('customer') ? $this->Html->link(
                                 $address->customer->name,
                                 ['controller' => 'Customers', 'action' => 'view', $address->customer->id]
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $address->has('customer') ? h($address->customer->number) : '' ?></td>
+                            <td><?= $address->__isset('customer') ? h($address->customer->number) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Type') ?></th>
@@ -91,7 +91,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Country') ?></th>
-                            <td><?= $address->has('country') ? $this->Html->link(
+                            <td><?= $address->__isset('country') ? $this->Html->link(
                                 $address->country->name,
                                 ['controller' => 'Countries', 'action' => 'view', $address->country->id]
                             ) : '' ?></td>
@@ -106,15 +106,15 @@
                         <tr>
                             <th class="actions"><?= __('Map location') ?></th>
                             <td class="actions">
-                                <?= $address->has('gps_x') && $address->has('gps_y') ?
+                                <?= $address->__isset('gps_x') && $address->__isset('gps_y') ?
                                     '' : '<span style="color: red;">' . __('unknown') . '</span>' ?>
-                                <?= $address->has('gps_x') && $address->has('gps_y') ? $this->Html->link(
+                                <?= $address->__isset('gps_x') && $address->__isset('gps_y') ? $this->Html->link(
                                     __('Google Maps'),
                                     'https://maps.google.com/maps?q='
                                         . h("{$address->gps_y},{$address->gps_x}"),
                                     ['target' => '_blank']
                                 ) : '' ?>
-                                <?= $address->has('gps_x') && $address->has('gps_y') ? $this->Html->link(
+                                <?= $address->__isset('gps_x') && $address->__isset('gps_y') ? $this->Html->link(
                                     __('Mapy.cz'),
                                     'https://mapy.cz/zakladni?source=coor&id='
                                         . h("{$address->gps_x},{$address->gps_y}"),
@@ -124,7 +124,7 @@
                         </tr>
                         <tr>
                             <th><?= __('RÚIAN') ?></th>
-                            <td><?= $address->has('ruian_gid') ?
+                            <td><?= $address->__isset('ruian_gid') ?
                                 $this->Number->format($address->ruian_gid) :
                                 '<span style="color: red;">' . __('unknown') . '</span>'
                             ?></td>
@@ -155,7 +155,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $address->has('creator') ? $this->Html->link(
+                            <td><?= $address->__isset('creator') ? $this->Html->link(
                                 $address->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -170,7 +170,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $address->has('modifier') ? $this->Html->link(
+                            <td><?= $address->__isset('modifier') ? $this->Html->link(
                                 $address->modifier->username,
                                 [
                                     'controller' => 'AppUsers',

@@ -40,12 +40,12 @@
                 <?php foreach ($logins as $login) : ?>
                 <tr>
                     <td>
-                        <?= $login->has('customer') ? $this->Html->link(
+                        <?= $login->__isset('customer') ? $this->Html->link(
                             $login->customer->name,
                             ['controller' => 'Customers', 'action' => 'view', $login->customer->id]
                         ) : '' ?>
                     </td>
-                    <td><?= $login->has('customer') ? h($login->customer->number) : '' ?></td>
+                    <td><?= $login->__isset('customer') ? h($login->customer->number) : '' ?></td>
                     <td><?= h($login->login) ?></td>
                     <td><?= $rights[$login->rights] ?></td>
                     <td><?= $login->locked ? __('Yes') : __('No'); ?></td>

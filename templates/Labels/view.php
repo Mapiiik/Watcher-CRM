@@ -70,7 +70,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $label->has('creator') ? $this->Html->link(
+                            <td><?= $label->__isset('creator') ? $this->Html->link(
                                 $label->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -85,7 +85,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $label->has('modifier') ? $this->Html->link(
+                            <td><?= $label->__isset('modifier') ? $this->Html->link(
                                 $label->modifier->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -115,12 +115,12 @@
                         </tr>
                         <?php foreach ($label->customer_labels as $customerLabel) : ?>
                         <tr>
-                            <td><?= $customerLabel->has('customer') ?
+                            <td><?= $customerLabel->__isset('customer') ?
                                 $this->Html->link(
                                     $customerLabel->customer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $customerLabel->customer->id]
                                 ) : '' ?></td>
-                            <td><?= $customerLabel->has('customer') ? h($customerLabel->customer->number) : '' ?></td>
+                            <td><?= $customerLabel->__isset('customer') ? h($customerLabel->customer->number) : '' ?></td>
                             <td><?= h($customerLabel->note) ?></td>
                             <td><?= h($customerLabel->created) ?></td>
                             <td class="actions">

@@ -75,7 +75,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $contractState->has('creator') ? $this->Html->link(
+                            <td><?= $contractState->__isset('creator') ? $this->Html->link(
                                 $contractState->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -90,7 +90,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $contractState->has('modifier') ? $this->Html->link(
+                            <td><?= $contractState->__isset('modifier') ? $this->Html->link(
                                 $contractState->modifier->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -132,14 +132,14 @@
                         <?php foreach ($contractState->contracts as $contract) : ?>
                         <tr style="<?= $contract->style ?>">
                             <td><?=
-                                $contract->has('customer') ? $this->Html->link(
+                                $contract->__isset('customer') ? $this->Html->link(
                                     $contract->customer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $contract->customer->id]
                                 ) : '' ?></td>
-                            <td><?= $contract->has('customer') ? h($contract->customer->number) : '' ?></td>
+                            <td><?= $contract->__isset('customer') ? h($contract->customer->number) : '' ?></td>
                             <td><?= h($contract->number) ?></td>
                             <td><?=
-                                $contract->has('service_type') ? $this->Html->link(
+                                $contract->__isset('service_type') ? $this->Html->link(
                                     $contract->service_type->name,
                                     [
                                         'controller' => 'Addresses',
@@ -148,7 +148,7 @@
                                     ]
                                 ) : '' ?></td>
                             <td><?=
-                                $contract->has('installation_address') ? $this->Html->link(
+                                $contract->__isset('installation_address') ? $this->Html->link(
                                     $contract->installation_address->full_address,
                                     [
                                         'controller' => 'Addresses',
@@ -157,10 +157,10 @@
                                     ]
                                 ) : '' ?></td>
                             <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
-                            <td><?= $contract->has('access_point') ? h($contract->access_point['name']) : '' ?></td>
+                            <td><?= $contract->__isset('access_point') ? h($contract->access_point['name']) : '' ?></td>
                             <td><?= h($contract->installation_date) ?></td>
                             <td><?=
-                                $contract->has('installation_technician') ? $this->Html->link(
+                                $contract->__isset('installation_technician') ? $this->Html->link(
                                     $contract->installation_technician->name,
                                     [
                                         'controller' => 'Customers',
@@ -170,7 +170,7 @@
                                 ) : '' ?></td>
                             <td><?= h($contract->uninstallation_date) ?></td>
                             <td><?=
-                                $contract->has('uninstallation_technician') ? $this->Html->link(
+                                $contract->__isset('uninstallation_technician') ? $this->Html->link(
                                     $contract->uninstallation_technician->name,
                                     [
                                         'controller' => 'Customers',
@@ -180,7 +180,7 @@
                                 ) : '' ?></td>
                             <td><?= h($contract->termination_date) ?></td>
                             <td><?=
-                                $contract->has('commission') ? $this->Html->link(
+                                $contract->__isset('commission') ? $this->Html->link(
                                     $contract->commission->name,
                                     ['controller' => 'Commissions', 'action' => 'view', $contract->commission->id]
                                 ) : '' ?></td>

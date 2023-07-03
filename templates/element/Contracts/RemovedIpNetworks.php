@@ -22,7 +22,7 @@
         <?php foreach ($removed_ip_networks as $removedIpNetwork) : ?>
         <tr style="<?= $removedIpNetwork->style ?>">
             <?php if (!empty($contract_column)) : ?>
-            <td><?= $removedIpNetwork->has('contract') ?
+            <td><?= $removedIpNetwork->__isset('contract') ?
                 $this->Html->link(
                     $removedIpNetwork->contract->number,
                     [

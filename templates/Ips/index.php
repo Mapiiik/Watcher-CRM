@@ -36,14 +36,14 @@
                 <?php foreach ($ips as $ip) : ?>
                 <tr style="<?= $ip->style ?>">
                     <td>
-                        <?= $ip->has('customer') ? $this->Html->link(
+                        <?= $ip->__isset('customer') ? $this->Html->link(
                             $ip->customer->name,
                             ['controller' => 'Customers', 'action' => 'view', $ip->customer->id]
                         ) : '' ?>
                     </td>
-                    <td><?= $ip->has('customer') ? h($ip->customer->number) : '' ?></td>
+                    <td><?= $ip->__isset('customer') ? h($ip->customer->number) : '' ?></td>
                     <td>
-                        <?= $ip->has('contract') ? $this->Html->link(
+                        <?= $ip->__isset('contract') ? $this->Html->link(
                             $ip->contract->number,
                             ['controller' => 'Contracts', 'action' => 'view', $ip->contract->id]
                         ) : '' ?>

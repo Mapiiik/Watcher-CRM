@@ -30,14 +30,14 @@
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $email->has('customer') ? $this->Html->link(
+                            <td><?= $email->__isset('customer') ? $this->Html->link(
                                 $email->customer->name,
                                 ['controller' => 'Customers', 'action' => 'view', $email->customer->id]
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $email->has('customer') ? h($email->customer->number) : '' ?></td>
+                            <td><?= $email->__isset('customer') ? h($email->customer->number) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Email') ?></th>
@@ -69,7 +69,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $email->has('creator') ? $this->Html->link(
+                            <td><?= $email->__isset('creator') ? $this->Html->link(
                                 $email->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -84,7 +84,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $email->has('modifier') ? $this->Html->link(
+                            <td><?= $email->__isset('modifier') ? $this->Html->link(
                                 $email->modifier->username,
                                 [
                                     'controller' => 'AppUsers',

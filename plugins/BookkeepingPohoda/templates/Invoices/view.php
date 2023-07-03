@@ -47,7 +47,7 @@
                     <table>
                         <tr>
                             <th><?= __d('bookkeeping_pohoda', 'Customer') ?></th>
-                            <td><?= $invoice->has('customer') ? $this->Html->link(
+                            <td><?= $invoice->__isset('customer') ? $this->Html->link(
                                 $invoice->customer->name,
                                 [
                                     'plugin' => null,
@@ -59,7 +59,7 @@
                         </tr>
                         <tr>
                             <th><?= __d('bookkeeping_pohoda', 'Customer Number') ?></th>
-                            <td><?= $invoice->has('customer') ? h($invoice->customer->number) : '' ?></td>
+                            <td><?= $invoice->__isset('customer') ? h($invoice->customer->number) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __d('bookkeeping_pohoda', 'Number') ?></th>
@@ -112,7 +112,7 @@
                         </tr>
                         <tr>
                             <th><?= __d('bookkeeping_pohoda', 'Created By') ?></th>
-                            <td><?= $invoice->has('creator') ? $this->Html->link(
+                            <td><?= $invoice->__isset('creator') ? $this->Html->link(
                                 $invoice->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -127,7 +127,7 @@
                         </tr>
                         <tr>
                             <th><?= __d('bookkeeping_pohoda', 'Modified By') ?></th>
-                            <td><?= $invoice->has('modifier') ? $this->Html->link(
+                            <td><?= $invoice->__isset('modifier') ? $this->Html->link(
                                 $invoice->modifier->username,
                                 [
                                     'controller' => 'AppUsers',

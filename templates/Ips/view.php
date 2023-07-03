@@ -31,18 +31,18 @@
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $ip->has('customer') ? $this->Html->link(
+                            <td><?= $ip->__isset('customer') ? $this->Html->link(
                                 $ip->customer->name,
                                 ['controller' => 'Customers', 'action' => 'view', $ip->customer->id]
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $ip->has('customer') ? h($ip->customer->number) : '' ?></td>
+                            <td><?= $ip->__isset('customer') ? h($ip->customer->number) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Contract') ?></th>
-                            <td><?= $ip->has('contract') ? $this->Html->link(
+                            <td><?= $ip->__isset('contract') ? $this->Html->link(
                                 $ip->contract->number,
                                 ['controller' => 'Contracts', 'action' => 'view', $ip->contract->id]
                             ) : '' ?></td>
@@ -105,7 +105,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $ip->has('creator') ? $this->Html->link(
+                            <td><?= $ip->__isset('creator') ? $this->Html->link(
                                 $ip->creator->username,
                                 [
                                     'controller' => 'AppUsers',
@@ -120,7 +120,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $ip->has('modifier') ? $this->Html->link(
+                            <td><?= $ip->__isset('modifier') ? $this->Html->link(
                                 $ip->modifier->username,
                                 [
                                     'controller' => 'AppUsers',

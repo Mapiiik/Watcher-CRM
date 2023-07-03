@@ -74,7 +74,7 @@
                                     $contract->id,
                                 ]
                             ) ?>
-                            <?= $contract->has('contract_state') ?
+                            <?= $contract->__isset('contract_state') ?
                                 '(' . h($contract->contract_state->name) . ')' : '' ?>
                         </span><br />
                         <?php endforeach; ?>
@@ -104,7 +104,7 @@
                         </span><br>
                         <?php endforeach; ?>
                     </td>
-                    <td><?= $customer->has('tax_rate') ? h($customer->tax_rate->name) : '' ?></td>
+                    <td><?= $customer->__isset('tax_rate') ? h($customer->tax_rate->name) : '' ?></td>
                     <td><?= $customer->getDealerState() ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(
