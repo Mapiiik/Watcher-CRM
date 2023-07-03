@@ -14,16 +14,16 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\RemovedIp newEmptyEntity()
  * @method \App\Model\Entity\RemovedIp newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\RemovedIp[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\RemovedIp get($primaryKey, $options = [])
+ * @method \App\Model\Entity\RemovedIp get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
  * @method \App\Model\Entity\RemovedIp findOrCreate($search, ?callable $callback = null, $options = [])
  * @method \App\Model\Entity\RemovedIp patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\RemovedIp[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \App\Model\Entity\RemovedIp|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\RemovedIp saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\RemovedIp[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\RemovedIp[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\RemovedIp[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\RemovedIp[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method \App\Model\Entity\RemovedIp[]|iterable<\Cake\Datasource\EntityInterface>|false saveMany(iterable $entities, $options = [])
+ * @method \App\Model\Entity\RemovedIp[]|iterable<\Cake\Datasource\EntityInterface> saveManyOrFail(iterable $entities, $options = [])
+ * @method \App\Model\Entity\RemovedIp[]|iterable<\Cake\Datasource\EntityInterface>|false deleteMany(iterable $entities, $options = [])
+ * @method \App\Model\Entity\RemovedIp[]|iterable<\Cake\Datasource\EntityInterface> deleteManyOrFail(iterable $entities, $options = [])
  */
 class RemovedIpsTable extends AppTable
 {

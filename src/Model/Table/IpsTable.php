@@ -14,16 +14,16 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Ip newEmptyEntity()
  * @method \App\Model\Entity\Ip newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Ip[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Ip get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Ip get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
  * @method \App\Model\Entity\Ip findOrCreate($search, ?callable $callback = null, $options = [])
  * @method \App\Model\Entity\Ip patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Ip[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \App\Model\Entity\Ip|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Ip saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Ip[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\Ip[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\Ip[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\Ip[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method \App\Model\Entity\Ip[]|iterable<\Cake\Datasource\EntityInterface>|false saveMany(iterable $entities, $options = [])
+ * @method \App\Model\Entity\Ip[]|iterable<\Cake\Datasource\EntityInterface> saveManyOrFail(iterable $entities, $options = [])
+ * @method \App\Model\Entity\Ip[]|iterable<\Cake\Datasource\EntityInterface>|false deleteMany(iterable $entities, $options = [])
+ * @method \App\Model\Entity\Ip[]|iterable<\Cake\Datasource\EntityInterface> deleteManyOrFail(iterable $entities, $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class IpsTable extends AppTable

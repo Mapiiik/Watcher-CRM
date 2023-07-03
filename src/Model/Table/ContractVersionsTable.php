@@ -13,16 +13,16 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\ContractVersion newEmptyEntity()
  * @method \App\Model\Entity\ContractVersion newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\ContractVersion[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\ContractVersion get($primaryKey, $options = [])
+ * @method \App\Model\Entity\ContractVersion get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
  * @method \App\Model\Entity\ContractVersion findOrCreate($search, ?callable $callback = null, $options = [])
  * @method \App\Model\Entity\ContractVersion patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\ContractVersion[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \App\Model\Entity\ContractVersion|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\ContractVersion saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\ContractVersion[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\ContractVersion[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\ContractVersion[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\ContractVersion[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method \App\Model\Entity\ContractVersion[]|iterable<\Cake\Datasource\EntityInterface>|false saveMany(iterable $entities, $options = [])
+ * @method \App\Model\Entity\ContractVersion[]|iterable<\Cake\Datasource\EntityInterface> saveManyOrFail(iterable $entities, $options = [])
+ * @method \App\Model\Entity\ContractVersion[]|iterable<\Cake\Datasource\EntityInterface>|false deleteMany(iterable $entities, $options = [])
+ * @method \App\Model\Entity\ContractVersion[]|iterable<\Cake\Datasource\EntityInterface> deleteManyOrFail(iterable $entities, $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class ContractVersionsTable extends AppTable

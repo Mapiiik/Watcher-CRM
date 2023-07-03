@@ -14,16 +14,16 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\DealerCommission newEmptyEntity()
  * @method \App\Model\Entity\DealerCommission newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\DealerCommission[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\DealerCommission get($primaryKey, $options = [])
+ * @method \App\Model\Entity\DealerCommission get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
  * @method \App\Model\Entity\DealerCommission findOrCreate($search, ?callable $callback = null, $options = [])
  * @method \App\Model\Entity\DealerCommission patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\DealerCommission[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \App\Model\Entity\DealerCommission|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\DealerCommission saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\DealerCommission[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\DealerCommission[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\DealerCommission[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\DealerCommission[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method \App\Model\Entity\DealerCommission[]|iterable<\Cake\Datasource\EntityInterface>|false saveMany(iterable $entities, $options = [])
+ * @method \App\Model\Entity\DealerCommission[]|iterable<\Cake\Datasource\EntityInterface> saveManyOrFail(iterable $entities, $options = [])
+ * @method \App\Model\Entity\DealerCommission[]|iterable<\Cake\Datasource\EntityInterface>|false deleteMany(iterable $entities, $options = [])
+ * @method \App\Model\Entity\DealerCommission[]|iterable<\Cake\Datasource\EntityInterface> deleteManyOrFail(iterable $entities, $options = [])
  */
 class DealerCommissionsTable extends AppTable
 {

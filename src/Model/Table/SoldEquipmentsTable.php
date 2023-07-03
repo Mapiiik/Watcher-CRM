@@ -15,16 +15,16 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\SoldEquipment newEmptyEntity()
  * @method \App\Model\Entity\SoldEquipment newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\SoldEquipment[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\SoldEquipment get($primaryKey, $options = [])
+ * @method \App\Model\Entity\SoldEquipment get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
  * @method \App\Model\Entity\SoldEquipment findOrCreate($search, ?callable $callback = null, $options = [])
  * @method \App\Model\Entity\SoldEquipment patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\SoldEquipment[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \App\Model\Entity\SoldEquipment|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\SoldEquipment saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\SoldEquipment[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\SoldEquipment[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\SoldEquipment[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\SoldEquipment[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method \App\Model\Entity\SoldEquipment[]|iterable<\Cake\Datasource\EntityInterface>|false saveMany(iterable $entities, $options = [])
+ * @method \App\Model\Entity\SoldEquipment[]|iterable<\Cake\Datasource\EntityInterface> saveManyOrFail(iterable $entities, $options = [])
+ * @method \App\Model\Entity\SoldEquipment[]|iterable<\Cake\Datasource\EntityInterface>|false deleteMany(iterable $entities, $options = [])
+ * @method \App\Model\Entity\SoldEquipment[]|iterable<\Cake\Datasource\EntityInterface> deleteManyOrFail(iterable $entities, $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class SoldEquipmentsTable extends AppTable
