@@ -23,7 +23,7 @@ class AuditLogsTableTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'app.AuditLogs',
     ];
 

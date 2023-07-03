@@ -47,9 +47,9 @@ trait UserSettingsTrait
         $user = $usersTable->get(
             $id,
             fields: [
-            'id',
-            'username',
-            'user_settings',
+                'id',
+                'username',
+                'user_settings',
             ],
             contain: []
         );
