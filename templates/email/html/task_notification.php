@@ -14,7 +14,6 @@
  * @var \App\View\AppView $this
  * @var string $title
  * @var \App\Model\Entity\Task $task
- * @var array<string> $priorities
  */
 use Cake\Routing\Router;
 
@@ -47,7 +46,7 @@ table {
                 </tr>
                 <tr>
                     <th><?= __('Priority') ?></th>
-                    <td><?= $priorities[$task->priority] ?></td>
+                    <td><?= h($task->getPriorityName()) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Task State') ?></th>

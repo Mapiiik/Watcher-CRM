@@ -2,7 +2,6 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Task $task
- * @var \Cake\Collection\CollectionInterface|array<string> $priorities
  */
 ?>
 <div class="row">
@@ -34,7 +33,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Priority') ?></th>
-                            <td><?= $priorities[$task->priority] ?></td>
+                            <td><?= h($task->getPriorityName()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Task State') ?></th>

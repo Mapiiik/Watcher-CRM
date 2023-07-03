@@ -150,4 +150,29 @@ class Task extends Entity
 
         return $style;
     }
+
+    /**
+     * Get task priority options method
+     *
+     * @return array<int, string>
+     */
+    public function getPriorityOptions(): array
+    {
+        return [
+            -10 => __('Low'),
+            0 => __('Normal'),
+            10 => __('High'),
+            50 => __('Urgent'),
+        ];
+    }
+
+    /**
+     * Get task priority name method
+     *
+     * @return string
+     */
+    public function getPriorityName(): string
+    {
+        return $this->getPriorityOptions()[$this->priority] ?? (string)$this->priority;
+    }
 }

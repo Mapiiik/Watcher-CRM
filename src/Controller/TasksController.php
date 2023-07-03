@@ -232,8 +232,6 @@ class TasksController extends AppController
 
         $this->set(compact('tasks', 'taskTypes', 'taskStates', 'dealers'));
 
-        $this->set('priorities', $this->Tasks->priorities);
-
         // load access points from NMS if possible
         $accessPoints = ApiClient::getAccessPoints();
         if ($accessPoints) {
@@ -268,8 +266,6 @@ class TasksController extends AppController
         ]);
 
         $this->set(compact('task'));
-
-        $this->set('priorities', $this->Tasks->priorities);
     }
 
     /**
@@ -438,8 +434,6 @@ class TasksController extends AppController
 
         $this->set(compact('task', 'taskTypes', 'customers', 'contracts', 'dealers', 'taskStates'));
 
-        $this->set('priorities', $this->Tasks->priorities);
-
         // load access points from NMS if possible
         $accessPoints = ApiClient::getAccessPoints();
         if ($accessPoints) {
@@ -549,8 +543,6 @@ class TasksController extends AppController
 
         $this->set(compact('task', 'taskTypes', 'customers', 'contracts', 'dealers', 'taskStates'));
 
-        $this->set('priorities', $this->Tasks->priorities);
-
         // load access points from NMS if possible
         $accessPoints = ApiClient::getAccessPoints();
         if ($accessPoints) {
@@ -643,7 +635,7 @@ class TasksController extends AppController
             ->setLayout('default')
             ->setTemplate('task-notification');
 
-        $mailer->setViewVars(['title' => $title, 'task' => $task, 'priorities' => $this->Tasks->priorities]);
+        $mailer->setViewVars(['title' => $title, 'task' => $task]);
 
         try {
             $mailer->deliver();

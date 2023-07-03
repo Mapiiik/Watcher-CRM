@@ -61,8 +61,6 @@ class TaskStatesController extends AppController
         ]);
 
         $this->set(compact('taskState'));
-
-        $this->set('priorities', $this->TaskStates->Tasks->priorities);
     }
 
     /**

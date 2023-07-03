@@ -2,7 +2,6 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\TaskType $taskType
- * @var \Cake\Collection\CollectionInterface|array<string> $priorities
  */
 ?>
 <div class="row">
@@ -106,7 +105,7 @@
                         </tr>
                         <?php foreach ($taskType->tasks as $task) : ?>
                         <tr style="<?= $task->style ?>">
-                            <td><?= $priorities[$task->priority] ?></td>
+                            <td><?= h($task->getPriorityName()) ?></td>
                             <td><?= $task->__isset('task_state') ?
                                 $this->Html->link(
                                     $task->task_state->name,

@@ -61,8 +61,6 @@ class TaskTypesController extends AppController
         ]);
 
         $this->set(compact('taskType'));
-
-        $this->set('priorities', $this->TaskTypes->Tasks->priorities);
     }
 
     /**
