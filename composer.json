@@ -33,7 +33,7 @@
     "require-dev": {
         "cakedc/cakephp-phpstan": "dev-3.next-cake5",
         "cakephp/bake": "3.x-dev",
-        "cakephp/cakephp-codesniffer": "^5.0",
+        "cakephp/cakephp-codesniffer": "5.x-dev",
         "cakephp/debug_kit": "5.x-dev",
         "josegonzalez/dotenv": "^4.0",
         "phpstan/extension-installer": "^1.1",
