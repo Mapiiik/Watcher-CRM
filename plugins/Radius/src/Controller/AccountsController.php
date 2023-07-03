@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Radius\Controller;
 
-use Cake\Database\Query;
 use Cake\I18n\Date;
+use Cake\ORM\Query\SelectQuery;
 use Mapik\RadiusClient\Client;
 use Mapik\RadiusClient\Exceptions\ClientException;
 use Mapik\RadiusClient\Packet;
@@ -604,7 +604,7 @@ class AccountsController extends AppController
         $contract = $this->fetchTable('Contracts')->get($account->contract_id, [
             'contain' => [
                 'Billings' => [
-                    'queryBuilder' => function (Query $q) {
+                    'queryBuilder' => function (SelectQuery $q) {
                         return $q->where([
                             'Queues.name IS NOT NULL',
                             'Billings.billing_from <=' => Date::now()->addMonths(1),

@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\ApiClient;
-use Cake\Database\Query;
 use Cake\Form\Form;
 use Cake\I18n\DateTime;
 use Cake\Mailer\Mailer;
+use Cake\ORM\Query\SelectQuery;
 use Cake\View\Helper\HtmlHelper;
 use Cake\View\View;
 use Exception;
@@ -184,7 +184,7 @@ class TasksController extends AppController
         // get the number of unassigned tasks
         $number_of_unassigned_tasks = $this->Tasks
             ->find()
-            ->matching('TaskStates', function (Query $query) {
+            ->matching('TaskStates', function (SelectQuery $query) {
                 return $query->where([
                     'TaskStates.completed' => false,
                 ]);

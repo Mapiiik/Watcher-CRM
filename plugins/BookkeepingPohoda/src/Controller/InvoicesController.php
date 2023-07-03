@@ -5,7 +5,7 @@ namespace BookkeepingPohoda\Controller;
 
 use Cake\Collection\CollectionInterface;
 use Cake\I18n\Date;
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use stdClass;
 
 /**
@@ -233,22 +233,22 @@ class InvoicesController extends AppController
     }
 
     /**
-     * get Query with billing data for selected month
+     * get SelectQuery with billing data for selected month
      *
      * @param \Cake\I18n\Date $invoiced_month Month for billing
      * @param int $tax_rate_id month Id of tax rate for billing
-     * @return \Cake\ORM\Query
+     * @return \Cake\ORM\Query\SelectQuery
      */
-    private function getQueryForBillingDataForMonth(Date $invoiced_month, int $tax_rate_id): Query
+    private function getQueryForBillingDataForMonth(Date $invoiced_month, int $tax_rate_id): SelectQuery
     {
         return $this->fetchTable('Customers')
             ->find()
             ->contain('Addresses')
-            ->contain('Contracts', function (Query $q) use ($invoiced_month) {
+            ->contain('Contracts', function (SelectQuery $q) use ($invoiced_month) {
                 return $q
                     ->contain('ContractStates')
                     ->contain('ServiceTypes')
-                    ->contain('Billings', function (Query $q) use ($invoiced_month) {
+                    ->contain('Billings', function (SelectQuery $q) use ($invoiced_month) {
                         return $q
                             ->contain(['Services'])
                             ->where([
@@ -336,6 +336,8 @@ class InvoicesController extends AppController
 
                 // compare verification data with CRM billings
                 foreach ($this->getQueryForBillingDataForMonth($invoiced_month, $tax_rate->id) as $customer) {
+                    /** @var \App\Model\Entity\Customer $customer */
+
                     // declare billing data
                     $billing_data['total'] = 0;
                     $billing_data['items'] = [];
@@ -407,6 +409,8 @@ class InvoicesController extends AppController
             $invoices = [];
 
             foreach ($this->getQueryForBillingDataForMonth($invoiced_month, $tax_rate->id) as $customer) {
+                /** @var \App\Model\Entity\Customer $customer */
+
                 // declare customer billing data
                 $billing_customer['total'] = 0;
                 $billing_customer['items'] = [];
@@ -417,11 +421,11 @@ class InvoicesController extends AppController
                     $billing_contract['items'] = [];
 
                     foreach ($contract->billings as $billing) {
-                        if ($billing->separate_invoice && $billing->period_total <> 0) {
+                        if ($billing->isSeparateInvoice() && $billing->period_total <> 0) {
                             $invoice = $this->Invoices->newEmptyEntity();
                             $invoice->number = $prefix + $index;
                             $invoice->customer = $customer;
-                            $invoice->variable_symbol = $customer->number;
+                            $invoice->variable_symbol = (int)$customer->number;
                             $invoice->creation_date = $invoiced_month->lastOfMonth();
                             $invoice->due_date = $invoiced_month->lastOfMonth()->addDays(10);
                             $invoice->text = $billing->name
@@ -439,15 +443,15 @@ class InvoicesController extends AppController
                         }
                     }
 
-                    if ($contract->separate_invoice && $billing_contract['total'] <> 0) {
+                    if ($contract->isSeparateInvoice() && $billing_contract['total'] <> 0) {
                         $invoice = $this->Invoices->newEmptyEntity();
                         $invoice->number = $prefix + $index;
                         $invoice->customer = $customer;
-                        $invoice->variable_symbol = $customer->number;
+                        $invoice->variable_symbol = (int)$customer->number;
                         $invoice->creation_date = $invoiced_month->lastOfMonth();
                         $invoice->due_date = $invoiced_month->lastOfMonth()->addDays(10);
-                        if ($contract->invoice_text) {
-                            $invoice->text = strtr($contract->invoice_text, [
+                        if ($contract->getInvoiceText()) {
+                            $invoice->text = strtr($contract->getInvoiceText(), [
                                 '{number}' => $contract->number,
                                 '{month}' => $invoiced_month->i18nFormat('MM/yyyy'),
                             ]);
@@ -458,7 +462,7 @@ class InvoicesController extends AppController
                         }
                         $invoice->internal_note = 'separate';
                         $invoice->total = $billing_contract['total'];
-                        $invoice->items = $contract->invoice_with_items ? $billing_contract['items'] : [];
+                        $invoice->items = $contract->isInvoiceWithItems() ? $billing_contract['items'] : [];
                         $invoices[] = $invoice;
                         unset($invoice);
                         $index++;
@@ -477,13 +481,13 @@ class InvoicesController extends AppController
                     $invoice = $this->Invoices->newEmptyEntity();
                     $invoice->number = $prefix + $index;
                     $invoice->customer = $customer;
-                    $invoice->variable_symbol = $customer->number;
+                    $invoice->variable_symbol = (int)$customer->number;
                     $invoice->creation_date = $invoiced_month->lastOfMonth();
                     $invoice->due_date = $invoiced_month->lastOfMonth()->addDays(10);
                     $invoice->text = 'Faktura za poskytované služby dle smlouvy'
                         . ' za období ' . $invoiced_month->i18nFormat('MM/yyyy');
                     $invoice->total = $billing_customer['total'];
-                    $invoice->items = $customer->invoice_with_items ? $billing_customer['items'] : [];
+                    $invoice->items = $customer->isInvoiceWithItems() ? $billing_customer['items'] : [];
                     $invoices[] = $invoice;
                     unset($invoice);
                     $index++;

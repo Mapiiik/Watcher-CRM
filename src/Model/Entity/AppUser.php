@@ -26,7 +26,7 @@ class AppUser extends User
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected array $_accessible = [
         '*' => true,

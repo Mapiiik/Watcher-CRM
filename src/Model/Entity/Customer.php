@@ -425,4 +425,14 @@ class Customer extends Entity
     {
         return $this->getDealerStateOptions()[$this->dealer] ?? strval($this->dealer);
     }
+
+    /**
+     * getter for option invoice_with_items
+     *
+     * @return bool
+     */
+    public function isInvoiceWithItems(): bool
+    {
+        return false;
+    }
 }

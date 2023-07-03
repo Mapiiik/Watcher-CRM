@@ -200,48 +200,6 @@ class Contract extends Entity
     }
 
     /**
-     * getter for option separate_invoice (use option from service type)
-     *
-     * @return bool
-     */
-    protected function _getSeparateInvoice(): bool
-    {
-        if (isset($this->service_type->separate_invoice)) {
-            return $this->service_type->separate_invoice;
-        }
-
-        return false;
-    }
-
-    /**
-     * getter for option invoice_with_items (use option from service type)
-     *
-     * @return bool
-     */
-    protected function _getInvoiceWithItems(): bool
-    {
-        if (isset($this->service_type->invoice_with_items)) {
-            return $this->service_type->invoice_with_items;
-        }
-
-        return false;
-    }
-
-    /**
-     * getter for option invoice_text (use option from service type)
-     *
-     * @return string|null
-     */
-    protected function _getInvoiceText(): ?string
-    {
-        if (isset($this->service_type->invoice_text)) {
-            return $this->service_type->invoice_text;
-        }
-
-        return null;
-    }
-
-    /**
      * getter for acess point (try to load via ApiClient)
      *
      * @return \Cake\ORM\Entity|null
@@ -314,5 +272,47 @@ class Contract extends Entity
         }
 
         throw new Exception(__('Contract state data not available.'));
+    }
+
+    /**
+     * getter for option separate_invoice (use option from service type)
+     *
+     * @return bool
+     */
+    public function isSeparateInvoice(): bool
+    {
+        if (isset($this->service_type->separate_invoice)) {
+            return $this->service_type->separate_invoice;
+        }
+
+        return false;
+    }
+
+    /**
+     * getter for option invoice_with_items (use option from service type)
+     *
+     * @return bool
+     */
+    public function isInvoiceWithItems(): bool
+    {
+        if (isset($this->service_type->invoice_with_items)) {
+            return $this->service_type->invoice_with_items;
+        }
+
+        return false;
+    }
+
+    /**
+     * getter for option invoice_text (use option from service type)
+     *
+     * @return string|null
+     */
+    public function getInvoiceText(): ?string
+    {
+        if (isset($this->service_type->invoice_text)) {
+            return $this->service_type->invoice_text;
+        }
+
+        return null;
     }
 }

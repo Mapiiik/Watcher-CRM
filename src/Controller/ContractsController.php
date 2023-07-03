@@ -6,9 +6,9 @@ namespace App\Controller;
 use App\ApiClient;
 use Cake\Collection\Collection;
 use Cake\Database\Exception\MissingConnectionException;
-use Cake\Database\Query;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
+use Cake\ORM\Query\SelectQuery;
 use stdClass;
 
 /**
@@ -352,7 +352,7 @@ class ContractsController extends AppController
         }
 
         // generate number
-        $result = $this->Contracts->query()
+        $result = $this->Contracts->selectQuery()
             ->select([
                 'number' => '(' . $service_type->contract_number_format . ')',
             ])
@@ -432,7 +432,7 @@ class ContractsController extends AppController
         }
 
         // generate subscriber verification code
-        $result = $this->Contracts->query()
+        $result = $this->Contracts->selectQuery()
             ->select([
                 'subscriber_verification_code' => '(' . $service_type->subscriber_verification_code_format . ')',
             ])
@@ -664,10 +664,10 @@ class ContractsController extends AppController
                 'Billings' => ['Services'],
                 'Ips',
                 'IpNetworks',
-                'BorrowedEquipments.EquipmentTypes' => function (Query $query) {
+                'BorrowedEquipments.EquipmentTypes' => function (SelectQuery $query) {
                     return $query->where(['BorrowedEquipments.borrowed_until IS NULL']);
                 },
-                'SoldEquipments.EquipmentTypes' => function (Query $query) {
+                'SoldEquipments.EquipmentTypes' => function (SelectQuery $query) {
                     return $query->where(['SoldEquipments.date_of_sale IS NULL']);
                 },
                 'Creators',

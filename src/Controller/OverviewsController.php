@@ -11,7 +11,7 @@ use Cake\Collection\CollectionInterface;
 use Cake\Database\Exception\MissingConnectionException;
 use Cake\I18n\Date;
 use Cake\ORM\Entity;
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 
 /**
  * Overviews Controller
@@ -43,11 +43,11 @@ class OverviewsController extends AppController
 
         $servicesQuery = $this->fetchTable('Services')->find()
             ->contain('ServiceTypes')
-            ->contain('Billings', function (Query $q) use ($month_to_display, $access_point_id) {
+            ->contain('Billings', function (SelectQuery $q) use ($month_to_display, $access_point_id) {
                 return $q
                     ->contain('Services')
                     ->contain('Customers')
-                    ->contain('Contracts', function (Query $q) use ($access_point_id) {
+                    ->contain('Contracts', function (SelectQuery $q) use ($access_point_id) {
                         $q->contain('ContractStates');
                         // filter by access point
                         return !empty($access_point_id) ?
@@ -511,12 +511,12 @@ class OverviewsController extends AppController
 
         $dealerCommissionsQuery = $this->fetchTable('DealerCommissions')->find()
             ->contain('Dealers')
-            ->contain('Commissions', function (Query $q) use ($month_to_display) {
-                return $q->contain('Contracts', function (Query $q) use ($month_to_display) {
+            ->contain('Commissions', function (SelectQuery $q) use ($month_to_display) {
+                return $q->contain('Contracts', function (SelectQuery $q) use ($month_to_display) {
                     return $q
                         ->contain('ContractStates')
                         ->contain('Customers')
-                        ->contain('Billings', function (Query $q) use ($month_to_display) {
+                        ->contain('Billings', function (SelectQuery $q) use ($month_to_display) {
                             return $q
                                 ->contain('Services')
                                 ->where([

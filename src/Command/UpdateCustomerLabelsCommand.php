@@ -53,15 +53,18 @@ class UpdateCustomerLabelsCommand extends Command
 
         $labels = $labels_table
             ->find()
-            ->contain('CustomerLabels');
+            ->contain([
+                'CustomerLabels',
+            ]);
 
         $label_id = $args->getArgument('label_id');
         if (!empty($label_id)) {
             $labels->where(['id' => $label_id]);
         }
 
-        /** @var array<\App\Model\Entity\Label> $labels */
         foreach ($labels as $label) {
+            /** @var \App\Model\Entity\Label $label */
+
             $io->info(__('Processing') . ': ' . $label->name . ' (' . $label->id . ')');
 
             $current_customer_ids = Hash::extract($label->customer_labels, '{n}.customer_id');
@@ -72,7 +75,10 @@ class UpdateCustomerLabelsCommand extends Command
                 // add customer labels (or update modified time) for IDs found in custom SQL query (for dynamic labels)
                 if (!empty($label->dynamic_sql)) {
                     try {
-                        $dynamic_sql_results = ConnectionManager::get('default')
+                        /** @var \Cake\Database\Connection $connection */
+                        $connection = ConnectionManager::get('default');
+
+                        $dynamic_sql_results = $connection
                             ->execute($label->dynamic_sql)
                             ->fetchAll();
                     } catch (PDOException $e) {

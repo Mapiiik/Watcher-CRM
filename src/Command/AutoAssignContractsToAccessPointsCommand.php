@@ -47,8 +47,12 @@ class AutoAssignContractsToAccessPointsCommand extends Command
         // load contracts without assigned access point
         $unassigned_contracts = $contracts_table
             ->find()
-            ->where(['Contracts.access_point_id IS NULL'])
-            ->contain('Ips')
+            ->where([
+                'Contracts.access_point_id IS NULL',
+            ])
+            ->contain([
+                'Ips',
+            ])
             ->all();
 
         foreach ($unassigned_contracts as $contract) {
@@ -84,10 +88,13 @@ class AutoAssignContractsToAccessPointsCommand extends Command
                                 . ' to contract ' . $contract->number
                             );
 
-                            $query = $contracts_table->query()
-                                ->update()
-                                ->set(['access_point_id' => $routeros_device['access_point_id']])
-                                ->where(['id' => $contract->id]);
+                            $query = $contracts_table->updateQuery()
+                                ->set([
+                                    'access_point_id' => $routeros_device['access_point_id'],
+                                ])
+                                ->where([
+                                    'id' => $contract->id,
+                                ]);
 
                             if ($query->execute()->rowCount() == 1) {
                                 // stop processing of this contract

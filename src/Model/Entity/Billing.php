@@ -294,4 +294,14 @@ class Billing extends Entity
 
         throw new Exception(__('Contract data not available.'));
     }
+
+    /**
+     * getter for option separate_invoice
+     *
+     * @return bool
+     */
+    public function isSeparateInvoice(): bool
+    {
+        return $this->separate_invoice;
+    }
 }
