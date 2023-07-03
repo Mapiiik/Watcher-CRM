@@ -20,10 +20,10 @@ use Cake\Validation\Validator;
  * @method \Radius\Model\Entity\Radpostauth[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \Radius\Model\Entity\Radpostauth|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \Radius\Model\Entity\Radpostauth saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \Radius\Model\Entity\Radpostauth[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \Radius\Model\Entity\Radpostauth[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \Radius\Model\Entity\Radpostauth[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \Radius\Model\Entity\Radpostauth[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radpostauth[]|iterable<\Cake\Datasource\EntityInterface>|false saveMany(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radpostauth[]|iterable<\Cake\Datasource\EntityInterface> saveManyOrFail(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radpostauth[]|iterable<\Cake\Datasource\EntityInterface>|false deleteMany(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radpostauth[]|iterable<\Cake\Datasource\EntityInterface> deleteManyOrFail(iterable $entities, $options = [])
  */
 class RadpostauthTable extends AppTable
 {

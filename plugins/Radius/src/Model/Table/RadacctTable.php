@@ -20,10 +20,10 @@ use Cake\Validation\Validator;
  * @method \Radius\Model\Entity\Radacct[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \Radius\Model\Entity\Radacct|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \Radius\Model\Entity\Radacct saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \Radius\Model\Entity\Radacct[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \Radius\Model\Entity\Radacct[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \Radius\Model\Entity\Radacct[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \Radius\Model\Entity\Radacct[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radacct[]|iterable<\Cake\Datasource\EntityInterface>|false saveMany(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radacct[]|iterable<\Cake\Datasource\EntityInterface> saveManyOrFail(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radacct[]|iterable<\Cake\Datasource\EntityInterface>|false deleteMany(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radacct[]|iterable<\Cake\Datasource\EntityInterface> deleteManyOrFail(iterable $entities, $options = [])
  */
 class RadacctTable extends AppTable
 {

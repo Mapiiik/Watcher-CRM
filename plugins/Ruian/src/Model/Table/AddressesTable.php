@@ -18,10 +18,10 @@ use Cake\Validation\Validator;
  * @method \Ruian\Model\Entity\Address[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \Ruian\Model\Entity\Address|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \Ruian\Model\Entity\Address saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \Ruian\Model\Entity\Address[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \Ruian\Model\Entity\Address[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \Ruian\Model\Entity\Address[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \Ruian\Model\Entity\Address[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method \Ruian\Model\Entity\Address[]|iterable<\Cake\Datasource\EntityInterface>|false saveMany(iterable $entities, $options = [])
+ * @method \Ruian\Model\Entity\Address[]|iterable<\Cake\Datasource\EntityInterface> saveManyOrFail(iterable $entities, $options = [])
+ * @method \Ruian\Model\Entity\Address[]|iterable<\Cake\Datasource\EntityInterface>|false deleteMany(iterable $entities, $options = [])
+ * @method \Ruian\Model\Entity\Address[]|iterable<\Cake\Datasource\EntityInterface> deleteManyOrFail(iterable $entities, $options = [])
  */
 class AddressesTable extends Table
 {

@@ -23,10 +23,10 @@ use Cake\Validation\Validator;
  * @method \Radius\Model\Entity\Radusergroup[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \Radius\Model\Entity\Radusergroup|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \Radius\Model\Entity\Radusergroup saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \Radius\Model\Entity\Radusergroup[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \Radius\Model\Entity\Radusergroup[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \Radius\Model\Entity\Radusergroup[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \Radius\Model\Entity\Radusergroup[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radusergroup[]|iterable<\Cake\Datasource\EntityInterface>|false saveMany(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radusergroup[]|iterable<\Cake\Datasource\EntityInterface> saveManyOrFail(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radusergroup[]|iterable<\Cake\Datasource\EntityInterface>|false deleteMany(iterable $entities, $options = [])
+ * @method \Radius\Model\Entity\Radusergroup[]|iterable<\Cake\Datasource\EntityInterface> deleteManyOrFail(iterable $entities, $options = [])
  */
 class RadusergroupTable extends AppTable
 {
