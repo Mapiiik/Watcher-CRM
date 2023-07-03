@@ -37,9 +37,15 @@
                         echo $this->Form->control('bank_account');
                         echo $this->Form->control('bank_code');
                         echo $this->Form->control('bank_name');
-                        echo $this->Form->control('tax_rate_id', ['options' => $taxRates]);
-                        echo $this->Form->control('dealer', ['options' => $customer->getDealerStateOptions()]);
-                        echo $this->Form->control('invoice_delivery_type', ['options' => $customer->getInvoiceDeliveryTypeOptions()]);
+                        echo $this->Form->control('tax_rate_id', [
+                            'options' => $taxRates,
+                        ]);
+                        echo $this->Form->control('dealer', [
+                            'options' => $customer->getDealerStateOptions(),
+                        ]);
+                        echo $this->Form->control('invoice_delivery_type', [
+                            'options' => $customer->getInvoiceDeliveryTypeOptions(),
+                        ]);
                         echo $this->Form->control('agree_gdpr', [
                             'label' => __('Agrees to Processing of Personal Data'),
                         ]);
