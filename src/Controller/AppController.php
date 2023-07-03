@@ -20,6 +20,9 @@ use AuditLog\Meta\RequestMetadata;
 use Cake\Cache\Cache;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
+use Cake\Datasource\Paging\PaginatedInterface;
+use Cake\Datasource\QueryInterface;
+use Cake\Datasource\RepositoryInterface;
 use Cake\Event\EventInterface;
 use Cake\Event\EventManager;
 use Cake\Http\Exception\NotFoundException;
@@ -65,15 +68,12 @@ class AppController extends Controller
     # App > paginate
 
     /**
-     * Customize pagination
-     *
-     * @param \Cake\ORM\Table|string|\Cake\ORM\Query|null $object Table to paginate
-     * (e.g: Table instance, 'TableName' or a Query object)
-     * @param array $settings The settings/configuration used for pagination.
-     * @return \Cake\ORM\ResultSet|\Cake\Datasource\ResultSetInterface|null Query results
+     * @inheritDoc
      */
-    public function paginate($object = null, $settings = [])
-    {
+    public function paginate(
+        RepositoryInterface|QueryInterface|string|null $object = null,
+        array $settings = []
+    ): PaginatedInterface {
         try {
             // set maximal limit
             $this->paginate['maxLimit'] = 10000;
@@ -94,13 +94,17 @@ class AppController extends Controller
 
             return null;
         }
+
+        return parent::paginate($object, $settings);
     }
 
     /**
      * Global beforeFilter
      *
-     * @param \Cake\Event\EventInterface $event An Event instance
+     * @param \Cake\Event\EventInterface<\Cake\Controller\Controller> $event An Event instance
      * @return \Cake\Http\Response|null|void
+     * @link https://book.cakephp.org/4/en/controllers.html#request-life-cycle-callbacks
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */
     public function beforeFilter(EventInterface $event)
     {
@@ -183,7 +187,7 @@ class AppController extends Controller
      * @param string $str Text with non-ASCII characters
      * @return string
      */
-    public function removeAccents($str): string
+    public function removeAccents(string $str): string
     {
         static $normalizeChars = null;
         if ($normalizeChars === null) {
@@ -232,8 +236,8 @@ class AppController extends Controller
      * @return string
      */
     public function generatePassword(
-        $length = 8,
-        $possible = '123456789ABCDEFGHJKLMNPQRSTUVWXabcdefghjkmnopqrstuvwx'
+        int $length = 8,
+        string $possible = '123456789ABCDEFGHJKLMNPQRSTUVWXabcdefghjkmnopqrstuvwx'
     ): string {
         // start with a blank password
         $password = '';
