@@ -32,11 +32,15 @@ class ContractStatesController extends AppController
         }
 
         $this->paginate = [
-            'order' => ['name' => 'ASC'],
-            'conditions' => $conditions,
+            'order' => [
+                'name' => 'ASC',
+            ],
         ];
-
-        $contractStates = $this->paginate($this->ContractStates);
+        $contractStates = $this->paginate($this->ContractStates->find(
+            'all',
+            contain: [],
+            conditions: $conditions
+        ));
 
         $this->set(compact('contractStates'));
     }

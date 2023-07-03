@@ -37,11 +37,17 @@ class LabelsController extends AppController
         }
 
         $this->paginate = [
-            'contain' => ['CustomerLabels'],
-            'order' => ['name' => 'ASC'],
-            'conditions' => $conditions,
+            'order' => [
+                'name' => 'ASC',
+            ],
         ];
-        $labels = $this->paginate($this->Labels);
+        $labels = $this->paginate($this->Labels->find(
+            'all',
+            contain: [
+                'CustomerLabels',
+            ],
+            conditions: $conditions
+        ));
 
         $this->set(compact('labels'));
     }

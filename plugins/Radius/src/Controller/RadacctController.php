@@ -18,10 +18,13 @@ class RadacctController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Accounts'],
-        ];
-        $radaccts = $this->paginate($this->Radacct);
+        $radaccts = $this->paginate($this->Radacct->find(
+            'all',
+            contain: [
+                'Accounts',
+            ],
+            conditions: []
+        ));
 
         $this->set(compact('radaccts'));
     }

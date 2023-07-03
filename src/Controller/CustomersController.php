@@ -213,22 +213,32 @@ class CustomersController extends AppController
         $this->set('filterForm', $filterForm);
 
         $this->paginate = [
-            'contain' => [
-                'TaxRates',
-                'Contracts' => ['ContractStates'],
-                'CustomerLabels' => [
-                    'Labels',
-                    'sort' => ['Labels.name'],
-                ],
-                'Ips' => ['Contracts'],
-                'IpNetworks' => ['Contracts'],
-            ],
             'order' => [
                 'Customers.id' => 'DESC',
             ],
         ];
 
+        $customersQuery->contain([
+            'Contracts' => [
+                'ContractStates',
+            ],
+            'CustomerLabels' => [
+                'Labels',
+                'sort' => [
+                    'Labels.name',
+                ],
+            ],
+            'IpNetworks' => [
+                'Contracts',
+            ],
+            'Ips' => [
+                'Contracts',
+            ],
+            'TaxRates',
+        ]);
+
         $customers = $this->paginate($customersQuery);
+
         $labels = $this->Customers->CustomerLabels->Labels->find('list', ['order' => 'name']);
 
         $invoice_delivery_types = $this->Customers->invoice_delivery_types;
@@ -246,28 +256,68 @@ class CustomersController extends AppController
     public function view(?string $id = null)
     {
         $customer = $this->Customers->get($id, contain: [
-            'TaxRates',
-            'Addresses' => ['Countries'],
-            'Billings' => ['Contracts' => ['ContractStates'], 'Services'],
-            'BorrowedEquipments' => ['Contracts' => ['ContractStates'], 'EquipmentTypes'],
+            'Addresses' => [
+                'Countries',
+            ],
+            'Billings' => [
+                'Contracts' => [
+                    'ContractStates',
+                ],
+                'Services',
+            ],
+            'BorrowedEquipments' => [
+                'Contracts' => [
+                    'ContractStates',
+                ],
+                'EquipmentTypes',
+            ],
             'Contracts' => [
                 'ContractStates',
                 'ServiceTypes',
                 'InstallationAddresses',
             ],
-            'Emails',
             'CustomerLabels' => [
                 'Labels',
-                'sort' => ['Labels.name'],
+                'sort' => [
+                    'Labels.name',
+                ],
             ],
+            'Emails',
             'Logins',
             'Phones',
-            'SoldEquipments' => ['Contracts' => ['ContractStates'], 'EquipmentTypes'],
-            'Tasks' => ['Contracts', 'TaskTypes', 'TaskStates', 'Dealers'],
-            'Ips' => ['Contracts' => ['ContractStates']],
-            'RemovedIps' => ['Contracts' => ['ContractStates']],
-            'IpNetworks' => ['Contracts' => ['ContractStates']],
-            'RemovedIpNetworks' => ['Contracts' => ['ContractStates']],
+            'SoldEquipments' => [
+                'Contracts' => [
+                    'ContractStates',
+                ],
+                'EquipmentTypes',
+            ],
+            'Tasks' => [
+                'Contracts',
+                'TaskTypes',
+                'TaskStates',
+                'Dealers',
+            ],
+            'TaxRates',
+            'Ips' => [
+                'Contracts' => [
+                    'ContractStates',
+                ],
+            ],
+            'RemovedIps' => [
+                'Contracts' => [
+                    'ContractStates',
+                ],
+            ],
+            'IpNetworks' => [
+                'Contracts' => [
+                    'ContractStates',
+                ],
+            ],
+            'RemovedIpNetworks' => [
+                'Contracts' => [
+                    'ContractStates',
+                ],
+            ],
             'Creators',
             'Modifiers',
         ]);

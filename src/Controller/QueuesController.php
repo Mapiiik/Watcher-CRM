@@ -33,11 +33,15 @@ class QueuesController extends AppController
         }
 
         $this->paginate = [
-            'order' => ['name' => 'ASC'],
-            'conditions' => $conditions,
+            'order' => [
+                'name' => 'ASC',
+            ],
         ];
-
-        $queues = $this->paginate($this->Queues);
+        $queues = $this->paginate($this->Queues->find(
+            'all',
+            contain: [],
+            conditions: $conditions
+        ));
 
         $this->set(compact('queues'));
     }

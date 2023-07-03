@@ -47,11 +47,18 @@ class RemovedIpNetworksController extends AppController
         }
 
         $this->paginate = [
-            'contain' => ['Customers', 'Contracts'],
-            'order' => ['id' => 'DESC'],
-            'conditions' => $conditions,
+            'order' => [
+                'id' => 'DESC',
+            ],
         ];
-        $removedIpNetworks = $this->paginate($this->RemovedIpNetworks);
+        $removedIpNetworks = $this->paginate($this->RemovedIpNetworks->find(
+            'all',
+            contain: [
+                'Contracts',
+                'Customers',
+            ],
+            conditions: $conditions
+        ));
 
         $types_of_use = $this->RemovedIpNetworks->types_of_use;
 

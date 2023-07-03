@@ -46,15 +46,21 @@ class BillingsController extends AppController
         }
 
         $this->paginate = [
-            'contain' => [
-                'Contracts' => ['ContractStates'],
+            'order' => [
+                'id' => 'DESC',
+            ],
+        ];
+        $billings = $this->paginate($this->Billings->find(
+            'all',
+            contain: [
+                'Contracts' => [
+                    'ContractStates',
+                ],
                 'Customers',
                 'Services',
             ],
-            'order' => ['id' => 'DESC'],
-            'conditions' => $conditions,
-        ];
-        $billings = $this->paginate($this->Billings);
+            conditions: $conditions
+        ));
 
         $this->set(compact('billings'));
     }

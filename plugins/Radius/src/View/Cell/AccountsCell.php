@@ -44,27 +44,36 @@ class AccountsCell extends Cell
     public function display(array $conditions = []): void
     {
         $contain = [
+            'Radacct' => [
+                'sort' => [
+                    'Radacct.acctstarttime' => 'DESC',
+                ],
+            ],
             'Radreply',
             'Radusergroup',
-            'Radacct' => ['sort' => ['Radacct.acctstarttime' => 'DESC']],
         ];
 
         if ($this->show_contracts) {
-            $contain['Contracts'] = ['ContractStates'];
+            $contain += [
+                'Contracts' => [
+                    'ContractStates',
+                ]
+            ];
         }
 
         try {
             //Try to load RADIUS accounts
             $accounts = $this->fetchTable('Radius.Accounts')
-                ->find('all', [
-                    'conditions' => $conditions,
-                    'contain' => $contain,
-                    'order' => [
+                ->find(
+                    'all',
+                    conditions: $conditions,
+                    contain: $contain,
+                    order: [
                         'Accounts.active' => 'DESC',
                         'Accounts.contract_id' => 'DESC',
                         'Accounts.username',
                     ],
-                ])
+                )
                 ->all();
         } catch (MissingConnectionException $connectionError) {
             //Couldn't connect

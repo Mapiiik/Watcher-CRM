@@ -49,11 +49,18 @@ class IpsController extends AppController
         }
 
         $this->paginate = [
-            'contain' => ['Customers', 'Contracts'],
-            'order' => ['id' => 'DESC'],
-            'conditions' => $conditions,
+            'order' => [
+                'id' => 'DESC',
+            ],
         ];
-        $ips = $this->paginate($this->Ips);
+        $ips = $this->paginate($this->Ips->find(
+            'all',
+            contain: [
+                'Contracts',
+                'Customers',
+            ],
+            conditions: $conditions
+        ));
 
         $types_of_use = $this->Ips->types_of_use;
 

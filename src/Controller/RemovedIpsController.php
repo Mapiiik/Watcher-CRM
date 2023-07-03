@@ -47,11 +47,18 @@ class RemovedIpsController extends AppController
         }
 
         $this->paginate = [
-            'contain' => ['Customers', 'Contracts'],
-            'order' => ['id' => 'DESC'],
-            'conditions' => $conditions,
+            'order' => [
+                'id' => 'DESC',
+            ],
         ];
-        $removedIps = $this->paginate($this->RemovedIps);
+        $removedIps = $this->paginate($this->RemovedIps->find(
+            'all',
+            contain: [
+                'Contracts',
+                'Customers',
+            ],
+            conditions: $conditions
+        ));
 
         $types_of_use = $this->RemovedIps->types_of_use;
 

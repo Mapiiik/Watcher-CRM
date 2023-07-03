@@ -42,10 +42,13 @@ class AddressesController extends AppController
             'order' => [
                 'Addresses.id' => 'DESC',
             ],
-            'conditions' => $conditions,
         ];
 
-        $addresses = $this->paginate($this->Addresses);
+        $addresses = $this->paginate($this->Addresses->find(
+            'all',
+            contain: [],
+            conditions: $conditions
+        ));
 
         $this->set(compact('addresses'));
     }

@@ -32,12 +32,19 @@ class ServicesController extends AppController
         }
 
         $this->paginate = [
-            'contain' => ['ServiceTypes', 'Queues'],
-            'order' => ['name' => 'ASC'],
-            'conditions' => $conditions,
+            'order' => [
+                'name' => 'ASC',
+            ],
         ];
 
-        $services = $this->paginate($this->Services);
+        $services = $this->paginate($this->Services->find(
+            'all',
+            contain: [
+                'Queues',
+                'ServiceTypes',
+            ],
+            conditions: $conditions
+        ));
 
         $this->set(compact('services'));
     }

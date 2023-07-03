@@ -38,11 +38,17 @@ class PhonesController extends AppController
         }
 
         $this->paginate = [
-            'contain' => ['Customers'],
-            'order' => ['id' => 'DESC'],
-            'conditions' => $conditions,
+            'order' => [
+                'id' => 'DESC',
+            ],
         ];
-        $phones = $this->paginate($this->Phones);
+        $phones = $this->paginate($this->Phones->find(
+            'all',
+            contain: [
+                'Customers',
+            ],
+            conditions: $conditions
+        ));
 
         $this->set(compact('phones'));
     }

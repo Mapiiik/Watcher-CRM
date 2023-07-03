@@ -48,12 +48,18 @@ class AddressesController extends AppController
         }
 
         $this->paginate = [
-            'contain' => ['Customers', 'Countries'],
-            'order' => ['id' => 'DESC'],
-            'conditions' => $conditions,
+            'order' => [
+                'id' => 'DESC',
+            ],
         ];
-
-        $addresses = $this->paginate($this->Addresses);
+        $addresses = $this->paginate($this->Addresses->find(
+            'all',
+            contain: [
+                'Countries',
+                'Customers',
+            ],
+            conditions: $conditions
+        ));
 
         $types = $this->Addresses->types;
 
@@ -281,9 +287,7 @@ class AddressesController extends AppController
 
         // search for all options
         foreach ($conditionsForSearches as $conditions) {
-            $ruianAddresses = $this->fetchTable('Ruian.Addresses')->find('all', [
-                'conditions' => $conditions,
-            ]);
+            $ruianAddresses = $this->fetchTable('Ruian.Addresses')->find('all', conditions: $conditions);
 
             $ruianAddresses->select([
                 'ruian_gid' => 'kod_adm',

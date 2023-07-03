@@ -38,11 +38,17 @@ class LoginsController extends AppController
         }
 
         $this->paginate = [
-            'contain' => ['Customers'],
-            'order' => ['id' => 'DESC'],
-            'conditions' => $conditions,
+            'order' => [
+                'id' => 'DESC',
+            ],
         ];
-        $logins = $this->paginate($this->Logins);
+        $logins = $this->paginate($this->Logins->find(
+            'all',
+            contain: [
+                'Customers',
+            ],
+            conditions: $conditions
+        ));
 
         $this->set(compact('logins'));
 

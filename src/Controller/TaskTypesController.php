@@ -32,11 +32,15 @@ class TaskTypesController extends AppController
         }
 
         $this->paginate = [
-            'order' => ['name' => 'ASC'],
-            'conditions' => $conditions,
+            'order' => [
+                'name' => 'ASC',
+            ],
         ];
-
-        $taskTypes = $this->paginate($this->TaskTypes);
+        $taskTypes = $this->paginate($this->TaskTypes->find(
+            'all',
+            contain: [],
+            conditions: $conditions
+        ));
 
         $this->set(compact('taskTypes'));
     }

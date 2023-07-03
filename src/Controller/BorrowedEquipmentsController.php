@@ -46,11 +46,19 @@ class BorrowedEquipmentsController extends AppController
         }
 
         $this->paginate = [
-            'contain' => ['Customers', 'Contracts', 'EquipmentTypes'],
-            'order' => ['id' => 'DESC'],
-            'conditions' => $conditions,
+            'order' => [
+                'id' => 'DESC',
+            ],
         ];
-        $borrowedEquipments = $this->paginate($this->BorrowedEquipments);
+        $borrowedEquipments = $this->paginate($this->BorrowedEquipments->find(
+            'all',
+            contain: [
+                'Contracts',
+                'Customers',
+                'EquipmentTypes',
+            ],
+            conditions: $conditions
+        ));
 
         $this->set(compact('borrowedEquipments'));
     }

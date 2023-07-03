@@ -18,7 +18,11 @@ class RadgroupreplyController extends AppController
      */
     public function index()
     {
-        $radgroupreplies = $this->paginate($this->Radgroupreply);
+        $radgroupreplies = $this->paginate($this->Radgroupreply->find(
+            'all',
+            contain: [],
+            conditions: []
+        ));
 
         $this->set(compact('radgroupreplies'));
     }

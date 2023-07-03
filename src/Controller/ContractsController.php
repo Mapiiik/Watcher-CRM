@@ -47,19 +47,23 @@ class ContractsController extends AppController
         }
 
         $this->paginate = [
-            'contain' => [
-                'Customers',
-                'ContractStates',
-                'InstallationAddresses',
-                'ServiceTypes',
-                'InstallationTechnicians',
-                'UninstallationTechnicians',
-                'Commissions',
+            'order' => [
+                'id' => 'DESC',
             ],
-            'order' => ['id' => 'DESC'],
-            'conditions' => $conditions,
         ];
-        $contracts = $this->paginate($this->Contracts);
+        $contracts = $this->paginate($this->Contracts->find(
+            'all',
+            contain: [
+                'Commissions',
+                'ContractStates',
+                'Customers',
+                'InstallationAddresses',
+                'InstallationTechnicians',
+                'ServiceTypes',
+                'UninstallationTechnicians',
+            ],
+            conditions: $conditions
+        ));
 
         $this->set(compact('contracts'));
     }

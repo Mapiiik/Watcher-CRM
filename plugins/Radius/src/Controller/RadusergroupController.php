@@ -18,10 +18,13 @@ class RadusergroupController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Accounts'],
-        ];
-        $radusergroups = $this->paginate($this->Radusergroup);
+        $radusergroups = $this->paginate($this->Radusergroup->find(
+            'all',
+            contain: [
+                'Accounts',
+            ],
+            conditions: []
+        ));
 
         $this->set(compact('radusergroups'));
     }

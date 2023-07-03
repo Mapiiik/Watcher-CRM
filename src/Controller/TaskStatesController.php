@@ -32,11 +32,15 @@ class TaskStatesController extends AppController
         }
 
         $this->paginate = [
-            'order' => ['name' => 'ASC'],
-            'conditions' => $conditions,
+            'order' => [
+                'name' => 'ASC',
+            ],
         ];
-
-        $taskStates = $this->paginate($this->TaskStates);
+        $taskStates = $this->paginate($this->TaskStates->find(
+            'all',
+            contain: [],
+            conditions: $conditions
+        ));
 
         $this->set(compact('taskStates'));
     }

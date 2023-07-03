@@ -18,10 +18,13 @@ class RadcheckController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Accounts'],
-        ];
-        $radchecks = $this->paginate($this->Radcheck);
+        $radchecks = $this->paginate($this->Radcheck->find(
+            'all',
+            contain: [
+                'Accounts',
+            ],
+            conditions: []
+        ));
 
         $this->set(compact('radchecks'));
     }

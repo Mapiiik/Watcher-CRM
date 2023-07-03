@@ -52,11 +52,18 @@ class AccountsController extends AppController
         }
 
         $this->paginate = [
-            'contain' => ['Customers', 'Contracts'],
-            'order' => ['id' => 'DESC'],
-            'conditions' => $conditions,
+            'order' => [
+                'id' => 'DESC',
+            ],
         ];
-        $accounts = $this->paginate($this->Accounts);
+        $accounts = $this->paginate($this->Accounts->find(
+            'all',
+            contain: [
+                'Contracts',
+                'Customers',
+            ],
+            conditions: $conditions
+        ));
 
         $this->set(compact('accounts'));
     }
@@ -302,11 +309,14 @@ class AccountsController extends AppController
     public function disconnectRequest(?string $id = null)
     {
         $this->request->allowMethod(['post']);
-        $account = $this->Accounts->get($id, [
-            'contain' => [
-                'Radacct' => ['conditions' => ['Radacct.acctstoptime IS' => null]],
+        $account = $this->Accounts->get($id, contain: [
+                'Radacct' => [
+                    'conditions' => [
+                        'Radacct.acctstoptime IS' => null,
+                    ],
+                ],
             ],
-        ]);
+        );
 
         if (empty($account->radacct)) {
             $this->Flash->warning(__d(

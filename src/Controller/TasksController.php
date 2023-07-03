@@ -144,25 +144,27 @@ class TasksController extends AppController
         $this->set('filterForm', $filterForm);
 
         $this->paginate = [
-            'contain' => [
-                'Customers' => [
-                    'Addresses',
-                ],
-                'Contracts' => [
-                    'InstallationAddresses',
-                ],
-                'Dealers',
-                'TaskTypes',
-                'TaskStates',
-            ],
             'order' => [
                 'Tasks.task_state_id' => 'ASC',
                 'Tasks.id' => 'DESC',
             ],
-            'conditions' => $conditions,
         ];
 
-        $tasks = $this->paginate($this->Tasks);
+        $tasks = $this->paginate($this->Tasks->find(
+            'all',
+            contain: [
+                'Contracts' => [
+                    'InstallationAddresses',
+                ],
+                'Customers' => [
+                    'Addresses',
+                ],
+                'Dealers',
+                'TaskStates',
+                'TaskTypes',
+            ],
+            conditions: $conditions
+        ));
         $dealers = $this->Tasks->Dealers
             ->find()
             ->orderBy([

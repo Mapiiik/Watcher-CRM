@@ -43,16 +43,22 @@ class InvoicesController extends AppController
         }
 
         $this->paginate = [
-            'contain' => ['Customers'],
             'order' => [
                 'Invoices.id' => 'DESC',
             ],
-            'conditions' => $conditions,
         ];
-        $invoices = $this->paginate($this->Invoices);
+
+        $invoices = $this->paginate($this->Invoices->find(
+            'all',
+            contain: [
+                'Customers',
+            ],
+            conditions: $conditions
+        ));
 
         // notify about unsent invoices
-        $unsent_invoices = $this->Invoices->find()
+        $unsent_invoices = $this->Invoices
+            ->find()
             ->where([
                 'send_by_email' => true,
                 'email_sent IS NULL',

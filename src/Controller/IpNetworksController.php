@@ -47,11 +47,18 @@ class IpNetworksController extends AppController
         }
 
         $this->paginate = [
-            'contain' => ['Customers', 'Contracts'],
-            'order' => ['id' => 'DESC'],
-            'conditions' => $conditions,
+            'order' => [
+                'id' => 'DESC',
+            ],
         ];
-        $ipNetworks = $this->paginate($this->IpNetworks);
+        $ipNetworks = $this->paginate($this->IpNetworks->find(
+            'all',
+            contain: [
+                'Contracts',
+                'Customers',
+            ],
+            conditions: $conditions
+        ));
 
         $types_of_use = $this->IpNetworks->types_of_use;
 

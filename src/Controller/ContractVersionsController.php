@@ -45,12 +45,17 @@ class ContractVersionsController extends AppController
         }
 
         $this->paginate = [
-            'contain' => ['Contracts'],
-            'order' => ['valid_from' => 'DESC'],
-            'conditions' => $conditions,
+            'order' => [
+                'valid_from' => 'DESC',
+            ],
         ];
-
-        $contractVersions = $this->paginate($this->ContractVersions);
+        $contractVersions = $this->paginate($this->ContractVersions->find(
+            'all',
+            contain: [
+                'Contracts',
+            ],
+            conditions: $conditions
+        ));
 
         $this->set(compact('contractVersions'));
     }

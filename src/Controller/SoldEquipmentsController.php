@@ -46,11 +46,19 @@ class SoldEquipmentsController extends AppController
         }
 
         $this->paginate = [
-            'contain' => ['Customers', 'Contracts', 'EquipmentTypes'],
-            'order' => ['id' => 'DESC'],
-            'conditions' => $conditions,
+            'order' => [
+                'id' => 'DESC',
+            ],
         ];
-        $soldEquipments = $this->paginate($this->SoldEquipments);
+        $soldEquipments = $this->paginate($this->SoldEquipments->find(
+            'all',
+            contain: [
+                'Contracts',
+                'Customers',
+                'EquipmentTypes',
+            ],
+            conditions: $conditions
+        ));
 
         $this->set(compact('soldEquipments'));
     }

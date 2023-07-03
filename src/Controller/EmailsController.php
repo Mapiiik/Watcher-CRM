@@ -38,11 +38,17 @@ class EmailsController extends AppController
         }
 
         $this->paginate = [
-            'contain' => ['Customers'],
-            'order' => ['id' => 'DESC'],
-            'conditions' => $conditions,
+            'order' => [
+                'id' => 'DESC',
+            ],
         ];
-        $emails = $this->paginate($this->Emails);
+        $emails = $this->paginate($this->Emails->find(
+            'all',
+            contain: [
+                'Customers',
+            ],
+            conditions: $conditions
+        ));
 
         $this->set(compact('emails'));
     }

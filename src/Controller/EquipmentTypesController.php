@@ -32,11 +32,16 @@ class EquipmentTypesController extends AppController
         }
 
         $this->paginate = [
-            'order' => ['name' => 'ASC'],
-            'conditions' => $conditions,
+            'order' => [
+                'name' => 'ASC',
+            ],
         ];
 
-        $equipmentTypes = $this->paginate($this->EquipmentTypes);
+        $equipmentTypes = $this->paginate($this->EquipmentTypes->find(
+            'all',
+            contain: [],
+            conditions: $conditions
+        ));
 
         $this->set(compact('equipmentTypes'));
     }

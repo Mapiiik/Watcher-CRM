@@ -18,10 +18,13 @@ class RadreplyController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Accounts'],
-        ];
-        $radreplies = $this->paginate($this->Radreply);
+        $radreplies = $this->paginate($this->Radreply->find(
+            'all',
+            contain: [
+                'Accounts',
+            ],
+            conditions: []
+        ));
 
         $this->set(compact('radreplies'));
     }

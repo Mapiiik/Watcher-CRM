@@ -43,17 +43,18 @@ class InvoicesCell extends Cell
     public function display(array $conditions = []): void
     {
         $invoices = $this->fetchTable('BookkeepingPohoda.Invoices')
-            ->find('all', [
-                'conditions' => $conditions + (
-                    $this->request->getQuery('show_also_paid_invoices') === '1' ? [] : ['Invoices.debt !=' => 0]
+            ->find(
+                'all',
+                conditions: $conditions + (
+                    $this->getRequest()->getQuery('show_also_paid_invoices') === '1' ? [] : ['Invoices.debt !=' => 0]
                 ),
-                'contain' => [
+                contain: [
                     'Customers',
                 ],
-                'order' => [
+                order: [
                     'Invoices.id' => 'DESC',
                 ],
-            ])
+            )
             ->all();
 
         $this->set(compact('invoices'));

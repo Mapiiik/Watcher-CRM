@@ -32,11 +32,15 @@ class CountriesController extends AppController
         }
 
         $this->paginate = [
-            'order' => ['name' => 'ASC'],
-            'conditions' => $conditions,
+            'order' => [
+                'name' => 'ASC',
+            ],
         ];
-
-        $countries = $this->paginate($this->Countries);
+        $countries = $this->paginate($this->Countries->find(
+            'all',
+            contain: [],
+            conditions: $conditions
+        ));
 
         $this->set(compact('countries'));
     }

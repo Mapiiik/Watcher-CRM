@@ -18,10 +18,13 @@ class RadpostauthController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Accounts'],
-        ];
-        $radpostauths = $this->paginate($this->Radpostauth);
+        $radpostauths = $this->paginate($this->Radpostauth->find(
+            'all',
+            contain: [
+                'Accounts',
+            ],
+            conditions: []
+        ));
 
         $this->set(compact('radpostauths'));
     }
