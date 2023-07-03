@@ -41,7 +41,8 @@ class OverviewsController extends AppController
         $service_type_id = $this->getRequest()->getQuery('service_type_id');
         $access_point_id = $this->getRequest()->getQuery('access_point_id');
 
-        $servicesQuery = $this->fetchTable('Services')->find()
+        $servicesQuery = $this->fetchTable('Services')
+            ->find()
             ->contain('ServiceTypes')
             ->contain('Billings', function (SelectQuery $q) use ($month_to_display, $access_point_id) {
                 return $q
@@ -102,7 +103,6 @@ class OverviewsController extends AppController
 
         // load services
         $services = $servicesQuery
-            ->find('all')
             ->all()
             ->filter(function ($service) {
                 return $service->number_of_uses > 0;
@@ -164,8 +164,10 @@ class OverviewsController extends AppController
             ->where(['Queues.cto_category IS NOT NULL'])
             ->where(['InstallationAddresses.ruian_gid IS NOT NULL'])
 
-            ->order('Queues.cto_category')
-            ->order('InstallationAddresses.ruian_gid')
+            ->orderBy([
+                'Queues.cto_category',
+                'InstallationAddresses.ruian_gid',
+            ])
 
             ->formatResults(
                 function (CollectionInterface $billings) {
@@ -337,8 +339,10 @@ class OverviewsController extends AppController
             ->where(['Queues.cto_category IS NOT NULL'])
             ->where(['InstallationAddresses.ruian_gid IS NOT NULL'])
 
-            ->order('Queues.cto_category')
-            ->order('InstallationAddresses.ruian_gid')
+            ->orderBy([
+                'Queues.cto_category',
+                'InstallationAddresses.ruian_gid',
+            ])
 
             ->formatResults(
                 function (CollectionInterface $billings) {

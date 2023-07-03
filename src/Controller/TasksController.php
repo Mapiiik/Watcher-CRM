@@ -164,8 +164,13 @@ class TasksController extends AppController
 
         $tasks = $this->paginate($this->Tasks);
         $dealers = $this->Tasks->Dealers
-            ->find('all')
-            ->order(['dealer', 'company', 'last_name', 'first_name'])
+            ->find()
+            ->orderBy([
+                'dealer',
+                'company',
+                'last_name',
+                'first_name',
+            ])
             ->all()
             ->map(function ($dealer) {
                 return [
@@ -310,9 +315,16 @@ class TasksController extends AppController
         $customers = $this->Tasks->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
         $contracts = [];
         $dealers = $this->Tasks->Dealers
-            ->find('all')
-            ->where(['dealer' => 1]) // only current dealers
-            ->order(['dealer', 'company', 'last_name', 'first_name'])
+            ->find()
+            ->where([
+                'dealer' => 1, // only current dealers
+            ])
+            ->orderBy([
+                'dealer',
+                'company',
+                'last_name',
+                'first_name',
+            ])
             ->all()
             ->map(function ($dealer) {
                 return [
@@ -457,8 +469,13 @@ class TasksController extends AppController
         $customers = $this->Tasks->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
         $contracts = [];
         $dealers = $this->Tasks->Dealers
-            ->find('all')
-            ->order(['dealer', 'company', 'last_name', 'first_name'])
+            ->find()
+            ->orderBy([
+                'dealer',
+                'company',
+                'last_name',
+                'first_name',
+            ])
             ->all()
             ->map(function ($dealer) {
                 return [

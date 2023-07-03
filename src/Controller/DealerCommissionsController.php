@@ -81,9 +81,16 @@ class DealerCommissionsController extends AppController
             $this->Flash->error(__('The dealer commission could not be saved. Please, try again.'));
         }
         $dealers = $this->DealerCommissions->Dealers
-            ->find('all')
-            ->where(['dealer' => 1]) // only current dealers
-            ->order(['dealer', 'company', 'last_name', 'first_name'])
+            ->find()
+            ->where([
+                'dealer' => 1, // only current dealers
+            ])
+            ->orderBy([
+                'dealer',
+                'company',
+                'last_name',
+                'first_name',
+            ])
             ->all()
             ->map(function ($dealer) {
                 return [
@@ -120,8 +127,13 @@ class DealerCommissionsController extends AppController
             $this->Flash->error(__('The dealer commission could not be saved. Please, try again.'));
         }
         $dealers = $this->DealerCommissions->Dealers
-            ->find('all')
-            ->order(['dealer', 'company', 'last_name', 'first_name'])
+            ->find()
+            ->orderBy([
+                'dealer',
+                'company',
+                'last_name',
+                'first_name',
+            ])
             ->all()
             ->map(function ($dealer) {
                 return [

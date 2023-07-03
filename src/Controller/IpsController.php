@@ -260,18 +260,19 @@ class IpsController extends AppController
 
                     // retrieve previous IP address usage
                     /** @var \App\Model\Entity\RemovedIp|null $previous_ip_address_usage */
-                    $previous_ip_address_usage = $this->fetchTable('RemovedIps')->find('all')
-                    ->contain([
-                        'Contracts',
-                        'Customers',
-                    ])
-                    ->where([
-                        'RemovedIps.ip' => $ip_from_range->toString(),
-                    ])
-                    ->order([
-                        'RemovedIps.removed' => 'DESC',
-                    ])
-                    ->first();
+                    $previous_ip_address_usage = $this->fetchTable('RemovedIps')
+                        ->find()
+                        ->contain([
+                            'Contracts',
+                            'Customers',
+                        ])
+                        ->where([
+                            'RemovedIps.ip' => $ip_from_range->toString(),
+                        ])
+                        ->orderBy([
+                            'RemovedIps.removed' => 'DESC',
+                        ])
+                        ->first();
 
                     // add retrieved previous IP address usage to description
                     if ($previous_ip_address_usage) {

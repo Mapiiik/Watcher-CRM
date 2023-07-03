@@ -250,7 +250,9 @@ class InvoicesController extends AppController
                     ->contain('ServiceTypes')
                     ->contain('Billings', function (SelectQuery $q) use ($invoiced_month) {
                         return $q
-                            ->contain(['Services'])
+                            ->contain([
+                                'Services',
+                            ])
                             ->where([
                                 'Billings.billing_from <=' => $invoiced_month->lastOfMonth(), //last day of month
                             ])
@@ -261,7 +263,9 @@ class InvoicesController extends AppController
                                 ],
                             ])
                             // order by billing ID
-                            ->order('Billings.id')
+                            ->orderBy([
+                                'Billings.id',
+                            ])
                             // format results
                             ->formatResults(
                                 function (CollectionInterface $billings) use ($invoiced_month) {
@@ -277,14 +281,22 @@ class InvoicesController extends AppController
                             );
                     })
                     // only contracts with billed states
-                    ->where(['ContractStates.billed' => true])
+                    ->where([
+                        'ContractStates.billed' => true,
+                    ])
                     // order by contract ID
-                    ->order('Contracts.id');
+                    ->orderBy([
+                        'Contracts.id',
+                    ]);
             })
             // only customers with the selected tax rate
-            ->where(['Customers.tax_rate_id' => $tax_rate_id])
+            ->where([
+                'Customers.tax_rate_id' => $tax_rate_id,
+            ])
             // order by customer ID
-            ->order('Customers.id');
+            ->orderBy([
+                'Customers.id',
+            ]);
     }
 
     /**

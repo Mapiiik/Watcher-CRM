@@ -63,10 +63,16 @@ class AutoAssignContractsToAccessPointsCommand extends Command
                     'Accounts.contract_id' => $contract->id,
                     'Accounts.active' => true,
                 ])
-                ->order(['Accounts.id' => 'DESC'])
+                ->orderBy([
+                    'Accounts.id' => 'DESC',
+                ])
                 // for each RADIUS account find lastly opened session
                 ->contain(['Radacct' => function ($q) {
-                    return $q->order(['Radacct.acctstarttime' => 'DESC'])->limit(1);
+                    return $q
+                        ->orderBy([
+                            'Radacct.acctstarttime' => 'DESC',
+                        ])
+                        ->limit(1);
                 }])
                 ->all();
 

@@ -171,9 +171,16 @@ class ContractsController extends AppController
         ]);
         $serviceTypes = $this->Contracts->ServiceTypes->find('list', ['order' => 'id']);
         $installationTechnicians = $this->Contracts->InstallationTechnicians
-            ->find('all')
-            ->where(['dealer' => 1]) // only current dealers
-            ->order(['dealer', 'company', 'last_name', 'first_name'])
+            ->find()
+            ->where([
+                'dealer' => 1, // only current dealers
+            ])
+            ->orderBy([
+                'dealer',
+                'company',
+                'last_name',
+                'first_name',
+            ])
             ->all()
             ->map(function ($dealer) {
                 return [
@@ -183,9 +190,16 @@ class ContractsController extends AppController
                 ];
             });
         $uninstallationTechnicians = $this->Contracts->UninstallationTechnicians
-            ->find('all')
-            ->where(['dealer' => 1]) // only current dealers
-            ->order(['dealer', 'company', 'last_name', 'first_name'])
+            ->find()
+            ->where([
+                'dealer' => 1, // only current dealers
+            ])
+            ->orderBy([
+                'dealer',
+                'company',
+                'last_name',
+                'first_name',
+            ])
             ->all()
             ->map(function ($dealer) {
                 return [
@@ -260,8 +274,13 @@ class ContractsController extends AppController
         ]);
         $serviceTypes = $this->Contracts->ServiceTypes->find('list', ['order' => 'id']);
         $installationTechnicians = $this->Contracts->InstallationTechnicians
-            ->find('all')
-            ->order(['dealer', 'company', 'last_name', 'first_name'])
+            ->find()
+            ->orderBy([
+                'dealer',
+                'company',
+                'last_name',
+                'first_name',
+            ])
             ->all()
             ->map(function ($dealer) {
                 return [
@@ -271,8 +290,13 @@ class ContractsController extends AppController
                 ];
             });
         $uninstallationTechnicians = $this->Contracts->UninstallationTechnicians
-            ->find('all')
-            ->order(['dealer', 'company', 'last_name', 'first_name'])
+            ->find()
+            ->orderBy([
+                'dealer',
+                'company',
+                'last_name',
+                'first_name',
+            ])
             ->all()
             ->map(function ($dealer) {
                 return [
@@ -859,8 +883,13 @@ class ContractsController extends AppController
                         /** @var \Radius\Model\Entity\Account $radius_account */
                         $radius_account = $this->fetchTable('Radius.Accounts')
                             ->find()
-                            ->where(['contract_id' => $contract->id, 'active' => true])
-                            ->order(['id' => 'DESC'])
+                            ->where([
+                                'contract_id' => $contract->id,
+                                'active' => true,
+                            ])
+                            ->orderBy([
+                                'id' => 'DESC',
+                            ])
                             ->limit(1)
                             ->first();
                         $radius_connected = true;

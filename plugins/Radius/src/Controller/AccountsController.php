@@ -615,7 +615,9 @@ class AccountsController extends AppController
                                 'Billings.billing_until >=' => Date::now(),
                             ],
                         ])
-                        ->order(['Billings.billing_from' => 'ASC']);
+                        ->orderBy([
+                            'Billings.billing_from' => 'ASC',
+                        ]);
                     },
                     'Services' => 'Queues',
                 ],
