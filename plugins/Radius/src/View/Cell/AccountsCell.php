@@ -57,7 +57,7 @@ class AccountsCell extends Cell
             $contain += [
                 'Contracts' => [
                     'ContractStates',
-                ]
+                ],
             ];
         }
 

@@ -46,7 +46,7 @@ class InvoicesCell extends Cell
             ->find(
                 'all',
                 conditions: $conditions + (
-                    $this->getRequest()->getQuery('show_also_paid_invoices') === '1' ? [] : ['Invoices.debt !=' => 0]
+                    $this->request->getQuery('show_also_paid_invoices') === '1' ? [] : ['Invoices.debt !=' => 0]
                 ),
                 contain: [
                     'Customers',

@@ -107,10 +107,16 @@ class ContractVersionsController extends AppController
             }
             $this->Flash->error(__('The contract version could not be saved. Please, try again.'));
         }
-        $contracts = $this->ContractVersions->Contracts->find('list', [
-            'order' => 'Contracts.number',
-            'contain' => ['ServiceTypes', 'InstallationAddresses'],
-        ]);
+        $contracts = $this->ContractVersions->Contracts->find(
+            'list',
+            contain: [
+                'InstallationAddresses',
+                'ServiceTypes',
+            ],
+            order: [
+                'Contracts.number',
+            ],
+        );
 
         if (isset($customer_id)) {
             $contracts->where(['Contracts.customer_id' => $customer_id]);
@@ -147,10 +153,16 @@ class ContractVersionsController extends AppController
             }
             $this->Flash->error(__('The contract version could not be saved. Please, try again.'));
         }
-        $contracts = $this->ContractVersions->Contracts->find('list', [
-            'order' => 'Contracts.number',
-            'contain' => ['ServiceTypes', 'InstallationAddresses'],
-        ]);
+        $contracts = $this->ContractVersions->Contracts->find(
+            'list',
+            contain: [
+                'InstallationAddresses',
+                'ServiceTypes',
+            ],
+            order: [
+                'Contracts.number',
+            ],
+        );
 
         if (isset($customer_id)) {
             $contracts->where(['Contracts.customer_id' => $customer_id]);

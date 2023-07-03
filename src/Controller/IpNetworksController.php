@@ -74,13 +74,11 @@ class IpNetworksController extends AppController
      */
     public function view(?string $id = null)
     {
-        $ipNetwork = $this->IpNetworks->get($id, [
-            'contain' => [
-                'Customers',
-                'Contracts',
-                'Creators',
-                'Modifiers',
-            ],
+        $ipNetwork = $this->IpNetworks->get($id, contain: [
+            'Contracts',
+            'Customers',
+            'Creators',
+            'Modifiers',
         ]);
 
         $types_of_use = $this->IpNetworks->types_of_use;
@@ -119,13 +117,24 @@ class IpNetworksController extends AppController
             }
             $this->Flash->error(__('The IP network could not be saved. Please, try again.'));
         }
-        $customers = $this->IpNetworks->Customers->find('list', [
-            'order' => ['company', 'last_name', 'first_name'],
-        ]);
-        $contracts = $this->IpNetworks->Contracts->find('list', [
-            'order' => 'Contracts.number',
-            'contain' => ['ServiceTypes', 'InstallationAddresses'],
-        ]);
+        $customers = $this->IpNetworks->Customers->find(
+            'list',
+            order: [
+                'company',
+                'last_name',
+                'first_name',
+            ],
+        );
+        $contracts = $this->IpNetworks->Contracts->find(
+            'list',
+            contain: [
+                'InstallationAddresses',
+                'ServiceTypes',
+            ],
+            order: [
+                'Contracts.number',
+            ],
+        );
 
         if (isset($customer_id)) {
             $customers->where(['Customers.id' => $customer_id]);
@@ -155,9 +164,7 @@ class IpNetworksController extends AppController
         $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
-        $ipNetwork = $this->IpNetworks->get($id, [
-            'contain' => [],
-        ]);
+        $ipNetwork = $this->IpNetworks->get($id);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $ipNetwork = $this->IpNetworks->patchEntity($ipNetwork, $this->getRequest()->getData());
             if ($this->IpNetworks->save($ipNetwork)) {
@@ -167,13 +174,24 @@ class IpNetworksController extends AppController
             }
             $this->Flash->error(__('The IP network could not be saved. Please, try again.'));
         }
-        $customers = $this->IpNetworks->Customers->find('list', [
-            'order' => ['company', 'last_name', 'first_name'],
-        ]);
-        $contracts = $this->IpNetworks->Contracts->find('list', [
-            'order' => 'Contracts.number',
-            'contain' => ['ServiceTypes', 'InstallationAddresses'],
-        ]);
+        $customers = $this->IpNetworks->Customers->find(
+            'list',
+            order: [
+                'company',
+                'last_name',
+                'first_name',
+            ],
+        );
+        $contracts = $this->IpNetworks->Contracts->find(
+            'list',
+            contain: [
+                'InstallationAddresses',
+                'ServiceTypes',
+            ],
+            order: [
+                'Contracts.number',
+            ],
+        );
 
         if (isset($customer_id)) {
             $customers->where(['Customers.id' => $customer_id]);

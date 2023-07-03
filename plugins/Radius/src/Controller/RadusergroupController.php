@@ -60,13 +60,20 @@ class RadusergroupController extends AppController
             }
             $this->Flash->error(__d('radius', 'The RADIUS user group could not be saved. Please, try again.'));
         }
-        $accounts = $this->Radusergroup->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
-        $groupnames = $this->Radusergroup->Radgroupreply->find('list', [
-            'keyField' => 'groupname',
-            'valueField' => 'groupname',
-            'order' => 'groupname',
-            'group' => 'groupname',
+        $accounts = $this->Radusergroup->Accounts->find('list', keyField: 'username', order: [
+            'username',
         ]);
+        $groupnames = $this->Radusergroup->Radgroupreply->find(
+            'list',
+            keyField: 'groupname',
+            valueField: 'groupname',
+            group: [
+                'groupname',
+            ],
+            order: [
+                'groupname',
+            ],
+        );
         $this->set(compact('radusergroup', 'accounts', 'groupnames'));
     }
 
@@ -89,13 +96,20 @@ class RadusergroupController extends AppController
             }
             $this->Flash->error(__d('radius', 'The RADIUS user group could not be saved. Please, try again.'));
         }
-        $accounts = $this->Radusergroup->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
-        $groupnames = $this->Radusergroup->Radgroupreply->find('list', [
-            'keyField' => 'groupname',
-            'valueField' => 'groupname',
-            'order' => 'groupname',
-            'group' => 'groupname',
+        $accounts = $this->Radusergroup->Accounts->find('list', keyField: 'username', order: [
+            'username',
         ]);
+        $groupnames = $this->Radusergroup->Radgroupreply->find(
+            'list',
+            keyField: 'groupname',
+            valueField: 'groupname',
+            group: [
+                'groupname',
+            ],
+            order: [
+                'groupname',
+            ],
+        );
         $this->set(compact('radusergroup', 'accounts', 'groupnames'));
     }
 

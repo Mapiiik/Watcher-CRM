@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Contract $contract
+ * @var \Cake\Collection\CollectionInterface|array<string> $contractVersions
  * @var \Cake\Collection\CollectionInterface|array<string> $documentTypes
  */
 ?>
@@ -104,8 +105,11 @@
                         </tr>
                         <tr>
                             <th><?= __('Activation Fee With Obligation') ?></th>
-                            <td><?= h($contract->activation_fee_with_obligation) ?><?= $contract->__isset('service_type') ?
-                                ' (' . h($contract->service_type->activation_fee_with_obligation) . ')' : '' ?></td>
+                            <td><?=
+                                h($contract->activation_fee_with_obligation)
+                            ?><?=
+                                $contract->__isset('service_type') ?
+                                    ' (' . h($contract->service_type->activation_fee_with_obligation) . ')' : '' ?></td>
                         </tr>
                     </table>
                 </div>

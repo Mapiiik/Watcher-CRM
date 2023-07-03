@@ -43,8 +43,12 @@ class CustomerCell extends Cell
     public function display(?string $customer_id): void
     {
         if ($customer_id) {
-            $customer = $this->fetchTable('Customers')->get($customer_id, [
-                'contain' => ['Contracts' => ['ContractStates', 'ServiceTypes', 'InstallationAddresses']],
+            $customer = $this->fetchTable('Customers')->get($customer_id, contain: [
+                'Contracts' => [
+                    'ContractStates',
+                    'InstallationAddresses',
+                    'ServiceTypes',
+                ],
             ]);
 
             $this->set(compact('customer'));

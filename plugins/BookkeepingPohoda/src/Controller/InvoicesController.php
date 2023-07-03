@@ -102,12 +102,10 @@ class InvoicesController extends AppController
      */
     public function view(?string $id = null)
     {
-        $invoice = $this->Invoices->get($id, [
-            'contain' => [
-                'Customers',
-                'Creators',
-                'Modifiers',
-            ],
+        $invoice = $this->Invoices->get($id, contain: [
+            'Customers',
+            'Creators',
+            'Modifiers',
         ]);
 
         $this->set(compact('invoice'));
@@ -122,8 +120,8 @@ class InvoicesController extends AppController
      */
     public function download(?string $id = null)
     {
-        $invoice = $this->Invoices->get($id, [
-            'contain' => ['Customers'],
+        $invoice = $this->Invoices->get($id, contain: [
+            'Customers',
         ]);
 
         $filename = env('DATA_ROOT', DS . 'data' . DS) . 'invoices' . DS
@@ -155,7 +153,11 @@ class InvoicesController extends AppController
             }
             $this->Flash->error(__d('bookkeeping_pohoda', 'The invoice could not be saved. Please, try again.'));
         }
-        $customers = $this->Invoices->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
+        $customers = $this->Invoices->Customers->find('list', order: [
+            'company',
+            'last_name',
+            'first_name',
+        ]);
         $this->set(compact('invoice', 'customers'));
     }
 
@@ -168,9 +170,7 @@ class InvoicesController extends AppController
      */
     public function edit(?string $id = null)
     {
-        $invoice = $this->Invoices->get($id, [
-            'contain' => [],
-        ]);
+        $invoice = $this->Invoices->get($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->getData());
             if ($this->Invoices->save($invoice)) {
@@ -180,7 +180,11 @@ class InvoicesController extends AppController
             }
             $this->Flash->error(__d('bookkeeping_pohoda', 'The invoice could not be saved. Please, try again.'));
         }
-        $customers = $this->Invoices->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
+        $customers = $this->Invoices->Customers->find('list', order: [
+            'company',
+            'last_name',
+            'first_name',
+        ]);
         $this->set(compact('invoice', 'customers'));
     }
 
@@ -312,7 +316,11 @@ class InvoicesController extends AppController
      */
     public function generate()
     {
-        $tax_rates = $this->fetchTable('TaxRates')->find('list', ['order' => 'name'])->toArray();
+        $tax_rates = $this->fetchTable('TaxRates')
+            ->find('list', order: [
+                'name',
+            ])
+            ->toArray();
 
         if ($this->request->is(['post'])) {
             $invoiced_month = new Date($this->request->getData('invoiced_month'));

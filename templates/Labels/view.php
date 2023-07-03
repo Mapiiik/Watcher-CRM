@@ -120,7 +120,8 @@
                                     $customerLabel->customer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $customerLabel->customer->id]
                                 ) : '' ?></td>
-                            <td><?= $customerLabel->__isset('customer') ? h($customerLabel->customer->number) : '' ?></td>
+                            <td><?= $customerLabel->__isset('customer') ?
+                                h($customerLabel->customer->number) : '' ?></td>
                             <td><?= h($customerLabel->note) ?></td>
                             <td><?= h($customerLabel->created) ?></td>
                             <td class="actions">

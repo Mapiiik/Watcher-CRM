@@ -77,57 +77,57 @@ class ContractsController extends AppController
      */
     public function view(?string $id = null)
     {
-        $contract = $this->Contracts->get($id, [
-            'contain' => [
-                'Customers' => [
-                    'CustomerLabels' => [
-                        'Labels',
-                        'sort' => [
-                            'Labels.name',
-                        ],
+        $contract = $this->Contracts->get($id, contain: [
+            'Billings' => [
+                'Contracts' => [
+                    'ContractStates',
+                ],
+                'Services',
+            ],
+            'BorrowedEquipments' => [
+                'EquipmentTypes',
+            ],
+            'Commissions',
+            'ContractStates',
+            'ContractVersions',
+            'Customers' => [
+                'CustomerLabels' => [
+                    'Labels',
+                    'sort' => [
+                        'Labels.name',
                     ],
-                    'Tasks' => [
-                        'TaskTypes',
-                        'TaskStates',
-                        'Contracts',
-                        'Dealers',
-                        'conditions' => [
-                            'OR' => [
-                                'Tasks.contract_id !=' => $id,
-                                'Tasks.contract_id IS' => null,
-                            ],
-                        ],
-                    ],
-                ],
-                'ContractStates',
-                'ContractVersions',
-                'InstallationAddresses',
-                'ServiceTypes',
-                'InstallationTechnicians',
-                'UninstallationTechnicians',
-                'Commissions',
-                'Billings' => [
-                    'Contracts' => ['ContractStates'],
-                    'Services',
-                ],
-                'BorrowedEquipments' => [
-                    'EquipmentTypes',
-                ],
-                'Ips',
-                'RemovedIps',
-                'IpNetworks',
-                'RemovedIpNetworks',
-                'SoldEquipments' => [
-                    'EquipmentTypes',
                 ],
                 'Tasks' => [
-                    'TaskTypes',
-                    'TaskStates',
+                    'Contracts',
                     'Dealers',
+                    'TaskStates',
+                    'TaskTypes',
+                    'conditions' => [
+                        'OR' => [
+                            'Tasks.contract_id !=' => $id,
+                            'Tasks.contract_id IS' => null,
+                        ],
+                    ],
                 ],
-                'Creators',
-                'Modifiers',
             ],
+            'InstallationAddresses',
+            'InstallationTechnicians',
+            'IpNetworks',
+            'Ips',
+            'RemovedIpNetworks',
+            'RemovedIps',
+            'ServiceTypes',
+            'Tasks' => [
+                'TaskTypes',
+                'TaskStates',
+                'Dealers',
+            ],
+            'SoldEquipments' => [
+                'EquipmentTypes',
+            ],
+            'UninstallationTechnicians',
+            'Creators',
+            'Modifiers',
         ]);
 
         $this->set('ip_address_types_of_use', $this->Contracts->Ips->types_of_use);
@@ -168,12 +168,25 @@ class ContractsController extends AppController
             }
             $this->Flash->error(__('The contract could not be saved. Please, try again.'));
         }
-        $customers = $this->Contracts->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
-        $contractStates = $this->Contracts->ContractStates->find('list', ['order' => 'name']);
-        $installationAddresses = $this->Contracts->InstallationAddresses->find('list', [
-            'order' => ['company', 'last_name', 'first_name'],
+        $customers = $this->Contracts->Customers->find('list', order: [
+            'company',
+            'last_name',
+            'first_name',
         ]);
-        $serviceTypes = $this->Contracts->ServiceTypes->find('list', ['order' => 'id']);
+        $contractStates = $this->Contracts->ContractStates->find('list', order: [
+            'name',
+        ]);
+        $installationAddresses = $this->Contracts->InstallationAddresses->find(
+            'list',
+            order: [
+                'company',
+                'last_name',
+                'first_name',
+            ],
+        );
+        $serviceTypes = $this->Contracts->ServiceTypes->find('list', order: [
+            'id',
+        ]);
         $installationTechnicians = $this->Contracts->InstallationTechnicians
             ->find()
             ->where([
@@ -212,7 +225,9 @@ class ContractsController extends AppController
                     'style' => $dealer->dealer === 1 ? null : 'color: darkgray;',
                 ];
             });
-        $commissions = $this->Contracts->Commissions->find('list', ['order' => 'name']);
+        $commissions = $this->Contracts->Commissions->find('list', order: [
+            'name',
+        ]);
 
         if (isset($customer_id)) {
             $customers->where(['id' => $customer_id]);
@@ -251,9 +266,7 @@ class ContractsController extends AppController
         $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
-        $contract = $this->Contracts->get($id, [
-            'contain' => [],
-        ]);
+        $contract = $this->Contracts->get($id);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $contract = $this->Contracts->patchEntity($contract, $this->getRequest()->getData());
@@ -271,12 +284,28 @@ class ContractsController extends AppController
             }
             $this->Flash->error(__('The contract could not be saved. Please, try again.'));
         }
-        $customers = $this->Contracts->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
-        $contractStates = $this->Contracts->ContractStates->find('list', ['order' => 'name']);
-        $installationAddresses = $this->Contracts->InstallationAddresses->find('list', [
-            'order' => ['company', 'last_name', 'first_name'],
+        $customers = $this->Contracts->Customers->find('list', order: [
+            'company',
+            'last_name',
+            'first_name',
         ]);
-        $serviceTypes = $this->Contracts->ServiceTypes->find('list', ['order' => 'id']);
+        $contractStates = $this->Contracts->ContractStates->find('list', order: [
+            'name',
+        ]);
+        $installationAddresses = $this->Contracts->InstallationAddresses->find(
+            'list',
+            order: [
+                'company',
+                'last_name',
+                'first_name',
+            ],
+        );
+        $serviceTypes = $this->Contracts->ServiceTypes->find(
+            'list',
+            order: [
+                'id',
+            ],
+        );
         $installationTechnicians = $this->Contracts->InstallationTechnicians
             ->find()
             ->orderBy([
@@ -309,7 +338,9 @@ class ContractsController extends AppController
                     'style' => $dealer->dealer === 1 ? null : 'color: darkgray;',
                 ];
             });
-        $commissions = $this->Contracts->Commissions->find('list', ['order' => 'name']);
+        $commissions = $this->Contracts->Commissions->find('list', order: [
+            'name',
+        ]);
 
         if (isset($customer_id)) {
             $customers->where(['id' => $customer_id]);
@@ -533,11 +564,9 @@ class ContractsController extends AppController
     {
         $this->getRequest()->allowMethod(['post']);
 
-        $contract = $this->Contracts->get($id, [
-            'contain' => [
-                'BorrowedEquipments' => [
-                    'EquipmentTypes',
-                ],
+        $contract = $this->Contracts->get($id, contain: [
+            'BorrowedEquipments' => [
+                'EquipmentTypes',
             ],
         ]);
 
@@ -612,11 +641,9 @@ class ContractsController extends AppController
     {
         $this->getRequest()->allowMethod(['post']);
 
-        $contract = $this->Contracts->get($id, [
-            'contain' => [
-                'Billings' => [
-                    'Services',
-                ],
+        $contract = $this->Contracts->get($id, contain: [
+            'Billings' => [
+                'Services',
             ],
         ]);
 
@@ -679,28 +706,35 @@ class ContractsController extends AppController
         ];
         $this->set('documentTypes', $documentTypes);
 
-        $contract = $this->Contracts->get($id, [
-            'contain' => [
-                'Customers' => ['Emails', 'Phones', 'Addresses', 'TaxRates'],
-                'ContractStates',
-                'ContractVersions',
-                'InstallationAddresses',
-                'ServiceTypes',
-                'InstallationTechnicians',
-                'UninstallationTechnicians',
-                'Commissions',
-                'Billings' => ['Services'],
-                'Ips',
-                'IpNetworks',
-                'BorrowedEquipments.EquipmentTypes' => function (SelectQuery $query) {
-                    return $query->where(['BorrowedEquipments.borrowed_until IS NULL']);
-                },
-                'SoldEquipments.EquipmentTypes' => function (SelectQuery $query) {
-                    return $query->where(['SoldEquipments.date_of_sale IS NULL']);
-                },
-                'Creators',
-                'Modifiers',
+        $contract = $this->Contracts->get($id, contain: [
+            'Billings' => ['Services'],
+            'BorrowedEquipments.EquipmentTypes' => function (SelectQuery $query) {
+                return $query->where([
+                    'BorrowedEquipments.borrowed_until IS NULL',
+                ]);
+            },
+            'Commissions',
+            'ContractStates',
+            'ContractVersions',
+            'Customers' => [
+                'Addresses',
+                'Emails',
+                'Phones',
+                'TaxRates',
             ],
+            'InstallationAddresses',
+            'InstallationTechnicians',
+            'IpNetworks',
+            'Ips',
+            'ServiceTypes',
+            'SoldEquipments.EquipmentTypes' => function (SelectQuery $query) {
+                return $query->where([
+                    'SoldEquipments.date_of_sale IS NULL',
+                ]);
+            },
+            'UninstallationTechnicians',
+            'Creators',
+            'Modifiers',
         ]);
 
         $contractVersions = collection($contract->contract_versions)->map(function ($contract_version) {

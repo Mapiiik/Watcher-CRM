@@ -77,16 +77,14 @@ class AccountsController extends AppController
      */
     public function view(?string $id = null)
     {
-        $account = $this->Accounts->get($id, [
-            'contain' => [
-                'Customers',
-                'Contracts',
-                'Radcheck',
-                'Radreply',
-                'Radusergroup',
-                'Creators',
-                'Modifiers',
-            ],
+        $account = $this->Accounts->get($id, contain: [
+            'Contracts',
+            'Customers',
+            'Radcheck',
+            'Radreply',
+            'Radusergroup',
+            'Creators',
+            'Modifiers',
         ]);
 
         $this->set(compact('account'));
@@ -101,15 +99,21 @@ class AccountsController extends AppController
      */
     public function monitoring(?string $id = null)
     {
-        $account = $this->Accounts->get($id, [
-            'contain' => [
-                'Customers',
-                'Contracts',
-                'Radacct' => ['sort' => ['Radacct.acctstarttime' => 'DESC']],
-                'Radpostauth' => ['sort' => ['Radpostauth.authdate' => 'DESC']],
-                'Creators',
-                'Modifiers',
+        $account = $this->Accounts->get($id, contain: [
+            'Contracts',
+            'Customers',
+            'Radacct' => [
+                'sort' => [
+                    'Radacct.acctstarttime' => 'DESC',
+                ],
             ],
+            'Radpostauth' => [
+                'sort' => [
+                    'Radpostauth.authdate' => 'DESC',
+                ],
+            ],
+            'Creators',
+            'Modifiers',
         ]);
 
         $details = $this->request->getQuery('show_details') == true;
@@ -160,11 +164,21 @@ class AccountsController extends AppController
                 $this->Flash->error(__d('radius', 'The RADIUS account could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->Accounts->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
-        $contracts = $this->Accounts->Contracts->find('list', [
-            'order' => 'Contracts.number',
-            'contain' => ['ServiceTypes', 'InstallationAddresses'],
+        $customers = $this->Accounts->Customers->find('list', order: [
+            'company',
+            'last_name',
+            'first_name',
         ]);
+        $contracts = $this->Accounts->Contracts->find(
+            'list',
+            contain: [
+                'InstallationAddresses',
+                'ServiceTypes',
+            ],
+            order: [
+                'Contracts.number',
+            ],
+        );
 
         if (isset($customer_id)) {
             $customers->where(['Customers.id' => $customer_id]);
@@ -237,8 +251,8 @@ class AccountsController extends AppController
         $contract_id = $this->request->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
-        $account = $this->Accounts->get($id, [
-            'contain' => ['Radcheck'],
+        $account = $this->Accounts->get($id, contain: [
+            'Radcheck',
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $account = $this->Accounts->patchEntity($account, $this->request->getData());
@@ -259,11 +273,21 @@ class AccountsController extends AppController
                 $this->Flash->error(__d('radius', 'The RADIUS account could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->Accounts->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
-        $contracts = $this->Accounts->Contracts->find('list', [
-            'order' => 'Contracts.number',
-            'contain' => ['ServiceTypes', 'InstallationAddresses'],
+        $customers = $this->Accounts->Customers->find('list', order: [
+            'company',
+            'last_name',
+            'first_name',
         ]);
+        $contracts = $this->Accounts->Contracts->find(
+            'list',
+            contain: [
+                'ServiceTypes',
+                'InstallationAddresses',
+            ],
+            order: [
+                'Contracts.number',
+            ],
+        );
 
         if (isset($customer_id)) {
             $customers->where(['Customers.id' => $customer_id]);
@@ -310,13 +334,12 @@ class AccountsController extends AppController
     {
         $this->request->allowMethod(['post']);
         $account = $this->Accounts->get($id, contain: [
-                'Radacct' => [
-                    'conditions' => [
-                        'Radacct.acctstoptime IS' => null,
-                    ],
+            'Radacct' => [
+                'conditions' => [
+                    'Radacct.acctstoptime IS' => null,
                 ],
             ],
-        );
+        ]);
 
         if (empty($account->radacct)) {
             $this->Flash->warning(__d(
@@ -463,8 +486,10 @@ class AccountsController extends AppController
     public function updateRelatedRecords(?string $id = null)
     {
         $this->request->allowMethod(['post']);
-        $account = $this->Accounts->get($id, [
-            'contain' => ['Radcheck', 'Radreply', 'Radusergroup'],
+        $account = $this->Accounts->get($id, contain: [
+            'Radcheck',
+            'Radreply',
+            'Radusergroup',
         ]);
 
         // autogenerate related records
@@ -520,8 +545,9 @@ class AccountsController extends AppController
     private function autoRadreplyData(Account $account): array
     {
         /** @var \App\Model\Entity\Contract $contract */
-        $contract = $this->fetchTable('Contracts')->get($account->contract_id, [
-            'contain' => ['Ips', 'IpNetworks'],
+        $contract = $this->fetchTable('Contracts')->get($account->contract_id, contain: [
+            'IpNetworks',
+            'Ips',
         ]);
 
         $radreply = [];
@@ -611,26 +637,24 @@ class AccountsController extends AppController
      */
     private function autoRadusergroupData(Account $account): array
     {
-        $contract = $this->fetchTable('Contracts')->get($account->contract_id, [
-            'contain' => [
-                'Billings' => [
-                    'queryBuilder' => function (SelectQuery $q) {
-                        return $q->where([
-                            'Queues.name IS NOT NULL',
-                            'Billings.billing_from <=' => Date::now()->addMonths(1),
-                        ])
-                        ->andWhere([
-                            'OR' => [
-                                'Billings.billing_until IS NULL',
-                                'Billings.billing_until >=' => Date::now(),
-                            ],
-                        ])
-                        ->orderBy([
-                            'Billings.billing_from' => 'ASC',
-                        ]);
-                    },
-                    'Services' => 'Queues',
-                ],
+        $contract = $this->fetchTable('Contracts')->get($account->contract_id, contain: [
+            'Billings' => [
+                'queryBuilder' => function (SelectQuery $q) {
+                    return $q->where([
+                        'Queues.name IS NOT NULL',
+                        'Billings.billing_from <=' => Date::now()->addMonths(1),
+                    ])
+                    ->andWhere([
+                        'OR' => [
+                            'Billings.billing_until IS NULL',
+                            'Billings.billing_until >=' => Date::now(),
+                        ],
+                    ])
+                    ->orderBy([
+                        'Billings.billing_from' => 'ASC',
+                    ]);
+                },
+                'Services' => 'Queues',
             ],
         ]);
 

@@ -77,7 +77,8 @@
                                                     $contract->customer->id,
                                                 ]
                                             ) : '' ?></td>
-                                        <td><?= $contract->__isset('customer') ? h($contract->customer->number) : '' ?></td>
+                                        <td><?= $contract->__isset('customer')
+                                            ? h($contract->customer->number) : '' ?></td>
                                         <td><?=
                                             $this->Html->link(
                                                 $contract->number,

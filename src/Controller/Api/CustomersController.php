@@ -24,9 +24,11 @@ class CustomersController extends AppController
      */
     public function index()
     {
-        $customers = $this->Customers->find('all', [
-            'contain' => ['TaxRates'],
-        ])->all();
+        $customers = $this->Customers
+            ->find('all', contain: [
+                'TaxRates',
+            ])
+            ->all();
 
         $this->set('customers', $customers);
         $this->viewBuilder()->setOption('serialize', ['customers']);
@@ -41,21 +43,44 @@ class CustomersController extends AppController
      */
     public function view(?string $id = null)
     {
-        $customer = $this->Customers->get($id, [
-            'contain' => [
-                'TaxRates',
-                'Addresses' => ['Countries'],
-                'Billings' => ['Contracts', 'Services'],
-                'BorrowedEquipments' => ['Contracts', 'EquipmentTypes'],
-                'Contracts' => ['ServiceTypes', 'InstallationAddresses'],
-                'Emails',
-                'Ips' => ['Contracts'],
-                'CustomerLabels' => ['Labels'],
-                'Logins',
-                'Phones',
-                'RemovedIps' => ['Contracts'],
-                'SoldEquipments' => ['Contracts', 'EquipmentTypes'],
-                'Tasks' => ['TaskTypes', 'TaskStates', 'Dealers']],
+        $customer = $this->Customers->get($id, contain: [
+            'Addresses' => [
+                'Countries',
+            ],
+            'Billings' => [
+                'Contracts',
+                'Services',
+            ],
+            'BorrowedEquipments' => [
+                'Contracts',
+                'EquipmentTypes',
+            ],
+            'Contracts' => [
+                'InstallationAddresses',
+                'ServiceTypes',
+            ],
+            'CustomerLabels' => [
+                'Labels',
+            ],
+            'Emails',
+            'Ips' => [
+                'Contracts',
+            ],
+            'Logins',
+            'Phones',
+            'RemovedIps' => [
+                'Contracts',
+            ],
+            'SoldEquipments' => [
+                'Contracts',
+                'EquipmentTypes',
+            ],
+            'Tasks' => [
+                'TaskTypes',
+                'TaskStates',
+                'Dealers',
+            ],
+            'TaxRates',
         ]);
 
         $this->set('customer', $customer);

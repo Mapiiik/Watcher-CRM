@@ -116,14 +116,27 @@ class SoldEquipmentsController extends AppController
             }
             $this->Flash->error(__('The sold equipment could not be saved. Please, try again.'));
         }
-        $customers = $this->SoldEquipments->Customers->find('list', [
-            'order' => ['company', 'last_name', 'first_name'],
+        $customers = $this->SoldEquipments->Customers->find(
+            'list',
+            order: [
+                'company',
+                'last_name',
+                'first_name',
+            ],
+        );
+        $contracts = $this->SoldEquipments->Contracts->find(
+            'list',
+            contain: [
+                'InstallationAddresses',
+                'ServiceTypes',
+            ],
+            order: [
+                'Contracts.number',
+            ],
+        );
+        $equipmentTypes = $this->SoldEquipments->EquipmentTypes->find('list', order: [
+        'name',
         ]);
-        $contracts = $this->SoldEquipments->Contracts->find('list', [
-            'order' => 'Contracts.number',
-            'contain' => ['ServiceTypes', 'InstallationAddresses'],
-        ]);
-        $equipmentTypes = $this->SoldEquipments->EquipmentTypes->find('list', ['order' => 'name']);
 
         if (isset($customer_id)) {
             $customers->where(['Customers.id' => $customer_id]);
@@ -166,13 +179,25 @@ class SoldEquipmentsController extends AppController
         }
         $customers = $this->SoldEquipments->Customers->find(
             'list',
-            ['order' => ['company', 'last_name', 'first_name']]
+            order: [
+                'company',
+                'last_name',
+                'first_name',
+            ],
         );
-        $contracts = $this->SoldEquipments->Contracts->find('list', [
-            'order' => 'Contracts.number',
-            'contain' => ['ServiceTypes', 'InstallationAddresses'],
+        $contracts = $this->SoldEquipments->Contracts->find(
+            'list',
+            contain: [
+                'InstallationAddresses',
+                'ServiceTypes',
+            ],
+            order: [
+                'Contracts.number',
+            ],
+        );
+        $equipmentTypes = $this->SoldEquipments->EquipmentTypes->find('list', order: [
+        'name',
         ]);
-        $equipmentTypes = $this->SoldEquipments->EquipmentTypes->find('list', ['order' => 'name']);
 
         if (isset($customer_id)) {
             $customers->where(['Customers.id' => $customer_id]);

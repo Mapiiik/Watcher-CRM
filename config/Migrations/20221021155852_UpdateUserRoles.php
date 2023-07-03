@@ -15,13 +15,13 @@ class UpdateUserRoles extends AbstractMigration
      */
     public function up(): void
     {
-        $this->getQueryBuilder()
+        $this->getQueryBuilder('update')
             ->update('users')
             ->set('role', 'sales-representative')
             ->where(['role' => 'manager'])
             ->execute();
 
-        $this->getQueryBuilder()
+        $this->getQueryBuilder('update')
             ->update('users')
             ->set('role', 'customer-service-technician')
             ->where(['role' => 'technician'])
@@ -38,13 +38,13 @@ class UpdateUserRoles extends AbstractMigration
      */
     public function down(): void
     {
-        $this->getQueryBuilder()
+        $this->getQueryBuilder('update')
             ->update('users')
             ->set('role', 'manager')
             ->where(['role' => 'sales-representative'])
             ->execute();
 
-        $this->getQueryBuilder()
+        $this->getQueryBuilder('update')
             ->update('users')
             ->set('role', 'technician')
             ->where(['role' => 'customer-service-technician'])

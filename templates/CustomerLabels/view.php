@@ -48,7 +48,8 @@
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $customerLabel->__isset('customer') ? h($customerLabel->customer->number) : '' ?></td>
+                            <td><?= $customerLabel->__isset('customer') ?
+                                h($customerLabel->customer->number) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Label') ?></th>

@@ -223,8 +223,12 @@ class TasksController extends AppController
             );
         }
 
-        $taskTypes = $this->Tasks->TaskTypes->find('list', ['order' => 'name']);
-        $taskStates = $this->Tasks->TaskStates->find('list', ['order' => 'name']);
+        $taskTypes = $this->Tasks->TaskTypes->find('list', order: [
+            'name',
+        ]);
+        $taskStates = $this->Tasks->TaskStates->find('list', order: [
+            'name',
+        ]);
 
         $this->set(compact('tasks', 'taskTypes', 'taskStates', 'dealers'));
 
@@ -313,8 +317,14 @@ class TasksController extends AppController
                 $this->Flash->error(__('The task could not be saved. Please, try again.'));
             }
         }
-        $taskTypes = $this->Tasks->TaskTypes->find('list', ['order' => 'name']);
-        $customers = $this->Tasks->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
+        $taskTypes = $this->Tasks->TaskTypes->find('list', order: [
+            'name',
+        ]);
+        $customers = $this->Tasks->Customers->find('list', order: [
+            'company',
+            'last_name',
+            'first_name',
+        ]);
         $contracts = [];
         $dealers = $this->Tasks->Dealers
             ->find()
@@ -335,27 +345,38 @@ class TasksController extends AppController
                     'style' => $dealer->dealer === 1 ? null : 'color: darkgray;',
                 ];
             });
-        $taskStates = $this->Tasks->TaskStates->find('list', ['order' => 'name']);
+        $taskStates = $this->Tasks->TaskStates->find('list', order: [
+            'name',
+        ]);
 
         // load customer data
         if (isset($task->customer_id)) {
-            $customer = $this->Tasks->Customers->get($task->customer_id, [
-                'contain' => ['Addresses', 'Phones', 'Emails'],
+            $customer = $this->Tasks->Customers->get($task->customer_id, contain: [
+                'Addresses',
+                'Emails',
+                'Phones',
             ]);
 
             // retrieve list of customer contracts
-            $contracts = $this->Tasks->Contracts
-                ->find('list', [
-                    'order' => 'Contracts.number',
-                    'contain' => ['ServiceTypes', 'InstallationAddresses'],
-                ])
-                ->where(['Contracts.customer_id' => $task->customer_id]);
+            $contracts = $this->Tasks->Contracts->find(
+                'list',
+                contain: [
+                    'InstallationAddresses',
+                    'ServiceTypes',
+                ],
+                conditions: [
+                    'Contracts.customer_id' => $task->customer_id,
+                ],
+                order: [
+                    'Contracts.number',
+                ],
+            );
         }
 
         // load contract data
         if (isset($task->contract_id)) {
-            $contract = $this->Tasks->Contracts->get($task->contract_id, [
-                'contain' => ['InstallationAddresses'],
+            $contract = $this->Tasks->Contracts->get($task->contract_id, contain: [
+                'InstallationAddresses',
             ]);
         }
 
@@ -467,8 +488,14 @@ class TasksController extends AppController
                 $this->Flash->error(__('The task could not be saved. Please, try again.'));
             }
         }
-        $taskTypes = $this->Tasks->TaskTypes->find('list', ['order' => 'name']);
-        $customers = $this->Tasks->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
+        $taskTypes = $this->Tasks->TaskTypes->find('list', order: [
+            'name',
+        ]);
+        $customers = $this->Tasks->Customers->find('list', order: [
+            'company',
+            'last_name',
+            'first_name',
+        ]);
         $contracts = [];
         $dealers = $this->Tasks->Dealers
             ->find()
@@ -486,15 +513,24 @@ class TasksController extends AppController
                     'style' => $dealer->dealer === 1 ? null : 'color: darkgray;',
                 ];
             });
-        $taskStates = $this->Tasks->TaskStates->find('list', ['order' => 'name']);
+        $taskStates = $this->Tasks->TaskStates->find('list', order: [
+            'name',
+        ]);
 
         if (isset($task->customer_id)) {
-            $contracts = $this->Tasks->Contracts
-                ->find('list', [
-                    'order' => 'Contracts.number',
-                    'contain' => ['ServiceTypes', 'InstallationAddresses'],
-                ])
-                ->where(['Contracts.customer_id' => $task->customer_id]);
+            $contracts = $this->Tasks->Contracts->find(
+                'list',
+                contain: [
+                    'InstallationAddresses',
+                    'ServiceTypes',
+                ],
+                conditions: [
+                    'Contracts.customer_id' => $task->customer_id,
+                ],
+                order: [
+                    'Contracts.number',
+                ],
+            );
         }
 
         if (isset($customer_id)) {

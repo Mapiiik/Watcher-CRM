@@ -60,7 +60,9 @@ class RadcheckController extends AppController
             }
             $this->Flash->error(__d('radius', 'The RADIUS check could not be saved. Please, try again.'));
         }
-        $accounts = $this->Radcheck->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
+        $accounts = $this->Radcheck->Accounts->find('list', keyField: 'username', order: [
+            'username',
+        ]);
         $this->set(compact('radcheck', 'accounts'));
     }
 
@@ -83,7 +85,9 @@ class RadcheckController extends AppController
             }
             $this->Flash->error(__d('radius', 'The RADIUS check could not be saved. Please, try again.'));
         }
-        $accounts = $this->Radcheck->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
+        $accounts = $this->Radcheck->Accounts->find('list', keyField: 'username', order: [
+            'username',
+        ]);
         $this->set(compact('radcheck', 'accounts'));
     }
 

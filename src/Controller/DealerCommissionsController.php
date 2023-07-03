@@ -105,8 +105,8 @@ class DealerCommissionsController extends AppController
                     'style' => $dealer->dealer === 1 ? null : 'color: darkgray;',
                 ];
             });
-        $commissions = $this->DealerCommissions->Commissions->find('list', [
-            'order' => ['name'],
+        $commissions = $this->DealerCommissions->Commissions->find('list', order: [
+            'name',
         ]);
         $this->set(compact('dealerCommission', 'dealers', 'commissions'));
     }
@@ -148,8 +148,8 @@ class DealerCommissionsController extends AppController
                     'style' => $dealer->dealer === 1 ? null : 'color: darkgray;',
                 ];
             });
-        $commissions = $this->DealerCommissions->Commissions->find('list', [
-            'order' => ['name'],
+        $commissions = $this->DealerCommissions->Commissions->find('list', order: [
+            'name',
         ]);
         $this->set(compact('dealerCommission', 'dealers', 'commissions'));
     }

@@ -60,7 +60,9 @@ class RadacctController extends AppController
             }
             $this->Flash->error(__d('radius', 'The RADIUS accounting could not be saved. Please, try again.'));
         }
-        $accounts = $this->Radacct->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
+        $accounts = $this->Radacct->Accounts->find('list', keyField: 'username', order: [
+            'username',
+        ]);
         $this->set(compact('radacct', 'accounts'));
     }
 
@@ -83,7 +85,9 @@ class RadacctController extends AppController
             }
             $this->Flash->error(__d('radius', 'The RADIUS accounting could not be saved. Please, try again.'));
         }
-        $accounts = $this->Radacct->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
+        $accounts = $this->Radacct->Accounts->find('list', keyField: 'username', order: [
+            'username',
+        ]);
         $this->set(compact('radacct', 'accounts'));
     }
 

@@ -75,13 +75,11 @@ class AddressesController extends AppController
      */
     public function view(?string $id = null)
     {
-        $address = $this->Addresses->get($id, [
-            'contain' => [
-                'Customers',
-                'Countries',
-                'Creators',
-                'Modifiers',
-            ],
+        $address = $this->Addresses->get($id, contain: [
+            'Countries',
+            'Customers',
+            'Creators',
+            'Modifiers',
         ]);
 
         $types = $this->Addresses->types;
@@ -132,8 +130,14 @@ class AddressesController extends AppController
                 $this->Flash->error(__('The address could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->Addresses->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
-        $countries = $this->Addresses->Countries->find('list', ['order' => 'name']);
+        $customers = $this->Addresses->Customers->find('list', order: [
+            'company',
+            'last_name',
+            'first_name',
+        ]);
+        $countries = $this->Addresses->Countries->find('list', order: [
+            'name',
+        ]);
 
         if (isset($customer_id)) {
             $customers->where(['id' => $customer_id]);
@@ -157,9 +161,7 @@ class AddressesController extends AppController
         $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
-        $address = $this->Addresses->get($id, [
-            'contain' => [],
-        ]);
+        $address = $this->Addresses->get($id);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $address = $this->Addresses->patchEntity($address, $this->getRequest()->getData());
 
@@ -183,8 +185,14 @@ class AddressesController extends AppController
                 $this->Flash->error(__('The address could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->Addresses->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
-        $countries = $this->Addresses->Countries->find('list', ['order' => 'name']);
+        $customers = $this->Addresses->Customers->find('list', order: [
+            'company',
+            'last_name',
+            'first_name',
+        ]);
+        $countries = $this->Addresses->Countries->find('list', order: [
+            'name',
+        ]);
 
         if (isset($customer_id)) {
             $customers->where(['id' => $customer_id]);

@@ -239,7 +239,9 @@ class CustomersController extends AppController
 
         $customers = $this->paginate($customersQuery);
 
-        $labels = $this->Customers->CustomerLabels->Labels->find('list', ['order' => 'name']);
+        $labels = $this->Customers->CustomerLabels->Labels->find('list', order: [
+            'name',
+        ]);
 
         $invoice_delivery_types = $this->Customers->invoice_delivery_types;
 
@@ -354,7 +356,9 @@ class CustomersController extends AppController
             }
             $this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
-        $taxRates = $this->Customers->TaxRates->find('list', ['order' => 'name']);
+        $taxRates = $this->Customers->TaxRates->find('list', order: [
+            'name',
+        ]);
 
         $invoice_delivery_types = $this->Customers->invoice_delivery_types;
 
@@ -380,7 +384,9 @@ class CustomersController extends AppController
             }
             $this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
-        $taxRates = $this->Customers->TaxRates->find('list', ['order' => 'name']);
+        $taxRates = $this->Customers->TaxRates->find('list', order: [
+            'name',
+        ]);
 
         $invoice_delivery_types = $this->Customers->invoice_delivery_types;
 

@@ -60,7 +60,9 @@ class RadpostauthController extends AppController
             }
             $this->Flash->error(__d('radius', 'The RADIUS post authentication could not be saved. Please, try again.'));
         }
-        $accounts = $this->Radpostauth->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
+        $accounts = $this->Radpostauth->Accounts->find('list', keyField: 'username', order: [
+            'username',
+        ]);
         $this->set(compact('radpostauth', 'accounts'));
     }
 
@@ -83,7 +85,9 @@ class RadpostauthController extends AppController
             }
             $this->Flash->error(__d('radius', 'The RADIUS post authentication could not be saved. Please, try again.'));
         }
-        $accounts = $this->Radpostauth->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
+        $accounts = $this->Radpostauth->Accounts->find('list', keyField: 'username', order: [
+            'username',
+        ]);
         $this->set(compact('radpostauth', 'accounts'));
     }
 

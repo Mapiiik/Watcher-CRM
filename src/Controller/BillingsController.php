@@ -134,12 +134,24 @@ class BillingsController extends AppController
                 $this->Flash->error(__('The billing could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->Billings->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
-        $contracts = $this->Billings->Contracts->find('list', [
-            'order' => 'Contracts.number',
-            'contain' => ['ServiceTypes', 'InstallationAddresses'],
+        $customers = $this->Billings->Customers->find('list', order: [
+            'company',
+            'last_name',
+            'first_name',
         ]);
-        $services = $this->Billings->Services->find('list', ['order' => 'name']);
+        $contracts = $this->Billings->Contracts->find(
+            'list',
+            contain: [
+                'InstallationAddresses',
+                'ServiceTypes',
+            ],
+            order: [
+                'Contracts.number',
+            ],
+        );
+        $services = $this->Billings->Services->find('list', order: [
+            'name',
+        ]);
 
         if (isset($customer_id)) {
             $customers->where(['Customers.id' => $customer_id]);
@@ -208,12 +220,24 @@ class BillingsController extends AppController
                 $this->Flash->error(__('The billing could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->Billings->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
-        $contracts = $this->Billings->Contracts->find('list', ['order' => 'Contracts.number', 'contain' => [
-            'ServiceTypes',
-            'InstallationAddresses',
-        ]]);
-        $services = $this->Billings->Services->find('list', ['order' => 'name']);
+        $customers = $this->Billings->Customers->find('list', order: [
+            'company',
+            'last_name',
+            'first_name',
+        ]);
+        $contracts = $this->Billings->Contracts->find(
+            'list',
+            contain: [
+                'InstallationAddresses',
+                'ServiceTypes',
+            ],
+            order: [
+                'Contracts.number',
+            ],
+        );
+        $services = $this->Billings->Services->find('list', order: [
+            'name',
+        ]);
 
         if (isset($customer_id)) {
             $customers->where(['Customers.id' => $customer_id]);

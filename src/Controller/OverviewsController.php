@@ -112,7 +112,12 @@ class OverviewsController extends AppController
         $this->set(compact('services', 'month_to_display'));
 
         // load service types
-        $this->set('serviceTypes', $this->fetchTable('ServiceTypes')->find('list', ['order' => 'name']));
+        $this->set(
+            'serviceTypes',
+            $this->fetchTable('ServiceTypes')->find('list', order: [
+                'name',
+            ])
+        );
 
         // load access points from NMS if possible
         $accessPoints = ApiClient::getAccessPoints();

@@ -60,7 +60,9 @@ class RadreplyController extends AppController
             }
             $this->Flash->error(__d('radius', 'The RADIUS reply could not be saved. Please, try again.'));
         }
-        $accounts = $this->Radreply->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
+        $accounts = $this->Radreply->Accounts->find('list', keyField: 'username', order: [
+            'username',
+        ]);
         $this->set(compact('radreply', 'accounts'));
     }
 
@@ -83,7 +85,9 @@ class RadreplyController extends AppController
             }
             $this->Flash->error(__d('radius', 'The RADIUS reply could not be saved. Please, try again.'));
         }
-        $accounts = $this->Radreply->Accounts->find('list', ['keyField' => 'username', 'order' => 'username']);
+        $accounts = $this->Radreply->Accounts->find('list', keyField: 'username', order: [
+            'username',
+        ]);
         $this->set(compact('radreply', 'accounts'));
     }
 

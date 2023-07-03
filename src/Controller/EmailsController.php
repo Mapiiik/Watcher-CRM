@@ -96,7 +96,11 @@ class EmailsController extends AppController
             }
             $this->Flash->error(__('The email could not be saved. Please, try again.'));
         }
-        $customers = $this->Emails->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
+        $customers = $this->Emails->Customers->find('list', order: [
+            'company',
+            'last_name',
+            'first_name',
+        ]);
 
         if (isset($customer_id)) {
             $customers->where(['id' => $customer_id]);
@@ -127,7 +131,11 @@ class EmailsController extends AppController
             }
             $this->Flash->error(__('The email could not be saved. Please, try again.'));
         }
-        $customers = $this->Emails->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
+        $customers = $this->Emails->Customers->find('list', order: [
+            'company',
+            'last_name',
+            'first_name',
+        ]);
 
         if (isset($customer_id)) {
             $customers->where(['id' => $customer_id]);

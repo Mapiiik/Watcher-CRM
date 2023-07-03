@@ -76,13 +76,11 @@ class IpsController extends AppController
      */
     public function view(?string $id = null)
     {
-        $ip = $this->Ips->get($id, [
-            'contain' => [
-                'Customers',
-                'Contracts',
-                'Creators',
-                'Modifiers',
-            ],
+        $ip = $this->Ips->get($id, contain: [
+            'Contracts',
+            'Customers',
+            'Creators',
+            'Modifiers',
         ]);
 
         $types_of_use = $this->Ips->types_of_use;
@@ -121,13 +119,24 @@ class IpsController extends AppController
             }
             $this->Flash->error(__('The IP address could not be saved. Please, try again.'));
         }
-        $customers = $this->Ips->Customers->find('list', [
-            'order' => ['company', 'last_name', 'first_name'],
-        ]);
-        $contracts = $this->Ips->Contracts->find('list', [
-            'order' => 'Contracts.number',
-            'contain' => ['ServiceTypes', 'InstallationAddresses'],
-        ]);
+        $customers = $this->Ips->Customers->find(
+            'list',
+            order: [
+                'company',
+                'last_name',
+                'first_name',
+            ],
+        );
+        $contracts = $this->Ips->Contracts->find(
+            'list',
+            contain: [
+                'InstallationAddresses',
+                'ServiceTypes',
+            ],
+            order: [
+                'Contracts.number',
+            ],
+        );
 
         if (isset($customer_id)) {
             $customers->where(['Customers.id' => $customer_id]);
@@ -178,13 +187,24 @@ class IpsController extends AppController
                 $this->Flash->error(__('The IP address could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->Ips->Customers->find('list', [
-            'order' => ['company', 'last_name', 'first_name'],
-        ]);
-        $contracts = $this->Ips->Contracts->find('list', [
-            'order' => 'Contracts.number',
-            'contain' => ['ServiceTypes', 'InstallationAddresses'],
-        ]);
+        $customers = $this->Ips->Customers->find(
+            'list',
+            order: [
+                'company',
+                'last_name',
+                'first_name',
+            ],
+        );
+        $contracts = $this->Ips->Contracts->find(
+            'list',
+            contain: [
+                'InstallationAddresses',
+                'ServiceTypes',
+            ],
+            order: [
+                'Contracts.number',
+            ],
+        );
 
         if (isset($customer_id)) {
             $customers->where(['Customers.id' => $customer_id]);
@@ -318,9 +338,7 @@ class IpsController extends AppController
         $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
-        $ip = $this->Ips->get($id, [
-            'contain' => [],
-        ]);
+        $ip = $this->Ips->get($id);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $ip = $this->Ips->patchEntity($ip, $this->getRequest()->getData());
@@ -331,11 +349,21 @@ class IpsController extends AppController
             }
             $this->Flash->error(__('The IP address could not be saved. Please, try again.'));
         }
-        $customers = $this->Ips->Customers->find('list', ['order' => ['company', 'last_name', 'first_name']]);
-        $contracts = $this->Ips->Contracts->find('list', [
-            'order' => 'Contracts.number',
-            'contain' => ['ServiceTypes', 'InstallationAddresses'],
+        $customers = $this->Ips->Customers->find('list', order: [
+            'company',
+            'last_name',
+            'first_name',
         ]);
+        $contracts = $this->Ips->Contracts->find(
+            'list',
+            contain: [
+                'InstallationAddresses',
+                'ServiceTypes',
+            ],
+            order: [
+                'Contracts.number',
+            ],
+        );
 
         if (isset($customer_id)) {
             $customers->where(['Customers.id' => $customer_id]);

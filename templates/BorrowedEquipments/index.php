@@ -46,7 +46,8 @@
                             ['controller' => 'Customers', 'action' => 'view', $borrowedEquipment->customer->id]
                         ) : '' ?>
                     </td>
-                    <td><?= $borrowedEquipment->__isset('customer') ? h($borrowedEquipment->customer->number) : '' ?></td>
+                    <td><?= $borrowedEquipment->__isset('customer') ?
+                        h($borrowedEquipment->customer->number) : '' ?></td>
                     <td>
                         <?= $borrowedEquipment->__isset('contract') ? $this->Html->link(
                             $borrowedEquipment->contract->number,

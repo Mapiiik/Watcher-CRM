@@ -166,7 +166,8 @@
                                     $soldEquipment->customer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $soldEquipment->customer->id]
                                 ) : '' ?></td>
-                            <td><?= $soldEquipment->__isset('customer') ? h($soldEquipment->customer->number) : '' ?></td>
+                            <td><?= $soldEquipment->__isset('customer') ?
+                                h($soldEquipment->customer->number) : '' ?></td>
                             <td><?= $soldEquipment->__isset('contract') ?
                                 $this->Html->link(
                                     $soldEquipment->contract->number,
