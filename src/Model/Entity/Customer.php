@@ -417,11 +417,11 @@ class Customer extends Entity
     }
 
     /**
-     * Get dealer state method
+     * Get dealer state name method
      *
      * @return string
      */
-    public function getDealerState(): string
+    public function getDealerStateName(): string
     {
         return $this->getDealerStateOptions()[$this->dealer] ?? strval($this->dealer);
     }

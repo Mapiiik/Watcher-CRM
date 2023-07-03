@@ -99,7 +99,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Dealer') ?></th>
-                            <td><?= $customer->getDealerState() ?></td>
+                            <td><?= h($customer->getDealerStateName()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Invoice Delivery Type') ?></th>
