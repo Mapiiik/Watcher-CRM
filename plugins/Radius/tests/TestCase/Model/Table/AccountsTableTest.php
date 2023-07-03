@@ -21,7 +21,7 @@ class AccountsTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var array
+     * @var array<string>
      */
     protected array $fixtures = [
         'plugin.Radius.Accounts',

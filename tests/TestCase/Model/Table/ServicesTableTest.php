@@ -21,7 +21,7 @@ class ServicesTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var array
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.Services',
