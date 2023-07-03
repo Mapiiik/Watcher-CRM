@@ -5,6 +5,7 @@ parameters:
     treatPhpDocTypesAsCertain: false
     bootstrapFiles:
        - config/paths.php
+       - vendor/cakephp/cakephp/src/functions.php
     paths:
         - src
         - plugins/BookkeepingPohoda/src

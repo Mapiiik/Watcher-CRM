@@ -15,15 +15,15 @@
         "source": "https://github.com/Mapiiik/Watcher-CRM"
     },
     "require": {
-        "php": ">=7.4",
-        "cakedc/users": "^11.2",
-        "cakephp/cakephp": "^4.4",
-        "cakephp/migrations": "^3.2",
-        "cakephp/plugin-installer": "^1.3",
+        "php": ">=8.1",
+        "cakedc/users": "dev-12.next-cake5",
+        "cakephp/cakephp": "5.x-dev",
+        "cakephp/migrations": "4.x-dev",
+        "cakephp/plugin-installer": "^2.0",
         "evilfreelancer/routeros-api-php": "^1.5",
         "jdorn/sql-formatter": "^1.2",
         "league/oauth2-google": "^4.0",
-        "mapik/audit-log": "^1.0",
+        "mapik/audit-log": "5.x-dev",
         "mapik/pohoda-xml": "^1.16",
         "mapik/radius-client": "^1.0",
         "mlocati/ip-lib": "^1.18",
@@ -31,15 +31,14 @@
         "tecnickcom/tcpdf": "^6.4"
     },
     "require-dev": {
-        "cakedc/cakephp-phpstan": "^2.0",
-        "cakephp/bake": "^2.6",
-        "cakephp/cakephp-codesniffer": "^4.5",
-        "cakephp/debug_kit": "^4.5",
-        "cakephp/repl": "^0.1",
-        "josegonzalez/dotenv": "^3.2",
+        "cakedc/cakephp-phpstan": "dev-3.next-cake5",
+        "cakephp/bake": "3.x-dev",
+        "cakephp/cakephp-codesniffer": "^5.0",
+        "cakephp/debug_kit": "5.x-dev",
+        "josegonzalez/dotenv": "^4.0",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^1.0",
-        "phpunit/phpunit": "~8.5.0 || ^9.3",
+        "phpunit/phpunit": "^10.1.0",
         "psalm/phar": "^5.12"
     },
     "suggest": {
@@ -91,6 +90,7 @@
         "test": "phpunit --colors=always"
     },
     "prefer-stable": true,
+    "minimum-stability": "dev",
     "config": {
         "sort-packages": true,
         "allow-plugins": {

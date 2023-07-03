@@ -240,7 +240,7 @@ $routes->scope('/admin/', function (RouteBuilder $builder): void {
     //$builder->fallbacks();
 });
 
-$routes->scope('/', function (RouteBuilder $builder) {
+$routes->scope('/', function (RouteBuilder $builder): void {
     // Default redirect
     $builder->redirect('/', ['controller' => 'Customers', 'action' => 'index'], ['status' => 303]);
 
@@ -282,7 +282,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
  */
 
 // API access
-$routes->prefix('Api', function (RouteBuilder $builder) {
+$routes->prefix('Api', function (RouteBuilder $builder): void {
     $builder->setExtensions(['json']);
 
     $builder->resources('Customers', [

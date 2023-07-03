@@ -8,4 +8,7 @@
         <exclude-pattern>config/Migrations/20221211110347_AddHaveContractVersionsAndHaveEquipmentsAndHaveIpAddressesAndHaveRadiusAccountsToServiceTypes.php</exclude-pattern>
     </rule>
     <rule ref="CakePHP"/>
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint">
+        <exclude-pattern>*/src/Controller/*</exclude-pattern>
+    </rule>
 </ruleset>
