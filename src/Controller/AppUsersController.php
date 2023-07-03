@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Controller\Traits\UserSettingsTrait;
+use CakeDC\Users\Controller\Traits\CustomUsersTableTrait;
 use CakeDC\Users\Controller\Traits\LinkSocialTrait;
 use CakeDC\Users\Controller\Traits\LoginTrait;
 use CakeDC\Users\Controller\Traits\OneTimePasswordVerifyTrait;
@@ -12,7 +13,6 @@ use CakeDC\Users\Controller\Traits\ReCaptchaTrait;
 use CakeDC\Users\Controller\Traits\RegisterTrait;
 use CakeDC\Users\Controller\Traits\SimpleCrudTrait;
 use CakeDC\Users\Controller\Traits\SocialTrait;
-use CakeDC\Users\Controller\Traits\U2fTrait;
 use CakeDC\Users\Controller\Traits\Webauthn2faTrait;
 
 /**
@@ -23,6 +23,7 @@ use CakeDC\Users\Controller\Traits\Webauthn2faTrait;
  */
 class AppUsersController extends AppController
 {
+    use CustomUsersTableTrait;
     use LinkSocialTrait;
     use LoginTrait;
     use OneTimePasswordVerifyTrait;
@@ -31,7 +32,6 @@ class AppUsersController extends AppController
     use RegisterTrait;
     use SimpleCrudTrait;
     use SocialTrait;
-    use U2fTrait;
     use UserSettingsTrait;
     use Webauthn2faTrait;
 
@@ -46,15 +46,11 @@ class AppUsersController extends AppController
 
         $this->loadComponent('CakeDC/Users.Setup');
 
-        if ($this->components()->has('Security')) {
-            $this->Security->setConfig(
+        if ($this->components()->has('FormProtection')) {
+            $this->FormProtection->setConfig(
                 'unlockedActions',
                 [
                     'login',
-                    'u2fRegister',
-                    'u2fRegisterFinish',
-                    'u2fAuthenticate',
-                    'u2fAuthenticateFinish',
                     'webauthn2faRegister',
                     'webauthn2faRegisterOptions',
                     'webauthn2faAuthenticate',
