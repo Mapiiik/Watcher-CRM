@@ -59,12 +59,10 @@ class LoginsController extends AppController
      */
     public function view($id = null)
     {
-        $login = $this->Logins->get($id, [
-            'contain' => [
-                'Customers',
-                'Creators',
-                'Modifiers',
-            ],
+        $login = $this->Logins->get($id, contain: [
+            'Customers',
+            'Creators',
+            'Modifiers',
         ]);
 
         $this->set(compact('login'));
@@ -144,9 +142,7 @@ class LoginsController extends AppController
         $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
-        $login = $this->Logins->get($id, [
-            'contain' => [],
-        ]);
+        $login = $this->Logins->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             // change password if is set new
             if (strlen($this->getRequest()->getData()['new_password']) > 0) {

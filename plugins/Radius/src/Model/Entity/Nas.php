@@ -29,7 +29,7 @@ class Nas extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'nasname' => true,
         'shortname' => true,
         'type' => true,

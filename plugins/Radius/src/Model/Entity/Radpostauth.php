@@ -14,7 +14,7 @@ use Cake\ORM\Entity;
  * @property string|null $reply
  * @property string|null $calledstationid
  * @property string|null $callingstationid
- * @property \Cake\I18n\FrozenTime $authdate
+ * @property \Cake\I18n\DateTime $authdate
  *
  * @property \Radius\Model\Entity\Account $account
  */
@@ -29,7 +29,7 @@ class Radpostauth extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'username' => true,
         'pass' => true,
         'reply' => true,

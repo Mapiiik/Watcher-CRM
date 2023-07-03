@@ -15,7 +15,7 @@ class RadpostauthFixture extends TestFixture
      *
      * @var string
      */
-    public $table = 'radpostauth';
+    public string $table = 'radpostauth';
     /**
      * Fields
      *

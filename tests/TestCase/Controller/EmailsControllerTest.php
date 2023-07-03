@@ -20,7 +20,7 @@ class EmailsControllerTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'app.Emails',
         'app.Customers',
     ];

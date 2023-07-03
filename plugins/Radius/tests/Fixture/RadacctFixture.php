@@ -15,7 +15,7 @@ class RadacctFixture extends TestFixture
      *
      * @var string
      */
-    public $table = 'radacct';
+    public string $table = 'radacct';
     /**
      * Fields
      *

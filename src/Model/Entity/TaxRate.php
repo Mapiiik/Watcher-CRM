@@ -8,10 +8,10 @@ use Cake\ORM\Entity;
 /**
  * TaxRate Entity
  *
- * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\DateTime|null $created
  * @property int|null $created_by
  * @property \CakeDC\Users\Model\Entity\User|null $creator
- * @property \Cake\I18n\FrozenTime|null $modified
+ * @property \Cake\I18n\DateTime|null $modified
  * @property int|null $modified_by
  * @property \CakeDC\Users\Model\Entity\User|null $modifier
  * @property int $id
@@ -35,7 +35,7 @@ class TaxRate extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'name' => true,
         'vat_rate' => true,
         'reverse_charge' => true,

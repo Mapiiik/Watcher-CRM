@@ -64,12 +64,10 @@ class ContractVersionsController extends AppController
      */
     public function view($id = null)
     {
-        $contractVersion = $this->ContractVersions->get($id, [
-            'contain' => [
-                'Contracts' => [
-                    'InstallationAddresses',
-                    'ServiceTypes',
-                ],
+        $contractVersion = $this->ContractVersions->get($id, contain: [
+            'Contracts' => [
+                'InstallationAddresses',
+                'ServiceTypes',
             ],
         ]);
 
@@ -134,9 +132,7 @@ class ContractVersionsController extends AppController
         $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
-        $contractVersion = $this->ContractVersions->get($id, [
-            'contain' => [],
-        ]);
+        $contractVersion = $this->ContractVersions->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $contractVersion = $this->ContractVersions->patchEntity($contractVersion, $this->request->getData());
             if ($this->ContractVersions->save($contractVersion)) {

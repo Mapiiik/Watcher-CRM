@@ -55,12 +55,10 @@ class LabelsController extends AppController
      */
     public function view($id = null)
     {
-        $label = $this->Labels->get($id, [
-            'contain' => [
-                'CustomerLabels' => ['Customers'],
-                'Creators',
-                'Modifiers',
-            ],
+        $label = $this->Labels->get($id, contain: [
+            'CustomerLabels' => ['Customers'],
+            'Creators',
+            'Modifiers',
         ]);
 
         $this->set(compact('label'));
@@ -105,9 +103,7 @@ class LabelsController extends AppController
      */
     public function edit($id = null)
     {
-        $label = $this->Labels->get($id, [
-            'contain' => [],
-        ]);
+        $label = $this->Labels->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $label = $this->Labels->patchEntity($label, $this->getRequest()->getData());
             // check if not bad SQL

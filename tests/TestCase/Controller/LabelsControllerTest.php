@@ -20,7 +20,7 @@ class LabelsControllerTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'app.Labels',
         'app.CustomerLabels',
     ];

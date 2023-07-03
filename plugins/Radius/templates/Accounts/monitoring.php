@@ -232,15 +232,15 @@ use Cake\I18n\FrozenTime;
                             <?php if ($details) : ?>
                             <td><?= h($radacct->acctupdatetime) ?></td>
                             <td><?= $radacct->acctinterval ?
-                                FrozenTime::createFromTimestamp($radacct->acctinterval)
-                                    ->diffForHumans(FrozenTime::createFromTimestamp(0), true) : '' ?></td>
+                                \Cake\I18n\DateTime::createFromTimestamp($radacct->acctinterval)
+                                    ->diffForHumans(\Cake\I18n\DateTime::createFromTimestamp(0), true) : '' ?></td>
                             <?php endif ?>
                             <td><?= h($radacct->acctstoptime) ?></td>
                             <?php if ($details) : ?>
                             <td><?= h($radacct->acctterminatecause) ?></td>
                             <?php endif ?>
-                            <td><?= FrozenTime::createFromTimestamp($radacct->acctsessiontime)
-                                ->diffForHumans(FrozenTime::createFromTimestamp(0), true) ?></td>
+                            <td><?= \Cake\I18n\DateTime::createFromTimestamp($radacct->acctsessiontime)
+                                ->diffForHumans(\Cake\I18n\DateTime::createFromTimestamp(0), true) ?></td>
                             <td><?= $this->Number->toReadableSize($radacct->acctinputoctets) ?></td>
                             <td><?= $this->Number->toReadableSize($radacct->acctoutputoctets) ?></td>
                             <td class="actions">

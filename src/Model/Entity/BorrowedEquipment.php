@@ -9,10 +9,10 @@ use Cake\ORM\Entity;
 /**
  * BorrowedEquipment Entity
  *
- * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\DateTime|null $created
  * @property int|null $created_by
  * @property \CakeDC\Users\Model\Entity\User|null $creator
- * @property \Cake\I18n\FrozenTime|null $modified
+ * @property \Cake\I18n\DateTime|null $modified
  * @property int|null $modified_by
  * @property \CakeDC\Users\Model\Entity\User|null $modifier
  * @property int $id
@@ -20,8 +20,8 @@ use Cake\ORM\Entity;
  * @property int $contract_id
  * @property int $equipment_type_id
  * @property string|null $serial_number
- * @property \Cake\I18n\FrozenDate|null $borrowed_from
- * @property \Cake\I18n\FrozenDate|null $borrowed_until
+ * @property \Cake\I18n\Date|null $borrowed_from
+ * @property \Cake\I18n\Date|null $borrowed_until
  * @property string $style
  *
  * @property \App\Model\Entity\Customer $customer
@@ -39,7 +39,7 @@ class BorrowedEquipment extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'created' => true,
         'created_by' => true,
         'modified' => true,
@@ -63,7 +63,7 @@ class BorrowedEquipment extends Entity
     protected function _getStyle(): string
     {
         $style = '';
-        $now = new FrozenDate();
+        $now = new \Cake\I18n\Date();
 
         if (isset($this->borrowed_from) && $this->borrowed_from > $now) {
             $style = 'color: darkorange;';

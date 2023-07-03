@@ -64,14 +64,12 @@ class BorrowedEquipmentsController extends AppController
      */
     public function view($id = null)
     {
-        $borrowedEquipment = $this->BorrowedEquipments->get($id, [
-            'contain' => [
-                'Customers',
-                'Contracts',
-                'EquipmentTypes',
-                'Creators',
-                'Modifiers',
-            ],
+        $borrowedEquipment = $this->BorrowedEquipments->get($id, contain: [
+            'Customers',
+            'Contracts',
+            'EquipmentTypes',
+            'Creators',
+            'Modifiers',
         ]);
 
         $this->set(compact('borrowedEquipment'));
@@ -145,9 +143,7 @@ class BorrowedEquipmentsController extends AppController
         $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
-        $borrowedEquipment = $this->BorrowedEquipments->get($id, [
-            'contain' => [],
-        ]);
+        $borrowedEquipment = $this->BorrowedEquipments->get($id, contain: []);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $borrowedEquipment = $this->BorrowedEquipments

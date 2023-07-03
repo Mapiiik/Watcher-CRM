@@ -19,7 +19,7 @@ use Cake\ORM\Entity;
  * @property array|null $original
  * @property array|null $changed
  * @property array|null $meta
- * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\DateTime|null $created
  */
 class AuditLog extends Entity
 {
@@ -32,7 +32,7 @@ class AuditLog extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'transaction' => true,
         'type' => true,
         'primary_key' => true,

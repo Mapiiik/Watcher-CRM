@@ -68,14 +68,12 @@ class BillingsController extends AppController
      */
     public function view($id = null)
     {
-        $billing = $this->Billings->get($id, [
-            'contain' => [
-                'Contracts' => ['ContractStates'],
-                'Customers',
-                'Services',
-                'Creators',
-                'Modifiers',
-            ],
+        $billing = $this->Billings->get($id, contain: [
+            'Contracts' => ['ContractStates'],
+            'Customers',
+            'Services',
+            'Creators',
+            'Modifiers',
         ]);
 
         $this->set(compact('billing'));
@@ -175,9 +173,7 @@ class BillingsController extends AppController
         $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
-        $billing = $this->Billings->get($id, [
-            'contain' => [],
-        ]);
+        $billing = $this->Billings->get($id, contain: []);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $billing = $this->Billings->patchEntity($billing, $this->getRequest()->getData());

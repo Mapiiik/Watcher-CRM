@@ -23,7 +23,7 @@ class EquipmentTypesTableTest extends TestCase
      *
      * @var array
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'app.EquipmentTypes',
         'app.BorrowedEquipments',
         'app.SoldEquipments',

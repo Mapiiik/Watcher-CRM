@@ -56,13 +56,11 @@ class CustomerLabelsController extends AppController
      */
     public function view($id = null)
     {
-        $customerLabel = $this->CustomerLabels->get($id, [
-            'contain' => [
-                'Labels',
-                'Customers',
-                'Creators',
-                'Modifiers',
-            ],
+        $customerLabel = $this->CustomerLabels->get($id, contain: [
+            'Labels',
+            'Customers',
+            'Creators',
+            'Modifiers',
         ]);
 
         $this->set(compact('customerLabel'));
@@ -112,9 +110,7 @@ class CustomerLabelsController extends AppController
         $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
-        $customerLabel = $this->CustomerLabels->get($id, [
-            'contain' => [],
-        ]);
+        $customerLabel = $this->CustomerLabels->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $customerLabel = $this->CustomerLabels->patchEntity($customerLabel, $this->getRequest()->getData());
             if ($this->CustomerLabels->save($customerLabel)) {

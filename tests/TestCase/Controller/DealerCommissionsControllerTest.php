@@ -20,7 +20,7 @@ class DealerCommissionsControllerTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'app.DealerCommissions',
         'app.Customers',
         'app.Commissions',

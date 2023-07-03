@@ -50,20 +50,18 @@ class ServiceTypesController extends AppController
      */
     public function view($id = null)
     {
-        $serviceType = $this->ServiceTypes->get($id, [
-            'contain' => [
-                'Contracts' => [
-                    'Customers',
-                    'ContractStates',
-                    'InstallationAddresses',
-                    'InstallationTechnicians',
-                    'UninstallationTechnicians',
-                    'Commissions',
-                ],
-                'Services' => ['Queues'],
-                'Creators',
-                'Modifiers',
+        $serviceType = $this->ServiceTypes->get($id, contain: [
+            'Contracts' => [
+                'Customers',
+                'ContractStates',
+                'InstallationAddresses',
+                'InstallationTechnicians',
+                'UninstallationTechnicians',
+                'Commissions',
             ],
+            'Services' => ['Queues'],
+            'Creators',
+            'Modifiers',
         ]);
 
         $this->set(compact('serviceType'));
@@ -98,9 +96,7 @@ class ServiceTypesController extends AppController
      */
     public function edit($id = null)
     {
-        $serviceType = $this->ServiceTypes->get($id, [
-            'contain' => [],
-        ]);
+        $serviceType = $this->ServiceTypes->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $serviceType = $this->ServiceTypes->patchEntity($serviceType, $this->getRequest()->getData());
             if ($this->ServiceTypes->save($serviceType)) {

@@ -9,24 +9,24 @@ use Cake\ORM\Entity;
 /**
  * Invoice Entity
  *
- * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\DateTime|null $created
  * @property int|null $created_by
  * @property \CakeDC\Users\Model\Entity\User|null $creator
- * @property \Cake\I18n\FrozenTime|null $modified
+ * @property \Cake\I18n\DateTime|null $modified
  * @property int|null $modified_by
  * @property \CakeDC\Users\Model\Entity\User|null $modifier
  * @property int $id
  * @property int|null $customer_id
  * @property int $number
  * @property int|null $variable_symbol
- * @property \Cake\I18n\FrozenDate|null $creation_date
- * @property \Cake\I18n\FrozenDate|null $due_date
+ * @property \Cake\I18n\Date|null $creation_date
+ * @property \Cake\I18n\Date|null $due_date
  * @property string|null $text
  * @property float|null $total
  * @property float|null $debt
- * @property \Cake\I18n\FrozenDate|null $payment_date
+ * @property \Cake\I18n\Date|null $payment_date
  * @property bool $send_by_email
- * @property \Cake\I18n\FrozenTime|null $email_sent
+ * @property \Cake\I18n\DateTime|null $email_sent
  * @property \App\Model\Entity\Billing[] $items
  * @property string|null $note
  * @property string|null $internal_note
@@ -45,7 +45,7 @@ class Invoice extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'created' => true,
         'created_by' => true,
         'modified' => true,
@@ -72,7 +72,7 @@ class Invoice extends Entity
     protected function _getStyle(): string
     {
         $style = '';
-        $now = new FrozenDate();
+        $now = new \Cake\I18n\Date();
 
         if ($this->debt > 0) {
             $style = 'color: red;';

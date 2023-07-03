@@ -20,7 +20,7 @@ class BorrowedEquipmentsControllerTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'app.BorrowedEquipments',
         'app.Customers',
         'app.Contracts',

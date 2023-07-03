@@ -59,9 +59,7 @@ class AddressesController extends AppController
      */
     public function view($id = null)
     {
-        $address = $this->Addresses->get($id, [
-            'contain' => [],
-        ]);
+        $address = $this->Addresses->get($id, contain: []);
 
         $this->set(compact('address'));
     }
@@ -95,9 +93,7 @@ class AddressesController extends AppController
      */
     public function edit($id = null)
     {
-        $address = $this->Addresses->get($id, [
-            'contain' => [],
-        ]);
+        $address = $this->Addresses->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $address = $this->Addresses->patchEntity($address, $this->request->getData());
             if ($this->Addresses->save($address)) {

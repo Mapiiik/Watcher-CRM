@@ -8,10 +8,10 @@ use Cake\ORM\Entity;
 /**
  * Customer Entity
  *
- * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\DateTime|null $created
  * @property int|null $created_by
  * @property \CakeDC\Users\Model\Entity\User|null $creator
- * @property \Cake\I18n\FrozenTime|null $modified
+ * @property \Cake\I18n\DateTime|null $modified
  * @property int|null $modified_by
  * @property \CakeDC\Users\Model\Entity\User|null $modifier
  * @property int $id
@@ -32,7 +32,7 @@ use Cake\ORM\Entity;
  * @property bool|null $invoice_delivery_type
  * @property string|null $note
  * @property string|null $identity_card_number
- * @property \Cake\I18n\FrozenDate|null $date_of_birth
+ * @property \Cake\I18n\Date|null $date_of_birth
  * @property bool|null $agree_gdpr
  * @property bool|null $agree_mailing_outages
  * @property bool|null $agree_mailing_commercial
@@ -78,7 +78,7 @@ class Customer extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'created' => true,
         'created_by' => true,
         'modified' => true,

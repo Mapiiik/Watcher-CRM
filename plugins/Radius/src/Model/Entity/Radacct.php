@@ -18,9 +18,9 @@ use Cake\ORM\Entity;
  * @property string $nasipaddress
  * @property string|null $nasportid
  * @property string|null $nasporttype
- * @property \Cake\I18n\FrozenTime|null $acctstarttime
- * @property \Cake\I18n\FrozenTime|null $acctupdatetime
- * @property \Cake\I18n\FrozenTime|null $acctstoptime
+ * @property \Cake\I18n\DateTime|null $acctstarttime
+ * @property \Cake\I18n\DateTime|null $acctupdatetime
+ * @property \Cake\I18n\DateTime|null $acctstoptime
  * @property int|null $acctinterval
  * @property int|null $acctsessiontime
  * @property string|null $acctauthentic
@@ -53,7 +53,7 @@ class Radacct extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'acctsessionid' => true,
         'acctuniqueid' => true,
         'username' => true,

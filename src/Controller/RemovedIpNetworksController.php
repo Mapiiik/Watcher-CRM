@@ -67,14 +67,12 @@ class RemovedIpNetworksController extends AppController
      */
     public function view($id = null)
     {
-        $removedIpNetwork = $this->RemovedIpNetworks->get($id, [
-            'contain' => [
-                'Customers',
-                'Contracts',
-                'Creators',
-                'Modifiers',
-                'Removers',
-            ],
+        $removedIpNetwork = $this->RemovedIpNetworks->get($id, contain: [
+            'Customers',
+            'Contracts',
+            'Creators',
+            'Modifiers',
+            'Removers',
         ]);
 
         $types_of_use = $this->RemovedIpNetworks->types_of_use;
@@ -109,7 +107,7 @@ class RemovedIpNetworksController extends AppController
                 ->patchEntity($removedIpNetwork, $this->getRequest()->getData());
 
             // TODO - add who and when deleted this
-            $removedIpNetwork->removed = FrozenTime::now();
+            $removedIpNetwork->removed = \Cake\I18n\DateTime::now();
             $removedIpNetwork->removed_by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
 
             if ($this->RemovedIpNetworks->save($removedIpNetwork)) {
@@ -155,9 +153,7 @@ class RemovedIpNetworksController extends AppController
         $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
-        $removedIpNetwork = $this->RemovedIpNetworks->get($id, [
-            'contain' => [],
-        ]);
+        $removedIpNetwork = $this->RemovedIpNetworks->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $removedIpNetwork = $this->RemovedIpNetworks
                 ->patchEntity($removedIpNetwork, $this->getRequest()->getData());

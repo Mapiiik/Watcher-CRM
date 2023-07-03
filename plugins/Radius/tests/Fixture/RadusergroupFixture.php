@@ -15,7 +15,7 @@ class RadusergroupFixture extends TestFixture
      *
      * @var string
      */
-    public $table = 'radusergroup';
+    public string $table = 'radusergroup';
     /**
      * Fields
      *

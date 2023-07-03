@@ -32,9 +32,7 @@ class NasController extends AppController
      */
     public function view($id = null)
     {
-        $nas = $this->Nas->get($id, [
-            'contain' => [],
-        ]);
+        $nas = $this->Nas->get($id, contain: []);
 
         $this->set(compact('nas'));
     }
@@ -68,9 +66,7 @@ class NasController extends AppController
      */
     public function edit($id = null)
     {
-        $nas = $this->Nas->get($id, [
-            'contain' => [],
-        ]);
+        $nas = $this->Nas->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $nas = $this->Nas->patchEntity($nas, $this->request->getData());
             if ($this->Nas->save($nas)) {

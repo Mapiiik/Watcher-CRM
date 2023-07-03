@@ -35,9 +35,7 @@ class RadacctController extends AppController
      */
     public function view($id = null)
     {
-        $radacct = $this->Radacct->get($id, [
-            'contain' => ['Accounts'],
-        ]);
+        $radacct = $this->Radacct->get($id, contain: ['Accounts']);
 
         $this->set(compact('radacct'));
     }
@@ -72,9 +70,7 @@ class RadacctController extends AppController
      */
     public function edit($id = null)
     {
-        $radacct = $this->Radacct->get($id, [
-            'contain' => [],
-        ]);
+        $radacct = $this->Radacct->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $radacct = $this->Radacct->patchEntity($radacct, $this->request->getData());
             if ($this->Radacct->save($radacct)) {

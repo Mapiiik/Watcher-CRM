@@ -24,7 +24,7 @@ use Cake\ORM\Entity;
  * @property int|null $cislo_orientacni
  * @property string|null $cislo_orientacni_znak
  * @property int|null $psc
- * @property \Cake\I18n\FrozenDate|null $plati_od
+ * @property \Cake\I18n\Date|null $plati_od
  * @property string|null $geometry
  * @property string|null $geometry_jtsk
  * @property string $address
@@ -44,7 +44,7 @@ class Address extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'obec_kod' => true,
         'obec_nazev' => true,
         'momc_kod' => true,

@@ -10,10 +10,10 @@ use Exception;
 /**
  * Contract Entity
  *
- * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\DateTime|null $created
  * @property int|null $created_by
  * @property \CakeDC\Users\Model\Entity\User|null $creator
- * @property \Cake\I18n\FrozenTime|null $modified
+ * @property \Cake\I18n\DateTime|null $modified
  * @property int|null $modified_by
  * @property \CakeDC\Users\Model\Entity\User|null $modifier
  * @property int $id
@@ -27,9 +27,9 @@ use Exception;
  * @property int|null $installation_technician_id
  * @property int|null $uninstallation_technician_id
  * @property int|null $commission_id
- * @property \Cake\I18n\FrozenDate|null $installation_date
- * @property \Cake\I18n\FrozenDate|null $uninstallation_date
- * @property \Cake\I18n\FrozenDate|null $termination_date
+ * @property \Cake\I18n\Date|null $installation_date
+ * @property \Cake\I18n\Date|null $uninstallation_date
+ * @property \Cake\I18n\Date|null $termination_date
  * @property string|null $access_description
  * @property int|null $activation_fee
  * @property int|null $activation_fee_with_obligation
@@ -78,7 +78,7 @@ class Contract extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'created' => true,
         'created_by' => true,
         'modified' => true,

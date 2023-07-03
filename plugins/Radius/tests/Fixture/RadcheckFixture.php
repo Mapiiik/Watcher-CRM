@@ -15,7 +15,7 @@ class RadcheckFixture extends TestFixture
      *
      * @var string
      */
-    public $table = 'radcheck';
+    public string $table = 'radcheck';
     /**
      * Fields
      *

@@ -23,7 +23,7 @@ class IpsTableTest extends TestCase
      *
      * @var array
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'app.Ips',
         'app.Customers',
         'app.Contracts',

@@ -27,7 +27,7 @@ class Radcheck extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'username' => true,
         'attribute' => true,
         'op' => true,

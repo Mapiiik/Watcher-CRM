@@ -11,13 +11,13 @@ use CakeDC\Users\Model\Entity\User;
  * @property string|null $first_name
  * @property string|null $last_name
  * @property bool $active
- * @property \Cake\I18n\FrozenDate|null $activation_date
- * @property \Cake\I18n\FrozenDate|null $tos_date
+ * @property \Cake\I18n\Date|null $activation_date
+ * @property \Cake\I18n\Date|null $tos_date
  * @property string|null $secret
  * @property bool $secret_verified
- * @property \Cake\I18n\FrozenDate|null $last_login
- * @property \Cake\I18n\FrozenDate $created
- * @property \Cake\I18n\FrozenDate $modified
+ * @property \Cake\I18n\Date|null $last_login
+ * @property \Cake\I18n\Date $created
+ * @property \Cake\I18n\Date $modified
  * @property int $customer_id
  * @property array|null $user_settings
  */
@@ -28,7 +28,7 @@ class AppUser extends User
      *
      * @var array
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         '*' => true,
         'id' => false,
         'is_superuser' => false,

@@ -32,9 +32,7 @@ class RadgroupcheckController extends AppController
      */
     public function view($id = null)
     {
-        $radgroupcheck = $this->Radgroupcheck->get($id, [
-            'contain' => ['Radusergroup'],
-        ]);
+        $radgroupcheck = $this->Radgroupcheck->get($id, contain: ['Radusergroup']);
 
         $this->set(compact('radgroupcheck'));
     }
@@ -68,9 +66,7 @@ class RadgroupcheckController extends AppController
      */
     public function edit($id = null)
     {
-        $radgroupcheck = $this->Radgroupcheck->get($id, [
-            'contain' => [],
-        ]);
+        $radgroupcheck = $this->Radgroupcheck->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $radgroupcheck = $this->Radgroupcheck->patchEntity($radgroupcheck, $this->request->getData());
             if ($this->Radgroupcheck->save($radgroupcheck)) {

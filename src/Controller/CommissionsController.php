@@ -50,20 +50,18 @@ class CommissionsController extends AppController
      */
     public function view($id = null)
     {
-        $commission = $this->Commissions->get($id, [
-            'contain' => [
-                'DealerCommissions' => ['Dealers'],
-                'Contracts' => [
-                    'Customers',
-                    'ContractStates',
-                    'ServiceTypes',
-                    'InstallationAddresses',
-                    'InstallationTechnicians',
-                    'UninstallationTechnicians',
-                ],
-                'Creators',
-                'Modifiers',
+        $commission = $this->Commissions->get($id, contain: [
+            'DealerCommissions' => ['Dealers'],
+            'Contracts' => [
+                'Customers',
+                'ContractStates',
+                'ServiceTypes',
+                'InstallationAddresses',
+                'InstallationTechnicians',
+                'UninstallationTechnicians',
             ],
+            'Creators',
+            'Modifiers',
         ]);
 
         $this->set(compact('commission'));
@@ -98,9 +96,7 @@ class CommissionsController extends AppController
      */
     public function edit($id = null)
     {
-        $commission = $this->Commissions->get($id, [
-            'contain' => [],
-        ]);
+        $commission = $this->Commissions->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $commission = $this->Commissions->patchEntity($commission, $this->getRequest()->getData());
             if ($this->Commissions->save($commission)) {

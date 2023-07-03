@@ -35,9 +35,7 @@ class RadcheckController extends AppController
      */
     public function view($id = null)
     {
-        $radcheck = $this->Radcheck->get($id, [
-            'contain' => ['Accounts'],
-        ]);
+        $radcheck = $this->Radcheck->get($id, contain: ['Accounts']);
 
         $this->set(compact('radcheck'));
     }
@@ -72,9 +70,7 @@ class RadcheckController extends AppController
      */
     public function edit($id = null)
     {
-        $radcheck = $this->Radcheck->get($id, [
-            'contain' => [],
-        ]);
+        $radcheck = $this->Radcheck->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $radcheck = $this->Radcheck->patchEntity($radcheck, $this->request->getData());
             if ($this->Radcheck->save($radcheck)) {

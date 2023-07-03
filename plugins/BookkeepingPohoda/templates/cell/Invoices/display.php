@@ -76,7 +76,7 @@ use Cake\I18n\FrozenDate;
             . $this->Number->currency(
                 $invoices
                     ->filter(function ($value, $key) {
-                        return $value->due_date < FrozenDate::create();
+                        return $value->due_date < \Cake\I18n\Date::create();
                     })
                     ->sumOf('debt')
             )

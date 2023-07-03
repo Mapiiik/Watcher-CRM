@@ -776,7 +776,7 @@ class ContractPDF extends TCPDF
         $this->Ln();
         $this->Ln();
         if ($signed) {
-            $this->Cell(90, 4, 'Datum podpisu: ' . new FrozenDate(), '', 0, 'C');
+            $this->Cell(90, 4, 'Datum podpisu: ' . new \Cake\I18n\Date(), '', 0, 'C');
         } else {
             $this->Cell(90, 4, 'Datum podpisu: ____________________', '', 0, 'C');
         }
@@ -1454,7 +1454,7 @@ class ContractPDF extends TCPDF
         $this->Ln();
         $this->Ln();
         if ($signed) {
-            $this->Cell(90, 4, 'Datum podpisu: ' . new FrozenDate(), '', 0, 'C');
+            $this->Cell(90, 4, 'Datum podpisu: ' . new \Cake\I18n\Date(), '', 0, 'C');
         } else {
             $this->Cell(90, 4, 'Datum podpisu: ____________________', '', 0, 'C');
         }

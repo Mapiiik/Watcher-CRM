@@ -19,7 +19,7 @@ class FootprintBehavior extends Behavior
      *
      * @var array<string, mixed>
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'identity_key' => 'id',
         'column_creator' => 'created_by',
         'column_modifier' => 'modified_by',

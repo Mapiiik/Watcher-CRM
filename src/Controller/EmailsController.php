@@ -56,12 +56,10 @@ class EmailsController extends AppController
      */
     public function view($id = null)
     {
-        $email = $this->Emails->get($id, [
-            'contain' => [
-                'Customers',
-                'Creators',
-                'Modifiers',
-            ],
+        $email = $this->Emails->get($id, contain: [
+            'Customers',
+            'Creators',
+            'Modifiers',
         ]);
 
         $this->set(compact('email'));
@@ -113,9 +111,7 @@ class EmailsController extends AppController
         $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
-        $email = $this->Emails->get($id, [
-            'contain' => [],
-        ]);
+        $email = $this->Emails->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $email = $this->Emails->patchEntity($email, $this->getRequest()->getData());
             if ($this->Emails->save($email)) {

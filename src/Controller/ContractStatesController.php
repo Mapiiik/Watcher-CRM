@@ -50,19 +50,17 @@ class ContractStatesController extends AppController
      */
     public function view($id = null)
     {
-        $contractState = $this->ContractStates->get($id, [
-            'contain' => [
-                'Contracts' => [
-                    'Commissions',
-                    'Customers',
-                    'InstallationAddresses',
-                    'InstallationTechnicians',
-                    'UninstallationTechnicians',
-                    'ServiceTypes',
-                ],
-                'Creators',
-                'Modifiers',
+        $contractState = $this->ContractStates->get($id, contain: [
+            'Contracts' => [
+                'Commissions',
+                'Customers',
+                'InstallationAddresses',
+                'InstallationTechnicians',
+                'UninstallationTechnicians',
+                'ServiceTypes',
             ],
+            'Creators',
+            'Modifiers',
         ]);
 
         $this->set(compact('contractState'));
@@ -99,9 +97,7 @@ class ContractStatesController extends AppController
      */
     public function edit($id = null)
     {
-        $contractState = $this->ContractStates->get($id, [
-            'contain' => [],
-        ]);
+        $contractState = $this->ContractStates->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $contractState = $this->ContractStates->patchEntity($contractState, $this->request->getData());
             if ($this->ContractStates->save($contractState)) {

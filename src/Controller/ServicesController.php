@@ -51,18 +51,16 @@ class ServicesController extends AppController
      */
     public function view($id = null)
     {
-        $service = $this->Services->get($id, [
-            'contain' => [
-                'ServiceTypes',
-                'Queues',
-                'Billings' => [
-                    'Contracts' => ['ContractStates'],
-                    'Customers',
-                    'Services',
-                ],
-                'Creators',
-                'Modifiers',
+        $service = $this->Services->get($id, contain: [
+            'ServiceTypes',
+            'Queues',
+            'Billings' => [
+                'Contracts' => ['ContractStates'],
+                'Customers',
+                'Services',
             ],
+            'Creators',
+            'Modifiers',
         ]);
 
         $this->set(compact('service'));
@@ -99,9 +97,7 @@ class ServicesController extends AppController
      */
     public function edit($id = null)
     {
-        $service = $this->Services->get($id, [
-            'contain' => [],
-        ]);
+        $service = $this->Services->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $service = $this->Services->patchEntity($service, $this->getRequest()->getData());
             if ($this->Services->save($service)) {

@@ -10,20 +10,20 @@ use Exception;
 /**
  * Billing Entity
  *
- * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\DateTime|null $created
  * @property int|null $created_by
  * @property \CakeDC\Users\Model\Entity\User|null $creator
- * @property \Cake\I18n\FrozenTime|null $modified
+ * @property \Cake\I18n\DateTime|null $modified
  * @property int|null $modified_by
  * @property \CakeDC\Users\Model\Entity\User|null $modifier
  * @property int $id
  * @property int|null $customer_id
  * @property string|null $text
  * @property int|null $price
- * @property \Cake\I18n\FrozenDate|null $billing_from
+ * @property \Cake\I18n\Date|null $billing_from
  * @property string|null $note
  * @property bool $active
- * @property \Cake\I18n\FrozenDate|null $billing_until
+ * @property \Cake\I18n\Date|null $billing_until
  * @property bool $separate_invoice
  * @property int|null $service_id
  * @property int $quantity
@@ -56,7 +56,7 @@ class Billing extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'created' => true,
         'created_by' => true,
         'modified' => true,
@@ -195,11 +195,11 @@ class Billing extends Entity
     /**
      * getter for total price per period (calculates the price ratio within active days in the selected period)
      *
-     * @param \Cake\I18n\FrozenDate $from First day of period
-     * @param \Cake\I18n\FrozenDate $until Last day of period
+     * @param \Cake\I18n\Date $from First day of period
+     * @param \Cake\I18n\Date $until Last day of period
      * @return float
      */
-    public function periodTotal(FrozenDate $from, FrozenDate $until): float
+    public function periodTotal(\Cake\I18n\Date $from, \Cake\I18n\Date $until): float
     {
         $period_days = $from->diffInDays($until->addDay(1));
 
@@ -253,7 +253,7 @@ class Billing extends Entity
     protected function _getStyle(): string
     {
         $style = '';
-        $now = new FrozenDate();
+        $now = new \Cake\I18n\Date();
 
         if (isset($this->billing_from) && $this->billing_from > $now) {
             $style = 'color: darkorange;';
@@ -278,7 +278,7 @@ class Billing extends Entity
      */
     protected function _getActive(): bool
     {
-        $now = new FrozenDate();
+        $now = new \Cake\I18n\Date();
 
         if (isset($this->billing_from) && $this->billing_from > $now) {
             return false;

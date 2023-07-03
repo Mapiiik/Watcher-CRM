@@ -8,18 +8,18 @@ use Cake\ORM\Entity;
 /**
  * ContractVersion Entity
  *
- * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\DateTime|null $created
  * @property int|null $created_by
  * @property \CakeDC\Users\Model\Entity\User|null $creator
- * @property \Cake\I18n\FrozenTime|null $modified
+ * @property \Cake\I18n\DateTime|null $modified
  * @property int|null $modified_by
  * @property \CakeDC\Users\Model\Entity\User|null $modifier
  * @property string $id
  * @property int $contract_id
- * @property \Cake\I18n\FrozenDate $valid_from
- * @property \Cake\I18n\FrozenDate|null $valid_until
- * @property \Cake\I18n\FrozenDate|null $obligation_until
- * @property \Cake\I18n\FrozenDate|null $conclusion_date
+ * @property \Cake\I18n\Date $valid_from
+ * @property \Cake\I18n\Date|null $valid_until
+ * @property \Cake\I18n\Date|null $obligation_until
+ * @property \Cake\I18n\Date|null $conclusion_date
  * @property int $number_of_amendments
  * @property string|null $note
  * @property int|null $minimum_duration
@@ -37,7 +37,7 @@ class ContractVersion extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'contract_id' => true,
         'valid_from' => true,
         'valid_until' => true,

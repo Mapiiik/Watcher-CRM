@@ -35,9 +35,7 @@ class RadusergroupController extends AppController
      */
     public function view($id = null)
     {
-        $radusergroup = $this->Radusergroup->get($id, [
-            'contain' => ['Accounts', 'Radgroupcheck', 'Radgroupreply'],
-        ]);
+        $radusergroup = $this->Radusergroup->get($id, contain: ['Accounts', 'Radgroupcheck', 'Radgroupreply']);
 
         $this->set(compact('radusergroup'));
     }
@@ -78,9 +76,7 @@ class RadusergroupController extends AppController
      */
     public function edit($id = null)
     {
-        $radusergroup = $this->Radusergroup->get($id, [
-            'contain' => [],
-        ]);
+        $radusergroup = $this->Radusergroup->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $radusergroup = $this->Radusergroup->patchEntity($radusergroup, $this->request->getData());
             if ($this->Radusergroup->save($radusergroup)) {

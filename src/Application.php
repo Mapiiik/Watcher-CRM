@@ -84,10 +84,10 @@ class Application extends BaseApplication
 
         // Set time and date format if specified in environment
         if (!empty(env('APP_TIME_FORMAT'))) {
-            FrozenTime::setToStringFormat(env('APP_TIME_FORMAT'));
+            \Cake\I18n\DateTime::setToStringFormat(env('APP_TIME_FORMAT'));
         }
         if (!empty(env('APP_DATE_FORMAT'))) {
-            FrozenDate::setToStringFormat(env('APP_DATE_FORMAT'));
+            \Cake\I18n\Date::setToStringFormat(env('APP_DATE_FORMAT'));
         }
 
         // Set default currency if specified in environment

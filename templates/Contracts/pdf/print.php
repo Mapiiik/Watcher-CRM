@@ -11,7 +11,7 @@ use App\ContractPDF;
 use Cake\I18n\FrozenDate;
 
 // define date format
-FrozenDate::setToStringFormat('dd.MM.yyyy');
+\Cake\I18n\Date::setToStringFormat('dd.MM.yyyy');
 
 if (isset($query['signed']) && $query['signed'] == 1) {
     $signed = true;

@@ -57,7 +57,7 @@ use Cake\I18n\FrozenDate;
                 echo $this->Form->control('obligation_until', [
                     'empty' => true,
                     'disabled' => !$contractVersion->has('obligation_until'),
-                    'default' => FrozenDate::now()->addMonth(24)->lastOfMonth(),
+                    'default' => \Cake\I18n\Date::now()->addMonth(24)->lastOfMonth(),
                 ]);
                 $this->Form->unlockField('obligation_until'); //disable form security check
 

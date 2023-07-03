@@ -20,7 +20,7 @@ class SettingsControllerTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [];
+    protected array $fixtures = [];
 
     /**
      * Test index method

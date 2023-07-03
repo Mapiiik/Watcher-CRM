@@ -32,9 +32,7 @@ class RadgroupreplyController extends AppController
      */
     public function view($id = null)
     {
-        $radgroupreply = $this->Radgroupreply->get($id, [
-            'contain' => ['Radusergroup'],
-        ]);
+        $radgroupreply = $this->Radgroupreply->get($id, contain: ['Radusergroup']);
 
         $this->set(compact('radgroupreply'));
     }
@@ -68,9 +66,7 @@ class RadgroupreplyController extends AppController
      */
     public function edit($id = null)
     {
-        $radgroupreply = $this->Radgroupreply->get($id, [
-            'contain' => [],
-        ]);
+        $radgroupreply = $this->Radgroupreply->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $radgroupreply = $this->Radgroupreply->patchEntity($radgroupreply, $this->request->getData());
             if ($this->Radgroupreply->save($radgroupreply)) {

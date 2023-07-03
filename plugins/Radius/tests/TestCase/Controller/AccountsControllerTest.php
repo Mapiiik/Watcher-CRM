@@ -20,7 +20,7 @@ class AccountsControllerTest extends TestCase
      *
      * @var array
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.Radius.Accounts',
     ];
 

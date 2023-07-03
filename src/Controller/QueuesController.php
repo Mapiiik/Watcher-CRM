@@ -51,12 +51,10 @@ class QueuesController extends AppController
      */
     public function view($id = null)
     {
-        $queue = $this->Queues->get($id, [
-            'contain' => [
-                'Services' => ['ServiceTypes'],
-                'Creators',
-                'Modifiers',
-            ],
+        $queue = $this->Queues->get($id, contain: [
+            'Services' => ['ServiceTypes'],
+            'Creators',
+            'Modifiers',
         ]);
 
         $this->set(compact('queue'));
@@ -91,9 +89,7 @@ class QueuesController extends AppController
      */
     public function edit($id = null)
     {
-        $queue = $this->Queues->get($id, [
-            'contain' => [],
-        ]);
+        $queue = $this->Queues->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $queue = $this->Queues->patchEntity($queue, $this->getRequest()->getData());
             if ($this->Queues->save($queue)) {

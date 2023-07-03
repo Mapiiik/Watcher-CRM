@@ -35,9 +35,7 @@ class RadpostauthController extends AppController
      */
     public function view($id = null)
     {
-        $radpostauth = $this->Radpostauth->get($id, [
-            'contain' => ['Accounts'],
-        ]);
+        $radpostauth = $this->Radpostauth->get($id, contain: ['Accounts']);
 
         $this->set(compact('radpostauth'));
     }
@@ -72,9 +70,7 @@ class RadpostauthController extends AppController
      */
     public function edit($id = null)
     {
-        $radpostauth = $this->Radpostauth->get($id, [
-            'contain' => [],
-        ]);
+        $radpostauth = $this->Radpostauth->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $radpostauth = $this->Radpostauth->patchEntity($radpostauth, $this->request->getData());
             if ($this->Radpostauth->save($radpostauth)) {

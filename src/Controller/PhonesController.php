@@ -56,12 +56,10 @@ class PhonesController extends AppController
      */
     public function view($id = null)
     {
-        $phone = $this->Phones->get($id, [
-            'contain' => [
-                'Customers',
-                'Creators',
-                'Modifiers',
-            ],
+        $phone = $this->Phones->get($id, contain: [
+            'Customers',
+            'Creators',
+            'Modifiers',
         ]);
 
         $this->set(compact('phone'));
@@ -113,9 +111,7 @@ class PhonesController extends AppController
         $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
 
-        $phone = $this->Phones->get($id, [
-            'contain' => [],
-        ]);
+        $phone = $this->Phones->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $phone = $this->Phones->patchEntity($phone, $this->getRequest()->getData());
             if ($this->Phones->save($phone)) {

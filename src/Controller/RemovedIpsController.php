@@ -67,14 +67,12 @@ class RemovedIpsController extends AppController
      */
     public function view($id = null)
     {
-        $removedIp = $this->RemovedIps->get($id, [
-            'contain' => [
-                'Customers',
-                'Contracts',
-                'Creators',
-                'Modifiers',
-                'Removers',
-            ],
+        $removedIp = $this->RemovedIps->get($id, contain: [
+            'Customers',
+            'Contracts',
+            'Creators',
+            'Modifiers',
+            'Removers',
         ]);
 
         $types_of_use = $this->RemovedIps->types_of_use;
@@ -108,7 +106,7 @@ class RemovedIpsController extends AppController
             $removedIp = $this->RemovedIps->patchEntity($removedIp, $this->getRequest()->getData());
 
             // TODO - add who and when deleted this
-            $removedIp->removed = FrozenTime::now();
+            $removedIp->removed = \Cake\I18n\DateTime::now();
             $removedIp->removed_by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
 
             if ($this->RemovedIps->save($removedIp)) {
@@ -154,9 +152,7 @@ class RemovedIpsController extends AppController
         $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
-        $removedIp = $this->RemovedIps->get($id, [
-            'contain' => [],
-        ]);
+        $removedIp = $this->RemovedIps->get($id, contain: []);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $removedIp = $this->RemovedIps->patchEntity($removedIp, $this->getRequest()->getData());

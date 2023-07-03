@@ -35,9 +35,7 @@ class RadreplyController extends AppController
      */
     public function view($id = null)
     {
-        $radreply = $this->Radreply->get($id, [
-            'contain' => ['Accounts'],
-        ]);
+        $radreply = $this->Radreply->get($id, contain: ['Accounts']);
 
         $this->set(compact('radreply'));
     }
@@ -72,9 +70,7 @@ class RadreplyController extends AppController
      */
     public function edit($id = null)
     {
-        $radreply = $this->Radreply->get($id, [
-            'contain' => [],
-        ]);
+        $radreply = $this->Radreply->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $radreply = $this->Radreply->patchEntity($radreply, $this->request->getData());
             if ($this->Radreply->save($radreply)) {

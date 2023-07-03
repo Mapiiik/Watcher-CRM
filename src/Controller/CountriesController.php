@@ -50,12 +50,10 @@ class CountriesController extends AppController
      */
     public function view($id = null)
     {
-        $country = $this->Countries->get($id, [
-            'contain' => [
-                'Addresses' => ['Customers'],
-                'Creators',
-                'Modifiers',
-            ],
+        $country = $this->Countries->get($id, contain: [
+            'Addresses' => ['Customers'],
+            'Creators',
+            'Modifiers',
         ]);
 
         $this->set('address_types', $this->Countries->Addresses->types);
@@ -92,9 +90,7 @@ class CountriesController extends AppController
      */
     public function edit($id = null)
     {
-        $country = $this->Countries->get($id, [
-            'contain' => [],
-        ]);
+        $country = $this->Countries->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $country = $this->Countries->patchEntity($country, $this->getRequest()->getData());
             if ($this->Countries->save($country)) {

@@ -20,7 +20,7 @@ class TaxRatesControllerTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'app.TaxRates',
         'app.Customers',
     ];

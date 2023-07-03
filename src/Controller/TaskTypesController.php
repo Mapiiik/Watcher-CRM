@@ -50,12 +50,10 @@ class TaskTypesController extends AppController
      */
     public function view($id = null)
     {
-        $taskType = $this->TaskTypes->get($id, [
-            'contain' => [
-                'Tasks' => ['Customers', 'Dealers', 'TaskStates'],
-                'Creators',
-                'Modifiers',
-            ],
+        $taskType = $this->TaskTypes->get($id, contain: [
+            'Tasks' => ['Customers', 'Dealers', 'TaskStates'],
+            'Creators',
+            'Modifiers',
         ]);
 
         $this->set(compact('taskType'));
@@ -92,9 +90,7 @@ class TaskTypesController extends AppController
      */
     public function edit($id = null)
     {
-        $taskType = $this->TaskTypes->get($id, [
-            'contain' => [],
-        ]);
+        $taskType = $this->TaskTypes->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $taskType = $this->TaskTypes->patchEntity($taskType, $this->getRequest()->getData());
             if ($this->TaskTypes->save($taskType)) {

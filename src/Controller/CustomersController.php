@@ -245,33 +245,31 @@ class CustomersController extends AppController
      */
     public function view($id = null)
     {
-        $customer = $this->Customers->get($id, [
-            'contain' => [
-                'TaxRates',
-                'Addresses' => ['Countries'],
-                'Billings' => ['Contracts' => ['ContractStates'], 'Services'],
-                'BorrowedEquipments' => ['Contracts' => ['ContractStates'], 'EquipmentTypes'],
-                'Contracts' => [
-                    'ContractStates',
-                    'ServiceTypes',
-                    'InstallationAddresses',
-                ],
-                'Emails',
-                'CustomerLabels' => [
-                    'Labels',
-                    'sort' => ['Labels.name'],
-                ],
-                'Logins',
-                'Phones',
-                'SoldEquipments' => ['Contracts' => ['ContractStates'], 'EquipmentTypes'],
-                'Tasks' => ['Contracts', 'TaskTypes', 'TaskStates', 'Dealers'],
-                'Ips' => ['Contracts' => ['ContractStates']],
-                'RemovedIps' => ['Contracts' => ['ContractStates']],
-                'IpNetworks' => ['Contracts' => ['ContractStates']],
-                'RemovedIpNetworks' => ['Contracts' => ['ContractStates']],
-                'Creators',
-                'Modifiers',
+        $customer = $this->Customers->get($id, contain: [
+            'TaxRates',
+            'Addresses' => ['Countries'],
+            'Billings' => ['Contracts' => ['ContractStates'], 'Services'],
+            'BorrowedEquipments' => ['Contracts' => ['ContractStates'], 'EquipmentTypes'],
+            'Contracts' => [
+                'ContractStates',
+                'ServiceTypes',
+                'InstallationAddresses',
             ],
+            'Emails',
+            'CustomerLabels' => [
+                'Labels',
+                'sort' => ['Labels.name'],
+            ],
+            'Logins',
+            'Phones',
+            'SoldEquipments' => ['Contracts' => ['ContractStates'], 'EquipmentTypes'],
+            'Tasks' => ['Contracts', 'TaskTypes', 'TaskStates', 'Dealers'],
+            'Ips' => ['Contracts' => ['ContractStates']],
+            'RemovedIps' => ['Contracts' => ['ContractStates']],
+            'IpNetworks' => ['Contracts' => ['ContractStates']],
+            'RemovedIpNetworks' => ['Contracts' => ['ContractStates']],
+            'Creators',
+            'Modifiers',
         ]);
 
         $invoice_delivery_types = $this->Customers->invoice_delivery_types;
@@ -322,9 +320,7 @@ class CustomersController extends AppController
      */
     public function edit($id = null)
     {
-        $customer = $this->Customers->get($id, [
-            'contain' => [],
-        ]);
+        $customer = $this->Customers->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $customer = $this->Customers->patchEntity($customer, $this->getRequest()->getData());
             if ($this->Customers->save($customer)) {
@@ -377,15 +373,13 @@ class CustomersController extends AppController
         ];
         $this->set('documentTypes', $documentTypes);
 
-        $customer = $this->Customers->get($id, [
-            'contain' => [
-                'TaxRates',
-                'Addresses' => ['Countries'],
-                'Emails',
-                'Phones',
-                'Creators',
-                'Modifiers',
-            ],
+        $customer = $this->Customers->get($id, contain: [
+            'TaxRates',
+            'Addresses' => ['Countries'],
+            'Emails',
+            'Phones',
+            'Creators',
+            'Modifiers',
         ]);
 
         $invoice_delivery_types = $this->Customers->invoice_delivery_types;

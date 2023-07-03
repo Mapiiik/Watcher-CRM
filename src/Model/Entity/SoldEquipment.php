@@ -8,10 +8,10 @@ use Cake\ORM\Entity;
 /**
  * SoldEquipment Entity
  *
- * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\DateTime|null $created
  * @property int|null $created_by
  * @property \CakeDC\Users\Model\Entity\User|null $creator
- * @property \Cake\I18n\FrozenTime|null $modified
+ * @property \Cake\I18n\DateTime|null $modified
  * @property int|null $modified_by
  * @property \CakeDC\Users\Model\Entity\User|null $modifier
  * @property int $id
@@ -19,7 +19,7 @@ use Cake\ORM\Entity;
  * @property int $contract_id
  * @property int $equipment_type_id
  * @property string|null $serial_number
- * @property \Cake\I18n\FrozenTime|null $date_of_sale
+ * @property \Cake\I18n\DateTime|null $date_of_sale
  * @property string $style
  *
  * @property \App\Model\Entity\Customer $customer
@@ -37,7 +37,7 @@ class SoldEquipment extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'created' => true,
         'created_by' => true,
         'modified' => true,

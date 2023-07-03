@@ -171,7 +171,7 @@ use Cake\I18n\Number;
                         </tr>
                         <?php foreach ($bill_dates as $bill_date) : ?>
                         <tr style="<?=
-                            $bill_date->subDay(1) == FrozenDate::create()->lastOfMonth() ?
+                            $bill_date->subDay(1) == \Cake\I18n\Date::create()->lastOfMonth() ?
                                 'background-color: #ffd500;' : ''
                         ?>">
                             <td><?= $bill_date->subDay(1) ?></td>
@@ -208,7 +208,7 @@ use Cake\I18n\Number;
                         </tr>
                         <?php foreach ($bill_dates as $bill_date) : ?>
                         <tr style="<?=
-                            $bill_date->subDay(1) == FrozenDate::create()->lastOfMonth() ?
+                            $bill_date->subDay(1) == \Cake\I18n\Date::create()->lastOfMonth() ?
                                 'background-color: #ffd500;' : ''
                         ?>">
                             <td><?= $bill_date->subDay(1) ?></td>

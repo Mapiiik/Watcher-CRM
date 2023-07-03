@@ -20,7 +20,7 @@ class ServicesControllerTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'app.Services',
         'app.ServiceTypes',
         'app.Queues',

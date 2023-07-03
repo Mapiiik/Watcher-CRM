@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \Cake\Collection\CollectionInterface $dealers
- * @var \Cake\I18n\FrozenDate $month_to_display
+ * @var \Cake\I18n\Date $month_to_display
  */
 ?>
 <div class="row">

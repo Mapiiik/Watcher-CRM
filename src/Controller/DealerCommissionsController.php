@@ -51,13 +51,11 @@ class DealerCommissionsController extends AppController
      */
     public function view($id = null)
     {
-        $dealerCommission = $this->DealerCommissions->get($id, [
-            'contain' => [
-                'Dealers',
-                'Commissions',
-                'Creators',
-                'Modifiers',
-            ],
+        $dealerCommission = $this->DealerCommissions->get($id, contain: [
+            'Dealers',
+            'Commissions',
+            'Creators',
+            'Modifiers',
         ]);
 
         $this->set(compact('dealerCommission'));
@@ -109,9 +107,7 @@ class DealerCommissionsController extends AppController
      */
     public function edit($id = null)
     {
-        $dealerCommission = $this->DealerCommissions->get($id, [
-            'contain' => [],
-        ]);
+        $dealerCommission = $this->DealerCommissions->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $dealerCommission = $this->DealerCommissions
                 ->patchEntity($dealerCommission, $this->getRequest()->getData());

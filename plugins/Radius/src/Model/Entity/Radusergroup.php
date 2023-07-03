@@ -28,7 +28,7 @@ class Radusergroup extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'username' => true,
         'groupname' => true,
         'priority' => true,

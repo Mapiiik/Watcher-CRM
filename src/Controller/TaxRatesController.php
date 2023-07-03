@@ -50,16 +50,14 @@ class TaxRatesController extends AppController
      */
     public function view($id = null)
     {
-        $taxRate = $this->TaxRates->get($id, [
-            'contain' => [
-                'Customers' => [
-                    'TaxRates',
-                    'Contracts',
-                    'Ips' => ['Contracts'],
-                ],
-                'Creators',
-                'Modifiers',
+        $taxRate = $this->TaxRates->get($id, contain: [
+            'Customers' => [
+                'TaxRates',
+                'Contracts',
+                'Ips' => ['Contracts'],
             ],
+            'Creators',
+            'Modifiers',
         ]);
 
         $this->set(compact('taxRate'));
@@ -94,9 +92,7 @@ class TaxRatesController extends AppController
      */
     public function edit($id = null)
     {
-        $taxRate = $this->TaxRates->get($id, [
-            'contain' => [],
-        ]);
+        $taxRate = $this->TaxRates->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $taxRate = $this->TaxRates->patchEntity($taxRate, $this->getRequest()->getData());
             if ($this->TaxRates->save($taxRate)) {

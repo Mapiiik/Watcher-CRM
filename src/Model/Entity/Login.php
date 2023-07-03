@@ -9,10 +9,10 @@ use Cake\Utility\Security;
 /**
  * Login Entity
  *
- * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\DateTime|null $created
  * @property int|null $created_by
  * @property \CakeDC\Users\Model\Entity\User|null $creator
- * @property \Cake\I18n\FrozenTime|null $modified
+ * @property \Cake\I18n\DateTime|null $modified
  * @property int|null $modified_by
  * @property \CakeDC\Users\Model\Entity\User|null $modifier
  * @property int $id
@@ -21,9 +21,9 @@ use Cake\Utility\Security;
  * @property string $password
  * @property int $rights
  * @property int $locked
- * @property \Cake\I18n\FrozenTime|null $last_granted
+ * @property \Cake\I18n\DateTime|null $last_granted
  * @property string|null $last_granted_ip
- * @property \Cake\I18n\FrozenTime|null $last_denied
+ * @property \Cake\I18n\DateTime|null $last_denied
  * @property string|null $last_denied_ip
  *
  * @property \App\Model\Entity\Customer $customer
@@ -39,7 +39,7 @@ class Login extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'created' => true,
         'created_by' => true,
         'modified' => true,
@@ -61,7 +61,7 @@ class Login extends Entity
      *
      * @var array<string>
      */
-    protected $_hidden = [
+    protected array $_hidden = [
         'password',
     ];
 

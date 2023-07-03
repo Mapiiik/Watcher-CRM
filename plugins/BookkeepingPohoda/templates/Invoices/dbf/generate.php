@@ -2,11 +2,10 @@
 /**
  * @var \App\View\AppView $this
  * @var \BookkeepingPohoda\Model\Entity\Invoice[]|\Cake\Collection\CollectionInterface $invoices
- * @var \Cake\I18n\FrozenDate $invoiced_month
+ * @var \Cake\I18n\Date $invoiced_month
  * @var array $tax_rates
  * @var \App\Model\Entity\TaxRate $tax_rate
  */
-
 use BookkeepingPohoda\DBFInvoices;
 
 $dbf = new DBFInvoices();

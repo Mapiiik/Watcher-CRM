@@ -241,20 +241,18 @@ class TasksController extends AppController
      */
     public function view($id = null)
     {
-        $task = $this->Tasks->get($id, [
-            'contain' => [
-                'TaskTypes',
-                'Customers' => [
-                    'Addresses',
-                ],
-                'Contracts' => [
-                    'InstallationAddresses',
-                ],
-                'Dealers',
-                'TaskStates',
-                'Creators',
-                'Modifiers',
+        $task = $this->Tasks->get($id, contain: [
+            'TaskTypes',
+            'Customers' => [
+                'Addresses',
             ],
+            'Contracts' => [
+                'InstallationAddresses',
+            ],
+            'Dealers',
+            'TaskStates',
+            'Creators',
+            'Modifiers',
         ]);
 
         $this->set(compact('task'));
@@ -392,7 +390,7 @@ class TasksController extends AppController
 
         // preset start date
         if (empty($task->start_date)) {
-            $task->start_date = FrozenTime::create();
+            $task->start_date = \Cake\I18n\DateTime::create();
         }
         // preset dealer
         if (empty($task->dealer_id)) {
@@ -431,9 +429,7 @@ class TasksController extends AppController
         $contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $contract_id);
 
-        $task = $this->Tasks->get($id, [
-            'contain' => [],
-        ]);
+        $task = $this->Tasks->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $task = $this->Tasks->patchEntity($task, $this->getRequest()->getData());
 
@@ -541,7 +537,7 @@ class TasksController extends AppController
         $identity = $this->getRequest()->getAttribute('identity');
         $text .= '------------------------------------------------------------' . PHP_EOL;
         $text .= ' ' . ($identity['first_name'] ?? '') . ' ' . ($identity['last_name'] ?? '');
-        $text .= ' (' . FrozenTime::create() . ')' . PHP_EOL;
+        $text .= ' (' . \Cake\I18n\DateTime::create() . ')' . PHP_EOL;
         $text .= '------------------------------------------------------------' . PHP_EOL;
         unset($identity);
 
@@ -558,20 +554,18 @@ class TasksController extends AppController
      */
     private function sendNotificationEmail($id = null, bool $new = false): bool
     {
-        $task = $this->Tasks->get($id, [
-            'contain' => [
-                'TaskTypes',
-                'TaskStates',
-                'Customers' => [
-                    'Addresses',
-                ],
-                'Contracts' => [
-                    'InstallationAddresses',
-                ],
-                'Dealers' => ['Emails'],
-                'Creators',
-                'Modifiers',
+        $task = $this->Tasks->get($id, contain: [
+            'TaskTypes',
+            'TaskStates',
+            'Customers' => [
+                'Addresses',
             ],
+            'Contracts' => [
+                'InstallationAddresses',
+            ],
+            'Dealers' => ['Emails'],
+            'Creators',
+            'Modifiers',
         ]);
 
         $mailer = new Mailer('default');

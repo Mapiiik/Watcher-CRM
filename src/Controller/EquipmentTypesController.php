@@ -50,13 +50,11 @@ class EquipmentTypesController extends AppController
      */
     public function view($id = null)
     {
-        $equipmentType = $this->EquipmentTypes->get($id, [
-            'contain' => [
-                'BorrowedEquipments' => ['Customers', 'Contracts'],
-                'SoldEquipments' => ['Customers', 'Contracts'],
-                'Creators',
-                'Modifiers',
-            ],
+        $equipmentType = $this->EquipmentTypes->get($id, contain: [
+            'BorrowedEquipments' => ['Customers', 'Contracts'],
+            'SoldEquipments' => ['Customers', 'Contracts'],
+            'Creators',
+            'Modifiers',
         ]);
 
         $this->set(compact('equipmentType'));
@@ -91,9 +89,7 @@ class EquipmentTypesController extends AppController
      */
     public function edit($id = null)
     {
-        $equipmentType = $this->EquipmentTypes->get($id, [
-            'contain' => [],
-        ]);
+        $equipmentType = $this->EquipmentTypes->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $equipmentType = $this->EquipmentTypes->patchEntity($equipmentType, $this->getRequest()->getData());
             if ($this->EquipmentTypes->save($equipmentType)) {

@@ -9,10 +9,10 @@ use Cake\ORM\Entity;
 /**
  * Task Entity
  *
- * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\DateTime|null $created
  * @property int|null $created_by
  * @property \CakeDC\Users\Model\Entity\User|null $creator
- * @property \Cake\I18n\FrozenTime|null $modified
+ * @property \Cake\I18n\DateTime|null $modified
  * @property int|null $modified_by
  * @property \CakeDC\Users\Model\Entity\User|null $modifier
  * @property int $id
@@ -26,10 +26,10 @@ use Cake\ORM\Entity;
  * @property string|null $email
  * @property string|null $phone
  * @property int $task_state_id
- * @property \Cake\I18n\FrozenTime|null $finish_date
- * @property \Cake\I18n\FrozenTime|null $start_date
- * @property \Cake\I18n\FrozenTime|null $estimated_date
- * @property \Cake\I18n\FrozenTime|null $critical_date
+ * @property \Cake\I18n\DateTime|null $finish_date
+ * @property \Cake\I18n\DateTime|null $start_date
+ * @property \Cake\I18n\DateTime|null $estimated_date
+ * @property \Cake\I18n\DateTime|null $critical_date
  * @property string|null $access_point_id
  * @property string $summary_text
  * @property string $style
@@ -52,7 +52,7 @@ class Task extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'created' => true,
         'created_by' => true,
         'modified' => true,

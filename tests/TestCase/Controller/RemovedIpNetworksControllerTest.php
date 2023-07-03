@@ -20,7 +20,7 @@ class RemovedIpNetworksControllerTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'app.RemovedIpNetworks',
         'app.Customers',
         'app.Contracts',

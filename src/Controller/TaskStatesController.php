@@ -50,12 +50,10 @@ class TaskStatesController extends AppController
      */
     public function view($id = null)
     {
-        $taskState = $this->TaskStates->get($id, [
-            'contain' => [
-                'Tasks' => ['Customers', 'Dealers', 'TaskStates', 'TaskTypes'],
-                'Creators',
-                'Modifiers',
-            ],
+        $taskState = $this->TaskStates->get($id, contain: [
+            'Tasks' => ['Customers', 'Dealers', 'TaskStates', 'TaskTypes'],
+            'Creators',
+            'Modifiers',
         ]);
 
         $this->set(compact('taskState'));
@@ -92,9 +90,7 @@ class TaskStatesController extends AppController
      */
     public function edit($id = null)
     {
-        $taskState = $this->TaskStates->get($id, [
-            'contain' => [],
-        ]);
+        $taskState = $this->TaskStates->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $taskState = $this->TaskStates->patchEntity($taskState, $this->getRequest()->getData());
             if ($this->TaskStates->save($taskState)) {

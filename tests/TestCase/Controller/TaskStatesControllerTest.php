@@ -20,7 +20,7 @@ class TaskStatesControllerTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'app.TaskStates',
         'app.Tasks',
     ];

@@ -20,7 +20,7 @@ class RadgroupreplyControllerTest extends TestCase
      *
      * @var array
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.Radius.Radgroupreply',
     ];
 

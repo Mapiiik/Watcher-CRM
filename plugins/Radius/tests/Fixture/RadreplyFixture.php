@@ -15,7 +15,7 @@ class RadreplyFixture extends TestFixture
      *
      * @var string
      */
-    public $table = 'radreply';
+    public string $table = 'radreply';
     /**
      * Fields
      *

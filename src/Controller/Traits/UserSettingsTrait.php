@@ -44,14 +44,13 @@ trait UserSettingsTrait
         /** @var \App\Model\Table\AppUsersTable $usersTable */
         $usersTable = $this->fetchTable(Configure::read('Users.table'));
 
-        $user = $usersTable->get($id, [
-            'fields' => [
-                'id',
-                'username',
-                'user_settings',
-            ],
-            'contain' => [],
-        ]);
+        $user = $usersTable->get($id,
+        fields: [
+            'id',
+            'username',
+            'user_settings',
+        ],
+        contain: []);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $user = $usersTable->patchEntity($user, [
