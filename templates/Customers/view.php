@@ -3,7 +3,6 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Customer $customer
  * @var \Cake\Collection\CollectionInterface|array<string> $invoice_delivery_types
- * @var \Cake\Collection\CollectionInterface|array<string> $address_types
  * @var \Cake\Collection\CollectionInterface|array<string> $login_rights
  * @var \Cake\Collection\CollectionInterface|array<string> $ip_address_types_of_use
  * @var \Cake\Collection\CollectionInterface|array<string> $ip_network_types_of_use
@@ -458,7 +457,7 @@
                         </tr>
                         <?php foreach ($customer->addresses as $address) : ?>
                         <tr>
-                            <td><?= h($address_types[$address->type]) ?></td>
+                            <td><?= h($address->getTypeName()) ?></td>
                             <td><?= h($address->company) ?></td>
                             <td><?= h($address->title) ?></td>
                             <td><?= h($address->first_name) ?></td>

@@ -29,20 +29,6 @@ use Cake\Validation\Validator;
 class AddressesTable extends AppTable
 {
     /**
-     * Address types
-     *
-     * @var array<string>
-     */
-    public array $types = [];
-
-    /**
-     * Number types
-     *
-     * @var array<string>
-     */
-    public array $number_types = [];
-
-    /**
      * Initialize method
      *
      * @param array $config The configuration for the Table.
@@ -51,18 +37,6 @@ class AddressesTable extends AppTable
     public function initialize(array $config): void
     {
         parent::initialize($config);
-
-        $this->types = [
-            0 => __('Installation Address'),
-            1 => __('Billing Address'),
-            2 => __('Delivery Address'),
-            3 => __('Permanent Address'),
-        ];
-
-        $this->number_types = [
-            0 => __('House Number'),
-            1 => __('Registration Number'),
-        ];
 
         $this->setTable('addresses');
         $this->setDisplayField('address');

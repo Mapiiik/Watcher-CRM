@@ -56,7 +56,7 @@ class AppUser extends User
     }
 
     /**
-     * Get dealer state method
+     * Get role name method
      *
      * @return string
      */

@@ -38,10 +38,9 @@ class CustomerPDF extends TCPDF
      * @param \App\Model\Entity\Customer $customer Customer with all related data
      * @param string $type Type of requested document
      * @param bool $signed Create signed document?
-     * @param array<string> $address_types Supported address types
      * @return void
      */
-    public function generateGDPRAgreement(Customer $customer, string $type = 'gdpr-new', bool $signed = false, ?array $address_types = null): void
+    public function generateGDPRAgreement(Customer $customer, string $type = 'gdpr-new', bool $signed = false): void
     {
         $this->setPrintHeader(false);
         $this->setPrintFooter(false);
@@ -205,7 +204,7 @@ class CustomerPDF extends TCPDF
 
         foreach ($customer->addresses as $address) {
             $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Cell(30, 4, $address_types[$address->type] . ': ', 0, 0, 'L');
+            $this->Cell(30, 4, $address->getTypeName() . ': ', 0, 0, 'L');
             $this->Ln();
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(30, 4);

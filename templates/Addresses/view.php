@@ -2,8 +2,6 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Address $address
- * @var \Cake\Collection\CollectionInterface|array<string> $types
- * @var \Cake\Collection\CollectionInterface|array<string> $number_types
  */
 ?>
 <div class="row">
@@ -43,7 +41,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Type') ?></th>
-                            <td><?= h($types[$address->type]) ?></td>
+                            <td><?= h($address->getTypeName()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Company') ?></th>
@@ -79,7 +77,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Number Type') ?></th>
-                            <td><?= h($number_types[$address->number_type]) ?></td>
+                            <td><?= h($address->getNumberTypeName()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('City') ?></th>

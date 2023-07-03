@@ -27,7 +27,7 @@ switch ($type) {
     case 'gdpr-change':
         //Generate PDF
         $pdf = new CustomerPDF('P', 'mm', 'A4');
-        $pdf->generateGDPRAgreement($customer, $type, $signed, $address_types);
+        $pdf->generateGDPRAgreement($customer, $type, $signed);
         $pdf->Output($customer->number . '_' . $type . '_' . date('Y-m-d') . '.pdf', 'I');
         break;
     default:

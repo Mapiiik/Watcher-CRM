@@ -206,4 +206,52 @@ class Address extends Entity
 
         return $address;
     }
+
+    /**
+     * Get address type options method
+     *
+     * @return array<int, string>
+     */
+    public function getTypeOptions(): array
+    {
+        return [
+            0 => __('Installation Address'),
+            1 => __('Billing Address'),
+            2 => __('Delivery Address'),
+            3 => __('Permanent Address'),
+        ];
+    }
+
+    /**
+     * Get address type name method
+     *
+     * @return string
+     */
+    public function getTypeName(): string
+    {
+        return $this->getTypeOptions()[$this->type] ?? (string)$this->type;
+    }
+
+    /**
+     * Get number type options method
+     *
+     * @return array<int, string>
+     */
+    public function getNumberTypeOptions(): array
+    {
+        return [
+            0 => __('House Number'),
+            1 => __('Registration Number'),
+        ];
+    }
+
+    /**
+     * Get number type name method
+     *
+     * @return string
+     */
+    public function getNumberTypeName(): string
+    {
+        return $this->getNumberTypeOptions()[$this->number_type] ?? (string)$this->number_type;
+    }
 }

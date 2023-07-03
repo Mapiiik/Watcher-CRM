@@ -91,7 +91,7 @@
                         </tr>
                         <tr>
                             <th><?= __d('radius', 'Type') ?></th>
-                            <td><?= h($account->getType()) ?></td>
+                            <td><?= h($account->getTypeName()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __d('radius', 'Active') ?></th>

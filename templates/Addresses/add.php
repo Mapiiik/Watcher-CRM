@@ -3,7 +3,6 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Address $address
  * @var \Cake\Collection\CollectionInterface|array<string> $customers
- * @var \Cake\Collection\CollectionInterface|array<string> $number_types
  * @var \Cake\Collection\CollectionInterface|array<string> $countries
  */
 ?>
@@ -25,7 +24,10 @@
                         if (!isset($customer_id)) {
                             echo $this->Form->control('customer_id', ['options' => $customers]);
                         }
-                        echo $this->Form->control('type', ['empty' => true]);
+                        echo $this->Form->control('type', [
+                            'empty' => true,
+                            'options' => $address->getTypeOptions(),
+                        ]);
                         echo $this->Form->control('company');
                         echo $this->Form->control('title');
                         echo $this->Form->control('first_name');
@@ -37,7 +39,7 @@
                         <?php
                         echo $this->Form->control('street');
                         echo $this->Form->control('number');
-                        echo $this->Form->control('number_type', ['options' => $number_types]);
+                        echo $this->Form->control('number_type', ['options' => $address->getNumberTypeOptions()]);
                         echo $this->Form->control('city');
                         echo $this->Form->control('zip', ['pattern' => '[0-9]*']);
                         echo $this->Form->control('country_id', ['options' => $countries]);

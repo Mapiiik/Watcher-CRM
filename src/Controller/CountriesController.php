@@ -60,8 +60,6 @@ class CountriesController extends AppController
             'Modifiers',
         ]);
 
-        $this->set('address_types', $this->Countries->Addresses->types);
-
         $this->set(compact('country'));
     }
 

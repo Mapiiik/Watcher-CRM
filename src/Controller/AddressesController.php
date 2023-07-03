@@ -61,9 +61,7 @@ class AddressesController extends AppController
             conditions: $conditions
         ));
 
-        $types = $this->Addresses->types;
-
-        $this->set(compact('addresses', 'types'));
+        $this->set(compact('addresses'));
     }
 
     /**
@@ -82,10 +80,7 @@ class AddressesController extends AppController
             'Modifiers',
         ]);
 
-        $types = $this->Addresses->types;
-        $number_types = $this->Addresses->number_types;
-
-        $this->set(compact('address', 'types', 'number_types'));
+        $this->set(compact('address'));
     }
 
     /**
@@ -143,10 +138,7 @@ class AddressesController extends AppController
             $customers->where(['id' => $customer_id]);
         }
 
-        $types = $this->Addresses->types;
-        $number_types = $this->Addresses->number_types;
-
-        $this->set(compact('address', 'customers', 'countries', 'types', 'number_types'));
+        $this->set(compact('address', 'customers', 'countries'));
     }
 
     /**
@@ -198,10 +190,7 @@ class AddressesController extends AppController
             $customers->where(['id' => $customer_id]);
         }
 
-        $types = $this->Addresses->types;
-        $number_types = $this->Addresses->number_types;
-
-        $this->set(compact('address', 'customers', 'countries', 'types', 'number_types'));
+        $this->set(compact('address', 'customers', 'countries'));
     }
 
     /**

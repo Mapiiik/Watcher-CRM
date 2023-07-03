@@ -325,7 +325,6 @@ class CustomersController extends AppController
         ]);
 
         $invoice_delivery_types = $this->Customers->invoice_delivery_types;
-        $address_types = $this->Customers->Addresses->types;
         $login_rights = $this->Customers->Logins->rights;
 
         $this->set('ip_address_types_of_use', $this->Customers->Ips->types_of_use);
@@ -334,7 +333,6 @@ class CustomersController extends AppController
         $this->set(compact(
             'customer',
             'invoice_delivery_types',
-            'address_types',
             'login_rights'
         ));
     }
@@ -439,7 +437,6 @@ class CustomersController extends AppController
         ]);
 
         $invoice_delivery_types = $this->Customers->invoice_delivery_types;
-        $address_types = $this->Customers->Addresses->types;
 
         $query = $this->getRequest()->getQuery();
         if (isset($query['document_type'])) {
@@ -458,6 +455,6 @@ class CustomersController extends AppController
                     return $this->redirect(['action' => 'print', $id, '?' => $query]);
             }
         }
-        $this->set(compact('customer', 'type', 'query', 'address_types', 'invoice_delivery_types'));
+        $this->set(compact('customer', 'type', 'query', 'invoice_delivery_types'));
     }
 }
