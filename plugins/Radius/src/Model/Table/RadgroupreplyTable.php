@@ -12,7 +12,7 @@ use Cake\Validation\Validator;
  * @method \Radius\Model\Entity\Radgroupreply newEmptyEntity()
  * @method \Radius\Model\Entity\Radgroupreply newEntity(array $data, array $options = [])
  * @method \Radius\Model\Entity\Radgroupreply[] newEntities(array $data, array $options = [])
- * @method \Radius\Model\Entity\Radgroupreply get($primaryKey, $options = [])
+ * @method \Radius\Model\Entity\Radgroupreply get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
  * @method \Radius\Model\Entity\Radgroupreply findOrCreate($search, ?callable $callback = null, $options = [])
  * @method \Radius\Model\Entity\Radgroupreply patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \Radius\Model\Entity\Radgroupreply[] patchEntities(iterable $entities, array $data, array $options = [])

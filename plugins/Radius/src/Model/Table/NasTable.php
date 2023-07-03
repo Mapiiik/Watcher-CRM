@@ -12,7 +12,7 @@ use Cake\Validation\Validator;
  * @method \Radius\Model\Entity\Nas newEmptyEntity()
  * @method \Radius\Model\Entity\Nas newEntity(array $data, array $options = [])
  * @method \Radius\Model\Entity\Nas[] newEntities(array $data, array $options = [])
- * @method \Radius\Model\Entity\Nas get($primaryKey, $options = [])
+ * @method \Radius\Model\Entity\Nas get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
  * @method \Radius\Model\Entity\Nas findOrCreate($search, ?callable $callback = null, $options = [])
  * @method \Radius\Model\Entity\Nas patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \Radius\Model\Entity\Nas[] patchEntities(iterable $entities, array $data, array $options = [])

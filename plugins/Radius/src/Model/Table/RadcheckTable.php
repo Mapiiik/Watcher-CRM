@@ -14,7 +14,7 @@ use Cake\Validation\Validator;
  * @method \Radius\Model\Entity\Radcheck newEmptyEntity()
  * @method \Radius\Model\Entity\Radcheck newEntity(array $data, array $options = [])
  * @method \Radius\Model\Entity\Radcheck[] newEntities(array $data, array $options = [])
- * @method \Radius\Model\Entity\Radcheck get($primaryKey, $options = [])
+ * @method \Radius\Model\Entity\Radcheck get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
  * @method \Radius\Model\Entity\Radcheck findOrCreate($search, ?callable $callback = null, $options = [])
  * @method \Radius\Model\Entity\Radcheck findOrNewEntity($search)
  * @method \Radius\Model\Entity\Radcheck patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])

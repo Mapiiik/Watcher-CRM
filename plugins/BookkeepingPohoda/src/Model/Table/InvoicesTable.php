@@ -16,7 +16,7 @@ use Cake\Validation\Validator;
  * @method \BookkeepingPohoda\Model\Entity\Invoice newEmptyEntity()
  * @method \BookkeepingPohoda\Model\Entity\Invoice newEntity(array $data, array $options = [])
  * @method \BookkeepingPohoda\Model\Entity\Invoice[] newEntities(array $data, array $options = [])
- * @method \BookkeepingPohoda\Model\Entity\Invoice get($primaryKey, $options = [])
+ * @method \BookkeepingPohoda\Model\Entity\Invoice get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
  * @method \BookkeepingPohoda\Model\Entity\Invoice findOrCreate($search, ?callable $callback = null, $options = [])
  * @method \BookkeepingPohoda\Model\Entity\Invoice patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \BookkeepingPohoda\Model\Entity\Invoice[] patchEntities(iterable $entities, array $data, array $options = [])
