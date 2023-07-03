@@ -2,7 +2,6 @@
 /**
  * @var \App\View\AppView $this
  * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\Login> $logins
- * @var \Cake\Collection\CollectionInterface|array<string> $rights
  */
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
@@ -47,7 +46,7 @@
                     </td>
                     <td><?= $login->__isset('customer') ? h($login->customer->number) : '' ?></td>
                     <td><?= h($login->login) ?></td>
-                    <td><?= $rights[$login->rights] ?></td>
+                    <td><?= h($login->getRightsName()) ?></td>
                     <td><?= $login->locked ? __('Yes') : __('No'); ?></td>
                     <td><?= h($login->last_granted) ?></td>
                     <td><?= h($login->last_granted_ip) ?></td>

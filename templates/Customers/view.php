@@ -3,7 +3,6 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Customer $customer
  * @var \Cake\Collection\CollectionInterface|array<string> $invoice_delivery_types
- * @var \Cake\Collection\CollectionInterface|array<string> $login_rights
  * @var \Cake\Collection\CollectionInterface|array<string> $ip_address_types_of_use
  * @var \Cake\Collection\CollectionInterface|array<string> $ip_network_types_of_use
  */
@@ -400,7 +399,7 @@
                         <?php foreach ($customer->logins as $login) : ?>
                         <tr>
                             <td><?= h($login->login) ?></td>
-                            <td><?= $login_rights[$login->rights] ?></td>
+                            <td><?= h($login->getRightsName()) ?></td>
                             <td><?= $login->locked ? __('Yes') : __('No'); ?></td>
                             <td><?= h($login->last_granted) ?></td>
                             <td><?= h($login->last_granted_ip) ?></td>

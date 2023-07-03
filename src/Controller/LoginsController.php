@@ -51,9 +51,6 @@ class LoginsController extends AppController
         ));
 
         $this->set(compact('logins'));
-
-        // rights
-        $this->set('rights', $this->Logins->rights);
     }
 
     /**
@@ -72,9 +69,6 @@ class LoginsController extends AppController
         ]);
 
         $this->set(compact('login'));
-
-        // rights
-        $this->set('rights', $this->Logins->rights);
     }
 
     /**
@@ -135,9 +129,6 @@ class LoginsController extends AppController
 
         // generate new password
         $this->set('new_password', $this->generatePassword(8));
-
-        // rights
-        $this->set('rights', $this->Logins->rights);
     }
 
     /**
@@ -178,9 +169,6 @@ class LoginsController extends AppController
         }
 
         $this->set(compact('login', 'customers'));
-
-        // rights
-        $this->set('rights', $this->Logins->rights);
     }
 
     /**

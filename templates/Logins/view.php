@@ -2,7 +2,6 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Login $login
- * @var \Cake\Collection\CollectionInterface|array<string> $rights
  */
 ?>
 <div class="row">
@@ -46,7 +45,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Rights') ?></th>
-                            <td><?= $rights[$login->rights] ?></td>
+                            <td><?= h($login->getRightsName()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Locked') ?></th>
