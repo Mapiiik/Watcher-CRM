@@ -13,7 +13,7 @@ class AddTimestampAndFootprintToEquipmentTypes extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('equipment_types');
         $table->addColumn('created', 'datetime', [

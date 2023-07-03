@@ -13,7 +13,7 @@ class RenameTaxeIdToTaxRateIdForCustomers extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('customers');
         $table->renameColumn('taxe_id', 'tax_rate_id');

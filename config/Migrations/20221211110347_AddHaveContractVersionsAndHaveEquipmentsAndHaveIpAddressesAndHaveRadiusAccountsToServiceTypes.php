@@ -13,7 +13,7 @@ class AddHaveContractVersionsAndHaveEquipmentsAndHaveIpAddressesAndHaveRadiusAcc
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('service_types');
         $table->addColumn('have_contract_versions', 'boolean', [

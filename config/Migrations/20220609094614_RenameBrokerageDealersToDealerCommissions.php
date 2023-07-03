@@ -13,7 +13,7 @@ class RenameBrokerageDealersToDealerCommissions extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('brokerage_dealers');
         $table->rename('dealer_commissions');

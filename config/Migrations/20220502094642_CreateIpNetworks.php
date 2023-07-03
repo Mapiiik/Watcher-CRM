@@ -13,7 +13,7 @@ class CreateIpNetworks extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('ip_networks');
         $table->addColumn('customer_id', 'integer', [

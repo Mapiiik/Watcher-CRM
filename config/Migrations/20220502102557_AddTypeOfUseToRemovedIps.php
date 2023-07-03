@@ -13,7 +13,7 @@ class AddTypeOfUseToRemovedIps extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('removed_ips');
         $table->addColumn('type_of_use', 'integer', [

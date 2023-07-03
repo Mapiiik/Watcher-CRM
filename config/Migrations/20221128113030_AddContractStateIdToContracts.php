@@ -13,7 +13,7 @@ class AddContractStateIdToContracts extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         // fetch a default contract state
         $contract_state = $this->fetchRow('SELECT id FROM contract_states WHERE name = \'Default\'');

@@ -13,7 +13,7 @@ class RenameBrokerageIdToCommissionIdForContracts extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('contracts');
         $table->renameColumn('brokerage_id', 'commission_id');

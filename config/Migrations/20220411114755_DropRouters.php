@@ -13,7 +13,7 @@ class DropRouters extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('routers');
         $table->drop();

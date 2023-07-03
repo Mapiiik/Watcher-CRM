@@ -13,7 +13,7 @@ class AddTimestampAndFootprintToLabels extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('labels');
         $table->addColumn('created', 'datetime', [

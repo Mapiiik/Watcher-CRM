@@ -13,7 +13,7 @@ class AddFootprintToServices extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('services');
         $table->addColumn('created_by', 'integer', [

@@ -13,7 +13,7 @@ class AddNotForNewCustomersToServices extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('services');
         $table->addColumn('not_for_new_customers', 'boolean', [

@@ -13,7 +13,7 @@ class AddAccessPointRequiredToServiceTypes extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('service_types');
         $table->addColumn('access_point_required', 'boolean', [

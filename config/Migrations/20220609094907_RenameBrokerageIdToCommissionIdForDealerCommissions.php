@@ -13,7 +13,7 @@ class RenameBrokerageIdToCommissionIdForDealerCommissions extends AbstractMigrat
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('dealer_commissions');
         $table->renameColumn('brokerage_id', 'commission_id');

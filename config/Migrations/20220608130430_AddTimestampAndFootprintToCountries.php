@@ -13,7 +13,7 @@ class AddTimestampAndFootprintToCountries extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('countries');
         $table->addColumn('created', 'datetime', [

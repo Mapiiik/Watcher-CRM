@@ -13,7 +13,7 @@ class UpdateUserRoles extends AbstractMigration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         $this->getQueryBuilder()
             ->update('users')
@@ -36,7 +36,7 @@ class UpdateUserRoles extends AbstractMigration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         $this->getQueryBuilder()
             ->update('users')

@@ -13,7 +13,7 @@ class RemoveActiveFromBillings extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('billings');
         $table->changeColumn('billing_from', 'date', [

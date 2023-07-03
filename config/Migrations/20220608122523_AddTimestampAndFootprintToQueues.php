@@ -13,7 +13,7 @@ class AddTimestampAndFootprintToQueues extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('queues');
         $table->addColumn('created', 'datetime', [

@@ -13,7 +13,7 @@ class AddUninstallationDateAndUninstallationTechnicianIdToContracts extends Abst
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('contracts');
         $table->addColumn('uninstallation_date', 'date', [

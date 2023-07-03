@@ -13,7 +13,7 @@ class AddAccessPointIdToContracts extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('contracts');
         $table->addColumn('access_point_id', 'uuid', [

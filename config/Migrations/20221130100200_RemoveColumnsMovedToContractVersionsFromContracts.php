@@ -13,7 +13,7 @@ class RemoveColumnsMovedToContractVersionsFromContracts extends AbstractMigratio
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('contracts');
         $table->removeColumn('valid_from');

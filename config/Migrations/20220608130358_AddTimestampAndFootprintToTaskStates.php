@@ -13,7 +13,7 @@ class AddTimestampAndFootprintToTaskStates extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('task_states');
         $table->addColumn('created', 'datetime', [

@@ -13,7 +13,7 @@ class RemoveServiceTypeIdFromQueues extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('queues');
         $table->removeColumn('service_type_id');

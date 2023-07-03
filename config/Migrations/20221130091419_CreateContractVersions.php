@@ -14,7 +14,7 @@ class CreateContractVersions extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         // create extension for full UUID support
         $this->execute('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";');

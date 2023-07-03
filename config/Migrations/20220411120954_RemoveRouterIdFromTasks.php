@@ -13,7 +13,7 @@ class RemoveRouterIdFromTasks extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('tasks');
         $table->removeColumn('router_id');

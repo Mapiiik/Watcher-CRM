@@ -13,7 +13,7 @@ class AddNormallyWithBorrowedEquipmentToServiceTypes extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('service_types');
         $table->addColumn('normally_with_borrowed_equipment', 'boolean', [

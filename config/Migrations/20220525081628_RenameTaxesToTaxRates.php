@@ -13,7 +13,7 @@ class RenameTaxesToTaxRates extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('taxes');
         $table->rename('tax_rates');

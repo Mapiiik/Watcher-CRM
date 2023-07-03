@@ -13,7 +13,7 @@ class AddCustomerRequiredAndContractRequiredToTaskTypes extends AbstractMigratio
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('task_types');
         $table->addColumn('customer_required', 'boolean', [

@@ -14,7 +14,7 @@ class CreateAuditLogs extends AbstractMigration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         // create extension for full UUID support
         $this->execute('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";');
@@ -100,7 +100,7 @@ class CreateAuditLogs extends AbstractMigration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         $this->table('audit_logs')->drop()->save();
     }

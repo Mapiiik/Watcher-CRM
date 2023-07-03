@@ -13,7 +13,7 @@ class AddTimestampAndFootprintToPhones extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('phones');
         $table->addColumn('created', 'datetime', [

@@ -13,7 +13,7 @@ class AddDateOfSaleToSoldEquipments extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('sold_equipments');
         $table->addColumn('date_of_sale', 'date', [

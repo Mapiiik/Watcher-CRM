@@ -13,7 +13,7 @@ class AddVatRateToTaxRates extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('tax_rates');
         $table->addColumn('vat_rate', 'float', [

@@ -13,7 +13,7 @@ class AddTimestampAndFootprintToRemovedIpNetworks extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('removed_ip_networks');
         $table->addColumn('created', 'datetime', [

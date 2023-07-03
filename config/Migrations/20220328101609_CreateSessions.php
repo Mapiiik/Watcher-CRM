@@ -13,7 +13,7 @@ class CreateSessions extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $this->table('sessions', ['id' => false, 'primary_key' => ['id']])
             ->addColumn('id', 'string', [

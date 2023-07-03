@@ -13,7 +13,7 @@ class AddNoteToAddresses extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('addresses');
         $table->addColumn('note', 'text', [

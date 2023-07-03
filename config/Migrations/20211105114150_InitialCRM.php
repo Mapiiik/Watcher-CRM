@@ -16,7 +16,7 @@ class InitialCRM extends AbstractMigration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         $this->table('addresses')
             ->addColumn('type', 'integer', [
@@ -1280,7 +1280,7 @@ class InitialCRM extends AbstractMigration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         $this->table('addresses')->drop()->save();
         $this->table('billings')->drop()->save();

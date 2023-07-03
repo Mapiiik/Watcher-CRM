@@ -13,7 +13,7 @@ class AddTimestampAndFootprintToTaxRates extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('tax_rates');
         $table->addColumn('created', 'datetime', [

@@ -13,7 +13,7 @@ class RenameLabelCustomersToCustomerLabels extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('label_customers');
         $table->rename('customer_labels');
