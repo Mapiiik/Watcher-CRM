@@ -3,7 +3,6 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Customer $customer
  * @var \Cake\Collection\CollectionInterface|array<string> $documentTypes
- * @var \Cake\Collection\CollectionInterface|array<string> $invoice_delivery_types
  */
 ?>
 <div class="row">
@@ -104,7 +103,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Invoice Delivery Type') ?></th>
-                            <td><?= h($invoice_delivery_types[$customer->invoice_delivery_type]) ?></td>
+                            <td><?= h($customer->getInvoiceDeliveryTypeName()) ?></td>
                         </tr>
                     </table>
                     <table>

@@ -42,13 +42,6 @@ use Cake\Validation\Validator;
 class CustomersTable extends AppTable
 {
     /**
-     * Invoice delivery types
-     *
-     * @var array<string>
-     */
-    public array $invoice_delivery_types = [];
-
-    /**
      * Initialize method
      *
      * @param array $config The configuration for the Table.
@@ -57,11 +50,6 @@ class CustomersTable extends AppTable
     public function initialize(array $config): void
     {
         parent::initialize($config);
-
-        $this->invoice_delivery_types = [
-            '0' => __('Do not send'),
-            '1' => __('Send by email'),
-        ];
 
         $this->setTable('customers');
         $this->setDisplayField('name_for_lists');

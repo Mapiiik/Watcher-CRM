@@ -3,7 +3,6 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Customer $customer
  * @var \Cake\Collection\CollectionInterface|array<string> $taxRates
- * @var \Cake\Collection\CollectionInterface|array<string> $invoice_delivery_types
  */
 ?>
 <div class="row">
@@ -40,7 +39,7 @@
                         echo $this->Form->control('bank_name');
                         echo $this->Form->control('tax_rate_id', ['options' => $taxRates]);
                         echo $this->Form->control('dealer', ['options' => $customer->getDealerStateOptions()]);
-                        echo $this->Form->control('invoice_delivery_type', ['options' => $invoice_delivery_types]);
+                        echo $this->Form->control('invoice_delivery_type', ['options' => $customer->getInvoiceDeliveryTypeOptions()]);
                         echo $this->Form->control('agree_gdpr', [
                             'label' => __('Agrees to Processing of Personal Data'),
                         ]);

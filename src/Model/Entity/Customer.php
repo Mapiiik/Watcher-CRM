@@ -29,7 +29,7 @@ use Cake\ORM\Entity;
  * @property string|null $dic
  * @property string|null $www
  * @property string|null $internal_note
- * @property bool|null $invoice_delivery_type
+ * @property int $invoice_delivery_type
  * @property string|null $note
  * @property string|null $identity_card_number
  * @property \Cake\I18n\Date|null $date_of_birth
@@ -424,6 +424,30 @@ class Customer extends Entity
     public function getDealerState(): string
     {
         return $this->getDealerStateOptions()[$this->dealer] ?? strval($this->dealer);
+    }
+
+    /**
+     * Get invoice delivery type options method
+     *
+     * @return array<int, string>
+     */
+    public function getInvoiceDeliveryTypeOptions(): array
+    {
+        return [
+            0 => __('Do not send'),
+            1 => __('Send by email'),
+        ];
+    }
+
+    /**
+     * Get invoice delivery type options name method
+     *
+     * @return string
+     */
+    public function getInvoiceDeliveryTypeName(): string
+    {
+        return $this->getInvoiceDeliveryTypeOptions()[$this->invoice_delivery_type] ??
+            (string)$this->invoice_delivery_type;
     }
 
     /**

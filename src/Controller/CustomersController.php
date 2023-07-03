@@ -243,9 +243,7 @@ class CustomersController extends AppController
             'name',
         ]);
 
-        $invoice_delivery_types = $this->Customers->invoice_delivery_types;
-
-        $this->set(compact('customers', 'labels', 'invoice_delivery_types', 'allow_advanced_search'));
+        $this->set(compact('customers', 'labels', 'allow_advanced_search'));
     }
 
     /**
@@ -324,11 +322,8 @@ class CustomersController extends AppController
             'Modifiers',
         ]);
 
-        $invoice_delivery_types = $this->Customers->invoice_delivery_types;
-
         $this->set(compact(
             'customer',
-            'invoice_delivery_types',
         ));
     }
 
@@ -353,9 +348,7 @@ class CustomersController extends AppController
             'name',
         ]);
 
-        $invoice_delivery_types = $this->Customers->invoice_delivery_types;
-
-        $this->set(compact('customer', 'taxRates', 'invoice_delivery_types'));
+        $this->set(compact('customer', 'taxRates'));
     }
 
     /**
@@ -381,9 +374,7 @@ class CustomersController extends AppController
             'name',
         ]);
 
-        $invoice_delivery_types = $this->Customers->invoice_delivery_types;
-
-        $this->set(compact('customer', 'taxRates', 'invoice_delivery_types'));
+        $this->set(compact('customer', 'taxRates'));
     }
 
     /**
@@ -431,8 +422,6 @@ class CustomersController extends AppController
             'Modifiers',
         ]);
 
-        $invoice_delivery_types = $this->Customers->invoice_delivery_types;
-
         $query = $this->getRequest()->getQuery();
         if (isset($query['document_type'])) {
             $type = $query['document_type'];
@@ -450,6 +439,6 @@ class CustomersController extends AppController
                     return $this->redirect(['action' => 'print', $id, '?' => $query]);
             }
         }
-        $this->set(compact('customer', 'type', 'query', 'invoice_delivery_types'));
+        $this->set(compact('customer', 'type', 'query'));
     }
 }
