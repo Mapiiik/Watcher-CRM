@@ -90,8 +90,6 @@ class AppController extends Controller
                 ['?' => ['page' => '1'] + $this->getRequest()->getQueryParams()]
                 + $this->getRequest()->getParam('pass')
             );
-
-            return null;
         }
 
         return parent::paginate($object, $settings);
