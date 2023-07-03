@@ -4,7 +4,7 @@
  * @var \App\Model\Entity\Billing $billing
  */
 
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\I18n\Number;
 ?>
 <div class="row">
@@ -156,8 +156,8 @@ use Cake\I18n\Number;
                 // show three billing calculations from start
                 $bill_dates = [
                     $billing->billing_from->day(1),
-                    $billing->billing_from->day(1)->addMonth(1),
-                    $billing->billing_from->day(1)->addMonth(2),
+                    $billing->billing_from->day(1)->addMonths(1),
+                    $billing->billing_from->day(1)->addMonths(2),
                 ];
                 ?>
                 <h4><?= __('Billing Preview - Start') ?></h4>
@@ -171,15 +171,15 @@ use Cake\I18n\Number;
                         </tr>
                         <?php foreach ($bill_dates as $bill_date) : ?>
                         <tr style="<?=
-                            $bill_date->subDay(1) == \Cake\I18n\Date::create()->lastOfMonth() ?
+                            $bill_date->subDays(1) == Date::now()->lastOfMonth() ?
                                 'background-color: #ffd500;' : ''
                         ?>">
-                            <td><?= $bill_date->subDay(1) ?></td>
-                            <td><?= $bill_date->subMonth(1) ?></td>
-                            <td><?= $bill_date->subDay(1) ?></td>
+                            <td><?= $bill_date->subDays(1) ?></td>
+                            <td><?= $bill_date->subMonths(1) ?></td>
+                            <td><?= $bill_date->subDays(1) ?></td>
                             <td><?= Number::currency($billing->periodTotal(
-                                $bill_date->subMonth(1),
-                                $bill_date->subDay(1)
+                                $bill_date->subMonths(1),
+                                $bill_date->subDays(1)
                             )) ?></td>
                         </tr>
                         <?php endforeach ?>
@@ -193,8 +193,8 @@ use Cake\I18n\Number;
                 // show three billing calculations before end
                 $bill_dates = [
                     $billing->billing_until->day(1),
-                    $billing->billing_until->day(1)->addMonth(1),
-                    $billing->billing_until->day(1)->addMonth(2),
+                    $billing->billing_until->day(1)->addMonths(1),
+                    $billing->billing_until->day(1)->addMonths(2),
                 ];
                 ?>
                 <h4><?= __('Billing Preview - End') ?></h4>
@@ -208,15 +208,15 @@ use Cake\I18n\Number;
                         </tr>
                         <?php foreach ($bill_dates as $bill_date) : ?>
                         <tr style="<?=
-                            $bill_date->subDay(1) == \Cake\I18n\Date::create()->lastOfMonth() ?
+                            $bill_date->subDays(1) == Date::now()->lastOfMonth() ?
                                 'background-color: #ffd500;' : ''
                         ?>">
-                            <td><?= $bill_date->subDay(1) ?></td>
-                            <td><?= $bill_date->subMonth(1) ?></td>
-                            <td><?= $bill_date->subDay(1) ?></td>
+                            <td><?= $bill_date->subDays(1) ?></td>
+                            <td><?= $bill_date->subMonths(1) ?></td>
+                            <td><?= $bill_date->subDays(1) ?></td>
                             <td><?= Number::currency($billing->periodTotal(
-                                $bill_date->subMonth(1),
-                                $bill_date->subDay(1)
+                                $bill_date->subMonths(1),
+                                $bill_date->subDays(1)
                             )) ?></td>
                         </tr>
                         <?php endforeach ?>

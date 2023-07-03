@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace BookkeepingPohoda\Controller;
 
 use Cake\Collection\CollectionInterface;
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\ORM\Query;
 use stdClass;
 
@@ -212,7 +212,7 @@ class InvoicesController extends AppController
                 ],
                 [ // conditions
                     'send_by_email' => false,
-                    'creation_date' => new FrozenDate($this->request->getData('creation_date')),
+                    'creation_date' => new Date($this->request->getData('creation_date')),
                 ]
             );
 
@@ -235,11 +235,11 @@ class InvoicesController extends AppController
     /**
      * get Query with billing data for selected month
      *
-     * @param \Cake\I18n\FrozenDate $invoiced_month Month for billing
+     * @param \Cake\I18n\Date $invoiced_month Month for billing
      * @param int $tax_rate_id month Id of tax rate for billing
      * @return \Cake\ORM\Query
      */
-    private function getQueryForBillingDataForMonth(FrozenDate $invoiced_month, int $tax_rate_id): Query
+    private function getQueryForBillingDataForMonth(Date $invoiced_month, int $tax_rate_id): Query
     {
         return $this->fetchTable('Customers')
             ->find()
@@ -297,7 +297,7 @@ class InvoicesController extends AppController
         $tax_rates = $this->fetchTable('TaxRates')->find('list', ['order' => 'name'])->toArray();
 
         if ($this->request->is(['post'])) {
-            $invoiced_month = new FrozenDate($this->request->getData('invoiced_month'));
+            $invoiced_month = new Date($this->request->getData('invoiced_month'));
             $tax_rate = $this->fetchTable('TaxRates')->get($this->request->getData('tax_rate_id'));
             /** @var \Laminas\Diactoros\UploadedFile $csv_for_verification */
             $csv_for_verification = $this->request->getData('csv_for_verification');
@@ -386,7 +386,7 @@ class InvoicesController extends AppController
 
         // DOWNLOAD INVOICES
         if ($this->request->getParam('_ext') === 'dbf' || $this->request->getParam('_ext') === 'xml') {
-            $invoiced_month = new FrozenDate($this->request->getQuery('invoiced_month'));
+            $invoiced_month = new Date($this->request->getQuery('invoiced_month'));
 
             /** @var \App\Model\Entity\TaxRate $tax_rate */
             $tax_rate = $this->fetchTable('TaxRates')->get($this->request->getQuery('tax_rate_id'));

@@ -62,7 +62,7 @@ class ContractVersion extends Entity
         $minimum_duration = null;
 
         if (isset($this->obligation_until) && ($this->valid_from < $this->obligation_until)) {
-            $minimum_duration = $this->valid_from->diffInMonths($this->obligation_until->addDay(1));
+            $minimum_duration = $this->valid_from->diffInMonths($this->obligation_until->addDays(1));
         }
 
         return $minimum_duration;

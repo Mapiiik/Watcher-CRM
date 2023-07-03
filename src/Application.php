@@ -25,8 +25,8 @@ use Cake\Http\Middleware\BodyParserMiddleware;
 use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Http\Middleware\SecurityHeadersMiddleware;
 use Cake\Http\MiddlewareQueue;
-use Cake\I18n\FrozenDate;
-use Cake\I18n\FrozenTime;
+use Cake\I18n\Date;
+use Cake\I18n\DateTime;
 use Cake\I18n\Number;
 use Cake\ORM\Locator\TableLocator;
 use Cake\Routing\Middleware\AssetMiddleware;
@@ -84,10 +84,10 @@ class Application extends BaseApplication
 
         // Set time and date format if specified in environment
         if (!empty(env('APP_TIME_FORMAT'))) {
-            \Cake\I18n\DateTime::setToStringFormat(env('APP_TIME_FORMAT'));
+            DateTime::setToStringFormat(env('APP_TIME_FORMAT'));
         }
         if (!empty(env('APP_DATE_FORMAT'))) {
-            \Cake\I18n\Date::setToStringFormat(env('APP_DATE_FORMAT'));
+            Date::setToStringFormat(env('APP_DATE_FORMAT'));
         }
 
         // Set default currency if specified in environment

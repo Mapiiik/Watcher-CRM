@@ -5,7 +5,8 @@
  * @var bool $details
  */
 
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
+
 ?>
 
 <div class="row">
@@ -232,15 +233,15 @@ use Cake\I18n\FrozenTime;
                             <?php if ($details) : ?>
                             <td><?= h($radacct->acctupdatetime) ?></td>
                             <td><?= $radacct->acctinterval ?
-                                \Cake\I18n\DateTime::createFromTimestamp($radacct->acctinterval)
-                                    ->diffForHumans(\Cake\I18n\DateTime::createFromTimestamp(0), true) : '' ?></td>
+                                DateTime::createFromTimestamp($radacct->acctinterval)
+                                    ->diffForHumans(DateTime::createFromTimestamp(0), true) : '' ?></td>
                             <?php endif ?>
                             <td><?= h($radacct->acctstoptime) ?></td>
                             <?php if ($details) : ?>
                             <td><?= h($radacct->acctterminatecause) ?></td>
                             <?php endif ?>
-                            <td><?= \Cake\I18n\DateTime::createFromTimestamp($radacct->acctsessiontime)
-                                ->diffForHumans(\Cake\I18n\DateTime::createFromTimestamp(0), true) ?></td>
+                            <td><?= DateTime::createFromTimestamp($radacct->acctsessiontime)
+                                ->diffForHumans(DateTime::createFromTimestamp(0), true) ?></td>
                             <td><?= $this->Number->toReadableSize($radacct->acctinputoctets) ?></td>
                             <td><?= $this->Number->toReadableSize($radacct->acctoutputoctets) ?></td>
                             <td class="actions">

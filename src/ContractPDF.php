@@ -5,7 +5,7 @@ namespace App;
 
 use App\Model\Entity\Contract;
 use App\Model\Entity\ContractVersion;
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\I18n\Number;
 use stdClass;
 use TCPDF;
@@ -776,7 +776,7 @@ class ContractPDF extends TCPDF
         $this->Ln();
         $this->Ln();
         if ($signed) {
-            $this->Cell(90, 4, 'Datum podpisu: ' . new \Cake\I18n\Date(), '', 0, 'C');
+            $this->Cell(90, 4, 'Datum podpisu: ' . Date::now(), '', 0, 'C');
         } else {
             $this->Cell(90, 4, 'Datum podpisu: ____________________', '', 0, 'C');
         }
@@ -1113,7 +1113,7 @@ class ContractPDF extends TCPDF
             $this->Ln();
 
             if ($type === 'contract-new-x') {
-                $this->Write(4, 'Smluvní strany zároveň ujednávají, že předchozí smlouva o poskytování služeb č. ' . $contract_version['number_of_the_contract_to_be_terminated'] . ' ze dne ' . $contract_version['old']->conclusion_date . ' (ve znění případných pozdějších dodatků) zaniká ke dni ' . $contract_version->valid_from->subDay(1) . '.');
+                $this->Write(4, 'Smluvní strany zároveň ujednávají, že předchozí smlouva o poskytování služeb č. ' . $contract_version['number_of_the_contract_to_be_terminated'] . ' ze dne ' . $contract_version['old']->conclusion_date . ' (ve znění případných pozdějších dodatků) zaniká ke dni ' . $contract_version->valid_from->subDays(1) . '.');
                 $this->Ln();
                 $this->Ln();
             }
@@ -1244,7 +1244,7 @@ class ContractPDF extends TCPDF
             $this->SetFont('DejaVuSerif', 'B' . $format, 8);
             $this->Cell(45, 4, 'měsíčně', '', 0, 'C');
             $this->Cell(45, 4, 'převodem z účtu', '', 0, 'C');
-            $this->Cell(45, 4, 'do ' . $contract_version->valid_from->day(1)->addMonth(1)->addDay(9), '', 0, 'C');
+            $this->Cell(45, 4, 'do ' . $contract_version->valid_from->day(1)->addMonths(1)->addDays(9), '', 0, 'C');
 
             // reverse charge
             if ($contract->customer->tax_rate->reverse_charge) {
@@ -1454,7 +1454,7 @@ class ContractPDF extends TCPDF
         $this->Ln();
         $this->Ln();
         if ($signed) {
-            $this->Cell(90, 4, 'Datum podpisu: ' . new \Cake\I18n\Date(), '', 0, 'C');
+            $this->Cell(90, 4, 'Datum podpisu: ' . Date::now(), '', 0, 'C');
         } else {
             $this->Cell(90, 4, 'Datum podpisu: ____________________', '', 0, 'C');
         }

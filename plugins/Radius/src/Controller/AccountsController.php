@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Radius\Controller;
 
 use Cake\Database\Query;
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Mapik\RadiusClient\Client;
 use Mapik\RadiusClient\Exceptions\ClientException;
 use Mapik\RadiusClient\Packet;
@@ -606,12 +606,12 @@ class AccountsController extends AppController
                     'queryBuilder' => function (Query $q) {
                         return $q->where([
                             'Queues.name IS NOT NULL',
-                            'Billings.billing_from <=' => (new FrozenDate())->addMonths(1),
+                            'Billings.billing_from <=' => Date::now()->addMonths(1),
                         ])
                         ->andWhere([
                             'OR' => [
                                 'Billings.billing_until IS NULL',
-                                'Billings.billing_until >=' => new FrozenDate(),
+                                'Billings.billing_until >=' => Date::now(),
                             ],
                         ])
                         ->order(['Billings.billing_from' => 'ASC']);

@@ -64,7 +64,7 @@
                     'empty' => true,
                     'disabled' => !$contractVersion->has('obligation_until'),
                     'default' => $contractVersion->has('valid_from') ?
-                        $contractVersion->valid_from->addMonth(24)->subDay(1) : null,
+                        $contractVersion->valid_from->addMonths(24)->subDays(1) : null,
                 ]);
                 $this->Form->unlockField('obligation_until'); //disable form security check
 

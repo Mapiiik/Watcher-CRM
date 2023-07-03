@@ -7,7 +7,7 @@ use App\ApiClient;
 use Cake\Collection\Collection;
 use Cake\Database\Exception\MissingConnectionException;
 use Cake\Database\Query;
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\I18n\Number;
 use stdClass;
 
@@ -770,7 +770,7 @@ class ContractsController extends AppController
 
                         return $this->redirect(['action' => 'print', $id, '?' => $query]);
                     } else {
-                        $contract_version->valid_from = new FrozenDate($query['effective_date_of_the_amendment']);
+                        $contract_version->valid_from = new Date($query['effective_date_of_the_amendment']);
                     }
 
                     if (!$contract_version->has('conclusion_date')) {

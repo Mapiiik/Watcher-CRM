@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
 
 /**
  * IpNetworks Controller
@@ -228,7 +228,7 @@ class IpNetworksController extends AppController
         $removedIpNetwork = $removedIpNetworksTable->patchEntity($removedIpNetwork, $ip->toArray());
 
         // TODO - add who and when deleted this
-        $removedIpNetwork->removed = FrozenTime::now();
+        $removedIpNetwork->removed = DateTime::now();
         $removedIpNetwork->removed_by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
 
         if ($removedIpNetworksTable->save($removedIpNetwork)) {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\ApiClient;
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
 use IPLib\Range\Subnet;
 
 /**
@@ -389,7 +389,7 @@ class IpsController extends AppController
         $removedIp = $removedIpsTable->patchEntity($removedIp, $ip->toArray());
 
         // TODO - add who and when deleted this
-        $removedIp->removed = FrozenTime::now();
+        $removedIp->removed = DateTime::now();
         $removedIp->removed_by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
 
         if ($removedIpsTable->save($removedIp)) {

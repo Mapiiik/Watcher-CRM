@@ -8,7 +8,7 @@ use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Datasource\ConnectionManager;
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
 use Cake\Log\Log;
 use Cake\Utility\Hash;
 use Cake\Utility\Text;
@@ -48,7 +48,7 @@ class UpdateCustomerLabelsCommand extends Command
     {
         /** @var \App\Model\Table\LabelsTable $labels_table */
         $labels_table = $this->fetchTable('Labels');
-        $start_time = new FrozenTime();
+        $start_time = DateTime::now();
 
         $labels = $labels_table
             ->find()
@@ -112,7 +112,7 @@ class UpdateCustomerLabelsCommand extends Command
                                 );
                             // update modification time
                             $label->customer_labels[$current_customer_label_key]
-                                ->modified = FrozenTime::now();
+                                ->modified = DateTime::now();
                         }
 
                         unset($customer_label_data);

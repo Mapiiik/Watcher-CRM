@@ -6,7 +6,7 @@ namespace App\Controller;
 use App\ApiClient;
 use Cake\Database\Query;
 use Cake\Form\Form;
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
 use Cake\Mailer\Mailer;
 use Cake\View\Helper\HtmlHelper;
 use Cake\View\View;
@@ -390,7 +390,7 @@ class TasksController extends AppController
 
         // preset start date
         if (empty($task->start_date)) {
-            $task->start_date = \Cake\I18n\DateTime::create();
+            $task->start_date = DateTime::now();
         }
         // preset dealer
         if (empty($task->dealer_id)) {
@@ -537,7 +537,7 @@ class TasksController extends AppController
         $identity = $this->getRequest()->getAttribute('identity');
         $text .= '------------------------------------------------------------' . PHP_EOL;
         $text .= ' ' . ($identity['first_name'] ?? '') . ' ' . ($identity['last_name'] ?? '');
-        $text .= ' (' . \Cake\I18n\DateTime::create() . ')' . PHP_EOL;
+        $text .= ' (' . DateTime::now() . ')' . PHP_EOL;
         $text .= '------------------------------------------------------------' . PHP_EOL;
         unset($identity);
 

@@ -5,7 +5,8 @@
  * @var bool $show_customers
  */
 
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
+
 ?>
 <div class="table-responsive">
     <?php if (is_object($invoices) && !$invoices->isEmpty()) : ?>
@@ -76,7 +77,7 @@ use Cake\I18n\FrozenDate;
             . $this->Number->currency(
                 $invoices
                     ->filter(function ($value, $key) {
-                        return $value->due_date < \Cake\I18n\Date::create();
+                        return $value->due_date < Date::now();
                     })
                     ->sumOf('debt')
             )

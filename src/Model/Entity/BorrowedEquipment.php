@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\ORM\Entity;
 
 /**
@@ -63,7 +63,7 @@ class BorrowedEquipment extends Entity
     protected function _getStyle(): string
     {
         $style = '';
-        $now = new \Cake\I18n\Date();
+        $now = Date::now();
 
         if (isset($this->borrowed_from) && $this->borrowed_from > $now) {
             $style = 'color: darkorange;';

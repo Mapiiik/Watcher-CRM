@@ -9,7 +9,7 @@ use App\Model\Entity\Contract;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 use Cake\Database\Exception\MissingConnectionException;
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\ORM\Entity;
 use Cake\ORM\Query;
 
@@ -37,7 +37,7 @@ class OverviewsController extends AppController
      */
     public function overviewOfActiveServices()
     {
-        $month_to_display = new FrozenDate($this->getRequest()->getQuery('month_to_display'));
+        $month_to_display = new Date($this->getRequest()->getQuery('month_to_display'));
         $service_type_id = $this->getRequest()->getQuery('service_type_id');
         $access_point_id = $this->getRequest()->getQuery('access_point_id');
 
@@ -133,7 +133,7 @@ class OverviewsController extends AppController
      */
     public function overviewOfCustomerConnectionPointsObsolete($category = null)
     {
-        $month_to_display = new FrozenDate($this->getRequest()->getQuery('month_to_display'));
+        $month_to_display = new Date($this->getRequest()->getQuery('month_to_display'));
 
         $cto_categories = $this->fetchTable('Billings')->find()
             ->contain('Customers')
@@ -306,7 +306,7 @@ class OverviewsController extends AppController
      */
     public function overviewOfCustomerConnectionPoints($category = null)
     {
-        $month_to_display = new FrozenDate($this->getRequest()->getQuery('month_to_display'));
+        $month_to_display = new Date($this->getRequest()->getQuery('month_to_display'));
 
         $cto_categories = $this->fetchTable('Billings')->find()
             ->contain('Customers')
@@ -507,7 +507,7 @@ class OverviewsController extends AppController
      */
     public function overviewOfDealerCommissions()
     {
-        $month_to_display = new FrozenDate($this->getRequest()->getQuery('month_to_display'));
+        $month_to_display = new Date($this->getRequest()->getQuery('month_to_display'));
 
         $dealerCommissionsQuery = $this->fetchTable('DealerCommissions')->find()
             ->contain('Dealers')

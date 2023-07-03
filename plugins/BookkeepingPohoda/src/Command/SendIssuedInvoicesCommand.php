@@ -7,8 +7,8 @@ use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
-use Cake\I18n\FrozenDate;
-use Cake\I18n\FrozenTime;
+use Cake\I18n\Date;
+use Cake\I18n\DateTime;
 use Cake\I18n\Number;
 use Cake\Log\Log;
 use Cake\Mailer\Mailer;
@@ -82,7 +82,7 @@ class SendIssuedInvoicesCommand extends Command
                 ]);
 
                 // define date format
-                FrozenDate::setToStringFormat('dd.MM.yyyy');
+                Date::setToStringFormat('dd.MM.yyyy');
 
                 $message =
                     'Vážený zákazníku,' . PHP_EOL
@@ -116,7 +116,7 @@ class SendIssuedInvoicesCommand extends Command
                     $io->info(__d('bookkeeping_pohoda', 'Email was successfully sent.'));
 
                     // save the date of submission to the database
-                    $issued_invoice->email_sent = new FrozenTime();
+                    $issued_invoice->email_sent = DateTime::now();
                     $issued_invoices_table->save($issued_invoice);
                 } catch (\Exception $e) {
                     Log::write('warning', 'The email cannot be sent. (' . $e->getMessage() . ')');

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace BookkeepingPohoda\Model\Entity;
 
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\ORM\Entity;
 
 /**
@@ -72,7 +72,7 @@ class Invoice extends Entity
     protected function _getStyle(): string
     {
         $style = '';
-        $now = new \Cake\I18n\Date();
+        $now = Date::now();
 
         if ($this->debt > 0) {
             $style = 'color: red;';
