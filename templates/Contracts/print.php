@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Contract $contract
- * @var string[]|\Cake\Collection\CollectionInterface $documentTypes
+ * @var \Cake\Collection\CollectionInterface|array<string> $documentTypes
  */
 ?>
 <div class="row">

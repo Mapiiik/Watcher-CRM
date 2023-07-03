@@ -47,7 +47,7 @@ class CustomersTable extends AppTable
      *
      * @var array<string>
      */
-    public $invoice_delivery_types = [];
+    public array $invoice_delivery_types = [];
 
     /**
      * Initialize method

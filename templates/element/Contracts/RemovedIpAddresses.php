@@ -1,8 +1,8 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\RemovedIp[] $removed_ip_addresses
- * @var string[]|\Cake\Collection\CollectionInterface $ip_address_types_of_use
+ * @var array<\App\Model\Entity\RemovedIp> $removed_ip_addresses
+ * @var \Cake\Collection\CollectionInterface|array<string> $ip_address_types_of_use
  * @var bool $contract_column
  */
 ?>

@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Email $email
- * @var string[]|\Cake\Collection\CollectionInterface $customers
+ * @var \Cake\Collection\CollectionInterface|array<string> $customers
  */
 ?>
 <div class="row">

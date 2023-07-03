@@ -38,7 +38,7 @@ class Account extends Entity
      *
      * @var array<string>
      */
-    public $types = [
+    public array $types = [
         0 => 'PPPoE',
     ];
 

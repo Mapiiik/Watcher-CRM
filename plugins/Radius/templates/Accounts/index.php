@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Radius\Model\Entity\Account[]|\Cake\Collection\CollectionInterface $accounts
+ * @var \Cake\Collection\CollectionInterface|array<\Radius\Model\Entity\Account> $accounts
  */
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>

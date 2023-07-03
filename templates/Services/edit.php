@@ -2,8 +2,8 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Service $service
- * @var string[]|\Cake\Collection\CollectionInterface $serviceTypes
- * @var string[]|\Cake\Collection\CollectionInterface $queues
+ * @var \Cake\Collection\CollectionInterface|array<string> $serviceTypes
+ * @var \Cake\Collection\CollectionInterface|array<string> $queues
  */
 ?>
 <div class="row">

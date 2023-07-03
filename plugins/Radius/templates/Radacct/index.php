@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface[]|\Cake\Collection\CollectionInterface $radaccts
+ * @var \Cake\Collection\CollectionInterface|array<\Cake\Datasource\EntityInterface> $radaccts
  */
 ?>
 <div class="radacct index content">

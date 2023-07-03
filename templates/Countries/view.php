@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Country $country
- * @var string[]|\Cake\Collection\CollectionInterface $address_types
+ * @var \Cake\Collection\CollectionInterface|array<string> $address_types
  */
 ?>
 <div class="row">

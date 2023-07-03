@@ -10,6 +10,7 @@ use Cake\I18n\DateTime;
 use Cake\Mailer\Mailer;
 use Cake\View\Helper\HtmlHelper;
 use Cake\View\View;
+use Exception;
 
 /**
  * Tasks Controller
@@ -239,7 +240,7 @@ class TasksController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view(?string $id = null)
     {
         $task = $this->Tasks->get($id, contain: [
             'TaskTypes',
@@ -421,7 +422,7 @@ class TasksController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit(?string $id = null)
     {
         $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
@@ -512,7 +513,7 @@ class TasksController extends AppController
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete(?string $id = null)
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
         $task = $this->Tasks->get($id);
@@ -552,7 +553,7 @@ class TasksController extends AppController
      * @return bool Successfull?
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    private function sendNotificationEmail($id = null, bool $new = false): bool
+    private function sendNotificationEmail(?string $id = null, bool $new = false): bool
     {
         $task = $this->Tasks->get($id, contain: [
             'TaskTypes',
@@ -594,7 +595,7 @@ class TasksController extends AppController
             $this->Flash->success(__('Notification email sent.') . ' (' . $task->dealer->email . ')');
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->Flash->error(__('The notification email could not be sent.') . ' (' . $e->getMessage() . ')');
 
             return false;

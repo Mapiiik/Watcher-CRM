@@ -16,14 +16,14 @@ class InvoicesCell extends Cell
      *
      * @var array<string>
      */
-    protected $_validCellOptions = ['show_customers'];
+    protected array $_validCellOptions = ['show_customers'];
 
     /**
      * Show customers
      *
      * @var bool
      */
-    protected $show_customers = true;
+    protected bool $show_customers = true;
 
     /**
      * Initialization logic run at the end of object construction.
@@ -40,7 +40,7 @@ class InvoicesCell extends Cell
      * @param array<mixed> $conditions Query conditions.
      * @return void
      */
-    public function display(array $conditions = [])
+    public function display(array $conditions = []): void
     {
         $invoices = $this->fetchTable('BookkeepingPohoda.Invoices')
             ->find('all', [

@@ -2,11 +2,11 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Customer $customer
- * @var string[]|\Cake\Collection\CollectionInterface $invoice_delivery_types
- * @var string[]|\Cake\Collection\CollectionInterface $address_types
- * @var string[]|\Cake\Collection\CollectionInterface $login_rights
- * @var string[]|\Cake\Collection\CollectionInterface $ip_address_types_of_use
- * @var string[]|\Cake\Collection\CollectionInterface $ip_network_types_of_use
+ * @var \Cake\Collection\CollectionInterface|array<string> $invoice_delivery_types
+ * @var \Cake\Collection\CollectionInterface|array<string> $address_types
+ * @var \Cake\Collection\CollectionInterface|array<string> $login_rights
+ * @var \Cake\Collection\CollectionInterface|array<string> $ip_address_types_of_use
+ * @var \Cake\Collection\CollectionInterface|array<string> $ip_network_types_of_use
  */
 ?>
 <div class="row">

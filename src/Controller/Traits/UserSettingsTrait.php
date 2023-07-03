@@ -19,7 +19,7 @@ trait UserSettingsTrait
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function userSettings($id = null)
+    public function userSettings(?string $id = null)
     {
         $identity = $this->getRequest()->getAttribute('identity');
         $identity = $identity ?? [];
@@ -44,13 +44,15 @@ trait UserSettingsTrait
         /** @var \App\Model\Table\AppUsersTable $usersTable */
         $usersTable = $this->fetchTable(Configure::read('Users.table'));
 
-        $user = $usersTable->get($id,
-        fields: [
+        $user = $usersTable->get(
+            $id,
+            fields: [
             'id',
             'username',
             'user_settings',
-        ],
-        contain: []);
+            ],
+            contain: []
+        );
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $user = $usersTable->patchEntity($user, [

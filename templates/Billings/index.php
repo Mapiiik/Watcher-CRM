@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Billing[]|\Cake\Collection\CollectionInterface $billings
+ * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\Billing> $billings
  */
 use Cake\I18n\Number;
 ?>

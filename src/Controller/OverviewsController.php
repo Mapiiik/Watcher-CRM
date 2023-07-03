@@ -131,7 +131,7 @@ class OverviewsController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function overviewOfCustomerConnectionPointsObsolete($category = null)
+    public function overviewOfCustomerConnectionPointsObsolete(?string $category = null)
     {
         $month_to_display = new Date($this->getRequest()->getQuery('month_to_display'));
 
@@ -304,7 +304,7 @@ class OverviewsController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function overviewOfCustomerConnectionPoints($category = null)
+    public function overviewOfCustomerConnectionPoints(?string $category = null)
     {
         $month_to_display = new Date($this->getRequest()->getQuery('month_to_display'));
 

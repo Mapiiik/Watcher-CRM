@@ -12,6 +12,7 @@ use Cake\I18n\DateTime;
 use Cake\I18n\Number;
 use Cake\Log\Log;
 use Cake\Mailer\Mailer;
+use Exception;
 
 /**
  * SendIssuedInvoices command.
@@ -37,7 +38,8 @@ class SendIssuedInvoicesCommand extends Command
      *
      * @param \Cake\Console\Arguments $args The command arguments.
      * @param \Cake\Console\ConsoleIo $io The console io
-     * @return null|void|int The exit code or null for success
+     * @return int|null|void The exit code or null for success
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */
     public function execute(Arguments $args, ConsoleIo $io)
     {
@@ -118,7 +120,7 @@ class SendIssuedInvoicesCommand extends Command
                     // save the date of submission to the database
                     $issued_invoice->email_sent = DateTime::now();
                     $issued_invoices_table->save($issued_invoice);
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     Log::write('warning', 'The email cannot be sent. (' . $e->getMessage() . ')');
                     $io->abort(__d('bookkeeping_pohoda', 'The email cannot be sent.'));
                 }

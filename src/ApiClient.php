@@ -112,7 +112,7 @@ class ApiClient
     /**
      * Search access point method
      *
-     * @param string[] $search access point condidions.
+     * @param array<string> $search access point condidions.
      * @return \Cake\Collection\CollectionInterface|null Return result from API
      */
     public static function searchAccessPoints(array $search): ?CollectionInterface
@@ -236,7 +236,7 @@ class ApiClient
     /**
      * Search IP address ranges method
      *
-     * @param string[] $search IP address ranges condidions.
+     * @param array<string> $search IP address ranges condidions.
      * @return \Cake\Collection\CollectionInterface|null Return result from API
      */
     public static function searchIpAddressRanges(array $search): ?CollectionInterface
@@ -278,7 +278,7 @@ class ApiClient
     /**
      * Search RouterOS Devices method
      *
-     * @param string[] $search IP address ranges condidions.
+     * @param array<string> $search IP address ranges condidions.
      * @return \Cake\Collection\CollectionInterface|null Return result from API
      */
     public static function searchRouterosDevices(array $search): ?CollectionInterface

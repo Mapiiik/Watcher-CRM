@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\ContractVersion $contractVersion
- * @var string[]|\Cake\Collection\CollectionInterface $contracts
+ * @var \Cake\Collection\CollectionInterface|array<string> $contracts
  */
 ?>
 <div class="row">

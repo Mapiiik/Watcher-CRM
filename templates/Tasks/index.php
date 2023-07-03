@@ -1,8 +1,8 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Task[]|\Cake\Collection\CollectionInterface $tasks
- * @var string[]|\Cake\Collection\CollectionInterface $priorities
+ * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\Task> $tasks
+ * @var \Cake\Collection\CollectionInterface|array<string> $priorities
  * @var \Cake\Form\Form $filterForm
  */
 ?>

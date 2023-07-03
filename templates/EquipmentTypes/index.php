@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\EquipmentType[]|\Cake\Collection\CollectionInterface $equipmentTypes
+ * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\EquipmentType> $equipmentTypes
  */
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>

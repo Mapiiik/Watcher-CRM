@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace BookkeepingPohoda\Controller;
 
 use App\Controller\AppController as BaseController;
+use Cake\Event\EventInterface;
 
 class AppController extends BaseController
 {
@@ -13,7 +14,7 @@ class AppController extends BaseController
      * @param \Cake\Event\EventInterface $event An Event instance
      * @return \Cake\Http\Response|null|void
      */
-    public function beforeFilter(\Cake\Event\EventInterface $event)
+    public function beforeFilter(EventInterface $event)
     {
         // add support for dBase extension
         $this->response->setTypeMap('dbf', ['application/dbase']);

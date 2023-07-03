@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface[]|\Cake\Collection\CollectionInterface $radreplies
+ * @var \Cake\Collection\CollectionInterface|array<\Cake\Datasource\EntityInterface> $radreplies
  */
 ?>
 <div class="radreply index content">

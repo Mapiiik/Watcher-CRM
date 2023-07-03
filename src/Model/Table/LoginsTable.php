@@ -33,7 +33,7 @@ class LoginsTable extends AppTable
      *
      * @var array<string>
      */
-    public $rights = [];
+    public array $rights = [];
 
     /**
      * Initialize method

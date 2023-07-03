@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Billing[] $billings
+ * @var array<\App\Model\Entity\Billing> $billings
  * @var bool $contract_column
  */
 

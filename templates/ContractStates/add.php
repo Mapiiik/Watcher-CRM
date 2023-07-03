@@ -2,8 +2,8 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\ContractState $contractState
- * @var \Cake\Collection\CollectionInterface|string[] $creators
- * @var \Cake\Collection\CollectionInterface|string[] $modifiers
+ * @var \Cake\Collection\CollectionInterface|array<string> $creators
+ * @var \Cake\Collection\CollectionInterface|array<string> $modifiers
  */
 ?>
 <div class="row">

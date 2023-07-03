@@ -31,6 +31,7 @@ use Cake\I18n\Number;
 use Cake\ORM\Locator\TableLocator;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
+use CakeDC\Users\Plugin;
 
 /**
  * Application setup class.
@@ -76,7 +77,7 @@ class Application extends BaseApplication
         // Load more plugins here
 
         // CakeDC/users
-        $this->addPlugin(\CakeDC\Users\Plugin::class);
+        $this->addPlugin(Plugin::class);
         Configure::write('Users.config', ['users']);
 
         // Persisting audit log

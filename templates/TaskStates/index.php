@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\TaskState[]|\Cake\Collection\CollectionInterface $taskStates
+ * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\TaskState> $taskStates
  */
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>

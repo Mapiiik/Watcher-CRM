@@ -14,7 +14,7 @@
  * @var \App\View\AppView $this
  * @var string $title
  * @var \App\Model\Entity\Task $task
- * @var string[] $priorities
+ * @var array<string> $priorities
  */
 use Cake\Routing\Router;
 

@@ -2,9 +2,9 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Ip $ip
- * @var string[]|\Cake\Collection\CollectionInterface $customers
- * @var string[]|\Cake\Collection\CollectionInterface $contracts
- * @var string[]|\Cake\Collection\CollectionInterface $types_of_use
+ * @var \Cake\Collection\CollectionInterface|array<string> $customers
+ * @var \Cake\Collection\CollectionInterface|array<string> $contracts
+ * @var \Cake\Collection\CollectionInterface|array<string> $types_of_use
  */
 
 ?>

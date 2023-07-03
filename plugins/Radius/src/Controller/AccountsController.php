@@ -9,6 +9,7 @@ use Mapik\RadiusClient\Client;
 use Mapik\RadiusClient\Exceptions\ClientException;
 use Mapik\RadiusClient\Packet;
 use Mapik\RadiusClient\PacketType;
+use Radius\Model\Entity\Account;
 
 /**
  * Accounts Controller
@@ -67,7 +68,7 @@ class AccountsController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view(?string $id = null)
     {
         $account = $this->Accounts->get($id, [
             'contain' => [
@@ -91,7 +92,7 @@ class AccountsController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function monitoring($id = null)
+    public function monitoring(?string $id = null)
     {
         $account = $this->Accounts->get($id, [
             'contain' => [
@@ -221,7 +222,7 @@ class AccountsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit(?string $id = null)
     {
         $customer_id = $this->request->getParam('customer_id');
         $this->set('customer_id', $customer_id);
@@ -278,7 +279,7 @@ class AccountsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete(?string $id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
         $account = $this->Accounts->get($id);
@@ -298,7 +299,7 @@ class AccountsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects always to monitoring.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function disconnectRequest($id = null)
+    public function disconnectRequest(?string $id = null)
     {
         $this->request->allowMethod(['post']);
         $account = $this->Accounts->get($id, [
@@ -449,7 +450,7 @@ class AccountsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects always to view.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function updateRelatedRecords($id = null)
+    public function updateRelatedRecords(?string $id = null)
     {
         $this->request->allowMethod(['post']);
         $account = $this->Accounts->get($id, [
@@ -474,9 +475,9 @@ class AccountsController extends AppController
      * generate data for radcheck table for customer
      *
      * @param \Radius\Model\Entity\Account $account RADIUS account entity
-     * @return \Radius\Model\Entity\Radcheck[]
+     * @return array<\Radius\Model\Entity\Radcheck>
      */
-    private function autoRadcheckData(\Radius\Model\Entity\Account $account): array
+    private function autoRadcheckData(Account $account): array
     {
         $radcheck = [];
 
@@ -504,9 +505,9 @@ class AccountsController extends AppController
      * generate data for radreply table for customer
      *
      * @param \Radius\Model\Entity\Account $account RADIUS account entity
-     * @return \Radius\Model\Entity\Radreply[]
+     * @return array<\Radius\Model\Entity\Radreply>
      */
-    private function autoRadreplyData(\Radius\Model\Entity\Account $account): array
+    private function autoRadreplyData(Account $account): array
     {
         /** @var \App\Model\Entity\Contract $contract */
         $contract = $this->fetchTable('Contracts')->get($account->contract_id, [
@@ -596,9 +597,9 @@ class AccountsController extends AppController
      * generate data for radusergroup table for customer
      *
      * @param \Radius\Model\Entity\Account $account RADIUS account entity
-     * @return \Radius\Model\Entity\Radusergroup[]
+     * @return array<\Radius\Model\Entity\Radusergroup>
      */
-    private function autoRadusergroupData(\Radius\Model\Entity\Account $account): array
+    private function autoRadusergroupData(Account $account): array
     {
         $contract = $this->fetchTable('Contracts')->get($account->contract_id, [
             'contain' => [

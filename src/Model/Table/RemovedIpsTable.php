@@ -32,7 +32,7 @@ class RemovedIpsTable extends AppTable
      *
      * @var array<string>
      */
-    public $types_of_use = [];
+    public array $types_of_use = [];
 
     /**
      * Initialize method

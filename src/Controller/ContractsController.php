@@ -71,7 +71,7 @@ class ContractsController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view(?string $id = null)
     {
         $contract = $this->Contracts->get($id, [
             'contain' => [
@@ -228,7 +228,7 @@ class ContractsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit(?string $id = null)
     {
         $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);
@@ -315,7 +315,7 @@ class ContractsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete(?string $id = null)
     {
         $customer_id = $this->getRequest()->getParam('customer_id');
 
@@ -341,7 +341,7 @@ class ContractsController extends AppController
      * @param bool $flash Enable flash messages
      * @return bool Return true on success false on failure
      */
-    private function updateNumber($id = null, bool $flash = true)
+    private function updateNumber(string|int|null $id = null, bool $flash = true)
     {
         $contract = $this->Contracts->get($id);
         $service_type = $this->Contracts->ServiceTypes->get($contract->service_type_id);
@@ -421,7 +421,7 @@ class ContractsController extends AppController
      * @param bool $flash Enable flash messages
      * @return bool Return true on success false on failure
      */
-    private function updateSubscriberVerificationCode($id = null, bool $flash = true)
+    private function updateSubscriberVerificationCode(string|int|null $id = null, bool $flash = true)
     {
         $contract = $this->Contracts->get($id);
         $service_type = $this->Contracts->ServiceTypes->get($contract->service_type_id);
@@ -501,7 +501,7 @@ class ContractsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects to view.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function setDatesForRelatedBorrowedEquipments($id = null)
+    public function setDatesForRelatedBorrowedEquipments(?string $id = null)
     {
         $this->getRequest()->allowMethod(['post']);
 
@@ -580,7 +580,7 @@ class ContractsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects to view.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function terminateRelatedBillings($id = null)
+    public function terminateRelatedBillings(?string $id = null)
     {
         $this->getRequest()->allowMethod(['post']);
 
@@ -631,7 +631,7 @@ class ContractsController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function print($id = null, $type = null)
+    public function print(?string $id = null, ?string $type = null)
     {
         $customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $customer_id);

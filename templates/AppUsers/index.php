@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\AppUser[]|\Cake\Collection\CollectionInterface $users
+ * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\AppUser> $users
  * @var string $tableAlias
  */
 

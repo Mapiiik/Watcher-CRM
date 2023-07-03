@@ -40,7 +40,7 @@ class Plugin extends BasePlugin
         $routes->plugin(
             'BookkeepingPohoda',
             ['path' => '/bookkeeping'],
-            function (RouteBuilder $builder) {
+            function (RouteBuilder $builder): void {
                 $builder->setExtensions(['dbf', 'xml']);
 
                 $builder->fallbacks();

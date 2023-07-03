@@ -1,8 +1,8 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\RemovedIp[]|\Cake\Collection\CollectionInterface $removedIps
- * @var string[]|\Cake\Collection\CollectionInterface $types_of_use
+ * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\RemovedIp> $removedIps
+ * @var \Cake\Collection\CollectionInterface|array<string> $types_of_use
  */
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>

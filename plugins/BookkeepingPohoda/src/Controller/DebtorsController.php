@@ -21,7 +21,7 @@ class DebtorsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects always to customer view.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function block($id = null)
+    public function block(?string $id = null)
     {
         $this->request->allowMethod(['post']);
 
@@ -48,7 +48,7 @@ class DebtorsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects always to customer view.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function unblock($id = null)
+    public function unblock(?string $id = null)
     {
         $this->request->allowMethod(['post']);
 
@@ -76,7 +76,7 @@ class DebtorsController extends AppController
      * @return string List of performed changes
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function updateRouters($id = null, $block = false)
+    public function updateRouters(?string $id = null, bool $block = false)
     {
         $result = '';
 

@@ -1,8 +1,8 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Login[]|\Cake\Collection\CollectionInterface $logins
- * @var string[]|\Cake\Collection\CollectionInterface $rights
+ * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\Login> $logins
+ * @var \Cake\Collection\CollectionInterface|array<string> $rights
  */
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>

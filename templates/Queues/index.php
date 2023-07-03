@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Queue[]|\Cake\Collection\CollectionInterface $queues
+ * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\Queue> $queues
  */
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>

@@ -36,7 +36,7 @@ class TasksTable extends AppTable
      *
      * @var array<string>
      */
-    public $priorities = [];
+    public array $priorities = [];
 
     /**
      * Initialize method

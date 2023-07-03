@@ -17,14 +17,14 @@ class AccountsCell extends Cell
      *
      * @var array<string>
      */
-    protected $_validCellOptions = ['show_contracts'];
+    protected array $_validCellOptions = ['show_contracts'];
 
     /**
      * Show contracts
      *
      * @var bool
      */
-    protected $show_contracts = true;
+    protected bool $show_contracts = true;
 
     /**
      * Initialization logic run at the end of object construction.
@@ -41,7 +41,7 @@ class AccountsCell extends Cell
      * @param array<mixed> $conditions Query conditions.
      * @return void
      */
-    public function display(array $conditions = [])
+    public function display(array $conditions = []): void
     {
         $contain = [
             'Radreply',

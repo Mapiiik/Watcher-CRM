@@ -40,7 +40,7 @@ class Plugin extends BasePlugin
         $routes->plugin(
             'Radius',
             ['path' => '/radius'],
-            function (RouteBuilder $builder) {
+            function (RouteBuilder $builder): void {
                 $builder->connect(
                     '/customers/{customer_id}/contracts/{contract_id}/{controller}',
                     ['action' => 'index']

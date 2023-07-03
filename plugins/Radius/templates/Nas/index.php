@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface[]|\Cake\Collection\CollectionInterface $nases
+ * @var \Cake\Collection\CollectionInterface|array<\Cake\Datasource\EntityInterface> $nases
  */
 ?>
 <div class="Nas index content">

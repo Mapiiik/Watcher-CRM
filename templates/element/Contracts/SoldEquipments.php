@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\SoldEquipment[] $sold_equipments
+ * @var array<\App\Model\Entity\SoldEquipment> $sold_equipments
  * @var bool $contract_column
  */
 ?>

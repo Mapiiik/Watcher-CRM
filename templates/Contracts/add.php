@@ -2,10 +2,10 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Contract $contract
- * @var string[]|\Cake\Collection\CollectionInterface $customers
- * @var string[]|\Cake\Collection\CollectionInterface $serviceTypes
- * @var string[]|\Cake\Collection\CollectionInterface $installationAddresses
- * @var string[]|\Cake\Collection\CollectionInterface $accessPoints
+ * @var \Cake\Collection\CollectionInterface|array<string> $customers
+ * @var \Cake\Collection\CollectionInterface|array<string> $serviceTypes
+ * @var \Cake\Collection\CollectionInterface|array<string> $installationAddresses
+ * @var \Cake\Collection\CollectionInterface|array<string> $accessPoints
  */
 
 ?>

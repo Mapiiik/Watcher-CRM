@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var string[]|\Cake\Collection\CollectionInterface $tax_rates
+ * @var \Cake\Collection\CollectionInterface|array<string> $tax_rates
  */
 ?>
 <div class="row">

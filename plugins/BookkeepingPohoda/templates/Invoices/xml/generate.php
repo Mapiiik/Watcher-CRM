@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \BookkeepingPohoda\Model\Entity\Invoice[]|\Cake\Collection\CollectionInterface $invoices
+ * @var \Cake\Collection\CollectionInterface|array<\BookkeepingPohoda\Model\Entity\Invoice> $invoices
  * @var \Cake\I18n\Date $invoiced_month
  * @var array $tax_rates
  * @var \App\Model\Entity\TaxRate $tax_rate

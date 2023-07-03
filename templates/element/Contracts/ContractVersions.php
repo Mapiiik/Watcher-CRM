@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ContractVersion[] $contract_versions
+ * @var array<\App\Model\Entity\ContractVersion> $contract_versions
  */
 ?>
 <?php if (!empty($contract_versions)) : ?>

@@ -42,9 +42,9 @@ class UpdateCustomerLabelsCommand extends Command
      *
      * @param \Cake\Console\Arguments $args The command arguments.
      * @param \Cake\Console\ConsoleIo $io The console io
-     * @return null|void|int The exit code or null for success
+     * @return int|null|void The exit code or null for success
      */
-    public function execute(Arguments $args, ConsoleIo $io)
+    public function execute(Arguments $args, ConsoleIo $io): null|int|null
     {
         /** @var \App\Model\Table\LabelsTable $labels_table */
         $labels_table = $this->fetchTable('Labels');
@@ -59,7 +59,7 @@ class UpdateCustomerLabelsCommand extends Command
             $labels->where(['id' => $label_id]);
         }
 
-        /** @var \App\Model\Entity\Label[] $labels */
+        /** @var array<\App\Model\Entity\Label> $labels */
         foreach ($labels as $label) {
             $io->info(__('Processing') . ': ' . $label->name . ' (' . $label->id . ')');
 

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Command;
 
+use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -12,7 +13,7 @@ use Cake\TestSuite\TestCase;
  */
 class AutoAssignContractsToAccessPointsCommandTest extends TestCase
 {
-    use \Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
+    use ConsoleIntegrationTestTrait;
 
     /**
      * setUp method

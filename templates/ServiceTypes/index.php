@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ServiceType[]|\Cake\Collection\CollectionInterface $serviceTypes
+ * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\ServiceType> $serviceTypes
  */
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>

@@ -2,8 +2,8 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Customer $customer
- * @var string[]|\Cake\Collection\CollectionInterface $taxRates
- * @var string[]|\Cake\Collection\CollectionInterface $invoice_delivery_types
+ * @var \Cake\Collection\CollectionInterface|array<string> $taxRates
+ * @var \Cake\Collection\CollectionInterface|array<string> $invoice_delivery_types
  */
 ?>
 <div class="row">

@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Task $task
- * @var string[]|\Cake\Collection\CollectionInterface $priorities
+ * @var \Cake\Collection\CollectionInterface|array<string> $priorities
  */
 ?>
 <div class="row">

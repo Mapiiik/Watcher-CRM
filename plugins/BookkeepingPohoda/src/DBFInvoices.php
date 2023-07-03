@@ -8,6 +8,9 @@ declare(strict_types=1);
 
 namespace BookkeepingPohoda;
 
+use App\Model\Entity\TaxRate;
+use BookkeepingPohoda\Model\Entity\Invoice;
+
 /**
  * Description of DBFInvoices
  *
@@ -70,7 +73,7 @@ class DBFInvoices
      * @param string $path The path of the database. It can be a relative or absolute path to the file where dBase will store your data.
      * @return void No return value
      */
-    public function createDBF($path)
+    public function createDBF(string $path): void
     {
         $this->dbf = dbase_create($path, $this->structure);
         if (!$this->dbf) {
@@ -83,7 +86,7 @@ class DBFInvoices
      *
      * @return void No return value
      */
-    public function closeDBF()
+    public function closeDBF(): void
     {
         dbase_close($this->dbf);
     }
@@ -95,7 +98,7 @@ class DBFInvoices
      * @param \App\Model\Entity\TaxRate $tax_rate Tax Rate
      * @return void No return value
      */
-    public function addRecord($invoice, $tax_rate)
+    public function addRecord(Invoice $invoice, TaxRate $tax_rate): void
     {
         $totalcost = $invoice->total;
 
@@ -148,7 +151,7 @@ class DBFInvoices
         $data[] = $invoice->note; //poznámka
         $data[] = $invoice->internal_note; //interní poznámka
 
-        foreach ($data as $key => $value) {
+        foreach ($data as $value) {
             if (is_string($value)) {
                 $xdata[] = iconv('UTF-8', $this->charset, $value);
             } else {

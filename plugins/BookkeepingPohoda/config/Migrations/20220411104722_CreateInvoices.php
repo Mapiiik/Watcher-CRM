@@ -13,7 +13,7 @@ class CreateInvoices extends AbstractMigration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         $this->table('invoices', ['id' => false, 'primary_key' => ['id']])
             ->addColumn('id', 'biginteger', [
@@ -122,7 +122,7 @@ class CreateInvoices extends AbstractMigration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         $this->table('invoices')->drop()->save();
     }

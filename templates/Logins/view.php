@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Login $login
- * @var string[]|\Cake\Collection\CollectionInterface $rights
+ * @var \Cake\Collection\CollectionInterface|array<string> $rights
  */
 ?>
 <div class="row">

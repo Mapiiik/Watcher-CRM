@@ -16,14 +16,14 @@ class CustomerCell extends Cell
      *
      * @var array<string>
      */
-    protected $_validCellOptions = ['compact'];
+    protected array $_validCellOptions = ['compact'];
 
     /**
      * Compact view
      *
      * @var bool
      */
-    protected $compact = false;
+    protected bool $compact = false;
 
     /**
      * Initialization logic run at the end of object construction.
@@ -40,7 +40,7 @@ class CustomerCell extends Cell
      * @param string|null $customer_id Customer Id.
      * @return void
      */
-    public function display($customer_id)
+    public function display(?string $customer_id): void
     {
         if ($customer_id) {
             $customer = $this->fetchTable('Customers')->get($customer_id, [

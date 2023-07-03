@@ -114,8 +114,6 @@ class PhonesTable extends AppTable
     {
         if (isset($data['phone']) && is_string($data['phone']) && (strlen($data['phone']) > 0)) {
             $phone = $data['phone'];
-            $old = ['+','-',' '];
-            $new = ['','',''];
 
             $phone = trim(str_replace(['+', '-', ' '], ['', '', ''], $phone));
 

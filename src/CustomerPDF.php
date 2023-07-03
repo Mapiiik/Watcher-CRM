@@ -38,10 +38,10 @@ class CustomerPDF extends TCPDF
      * @param \App\Model\Entity\Customer $customer Customer with all related data
      * @param string $type Type of requested document
      * @param bool $signed Create signed document?
-     * @param string[] $address_types Supported address types
+     * @param array<string> $address_types Supported address types
      * @return void
      */
-    public function generateGDPRAgreement(Customer $customer, string $type = 'gdpr-new', bool $signed = false, ?array $address_types = null)
+    public function generateGDPRAgreement(Customer $customer, string $type = 'gdpr-new', bool $signed = false, ?array $address_types = null): void
     {
         $this->setPrintHeader(false);
         $this->setPrintFooter(false);

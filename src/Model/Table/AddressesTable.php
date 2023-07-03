@@ -33,14 +33,14 @@ class AddressesTable extends AppTable
      *
      * @var array<string>
      */
-    public $types = [];
+    public array $types = [];
 
     /**
      * Number types
      *
      * @var array<string>
      */
-    public $number_types = [];
+    public array $number_types = [];
 
     /**
      * Initialize method
