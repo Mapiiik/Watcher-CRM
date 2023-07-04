@@ -86,13 +86,20 @@ class AppController extends Controller
                 'Unable to find results on page {0}. Redirect to page 1.',
                 $this->getRequest()->getQuery('page')
             ));
-            $this->redirect(
+            $response = $this->redirect(
                 ['?' => ['page' => '1'] + $this->getRequest()->getQueryParams()]
                 + $this->getRequest()->getParam('pass')
             );
-        }
 
-        return parent::paginate($object, $settings);
+            // Redirect if not called from CLI
+            if (PHP_SAPI == 'cli') {
+                throw new NotFoundException('Redirect to ' . $response->getHeaderLine('Location') . ' for non-CLI.');
+            } else {
+                header('Location: ' . $response->getHeaderLine('Location'), true, 303);
+            }
+
+            exit;
+        }
     }
 
     /**
