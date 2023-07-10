@@ -163,12 +163,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/authentication.git",
-                "reference": "f273e127c42de675cd66fcd2f26c54ddd1be371f"
+                "reference": "8912a6bdf1fcddb0c42cc84b95c85a3c4aa93668"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/authentication/zipball/f273e127c42de675cd66fcd2f26c54ddd1be371f",
-                "reference": "f273e127c42de675cd66fcd2f26c54ddd1be371f",
+                "url": "https://api.github.com/repos/cakephp/authentication/zipball/8912a6bdf1fcddb0c42cc84b95c85a3c4aa93668",
+                "reference": "8912a6bdf1fcddb0c42cc84b95c85a3c4aa93668",
                 "shasum": ""
             },
             "require": {
@@ -223,7 +223,7 @@
                 "issues": "https://github.com/cakephp/authentication/issues",
                 "source": "https://github.com/cakephp/authentication"
             },
-            "time": "2023-06-03T08:58:16+00:00"
+            "time": "2023-07-03T14:53:58+00:00"
         },
         {
             "name": "cakephp/authorization",
@@ -297,12 +297,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "131e3795849fed907d69d35eb2b5deca0069ca10"
+                "reference": "72b5b3ed36840ed4b623956dd29117036bcb3f72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/131e3795849fed907d69d35eb2b5deca0069ca10",
-                "reference": "131e3795849fed907d69d35eb2b5deca0069ca10",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/72b5b3ed36840ed4b623956dd29117036bcb3f72",
+                "reference": "72b5b3ed36840ed4b623956dd29117036bcb3f72",
                 "shasum": ""
             },
             "require": {
@@ -405,7 +405,7 @@
                 "issues": "https://github.com/cakephp/cakephp/issues",
                 "source": "https://github.com/cakephp/cakephp"
             },
-            "time": "2023-06-27T02:20:12+00:00"
+            "time": "2023-07-10T01:45:53+00:00"
         },
         {
             "name": "cakephp/chronos",
@@ -413,12 +413,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/chronos.git",
-                "reference": "97097947350e35063f0bcc2867079f693deecce2"
+                "reference": "98911ff37fada223d7314ea33d44cf2a57196890"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/chronos/zipball/97097947350e35063f0bcc2867079f693deecce2",
-                "reference": "97097947350e35063f0bcc2867079f693deecce2",
+                "url": "https://api.github.com/repos/cakephp/chronos/zipball/98911ff37fada223d7314ea33d44cf2a57196890",
+                "reference": "98911ff37fada223d7314ea33d44cf2a57196890",
                 "shasum": ""
             },
             "require": {
@@ -460,7 +460,7 @@
                 "issues": "https://github.com/cakephp/chronos/issues",
                 "source": "https://github.com/cakephp/chronos"
             },
-            "time": "2023-07-02T16:06:31+00:00"
+            "time": "2023-07-07T10:12:55+00:00"
         },
         {
             "name": "cakephp/migrations",
@@ -5172,16 +5172,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.22",
+            "version": "1.10.25",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "97d694dfd4ceb57bcce4e3b38548f13ea62e4287"
+                "reference": "578f4e70d117f9a90699324c555922800ac38d8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/97d694dfd4ceb57bcce4e3b38548f13ea62e4287",
-                "reference": "97d694dfd4ceb57bcce4e3b38548f13ea62e4287",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/578f4e70d117f9a90699324c555922800ac38d8c",
+                "reference": "578f4e70d117f9a90699324c555922800ac38d8c",
                 "shasum": ""
             },
             "require": {
@@ -5230,7 +5230,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-06-30T20:04:11+00:00"
+            "time": "2023-07-06T12:11:37+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -5554,16 +5554,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "10.2.3",
+            "version": "10.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "35c8cac1734ede2ae354a6644f7088356ff5b08e"
+                "reference": "68484779b5a2ed711fbdeba6ca01910d87acdff2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/35c8cac1734ede2ae354a6644f7088356ff5b08e",
-                "reference": "35c8cac1734ede2ae354a6644f7088356ff5b08e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/68484779b5a2ed711fbdeba6ca01910d87acdff2",
+                "reference": "68484779b5a2ed711fbdeba6ca01910d87acdff2",
                 "shasum": ""
             },
             "require": {
@@ -5635,7 +5635,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.2.3"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.2.4"
             },
             "funding": [
                 {
@@ -5651,7 +5651,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-06-30T06:17:38+00:00"
+            "time": "2023-07-10T04:06:08+00:00"
         },
         {
             "name": "psalm/phar",
