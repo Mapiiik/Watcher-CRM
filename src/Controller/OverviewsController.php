@@ -37,13 +37,13 @@ class OverviewsController extends AppController
      */
     public function overviewOfActiveServices()
     {
-        $month_to_display = new Date($this->getRequest()->getQuery('month_to_display'));
+        $month_to_display = new Date($this->getRequest()->getQuery('month_to_display') ?? 'now');
         $service_type_id = $this->getRequest()->getQuery('service_type_id');
+        $cto_category = $this->getRequest()->getQuery('cto_category');
         $access_point_id = $this->getRequest()->getQuery('access_point_id');
 
         $servicesQuery = $this->fetchTable('Services')
             ->find()
-            ->contain('ServiceTypes')
             ->contain('Billings', function (SelectQuery $q) use ($month_to_display, $access_point_id) {
                 return $q
                     ->contain('Services')
@@ -65,49 +65,80 @@ class OverviewsController extends AppController
                         ],
                     ]);
             })
+            ->contain('Queues')
+            ->contain('ServiceTypes')
             ->formatResults(
                 function (CollectionInterface $services) {
-                    return $services->map(function ($service) {
-                        $service['number_of_uses'] = (new Collection($service['billings']))
+                    $services = $services->map(function ($service) {
+                        $billings = new Collection($service['billings']);
+
+                        $service['number_of_uses'] = $billings
                             ->sumOf('quantity');
 
-                        $service['number_of_uses_nonbusiness'] = (new Collection($service['billings']))
-                            ->match(['customer.ic' => null])->sumOf('quantity');
+                        $service['number_of_uses_nonbusiness'] = $billings
+                            ->match(['customer.ic' => null])
+                            ->sumOf('quantity');
 
-                        $service['sum'] = (new Collection($service['billings']))->sumOf('sum');
+                        $service['sum'] = $billings
+                            ->sumOf('sum');
 
-                        $service['fixed_discount_sum'] = (new Collection($service['billings']))
+                        $service['fixed_discount_sum'] = $billings
                             ->sumOf('fixed_discount_sum');
 
-                        $service['percentage_discount_sum'] = (new Collection($service['billings']))
+                        $service['percentage_discount_sum'] = $billings
                             ->sumOf('percentage_discount_sum');
 
-                        $service['total_sum'] = (new Collection($service['billings']))->sumOf('total_price');
+                        $service['total_sum'] = $billings
+                            ->sumOf('total_price');
 
-                        $service['total_sum_nonbusiness'] = (new Collection($service['billings']))
-                            ->match(['customer.ic' => null])->sumOf('total_price');
+                        $service['total_sum_nonbusiness'] = $billings
+                            ->match(['customer.ic' => null])
+                            ->sumOf('total_price');
 
-                        $service['total_sum_unbilled'] = (new Collection($service['billings']))
+                        $service['total_sum_unbilled'] = $billings
                             ->match(['contract.billed' => false])
                             ->sumOf('total_price');
 
+                        unset($billings);
+
                         return $service;
                     });
+
+                    // only services that are used
+                    $services = $services->filter(function ($service) {
+                        return $service->number_of_uses > 0;
+                    });
+
+                    // sorting by number of uses, if no other sorting is set¨
+                    if ($this->getRequest()->getQuery('sort') === null) {
+                        $services = $services->sortBy('number_of_uses');
+                    }
+
+                    return $services;
                 }
             );
 
         // filter by service type
         if (!empty($service_type_id)) {
-            $servicesQuery->where(['service_type_id' => $service_type_id]);
+            $servicesQuery->where(['Services.service_type_id' => $service_type_id]);
         }
 
-        // load services
-        $services = $servicesQuery
-            ->all()
-            ->filter(function ($service) {
-                return $service->number_of_uses > 0;
-            })
-            ->sortBy('number_of_uses');
+        // filter by CTO category
+        if (!empty($cto_category)) {
+            $servicesQuery->where(['Queues.cto_category' => $cto_category]);
+        }
+
+        // Load services with paginator
+        $services = $this->paginate($servicesQuery, [
+            'sortableFields' => [
+                'name',
+                'price',
+                'ServiceTypes.name',
+                'Queues.name',
+            ],
+            'limit' => PHP_INT_MAX,
+            'maxLimit' => PHP_INT_MAX,
+        ]);
 
         $this->set(compact('services', 'month_to_display'));
 
@@ -117,6 +148,20 @@ class OverviewsController extends AppController
             $this->fetchTable('ServiceTypes')->find('list', order: [
                 'name',
             ])
+        );
+
+        // load CTO categories
+        $this->set(
+            'ctoCategories',
+            $this->fetchTable('Queues')
+                ->find(
+                    'list',
+                    order: 'cto_category',
+                    group: 'cto_category',
+                    keyField: 'cto_category',
+                    valueField: 'cto_category',
+                )
+                ->whereNotNull('cto_category')
         );
 
         // load access points from NMS if possible

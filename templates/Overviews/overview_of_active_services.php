@@ -35,6 +35,12 @@
                     ]) ?>
                 </div>
                 <div class="column">
+                    <?= $this->Form->control('cto_category', [
+                        'empty' => true,
+                        'onchange' => 'this.form.submit();',
+                    ]) ?>
+                </div>
+                <div class="column">
                     <?= $this->Form->control('access_point_id', [
                         'empty' => true,
                         'onchange' => 'this.form.submit();',
@@ -47,10 +53,10 @@
                 <table>
                     <thead>
                         <tr>
-                            <th><?= __('Name') ?></th>
-                            <th><?= __('Price') ?></th>
-                            <th><?= __('Service Type') ?></th>
-                            <th><?= __('Queue') ?></th>
+                            <th><?= $this->Paginator->sort('name') ?></th>
+                            <th><?= $this->Paginator->sort('price') ?></th>
+                            <th><?= $this->Paginator->sort('ServiceTypes.name', __('Service Type')) ?></th>
+                            <th><?= $this->Paginator->sort('Queues.name', __('Queue')) ?></th>
                             <th><?= __('Number of Uses') ?></th>
                             <th><?= __('Number of Uses (nonbusiness)') ?></th>
                             <th><?= __('Sum') ?></th>
@@ -66,7 +72,8 @@
                         <?php foreach ($services as $service) : ?>
                         <tr>
                             <td><?= h($service->name) ?></td>
-                            <td><?= $this->Number->currency($service->price) ?></td>
+                            <td><?= $service->price === null ?
+                                '' : $this->Number->currency($service->price) ?></td>
                             <td><?= $service->__isset('service_type') ?
                                 $this->Html->link(
                                     $service->service_type->name,
@@ -81,14 +88,22 @@
                                 'action' => 'view',
                                 $service->queue->id,
                             ]) : '' ?></td>
-                            <td><?= $this->Number->format($service->number_of_uses) ?></td>
-                            <td><?= $this->Number->format($service->number_of_uses_nonbusiness) ?></td>
-                            <td><?= $this->Number->currency($service->sum) ?></td>
-                            <td><?= $this->Number->currency($service->fixed_discount_sum) ?></td>
-                            <td><?= $this->Number->currency($service->percentage_discount_sum) ?></td>
-                            <td><?= $this->Number->currency($service->total_sum) ?></td>
-                            <td><?= $this->Number->currency($service->total_sum_nonbusiness) ?></td>
-                            <td><?= $this->Number->currency($service->total_sum_unbilled) ?></td>
+                            <td><?= $service->number_of_uses === null ?
+                                '' : $this->Number->format($service->number_of_uses) ?></td>
+                            <td><?= $service->number_of_uses_nonbusiness === null ?
+                                '' : $this->Number->format($service->number_of_uses_nonbusiness) ?></td>
+                            <td><?= $service->sum === null ?
+                                '' : $this->Number->currency($service->sum) ?></td>
+                            <td><?= $service->fixed_discount_sum === null ?
+                                '' : $this->Number->currency($service->fixed_discount_sum) ?></td>
+                            <td><?= $service->percentage_discount_sum === null ?
+                                '' : $this->Number->currency($service->percentage_discount_sum) ?></td>
+                            <td><?= $service->total_sum === null ?
+                                '' : $this->Number->currency($service->total_sum) ?></td>
+                            <td><?= $service->total_sum_nonbusiness === null ?
+                                '' : $this->Number->currency($service->total_sum_nonbusiness) ?></td>
+                            <td><?= $service->total_sum_unbilled === null ?
+                                '' : $this->Number->currency($service->total_sum_unbilled) ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(__('View'), [
                                     'controller' => 'Services',
