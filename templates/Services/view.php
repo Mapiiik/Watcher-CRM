@@ -1,11 +1,10 @@
 <?php
+use Cake\Collection\Collection;
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Service $service
  */
-
-use Cake\Collection\Collection;
-
 ?>
 <div class="row">
     <aside class="column">

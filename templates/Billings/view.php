@@ -1,11 +1,11 @@
 <?php
+use Cake\I18n\Date;
+use Cake\I18n\Number;
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Billing $billing
  */
-
-use Cake\I18n\Date;
-use Cake\I18n\Number;
 ?>
 <div class="row">
     <aside class="column">

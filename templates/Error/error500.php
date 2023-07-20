@@ -1,13 +1,13 @@
 <?php
+use Cake\Core\Configure;
+use Cake\Error\Debugger;
+
 /**
  * @var \App\View\AppView $this
  * @var \Cake\Database\StatementInterface $error
  * @var string $message
  * @var string $url
- * @psalm-scope-this \App\View\AppView
  */
-use Cake\Core\Configure;
-use Cake\Error\Debugger;
 
 $this->setLayout('error');
 

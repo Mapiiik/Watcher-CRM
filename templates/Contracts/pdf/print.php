@@ -1,4 +1,7 @@
 <?php
+use App\ContractPDF;
+use Cake\I18n\Date;
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Contract $contract
@@ -6,9 +9,6 @@
  * @var string|null $type
  * @var \stdClass|null $technical_details
  */
-
-use App\ContractPDF;
-use Cake\I18n\Date;
 
 // define date format
 Date::setToStringFormat('dd.MM.yyyy');

@@ -1,12 +1,13 @@
 <?php
+use App\CustomerPDF;
+use Cake\I18n\Date;
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Customer $customer
  * @var string|null $type
  * @var \stdClass|null $technical_details
  */
-use App\CustomerPDF;
-use Cake\I18n\Date;
 
 // define date format
 Date::setToStringFormat('dd.MM.yyyy');

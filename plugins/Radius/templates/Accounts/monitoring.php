@@ -1,14 +1,12 @@
 <?php
+use Cake\I18n\DateTime;
+
 /**
  * @var \App\View\AppView $this
  * @var \Radius\Model\Entity\Account $account
  * @var bool $details
  */
-
-use Cake\I18n\DateTime;
-
 ?>
-
 <div class="row">
     <aside class="column">
         <div class="side-nav">

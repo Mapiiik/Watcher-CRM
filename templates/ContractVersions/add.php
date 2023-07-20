@@ -1,12 +1,11 @@
 <?php
+use Cake\I18n\Date;
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\ContractVersion $contractVersion
  * @var \Cake\Collection\CollectionInterface|array<string> $contracts
  */
-
-use Cake\I18n\Date;
-
 ?>
 <div class="row">
     <aside class="column">

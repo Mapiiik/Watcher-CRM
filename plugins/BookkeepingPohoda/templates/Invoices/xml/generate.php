@@ -1,12 +1,14 @@
 <?php
+use Riesenia\Pohoda;
+
 /**
  * @var \App\View\AppView $this
+ * @psalm-scope-this \App\View\AppView
  * @var \Cake\Collection\CollectionInterface|array<\BookkeepingPohoda\Model\Entity\Invoice> $invoices
  * @var \Cake\I18n\Date $invoiced_month
  * @var array $tax_rates
  * @var \App\Model\Entity\TaxRate $tax_rate
  */
-use Riesenia\Pohoda;
 
 Pohoda::$encoding = 'UTF-8';
 

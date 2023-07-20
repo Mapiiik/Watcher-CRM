@@ -1,12 +1,11 @@
 <?php
+use Cake\I18n\Date;
+
 /**
  * @var \App\View\AppView $this
  * @var \Cake\Collection\CollectionInterface|array<\BookkeepingPohoda\Model\Entity\Invoice> $invoices
  * @var bool $show_customers
  */
-
-use Cake\I18n\Date;
-
 ?>
 <div class="table-responsive">
     <?php if (is_object($invoices) && !$invoices->isEmpty()) : ?>

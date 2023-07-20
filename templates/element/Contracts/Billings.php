@@ -1,10 +1,11 @@
 <?php
+use Cake\I18n\Number;
+
 /**
  * @var \App\View\AppView $this
  * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\Billing> $billings
  * @var bool $contract_column
  */
-use Cake\I18n\Number;
 ?>
 <?php if (!empty($billings)) : ?>
 <div class="table-responsive">

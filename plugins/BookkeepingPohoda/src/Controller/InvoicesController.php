@@ -543,7 +543,6 @@ class InvoicesController extends AppController
             $modified = 0;
             // VERIFICATION DATA CHECK
             if ($dbf_for_import->getSize() > 0) {
-                /** @psalm-suppress InvalidArrayOffset **/
                 $dbase = dbase_open($_FILES['dbf_for_import']['tmp_name'], 0);
 
                 $record_count = dbase_numrecords($dbase);

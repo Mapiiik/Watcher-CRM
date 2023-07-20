@@ -159,7 +159,7 @@
                             <th class="actions"><?= __('Map location') ?></th>
                             <td class="actions">
                                 <?php if ($contract->__isset('installation_address')) : ?>
-                                    <?php $address =& $contract->installation_address ?>
+                                    <?php $address = $contract->installation_address ?>
                                     <?= $address->__isset('gps_x') && $address->__isset('gps_y') ?
                                         '' : '<span style="color: red;">' . __('unknown') . '</span>' ?>
                                     <?= $address->__isset('gps_x') && $address->__isset('gps_y') ? $this->Html->link(

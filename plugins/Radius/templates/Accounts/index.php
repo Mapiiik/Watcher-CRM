@@ -64,7 +64,7 @@
                     <td><?= h($account->username) ?></td>
                     <td><?= h($account->password) ?></td>
                     <td><?= $account->active ? __d('radius', 'Yes') : __d('radius', 'No'); ?></td>
-                    <td><?= h($account->getType()) ?></td>
+                    <td><?= h($account->getTypeName()) ?></td>
                     <td><?= h($account->created) ?></td>
                     <td><?= h($account->modified) ?></td>
                     <td class="actions">

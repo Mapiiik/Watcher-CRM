@@ -1,9 +1,10 @@
 <?php
+use Cake\I18n\Number;
+
 /**
  * @var \App\View\AppView $this
  * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\Billing> $billings
  */
-use Cake\I18n\Number;
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
 <div class="row">

@@ -2,7 +2,6 @@
 /**
  * @var \App\View\AppView $this
  * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\Address> $addresses
- * @var \Cake\Collection\CollectionInterface|array<string> $types
  */
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
@@ -52,7 +51,7 @@
                         ) : '' ?>
                     </td>
                     <td><?= $address->__isset('customer') ? h($address->customer->number) : '' ?></td>
-                    <td><?= h($types[$address->type]) ?></td>
+                    <td><?= h($address->getTypeName()) ?></td>
                     <td><?= h($address->company) ?></td>
                     <td><?= h($address->title) ?></td>
                     <td><?= h($address->first_name) ?></td>

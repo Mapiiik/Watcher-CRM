@@ -11,15 +11,18 @@
  * @link          https://cakephp.org CakePHP(tm) Project
  * @since         0.10.0
  * @license       https://opensource.org/licenses/mit-license.php MIT License
- * @var \App\View\AppView $this
  */
 
 use App\Controller\AppController;
 use Cake\Core\Configure;
 
+/**
+ * @var \App\View\AppView $this
+ * @psalm-scope-this \App\View\AppView
+ */
+
 $cakeDescription = 'Watcher CRM | ' . env('APP_COMPANY', 'ISP');
 
-/** @psalm-scope-this \App\View\AppView */
 $request = $this->getRequest();
 
 $controller = $this->getName();
