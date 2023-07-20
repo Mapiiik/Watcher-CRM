@@ -36,7 +36,7 @@ class AddressesTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Addresses') ? [] : ['className' => AddressesTable::class];
-        $this->Addresses = $this->fetchTable('Addresses', $config);
+        $this->Addresses = $this->getTableLocator()->get('Addresses', $config);
     }
 
     /**

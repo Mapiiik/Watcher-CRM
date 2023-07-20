@@ -37,7 +37,7 @@ class RadacctTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Radacct') ? [] : ['className' => RadacctTable::class];
-        $this->Radacct = $this->fetchTable('Radacct', $config);
+        $this->Radacct = $this->getTableLocator()->get('Radacct', $config);
     }
 
     /**

@@ -37,7 +37,7 @@ class InvoicesTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Invoices') ? [] : ['className' => InvoicesTable::class];
-        $this->Invoices = $this->fetchTable('Invoices', $config);
+        $this->Invoices = $this->getTableLocator()->get('Invoices', $config);
     }
 
     /**

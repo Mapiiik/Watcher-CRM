@@ -39,7 +39,7 @@ class RadusergroupTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Radusergroup') ? [] : ['className' => RadusergroupTable::class];
-        $this->Radusergroup = $this->fetchTable('Radusergroup', $config);
+        $this->Radusergroup = $this->getTableLocator()->get('Radusergroup', $config);
     }
 
     /**

@@ -36,7 +36,7 @@ class NasTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Nas') ? [] : ['className' => NasTable::class];
-        $this->Nas = $this->fetchTable('Nas', $config);
+        $this->Nas = $this->getTableLocator()->get('Nas', $config);
     }
 
     /**
