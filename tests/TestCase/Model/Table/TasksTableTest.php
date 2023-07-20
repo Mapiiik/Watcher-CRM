@@ -39,7 +39,7 @@ class TasksTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Tasks') ? [] : ['className' => TasksTable::class];
-        $this->TasksTable = $this->fetchTable('Tasks', $config);
+        $this->TasksTable = $this->getTableLocator()->get('Tasks', $config);
     }
 
     /**

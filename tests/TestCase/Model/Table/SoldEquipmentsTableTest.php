@@ -39,7 +39,7 @@ class SoldEquipmentsTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('SoldEquipments') ? [] : ['className' => SoldEquipmentsTable::class];
-        $this->SoldEquipmentsTable = $this->fetchTable('SoldEquipments', $config);
+        $this->SoldEquipmentsTable = $this->getTableLocator()->get('SoldEquipments', $config);
     }
 
     /**

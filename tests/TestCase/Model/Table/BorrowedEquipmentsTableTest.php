@@ -39,7 +39,7 @@ class BorrowedEquipmentsTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('BorrowedEquipments') ? [] : ['className' => BorrowedEquipmentsTable::class];
-        $this->BorrowedEquipmentsTable = $this->fetchTable('BorrowedEquipments', $config);
+        $this->BorrowedEquipmentsTable = $this->getTableLocator()->get('BorrowedEquipments', $config);
     }
 
     /**

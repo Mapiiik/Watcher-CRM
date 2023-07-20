@@ -37,7 +37,7 @@ class LoginsTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Logins') ? [] : ['className' => LoginsTable::class];
-        $this->LoginsTable = $this->fetchTable('Logins', $config);
+        $this->LoginsTable = $this->getTableLocator()->get('Logins', $config);
     }
 
     /**

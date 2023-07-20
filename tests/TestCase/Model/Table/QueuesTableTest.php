@@ -37,7 +37,7 @@ class QueuesTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Queues') ? [] : ['className' => QueuesTable::class];
-        $this->QueuesTable = $this->fetchTable('Queues', $config);
+        $this->QueuesTable = $this->getTableLocator()->get('Queues', $config);
     }
 
     /**

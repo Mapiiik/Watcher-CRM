@@ -37,7 +37,7 @@ class EmailsTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Emails') ? [] : ['className' => EmailsTable::class];
-        $this->EmailsTable = $this->fetchTable('Emails', $config);
+        $this->EmailsTable = $this->getTableLocator()->get('Emails', $config);
     }
 
     /**

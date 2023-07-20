@@ -39,7 +39,7 @@ class BillingsTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Billings') ? [] : ['className' => BillingsTable::class];
-        $this->BillingsTable = $this->fetchTable('Billings', $config);
+        $this->BillingsTable = $this->getTableLocator()->get('Billings', $config);
     }
 
     /**

@@ -38,7 +38,7 @@ class IpsTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Ips') ? [] : ['className' => IpsTable::class];
-        $this->IpsTable = $this->fetchTable('Ips', $config);
+        $this->IpsTable = $this->getTableLocator()->get('Ips', $config);
     }
 
     /**

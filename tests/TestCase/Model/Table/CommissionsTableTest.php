@@ -38,7 +38,7 @@ class CommissionsTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Commissions') ? [] : ['className' => CommissionsTable::class];
-        $this->CommissionsTable = $this->fetchTable('Commissions', $config);
+        $this->CommissionsTable = $this->getTableLocator()->get('Commissions', $config);
     }
 
     /**

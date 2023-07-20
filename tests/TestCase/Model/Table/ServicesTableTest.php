@@ -39,7 +39,7 @@ class ServicesTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Services') ? [] : ['className' => ServicesTable::class];
-        $this->ServicesTable = $this->fetchTable('Services', $config);
+        $this->ServicesTable = $this->getTableLocator()->get('Services', $config);
     }
 
     /**

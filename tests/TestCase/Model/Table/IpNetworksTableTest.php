@@ -38,7 +38,7 @@ class IpNetworksTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('IpNetworks') ? [] : ['className' => IpNetworksTable::class];
-        $this->IpNetworks = $this->fetchTable('IpNetworks', $config);
+        $this->IpNetworks = $this->getTableLocator()->get('IpNetworks', $config);
     }
 
     /**
