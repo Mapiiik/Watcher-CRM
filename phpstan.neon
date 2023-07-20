@@ -4,12 +4,12 @@ parameters:
     checkGenericClassInNonGenericObjectType: false
     treatPhpDocTypesAsCertain: false
     bootstrapFiles:
-       - config/paths.php
-       - vendor/cakephp/cakephp/src/functions.php
+        - config/bootstrap.php
     paths:
-        - src
-        - plugins/BookkeepingPohoda/src
-        - plugins/Radius/src
-        - plugins/Ruian/src
+        - src/
+        - templates/
+        - tests/
+        - plugins/
+        - config/
     excludePaths:
-        - src/Console/Installer.php
+        - templates/AppUsers/

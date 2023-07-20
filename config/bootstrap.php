@@ -156,6 +156,7 @@ if (!$fullBaseUrl) {
     $trustProxy = false;
 
     $s = null;
+    /** @phpstan-ignore-next-line */
     if (env('HTTPS') || ($trustProxy && env('HTTP_X_FORWARDED_PROTO') === 'https')) {
         $s = 's';
     }

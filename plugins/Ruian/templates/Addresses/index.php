@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface|array<\Cake\Datasource\EntityInterface> $addresses
+ * @var \Cake\Collection\CollectionInterface|array<\Ruian\Model\Entity\Address> $addresses
  */
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>

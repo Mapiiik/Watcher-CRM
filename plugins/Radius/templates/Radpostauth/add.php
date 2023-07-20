@@ -1,7 +1,8 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface $radpostauth
+ * @var \Radius\Model\Entity\Radpostauth $radpostauth
+ * @var \Cake\Collection\CollectionInterface|array<string> $accounts
  */
 ?>
 <div class="row">

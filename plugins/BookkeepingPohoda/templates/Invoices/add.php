@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface $invoice
+ * @var \BookkeepingPohoda\Model\Entity\Invoice $invoice
  * @var \Cake\Collection\CollectionInterface|array<string> $customers
  */
 ?>

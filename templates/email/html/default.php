@@ -12,10 +12,11 @@
  * @since         0.10.0
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  * @var \App\View\AppView $this
+ * @var string $content
  */
 
-$content = explode("\n", $content);
+$content_lines = explode("\n", $content);
 
-foreach ($content as $line) :
+foreach ($content_lines as $line) :
     echo '<p> ' . $line . "</p>\n";
 endforeach;

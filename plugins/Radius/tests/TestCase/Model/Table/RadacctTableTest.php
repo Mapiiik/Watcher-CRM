@@ -36,8 +36,8 @@ class RadacctTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Radacct') ? [] : ['className' => RadacctTable::class];
-        $this->Radacct = $this->getTableLocator()->get('Radacct', $config);
+        $config = $this->getTableLocator()->exists('Radius.Radacct') ? [] : ['className' => RadacctTable::class];
+        $this->Radacct = $this->getTableLocator()->get('Radius.Radacct', $config);
     }
 
     /**

@@ -1,7 +1,9 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface $radusergroup
+ * @var \Radius\Model\Entity\Radusergroup $radusergroup
+ * @var \Cake\Collection\CollectionInterface|array<string> $accounts
+ * @var \Cake\Collection\CollectionInterface|array<string> $groupnames
  */
 ?>
 <div class="row">

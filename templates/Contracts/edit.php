@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Contract $contract
+ * @var \Cake\Collection\CollectionInterface|array<string> $contractStates
  * @var \Cake\Collection\CollectionInterface|array<string> $customers
  * @var \Cake\Collection\CollectionInterface|array<string> $serviceTypes
  * @var \Cake\Collection\CollectionInterface|array<string> $installationAddresses

@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface|array<\Cake\Datasource\EntityInterface> $radusergroups
+ * @var \Cake\Collection\CollectionInterface|array<\Radius\Model\Entity\Radusergroup> $radusergroups
  */
 ?>
 <div class="radusergroup index content">

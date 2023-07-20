@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface $radpostauth
+ * @var \Radius\Model\Entity\Radpostauth $radpostauth
  */
 ?>
 <div class="row">

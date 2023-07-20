@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface $radgroupcheck
+ * @var \Radius\Model\Entity\Radgroupcheck $radgroupcheck
  */
 ?>
 <div class="row">

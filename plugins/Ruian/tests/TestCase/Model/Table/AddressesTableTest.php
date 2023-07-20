@@ -35,8 +35,8 @@ class AddressesTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Addresses') ? [] : ['className' => AddressesTable::class];
-        $this->Addresses = $this->getTableLocator()->get('Addresses', $config);
+        $config = $this->getTableLocator()->exists('Ruian.Addresses') ? [] : ['className' => AddressesTable::class];
+        $this->Addresses = $this->getTableLocator()->get('Ruian.Addresses', $config);
     }
 
     /**

@@ -2,6 +2,8 @@
 /**
  * @var \App\View\AppView $this
  * @var \Radius\Model\Entity\Account $account
+ * @var \Cake\Collection\CollectionInterface|array<string> $customers
+ * @var \Cake\Collection\CollectionInterface|array<string> $contracts
  */
 ?>
 <div class="row">

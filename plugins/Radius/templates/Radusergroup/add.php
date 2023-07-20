@@ -1,7 +1,9 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface $radusergroup
+ * @var \Radius\Model\Entity\Radusergroup $radusergroup
+ * @var \Cake\Collection\CollectionInterface|array<string> $accounts
+ * @var \Cake\Collection\CollectionInterface|array<string> $groupnames
  */
 ?>
 <div class="row">
@@ -24,7 +26,7 @@
                 echo $this->Form->control('username', [
                     'options' => $accounts,
                     'empty' => true,
-                    'default' => $this->request->getQuery('username'),
+                    'default' => $this->getRequest()->getQuery('username'),
                     ]);
                 echo $this->Form->control('groupname', [
                     'options' => $groupnames,

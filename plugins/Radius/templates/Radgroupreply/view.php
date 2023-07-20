@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface $radgroupreply
+ * @var \Radius\Model\Entity\Radgroupreply $radgroupreply
  */
 ?>
 <div class="row">

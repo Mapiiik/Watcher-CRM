@@ -38,8 +38,8 @@ class RadusergroupTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Radusergroup') ? [] : ['className' => RadusergroupTable::class];
-        $this->Radusergroup = $this->getTableLocator()->get('Radusergroup', $config);
+        $config = $this->getTableLocator()->exists('Radius.Radusergroup') ? [] : ['className' => RadusergroupTable::class];
+        $this->Radusergroup = $this->getTableLocator()->get('Radius.Radusergroup', $config);
     }
 
     /**

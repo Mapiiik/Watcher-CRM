@@ -36,8 +36,8 @@ class RadgroupreplyTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Radgroupreply') ? [] : ['className' => RadgroupreplyTable::class];
-        $this->Radgroupreply = $this->getTableLocator()->get('Radgroupreply', $config);
+        $config = $this->getTableLocator()->exists('Radius.Radgroupreply') ? [] : ['className' => RadgroupreplyTable::class];
+        $this->Radgroupreply = $this->getTableLocator()->get('Radius.Radgroupreply', $config);
     }
 
     /**

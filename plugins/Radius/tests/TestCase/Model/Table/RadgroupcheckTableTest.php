@@ -36,8 +36,8 @@ class RadgroupcheckTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Radgroupcheck') ? [] : ['className' => RadgroupcheckTable::class];
-        $this->Radgroupcheck = $this->getTableLocator()->get('Radgroupcheck', $config);
+        $config = $this->getTableLocator()->exists('Radius.Radgroupcheck') ? [] : ['className' => RadgroupcheckTable::class];
+        $this->Radgroupcheck = $this->getTableLocator()->get('Radius.Radgroupcheck', $config);
     }
 
     /**

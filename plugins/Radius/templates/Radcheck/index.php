@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface|array<\Cake\Datasource\EntityInterface> $radchecks
+ * @var \Cake\Collection\CollectionInterface|array<\Radius\Model\Entity\Radcheck> $radchecks
  */
 ?>
 <div class="radcheck index content">

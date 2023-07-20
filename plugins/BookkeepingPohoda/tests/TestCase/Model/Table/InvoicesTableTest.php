@@ -36,8 +36,8 @@ class InvoicesTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Invoices') ? [] : ['className' => InvoicesTable::class];
-        $this->Invoices = $this->getTableLocator()->get('Invoices', $config);
+        $config = $this->getTableLocator()->exists('BookkeepingPohoda.Invoices') ? [] : ['className' => InvoicesTable::class];
+        $this->Invoices = $this->getTableLocator()->get('BookkeepingPohoda.Invoices', $config);
     }
 
     /**

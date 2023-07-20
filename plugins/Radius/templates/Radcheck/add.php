@@ -1,7 +1,8 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface $radcheck
+ * @var \Radius\Model\Entity\Radcheck $radcheck
+ * @var \Cake\Collection\CollectionInterface|array<string> $accounts
  */
 ?>
 <div class="row">
@@ -24,7 +25,7 @@
                 echo $this->Form->control('username', [
                     'options' => $accounts,
                     'empty' => true,
-                    'default' => $this->request->getQuery('username'),
+                    'default' => $this->getRequest()->getQuery('username'),
                 ]);
                 echo $this->Form->control('attribute');
                 echo $this->Form->control('op');

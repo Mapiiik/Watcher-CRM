@@ -38,9 +38,10 @@ class PagesControllerTest extends TestCase
      */
     protected function login()
     {
-        $users = TableRegistry::getTableLocator()->get('Users');
+        /** @var \App\Model\Table\AppUsersTable $usersTable */
+        $usersTable = TableRegistry::getTableLocator()->get(Configure::read('Users.table', 'Users'));
 
-        $user = $users->newEmptyEntity();
+        $user = $usersTable->newEmptyEntity();
         $user->username = 'tester';
         $user->role = 'admin';
         $user->active = true;

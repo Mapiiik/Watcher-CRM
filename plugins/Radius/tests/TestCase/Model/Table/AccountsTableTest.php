@@ -42,8 +42,8 @@ class AccountsTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Accounts') ? [] : ['className' => AccountsTable::class];
-        $this->Accounts = $this->getTableLocator()->get('Accounts', $config);
+        $config = $this->getTableLocator()->exists('Radius.Accounts') ? [] : ['className' => AccountsTable::class];
+        $this->Accounts = $this->getTableLocator()->get('Radius.Accounts', $config);
     }
 
     /**

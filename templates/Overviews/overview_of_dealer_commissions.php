@@ -47,7 +47,7 @@
 
                         <?php if (!empty($dealerCommission->commission->contracts)) : ?>
                         <div><?= __('Total Price') . ': '
-                            . $this->Number->currency($dealerCommission->commission->total_price) ?></div>
+                            . $this->Number->currency($dealerCommission->commission['total_price']) ?></div>
                         <div class="table-responsive">
                             <table>
                                 <tr>

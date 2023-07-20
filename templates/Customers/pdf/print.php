@@ -5,11 +5,6 @@
  * @var string|null $type
  * @var \stdClass|null $technical_details
  */
-
-declare(strict_types=1);
-
-namespace App\View;
-
 use App\CustomerPDF;
 use Cake\I18n\Date;
 

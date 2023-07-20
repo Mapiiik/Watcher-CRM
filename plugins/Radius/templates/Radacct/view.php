@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface $radacct
+ * @var \Radius\Model\Entity\Radacct $radacct
  */
 ?>
 <div class="row">

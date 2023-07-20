@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface $address
+ * @var \Ruian\Model\Entity\Address $address
  */
 ?>
 <div class="row">

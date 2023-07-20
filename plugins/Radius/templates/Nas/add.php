@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface $nas
+ * @var \Radius\Model\Entity\Nas $nas
  */
 ?>
 <div class="row">

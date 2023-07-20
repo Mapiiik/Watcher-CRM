@@ -35,8 +35,8 @@ class NasTableTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Nas') ? [] : ['className' => NasTable::class];
-        $this->Nas = $this->getTableLocator()->get('Nas', $config);
+        $config = $this->getTableLocator()->exists('Radius.Nas') ? [] : ['className' => NasTable::class];
+        $this->Nas = $this->getTableLocator()->get('Radius.Nas', $config);
     }
 
     /**
