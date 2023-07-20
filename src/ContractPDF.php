@@ -297,7 +297,7 @@ class ContractPDF extends TCPDF
         $this->SetY(max($this->GetY(), $addressStopY));
 
         // INSTALLATION ADDRESS
-        if ($contract->has('installation_address')) {
+        if ($contract->__isset('installation_address')) {
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(30, 4, __('Installation Address') . ': ', '', 0, 'L');
             $this->Ln();
@@ -306,7 +306,7 @@ class ContractPDF extends TCPDF
             $this->MultiCell(160, 4, $contract->installation_address->full_address, '', 'L');
         }
         // DELIVERY ADDRESS
-        if ($contract->has('delivery_address')) {
+        if ($contract->__isset('delivery_address')) {
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(30, 4, __('Delivery Address') . ': ', '', 0, 'L');
             $this->Ln();
@@ -314,7 +314,7 @@ class ContractPDF extends TCPDF
             $this->MultiCell(160, 4, $contract->delivery_address->full_address, '', 'L');
         }
         // PERMANENT ADDRESS
-        if ($contract->has('permanent_address')) {
+        if ($contract->__isset('permanent_address')) {
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(30, 4, __('Permanent Address') . ': ', '', 0, 'L');
             $this->Ln();
@@ -1065,7 +1065,7 @@ class ContractPDF extends TCPDF
         $this->SetY(max($this->GetY(), $addressStopY));
 
         // INSTALLATION ADDRESS
-        if ($contract->has('installation_address')) {
+        if ($contract->__isset('installation_address')) {
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(30, 4, __('Installation Address') . ': ');
             $this->Ln();
@@ -1074,7 +1074,7 @@ class ContractPDF extends TCPDF
             $this->MultiCell(160, 4, $contract->installation_address->full_address, '', 'L');
         }
         // DELIVERY ADDRESS
-        if ($contract->has('delivery_address')) {
+        if ($contract->__isset('delivery_address')) {
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(30, 4, __('Delivery Address') . ': ');
             $this->Ln();
@@ -1082,7 +1082,7 @@ class ContractPDF extends TCPDF
             $this->MultiCell(160, 4, $contract->delivery_address->full_address, '', 'L');
         }
         // PERMANENT ADDRESS
-        if ($contract->has('permanent_address')) {
+        if ($contract->__isset('permanent_address')) {
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(30, 4, __('Permanent Address') . ': ');
             $this->Ln();

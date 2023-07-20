@@ -51,7 +51,7 @@
                             ['controller' => 'Contracts', 'action' => 'view', $removedIpNetwork->contract->id]
                         ) : '' ?></td>
                     <td><?= h($removedIpNetwork->ip_network) ?></td>
-                    <td><?= h($$removedIpNetwork->getTypeOfUseName()) ?></td>
+                    <td><?= h($removedIpNetwork->getTypeOfUseName()) ?></td>
                     <td><?= h($removedIpNetwork->removed) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $removedIpNetwork->id]) ?>

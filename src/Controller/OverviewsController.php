@@ -37,7 +37,7 @@ class OverviewsController extends AppController
      */
     public function overviewOfActiveServices()
     {
-        $month_to_display = new Date($this->getRequest()->getQuery('month_to_display') ?? 'now');
+        $month_to_display = new Date($this->getRequest()->getQuery('month_to_display', 'now'));
         $service_type_id = $this->getRequest()->getQuery('service_type_id');
         $cto_category = $this->getRequest()->getQuery('cto_category');
         $access_point_id = $this->getRequest()->getQuery('access_point_id');
@@ -183,7 +183,7 @@ class OverviewsController extends AppController
      */
     public function overviewOfCustomerConnectionPointsObsolete(?string $category = null)
     {
-        $month_to_display = new Date($this->getRequest()->getQuery('month_to_display'));
+        $month_to_display = new Date($this->getRequest()->getQuery('month_to_display', 'now'));
 
         $cto_categories = $this->fetchTable('Billings')->find()
             ->contain('Customers')
@@ -358,7 +358,7 @@ class OverviewsController extends AppController
      */
     public function overviewOfCustomerConnectionPoints(?string $category = null)
     {
-        $month_to_display = new Date($this->getRequest()->getQuery('month_to_display'));
+        $month_to_display = new Date($this->getRequest()->getQuery('month_to_display', 'now'));
 
         $cto_categories = $this->fetchTable('Billings')->find()
             ->contain('Customers')
@@ -561,7 +561,7 @@ class OverviewsController extends AppController
      */
     public function overviewOfDealerCommissions()
     {
-        $month_to_display = new Date($this->getRequest()->getQuery('month_to_display'));
+        $month_to_display = new Date($this->getRequest()->getQuery('month_to_display', 'now'));
 
         $dealerCommissionsQuery = $this->fetchTable('DealerCommissions')->find()
             ->contain('Dealers')

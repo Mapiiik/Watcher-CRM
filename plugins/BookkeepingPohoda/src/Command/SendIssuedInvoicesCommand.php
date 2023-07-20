@@ -60,7 +60,7 @@ class SendIssuedInvoicesCommand extends Command
         echo 'Sending notifications:' . "\n";
         foreach ($issued_invoices as $issued_invoice) {
             if (
-                $issued_invoice->has('customer') &&
+                $issued_invoice->__isset('customer') &&
                 $issued_invoice->customer->agree_mailing_billing &&
                 count($issued_invoice->customer->billing_emails) > 0
             ) {

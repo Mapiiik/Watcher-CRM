@@ -572,7 +572,7 @@ class ContractsController extends AppController
         $borrowed_equipments_to_install = $borrowed_equipments->match(['borrowed_from' => null]);
         $borrowed_equipments_to_uninstall = $borrowed_equipments->match(['borrowed_until' => null]);
 
-        if ($contract->has('installation_date')) {
+        if ($contract->__isset('installation_date')) {
             if ($borrowed_equipments_to_install->isEmpty()) {
                 $this->Flash->warning(__('No related borrowed equipments to install.'));
             } else {
@@ -598,7 +598,7 @@ class ContractsController extends AppController
             }
         }
 
-        if ($contract->has('uninstallation_date')) {
+        if ($contract->__isset('uninstallation_date')) {
             if ($borrowed_equipments_to_uninstall->isEmpty()) {
                 $this->Flash->warning(__('No related borrowed equipments to uninstall.'));
             } else {
@@ -648,7 +648,7 @@ class ContractsController extends AppController
 
         $billings_to_update = $billings->match(['billing_until' => null]);
 
-        if ($contract->has('termination_date')) {
+        if ($contract->__isset('termination_date')) {
             if ($billings_to_update->isEmpty()) {
                 $this->Flash->warning(__('No related billings to terminate.'));
             } else {
@@ -792,7 +792,7 @@ class ContractsController extends AppController
 
             switch ($type) {
                 case 'contract-termination':
-                    if (!$contract_version->has('valid_until')) {
+                    if (!$contract_version->__isset('valid_until')) {
                         $this->Flash->error(__('Please set the date until which the contract version is valid.'));
 
                         return $this->redirect([
@@ -802,7 +802,7 @@ class ContractsController extends AppController
                         ]);
                     }
 
-                    if (!$contract_version->has('conclusion_date')) {
+                    if (!$contract_version->__isset('conclusion_date')) {
                         $this->Flash->error(__('Please set the date of conclusion of the contract version.'));
 
                         return $this->redirect([
@@ -832,7 +832,7 @@ class ContractsController extends AppController
                         $contract_version->valid_from = new Date($query['effective_date_of_the_amendment']);
                     }
 
-                    if (!$contract_version->has('conclusion_date')) {
+                    if (!$contract_version->__isset('conclusion_date')) {
                         $this->Flash->error(__('Please set the date of conclusion of the contract version.'));
 
                         return $this->redirect([
@@ -851,7 +851,7 @@ class ContractsController extends AppController
                         return $this->redirect(['action' => 'print', $id, '?' => $query]);
                     }
 
-                    if (!$contract_version['old']->has('conclusion_date')) {
+                    if (!$contract_version['old']->__isset('conclusion_date')) {
                         $this->Flash->error(__('Please set the date of conclusion of the original contract version.'));
 
                         return $this->redirect([
@@ -874,7 +874,7 @@ class ContractsController extends AppController
 
                 case 'contract-new':
                     /*
-                    if (!$contract_version->has('valid_from')) {
+                    if (!$contract_version->__isset('valid_from')) {
                         $this->Flash->error(__('Please set the date from which the contract version is valid.'));
 
                         return $this->redirect(['action' => 'view', $id]);
@@ -884,7 +884,7 @@ class ContractsController extends AppController
                     break;
 
                 case 'handover-protocol-uninstallation':
-                    if (!$contract_version->has('valid_until')) {
+                    if (!$contract_version->__isset('valid_until')) {
                         $this->Flash->error(__('Please set the date until which the contract version is valid.'));
 
                         return $this->redirect([
@@ -906,7 +906,7 @@ class ContractsController extends AppController
                     // no break - checks will continue
                 case 'handover-protocol-installation':
                     /*
-                    if (!$contract_version->has('valid_from')) {
+                    if (!$contract_version->__isset('valid_from')) {
                         $this->Flash->error(__('Please set the date from which the contract version is valid.'));
 
                         return $this->redirect(['action' => 'view', $id]);
@@ -938,7 +938,7 @@ class ContractsController extends AppController
 
                     if (!empty($query['access_point'])) {
                         $technical_details->access_point = $query['access_point'];
-                    } elseif ($contract->has('access_point')) {
+                    } elseif ($contract->__isset('access_point')) {
                         $technical_details->access_point = $contract->access_point['name'];
                     }
 
@@ -967,17 +967,17 @@ class ContractsController extends AppController
 
             $active_billings_collection = $billings_collection->reject(
                 function ($billing, $key) use ($contract_version) {
-                    return ($billing->has('billing_from') && $billing->billing_from > $contract_version->valid_from)
-                        || ($billing->has('billing_until') && $billing->billing_until < $contract_version->valid_from);
+                    return ($billing->__isset('billing_from') && $billing->billing_from > $contract_version->valid_from)
+                        || ($billing->__isset('billing_until') && $billing->billing_until < $contract_version->valid_from);
                 }
             );
 
             $contract->individual_billings = $active_billings_collection->filter(function ($billing, $key) {
-                return $billing->has('price');
+                return $billing->__isset('price');
             })->toArray();
 
             $contract->standard_billings = $active_billings_collection->filter(function ($billing, $key) {
-                return !$billing->has('price');
+                return !$billing->__isset('price');
             })->toArray();
         }
         $this->set(compact(

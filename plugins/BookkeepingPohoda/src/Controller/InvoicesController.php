@@ -323,7 +323,7 @@ class InvoicesController extends AppController
             ->toArray();
 
         if ($this->request->is(['post'])) {
-            $invoiced_month = new Date($this->request->getData('invoiced_month'));
+            $invoiced_month = new Date($this->request->getData('invoiced_month', 'now'));
             $tax_rate = $this->fetchTable('TaxRates')->get($this->request->getData('tax_rate_id'));
             /** @var \Laminas\Diactoros\UploadedFile $csv_for_verification */
             $csv_for_verification = $this->request->getData('csv_for_verification');
@@ -414,7 +414,7 @@ class InvoicesController extends AppController
 
         // DOWNLOAD INVOICES
         if ($this->request->getParam('_ext') === 'dbf' || $this->request->getParam('_ext') === 'xml') {
-            $invoiced_month = new Date($this->request->getQuery('invoiced_month'));
+            $invoiced_month = new Date($this->request->getQuery('invoiced_month', 'now'));
 
             /** @var \App\Model\Entity\TaxRate $tax_rate */
             $tax_rate = $this->fetchTable('TaxRates')->get($this->request->getQuery('tax_rate_id'));

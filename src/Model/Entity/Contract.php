@@ -195,8 +195,8 @@ class Contract extends Entity
     protected function _getName(): string
     {
         return $this->number .
-            ($this->has('service_type') ? ' - ' . $this->service_type->name : '') .
-            ($this->has('installation_address') ? ' - ' . $this->installation_address->address : '');
+            ($this->__isset('service_type') ? ' - ' . $this->service_type->name : '') .
+            ($this->__isset('installation_address') ? ' - ' . $this->installation_address->address : '');
     }
 
     /**
