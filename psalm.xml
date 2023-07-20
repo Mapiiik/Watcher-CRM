@@ -5,12 +5,16 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
-    autoloader="vendor/cakephp/cakephp/src/functions.php"
+    autoloader="config/bootstrap.php"
 >
     <projectFiles>
         <directory name="src" />
-        <directory name="plugins/*/src" />
+        <directory name="templates" />
+        <directory name="tests" />
+        <directory name="plugins" />
+        <directory name="config" />
         <ignoreFiles>
+            <directory name="templates/AppUsers/" />
             <directory name="vendor" />
         </ignoreFiles>
     </projectFiles>

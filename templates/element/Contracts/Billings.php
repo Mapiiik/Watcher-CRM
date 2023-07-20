@@ -1,10 +1,9 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var array<\App\Model\Entity\Billing> $billings
+ * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\Billing> $billings
  * @var bool $contract_column
  */
-
 use Cake\I18n\Number;
 ?>
 <?php if (!empty($billings)) : ?>

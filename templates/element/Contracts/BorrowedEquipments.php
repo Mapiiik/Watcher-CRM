@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var array<\App\Model\Entity\BorrowedEquipment> $borrowed_equipments
+ * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\BorrowedEquipment> $borrowed_equipments
  * @var bool $contract_column
  */
 ?>

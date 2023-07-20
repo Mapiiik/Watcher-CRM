@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var array<\App\Model\Entity\Ip> $ip_addresses
+ * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\Ip> $ip_addresses
  * @var bool $contract_column
  */
 ?>
