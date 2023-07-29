@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\Address> $addresses
+ * @var iterable<\App\Model\Entity\Address> $addresses
  */
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>

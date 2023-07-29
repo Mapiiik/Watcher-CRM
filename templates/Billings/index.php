@@ -3,7 +3,7 @@ use Cake\I18n\Number;
 
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\Billing> $billings
+ * @var iterable<\App\Model\Entity\Billing> $billings
  */
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>

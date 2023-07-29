@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\RemovedIpNetwork> $removedIpNetworks
+ * @var iterable<\App\Model\Entity\RemovedIpNetwork> $removedIpNetworks
  */
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>

@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface|array<\Radius\Model\Entity\Radacct> $radaccts
+ * @var iterable<\Radius\Model\Entity\Radacct> $radaccts
  */
 ?>
 <div class="radacct index content">

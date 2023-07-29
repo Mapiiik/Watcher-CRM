@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface|array<\BookkeepingPohoda\Model\Entity\Invoice> $invoices
+ * @var iterable<\BookkeepingPohoda\Model\Entity\Invoice> $invoices
  * @var float $total_debt
  * @var float $total_overdue_debt
  */

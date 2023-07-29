@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface|array<\Radius\Model\Entity\Radpostauth> $radpostauths
+ * @var iterable<\Radius\Model\Entity\Radpostauth> $radpostauths
  */
 ?>
 <div class="radpostauth index content">

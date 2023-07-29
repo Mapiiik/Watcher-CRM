@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\Customer> $customers
+ * @var iterable<\App\Model\Entity\Customer> $customers
  * @var bool $allow_advanced_search
  * @var \Cake\Form\Form $filterForm
  */

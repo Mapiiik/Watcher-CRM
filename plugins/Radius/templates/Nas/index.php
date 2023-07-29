@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface|array<\Radius\Model\Entity\Nas> $nases
+ * @var iterable<\Radius\Model\Entity\Nas> $nases
  */
 ?>
 <div class="Nas index content">

@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\Task> $tasks
+ * @var iterable<\App\Model\Entity\Task> $tasks
  * @var \Cake\Form\Form $filterForm
  */
 ?>

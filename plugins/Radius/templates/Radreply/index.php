@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface|array<\Radius\Model\Entity\Radreply> $radreplies
+ * @var iterable<\Radius\Model\Entity\Radreply> $radreplies
  */
 ?>
 <div class="radreply index content">

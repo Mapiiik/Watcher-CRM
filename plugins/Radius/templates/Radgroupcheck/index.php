@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface|array<\Radius\Model\Entity\Radgroupcheck> $radgroupchecks
+ * @var iterable<\Radius\Model\Entity\Radgroupcheck> $radgroupchecks
  */
 ?>
 <div class="radgroupcheck index content">

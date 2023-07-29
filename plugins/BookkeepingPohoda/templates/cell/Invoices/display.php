@@ -3,7 +3,7 @@ use Cake\I18n\Date;
 
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface|array<\BookkeepingPohoda\Model\Entity\Invoice> $invoices
+ * @var iterable<\BookkeepingPohoda\Model\Entity\Invoice> $invoices
  * @var bool $show_customers
  */
 ?>

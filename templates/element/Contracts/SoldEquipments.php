@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\SoldEquipment> $sold_equipments
+ * @var iterable<\App\Model\Entity\SoldEquipment> $sold_equipments
  * @var bool $contract_column
  */
 ?>

@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface|array<\App\Model\Entity\Ip> $ip_addresses
+ * @var iterable<\App\Model\Entity\Ip> $ip_addresses
  * @var bool $contract_column
  */
 ?>
