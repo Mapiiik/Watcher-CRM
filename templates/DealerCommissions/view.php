@@ -56,12 +56,12 @@
                         <tr>
                             <th><?= __('Fixed') ?></th>
                             <td><?= $dealerCommission->fixed === null ?
-                                '' : $this->Number->format($dealerCommission->fixed) ?></td>
+                                '' : $this->Number->format($dealerCommission->fixed); ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Percentage') ?></th>
                             <td><?= $dealerCommission->percentage === null ?
-                                '' : $this->Number->format($dealerCommission->percentage) ?></td>
+                                '' : $this->Number->format($dealerCommission->percentage); ?></td>
                         </tr>
                     </table>
                 </div>

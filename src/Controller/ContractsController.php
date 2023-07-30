@@ -968,7 +968,8 @@ class ContractsController extends AppController
             $active_billings_collection = $billings_collection->reject(
                 function ($billing, $key) use ($contract_version) {
                     return ($billing->__isset('billing_from') && $billing->billing_from > $contract_version->valid_from)
-                        || ($billing->__isset('billing_until') && $billing->billing_until < $contract_version->valid_from);
+                        ||
+                        ($billing->__isset('billing_until') && $billing->billing_until < $contract_version->valid_from);
                 }
             );
 
