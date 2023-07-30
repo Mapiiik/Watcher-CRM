@@ -50,7 +50,7 @@
                         h($borrowedEquipment->customer->number) : '' ?></td>
                     <td>
                         <?= $borrowedEquipment->__isset('contract') ? $this->Html->link(
-                            $borrowedEquipment->contract->number,
+                            $borrowedEquipment->contract->number ?? '--',
                             ['controller' => 'Contracts', 'action' => 'view', $borrowedEquipment->contract->id]
                         ) : '' ?>
                     </td>

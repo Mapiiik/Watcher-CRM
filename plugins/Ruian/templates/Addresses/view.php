@@ -79,35 +79,35 @@
                 </tr>
                 <tr>
                     <th><?= __d('ruian', 'Obec Kod') ?></th>
-                    <td><?= $this->Number->format($address->obec_kod) ?></td>
+                    <td><?= $address->obec_kod === null ? '' : $this->Number->format($address->obec_kod) ?></td>
                 </tr>
                 <tr>
                     <th><?= __d('ruian', 'Momc Kod') ?></th>
-                    <td><?= $this->Number->format($address->momc_kod) ?></td>
+                    <td><?= $address->momc_kod === null ? '' : $this->Number->format($address->momc_kod) ?></td>
                 </tr>
                 <tr>
                     <th><?= __d('ruian', 'Mop Kod') ?></th>
-                    <td><?= $this->Number->format($address->mop_kod) ?></td>
+                    <td><?= $address->mop_kod === null ? '' : $this->Number->format($address->mop_kod) ?></td>
                 </tr>
                 <tr>
                     <th><?= __d('ruian', 'Cast Obce Kod') ?></th>
-                    <td><?= $this->Number->format($address->cast_obce_kod) ?></td>
+                    <td><?= $address->cast_obce_kod === null ? '' : $this->Number->format($address->cast_obce_kod) ?></td>
                 </tr>
                 <tr>
                     <th><?= __d('ruian', 'Ulice Kod') ?></th>
-                    <td><?= $this->Number->format($address->ulice_kod) ?></td>
+                    <td><?= $address->ulice_kod === null ? '' : $this->Number->format($address->ulice_kod) ?></td>
                 </tr>
                 <tr>
                     <th><?= __d('ruian', 'Cislo Domovni') ?></th>
-                    <td><?= $this->Number->format($address->cislo_domovni) ?></td>
+                    <td><?= $address->cislo_domovni === null ? '' : $this->Number->format($address->cislo_domovni) ?></td>
                 </tr>
                 <tr>
                     <th><?= __d('ruian', 'Cislo Orientacni') ?></th>
-                    <td><?= $this->Number->format($address->cislo_orientacni) ?></td>
+                    <td><?= $address->cislo_orientacni === null ? '' : $this->Number->format($address->cislo_orientacni) ?></td>
                 </tr>
                 <tr>
                     <th><?= __d('ruian', 'Psc') ?></th>
-                    <td><?= $this->Number->format($address->psc) ?></td>
+                    <td><?= $address->psc === null ? '' : $this->Number->format($address->psc) ?></td>
                 </tr>
                 <tr>
                     <th><?= __d('ruian', 'Plati Od') ?></th>

@@ -23,7 +23,7 @@
             <?php if (!empty($contract_column)) : ?>
             <td><?= $borrowedEquipment->__isset('contract') ?
                 $this->Html->link(
-                    $borrowedEquipment->contract->number,
+                    $borrowedEquipment->contract->number ?? '--',
                     [
                         'controller' => 'Contracts',
                         'action' => 'view',

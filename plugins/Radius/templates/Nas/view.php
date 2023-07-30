@@ -39,7 +39,7 @@
             <table>
                 <tr>
                     <th><?= __d('radius', 'Ports') ?></th>
-                    <td><?= $this->Number->format($nas->ports) ?></td>
+                    <td><?= $nas->ports === null ? '' : $this->Number->format($nas->ports) ?></td>
                 </tr>
                 <tr>
                     <th><?= __d('radius', 'Id') ?></th>

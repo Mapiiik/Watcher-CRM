@@ -48,7 +48,7 @@
                     <td><?= $soldEquipment->__isset('customer') ? h($soldEquipment->customer->number) : '' ?></td>
                     <td>
                         <?= $soldEquipment->__isset('contract') ? $this->Html->link(
-                            $soldEquipment->contract->number,
+                            $soldEquipment->contract->number ?? '--',
                             ['controller' => 'Contracts', 'action' => 'view', $soldEquipment->contract->id]
                         ) : '' ?>
                     </td>

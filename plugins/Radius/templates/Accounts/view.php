@@ -71,7 +71,7 @@
                         <tr>
                             <th><?= __d('radius', 'Contract') ?></th>
                             <td><?= $account->__isset('contract') ? $this->Html->link(
-                                $account->contract->number,
+                                $account->contract->number ?? '--',
                                 [
                                     'plugin' => null,
                                     'controller' => 'Contracts',

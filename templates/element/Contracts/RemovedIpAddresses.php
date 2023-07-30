@@ -23,7 +23,7 @@
             <?php if (!empty($contract_column)) : ?>
             <td><?= $removedIp->__isset('contract') ?
                 $this->Html->link(
-                    $removedIp->contract->number,
+                    $removedIp->contract->number ?? '--',
                     ['controller' => 'Contracts', 'action' => 'view', $removedIp->contract->id]
                 ) : '' ?></td>
             <?php endif; ?>

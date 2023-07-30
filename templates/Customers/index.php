@@ -66,7 +66,7 @@
                         <?php foreach ($customer->contracts as $contract) : ?>
                         <span style="<?= $contract->style ?>">
                             <?= $this->Html->link(
-                                $contract->number,
+                                $contract->number ?? '--',
                                 [
                                     'controller' => 'Contracts',
                                     'action' => 'view',

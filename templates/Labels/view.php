@@ -50,7 +50,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Validity') ?></th>
-                            <td><?= $this->Number->format($label->validity) ?></td>
+                            <td><?= $label->validity === null ? '' : $this->Number->format($label->validity) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Dynamic') ?></th>

@@ -45,7 +45,8 @@
                         </tr>
                         <tr>
                             <th><?= __('Price') ?></th>
-                            <td><?= $this->Number->currency($equipmentType->price) ?></td>
+                            <td><?= $equipmentType->price === null ?
+                                '' : $this->Number->currency($equipmentType->price) ?></td>
                         </tr>
                     </table>
                 </div>
@@ -114,7 +115,7 @@
                             ?></td>
                             <td><?= $borrowedEquipment->__isset('contract') ?
                                 $this->Html->link(
-                                    $borrowedEquipment->contract->number,
+                                    $borrowedEquipment->contract->number ?? '--',
                                     ['controller' => 'Contracts', 'action' => 'view', $borrowedEquipment->contract->id]
                                 ) : '' ?></td>
                             <td><?= h($borrowedEquipment->serial_number) ?></td>
@@ -170,7 +171,7 @@
                                 h($soldEquipment->customer->number) : '' ?></td>
                             <td><?= $soldEquipment->__isset('contract') ?
                                 $this->Html->link(
-                                    $soldEquipment->contract->number,
+                                    $soldEquipment->contract->number ?? '--',
                                     ['controller' => 'Contracts', 'action' => 'view', $soldEquipment->contract->id]
                                 ) : '' ?></td>
                             <td><?= h($soldEquipment->serial_number) ?></td>

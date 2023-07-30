@@ -66,11 +66,13 @@
                 </tr>
                 <tr>
                     <th><?= __d('radius', 'Uploaded') ?></th>
-                    <td><?= $this->Number->toReadableSize($radacct->acctinputoctets) ?></td>
+                    <td><?= $radacct->acctinputoctets === null ?
+                        '' : $this->Number->toReadableSize($radacct->acctinputoctets) ?></td>
                 </tr>
                 <tr>
                     <th><?= __d('radius', 'Downloaded') ?></th>
-                    <td><?= $this->Number->toReadableSize($radacct->acctoutputoctets) ?></td>
+                    <td><?= $radacct->acctoutputoctets === null ?
+                        '' : $this->Number->toReadableSize($radacct->acctoutputoctets) ?></td>
                 </tr>
                 <tr>
                     <th><?= __d('radius', 'Start Time') ?></th>
@@ -82,7 +84,7 @@
                 </tr>
                 <tr>
                     <th><?= __d('radius', 'Update Interval') ?></th>
-                    <td><?= $this->Number->format($radacct->acctinterval) ?></td>
+                    <td><?= $radacct->acctinterval === null ? '' : $this->Number->format($radacct->acctinterval) ?></td>
                 </tr>
                 <tr>
                     <th><?= __d('radius', 'Stop Time') ?></th>
@@ -90,7 +92,8 @@
                 </tr>
                 <tr>
                     <th><?= __d('radius', 'Session Time') ?></th>
-                    <td><?= $this->Number->format($radacct->acctsessiontime) ?></td>
+                    <td><?= $radacct->acctsessiontime === null ?
+                        '' : $this->Number->format($radacct->acctsessiontime) ?></td>
                 </tr>
                 <tr>
                     <th><?= __d('radius', 'RADIUS Accounting ID') ?></th>

@@ -40,12 +40,14 @@
                 <tr>
                     <td><?= h($queue->name) ?></td>
                     <td><?= h($queue->caption) ?></td>
-                    <td><?= $this->Number->format($queue->fup) ?></td>
-                    <td><?= $this->Number->format($queue->limit) ?></td>
-                    <td><?= $this->Number->format($queue->overlimit_fragment) ?></td>
-                    <td><?= $this->Number->currency($queue->overlimit_cost) ?></td>
-                    <td><?= $this->Number->format($queue->speed_up) ?></td>
-                    <td><?= $this->Number->format($queue->speed_down) ?></td>
+                    <td><?= $queue->fup === null ? '' : $this->Number->format($queue->fup) ?></td>
+                    <td><?= $queue->limit === null ? '' : $this->Number->format($queue->limit) ?></td>
+                    <td><?= $queue->overlimit_fragment === null ?
+                        '' : $this->Number->format($queue->overlimit_fragment) ?></td>
+                    <td><?= $queue->overlimit_cost === null ?
+                        '' : $this->Number->currency($queue->overlimit_cost) ?></td>
+                    <td><?= $queue->speed_up === null ? '' : $this->Number->format($queue->speed_up) ?></td>
+                    <td><?= $queue->speed_down === null ? '' : $this->Number->format($queue->speed_down) ?></td>
                     <td><?= h($queue->cto_category) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $queue->id]) ?>

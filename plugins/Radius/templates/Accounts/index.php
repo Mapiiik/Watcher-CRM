@@ -51,7 +51,7 @@
                     <td><?= $account->__isset('customer') ? h($account->customer->number) : '' ?></td>
                     <td>
                         <?= $account->__isset('contract') ? $this->Html->link(
-                            $account->contract->number,
+                            $account->contract->number ?? '--',
                             [
                                 'plugin' => null,
                                 'controller' => 'Contracts',

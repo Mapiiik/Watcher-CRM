@@ -50,7 +50,7 @@ use Cake\Collection\Collection;
                         </tr>
                         <tr>
                             <th><?= __('Price') ?></th>
-                            <td><?= $this->Number->format($service->price) ?></td>
+                            <td><?= $service->price === null ? '' : $this->Number->currency($service->price) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Not For New Customers') ?></th>
@@ -129,7 +129,7 @@ use Cake\Collection\Collection;
                             <td><?= $billing->__isset('customer') ? h($billing->customer->number) : '' ?></td>
                             <td><?= $billing->__isset('contract') ?
                                 $this->Html->link(
-                                    $billing->contract->number,
+                                    $billing->contract->number ?? '--',
                                     ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]
                                 ) : '' ?></td>
                             <td><?= h($billing->text) ?></td>

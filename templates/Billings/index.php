@@ -54,7 +54,7 @@ use Cake\I18n\Number;
                     <td><?= $billing->__isset('customer') ? h($billing->customer->number) : '' ?></td>
                     <td>
                         <?= $billing->__isset('contract') ? $this->Html->link(
-                            $billing->contract->number,
+                            $billing->contract->number ?? '--',
                             ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]
                         ) : '' ?>
                     </td>

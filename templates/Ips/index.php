@@ -43,7 +43,7 @@
                     <td><?= $ip->__isset('customer') ? h($ip->customer->number) : '' ?></td>
                     <td>
                         <?= $ip->__isset('contract') ? $this->Html->link(
-                            $ip->contract->number,
+                            $ip->contract->number ?? '--',
                             ['controller' => 'Contracts', 'action' => 'view', $ip->contract->id]
                         ) : '' ?>
                     </td>

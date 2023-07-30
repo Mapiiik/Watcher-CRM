@@ -32,7 +32,7 @@
                     <td><?= h($nas->nasname) ?></td>
                     <td><?= h($nas->shortname) ?></td>
                     <td><?= h($nas->type) ?></td>
-                    <td><?= $this->Number->format($nas->ports) ?></td>
+                    <td><?= $nas->ports === null ? '' : $this->Number->format($nas->ports) ?></td>
                     <td><?= h($nas->secret) ?></td>
                     <td><?= h($nas->server) ?></td>
                     <td><?= h($nas->community) ?></td>

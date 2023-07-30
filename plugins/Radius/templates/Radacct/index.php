@@ -59,13 +59,17 @@
                     <td><?= h($radacct->acctstarttime) ?></td>
                     <td><?= h($radacct->acctupdatetime) ?></td>
                     <td><?= h($radacct->acctstoptime) ?></td>
-                    <td><?= $this->Number->format($radacct->acctinterval) ?></td>
-                    <td><?= $this->Number->format($radacct->acctsessiontime) ?></td>
+                    <td><?= $radacct->acctinterval === null ?
+                        '' : $this->Number->format($radacct->acctinterval) ?></td>
+                    <td><?= $radacct->acctsessiontime === null ?
+                        '' : $this->Number->format($radacct->acctsessiontime) ?></td>
                     <td><?= h($radacct->acctauthentic) ?></td>
                     <td><?= h($radacct->connectinfo_start) ?></td>
                     <td><?= h($radacct->connectinfo_stop) ?></td>
-                    <td><?= $this->Number->format($radacct->acctinputoctets) ?></td>
-                    <td><?= $this->Number->format($radacct->acctoutputoctets) ?></td>
+                    <td><?= $radacct->acctinputoctets === null ?
+                        '' : $this->Number->format($radacct->acctinputoctets) ?></td>
+                    <td><?= $radacct->acctoutputoctets === null ?
+                        '' : $this->Number->format($radacct->acctoutputoctets) ?></td>
                     <td><?= h($radacct->calledstationid) ?></td>
                     <td><?= h($radacct->callingstationid) ?></td>
                     <td><?= h($radacct->acctterminatecause) ?></td>

@@ -53,21 +53,24 @@
                 <?php foreach ($addresses as $address) : ?>
                 <tr>
                     <td><?= $this->Number->format($address->kod_adm) ?></td>
-                    <td><?= $this->Number->format($address->obec_kod) ?></td>
+                    <td><?= $address->obec_kod === null ? '' : $this->Number->format($address->obec_kod) ?></td>
                     <td><?= h($address->obec_nazev) ?></td>
-                    <td><?= $this->Number->format($address->momc_kod) ?></td>
+                    <td><?= $address->momc_kod === null ? '' : $this->Number->format($address->momc_kod) ?></td>
                     <td><?= h($address->momc_nazev) ?></td>
-                    <td><?= $this->Number->format($address->mop_kod) ?></td>
+                    <td><?= $address->mop_kod === null ? '' : $this->Number->format($address->mop_kod) ?></td>
                     <td><?= h($address->mop_nazev) ?></td>
-                    <td><?= $this->Number->format($address->cast_obce_kod) ?></td>
+                    <td><?= $address->cast_obce_kod === null ?
+                        '' : $this->Number->format($address->cast_obce_kod) ?></td>
                     <td><?= h($address->cast_obce_nazev) ?></td>
-                    <td><?= $this->Number->format($address->ulice_kod) ?></td>
+                    <td><?= $address->ulice_kod === null ? '' : $this->Number->format($address->ulice_kod) ?></td>
                     <td><?= h($address->ulice_nazev) ?></td>
                     <td><?= h($address->typ_so) ?></td>
-                    <td><?= $this->Number->format($address->cislo_domovni) ?></td>
-                    <td><?= $this->Number->format($address->cislo_orientacni) ?></td>
+                    <td><?= $address->cislo_domovni === null ?
+                        '' : $this->Number->format($address->cislo_domovni) ?></td>
+                    <td><?= $address->cislo_orientacni === null ?
+                        '' : $this->Number->format($address->cislo_orientacni) ?></td>
                     <td><?= h($address->cislo_orientacni_znak) ?></td>
-                    <td><?= $this->Number->format($address->psc) ?></td>
+                    <td><?= $address->psc === null ? '' : $this->Number->format($address->psc) ?></td>
                     <td><?= h($address->plati_od) ?></td>
                     <td><?= h($address->geometry) ?></td>
                     <td><?= h($address->geometry_jtsk) ?></td>

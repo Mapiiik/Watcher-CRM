@@ -92,8 +92,10 @@
                                     ['controller' => 'Customers', 'action' => 'view', $dealerCommission->dealer->id]
                                 ) : '' ?>
                             </td>
-                            <td><?= $this->Number->format($dealerCommission->fixed) ?></td>
-                            <td><?= $this->Number->format($dealerCommission->percentage) ?></td>
+                            <td><?= $dealerCommission->fixed === null ?
+                                '' : $this->Number->format($dealerCommission->fixed) ?></td>
+                            <td><?= $dealerCommission->percentage === null ?
+                                '' : $this->Number->format($dealerCommission->percentage) ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),

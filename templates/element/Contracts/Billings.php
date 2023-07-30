@@ -33,7 +33,7 @@ use Cake\I18n\Number;
             <?php if (!empty($contract_column)) : ?>
             <td><?= $billing->__isset('contract') ?
                 $this->Html->link(
-                    $billing->contract->number,
+                    $billing->contract->number ?? '--',
                     ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]
                 ) : '' ?></td>
             <?php endif; ?>

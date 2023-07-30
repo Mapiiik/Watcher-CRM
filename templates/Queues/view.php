@@ -38,27 +38,29 @@
                         </tr>
                         <tr>
                             <th><?= __('Fup') ?></th>
-                            <td><?= $this->Number->format($queue->fup) ?></td>
+                            <td><?= $queue->fup === null ? '' : $this->Number->format($queue->fup) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Limit') ?></th>
-                            <td><?= $this->Number->format($queue->limit) ?></td>
+                            <td><?= $queue->limit === null ? '' : $this->Number->format($queue->limit) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Overlimit Fragment') ?></th>
-                            <td><?= $this->Number->format($queue->overlimit_fragment) ?></td>
+                            <td><?= $queue->overlimit_fragment === null ?
+                                '' : $this->Number->format($queue->overlimit_fragment) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Overlimit Cost') ?></th>
-                            <td><?= $this->Number->currency($queue->overlimit_cost) ?></td>
+                            <td><?= $queue->overlimit_cost === null ?
+                                '' : $this->Number->currency($queue->overlimit_cost) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Speed Up') ?></th>
-                            <td><?= $this->Number->format($queue->speed_up) ?></td>
+                            <td><?= $queue->speed_up === null ? '' : $this->Number->format($queue->speed_up) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Speed Down') ?></th>
-                            <td><?= $this->Number->format($queue->speed_down) ?></td>
+                            <td><?= $queue->speed_down === null ? '' : $this->Number->format($queue->speed_down) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Cto Category') ?></th>
@@ -120,7 +122,7 @@
                         <?php foreach ($queue->services as $service) : ?>
                         <tr>
                             <td><?= h($service->name) ?></td>
-                            <td><?= $this->Number->currency($service->price) ?></td>
+                            <td><?= $service->price === null ? '' : $this->Number->currency($service->price) ?></td>
                             <td>
                                 <?= $service->__isset('service_type') ? $this->Html->link(
                                     $service->service_type->name,

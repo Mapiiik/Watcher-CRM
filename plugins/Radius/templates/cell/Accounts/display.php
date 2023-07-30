@@ -30,7 +30,7 @@
             <?php if ($show_contracts) : ?>
             <td><?= $account->__isset('contract') ?
                 $this->Html->link(
-                    $account->contract->number,
+                    $account->contract->number ?? '--',
                     ['plugin' => null, 'controller' => 'Contracts', 'action' => 'view', $account->contract->id]
                 ) : '' ?></td>
             <?php endif; ?>

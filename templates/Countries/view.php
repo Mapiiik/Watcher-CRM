@@ -114,9 +114,9 @@
                             <td><?= h($address->number) ?></td>
                             <td><?= h($address->city) ?></td>
                             <td><?= h($address->zip) ?></td>
-                            <td><?= $address->__isset('ruian_gid') ?
-                                $this->Number->format($address->ruian_gid) :
-                                '<span style="color: red;">' . __('unknown') . '</span>'
+                            <td><?= $address->ruian_gid === null ?
+                                '<span style="color: red;">' . __('unknown') . '</span>' :
+                                $this->Number->format($address->ruian_gid)
                             ?></td>
                             <td class="actions">
                                 <?= $address->__isset('gps_x') && $address->__isset('gps_y') ?

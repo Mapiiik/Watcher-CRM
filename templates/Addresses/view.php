@@ -122,9 +122,9 @@
                         </tr>
                         <tr>
                             <th><?= __('RÚIAN') ?></th>
-                            <td><?= $address->__isset('ruian_gid') ?
-                                $this->Number->format($address->ruian_gid) :
-                                '<span style="color: red;">' . __('unknown') . '</span>'
+                            <td><?= $address->ruian_gid === null ?
+                                '<span style="color: red;">' . __('unknown') . '</span>' :
+                                $this->Number->format($address->ruian_gid)
                             ?></td>
                         </tr>
                         <tr>
@@ -133,11 +133,13 @@
                         </tr>
                         <tr>
                             <th><?= __('Gps Y') ?></th>
-                            <td><?= $this->Number->format($address->gps_y, ['precision' => 15]) ?></td>
+                            <td><?= $address->gps_y === null ?
+                                '' : $this->Number->format($address->gps_y, ['precision' => 15]) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Gps X') ?></th>
-                            <td><?= $this->Number->format($address->gps_x, ['precision' => 15]) ?></td>
+                            <td><?= $address->gps_x === null ?
+                                '' : $this->Number->format($address->gps_x, ['precision' => 15]) ?></td>
                         </tr>
                     </table>
                 </div>

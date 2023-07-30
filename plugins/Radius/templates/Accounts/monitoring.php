@@ -74,7 +74,7 @@ use Cake\I18n\DateTime;
                         <tr>
                             <th><?= __d('radius', 'Contract') ?></th>
                             <td><?= $account->__isset('contract') ? $this->Html->link(
-                                $account->contract->number,
+                                $account->contract->number ?? '--',
                                 [
                                     'plugin' => null,
                                     'controller' => 'Contracts',
@@ -238,10 +238,14 @@ use Cake\I18n\DateTime;
                             <?php if ($details) : ?>
                             <td><?= h($radacct->acctterminatecause) ?></td>
                             <?php endif ?>
-                            <td><?= DateTime::createFromTimestamp($radacct->acctsessiontime)
-                                ->diffForHumans(DateTime::createFromTimestamp(0), true) ?></td>
-                            <td><?= $this->Number->toReadableSize($radacct->acctinputoctets) ?></td>
-                            <td><?= $this->Number->toReadableSize($radacct->acctoutputoctets) ?></td>
+                            <td><?= $radacct->acctsessiontime === null ?
+                                '' :
+                                DateTime::createFromTimestamp($radacct->acctsessiontime)
+                                    ->diffForHumans(DateTime::createFromTimestamp(0), true) ?></td>
+                            <td><?= $radacct->acctinputoctets === null ?
+                                '' : $this->Number->toReadableSize($radacct->acctinputoctets) ?></td>
+                            <td><?= $radacct->acctoutputoctets === null ?
+                                '' : $this->Number->toReadableSize($radacct->acctoutputoctets) ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __d('radius', 'View'),
