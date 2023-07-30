@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var iterable<\Radius\Model\Entity\Account> $accounts
+ * @var \Cake\ORM\ResultSet<\Radius\Model\Entity\Account> $accounts
  * @var bool $show_contracts
  */
 ?>
@@ -23,6 +23,9 @@
             <th class="actions"><?= __d('radius', 'Actions') ?></th>
         </tr>
         <?php foreach ($accounts as $account) : ?>
+            <?php
+            /** @var \Radius\Model\Entity\Account $account */
+            ?>
         <tr style="<?= $account->style ?>">
             <?php if ($show_contracts) : ?>
             <td><?= $account->__isset('contract') ?

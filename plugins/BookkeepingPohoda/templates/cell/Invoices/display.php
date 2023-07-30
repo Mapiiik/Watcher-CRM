@@ -3,7 +3,7 @@ use Cake\I18n\Date;
 
 /**
  * @var \App\View\AppView $this
- * @var iterable<\BookkeepingPohoda\Model\Entity\Invoice> $invoices
+ * @var \Cake\ORM\ResultSet<\BookkeepingPohoda\Model\Entity\Invoice> $invoices
  * @var bool $show_customers
  */
 ?>
@@ -28,6 +28,9 @@ use Cake\I18n\Date;
             <th class="actions"><?= __d('bookkeeping_pohoda', 'Actions') ?></th>
         </tr>
         <?php foreach ($invoices as $invoice) : ?>
+            <?php
+            /** @var \BookkeepingPohoda\Model\Entity\Invoice $invoice */
+            ?>
         <tr style="<?= $invoice->style ?>">
             <?php if ($show_customers) : ?>
             <td>
