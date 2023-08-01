@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\View\PdfView;
 use Cake\Form\Form;
 use Cake\Utility\Hash;
 
@@ -114,6 +115,16 @@ GROUP BY
  */
 class CustomersController extends AppController
 {
+    /**
+     * Returns supported output types
+     */
+    public function viewClasses(): array
+    {
+        return [
+            PdfView::class,
+        ];
+    }
+
     /**
      * Index method
      *

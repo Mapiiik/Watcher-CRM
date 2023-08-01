@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\ApiClient;
+use App\View\PdfView;
 use Cake\Collection\Collection;
 use Cake\Database\Exception\MissingConnectionException;
 use Cake\I18n\Date;
@@ -19,6 +20,16 @@ use stdClass;
  */
 class ContractsController extends AppController
 {
+    /**
+     * Returns supported output types
+     */
+    public function viewClasses(): array
+    {
+        return [
+            PdfView::class,
+        ];
+    }
+
     /**
      * Index method
      *
@@ -734,7 +745,7 @@ class ContractsController extends AppController
             'Modifiers',
         ]);
 
-        $contractVersions = collection($contract->contract_versions)->map(function ($contract_version) {
+        $contractVersions = (new Collection($contract->contract_versions))->map(function ($contract_version) {
             return [
                 'value' => $contract_version->id,
                 'text' => $contract_version->valid_from
@@ -748,12 +759,12 @@ class ContractsController extends AppController
             $type = $query['document_type'];
         }
         if (isset($query['contract_version_id'])) {
-            $contract_version = collection($contract->contract_versions)->firstMatch([
+            $contract_version = (new Collection($contract->contract_versions))->firstMatch([
                 'id' => $query['contract_version_id'],
             ]);
         }
         if (isset($query['contract_version_to_be_replaced_id'])) {
-            $contract_version_to_be_replaced = collection($contract->contract_versions)->firstMatch([
+            $contract_version_to_be_replaced = (new Collection($contract->contract_versions))->firstMatch([
                 'id' => $query['contract_version_to_be_replaced_id'],
             ]);
         }
