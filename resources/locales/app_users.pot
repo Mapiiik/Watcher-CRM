@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-06-12 13:06+0200\n"
+"POT-Creation-Date: 2023-08-01 18:35+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -18,11 +18,11 @@ msgstr ""
 msgid "You are not allowed to edit another user's settings."
 msgstr ""
 
-#: ./src/Controller/Traits/UserSettingsTrait.php:68
+#: ./src/Controller/Traits/UserSettingsTrait.php:69
 msgid "The user settings have been saved."
 msgstr ""
 
-#: ./src/Controller/Traits/UserSettingsTrait.php:72
+#: ./src/Controller/Traits/UserSettingsTrait.php:73
 msgid "The user settings could not be saved. Please, try again."
 msgstr ""
 
