@@ -68,16 +68,26 @@
                         <?php foreach ($connection_points as $connection_point) : ?>
                         <tr>
                             <td><?= $this->Number->format($connection_point->ruian_gid) ?></td>
-                            <td><?= $this->Number->format($connection_point->active_connections) ?></td>
-                            <td><?= $this->Number->format($connection_point->active_connections_nonbusiness) ?></td>
-                            <td><?= $this->Number->format($connection_point->active_speeds->speed_0_30) ?></td>
-                            <td><?= $this->Number->format($connection_point->active_speeds->speed_30_100) ?></td>
-                            <td><?= $this->Number->format($connection_point->active_speeds->speed_100_plus) ?></td>
-                            <td><?= $this->Number->format($connection_point->available_speeds->speed_0_30) ?></td>
-                            <td><?= $this->Number->format($connection_point->available_speeds->speed_30_100) ?></td>
-                            <td><?= $this->Number->format($connection_point->available_speeds->speed_100_300) ?></td>
-                            <td><?= $this->Number->format($connection_point->available_speeds->speed_300_1000) ?></td>
-                            <td><?= $this->Number->format($connection_point->available_speeds->speed_1000_plus) ?></td>
+                            <td><?= $connection_point->active_connections === null ?
+                                '' : $this->Number->format($connection_point->active_connections) ?></td>
+                            <td><?= $connection_point->active_connections_nonbusiness === null ?
+                                '' : $this->Number->format($connection_point->active_connections_nonbusiness) ?></td>
+                            <td><?= $connection_point->active_speeds->speed_0_30 === null ?
+                                '' : $this->Number->format($connection_point->active_speeds->speed_0_30) ?></td>
+                            <td><?= $connection_point->active_speeds->speed_30_100 === null ?
+                                '' : $this->Number->format($connection_point->active_speeds->speed_30_100) ?></td>
+                            <td><?= $connection_point->active_speeds->speed_100_plus === null ?
+                                '' : $this->Number->format($connection_point->active_speeds->speed_100_plus) ?></td>
+                            <td><?= $connection_point->available_speeds->speed_0_30 === null ?
+                                '' : $this->Number->format($connection_point->available_speeds->speed_0_30) ?></td>
+                            <td><?= $connection_point->available_speeds->speed_30_100 === null ?
+                                '' : $this->Number->format($connection_point->available_speeds->speed_30_100) ?></td>
+                            <td><?= $connection_point->available_speeds->speed_100_300 === null ?
+                                '' : $this->Number->format($connection_point->available_speeds->speed_100_300) ?></td>
+                            <td><?= $connection_point->available_speeds->speed_300_1000 === null ?
+                                '' : $this->Number->format($connection_point->available_speeds->speed_300_1000) ?></td>
+                            <td><?= $connection_point->available_speeds->speed_1000_plus === null ?
+                                '' : $this->Number->format($connection_point->available_speeds->speed_1000_plus) ?></td>
                             <td><?= $connection_point->vhcn ? __('Yes') : __('No'); ?></td>
                             <td><?= h($connection_point->ruian_address) ?></td>
                             <td class="actions">
