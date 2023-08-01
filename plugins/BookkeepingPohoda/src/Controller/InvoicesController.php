@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace BookkeepingPohoda\Controller;
 
+use BookkeepingPohoda\View\DbfView;
+use BookkeepingPohoda\View\XmlView;
 use Cake\Collection\CollectionInterface;
 use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
@@ -16,6 +18,21 @@ use stdClass;
  */
 class InvoicesController extends AppController
 {
+    /**
+     * Returns supported output types
+     */
+    public function viewClasses(): array
+    {
+        if ($this->request->getParam('_ext') === 'dbf' || $this->request->getParam('_ext') === 'xml') {
+            return [
+                DbfView::class,
+                XmlView::class,
+            ];
+        }
+
+        return [];
+    }
+
     /**
      * Index method
      *

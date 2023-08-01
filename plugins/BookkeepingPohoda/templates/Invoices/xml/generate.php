@@ -28,7 +28,7 @@ foreach ($invoices as $invoice) {
         'number' => [
             'numberRequested' => $invoice->number,
         ],
-        'symVar' => $invoice->variable_symbol,
+        'symVar' => (string)$invoice->variable_symbol,
         'date' => $invoice->creation_date->i18nFormat('yyyy-MM-dd'),
         'dateTax' => $invoice->creation_date->i18nFormat('yyyy-MM-dd'),
         'dateAccounting' => $invoice->creation_date->i18nFormat('yyyy-MM-dd'),
