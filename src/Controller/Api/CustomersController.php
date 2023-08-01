@@ -7,6 +7,7 @@ use App\Controller\AppController;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\View\JsonView;
 use Ruian\Model\Entity\Address;
 
 /**
@@ -17,6 +18,14 @@ use Ruian\Model\Entity\Address;
  */
 class CustomersController extends AppController
 {
+    /**
+     * Returns supported output types
+     */
+    public function viewClasses(): array
+    {
+        return [JsonView::class];
+    }
+
     /**
      * Index method
      *
