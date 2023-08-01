@@ -52,11 +52,11 @@ class CustomerPDF extends TCPDF
         $this->SetFont('DejaVuSerif', 'BI', 8);
 
         $this->SetFont('DejaVuSerif', 'B', 18);
-        $this->Cell(187, 6, 'SOUHLAS', 0, 0, 'C');
+        $this->Cell(187, 6, 'SOUHLAS', align: 'C');
         $this->Ln();
 
         $this->SetFont('DejaVuSerif', 'B', 12);
-        $this->Cell(187, 2, 'se zpracováním osobních údajů', 0, 0, 'C');
+        $this->Cell(187, 2, 'se zpracováním osobních údajů', align: 'C');
         $this->Ln(3);
 
         $this->Ln(4);
@@ -64,22 +64,22 @@ class CustomerPDF extends TCPDF
         $this->Ln(0.5);
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(62, 4, 'nový / změna:', 0, 0, 'C');
-        $this->Cell(62, 4, 'číslo souhlasu:', 0, 0, 'C');
-        $this->Cell(62, 4, 'doba trvání souhlasu:', 0, 0, 'C');
+        $this->Cell(62, 4, 'nový / změna:', align: 'C');
+        $this->Cell(62, 4, 'číslo souhlasu:', align: 'C');
+        $this->Cell(62, 4, 'doba trvání souhlasu:', align: 'C');
         $this->Ln();
 
         $this->SetFont('DejaVuSerif', 'B', 8);
         switch ($type) {
             case 'gdpr-new':
-                $this->Cell(62, 4, 'nový', 0, 0, 'C');
-                $this->Cell(62, 4, $customer->number, 0, 0, 'C');
-                $this->Cell(62, 4, 'na dobu neurčitou', 0, 0, 'C');
+                $this->Cell(62, 4, 'nový', align: 'C');
+                $this->Cell(62, 4, $customer->number, align: 'C');
+                $this->Cell(62, 4, 'na dobu neurčitou', align: 'C');
                 break;
             case 'gdpr-change':
-                $this->Cell(62, 4, 'změna', 0, 0, 'C');
-                $this->Cell(62, 4, $customer->number, 0, 0, 'C');
-                $this->Cell(62, 4, 'na dobu neurčitou', 0, 0, 'C');
+                $this->Cell(62, 4, 'změna', align: 'C');
+                $this->Cell(62, 4, $customer->number, align: 'C');
+                $this->Cell(62, 4, 'na dobu neurčitou', align: 'C');
                 break;
         }
         $this->Ln();
@@ -88,7 +88,7 @@ class CustomerPDF extends TCPDF
         $this->Ln(3);
 
         $this->SetFont('DejaVuSerif', 'B', 9);
-        $this->Cell(187, 2, iconv('UTF-8', 'UTF-8', 'mezi'), 0, 0, 'C');
+        $this->Cell(187, 2, iconv('UTF-8', 'UTF-8', 'mezi'), align: 'C');
         $this->Ln();
 
         $this->SetFont('DejaVuSerif', 'B', 9);
@@ -99,45 +99,45 @@ class CustomerPDF extends TCPDF
 
         $this->Ln(1);
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(30, 4, '', 0, 0, 'R');
+        $this->Cell(30, 4);
         $this->Cell(40, 4, 'NETAIR, s.r.o.');
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, '', 0, 0, 'R');
-        $this->Cell(40, 4, '');
-        $this->Cell(15, 4, 'tel:', 0, 0, 'L');
+        $this->Cell(30, 4);
+        $this->Cell(40, 4);
+        $this->Cell(15, 4, 'tel:');
         $this->Cell(40, 4, '+420 488 572 050');
         $this->Ln();
 
-        $this->Cell(30, 4, '', 0, 0, 'R');
+        $this->Cell(30, 4);
         $this->Cell(40, 4, 'Jablonec nad Jizerou 299');
-        $this->Cell(20, 4, '', 0, 0, 'R');
+        $this->Cell(20, 4);
         $this->Cell(10, 4, 'IČ:');
         $this->Cell(40, 4, '27496139');
-        $this->Cell(15, 4, 'mobil:', 0, 0, 'L');
+        $this->Cell(15, 4, 'mobil:');
         $this->Cell(40, 4, '+420 604 553 444');
         $this->Ln();
 
-        $this->Cell(30, 4, '', 0, 0, 'R');
+        $this->Cell(30, 4);
         $this->Cell(40, 4, '512 43 Jablonec nad Jizerou');
-        $this->Cell(20, 4, '', 0, 0, 'R');
+        $this->Cell(20, 4);
         $this->Cell(10, 4, 'DIČ:');
         $this->Cell(40, 4, 'CZ27496139');
-        $this->Cell(15, 4, 'e-mail:', 0, 0, 'L');
+        $this->Cell(15, 4, 'e-mail:');
         $this->Cell(40, 4, 'mail@netair.cz');
         $this->Ln();
 
         $this->Ln(3);
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, '');
-        $this->MultiCell(157, 4, 'zastoupeným Marko Jujnovićem, jednatelem', '', 'L');
-        $this->Cell(30, 4, '');
-        $this->MultiCell(157, 4, 'zapsaným v obchodním rejstříku vedeném u Krajského soudu v Hradci Králové, oddíl C, vložka 22450.', '', 'L');
+        $this->Cell(30, 4);
+        $this->MultiCell(157, 4, 'zastoupeným Marko Jujnovićem, jednatelem', align: 'L');
+        $this->Cell(30, 4);
+        $this->MultiCell(157, 4, 'zapsaným v obchodním rejstříku vedeném u Krajského soudu v Hradci Králové, oddíl C, vložka 22450.', align: 'L');
 
         $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
         $this->Ln(3);
 
         $this->SetFont('DejaVuSerif', 'B', 9);
-        $this->Cell(187, 4, 'a', 0, 0, 'C');
+        $this->Cell(187, 4, 'a', align: 'C');
         $this->Ln();
         $this->Cell(30, 4, 'Uživatelem:');
 
@@ -156,59 +156,59 @@ class CustomerPDF extends TCPDF
         $this->Ln(0.5);
 
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(90, 4, 'Osobní údaje:', 0, 0, 'L');
-        $this->Cell(90, 4, 'Obchodní údaje:', 0, 0, 'L');
+        $this->Cell(90, 4, 'Osobní údaje:');
+        $this->Cell(90, 4, 'Obchodní údaje:');
         $this->Ln();
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, 'jméno:', 0, 0, 'R');
+        $this->Cell(30, 4, 'jméno:', align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->Cell(60, 4, $customer->billing_address->full_name);
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, 'firma:', 0, 0, 'R');
+        $this->Cell(30, 4, 'firma:', align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(60, 4, $customer->billing_address->company ?? 'X', '', 'L');
+        $this->MultiCell(60, 4, $customer->billing_address->company ?? 'X', align: 'L');
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, 'datum narození:', 0, 0, 'R');
+        $this->Cell(30, 4, 'datum narození:', align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->Cell(60, 4, h($customer->date_of_birth));
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, 'IČ:', 0, 0, 'R');
+        $this->Cell(30, 4, 'IČ:', align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->Cell(60, 4, $customer->ic ?? 'X');
         $this->Ln();
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, 'číslo OP:', 0, 0, 'R');
+        $this->Cell(30, 4, 'číslo OP:', align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->Cell(60, 4, $customer->identity_card_number);
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, 'DIČ:', 0, 0, 'R');
+        $this->Cell(30, 4, 'DIČ:', align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->Cell(60, 4, $customer->dic ?? 'X');
         $this->Ln();
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, 'tel:', 0, 0, 'R');
+        $this->Cell(30, 4, 'tel:', align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(160, 4, $customer->phone, '', 'L');
+        $this->MultiCell(160, 4, $customer->phone, align: 'L');
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, 'e-mail:', 0, 0, 'R');
+        $this->Cell(30, 4, 'e-mail:', align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(160, 4, $customer->email, '', 'L');
+        $this->MultiCell(160, 4, $customer->email, align: 'L');
 
         foreach ($customer->addresses as $address) {
             $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Cell(30, 4, $address->getTypeName() . ': ', 0, 0, 'L');
+            $this->Cell(30, 4, $address->getTypeName() . ': ');
             $this->Ln();
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(30, 4);
-            $this->MultiCell(160, 4, $address->full_address, '', 'L');
+            $this->MultiCell(160, 4, $address->full_address, align: 'L');
         }
 
         $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
@@ -255,15 +255,15 @@ Jméno, příjmení, emailová adresa, telefonní číslo, adresa trvalého poby
         $this->Ln();
 
         $this->Cell(90, 4);
-        $this->Cell(90, 4, 'Datum podpisu: ____________________', 0, 0, 'C');
+        $this->Cell(90, 4, 'Datum podpisu: ____________________', align: 'C');
 
         $this->Ln(20);
 
         $this->Cell(90, 4);
-        $this->Cell(90, 4, '......................................................', 0, 0, 'C');
+        $this->Cell(90, 4, '......................................................', align: 'C');
         $this->Ln();
         $this->Cell(90, 4);
-        $this->Cell(90, 4, 'Uživatel', 0, 0, 'C');
+        $this->Cell(90, 4, 'Uživatel', align: 'C');
         $this->Ln();
 
         $this->Close();

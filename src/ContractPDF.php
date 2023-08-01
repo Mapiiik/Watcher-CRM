@@ -98,20 +98,20 @@ class ContractPDF extends TCPDF
         switch ($type) {
             case 'handover-protocol-installation':
                 $this->SetFont('DejaVuSerif', 'B', 18);
-                $this->Cell(187, 6, 'PŘEDÁVACÍ PROTOKOL', '', 0, 'C');
+                $this->Cell(187, 6, 'PŘEDÁVACÍ PROTOKOL', align: 'C');
                 $this->Ln();
 
                 $this->SetFont('DejaVuSerif', 'B', 12);
-                $this->Cell(187, 2, 'ke Smlouvě o poskytování služeb', '', 0, 'C');
+                $this->Cell(187, 2, 'ke Smlouvě o poskytování služeb', align: 'C');
                 $this->Ln(3);
                 break;
             case 'handover-protocol-uninstallation':
                 $this->SetFont('DejaVuSerif', 'B', 18);
-                $this->Cell(187, 6, 'PŘEDÁVACÍ PROTOKOL', '', 0, 'C');
+                $this->Cell(187, 6, 'PŘEDÁVACÍ PROTOKOL', align: 'C');
                 $this->Ln();
 
                 $this->SetFont('DejaVuSerif', 'B', 12);
-                $this->Cell(187, 2, 'k ukončení Smlouvy o poskytování služeb', '', 0, 'C');
+                $this->Cell(187, 2, 'k ukončení Smlouvy o poskytování služeb', align: 'C');
                 $this->Ln(3);
                 break;
         }
@@ -123,36 +123,36 @@ class ContractPDF extends TCPDF
         switch ($type) {
             case 'handover-protocol-installation':
                 $this->SetFont('DejaVuSerif', '', 8);
-                $this->Cell(90, 4, 'číslo smlouvy:', '', 0, 'C');
-                $this->Cell(90, 4, 'datum zahájení poskytování služeb:', '', 0, 'C');
+                $this->Cell(90, 4, 'číslo smlouvy:', align: 'C');
+                $this->Cell(90, 4, 'datum zahájení poskytování služeb:', align: 'C');
                 $this->Ln();
                 $this->SetFont('DejaVuSerif', 'B', 8);
-                $this->Cell(90, 4, $contract->number, '', 0, 'C');
-                $this->Cell(90, 4, (string)$contract_version->valid_from, '', 0, 'C');
+                $this->Cell(90, 4, $contract->number, align: 'C');
+                $this->Cell(90, 4, (string)$contract_version->valid_from, align: 'C');
                 $this->Ln();
 
                 $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
                 $this->Ln(3);
 
                 $this->SetFont('DejaVuSerif', 'B', 9);
-                $this->Cell(187, 2, 'mezi', '', 0, 'C');
+                $this->Cell(187, 2, 'mezi', align: 'C');
                 $this->Ln();
                 break;
             case 'handover-protocol-uninstallation':
                 $this->SetFont('DejaVuSerif', '', 8);
-                $this->Cell(90, 4, 'číslo smlouvy:', '', 0, 'C');
-                $this->Cell(90, 4, 'datum ukončení poskytování služeb:', '', 0, 'C');
+                $this->Cell(90, 4, 'číslo smlouvy:', align: 'C');
+                $this->Cell(90, 4, 'datum ukončení poskytování služeb:', align: 'C');
                 $this->Ln();
                 $this->SetFont('DejaVuSerif', 'B', 8);
-                $this->Cell(90, 4, $contract_version['number_of_the_contract_to_be_terminated'], '', 0, 'C');
-                $this->Cell(90, 4, (string)$contract_version->valid_until, '', 0, 'C');
+                $this->Cell(90, 4, $contract_version['number_of_the_contract_to_be_terminated'], align: 'C');
+                $this->Cell(90, 4, (string)$contract_version->valid_until, align: 'C');
                 $this->Ln();
 
                 $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
                 $this->Ln(3);
 
                 $this->SetFont('DejaVuSerif', 'B', 9);
-                $this->Cell(187, 2, 'mezi', '', 0, 'C');
+                $this->Cell(187, 2, 'mezi', align: 'C');
                 $this->Ln();
                 break;
         }
@@ -165,45 +165,45 @@ class ContractPDF extends TCPDF
 
         $this->Ln(1);
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(30, 4, '', '', 0, 'R');
+        $this->Cell(30, 4);
         $this->Cell(40, 4, 'NETAIR, s.r.o.');
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, '', '', 0, 'R');
+        $this->Cell(30, 4);
         $this->Cell(40, 4);
-        $this->Cell(15, 4, 'tel:', '', 0, 'L');
+        $this->Cell(15, 4, 'tel:');
         $this->Cell(40, 4, '+420 488 572 050');
         $this->Ln();
 
-        $this->Cell(30, 4, '', '', 0, 'R');
+        $this->Cell(30, 4);
         $this->Cell(40, 4, 'Jablonec nad Jizerou 299');
-        $this->Cell(20, 4, '', '', 0, 'R');
+        $this->Cell(20, 4);
         $this->Cell(10, 4, 'IČ:');
         $this->Cell(40, 4, '27496139');
-        $this->Cell(15, 4, 'mobil:', '', 0, 'L');
+        $this->Cell(15, 4, 'mobil:');
         $this->Cell(40, 4, '+420 604 553 444');
         $this->Ln();
 
-        $this->Cell(30, 4, '', '', 0, 'R');
+        $this->Cell(30, 4);
         $this->Cell(40, 4, '512 43 Jablonec nad Jizerou');
-        $this->Cell(20, 4, '', '', 0, 'R');
+        $this->Cell(20, 4);
         $this->Cell(10, 4, 'DIČ:');
         $this->Cell(40, 4, 'CZ27496139');
-        $this->Cell(15, 4, 'e-mail:', '', 0, 'L');
+        $this->Cell(15, 4, 'e-mail:');
         $this->Cell(40, 4, 'mail@netair.cz');
         $this->Ln();
 
         $this->Ln(3);
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Cell(30, 4);
-        $this->MultiCell(157, 4, 'zastoupeným Marko Jujnovićem, jednatelem', '', 'L');
+        $this->MultiCell(157, 4, 'zastoupeným Marko Jujnovićem, jednatelem', align: 'L');
         $this->Cell(30, 4);
-        $this->MultiCell(157, 4, 'zapsaným v obchodním rejstříku vedeném u Krajského soudu v Hradci Králové, oddíl C, vložka 22450.', '', 'L');
+        $this->MultiCell(157, 4, 'zapsaným v obchodním rejstříku vedeném u Krajského soudu v Hradci Králové, oddíl C, vložka 22450.', align: 'L');
 
         $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
         $this->Ln(3);
 
         $this->SetFont('DejaVuSerif', 'B', 9);
-        $this->Cell(187, 4, 'a', '', 0, 'C');
+        $this->Cell(187, 4, 'a', align: 'C');
         $this->Ln();
         $this->Cell(30, 4, 'Uživatelem:');
 
@@ -225,32 +225,32 @@ class ContractPDF extends TCPDF
 
         // BILLING
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(60, 4, __('Billing Address') . ':', '', 0, 'L');
+        $this->Cell(60, 4, __('Billing Address') . ':');
         $this->Ln();
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, 'firma:', '', 0, 'R');
+        $this->Cell(30, 4, 'firma:', align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(60, 4, $contract->billing_address->company ?? '', '', 'L');
+        $this->MultiCell(60, 4, $contract->billing_address->company ?? '', align: 'L');
 
         $this->SetFont('DejaVuSerif', '', 8);
         if (is_null($contract->billing_address->company)) {
-            $this->Cell(30, 4, 'jméno:', '', 0, 'R');
+            $this->Cell(30, 4, 'jméno:', align: 'R');
         } else {
-            $this->Cell(30, 4, 'zastoupená:', '', 0, 'R');
+            $this->Cell(30, 4, 'zastoupená:', align: 'R');
         }
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(60, 4, $contract->billing_address->full_name, '', 'L');
+        $this->MultiCell(60, 4, $contract->billing_address->full_name, align: 'L');
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, 'ulice / č.p.:', '', 0, 'R');
+        $this->Cell(30, 4, 'ulice / č.p.:', align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(60, 4, $contract->billing_address->street_and_number, '', 'L');
+        $this->MultiCell(60, 4, $contract->billing_address->street_and_number, align: 'L');
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, 'PSČ / město:', '', 0, 'R');
+        $this->Cell(30, 4, 'PSČ / město:', align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(60, 4, $contract->billing_address->zip_and_city, '', 'L');
+        $this->MultiCell(60, 4, $contract->billing_address->zip_and_city, align: 'L');
 
         // NEXT COLLUMN
         $addressStopY = $this->GetY();
@@ -283,15 +283,15 @@ class ContractPDF extends TCPDF
         // CONTACT
         $this->Cell(105);
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(15, 4, 'tel:', '', 0, 'L');
+        $this->Cell(15, 4, 'tel:');
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(70, 4, $contract->customer->phone, '', 'L');
+        $this->MultiCell(70, 4, $contract->customer->phone, align: 'L');
 
         $this->Cell(105);
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(15, 4, 'e-mail:', '', 0, 'L');
+        $this->Cell(15, 4, 'e-mail:');
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(70, 4, $contract->customer->email, '', 'L');
+        $this->MultiCell(70, 4, $contract->customer->email, align: 'L');
 
         // GO BACK TO END
         $this->SetY(max($this->GetY(), $addressStopY));
@@ -299,27 +299,27 @@ class ContractPDF extends TCPDF
         // INSTALLATION ADDRESS
         if ($contract->__isset('installation_address')) {
             $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Cell(30, 4, __('Installation Address') . ': ', '', 0, 'L');
+            $this->Cell(30, 4, __('Installation Address') . ': ');
             $this->Ln();
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(30, 4);
-            $this->MultiCell(160, 4, $contract->installation_address->full_address, '', 'L');
+            $this->MultiCell(160, 4, $contract->installation_address->full_address, align: 'L');
         }
         // DELIVERY ADDRESS
         if ($contract->__isset('delivery_address')) {
             $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Cell(30, 4, __('Delivery Address') . ': ', '', 0, 'L');
+            $this->Cell(30, 4, __('Delivery Address') . ': ');
             $this->Ln();
             $this->Cell(30, 4);
-            $this->MultiCell(160, 4, $contract->delivery_address->full_address, '', 'L');
+            $this->MultiCell(160, 4, $contract->delivery_address->full_address, align: 'L');
         }
         // PERMANENT ADDRESS
         if ($contract->__isset('permanent_address')) {
             $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Cell(30, 4, __('Permanent Address') . ': ', '', 0, 'L');
+            $this->Cell(30, 4, __('Permanent Address') . ': ');
             $this->Ln();
             $this->Cell(30, 4);
-            $this->MultiCell(160, 4, $contract->permanent_address->full_address, '', 'L');
+            $this->MultiCell(160, 4, $contract->permanent_address->full_address, align: 'L');
         }
 
         $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
@@ -343,16 +343,16 @@ class ContractPDF extends TCPDF
 
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(4, 5);
-            $this->Cell(60, 5, __('Access Point') . ' / ' . __('SSID'), 1, 0, 'C');
-            $this->Cell(60, 5, __('Username'), 1, 0, 'C');
-            $this->Cell(60, 5, __('Password'), 1, 0, 'C');
+            $this->Cell(60, 5, __('Access Point') . ' / ' . __('SSID'), border: 1, align: 'C');
+            $this->Cell(60, 5, __('Username'), border: 1, align: 'C');
+            $this->Cell(60, 5, __('Password'), border: 1, align: 'C');
             $this->Ln();
 
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Cell(4, 5);
-            $this->Cell(60, 5, $technical_details->access_point ?? '-', 1, 0, 'C');
-            $this->Cell(60, 5, $technical_details->radius_username ?? '-', 1, 0, 'C');
-            $this->Cell(60, 5, $technical_details->radius_password ?? '-', 1, 0, 'C');
+            $this->Cell(60, 5, $technical_details->access_point ?? '-', border: 1, align: 'C');
+            $this->Cell(60, 5, $technical_details->radius_username ?? '-', border: 1, align: 'C');
+            $this->Cell(60, 5, $technical_details->radius_password ?? '-', border: 1, align: 'C');
             $this->Ln();
 
             $this->Ln(1);
@@ -364,9 +364,9 @@ class ContractPDF extends TCPDF
 
                 $this->SetFont('DejaVuSerif', 'B', 8);
                 $this->Cell(4, 5);
-                $this->Cell(60, 5, __('IP Address'), 1, 0, 'C');
-                $this->Cell(60, 5, __('IP Network'), 1, 0, 'C');
-                $this->Cell(60, 5, __('IP Gateway'), 1, 0, 'C');
+                $this->Cell(60, 5, __('IP Address'), border: 1, align: 'C');
+                $this->Cell(60, 5, __('IP Network'), border: 1, align: 'C');
+                $this->Cell(60, 5, __('IP Gateway'), border: 1, align: 'C');
                 $this->Ln();
 
                 $this->SetFont('DejaVuSerif', '', 8);
@@ -380,9 +380,9 @@ class ContractPDF extends TCPDF
                         continue 1;
                     }
                     $this->Cell(4, 5);
-                    $this->Cell(60, 5, $ip->ip, 1, 0, 'C');
-                    $this->Cell(60, 5, $range['ip_network'] ?? '-', 1, 0, 'C');
-                    $this->Cell(60, 5, $range['ip_gateway'] ?? '-', 1, 0, 'C');
+                    $this->Cell(60, 5, $ip->ip, border: 1, align: 'C');
+                    $this->Cell(60, 5, $range['ip_network'] ?? '-', border: 1, align: 'C');
+                    $this->Cell(60, 5, $range['ip_gateway'] ?? '-', border: 1, align: 'C');
                     $this->Ln();
 
                     unset($range);
@@ -398,7 +398,7 @@ class ContractPDF extends TCPDF
 
                 $this->SetFont('DejaVuSerif', '', 8);
                 $this->Cell(4, 5);
-                $this->MultiCell(180, 4, implode(', ', array_column($contract->ip_networks, 'ip_network')), 1, 'L');
+                $this->MultiCell(180, 4, implode(', ', array_column($contract->ip_networks, 'ip_network')), border: 1, align: 'L');
 
                 $this->Ln(1);
             }
@@ -409,30 +409,30 @@ class ContractPDF extends TCPDF
 
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(4, 5);
-            $this->Cell(60, 5, __('IP Network'), 1, 0, 'C');
-            $this->Cell(60, 5, __('IP Gateway'), 1, 0, 'C');
-            $this->Cell(60, 5, __('DNS Servers'), 1, 0, 'C');
+            $this->Cell(60, 5, __('IP Network'), border: 1, align: 'C');
+            $this->Cell(60, 5, __('IP Gateway'), border: 1, align: 'C');
+            $this->Cell(60, 5, __('DNS Servers'), border: 1, align: 'C');
             $this->Ln();
 
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Cell(4, 5);
-            $this->Cell(60, 5, '192.168.1.0/24', 1, 0, 'C');
-            $this->Cell(60, 5, '192.168.1.1', 1, 0, 'C');
-            $this->Cell(60, 5, '79.98.156.2, 79.98.152.2', 1, 0, 'C');
+            $this->Cell(60, 5, '192.168.1.0/24', border: 1, align: 'C');
+            $this->Cell(60, 5, '192.168.1.1', border: 1, align: 'C');
+            $this->Cell(60, 5, '79.98.156.2, 79.98.152.2', border: 1, align: 'C');
             $this->Ln();
 
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(4, 5);
-            $this->Cell(90, 5, __('WiFi - SSID'), 1, 0, 'C');
-            $this->Cell(90, 5, __('WiFi - Password'), 1, 0, 'C');
+            $this->Cell(90, 5, __('WiFi - SSID'), border: 1, align: 'C');
+            $this->Cell(90, 5, __('WiFi - Password'), border: 1, align: 'C');
             $this->Ln();
 
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Cell(4, 5);
-            $this->Cell(90, 5, '', 1, 0, 'C');
-            $this->Cell(90, 5, '', 1, 0, 'C');
+            $this->Cell(90, 5, '', border: 1, align: 'C');
+            $this->Cell(90, 5, '', border: 1, align: 'C');
             $this->Ln();
 
             $this->Ln(1);
@@ -467,23 +467,23 @@ class ContractPDF extends TCPDF
                 $this->SetFont('DejaVuSerif', 'B', 8);
                 $this->Cell(4, 5);
                 $this->Cell(130, 5, 'Zařízení', 1);
-                $this->Cell(25, 5, 'Sériové číslo', 1, 0, 'C');
-                $this->Cell(25, 5, 'Hodnota', 1, 0, 'R');
+                $this->Cell(25, 5, 'Sériové číslo', border: 1, align: 'C');
+                $this->Cell(25, 5, 'Hodnota', border: 1, align: 'R');
                 $this->Ln();
 
                 $this->SetFont('DejaVuSerif', '', 8);
                 foreach ($contract->borrowed_equipments as $borrowed_equipment) {
                     $this->Cell(4, 5);
                     $this->Cell(130, 5, $borrowed_equipment->equipment_type->name, 1);
-                    $this->Cell(25, 5, $borrowed_equipment->serial_number, 1, 0, 'C');
-                    $this->Cell(25, 5, Number::currency($borrowed_equipment->equipment_type->price), 1, 0, 'R');
+                    $this->Cell(25, 5, $borrowed_equipment->serial_number, border: 1, align: 'C');
+                    $this->Cell(25, 5, Number::currency($borrowed_equipment->equipment_type->price), border: 1, align: 'R');
                     $this->Ln();
                 }
 
                 $this->Ln(2);
 
                 $this->SetFont('DejaVuSerif', '', 8);
-                $this->MultiCell(180, 4, 'Uživatel je povinen tato zařízení Poskytovateli vrátit bez zbytečných odkladů nejpozději po zániku Smlouvy.' . PHP_EOL, 0, 'J');
+                $this->MultiCell(180, 4, 'Uživatel je povinen tato zařízení Poskytovateli vrátit bez zbytečných odkladů nejpozději po zániku Smlouvy.' . PHP_EOL, align: 'J');
                 $this->Ln(2);
             }
 
@@ -510,9 +510,9 @@ class ContractPDF extends TCPDF
 
             $this->SetFont('DejaVuSerif', '', 8);
             if (count($contract->borrowed_equipments) > 0) {
-                $this->MultiCell(180, 4, 'Aktivační poplatek zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci poskytnutých zařízení:' . PHP_EOL, 0, 'J');
+                $this->MultiCell(180, 4, 'Aktivační poplatek zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci poskytnutých zařízení:' . PHP_EOL, align: 'J');
             } else {
-                $this->MultiCell(180, 4, 'Aktivační poplatek zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací:' . PHP_EOL, 0, 'J');
+                $this->MultiCell(180, 4, 'Aktivační poplatek zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací:' . PHP_EOL, align: 'J');
             }
             $this->Ln(1);
 
@@ -520,7 +520,7 @@ class ContractPDF extends TCPDF
 
             $this->Cell(4, 5);
             $this->Cell(155, 5, 'Aktivační poplatek', 1);
-            $this->Cell(25, 5, Number::currency($subtotal = $contract_version->minimum_duration <= 0 ? $contract->activation_fee_sum : $contract->activation_fee_with_obligation_sum), 1, 0, 'R');
+            $this->Cell(25, 5, Number::currency($subtotal = $contract_version->minimum_duration <= 0 ? $contract->activation_fee_sum : $contract->activation_fee_with_obligation_sum), border: 1, align: 'R');
             $this->Ln();
 
             $this->Ln(2);
@@ -533,8 +533,8 @@ class ContractPDF extends TCPDF
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(4, 5);
             $this->Cell(130, 5, 'Zařízení / příslušenství / práce', 1);
-            $this->Cell(25, 5, 'Sériové číslo', 1, 0, 'C');
-            $this->Cell(25, 5, 'Cena', 1, 0, 'R');
+            $this->Cell(25, 5, 'Sériové číslo', border: 1, align: 'C');
+            $this->Cell(25, 5, 'Cena', border: 1, align: 'R');
             $this->Ln();
 
             $this->SetFont('DejaVuSerif', '', 8);
@@ -542,16 +542,16 @@ class ContractPDF extends TCPDF
                 $subtotal += $sold_equipment->equipment_type->price;
                 $this->Cell(4, 5);
                 $this->Cell(130, 5, $sold_equipment->equipment_type->name, 1);
-                $this->Cell(25, 5, $sold_equipment->serial_number, 1, 0, 'C');
-                $this->Cell(25, 5, Number::currency($sold_equipment->equipment_type->price), 1, 0, 'R');
+                $this->Cell(25, 5, $sold_equipment->serial_number, border: 1, align: 'C');
+                $this->Cell(25, 5, Number::currency($sold_equipment->equipment_type->price), border: 1, align: 'R');
                 $this->Ln();
             }
             $count = 6 - min(6, count($contract->sold_equipments));
             for ($i = 1; $i <= $count; $i++) {
                 $this->Cell(4, 5);
                 $this->Cell(130, 5, '', 1);
-                $this->Cell(25, 5, '', 1, 0, 'C');
-                $this->Cell(25, 5, '', 1, 0, 'C');
+                $this->Cell(25, 5, '', border: 1, align: 'C');
+                $this->Cell(25, 5, '', border: 1, align: 'C');
                 $this->Ln();
             }
             unset($count);
@@ -559,11 +559,11 @@ class ContractPDF extends TCPDF
             $this->Ln(2);
 
             $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek a cenu prodaných zařízení, příslušenství a prací.' . PHP_EOL, 0, 'J');
+            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek a cenu prodaných zařízení, příslušenství a prací.' . PHP_EOL, align: 'J');
 
             $this->Cell(4, 5);
             $this->Cell(155, 5, 'Celkem k úhradě', 1);
-            $this->Cell(25, 5, Number::currency($subtotal), 1, 0, 'R');
+            $this->Cell(25, 5, Number::currency($subtotal), border: 1, align: 'R');
             $this->Ln();
 
             $this->Ln(6);
@@ -580,7 +580,7 @@ class ContractPDF extends TCPDF
 
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Ln(4);
-            $this->MultiCell(180, 4, 'Placeno hotově: ____________________,- Kč, podpis příjemce: ____________________' . PHP_EOL, 0, 'J');
+            $this->MultiCell(180, 4, 'Placeno hotově: ____________________,- Kč, podpis příjemce: ____________________' . PHP_EOL, align: 'J');
             $this->Ln(6);
             */
 
@@ -595,9 +595,9 @@ class ContractPDF extends TCPDF
 
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Ln(3);
-            $this->MultiCell(180, 4, 'Síla signálu na straně Uživatele v případě bezdrátového připojení do sítě Poskytovatele (Tx / Rx): ____________________ dBm' . PHP_EOL, 0, 'J');
+            $this->MultiCell(180, 4, 'Síla signálu na straně Uživatele v případě bezdrátového připojení do sítě Poskytovatele (Tx / Rx): ____________________ dBm' . PHP_EOL, align: 'J');
             $this->Ln(3);
-            $this->MultiCell(180, 4, 'Pro případný servis je zapotřebí žebřík v minimální délce: ______ m' . PHP_EOL, 0, 'J');
+            $this->MultiCell(180, 4, 'Pro případný servis je zapotřebí žebřík v minimální délce: ______ m' . PHP_EOL, align: 'J');
             $this->Ln(6);
 
             // GENERAL STATEMENTS
@@ -611,7 +611,7 @@ class ContractPDF extends TCPDF
 
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Ln(4);
-            $this->MultiCell(180, 4, 'Uživatel a Poskytovatel tímto stvrzují, že: ___________________________________________________________________________________' . PHP_EOL, 0, 'J');
+            $this->MultiCell(180, 4, 'Uživatel a Poskytovatel tímto stvrzují, že: ___________________________________________________________________________________' . PHP_EOL, align: 'J');
             $this->Ln(6);
 
             // FINAL STATEMENTS
@@ -624,11 +624,11 @@ class ContractPDF extends TCPDF
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', '', 8);
-            $this->MultiCell(180, 4, 'Uživatel svým podpisem stvrzuje, že výše uvedená zařízení převzal nainstalovaná a plně funkční, a zároveň se zavazuje uhradit částku aktivačního poplatku i cenu dodaných zařízení a příslušenství a prací nad rámec aktivačního poplatku nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené příjmovým pokladním dokladem).' . PHP_EOL, 0, 'J');
+            $this->MultiCell(180, 4, 'Uživatel svým podpisem stvrzuje, že výše uvedená zařízení převzal nainstalovaná a plně funkční, a zároveň se zavazuje uhradit částku aktivačního poplatku i cenu dodaných zařízení a příslušenství a prací nad rámec aktivačního poplatku nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené příjmovým pokladním dokladem).' . PHP_EOL, align: 'J');
             $this->Ln(3);
-            $this->MultiCell(180, 4, 'Uživatel dále potvrzuje, že  souhlasí s provedenou instalací a nemá vůči ní žádné námitky a zároveň prohlašuje, že objednané služby jsou plně funkční.' . PHP_EOL, 0, 'J');
+            $this->MultiCell(180, 4, 'Uživatel dále potvrzuje, že  souhlasí s provedenou instalací a nemá vůči ní žádné námitky a zároveň prohlašuje, že objednané služby jsou plně funkční.' . PHP_EOL, align: 'J');
             $this->Ln(3);
-            $this->MultiCell(180, 4, 'Tento předávací protokol (ke smlouvě č. ' . $contract->number . ') je vyhotoven ve dvou stejnopisech.' . PHP_EOL, 0, 'J');
+            $this->MultiCell(180, 4, 'Tento předávací protokol (ke smlouvě č. ' . $contract->number . ') je vyhotoven ve dvou stejnopisech.' . PHP_EOL, align: 'J');
             $this->Ln(3);
         endif;
         // END INSTALLATION
@@ -652,8 +652,8 @@ class ContractPDF extends TCPDF
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(4, 5);
             $this->Cell(130, 5, 'Zařízení', 1);
-            $this->Cell(25, 5, 'Sériové číslo', 1, 0, 'C');
-            $this->Cell(25, 5, 'Hodnota', 1, 0, 'R');
+            $this->Cell(25, 5, 'Sériové číslo', border: 1, align: 'C');
+            $this->Cell(25, 5, 'Hodnota', border: 1, align: 'R');
             $this->Ln();
 
             $this->SetFont('DejaVuSerif', '', 8);
@@ -661,16 +661,16 @@ class ContractPDF extends TCPDF
             foreach ($contract->borrowed_equipments as $borrowed_equipment) {
                 $this->Cell(4, 5);
                 $this->Cell(130, 5, $borrowed_equipment->equipment_type->name, 1);
-                $this->Cell(25, 5, $borrowed_equipment->serial_number, 1, 0, 'C');
-                $this->Cell(25, 5, Number::currency($borrowed_equipment->equipment_type->price), 1, 0, 'R');
+                $this->Cell(25, 5, $borrowed_equipment->serial_number, border: 1, align: 'C');
+                $this->Cell(25, 5, Number::currency($borrowed_equipment->equipment_type->price), border: 1, align: 'R');
                 $this->Ln();
             }
             $count = 5 - min(5, count($contract->borrowed_equipments));
             for ($i = 1; $i <= $count; $i++) {
                 $this->Cell(4, 5);
                 $this->Cell(130, 5, '', 1);
-                $this->Cell(25, 5, '', 1, 0, 'C');
-                $this->Cell(25, 5, '', 1, 0, 'C');
+                $this->Cell(25, 5, '', border: 1, align: 'C');
+                $this->Cell(25, 5, '', border: 1, align: 'C');
                 $this->Ln();
             }
 
@@ -682,31 +682,31 @@ class ContractPDF extends TCPDF
 
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Cell(22, 0, '▢ ano / ▢ ne - ');
-            $this->MultiCell(170, 0, 'Poskytovateli byla umožněna zkouška funkčnosti zařízení na místě, jejich zapnutím, připojením se do jejich konfiguračního rozhraní pokud to umožňují a provedením diagnostiky' . PHP_EOL, 0, 'L');
+            $this->MultiCell(170, 0, 'Poskytovateli byla umožněna zkouška funkčnosti zařízení na místě, jejich zapnutím, připojením se do jejich konfiguračního rozhraní pokud to umožňují a provedením diagnostiky' . PHP_EOL, align: 'L');
             $this->Ln(1);
 
             $this->Cell(22, 0, '▢ ano / ▢ ne - ');
-            $this->MultiCell(170, 0, 'provedením zkoušky funkčnosti zařízení na místě, byla zjištěna jeho nefunkčnost' . PHP_EOL, 0, 'L');
+            $this->MultiCell(170, 0, 'provedením zkoušky funkčnosti zařízení na místě, byla zjištěna jeho nefunkčnost' . PHP_EOL, align: 'L');
             $this->Ln(1);
 
             $this->Cell(22, 0, '▢ ano / ▢ ne - ');
-            $this->MultiCell(170, 4, 'zařízení má viditelnou vadu nebo poškození způsobené neodborným zacházením ze strany Uživatele' . PHP_EOL, 0, 'L');
+            $this->MultiCell(170, 4, 'zařízení má viditelnou vadu nebo poškození způsobené neodborným zacházením ze strany Uživatele' . PHP_EOL, align: 'L');
             $this->Ln(3);
 
             $this->Cell(30, 0, 'zjištěné nedostatky:');
-            $this->MultiCell(150, 0, '_______________________________________________________________________________________________________', 0, 'L');
+            $this->MultiCell(150, 0, '_______________________________________________________________________________________________________', align: 'L');
             $this->Ln(2);
             $this->Cell(30, 0);
-            $this->MultiCell(150, 0, '_______________________________________________________________________________________________________', 0, 'L');
+            $this->MultiCell(150, 0, '_______________________________________________________________________________________________________', align: 'L');
             $this->Ln(2);
             $this->Cell(30, 0);
-            $this->MultiCell(150, 0, '_______________________________________________________________________________________________________', 0, 'L');
+            $this->MultiCell(150, 0, '_______________________________________________________________________________________________________', align: 'L');
             $this->Ln(2);
 
-            $this->MultiCell(180, 4, 'V případě že provedení zkoušky funkčnosti těchto zařízení na místě nebylo umožněno, bude provedeno následně v provozovně Poskytovatele.' . PHP_EOL, 0, 'J');
+            $this->MultiCell(180, 4, 'V případě že provedení zkoušky funkčnosti těchto zařízení na místě nebylo umožněno, bude provedeno následně v provozovně Poskytovatele.' . PHP_EOL, align: 'J');
             $this->Ln(1);
 
-            $this->MultiCell(180, 4, 'V případě viditelné vady, poškození nebo zjištění nefunkčnosti těchto zařízení se Uživatel zavazuje uhradit hodnotu těchto zařízení.' . PHP_EOL, 0, 'J');
+            $this->MultiCell(180, 4, 'V případě viditelné vady, poškození nebo zjištění nefunkčnosti těchto zařízení se Uživatel zavazuje uhradit hodnotu těchto zařízení.' . PHP_EOL, align: 'J');
             $this->Ln(1);
 
             // CROSS
@@ -732,7 +732,7 @@ class ContractPDF extends TCPDF
 
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Ln(4);
-            $this->MultiCell(180, 4, 'Placeno hotově: ____________________,- Kč, podpis příjemce: ____________________' . PHP_EOL, 0, 'J');
+            $this->MultiCell(180, 4, 'Placeno hotově: ____________________,- Kč, podpis příjemce: ____________________' . PHP_EOL, align: 'J');
             $this->Ln(6);
 
             // GENERAL STATEMENTS
@@ -746,7 +746,7 @@ class ContractPDF extends TCPDF
 
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Ln(4);
-            $this->MultiCell(180, 4, 'Uživatel a Poskytovatel tímto stvrzují, že: ___________________________________________________________________________________' . PHP_EOL, 0, 'J');
+            $this->MultiCell(180, 4, 'Uživatel a Poskytovatel tímto stvrzují, že: ___________________________________________________________________________________' . PHP_EOL, align: 'J');
             $this->Ln(6);
 
             // FINAL STATEMENTS
@@ -759,11 +759,11 @@ class ContractPDF extends TCPDF
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', '', 8);
-            $this->MultiCell(180, 4, 'Poskytovatel svým podpisem stvrzuje, že uvedená zařízení převzal ve stavu popsaném výše.' . PHP_EOL, 0, 'J');
+            $this->MultiCell(180, 4, 'Poskytovatel svým podpisem stvrzuje, že uvedená zařízení převzal ve stavu popsaném výše.' . PHP_EOL, align: 'J');
             $this->Ln(1);
-            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit hodnotu zařízení v případě jejich viditelné vady, poškození nebo zjištěné nefunkčnosti nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené výše).' . PHP_EOL, 0, 'J');
+            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit hodnotu zařízení v případě jejich viditelné vady, poškození nebo zjištěné nefunkčnosti nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené výše).' . PHP_EOL, align: 'J');
             $this->Ln(1);
-            $this->MultiCell(180, 4, 'Uživatel dále potvrzuje, že souhlasí s provedenou deinstalací a nemá vůči ní žádné námitky.' . PHP_EOL, 0, 'J');
+            $this->MultiCell(180, 4, 'Uživatel dále potvrzuje, že souhlasí s provedenou deinstalací a nemá vůči ní žádné námitky.' . PHP_EOL, align: 'J');
             $this->Ln(1);
         endif;
         // END UNINSTALLATION
@@ -776,20 +776,20 @@ class ContractPDF extends TCPDF
         $this->Ln();
         $this->Ln();
         if ($signed) {
-            $this->Cell(90, 4, 'Datum podpisu: ' . Date::now(), '', 0, 'C');
+            $this->Cell(90, 4, 'Datum podpisu: ' . Date::now(), align: 'C');
         } else {
-            $this->Cell(90, 4, 'Datum podpisu: ____________________', '', 0, 'C');
+            $this->Cell(90, 4, 'Datum podpisu: ____________________', align: 'C');
         }
 
-        $this->Cell(90, 4, 'Datum podpisu: ____________________', '', 0, 'C');
+        $this->Cell(90, 4, 'Datum podpisu: ____________________', align: 'C');
 
         $this->Ln(20);
 
-        $this->Cell(90, 4, '......................................................', '', 0, 'C');
-        $this->Cell(90, 4, '......................................................', '', 0, 'C');
+        $this->Cell(90, 4, '......................................................', align: 'C');
+        $this->Cell(90, 4, '......................................................', align: 'C');
         $this->Ln();
-        $this->Cell(90, 4, 'Poskytovatel', '', 0, 'C');
-        $this->Cell(90, 4, 'Uživatel', '', 0, 'C');
+        $this->Cell(90, 4, 'Poskytovatel', align: 'C');
+        $this->Cell(90, 4, 'Uživatel', align: 'C');
         $this->Ln();
 
         if ($signed) {
@@ -823,29 +823,29 @@ class ContractPDF extends TCPDF
             case 'contract-new':
             case 'contract-new-x':
                 $this->SetFont('DejaVuSerif', 'B', 18);
-                $this->Cell(187, 6, 'SMLOUVA', '', 0, 'C');
+                $this->Cell(187, 6, 'SMLOUVA', align: 'C');
                 $this->Ln();
 
                 $this->SetFont('DejaVuSerif', 'B', 12);
-                $this->Cell(187, 2, 'o poskytování služeb', '', 0, 'C');
+                $this->Cell(187, 2, 'o poskytování služeb', align: 'C');
                 $this->Ln(3);
                 break;
             case 'contract-amendment':
                 $this->SetFont('DejaVuSerif', 'B', 18);
-                $this->Cell(187, 6, 'DODATEK', '', 0, 'C');
+                $this->Cell(187, 6, 'DODATEK', align: 'C');
                 $this->Ln();
 
                 $this->SetFont('DejaVuSerif', 'B', 12);
-                $this->Cell(187, 2, 'ke Smlouvě o poskytování služeb', '', 0, 'C');
+                $this->Cell(187, 2, 'ke Smlouvě o poskytování služeb', align: 'C');
                 $this->Ln(3);
                 break;
             case 'contract-termination':
                 $this->SetFont('DejaVuSerif', 'B', 18);
-                $this->Cell(187, 6, 'DOHODA', '', 0, 'C');
+                $this->Cell(187, 6, 'DOHODA', align: 'C');
                 $this->Ln();
 
                 $this->SetFont('DejaVuSerif', 'B', 12);
-                $this->Cell(187, 2, 'o ukončení Smlouvy o poskytování služeb', '', 0, 'C');
+                $this->Cell(187, 2, 'o ukončení Smlouvy o poskytování služeb', align: 'C');
                 $this->Ln(3);
                 break;
         }
@@ -858,61 +858,61 @@ class ContractPDF extends TCPDF
             case 'contract-new':
             case 'contract-new-x':
                 $this->SetFont('DejaVuSerif', '', 8);
-                $this->Cell(90, 4, 'číslo smlouvy:', '', 0, 'C');
-                $this->Cell(90, 4, 'datum zahájení poskytování služeb:', '', 0, 'C');
+                $this->Cell(90, 4, 'číslo smlouvy:', align: 'C');
+                $this->Cell(90, 4, 'datum zahájení poskytování služeb:', align: 'C');
                 $this->Ln();
                 $this->SetFont('DejaVuSerif', 'B', 8);
-                $this->Cell(90, 4, $contract->number, '', 0, 'C');
-                $this->Cell(90, 4, (string)$contract_version->valid_from, '', 0, 'C');
+                $this->Cell(90, 4, $contract->number, align: 'C');
+                $this->Cell(90, 4, (string)$contract_version->valid_from, align: 'C');
                 $this->Ln();
 
                 $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
                 $this->Ln(3);
 
                 $this->SetFont('DejaVuSerif', 'B', 9);
-                $this->Cell(187, 2, 'uzavřená mezi', '', 0, 'C');
+                $this->Cell(187, 2, 'uzavřená mezi', align: 'C');
                 $this->Ln();
                 break;
 
             case 'contract-amendment':
                 $this->SetFont('DejaVuSerif', '', 8);
-                $this->Cell(45, 4, 'číslo smlouvy:', '', 0, 'C');
-                $this->Cell(45, 4, 'datum uzavření smlouvy:', '', 0, 'C');
-                $this->Cell(45, 4, 'číslo dodatku:', '', 0, 'C');
-                $this->Cell(45, 4, 'datum účinnosti dodatku:', '', 0, 'C');
+                $this->Cell(45, 4, 'číslo smlouvy:', align: 'C');
+                $this->Cell(45, 4, 'datum uzavření smlouvy:', align: 'C');
+                $this->Cell(45, 4, 'číslo dodatku:', align: 'C');
+                $this->Cell(45, 4, 'datum účinnosti dodatku:', align: 'C');
                 $this->Ln();
                 $this->SetFont('DejaVuSerif', 'B', 8);
-                $this->Cell(45, 4, $contract->number, '', 0, 'C');
-                $this->Cell(45, 4, (string)$contract_version->conclusion_date, '', 0, 'C');
-                $this->Cell(45, 4, (string)($contract_version->number_of_amendments + 1), '', 0, 'C');
-                $this->Cell(45, 4, (string)$contract_version->valid_from, '', 0, 'C');
+                $this->Cell(45, 4, $contract->number, align: 'C');
+                $this->Cell(45, 4, (string)$contract_version->conclusion_date, align: 'C');
+                $this->Cell(45, 4, (string)($contract_version->number_of_amendments + 1), align: 'C');
+                $this->Cell(45, 4, (string)$contract_version->valid_from, align: 'C');
                 $this->Ln();
 
                 $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
                 $this->Ln(3);
 
                 $this->SetFont('DejaVuSerif', 'B', 9);
-                $this->Cell(187, 2, 'uzavřený mezi', '', 0, 'C');
+                $this->Cell(187, 2, 'uzavřený mezi', align: 'C');
                 $this->Ln();
                 break;
 
             case 'contract-termination':
                 $this->SetFont('DejaVuSerif', '', 8);
-                $this->Cell(60, 4, 'číslo smlouvy:', '', 0, 'C');
-                $this->Cell(60, 4, 'datum uzavření smlouvy:', '', 0, 'C');
-                $this->Cell(60, 4, 'datum ukončení poskytování služeb:', '', 0, 'C');
+                $this->Cell(60, 4, 'číslo smlouvy:', align: 'C');
+                $this->Cell(60, 4, 'datum uzavření smlouvy:', align: 'C');
+                $this->Cell(60, 4, 'datum ukončení poskytování služeb:', align: 'C');
                 $this->Ln();
                 $this->SetFont('DejaVuSerif', 'B', 8);
-                $this->Cell(60, 4, $contract_version['number_of_the_contract_to_be_terminated'], '', 0, 'C');
-                $this->Cell(60, 4, (string)$contract_version->conclusion_date, '', 0, 'C');
-                $this->Cell(60, 4, (string)$contract_version->valid_until, '', 0, 'C');
+                $this->Cell(60, 4, $contract_version['number_of_the_contract_to_be_terminated'], align: 'C');
+                $this->Cell(60, 4, (string)$contract_version->conclusion_date, align: 'C');
+                $this->Cell(60, 4, (string)$contract_version->valid_until, align: 'C');
                 $this->Ln();
 
                 $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
                 $this->Ln(3);
 
                 $this->SetFont('DejaVuSerif', 'B', 9);
-                $this->Cell(187, 2, 'uzavřená mezi', '', 0, 'C');
+                $this->Cell(187, 2, 'uzavřená mezi', align: 'C');
                 $this->Ln();
                 break;
         }
@@ -930,7 +930,7 @@ class ContractPDF extends TCPDF
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Cell(30, 4);
         $this->Cell(40, 4);
-        $this->Cell(15, 4, 'tel:', '', 0, 'L');
+        $this->Cell(15, 4, 'tel:');
         $this->Cell(40, 4, '+420 488 572 050');
         $this->Ln();
 
@@ -954,16 +954,16 @@ class ContractPDF extends TCPDF
 
         $this->Ln(3);
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, '');
-        $this->MultiCell(157, 4, 'zastoupeným Marko Jujnovićem, jednatelem', '', 'L');
-        $this->Cell(30, 4, '');
-        $this->MultiCell(157, 4, 'zapsaným v obchodním rejstříku vedeném u Krajského soudu v Hradci Králové, oddíl C, vložka 22450.', '', 'L');
+        $this->Cell(30, 4);
+        $this->MultiCell(157, 4, 'zastoupeným Marko Jujnovićem, jednatelem', align: 'L');
+        $this->Cell(30, 4);
+        $this->MultiCell(157, 4, 'zapsaným v obchodním rejstříku vedeném u Krajského soudu v Hradci Králové, oddíl C, vložka 22450.', align: 'L');
 
         $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
         $this->Ln(3);
 
         $this->SetFont('DejaVuSerif', 'B', 9);
-        $this->Cell(187, 4, 'a', '', 0, 'C');
+        $this->Cell(187, 4, 'a', align: 'C');
         $this->Ln();
         $this->Cell(30, 4, 'Uživatelem:');
 
@@ -978,7 +978,7 @@ class ContractPDF extends TCPDF
 
         // Subscriber Verification Code
         if (!empty($contract->subscriber_verification_code)) {
-            $this->Cell(60, 4, __('Subscriber Verification Code') . ':', 0, 0, 'R');
+            $this->Cell(60, 4, __('Subscriber Verification Code') . ':', align: 'R');
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(60, 4, $contract->subscriber_verification_code);
         }
@@ -996,28 +996,28 @@ class ContractPDF extends TCPDF
         $this->Ln();
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, 'firma:', '', 0, 'R');
+        $this->Cell(30, 4, 'firma:', align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(60, 4, $contract->billing_address->company ?? '', '', 'L');
+        $this->MultiCell(60, 4, $contract->billing_address->company ?? '', align: 'L');
 
         $this->SetFont('DejaVuSerif', '', 8);
         if (is_null($contract->billing_address->company)) {
-            $this->Cell(30, 4, 'jméno:', '', 0, 'R');
+            $this->Cell(30, 4, 'jméno:', align: 'R');
         } else {
-            $this->Cell(30, 4, 'zastoupená:', '', 0, 'R');
+            $this->Cell(30, 4, 'zastoupená:', align: 'R');
         }
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(60, 4, $contract->billing_address->full_name, '', 'L');
+        $this->MultiCell(60, 4, $contract->billing_address->full_name, align: 'L');
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, 'ulice / č.p.:', '', 0, 'R');
+        $this->Cell(30, 4, 'ulice / č.p.:', align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(60, 4, $contract->billing_address->street_and_number, '', 'L');
+        $this->MultiCell(60, 4, $contract->billing_address->street_and_number, align: 'L');
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, 'PSČ / město:', '', 0, 'R');
+        $this->Cell(30, 4, 'PSČ / město:', align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(60, 4, $contract->billing_address->zip_and_city, '', 'L');
+        $this->MultiCell(60, 4, $contract->billing_address->zip_and_city, align: 'L');
 
         // NEXT COLLUMN
         $addressStopY = $this->GetY();
@@ -1053,13 +1053,13 @@ class ContractPDF extends TCPDF
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Cell(15, 4, 'tel:');
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(70, 4, $contract->customer->phone, '', 'L');
+        $this->MultiCell(70, 4, $contract->customer->phone, align: 'L');
 
         $this->Cell(105);
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Cell(15, 4, 'e-mail:');
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(70, 4, $contract->customer->email, '', 'L');
+        $this->MultiCell(70, 4, $contract->customer->email, align: 'L');
 
         // GO BACK TO END
         $this->SetY(max($this->GetY(), $addressStopY));
@@ -1071,7 +1071,7 @@ class ContractPDF extends TCPDF
             $this->Ln();
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(30, 4);
-            $this->MultiCell(160, 4, $contract->installation_address->full_address, '', 'L');
+            $this->MultiCell(160, 4, $contract->installation_address->full_address, align: 'L');
         }
         // DELIVERY ADDRESS
         if ($contract->__isset('delivery_address')) {
@@ -1079,7 +1079,7 @@ class ContractPDF extends TCPDF
             $this->Cell(30, 4, __('Delivery Address') . ': ');
             $this->Ln();
             $this->Cell(30, 4);
-            $this->MultiCell(160, 4, $contract->delivery_address->full_address, '', 'L');
+            $this->MultiCell(160, 4, $contract->delivery_address->full_address, align: 'L');
         }
         // PERMANENT ADDRESS
         if ($contract->__isset('permanent_address')) {
@@ -1087,7 +1087,7 @@ class ContractPDF extends TCPDF
             $this->Cell(30, 4, __('Permanent Address') . ': ');
             $this->Ln();
             $this->Cell(30, 4);
-            $this->MultiCell(160, 4, $contract->permanent_address->full_address, '', 'L');
+            $this->MultiCell(160, 4, $contract->permanent_address->full_address, align: 'L');
         }
 
         $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
@@ -1148,28 +1148,28 @@ class ContractPDF extends TCPDF
                 $this->SetFont('DejaVuSerif', '' . $format, 8);
                 $this->Cell(4, 4);
                 $this->Cell(135, 4, 'služba:');
-                $this->Cell(40, 4, 'cena / měsíc:', '', 0, 'R');
+                $this->Cell(40, 4, 'cena / měsíc:', align: 'R');
                 $this->Ln();
 
                 foreach ($contract->standard_billings as $billing) {
                     $this->SetFont('DejaVuSerif', 'B' . $format, 8);
                     $this->Cell(4, 4);
                     $this->Cell(135, 4, $billing->name);
-                    $this->Cell(40, 4, Number::currency($billing->sum), '', 0, 'R');
+                    $this->Cell(40, 4, Number::currency($billing->sum), align: 'R');
                     $this->Ln();
 
                     if ($billing->percentage_discount_sum > 0) {
                         $this->SetFont('DejaVuSerif', '' . $format, 8);
                         $this->Cell(4, 4);
                         $this->Cell(135, 4, ' - sleva ve výši ' . $billing->percentage_discount . ' % z ceny této služby');
-                        $this->Cell(40, 4, Number::currency(-$billing->percentage_discount_sum), '', 0, 'R');
+                        $this->Cell(40, 4, Number::currency(-$billing->percentage_discount_sum), align: 'R');
                         $this->Ln();
                     }
                     if ($billing->fixed_discount_sum > 0) {
                         $this->SetFont('DejaVuSerif', '' . $format, 8);
                         $this->Cell(4, 4);
                         $this->Cell(135, 4, ' - sleva v pevné výši z ceny této služby');
-                        $this->Cell(40, 4, Number::currency(-$billing->fixed_discount_sum), '', 0, 'R');
+                        $this->Cell(40, 4, Number::currency(-$billing->fixed_discount_sum), align: 'R');
                         $this->Ln();
                     }
 
@@ -1191,28 +1191,28 @@ class ContractPDF extends TCPDF
                 $this->SetFont('DejaVuSerif', $format, 8);
                 $this->Cell(4, 4);
                 $this->Cell(135, 4, 'služba:');
-                $this->Cell(40, 4, 'cena / měsíc:', '', 0, 'R');
+                $this->Cell(40, 4, 'cena / měsíc:', align: 'R');
                 $this->Ln();
 
                 foreach ($contract->individual_billings as $billing) {
                     $this->SetFont('DejaVuSerif', 'B' . $format, 8);
                     $this->Cell(4, 4);
                     $this->Cell(135, 4, $billing->name);
-                    $this->Cell(40, 4, Number::currency($billing->sum), '', 0, 'R');
+                    $this->Cell(40, 4, Number::currency($billing->sum), align: 'R');
                     $this->Ln();
 
                     if ($billing->percentage_discount_sum > 0) {
                         $this->SetFont('DejaVuSerif', $format, 8);
                         $this->Cell(4, 4);
                         $this->Cell(135, 4, ' - sleva ve výši ' . $billing->percentage_discount . ' % z ceny této služby');
-                        $this->Cell(40, 4, Number::currency(-$billing->percentage_discount_sum), '', 0, 'R');
+                        $this->Cell(40, 4, Number::currency(-$billing->percentage_discount_sum), align: 'R');
                         $this->Ln();
                     }
                     if ($billing->fixed_discount_sum > 0) {
                         $this->SetFont('DejaVuSerif', $format, 8);
                         $this->Cell(4, 4);
                         $this->Cell(135, 4, ' - sleva v pevné výši z ceny této služby');
-                        $this->Cell(40, 4, Number::currency(-$billing->fixed_discount_sum), '', 0, 'R');
+                        $this->Cell(40, 4, Number::currency(-$billing->fixed_discount_sum), align: 'R');
                         $this->Ln();
                     }
 
@@ -1221,7 +1221,7 @@ class ContractPDF extends TCPDF
 
                 $this->SetFont('DejaVuSerif', $format, 7);
                 $this->Cell(4, 4);
-                $this->MultiCell(180, 4, 'Smluvní strany ujednávají, že výše cen za Poskytovatelovy služby je touto smlouvou ujednána oproti Ceníku v individuální výši. Včetně všech svých složek má proto povahu Poskytovatelova obchodního tajemství dle § 504 zákona č. 89/2012 Sb., občanského zákoníku.', '', 'L');
+                $this->MultiCell(180, 4, 'Smluvní strany ujednávají, že výše cen za Poskytovatelovy služby je touto smlouvou ujednána oproti Ceníku v individuální výši. Včetně všech svých složek má proto povahu Poskytovatelova obchodního tajemství dle § 504 zákona č. 89/2012 Sb., občanského zákoníku.', align: 'L');
 
                 $this->Ln();
             }
@@ -1235,20 +1235,20 @@ class ContractPDF extends TCPDF
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', $format, 8);
-            $this->Cell(45, 4, 'perioda platby:', '', 0, 'C');
-            $this->Cell(45, 4, 'způsob úhrady:', '', 0, 'C');
-            $this->Cell(45, 4, 'datum 1. úhrady:', '', 0, 'C');
-            $this->Cell(45, 4, 'měsíční platba za služby celkem:', '', 0, 'C');
+            $this->Cell(45, 4, 'perioda platby:', align: 'C');
+            $this->Cell(45, 4, 'způsob úhrady:', align: 'C');
+            $this->Cell(45, 4, 'datum 1. úhrady:', align: 'C');
+            $this->Cell(45, 4, 'měsíční platba za služby celkem:', align: 'C');
             $this->Ln();
 
             $this->SetFont('DejaVuSerif', 'B' . $format, 8);
-            $this->Cell(45, 4, 'měsíčně', '', 0, 'C');
-            $this->Cell(45, 4, 'převodem z účtu', '', 0, 'C');
-            $this->Cell(45, 4, 'do ' . $contract_version->valid_from->day(1)->addMonths(1)->addDays(9), '', 0, 'C');
+            $this->Cell(45, 4, 'měsíčně', align: 'C');
+            $this->Cell(45, 4, 'převodem z účtu', align: 'C');
+            $this->Cell(45, 4, 'do ' . $contract_version->valid_from->day(1)->addMonths(1)->addDays(9), align: 'C');
 
             // reverse charge
             if ($contract->customer->tax_rate->reverse_charge) {
-                $this->Cell(45, 4, Number::currency($totalCost - round($totalCost - ($totalCost / (1 + $contract->customer->tax_rate->vat_rate)), 2)) . ' *', '', 0, 'C');
+                $this->Cell(45, 4, Number::currency($totalCost - round($totalCost - ($totalCost / (1 + $contract->customer->tax_rate->vat_rate)), 2)) . ' *', align: 'C');
                 $this->Ln();
 
                 $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
@@ -1256,9 +1256,9 @@ class ContractPDF extends TCPDF
 
                 $this->SetFont('DejaVuSerif', $format, 7);
                 $this->Cell(4, 4);
-                $this->MultiCell(180, 4, '*faktury budou vystaveny v režimu přenesené daňové povinnosti dle § 92a zákona o dani z přidané hodnoty, kdy výši daně je povinen doplnit a přiznat plátce, pro kterého je plnění uskutečněno' . PHP_EOL, 0, 'J');
+                $this->MultiCell(180, 4, '*faktury budou vystaveny v režimu přenesené daňové povinnosti dle § 92a zákona o dani z přidané hodnoty, kdy výši daně je povinen doplnit a přiznat plátce, pro kterého je plnění uskutečněno' . PHP_EOL, align: 'J');
             } else {
-                $this->Cell(45, 4, Number::currency($totalCost), '', 0, 'C');
+                $this->Cell(45, 4, Number::currency($totalCost), align: 'C');
                 $this->Ln();
             }
 
@@ -1266,15 +1266,15 @@ class ContractPDF extends TCPDF
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', $format, 8);
-            $this->Cell(90, 4, 'peněžní ústav poskytovatele:', '', 0, 'C');
-            $this->Cell(45, 4, 'číslo účtu poskytovatele:', '', 0, 'C');
-            $this->Cell(45, 4, 'variabilní symbol:', '', 0, 'C');
+            $this->Cell(90, 4, 'peněžní ústav poskytovatele:', align: 'C');
+            $this->Cell(45, 4, 'číslo účtu poskytovatele:', align: 'C');
+            $this->Cell(45, 4, 'variabilní symbol:', align: 'C');
             $this->Ln();
 
             $this->SetFont('DejaVuSerif', 'B' . $format, 8);
-            $this->Cell(90, 4, 'Komerční banka, a.s.', '', 0, 'C');
-            $this->Cell(45, 4, '207385091/0100', '', 0, 'C');
-            $this->Cell(45, 4, $contract->customer->number . ' *', '', 0, 'C');
+            $this->Cell(90, 4, 'Komerční banka, a.s.', align: 'C');
+            $this->Cell(45, 4, '207385091/0100', align: 'C');
+            $this->Cell(45, 4, $contract->customer->number . ' *', align: 'C');
             $this->Ln();
 
             $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
@@ -1334,33 +1334,33 @@ class ContractPDF extends TCPDF
                 $this->SetFont('DejaVuSerif', 'B', 8);
                 $this->Cell(4, 5);
                 $this->Cell(130, 5, 'Zařízení', 1);
-                $this->Cell(30, 5, 'Hodnota', 1, 0, 'R');
+                $this->Cell(30, 5, 'Hodnota', border: 1, align: 'R');
                 $this->Ln();
 
                 $this->SetFont('DejaVuSerif', '', 8);
                 foreach ($contract->borrowed_equipments as $borrowed_equipment) {
                     $this->Cell(4, 5);
                     $this->Cell(130, 5, $borrowed_equipment->equipment_type->name, 1);
-                    $this->Cell(30, 5, Number::currency((float)$borrowed_equipment->equipment_type->price), 1, 0, 'R');
+                    $this->Cell(30, 5, Number::currency((float)$borrowed_equipment->equipment_type->price), border: 1, align: 'R');
                     $this->Ln();
                 }
 
                 $this->Ln();
 
                 if ($type === 'contract-new-x') {
-                    $this->MultiCell(180, 4, 'Smluvní strany ujednávají, že Poskytovatel Uživateli touto smlouvou uvedená zařízení nadále poskytuje k bezúplatnému užívání až do zániku této nové smlouvy.' . PHP_EOL, 0, 'J');
+                    $this->MultiCell(180, 4, 'Smluvní strany ujednávají, že Poskytovatel Uživateli touto smlouvou uvedená zařízení nadále poskytuje k bezúplatnému užívání až do zániku této nové smlouvy.' . PHP_EOL, align: 'J');
                     $this->Ln(3);
                 }
 
                 $this->SetFont('DejaVuSerif', 'B', 8);
-                $this->MultiCell(180, 4, 'Uživatel je srozuměn se skutečností, že při bezúplatném poskytnutí zařízení Poskytovatel neumožňuje změnu tarifu na tarif, který má dle Ceníku nižší měsíční cenu než 295,- Kč.' . PHP_EOL, 0, 'J');
+                $this->MultiCell(180, 4, 'Uživatel je srozuměn se skutečností, že při bezúplatném poskytnutí zařízení Poskytovatel neumožňuje změnu tarifu na tarif, který má dle Ceníku nižší měsíční cenu než 295,- Kč.' . PHP_EOL, align: 'J');
                 $this->Ln(3);
 
                 $this->SetFont('DejaVuSerif', '', 8);
-                $this->MultiCell(180, 4, 'Uživatel je povinen tato zařízení Poskytovateli vrátit bez zbytečných odkladů nejpozději po zániku této Smlouvy.' . PHP_EOL, 0, 'J');
+                $this->MultiCell(180, 4, 'Uživatel je povinen tato zařízení Poskytovateli vrátit bez zbytečných odkladů nejpozději po zániku této Smlouvy.' . PHP_EOL, align: 'J');
                 $this->Ln(3);
 
-                $this->MultiCell(180, 4, 'Náklady spojené s instalací dalších zařízení nebo další kabeláže se řídí aktuálně účinným Ceníkem Poskytovatele.' . PHP_EOL, 0, 'J');
+                $this->MultiCell(180, 4, 'Náklady spojené s instalací dalších zařízení nebo další kabeláže se řídí aktuálně účinným Ceníkem Poskytovatele.' . PHP_EOL, align: 'J');
                 $this->Ln(3);
 
                 if ($contract->activation_fee_sum > 0) {
@@ -1368,21 +1368,21 @@ class ContractPDF extends TCPDF
 
                     if ($contract_version->minimum_duration <= 0) {
                         if ($type === 'contract-new') {
-                            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . Number::currency((float)$contract->activation_fee_sum) . ' zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci Poskytnutých zařízení.' . PHP_EOL, 0, 'J');
+                            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . Number::currency((float)$contract->activation_fee_sum) . ' zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci Poskytnutých zařízení.' . PHP_EOL, align: 'J');
                             $this->Ln(3);
                         }
                     } else {
                         if ($type === 'contract-new') {
-                            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . Number::currency((float)$contract->activation_fee_with_obligation_sum) . ' zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci Poskytnutých zařízení.' . PHP_EOL, 0, 'J');
+                            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . Number::currency((float)$contract->activation_fee_with_obligation_sum) . ' zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci Poskytnutých zařízení.' . PHP_EOL, align: 'J');
                             $this->Ln(3);
                         }
-                        $this->MultiCell(180, 4, 'Poskytnutá zařízení jsou Uživateli poskytnuta Poskytovatelem za zvýhodněných podmínek (bezúplatně). V případě zániku této smlouvy před uplynutím ' . $this->contractDurationBefore($contract_version->minimum_duration) . ' od jejího uzavření je proto Uživatel povinen nahradit Poskytovateli náklady spojené s výše uvedenými Poskytnutými zařízeními, a to v paušální částce ' . Number::currency((float)$contract->activation_fee_sum - $contract->activation_fee_with_obligation_sum) . ' (' . Number::currency((float)$contract->activation_fee_sum) . ' je aktivační poplatek při smlouvě bez úvazku).' . PHP_EOL, 0, 'J');
+                        $this->MultiCell(180, 4, 'Poskytnutá zařízení jsou Uživateli poskytnuta Poskytovatelem za zvýhodněných podmínek (bezúplatně). V případě zániku této smlouvy před uplynutím ' . $this->contractDurationBefore($contract_version->minimum_duration) . ' od jejího uzavření je proto Uživatel povinen nahradit Poskytovateli náklady spojené s výše uvedenými Poskytnutými zařízeními, a to v paušální částce ' . Number::currency((float)$contract->activation_fee_sum - $contract->activation_fee_with_obligation_sum) . ' (' . Number::currency((float)$contract->activation_fee_sum) . ' je aktivační poplatek při smlouvě bez úvazku).' . PHP_EOL, align: 'J');
                         $this->Ln(3);
                     }
                 }
             } else {
                 $this->SetFont('DejaVuSerif', '', 8);
-                $this->MultiCell(180, 4, 'Cena za případnou instalaci Uživatelových zařízení včetně případných souvisejících nákladů (např. kabeláž) se řídí aktuálním Ceníkem Poskytovatele.' . PHP_EOL, 0, 'J');
+                $this->MultiCell(180, 4, 'Cena za případnou instalaci Uživatelových zařízení včetně případných souvisejících nákladů (např. kabeláž) se řídí aktuálním Ceníkem Poskytovatele.' . PHP_EOL, align: 'J');
                 $this->Ln(3);
 
                 if ($contract->activation_fee_sum > 0) {
@@ -1390,15 +1390,15 @@ class ContractPDF extends TCPDF
 
                     if ($contract_version->minimum_duration <= 0) {
                         if ($type === 'contract-new') {
-                            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . Number::currency((float)$contract->activation_fee_sum) . ' zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací.' . PHP_EOL, 0, 'J');
+                            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . Number::currency((float)$contract->activation_fee_sum) . ' zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací.' . PHP_EOL, align: 'J');
                             $this->Ln(3);
                         }
                     } else {
                         if ($type === 'contract-new') {
-                            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . Number::currency((float)$contract->activation_fee_with_obligation_sum) . ' zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací.' . PHP_EOL, 0, 'J');
+                            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . Number::currency((float)$contract->activation_fee_with_obligation_sum) . ' zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací.' . PHP_EOL, align: 'J');
                             $this->Ln(3);
                         }
-                        $this->MultiCell(180, 4, 'Aktivační poplatek je Uživateli poskytnut Poskytovatelem za zvýhodněných podmínek. V případě zániku této smlouvy před uplynutím ' . $this->contractDurationBefore($contract_version->minimum_duration) . ' od jejího uzavření je proto Uživatel povinen nahradit Poskytovateli náklady spojené se zřízením koncového bodu Poskytovatelovy sítě elektronických komunikací, a to v paušální částce ' . Number::currency((float)($contract->activation_fee_sum - $contract->activation_fee_with_obligation_sum)) . ' (' . Number::currency((float)$contract->activation_fee_sum) . ' je aktivační poplatek při smlouvě bez úvazku).' . PHP_EOL, 0, 'J');
+                        $this->MultiCell(180, 4, 'Aktivační poplatek je Uživateli poskytnut Poskytovatelem za zvýhodněných podmínek. V případě zániku této smlouvy před uplynutím ' . $this->contractDurationBefore($contract_version->minimum_duration) . ' od jejího uzavření je proto Uživatel povinen nahradit Poskytovateli náklady spojené se zřízením koncového bodu Poskytovatelovy sítě elektronických komunikací, a to v paušální částce ' . Number::currency((float)($contract->activation_fee_sum - $contract->activation_fee_with_obligation_sum)) . ' (' . Number::currency((float)$contract->activation_fee_sum) . ' je aktivační poplatek při smlouvě bez úvazku).' . PHP_EOL, align: 'J');
                         $this->Ln(3);
                     }
                 }
@@ -1443,7 +1443,7 @@ class ContractPDF extends TCPDF
                 ''
             );
             $this->Ln(3);
-            $this->MultiCell(180, 4, 'Tato smlouva (č. ' . $contract->number . ') je vyhotovena ve dvou stejnopisech.' . PHP_EOL, 0, 'J');
+            $this->MultiCell(180, 4, 'Tato smlouva (č. ' . $contract->number . ') je vyhotovena ve dvou stejnopisech.' . PHP_EOL, align: 'J');
             $this->Ln(3);
         }
 
@@ -1454,20 +1454,20 @@ class ContractPDF extends TCPDF
         $this->Ln();
         $this->Ln();
         if ($signed) {
-            $this->Cell(90, 4, 'Datum podpisu: ' . Date::now(), '', 0, 'C');
+            $this->Cell(90, 4, 'Datum podpisu: ' . Date::now(), align: 'C');
         } else {
-            $this->Cell(90, 4, 'Datum podpisu: ____________________', '', 0, 'C');
+            $this->Cell(90, 4, 'Datum podpisu: ____________________', align: 'C');
         }
 
-        $this->Cell(90, 4, 'Datum podpisu: ____________________', '', 0, 'C');
+        $this->Cell(90, 4, 'Datum podpisu: ____________________', align: 'C');
 
         $this->Ln(20);
 
-        $this->Cell(90, 4, '......................................................', '', 0, 'C');
-        $this->Cell(90, 4, '......................................................', '', 0, 'C');
+        $this->Cell(90, 4, '......................................................', align: 'C');
+        $this->Cell(90, 4, '......................................................', align: 'C');
         $this->Ln();
-        $this->Cell(90, 4, 'Poskytovatel', '', 0, 'C');
-        $this->Cell(90, 4, 'Uživatel', '', 0, 'C');
+        $this->Cell(90, 4, 'Poskytovatel', align: 'C');
+        $this->Cell(90, 4, 'Uživatel', align: 'C');
         $this->Ln();
 
         if ($signed) {
