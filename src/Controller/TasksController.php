@@ -399,7 +399,7 @@ class TasksController extends AppController
                     foreach ($customer->addresses as $address) {
                         // add all customer installation addresses to the text
                         if ($address->type === 0) {
-                            $task->text .= $this->Tasks->Customers->Addresses->types[$address->type] . ': ';
+                            $task->text .= $address->getTypeName() . ': ';
                             $task->text .= $address->full_address . PHP_EOL;
                         }
                     }
