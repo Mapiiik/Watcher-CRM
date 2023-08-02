@@ -30,8 +30,12 @@ if (Configure::read('debug')) :
         <?php Debugger::dump($error->params) ?>
     <?php endif; ?>
     <?php if ($error instanceof Error) : ?>
+        <?php $file = $error->getFile() ?>
+        <?php $line = $error->getLine() ?>
         <strong>Error in: </strong>
-        <?= sprintf('%s, line %s', str_replace(ROOT, 'ROOT', $error->getFile()), $error->getLine()) ?>
+        <?= $this->Html->link(
+            sprintf('%s, line %s', Debugger::trimPath($file), $line), Debugger::editorUrl($file, $line)
+        ); ?>
     <?php endif; ?>
     <?php
     echo $this->element('auto_table_warning');
@@ -39,7 +43,7 @@ if (Configure::read('debug')) :
     $this->end();
 endif;
 ?>
-<h2><?= __d('cake', 'An Internal Error Has Occurred') ?></h2>
+<h2><?= __d('cake', 'An Internal Error Has Occurred.') ?></h2>
 <p class="error">
     <strong><?= __d('cake', 'Error') ?>: </strong>
     <?= h($message) ?>
