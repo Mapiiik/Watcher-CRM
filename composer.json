@@ -84,8 +84,8 @@
             "@test",
             "@cs-check"
         ],
-        "cs-check": "phpcs --colors -p src/ templates/ tests/ plugins/ config/",
-        "cs-fix": "phpcbf --colors -p src/ templates/ tests/ plugins/ config/",
+        "cs-check": "phpcs --colors -p",
+        "cs-fix": "phpcbf --colors -p",
         "stan": "phpstan analyse",
         "test": "phpunit --colors=always"
     },

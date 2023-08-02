@@ -119,7 +119,7 @@ jobs:
           composer run-script post-install-cmd --no-interaction
 
       - name: Run PHP CodeSniffer
-        run: vendor/bin/phpcs --report=checkstyle src/ templates/ tests/ plugins/ config/ | cs2pr
+        run: vendor/bin/phpcs --report=checkstyle | cs2pr
 
       - name: Run psalm
         if: success() || failure()
