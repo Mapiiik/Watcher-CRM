@@ -297,16 +297,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "f104f2da8071652136d270ceac9b469eb4f42f79"
+                "reference": "06c3e78c413898b33a76ba95464c7a891c68f20a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/f104f2da8071652136d270ceac9b469eb4f42f79",
-                "reference": "f104f2da8071652136d270ceac9b469eb4f42f79",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/06c3e78c413898b33a76ba95464c7a891c68f20a",
+                "reference": "06c3e78c413898b33a76ba95464c7a891c68f20a",
                 "shasum": ""
             },
             "require": {
-                "cakephp/chronos": "3.x-dev",
+                "cakephp/chronos": "^3.0",
                 "composer/ca-bundle": "^1.2",
                 "ext-intl": "*",
                 "ext-json": "*",
@@ -405,11 +405,11 @@
                 "issues": "https://github.com/cakephp/cakephp/issues",
                 "source": "https://github.com/cakephp/cakephp"
             },
-            "time": "2023-07-30T23:41:24+00:00"
+            "time": "2023-08-10T06:55:12+00:00"
         },
         {
             "name": "cakephp/chronos",
-            "version": "3.x-dev",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/chronos.git",
@@ -935,16 +935,16 @@
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "3a494dc7dc1d7d12e511890177ae2d0e6c107da6"
+                "reference": "111166291a0f8130081195ac4556a5587d7f1b5d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/3a494dc7dc1d7d12e511890177ae2d0e6c107da6",
-                "reference": "3a494dc7dc1d7d12e511890177ae2d0e6c107da6",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/111166291a0f8130081195ac4556a5587d7f1b5d",
+                "reference": "111166291a0f8130081195ac4556a5587d7f1b5d",
                 "shasum": ""
             },
             "require": {
@@ -998,7 +998,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/promises/issues",
-                "source": "https://github.com/guzzle/promises/tree/2.0.0"
+                "source": "https://github.com/guzzle/promises/tree/2.0.1"
             },
             "funding": [
                 {
@@ -1014,20 +1014,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-21T13:50:22+00:00"
+            "time": "2023-08-03T15:11:55+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "2.5.0",
+            "version": "2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "b635f279edd83fc275f822a1188157ffea568ff6"
+                "reference": "8bd7c33a0734ae1c5d074360512beb716bef3f77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/b635f279edd83fc275f822a1188157ffea568ff6",
-                "reference": "b635f279edd83fc275f822a1188157ffea568ff6",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/8bd7c33a0734ae1c5d074360512beb716bef3f77",
+                "reference": "8bd7c33a0734ae1c5d074360512beb716bef3f77",
                 "shasum": ""
             },
             "require": {
@@ -1114,7 +1114,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/2.5.0"
+                "source": "https://github.com/guzzle/psr7/tree/2.6.0"
             },
             "funding": [
                 {
@@ -1130,7 +1130,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-04-17T16:11:26+00:00"
+            "time": "2023-08-03T15:06:02+00:00"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -2444,17 +2444,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/phinx.git",
-                "reference": "efec06d38f62a12b26e720e608b1c9b3c31db52c"
+                "reference": "8ca989df1a8edd47adc32140f8a95720d23f605f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/phinx/zipball/efec06d38f62a12b26e720e608b1c9b3c31db52c",
-                "reference": "efec06d38f62a12b26e720e608b1c9b3c31db52c",
+                "url": "https://api.github.com/repos/cakephp/phinx/zipball/8ca989df1a8edd47adc32140f8a95720d23f605f",
+                "reference": "8ca989df1a8edd47adc32140f8a95720d23f605f",
                 "shasum": ""
             },
             "require": {
                 "cakephp/database": "5.x-dev",
-                "php": ">=8.1",
+                "php-64bit": ">=8.1",
                 "psr/container": "^2.0",
                 "symfony/config": "^3.4|^4.0|^5.0|^6.0",
                 "symfony/console": "^6.0"
@@ -2523,7 +2523,7 @@
                 "issues": "https://github.com/cakephp/phinx/issues",
                 "source": "https://github.com/cakephp/phinx/tree/1.x"
             },
-            "time": "2023-02-28T01:10:12+00:00"
+            "time": "2023-08-03T21:00:19+00:00"
         },
         {
             "name": "spatie/ssh",
@@ -5125,16 +5125,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "1.23.0",
+            "version": "1.23.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "a2b24135c35852b348894320d47b3902a94bc494"
+                "reference": "846ae76eef31c6d7790fac9bc399ecee45160b26"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/a2b24135c35852b348894320d47b3902a94bc494",
-                "reference": "a2b24135c35852b348894320d47b3902a94bc494",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/846ae76eef31c6d7790fac9bc399ecee45160b26",
+                "reference": "846ae76eef31c6d7790fac9bc399ecee45160b26",
                 "shasum": ""
             },
             "require": {
@@ -5166,22 +5166,22 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.23.0"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.23.1"
             },
-            "time": "2023-07-23T22:17:56+00:00"
+            "time": "2023-08-03T16:32:59+00:00"
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.26",
+            "version": "1.10.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "5d660cbb7e1b89253a47147ae44044f49832351f"
+                "reference": "e4545b55904ebef470423d3ddddb74fa7325497a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/5d660cbb7e1b89253a47147ae44044f49832351f",
-                "reference": "5d660cbb7e1b89253a47147ae44044f49832351f",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/e4545b55904ebef470423d3ddddb74fa7325497a",
+                "reference": "e4545b55904ebef470423d3ddddb74fa7325497a",
                 "shasum": ""
             },
             "require": {
@@ -5230,7 +5230,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-07-19T12:44:37+00:00"
+            "time": "2023-08-08T12:33:42+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -5554,16 +5554,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "10.2.6",
+            "version": "10.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "1c17815c129f133f3019cc18e8d0c8622e6d9bcd"
+                "reference": "d442ce7c4104d5683c12e67e4dcb5058159e9804"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/1c17815c129f133f3019cc18e8d0c8622e6d9bcd",
-                "reference": "1c17815c129f133f3019cc18e8d0c8622e6d9bcd",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/d442ce7c4104d5683c12e67e4dcb5058159e9804",
+                "reference": "d442ce7c4104d5683c12e67e4dcb5058159e9804",
                 "shasum": ""
             },
             "require": {
@@ -5588,7 +5588,7 @@
                 "sebastian/diff": "^5.0",
                 "sebastian/environment": "^6.0",
                 "sebastian/exporter": "^5.0",
-                "sebastian/global-state": "^6.0",
+                "sebastian/global-state": "^6.0.1",
                 "sebastian/object-enumerator": "^5.0",
                 "sebastian/recursion-context": "^5.0",
                 "sebastian/type": "^4.0",
@@ -5603,7 +5603,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "10.2-dev"
+                    "dev-main": "10.3-dev"
                 }
             },
             "autoload": {
@@ -5635,7 +5635,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.2.6"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.3.1"
             },
             "funding": [
                 {
@@ -5651,7 +5651,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-07-17T12:08:28+00:00"
+            "time": "2023-08-04T06:48:08+00:00"
         },
         {
             "name": "psalm/phar",
