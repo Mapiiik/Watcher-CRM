@@ -200,8 +200,9 @@ class CustomersController extends AppController
                                     // Try to load RUIAN record if RUIAN GID is set
                                     try {
                                         /** @var \Ruian\Model\Entity\Address $address */
-                                        $address = $this->fetchTable('Ruian.Addresses')->get($key, [
-                                            'fields' => [
+                                        $address = $this->fetchTable('Ruian.Addresses')->get(
+                                            $key,
+                                            fields: [
                                                 'ulice_nazev',
                                                 'typ_so',
                                                 'cislo_domovni',
@@ -211,7 +212,7 @@ class CustomersController extends AppController
                                                 'gps_y' => 'ST_Y(geometry)',
                                                 'gps_x' => 'ST_X(geometry)',
                                             ],
-                                        ]);
+                                        );
                                     } catch (RecordNotFoundException $recordNotFoundError) {
                                         $address = new Address([
                                             'gps_y' => $contracts[0]->installation_address->gps_y ?? null,
