@@ -379,6 +379,20 @@ $permissions = [
                 'download',
             ],
         ],
+        //enable debtor blocking/unblocking for network managers
+        [
+            'role' => [
+                'network-manager',
+            ],
+            'plugin' => 'BookkeepingPohoda',
+            'controller' => [
+                'Debtors',
+            ],
+            'action' => [
+                'block',
+                'unblock',
+            ],
+        ],
         //allow all in bookkeeping plugin for sales-managers and bookkeepers
         [
             'role' => [
