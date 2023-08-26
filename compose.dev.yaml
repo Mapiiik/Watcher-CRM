@@ -1,15 +1,4 @@
 services:
-  database-dev:
-    image: postgres
-    tmpfs:
-      - /var/lib/postgresql/data:exec
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: watcher_crm
-    ports:
-      - 5432:5432/tcp
-
   webserver-dev:
     build:
       context: .
@@ -19,6 +8,7 @@ services:
         - gitcommithash
     depends_on:
       - database-dev
+      - cache-dev
     tmpfs:
       - /app/logs:uid=1000,gid=1000
       - /app/tmp:uid=1000,gid=1000
@@ -32,3 +22,22 @@ services:
       DATABASE_RUIAN_URL: postgres://postgres@database-dev/watcher_crm_ruian
     ports:
       - 80:80/tcp
+
+  database-dev:
+    image: postgres
+    tmpfs:
+      - /var/lib/postgresql/data:exec
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: watcher_crm
+    ports:
+      - 5432:5432/tcp
+
+  cache-dev:
+    image: redis
+    tmpfs: 
+      - /data:exec
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass redis

@@ -1,14 +1,4 @@
 services:
-  database:
-    image: postgres
-    volumes:
-      - app-database:/var/lib/postgresql/data:Z
-    restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: watcher_crm
-
   webserver:
     build:
       context: .
@@ -18,6 +8,7 @@ services:
         - gitcommithash
     depends_on:
       - database
+      - cache
     tmpfs:
       - /app/tmp:uid=1000,gid=1000
     volumes:
@@ -31,7 +22,27 @@ services:
       - 80:80/tcp
       - 443:443/tcp
 
+  database:
+    image: postgres
+    volumes:
+      - app-database:/var/lib/postgresql/data:Z
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: watcher_crm
+
+  cache:
+    image: redis
+    volumes: 
+      - app-cache:/data
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass redis
+
 volumes:
   app-database:
+  app-cache:
   app-logs:
   app-acme:
