@@ -42,6 +42,7 @@ class Installer
         'tmp/cache/models',
         'tmp/cache/persistent',
         'tmp/cache/views',
+        'tmp/queue',
         'tmp/sessions',
         'tmp/tests',
     ];

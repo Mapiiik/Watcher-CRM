@@ -76,6 +76,11 @@ define('LOGS', ROOT . DS . 'logs' . DS);
 define('CACHE', TMP . 'cache' . DS);
 
 /*
+ * Path to the queue files directory. It can be shared between hosts in a multi-server setup.
+ */
+define('QUEUE', TMP . 'queue' . DS);
+
+/*
  * Path to the resources directory.
  */
 define('RESOURCES', ROOT . DS . 'resources' . DS);

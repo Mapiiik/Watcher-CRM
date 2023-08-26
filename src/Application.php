@@ -56,6 +56,8 @@ class Application extends BaseApplication
 
         $this->addPlugin('Radius');
 
+        $this->addPlugin('Cake/Queue');
+
         // Call parent to load bootstrap from files.
         parent::bootstrap();
 

@@ -20,6 +20,9 @@
         "cakephp/cakephp": "5.x-dev",
         "cakephp/migrations": "4.x-dev",
         "cakephp/plugin-installer": "^2.0",
+        "cakephp/queue": "dev-cake5",
+        "enqueue/fs": "^0.10.19",
+        "enqueue/redis": "^0.10.19",
         "evilfreelancer/routeros-api-php": "^1.5",
         "jdorn/sql-formatter": "^1.2",
         "league/oauth2-google": "^4.0",
@@ -74,6 +77,7 @@
         "post-update-cmd": [],
         "migrations": [
             "bin/cake migrations migrate --plugin CakeDC/Users",
+            "bin/cake migrations migrate --plugin Cake/Queue",
             "bin/cake migrations migrate --plugin BookkeepingPohoda",
             "bin/cake migrations migrate"
         ],
