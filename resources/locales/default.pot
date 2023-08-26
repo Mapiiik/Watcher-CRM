@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-08-01 18:35+0200\n"
+"POT-Creation-Date: 2023-08-26 17:56+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -70,6 +70,7 @@ msgid "Permanent Address"
 msgstr ""
 
 #: ./src/ContractPDF.php:346
+#: ./templates/Billings/bulk_service_change.php:60
 #: ./templates/Commissions/view.php:134
 #: ./templates/ContractStates/view.php:123
 #: ./templates/Contracts/print.php:87
@@ -202,34 +203,50 @@ msgstr ""
 msgid "Not installed via Git"
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:118
-#: ./src/Controller/BillingsController.php:204
+#: ./src/Controller/BillingsController.php:123
+#: ./src/Controller/BillingsController.php:209
 msgid "Billing text must be entered or service selected."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:127
-#: ./src/Controller/BillingsController.php:213
+#: ./src/Controller/BillingsController.php:132
+#: ./src/Controller/BillingsController.php:218
 msgid "The service type does not match the selected contract."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:130
-#: ./src/Controller/BillingsController.php:216
+#: ./src/Controller/BillingsController.php:135
+#: ./src/Controller/BillingsController.php:221
+#: ./src/Controller/BillingsController.php:440
 #: ./src/Controller/ContractsController.php:673
 msgid "The billing has been saved."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:134
-#: ./src/Controller/BillingsController.php:220
+#: ./src/Controller/BillingsController.php:139
+#: ./src/Controller/BillingsController.php:225
+#: ./src/Controller/BillingsController.php:408
 #: ./src/Controller/ContractsController.php:677
 msgid "The billing could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:276
+#: ./src/Controller/BillingsController.php:281
 msgid "The billing has been deleted."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:278
+#: ./src/Controller/BillingsController.php:283
 msgid "The billing could not be deleted. Please, try again."
+msgstr ""
+
+#: ./src/Controller/BillingsController.php:364
+#: ./src/Controller/ContractsController.php:260
+#: ./src/Controller/ContractsController.php:373
+#: ./src/Controller/OverviewsController.php:172
+#: ./src/Controller/TasksController.php:240
+#: ./src/Controller/TasksController.php:442
+#: ./src/Controller/TasksController.php:551
+msgid "The access points list could not be loaded. Please, try again."
+msgstr ""
+
+#: ./src/Controller/BillingsController.php:409
+msgid "Contract Number"
 msgstr ""
 
 #: ./src/Controller/BorrowedEquipmentsController.php:113
@@ -316,15 +333,6 @@ msgstr ""
 #: ./src/Controller/ContractsController.php:177
 #: ./src/Controller/ContractsController.php:293
 msgid "The contract could not be saved. Please, try again."
-msgstr ""
-
-#: ./src/Controller/ContractsController.php:260
-#: ./src/Controller/ContractsController.php:373
-#: ./src/Controller/OverviewsController.php:172
-#: ./src/Controller/TasksController.php:240
-#: ./src/Controller/TasksController.php:442
-#: ./src/Controller/TasksController.php:551
-msgid "The access points list could not be loaded. Please, try again."
 msgstr ""
 
 #: ./src/Controller/ContractsController.php:392
@@ -1089,8 +1097,8 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:41
 #: ./templates/TaxRates/index.php:40
 #: ./templates/TaxRates/view.php:41
-#: ./templates/element/Contracts/Billings.php:50
-#: ./templates/element/Contracts/Billings.php:51
+#: ./templates/element/Contracts/Billings.php:64
+#: ./templates/element/Contracts/Billings.php:65
 msgid "No"
 msgstr ""
 
@@ -1178,8 +1186,8 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:41
 #: ./templates/TaxRates/index.php:40
 #: ./templates/TaxRates/view.php:41
-#: ./templates/element/Contracts/Billings.php:50
-#: ./templates/element/Contracts/Billings.php:51
+#: ./templates/element/Contracts/Billings.php:64
+#: ./templates/element/Contracts/Billings.php:65
 msgid "Yes"
 msgstr ""
 
@@ -1294,6 +1302,7 @@ msgstr ""
 #: ./templates/Addresses/index.php:41
 #: ./templates/Addresses/view.php:10
 #: ./templates/Billings/add.php:13
+#: ./templates/Billings/bulk_service_change.php:15
 #: ./templates/Billings/edit.php:13
 #: ./templates/Billings/index.php:42
 #: ./templates/Billings/view.php:13
@@ -1434,7 +1443,7 @@ msgstr ""
 #: ./templates/TaxRates/index.php:32
 #: ./templates/TaxRates/view.php:10
 #: ./templates/TaxRates/view.php:110
-#: ./templates/element/Contracts/Billings.php:29
+#: ./templates/element/Contracts/Billings.php:34
 #: ./templates/element/Contracts/BorrowedEquipments.php:19
 #: ./templates/element/Contracts/ContractVersions.php:18
 #: ./templates/element/Contracts/IpAddresses.php:21
@@ -1459,6 +1468,7 @@ msgstr ""
 #: ./templates/Addresses/add.php:69
 #: ./templates/Addresses/edit.php:74
 #: ./templates/Billings/add.php:63
+#: ./templates/Billings/bulk_service_change.php:87
 #: ./templates/Billings/edit.php:68
 #: ./templates/BorrowedEquipments/add.php:39
 #: ./templates/BorrowedEquipments/edit.php:47
@@ -1594,7 +1604,7 @@ msgstr ""
 #: ./templates/TaxRates/edit.php:12
 #: ./templates/TaxRates/index.php:52
 #: ./templates/TaxRates/view.php:141
-#: ./templates/element/Contracts/Billings.php:64
+#: ./templates/element/Contracts/Billings.php:78
 #: ./templates/element/Contracts/BorrowedEquipments.php:59
 #: ./templates/element/Contracts/ContractVersions.php:45
 #: ./templates/element/Contracts/IpAddresses.php:82
@@ -1709,7 +1719,7 @@ msgstr ""
 #: ./templates/TaxRates/index.php:54
 #: ./templates/TaxRates/view.php:19
 #: ./templates/TaxRates/view.php:143
-#: ./templates/element/Contracts/Billings.php:66
+#: ./templates/element/Contracts/Billings.php:80
 #: ./templates/element/Contracts/BorrowedEquipments.php:66
 #: ./templates/element/Contracts/ContractVersions.php:47
 #: ./templates/element/Contracts/IpAddresses.php:84
@@ -1808,6 +1818,7 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:98
 #: ./templates/Tasks/index.php:63
 #: ./templates/Tasks/view.php:78
+#: ./templates/element/Contracts/Billings.php:17
 msgid "Customer Number"
 msgstr ""
 
@@ -1909,7 +1920,7 @@ msgstr ""
 #: ./templates/Tasks/index.php:125
 #: ./templates/TaxRates/index.php:45
 #: ./templates/TaxRates/view.php:132
-#: ./templates/element/Contracts/Billings.php:55
+#: ./templates/element/Contracts/Billings.php:69
 #: ./templates/element/Contracts/BorrowedEquipments.php:42
 #: ./templates/element/Contracts/ContractVersions.php:36
 #: ./templates/element/Contracts/IpAddresses.php:73
@@ -1971,7 +1982,7 @@ msgstr ""
 #: ./templates/Tasks/index.php:129
 #: ./templates/TaxRates/index.php:47
 #: ./templates/TaxRates/view.php:136
-#: ./templates/element/Contracts/Billings.php:59
+#: ./templates/element/Contracts/Billings.php:73
 #: ./templates/element/Contracts/BorrowedEquipments.php:50
 #: ./templates/element/Contracts/ContractVersions.php:40
 #: ./templates/element/Contracts/IpAddresses.php:77
@@ -2168,6 +2179,7 @@ msgstr ""
 #: ./templates/TaskStates/view.php:97
 #: ./templates/TaskTypes/view.php:97
 #: ./templates/Tasks/view.php:67
+#: ./templates/element/Contracts/Billings.php:16
 #: ./templates/email/html/task_notification.php:62
 msgid "Customer"
 msgstr ""
@@ -2466,7 +2478,7 @@ msgstr ""
 #: ./templates/RemovedIpNetworks/view.php:150
 #: ./templates/RemovedIps/view.php:143
 #: ./templates/Services/view.php:119
-#: ./templates/element/Contracts/Billings.php:28
+#: ./templates/element/Contracts/Billings.php:33
 #: ./templates/element/Contracts/ContractVersions.php:17
 #: ./templates/element/Contracts/IpAddresses.php:17
 #: ./templates/element/Contracts/IpNetworks.php:17
@@ -2496,6 +2508,7 @@ msgid "Dark"
 msgstr ""
 
 #: ./templates/Billings/add.php:14
+#: ./templates/Billings/bulk_service_change.php:22
 #: ./templates/Billings/edit.php:19
 #: ./templates/Billings/view.php:24
 #: ./templates/Overviews/index.php:80
@@ -2504,6 +2517,59 @@ msgstr ""
 
 #: ./templates/Billings/add.php:21
 msgid "Add Billing"
+msgstr ""
+
+#: ./templates/Billings/bulk_service_change.php:17
+#: ./templates/Settings/index.php:7
+#: ./templates/layout/default.php:155
+msgid "Settings"
+msgstr ""
+
+#: ./templates/Billings/bulk_service_change.php:32
+msgid "Original Service"
+msgstr ""
+
+#: ./templates/Billings/bulk_service_change.php:34
+#: ./templates/Billings/bulk_service_change.php:75
+#: ./templates/Billings/view.php:53
+#: ./templates/element/Contracts/Billings.php:22
+msgid "Service"
+msgstr ""
+
+#: ./templates/Billings/bulk_service_change.php:41
+msgid "Active on Date"
+msgstr ""
+
+#: ./templates/Billings/bulk_service_change.php:47
+msgid "Processing Limit"
+msgstr ""
+
+#: ./templates/Billings/bulk_service_change.php:54
+msgid "Standard Prices Only"
+msgstr ""
+
+#: ./templates/Billings/bulk_service_change.php:72
+#: ./templates/Services/index.php:20
+#: ./templates/Services/view.php:24
+msgid "New Service"
+msgstr ""
+
+#: ./templates/Billings/bulk_service_change.php:89
+msgid "Do you really want to change the original service to the new service for all the billings listed below from the date set?"
+msgstr ""
+
+#: ./templates/Billings/bulk_service_change.php:99
+#: ./templates/Billings/index.php:23
+#: ./templates/Contracts/view.php:68
+#: ./templates/Contracts/view.php:344
+#: ./templates/Customers/view.php:78
+#: ./templates/Settings/index.php:115
+msgid "Billings"
+msgstr ""
+
+#: ./templates/Billings/bulk_service_change.php:99
+#: ./templates/Settings/index.php:115
+msgid "Bulk Service Change"
 msgstr ""
 
 #: ./templates/Billings/edit.php:26
@@ -2516,13 +2582,6 @@ msgstr ""
 #: ./templates/Contracts/view.php:327
 #: ./templates/Customers/view.php:574
 msgid "New Billing"
-msgstr ""
-
-#: ./templates/Billings/index.php:23
-#: ./templates/Contracts/view.php:68
-#: ./templates/Contracts/view.php:344
-#: ./templates/Customers/view.php:78
-msgid "Billings"
 msgstr ""
 
 #: ./templates/Billings/view.php:20
@@ -2545,7 +2604,7 @@ msgstr ""
 #: ./templates/Services/view.php:108
 #: ./templates/SoldEquipments/view.php:55
 #: ./templates/Tasks/view.php:82
-#: ./templates/element/Contracts/Billings.php:15
+#: ./templates/element/Contracts/Billings.php:20
 #: ./templates/element/Contracts/BorrowedEquipments.php:13
 #: ./templates/element/Contracts/IpAddresses.php:13
 #: ./templates/element/Contracts/IpNetworks.php:13
@@ -2556,11 +2615,6 @@ msgstr ""
 msgid "Contract"
 msgstr ""
 
-#: ./templates/Billings/view.php:53
-#: ./templates/element/Contracts/Billings.php:17
-msgid "Service"
-msgstr ""
-
 #: ./templates/Billings/view.php:60
 #: ./templates/Contracts/view.php:524
 #: ./templates/Contracts/view.php:568
@@ -2569,7 +2623,7 @@ msgstr ""
 #: ./templates/TaskStates/view.php:94
 #: ./templates/TaskTypes/view.php:94
 #: ./templates/Tasks/view.php:163
-#: ./templates/element/Contracts/Billings.php:18
+#: ./templates/element/Contracts/Billings.php:23
 #: ./templates/email/html/task_notification.php:145
 msgid "Text"
 msgstr ""
@@ -2577,34 +2631,34 @@ msgstr ""
 #: ./templates/Billings/view.php:66
 #: ./templates/Overviews/overview_of_dealer_commissions.php:64
 #: ./templates/Services/view.php:115
-#: ./templates/element/Contracts/Billings.php:24
+#: ./templates/element/Contracts/Billings.php:29
 msgid "Billing From"
 msgstr ""
 
 #: ./templates/Billings/view.php:70
 #: ./templates/Overviews/overview_of_dealer_commissions.php:65
 #: ./templates/Services/view.php:116
-#: ./templates/element/Contracts/Billings.php:25
+#: ./templates/element/Contracts/Billings.php:30
 msgid "Billing Until"
 msgstr ""
 
 #: ./templates/Billings/view.php:76
 #: ./templates/Services/view.php:117
-#: ./templates/element/Contracts/Billings.php:26
+#: ./templates/element/Contracts/Billings.php:31
 msgid "Active"
 msgstr ""
 
 #: ./templates/Billings/view.php:80
 #: ./templates/ServiceTypes/view.php:59
 #: ./templates/Services/view.php:118
-#: ./templates/element/Contracts/Billings.php:27
+#: ./templates/element/Contracts/Billings.php:32
 msgid "Separate Invoice"
 msgstr ""
 
 #: ./templates/Billings/view.php:88
 #: ./templates/Overviews/overview_of_dealer_commissions.php:59
 #: ./templates/Services/view.php:110
-#: ./templates/element/Contracts/Billings.php:19
+#: ./templates/element/Contracts/Billings.php:24
 msgid "Quantity"
 msgstr ""
 
@@ -2617,21 +2671,21 @@ msgstr ""
 #: ./templates/ServiceTypes/view.php:142
 #: ./templates/Services/view.php:52
 #: ./templates/Services/view.php:111
-#: ./templates/element/Contracts/Billings.php:20
+#: ./templates/element/Contracts/Billings.php:25
 msgid "Price"
 msgstr ""
 
 #: ./templates/Billings/view.php:97
 #: ./templates/Overviews/overview_of_dealer_commissions.php:61
 #: ./templates/Services/view.php:112
-#: ./templates/element/Contracts/Billings.php:21
+#: ./templates/element/Contracts/Billings.php:26
 msgid "Fixed Discount"
 msgstr ""
 
 #: ./templates/Billings/view.php:101
 #: ./templates/Overviews/overview_of_dealer_commissions.php:62
 #: ./templates/Services/view.php:113
-#: ./templates/element/Contracts/Billings.php:22
+#: ./templates/element/Contracts/Billings.php:27
 msgid "Percentage Discount"
 msgstr ""
 
@@ -2639,7 +2693,7 @@ msgstr ""
 #: ./templates/Overviews/overview_of_dealer_commissions.php:49
 #: ./templates/Overviews/overview_of_dealer_commissions.php:63
 #: ./templates/Services/view.php:114
-#: ./templates/element/Contracts/Billings.php:23
+#: ./templates/element/Contracts/Billings.php:28
 msgid "Total Price"
 msgstr ""
 
@@ -2729,7 +2783,7 @@ msgstr ""
 #: ./templates/Commissions/add.php:11
 #: ./templates/Commissions/edit.php:16
 #: ./templates/Commissions/view.php:21
-#: ./templates/Settings/index.php:163
+#: ./templates/Settings/index.php:168
 msgid "List Commissions"
 msgstr ""
 
@@ -3619,7 +3673,7 @@ msgstr ""
 #: ./templates/DealerCommissions/add.php:14
 #: ./templates/DealerCommissions/edit.php:22
 #: ./templates/DealerCommissions/view.php:25
-#: ./templates/Settings/index.php:168
+#: ./templates/Settings/index.php:173
 msgid "List Dealer Commissions"
 msgstr ""
 
@@ -3668,7 +3722,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/add.php:12
 #: ./templates/EquipmentTypes/edit.php:20
 #: ./templates/EquipmentTypes/view.php:25
-#: ./templates/Settings/index.php:136
+#: ./templates/Settings/index.php:141
 msgid "List Equipment Types"
 msgstr ""
 
@@ -3875,7 +3929,7 @@ msgid "Overviews"
 msgstr ""
 
 #: ./templates/Overviews/index.php:10
-#: ./templates/Settings/index.php:118
+#: ./templates/Settings/index.php:123
 msgid "Service Related"
 msgstr ""
 
@@ -4114,7 +4168,7 @@ msgstr ""
 #: ./templates/Queues/add.php:11
 #: ./templates/Queues/edit.php:16
 #: ./templates/Queues/view.php:21
-#: ./templates/Settings/index.php:131
+#: ./templates/Settings/index.php:136
 msgid "List Queues"
 msgstr ""
 
@@ -4220,7 +4274,7 @@ msgstr ""
 #: ./templates/ServiceTypes/add.php:11
 #: ./templates/ServiceTypes/edit.php:19
 #: ./templates/ServiceTypes/view.php:24
-#: ./templates/Settings/index.php:126
+#: ./templates/Settings/index.php:131
 msgid "List Service Types"
 msgstr ""
 
@@ -4299,7 +4353,7 @@ msgstr ""
 #: ./templates/Services/add.php:13
 #: ./templates/Services/edit.php:18
 #: ./templates/Services/view.php:23
-#: ./templates/Settings/index.php:121
+#: ./templates/Settings/index.php:126
 msgid "List Services"
 msgstr ""
 
@@ -4312,11 +4366,6 @@ msgstr ""
 msgid "Edit Service"
 msgstr ""
 
-#: ./templates/Services/index.php:20
-#: ./templates/Services/view.php:24
-msgid "New Service"
-msgstr ""
-
 #: ./templates/Services/index.php:21
 msgid "Services"
 msgstr ""
@@ -4327,11 +4376,6 @@ msgstr ""
 
 #: ./templates/Services/view.php:168
 msgid "Total sum of active"
-msgstr ""
-
-#: ./templates/Settings/index.php:7
-#: ./templates/layout/default.php:155
-msgid "Settings"
 msgstr ""
 
 #: ./templates/Settings/index.php:10
@@ -4388,25 +4432,25 @@ msgstr ""
 msgid "Do you really want to re-set a subscriber verification code for all contracts?"
 msgstr ""
 
-#: ./templates/Settings/index.php:144
+#: ./templates/Settings/index.php:149
 msgid "Task Related"
 msgstr ""
 
-#: ./templates/Settings/index.php:147
+#: ./templates/Settings/index.php:152
 #: ./templates/TaskStates/add.php:11
 #: ./templates/TaskStates/edit.php:16
 #: ./templates/TaskStates/view.php:21
 msgid "List Task States"
 msgstr ""
 
-#: ./templates/Settings/index.php:152
+#: ./templates/Settings/index.php:157
 #: ./templates/TaskTypes/add.php:11
 #: ./templates/TaskTypes/edit.php:16
 #: ./templates/TaskTypes/view.php:21
 msgid "List Task Types"
 msgstr ""
 
-#: ./templates/Settings/index.php:160
+#: ./templates/Settings/index.php:165
 msgid "Commission Related"
 msgstr ""
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CakePHP 5.0.0-RC2\n"
-"POT-Creation-Date: 2023-08-01 18:35+0200\n"
+"POT-Creation-Date: 2023-08-26 17:56+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
 #: ./templates/Error/error400.php:40
-#: ./templates/Error/error500.php:44
+#: ./templates/Error/error500.php:49
 msgid "Error"
 msgstr ""
 
@@ -23,16 +23,13 @@ msgstr ""
 msgid "The requested address {0} was not found on this server."
 msgstr ""
 
-#: ./templates/Error/error500.php:42
-msgid "An Internal Error Has Occurred"
+#: ./templates/Error/error500.php:47
+#: ./vendor/cakephp/cakephp/src/Error/Renderer/WebExceptionRenderer.php:360
+msgid "An Internal Error Has Occurred."
 msgstr ""
 
 #: ./vendor/cakephp/cakephp/src/Error/Renderer/WebExceptionRenderer.php:358
 msgid "Not Found"
-msgstr ""
-
-#: ./vendor/cakephp/cakephp/src/Error/Renderer/WebExceptionRenderer.php:360
-msgid "An Internal Error Has Occurred."
 msgstr ""
 
 #: ./vendor/cakephp/cakephp/src/Http/Middleware/CsrfProtectionMiddleware.php:354

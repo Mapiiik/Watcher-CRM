@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-08-01 18:35+0200\n"
-"PO-Revision-Date: 2023-08-01 18:43+0200\n"
+"POT-Creation-Date: 2023-08-26 17:56+0200\n"
+"PO-Revision-Date: 2023-08-26 17:59+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -71,14 +71,14 @@ msgstr "Doručovací adresa"
 msgid "Permanent Address"
 msgstr "Adresa trvalého bydliště"
 
-#: src/ContractPDF.php:346 templates/Commissions/view.php:134
-#: templates/ContractStates/view.php:123 templates/Contracts/print.php:87
-#: templates/Contracts/view.php:185 templates/Customers/view.php:526
-#: templates/IpNetworks/view.php:73 templates/Ips/view.php:78
-#: templates/RemovedIpNetworks/view.php:78 templates/RemovedIps/view.php:71
-#: templates/ServiceTypes/view.php:192 templates/TaskStates/view.php:99
-#: templates/TaskTypes/view.php:99 templates/Tasks/view.php:63
-#: templates/element/Contracts/IpAddresses.php:56
+#: src/ContractPDF.php:346 templates/Billings/bulk_service_change.php:60
+#: templates/Commissions/view.php:134 templates/ContractStates/view.php:123
+#: templates/Contracts/print.php:87 templates/Contracts/view.php:185
+#: templates/Customers/view.php:526 templates/IpNetworks/view.php:73
+#: templates/Ips/view.php:78 templates/RemovedIpNetworks/view.php:78
+#: templates/RemovedIps/view.php:71 templates/ServiceTypes/view.php:192
+#: templates/TaskStates/view.php:99 templates/TaskTypes/view.php:99
+#: templates/Tasks/view.php:63 templates/element/Contracts/IpAddresses.php:56
 #: templates/element/Contracts/IpNetworks.php:37
 #: templates/email/html/task_notification.php:58
 msgid "Access Point"
@@ -185,35 +185,51 @@ msgstr "Nelze najít výsledky na stránce {0}. Přesměrování na stranu 1."
 msgid "Not installed via Git"
 msgstr "Není nainstalováno přes Git"
 
-#: src/Controller/BillingsController.php:118
-#: src/Controller/BillingsController.php:204
+#: src/Controller/BillingsController.php:123
+#: src/Controller/BillingsController.php:209
 msgid "Billing text must be entered or service selected."
 msgstr "Je nutné zadat fakturační text nebo vybrat službu."
 
-#: src/Controller/BillingsController.php:127
-#: src/Controller/BillingsController.php:213
+#: src/Controller/BillingsController.php:132
+#: src/Controller/BillingsController.php:218
 msgid "The service type does not match the selected contract."
 msgstr "Typ služby neodpovídá vybrané smlouvě."
 
-#: src/Controller/BillingsController.php:130
-#: src/Controller/BillingsController.php:216
+#: src/Controller/BillingsController.php:135
+#: src/Controller/BillingsController.php:221
+#: src/Controller/BillingsController.php:440
 #: src/Controller/ContractsController.php:673
 msgid "The billing has been saved."
 msgstr "Fakturace byla uložena."
 
-#: src/Controller/BillingsController.php:134
-#: src/Controller/BillingsController.php:220
+#: src/Controller/BillingsController.php:139
+#: src/Controller/BillingsController.php:225
+#: src/Controller/BillingsController.php:408
 #: src/Controller/ContractsController.php:677
 msgid "The billing could not be saved. Please, try again."
 msgstr "Fakturace nelze uložit. Opakujte akci."
 
-#: src/Controller/BillingsController.php:276
+#: src/Controller/BillingsController.php:281
 msgid "The billing has been deleted."
 msgstr "Fakturace byla odstraněna."
 
-#: src/Controller/BillingsController.php:278
+#: src/Controller/BillingsController.php:283
 msgid "The billing could not be deleted. Please, try again."
 msgstr "Fakturace nelze odstranit. Opakujte akci."
+
+#: src/Controller/BillingsController.php:364
+#: src/Controller/ContractsController.php:260
+#: src/Controller/ContractsController.php:373
+#: src/Controller/OverviewsController.php:172
+#: src/Controller/TasksController.php:240
+#: src/Controller/TasksController.php:442
+#: src/Controller/TasksController.php:551
+msgid "The access points list could not be loaded. Please, try again."
+msgstr "Seznam přístupových bodů nelze načíst. Zkuste to prosím znovu."
+
+#: src/Controller/BillingsController.php:409
+msgid "Contract Number"
+msgstr "Číslo smlouvy"
 
 #: src/Controller/BorrowedEquipmentsController.php:113
 #: src/Controller/BorrowedEquipmentsController.php:174
@@ -300,15 +316,6 @@ msgstr "Smlouva byla uložena."
 #: src/Controller/ContractsController.php:293
 msgid "The contract could not be saved. Please, try again."
 msgstr "Smlouvu nelze uložit. Opakujte akci."
-
-#: src/Controller/ContractsController.php:260
-#: src/Controller/ContractsController.php:373
-#: src/Controller/OverviewsController.php:172
-#: src/Controller/TasksController.php:240
-#: src/Controller/TasksController.php:442
-#: src/Controller/TasksController.php:551
-msgid "The access points list could not be loaded. Please, try again."
-msgstr "Seznam přístupových bodů nelze načíst. Zkuste to prosím znovu."
 
 #: src/Controller/ContractsController.php:392
 msgid "The contract has been deleted."
@@ -1042,8 +1049,8 @@ msgstr "Údaje o stavu smlouvy nejsou k dispozici."
 #: templates/TaskStates/view.php:41 templates/TaskTypes/index.php:36
 #: templates/TaskTypes/index.php:37 templates/TaskTypes/view.php:37
 #: templates/TaskTypes/view.php:41 templates/TaxRates/index.php:40
-#: templates/TaxRates/view.php:41 templates/element/Contracts/Billings.php:50
-#: templates/element/Contracts/Billings.php:51
+#: templates/TaxRates/view.php:41 templates/element/Contracts/Billings.php:64
+#: templates/element/Contracts/Billings.php:65
 msgid "No"
 msgstr "Ne"
 
@@ -1089,8 +1096,8 @@ msgstr "Ne"
 #: templates/TaskStates/view.php:41 templates/TaskTypes/index.php:36
 #: templates/TaskTypes/index.php:37 templates/TaskTypes/view.php:37
 #: templates/TaskTypes/view.php:41 templates/TaxRates/index.php:40
-#: templates/TaxRates/view.php:41 templates/element/Contracts/Billings.php:50
-#: templates/element/Contracts/Billings.php:51
+#: templates/TaxRates/view.php:41 templates/element/Contracts/Billings.php:64
+#: templates/element/Contracts/Billings.php:65
 msgid "Yes"
 msgstr "Ano"
 
@@ -1198,9 +1205,9 @@ msgstr "Zadaný typ úkolu vyžaduje přiřazení smlouvy."
 
 #: templates/Addresses/add.php:12 templates/Addresses/edit.php:12
 #: templates/Addresses/index.php:41 templates/Addresses/view.php:10
-#: templates/Billings/add.php:13 templates/Billings/edit.php:13
-#: templates/Billings/index.php:42 templates/Billings/view.php:13
-#: templates/BorrowedEquipments/add.php:13
+#: templates/Billings/add.php:13 templates/Billings/bulk_service_change.php:15
+#: templates/Billings/edit.php:13 templates/Billings/index.php:42
+#: templates/Billings/view.php:13 templates/BorrowedEquipments/add.php:13
 #: templates/BorrowedEquipments/edit.php:13
 #: templates/BorrowedEquipments/index.php:37
 #: templates/BorrowedEquipments/view.php:10 templates/Commissions/add.php:10
@@ -1277,7 +1284,7 @@ msgstr "Zadaný typ úkolu vyžaduje přiřazení smlouvy."
 #: templates/Tasks/index.php:70 templates/Tasks/view.php:10
 #: templates/TaxRates/add.php:10 templates/TaxRates/edit.php:10
 #: templates/TaxRates/index.php:32 templates/TaxRates/view.php:10
-#: templates/TaxRates/view.php:110 templates/element/Contracts/Billings.php:29
+#: templates/TaxRates/view.php:110 templates/element/Contracts/Billings.php:34
 #: templates/element/Contracts/BorrowedEquipments.php:19
 #: templates/element/Contracts/ContractVersions.php:18
 #: templates/element/Contracts/IpAddresses.php:21
@@ -1298,8 +1305,8 @@ msgid "Add Address"
 msgstr "Přidat adresu"
 
 #: templates/Addresses/add.php:69 templates/Addresses/edit.php:74
-#: templates/Billings/add.php:63 templates/Billings/edit.php:68
-#: templates/BorrowedEquipments/add.php:39
+#: templates/Billings/add.php:63 templates/Billings/bulk_service_change.php:87
+#: templates/Billings/edit.php:68 templates/BorrowedEquipments/add.php:39
 #: templates/BorrowedEquipments/edit.php:47 templates/Commissions/add.php:23
 #: templates/Commissions/edit.php:28 templates/ContractStates/add.php:34
 #: templates/ContractStates/edit.php:42 templates/ContractVersions/add.php:68
@@ -1370,7 +1377,7 @@ msgstr "Potvrdit"
 #: templates/TaskTypes/index.php:46 templates/TaskTypes/view.php:150
 #: templates/Tasks/edit.php:18 templates/TaxRates/edit.php:12
 #: templates/TaxRates/index.php:52 templates/TaxRates/view.php:141
-#: templates/element/Contracts/Billings.php:64
+#: templates/element/Contracts/Billings.php:78
 #: templates/element/Contracts/BorrowedEquipments.php:59
 #: templates/element/Contracts/ContractVersions.php:45
 #: templates/element/Contracts/IpAddresses.php:82
@@ -1436,7 +1443,7 @@ msgstr "Odstranit"
 #: templates/Tasks/edit.php:20 templates/Tasks/view.php:15
 #: templates/TaxRates/edit.php:14 templates/TaxRates/index.php:54
 #: templates/TaxRates/view.php:19 templates/TaxRates/view.php:143
-#: templates/element/Contracts/Billings.php:66
+#: templates/element/Contracts/Billings.php:80
 #: templates/element/Contracts/BorrowedEquipments.php:66
 #: templates/element/Contracts/ContractVersions.php:47
 #: templates/element/Contracts/IpAddresses.php:84
@@ -1500,7 +1507,7 @@ msgstr "Adresy"
 #: templates/Services/view.php:107 templates/SoldEquipments/index.php:31
 #: templates/SoldEquipments/view.php:50 templates/TaskStates/view.php:98
 #: templates/TaskTypes/view.php:98 templates/Tasks/index.php:63
-#: templates/Tasks/view.php:78
+#: templates/Tasks/view.php:78 templates/element/Contracts/Billings.php:17
 msgid "Customer Number"
 msgstr "Číslo zákazníka"
 
@@ -1565,7 +1572,7 @@ msgstr "Mapy.cz"
 #: templates/TaskStates/view.php:141 templates/TaskTypes/index.php:39
 #: templates/TaskTypes/view.php:141 templates/Tasks/index.php:125
 #: templates/TaxRates/index.php:45 templates/TaxRates/view.php:132
-#: templates/element/Contracts/Billings.php:55
+#: templates/element/Contracts/Billings.php:69
 #: templates/element/Contracts/BorrowedEquipments.php:42
 #: templates/element/Contracts/ContractVersions.php:36
 #: templates/element/Contracts/IpAddresses.php:73
@@ -1602,7 +1609,7 @@ msgstr "Zobrazit"
 #: templates/TaskStates/view.php:145 templates/TaskTypes/index.php:41
 #: templates/TaskTypes/view.php:145 templates/Tasks/index.php:129
 #: templates/TaxRates/index.php:47 templates/TaxRates/view.php:136
-#: templates/element/Contracts/Billings.php:59
+#: templates/element/Contracts/Billings.php:73
 #: templates/element/Contracts/BorrowedEquipments.php:50
 #: templates/element/Contracts/ContractVersions.php:40
 #: templates/element/Contracts/IpAddresses.php:77
@@ -1725,7 +1732,8 @@ msgstr "Odstranit adresu"
 #: templates/RemovedIps/view.php:40 templates/ServiceTypes/view.php:186
 #: templates/Services/view.php:106 templates/SoldEquipments/view.php:43
 #: templates/TaskStates/view.php:97 templates/TaskTypes/view.php:97
-#: templates/Tasks/view.php:67 templates/email/html/task_notification.php:62
+#: templates/Tasks/view.php:67 templates/element/Contracts/Billings.php:16
+#: templates/email/html/task_notification.php:62
 msgid "Customer"
 msgstr "Zákazník"
 
@@ -1914,7 +1922,7 @@ msgstr "Upravil"
 #: templates/Ips/view.php:135 templates/Labels/view.php:112
 #: templates/Phones/view.php:100 templates/RemovedIpNetworks/view.php:150
 #: templates/RemovedIps/view.php:143 templates/Services/view.php:119
-#: templates/element/Contracts/Billings.php:28
+#: templates/element/Contracts/Billings.php:33
 #: templates/element/Contracts/ContractVersions.php:17
 #: templates/element/Contracts/IpAddresses.php:17
 #: templates/element/Contracts/IpNetworks.php:17
@@ -1939,14 +1947,67 @@ msgstr "Starší"
 msgid "Dark"
 msgstr "Tmavý"
 
-#: templates/Billings/add.php:14 templates/Billings/edit.php:19
-#: templates/Billings/view.php:24 templates/Overviews/index.php:80
+#: templates/Billings/add.php:14 templates/Billings/bulk_service_change.php:22
+#: templates/Billings/edit.php:19 templates/Billings/view.php:24
+#: templates/Overviews/index.php:80
 msgid "List Billings"
 msgstr "Seznam fakturací"
 
 #: templates/Billings/add.php:21
 msgid "Add Billing"
 msgstr "Přidat fakturaci"
+
+#: templates/Billings/bulk_service_change.php:17 templates/Settings/index.php:7
+#: templates/layout/default.php:155
+msgid "Settings"
+msgstr "Nastavení"
+
+#: templates/Billings/bulk_service_change.php:32
+msgid "Original Service"
+msgstr "Původní služba"
+
+#: templates/Billings/bulk_service_change.php:34
+#: templates/Billings/bulk_service_change.php:75 templates/Billings/view.php:53
+#: templates/element/Contracts/Billings.php:22
+msgid "Service"
+msgstr "Služba"
+
+#: templates/Billings/bulk_service_change.php:41
+msgid "Active on Date"
+msgstr "Aktivní k datu"
+
+#: templates/Billings/bulk_service_change.php:47
+msgid "Processing Limit"
+msgstr "Limit zpracování"
+
+#: templates/Billings/bulk_service_change.php:54
+msgid "Standard Prices Only"
+msgstr "Pouze standardní ceny"
+
+#: templates/Billings/bulk_service_change.php:72
+#: templates/Services/index.php:20 templates/Services/view.php:24
+msgid "New Service"
+msgstr "Nová služba"
+
+#: templates/Billings/bulk_service_change.php:89
+msgid ""
+"Do you really want to change the original service to the new service for all "
+"the billings listed below from the date set?"
+msgstr ""
+"Opravdu chcete změnit původní službu na novou službu u všech níže uvedených "
+"fakturací od nastaveného data?"
+
+#: templates/Billings/bulk_service_change.php:99
+#: templates/Billings/index.php:23 templates/Contracts/view.php:68
+#: templates/Contracts/view.php:344 templates/Customers/view.php:78
+#: templates/Settings/index.php:115
+msgid "Billings"
+msgstr "Fakturace"
+
+#: templates/Billings/bulk_service_change.php:99
+#: templates/Settings/index.php:115
+msgid "Bulk Service Change"
+msgstr "Hromadná změna služeb"
 
 #: templates/Billings/edit.php:26 templates/Billings/view.php:15
 msgid "Edit Billing"
@@ -1956,11 +2017,6 @@ msgstr "Upravit fakturaci"
 #: templates/Contracts/view.php:327 templates/Customers/view.php:574
 msgid "New Billing"
 msgstr "Nová fakturace"
-
-#: templates/Billings/index.php:23 templates/Contracts/view.php:68
-#: templates/Contracts/view.php:344 templates/Customers/view.php:78
-msgid "Billings"
-msgstr "Fakturace"
 
 #: templates/Billings/view.php:20
 msgid "Delete Billing"
@@ -1974,7 +2030,7 @@ msgstr "Odstranit fakturaci"
 #: templates/Overviews/overview_of_dealer_commissions.php:56
 #: templates/RemovedIpNetworks/view.php:57 templates/RemovedIps/view.php:51
 #: templates/Services/view.php:108 templates/SoldEquipments/view.php:55
-#: templates/Tasks/view.php:82 templates/element/Contracts/Billings.php:15
+#: templates/Tasks/view.php:82 templates/element/Contracts/Billings.php:20
 #: templates/element/Contracts/BorrowedEquipments.php:13
 #: templates/element/Contracts/IpAddresses.php:13
 #: templates/element/Contracts/IpNetworks.php:13
@@ -1985,44 +2041,40 @@ msgstr "Odstranit fakturaci"
 msgid "Contract"
 msgstr "Smlouva"
 
-#: templates/Billings/view.php:53 templates/element/Contracts/Billings.php:17
-msgid "Service"
-msgstr "Služba"
-
 #: templates/Billings/view.php:60 templates/Contracts/view.php:524
 #: templates/Contracts/view.php:568 templates/Customers/view.php:740
 #: templates/Services/view.php:109 templates/TaskStates/view.php:94
 #: templates/TaskTypes/view.php:94 templates/Tasks/view.php:163
-#: templates/element/Contracts/Billings.php:18
+#: templates/element/Contracts/Billings.php:23
 #: templates/email/html/task_notification.php:145
 msgid "Text"
 msgstr "Text"
 
 #: templates/Billings/view.php:66
 #: templates/Overviews/overview_of_dealer_commissions.php:64
-#: templates/Services/view.php:115 templates/element/Contracts/Billings.php:24
+#: templates/Services/view.php:115 templates/element/Contracts/Billings.php:29
 msgid "Billing From"
 msgstr "Fakturovat od"
 
 #: templates/Billings/view.php:70
 #: templates/Overviews/overview_of_dealer_commissions.php:65
-#: templates/Services/view.php:116 templates/element/Contracts/Billings.php:25
+#: templates/Services/view.php:116 templates/element/Contracts/Billings.php:30
 msgid "Billing Until"
 msgstr "Fakturovat do"
 
 #: templates/Billings/view.php:76 templates/Services/view.php:117
-#: templates/element/Contracts/Billings.php:26
+#: templates/element/Contracts/Billings.php:31
 msgid "Active"
 msgstr "Aktivní"
 
 #: templates/Billings/view.php:80 templates/ServiceTypes/view.php:59
-#: templates/Services/view.php:118 templates/element/Contracts/Billings.php:27
+#: templates/Services/view.php:118 templates/element/Contracts/Billings.php:32
 msgid "Separate Invoice"
 msgstr "Samostatná faktura"
 
 #: templates/Billings/view.php:88
 #: templates/Overviews/overview_of_dealer_commissions.php:59
-#: templates/Services/view.php:110 templates/element/Contracts/Billings.php:19
+#: templates/Services/view.php:110 templates/element/Contracts/Billings.php:24
 msgid "Quantity"
 msgstr "Počet"
 
@@ -2031,26 +2083,26 @@ msgstr "Počet"
 #: templates/Overviews/overview_of_dealer_commissions.php:60
 #: templates/Queues/view.php:117 templates/ServiceTypes/view.php:142
 #: templates/Services/view.php:52 templates/Services/view.php:111
-#: templates/element/Contracts/Billings.php:20
+#: templates/element/Contracts/Billings.php:25
 msgid "Price"
 msgstr "Cena"
 
 #: templates/Billings/view.php:97
 #: templates/Overviews/overview_of_dealer_commissions.php:61
-#: templates/Services/view.php:112 templates/element/Contracts/Billings.php:21
+#: templates/Services/view.php:112 templates/element/Contracts/Billings.php:26
 msgid "Fixed Discount"
 msgstr "Pevná sleva"
 
 #: templates/Billings/view.php:101
 #: templates/Overviews/overview_of_dealer_commissions.php:62
-#: templates/Services/view.php:113 templates/element/Contracts/Billings.php:22
+#: templates/Services/view.php:113 templates/element/Contracts/Billings.php:27
 msgid "Percentage Discount"
 msgstr "Procentuální sleva"
 
 #: templates/Billings/view.php:105
 #: templates/Overviews/overview_of_dealer_commissions.php:49
 #: templates/Overviews/overview_of_dealer_commissions.php:63
-#: templates/Services/view.php:114 templates/element/Contracts/Billings.php:23
+#: templates/Services/view.php:114 templates/element/Contracts/Billings.php:28
 msgid "Total Price"
 msgstr "Celková cena"
 
@@ -2131,7 +2183,7 @@ msgid "Borrowed Until"
 msgstr "Zapůjčené do"
 
 #: templates/Commissions/add.php:11 templates/Commissions/edit.php:16
-#: templates/Commissions/view.php:21 templates/Settings/index.php:163
+#: templates/Commissions/view.php:21 templates/Settings/index.php:168
 msgid "List Commissions"
 msgstr "Seznam provizí"
 
@@ -2861,7 +2913,7 @@ msgstr "Související odebrané IP sítě"
 
 #: templates/DealerCommissions/add.php:14
 #: templates/DealerCommissions/edit.php:22
-#: templates/DealerCommissions/view.php:25 templates/Settings/index.php:168
+#: templates/DealerCommissions/view.php:25 templates/Settings/index.php:173
 msgid "List Dealer Commissions"
 msgstr "Seznam provizí dealerů"
 
@@ -2905,7 +2957,7 @@ msgid "Delete Email"
 msgstr "Odstranit e-mail"
 
 #: templates/EquipmentTypes/add.php:12 templates/EquipmentTypes/edit.php:20
-#: templates/EquipmentTypes/view.php:25 templates/Settings/index.php:136
+#: templates/EquipmentTypes/view.php:25 templates/Settings/index.php:141
 msgid "List Equipment Types"
 msgstr "Seznam typů zařízení"
 
@@ -3085,7 +3137,7 @@ msgstr "Smazat přihlášení"
 msgid "Overviews"
 msgstr "Přehledy"
 
-#: templates/Overviews/index.php:10 templates/Settings/index.php:118
+#: templates/Overviews/index.php:10 templates/Settings/index.php:123
 msgid "Service Related"
 msgstr "Související se službou"
 
@@ -3311,7 +3363,7 @@ msgid "Delete Phone"
 msgstr "Odstranit telefon"
 
 #: templates/Queues/add.php:11 templates/Queues/edit.php:16
-#: templates/Queues/view.php:21 templates/Settings/index.php:131
+#: templates/Queues/view.php:21 templates/Settings/index.php:136
 msgid "List Queues"
 msgstr "Seznam front"
 
@@ -3408,7 +3460,7 @@ msgid "Delete Removed IP Address"
 msgstr "Odstranit odebranou IP adresu"
 
 #: templates/ServiceTypes/add.php:11 templates/ServiceTypes/edit.php:19
-#: templates/ServiceTypes/view.php:24 templates/Settings/index.php:126
+#: templates/ServiceTypes/view.php:24 templates/Settings/index.php:131
 msgid "List Service Types"
 msgstr "Seznam typů služeb"
 
@@ -3479,7 +3531,7 @@ msgid "Have Equipments"
 msgstr "Má zařízení"
 
 #: templates/Services/add.php:13 templates/Services/edit.php:18
-#: templates/Services/view.php:23 templates/Settings/index.php:121
+#: templates/Services/view.php:23 templates/Settings/index.php:126
 msgid "List Services"
 msgstr "Seznam služeb"
 
@@ -3490,10 +3542,6 @@ msgstr "Přidat službu"
 #: templates/Services/edit.php:25 templates/Services/view.php:14
 msgid "Edit Service"
 msgstr "Upravit službu"
-
-#: templates/Services/index.php:20 templates/Services/view.php:24
-msgid "New Service"
-msgstr "Nová služba"
 
 #: templates/Services/index.php:21
 msgid "Services"
@@ -3506,10 +3554,6 @@ msgstr "Odstranit službu"
 #: templates/Services/view.php:168
 msgid "Total sum of active"
 msgstr "Celkový součet aktivních"
-
-#: templates/Settings/index.php:7 templates/layout/default.php:155
-msgid "Settings"
-msgstr "Nastavení"
 
 #: templates/Settings/index.php:10
 msgid "User Related"
@@ -3564,21 +3608,21 @@ msgid ""
 msgstr ""
 "Opravdu chcete znovu nastavit ověřovací kód účastníka pro všechny smlouvy?"
 
-#: templates/Settings/index.php:144
+#: templates/Settings/index.php:149
 msgid "Task Related"
 msgstr "Související s úkolem"
 
-#: templates/Settings/index.php:147 templates/TaskStates/add.php:11
+#: templates/Settings/index.php:152 templates/TaskStates/add.php:11
 #: templates/TaskStates/edit.php:16 templates/TaskStates/view.php:21
 msgid "List Task States"
 msgstr "Seznam stavů úkolů"
 
-#: templates/Settings/index.php:152 templates/TaskTypes/add.php:11
+#: templates/Settings/index.php:157 templates/TaskTypes/add.php:11
 #: templates/TaskTypes/edit.php:16 templates/TaskTypes/view.php:21
 msgid "List Task Types"
 msgstr "Seznam typů úkolů"
 
-#: templates/Settings/index.php:160
+#: templates/Settings/index.php:165
 msgid "Commission Related"
 msgstr "Související s provizí"
 
@@ -3824,9 +3868,6 @@ msgstr "Zpět"
 
 #~ msgid "Token Expires"
 #~ msgstr "Platnost tokenu vyprší"
-
-#~ msgid "Activation Date"
-#~ msgstr "Datum aktivace"
 
 #~ msgid "Tos Date"
 #~ msgstr "Tos Datum"
