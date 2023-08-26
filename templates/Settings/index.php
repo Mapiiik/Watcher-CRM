@@ -111,6 +111,11 @@
                         'class' => 'side-nav-item',
                     ]
                 ) ?>
+                <?= $this->AuthLink->link(
+                    __('Billings') . ' - ' . __('Bulk Service Change'),
+                    ['controller' => 'Billings', 'action' => 'bulkServiceChange', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
             </div>
         </div>
 

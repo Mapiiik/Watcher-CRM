@@ -180,6 +180,14 @@ $routes->scope('/admin/', function (RouteBuilder $builder): void {
         ]
     );
 
+    $builder->connect(
+        '/billings/bulk-service-change/*',
+        [
+            'controller' => 'Billings',
+            'action' => 'bulkServiceChange',
+        ]
+    );
+
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}', ['action' => 'index'])
         ->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+']);
     $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/add', ['action' => 'add'])

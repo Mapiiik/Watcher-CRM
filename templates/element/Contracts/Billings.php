@@ -4,6 +4,7 @@ use Cake\I18n\Number;
 /**
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Billing> $billings
+ * @var bool $customer_column
  * @var bool $contract_column
  */
 ?>
@@ -11,6 +12,10 @@ use Cake\I18n\Number;
 <div class="table-responsive">
     <table>
         <tr>
+            <?php if (!empty($customer_column)) : ?>
+            <th><?= __('Customer') ?></th>
+            <th><?= __('Customer Number') ?></th>
+            <?php endif; ?>
             <?php if (!empty($contract_column)) : ?>
             <th><?= __('Contract') ?></th>
             <?php endif; ?>
@@ -30,6 +35,15 @@ use Cake\I18n\Number;
         </tr>
         <?php foreach ($billings as $billing) : ?>
         <tr style="<?= $billing->style ?>">
+            <?php if (!empty($customer_column)) : ?>
+            <td><?= $billing->__isset('customer') ?
+                $this->Html->link(
+                    $billing->customer->name,
+                    ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]
+                ) : '' ?>
+            </td>
+            <td><?= $billing->__isset('customer') ? h($billing->customer->number) : '' ?></td>
+            <?php endif; ?>
             <?php if (!empty($contract_column)) : ?>
             <td><?= $billing->__isset('contract') ?
                 $this->Html->link(

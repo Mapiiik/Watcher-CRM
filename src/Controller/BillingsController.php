@@ -3,6 +3,11 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\ApiClient;
+use App\Mailer\QueueMailer;
+use Cake\Utility\Text;
+use SplObjectStorage;
+
 /**
  * Billings Controller
  *
@@ -283,5 +288,161 @@ class BillingsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    /**
+     * Bulk Service Change method
+     *
+     * @return \Cake\Http\Response|null|void Renders view
+     */
+    public function bulkServiceChange()
+    {
+        // query
+        $billingsQuery = $this->Billings->find(
+            'all',
+            contain: [
+                'Contracts' => [
+                    'ContractStates',
+                    'InstallationAddresses',
+                ],
+                'Customers' => [
+                    'Emails',
+                ],
+                'Services',
+            ],
+        );
+
+        // filter
+        $original_service_id = $this->request->getQuery('original_service_id');
+        if (!empty($original_service_id)) {
+            $billingsQuery->where(['Billings.service_id' => $original_service_id]);
+        } else {
+            $billingsQuery->where(['FALSE']);
+        }
+
+        $active_on_date = $this->request->getQuery('active_on_date');
+        if (!empty($active_on_date)) {
+            $billingsQuery->where([
+                'Billings.billing_from <=' => $active_on_date,
+                'OR' => [
+                    'Billings.billing_until IS NULL',
+                    'Billings.billing_until >=' => $active_on_date,
+                ],
+            ]);
+        } else {
+            $billingsQuery->where(['FALSE']);
+        }
+
+        $standard_prices_only = $this->request->getQuery('standard_prices_only');
+        if ($standard_prices_only !== '0') {
+            $billingsQuery->where([
+                'Billings.price IS NULL',
+                'Billings.fixed_discount IS NULL',
+                'Billings.percentage_discount IS NULL',
+            ]);
+        }
+
+        $processing_limit = $this->request->getQuery('processing_limit');
+        if (is_numeric($processing_limit)) {
+            $billingsQuery->limit((int)$processing_limit);
+        }
+
+        $access_point_id = $this->request->getQuery('access_point_id');
+        if (!empty($access_point_id)) {
+            $billingsQuery->where(['Contracts.access_point_id' => $access_point_id]);
+        }
+
+        // get data
+        $billings = $billingsQuery->all();
+        $services = $this->Billings->Services->find('list', order: ['name'])->all();
+
+        // load access points from NMS if possible
+        $accessPoints = ApiClient::getAccessPoints();
+        if ($accessPoints) {
+            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
+        } else {
+            $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
+            $this->set('accessPoints', []);
+        }
+
+        // process change request
+        if ($this->getRequest()->is('post')) {
+            foreach ($billings as $original_billing) {
+                /** @var \App\Model\Entity\Billing $original_billing */
+
+                // create new billing entity
+                $original_billing_data = $original_billing->toArray();
+                unset(
+                    $original_billing_data['id'],
+                    $original_billing_data['created'],
+                    $original_billing_data['created_by'],
+                    $original_billing_data['modified'],
+                    $original_billing_data['modified_by'],
+                    $original_billing_data['contract'],
+                    $original_billing_data['customer'],
+                    $original_billing_data['service'],
+                );
+                $new_billing = $this->Billings->newEntity($original_billing_data);
+                $new_billing = $this->Billings->patchEntity($new_billing, $this->getRequest()->getData());
+                $new_billing->service = $this->Billings->Services->get($new_billing->service_id); // load associated service
+
+                // update original entity
+                $original_billing = $this->Billings->patchEntity($original_billing, [
+                    'billing_until' => $new_billing->billing_from->subDays(1),
+                ]);
+
+                // save new and modified entity to database
+                if (
+                    $this->Billings->saveMany(
+                        [
+                            $original_billing,
+                            $new_billing,
+                        ],
+                        [
+                            '_auditQueue' => new SplObjectStorage(),
+                            '_auditTransaction' => Text::uuid(),
+                        ]
+                    ) === false
+                ) {
+                    $this->Flash->error(
+                        __('The billing could not be saved. Please, try again.')
+                        . ' (' . __('Contract Number') . ': ' . $original_billing->contract->number . ')'
+                    );
+
+                    return $this->redirect([]);
+                } else {
+                    $mailer = new QueueMailer();
+                    $mailer->push(
+                        'serviceChange',
+                        [
+                            array_column($original_billing->customer->billing_emails, 'email'),
+                            [
+                                'customer_name' => $original_billing->customer->name,
+                                'contract_number' => $original_billing->contract->number,
+                                'installation_address' => $original_billing->contract->installation_address->address,
+                                'original_billing_name' => $original_billing->name,
+                                'original_billing_sum' => $original_billing->sum,
+                                'new_billing_name' => $new_billing->name,
+                                'new_billing_sum' => $new_billing->sum,
+                                'new_billing_from' => h($new_billing->billing_from),
+                            ],
+                        ],
+                        options: [
+                            'mailerConfig' => 'contracts',
+                        ]
+                    );
+                }
+
+                unset($original_billing);
+                unset($new_billing);
+            }
+
+            $this->Flash->success(__('The billing has been saved.'));
+
+            return $this->redirect([]);
+        }
+
+        // set data
+        $this->set(compact('billings', 'services'));
     }
 }
