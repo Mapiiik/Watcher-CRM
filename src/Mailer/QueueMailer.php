@@ -30,7 +30,13 @@ class QueueMailer extends Mailer
     {
         $this
             ->setTo($emails)
-            ->setSubject(sprintf('NETAIR - změna služeb od %s na Vaší přípojce č. %s', $data['new_billing_from'], $data['contract_number']))
+            ->setSubject(
+                sprintf(
+                    'NETAIR - změna služeb od %s na Vaší přípojce č. %s',
+                    $data['new_billing_from'],
+                    $data['contract_number']
+                )
+            )
             ->setViewVars(['data' => $data]);
     }
 }

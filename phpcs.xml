@@ -2,6 +2,7 @@
 <ruleset name="App">
     <config name="installed_paths" value="../../cakephp/cakephp-codesniffer"/>
     <rule ref="Generic.Files.LineLength">
+        <exclude-pattern>templates/email/text/service_change.php</exclude-pattern>
         <exclude-pattern>templates/Pages/home.php</exclude-pattern>
         <exclude-pattern>src/ContractPDF.php</exclude-pattern>
         <exclude-pattern>src/CustomerPDF.php</exclude-pattern>
