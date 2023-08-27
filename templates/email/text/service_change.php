@@ -34,4 +34,4 @@ Pokud budete mít jakékoliv dotazy neváhejte nás kontaktovat
 NETAIR, s.r.o.
 512 43 Jablonec nad Jizerou, č.p. 299
 Mail: smlouvy@netair.cz
-Telefon: +420 488572050
+Telefon: +420 488 572 512
