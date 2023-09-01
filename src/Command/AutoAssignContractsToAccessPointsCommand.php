@@ -47,11 +47,11 @@ class AutoAssignContractsToAccessPointsCommand extends Command
         // load contracts without assigned access point
         $unassigned_contracts = $contracts_table
             ->find()
-            ->where([
-                'Contracts.access_point_id IS NULL',
-            ])
             ->contain([
                 'Ips',
+            ])
+            ->where([
+                'Contracts.access_point_id IS NULL',
             ])
             ->all();
 

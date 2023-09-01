@@ -46,15 +46,16 @@ class SendIssuedInvoicesCommand extends Command
         $issued_invoices_table = $this->fetchTable('BookkeepingPohoda.Invoices');
         $issued_invoices = $issued_invoices_table
             ->find()
-            ->where([
-                'send_by_email' => true,
-                'email_sent IS' => null,
-            ])
             ->contain([
                 'Customers' => [
                     'Emails',
                 ],
             ])
+            ->where([
+                'send_by_email' => true,
+                'email_sent IS' => null,
+            ])
+            ->limit(50)
             ->all();
 
         echo 'Sending notifications:' . "\n";
