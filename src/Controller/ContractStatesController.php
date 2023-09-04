@@ -87,9 +87,7 @@ class ContractStatesController extends AppController
             }
             $this->Flash->error(__('The contract state could not be saved. Please, try again.'));
         }
-        $creators = $this->ContractStates->Creators->find('list', ['limit' => 200])->all();
-        $modifiers = $this->ContractStates->Modifiers->find('list', ['limit' => 200])->all();
-        $this->set(compact('contractState', 'creators', 'modifiers'));
+        $this->set(compact('contractState'));
     }
 
     /**
@@ -111,9 +109,7 @@ class ContractStatesController extends AppController
             }
             $this->Flash->error(__('The contract state could not be saved. Please, try again.'));
         }
-        $creators = $this->ContractStates->Creators->find('list', ['limit' => 200])->all();
-        $modifiers = $this->ContractStates->Modifiers->find('list', ['limit' => 200])->all();
-        $this->set(compact('contractState', 'creators', 'modifiers'));
+        $this->set(compact('contractState'));
     }
 
     /**
