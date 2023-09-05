@@ -30,16 +30,16 @@ class AppView extends View
     /**
      * Initialization hook method.
      *
-     * Use this method to add common initialization code like loading helpers.
+     * Use this method to add common initialization code like adding helpers.
      *
-     * e.g. `$this->loadHelper('Html');`
+     * e.g. `$this->addHelper('Html');`
      *
      * @return void
      */
     public function initialize(): void
     {
         parent::initialize();
-        $this->loadHelper('CakeDC/Users.User');
-        $this->loadHelper('CakeDC/Users.AuthLink');
+        $this->addHelper('CakeDC/Users.User');
+        $this->addHelper('CakeDC/Users.AuthLink');
     }
 }
