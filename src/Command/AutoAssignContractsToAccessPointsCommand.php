@@ -9,6 +9,7 @@ use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Log\Log;
+use Cake\ORM\Query\SelectQuery;
 
 /**
  * AutoAssignContractsToAccessPoints command.
@@ -67,7 +68,7 @@ class AutoAssignContractsToAccessPointsCommand extends Command
                     'Accounts.id' => 'DESC',
                 ])
                 // for each RADIUS account find lastly opened session
-                ->contain(['Radacct' => function ($q) {
+                ->contain(['Radacct' => function (SelectQuery $q) {
                     return $q
                         ->orderBy([
                             'Radacct.acctstarttime' => 'DESC',
