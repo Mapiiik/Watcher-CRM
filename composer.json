@@ -17,8 +17,8 @@
     "require": {
         "php": ">=8.1",
         "cakedc/users": "dev-12.next-cake5",
-        "cakephp/cakephp": "5.x-dev",
-        "cakephp/migrations": "4.x-dev",
+        "cakephp/cakephp": "^5.0.0",
+        "cakephp/migrations": "^4.0.0",
         "cakephp/plugin-installer": "^2.0",
         "cakephp/queue": "dev-cake5",
         "enqueue/fs": "^0.10.19",
@@ -35,9 +35,9 @@
     },
     "require-dev": {
         "cakedc/cakephp-phpstan": "dev-3.next-cake5",
-        "cakephp/bake": "3.x-dev",
-        "cakephp/cakephp-codesniffer": "5.x-dev",
-        "cakephp/debug_kit": "5.x-dev",
+        "cakephp/bake": "^3.0.0",
+        "cakephp/cakephp-codesniffer": "^5.0",
+        "cakephp/debug_kit": "^5.0.0",
         "josegonzalez/dotenv": "^4.0",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^1.0",
