@@ -7,26 +7,34 @@ use Phinx\Util\Literal;
 class AlterDealerOnCustomers extends AbstractMigration
 {
     /**
-     * Change Method.
+     * Up Method.
      *
      * More information on this method is available here:
-     * https://book.cakephp.org/phinx/0/en/migrations.html#the-change-method
+     * https://book.cakephp.org/phinx/0/en/migrations.html#the-up-method
      *
      * @return void
      */
-    public function change(): void
+    public function up()
     {
-        $table = $this->table('customers');
-        $table->changeColumn('dealer', 'boolean', [
-            'default' => null,
-            'limit' => null,
-            'null' => false,
-        ]);
-        $table->changeColumn('dealer', Literal::from('SMALLINT USING (CASE WHEN dealer THEN 1 ELSE 0 END)'), [
-            'default' => 0,
-            'limit' => 6,
-            'null' => false,
-        ]);
-        $table->update();
+        $this->execute('ALTER TABLE customers ALTER COLUMN dealer DROP DEFAULT');
+        $this->execute('ALTER TABLE customers ALTER COLUMN dealer TYPE smallint USING CASE WHEN dealer = TRUE THEN 1 ELSE 0 END');
+        $this->execute('ALTER TABLE customers ALTER COLUMN dealer SET DEFAULT 0');
+        $this->execute('ALTER TABLE customers ALTER COLUMN dealer SET NOT NULL');
+    }
+
+    /**
+     * Down Method.
+     *
+     * More information on this method is available here:
+     * https://book.cakephp.org/phinx/0/en/migrations.html#the-down-method
+     *
+     * @return void
+     */
+    public function down()
+    {
+        $this->execute('ALTER TABLE customers ALTER COLUMN dealer DROP DEFAULT');
+        $this->execute('ALTER TABLE customers ALTER COLUMN dealer TYPE boolean USING CASE WHEN dealer = 0 THEN FALSE ELSE TRUE END');
+        $this->execute('ALTER TABLE customers ALTER COLUMN dealer SET DEFAULT false');
+        $this->execute('ALTER TABLE customers ALTER COLUMN dealer SET NOT NULL');
     }
 }
