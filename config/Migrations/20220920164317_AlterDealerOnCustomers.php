@@ -16,7 +16,10 @@ class AlterDealerOnCustomers extends AbstractMigration
     public function up(): void
     {
         $this->execute('ALTER TABLE customers ALTER COLUMN dealer DROP DEFAULT');
-        $this->execute('ALTER TABLE customers ALTER COLUMN dealer TYPE smallint USING CASE WHEN dealer = TRUE THEN 1 ELSE 0 END');
+        $this->execute(
+            'ALTER TABLE customers ALTER COLUMN dealer TYPE smallint'
+                . ' USING CASE WHEN dealer = TRUE THEN 1 ELSE 0 END'
+        );
         $this->execute('ALTER TABLE customers ALTER COLUMN dealer SET DEFAULT 0');
         $this->execute('ALTER TABLE customers ALTER COLUMN dealer SET NOT NULL');
     }
@@ -32,7 +35,10 @@ class AlterDealerOnCustomers extends AbstractMigration
     public function down(): void
     {
         $this->execute('ALTER TABLE customers ALTER COLUMN dealer DROP DEFAULT');
-        $this->execute('ALTER TABLE customers ALTER COLUMN dealer TYPE boolean USING CASE WHEN dealer = 0 THEN FALSE ELSE TRUE END');
+        $this->execute(
+            'ALTER TABLE customers ALTER COLUMN dealer TYPE boolean'
+                . ' USING CASE WHEN dealer = 0 THEN FALSE ELSE TRUE END'
+        );
         $this->execute('ALTER TABLE customers ALTER COLUMN dealer SET DEFAULT false');
         $this->execute('ALTER TABLE customers ALTER COLUMN dealer SET NOT NULL');
     }
