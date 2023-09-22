@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 use Migrations\AbstractMigration;
-use Phinx\Util\Literal;
 
 class AlterDealerOnCustomers extends AbstractMigration
 {
@@ -14,7 +13,7 @@ class AlterDealerOnCustomers extends AbstractMigration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         $this->execute('ALTER TABLE customers ALTER COLUMN dealer DROP DEFAULT');
         $this->execute('ALTER TABLE customers ALTER COLUMN dealer TYPE smallint USING CASE WHEN dealer = TRUE THEN 1 ELSE 0 END');
@@ -30,7 +29,7 @@ class AlterDealerOnCustomers extends AbstractMigration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         $this->execute('ALTER TABLE customers ALTER COLUMN dealer DROP DEFAULT');
         $this->execute('ALTER TABLE customers ALTER COLUMN dealer TYPE boolean USING CASE WHEN dealer = 0 THEN FALSE ELSE TRUE END');
