@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Radius\Controller;
 
 use Cake\I18n\Date;
+use Cake\I18n\Number;
+use Cake\Log\Log;
 use Cake\ORM\Query\SelectQuery;
 use Mapik\RadiusClient\Client;
 use Mapik\RadiusClient\Exceptions\ClientException;
@@ -477,7 +479,7 @@ class AccountsController extends AppController
     }
 
     /**
-     * Update method
+     * Update related records method
      *
      * @param string|null $id Account id.
      * @return \Cake\Http\Response|null|void Redirects always to view.
@@ -504,6 +506,63 @@ class AccountsController extends AppController
         }
 
         return $this->redirect($this->referer(['action' => 'view', $account->id]));
+    }
+
+    /**
+     * Update related records for all accounts method
+     *
+     * @return \Cake\Http\Response|null|void Redirects always to index.
+     */
+    public function updateRelatedRecordsForAllAccounts()
+    {
+        $this->request->allowMethod(['post']);
+        /** @var iterable<\Radius\Model\Entity\Account> $accounts */
+        $accounts = $this->Accounts->find('all', contain: [
+            'Radcheck',
+            'Radreply',
+            'Radusergroup',
+        ]);
+
+        $processed = 0;
+        $failures = 0;
+
+        foreach ($accounts as $account) {
+            // autogenerate related records
+            $account->radcheck = $this->autoRadcheckData($account);
+            $account->radreply = $this->autoRadreplyData($account);
+            $account->radusergroup = $this->autoRadusergroupData($account);
+
+            $processed++;
+            if ($this->Accounts->save($account) === false) {
+                $failures++;
+                $this->Flash->error(
+                    __d(
+                        'radius',
+                        'The RADIUS account {0} could not be updated. Please, try again.',
+                        $account->username
+                    )
+                );
+                Log::warning('The RADIUS account ' . $account->username . ' could not be updated.');
+            }
+        }
+
+        $this->Flash->success(
+            __d(
+                'radius',
+                'Related entries for {0} RADIUS accounts were processed,'
+                    . ' {1} accounts were updated, and {2} accounts failed to update.',
+                Number::format($processed),
+                Number::format($processed - $failures),
+                Number::format($failures),
+            )
+        );
+        Log::info(
+            'Related entries for ' . Number::format($processed) . ' RADIUS accounts were processed, '
+                . Number::format($processed - $failures) . ' accounts were updated, and '
+                . Number::format($failures) . ' accounts failed to update.'
+        );
+
+        return $this->redirect(['action' => 'index']);
     }
 
     /**
@@ -610,11 +669,16 @@ class AccountsController extends AppController
 
         if (empty($radreply)) {
             $this->Flash->warning(
-                __d('radius', 'The RADIUS replies could not be found automatically. Please, set it manually.')
+                __d(
+                    'radius',
+                    'The RADIUS replies for {0} could not be found automatically. Please, set it manually.',
+                    $account->username
+                )
                 . ' ('
                 . __d('radius', 'The IP addresses for the contract are probably not set correctly.')
                 . ')'
             );
+            Log::warning('The RADIUS replies for ' . $account->username . ' could not be found automatically.');
         }
 
         if (empty($radreply)) {
@@ -672,7 +736,11 @@ class AccountsController extends AppController
 
         if (empty($radusergroup)) {
             $this->Flash->warning(
-                __d('radius', 'The RADIUS user groups could not be found automatically. Please, set it manually.')
+                __d(
+                    'radius',
+                    'The RADIUS user groups for {0} could not be found automatically. Please, set it manually.',
+                    $account->username
+                )
                 . ' ('
                 . __d(
                     'radius',
@@ -680,6 +748,7 @@ class AccountsController extends AppController
                 )
                 . ')'
             );
+            Log::warning('The RADIUS user groups for ' . $account->username . ' could not be found automatically.');
         }
 
         if (empty($radusergroup) && env('RADIUS_DEFAULT_USER_GROUP')) {
