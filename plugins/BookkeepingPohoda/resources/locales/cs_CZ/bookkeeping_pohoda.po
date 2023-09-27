@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-08-01 18:36+0200\n"
-"PO-Revision-Date: 2023-08-01 18:41+0200\n"
+"POT-Creation-Date: 2023-09-27 17:05+0200\n"
+"PO-Revision-Date: 2023-09-27 17:07+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -15,11 +15,11 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 "X-Generator: Poedit 3.3.2\n"
 
-#: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:122
+#: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:123
 msgid "Email was successfully sent."
 msgstr "E-mail byl úspěšně odeslán."
 
-#: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:129
+#: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:130
 msgid "The email cannot be sent."
 msgstr "E-mail nelze odeslat."
 

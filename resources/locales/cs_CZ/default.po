@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-08-26 17:56+0200\n"
-"PO-Revision-Date: 2023-08-26 17:59+0200\n"
+"POT-Creation-Date: 2023-09-27 17:05+0200\n"
+"PO-Revision-Date: 2023-09-27 17:13+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -272,20 +272,20 @@ msgid "The commission could not be deleted. Please, try again."
 msgstr "Provizi se nepodařilo smazat. Prosím zkuste to znovu."
 
 #: src/Controller/ContractStatesController.php:84
-#: src/Controller/ContractStatesController.php:108
+#: src/Controller/ContractStatesController.php:106
 msgid "The contract state has been saved."
 msgstr "Stav smlouvy byl uložen."
 
 #: src/Controller/ContractStatesController.php:88
-#: src/Controller/ContractStatesController.php:112
+#: src/Controller/ContractStatesController.php:110
 msgid "The contract state could not be saved. Please, try again."
 msgstr "Stav smlouvy nelze uložit. Prosím, zkuste to znovu."
 
-#: src/Controller/ContractStatesController.php:131
+#: src/Controller/ContractStatesController.php:127
 msgid "The contract state has been deleted."
 msgstr "Stav smlouvy byl odstraněn."
 
-#: src/Controller/ContractStatesController.php:133
+#: src/Controller/ContractStatesController.php:129
 msgid "The contract state could not be deleted. Please, try again."
 msgstr "Stav smlouvy nelze odstranit. Prosím, zkuste to znovu."
 
@@ -1213,8 +1213,8 @@ msgstr "Zadaný typ úkolu vyžaduje přiřazení smlouvy."
 #: templates/BorrowedEquipments/view.php:10 templates/Commissions/add.php:10
 #: templates/Commissions/edit.php:10 templates/Commissions/index.php:27
 #: templates/Commissions/view.php:10 templates/Commissions/view.php:85
-#: templates/Commissions/view.php:140 templates/ContractStates/add.php:12
-#: templates/ContractStates/edit.php:12 templates/ContractStates/index.php:35
+#: templates/Commissions/view.php:140 templates/ContractStates/add.php:10
+#: templates/ContractStates/edit.php:10 templates/ContractStates/index.php:35
 #: templates/ContractStates/view.php:10 templates/ContractStates/view.php:130
 #: templates/ContractVersions/add.php:13 templates/ContractVersions/edit.php:11
 #: templates/ContractVersions/index.php:36
@@ -1308,8 +1308,8 @@ msgstr "Přidat adresu"
 #: templates/Billings/add.php:63 templates/Billings/bulk_service_change.php:87
 #: templates/Billings/edit.php:68 templates/BorrowedEquipments/add.php:39
 #: templates/BorrowedEquipments/edit.php:47 templates/Commissions/add.php:23
-#: templates/Commissions/edit.php:28 templates/ContractStates/add.php:34
-#: templates/ContractStates/edit.php:42 templates/ContractVersions/add.php:68
+#: templates/Commissions/edit.php:28 templates/ContractStates/add.php:32
+#: templates/ContractStates/edit.php:40 templates/ContractVersions/add.php:68
 #: templates/ContractVersions/edit.php:76 templates/Contracts/add.php:64
 #: templates/Contracts/edit.php:134 templates/Contracts/print.php:268
 #: templates/Countries/add.php:23 templates/Countries/edit.php:28
@@ -1343,7 +1343,7 @@ msgstr "Potvrdit"
 #: templates/BorrowedEquipments/edit.php:15
 #: templates/BorrowedEquipments/index.php:78 templates/Commissions/edit.php:12
 #: templates/Commissions/index.php:42 templates/Commissions/view.php:110
-#: templates/Commissions/view.php:212 templates/ContractStates/edit.php:14
+#: templates/Commissions/view.php:212 templates/ContractStates/edit.php:12
 #: templates/ContractStates/index.php:57 templates/ContractStates/view.php:198
 #: templates/ContractVersions/edit.php:13
 #: templates/ContractVersions/index.php:63 templates/Contracts/edit.php:20
@@ -1396,7 +1396,7 @@ msgstr "Odstranit"
 #: templates/BorrowedEquipments/view.php:20 templates/Commissions/edit.php:14
 #: templates/Commissions/index.php:44 templates/Commissions/view.php:19
 #: templates/Commissions/view.php:112 templates/Commissions/view.php:214
-#: templates/ContractStates/edit.php:17 templates/ContractStates/index.php:59
+#: templates/ContractStates/edit.php:15 templates/ContractStates/index.php:59
 #: templates/ContractStates/view.php:20 templates/ContractStates/view.php:200
 #: templates/ContractVersions/edit.php:16
 #: templates/ContractVersions/index.php:65
@@ -1580,7 +1580,7 @@ msgstr "Mapy.cz"
 #: templates/element/Contracts/RemovedIpAddresses.php:36
 #: templates/element/Contracts/RemovedIpNetworks.php:40
 #: templates/element/Contracts/SoldEquipments.php:46
-#: vendor/cakephp/cakephp/src/View/Helper/PaginatorHelper.php:1164
+#: vendor/cakephp/cakephp/src/View/Helper/PaginatorHelper.php:1162
 msgid "View"
 msgstr "Zobrazit"
 
@@ -2300,16 +2300,16 @@ msgstr "Technik pro deinstalaci"
 msgid "Date of Termination of Services"
 msgstr "Datum ukončení poskytování služeb"
 
-#: templates/ContractStates/add.php:14 templates/ContractStates/edit.php:22
+#: templates/ContractStates/add.php:12 templates/ContractStates/edit.php:20
 #: templates/ContractStates/view.php:25 templates/Settings/index.php:50
 msgid "List Contract States"
 msgstr "Seznam stavů smlouvy"
 
-#: templates/ContractStates/add.php:24
+#: templates/ContractStates/add.php:22
 msgid "Add Contract State"
 msgstr "Přidat stav smlouvy"
 
-#: templates/ContractStates/edit.php:32 templates/ContractStates/view.php:12
+#: templates/ContractStates/edit.php:30 templates/ContractStates/view.php:12
 msgid "Edit Contract State"
 msgstr "Upravit stav smlouvy"
 

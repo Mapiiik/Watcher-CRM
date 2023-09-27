@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-08-01 18:36+0200\n"
+"POT-Creation-Date: 2023-09-27 17:05+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,11 +14,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:122
+#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:123
 msgid "Email was successfully sent."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:129
+#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:130
 msgid "The email cannot be sent."
 msgstr ""
 

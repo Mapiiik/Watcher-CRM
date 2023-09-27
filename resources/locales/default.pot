@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-08-26 17:56+0200\n"
+"POT-Creation-Date: 2023-09-27 17:05+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -290,20 +290,20 @@ msgid "The commission could not be deleted. Please, try again."
 msgstr ""
 
 #: ./src/Controller/ContractStatesController.php:84
-#: ./src/Controller/ContractStatesController.php:108
+#: ./src/Controller/ContractStatesController.php:106
 msgid "The contract state has been saved."
 msgstr ""
 
 #: ./src/Controller/ContractStatesController.php:88
-#: ./src/Controller/ContractStatesController.php:112
+#: ./src/Controller/ContractStatesController.php:110
 msgid "The contract state could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractStatesController.php:131
+#: ./src/Controller/ContractStatesController.php:127
 msgid "The contract state has been deleted."
 msgstr ""
 
-#: ./src/Controller/ContractStatesController.php:133
+#: ./src/Controller/ContractStatesController.php:129
 msgid "The contract state could not be deleted. Please, try again."
 msgstr ""
 
@@ -1316,8 +1316,8 @@ msgstr ""
 #: ./templates/Commissions/view.php:10
 #: ./templates/Commissions/view.php:85
 #: ./templates/Commissions/view.php:140
-#: ./templates/ContractStates/add.php:12
-#: ./templates/ContractStates/edit.php:12
+#: ./templates/ContractStates/add.php:10
+#: ./templates/ContractStates/edit.php:10
 #: ./templates/ContractStates/index.php:35
 #: ./templates/ContractStates/view.php:10
 #: ./templates/ContractStates/view.php:130
@@ -1474,8 +1474,8 @@ msgstr ""
 #: ./templates/BorrowedEquipments/edit.php:47
 #: ./templates/Commissions/add.php:23
 #: ./templates/Commissions/edit.php:28
-#: ./templates/ContractStates/add.php:34
-#: ./templates/ContractStates/edit.php:42
+#: ./templates/ContractStates/add.php:32
+#: ./templates/ContractStates/edit.php:40
 #: ./templates/ContractVersions/add.php:68
 #: ./templates/ContractVersions/edit.php:76
 #: ./templates/Contracts/add.php:64
@@ -1538,7 +1538,7 @@ msgstr ""
 #: ./templates/Commissions/index.php:42
 #: ./templates/Commissions/view.php:110
 #: ./templates/Commissions/view.php:212
-#: ./templates/ContractStates/edit.php:14
+#: ./templates/ContractStates/edit.php:12
 #: ./templates/ContractStates/index.php:57
 #: ./templates/ContractStates/view.php:198
 #: ./templates/ContractVersions/edit.php:13
@@ -1629,7 +1629,7 @@ msgstr ""
 #: ./templates/Commissions/view.php:19
 #: ./templates/Commissions/view.php:112
 #: ./templates/Commissions/view.php:214
-#: ./templates/ContractStates/edit.php:17
+#: ./templates/ContractStates/edit.php:15
 #: ./templates/ContractStates/index.php:59
 #: ./templates/ContractStates/view.php:20
 #: ./templates/ContractStates/view.php:200
@@ -1928,7 +1928,7 @@ msgstr ""
 #: ./templates/element/Contracts/RemovedIpAddresses.php:36
 #: ./templates/element/Contracts/RemovedIpNetworks.php:40
 #: ./templates/element/Contracts/SoldEquipments.php:46
-#: ./vendor/cakephp/cakephp/src/View/Helper/PaginatorHelper.php:1164
+#: ./vendor/cakephp/cakephp/src/View/Helper/PaginatorHelper.php:1162
 msgid "View"
 msgstr ""
 
@@ -2940,18 +2940,18 @@ msgstr ""
 msgid "Date of Termination of Services"
 msgstr ""
 
-#: ./templates/ContractStates/add.php:14
-#: ./templates/ContractStates/edit.php:22
+#: ./templates/ContractStates/add.php:12
+#: ./templates/ContractStates/edit.php:20
 #: ./templates/ContractStates/view.php:25
 #: ./templates/Settings/index.php:50
 msgid "List Contract States"
 msgstr ""
 
-#: ./templates/ContractStates/add.php:24
+#: ./templates/ContractStates/add.php:22
 msgid "Add Contract State"
 msgstr ""
 
-#: ./templates/ContractStates/edit.php:32
+#: ./templates/ContractStates/edit.php:30
 #: ./templates/ContractStates/view.php:12
 msgid "Edit Contract State"
 msgstr ""
