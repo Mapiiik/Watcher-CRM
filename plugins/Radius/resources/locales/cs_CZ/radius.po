@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-09-28 19:07+0200\n"
-"PO-Revision-Date: 2023-09-28 19:11+0200\n"
+"POT-Creation-Date: 2023-09-28 19:53+0200\n"
+"PO-Revision-Date: 2023-09-28 19:59+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -298,6 +298,7 @@ msgstr "Akce"
 #: plugins/Radius/templates/Accounts/monitoring.php:28
 #: plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:11
 #: plugins/Radius/templates/Accounts/view.php:25
+#: plugins/Radius/templates/Settings/index.php:24
 msgid "List RADIUS Accounts"
 msgstr "Seznam účtů RADIUS"
 
@@ -438,10 +439,8 @@ msgid "Search"
 msgstr "Hledat"
 
 #: plugins/Radius/templates/Accounts/index.php:21
-#: plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:21
-#: plugins/Radius/templates/Accounts/view.php:44
-msgid "Update Related Records"
-msgstr "Aktualizace souvisejících záznamů"
+msgid "Settings"
+msgstr "Nastavení"
 
 #: plugins/Radius/templates/Accounts/index.php:26
 #: plugins/Radius/templates/Accounts/monitoring.php:33
@@ -805,6 +804,12 @@ msgstr "Odpověď"
 msgid "Authentication Date"
 msgstr "Datum ověření"
 
+#: plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:21
+#: plugins/Radius/templates/Accounts/view.php:44
+#: plugins/Radius/templates/Settings/index.php:13
+msgid "Update Related Records"
+msgstr "Aktualizace souvisejících záznamů"
+
 #: plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:24
 msgid "State"
 msgstr "Stav"
@@ -928,6 +933,7 @@ msgstr "Priorita"
 #: plugins/Radius/templates/Nas/add.php:12
 #: plugins/Radius/templates/Nas/edit.php:20
 #: plugins/Radius/templates/Nas/view.php:25
+#: plugins/Radius/templates/Settings/index.php:82
 msgid "List RADIUS NAS"
 msgstr "Seznam RADIUS NASů"
 
@@ -985,6 +991,7 @@ msgstr "Popis"
 #: plugins/Radius/templates/Radacct/add.php:13
 #: plugins/Radius/templates/Radacct/edit.php:21
 #: plugins/Radius/templates/Radacct/view.php:25
+#: plugins/Radius/templates/Settings/index.php:50
 msgid "List RADIUS Accountings"
 msgstr "Seznam monitorování účtů RADIUS"
 
@@ -1042,6 +1049,7 @@ msgstr "Informace o připojení Stop"
 #: plugins/Radius/templates/Radcheck/add.php:13
 #: plugins/Radius/templates/Radcheck/edit.php:21
 #: plugins/Radius/templates/Radcheck/view.php:25
+#: plugins/Radius/templates/Settings/index.php:29
 msgid "List RADIUS Checks"
 msgstr "Seznam kontrol protokolu RADIUS"
 
@@ -1066,6 +1074,7 @@ msgstr "Kontroly protokolu RADIUS"
 #: plugins/Radius/templates/Radgroupcheck/add.php:12
 #: plugins/Radius/templates/Radgroupcheck/edit.php:20
 #: plugins/Radius/templates/Radgroupcheck/view.php:25
+#: plugins/Radius/templates/Settings/index.php:66
 msgid "List RADIUS Group Checks"
 msgstr "Seznam kontrol skupiny RADIUS"
 
@@ -1095,6 +1104,7 @@ msgstr "Kontroly skupiny RADIUS"
 #: plugins/Radius/templates/Radgroupreply/add.php:12
 #: plugins/Radius/templates/Radgroupreply/edit.php:20
 #: plugins/Radius/templates/Radgroupreply/view.php:25
+#: plugins/Radius/templates/Settings/index.php:71
 msgid "List RADIUS Group Replies"
 msgstr "Seznam odpovědí skupiny RADIUS"
 
@@ -1124,6 +1134,7 @@ msgstr "Odpovědi skupiny RADIUS"
 #: plugins/Radius/templates/Radpostauth/add.php:13
 #: plugins/Radius/templates/Radpostauth/edit.php:21
 #: plugins/Radius/templates/Radpostauth/view.php:25
+#: plugins/Radius/templates/Settings/index.php:55
 msgid "List RADIUS Post Authentications"
 msgstr "Seznam následných ověření RADIUS"
 
@@ -1153,6 +1164,7 @@ msgstr "Následné ověřování RADIUS"
 #: plugins/Radius/templates/Radreply/add.php:13
 #: plugins/Radius/templates/Radreply/edit.php:21
 #: plugins/Radius/templates/Radreply/view.php:25
+#: plugins/Radius/templates/Settings/index.php:34
 msgid "List RADIUS Replies"
 msgstr "Seznam odpovědí RADIUS"
 
@@ -1178,6 +1190,7 @@ msgstr "Odpovědi RADIUS"
 #: plugins/Radius/templates/Radusergroup/add.php:14
 #: plugins/Radius/templates/Radusergroup/edit.php:22
 #: plugins/Radius/templates/Radusergroup/view.php:25
+#: plugins/Radius/templates/Settings/index.php:39
 msgid "List RADIUS User Groups"
 msgstr "Seznam skupin uživatelů RADIUS"
 
@@ -1207,6 +1220,30 @@ msgstr "Související kontroly skupiny RADIUS"
 #: plugins/Radius/templates/Radusergroup/view.php:105
 msgid "Related RADIUS Group Replies"
 msgstr "Související odpovědi skupiny RADIUS"
+
+#: plugins/Radius/templates/Settings/index.php:7
+msgid "RADIUS Settings"
+msgstr "Nastavení RADIUS"
+
+#: plugins/Radius/templates/Settings/index.php:10
+msgid "RADIUS Account Functions"
+msgstr "Funkce účtu RADIUS"
+
+#: plugins/Radius/templates/Settings/index.php:21
+msgid "RADIUS Account Related"
+msgstr "Související s účtem RADIUS"
+
+#: plugins/Radius/templates/Settings/index.php:47
+msgid "RADIUS Monitoring Related"
+msgstr "Související s monitorováním RADIUS"
+
+#: plugins/Radius/templates/Settings/index.php:63
+msgid "RADIUS Groups Related"
+msgstr "Související se skupinami RADIUS"
+
+#: plugins/Radius/templates/Settings/index.php:79
+msgid "RADIUS System Related"
+msgstr "Související se systémem RADIUS"
 
 #: plugins/Radius/templates/cell/Accounts/display.php:18
 msgid "IP Addresses"

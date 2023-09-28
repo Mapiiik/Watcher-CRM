@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-09-28 19:07+0200\n"
+"POT-Creation-Date: 2023-09-28 19:53+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -281,6 +281,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Accounts/monitoring.php:28
 #: ./plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:11
 #: ./plugins/Radius/templates/Accounts/view.php:25
+#: ./plugins/Radius/templates/Settings/index.php:24
 msgid "List RADIUS Accounts"
 msgstr ""
 
@@ -421,9 +422,7 @@ msgid "Search"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/index.php:21
-#: ./plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:21
-#: ./plugins/Radius/templates/Accounts/view.php:44
-msgid "Update Related Records"
+msgid "Settings"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/index.php:26
@@ -784,6 +783,12 @@ msgstr ""
 msgid "Authentication Date"
 msgstr ""
 
+#: ./plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:21
+#: ./plugins/Radius/templates/Accounts/view.php:44
+#: ./plugins/Radius/templates/Settings/index.php:13
+msgid "Update Related Records"
+msgstr ""
+
 #: ./plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:24
 msgid "State"
 msgstr ""
@@ -907,6 +912,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Nas/add.php:12
 #: ./plugins/Radius/templates/Nas/edit.php:20
 #: ./plugins/Radius/templates/Nas/view.php:25
+#: ./plugins/Radius/templates/Settings/index.php:82
 msgid "List RADIUS NAS"
 msgstr ""
 
@@ -964,6 +970,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Radacct/add.php:13
 #: ./plugins/Radius/templates/Radacct/edit.php:21
 #: ./plugins/Radius/templates/Radacct/view.php:25
+#: ./plugins/Radius/templates/Settings/index.php:50
 msgid "List RADIUS Accountings"
 msgstr ""
 
@@ -1021,6 +1028,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Radcheck/add.php:13
 #: ./plugins/Radius/templates/Radcheck/edit.php:21
 #: ./plugins/Radius/templates/Radcheck/view.php:25
+#: ./plugins/Radius/templates/Settings/index.php:29
 msgid "List RADIUS Checks"
 msgstr ""
 
@@ -1045,6 +1053,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Radgroupcheck/add.php:12
 #: ./plugins/Radius/templates/Radgroupcheck/edit.php:20
 #: ./plugins/Radius/templates/Radgroupcheck/view.php:25
+#: ./plugins/Radius/templates/Settings/index.php:66
 msgid "List RADIUS Group Checks"
 msgstr ""
 
@@ -1074,6 +1083,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Radgroupreply/add.php:12
 #: ./plugins/Radius/templates/Radgroupreply/edit.php:20
 #: ./plugins/Radius/templates/Radgroupreply/view.php:25
+#: ./plugins/Radius/templates/Settings/index.php:71
 msgid "List RADIUS Group Replies"
 msgstr ""
 
@@ -1103,6 +1113,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Radpostauth/add.php:13
 #: ./plugins/Radius/templates/Radpostauth/edit.php:21
 #: ./plugins/Radius/templates/Radpostauth/view.php:25
+#: ./plugins/Radius/templates/Settings/index.php:55
 msgid "List RADIUS Post Authentications"
 msgstr ""
 
@@ -1132,6 +1143,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Radreply/add.php:13
 #: ./plugins/Radius/templates/Radreply/edit.php:21
 #: ./plugins/Radius/templates/Radreply/view.php:25
+#: ./plugins/Radius/templates/Settings/index.php:34
 msgid "List RADIUS Replies"
 msgstr ""
 
@@ -1157,6 +1169,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Radusergroup/add.php:14
 #: ./plugins/Radius/templates/Radusergroup/edit.php:22
 #: ./plugins/Radius/templates/Radusergroup/view.php:25
+#: ./plugins/Radius/templates/Settings/index.php:39
 msgid "List RADIUS User Groups"
 msgstr ""
 
@@ -1185,6 +1198,30 @@ msgstr ""
 
 #: ./plugins/Radius/templates/Radusergroup/view.php:105
 msgid "Related RADIUS Group Replies"
+msgstr ""
+
+#: ./plugins/Radius/templates/Settings/index.php:7
+msgid "RADIUS Settings"
+msgstr ""
+
+#: ./plugins/Radius/templates/Settings/index.php:10
+msgid "RADIUS Account Functions"
+msgstr ""
+
+#: ./plugins/Radius/templates/Settings/index.php:21
+msgid "RADIUS Account Related"
+msgstr ""
+
+#: ./plugins/Radius/templates/Settings/index.php:47
+msgid "RADIUS Monitoring Related"
+msgstr ""
+
+#: ./plugins/Radius/templates/Settings/index.php:63
+msgid "RADIUS Groups Related"
+msgstr ""
+
+#: ./plugins/Radius/templates/Settings/index.php:79
+msgid "RADIUS System Related"
 msgstr ""
 
 #: ./plugins/Radius/templates/cell/Accounts/display.php:18
