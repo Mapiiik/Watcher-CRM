@@ -511,58 +511,85 @@ class AccountsController extends AppController
     /**
      * Update related records for all accounts method
      *
-     * @return \Cake\Http\Response|null|void Redirects always to index.
+     * @return \Cake\Http\Response|null|void Renders view
      */
     public function updateRelatedRecordsForAllAccounts()
     {
-        $this->request->allowMethod(['post']);
-        /** @var iterable<\Radius\Model\Entity\Account> $accounts */
-        $accounts = $this->Accounts->find('all', contain: [
-            'Radcheck',
-            'Radreply',
-            'Radusergroup',
-        ]);
+        if ($this->request->is(['post'])) {
+            $accountsQuery = $this->Accounts->find('all', contain: [
+                'Radcheck',
+                'Radreply',
+                'Radusergroup',
+            ]);
 
-        $processed = 0;
-        $failures = 0;
-
-        foreach ($accounts as $account) {
-            // autogenerate related records
-            $account->radcheck = $this->autoRadcheckData($account);
-            $account->radreply = $this->autoRadreplyData($account);
-            $account->radusergroup = $this->autoRadusergroupData($account);
-
-            $processed++;
-            if ($this->Accounts->save($account) === false) {
-                $failures++;
-                $this->Flash->error(
-                    __d(
-                        'radius',
-                        'The RADIUS account {0} could not be updated. Please, try again.',
-                        $account->username
-                    )
-                );
-                Log::warning('The RADIUS account ' . $account->username . ' could not be updated.');
+            switch ($this->getRequest()->getData('state')) {
+                case 'active':
+                    $accountsQuery->where(['active' => true]);
+                    break;
+                case 'inactive':
+                    $accountsQuery->where(['active' => false]);
+                    break;
             }
+
+            $processed = 0;
+            $failures = 0;
+            $something_to_do = false;
+
+            /** @var iterable<\Radius\Model\Entity\Account> $accounts */
+            $accounts = $accountsQuery->all();
+
+            foreach ($accounts as $account) {
+                // autogenerate related records
+                if ($this->getRequest()->getData('radcheck') == '1') {
+                    $account->radcheck = $this->autoRadcheckData($account);
+                    $something_to_do = true;
+                }
+                if ($this->getRequest()->getData('radreply') == '1') {
+                    $account->radreply = $this->autoRadreplyData($account);
+                    $something_to_do = true;
+                }
+                if ($this->getRequest()->getData('radusergroup') == '1') {
+                    $account->radusergroup = $this->autoRadusergroupData($account);
+                    $something_to_do = true;
+                }
+
+                // stop processing if there is nothing to do
+                if (!$something_to_do) {
+                    $this->Flash->warning(__d('radius', 'Nothing has been selected for update.'));
+
+                    return;
+                }
+
+                $processed++;
+                if ($this->Accounts->save($account) === false) {
+                    $failures++;
+                    $this->Flash->error(
+                        __d(
+                            'radius',
+                            'The RADIUS account {0} could not be updated. Please, try again.',
+                            $account->username
+                        )
+                    );
+                    Log::warning('The RADIUS account ' . $account->username . ' could not be updated.');
+                }
+            }
+
+            $this->Flash->success(
+                __d(
+                    'radius',
+                    'Related entries for {0} RADIUS accounts were processed,'
+                        . ' {1} accounts were updated, and {2} accounts failed to update.',
+                    Number::format($processed),
+                    Number::format($processed - $failures),
+                    Number::format($failures),
+                )
+            );
+            Log::info(
+                'Related entries for ' . Number::format($processed) . ' RADIUS accounts were processed, '
+                    . Number::format($processed - $failures) . ' accounts were updated, and '
+                    . Number::format($failures) . ' accounts failed to update.'
+            );
         }
-
-        $this->Flash->success(
-            __d(
-                'radius',
-                'Related entries for {0} RADIUS accounts were processed,'
-                    . ' {1} accounts were updated, and {2} accounts failed to update.',
-                Number::format($processed),
-                Number::format($processed - $failures),
-                Number::format($failures),
-            )
-        );
-        Log::info(
-            'Related entries for ' . Number::format($processed) . ' RADIUS accounts were processed, '
-                . Number::format($processed - $failures) . ' accounts were updated, and '
-                . Number::format($failures) . ' accounts failed to update.'
-        );
-
-        return $this->redirect(['action' => 'index']);
     }
 
     /**

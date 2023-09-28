@@ -17,13 +17,10 @@
 <?= $this->Form->end() ?>
 
 <div class="accounts index content">
-    <?= $this->AuthLink->postLink(
+    <?= $this->AuthLink->link(
         __d('radius', 'Update Related Records'),
         ['action' => 'updateRelatedRecordsForAllAccounts'],
-        [
-            'confirm' => __d('radius', 'Are you sure you want to update related records for all accounts?'),
-            'class' => 'button float-right',
-        ]
+        ['class' => 'button float-right']
     ) ?>
     <?= $this->AuthLink->link(
         __d('radius', 'New RADIUS Account'),
