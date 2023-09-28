@@ -18,8 +18,8 @@
 
 <div class="accounts index content">
     <?= $this->AuthLink->link(
-        __d('radius', 'Update Related Records'),
-        ['action' => 'updateRelatedRecordsForAllAccounts'],
+        __d('radius', 'Settings'),
+        ['controller' => 'Settings', 'action' => 'index'],
         ['class' => 'button float-right']
     ) ?>
     <?= $this->AuthLink->link(

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace Radius\Controller;
 
 /**
  * Settings Controller
