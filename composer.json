@@ -20,7 +20,7 @@
         "cakephp/cakephp": "^5.0.0",
         "cakephp/migrations": "^4.0.0",
         "cakephp/plugin-installer": "^2.0",
-        "cakephp/queue": "^2.0.0@dev",
+        "cakephp/queue": "^2.0.1",
         "enqueue/fs": "^0.10.19",
         "enqueue/redis": "^0.10.19",
         "evilfreelancer/routeros-api-php": "^1.5",
