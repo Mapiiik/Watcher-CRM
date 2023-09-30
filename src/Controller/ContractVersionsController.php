@@ -74,6 +74,8 @@ class ContractVersionsController extends AppController
                 'InstallationAddresses',
                 'ServiceTypes',
             ],
+            'Creators',
+            'Modifiers',
         ]);
 
         $this->set(compact('contractVersion'));
