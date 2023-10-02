@@ -4,8 +4,8 @@ use Cake\I18n\DateTime;
 /**
  * @var \App\View\AppView $this
  * @var \Radius\Model\Entity\Account $account
- * @var iterable<\Radius\Model\Entity\Radacct> $radaccts
- * @var iterable<\Radius\Model\Entity\Radpostauth> $radpostauths
+ * @var \Cake\Datasource\Paging\PaginatedResultSet<\Radius\Model\Entity\Radacct> $radaccts
+ * @var \Cake\Datasource\Paging\PaginatedResultSet<\Radius\Model\Entity\Radpostauth> $radpostauths
  * @var bool $details
  */
 ?>
@@ -158,7 +158,7 @@ use Cake\I18n\DateTime;
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <?php $this->Paginator->setPaginated($radaccts); ?>
+                            <?php debug($radaccts); $this->Paginator->setPaginated($radaccts); ?>
                             <?php if ($details) : ?>
                             <th><?=
                                 $this->Paginator->sort('servicetype', __d('radius', 'Service Type'))
