@@ -14,6 +14,11 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
  * @property \CakeDC\Users\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Creators
  * @property \CakeDC\Users\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Modifiers
+ * @property \Radius\Model\Table\RadcheckTable&\Cake\ORM\Association\HasMany $Radcheck
+ * @property \Radius\Model\Table\RadreplyTable&\Cake\ORM\Association\HasMany $Radpreply
+ * @property \Radius\Model\Table\RadusergroupTable&\Cake\ORM\Association\HasMany $Radusergroup
+ * @property \Radius\Model\Table\RadacctTable&\Cake\ORM\Association\HasMany $Radacct
+ * @property \Radius\Model\Table\RadpostauthTable&\Cake\ORM\Association\HasMany $Radpostauth
  * @method \Radius\Model\Entity\Account newEmptyEntity()
  * @method \Radius\Model\Entity\Account newEntity(array $data, array $options = [])
  * @method \Radius\Model\Entity\Account[] newEntities(array $data, array $options = [])
@@ -88,11 +93,11 @@ class AccountsTable extends AppTable
             'saveStrategy' => 'replace',
             'cascadeCallbacks' => true,
         ]);
-        $this->hasMany('Radius.Radpostauth', [
+        $this->hasMany('Radius.Radacct', [
             'foreignKey' => 'username',
             'bindingKey' => 'username',
         ]);
-        $this->hasMany('Radius.Radacct', [
+        $this->hasMany('Radius.Radpostauth', [
             'foreignKey' => 'username',
             'bindingKey' => 'username',
         ]);

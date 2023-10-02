@@ -104,23 +104,41 @@ class AccountsController extends AppController
         $account = $this->Accounts->get($id, contain: [
             'Contracts',
             'Customers',
-            'Radacct' => [
-                'sort' => [
-                    'Radacct.acctstarttime' => 'DESC',
-                ],
-            ],
-            'Radpostauth' => [
-                'sort' => [
-                    'Radpostauth.authdate' => 'DESC',
-                ],
-            ],
             'Creators',
             'Modifiers',
         ]);
 
+        $radaccts = $this->paginate(
+            $this->Accounts->Radacct
+                ->find()
+                ->where([
+                    'Radacct.username' => $account->username,
+                ]),
+            [
+                'scope' => 'radacct',
+                'order' => [
+                    'acctstarttime' => 'DESC',
+                ],
+            ]
+        );
+
+        $radpostauths = $this->paginate(
+            $this->Accounts->Radpostauth
+                ->find()
+                ->where([
+                    'Radpostauth.username' => $account->username,
+                ]),
+            [
+                'scope' => 'radpostauth',
+                'order' => [
+                    'acctstarttime' => 'DESC',
+                ],
+            ]
+        );
+
         $details = $this->request->getQuery('show_details') == true;
 
-        $this->set(compact('account', 'details'));
+        $this->set(compact('account', 'details', 'radaccts', 'radpostauths'));
     }
 
     /**

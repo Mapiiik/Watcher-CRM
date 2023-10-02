@@ -4,6 +4,8 @@ use Cake\I18n\DateTime;
 /**
  * @var \App\View\AppView $this
  * @var \Radius\Model\Entity\Account $account
+ * @var iterable<\Radius\Model\Entity\Radacct> $radaccts
+ * @var iterable<\Radius\Model\Entity\Radpostauth> $radpostauths
  * @var bool $details
  */
 ?>
@@ -152,44 +154,87 @@ use Cake\I18n\DateTime;
                     <?= $this->Form->end() ?>
                 </div>
                 <h4><?= __d('radius', 'Related RADIUS Accountings') ?></h4>
-                <?php if (!empty($account->radacct)) : ?>
+                <?php if (!empty($radaccts)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
+                            <?php $this->Paginator->setPaginated($radaccts); ?>
                             <?php if ($details) : ?>
-                            <th><?= __d('radius', 'Service Type') ?></th>
-                            <th><?= __d('radius', 'Framed Protocol') ?></th>
-                            <th><?= __d('radius', 'Called Station ID') ?></th>
+                            <th><?=
+                                $this->Paginator->sort('servicetype', __d('radius', 'Service Type'))
+                            ?></th>
+                            <th><?=
+                                $this->Paginator->sort('framedprotocol', __d('radius', 'Framed Protocol'))
+                            ?></th>
+                            <th><?=
+                                $this->Paginator->sort('calledstationid', __d('radius', 'Called Station ID'))
+                            ?></th>
                             <?php endif ?>
-                            <th><?= __d('radius', 'Calling Station ID') ?></th>
-                            <th><?= __d('radius', 'Framed IP Address') ?></th>
-                            <th><?= __d('radius', 'Framed IPv6 Address') ?></th>
-                            <th><?= __d('radius', 'Framed IPv6 Prefix') ?></th>
-                            <th><?= __d('radius', 'Delegated IPv6 Prefix') ?></th>
+                            <th><?=
+                                $this->Paginator->sort('callingstationid', __d('radius', 'Calling Station ID'))
+                            ?></th>
+                            <th><?=
+                                $this->Paginator->sort('framedipaddress', __d('radius', 'Framed IP Address'))
+                            ?></th>
+                            <th><?=
+                                $this->Paginator->sort('framedipv6address', __d('radius', 'Framed IPv6 Address'))
+                            ?></th>
+                            <th><?=
+                                $this->Paginator->sort('framedipv6prefix', __d('radius', 'Framed IPv6 Prefix'))
+                            ?></th>
+                            <th><?=
+                                $this->Paginator->sort('delegatedipv6prefix', __d('radius', 'Delegated IPv6 Prefix'))
+                            ?></th>
                             <?php if ($details) : ?>
-                            <th><?= __d('radius', 'Framed Interface ID') ?></th>
+                            <th><?=
+                                $this->Paginator->sort('framedinterfaceid', __d('radius', 'Framed Interface ID'))
+                            ?></th>
                             <?php endif ?>
-                            <th><?= __d('radius', 'NAS IP Address') ?></th>
-                            <th><?= __d('radius', 'NAS Port ID') ?></th>
+                            <th><?=
+                                $this->Paginator->sort('nasipaddress', __d('radius', 'NAS IP Address'))
+                            ?></th>
+                            <th><?=
+                                $this->Paginator->sort('nasportid', __d('radius', 'NAS Port ID'))
+                            ?></th>
                             <?php if ($details) : ?>
-                            <th><?= __d('radius', 'NAS Port Type') ?></th>
+                            <th><?=
+                                $this->Paginator->sort('nasporttype', __d('radius', 'NAS Port Type'))
+                            ?></th>
                             <?php endif ?>
-                            <th><?= __d('radius', 'Network Access Server') ?></th>
-                            <th><?= __d('radius', 'Start Time') ?></th>
+                            <th><?=
+                                $this->Paginator->sort('nasipaddress', __d('radius', 'Network Access Server'))
+                            ?></th>
+                            <th><?=
+                                $this->Paginator->sort('acctstarttime', __d('radius', 'Start Time'))
+                            ?></th>
                             <?php if ($details) : ?>
-                            <th><?= __d('radius', 'Update Time') ?></th>
-                            <th><?= __d('radius', 'Update Interval') ?></th>
+                            <th><?=
+                                $this->Paginator->sort('acctupdatetime', __d('radius', 'Update Time'))
+                            ?></th>
+                            <th><?=
+                                $this->Paginator->sort('acctinterval', __d('radius', 'Update Interval'))
+                            ?></th>
                             <?php endif ?>
-                            <th><?= __d('radius', 'Stop Time') ?></th>
+                            <th><?=
+                                $this->Paginator->sort('acctstoptime', __d('radius', 'Stop Time'))
+                            ?></th>
                             <?php if ($details) : ?>
-                            <th><?= __d('radius', 'Termination Cause') ?></th>
+                            <th><?=
+                                $this->Paginator->sort('acctterminatecause', __d('radius', 'Termination Cause'))
+                            ?></th>
                             <?php endif ?>
-                            <th><?= __d('radius', 'Session Time') ?></th>
-                            <th><?= __d('radius', 'Uploaded') ?></th>
-                            <th><?= __d('radius', 'Downloaded') ?></th>
+                            <th><?=
+                                $this->Paginator->sort('acctsessiontime', __d('radius', 'Session Time'))
+                            ?></th>
+                            <th><?=
+                                $this->Paginator->sort('acctinputoctets', __d('radius', 'Uploaded'))
+                            ?></th>
+                            <th><?=
+                                $this->Paginator->sort('acctoutputoctets', __d('radius', 'Downloaded'))
+                            ?></th>
                             <th class="actions"><?= __d('radius', 'Actions') ?></th>
                         </tr>
-                        <?php foreach ($account->radacct as $radacct) : ?>
+                        <?php foreach ($radaccts as $radacct) : ?>
                         <tr>
                             <?php if ($details) : ?>
                             <td><?= h($radacct->servicetype) ?></td>
@@ -270,24 +315,55 @@ use Cake\I18n\DateTime;
                         <?php endforeach; ?>
                     </table>
                 </div>
+                <div class="paginator">
+                    <ul class="pagination">
+                        <?= $this->Paginator->first('<< ' . __d('radius', 'first')) ?>
+                        <?= $this->Paginator->prev('< ' . __d('radius', 'previous')) ?>
+                        <?= $this->Paginator->numbers() ?>
+                        <?= $this->Paginator->next(__d('radius', 'next') . ' >') ?>
+                        <?= $this->Paginator->last(__d('radius', 'last') . ' >>') ?>
+                    </ul>
+                    <p><?=
+                        $this->Paginator->counter(
+                            __d(
+                                'radius',
+                                'Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'
+                            )
+                        ) ?></p>
+                </div>
                 <?php endif; ?>
             </div>
             <div class="related">
                 <h4><?= __d('radius', 'Related RADIUS Post Authentications') ?></h4>
-                <?php if (!empty($account->radpostauth)) : ?>
+                <?php if (!empty($radpostauths)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __d('radius', 'Id') ?></th>
-                            <th><?= __d('radius', 'Username') ?></th>
-                            <th><?= __d('radius', 'Pass') ?></th>
-                            <th><?= __d('radius', 'Reply') ?></th>
-                            <th><?= __d('radius', 'Called Station ID') ?></th>
-                            <th><?= __d('radius', 'Calling Station ID') ?></th>
-                            <th><?= __d('radius', 'Authentication Date') ?></th>
+                            <?php $this->Paginator->setPaginated($radpostauths); ?>
+                            <th><?=
+                                $this->Paginator->sort('id', __d('radius', 'Id'))
+                            ?></th>
+                            <th><?=
+                                $this->Paginator->sort('username', __d('radius', 'Username'))
+                            ?></th>
+                            <th><?=
+                                $this->Paginator->sort('pass', __d('radius', 'Pass'))
+                            ?></th>
+                            <th><?=
+                                $this->Paginator->sort('reply', __d('radius', 'Reply'))
+                            ?></th>
+                            <th><?=
+                                $this->Paginator->sort('calledstationid', __d('radius', 'Called Station ID'))
+                            ?></th>
+                            <th><?=
+                                $this->Paginator->sort('callingstationid', __d('radius', 'Calling Station ID'))
+                            ?></th>
+                            <th><?=
+                                $this->Paginator->sort('authdate', __d('radius', 'Authentication Date'))
+                            ?></th>
                             <th class="actions"><?= __d('radius', 'Actions') ?></th>
                         </tr>
-                        <?php foreach ($account->radpostauth as $radpostauth) : ?>
+                        <?php foreach ($radpostauths as $radpostauth) : ?>
                         <tr>
                             <td><?= h($radpostauth->id) ?></td>
                             <td><?= h($radpostauth->username) ?></td>
@@ -319,6 +395,22 @@ use Cake\I18n\DateTime;
                         </tr>
                         <?php endforeach; ?>
                     </table>
+                </div>
+                <div class="paginator">
+                    <ul class="pagination">
+                        <?= $this->Paginator->first('<< ' . __d('radius', 'first')) ?>
+                        <?= $this->Paginator->prev('< ' . __d('radius', 'previous')) ?>
+                        <?= $this->Paginator->numbers() ?>
+                        <?= $this->Paginator->next(__d('radius', 'next') . ' >') ?>
+                        <?= $this->Paginator->last(__d('radius', 'last') . ' >>') ?>
+                    </ul>
+                    <p><?=
+                        $this->Paginator->counter(
+                            __d(
+                                'radius',
+                                'Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'
+                            )
+                        ) ?></p>
                 </div>
                 <?php endif; ?>
             </div>
