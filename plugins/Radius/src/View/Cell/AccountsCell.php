@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Radius\View\Cell;
 
 use Cake\Database\Exception\MissingConnectionException;
+use Cake\Database\Query\SelectQuery;
 use Cake\View\Cell;
 
 /**
@@ -44,11 +45,13 @@ class AccountsCell extends Cell
     public function display(array $conditions = []): void
     {
         $contain = [
-            'Radacct' => [
-                'sort' => [
-                    'Radacct.acctstarttime' => 'DESC',
-                ],
-            ],
+            'Radacct' => function (SelectQuery $q) {
+                return $q
+                    ->orderBy([
+                        'Radacct.acctstarttime' => 'DESC',
+                    ])
+                    ->limit(1);
+            },
             'Radreply',
             'Radusergroup',
         ];
