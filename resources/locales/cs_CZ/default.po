@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-09-27 17:05+0200\n"
-"PO-Revision-Date: 2023-09-27 17:13+0200\n"
+"POT-Creation-Date: 2023-10-02 17:21+0200\n"
+"PO-Revision-Date: 2023-10-02 17:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -289,21 +289,21 @@ msgstr "Stav smlouvy byl odstraněn."
 msgid "The contract state could not be deleted. Please, try again."
 msgstr "Stav smlouvy nelze odstranit. Prosím, zkuste to znovu."
 
-#: src/Controller/ContractVersionsController.php:104
-#: src/Controller/ContractVersionsController.php:150
+#: src/Controller/ContractVersionsController.php:106
+#: src/Controller/ContractVersionsController.php:152
 msgid "The contract version has been saved."
 msgstr "Verze smlouvy byla uložena."
 
-#: src/Controller/ContractVersionsController.php:108
-#: src/Controller/ContractVersionsController.php:154
+#: src/Controller/ContractVersionsController.php:110
+#: src/Controller/ContractVersionsController.php:156
 msgid "The contract version could not be saved. Please, try again."
 msgstr "Verzi smlouvy nebylo možné uložit. Zkuste to prosím znovu."
 
-#: src/Controller/ContractVersionsController.php:189
+#: src/Controller/ContractVersionsController.php:191
 msgid "The contract version has been deleted."
 msgstr "Verze smlouvy byla odstraněna."
 
-#: src/Controller/ContractVersionsController.php:191
+#: src/Controller/ContractVersionsController.php:193
 msgid "The contract version could not be deleted. Please, try again."
 msgstr "Verzi smlouvy nebylo možné odstranit. Zkuste to prosím znovu."
 
