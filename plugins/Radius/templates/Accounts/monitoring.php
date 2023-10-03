@@ -158,7 +158,7 @@ use Cake\I18n\DateTime;
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <?php debug($radaccts); $this->Paginator->setPaginated($radaccts); ?>
+                            <?php $this->Paginator->setPaginated($radaccts); ?>
                             <?php if ($details) : ?>
                             <th><?=
                                 $this->Paginator->sort('servicetype', __d('radius', 'Service Type'))
