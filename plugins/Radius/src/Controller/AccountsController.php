@@ -131,7 +131,7 @@ class AccountsController extends AppController
             [
                 'scope' => 'radpostauth',
                 'order' => [
-                    'acctstarttime' => 'DESC',
+                    'authdate' => 'DESC',
                 ],
             ]
         );
