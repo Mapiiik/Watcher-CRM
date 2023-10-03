@@ -46,11 +46,23 @@ class AccountsCell extends Cell
     {
         $contain = [
             'Radacct' => function (SelectQuery $q) {
-                return $q
-                    ->orderBy([
-                        'Radacct.acctstarttime' => 'DESC',
+                $subquery = $this->fetchTable('Radius.Radacct')->subquery()
+                    ->select([
+                        'username',
+                        'max_acctstarttime' => $q->func()->max('acctstarttime'),
                     ])
-                    ->limit(1);
+                    ->groupBy([
+                        'username',
+                    ]);
+
+                return $q
+                    ->innerJoin(
+                        ['RadacctLast' => $subquery],
+                        [
+                            'Radacct.username = RadacctLast.username',
+                            'Radacct.acctstarttime = RadacctLast.max_acctstarttime',
+                        ]
+                    );
             },
             'Radreply',
             'Radusergroup',
