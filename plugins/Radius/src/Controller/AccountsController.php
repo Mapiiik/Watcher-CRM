@@ -705,7 +705,7 @@ class AccountsController extends AppController
                 $radreply[] = $this->fetchTable('Radius.Radreply')
                     ->findOrNewEntity([
                         'username' => $account->username,
-                        'attribute' => 'Framed-IPv6-Prefix',
+                        'attribute' => 'Delegated-IPv6-Prefix',
                         'op' => '=',
                         'value' => $address . '/' . $mask,
                     ]);
