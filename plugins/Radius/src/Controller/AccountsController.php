@@ -29,23 +29,17 @@ class AccountsController extends AppController
      */
     public function index()
     {
-        $customer_id = $this->request->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->request->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         // filter
         $conditions = [];
-        if (isset($customer_id)) {
-            $conditions += ['Accounts.customer_id' => $customer_id];
+        if (isset($this->customer_id)) {
+            $conditions += ['Accounts.customer_id' => $this->customer_id];
         }
-        if (isset($contract_id)) {
-            $conditions += ['Accounts.contract_id' => $contract_id];
+        if (isset($this->contract_id)) {
+            $conditions += ['Accounts.contract_id' => $this->contract_id];
         }
 
         // search
-        $search = $this->request->getQuery('search');
+        $search = $this->getRequest()->getQuery('search');
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
@@ -137,7 +131,7 @@ class AccountsController extends AppController
             ]
         );
 
-        $details = $this->request->getQuery('show_details') == true;
+        $details = $this->getRequest()->getQuery('show_details') == true;
 
         $this->set(compact('account', 'details', 'radaccts', 'radpostauths'));
     }
@@ -149,25 +143,19 @@ class AccountsController extends AppController
      */
     public function add()
     {
-        $customer_id = $this->request->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->request->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         $account = $this->Accounts->newEmptyEntity();
 
-        if (isset($customer_id)) {
-            $account->customer_id = $customer_id;
+        if (isset($this->customer_id)) {
+            $account->customer_id = $this->customer_id;
         }
-        if (isset($contract_id)) {
-            $account->contract_id = $contract_id;
+        if (isset($this->contract_id)) {
+            $account->contract_id = $this->contract_id;
         }
 
-        if ($this->request->is('post')) {
-            $account = $this->Accounts->patchEntity($account, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $account = $this->Accounts->patchEntity($account, $this->getRequest()->getData());
 
-            if ($this->request->getData('refresh') == 'refresh') {
+            if ($this->getRequest()->getData('refresh') == 'refresh') {
                 // only refresh
             } else {
                 if (!$account->hasErrors()) {
@@ -201,15 +189,15 @@ class AccountsController extends AppController
             ],
         );
 
-        if (isset($customer_id)) {
-            $customers->where(['Customers.id' => $customer_id]);
-            $contracts->where(['Contracts.customer_id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
+            $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
         if (isset($account->customer_id)) {
             $contracts->where(['Contracts.customer_id' => $account->customer_id]);
         }
-        if (isset($contract_id)) {
-            $contracts->where(['Contracts.id' => $contract_id]);
+        if (isset($this->contract_id)) {
+            $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
         // START find free username
@@ -220,8 +208,8 @@ class AccountsController extends AppController
 
             if ($customer->id == $contract->customer_id) {
                 // clear request data for username if empty
-                if (empty($this->request->getData('username'))) {
-                    $this->request = $this->request->withoutData('username');
+                if (empty($this->getRequest()->getData('username'))) {
+                    $this->setRequest($this->getRequest()->withoutData('username'));
                 }
 
                 if (empty($customer->company)) {
@@ -266,19 +254,13 @@ class AccountsController extends AppController
      */
     public function edit(?string $id = null)
     {
-        $customer_id = $this->request->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->request->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         $account = $this->Accounts->get($id, contain: [
             'Radcheck',
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $account = $this->Accounts->patchEntity($account, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $account = $this->Accounts->patchEntity($account, $this->getRequest()->getData());
 
-            if ($this->request->getData('refresh') == 'refresh') {
+            if ($this->getRequest()->getData('refresh') == 'refresh') {
                 // only refresh
             } else {
                 if (!$account->hasErrors()) {
@@ -310,15 +292,15 @@ class AccountsController extends AppController
             ],
         );
 
-        if (isset($customer_id)) {
-            $customers->where(['Customers.id' => $customer_id]);
-            $contracts->where(['Contracts.customer_id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
+            $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
         if (isset($account->customer_id)) {
             $contracts->where(['Contracts.customer_id' => $account->customer_id]);
         }
-        if (isset($contract_id)) {
-            $contracts->where(['Contracts.id' => $contract_id]);
+        if (isset($this->contract_id)) {
+            $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
         $this->set(compact('account', 'customers', 'contracts'));
@@ -333,7 +315,7 @@ class AccountsController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $account = $this->Accounts->get($id);
         if ($this->Accounts->delete($account)) {
             $this->Flash->success(__d('radius', 'The RADIUS account has been deleted.'));
@@ -353,7 +335,7 @@ class AccountsController extends AppController
      */
     public function disconnectRequest(?string $id = null)
     {
-        $this->request->allowMethod(['post']);
+        $this->getRequest()->allowMethod(['post']);
         $account = $this->Accounts->get($id, contain: [
             'Radacct' => [
                 'conditions' => [
@@ -506,7 +488,7 @@ class AccountsController extends AppController
      */
     public function updateRelatedRecords(?string $id = null)
     {
-        $this->request->allowMethod(['post']);
+        $this->getRequest()->allowMethod(['post']);
         $account = $this->Accounts->get($id, contain: [
             'Radcheck',
             'Radreply',
@@ -534,7 +516,7 @@ class AccountsController extends AppController
      */
     public function updateRelatedRecordsForAllAccounts()
     {
-        if ($this->request->is(['post'])) {
+        if ($this->getRequest()->is(['post'])) {
             $accountsQuery = $this->Accounts->find('all', contain: [
                 'Radcheck',
                 'Radreply',

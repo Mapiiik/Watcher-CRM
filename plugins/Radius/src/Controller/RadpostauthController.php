@@ -51,8 +51,8 @@ class RadpostauthController extends AppController
     public function add()
     {
         $radpostauth = $this->Radpostauth->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $radpostauth = $this->Radpostauth->patchEntity($radpostauth, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $radpostauth = $this->Radpostauth->patchEntity($radpostauth, $this->getRequest()->getData());
             if ($this->Radpostauth->save($radpostauth)) {
                 $this->Flash->success(__d('radius', 'The RADIUS post authentication has been saved.'));
 
@@ -76,8 +76,8 @@ class RadpostauthController extends AppController
     public function edit(?string $id = null)
     {
         $radpostauth = $this->Radpostauth->get($id, contain: []);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $radpostauth = $this->Radpostauth->patchEntity($radpostauth, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $radpostauth = $this->Radpostauth->patchEntity($radpostauth, $this->getRequest()->getData());
             if ($this->Radpostauth->save($radpostauth)) {
                 $this->Flash->success(__d('radius', 'The RADIUS post authentication has been saved.'));
 
@@ -100,7 +100,7 @@ class RadpostauthController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $radpostauth = $this->Radpostauth->get($id);
         if ($this->Radpostauth->delete($radpostauth)) {
             $this->Flash->success(__d('radius', 'The RADIUS post authentication has been deleted.'));

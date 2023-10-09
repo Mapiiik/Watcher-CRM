@@ -38,8 +38,20 @@ use Cake\Routing\Router;
  */
 class AppController extends Controller
 {
-    # User settings
+    /*
+     * User settings
+     */
     protected array $user_settings = [];
+
+    /*
+     * Customer ID
+     */
+    protected ?int $customer_id = null;
+
+    /*
+     * Contract ID
+     */
+    protected ?int $contract_id = null;
 
     /**
      * Initialization hook method.
@@ -115,6 +127,18 @@ class AppController extends Controller
 
         # Load user settings
         $this->user_settings = $identity['user_settings'] ?? [];
+
+        # Load selected customer ID from request
+        $this->customer_id = $this->getRequest()->getParam('customer_id') ?
+            (int)$this->getRequest()->getParam('customer_id') :
+            null;
+        $this->set('customer_id', $this->customer_id);
+
+        # Load selected contract ID from request
+        $this->contract_id = $this->getRequest()->getParam('contract_id') ?
+            (int)$this->getRequest()->getParam('contract_id') :
+            null;
+        $this->set('contract_id', $this->contract_id);
 
         # Determine if we want to set the language
         if ($this->getRequest()->getQuery('language')) {

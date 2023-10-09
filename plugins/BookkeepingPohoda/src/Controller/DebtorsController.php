@@ -24,7 +24,7 @@ class DebtorsController extends AppController
      */
     public function block(?string $id = null)
     {
-        $this->request->allowMethod(['post']);
+        $this->getRequest()->allowMethod(['post']);
 
         $result = $this->updateRouters($id, true);
 
@@ -51,7 +51,7 @@ class DebtorsController extends AppController
      */
     public function unblock(?string $id = null)
     {
-        $this->request->allowMethod(['post']);
+        $this->getRequest()->allowMethod(['post']);
 
         $result = $this->updateRouters($id, false);
 

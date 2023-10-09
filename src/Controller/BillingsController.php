@@ -23,23 +23,17 @@ class BillingsController extends AppController
      */
     public function index()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->getRequest()->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         // filter
         $conditions = [];
-        if (isset($customer_id)) {
-            $conditions += ['Billings.customer_id' => $customer_id];
+        if (isset($this->customer_id)) {
+            $conditions += ['Billings.customer_id' => $this->customer_id];
         }
-        if (isset($contract_id)) {
-            $conditions += ['Billings.contract_id' => $contract_id];
+        if (isset($this->contract_id)) {
+            $conditions += ['Billings.contract_id' => $this->contract_id];
         }
 
         // search
-        $search = $this->request->getQuery('search');
+        $search = $this->getRequest()->getQuery('search');
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
@@ -97,19 +91,13 @@ class BillingsController extends AppController
      */
     public function add()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->getRequest()->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         $billing = $this->Billings->newEmptyEntity();
 
-        if (isset($customer_id)) {
-            $billing->customer_id = $customer_id;
+        if (isset($this->customer_id)) {
+            $billing->customer_id = $this->customer_id;
         }
-        if (isset($contract_id)) {
-            $billing->contract_id = $contract_id;
+        if (isset($this->contract_id)) {
+            $billing->contract_id = $this->contract_id;
         }
 
         if ($this->getRequest()->is('post')) {
@@ -158,14 +146,14 @@ class BillingsController extends AppController
             'name',
         ]);
 
-        if (isset($customer_id)) {
-            $customers->where(['Customers.id' => $customer_id]);
-            $contracts->where(['Contracts.customer_id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
+            $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
-        if (isset($contract_id)) {
-            $contracts->where(['Contracts.id' => $contract_id]);
+        if (isset($this->contract_id)) {
+            $contracts->where(['Contracts.id' => $this->contract_id]);
             $services->where(['OR' => [
-                'service_type_id' => $this->Billings->Contracts->get($contract_id)->service_type_id,
+                'service_type_id' => $this->Billings->Contracts->get($this->contract_id)->service_type_id,
                 'service_type_id IS NULL',
             ]]);
         } elseif (isset($billing->contract_id)) {
@@ -190,12 +178,6 @@ class BillingsController extends AppController
      */
     public function edit(?string $id = null)
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->getRequest()->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         $billing = $this->Billings->get($id, contain: []);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
@@ -244,14 +226,14 @@ class BillingsController extends AppController
             'name',
         ]);
 
-        if (isset($customer_id)) {
-            $customers->where(['Customers.id' => $customer_id]);
-            $contracts->where(['Contracts.customer_id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
+            $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
-        if (isset($contract_id)) {
-            $contracts->where(['Contracts.id' => $contract_id]);
+        if (isset($this->contract_id)) {
+            $contracts->where(['Contracts.id' => $this->contract_id]);
             $services->where(['OR' => [
-                'service_type_id' => $this->Billings->Contracts->get($contract_id)->service_type_id,
+                'service_type_id' => $this->Billings->Contracts->get($this->contract_id)->service_type_id,
                 'service_type_id IS NULL',
             ]]);
         } elseif (isset($billing->contract_id)) {
@@ -273,8 +255,6 @@ class BillingsController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $contract_id = $this->getRequest()->getParam('contract_id');
-
         $this->getRequest()->allowMethod(['post', 'delete']);
         $billing = $this->Billings->get($id);
         if ($this->Billings->delete($billing)) {
@@ -283,8 +263,8 @@ class BillingsController extends AppController
             $this->Flash->error(__('The billing could not be deleted. Please, try again.'));
         }
 
-        if (isset($contract_id)) {
-            return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+        if (isset($this->contract_id)) {
+            return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $this->contract_id]);
         }
 
         return $this->redirect(['action' => 'index']);
@@ -313,14 +293,14 @@ class BillingsController extends AppController
         );
 
         // filter
-        $original_service_id = $this->request->getQuery('original_service_id');
+        $original_service_id = $this->getRequest()->getQuery('original_service_id');
         if (!empty($original_service_id)) {
             $billingsQuery->where(['Billings.service_id' => $original_service_id]);
         } else {
             $billingsQuery->where(['FALSE']);
         }
 
-        $active_on_date = $this->request->getQuery('active_on_date');
+        $active_on_date = $this->getRequest()->getQuery('active_on_date');
         if (!empty($active_on_date)) {
             $billingsQuery->where([
                 'Billings.billing_from <=' => $active_on_date,
@@ -333,7 +313,7 @@ class BillingsController extends AppController
             $billingsQuery->where(['FALSE']);
         }
 
-        $standard_prices_only = $this->request->getQuery('standard_prices_only');
+        $standard_prices_only = $this->getRequest()->getQuery('standard_prices_only');
         if ($standard_prices_only !== '0') {
             $billingsQuery->where([
                 'Billings.price IS NULL',
@@ -342,12 +322,12 @@ class BillingsController extends AppController
             ]);
         }
 
-        $processing_limit = $this->request->getQuery('processing_limit');
+        $processing_limit = $this->getRequest()->getQuery('processing_limit');
         if (is_numeric($processing_limit)) {
             $billingsQuery->limit((int)$processing_limit);
         }
 
-        $access_point_id = $this->request->getQuery('access_point_id');
+        $access_point_id = $this->getRequest()->getQuery('access_point_id');
         if (!empty($access_point_id)) {
             $billingsQuery->where(['Contracts.access_point_id' => $access_point_id]);
         }

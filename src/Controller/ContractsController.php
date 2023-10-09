@@ -37,17 +37,14 @@ class ContractsController extends AppController
      */
     public function index()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
         // filter
         $conditions = [];
-        if (isset($customer_id)) {
-            $conditions = ['Contracts.customer_id' => $customer_id];
+        if (isset($this->customer_id)) {
+            $conditions = ['Contracts.customer_id' => $this->customer_id];
         }
 
         // search
-        $search = $this->request->getQuery('search');
+        $search = $this->getRequest()->getQuery('search');
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
@@ -151,13 +148,10 @@ class ContractsController extends AppController
      */
     public function add()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
         $contract = $this->Contracts->newEmptyEntity();
 
-        if (isset($customer_id)) {
-            $contract->customer_id = $customer_id;
+        if (isset($this->customer_id)) {
+            $contract->customer_id = $this->customer_id;
         }
 
         if ($this->getRequest()->is('post')) {
@@ -237,9 +231,9 @@ class ContractsController extends AppController
             'name',
         ]);
 
-        if (isset($customer_id)) {
-            $customers->where(['id' => $customer_id]);
-            $installationAddresses->where([['customer_id' => $customer_id]]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
+            $installationAddresses->where([['InstallationAddresses.customer_id' => $this->customer_id]]);
         }
 
         $this->set(compact('contract', 'customers'));
@@ -271,9 +265,6 @@ class ContractsController extends AppController
      */
     public function edit(?string $id = null)
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
         $contract = $this->Contracts->get($id);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
@@ -350,9 +341,9 @@ class ContractsController extends AppController
             'name',
         ]);
 
-        if (isset($customer_id)) {
-            $customers->where(['id' => $customer_id]);
-            $installationAddresses->where([['customer_id' => $customer_id]]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
+            $installationAddresses->where([['InstallationAddresses.customer_id' => $this->customer_id]]);
         }
 
         $this->set(compact('contract', 'customers'));
@@ -384,8 +375,6 @@ class ContractsController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-
         $this->getRequest()->allowMethod(['post', 'delete']);
         $contract = $this->Contracts->get($id);
         if ($this->Contracts->delete($contract)) {
@@ -394,8 +383,8 @@ class ContractsController extends AppController
             $this->Flash->error(__('The contract could not be deleted. Please, try again.'));
         }
 
-        if (isset($customer_id)) {
-            return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+        if (isset($this->customer_id)) {
+            return $this->redirect(['controller' => 'Customers', 'action' => 'view', $this->customer_id]);
         }
 
         return $this->redirect(['action' => 'index']);
@@ -696,9 +685,6 @@ class ContractsController extends AppController
      */
     public function print(?string $id = null, ?string $type = null)
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
         $documentTypes = [
             __('Contracts') => [
                 'contract-new' => __('Contract for the provision of services'),

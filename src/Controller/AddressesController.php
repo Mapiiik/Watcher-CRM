@@ -20,17 +20,14 @@ class AddressesController extends AppController
      */
     public function index()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
         // filter
         $conditions = [];
-        if (isset($customer_id)) {
-            $conditions = ['Addresses.customer_id' => $customer_id];
+        if (isset($this->customer_id)) {
+            $conditions = ['Addresses.customer_id' => $this->customer_id];
         }
 
         // search
-        $search = $this->request->getQuery('search');
+        $search = $this->getRequest()->getQuery('search');
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
@@ -90,16 +87,13 @@ class AddressesController extends AppController
      */
     public function add()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
         $address = $this->Addresses->newEmptyEntity();
 
-        if (isset($customer_id)) {
-            $customer = $this->Addresses->Customers->get($customer_id);
+        if (isset($this->customer_id)) {
+            $customer = $this->Addresses->Customers->get($this->customer_id);
 
             $address = $this->Addresses->patchEntity($address, $customer->toArray(), ['validate' => false]);
-            $address->customer_id = $customer_id;
+            $address->customer_id = $customer->id;
         }
 
         if ($this->getRequest()->is('post')) {
@@ -134,8 +128,8 @@ class AddressesController extends AppController
             'name',
         ]);
 
-        if (isset($customer_id)) {
-            $customers->where(['id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
         }
 
         $this->set(compact('address', 'customers', 'countries'));
@@ -150,9 +144,6 @@ class AddressesController extends AppController
      */
     public function edit(?string $id = null)
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
         $address = $this->Addresses->get($id);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $address = $this->Addresses->patchEntity($address, $this->getRequest()->getData());
@@ -186,8 +177,8 @@ class AddressesController extends AppController
             'name',
         ]);
 
-        if (isset($customer_id)) {
-            $customers->where(['id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
         }
 
         $this->set(compact('address', 'customers', 'countries'));
@@ -202,8 +193,6 @@ class AddressesController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-
         $this->getRequest()->allowMethod(['post', 'delete']);
         $address = $this->Addresses->get($id);
         if ($this->Addresses->delete($address)) {
@@ -212,8 +201,8 @@ class AddressesController extends AppController
             $this->Flash->error(__('The address could not be deleted. Please, try again.'));
         }
 
-        if (isset($customer_id)) {
-            return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+        if (isset($this->customer_id)) {
+            return $this->redirect(['controller' => 'Customers', 'action' => 'view', $this->customer_id]);
         }
 
         return $this->redirect(['action' => 'index']);

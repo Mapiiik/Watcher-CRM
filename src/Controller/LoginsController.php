@@ -20,17 +20,14 @@ class LoginsController extends AppController
      */
     public function index()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
         // filter
         $conditions = [];
-        if (isset($customer_id)) {
-            $conditions = ['Logins.customer_id' => $customer_id];
+        if (isset($this->customer_id)) {
+            $conditions = ['Logins.customer_id' => $this->customer_id];
         }
 
         // search
-        $search = $this->request->getQuery('search');
+        $search = $this->getRequest()->getQuery('search');
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
@@ -80,13 +77,10 @@ class LoginsController extends AppController
      */
     public function add()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
         $login = $this->Logins->newEmptyEntity();
 
-        if (isset($customer_id)) {
-            $login->customer_id = $customer_id;
+        if (isset($this->customer_id)) {
+            $login->customer_id = $this->customer_id;
         }
 
         if ($this->getRequest()->is('post')) {
@@ -105,11 +99,11 @@ class LoginsController extends AppController
         ]);
 
         $new_login = '';
-        if (isset($customer_id)) {
-            $customers->where(['id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
 
             // START find free login
-            $customer = $this->Logins->Customers->get($customer_id);
+            $customer = $this->Logins->Customers->get($this->customer_id);
             $new_login = strtolower(Strings::removeAccents($customer->last_name . '.' . $customer->first_name));
 
             $i = 1;
@@ -142,9 +136,6 @@ class LoginsController extends AppController
      */
     public function edit(?string $id = null)
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
         $login = $this->Logins->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             // change password if is set new
@@ -166,8 +157,8 @@ class LoginsController extends AppController
             'first_name',
         ]);
 
-        if (isset($customer_id)) {
-            $customers->where(['id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
         }
 
         $this->set(compact('login', 'customers'));
@@ -182,8 +173,6 @@ class LoginsController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-
         $this->getRequest()->allowMethod(['post', 'delete']);
         $login = $this->Logins->get($id);
         if ($this->Logins->delete($login)) {
@@ -192,8 +181,8 @@ class LoginsController extends AppController
             $this->Flash->error(__('The login could not be deleted. Please, try again.'));
         }
 
-        if (isset($customer_id)) {
-            return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+        if (isset($this->customer_id)) {
+            return $this->redirect(['controller' => 'Customers', 'action' => 'view', $this->customer_id]);
         }
 
         return $this->redirect(['action' => 'index']);

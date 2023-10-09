@@ -51,8 +51,8 @@ class RadacctController extends AppController
     public function add()
     {
         $radacct = $this->Radacct->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $radacct = $this->Radacct->patchEntity($radacct, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $radacct = $this->Radacct->patchEntity($radacct, $this->getRequest()->getData());
             if ($this->Radacct->save($radacct)) {
                 $this->Flash->success(__d('radius', 'The RADIUS accounting has been saved.'));
 
@@ -76,8 +76,8 @@ class RadacctController extends AppController
     public function edit(?string $id = null)
     {
         $radacct = $this->Radacct->get($id, contain: []);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $radacct = $this->Radacct->patchEntity($radacct, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $radacct = $this->Radacct->patchEntity($radacct, $this->getRequest()->getData());
             if ($this->Radacct->save($radacct)) {
                 $this->Flash->success(__d('radius', 'The RADIUS accounting has been saved.'));
 
@@ -100,7 +100,7 @@ class RadacctController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $radacct = $this->Radacct->get($id);
         if ($this->Radacct->delete($radacct)) {
             $this->Flash->success(__d('radius', 'The RADIUS accounting has been deleted.'));

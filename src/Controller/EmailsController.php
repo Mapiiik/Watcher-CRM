@@ -18,17 +18,14 @@ class EmailsController extends AppController
      */
     public function index()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
         // filter
         $conditions = [];
-        if (isset($customer_id)) {
-            $conditions = ['Emails.customer_id' => $customer_id];
+        if (isset($this->customer_id)) {
+            $conditions = ['Emails.customer_id' => $this->customer_id];
         }
 
         // search
-        $search = $this->request->getQuery('search');
+        $search = $this->getRequest()->getQuery('search');
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
@@ -78,13 +75,10 @@ class EmailsController extends AppController
      */
     public function add()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
         $email = $this->Emails->newEmptyEntity();
 
-        if (isset($customer_id)) {
-            $email->customer_id = $customer_id;
+        if (isset($this->customer_id)) {
+            $email->customer_id = $this->customer_id;
         }
 
         if ($this->getRequest()->is('post')) {
@@ -102,8 +96,8 @@ class EmailsController extends AppController
             'first_name',
         ]);
 
-        if (isset($customer_id)) {
-            $customers->where(['id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
         }
 
         $this->set(compact('email', 'customers'));
@@ -118,9 +112,6 @@ class EmailsController extends AppController
      */
     public function edit(?string $id = null)
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
         $email = $this->Emails->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $email = $this->Emails->patchEntity($email, $this->getRequest()->getData());
@@ -137,8 +128,8 @@ class EmailsController extends AppController
             'first_name',
         ]);
 
-        if (isset($customer_id)) {
-            $customers->where(['id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
         }
 
         $this->set(compact('email', 'customers'));
@@ -153,8 +144,6 @@ class EmailsController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-
         $this->getRequest()->allowMethod(['post', 'delete']);
         $email = $this->Emails->get($id);
         if ($this->Emails->delete($email)) {
@@ -163,8 +152,8 @@ class EmailsController extends AppController
             $this->Flash->error(__('The email could not be deleted. Please, try again.'));
         }
 
-        if (isset($customer_id)) {
-            return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+        if (isset($this->customer_id)) {
+            return $this->redirect(['controller' => 'Customers', 'action' => 'view', $this->customer_id]);
         }
 
         return $this->redirect(['action' => 'index']);

@@ -18,17 +18,14 @@ class PhonesController extends AppController
      */
     public function index()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
         // filter
         $conditions = [];
-        if (isset($customer_id)) {
-            $conditions = ['Phones.customer_id' => $customer_id];
+        if (isset($this->customer_id)) {
+            $conditions = ['Phones.customer_id' => $this->customer_id];
         }
 
         // search
-        $search = $this->request->getQuery('search');
+        $search = $this->getRequest()->getQuery('search');
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
@@ -78,13 +75,10 @@ class PhonesController extends AppController
      */
     public function add()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
         $phone = $this->Phones->newEmptyEntity();
 
-        if (isset($customer_id)) {
-            $phone->customer_id = $customer_id;
+        if (isset($this->customer_id)) {
+            $phone->customer_id = $this->customer_id;
         }
 
         if ($this->getRequest()->is('post')) {
@@ -102,8 +96,8 @@ class PhonesController extends AppController
             'first_name',
         ]);
 
-        if (isset($customer_id)) {
-            $customers->where(['id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['id' => $this->customer_id]);
         }
 
         $this->set(compact('phone', 'customers'));
@@ -118,9 +112,6 @@ class PhonesController extends AppController
      */
     public function edit(?string $id = null)
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
         $phone = $this->Phones->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $phone = $this->Phones->patchEntity($phone, $this->getRequest()->getData());
@@ -137,8 +128,8 @@ class PhonesController extends AppController
             'first_name',
         ]);
 
-        if (isset($customer_id)) {
-            $customers->where(['id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
         }
 
         $this->set(compact('phone', 'customers'));
@@ -153,8 +144,6 @@ class PhonesController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-
         $this->getRequest()->allowMethod(['post', 'delete']);
         $phone = $this->Phones->get($id);
         if ($this->Phones->delete($phone)) {
@@ -163,8 +152,8 @@ class PhonesController extends AppController
             $this->Flash->error(__('The phone could not be deleted. Please, try again.'));
         }
 
-        if (isset($customer_id)) {
-            return $this->redirect(['controller' => 'Customers', 'action' => 'view', $customer_id]);
+        if (isset($this->customer_id)) {
+            return $this->redirect(['controller' => 'Customers', 'action' => 'view', $this->customer_id]);
         }
 
         return $this->redirect(['action' => 'index']);

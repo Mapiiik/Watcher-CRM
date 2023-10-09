@@ -23,7 +23,7 @@ class InvoicesController extends AppController
      */
     public function viewClasses(): array
     {
-        if ($this->request->getParam('_ext') === 'dbf' || $this->request->getParam('_ext') === 'xml') {
+        if ($this->getRequest()->getParam('_ext') === 'dbf' || $this->getRequest()->getParam('_ext') === 'xml') {
             return [
                 DbfView::class,
                 XmlView::class,
@@ -44,7 +44,7 @@ class InvoicesController extends AppController
         $conditions = [];
 
         // search
-        $search = $this->request->getQuery('search');
+        $search = $this->getRequest()->getQuery('search');
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
@@ -161,8 +161,8 @@ class InvoicesController extends AppController
     public function add()
     {
         $invoice = $this->Invoices->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $invoice = $this->Invoices->patchEntity($invoice, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $invoice = $this->Invoices->patchEntity($invoice, $this->getRequest()->getData());
             if ($this->Invoices->save($invoice)) {
                 $this->Flash->success(__d('bookkeeping_pohoda', 'The invoice has been saved.'));
 
@@ -188,8 +188,8 @@ class InvoicesController extends AppController
     public function edit(?string $id = null)
     {
         $invoice = $this->Invoices->get($id);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $invoice = $this->Invoices->patchEntity($invoice, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $invoice = $this->Invoices->patchEntity($invoice, $this->getRequest()->getData());
             if ($this->Invoices->save($invoice)) {
                 $this->Flash->success(__d('bookkeeping_pohoda', 'The invoice has been saved.'));
 
@@ -214,7 +214,7 @@ class InvoicesController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $invoice = $this->Invoices->get($id);
         if ($this->Invoices->delete($invoice)) {
             $this->Flash->success(__d('bookkeeping_pohoda', 'The invoice has been deleted.'));
@@ -232,14 +232,14 @@ class InvoicesController extends AppController
      */
     public function sendByEmail()
     {
-        if ($this->request->is(['post']) && !empty($this->request->getData('creation_date'))) {
+        if ($this->getRequest()->is(['post']) && !empty($this->getRequest()->getData('creation_date'))) {
             $count = $this->Invoices->updateAll(
                 [ // fields
                     'send_by_email' => true,
                 ],
                 [ // conditions
                     'send_by_email' => false,
-                    'creation_date' => new Date($this->request->getData('creation_date')),
+                    'creation_date' => new Date($this->getRequest()->getData('creation_date')),
                 ]
             );
 
@@ -339,11 +339,11 @@ class InvoicesController extends AppController
             ])
             ->toArray();
 
-        if ($this->request->is(['post'])) {
-            $invoiced_month = new Date($this->request->getData('invoiced_month', 'now'));
-            $tax_rate = $this->fetchTable('TaxRates')->get($this->request->getData('tax_rate_id'));
+        if ($this->getRequest()->is(['post'])) {
+            $invoiced_month = new Date($this->getRequest()->getData('invoiced_month', 'now'));
+            $tax_rate = $this->fetchTable('TaxRates')->get($this->getRequest()->getData('tax_rate_id'));
             /** @var \Laminas\Diactoros\UploadedFile $csv_for_verification */
-            $csv_for_verification = $this->request->getData('csv_for_verification');
+            $csv_for_verification = $this->getRequest()->getData('csv_for_verification');
 
             // VERIFICATION DATA CHECK
             if ($csv_for_verification->getSize() > 0) {
@@ -420,7 +420,7 @@ class InvoicesController extends AppController
             } else {
                 return $this->redirect([
                     'action' => 'generate',
-                    '_ext' => $this->request->getData('output_format'),
+                    '_ext' => $this->getRequest()->getData('output_format'),
                     '?' => [
                         'invoiced_month' => $invoiced_month->i18nFormat('yyyy-MM'),
                         'tax_rate_id' => $tax_rate->id,
@@ -430,11 +430,11 @@ class InvoicesController extends AppController
         }
 
         // DOWNLOAD INVOICES
-        if ($this->request->getParam('_ext') === 'dbf' || $this->request->getParam('_ext') === 'xml') {
-            $invoiced_month = new Date($this->request->getQuery('invoiced_month', 'now'));
+        if ($this->getRequest()->getParam('_ext') === 'dbf' || $this->getRequest()->getParam('_ext') === 'xml') {
+            $invoiced_month = new Date($this->getRequest()->getQuery('invoiced_month', 'now'));
 
             /** @var \App\Model\Entity\TaxRate $tax_rate */
-            $tax_rate = $this->fetchTable('TaxRates')->get($this->request->getQuery('tax_rate_id'));
+            $tax_rate = $this->fetchTable('TaxRates')->get($this->getRequest()->getQuery('tax_rate_id'));
 
             if ($tax_rate->reverse_charge) {
                 $prefix = 10000000 * ($invoiced_month->year - 1980)
@@ -552,9 +552,9 @@ class InvoicesController extends AppController
      */
     public function importFromDBF()
     {
-        if ($this->request->is(['post'])) {
+        if ($this->getRequest()->is(['post'])) {
             /** @var \Laminas\Diactoros\UploadedFile $dbf_for_import */
-            $dbf_for_import = $this->request->getData('dbf_for_import');
+            $dbf_for_import = $this->getRequest()->getData('dbf_for_import');
 
             $created = 0;
             $modified = 0;

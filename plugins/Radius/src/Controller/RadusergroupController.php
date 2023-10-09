@@ -51,8 +51,8 @@ class RadusergroupController extends AppController
     public function add()
     {
         $radusergroup = $this->Radusergroup->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $radusergroup = $this->Radusergroup->patchEntity($radusergroup, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $radusergroup = $this->Radusergroup->patchEntity($radusergroup, $this->getRequest()->getData());
             if ($this->Radusergroup->save($radusergroup)) {
                 $this->Flash->success(__d('radius', 'The RADIUS user group has been saved.'));
 
@@ -87,8 +87,8 @@ class RadusergroupController extends AppController
     public function edit(?string $id = null)
     {
         $radusergroup = $this->Radusergroup->get($id, contain: []);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $radusergroup = $this->Radusergroup->patchEntity($radusergroup, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $radusergroup = $this->Radusergroup->patchEntity($radusergroup, $this->getRequest()->getData());
             if ($this->Radusergroup->save($radusergroup)) {
                 $this->Flash->success(__d('radius', 'The RADIUS user group has been saved.'));
 
@@ -122,7 +122,7 @@ class RadusergroupController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $radusergroup = $this->Radusergroup->get($id);
         if ($this->Radusergroup->delete($radusergroup)) {
             $this->Flash->success(__d('radius', 'The RADIUS user group has been deleted.'));

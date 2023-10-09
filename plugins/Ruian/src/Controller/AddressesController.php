@@ -22,7 +22,7 @@ class AddressesController extends AppController
         $conditions = [];
 
         // search
-        $search = $this->request->getQuery('search');
+        $search = $this->getRequest()->getQuery('search');
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
@@ -75,8 +75,8 @@ class AddressesController extends AppController
     public function add()
     {
         $address = $this->Addresses->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $address = $this->Addresses->patchEntity($address, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $address = $this->Addresses->patchEntity($address, $this->getRequest()->getData());
             if ($this->Addresses->save($address)) {
                 $this->Flash->success(__d('ruian', 'The address has been saved.'));
 
@@ -97,8 +97,8 @@ class AddressesController extends AppController
     public function edit(?string $id = null)
     {
         $address = $this->Addresses->get($id, contain: []);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $address = $this->Addresses->patchEntity($address, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $address = $this->Addresses->patchEntity($address, $this->getRequest()->getData());
             if ($this->Addresses->save($address)) {
                 $this->Flash->success(__d('ruian', 'The address has been saved.'));
 
@@ -118,7 +118,7 @@ class AddressesController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $address = $this->Addresses->get($id);
         if ($this->Addresses->delete($address)) {
             $this->Flash->success(__d('ruian', 'The address has been deleted.'));

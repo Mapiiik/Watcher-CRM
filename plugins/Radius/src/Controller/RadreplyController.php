@@ -51,8 +51,8 @@ class RadreplyController extends AppController
     public function add()
     {
         $radreply = $this->Radreply->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $radreply = $this->Radreply->patchEntity($radreply, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $radreply = $this->Radreply->patchEntity($radreply, $this->getRequest()->getData());
             if ($this->Radreply->save($radreply)) {
                 $this->Flash->success(__d('radius', 'The RADIUS reply has been saved.'));
 
@@ -76,8 +76,8 @@ class RadreplyController extends AppController
     public function edit(?string $id = null)
     {
         $radreply = $this->Radreply->get($id, contain: []);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $radreply = $this->Radreply->patchEntity($radreply, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $radreply = $this->Radreply->patchEntity($radreply, $this->getRequest()->getData());
             if ($this->Radreply->save($radreply)) {
                 $this->Flash->success(__d('radius', 'The RADIUS reply has been saved.'));
 
@@ -100,7 +100,7 @@ class RadreplyController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $radreply = $this->Radreply->get($id);
         if ($this->Radreply->delete($radreply)) {
             $this->Flash->success(__d('radius', 'The RADIUS reply has been deleted.'));

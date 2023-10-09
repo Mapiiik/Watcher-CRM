@@ -12,7 +12,7 @@ $this->Html->script('CakeDC/Users.u2f-api.js', ['block' => true]);
                 <?= $this->Form->create(null, [
                     'url' => [
                         'action' => 'u2fRegisterFinish',
-                        '?' => $this->request->getQueryParams(),
+                        '?' => $this->getRequest()->getQueryParams(),
                     ],
                     'id' => 'u2fRegisterFrm',
                 ]) ?>

@@ -20,23 +20,17 @@ class RemovedIpNetworksController extends AppController
      */
     public function index()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->getRequest()->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         // filter
         $conditions = [];
-        if (isset($customer_id)) {
-            $conditions += ['RemovedIpNetworks.customer_id' => $customer_id];
+        if (isset($this->customer_id)) {
+            $conditions += ['RemovedIpNetworks.customer_id' => $this->customer_id];
         }
-        if (isset($contract_id)) {
-            $conditions += ['RemovedIpNetworks.contract_id' => $contract_id];
+        if (isset($this->contract_id)) {
+            $conditions += ['RemovedIpNetworks.contract_id' => $this->contract_id];
         }
 
         // search
-        $search = $this->request->getQuery('search');
+        $search = $this->getRequest()->getQuery('search');
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
@@ -90,19 +84,13 @@ class RemovedIpNetworksController extends AppController
      */
     public function add()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->getRequest()->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         $removedIpNetwork = $this->RemovedIpNetworks->newEmptyEntity();
 
-        if (isset($customer_id)) {
-            $removedIpNetwork->customer_id = $customer_id;
+        if (isset($this->customer_id)) {
+            $removedIpNetwork->customer_id = $this->customer_id;
         }
-        if (isset($contract_id)) {
-            $removedIpNetwork->contract_id = $contract_id;
+        if (isset($this->contract_id)) {
+            $removedIpNetwork->contract_id = $this->contract_id;
         }
 
         if ($this->getRequest()->is('post')) {
@@ -139,12 +127,12 @@ class RemovedIpNetworksController extends AppController
             ],
         );
 
-        if (isset($customer_id)) {
-            $customers->where(['Customers.id' => $customer_id]);
-            $contracts->where(['Contracts.customer_id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
+            $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
-        if (isset($contract_id)) {
-            $contracts->where(['Contracts.id' => $contract_id]);
+        if (isset($this->contract_id)) {
+            $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
         $this->set(compact('removedIpNetwork', 'customers', 'contracts'));
@@ -159,12 +147,6 @@ class RemovedIpNetworksController extends AppController
      */
     public function edit(?string $id = null)
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->getRequest()->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         $removedIpNetwork = $this->RemovedIpNetworks->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $removedIpNetwork = $this->RemovedIpNetworks
@@ -196,12 +178,12 @@ class RemovedIpNetworksController extends AppController
             ],
         );
 
-        if (isset($customer_id)) {
-            $customers->where(['Customers.id' => $customer_id]);
-            $contracts->where(['Contracts.customer_id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
+            $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
-        if (isset($contract_id)) {
-            $contracts->where(['Contracts.id' => $contract_id]);
+        if (isset($this->contract_id)) {
+            $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
         $this->set(compact('removedIpNetwork', 'customers', 'contracts'));

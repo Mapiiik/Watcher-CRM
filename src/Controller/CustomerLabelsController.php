@@ -18,17 +18,14 @@ class CustomerLabelsController extends AppController
      */
     public function index()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
         // filter
         $conditions = [];
-        if (isset($customer_id)) {
-            $conditions = ['CustomerLabels.customer_id' => $customer_id];
+        if (isset($this->customer_id)) {
+            $conditions = ['CustomerLabels.customer_id' => $this->customer_id];
         }
 
         // search
-        $search = $this->request->getQuery('search');
+        $search = $this->getRequest()->getQuery('search');
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
@@ -80,13 +77,10 @@ class CustomerLabelsController extends AppController
      */
     public function add()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
         $customerLabel = $this->CustomerLabels->newEmptyEntity();
 
-        if (isset($customer_id)) {
-            $customerLabel->customer_id = $customer_id;
+        if (isset($this->customer_id)) {
+            $customerLabel->customer_id = $this->customer_id;
         }
 
         if ($this->getRequest()->is('post')) {
@@ -118,9 +112,6 @@ class CustomerLabelsController extends AppController
      */
     public function edit(?string $id = null)
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
         $customerLabel = $this->CustomerLabels->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $customerLabel = $this->CustomerLabels->patchEntity($customerLabel, $this->getRequest()->getData());

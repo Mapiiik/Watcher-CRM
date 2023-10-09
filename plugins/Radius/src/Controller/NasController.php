@@ -49,8 +49,8 @@ class NasController extends AppController
     public function add()
     {
         $nas = $this->Nas->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $nas = $this->Nas->patchEntity($nas, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $nas = $this->Nas->patchEntity($nas, $this->getRequest()->getData());
             if ($this->Nas->save($nas)) {
                 $this->Flash->success(__d('radius', 'The RADIUS NAS has been saved.'));
 
@@ -71,8 +71,8 @@ class NasController extends AppController
     public function edit(?string $id = null)
     {
         $nas = $this->Nas->get($id, contain: []);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $nas = $this->Nas->patchEntity($nas, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $nas = $this->Nas->patchEntity($nas, $this->getRequest()->getData());
             if ($this->Nas->save($nas)) {
                 $this->Flash->success(__d('radius', 'The RADIUS NAS has been saved.'));
 
@@ -92,7 +92,7 @@ class NasController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $nas = $this->Nas->get($id);
         if ($this->Nas->delete($nas)) {
             $this->Flash->success(__d('radius', 'The RADIUS NAS has been deleted.'));

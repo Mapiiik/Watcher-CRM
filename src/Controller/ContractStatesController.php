@@ -22,7 +22,7 @@ class ContractStatesController extends AppController
         $conditions = [];
 
         // search
-        $search = $this->request->getQuery('search');
+        $search = $this->getRequest()->getQuery('search');
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
@@ -78,8 +78,8 @@ class ContractStatesController extends AppController
     public function add()
     {
         $contractState = $this->ContractStates->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $contractState = $this->ContractStates->patchEntity($contractState, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $contractState = $this->ContractStates->patchEntity($contractState, $this->getRequest()->getData());
             if ($this->ContractStates->save($contractState)) {
                 $this->Flash->success(__('The contract state has been saved.'));
 
@@ -100,8 +100,8 @@ class ContractStatesController extends AppController
     public function edit(?string $id = null)
     {
         $contractState = $this->ContractStates->get($id, contain: []);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $contractState = $this->ContractStates->patchEntity($contractState, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $contractState = $this->ContractStates->patchEntity($contractState, $this->getRequest()->getData());
             if ($this->ContractStates->save($contractState)) {
                 $this->Flash->success(__('The contract state has been saved.'));
 
@@ -121,7 +121,7 @@ class ContractStatesController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $contractState = $this->ContractStates->get($id);
         if ($this->ContractStates->delete($contractState)) {
             $this->Flash->success(__('The contract state has been deleted.'));

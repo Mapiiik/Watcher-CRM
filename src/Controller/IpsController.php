@@ -22,23 +22,17 @@ class IpsController extends AppController
      */
     public function index()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->getRequest()->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         // filter
         $conditions = [];
-        if (isset($customer_id)) {
-            $conditions += ['Ips.customer_id' => $customer_id];
+        if (isset($this->customer_id)) {
+            $conditions += ['Ips.customer_id' => $this->customer_id];
         }
-        if (isset($contract_id)) {
-            $conditions += ['Ips.contract_id' => $contract_id];
+        if (isset($this->contract_id)) {
+            $conditions += ['Ips.contract_id' => $this->contract_id];
         }
 
         // search
-        $search = $this->request->getQuery('search');
+        $search = $this->getRequest()->getQuery('search');
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
@@ -91,19 +85,13 @@ class IpsController extends AppController
      */
     public function add()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->getRequest()->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         $ip = $this->Ips->newEmptyEntity();
 
-        if (isset($customer_id)) {
-            $ip->customer_id = $customer_id;
+        if (isset($this->customer_id)) {
+            $ip->customer_id = $this->customer_id;
         }
-        if (isset($contract_id)) {
-            $ip->contract_id = $contract_id;
+        if (isset($this->contract_id)) {
+            $ip->contract_id = $this->contract_id;
         }
 
         if ($this->getRequest()->is('post')) {
@@ -134,12 +122,12 @@ class IpsController extends AppController
             ],
         );
 
-        if (isset($customer_id)) {
-            $customers->where(['Customers.id' => $customer_id]);
-            $contracts->where(['Contracts.customer_id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
+            $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
-        if (isset($contract_id)) {
-            $contracts->where(['Contracts.id' => $contract_id]);
+        if (isset($this->contract_id)) {
+            $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
         $this->set(compact('ip', 'customers', 'contracts'));
@@ -152,19 +140,13 @@ class IpsController extends AppController
      */
     public function addFromRange()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->getRequest()->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         $ip = $this->Ips->newEmptyEntity();
 
-        if (isset($customer_id)) {
-            $ip->customer_id = $customer_id;
+        if (isset($this->customer_id)) {
+            $ip->customer_id = $this->customer_id;
         }
-        if (isset($contract_id)) {
-            $ip->contract_id = $contract_id;
+        if (isset($this->contract_id)) {
+            $ip->contract_id = $this->contract_id;
         }
 
         if ($this->getRequest()->is('post')) {
@@ -200,12 +182,12 @@ class IpsController extends AppController
             ],
         );
 
-        if (isset($customer_id)) {
-            $customers->where(['Customers.id' => $customer_id]);
-            $contracts->where(['Contracts.customer_id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
+            $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
-        if (isset($contract_id)) {
-            $contracts->where(['Contracts.id' => $contract_id]);
+        if (isset($this->contract_id)) {
+            $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
         // load IP address ranges from NMS
@@ -324,12 +306,6 @@ class IpsController extends AppController
      */
     public function edit(?string $id = null)
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->getRequest()->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         $ip = $this->Ips->get($id);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
@@ -357,12 +333,12 @@ class IpsController extends AppController
             ],
         );
 
-        if (isset($customer_id)) {
-            $customers->where(['Customers.id' => $customer_id]);
-            $contracts->where(['Contracts.customer_id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
+            $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
-        if (isset($contract_id)) {
-            $contracts->where(['Contracts.id' => $contract_id]);
+        if (isset($this->contract_id)) {
+            $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
         $this->set(compact('ip', 'customers', 'contracts'));
@@ -377,8 +353,6 @@ class IpsController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $contract_id = $this->getRequest()->getParam('contract_id');
-
         $this->getRequest()->allowMethod(['post', 'delete']);
         $ip = $this->Ips->get($id);
 
@@ -390,8 +364,8 @@ class IpsController extends AppController
             }
         }
 
-        if (isset($contract_id)) {
-            return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+        if (isset($this->contract_id)) {
+            return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $this->contract_id]);
         }
 
         return $this->redirect(['action' => 'index']);

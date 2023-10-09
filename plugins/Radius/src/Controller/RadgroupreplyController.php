@@ -49,8 +49,8 @@ class RadgroupreplyController extends AppController
     public function add()
     {
         $radgroupreply = $this->Radgroupreply->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $radgroupreply = $this->Radgroupreply->patchEntity($radgroupreply, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $radgroupreply = $this->Radgroupreply->patchEntity($radgroupreply, $this->getRequest()->getData());
             if ($this->Radgroupreply->save($radgroupreply)) {
                 $this->Flash->success(__d('radius', 'The RADIUS group reply has been saved.'));
 
@@ -71,8 +71,8 @@ class RadgroupreplyController extends AppController
     public function edit(?string $id = null)
     {
         $radgroupreply = $this->Radgroupreply->get($id, contain: []);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $radgroupreply = $this->Radgroupreply->patchEntity($radgroupreply, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $radgroupreply = $this->Radgroupreply->patchEntity($radgroupreply, $this->getRequest()->getData());
             if ($this->Radgroupreply->save($radgroupreply)) {
                 $this->Flash->success(__d('radius', 'The RADIUS group reply has been saved.'));
 
@@ -92,7 +92,7 @@ class RadgroupreplyController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $radgroupreply = $this->Radgroupreply->get($id);
         if ($this->Radgroupreply->delete($radgroupreply)) {
             $this->Flash->success(__d('radius', 'The RADIUS group reply has been deleted.'));

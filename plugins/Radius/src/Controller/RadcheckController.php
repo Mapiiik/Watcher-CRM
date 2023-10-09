@@ -51,8 +51,8 @@ class RadcheckController extends AppController
     public function add()
     {
         $radcheck = $this->Radcheck->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $radcheck = $this->Radcheck->patchEntity($radcheck, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $radcheck = $this->Radcheck->patchEntity($radcheck, $this->getRequest()->getData());
             if ($this->Radcheck->save($radcheck)) {
                 $this->Flash->success(__d('radius', 'The RADIUS check has been saved.'));
 
@@ -76,8 +76,8 @@ class RadcheckController extends AppController
     public function edit(?string $id = null)
     {
         $radcheck = $this->Radcheck->get($id, contain: []);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $radcheck = $this->Radcheck->patchEntity($radcheck, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $radcheck = $this->Radcheck->patchEntity($radcheck, $this->getRequest()->getData());
             if ($this->Radcheck->save($radcheck)) {
                 $this->Flash->success(__d('radius', 'The RADIUS check has been saved.'));
 
@@ -100,7 +100,7 @@ class RadcheckController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $radcheck = $this->Radcheck->get($id);
         if ($this->Radcheck->delete($radcheck)) {
             $this->Flash->success(__d('radius', 'The RADIUS check has been deleted.'));

@@ -27,12 +27,6 @@ class TasksController extends AppController
      */
     public function index()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->getRequest()->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         // persistent filter data
         if (!is_null($this->getRequest()->getQuery('show_completed'))) {
             $this->getRequest()->getSession()->write(
@@ -74,14 +68,14 @@ class TasksController extends AppController
 
         // filter
         $conditions = [];
-        if (isset($customer_id)) {
+        if (isset($this->customer_id)) {
             $conditions[] = [
-                'Tasks.customer_id' => $customer_id,
+                'Tasks.customer_id' => $this->customer_id,
             ];
         }
-        if (isset($contract_id)) {
+        if (isset($this->contract_id)) {
             $conditions[] = [
-                'Tasks.contract_id' => $contract_id,
+                'Tasks.contract_id' => $this->contract_id,
             ];
         }
 
@@ -202,7 +196,7 @@ class TasksController extends AppController
         // show warning if there are some unassigned tasks
         if ($number_of_unassigned_tasks > 0) {
             $this->Flash->warning(
-                (new HtmlHelper(new View($this->request)))->link(
+                (new HtmlHelper(new View($this->getRequest())))->link(
                     __n(
                         'There was {0} unfinished task found that does not have a dealer assigned.',
                         'There were {0} unfinished tasks found that do not have a dealer assigned.',
@@ -275,20 +269,14 @@ class TasksController extends AppController
      */
     public function add()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->getRequest()->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         $task = $this->Tasks->newEmptyEntity();
 
-        if (isset($customer_id)) {
-            $task->customer_id = $customer_id;
+        if (isset($this->customer_id)) {
+            $task->customer_id = $this->customer_id;
         }
 
-        if (isset($contract_id)) {
-            $task->contract_id = $contract_id;
+        if (isset($this->contract_id)) {
+            $task->contract_id = $this->contract_id;
         }
 
         if ($this->getRequest()->is('post')) {
@@ -413,11 +401,11 @@ class TasksController extends AppController
         unset($customer);
         unset($contract);
 
-        if (isset($customer_id)) {
-            $customers->where(['Customers.id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
         }
-        if (isset($contract_id)) {
-            $contracts->where(['Contracts.id' => $contract_id]);
+        if (isset($this->contract_id)) {
+            $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
         // preset start date
@@ -453,12 +441,6 @@ class TasksController extends AppController
      */
     public function edit(?string $id = null)
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->getRequest()->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         $task = $this->Tasks->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $task = $this->Tasks->patchEntity($task, $this->getRequest()->getData());
@@ -527,12 +509,12 @@ class TasksController extends AppController
             );
         }
 
-        if (isset($customer_id)) {
-            $customers->where(['Customers.id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
         }
 
-        if (isset($contract_id)) {
-            $contracts->where(['Contracts.id' => $contract_id]);
+        if (isset($this->contract_id)) {
+            $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
         // add task text header

@@ -20,23 +20,17 @@ class IpNetworksController extends AppController
      */
     public function index()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->getRequest()->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         // filter
         $conditions = [];
-        if (isset($customer_id)) {
-            $conditions += ['IpNetworks.customer_id' => $customer_id];
+        if (isset($this->customer_id)) {
+            $conditions += ['IpNetworks.customer_id' => $this->customer_id];
         }
-        if (isset($contract_id)) {
-            $conditions += ['IpNetworks.contract_id' => $contract_id];
+        if (isset($this->contract_id)) {
+            $conditions += ['IpNetworks.contract_id' => $this->contract_id];
         }
 
         // search
-        $search = $this->request->getQuery('search');
+        $search = $this->getRequest()->getQuery('search');
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
@@ -89,19 +83,13 @@ class IpNetworksController extends AppController
      */
     public function add()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->getRequest()->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         $ipNetwork = $this->IpNetworks->newEmptyEntity();
 
-        if (isset($customer_id)) {
-            $ipNetwork->customer_id = $customer_id;
+        if (isset($this->customer_id)) {
+            $ipNetwork->customer_id = $this->customer_id;
         }
-        if (isset($contract_id)) {
-            $ipNetwork->contract_id = $contract_id;
+        if (isset($this->contract_id)) {
+            $ipNetwork->contract_id = $this->contract_id;
         }
 
         if ($this->getRequest()->is('post')) {
@@ -132,12 +120,12 @@ class IpNetworksController extends AppController
             ],
         );
 
-        if (isset($customer_id)) {
-            $customers->where(['Customers.id' => $customer_id]);
-            $contracts->where(['Contracts.customer_id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
+            $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
-        if (isset($contract_id)) {
-            $contracts->where(['Contracts.id' => $contract_id]);
+        if (isset($this->contract_id)) {
+            $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
         $this->set(compact('ipNetwork', 'customers', 'contracts'));
@@ -152,12 +140,6 @@ class IpNetworksController extends AppController
      */
     public function edit(?string $id = null)
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->getRequest()->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         $ipNetwork = $this->IpNetworks->get($id);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $ipNetwork = $this->IpNetworks->patchEntity($ipNetwork, $this->getRequest()->getData());
@@ -187,12 +169,12 @@ class IpNetworksController extends AppController
             ],
         );
 
-        if (isset($customer_id)) {
-            $customers->where(['Customers.id' => $customer_id]);
-            $contracts->where(['Contracts.customer_id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
+            $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
-        if (isset($contract_id)) {
-            $contracts->where(['Contracts.id' => $contract_id]);
+        if (isset($this->contract_id)) {
+            $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
         $this->set(compact('ipNetwork', 'customers', 'contracts'));
@@ -207,8 +189,6 @@ class IpNetworksController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $contract_id = $this->getRequest()->getParam('contract_id');
-
         $this->getRequest()->allowMethod(['post', 'delete']);
         $ipNetwork = $this->IpNetworks->get($id);
 
@@ -220,8 +200,8 @@ class IpNetworksController extends AppController
             }
         }
 
-        if (isset($contract_id)) {
-            return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+        if (isset($this->contract_id)) {
+            return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $this->contract_id]);
         }
 
         return $this->redirect(['action' => 'index']);

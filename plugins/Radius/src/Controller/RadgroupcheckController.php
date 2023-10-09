@@ -49,8 +49,8 @@ class RadgroupcheckController extends AppController
     public function add()
     {
         $radgroupcheck = $this->Radgroupcheck->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $radgroupcheck = $this->Radgroupcheck->patchEntity($radgroupcheck, $this->request->getData());
+        if ($this->getRequest()->is('post')) {
+            $radgroupcheck = $this->Radgroupcheck->patchEntity($radgroupcheck, $this->getRequest()->getData());
             if ($this->Radgroupcheck->save($radgroupcheck)) {
                 $this->Flash->success(__d('radius', 'The RADIUS group check has been saved.'));
 
@@ -71,8 +71,8 @@ class RadgroupcheckController extends AppController
     public function edit(?string $id = null)
     {
         $radgroupcheck = $this->Radgroupcheck->get($id, contain: []);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $radgroupcheck = $this->Radgroupcheck->patchEntity($radgroupcheck, $this->request->getData());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $radgroupcheck = $this->Radgroupcheck->patchEntity($radgroupcheck, $this->getRequest()->getData());
             if ($this->Radgroupcheck->save($radgroupcheck)) {
                 $this->Flash->success(__d('radius', 'The RADIUS group check has been saved.'));
 
@@ -92,7 +92,7 @@ class RadgroupcheckController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $radgroupcheck = $this->Radgroupcheck->get($id);
         if ($this->Radgroupcheck->delete($radgroupcheck)) {
             $this->Flash->success(__d('radius', 'The RADIUS group check has been deleted.'));

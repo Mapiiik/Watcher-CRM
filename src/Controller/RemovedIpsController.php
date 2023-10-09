@@ -20,23 +20,17 @@ class RemovedIpsController extends AppController
      */
     public function index()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->getRequest()->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         // filter
         $conditions = [];
-        if (isset($customer_id)) {
-            $conditions += ['RemovedIps.customer_id' => $customer_id];
+        if (isset($this->customer_id)) {
+            $conditions += ['RemovedIps.customer_id' => $this->customer_id];
         }
-        if (isset($contract_id)) {
-            $conditions += ['RemovedIps.contract_id' => $contract_id];
+        if (isset($this->contract_id)) {
+            $conditions += ['RemovedIps.contract_id' => $this->contract_id];
         }
 
         // search
-        $search = $this->request->getQuery('search');
+        $search = $this->getRequest()->getQuery('search');
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
@@ -90,19 +84,13 @@ class RemovedIpsController extends AppController
      */
     public function add()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->getRequest()->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         $removedIp = $this->RemovedIps->newEmptyEntity();
 
-        if (isset($customer_id)) {
-            $removedIp->customer_id = $customer_id;
+        if (isset($this->customer_id)) {
+            $removedIp->customer_id = $this->customer_id;
         }
-        if (isset($contract_id)) {
-            $removedIp->contract_id = $contract_id;
+        if (isset($this->contract_id)) {
+            $removedIp->contract_id = $this->contract_id;
         }
 
         if ($this->getRequest()->is('post')) {
@@ -138,12 +126,12 @@ class RemovedIpsController extends AppController
             ],
         );
 
-        if (isset($customer_id)) {
-            $customers->where(['Customers.id' => $customer_id]);
-            $contracts->where(['Contracts.customer_id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
+            $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
-        if (isset($contract_id)) {
-            $contracts->where(['Contracts.id' => $contract_id]);
+        if (isset($this->contract_id)) {
+            $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
         $this->set(compact('removedIp', 'customers', 'contracts'));
@@ -158,12 +146,6 @@ class RemovedIpsController extends AppController
      */
     public function edit(?string $id = null)
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->getRequest()->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         $removedIp = $this->RemovedIps->get($id, contain: []);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
@@ -191,12 +173,12 @@ class RemovedIpsController extends AppController
             ],
         );
 
-        if (isset($customer_id)) {
-            $customers->where(['Customers.id' => $customer_id]);
-            $contracts->where(['Contracts.customer_id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
+            $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
-        if (isset($contract_id)) {
-            $contracts->where(['Contracts.id' => $contract_id]);
+        if (isset($this->contract_id)) {
+            $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
         $this->set(compact('removedIp', 'customers', 'contracts'));
@@ -211,8 +193,6 @@ class RemovedIpsController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $contract_id = $this->getRequest()->getParam('contract_id');
-
         $this->getRequest()->allowMethod(['post', 'delete']);
         $removedIp = $this->RemovedIps->get($id);
         if ($this->RemovedIps->delete($removedIp)) {
@@ -221,8 +201,8 @@ class RemovedIpsController extends AppController
             $this->Flash->error(__('The removed IP address could not be deleted. Please, try again.'));
         }
 
-        if (isset($contract_id)) {
-            return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+        if (isset($this->contract_id)) {
+            return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $this->contract_id]);
         }
 
         return $this->redirect(['action' => 'index']);

@@ -18,23 +18,17 @@ class SoldEquipmentsController extends AppController
      */
     public function index()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->getRequest()->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         // filter
         $conditions = [];
-        if (isset($customer_id)) {
-            $conditions += ['SoldEquipments.customer_id' => $customer_id];
+        if (isset($this->customer_id)) {
+            $conditions += ['SoldEquipments.customer_id' => $this->customer_id];
         }
-        if (isset($contract_id)) {
-            $conditions += ['SoldEquipments.contract_id' => $contract_id];
+        if (isset($this->contract_id)) {
+            $conditions += ['SoldEquipments.contract_id' => $this->contract_id];
         }
 
         // search
-        $search = $this->request->getQuery('search');
+        $search = $this->getRequest()->getQuery('search');
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
@@ -90,19 +84,13 @@ class SoldEquipmentsController extends AppController
      */
     public function add()
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->getRequest()->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         $soldEquipment = $this->SoldEquipments->newEmptyEntity();
 
-        if (isset($customer_id)) {
-            $soldEquipment->customer_id = $customer_id;
+        if (isset($this->customer_id)) {
+            $soldEquipment->customer_id = $this->customer_id;
         }
-        if (isset($contract_id)) {
-            $soldEquipment->contract_id = $contract_id;
+        if (isset($this->contract_id)) {
+            $soldEquipment->contract_id = $this->contract_id;
         }
 
         if ($this->getRequest()->is('post')) {
@@ -138,12 +126,12 @@ class SoldEquipmentsController extends AppController
         'name',
         ]);
 
-        if (isset($customer_id)) {
-            $customers->where(['Customers.id' => $customer_id]);
-            $contracts->where(['Contracts.customer_id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
+            $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
-        if (isset($contract_id)) {
-            $contracts->where(['Contracts.id' => $contract_id]);
+        if (isset($this->contract_id)) {
+            $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
         $this->set(compact('soldEquipment', 'customers', 'contracts', 'equipmentTypes'));
@@ -158,12 +146,6 @@ class SoldEquipmentsController extends AppController
      */
     public function edit(?string $id = null)
     {
-        $customer_id = $this->getRequest()->getParam('customer_id');
-        $this->set('customer_id', $customer_id);
-
-        $contract_id = $this->getRequest()->getParam('contract_id');
-        $this->set('contract_id', $contract_id);
-
         $soldEquipment = $this->SoldEquipments->get($id, contain: []);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
@@ -199,12 +181,12 @@ class SoldEquipmentsController extends AppController
         'name',
         ]);
 
-        if (isset($customer_id)) {
-            $customers->where(['Customers.id' => $customer_id]);
-            $contracts->where(['Contracts.customer_id' => $customer_id]);
+        if (isset($this->customer_id)) {
+            $customers->where(['Customers.id' => $this->customer_id]);
+            $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
-        if (isset($contract_id)) {
-            $contracts->where(['Contracts.id' => $contract_id]);
+        if (isset($this->contract_id)) {
+            $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
         $this->set(compact('soldEquipment', 'customers', 'contracts', 'equipmentTypes'));
@@ -219,8 +201,6 @@ class SoldEquipmentsController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $contract_id = $this->getRequest()->getParam('contract_id');
-
         $this->getRequest()->allowMethod(['post', 'delete']);
         $soldEquipment = $this->SoldEquipments->get($id);
         if ($this->SoldEquipments->delete($soldEquipment)) {
@@ -229,8 +209,8 @@ class SoldEquipmentsController extends AppController
             $this->Flash->error(__('The sold equipment could not be deleted. Please, try again.'));
         }
 
-        if (isset($contract_id)) {
-            return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $contract_id]);
+        if (isset($this->contract_id)) {
+            return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $this->contract_id]);
         }
 
         return $this->redirect(['action' => 'index']);
