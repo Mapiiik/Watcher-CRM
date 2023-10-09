@@ -100,6 +100,6 @@ class RadgroupcheckController extends AppController
             $this->Flash->error(__d('radius', 'The RADIUS group check could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->afterDeleteRedirect(['action' => 'index']);
     }
 }

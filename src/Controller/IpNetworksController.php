@@ -200,11 +200,7 @@ class IpNetworksController extends AppController
             }
         }
 
-        if (isset($this->contract_id)) {
-            return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $this->contract_id]);
-        }
-
-        return $this->redirect(['action' => 'index']);
+        return $this->afterDeleteRedirect(['action' => 'index']);
     }
 
     /**

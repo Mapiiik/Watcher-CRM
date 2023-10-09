@@ -100,6 +100,6 @@ class RadgroupreplyController extends AppController
             $this->Flash->error(__d('radius', 'The RADIUS group reply could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->afterDeleteRedirect(['action' => 'index']);
     }
 }

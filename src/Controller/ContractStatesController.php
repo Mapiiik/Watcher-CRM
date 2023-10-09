@@ -129,6 +129,6 @@ class ContractStatesController extends AppController
             $this->Flash->error(__('The contract state could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->afterDeleteRedirect(['action' => 'index']);
     }
 }

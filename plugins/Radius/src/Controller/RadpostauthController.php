@@ -110,6 +110,6 @@ class RadpostauthController extends AppController
             );
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->afterDeleteRedirect(['action' => 'index']);
     }
 }

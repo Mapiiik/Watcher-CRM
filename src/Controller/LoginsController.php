@@ -181,10 +181,6 @@ class LoginsController extends AppController
             $this->Flash->error(__('The login could not be deleted. Please, try again.'));
         }
 
-        if (isset($this->customer_id)) {
-            return $this->redirect(['controller' => 'Customers', 'action' => 'view', $this->customer_id]);
-        }
-
-        return $this->redirect(['action' => 'index']);
+        return $this->afterDeleteRedirect(['action' => 'index']);
     }
 }

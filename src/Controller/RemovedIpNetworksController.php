@@ -206,6 +206,6 @@ class RemovedIpNetworksController extends AppController
             $this->Flash->error(__('The removed IP network could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->afterDeleteRedirect(['action' => 'index']);
     }
 }

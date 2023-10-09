@@ -152,10 +152,6 @@ class PhonesController extends AppController
             $this->Flash->error(__('The phone could not be deleted. Please, try again.'));
         }
 
-        if (isset($this->customer_id)) {
-            return $this->redirect(['controller' => 'Customers', 'action' => 'view', $this->customer_id]);
-        }
-
-        return $this->redirect(['action' => 'index']);
+        return $this->afterDeleteRedirect(['action' => 'index']);
     }
 }

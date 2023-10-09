@@ -25,8 +25,11 @@ use Cake\Datasource\RepositoryInterface;
 use Cake\Event\EventInterface;
 use Cake\Event\EventManager;
 use Cake\Http\Exception\NotFoundException;
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
 use Cake\I18n\I18n;
 use Cake\Routing\Router;
+use Psr\Http\Message\UriInterface;
 
 /**
  * Application Controller
@@ -219,5 +222,55 @@ class AppController extends Controller
         return Router::url(
             ['?' => $query + $request->getQueryParams()] + $request->getParam('pass')
         );
+    }
+
+    /**
+     * Redirect to proper path after delete
+     *
+     * @param \Psr\Http\Message\UriInterface|array|string $url A string, array-based URL or UriInterface instance.
+     * @param int $status HTTP status code. Defaults to `302`.
+     * @return \Cake\Http\Response|null
+     */
+    public function afterDeleteRedirect(UriInterface|array|string $url, int $status = 302): ?Response
+    {
+        $request_param = Router::parseRequest($this->getRequest());
+        $referer_url = $this->getRequest()->referer();
+
+        # Redirect to referer if it is not the same object
+        if ($referer_url) {
+            $referer_param = Router::parseRequest(new ServerRequest(['url' => $referer_url]));
+
+            if (
+                ($referer_param['controller'] ?? null) !== ($request_param['controller'] ?? null)
+                || !isset($referer_param['pass'][0])
+                || !isset($request_param['pass'][0])
+                || $referer_param['pass'][0] !== $request_param['pass'][0]
+            ) {
+                return $this->redirect($referer_url, $status);
+            }
+        }
+
+        # Redirect to contract card if contract ID is known
+        if (isset($this->contract_id) && ($request_param['controller'] ?? null) !== 'Contracts') {
+            return $this->redirect([
+                'plugin' => null,
+                'controller' => 'Contracts',
+                'action' => 'view',
+                $this->contract_id,
+            ]);
+        }
+
+        # Redirect to customer card if customer ID is known
+        if (isset($this->customer_id) && ($request_param['controller'] ?? null) !== 'Customers') {
+            return $this->redirect([
+                'plugin' => null,
+                'controller' => 'Customers',
+                'action' => 'view',
+                $this->customer_id,
+            ]);
+        }
+
+        # Redirect to URL from parameter
+        return $this->redirect($url, $status);
     }
 }

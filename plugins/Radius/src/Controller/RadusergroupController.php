@@ -130,6 +130,6 @@ class RadusergroupController extends AppController
             $this->Flash->error(__d('radius', 'The RADIUS user group could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->afterDeleteRedirect(['action' => 'index']);
     }
 }

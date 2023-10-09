@@ -126,6 +126,6 @@ class AddressesController extends AppController
             $this->Flash->error(__d('ruian', 'The address could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->afterDeleteRedirect(['action' => 'index']);
     }
 }

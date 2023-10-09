@@ -149,7 +149,7 @@ class LabelsController extends AppController
             $this->Flash->error(__('The label could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect($this->referer(['action' => 'index']));
+        return $this->afterDeleteRedirect(['action' => 'index']);
     }
 
     /**

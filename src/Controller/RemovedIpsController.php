@@ -201,10 +201,6 @@ class RemovedIpsController extends AppController
             $this->Flash->error(__('The removed IP address could not be deleted. Please, try again.'));
         }
 
-        if (isset($this->contract_id)) {
-            return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $this->contract_id]);
-        }
-
-        return $this->redirect(['action' => 'index']);
+        return $this->afterDeleteRedirect(['action' => 'index']);
     }
 }

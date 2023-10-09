@@ -209,10 +209,6 @@ class BorrowedEquipmentsController extends AppController
             $this->Flash->error(__('The borrowed equipment could not be deleted. Please, try again.'));
         }
 
-        if (isset($this->contract_id)) {
-            return $this->redirect(['controller' => 'Contracts', 'action' => 'view', $this->contract_id]);
-        }
-
-        return $this->redirect(['action' => 'index']);
+        return $this->afterDeleteRedirect(['action' => 'index']);
     }
 }
