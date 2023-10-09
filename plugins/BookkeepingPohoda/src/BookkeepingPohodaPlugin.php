@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Radius;
+namespace BookkeepingPohoda;
 
 use Cake\Core\BasePlugin;
 use Cake\Core\PluginApplicationInterface;
@@ -9,9 +9,9 @@ use Cake\Http\MiddlewareQueue;
 use Cake\Routing\RouteBuilder;
 
 /**
- * Plugin for RADIUS
+ * Plugin for BookkeepingPohoda
  */
-class Plugin extends BasePlugin
+class BookkeepingPohodaPlugin extends BasePlugin
 {
     /**
      * Load all the plugin configuration and bootstrap logic.
@@ -38,28 +38,10 @@ class Plugin extends BasePlugin
     public function routes(RouteBuilder $routes): void
     {
         $routes->plugin(
-            'Radius',
-            ['path' => '/radius'],
+            'BookkeepingPohoda',
+            ['path' => '/bookkeeping'],
             function (RouteBuilder $builder): void {
-                $builder->connect(
-                    '/customers/{customer_id}/contracts/{contract_id}/{controller}',
-                    ['action' => 'index']
-                )->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+']);
-
-                $builder->connect(
-                    '/customers/{customer_id}/contracts/{contract_id}/{controller}/{action}/*',
-                    []
-                )->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+']);
-
-                $builder->connect(
-                    '/customers/{customer_id}/{controller}',
-                    ['action' => 'index']
-                )->setPatterns(['customer_id' => '[0-9]+']);
-
-                $builder->connect(
-                    '/customers/{customer_id}/{controller}/{action}/*',
-                    []
-                )->setPatterns(['customer_id' => '[0-9]+', 'id' => '[0-9]+']);
+                $builder->setExtensions(['dbf', 'xml']);
 
                 $builder->fallbacks();
             }

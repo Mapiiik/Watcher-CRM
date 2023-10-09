@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace BookkeepingPohoda;
+namespace Ruian;
 
 use Cake\Core\BasePlugin;
 use Cake\Core\PluginApplicationInterface;
@@ -9,9 +9,9 @@ use Cake\Http\MiddlewareQueue;
 use Cake\Routing\RouteBuilder;
 
 /**
- * Plugin for BookkeepingPohoda
+ * Plugin for RUIAN
  */
-class Plugin extends BasePlugin
+class RuianPlugin extends BasePlugin
 {
     /**
      * Load all the plugin configuration and bootstrap logic.
@@ -38,11 +38,9 @@ class Plugin extends BasePlugin
     public function routes(RouteBuilder $routes): void
     {
         $routes->plugin(
-            'BookkeepingPohoda',
-            ['path' => '/bookkeeping'],
+            'Ruian',
+            ['path' => '/ruian'],
             function (RouteBuilder $builder): void {
-                $builder->setExtensions(['dbf', 'xml']);
-
                 $builder->fallbacks();
             }
         );

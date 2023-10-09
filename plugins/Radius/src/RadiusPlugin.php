@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Ruian;
+namespace Radius;
 
 use Cake\Core\BasePlugin;
 use Cake\Core\PluginApplicationInterface;
@@ -9,9 +9,9 @@ use Cake\Http\MiddlewareQueue;
 use Cake\Routing\RouteBuilder;
 
 /**
- * Plugin for RUIAN
+ * Plugin for RADIUS
  */
-class Plugin extends BasePlugin
+class RadiusPlugin extends BasePlugin
 {
     /**
      * Load all the plugin configuration and bootstrap logic.
@@ -38,9 +38,29 @@ class Plugin extends BasePlugin
     public function routes(RouteBuilder $routes): void
     {
         $routes->plugin(
-            'Ruian',
-            ['path' => '/ruian'],
+            'Radius',
+            ['path' => '/radius'],
             function (RouteBuilder $builder): void {
+                $builder->connect(
+                    '/customers/{customer_id}/contracts/{contract_id}/{controller}',
+                    ['action' => 'index']
+                )->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+']);
+
+                $builder->connect(
+                    '/customers/{customer_id}/contracts/{contract_id}/{controller}/{action}/*',
+                    []
+                )->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+']);
+
+                $builder->connect(
+                    '/customers/{customer_id}/{controller}',
+                    ['action' => 'index']
+                )->setPatterns(['customer_id' => '[0-9]+']);
+
+                $builder->connect(
+                    '/customers/{customer_id}/{controller}/{action}/*',
+                    []
+                )->setPatterns(['customer_id' => '[0-9]+', 'id' => '[0-9]+']);
+
                 $builder->fallbacks();
             }
         );
