@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Radius\Controller;
 
+use App\Strings;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
 use Cake\Log\Log;
@@ -224,12 +225,12 @@ class AccountsController extends AppController
                 }
 
                 if (empty($customer->company)) {
-                    $new_username = strtolower($this->removeAccents(
+                    $new_username = strtolower(Strings::removeAccents(
                         $customer->last_name . '.' . $customer->first_name
                     ));
                     $new_username = strtr($new_username, [' - ' => '-', ' ' => '-']);
                 } else {
-                    $new_username = strtolower($this->removeAccents($customer->company));
+                    $new_username = strtolower(Strings::removeAccents($customer->company));
                     $new_username = strtr($new_username, [' - ' => '-', ' ' => '-', '.' => '', ',' => '']);
                 }
                 //$new_username = $contract->number . '-' . $new_username;
@@ -253,7 +254,7 @@ class AccountsController extends AppController
         $this->set('new_username', $new_username);
 
         // generate new password
-        $this->set('new_password', $this->generatePassword(10));
+        $this->set('new_password', Strings::generatePassword(10));
     }
 
     /**

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace BookkeepingPohoda\Controller;
 
+use App\Strings;
 use RouterOS\Client;
 use RouterOS\Query;
 
@@ -155,7 +156,7 @@ class DebtorsController extends AppController
                         ->equal('list', env('DEBTORS_ADDRESS_LIST', ''))
                         ->equal(
                             'comment',
-                            addslashes($this->removeAccents(
+                            addslashes(Strings::removeAccents(
                                 'MANUAL ENTRY - ' . $customer->number . ' - ' . $customer->name
                             ))
                         );
@@ -206,7 +207,7 @@ class DebtorsController extends AppController
                         ->equal('list', env('DEBTORS_ADDRESS_LIST', ''))
                         ->equal(
                             'comment',
-                            addslashes($this->removeAccents(
+                            addslashes(Strings::removeAccents(
                                 'MANUAL ENTRY - ' . $customer->number . ' - ' . $customer->name
                             ))
                         );

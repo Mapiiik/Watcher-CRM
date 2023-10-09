@@ -13,7 +13,7 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
-use App\Controller\AppController;
+use App\Versioning;
 use Cake\Core\Configure;
 
 /**
@@ -258,8 +258,8 @@ $urlWithQuery = function ($query = []) use ($request) {
     <footer>
         <br>
         <div class="container">
-            <div class="float-right" title="<?= __('Changelog') . ': ' . PHP_EOL . h(AppController::getChangelog()) ?>">
-                <?= __('Version') . ': ' . h(AppController::getVersion()) ?>
+            <div class="float-right" title="<?= __('Changelog') . ': ' . PHP_EOL . h(Versioning::getChangelog()) ?>">
+                <?= __('Version') . ': ' . h(Versioning::getVersion()) ?>
             </div>
             <br><br>
         </div>

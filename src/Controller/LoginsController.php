@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Strings;
+
 /**
  * Logins Controller
  *
@@ -108,7 +110,7 @@ class LoginsController extends AppController
 
             // START find free login
             $customer = $this->Logins->Customers->get($customer_id);
-            $new_login = strtolower($this->removeAccents($customer->last_name . '.' . $customer->first_name));
+            $new_login = strtolower(Strings::removeAccents($customer->last_name . '.' . $customer->first_name));
 
             $i = 1;
             $test_login = $new_login;
@@ -128,7 +130,7 @@ class LoginsController extends AppController
         $this->set('new_login', $new_login);
 
         // generate new password
-        $this->set('new_password', $this->generatePassword(8));
+        $this->set('new_password', Strings::generatePassword(8));
     }
 
     /**
