@@ -8,7 +8,7 @@ use Cake\Core\Configure;
 /**
  * Covers the user settings
  *
- * @property \Cake\Http\ServerRequest $request
+ * @method \Cake\Http\ServerRequest getRequest()
  */
 trait UserSettingsTrait
 {
