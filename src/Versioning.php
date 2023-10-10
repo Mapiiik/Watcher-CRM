@@ -29,7 +29,7 @@ class Versioning
      */
     public static function gitRepositoryPresent(): bool
     {
-        return file_exists(dirname(__DIR__, 2) . '/.git');
+        return file_exists(dirname(__DIR__, 1) . '/.git');
     }
 
     /**
