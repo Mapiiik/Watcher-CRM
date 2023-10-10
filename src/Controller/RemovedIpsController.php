@@ -103,7 +103,7 @@ class RemovedIpsController extends AppController
             if ($this->RemovedIps->save($removedIp)) {
                 $this->Flash->success(__('The removed IP address has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterAddRedirect(['action' => 'view', $removedIp->id]);
             }
             $this->Flash->error(__('The removed IP address could not be saved. Please, try again.'));
         }

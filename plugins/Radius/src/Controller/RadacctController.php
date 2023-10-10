@@ -56,7 +56,7 @@ class RadacctController extends AppController
             if ($this->Radacct->save($radacct)) {
                 $this->Flash->success(__d('radius', 'The RADIUS accounting has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterAddRedirect(['action' => 'view', $radacct->id]);
             }
             $this->Flash->error(__d('radius', 'The RADIUS accounting could not be saved. Please, try again.'));
         }

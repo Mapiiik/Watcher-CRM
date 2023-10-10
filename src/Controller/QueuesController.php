@@ -77,7 +77,7 @@ class QueuesController extends AppController
             if ($this->Queues->save($queue)) {
                 $this->Flash->success(__('The queue has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterAddRedirect(['action' => 'view', $queue->id]);
             }
             $this->Flash->error(__('The queue could not be saved. Please, try again.'));
         }

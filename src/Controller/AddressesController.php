@@ -114,7 +114,7 @@ class AddressesController extends AppController
                 if ($this->Addresses->save($address)) {
                     $this->Flash->success(__('The address has been saved.'));
 
-                    return $this->redirect(['action' => 'index']);
+                    return $this->afterAddRedirect(['action' => 'view', $address->id]);
                 }
                 $this->Flash->error(__('The address could not be saved. Please, try again.'));
             }

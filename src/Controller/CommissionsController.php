@@ -84,7 +84,7 @@ class CommissionsController extends AppController
             if ($this->Commissions->save($commission)) {
                 $this->Flash->success(__('The commission has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterAddRedirect(['action' => 'view', $commission->id]);
             }
             $this->Flash->error(__('The commission could not be saved. Please, try again.'));
         }

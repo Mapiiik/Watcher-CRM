@@ -76,7 +76,7 @@ class TaskStatesController extends AppController
             if ($this->TaskStates->save($taskState)) {
                 $this->Flash->success(__('The task state has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterAddRedirect(['action' => 'view', $taskState->id]);
             }
             $this->Flash->error(__('The task state could not be saved. Please, try again.'));
         }

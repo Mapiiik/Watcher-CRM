@@ -56,7 +56,7 @@ class RadcheckController extends AppController
             if ($this->Radcheck->save($radcheck)) {
                 $this->Flash->success(__d('radius', 'The RADIUS check has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterAddRedirect(['action' => 'view', $radcheck->id]);
             }
             $this->Flash->error(__d('radius', 'The RADIUS check could not be saved. Please, try again.'));
         }

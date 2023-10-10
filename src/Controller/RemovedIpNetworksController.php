@@ -104,7 +104,7 @@ class RemovedIpNetworksController extends AppController
             if ($this->RemovedIpNetworks->save($removedIpNetwork)) {
                 $this->Flash->success(__('The removed IP network has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterAddRedirect(['action' => 'view', $removedIpNetwork->id]);
             }
             $this->Flash->error(__('The removed IP network could not be saved. Please, try again.'));
         }

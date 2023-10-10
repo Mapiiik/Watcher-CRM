@@ -100,7 +100,7 @@ class SoldEquipmentsController extends AppController
             if ($this->SoldEquipments->save($soldEquipment)) {
                 $this->Flash->success(__('The sold equipment has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterAddRedirect(['action' => 'view', $soldEquipment->id]);
             }
             $this->Flash->error(__('The sold equipment could not be saved. Please, try again.'));
         }

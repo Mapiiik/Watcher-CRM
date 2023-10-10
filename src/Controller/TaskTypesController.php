@@ -76,7 +76,7 @@ class TaskTypesController extends AppController
             if ($this->TaskTypes->save($taskType)) {
                 $this->Flash->success(__('The task type has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterAddRedirect(['action' => 'view', $taskType->id]);
             }
             $this->Flash->error(__('The task type could not be saved. Please, try again.'));
         }

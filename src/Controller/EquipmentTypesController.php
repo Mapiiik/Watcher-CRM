@@ -78,7 +78,7 @@ class EquipmentTypesController extends AppController
             if ($this->EquipmentTypes->save($equipmentType)) {
                 $this->Flash->success(__('The equipment type has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterAddRedirect(['action' => 'view', $equipmentType->id]);
             }
             $this->Flash->error(__('The equipment type could not be saved. Please, try again.'));
         }

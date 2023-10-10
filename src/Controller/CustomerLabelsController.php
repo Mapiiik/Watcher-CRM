@@ -88,7 +88,7 @@ class CustomerLabelsController extends AppController
             if ($this->CustomerLabels->save($customerLabel)) {
                 $this->Flash->success(__('The customer label has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterAddRedirect(['action' => 'view', $customerLabel->id]);
             }
             $this->Flash->error(__('The customer label could not be saved. Please, try again.'));
         }

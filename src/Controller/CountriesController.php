@@ -76,7 +76,7 @@ class CountriesController extends AppController
             if ($this->Countries->save($country)) {
                 $this->Flash->success(__('The country has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterAddRedirect(['action' => 'view', $country->id]);
             }
             $this->Flash->error(__('The country could not be saved. Please, try again.'));
         }

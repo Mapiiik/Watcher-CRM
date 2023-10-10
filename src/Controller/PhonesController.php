@@ -86,7 +86,7 @@ class PhonesController extends AppController
             if ($this->Phones->save($phone)) {
                 $this->Flash->success(__('The phone has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterAddRedirect(['action' => 'view', $phone->id]);
             }
             $this->Flash->error(__('The phone could not be saved. Please, try again.'));
         }

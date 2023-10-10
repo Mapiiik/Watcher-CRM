@@ -168,7 +168,7 @@ class AccountsController extends AppController
                 if ($this->Accounts->save($account)) {
                     $this->Flash->success(__d('radius', 'The RADIUS account has been saved.'));
 
-                    return $this->redirect(['action' => 'view', $account->id]);
+                    return $this->afterAddRedirect(['action' => 'view', $account->id]);
                 }
                 $this->Flash->error(__d('radius', 'The RADIUS account could not be saved. Please, try again.'));
             }

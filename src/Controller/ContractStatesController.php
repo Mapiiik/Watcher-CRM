@@ -83,7 +83,7 @@ class ContractStatesController extends AppController
             if ($this->ContractStates->save($contractState)) {
                 $this->Flash->success(__('The contract state has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterAddRedirect(['action' => 'view', $contractState->id]);
             }
             $this->Flash->error(__('The contract state could not be saved. Please, try again.'));
         }

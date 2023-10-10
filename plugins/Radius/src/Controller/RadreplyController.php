@@ -56,7 +56,7 @@ class RadreplyController extends AppController
             if ($this->Radreply->save($radreply)) {
                 $this->Flash->success(__d('radius', 'The RADIUS reply has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterAddRedirect(['action' => 'view', $radreply->id]);
             }
             $this->Flash->error(__d('radius', 'The RADIUS reply could not be saved. Please, try again.'));
         }

@@ -166,7 +166,7 @@ class InvoicesController extends AppController
             if ($this->Invoices->save($invoice)) {
                 $this->Flash->success(__d('bookkeeping_pohoda', 'The invoice has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterAddRedirect(['action' => 'view', $invoice->id]);
             }
             $this->Flash->error(__d('bookkeeping_pohoda', 'The invoice could not be saved. Please, try again.'));
         }

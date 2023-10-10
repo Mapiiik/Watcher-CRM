@@ -54,7 +54,7 @@ class RadgroupreplyController extends AppController
             if ($this->Radgroupreply->save($radgroupreply)) {
                 $this->Flash->success(__d('radius', 'The RADIUS group reply has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterAddRedirect(['action' => 'view', $radgroupreply->id]);
             }
             $this->Flash->error(__d('radius', 'The RADIUS group reply could not be saved. Please, try again.'));
         }

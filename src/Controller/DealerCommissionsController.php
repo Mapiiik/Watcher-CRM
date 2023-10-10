@@ -82,7 +82,7 @@ class DealerCommissionsController extends AppController
             if ($this->DealerCommissions->save($dealerCommission)) {
                 $this->Flash->success(__('The dealer commission has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterAddRedirect(['action' => 'view', $dealerCommission->id]);
             }
             $this->Flash->error(__('The dealer commission could not be saved. Please, try again.'));
         }
