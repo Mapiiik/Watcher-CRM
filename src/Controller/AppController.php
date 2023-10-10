@@ -123,6 +123,9 @@ class AppController extends Controller
         # Load user settings
         $this->user_settings = $identity['user_settings'] ?? [];
 
+        # Load additional parameters
+        $this->loadAdditionalParameters();
+
         # Determine if we want to set the language
         if ($this->getRequest()->getQuery('language')) {
             $this->getRequest()->getSession()->write(
