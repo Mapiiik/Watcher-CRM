@@ -35,8 +35,12 @@ trait RedirectionTrait
                 ]);
             }
 
-            # Redirect to customer card if customer ID is known
-            if (isset($this->customer_id) && $this->getRequest()->getParam('controller') !== 'Customers') {
+            # Redirect to customer card if customer ID is known (not for contracts)
+            if (
+                isset($this->customer_id)
+                && $this->getRequest()->getParam('controller') !== 'Customers'
+                && $this->getRequest()->getParam('controller') !== 'Contracts'
+            ) {
                 return $this->redirect([
                     'plugin' => null,
                     'controller' => 'Customers',
