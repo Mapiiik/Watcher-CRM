@@ -146,7 +146,7 @@ class IpNetworksController extends AppController
             if ($this->IpNetworks->save($ipNetwork)) {
                 $this->Flash->success(__('The IP network has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterEditRedirect(['action' => 'view', $ipNetwork->id]);
             }
             $this->Flash->error(__('The IP network could not be saved. Please, try again.'));
         }

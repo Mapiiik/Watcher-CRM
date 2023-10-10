@@ -102,7 +102,7 @@ class TaxRatesController extends AppController
             if ($this->TaxRates->save($taxRate)) {
                 $this->Flash->success(__('The tax rate has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterEditRedirect(['action' => 'view', $taxRate->id]);
             }
             $this->Flash->error(__('The tax rate could not be saved. Please, try again.'));
         }

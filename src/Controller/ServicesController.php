@@ -114,7 +114,7 @@ class ServicesController extends AppController
             if ($this->Services->save($service)) {
                 $this->Flash->success(__('The service has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterEditRedirect(['action' => 'view', $service->id]);
             }
             $this->Flash->error(__('The service could not be saved. Please, try again.'));
         }

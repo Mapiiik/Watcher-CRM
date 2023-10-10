@@ -76,7 +76,7 @@ class RadgroupcheckController extends AppController
             if ($this->Radgroupcheck->save($radgroupcheck)) {
                 $this->Flash->success(__d('radius', 'The RADIUS group check has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterEditRedirect(['action' => 'view', $radgroupcheck->id]);
             }
             $this->Flash->error(__d('radius', 'The RADIUS group check could not be saved. Please, try again.'));
         }

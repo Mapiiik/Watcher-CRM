@@ -92,7 +92,7 @@ class RadusergroupController extends AppController
             if ($this->Radusergroup->save($radusergroup)) {
                 $this->Flash->success(__d('radius', 'The RADIUS user group has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterEditRedirect(['action' => 'view', $radusergroup->id]);
             }
             $this->Flash->error(__d('radius', 'The RADIUS user group could not be saved. Please, try again.'));
         }

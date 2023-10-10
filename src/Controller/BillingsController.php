@@ -202,7 +202,7 @@ class BillingsController extends AppController
                 if ($this->Billings->save($billing)) {
                     $this->Flash->success(__('The billing has been saved.'));
 
-                    return $this->redirect(['action' => 'index']);
+                    return $this->afterEditRedirect(['action' => 'view', $billing->id]);
                 }
                 $this->Flash->error(__('The billing could not be saved. Please, try again.'));
             }

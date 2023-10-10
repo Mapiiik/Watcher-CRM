@@ -124,7 +124,7 @@ class LabelsController extends AppController
                 if ($this->Labels->save($label)) {
                     $this->Flash->success(__('The label has been saved.'));
 
-                    return $this->redirect(['action' => 'view', $label->id]);
+                    return $this->afterEditRedirect(['action' => 'view', $label->id]);
                 }
             }
             $this->Flash->error(__('The label could not be saved. Please, try again.'));

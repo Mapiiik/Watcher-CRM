@@ -158,7 +158,7 @@ class IpsController extends AppController
                 if ($this->Ips->save($ip)) {
                     $this->Flash->success(__('The IP address has been saved.'));
 
-                    return $this->redirect(['action' => 'index']);
+                    return $this->afterAddRedirect(['action' => 'view', $ip->id]);
                 }
                 $this->Flash->error(__('The IP address could not be saved. Please, try again.'));
             }
@@ -313,7 +313,7 @@ class IpsController extends AppController
             if ($this->Ips->save($ip)) {
                 $this->Flash->success(__('The IP address has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterEditRedirect(['action' => 'view', $ip->id]);
             }
             $this->Flash->error(__('The IP address could not be saved. Please, try again.'));
         }

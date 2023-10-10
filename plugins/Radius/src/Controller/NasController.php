@@ -76,7 +76,7 @@ class NasController extends AppController
             if ($this->Nas->save($nas)) {
                 $this->Flash->success(__d('radius', 'The RADIUS NAS has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterEditRedirect(['action' => 'view', $nas->id]);
             }
             $this->Flash->error(__d('radius', 'The RADIUS NAS could not be saved. Please, try again.'));
         }

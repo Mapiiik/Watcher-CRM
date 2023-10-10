@@ -81,7 +81,7 @@ class RadpostauthController extends AppController
             if ($this->Radpostauth->save($radpostauth)) {
                 $this->Flash->success(__d('radius', 'The RADIUS post authentication has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterEditRedirect(['action' => 'view', $radpostauth->id]);
             }
             $this->Flash->error(__d('radius', 'The RADIUS post authentication could not be saved. Please, try again.'));
         }

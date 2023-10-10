@@ -147,7 +147,7 @@ class LoginsController extends AppController
             if ($this->Logins->save($login)) {
                 $this->Flash->success(__('The login has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterEditRedirect(['action' => 'view', $login->id]);
             }
             $this->Flash->error(__('The login could not be saved. Please, try again.'));
         }

@@ -133,7 +133,7 @@ class ContractVersionsController extends AppController
             if ($this->ContractVersions->save($contractVersion)) {
                 $this->Flash->success(__('The contract version has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->afterEditRedirect(['action' => 'view', $contractVersion->id]);
             }
             $this->Flash->error(__('The contract version could not be saved. Please, try again.'));
         }

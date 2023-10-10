@@ -279,7 +279,7 @@ class ContractsController extends AppController
                     $this->updateSubscriberVerificationCode($contract->id);
                 }
 
-                return $this->redirect(['action' => 'view', $id]);
+                return $this->afterEditRedirect(['action' => 'view', $contract->id]);
             }
             $this->Flash->error(__('The contract could not be saved. Please, try again.'));
         }
