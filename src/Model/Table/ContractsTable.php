@@ -289,6 +289,16 @@ class ContractsTable extends AppTable
             ]
         );
 
+        $rules->addDelete($rules->isNotLinkedTo('Billings'));
+        $rules->addDelete($rules->isNotLinkedTo('BorrowedEquipments'));
+        $rules->addDelete($rules->isNotLinkedTo('ContractVersions'));
+        $rules->addDelete($rules->isNotLinkedTo('Ips'));
+        $rules->addDelete($rules->isNotLinkedTo('RemovedIps'));
+        $rules->addDelete($rules->isNotLinkedTo('IpNetworks'));
+        $rules->addDelete($rules->isNotLinkedTo('RemovedIpNetworks'));
+        $rules->addDelete($rules->isNotLinkedTo('SoldEquipments'));
+        $rules->addDelete($rules->isNotLinkedTo('Tasks'));
+
         return $rules;
     }
 }

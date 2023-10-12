@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 
 /**
@@ -113,7 +114,7 @@ class ServiceTypesTable extends AppTable
             ->boolean('have_contract_versions')
             ->notEmptyString('have_contract_versions');
 
-            $validator
+        $validator
             ->boolean('have_equipments')
             ->notEmptyString('have_equipments');
 
@@ -126,5 +127,20 @@ class ServiceTypesTable extends AppTable
             ->notEmptyString('have_radius_accounts');
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules): RulesChecker
+    {
+        $rules->addDelete($rules->isNotLinkedTo('Contracts'));
+        $rules->addDelete($rules->isNotLinkedTo('Services'));
+
+        return $rules;
     }
 }

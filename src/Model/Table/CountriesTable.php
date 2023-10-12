@@ -81,6 +81,8 @@ class CountriesTable extends AppTable
     {
         $rules->add($rules->isUnique(['id']), ['errorField' => 'id']);
 
+        $rules->addDelete($rules->isNotLinkedTo('Addresses'));
+
         return $rules;
     }
 }

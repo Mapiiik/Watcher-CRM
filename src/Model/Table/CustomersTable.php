@@ -161,6 +161,10 @@ class CustomersTable extends AppTable
                 'Tasks.id' => 'DESC',
             ],
         ]);
+        // as Dealers
+        $this->hasMany('DealerCommissions', [
+            'foreignKey' => 'dealer_id',
+        ]);
     }
 
     /**
@@ -291,6 +295,22 @@ class CustomersTable extends AppTable
                 'message' => __('The specified identification number is not valid.'),
             ]
         );
+
+        $rules->addDelete($rules->isNotLinkedTo('Addresses'));
+        $rules->addDelete($rules->isNotLinkedTo('Billings'));
+        $rules->addDelete($rules->isNotLinkedTo('BorrowedEquipments'));
+        $rules->addDelete($rules->isNotLinkedTo('Contracts'));
+        $rules->addDelete($rules->isNotLinkedTo('Emails'));
+        $rules->addDelete($rules->isNotLinkedTo('CustomerLabels'));
+        $rules->addDelete($rules->isNotLinkedTo('Logins'));
+        $rules->addDelete($rules->isNotLinkedTo('Phones'));
+        $rules->addDelete($rules->isNotLinkedTo('SoldEquipments'));
+        $rules->addDelete($rules->isNotLinkedTo('Ips'));
+        $rules->addDelete($rules->isNotLinkedTo('RemovedIps'));
+        $rules->addDelete($rules->isNotLinkedTo('IpNetworks'));
+        $rules->addDelete($rules->isNotLinkedTo('RemovedIpNetworks'));
+        $rules->addDelete($rules->isNotLinkedTo('Tasks'));
+        $rules->addDelete($rules->isNotLinkedTo('DealerCommissions')); // as Dealers
 
         return $rules;
     }

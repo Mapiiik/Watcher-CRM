@@ -97,6 +97,8 @@ class ServicesTable extends AppTable
         $rules->add($rules->existsIn(['service_type_id'], 'ServiceTypes'), ['errorField' => 'service_type_id']);
         $rules->add($rules->existsIn(['queue_id'], 'Queues'), ['errorField' => 'queue_id']);
 
+        $rules->addDelete($rules->isNotLinkedTo('Billings'));
+
         return $rules;
     }
 }

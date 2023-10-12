@@ -100,6 +100,8 @@ class LabelsTable extends AppTable
     {
         $rules->add($rules->isUnique(['id']), ['errorField' => 'id']);
 
+        $rules->addDelete($rules->isNotLinkedTo('CustomerLabels'));
+
         return $rules;
     }
 }

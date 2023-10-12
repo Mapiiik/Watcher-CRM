@@ -156,6 +156,9 @@ class AccountsTable extends AppTable
         $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
         $rules->add($rules->existsIn(['contract_id'], 'Contracts'), ['errorField' => 'contract_id']);
 
+        $rules->addDelete($rules->isNotLinkedTo('Radacct'));
+        $rules->addDelete($rules->isNotLinkedTo('Radpostauth'));
+
         return $rules;
     }
 

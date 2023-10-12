@@ -103,6 +103,8 @@ class QueuesTable extends AppTable
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
+        $rules->addDelete($rules->isNotLinkedTo('Services'));
+
         return $rules;
     }
 }

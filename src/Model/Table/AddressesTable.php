@@ -54,6 +54,10 @@ class AddressesTable extends AppTable
             'foreignKey' => 'country_id',
             'joinType' => 'INNER',
         ]);
+        // as InstallationAddresses
+        $this->hasMany('Contracts', [
+            'foreignKey' => 'installation_address_id',
+        ]);
     }
 
     /**
@@ -148,6 +152,8 @@ class AddressesTable extends AppTable
     {
         $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
         $rules->add($rules->existsIn(['country_id'], 'Countries'), ['errorField' => 'country_id']);
+
+        $rules->addDelete($rules->isNotLinkedTo('Contracts')); // as InstallationAddresses
 
         return $rules;
     }
