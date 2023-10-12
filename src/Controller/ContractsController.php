@@ -380,6 +380,7 @@ class ContractsController extends AppController
         if ($this->Contracts->delete($contract)) {
             $this->Flash->success(__('The contract has been deleted.'));
         } else {
+            $this->flashValidationErrors($contract->getErrors());
             $this->Flash->error(__('The contract could not be deleted. Please, try again.'));
         }
 

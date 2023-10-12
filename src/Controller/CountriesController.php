@@ -119,6 +119,7 @@ class CountriesController extends AppController
         if ($this->Countries->delete($country)) {
             $this->Flash->success(__('The country has been deleted.'));
         } else {
+            $this->flashValidationErrors($country->getErrors());
             $this->Flash->error(__('The country could not be deleted. Please, try again.'));
         }
 

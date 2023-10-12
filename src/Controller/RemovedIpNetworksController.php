@@ -203,6 +203,7 @@ class RemovedIpNetworksController extends AppController
         if ($this->RemovedIpNetworks->delete($removedIpNetwork)) {
             $this->Flash->success(__('The removed IP network has been deleted.'));
         } else {
+            $this->flashValidationErrors($removedIpNetwork->getErrors());
             $this->Flash->error(__('The removed IP network could not be deleted. Please, try again.'));
         }
 

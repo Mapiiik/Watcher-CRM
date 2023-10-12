@@ -120,6 +120,7 @@ class QueuesController extends AppController
         if ($this->Queues->delete($queue)) {
             $this->Flash->success(__('The queue has been deleted.'));
         } else {
+            $this->flashValidationErrors($queue->getErrors());
             $this->Flash->error(__('The queue could not be deleted. Please, try again.'));
         }
 

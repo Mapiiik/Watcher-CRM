@@ -168,6 +168,7 @@ class DealerCommissionsController extends AppController
         if ($this->DealerCommissions->delete($dealerCommission)) {
             $this->Flash->success(__('The dealer commission has been deleted.'));
         } else {
+            $this->flashValidationErrors($dealerCommission->getErrors());
             $this->Flash->error(__('The dealer commission could not be deleted. Please, try again.'));
         }
 

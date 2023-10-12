@@ -126,6 +126,7 @@ class ContractStatesController extends AppController
         if ($this->ContractStates->delete($contractState)) {
             $this->Flash->success(__('The contract state has been deleted.'));
         } else {
+            $this->flashValidationErrors($contractState->getErrors());
             $this->Flash->error(__('The contract state could not be deleted. Please, try again.'));
         }
 

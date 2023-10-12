@@ -178,6 +178,7 @@ class LoginsController extends AppController
         if ($this->Logins->delete($login)) {
             $this->Flash->success(__('The login has been deleted.'));
         } else {
+            $this->flashValidationErrors($login->getErrors());
             $this->Flash->error(__('The login could not be deleted. Please, try again.'));
         }
 

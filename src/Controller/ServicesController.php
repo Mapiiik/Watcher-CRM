@@ -141,6 +141,7 @@ class ServicesController extends AppController
         if ($this->Services->delete($service)) {
             $this->Flash->success(__('The service has been deleted.'));
         } else {
+            $this->flashValidationErrors($service->getErrors());
             $this->Flash->error(__('The service could not be deleted. Please, try again.'));
         }
 

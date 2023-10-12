@@ -198,6 +198,7 @@ class RemovedIpsController extends AppController
         if ($this->RemovedIps->delete($removedIp)) {
             $this->Flash->success(__('The removed IP address has been deleted.'));
         } else {
+            $this->flashValidationErrors($removedIp->getErrors());
             $this->Flash->error(__('The removed IP address could not be deleted. Please, try again.'));
         }
 

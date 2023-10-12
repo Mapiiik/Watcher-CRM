@@ -17,6 +17,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Controller\Traits\AdditionalParametersTrait;
+use App\Controller\Traits\ErrorFormatterTrait;
 use App\Controller\Traits\RedirectionTrait;
 use AuditLog\Meta\RequestMetadata;
 use Cake\Controller\Controller;
@@ -41,6 +42,7 @@ use Cake\Routing\Router;
 class AppController extends Controller
 {
     use AdditionalParametersTrait;
+    use ErrorFormatterTrait;
     use RedirectionTrait;
 
     /*

@@ -549,6 +549,7 @@ class TasksController extends AppController
         if ($this->Tasks->delete($task)) {
             $this->Flash->success(__('The task has been deleted.'));
         } else {
+            $this->flashValidationErrors($task->getErrors());
             $this->Flash->error(__('The task could not be deleted. Please, try again.'));
         }
 

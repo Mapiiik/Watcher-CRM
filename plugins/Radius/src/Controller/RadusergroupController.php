@@ -127,6 +127,7 @@ class RadusergroupController extends AppController
         if ($this->Radusergroup->delete($radusergroup)) {
             $this->Flash->success(__d('radius', 'The RADIUS user group has been deleted.'));
         } else {
+            $this->flashValidationErrors($radusergroup->getErrors());
             $this->Flash->error(__d('radius', 'The RADIUS user group could not be deleted. Please, try again.'));
         }
 

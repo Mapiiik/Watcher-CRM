@@ -360,6 +360,7 @@ class IpsController extends AppController
             if ($this->Ips->delete($ip)) {
                 $this->Flash->success(__('The IP address has been deleted.'));
             } else {
+                $this->flashValidationErrors($ip->getErrors());
                 $this->Flash->error(__('The IP address could not be deleted. Please, try again.'));
             }
         }

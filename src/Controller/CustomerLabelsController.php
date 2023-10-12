@@ -147,6 +147,7 @@ class CustomerLabelsController extends AppController
         if ($this->CustomerLabels->delete($customerLabel)) {
             $this->Flash->success(__('The customer label has been deleted.'));
         } else {
+            $this->flashValidationErrors($customerLabel->getErrors());
             $this->Flash->error(__('The customer label could not be deleted. Please, try again.'));
         }
 

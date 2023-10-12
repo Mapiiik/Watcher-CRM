@@ -206,6 +206,7 @@ class BorrowedEquipmentsController extends AppController
         if ($this->BorrowedEquipments->delete($borrowedEquipment)) {
             $this->Flash->success(__('The borrowed equipment has been deleted.'));
         } else {
+            $this->flashValidationErrors($borrowedEquipment->getErrors());
             $this->Flash->error(__('The borrowed equipment could not be deleted. Please, try again.'));
         }
 

@@ -260,6 +260,7 @@ class BillingsController extends AppController
         if ($this->Billings->delete($billing)) {
             $this->Flash->success(__('The billing has been deleted.'));
         } else {
+            $this->flashValidationErrors($billing->getErrors());
             $this->Flash->error(__('The billing could not be deleted. Please, try again.'));
         }
 

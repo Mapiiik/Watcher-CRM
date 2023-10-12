@@ -172,6 +172,7 @@ class ContractVersionsController extends AppController
         if ($this->ContractVersions->delete($contractVersion)) {
             $this->Flash->success(__('The contract version has been deleted.'));
         } else {
+            $this->flashValidationErrors($contractVersion->getErrors());
             $this->Flash->error(__('The contract version could not be deleted. Please, try again.'));
         }
 

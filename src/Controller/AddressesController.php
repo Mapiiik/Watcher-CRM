@@ -198,6 +198,7 @@ class AddressesController extends AppController
         if ($this->Addresses->delete($address)) {
             $this->Flash->success(__('The address has been deleted.'));
         } else {
+            $this->flashValidationErrors($address->getErrors());
             $this->Flash->error(__('The address could not be deleted. Please, try again.'));
         }
 

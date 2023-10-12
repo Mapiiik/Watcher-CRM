@@ -123,6 +123,7 @@ class TaxRatesController extends AppController
         if ($this->TaxRates->delete($taxRate)) {
             $this->Flash->success(__('The tax rate has been deleted.'));
         } else {
+            $this->flashValidationErrors($taxRate->getErrors());
             $this->Flash->error(__('The tax rate could not be deleted. Please, try again.'));
         }
 

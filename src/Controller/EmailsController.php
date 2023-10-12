@@ -149,6 +149,7 @@ class EmailsController extends AppController
         if ($this->Emails->delete($email)) {
             $this->Flash->success(__('The email has been deleted.'));
         } else {
+            $this->flashValidationErrors($email->getErrors());
             $this->Flash->error(__('The email could not be deleted. Please, try again.'));
         }
 

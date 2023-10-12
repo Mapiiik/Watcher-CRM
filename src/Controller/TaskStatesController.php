@@ -119,6 +119,7 @@ class TaskStatesController extends AppController
         if ($this->TaskStates->delete($taskState)) {
             $this->Flash->success(__('The task state has been deleted.'));
         } else {
+            $this->flashValidationErrors($taskState->getErrors());
             $this->Flash->error(__('The task state could not be deleted. Please, try again.'));
         }
 

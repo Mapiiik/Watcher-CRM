@@ -105,6 +105,7 @@ class RadreplyController extends AppController
         if ($this->Radreply->delete($radreply)) {
             $this->Flash->success(__d('radius', 'The RADIUS reply has been deleted.'));
         } else {
+            $this->flashValidationErrors($radreply->getErrors());
             $this->Flash->error(__d('radius', 'The RADIUS reply could not be deleted. Please, try again.'));
         }
 

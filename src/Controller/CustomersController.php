@@ -402,6 +402,7 @@ class CustomersController extends AppController
         if ($this->Customers->delete($customer)) {
             $this->Flash->success(__('The customer has been deleted.'));
         } else {
+            $this->flashValidationErrors($customer->getErrors());
             $this->Flash->error(__('The customer could not be deleted. Please, try again.'));
         }
 

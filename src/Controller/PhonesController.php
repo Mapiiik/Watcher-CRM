@@ -149,6 +149,7 @@ class PhonesController extends AppController
         if ($this->Phones->delete($phone)) {
             $this->Flash->success(__('The phone has been deleted.'));
         } else {
+            $this->flashValidationErrors($phone->getErrors());
             $this->Flash->error(__('The phone could not be deleted. Please, try again.'));
         }
 

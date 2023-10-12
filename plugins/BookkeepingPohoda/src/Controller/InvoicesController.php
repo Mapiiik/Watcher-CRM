@@ -219,6 +219,7 @@ class InvoicesController extends AppController
         if ($this->Invoices->delete($invoice)) {
             $this->Flash->success(__d('bookkeeping_pohoda', 'The invoice has been deleted.'));
         } else {
+            $this->flashValidationErrors($invoice->getErrors());
             $this->Flash->error(__d('bookkeeping_pohoda', 'The invoice could not be deleted. Please, try again.'));
         }
 

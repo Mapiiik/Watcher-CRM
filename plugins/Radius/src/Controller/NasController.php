@@ -97,6 +97,7 @@ class NasController extends AppController
         if ($this->Nas->delete($nas)) {
             $this->Flash->success(__d('radius', 'The RADIUS NAS has been deleted.'));
         } else {
+            $this->flashValidationErrors($nas->getErrors());
             $this->Flash->error(__d('radius', 'The RADIUS NAS could not be deleted. Please, try again.'));
         }
 

@@ -196,6 +196,7 @@ class IpNetworksController extends AppController
             if ($this->IpNetworks->delete($ipNetwork)) {
                 $this->Flash->success(__('The IP network has been deleted.'));
             } else {
+                $this->flashValidationErrors($ipNetwork->getErrors());
                 $this->Flash->error(__('The IP network could not be deleted. Please, try again.'));
             }
         }

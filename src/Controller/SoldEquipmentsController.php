@@ -206,6 +206,7 @@ class SoldEquipmentsController extends AppController
         if ($this->SoldEquipments->delete($soldEquipment)) {
             $this->Flash->success(__('The sold equipment has been deleted.'));
         } else {
+            $this->flashValidationErrors($soldEquipment->getErrors());
             $this->Flash->error(__('The sold equipment could not be deleted. Please, try again.'));
         }
 

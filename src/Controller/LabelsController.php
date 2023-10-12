@@ -146,6 +146,7 @@ class LabelsController extends AppController
         if ($this->Labels->delete($label)) {
             $this->Flash->success(__('The label has been deleted.'));
         } else {
+            $this->flashValidationErrors($label->getErrors());
             $this->Flash->error(__('The label could not be deleted. Please, try again.'));
         }
 

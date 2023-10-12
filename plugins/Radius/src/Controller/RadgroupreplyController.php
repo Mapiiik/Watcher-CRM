@@ -97,6 +97,7 @@ class RadgroupreplyController extends AppController
         if ($this->Radgroupreply->delete($radgroupreply)) {
             $this->Flash->success(__d('radius', 'The RADIUS group reply has been deleted.'));
         } else {
+            $this->flashValidationErrors($radgroupreply->getErrors());
             $this->Flash->error(__d('radius', 'The RADIUS group reply could not be deleted. Please, try again.'));
         }
 

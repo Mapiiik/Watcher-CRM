@@ -97,6 +97,7 @@ class RadgroupcheckController extends AppController
         if ($this->Radgroupcheck->delete($radgroupcheck)) {
             $this->Flash->success(__d('radius', 'The RADIUS group check has been deleted.'));
         } else {
+            $this->flashValidationErrors($radgroupcheck->getErrors());
             $this->Flash->error(__d('radius', 'The RADIUS group check could not be deleted. Please, try again.'));
         }
 

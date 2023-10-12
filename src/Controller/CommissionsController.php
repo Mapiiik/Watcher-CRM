@@ -127,6 +127,7 @@ class CommissionsController extends AppController
         if ($this->Commissions->delete($commission)) {
             $this->Flash->success(__('The commission has been deleted.'));
         } else {
+            $this->flashValidationErrors($commission->getErrors());
             $this->Flash->error(__('The commission could not be deleted. Please, try again.'));
         }
 

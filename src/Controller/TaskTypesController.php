@@ -119,6 +119,7 @@ class TaskTypesController extends AppController
         if ($this->TaskTypes->delete($taskType)) {
             $this->Flash->success(__('The task type has been deleted.'));
         } else {
+            $this->flashValidationErrors($taskType->getErrors());
             $this->Flash->error(__('The task type could not be deleted. Please, try again.'));
         }
 

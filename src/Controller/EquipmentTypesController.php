@@ -121,6 +121,7 @@ class EquipmentTypesController extends AppController
         if ($this->EquipmentTypes->delete($equipmentType)) {
             $this->Flash->success(__('The equipment type has been deleted.'));
         } else {
+            $this->flashValidationErrors($equipmentType->getErrors());
             $this->Flash->error(__('The equipment type could not be deleted. Please, try again.'));
         }
 

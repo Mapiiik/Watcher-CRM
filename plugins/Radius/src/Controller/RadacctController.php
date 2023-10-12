@@ -105,6 +105,7 @@ class RadacctController extends AppController
         if ($this->Radacct->delete($radacct)) {
             $this->Flash->success(__d('radius', 'The RADIUS accounting has been deleted.'));
         } else {
+            $this->flashValidationErrors($radacct->getErrors());
             $this->Flash->error(__d('radius', 'The RADIUS accounting could not be deleted. Please, try again.'));
         }
 
