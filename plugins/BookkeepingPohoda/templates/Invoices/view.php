@@ -31,7 +31,7 @@
                 ['action' => 'add'],
                 ['class' => 'side-nav-item']
             ) ?>
-            <br />
+            <br>
             <?= $this->AuthLink->link(
                 __d('bookkeeping_pohoda', 'Download Invoice'),
                 ['action' => 'download', $invoice->id],

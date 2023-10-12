@@ -64,7 +64,7 @@
         </div>
 
         <?php if (isset($verification_data)) : ?>
-        <br />
+        <br>
         <div class="table-responsive">
             <table>
                 <thead>

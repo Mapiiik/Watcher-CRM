@@ -114,7 +114,7 @@
                     </table>
                 </div>
             </div>
-            <br />
+            <br>
             <div class="row">
                 <div class="column">
                     <table>
@@ -205,7 +205,7 @@
                     'contract_versions' => $contract->contract_versions,
                 ]) ?>
             </div>
-            <br />
+            <br>
             <?php endif; ?>
             <?= $this->Form->create(null, [
                 'type' => 'get',

@@ -119,12 +119,12 @@
                             <td><?= h($customer->suffix) ?></td>
                             <td>
                                 <?php foreach ($customer->contracts as $contract) {
-                                    echo h($contract->number) . '<br />';
+                                    echo h($contract->number) . '<br>';
                                 } ?>
                             </td>
                             <td>
                                 <?php foreach ($customer->ips as $ip) {
-                                    echo h($ip->ip) . '<br />';
+                                    echo h($ip->ip) . '<br>';
                                 } ?>
                             </td>
                             <td class="actions">

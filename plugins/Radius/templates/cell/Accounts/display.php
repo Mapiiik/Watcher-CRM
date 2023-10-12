@@ -40,13 +40,13 @@
             <td><?php
             foreach ($account->radreply as $radreply) {
                 if (in_array($radreply->attribute, ['Framed-IP-Address', 'Framed-IPv6-Address'])) {
-                    echo h($radreply->value) . '<br />';
+                    echo h($radreply->value) . '<br>';
                 }
             }
             ?></td>
             <td><?php
             foreach ($account->radusergroup as $radusergroup) {
-                echo h($radusergroup->groupname) . '<br />';
+                echo h($radusergroup->groupname) . '<br>';
             }
             ?></td>
             <td><?php
@@ -54,7 +54,7 @@
                 echo h($radreply->attribute)
                     . ' ' . h($radreply->op)
                     . ' ' . h($radreply->value)
-                    . '<br />';
+                    . '<br>';
             }
             ?></td>
             <td><?= h($account->radacct[0]->nasipaddress ?? '') ?></td>
@@ -106,7 +106,7 @@
                     ],
                     ['confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $account->username)]
                 ) ?>
-                <br />
+                <br>
                 <?= $this->AuthLink->link(
                     __d('radius', 'Monitoring'),
                     [

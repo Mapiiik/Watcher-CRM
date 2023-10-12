@@ -38,7 +38,7 @@ $checkConnection = function (string $name) {
         if (method_exists($connectionError, 'getAttributes')) {
             $attributes = $connectionError->getAttributes();
             if (isset($attributes['message'])) {
-                $error .= '<br />' . $attributes['message'];
+                $error .= '<br>' . $attributes['message'];
             }
         }
         if ($name === 'debug_kit') {
@@ -46,7 +46,7 @@ $checkConnection = function (string $name) {
                 <a href="https://book.cakephp.org/debugkit/5/en/index.html#configuration" target="_blank">DebugKit.safeTld</a>
             config and reload.';
             if (!in_array('sqlite', PDO::getAvailableDrivers())) {
-                $error .= '<br />You need to install the PHP extension <code>pdo_sqlite</code> so DebugKit can work properly.';
+                $error .= '<br>You need to install the PHP extension <code>pdo_sqlite</code> so DebugKit can work properly.';
             }
         }
     }
@@ -100,8 +100,8 @@ endif;
                         <div id="url-rewriting-warning" style="padding: 1rem; background: #fcebea; color: #cc1f1a; border-color: #ef5753;">
                             <ul>
                                 <li class="bullet problem">
-                                    URL rewriting is not properly configured on your server.<br />
-                                    1) <a target="_blank" rel="noopener" href="https://book.cakephp.org/5/en/installation.html#url-rewriting">Help me configure it</a><br />
+                                    URL rewriting is not properly configured on your server.<br>
+                                    1) <a target="_blank" rel="noopener" href="https://book.cakephp.org/5/en/installation.html#url-rewriting">Help me configure it</a><br>
                                     2) <a target="_blank" rel="noopener" href="https://book.cakephp.org/5/en/development/configuration.html#general-configuration">I don't / can't use URL rewriting</a>
                                 </li>
                             </ul>
@@ -175,7 +175,7 @@ endif;
                         <?php if ($result['connected']) : ?>
                             <li class="bullet success">CakePHP is able to connect to the database.</li>
                         <?php else : ?>
-                            <li class="bullet problem">CakePHP is NOT able to connect to the database.<br /><?= h($result['error']) ?></li>
+                            <li class="bullet problem">CakePHP is NOT able to connect to the database.<br><?= h($result['error']) ?></li>
                         <?php endif; ?>
                         </ul>
                     </div>
@@ -190,7 +190,7 @@ endif;
                             <?php if ($result['connected']) : ?>
                                 <li class="bullet success">DebugKit can connect to the database.</li>
                             <?php else : ?>
-                                <li class="bullet problem">There are configuration problems present which need to be fixed:<br /><?= $result['error'] ?></li>
+                                <li class="bullet problem">There are configuration problems present which need to be fixed:<br><?= $result['error'] ?></li>
                             <?php endif; ?>
                         <?php else : ?>
                             <li class="bullet problem">DebugKit is <strong>not</strong> loaded.</li>

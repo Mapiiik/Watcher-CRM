@@ -438,7 +438,7 @@ class ContractPDF extends TCPDF
             $this->Ln(1);
 
             $this->writeHTML(
-                '<strong>Přístup do Uživatelského portálu je možné zřídit na Webu Poskytovatele:</strong><br />' . PHP_EOL
+                '<strong>Přístup do Uživatelského portálu je možné zřídit na Webu Poskytovatele:</strong><br>' . PHP_EOL
                 . '<u>https://netair.cz/internet/uzivatelsky-portal</u>' . PHP_EOL,
                 true,
                 false,

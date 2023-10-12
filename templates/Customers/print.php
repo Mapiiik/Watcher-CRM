@@ -163,7 +163,7 @@
                     </table>
                 </div>
             </div>
-            <br />
+            <br>
             <?= $this->Form->create(null, [
                 'type' => 'get',
                 'valueSources' => ['query'],

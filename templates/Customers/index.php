@@ -76,15 +76,15 @@
                             ) ?>
                             <?= $contract->__isset('contract_state') ?
                                 '(' . h($contract->contract_state->name) . ')' : '' ?>
-                        </span><br />
+                        </span><br>
                         <?php endforeach; ?>
                     </td>
                     <td>
                         <?php foreach ($customer->ips as $ip) : ?>
-                        <span><?= h($ip->ip) ?></span><br />
+                        <span><?= h($ip->ip) ?></span><br>
                         <?php endforeach; ?>
                         <?php foreach ($customer->ip_networks as $ip_network) : ?>
-                        <span><?= h($ip_network->ip_network) ?></span><br />
+                        <span><?= h($ip_network->ip_network) ?></span><br>
                         <?php endforeach; ?>
                     </td>
                     <td>

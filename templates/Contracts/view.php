@@ -20,7 +20,7 @@
             ) ?>
             <?= $this->AuthLink->link(__('List Contracts'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Contract'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
-            <br />
+            <br>
             <?= $this->AuthLink->link(
                 __('Print to PDF'),
                 ['action' => 'print', $contract->id],
@@ -212,7 +212,7 @@
                     </table>
                 </div>
             </div>
-            <br />
+            <br>
             <div class="row">
                 <div class="column">
                     <table>

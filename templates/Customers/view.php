@@ -20,7 +20,7 @@
             ) ?>
             <?= $this->AuthLink->link(__('List Customers'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Customer'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
-            <br />
+            <br>
             <?= $this->AuthLink->link(
                 __('Print to PDF'),
                 ['action' => 'print', $customer->id],
