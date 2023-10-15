@@ -115,6 +115,7 @@
                             <td><?= $invoice->__isset('creator') ? $this->Html->link(
                                 $invoice->creator->username,
                                 [
+                                    'plugin' => null,
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $invoice->creator->id,
@@ -130,6 +131,7 @@
                             <td><?= $invoice->__isset('modifier') ? $this->Html->link(
                                 $invoice->modifier->username,
                                 [
+                                    'plugin' => null,
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $invoice->modifier->id,

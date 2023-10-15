@@ -119,6 +119,7 @@ use Cake\I18n\DateTime;
                             <td><?= $account->__isset('creator') ? $this->Html->link(
                                 $account->creator->username,
                                 [
+                                    'plugin' => null,
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $account->creator->id,
@@ -134,6 +135,7 @@ use Cake\I18n\DateTime;
                             <td><?= $account->__isset('modifier') ? $this->Html->link(
                                 $account->modifier->username,
                                 [
+                                    'plugin' => null,
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $account->modifier->id,
