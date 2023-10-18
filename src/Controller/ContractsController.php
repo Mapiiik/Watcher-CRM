@@ -409,7 +409,12 @@ class ContractsController extends AppController
             ->select([
                 'number' => '(' . $service_type->contract_number_format . ')',
             ])
-            ->where(['id' => $contract->id])
+            ->contain([
+                'Customers',
+            ])
+            ->where([
+                'Contracts.id' => $contract->id,
+            ])
             ->all();
 
         if ($result->count() == 1) {
