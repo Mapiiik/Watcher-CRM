@@ -9,18 +9,18 @@ use Cake\ORM\Entity;
  * Account Entity
  *
  * @property \Cake\I18n\DateTime|null $created
- * @property int|null $created_by
- * @property \CakeDC\Users\Model\Entity\User|null $creator
+ * @property string|null $created_by
+ * @property \App\Model\Entity\AppUser|null $creator
  * @property \Cake\I18n\DateTime|null $modified
- * @property int|null $modified_by
- * @property \CakeDC\Users\Model\Entity\User|null $modifier
+ * @property string|null $modified_by
+ * @property \App\Model\Entity\AppUser|null $modifier
  * @property int $id
  * @property string $username
  * @property string $password
  * @property int $type
  * @property bool $active
- * @property int $customer_id
- * @property int $contract_id
+ * @property string $customer_id
+ * @property string $contract_id
  * @property string $style
  *
  * @property \App\Model\Entity\Customer $customer

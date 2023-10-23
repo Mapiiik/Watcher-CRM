@@ -90,7 +90,7 @@ WHERE
     to_tsvector (
         CONCAT_WS(
             ' ',
-            Customers.id + :customer_series,
+            Customers.nid + :customer_series,
             Customers.ic,
             Customers.dic,
             Customers.first_name, 
@@ -191,7 +191,7 @@ class CustomersController extends AppController
             // search by customer number
             $customersQuery->where([
                 'OR' => [
-                    '(Customers.id::bigint + ' . (int)env('CUSTOMER_SERIES', '0') . ') =' => (int)trim($search),
+                    '(Customers.nid::bigint + ' . (int)env('CUSTOMER_SERIES', '0') . ') =' => (int)trim($search),
                     'Customers.ic' => trim($search),
                 ],
             ]);
@@ -225,7 +225,7 @@ class CustomersController extends AppController
 
         $this->paginate = [
             'order' => [
-                'Customers.id' => 'DESC',
+                'Customers.nid' => 'DESC',
             ],
         ];
 

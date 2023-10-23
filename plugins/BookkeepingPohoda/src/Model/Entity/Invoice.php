@@ -10,13 +10,14 @@ use Cake\ORM\Entity;
  * Invoice Entity
  *
  * @property \Cake\I18n\DateTime|null $created
- * @property int|null $created_by
- * @property \CakeDC\Users\Model\Entity\User|null $creator
+ * @property string|null $created_by
+ * @property \App\Model\Entity\AppUser|null $creator
  * @property \Cake\I18n\DateTime|null $modified
- * @property int|null $modified_by
- * @property \CakeDC\Users\Model\Entity\User|null $modifier
- * @property int $id
- * @property int|null $customer_id
+ * @property string|null $modified_by
+ * @property \App\Model\Entity\AppUser|null $modifier
+ * @property string $id
+ * @property int $nid
+ * @property string|null $customer_id
  * @property int $number
  * @property int|null $variable_symbol
  * @property \Cake\I18n\Date|null $creation_date

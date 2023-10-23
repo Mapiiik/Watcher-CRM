@@ -79,7 +79,7 @@ class TasksTable extends AppTable
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->integer('id')
+            ->uuid('id')
             ->allowEmptyString('id', null, 'create')
             ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
@@ -124,11 +124,11 @@ class TasksTable extends AppTable
             ->allowEmptyString('access_point_id');
 
         $validator
-            ->integer('task_type_id')
+            ->uuid('task_type_id')
             ->notEmptyString('task_type_id');
 
         $validator
-            ->integer('task_state_id')
+            ->uuid('task_state_id')
             ->notEmptyString('task_state_id');
 
         return $validator;

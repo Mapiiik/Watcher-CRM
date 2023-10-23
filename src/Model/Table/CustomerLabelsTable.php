@@ -69,7 +69,7 @@ class CustomerLabelsTable extends AppTable
             ->allowEmptyString('note');
 
         $validator
-            ->integer('id')
+            ->uuid('id')
             ->allowEmptyString('id', null, 'create')
             ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 

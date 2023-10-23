@@ -70,19 +70,19 @@ class BorrowedEquipmentsTable extends AppTable
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->integer('id')
+            ->uuid('id')
             ->allowEmptyString('id', null, 'create');
 
         $validator
-            ->integer('customer_id')
+            ->uuid('customer_id')
             ->notEmptyString('customer_id');
 
         $validator
-            ->integer('contract_id')
+            ->uuid('contract_id')
             ->notEmptyString('contract_id');
 
         $validator
-            ->integer('equipment_type_id')
+            ->uuid('equipment_type_id')
             ->notEmptyString('equipment_type_id');
 
         $validator

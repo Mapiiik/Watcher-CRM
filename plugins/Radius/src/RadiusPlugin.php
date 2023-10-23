@@ -41,25 +41,41 @@ class RadiusPlugin extends BasePlugin
             'Radius',
             ['path' => '/radius'],
             function (RouteBuilder $builder): void {
-                $builder->connect(
-                    '/customers/{customer_id}/contracts/{contract_id}/{controller}',
-                    ['action' => 'index']
-                )->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+']);
+                /*
+                * Contracts - nested routes
+                */
+                $builder
+                    ->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}', [
+                        'action' => 'index',
+                    ])
+                    ->setPatterns([
+                        'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+                        'contract_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+                    ]);
 
-                $builder->connect(
-                    '/customers/{customer_id}/contracts/{contract_id}/{controller}/{action}/*',
-                    []
-                )->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+']);
+                $builder
+                    ->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/{action}/*', [])
+                    ->setPatterns([
+                        'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+                        'contract_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+                    ]);
 
-                $builder->connect(
-                    '/customers/{customer_id}/{controller}',
-                    ['action' => 'index']
-                )->setPatterns(['customer_id' => '[0-9]+']);
+                /*
+                * Customers - nested routes
+                */
+                $builder
+                    ->connect('/customers/{customer_id}/{controller}', [
+                        'action' => 'index',
+                    ])
+                    ->setPatterns([
+                        'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+                    ]);
 
-                $builder->connect(
-                    '/customers/{customer_id}/{controller}/{action}/*',
-                    []
-                )->setPatterns(['customer_id' => '[0-9]+', 'id' => '[0-9]+']);
+                $builder
+                    ->connect('/customers/{customer_id}/{controller}/{action}/*', [])
+                    ->setPatterns([
+                        'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+                    ]);
 
                 $builder->fallbacks();
             }

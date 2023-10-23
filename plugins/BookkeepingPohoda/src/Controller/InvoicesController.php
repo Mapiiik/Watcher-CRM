@@ -99,12 +99,12 @@ class InvoicesController extends AppController
                 'debt' => $query->func()->sum('Invoices.debt'),
             ]);
 
-        $this->set('total_debt', $query->first()['debt']);
+        $this->set('total_debt', $query->first()['debt'] ?? 0);
         $this->set(
             'total_overdue_debt',
             $query
                 ->where(['Invoices.due_date < NOW()'])
-                ->first()['debt']
+                ->first()['debt'] ?? 0
         );
 
         $this->set(compact('invoices'));
@@ -264,10 +264,10 @@ class InvoicesController extends AppController
      * get SelectQuery with billing data for selected month
      *
      * @param \Cake\I18n\Date $invoiced_month Month for billing
-     * @param int $tax_rate_id month Id of tax rate for billing
+     * @param string $tax_rate_id month Id of tax rate for billing
      * @return \Cake\ORM\Query\SelectQuery
      */
-    private function getQueryForBillingDataForMonth(Date $invoiced_month, int $tax_rate_id): SelectQuery
+    private function getQueryForBillingDataForMonth(Date $invoiced_month, string $tax_rate_id): SelectQuery
     {
         return $this->fetchTable('Customers')
             ->find()
@@ -314,7 +314,7 @@ class InvoicesController extends AppController
                     ])
                     // order by contract ID
                     ->orderBy([
-                        'Contracts.id',
+                        'Contracts.nid',
                     ]);
             })
             // only customers with the selected tax rate
@@ -323,7 +323,7 @@ class InvoicesController extends AppController
             ])
             // order by customer ID
             ->orderBy([
-                'Customers.id',
+                'Customers.nid',
             ]);
     }
 
@@ -606,7 +606,17 @@ class InvoicesController extends AppController
                             ??
                             $this->Invoices->newEntity(['number' => $record['CISLO']]);
 
-                        $invoice->customer_id = (int)$record['VARSYM'] - (int)env('CUSTOMER_SERIES', '0');
+                        $customerIds = $this->Invoices->Customers
+                            ->find(
+                                'list',
+                                keyField: 'nid',
+                                valueField: 'id'
+                            )
+                            ->toArray();
+
+                        $invoice->customer_id =
+                            $customerIds[(int)$record['VARSYM'] - (int)env('CUSTOMER_SERIES', '0')] ?? null;
+
                         $invoice->variable_symbol = (int)$record['VARSYM'];
                         $invoice->creation_date = $record['DATUM'];
                         $invoice->due_date = $record['DATSPLAT'];

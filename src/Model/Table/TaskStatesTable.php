@@ -48,7 +48,7 @@ class TaskStatesTable extends AppTable
             'foreignKey' => 'task_state_id',
             'sort' => [
                 'Tasks.task_state_id',
-                'Tasks.id' => 'DESC',
+                'Tasks.nid' => 'DESC',
             ],
         ]);
     }
@@ -62,7 +62,7 @@ class TaskStatesTable extends AppTable
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->integer('id')
+            ->uuid('id')
             ->allowEmptyString('id', null, 'create');
 
         $validator

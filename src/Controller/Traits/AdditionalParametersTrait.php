@@ -12,12 +12,12 @@ trait AdditionalParametersTrait
     /*
      * Customer ID
      */
-    protected ?int $customer_id = null;
+    protected ?string $customer_id = null;
 
     /*
      * Contract ID
      */
-    protected ?int $contract_id = null;
+    protected ?string $contract_id = null;
 
     /**
      * Load and set additonal parameters
@@ -27,15 +27,11 @@ trait AdditionalParametersTrait
     protected function loadAdditionalParameters()
     {
         # Load selected customer ID from request
-        $this->customer_id = $this->getRequest()->getParam('customer_id') ?
-            (int)$this->getRequest()->getParam('customer_id') :
-            null;
+        $this->customer_id = $this->getRequest()->getParam('customer_id');
         $this->set('customer_id', $this->customer_id);
 
         # Load selected contract ID from request
-        $this->contract_id = $this->getRequest()->getParam('contract_id') ?
-            (int)$this->getRequest()->getParam('contract_id') :
-            null;
+        $this->contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $this->contract_id);
     }
 }

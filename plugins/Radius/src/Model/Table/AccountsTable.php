@@ -12,8 +12,6 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
  * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
- * @property \CakeDC\Users\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Creators
- * @property \CakeDC\Users\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Modifiers
  * @property \Radius\Model\Table\RadcheckTable&\Cake\ORM\Association\HasMany $Radcheck
  * @property \Radius\Model\Table\RadreplyTable&\Cake\ORM\Association\HasMany $Radpreply
  * @property \Radius\Model\Table\RadusergroupTable&\Cake\ORM\Association\HasMany $Radusergroup
@@ -133,11 +131,11 @@ class AccountsTable extends AppTable
             ->notEmptyString('active');
 
         $validator
-            ->integer('customer_id')
+            ->uuid('customer_id')
             ->notEmptyString('customer_id');
 
         $validator
-            ->integer('contract_id')
+            ->uuid('contract_id')
             ->notEmptyString('contract_id');
 
         return $validator;

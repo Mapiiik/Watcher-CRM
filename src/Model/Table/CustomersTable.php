@@ -90,7 +90,7 @@ class CustomersTable extends AppTable
             'foreignKey' => 'customer_id',
             'sort' => [
                 'Contracts.service_type_id',
-                'Contracts.id' => 'DESC',
+                'Contracts.nid' => 'DESC',
             ],
         ]);
         $this->hasMany('Emails', [
@@ -126,7 +126,7 @@ class CustomersTable extends AppTable
             'foreignKey' => 'customer_id',
             'sort' => [
                 'Contracts.service_type_id',
-                'Contracts.id' => 'DESC',
+                'Contracts.nid' => 'DESC',
                 'Ips.ip',
             ],
         ]);
@@ -134,7 +134,7 @@ class CustomersTable extends AppTable
             'foreignKey' => 'customer_id',
             'sort' => [
                 'Contracts.service_type_id',
-                'Contracts.id' => 'DESC',
+                'Contracts.nid' => 'DESC',
                 'RemovedIps.ip',
             ],
         ]);
@@ -142,7 +142,7 @@ class CustomersTable extends AppTable
             'foreignKey' => 'customer_id',
             'sort' => [
                 'Contracts.service_type_id',
-                'Contracts.id' => 'DESC',
+                'Contracts.nid' => 'DESC',
                 'IpNetworks.ip_network',
             ],
         ]);
@@ -150,7 +150,7 @@ class CustomersTable extends AppTable
             'foreignKey' => 'customer_id',
             'sort' => [
                 'Contracts.service_type_id',
-                'Contracts.id' => 'DESC',
+                'Contracts.nid' => 'DESC',
                 'RemovedIpNetworks.ip_network',
             ],
         ]);
@@ -158,7 +158,7 @@ class CustomersTable extends AppTable
             'foreignKey' => 'customer_id',
             'sort' => [
                 'Tasks.task_state_id',
-                'Tasks.id' => 'DESC',
+                'Tasks.nid' => 'DESC',
             ],
         ]);
         // as Dealers
@@ -176,7 +176,7 @@ class CustomersTable extends AppTable
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->integer('id')
+            ->uuid('id')
             ->allowEmptyString('id', null, 'create');
 
         $validator

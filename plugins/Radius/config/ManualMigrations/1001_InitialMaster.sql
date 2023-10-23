@@ -1,4 +1,4 @@
--- PostgreSQL 12.9 dump
+-- Run this on master/standalone DB
 
 CREATE SEQUENCE accounts_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
 

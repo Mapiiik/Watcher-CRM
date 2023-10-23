@@ -60,7 +60,7 @@ class ContractVersionsTable extends AppTable
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->integer('contract_id')
+            ->uuid('contract_id')
             ->notEmptyString('contract_id');
 
         $validator

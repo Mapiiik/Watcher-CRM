@@ -10,18 +10,19 @@ use Cake\ORM\Entity;
  * Task Entity
  *
  * @property \Cake\I18n\DateTime|null $created
- * @property int|null $created_by
- * @property \CakeDC\Users\Model\Entity\User|null $creator
+ * @property string|null $created_by
+ * @property \App\Model\Entity\AppUser|null $creator
  * @property \Cake\I18n\DateTime|null $modified
- * @property int|null $modified_by
- * @property \CakeDC\Users\Model\Entity\User|null $modifier
- * @property int $id
+ * @property string|null $modified_by
+ * @property \App\Model\Entity\AppUser|null $modifier
+ * @property string $id
+ * @property int $nid
  * @property int $task_type_id
  * @property string|null $subject
  * @property string|null $text
  * @property int $priority
- * @property int|null $customer_id
- * @property int|null $contract_id
+ * @property string|null $customer_id
+ * @property string|null $contract_id
  * @property int|null $dealer_id
  * @property string|null $email
  * @property string|null $phone

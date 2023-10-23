@@ -140,7 +140,7 @@ class TasksController extends AppController
         $this->paginate = [
             'order' => [
                 'Tasks.task_state_id' => 'ASC',
-                'Tasks.id' => 'DESC',
+                'Tasks.nid' => 'DESC',
             ],
         ];
 

@@ -9,15 +9,16 @@ use Cake\ORM\Entity;
  * CustomerLabel Entity
  *
  * @property \Cake\I18n\DateTime|null $created
- * @property int|null $created_by
- * @property \CakeDC\Users\Model\Entity\User|null $creator
+ * @property string|null $created_by
+ * @property \App\Model\Entity\AppUser|null $creator
  * @property \Cake\I18n\DateTime|null $modified
- * @property int|null $modified_by
- * @property \CakeDC\Users\Model\Entity\User|null $modifier
+ * @property string|null $modified_by
+ * @property \App\Model\Entity\AppUser|null $modifier
  * @property int $label_id
- * @property int $customer_id
+ * @property string $customer_id
  * @property string|null $note
- * @property int $id
+ * @property string $id
+ * @property int $nid
  *
  * @property \App\Model\Entity\Label $label
  * @property \App\Model\Entity\Customer $customer

@@ -11,13 +11,14 @@ use Exception;
  * Billing Entity
  *
  * @property \Cake\I18n\DateTime|null $created
- * @property int|null $created_by
- * @property \CakeDC\Users\Model\Entity\User|null $creator
+ * @property string|null $created_by
+ * @property \App\Model\Entity\AppUser|null $creator
  * @property \Cake\I18n\DateTime|null $modified
- * @property int|null $modified_by
- * @property \CakeDC\Users\Model\Entity\User|null $modifier
- * @property int $id
- * @property int|null $customer_id
+ * @property string|null $modified_by
+ * @property \App\Model\Entity\AppUser|null $modifier
+ * @property string $id
+ * @property int $nid
+ * @property string $customer_id
  * @property string|null $text
  * @property int|null $price
  * @property \Cake\I18n\Date|null $billing_from
@@ -27,7 +28,7 @@ use Exception;
  * @property bool $separate_invoice
  * @property int|null $service_id
  * @property int $quantity
- * @property int $contract_id
+ * @property string $contract_id
  * @property int|null $fixed_discount
  * @property int|null $percentage_discount
  * @property float $sum

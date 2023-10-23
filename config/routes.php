@@ -35,7 +35,11 @@ if (!(php_sapi_name() == 'cli')) {
         . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
     if (mb_strpos($url, '/legacy/') !== false) {
-        header('Location: ' . mb_ereg_replace('/legacy/', '/admin/', $url), true, 303);
+        header('Location: ' . mb_ereg_replace('/legacy/', '/', $url), true, 303);
+        die;
+    }
+    if (mb_strpos($url, '/admin/') !== false) {
+        header('Location: ' . mb_ereg_replace('/admin/', '/', $url), true, 303);
         die;
     }
 }
@@ -60,197 +64,87 @@ if (!(php_sapi_name() == 'cli')) {
 /** @var \Cake\Routing\RouteBuilder $routes */
 $routes->setRouteClass(DashedRoute::class);
 
-$routes->scope('/admin/', function (RouteBuilder $builder): void {
+$routes->scope('/', function (RouteBuilder $builder): void {
     $builder->setExtensions(['pdf']);
 
     /*
-    // routes for contract related
+     * Contracts - nested routes
+     */
     $builder
-        ->connect('/customers/{customer_id}/contracts/{action}/{contract_id}/', [
+        ->connect('/customers/{customer_id}/contracts/{contract_id}', [
             'controller' => 'Contracts',
+            'action' => 'view',
         ])
         ->setPatterns([
-            'customer_id' => '[0-9]+',
-            'contract_id' => '[0-9]+',
+            'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+            'contract_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
         ])
         ->setPass(['contract_id']);
 
-    $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/{action}/{id}', [])
-        ->setPatterns([
-            'customer_id' => '[0-9]+',
-            'contract_id' => '[0-9]+',
-        ]);
-
-    $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/{action}/', [])
-        ->setPatterns([
-            'customer_id' => '[0-9]+',
-            'contract_id' => '[0-9]+',
-        ]);
-
-    // routes for customer related
     $builder
-        ->connect('/customers/{action}/{customer_id}', [
+        ->connect('/customers/{customer_id}/contracts/{contract_id}/edit', [
+            'controller' => 'Contracts',
+            'action' => 'edit',
+        ])
+        ->setPatterns([
+            'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+            'contract_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+        ])
+        ->setPass(['contract_id']);
+
+    $builder
+        ->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}', [
+            'action' => 'index',
+        ])
+        ->setPatterns([
+            'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+            'contract_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+        ]);
+
+    $builder
+        ->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/{action}/*', [])
+        ->setPatterns([
+            'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+            'contract_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+        ]);
+
+    /*
+     * Customers - nested routes
+     */
+    $builder
+        ->connect('/customers/{customer_id}', [
             'controller' => 'Customers',
+            'action' => 'view',
         ])
         ->setPatterns([
-            'customer_id' => '[0-9]+',
+            'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
         ])
         ->setPass(['customer_id']);
 
-    $builder->connect('/customers/{customer_id}/{controller}/{action}/{id}', [])
+    $builder
+        ->connect('/customers/{customer_id}/edit', [
+            'controller' => 'Customers',
+            'action' => 'edit',
+        ])
         ->setPatterns([
-            'customer_id' => '[0-9]+',
+            'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+        ])
+        ->setPass(['customer_id']);
+
+    $builder
+        ->connect('/customers/{customer_id}/{controller}', [
+            'action' => 'index',
+        ])
+        ->setPatterns([
+            'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
         ]);
 
-    $builder->connect('/customers/{customer_id}/{controller}/{action}/', [])
+    $builder
+        ->connect('/customers/{customer_id}/{controller}/{action}/*', [])
         ->setPatterns([
-            'customer_id' => '[0-9]+',
+            'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
         ]);
 
-    // routes
-    $builder->connect('/{controller}/{action}/{id}', [])
-        ->setPass(['id']);
-
-    $builder->connect('/{controller}/{action}/', []);
-    */
-
-    // UUID routes
-    $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/{action}/{id}', [])
-        ->setPatterns([
-            'customer_id' => '[0-9]+',
-            'contract_id' => '[0-9]+',
-            'id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
-        ])
-        ->setPass(['id']);
-
-    $builder->connect('/customers/{customer_id}/{controller}/{action}/{id}', [])
-        ->setPatterns([
-            'customer_id' => '[0-9]+',
-            'id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
-        ])
-        ->setPass(['id']);
-
-    $builder->connect('/{controller}/{action}/{id}', [])
-        ->setPatterns([
-            'id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
-        ])
-        ->setPass(['id']);
-
-    // other routes
-    $builder->connect('/customers/{customer_id}/contracts/{contract_id}', 'Contracts::view')
-        ->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+'])
-        ->setPass(['contract_id']);
-    $builder->connect('/customers/{customer_id}/contracts/{contract_id}/edit', 'Contracts::edit')
-        ->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+'])
-        ->setPass(['contract_id']);
-    $builder->connect('/customers/{customer_id}/contracts/{contract_id}/delete', 'Contracts::delete')
-        ->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+'])
-        ->setPass(['contract_id']);
-    $builder->connect('/customers/{customer_id}/contracts/{contract_id}/print', 'Contracts::print')
-        ->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+'])
-        ->setPass(['contract_id']);
-    $builder
-        ->connect(
-            '/customers/{customer_id}/contracts/{contract_id}/terminate-related-billings',
-            'Contracts::terminateRelatedBillings'
-        )
-        ->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+'])
-        ->setPass(['contract_id']);
-    $builder
-        ->connect(
-            '/customers/{customer_id}/contracts/{contract_id}/set-dates-for-related-borrowed-equipments',
-            'Contracts::setDatesForRelatedBorrowedEquipments'
-        )
-        ->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+'])
-        ->setPass(['contract_id']);
-
-    $builder->connect(
-        '/contracts/update-all-numbers/*',
-        [
-            'controller' => 'Contracts',
-            'action' => 'updateAllNumbers',
-        ]
-    );
-
-    $builder->connect(
-        '/contracts/update-all-subscriber-verification-codes/*',
-        [
-            'controller' => 'Contracts',
-            'action' => 'updateAllSubscriberVerificationCodes',
-        ]
-    );
-
-    $builder->connect(
-        '/billings/bulk-service-change/*',
-        [
-            'controller' => 'Billings',
-            'action' => 'bulkServiceChange',
-        ]
-    );
-
-    $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}', ['action' => 'index'])
-        ->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+']);
-    $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/add', ['action' => 'add'])
-        ->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+']);
-    $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/add-from-range', [
-            'action' => 'addFromRange',
-        ])
-        ->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+']);
-    $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/{id}', ['action' => 'view'])
-        ->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+', 'id' => '[0-9]+'])
-        ->setPass(['id']);
-    $builder->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/{id}/{action}/*', [])
-        ->setPatterns(['customer_id' => '[0-9]+', 'contract_id' => '[0-9]+', 'id' => '[0-9]+'])
-        ->setPass(['id']);
-
-    $builder->connect('/customers/{customer_id}', 'Customers::view')
-        ->setPatterns(['customer_id' => '[0-9]+'])
-        ->setPass(['customer_id']);
-    $builder->connect('/customers/{customer_id}/edit', 'Customers::edit')
-        ->setPatterns(['customer_id' => '[0-9]+'])
-        ->setPass(['customer_id']);
-    $builder->connect('/customers/{customer_id}/delete', 'Customers::delete')
-        ->setPatterns(['customer_id' => '[0-9]+'])
-        ->setPass(['customer_id']);
-    $builder->connect('/customers/{customer_id}/print', 'Customers::print')
-        ->setPatterns(['customer_id' => '[0-9]+'])
-        ->setPass(['customer_id']);
-
-    $builder->connect('/customers/{customer_id}/{controller}', ['action' => 'index'])
-        ->setPatterns(['customer_id' => '[0-9]+']);
-    $builder->connect('/customers/{customer_id}/{controller}/add', ['action' => 'add'])
-        ->setPatterns(['customer_id' => '[0-9]+']);
-    $builder->connect('/customers/{customer_id}/{controller}/add-from-range', ['action' => 'addFromRange'])
-        ->setPatterns(['customer_id' => '[0-9]+']);
-    $builder->connect('/customers/{customer_id}/{controller}/{id}', ['action' => 'view'])
-        ->setPatterns(['customer_id' => '[0-9]+', 'id' => '[0-9]+'])
-        ->setPass(['id']);
-    $builder->connect('/customers/{customer_id}/{controller}/{id}/{action}/*', [])
-        ->setPatterns(['customer_id' => '[0-9]+', 'id' => '[0-9]+'])
-        ->setPass(['id']);
-
-    $builder->connect('/labels/update-related-customer-labels', 'Labels::updateRelatedCustomerLabels');
-
-    $builder->connect('/overviews/{action}/*', ['controller' => 'Overviews'])
-        ->setExtensions(['csv']);
-
-    $builder->connect('/{controller}', ['action' => 'index']);
-    $builder->connect('/{controller}/add', ['action' => 'add']);
-    $builder->connect('/{controller}/add-from-range', ['action' => 'addFromRange']);
-    $builder->connect('/{controller}/{id}', ['action' => 'view'])
-        ->setPatterns(['id' => '[0-9]+'])
-        ->setPass(['id']);
-    $builder->connect('/{controller}/{id}/{action}/*', [])
-        ->setPatterns(['id' => '[0-9]+'])
-        ->setPass(['id']);
-
-    // Default redirect
-    $builder->redirect('/', ['controller' => 'Customers', 'action' => 'index'], ['status' => 303]);
-
-    //$builder->fallbacks();
-});
-
-$routes->scope('/', function (RouteBuilder $builder): void {
     // Default redirect
     $builder->redirect('/', ['controller' => 'Customers', 'action' => 'index'], ['status' => 303]);
 
@@ -272,7 +166,7 @@ $routes->scope('/', function (RouteBuilder $builder): void {
      * You can remove these routes once you've connected the
      * routes you want in your application.
      */
-    //$builder->fallbacks();
+    $builder->fallbacks();
 });
 
 /*

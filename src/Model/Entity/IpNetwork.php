@@ -11,14 +11,15 @@ use Cake\ORM\Entity;
  * IpNetwork Entity
  *
  * @property \Cake\I18n\DateTime|null $created
- * @property int|null $created_by
- * @property \CakeDC\Users\Model\Entity\User|null $creator
+ * @property string|null $created_by
+ * @property \App\Model\Entity\AppUser|null $creator
  * @property \Cake\I18n\DateTime|null $modified
- * @property int|null $modified_by
- * @property \CakeDC\Users\Model\Entity\User|null $modifier
- * @property int $id
- * @property int $customer_id
- * @property int $contract_id
+ * @property string|null $modified_by
+ * @property \App\Model\Entity\AppUser|null $modifier
+ * @property string $id
+ * @property int $nid
+ * @property string $customer_id
+ * @property string $contract_id
  * @property string $ip_network
  * @property int $type_of_use
  * @property string|null $note

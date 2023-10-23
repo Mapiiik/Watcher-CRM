@@ -11,17 +11,18 @@ use Cake\ORM\Entity;
  * RemovedIpNetwork Entity
  *
  * @property \Cake\I18n\DateTime|null $created
- * @property int|null $created_by
- * @property \CakeDC\Users\Model\Entity\User|null $creator
+ * @property string|null $created_by
+ * @property \App\Model\Entity\AppUser|null $creator
  * @property \Cake\I18n\DateTime|null $modified
- * @property int|null $modified_by
- * @property \CakeDC\Users\Model\Entity\User|null $modifier
+ * @property string|null $modified_by
+ * @property \App\Model\Entity\AppUser|null $modifier
  * @property \Cake\I18n\DateTime|null $removed
  * @property \CakeDC\Users\Model\Entity\User|null $remover
  * @property int|null $removed_by
- * @property int $id
- * @property int $customer_id
- * @property int $contract_id
+ * @property string $id
+ * @property int $nid
+ * @property string $customer_id
+ * @property string $contract_id
  * @property string $ip_network
  * @property int $type_of_use
  * @property string|null $note

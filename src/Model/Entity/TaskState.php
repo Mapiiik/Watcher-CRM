@@ -9,12 +9,13 @@ use Cake\ORM\Entity;
  * TaskState Entity
  *
  * @property \Cake\I18n\DateTime|null $created
- * @property int|null $created_by
- * @property \CakeDC\Users\Model\Entity\User|null $creator
+ * @property string|null $created_by
+ * @property \App\Model\Entity\AppUser|null $creator
  * @property \Cake\I18n\DateTime|null $modified
- * @property int|null $modified_by
- * @property \CakeDC\Users\Model\Entity\User|null $modifier
- * @property int $id
+ * @property string|null $modified_by
+ * @property \App\Model\Entity\AppUser|null $modifier
+ * @property string $id
+ * @property int $nid
  * @property string|null $name
  * @property string $color
  * @property bool $completed

@@ -39,7 +39,7 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id', __('Number')) ?></th>
+                    <th><?= $this->Paginator->sort('nid', __('Number')) ?></th>
                     <th><?= $this->Paginator->sort('company') ?></th>
                     <th><?= $this->Paginator->sort('title') ?></th>
                     <th><?= $this->Paginator->sort('first_name') ?></th>

@@ -124,7 +124,7 @@ class ContractsTable extends AppTable
             'foreignKey' => 'contract_id',
             'sort' => [
                 'Tasks.task_state_id',
-                'Tasks.id' => 'DESC',
+                'Tasks.nid' => 'DESC',
             ],
         ]);
     }
@@ -138,11 +138,11 @@ class ContractsTable extends AppTable
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->integer('customer_id')
+            ->uuid('customer_id')
             ->notEmptyString('customer_id');
 
         $validator
-            ->integer('installation_address_id')
+            ->uuid('installation_address_id')
             ->allowEmptyString('installation_address_id');
 
         $validator
@@ -158,7 +158,7 @@ class ContractsTable extends AppTable
             ->add('subscriber_verification_code', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
-            ->integer('service_type_id')
+            ->uuid('service_type_id')
             ->notEmptyString('service_type_id');
 
         $validator
@@ -170,15 +170,15 @@ class ContractsTable extends AppTable
             ->allowEmptyString('vip');
 
         $validator
-            ->integer('installation_technician_id')
+            ->uuid('installation_technician_id')
             ->allowEmptyString('installation_technician_id');
 
         $validator
-            ->integer('uninstallation_technician_id')
+            ->uuid('uninstallation_technician_id')
             ->allowEmptyString('uninstallation_technician_id');
 
         $validator
-            ->integer('commission_id')
+            ->uuid('commission_id')
             ->allowEmptyString('commission_id');
 
         $validator

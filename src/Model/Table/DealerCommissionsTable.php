@@ -72,7 +72,7 @@ class DealerCommissionsTable extends AppTable
             ->allowEmptyString('percentage');
 
         $validator
-            ->integer('id')
+            ->uuid('id')
             ->allowEmptyString('id', null, 'create')
             ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
