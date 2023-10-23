@@ -38,7 +38,7 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= $this->Number->format($commission->id) ?></td>
+                            <td><?= h($commission->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>

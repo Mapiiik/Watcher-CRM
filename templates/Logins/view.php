@@ -75,7 +75,7 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= $this->Number->format($login->id) ?></td>
+                            <td><?= h($login->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>

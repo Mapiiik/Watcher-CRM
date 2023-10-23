@@ -147,7 +147,7 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= $this->Number->format($address->id) ?></td>
+                            <td><?= h($address->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>

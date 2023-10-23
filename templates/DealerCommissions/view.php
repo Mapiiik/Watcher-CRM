@@ -69,7 +69,7 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= $this->Number->format($dealerCommission->id) ?></td>
+                            <td><?= h($dealerCommission->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>

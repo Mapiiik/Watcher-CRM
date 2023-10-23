@@ -91,7 +91,7 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= $this->Number->format($ipNetwork->id) ?></td>
+                            <td><?= h($ipNetwork->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>

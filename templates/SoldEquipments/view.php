@@ -83,7 +83,7 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= $this->Number->format($soldEquipment->id) ?></td>
+                            <td><?= h($soldEquipment->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>

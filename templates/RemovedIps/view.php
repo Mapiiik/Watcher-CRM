@@ -89,7 +89,7 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= $this->Number->format($removedIp->id) ?></td>
+                            <td><?= h($removedIp->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>

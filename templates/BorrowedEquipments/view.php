@@ -88,7 +88,7 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= $this->Number->format($borrowedEquipment->id) ?></td>
+                            <td><?= h($borrowedEquipment->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>

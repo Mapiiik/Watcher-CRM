@@ -46,7 +46,7 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= $this->Number->format($taskType->id) ?></td>
+                            <td><?= h($taskType->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>

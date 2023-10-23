@@ -46,7 +46,7 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= $this->Number->format($taskState->id) ?></td>
+                            <td><?= h($taskState->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>

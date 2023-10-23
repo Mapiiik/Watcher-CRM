@@ -97,7 +97,7 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= $this->Number->format($serviceType->id) ?></td>
+                            <td><?= h($serviceType->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>

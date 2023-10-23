@@ -64,7 +64,7 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= $this->Number->format($customerLabel->id) ?></td>
+                            <td><?= h($customerLabel->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>

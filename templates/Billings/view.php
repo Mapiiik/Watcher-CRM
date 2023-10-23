@@ -109,7 +109,7 @@ use Cake\I18n\Number;
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= $this->Number->format($billing->id) ?></td>
+                            <td><?= h($billing->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>

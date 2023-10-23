@@ -61,7 +61,7 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= $this->Number->format($phone->id) ?></td>
+                            <td><?= h($phone->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>

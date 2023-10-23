@@ -61,7 +61,7 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= $this->Number->format($email->id) ?></td>
+                            <td><?= h($email->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>

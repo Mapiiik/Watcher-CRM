@@ -72,7 +72,7 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= $this->Number->format($queue->id) ?></td>
+                            <td><?= h($queue->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>

@@ -58,7 +58,7 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= $this->Number->format($taxRate->id) ?></td>
+                            <td><?= h($taxRate->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>

@@ -256,7 +256,7 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= $this->Number->format($contract->id) ?></td>
+                            <td><?= h($contract->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>

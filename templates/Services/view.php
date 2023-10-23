@@ -62,7 +62,7 @@ use Cake\Collection\Collection;
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= $this->Number->format($service->id) ?></td>
+                            <td><?= h($service->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>

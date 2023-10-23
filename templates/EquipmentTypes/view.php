@@ -54,7 +54,7 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= $this->Number->format($equipmentType->id) ?></td>
+                            <td><?= h($equipmentType->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>

@@ -219,7 +219,7 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= $this->Number->format($customer->id) ?></td>
+                            <td><?= h($customer->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>

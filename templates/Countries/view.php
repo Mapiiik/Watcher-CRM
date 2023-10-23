@@ -38,7 +38,7 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= $this->Number->format($country->id) ?></td>
+                            <td><?= h($country->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>
