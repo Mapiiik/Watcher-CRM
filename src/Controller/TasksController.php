@@ -291,7 +291,7 @@ class TasksController extends AppController
                         $task->__isset('dealer_id')
                         && $task->dealer_id != ($this->getRequest()->getAttribute('identity')['customer_id'] ?? null)
                     ) {
-                        $this->sendNotificationEmail(strval($task->id), true);
+                        $this->sendNotificationEmail($task->id, true);
                     }
 
                     $this->Flash->success(__('The task has been saved.'));
@@ -454,7 +454,7 @@ class TasksController extends AppController
                         $task->__isset('dealer_id')
                         && $task->dealer_id != ($this->getRequest()->getAttribute('identity')['customer_id'] ?? null)
                     ) {
-                        $this->sendNotificationEmail(strval($task->id), false);
+                        $this->sendNotificationEmail($task->id, false);
                     }
 
                     $this->Flash->success(__('The task has been saved.'));
@@ -606,9 +606,9 @@ class TasksController extends AppController
         }
 
         if ($new) {
-            $title = __('You have a new task # {0}', $task->id);
+            $title = __('You have a new task # {0}', $task->nid);
         } else {
-            $title = __('You have changes in task # {0}', $task->id);
+            $title = __('You have changes in task # {0}', $task->nid);
         }
 
         $mailer->setSubject($title . ' - ' . $task->summary_text);

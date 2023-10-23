@@ -547,7 +547,7 @@
                                 <?= $this->AuthLink->postLink(
                                     __('Delete'),
                                     ['controller' => 'Tasks', 'action' => 'delete', $task->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $task->nid)]
                                 ) ?>
                             </td>
                         </tr>
@@ -603,7 +603,7 @@
                                 <?= $this->AuthLink->postLink(
                                     __('Delete'),
                                     ['controller' => 'Tasks', 'action' => 'delete', $task->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $task->nid)]
                                 ) ?>
                             </td>
                         </tr>

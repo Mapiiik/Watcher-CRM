@@ -105,7 +105,7 @@ table {
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($task->id) ?></td>
+                    <td><?= h($task->id) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Created') ?></th>
