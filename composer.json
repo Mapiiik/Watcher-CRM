@@ -78,8 +78,8 @@
         "migrations": [
             "bin/cake migrations migrate --plugin CakeDC/Users",
             "bin/cake migrations migrate --plugin Cake/Queue",
-            "bin/cake migrations migrate --plugin BookkeepingPohoda",
-            "bin/cake migrations migrate"
+            "bin/cake migrations migrate",
+            "bin/cake migrations migrate --plugin BookkeepingPohoda"
         ],
         "schema-cache": [
             "bin/cake schema_cache build"

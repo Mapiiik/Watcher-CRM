@@ -104,7 +104,7 @@
                     <table>
                         <tr>
                             <th><?= __d('bookkeeping_pohoda', 'Id') ?></th>
-                            <td><?= $this->Number->format($invoice->id) ?></td>
+                            <td><?= h($invoice->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __d('bookkeeping_pohoda', 'Created') ?></th>

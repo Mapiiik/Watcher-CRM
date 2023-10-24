@@ -65,6 +65,7 @@ class MigratePrimaryKeysToUuidAndAddForeignKeys extends AbstractMigration
             'contracts' => [
                 'original' => 'id',
                 'backup' => 'nid',
+                'keep_backup' => true,
                 'related' => [
                     [
                         'table' => 'billings',
@@ -153,6 +154,7 @@ class MigratePrimaryKeysToUuidAndAddForeignKeys extends AbstractMigration
             'customers' => [
                 'original' => 'id',
                 'backup' => 'nid',
+                'keep_backup' => true,
                 'related' => [
                     [
                         'table' => 'addresses',
@@ -215,13 +217,6 @@ class MigratePrimaryKeysToUuidAndAddForeignKeys extends AbstractMigration
                         'original' => 'customer_id',
                         'backup' => 'customer_nid',
                         'nullable' => false,
-                        'add_fk' => true,
-                    ],
-                    [ # Migration should be in BookkeepingPohoda plugin, but for simplicity it's now here
-                        'table' => 'invoices',
-                        'original' => 'customer_id',
-                        'backup' => 'customer_nid',
-                        'nullable' => true,
                         'add_fk' => true,
                     ],
                     [
@@ -326,12 +321,6 @@ class MigratePrimaryKeysToUuidAndAddForeignKeys extends AbstractMigration
                         'nullable' => false,
                         'add_fk' => true,
                     ],
-                ],
-            ],
-            'invoices' => [ # Migration should be in BookkeepingPohoda plugin, but for simplicity it's now here
-                'original' => 'id',
-                'backup' => 'nid',
-                'related' => [
                 ],
             ],
             'ip_networks' => [
@@ -464,6 +453,7 @@ class MigratePrimaryKeysToUuidAndAddForeignKeys extends AbstractMigration
             'tasks' => [
                 'original' => 'id',
                 'backup' => 'nid',
+                'keep_backup' => true,
                 'related' => [
                 ],
             ],
@@ -489,6 +479,7 @@ class MigratePrimaryKeysToUuidAndAddForeignKeys extends AbstractMigration
             'users' => [ # Migration should be in CakeDC/Users plugin, but for simplicity it's now here
                 'original' => 'id',
                 'backup' => 'nid',
+                'keep_backup' => true,
                 'related' => [
                     [
                         'table' => 'social_accounts',
@@ -674,20 +665,6 @@ class MigratePrimaryKeysToUuidAndAddForeignKeys extends AbstractMigration
                     ],
                     [
                         'table' => 'equipment_types',
-                        'original' => 'modified_by',
-                        'backup' => 'modified_nid',
-                        'nullable' => true,
-                        'add_fk' => true,
-                    ],
-                    [ # Migration should be in BookkeepingPohoda plugin, but for simplicity it's now here
-                        'table' => 'invoices',
-                        'original' => 'created_by',
-                        'backup' => 'created_nid',
-                        'nullable' => true,
-                        'add_fk' => true,
-                    ],
-                    [ # Migration should be in BookkeepingPohoda plugin, but for simplicity it's now here
-                        'table' => 'invoices',
                         'original' => 'modified_by',
                         'backup' => 'modified_nid',
                         'nullable' => true,
