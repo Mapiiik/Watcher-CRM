@@ -259,7 +259,7 @@ class ContractsTable extends AppTable
                 $service_type = $this->ServiceTypes->get($entity->service_type_id);
                 // check if installation adress required for this service type
                 if ($service_type->installation_address_required) {
-                    return is_numeric($entity->installation_address_id);
+                    return !empty($entity->installation_address_id);
                 } else {
                     return true;
                 }
