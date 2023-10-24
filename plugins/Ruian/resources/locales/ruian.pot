@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-08-01 18:36+0200\n"
+"POT-Creation-Date: 2023-10-24 23:32+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -28,7 +28,7 @@ msgstr ""
 msgid "The address has been deleted."
 msgstr ""
 
-#: ./plugins/Ruian/src/Controller/AddressesController.php:126
+#: ./plugins/Ruian/src/Controller/AddressesController.php:127
 msgid "The address could not be deleted. Please, try again."
 msgstr ""
 

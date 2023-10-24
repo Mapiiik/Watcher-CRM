@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-09-27 17:05+0200\n"
+"POT-Creation-Date: 2023-10-24 23:32+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -22,29 +22,29 @@ msgstr ""
 msgid "The email cannot be sent."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:31
-#: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:58
+#: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:32
+#: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:59
 msgid "Routers updated."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:32
-#: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:59
+#: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:33
+#: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:60
 msgid "Nothing has changed."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:142
+#: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:143
 msgid "Removed IPv4 record {0} from {1}."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:167
+#: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:168
 msgid "Added IPv4 record {0} to {1}."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:193
+#: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:194
 msgid "Removed IPv6 record {0} from {1}."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:218
+#: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:219
 msgid "Added IPv6 record {0} to {1}."
 msgstr ""
 
@@ -62,27 +62,27 @@ msgstr ""
 msgid "The invoice has been deleted."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:222
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:223
 msgid "The invoice could not be deleted. Please, try again."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:247
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:248
 msgid "The invoices has been marked to be sent by email ({0})."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:255
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:256
 msgid "No invoices could be marked to be sent by email. Please, try again."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:590
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:591
 msgid "The import file is missing some required columns."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:626
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:637
 msgid "Invoice {0} could not be loaded."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:635
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:646
 msgid "Successfully imported {0} invoices. Created {1}, modified {2} and skipped {3} records."
 msgstr ""
 
@@ -160,7 +160,7 @@ msgstr ""
 
 #: ./plugins/BookkeepingPohoda/templates/Invoices/add.php:45
 #: ./plugins/BookkeepingPohoda/templates/Invoices/edit.php:53
-#: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:143
+#: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:145
 #: ./plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:23
 msgid "Text"
 msgstr ""
@@ -301,7 +301,7 @@ msgid "Created"
 msgstr ""
 
 #: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:62
-#: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:125
+#: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:126
 msgid "Modified"
 msgstr ""
 
@@ -380,7 +380,7 @@ msgstr ""
 msgid "Created By"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:129
+#: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:130
 msgid "Modified By"
 msgstr ""
 

@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-10-02 17:21+0200\n"
-"PO-Revision-Date: 2023-10-02 17:24+0200\n"
+"POT-Creation-Date: 2023-10-24 23:31+0200\n"
+"PO-Revision-Date: 2023-10-24 23:37+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4\n"
 
 #: src/Command/UpdateCustomerLabelsCommand.php:68
 msgid "Processing"
@@ -49,12 +49,12 @@ msgstr ""
 "prosím znovu."
 
 #: src/ContractPDF.php:228 src/ContractPDF.php:995
-#: src/Model/Entity/Address.php:219
+#: src/Model/Entity/Address.php:220
 msgid "Billing Address"
 msgstr "Fakturační adresa"
 
 #: src/ContractPDF.php:302 src/ContractPDF.php:1070
-#: src/Controller/TasksController.php:394 src/Model/Entity/Address.php:218
+#: src/Controller/TasksController.php:382 src/Model/Entity/Address.php:219
 #: templates/Commissions/view.php:132 templates/ContractStates/view.php:121
 #: templates/Contracts/print.php:74 templates/Contracts/view.php:150
 #: templates/Customers/view.php:524 templates/ServiceTypes/view.php:190
@@ -62,12 +62,12 @@ msgid "Installation Address"
 msgstr "Adresa instalace"
 
 #: src/ContractPDF.php:311 src/ContractPDF.php:1079
-#: src/Model/Entity/Address.php:220
+#: src/Model/Entity/Address.php:221
 msgid "Delivery Address"
 msgstr "Doručovací adresa"
 
 #: src/ContractPDF.php:319 src/ContractPDF.php:1087
-#: src/Model/Entity/Address.php:221
+#: src/Model/Entity/Address.php:222
 msgid "Permanent Address"
 msgstr "Adresa trvalého bydliště"
 
@@ -147,109 +147,105 @@ msgstr "WiFi - Heslo"
 msgid "Subscriber Verification Code"
 msgstr "Ověřovací kód účastníka"
 
-#: src/Controller/AddressesController.php:121
-#: src/Controller/AddressesController.php:173
+#: src/Controller/AddressesController.php:115
+#: src/Controller/AddressesController.php:164
 msgid "The address has been saved."
 msgstr "Adresa byla uložena."
 
-#: src/Controller/AddressesController.php:125
-#: src/Controller/AddressesController.php:177
+#: src/Controller/AddressesController.php:119
+#: src/Controller/AddressesController.php:168
 msgid "The address could not be saved. Please, try again."
 msgstr "Adresu nelze uložit. Opakujte akci."
 
-#: src/Controller/AddressesController.php:210
+#: src/Controller/AddressesController.php:199
 msgid "The address has been deleted."
 msgstr "Adresa byla odstraněna."
 
-#: src/Controller/AddressesController.php:212
+#: src/Controller/AddressesController.php:202
 msgid "The address could not be deleted. Please, try again."
 msgstr "Adresu nelze odstranit. Opakujte akci."
 
-#: src/Controller/AddressesController.php:296
+#: src/Controller/AddressesController.php:282
 msgid "Multiple ({0}) RUIAN addresses found."
 msgstr "Bylo nalezeno více ({0}) adres RUIAN."
 
-#: src/Controller/AddressesController.php:300
+#: src/Controller/AddressesController.php:286
 msgid "Address found in RUIAN."
 msgstr "Adresa nalezena v RUIAN."
 
-#: src/Controller/AddressesController.php:308
+#: src/Controller/AddressesController.php:294
 msgid "Address could not be found in RUIAN."
 msgstr "Adresa nebyla v RUIAN nalezena."
 
-#: src/Controller/AppController.php:85
+#: src/Controller/AppController.php:91
 msgid "Unable to find results on page {0}. Redirect to page 1."
 msgstr "Nelze najít výsledky na stránce {0}. Přesměrování na stranu 1."
 
-#: src/Controller/AppController.php:320 src/Controller/AppController.php:342
-msgid "Not installed via Git"
-msgstr "Není nainstalováno přes Git"
-
-#: src/Controller/BillingsController.php:123
-#: src/Controller/BillingsController.php:209
+#: src/Controller/BillingsController.php:111
+#: src/Controller/BillingsController.php:191
 msgid "Billing text must be entered or service selected."
 msgstr "Je nutné zadat fakturační text nebo vybrat službu."
 
-#: src/Controller/BillingsController.php:132
-#: src/Controller/BillingsController.php:218
+#: src/Controller/BillingsController.php:120
+#: src/Controller/BillingsController.php:200
 msgid "The service type does not match the selected contract."
 msgstr "Typ služby neodpovídá vybrané smlouvě."
 
-#: src/Controller/BillingsController.php:135
-#: src/Controller/BillingsController.php:221
-#: src/Controller/BillingsController.php:440
-#: src/Controller/ContractsController.php:673
+#: src/Controller/BillingsController.php:123
+#: src/Controller/BillingsController.php:203
+#: src/Controller/BillingsController.php:417
+#: src/Controller/ContractsController.php:664
 msgid "The billing has been saved."
 msgstr "Fakturace byla uložena."
 
-#: src/Controller/BillingsController.php:139
-#: src/Controller/BillingsController.php:225
-#: src/Controller/BillingsController.php:408
-#: src/Controller/ContractsController.php:677
+#: src/Controller/BillingsController.php:127
+#: src/Controller/BillingsController.php:207
+#: src/Controller/BillingsController.php:385
+#: src/Controller/ContractsController.php:668
 msgid "The billing could not be saved. Please, try again."
 msgstr "Fakturace nelze uložit. Opakujte akci."
 
-#: src/Controller/BillingsController.php:281
+#: src/Controller/BillingsController.php:261
 msgid "The billing has been deleted."
 msgstr "Fakturace byla odstraněna."
 
-#: src/Controller/BillingsController.php:283
+#: src/Controller/BillingsController.php:264
 msgid "The billing could not be deleted. Please, try again."
 msgstr "Fakturace nelze odstranit. Opakujte akci."
 
-#: src/Controller/BillingsController.php:364
-#: src/Controller/ContractsController.php:260
-#: src/Controller/ContractsController.php:373
+#: src/Controller/BillingsController.php:341
+#: src/Controller/ContractsController.php:254
+#: src/Controller/ContractsController.php:364
 #: src/Controller/OverviewsController.php:172
-#: src/Controller/TasksController.php:240
-#: src/Controller/TasksController.php:442
-#: src/Controller/TasksController.php:551
+#: src/Controller/TasksController.php:234
+#: src/Controller/TasksController.php:430
+#: src/Controller/TasksController.php:533
 msgid "The access points list could not be loaded. Please, try again."
 msgstr "Seznam přístupových bodů nelze načíst. Zkuste to prosím znovu."
 
-#: src/Controller/BillingsController.php:409
+#: src/Controller/BillingsController.php:386
 msgid "Contract Number"
 msgstr "Číslo smlouvy"
 
-#: src/Controller/BorrowedEquipmentsController.php:113
-#: src/Controller/BorrowedEquipmentsController.php:174
-#: src/Controller/ContractsController.php:599
-#: src/Controller/ContractsController.php:625
+#: src/Controller/BorrowedEquipmentsController.php:101
+#: src/Controller/BorrowedEquipmentsController.php:156
+#: src/Controller/ContractsController.php:590
+#: src/Controller/ContractsController.php:616
 msgid "The borrowed equipment has been saved."
 msgstr "Zapůjčené zařízení bylo uloženo."
 
-#: src/Controller/BorrowedEquipmentsController.php:117
-#: src/Controller/BorrowedEquipmentsController.php:178
-#: src/Controller/ContractsController.php:605
-#: src/Controller/ContractsController.php:631
+#: src/Controller/BorrowedEquipmentsController.php:105
+#: src/Controller/BorrowedEquipmentsController.php:160
+#: src/Controller/ContractsController.php:596
+#: src/Controller/ContractsController.php:622
 msgid "The borrowed equipment could not be saved. Please, try again."
 msgstr "Zapůjčené zařízení nelze uložit. Opakujte akci."
 
-#: src/Controller/BorrowedEquipmentsController.php:227
+#: src/Controller/BorrowedEquipmentsController.php:207
 msgid "The borrowed equipment has been deleted."
 msgstr "Zapůjčené zařízení bylo odstraněno."
 
-#: src/Controller/BorrowedEquipmentsController.php:229
+#: src/Controller/BorrowedEquipmentsController.php:210
 msgid "The borrowed equipment could not be deleted. Please, try again."
 msgstr "Zapůjčené zařízení nelze odstranit. Opakujte akci."
 
@@ -267,7 +263,7 @@ msgstr "Provizi se nepodařilo uložit. Prosím zkuste to znovu."
 msgid "The commission has been deleted."
 msgstr "Provize byla smazána."
 
-#: src/Controller/CommissionsController.php:130
+#: src/Controller/CommissionsController.php:131
 msgid "The commission could not be deleted. Please, try again."
 msgstr "Provizi se nepodařilo smazat. Prosím zkuste to znovu."
 
@@ -285,150 +281,150 @@ msgstr "Stav smlouvy nelze uložit. Prosím, zkuste to znovu."
 msgid "The contract state has been deleted."
 msgstr "Stav smlouvy byl odstraněn."
 
-#: src/Controller/ContractStatesController.php:129
+#: src/Controller/ContractStatesController.php:130
 msgid "The contract state could not be deleted. Please, try again."
 msgstr "Stav smlouvy nelze odstranit. Prosím, zkuste to znovu."
 
-#: src/Controller/ContractVersionsController.php:106
-#: src/Controller/ContractVersionsController.php:152
+#: src/Controller/ContractVersionsController.php:94
+#: src/Controller/ContractVersionsController.php:134
 msgid "The contract version has been saved."
 msgstr "Verze smlouvy byla uložena."
 
-#: src/Controller/ContractVersionsController.php:110
-#: src/Controller/ContractVersionsController.php:156
+#: src/Controller/ContractVersionsController.php:98
+#: src/Controller/ContractVersionsController.php:138
 msgid "The contract version could not be saved. Please, try again."
 msgstr "Verzi smlouvy nebylo možné uložit. Zkuste to prosím znovu."
 
-#: src/Controller/ContractVersionsController.php:191
+#: src/Controller/ContractVersionsController.php:173
 msgid "The contract version has been deleted."
 msgstr "Verze smlouvy byla odstraněna."
 
-#: src/Controller/ContractVersionsController.php:193
+#: src/Controller/ContractVersionsController.php:176
 msgid "The contract version could not be deleted. Please, try again."
 msgstr "Verzi smlouvy nebylo možné odstranit. Zkuste to prosím znovu."
 
-#: src/Controller/ContractsController.php:166
-#: src/Controller/ContractsController.php:282
+#: src/Controller/ContractsController.php:160
+#: src/Controller/ContractsController.php:273
 msgid "The contract has been saved."
 msgstr "Smlouva byla uložena."
 
-#: src/Controller/ContractsController.php:177
-#: src/Controller/ContractsController.php:293
+#: src/Controller/ContractsController.php:171
+#: src/Controller/ContractsController.php:284
 msgid "The contract could not be saved. Please, try again."
 msgstr "Smlouvu nelze uložit. Opakujte akci."
 
-#: src/Controller/ContractsController.php:392
+#: src/Controller/ContractsController.php:381
 msgid "The contract has been deleted."
 msgstr "Smlouva byla odstraněna."
 
-#: src/Controller/ContractsController.php:394
+#: src/Controller/ContractsController.php:384
 msgid "The contract could not be deleted. Please, try again."
 msgstr "Smlouvu nelze odstranit. Opakujte akci."
 
-#: src/Controller/ContractsController.php:435
+#: src/Controller/ContractsController.php:426
 msgid "The contract number has been updated."
 msgstr "Číslo smlouvy bylo aktualizováno."
 
-#: src/Controller/ContractsController.php:443
+#: src/Controller/ContractsController.php:434
 msgid "The contract number could not be updated. Please, try again."
 msgstr "Číslo smlouvy nebylo možné aktualizovat. Zkuste to prosím znovu."
 
-#: src/Controller/ContractsController.php:470
+#: src/Controller/ContractsController.php:461
 msgid "The contract numbers could not be updated. Please, try again."
 msgstr "Čísla smluv nebylo možné aktualizovat. Zkuste to prosím znovu."
 
-#: src/Controller/ContractsController.php:478
+#: src/Controller/ContractsController.php:469
 msgid "The contract numbers have been updated."
 msgstr "Čísla smluv byla aktualizována."
 
-#: src/Controller/ContractsController.php:515
+#: src/Controller/ContractsController.php:506
 msgid "The subscriber verification code has been updated."
 msgstr "Ověřovací kód účastníka byl aktualizován."
 
-#: src/Controller/ContractsController.php:523
+#: src/Controller/ContractsController.php:514
 msgid ""
 "The subscriber verification code could not be updated. Please, try again."
 msgstr ""
 "Ověřovací kód účastníka se nepodařilo aktualizovat. Zkuste to prosím znovu."
 
-#: src/Controller/ContractsController.php:550
+#: src/Controller/ContractsController.php:541
 msgid ""
 "The subscriber verification codes could not be updated. Please, try again."
 msgstr ""
 "Ověřovací kódy účastníků nebylo možné aktualizovat. Zkuste to prosím znovu."
 
-#: src/Controller/ContractsController.php:558
+#: src/Controller/ContractsController.php:549
 msgid "The subscriber verification codes have been updated."
 msgstr "Ověřovací kódy účastníků byly aktualizovány."
 
-#: src/Controller/ContractsController.php:588
+#: src/Controller/ContractsController.php:579
 msgid "No related borrowed equipments to install."
 msgstr "Žádná související zapůjčená zařízení k instalaci."
 
-#: src/Controller/ContractsController.php:597
-#: src/Controller/ContractsController.php:603
+#: src/Controller/ContractsController.php:588
+#: src/Controller/ContractsController.php:594
 msgid "Installation"
 msgstr "Instalace"
 
-#: src/Controller/ContractsController.php:614
+#: src/Controller/ContractsController.php:605
 msgid "No related borrowed equipments to uninstall."
 msgstr "Žádná související zapůjčená zařízení k deinstalaci."
 
-#: src/Controller/ContractsController.php:623
-#: src/Controller/ContractsController.php:629
+#: src/Controller/ContractsController.php:614
+#: src/Controller/ContractsController.php:620
 msgid "Uninstallation"
 msgstr "Deinstalace"
 
-#: src/Controller/ContractsController.php:664
+#: src/Controller/ContractsController.php:655
 msgid "No related billings to terminate."
 msgstr "Žádné související fakturace k ukončení."
 
-#: src/Controller/ContractsController.php:683
+#: src/Controller/ContractsController.php:674
 msgid "Please set a date until which the contract is valid."
 msgstr "Nastavte prosím datum, do kterého je smlouva platná."
 
-#: src/Controller/ContractsController.php:703 templates/Contracts/index.php:21
+#: src/Controller/ContractsController.php:691 templates/Contracts/index.php:21
 #: templates/Customers/index.php:48 templates/Customers/view.php:73
 #: templates/Customers/view.php:516 templates/TaxRates/view.php:108
 msgid "Contracts"
 msgstr "Smlouvy"
 
-#: src/Controller/ContractsController.php:704
+#: src/Controller/ContractsController.php:692
 msgid "Contract for the provision of services"
 msgstr "Smlouva o poskytování služeb"
 
-#: src/Controller/ContractsController.php:705
+#: src/Controller/ContractsController.php:693
 msgid ""
 "Contract for the provision of services (with termination of the original "
 "contract)"
 msgstr "Smlouva o poskytování služeb (s ukončením původní smlouvy)"
 
-#: src/Controller/ContractsController.php:707
+#: src/Controller/ContractsController.php:695
 msgid "Amendment to the contract for the provision of services"
 msgstr "Dodatek ke smlouvě o poskytování služeb"
 
-#: src/Controller/ContractsController.php:708
+#: src/Controller/ContractsController.php:696
 msgid "Agreement to terminate contract for the provision of services"
 msgstr "Dohoda o ukončení smlouvy o poskytování služeb"
 
-#: src/Controller/ContractsController.php:710
+#: src/Controller/ContractsController.php:698
 msgid "Handover Protocols"
 msgstr "Předávací protokoly"
 
-#: src/Controller/ContractsController.php:711
+#: src/Controller/ContractsController.php:699
 msgid "Handover protocol - Installation of internet connection"
 msgstr "Předávací protokol - Instalace připojení k internetu"
 
-#: src/Controller/ContractsController.php:712
+#: src/Controller/ContractsController.php:700
 msgid "Handover protocol - Internet connection uninstallation"
 msgstr "Předávací protokol - Deinstalace připojení k internetu"
 
-#: src/Controller/ContractsController.php:753
+#: src/Controller/ContractsController.php:741
 #: templates/ContractVersions/view.php:40
 msgid "indefinitely"
 msgstr "na dobu neurčitou"
 
-#: src/Controller/ContractsController.php:779
+#: src/Controller/ContractsController.php:767
 msgid ""
 "A borrowed equipment is not assigned, although it should normally be for "
 "this type of service. Please confirm that the customer has their own "
@@ -437,44 +433,44 @@ msgstr ""
 "Zapůjčené zařízení není přiděleno, ačkoli by normálně mělo být pro tento typ "
 "služby. Potvrďte prosím, že zákazník má vlastní zařízení, nebo jej přidejte."
 
-#: src/Controller/ContractsController.php:788
+#: src/Controller/ContractsController.php:776
 msgid "Invalid contract version requested."
 msgstr "Požadována neplatná verze smlouvy."
 
-#: src/Controller/ContractsController.php:794
+#: src/Controller/ContractsController.php:782
 msgid "Invalid contract version to be replaced requested."
 msgstr "Požadována neplatná verze smlouvy, která má být nahrazena."
 
-#: src/Controller/ContractsController.php:807
-#: src/Controller/ContractsController.php:899
+#: src/Controller/ContractsController.php:795
+#: src/Controller/ContractsController.php:887
 msgid "Please set the date until which the contract version is valid."
 msgstr "Nastavte prosím datum, do kterého je verze smlouvy platná."
 
-#: src/Controller/ContractsController.php:817
-#: src/Controller/ContractsController.php:847
+#: src/Controller/ContractsController.php:805
+#: src/Controller/ContractsController.php:835
 msgid "Please set the date of conclusion of the contract version."
 msgstr "Nastavte prosím datum uzavření verze smlouvy."
 
-#: src/Controller/ContractsController.php:827
-#: src/Controller/ContractsController.php:876
-#: src/Controller/ContractsController.php:909
+#: src/Controller/ContractsController.php:815
+#: src/Controller/ContractsController.php:864
+#: src/Controller/ContractsController.php:897
 msgid "Please enter the number of the contract to be terminated."
 msgstr "Zadejte prosím číslo smlouvy, která má být ukončena."
 
-#: src/Controller/ContractsController.php:839
+#: src/Controller/ContractsController.php:827
 msgid "Please enter the effective date of the amendment."
 msgstr "Zadejte prosím datum účinnosti dodatku."
 
-#: src/Controller/ContractsController.php:860
+#: src/Controller/ContractsController.php:848
 msgid "Please select the contract version to be replaced."
 msgstr "Vyberte verzi smlouvy, která má být nahrazena."
 
-#: src/Controller/ContractsController.php:866
+#: src/Controller/ContractsController.php:854
 msgid "Please set the date of conclusion of the original contract version."
 msgstr "Nastavte prosím datum uzavření původní verze smlouvy."
 
-#: src/Controller/ContractsController.php:972
-#: src/Controller/CustomersController.php:448
+#: src/Controller/ContractsController.php:960
+#: src/Controller/CustomersController.php:449
 msgid "Invalid type of document requested."
 msgstr "Neplatný typ požadovaného dokumentu."
 
@@ -492,25 +488,25 @@ msgstr "Zemi nelze uložit. Opakujte akci."
 msgid "The country has been deleted."
 msgstr "Země byla odstraněna."
 
-#: src/Controller/CountriesController.php:122
+#: src/Controller/CountriesController.php:123
 msgid "The country could not be deleted. Please, try again."
 msgstr "Zemi nelze odstranit. Opakujte akci."
 
-#: src/Controller/CustomerLabelsController.php:95
-#: src/Controller/CustomerLabelsController.php:128
+#: src/Controller/CustomerLabelsController.php:89
+#: src/Controller/CustomerLabelsController.php:119
 msgid "The customer label has been saved."
 msgstr "Štítek zákazníka byl uložen."
 
-#: src/Controller/CustomerLabelsController.php:99
-#: src/Controller/CustomerLabelsController.php:132
+#: src/Controller/CustomerLabelsController.php:93
+#: src/Controller/CustomerLabelsController.php:123
 msgid "The customer label could not be saved. Please, try again."
 msgstr "Štítek zákazníka nelze uložit. Zkuste to prosím znovu."
 
-#: src/Controller/CustomerLabelsController.php:157
+#: src/Controller/CustomerLabelsController.php:148
 msgid "The customer label has been deleted."
 msgstr "Štítek zákazníka byl odstraněn."
 
-#: src/Controller/CustomerLabelsController.php:159
+#: src/Controller/CustomerLabelsController.php:151
 msgid "The customer label could not be deleted. Please, try again."
 msgstr "Štítek zákazníka nelze odstranit. Zkuste to prosím znovu."
 
@@ -536,15 +532,15 @@ msgstr "Zákazníka nelze uložit. Opakujte akci."
 msgid "The customer has been deleted."
 msgstr "Zákazník byl odstraněn."
 
-#: src/Controller/CustomersController.php:405
+#: src/Controller/CustomersController.php:406
 msgid "The customer could not be deleted. Please, try again."
 msgstr "Zákazníka nelze odstranit. Opakujte akci."
 
-#: src/Controller/CustomersController.php:422
+#: src/Controller/CustomersController.php:423
 msgid "Consent to the processing of personal data"
 msgstr "Souhlas se zpracováním osobních údajů"
 
-#: src/Controller/CustomersController.php:423
+#: src/Controller/CustomersController.php:424
 msgid "Consent to the processing of personal data (change)"
 msgstr "Souhlas se zpracováním osobních údajů (změna)"
 
@@ -562,25 +558,25 @@ msgstr "Provizi dealera se nepodařilo uložit. Prosím zkuste to znovu."
 msgid "The dealer commission has been deleted."
 msgstr "Provize dealera byla smazána."
 
-#: src/Controller/DealerCommissionsController.php:171
+#: src/Controller/DealerCommissionsController.php:172
 msgid "The dealer commission could not be deleted. Please, try again."
 msgstr "Provizi dealera nelze smazat. Prosím zkuste to znovu."
 
-#: src/Controller/EmailsController.php:93
-#: src/Controller/EmailsController.php:128
+#: src/Controller/EmailsController.php:87
+#: src/Controller/EmailsController.php:119
 msgid "The email has been saved."
 msgstr "E-mail byl uložen."
 
-#: src/Controller/EmailsController.php:97
-#: src/Controller/EmailsController.php:132
+#: src/Controller/EmailsController.php:91
+#: src/Controller/EmailsController.php:123
 msgid "The email could not be saved. Please, try again."
 msgstr "E-mail nelze uložit. Opakujte akci."
 
-#: src/Controller/EmailsController.php:161
+#: src/Controller/EmailsController.php:150
 msgid "The email has been deleted."
 msgstr "E-mail byl odstraněn."
 
-#: src/Controller/EmailsController.php:163
+#: src/Controller/EmailsController.php:153
 msgid "The email could not be deleted. Please, try again."
 msgstr "E-mail nelze odstranit. Opakujte akci."
 
@@ -598,79 +594,79 @@ msgstr "Typ zařízení nelze uložit. Opakujte akci."
 msgid "The equipment type has been deleted."
 msgstr "Typ zařízení byl odstraněn."
 
-#: src/Controller/EquipmentTypesController.php:124
+#: src/Controller/EquipmentTypesController.php:125
 msgid "The equipment type could not be deleted. Please, try again."
 msgstr "Typ zařízení nelze odstranit. Opakujte akci."
 
-#: src/Controller/IpNetworksController.php:110
-#: src/Controller/IpNetworksController.php:165
+#: src/Controller/IpNetworksController.php:98
+#: src/Controller/IpNetworksController.php:147
 msgid "The IP network has been saved."
 msgstr "IP síť byla uložena."
 
-#: src/Controller/IpNetworksController.php:114
-#: src/Controller/IpNetworksController.php:169
+#: src/Controller/IpNetworksController.php:102
+#: src/Controller/IpNetworksController.php:151
 msgid "The IP network could not be saved. Please, try again."
 msgstr "IP síť nelze uložit. Zkuste to prosím znovu."
 
-#: src/Controller/IpNetworksController.php:217
+#: src/Controller/IpNetworksController.php:197
 msgid "The IP network has been deleted."
 msgstr "IP síť byla odstraněna."
 
-#: src/Controller/IpNetworksController.php:219
+#: src/Controller/IpNetworksController.php:200
 msgid "The IP network could not be deleted. Please, try again."
 msgstr "IP síť nelze odstranit. Zkuste to prosím znovu."
 
-#: src/Controller/IpNetworksController.php:251
-#: src/Controller/RemovedIpNetworksController.php:117
-#: src/Controller/RemovedIpNetworksController.php:174
+#: src/Controller/IpNetworksController.php:228
+#: src/Controller/RemovedIpNetworksController.php:105
+#: src/Controller/RemovedIpNetworksController.php:156
 msgid "The removed IP network has been saved."
 msgstr "Odebraná IP síť byla uložena."
 
-#: src/Controller/IpNetworksController.php:256
-#: src/Controller/RemovedIpNetworksController.php:121
-#: src/Controller/RemovedIpNetworksController.php:178
+#: src/Controller/IpNetworksController.php:233
+#: src/Controller/RemovedIpNetworksController.php:109
+#: src/Controller/RemovedIpNetworksController.php:160
 msgid "The removed IP network could not be saved. Please, try again."
 msgstr "Odebranou IP síť nelze uložit. Zkuste to prosím znovu."
 
-#: src/Controller/IpsController.php:112 src/Controller/IpsController.php:177
-#: src/Controller/IpsController.php:338
+#: src/Controller/IpsController.php:100 src/Controller/IpsController.php:159
+#: src/Controller/IpsController.php:314
 msgid "The IP address has been saved."
 msgstr "IP adresa byla uložena."
 
-#: src/Controller/IpsController.php:116 src/Controller/IpsController.php:181
-#: src/Controller/IpsController.php:342
+#: src/Controller/IpsController.php:104 src/Controller/IpsController.php:163
+#: src/Controller/IpsController.php:318
 msgid "The IP address could not be saved. Please, try again."
 msgstr "IP adresu se nepodařilo uložit. Zkuste to prosím znovu."
 
-#: src/Controller/IpsController.php:239
+#: src/Controller/IpsController.php:221
 msgid "The IP address ranges list could not be loaded. Please, try again."
 msgstr "Seznam rozsahů IP adres se nepodařilo načíst. Zkuste to prosím znovu."
 
-#: src/Controller/IpsController.php:300
+#: src/Controller/IpsController.php:282
 msgid "last used until {0} by {1}"
 msgstr "naposledy použito do {0} - {1}"
 
-#: src/Controller/IpsController.php:305
+#: src/Controller/IpsController.php:287
 msgid "unknown customer"
 msgstr "neznámý zákazník"
 
-#: src/Controller/IpsController.php:387
+#: src/Controller/IpsController.php:361
 msgid "The IP address has been deleted."
 msgstr "IP adresa byla odstraněna."
 
-#: src/Controller/IpsController.php:389
+#: src/Controller/IpsController.php:364
 msgid "The IP address could not be deleted. Please, try again."
 msgstr "IP adresu nebylo možné odstranit. Zkuste to prosím znovu."
 
-#: src/Controller/IpsController.php:421
-#: src/Controller/RemovedIpsController.php:116
-#: src/Controller/RemovedIpsController.php:172
+#: src/Controller/IpsController.php:392
+#: src/Controller/RemovedIpsController.php:104
+#: src/Controller/RemovedIpsController.php:154
 msgid "The removed IP address has been saved."
 msgstr "Odebraná IP adresa byla uložena."
 
-#: src/Controller/IpsController.php:426
-#: src/Controller/RemovedIpsController.php:120
-#: src/Controller/RemovedIpsController.php:176
+#: src/Controller/IpsController.php:397
+#: src/Controller/RemovedIpsController.php:108
+#: src/Controller/RemovedIpsController.php:158
 msgid "The removed IP address could not be saved. Please, try again."
 msgstr "Odebranou IP adresu nelze uložit. Opakujte akci."
 
@@ -695,35 +691,35 @@ msgstr "Štítek nelze uložit. Zkuste to prosím znovu."
 msgid "The label has been deleted."
 msgstr "Štítek byl odstraněn."
 
-#: src/Controller/LabelsController.php:149
+#: src/Controller/LabelsController.php:150
 msgid "The label could not be deleted. Please, try again."
 msgstr "Štítek nelze odstranit. Zkuste to prosím znovu."
 
-#: src/Controller/LabelsController.php:198
+#: src/Controller/LabelsController.php:199
 msgid "The related customer labels has been updated."
 msgstr "Související štítky zákazníků byly aktualizovány."
 
-#: src/Controller/LabelsController.php:200
+#: src/Controller/LabelsController.php:201
 msgid "The related customer labels could not be updated. Please, try again."
 msgstr ""
 "Související štítky zákazníků nebylo možné aktualizovat. Zkuste to prosím "
 "znovu."
 
-#: src/Controller/LoginsController.php:93
-#: src/Controller/LoginsController.php:155
+#: src/Controller/LoginsController.php:89
+#: src/Controller/LoginsController.php:148
 msgid "The login has been saved."
 msgstr "Přihlášení bylo uloženo."
 
-#: src/Controller/LoginsController.php:97
-#: src/Controller/LoginsController.php:159
+#: src/Controller/LoginsController.php:93
+#: src/Controller/LoginsController.php:152
 msgid "The login could not be saved. Please, try again."
 msgstr "Přihlášení nelze uložit. Prosím, zkuste to znovu."
 
-#: src/Controller/LoginsController.php:188
+#: src/Controller/LoginsController.php:179
 msgid "The login has been deleted."
 msgstr "Přihlášení bylo odstraněno."
 
-#: src/Controller/LoginsController.php:190
+#: src/Controller/LoginsController.php:182
 msgid "The login could not be deleted. Please, try again."
 msgstr "Přihlášení nelze odstranit. Prosím, zkuste to znovu."
 
@@ -731,21 +727,21 @@ msgstr "Přihlášení nelze odstranit. Prosím, zkuste to znovu."
 msgid "unknown dealer"
 msgstr "neznámý dealer"
 
-#: src/Controller/PhonesController.php:93
-#: src/Controller/PhonesController.php:128
+#: src/Controller/PhonesController.php:87
+#: src/Controller/PhonesController.php:119
 msgid "The phone has been saved."
 msgstr "Telefon byl uložen."
 
-#: src/Controller/PhonesController.php:97
-#: src/Controller/PhonesController.php:132
+#: src/Controller/PhonesController.php:91
+#: src/Controller/PhonesController.php:123
 msgid "The phone could not be saved. Please, try again."
 msgstr "Telefon nelze uložit. Opakujte akci."
 
-#: src/Controller/PhonesController.php:161
+#: src/Controller/PhonesController.php:150
 msgid "The phone has been deleted."
 msgstr "Telefon byl odstraněn."
 
-#: src/Controller/PhonesController.php:163
+#: src/Controller/PhonesController.php:153
 msgid "The phone could not be deleted. Please, try again."
 msgstr "Telefon nelze odstranit. Opakujte akci."
 
@@ -763,23 +759,23 @@ msgstr "Frontu nelze uložit. Zkuste to prosím znovu."
 msgid "The queue has been deleted."
 msgstr "Fronta byla odstraněna."
 
-#: src/Controller/QueuesController.php:123
+#: src/Controller/QueuesController.php:124
 msgid "The queue could not be deleted. Please, try again."
 msgstr "Frontu nelze odstranit. Zkuste to prosím znovu."
 
-#: src/Controller/RemovedIpNetworksController.php:222
+#: src/Controller/RemovedIpNetworksController.php:204
 msgid "The removed IP network has been deleted."
 msgstr "Odebraná IP síť byla odstraněna."
 
-#: src/Controller/RemovedIpNetworksController.php:224
+#: src/Controller/RemovedIpNetworksController.php:207
 msgid "The removed IP network could not be deleted. Please, try again."
 msgstr "Odebranou IP síť nelze odstranit. Zkuste to prosím znovu."
 
-#: src/Controller/RemovedIpsController.php:219
+#: src/Controller/RemovedIpsController.php:199
 msgid "The removed IP address has been deleted."
 msgstr "Odebraná IP adresa byla odstraněna."
 
-#: src/Controller/RemovedIpsController.php:221
+#: src/Controller/RemovedIpsController.php:202
 msgid "The removed IP address could not be deleted. Please, try again."
 msgstr "Odebranou IP adresu nelze odstranit. Opakujte akci."
 
@@ -797,7 +793,7 @@ msgstr "Typ služby nelze uložit. Opakujte akci."
 msgid "The service type has been deleted."
 msgstr "Typ služby byl odstraněn."
 
-#: src/Controller/ServiceTypesController.php:131
+#: src/Controller/ServiceTypesController.php:132
 msgid "The service type could not be deleted. Please, try again."
 msgstr "Typ služby nelze odstranit. Opakujte akci."
 
@@ -815,25 +811,25 @@ msgstr "Službu nelze uložit. Opakujte akci."
 msgid "The service has been deleted."
 msgstr "Služba byla odstraněna."
 
-#: src/Controller/ServicesController.php:144
+#: src/Controller/ServicesController.php:145
 msgid "The service could not be deleted. Please, try again."
 msgstr "Službu nelze odstranit. Opakujte akci."
 
-#: src/Controller/SoldEquipmentsController.php:113
-#: src/Controller/SoldEquipmentsController.php:174
+#: src/Controller/SoldEquipmentsController.php:101
+#: src/Controller/SoldEquipmentsController.php:156
 msgid "The sold equipment has been saved."
 msgstr "Prodané zařízení bylo uloženo."
 
-#: src/Controller/SoldEquipmentsController.php:117
-#: src/Controller/SoldEquipmentsController.php:178
+#: src/Controller/SoldEquipmentsController.php:105
+#: src/Controller/SoldEquipmentsController.php:160
 msgid "The sold equipment could not be saved. Please, try again."
 msgstr "Prodané zařízení nelze uložit. Opakujte akci."
 
-#: src/Controller/SoldEquipmentsController.php:227
+#: src/Controller/SoldEquipmentsController.php:207
 msgid "The sold equipment has been deleted."
 msgstr "Prodané zařízení bylo odstraněno."
 
-#: src/Controller/SoldEquipmentsController.php:229
+#: src/Controller/SoldEquipmentsController.php:210
 msgid "The sold equipment could not be deleted. Please, try again."
 msgstr "Prodané zařízení nelze odstranit. Opakujte akci."
 
@@ -851,7 +847,7 @@ msgstr "Stav úkolu nelze uložit. Prosím, zkuste to znovu."
 msgid "The task state has been deleted."
 msgstr "Stav úkolu byl odstraněn."
 
-#: src/Controller/TaskStatesController.php:122
+#: src/Controller/TaskStatesController.php:123
 msgid "The task state could not be deleted. Please, try again."
 msgstr "Stav úkolu nelze odstranit. Prosím, zkuste to znovu."
 
@@ -869,63 +865,63 @@ msgstr "Typ úkolu nelze uložit. Prosím, zkuste to znovu."
 msgid "The task type has been deleted."
 msgstr "Typ úkolu byl odstraněn."
 
-#: src/Controller/TaskTypesController.php:122
+#: src/Controller/TaskTypesController.php:123
 msgid "The task type could not be deleted. Please, try again."
 msgstr "Typ úkolu nelze odstranit. Prosím, zkuste to znovu."
 
-#: src/Controller/TasksController.php:186
+#: src/Controller/TasksController.php:180
 msgid "none"
 msgstr "žádný"
 
-#: src/Controller/TasksController.php:309
-#: src/Controller/TasksController.php:478
+#: src/Controller/TasksController.php:297
+#: src/Controller/TasksController.php:460
 msgid "The task has been saved."
 msgstr "Úkol byl uložen."
 
-#: src/Controller/TasksController.php:313
-#: src/Controller/TasksController.php:482
+#: src/Controller/TasksController.php:301
+#: src/Controller/TasksController.php:464
 msgid "The task could not be saved. Please, try again."
 msgstr "Úkol nelze uložit. Prosím, zkuste to znovu."
 
-#: src/Controller/TasksController.php:407 templates/Customers/view.php:289
+#: src/Controller/TasksController.php:395 templates/Customers/view.php:289
 #: templates/Emails/view.php:43 templates/TaskStates/view.php:95
 #: templates/TaskTypes/view.php:95 templates/Tasks/view.php:55
 #: templates/email/html/task_notification.php:50
 msgid "Email"
 msgstr "E-mail"
 
-#: src/Controller/TasksController.php:408 templates/Customers/view.php:338
+#: src/Controller/TasksController.php:396 templates/Customers/view.php:338
 #: templates/Phones/view.php:43 templates/TaskStates/view.php:96
 #: templates/TaskTypes/view.php:96 templates/Tasks/view.php:59
 #: templates/email/html/task_notification.php:54
 msgid "Phone"
 msgstr "Telefon"
 
-#: src/Controller/TasksController.php:568
+#: src/Controller/TasksController.php:550
 msgid "The task has been deleted."
 msgstr "Úkol byl odstraněn."
 
-#: src/Controller/TasksController.php:570
+#: src/Controller/TasksController.php:553
 msgid "The task could not be deleted. Please, try again."
 msgstr "Úkol nelze odstranit. Prosím, zkuste to znovu."
 
-#: src/Controller/TasksController.php:626
+#: src/Controller/TasksController.php:609
 msgid "You have a new task # {0}"
 msgstr "Máte nový úkol č. {0}"
 
-#: src/Controller/TasksController.php:628
+#: src/Controller/TasksController.php:611
 msgid "You have changes in task # {0}"
 msgstr "Máte změny v úkolu č. {0}"
 
-#: src/Controller/TasksController.php:642
+#: src/Controller/TasksController.php:625
 msgid "Notification email sent."
 msgstr "E-mail s oznámením odeslán."
 
-#: src/Controller/TasksController.php:646
+#: src/Controller/TasksController.php:629
 msgid "The notification email could not be sent."
 msgstr "E-mail s oznámením se nepodařilo odeslat."
 
-#: src/Controller/TasksController.php:206
+#: src/Controller/TasksController.php:200
 msgid ""
 "There was {0} unfinished task found that does not have a dealer assigned."
 msgid_plural ""
@@ -950,19 +946,23 @@ msgstr "Sazbu daně nebylo možné uložit. Zkuste to prosím znovu."
 msgid "The tax rate has been deleted."
 msgstr "Sazba daně byla odstraněna."
 
-#: src/Controller/TaxRatesController.php:126
+#: src/Controller/TaxRatesController.php:127
 msgid "The tax rate could not be deleted. Please, try again."
 msgstr "Sazbu daně nelze odstranit. Zkuste to prosím znovu."
 
-#: src/Model/Entity/Address.php:243
+#: src/Controller/Traits/ErrorFormatterTrait.php:35
+msgid "Errors"
+msgstr "Chyby"
+
+#: src/Model/Entity/Address.php:244
 msgid "House Number"
 msgstr "Číslo popisné"
 
-#: src/Model/Entity/Address.php:244
+#: src/Model/Entity/Address.php:245
 msgid "Registration Number"
 msgstr "Evidenční číslo"
 
-#: src/Model/Entity/AppUser.php:46 src/Model/Entity/Login.php:92
+#: src/Model/Entity/AppUser.php:46 src/Model/Entity/Login.php:93
 msgid "User"
 msgstr "Uživatel"
 
@@ -998,16 +998,16 @@ msgstr "Admin"
 msgid "API"
 msgstr "API"
 
-#: src/Model/Entity/Billing.php:295
+#: src/Model/Entity/Billing.php:296
 msgid "Contract data not available."
 msgstr "Údaje o smlouvě nejsou k dispozici."
 
-#: src/Model/Entity/Contract.php:244 src/Model/Entity/Contract.php:259
-#: src/Model/Entity/Contract.php:274
+#: src/Model/Entity/Contract.php:245 src/Model/Entity/Contract.php:260
+#: src/Model/Entity/Contract.php:275
 msgid "Contract state data not available."
 msgstr "Údaje o stavu smlouvy nejsou k dispozici."
 
-#: src/Model/Entity/Customer.php:413 templates/Addresses/view.php:132
+#: src/Model/Entity/Customer.php:414 templates/Addresses/view.php:132
 #: templates/Billings/index.php:78 templates/Billings/index.php:79
 #: templates/Billings/view.php:77 templates/Billings/view.php:81
 #: templates/Commissions/view.php:177 templates/ContractStates/index.php:43
@@ -1054,7 +1054,7 @@ msgstr "Údaje o stavu smlouvy nejsou k dispozici."
 msgid "No"
 msgstr "Ne"
 
-#: src/Model/Entity/Customer.php:414 src/Model/Entity/Customer.php:415
+#: src/Model/Entity/Customer.php:415 src/Model/Entity/Customer.php:416
 #: templates/Addresses/view.php:132 templates/Billings/index.php:78
 #: templates/Billings/index.php:79 templates/Billings/view.php:77
 #: templates/Billings/view.php:81 templates/Commissions/view.php:177
@@ -1101,75 +1101,75 @@ msgstr "Ne"
 msgid "Yes"
 msgstr "Ano"
 
-#: src/Model/Entity/Customer.php:414
+#: src/Model/Entity/Customer.php:415
 msgid "current"
 msgstr "aktuální"
 
-#: src/Model/Entity/Customer.php:415
+#: src/Model/Entity/Customer.php:416
 msgid "former"
 msgstr "bývalý"
 
-#: src/Model/Entity/Customer.php:437
+#: src/Model/Entity/Customer.php:438
 msgid "Do not send"
 msgstr "Nezasílat"
 
-#: src/Model/Entity/Customer.php:438
+#: src/Model/Entity/Customer.php:439
 msgid "Send by email"
 msgstr "Odeslat e-mailem"
 
-#: src/Model/Entity/Ip.php:113 src/Model/Entity/RemovedIp.php:101
+#: src/Model/Entity/Ip.php:114 src/Model/Entity/RemovedIp.php:102
 msgid "Customer address set via RADIUS"
 msgstr "Adresa zákazníka nastavená přes RADIUS"
 
-#: src/Model/Entity/Ip.php:114 src/Model/Entity/RemovedIp.php:102
+#: src/Model/Entity/Ip.php:115 src/Model/Entity/RemovedIp.php:103
 msgid "Customer address set manually"
 msgstr "Adresa zákazníka nastavená ručně"
 
-#: src/Model/Entity/Ip.php:115 src/Model/Entity/RemovedIp.php:103
+#: src/Model/Entity/Ip.php:116 src/Model/Entity/RemovedIp.php:104
 msgid "Technology address set manually"
 msgstr "Adresa technologie nastavená ručně"
 
-#: src/Model/Entity/IpNetwork.php:96 src/Model/Entity/RemovedIpNetwork.php:101
+#: src/Model/Entity/IpNetwork.php:97 src/Model/Entity/RemovedIpNetwork.php:102
 msgid "Customer network set via RADIUS"
 msgstr "Síť zákazníka nastavená přes RADIUS"
 
-#: src/Model/Entity/IpNetwork.php:97 src/Model/Entity/RemovedIpNetwork.php:102
+#: src/Model/Entity/IpNetwork.php:98 src/Model/Entity/RemovedIpNetwork.php:103
 msgid "Customer network set manually"
 msgstr "Síť zákazníka nastavená ručně"
 
-#: src/Model/Entity/IpNetwork.php:98 src/Model/Entity/RemovedIpNetwork.php:103
+#: src/Model/Entity/IpNetwork.php:99 src/Model/Entity/RemovedIpNetwork.php:104
 msgid "Technology network set manually"
 msgstr "Síť technologie nastavená ručně"
 
-#: src/Model/Entity/Login.php:91
+#: src/Model/Entity/Login.php:92
 msgid "Guest"
 msgstr "Host"
 
-#: src/Model/Entity/Login.php:93
+#: src/Model/Entity/Login.php:94
 msgid "Technician"
 msgstr "Technik"
 
-#: src/Model/Entity/Login.php:94
+#: src/Model/Entity/Login.php:95
 msgid "Administrator"
 msgstr "Administrátor"
 
-#: src/Model/Entity/Login.php:95
+#: src/Model/Entity/Login.php:96
 msgid "Specialist"
 msgstr "Specialista"
 
-#: src/Model/Entity/Task.php:162
+#: src/Model/Entity/Task.php:163
 msgid "Low"
 msgstr "Nízká"
 
-#: src/Model/Entity/Task.php:163
+#: src/Model/Entity/Task.php:164
 msgid "Normal"
 msgstr "Normální"
 
-#: src/Model/Entity/Task.php:164
+#: src/Model/Entity/Task.php:165
 msgid "High"
 msgstr "Vysoká"
 
-#: src/Model/Entity/Task.php:165
+#: src/Model/Entity/Task.php:166
 msgid "Urgent"
 msgstr "Naléhavé"
 
@@ -1183,7 +1183,7 @@ msgstr "Zadaný typ služby vyžaduje přiřazení instalační adresy."
 msgid "The specified service type requires the assignment of an access point."
 msgstr "Zadaný typ služby vyžaduje přiřazení přístupového bodu."
 
-#: src/Model/Table/CustomersTable.php:291
+#: src/Model/Table/CustomersTable.php:295
 msgid "The specified identification number is not valid."
 msgstr "Zadané identifikační číslo není platné."
 
@@ -1202,6 +1202,10 @@ msgstr "Zadaný typ úkolu vyžaduje přiřazení zákazníka."
 #: src/Model/Table/TasksTable.php:185
 msgid "The specified task type requires the assignment of an contract."
 msgstr "Zadaný typ úkolu vyžaduje přiřazení smlouvy."
+
+#: src/Versioning.php:52 src/Versioning.php:74
+msgid "Not installed via Git"
+msgstr "Není nainstalováno přes Git"
 
 #: templates/Addresses/add.php:12 templates/Addresses/edit.php:12
 #: templates/Addresses/index.php:41 templates/Addresses/view.php:10

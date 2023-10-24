@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-09-27 17:05+0200\n"
-"PO-Revision-Date: 2023-09-27 17:07+0200\n"
+"POT-Creation-Date: 2023-10-24 23:32+0200\n"
+"PO-Revision-Date: 2023-10-24 23:33+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4\n"
 
 #: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:123
 msgid "Email was successfully sent."
@@ -23,29 +23,29 @@ msgstr "E-mail byl úspěšně odeslán."
 msgid "The email cannot be sent."
 msgstr "E-mail nelze odeslat."
 
-#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:31
-#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:58
+#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:32
+#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:59
 msgid "Routers updated."
 msgstr "Směrovače byly aktualizovány."
 
-#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:32
-#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:59
+#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:33
+#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:60
 msgid "Nothing has changed."
 msgstr "Nic se nezměnilo."
 
-#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:142
+#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:143
 msgid "Removed IPv4 record {0} from {1}."
 msgstr "Odebrán záznam IPv4 {0} z {1}."
 
-#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:167
+#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:168
 msgid "Added IPv4 record {0} to {1}."
 msgstr "Přidán záznam IPv4 {0} do {1}."
 
-#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:193
+#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:194
 msgid "Removed IPv6 record {0} from {1}."
 msgstr "Odebrán záznam IPv6 {0} z {1}."
 
-#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:218
+#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:219
 msgid "Added IPv6 record {0} to {1}."
 msgstr "Přidán záznam IPv6 {0} do {1}."
 
@@ -63,28 +63,28 @@ msgstr "Fakturu nelze uložit. Zkuste to prosím znovu."
 msgid "The invoice has been deleted."
 msgstr "Faktura byla odstraněna."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:222
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:223
 msgid "The invoice could not be deleted. Please, try again."
 msgstr "Fakturu nelze odstranit. Zkuste to prosím znovu."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:247
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:248
 msgid "The invoices has been marked to be sent by email ({0})."
 msgstr "Faktury byly označeny k odeslání e-mailem ({0})."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:255
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:256
 msgid "No invoices could be marked to be sent by email. Please, try again."
 msgstr ""
 "Žádné faktury nelze označit k odeslání e-mailem. Zkuste to prosím znovu."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:590
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:591
 msgid "The import file is missing some required columns."
 msgstr "V souboru importu chybí některé povinné sloupce."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:626
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:637
 msgid "Invoice {0} could not be loaded."
 msgstr "Fakturu {0} nelze načíst."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:635
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:646
 msgid ""
 "Successfully imported {0} invoices. Created {1}, modified {2} and skipped "
 "{3} records."
@@ -167,7 +167,7 @@ msgstr "Datum splatnosti"
 
 #: plugins/BookkeepingPohoda/templates/Invoices/add.php:45
 #: plugins/BookkeepingPohoda/templates/Invoices/edit.php:53
-#: plugins/BookkeepingPohoda/templates/Invoices/view.php:143
+#: plugins/BookkeepingPohoda/templates/Invoices/view.php:145
 #: plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:23
 msgid "Text"
 msgstr "Text"
@@ -308,7 +308,7 @@ msgid "Created"
 msgstr "Vytvořeno"
 
 #: plugins/BookkeepingPohoda/templates/Invoices/index.php:62
-#: plugins/BookkeepingPohoda/templates/Invoices/view.php:125
+#: plugins/BookkeepingPohoda/templates/Invoices/view.php:126
 msgid "Modified"
 msgstr "Upraveno"
 
@@ -391,7 +391,7 @@ msgstr "ID"
 msgid "Created By"
 msgstr "Vytvořil"
 
-#: plugins/BookkeepingPohoda/templates/Invoices/view.php:129
+#: plugins/BookkeepingPohoda/templates/Invoices/view.php:130
 msgid "Modified By"
 msgstr "Upravil"
 
