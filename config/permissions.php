@@ -266,7 +266,7 @@ $permissions = [
                 'index',
             ],
             'allowed' => function ($user, $role, ServerRequest $request) {
-                return is_numeric($request->getParam('customer_id'));
+                return !empty($request->getParam('customer_id'));
             },
         ],
         //allow all indexes and views for sales-managers and network-managers
