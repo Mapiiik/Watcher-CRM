@@ -139,12 +139,24 @@ class TasksController extends AppController
 
         $this->paginate = [
             'sortableFields' => [
+                'task_type_id',
+                'priority',
                 'TaskStates.priority',
+                'dealer_id',
+                'subject',
+                'text',
+                'customer_id',
+                'contract_id',
+                'access_point_id',
+                'start_date',
+                'estimated_date',
+                'critical_date',
+                'finish_date',
             ],
             'order' => [
                 'TaskStates.priority' => 'DESC',
-                'Tasks.priority' => 'DESC',
-                'Tasks.nid' => 'DESC',
+                'priority' => 'DESC',
+                'nid' => 'DESC',
             ],
         ];
 
