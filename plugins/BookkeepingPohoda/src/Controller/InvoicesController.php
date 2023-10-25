@@ -559,6 +559,16 @@ class InvoicesController extends AppController
 
             $created = 0;
             $modified = 0;
+
+            // load customer IDs
+            $customerIds = $this->Invoices->Customers
+            ->find(
+                'list',
+                keyField: 'nid',
+                valueField: 'id'
+            )
+            ->toArray();
+
             // VERIFICATION DATA CHECK
             if ($dbf_for_import->getSize() > 0) {
                 $dbase = dbase_open($_FILES['dbf_for_import']['tmp_name'], 0);
@@ -605,14 +615,6 @@ class InvoicesController extends AppController
                             $this->Invoices->find()->where(['number' => $record['CISLO']])->first()
                             ??
                             $this->Invoices->newEntity(['number' => $record['CISLO']]);
-
-                        $customerIds = $this->Invoices->Customers
-                            ->find(
-                                'list',
-                                keyField: 'nid',
-                                valueField: 'id'
-                            )
-                            ->toArray();
 
                         $invoice->customer_id =
                             $customerIds[(int)$record['VARSYM'] - (int)env('CUSTOMER_SERIES', '0')] ?? null;
