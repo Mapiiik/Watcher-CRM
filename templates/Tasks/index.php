@@ -55,7 +55,7 @@
                 <tr>
                     <th><?= $this->Paginator->sort('task_type_id') ?></th>
                     <th><?= $this->Paginator->sort('priority') ?></th>
-                    <th><?= $this->Paginator->sort('task_state_id') ?></th>
+                    <th><?= $this->Paginator->sort('TaskStates.priority', __('Task State')) ?></th>
                     <th><?= $this->Paginator->sort('dealer_id') ?></th>
                     <th><?= $this->Paginator->sort('subject') ?> / <i><?= __('Summary Text') ?></i></th>
                     <th><?= $this->Paginator->sort('text') ?></th>

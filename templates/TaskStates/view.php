@@ -37,6 +37,10 @@
                             <td style="background-color: <?= h($taskState->color) ?>;"><?= h($taskState->color) ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Priority') ?></th>
+                            <td><?= h($taskState->priority) ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Completed') ?></th>
                             <td><?= $taskState->completed ? __('Yes') : __('No'); ?></td>
                         </tr>

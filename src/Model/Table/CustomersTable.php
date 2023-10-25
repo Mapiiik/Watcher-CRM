@@ -157,7 +157,8 @@ class CustomersTable extends AppTable
         $this->hasMany('Tasks', [
             'foreignKey' => 'customer_id',
             'sort' => [
-                'Tasks.task_state_id',
+                'TaskStates.priority' => 'DESC',
+                'Tasks.priority' => 'DESC',
                 'Tasks.nid' => 'DESC',
             ],
         ]);

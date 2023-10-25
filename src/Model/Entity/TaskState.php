@@ -19,6 +19,7 @@ use Cake\ORM\Entity;
  * @property string|null $name
  * @property string $color
  * @property bool $completed
+ * @property int $priority
  *
  * @property \App\Model\Entity\Task[] $tasks
  */
@@ -41,6 +42,7 @@ class TaskState extends Entity
         'name' => true,
         'color' => true,
         'completed' => true,
+        'priority' => true,
         'tasks' => true,
     ];
 }

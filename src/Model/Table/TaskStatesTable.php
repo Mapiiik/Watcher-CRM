@@ -47,7 +47,7 @@ class TaskStatesTable extends AppTable
         $this->hasMany('Tasks', [
             'foreignKey' => 'task_state_id',
             'sort' => [
-                'Tasks.task_state_id',
+                'Tasks.priority' => 'DESC',
                 'Tasks.nid' => 'DESC',
             ],
         ]);
@@ -68,6 +68,10 @@ class TaskStatesTable extends AppTable
         $validator
             ->scalar('name')
             ->allowEmptyString('name');
+
+        $validator
+            ->integer('priority')
+            ->notEmptyString('priority');
 
         return $validator;
     }

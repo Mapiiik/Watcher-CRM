@@ -138,8 +138,12 @@ class TasksController extends AppController
         $this->set('filterForm', $filterForm);
 
         $this->paginate = [
+            'sortableFields' => [
+                'TaskStates.priority',
+            ],
             'order' => [
-                'Tasks.task_state_id' => 'ASC',
+                'TaskStates.priority' => 'DESC',
+                'Tasks.priority' => 'DESC',
                 'Tasks.nid' => 'DESC',
             ],
         ];

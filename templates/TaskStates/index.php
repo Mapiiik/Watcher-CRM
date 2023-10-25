@@ -25,6 +25,7 @@
                 <tr>
                     <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('color') ?></th>
+                    <th><?= $this->Paginator->sort('priority') ?></th>
                     <th><?= $this->Paginator->sort('completed') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
@@ -34,6 +35,7 @@
                 <tr>
                     <td><?= h($taskState->name) ?></td>
                     <td style="background-color: <?= h($taskState->color) ?>;"><?= h($taskState->color) ?></td>
+                    <td><?= h($taskState->priority) ?></td>
                     <td><?= $taskState->completed ? __('Yes') : __('No'); ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $taskState->id]) ?>

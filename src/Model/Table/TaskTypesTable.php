@@ -47,7 +47,8 @@ class TaskTypesTable extends AppTable
         $this->hasMany('Tasks', [
             'foreignKey' => 'task_type_id',
             'sort' => [
-                'Tasks.task_state_id',
+                'TaskStates.priority' => 'DESC',
+                'Tasks.priority' => 'DESC',
                 'Tasks.nid' => 'DESC',
             ],
         ]);
