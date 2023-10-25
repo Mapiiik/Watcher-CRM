@@ -7,6 +7,7 @@ use App\Controller\AppController;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\Routing\Router;
 use Cake\View\JsonView;
 use Ruian\Model\Entity\Address;
 
@@ -237,7 +238,20 @@ class CustomersController extends AppController
                                                 'name' => $contract->installation_address->name ??
                                                     $contract->customer->name,
                                                 'customer_number' => $contract->customer->number,
+                                                'customer_url' => Router::url([
+                                                    'prefix' => false,
+                                                    'controller' => 'Customers',
+                                                    'action' => 'view',
+                                                    $contract->customer->id,
+                                                ]),
                                                 'contract_number' => $contract->number,
+                                                'contract_url' => Router::url([
+                                                    'prefix' => false,
+                                                    'controller' => 'Contracts',
+                                                    'action' => 'view',
+                                                    'customer_id' => $contract->customer->id,
+                                                    $contract->id,
+                                                ]),
                                                 'access_point_id' => $contract->access_point_id,
                                                 'note' => $contract->note,
                                                 'CustomerConnectionIps' => (new Collection($contract->ips))->map(
