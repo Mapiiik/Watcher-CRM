@@ -52,7 +52,7 @@ class InvoicesCell extends Cell
                     'Customers',
                 ],
                 order: [
-                    'Invoices.id' => 'DESC',
+                    'Invoices.creation_date' => 'DESC',
                 ],
             )
             ->all();
