@@ -900,14 +900,12 @@ class RemoveUnnecessaryNumericKeys extends AbstractMigration
         foreach ($main_tables as $main_table => $main_table_data) {
             // removal of backup related keys
             foreach ($main_table_data['related'] as $related_table) {
-                if (($related_table['keep_backup'] ?? false) !== true) {
-                    $rtable = $this->table($related_table['table']);
+                $rtable = $this->table($related_table['table']);
 
-                    $rtable->removeColumn($related_table['backup']);
+                $rtable->removeColumn($related_table['backup']);
 
-                    $rtable->update();
-                    unset($ftable);
-                }
+                $rtable->update();
+                unset($rtable);
             }
 
             // removal of backup primary keys
