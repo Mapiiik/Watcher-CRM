@@ -61,7 +61,7 @@ class InvoicesController extends AppController
 
         $this->paginate = [
             'order' => [
-                'Invoices.creation_date' => 'DESC',
+                'creation_date' => 'DESC',
             ],
         ];
 
