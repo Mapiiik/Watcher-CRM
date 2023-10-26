@@ -24,7 +24,7 @@
         "enqueue/fs": "^0.10.19",
         "enqueue/redis": "^0.10.19",
         "evilfreelancer/routeros-api-php": "^1.5",
-        "jdorn/sql-formatter": "^1.2",
+        "doctrine/sql-formatter": "^1.1.3",
         "league/oauth2-google": "^4.0",
         "mapik/audit-log": "^5.0",
         "mapik/pohoda-xml": "^1.16",

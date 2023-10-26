@@ -3,6 +3,10 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Label $label
  */
+
+use Doctrine\SqlFormatter\NullHighlighter;
+use Doctrine\SqlFormatter\SqlFormatter;
+
 ?>
 <div class="row">
     <aside class="column">
@@ -28,7 +32,7 @@
                 echo $this->Form->control('validity');
                 echo $this->Form->control('dynamic');
                 echo $this->Form->control('dynamic_sql', [
-                    'value' => SqlFormatter::format($label->dynamic_sql ?? '', false),
+                    'value' => (new SqlFormatter(new NullHighlighter()))->format($label->dynamic_sql ?? ''),
                 ]);
                 ?>
             </fieldset>

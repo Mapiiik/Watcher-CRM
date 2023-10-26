@@ -3,6 +3,10 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Label $label
  */
+
+use Doctrine\SqlFormatter\HtmlHighlighter;
+use Doctrine\SqlFormatter\SqlFormatter;
+
 ?>
 <div class="row">
     <aside class="column">
@@ -99,7 +103,17 @@
             </div>
             <div class="text">
                 <strong><?= __('Dynamic Sql') ?></strong>
-                <?= SqlFormatter::format($label->dynamic_sql ?? ''); ?>
+                <?=
+                    (new SqlFormatter(
+                        new HtmlHighlighter([
+                            HtmlHighlighter::HIGHLIGHT_QUOTE => 'style="color: #004d40;"',
+                            HtmlHighlighter::HIGHLIGHT_BACKTICK_QUOTE => 'style="color: #26a69a;"',
+                            HtmlHighlighter::HIGHLIGHT_NUMBER => 'style="color: #ec407a;"',
+                            HtmlHighlighter::HIGHLIGHT_WORD => 'style="color: #9c27b0;"',
+                            HtmlHighlighter::HIGHLIGHT_PRE => 'style="color: #222; background-color: transparent;"',
+                        ])
+                    ))
+                    ->format($label->dynamic_sql ?? '') ?>
             </div>
             <div class="related">
                 <h4><?= __('Related Customer Labels') ?></h4>
