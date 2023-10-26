@@ -49,15 +49,15 @@ class RadiusPlugin extends BasePlugin
                         'action' => 'index',
                     ])
                     ->setPatterns([
-                        'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
-                        'contract_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+                        'customer_id' => RouteBuilder::UUID,
+                        'contract_id' => RouteBuilder::UUID,
                     ]);
 
                 $builder
                     ->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/{action}/*', [])
                     ->setPatterns([
-                        'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
-                        'contract_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+                        'customer_id' => RouteBuilder::UUID,
+                        'contract_id' => RouteBuilder::UUID,
                     ]);
 
                 /*
@@ -68,13 +68,13 @@ class RadiusPlugin extends BasePlugin
                         'action' => 'index',
                     ])
                     ->setPatterns([
-                        'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+                        'customer_id' => RouteBuilder::UUID,
                     ]);
 
                 $builder
                     ->connect('/customers/{customer_id}/{controller}/{action}/*', [])
                     ->setPatterns([
-                        'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+                        'customer_id' => RouteBuilder::UUID,
                     ]);
 
                 $builder->fallbacks();

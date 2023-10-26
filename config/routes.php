@@ -76,8 +76,8 @@ $routes->scope('/', function (RouteBuilder $builder): void {
             'action' => 'view',
         ])
         ->setPatterns([
-            'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
-            'contract_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+            'customer_id' => RouteBuilder::UUID,
+            'contract_id' => RouteBuilder::UUID,
         ])
         ->setPass(['contract_id']);
 
@@ -87,8 +87,8 @@ $routes->scope('/', function (RouteBuilder $builder): void {
         ])
         ->setPatterns([
             'action' => 'edit|delete|print|set-dates-for-related-borrowed-equipments|terminate-related-billings',
-            'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
-            'contract_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+            'customer_id' => RouteBuilder::UUID,
+            'contract_id' => RouteBuilder::UUID,
         ])
         ->setPass(['contract_id']);
 
@@ -97,15 +97,15 @@ $routes->scope('/', function (RouteBuilder $builder): void {
             'action' => 'index',
         ])
         ->setPatterns([
-            'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
-            'contract_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+            'customer_id' => RouteBuilder::UUID,
+            'contract_id' => RouteBuilder::UUID,
         ]);
 
     $builder
         ->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/{action}/*', [])
         ->setPatterns([
-            'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
-            'contract_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+            'customer_id' => RouteBuilder::UUID,
+            'contract_id' => RouteBuilder::UUID,
         ]);
 
     /*
@@ -117,7 +117,7 @@ $routes->scope('/', function (RouteBuilder $builder): void {
             'action' => 'view',
         ])
         ->setPatterns([
-            'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+            'customer_id' => RouteBuilder::UUID,
         ])
         ->setPass(['customer_id']);
 
@@ -127,7 +127,7 @@ $routes->scope('/', function (RouteBuilder $builder): void {
         ])
         ->setPatterns([
             'action' => 'edit|delete|print',
-            'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+            'customer_id' => RouteBuilder::UUID,
         ])
         ->setPass(['customer_id']);
 
@@ -136,13 +136,13 @@ $routes->scope('/', function (RouteBuilder $builder): void {
             'action' => 'index',
         ])
         ->setPatterns([
-            'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+            'customer_id' => RouteBuilder::UUID,
         ]);
 
     $builder
         ->connect('/customers/{customer_id}/{controller}/{action}/*', [])
         ->setPatterns([
-            'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
+            'customer_id' => RouteBuilder::UUID,
         ]);
 
     // Default redirect
