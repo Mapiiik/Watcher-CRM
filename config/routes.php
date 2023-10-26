@@ -82,11 +82,11 @@ $routes->scope('/', function (RouteBuilder $builder): void {
         ->setPass(['contract_id']);
 
     $builder
-        ->connect('/customers/{customer_id}/contracts/{contract_id}/edit', [
+        ->connect('/customers/{customer_id}/contracts/{contract_id}/{action}', [
             'controller' => 'Contracts',
-            'action' => 'edit',
         ])
         ->setPatterns([
+            'action' => 'edit|delete|print|set-dates-for-related-borrowed-equipments|terminate-related-billings',
             'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
             'contract_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
         ])
@@ -122,11 +122,11 @@ $routes->scope('/', function (RouteBuilder $builder): void {
         ->setPass(['customer_id']);
 
     $builder
-        ->connect('/customers/{customer_id}/edit', [
+        ->connect('/customers/{customer_id}/{action}', [
             'controller' => 'Customers',
-            'action' => 'edit',
         ])
         ->setPatterns([
+            'action' => 'edit|delete|print',
             'customer_id' => '[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}',
         ])
         ->setPass(['customer_id']);
