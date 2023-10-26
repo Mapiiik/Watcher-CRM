@@ -12,6 +12,7 @@ use Cake\Database\Exception\MissingConnectionException;
 use Cake\I18n\Date;
 use Cake\ORM\Entity;
 use Cake\ORM\Query\SelectQuery;
+use Cake\Validation\Validation;
 
 /**
  * Overviews Controller
@@ -51,7 +52,7 @@ class OverviewsController extends AppController
                     ->contain('Contracts', function (SelectQuery $q) use ($access_point_id) {
                         $q->contain('ContractStates');
                         // filter by access point
-                        return !empty($access_point_id) ?
+                        return Validation::uuid($access_point_id) ?
                             $q->where(['Contracts.access_point_id' => $access_point_id]) :
                             $q;
                     })
@@ -119,7 +120,7 @@ class OverviewsController extends AppController
             );
 
         // filter by service type
-        if (!empty($service_type_id)) {
+        if (Validation::uuid($service_type_id)) {
             $servicesQuery->where(['Services.service_type_id' => $service_type_id]);
         }
 

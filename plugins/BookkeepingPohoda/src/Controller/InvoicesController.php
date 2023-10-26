@@ -8,6 +8,7 @@ use BookkeepingPohoda\View\XmlView;
 use Cake\Collection\CollectionInterface;
 use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
+use Cake\Validation\Validation;
 use stdClass;
 
 /**
@@ -233,7 +234,7 @@ class InvoicesController extends AppController
      */
     public function sendByEmail()
     {
-        if ($this->getRequest()->is(['post']) && !empty($this->getRequest()->getData('creation_date'))) {
+        if ($this->getRequest()->is(['post']) && Validation::date($this->getRequest()->getData('creation_date'))) {
             $count = $this->Invoices->updateAll(
                 [ // fields
                     'send_by_email' => true,

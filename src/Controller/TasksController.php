@@ -8,6 +8,7 @@ use Cake\Form\Form;
 use Cake\I18n\DateTime;
 use Cake\Mailer\Mailer;
 use Cake\ORM\Query\SelectQuery;
+use Cake\Validation\Validation;
 use Cake\View\Helper\HtmlHelper;
 use Cake\View\View;
 use Exception;
@@ -91,26 +92,26 @@ class TasksController extends AppController
                 $conditions[] = [
                     'Dealers.id IS' => null,
                 ];
-            } else {
+            } elseif (Validation::uuid($dealer_id)) {
                 $conditions[] = [
                     'Dealers.id' => $dealer_id,
                 ];
             }
         }
         $task_type_id = $filter['task_type_id'] ?? null;
-        if (!empty($task_type_id)) {
+        if (Validation::uuid($task_type_id)) {
             $conditions[] = [
                 'Tasks.task_type_id' => $task_type_id,
             ];
         }
         $task_state_id = $filter['task_state_id'] ?? null;
-        if (!empty($task_state_id)) {
+        if (Validation::uuid($task_state_id)) {
             $conditions[] = [
                 'Tasks.task_state_id' => $task_state_id,
             ];
         }
         $access_point_id = $filter['access_point_id'] ?? null;
-        if (!empty($access_point_id)) {
+        if (Validation::uuid($access_point_id)) {
             $conditions[] = [
                 'Tasks.access_point_id' => $access_point_id,
             ];
