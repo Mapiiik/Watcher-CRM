@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\View\PdfView;
 use Cake\Form\Form;
 use Cake\Utility\Hash;
+use Cake\Validation\Validation;
 
 // filter for fulltext search
 const CUSTOMERS_FULLTEXT_SEARCH_FILTER = "SELECT
@@ -149,8 +150,8 @@ class CustomersController extends AppController
             $labels = [];
             if (is_array($this->getRequest()->getQuery('labels'))) {
                 foreach ($this->getRequest()->getQuery('labels') as $label) {
-                    if (is_numeric($label)) {
-                        $labels[] = (int)$label;
+                    if (Validation::uuid($label)) {
+                        $labels[] = $label;
                     }
                 }
             }
@@ -205,11 +206,14 @@ class CustomersController extends AppController
 
         // filter labels
         if ($labels) {
+            $uuidLabels = array_map(function ($label) {
+                return "'{$label}'::uuid";
+            }, $labels);
             $customersQuery->where([
                 'Customers.id IN ('
                 . ' SELECT customer_id FROM customer_labels '
                 . 'GROUP BY customer_id '
-                . 'HAVING array_agg(label_id) @> ARRAY[' . implode(',', $labels) . ']'
+                . 'HAVING array_agg(label_id) @> ARRAY[' . implode(',', $uuidLabels) . ']'
                 . ')',
             ]);
         }
