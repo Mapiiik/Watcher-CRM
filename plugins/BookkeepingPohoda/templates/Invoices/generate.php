@@ -77,19 +77,16 @@
                 <tbody>
                     <?php foreach ($verification_data as $customer_number => $customer_comparision) : ?>
                     <tr>
-                        <td><?= isset($customer_comparision['customer']) ?
-                            $this->Html->link($customer_number . ' - ' . $customer_comparision['customer']->name, [
-                                'plugin' => null,
-                                'controller' => 'Customers',
-                                'action' => 'view',
-                                $customer_comparision['customer']->id,
-                            ], ['target' => '_blank']) :
-                            $this->Html->link($customer_number, [
-                                'plugin' => null,
-                                'controller' => 'Customers',
-                                'action' => 'view',
-                                $customer_number - (int)env('CUSTOMER_SERIES', '0'),
-                            ], ['target' => '_blank']) ?></td>
+                        <td><?=
+                            isset($customer_comparision['customer']) ?
+                                $this->Html->link($customer_number . ' - ' . $customer_comparision['customer']->name, [
+                                    'plugin' => null,
+                                    'controller' => 'Customers',
+                                    'action' => 'view',
+                                    $customer_comparision['customer']->id,
+                                ], ['target' => '_blank'])
+                                :
+                                h($customer_number) ?></td>
                         <td>
                             <?php if (isset($customer_comparision['crm'])) : ?>
                                 <table>
