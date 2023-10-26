@@ -98,6 +98,10 @@ class ContractsTable extends AppTable
         ]);
         $this->hasMany('BorrowedEquipments', [
             'foreignKey' => 'contract_id',
+            'sort' => [
+                'BorrowedEquipments.borrowed_from' => 'DESC',
+                'BorrowedEquipments.id' => 'DESC',
+            ],
         ]);
         $this->hasMany('ContractVersions', [
             'foreignKey' => 'contract_id',
@@ -107,18 +111,34 @@ class ContractsTable extends AppTable
         ]);
         $this->hasMany('Ips', [
             'foreignKey' => 'contract_id',
+            'sort' => [
+                'Ips.ip',
+            ],
         ]);
         $this->hasMany('RemovedIps', [
             'foreignKey' => 'contract_id',
+            'sort' => [
+                'RemovedIps.ip',
+            ],
         ]);
         $this->hasMany('IpNetworks', [
             'foreignKey' => 'contract_id',
+            'sort' => [
+                'IpNetworks.ip_network',
+            ],
         ]);
         $this->hasMany('RemovedIpNetworks', [
             'foreignKey' => 'contract_id',
+            'sort' => [
+                'RemovedIpNetworks.ip_network',
+            ],
         ]);
         $this->hasMany('SoldEquipments', [
             'foreignKey' => 'contract_id',
+            'sort' => [
+                'SoldEquipments.date_of_sale' => 'DESC',
+                'SoldEquipments.id' => 'DESC',
+            ],
         ]);
         $this->hasMany('Tasks', [
             'foreignKey' => 'contract_id',

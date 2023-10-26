@@ -83,14 +83,15 @@ class CustomersTable extends AppTable
             'sort' => [
                 'Contracts.service_type_id',
                 'BorrowedEquipments.contract_id' => 'DESC',
+                'BorrowedEquipments.borrowed_from' => 'DESC',
                 'BorrowedEquipments.id' => 'DESC',
-                ],
+            ],
         ]);
         $this->hasMany('Contracts', [
             'foreignKey' => 'customer_id',
             'sort' => [
                 'Contracts.service_type_id',
-                'Contracts.nid' => 'DESC',
+                'Contracts.id' => 'DESC',
             ],
         ]);
         $this->hasMany('Emails', [
@@ -119,14 +120,15 @@ class CustomersTable extends AppTable
             'sort' => [
                 'Contracts.service_type_id',
                 'SoldEquipments.contract_id' => 'DESC',
+                'SoldEquipments.date_of_sale' => 'DESC',
                 'SoldEquipments.id' => 'DESC',
-                ],
+            ],
         ]);
         $this->hasMany('Ips', [
             'foreignKey' => 'customer_id',
             'sort' => [
                 'Contracts.service_type_id',
-                'Contracts.nid' => 'DESC',
+                'Ips.contract_id' => 'DESC',
                 'Ips.ip',
             ],
         ]);
@@ -134,7 +136,7 @@ class CustomersTable extends AppTable
             'foreignKey' => 'customer_id',
             'sort' => [
                 'Contracts.service_type_id',
-                'Contracts.nid' => 'DESC',
+                'RemovedIps.contract_id' => 'DESC',
                 'RemovedIps.ip',
             ],
         ]);
@@ -142,7 +144,7 @@ class CustomersTable extends AppTable
             'foreignKey' => 'customer_id',
             'sort' => [
                 'Contracts.service_type_id',
-                'Contracts.nid' => 'DESC',
+                'IpNetworks.contract_id' => 'DESC',
                 'IpNetworks.ip_network',
             ],
         ]);
@@ -150,7 +152,7 @@ class CustomersTable extends AppTable
             'foreignKey' => 'customer_id',
             'sort' => [
                 'Contracts.service_type_id',
-                'Contracts.nid' => 'DESC',
+                'RemovedIpNetworks.contract_id' => 'DESC',
                 'RemovedIpNetworks.ip_network',
             ],
         ]);
