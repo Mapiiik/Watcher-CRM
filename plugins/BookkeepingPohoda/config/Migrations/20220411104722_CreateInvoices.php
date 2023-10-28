@@ -75,6 +75,7 @@ class CreateInvoices extends AbstractMigration
                 'null' => false,
             ])
             ->addColumn('email_sent', 'timestamp', [
+                'timezone' => true,
                 'default' => null,
                 'limit' => null,
                 'null' => true,
@@ -82,6 +83,7 @@ class CreateInvoices extends AbstractMigration
                 'scale' => 6,
             ])
             ->addColumn('created', 'timestamp', [
+                'timezone' => true,
                 'default' => null,
                 'limit' => null,
                 'null' => true,
@@ -94,6 +96,7 @@ class CreateInvoices extends AbstractMigration
                 'null' => true,
             ])
             ->addColumn('modified', 'timestamp', [
+                'timezone' => true,
                 'default' => null,
                 'limit' => null,
                 'null' => true,

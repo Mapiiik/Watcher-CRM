@@ -10,9 +10,9 @@ CREATE TABLE "public"."accounts" (
     "active" boolean DEFAULT true NOT NULL,
     "customer_id" integer NOT NULL,
     "contract_id" integer NOT NULL,
-    "created" timestamp DEFAULT now() NOT NULL,
+    "created" timestamptz DEFAULT now() NOT NULL,
     "created_by" integer DEFAULT '0' NOT NULL,
-    "modified" timestamp,
+    "modified" timestamptz,
     "modified_by" integer,
     CONSTRAINT "users_pkey" PRIMARY KEY ("id"),
     CONSTRAINT "users_username" UNIQUE ("username")

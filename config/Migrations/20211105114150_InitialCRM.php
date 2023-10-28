@@ -85,6 +85,7 @@ class InitialCRM extends AbstractMigration
                 'null' => true,
             ])
             ->addColumn('created', 'timestamp', [
+                'timezone' => true,
                 'default' => null,
                 'limit' => null,
                 'null' => true,
@@ -97,6 +98,7 @@ class InitialCRM extends AbstractMigration
                 'null' => true,
             ])
             ->addColumn('modified', 'timestamp', [
+                'timezone' => true,
                 'default' => null,
                 'limit' => null,
                 'null' => true,
@@ -157,6 +159,7 @@ class InitialCRM extends AbstractMigration
                 'null' => true,
             ])
             ->addColumn('modified', 'timestamp', [
+                'timezone' => true,
                 'default' => null,
                 'limit' => null,
                 'null' => true,
@@ -169,6 +172,7 @@ class InitialCRM extends AbstractMigration
                 'null' => true,
             ])
             ->addColumn('created', 'timestamp', [
+                'timezone' => true,
                 'default' => null,
                 'limit' => null,
                 'null' => true,
@@ -234,6 +238,7 @@ class InitialCRM extends AbstractMigration
                 'null' => true,
             ])
             ->addColumn('created', 'timestamp', [
+                'timezone' => true,
                 'default' => 'now()',
                 'limit' => null,
                 'null' => false,
@@ -246,6 +251,7 @@ class InitialCRM extends AbstractMigration
                 'null' => false,
             ])
             ->addColumn('modified', 'timestamp', [
+                'timezone' => true,
                 'default' => null,
                 'limit' => null,
                 'null' => true,
@@ -329,6 +335,7 @@ class InitialCRM extends AbstractMigration
                 'null' => false,
             ])
             ->addColumn('created', 'timestamp', [
+                'timezone' => true,
                 'default' => 'now()',
                 'limit' => null,
                 'null' => false,
@@ -341,6 +348,7 @@ class InitialCRM extends AbstractMigration
                 'null' => false,
             ])
             ->addColumn('modified', 'timestamp', [
+                'timezone' => true,
                 'default' => null,
                 'limit' => null,
                 'null' => true,
@@ -490,6 +498,7 @@ class InitialCRM extends AbstractMigration
                 'null' => false,
             ])
             ->addColumn('modified', 'timestamp', [
+                'timezone' => true,
                 'default' => null,
                 'limit' => null,
                 'null' => true,
@@ -502,6 +511,7 @@ class InitialCRM extends AbstractMigration
                 'null' => false,
             ])
             ->addColumn('created', 'timestamp', [
+                'timezone' => true,
                 'default' => null,
                 'limit' => null,
                 'null' => true,
@@ -638,6 +648,7 @@ class InitialCRM extends AbstractMigration
                 'null' => false,
             ])
             ->addColumn('created', 'timestamp', [
+                'timezone' => true,
                 'default' => null,
                 'limit' => null,
                 'null' => true,
@@ -650,6 +661,7 @@ class InitialCRM extends AbstractMigration
                 'null' => true,
             ])
             ->addColumn('modified', 'timestamp', [
+                'timezone' => true,
                 'default' => null,
                 'limit' => null,
                 'null' => true,
@@ -681,6 +693,7 @@ class InitialCRM extends AbstractMigration
                 'null' => false,
             ])
             ->addColumn('created', 'timestamp', [
+                'timezone' => true,
                 'default' => 'now()',
                 'limit' => null,
                 'null' => false,
@@ -759,6 +772,7 @@ class InitialCRM extends AbstractMigration
                 'null' => false,
             ])
             ->addColumn('last_granted', 'timestamp', [
+                'timezone' => true,
                 'default' => null,
                 'limit' => null,
                 'null' => true,
@@ -771,6 +785,7 @@ class InitialCRM extends AbstractMigration
                 'null' => true,
             ])
             ->addColumn('last_denied', 'timestamp', [
+                'timezone' => true,
                 'default' => null,
                 'limit' => null,
                 'null' => true,
@@ -788,6 +803,7 @@ class InitialCRM extends AbstractMigration
                 'null' => false,
             ])
             ->addColumn('modified', 'timestamp', [
+                'timezone' => true,
                 'default' => null,
                 'limit' => null,
                 'null' => true,
@@ -800,6 +816,7 @@ class InitialCRM extends AbstractMigration
                 'null' => false,
             ])
             ->addColumn('created', 'timestamp', [
+                'timezone' => true,
                 'default' => null,
                 'limit' => null,
                 'null' => false,
@@ -887,6 +904,7 @@ class InitialCRM extends AbstractMigration
                 'null' => false,
             ])
             ->addColumn('removed', 'timestamp', [
+                'timezone' => true,
                 'default' => null,
                 'limit' => null,
                 'null' => false,
@@ -1078,6 +1096,7 @@ class InitialCRM extends AbstractMigration
                 'null' => true,
             ])
             ->addColumn('created', 'timestamp', [
+                'timezone' => true,
                 'default' => 'now()',
                 'limit' => null,
                 'null' => false,
@@ -1090,6 +1109,7 @@ class InitialCRM extends AbstractMigration
                 'null' => false,
             ])
             ->addColumn('modified', 'timestamp', [
+                'timezone' => true,
                 'default' => null,
                 'limit' => null,
                 'null' => true,
@@ -1156,6 +1176,7 @@ class InitialCRM extends AbstractMigration
                 'null' => false,
             ])
             ->addColumn('modified', 'timestamp', [
+                'timezone' => true,
                 'default' => null,
                 'limit' => null,
                 'null' => true,
@@ -1168,6 +1189,7 @@ class InitialCRM extends AbstractMigration
                 'null' => false,
             ])
             ->addColumn('created', 'timestamp', [
+                'timezone' => true,
                 'default' => null,
                 'limit' => null,
                 'null' => true,
