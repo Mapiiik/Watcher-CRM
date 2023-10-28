@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+use Migrations\TestSuite\Migrator;
+
 /**
  * Test suite bootstrap for BookkeepingPohoda.
  *
@@ -27,14 +29,36 @@ chdir($root);
 require_once $root . '/vendor/autoload.php';
 
 /**
- * Define fallback values for required constants and configuration.
- * To customize constants and configuration remove this require
- * and define the data required by your plugin here.
+ * Load application bootstrap if possible
  */
-require_once $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
-
 if (file_exists($root . '/config/bootstrap.php')) {
-    require $root . '/config/bootstrap.php';
+    require_once $root . '/config/bootstrap.php';
 
-    return;
+    #return;
+} else {
+    /**
+     * Define fallback values for required constants and configuration.
+     * To customize constants and configuration remove this require
+     * and define the data required by your plugin here.
+     */
+    require_once $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
 }
+
+// Use migrations to build test database schema.
+//
+// Will rebuild the database if the migration state differs
+// from the migration history in files.
+//
+// If you are not using CakePHP's migrations you can
+// hook into your migration tool of choice here or
+// load schema from a SQL dump file with
+// use Cake\TestSuite\SchemaLoader;
+// (new SchemaManager())->loadSqlFiles('./tests/schema.sql', 'test');
+$migrator = new Migrator();
+
+// Run migrations on test connection
+$migrator->runMany([
+    ['plugin' => 'CakeDC/Users'],
+    [],
+    ['plugin' => 'BookkeepingPohoda'],
+]);

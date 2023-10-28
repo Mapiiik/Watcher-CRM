@@ -27,14 +27,32 @@ chdir($root);
 require_once $root . '/vendor/autoload.php';
 
 /**
- * Define fallback values for required constants and configuration.
- * To customize constants and configuration remove this require
- * and define the data required by your plugin here.
+ * Load application bootstrap if possible
  */
-require_once $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
-
 if (file_exists($root . '/config/bootstrap.php')) {
-    require $root . '/config/bootstrap.php';
+    require_once $root . '/config/bootstrap.php';
 
-    return;
+    #return;
+} else {
+    /**
+     * Define fallback values for required constants and configuration.
+     * To customize constants and configuration remove this require
+     * and define the data required by your plugin here.
+     */
+    require_once $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
 }
+
+/**
+ * Load schema from a SQL dump file.
+ *
+ * If your plugin does not use database fixtures you can
+ * safely delete this.
+ *
+ * If you want to support multiple databases, consider
+ * using migrations to provide schema for your plugin,
+ * and using \Migrations\TestSuite\Migrator to load schema.
+ */
+use Cake\TestSuite\Fixture\SchemaLoader;
+
+// Load a schema dump file.
+(new SchemaLoader())->loadSqlFiles(dirname(__DIR__) . '/tests/schema.sql', 'test');

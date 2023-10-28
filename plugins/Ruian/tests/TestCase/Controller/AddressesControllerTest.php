@@ -22,8 +22,6 @@ class AddressesControllerTest extends TestCase
      */
     protected array $fixtures = [
         'plugin.Ruian.Addresses',
-        'plugin.Ruian.Customers',
-        'plugin.Ruian.Countries',
     ];
 
     /**

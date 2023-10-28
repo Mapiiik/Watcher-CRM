@@ -19,7 +19,7 @@ class InvoicesFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
+                'id' => 'dbcc7efa-8ae3-4bf9-afc5-273bd3a843f7',
                 'customer_id' => '403bab0e-52cd-4a8e-83f8-43c2457d0481',
                 'number' => 1,
                 'variable_symbol' => 1,

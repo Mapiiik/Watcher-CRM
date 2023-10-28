@@ -21,6 +21,9 @@ class InvoicesControllerTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
+        'app.AppUsers',
+        'app.TaxRates',
+        'app.Customers',
         'plugin.BookkeepingPohoda.Invoices',
     ];
 

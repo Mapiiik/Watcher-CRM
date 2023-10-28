@@ -16,26 +16,7 @@ class RadgroupcheckFixture extends TestFixture
      * @var string
      */
     public string $table = 'radgroupcheck';
-    /**
-     * Fields
-     *
-     * @var array
-     */
-    // phpcs:disable
-    public $fields = [
-        'id' => ['type' => 'integer', 'length' => 10, 'autoIncrement' => true, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null],
-        'groupname' => ['type' => 'text', 'length' => null, 'default' => '', 'null' => false, 'collate' => null, 'comment' => null, 'precision' => null],
-        'attribute' => ['type' => 'text', 'length' => null, 'default' => '', 'null' => false, 'collate' => null, 'comment' => null, 'precision' => null],
-        'op' => ['type' => 'string', 'length' => 2, 'default' => '==', 'null' => false, 'collate' => null, 'comment' => null, 'precision' => null],
-        'value' => ['type' => 'text', 'length' => null, 'default' => '', 'null' => false, 'collate' => null, 'comment' => null, 'precision' => null],
-        '_indexes' => [
-            'radgroupcheck_groupname' => ['type' => 'index', 'columns' => ['groupname', 'attribute'], 'length' => []],
-        ],
-        '_constraints' => [
-            'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-        ],
-    ];
-    // phpcs:enable
+
     /**
      * Init method
      *
