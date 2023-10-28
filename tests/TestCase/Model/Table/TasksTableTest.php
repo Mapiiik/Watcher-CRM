@@ -16,7 +16,7 @@ class TasksTableTest extends TestCase
      *
      * @var \App\Model\Table\TasksTable
      */
-    protected $TasksTable;
+    protected $Tasks;
 
     /**
      * Fixtures
@@ -24,10 +24,18 @@ class TasksTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.Tasks',
-        'app.TaskTypes',
+        'app.AppUsers',
+        'app.TaxRates',
         'app.Customers',
+        'app.Countries',
+        'app.Addresses',
+        'app.Commissions',
+        'app.ContractStates',
+        'app.ServiceTypes',
+        'app.Contracts',
         'app.TaskStates',
+        'app.TaskTypes',
+        'app.Tasks',
     ];
 
     /**
@@ -35,11 +43,11 @@ class TasksTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Tasks') ? [] : ['className' => TasksTable::class];
-        $this->TasksTable = $this->getTableLocator()->get('Tasks', $config);
+        $this->Tasks = $this->getTableLocator()->get('Tasks', $config);
     }
 
     /**
@@ -47,9 +55,9 @@ class TasksTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
-        unset($this->TasksTable);
+        unset($this->Tasks);
 
         parent::tearDown();
     }

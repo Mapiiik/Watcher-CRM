@@ -16,7 +16,7 @@ class EquipmentTypesTableTest extends TestCase
      *
      * @var \App\Model\Table\EquipmentTypesTable
      */
-    protected $EquipmentTypesTable;
+    protected $EquipmentTypes;
 
     /**
      * Fixtures
@@ -24,6 +24,15 @@ class EquipmentTypesTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
+        'app.AppUsers',
+        'app.TaxRates',
+        'app.Customers',
+        'app.Countries',
+        'app.Addresses',
+        'app.Commissions',
+        'app.ContractStates',
+        'app.ServiceTypes',
+        'app.Contracts',
         'app.EquipmentTypes',
         'app.BorrowedEquipments',
         'app.SoldEquipments',
@@ -34,11 +43,11 @@ class EquipmentTypesTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('EquipmentTypes') ? [] : ['className' => EquipmentTypesTable::class];
-        $this->EquipmentTypesTable = $this->getTableLocator()->get('EquipmentTypes', $config);
+        $this->EquipmentTypes = $this->getTableLocator()->get('EquipmentTypes', $config);
     }
 
     /**
@@ -46,9 +55,9 @@ class EquipmentTypesTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
-        unset($this->EquipmentTypesTable);
+        unset($this->EquipmentTypes);
 
         parent::tearDown();
     }
@@ -60,6 +69,17 @@ class EquipmentTypesTableTest extends TestCase
      * @uses \App\Model\Table\EquipmentTypesTable::validationDefault()
      */
     public function testValidationDefault(): void
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test buildRules method
+     *
+     * @return void
+     * @uses \App\Model\Table\EquipmentTypesTable::buildRules()
+     */
+    public function testBuildRules(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

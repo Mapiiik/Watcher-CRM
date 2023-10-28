@@ -19,7 +19,7 @@ class PhonesFixture extends TestFixture
     {
         $this->records = [
             [
-                'customer_id' => 1,
+                'customer_id' => '403bab0e-52cd-4a8e-83f8-43c2457d0481',
                 'phone' => 'Lorem ipsum dolor sit amet',
             ],
         ];

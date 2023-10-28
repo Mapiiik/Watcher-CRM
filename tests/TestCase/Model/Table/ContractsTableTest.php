@@ -24,18 +24,28 @@ class ContractsTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.Contracts',
+        'app.AppUsers',
+        'app.TaxRates',
         'app.Customers',
-        'app.ServiceTypes',
+        'app.Countries',
+        'app.Addresses',
         'app.Commissions',
         'app.ContractStates',
+        'app.ServiceTypes',
+        'app.Contracts',
+        'app.Queues',
+        'app.Services',
         'app.Billings',
+        'app.EquipmentTypes',
         'app.BorrowedEquipments',
+        'app.ContractVersions',
         'app.Ips',
         'app.RemovedIps',
         'app.IpNetworks',
         'app.RemovedIpNetworks',
         'app.SoldEquipments',
+        'app.TaskStates',
+        'app.TaskTypes',
         'app.Tasks',
     ];
 

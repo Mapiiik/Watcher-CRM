@@ -16,7 +16,7 @@ class CustomerLabelsTableTest extends TestCase
      *
      * @var \App\Model\Table\CustomerLabelsTable
      */
-    protected $CustomerLabelsTable;
+    protected $CustomerLabels;
 
     /**
      * Fixtures
@@ -24,9 +24,11 @@ class CustomerLabelsTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.CustomerLabels',
-        'app.Labels',
+        'app.AppUsers',
+        'app.TaxRates',
         'app.Customers',
+        'app.Labels',
+        'app.CustomerLabels',
     ];
 
     /**
@@ -34,11 +36,11 @@ class CustomerLabelsTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('CustomerLabels') ? [] : ['className' => CustomerLabelsTable::class];
-        $this->CustomerLabelsTable = $this->getTableLocator()->get('CustomerLabels', $config);
+        $this->CustomerLabels = $this->getTableLocator()->get('CustomerLabels', $config);
     }
 
     /**
@@ -46,9 +48,9 @@ class CustomerLabelsTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
-        unset($this->CustomerLabelsTable);
+        unset($this->CustomerLabels);
 
         parent::tearDown();
     }

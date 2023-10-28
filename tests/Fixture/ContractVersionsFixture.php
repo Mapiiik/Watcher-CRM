@@ -20,7 +20,7 @@ class ContractVersionsFixture extends TestFixture
         $this->records = [
             [
                 'id' => '74824fba-20b2-46fc-806c-df795aa9e429',
-                'contract_id' => 1,
+                'contract_id' => '7f76dc3f-a11b-4109-958b-4b0382545a66',
                 'valid_from' => '2022-11-30',
                 'valid_until' => '2022-11-30',
                 'obligation_until' => '2022-11-30',
@@ -28,9 +28,9 @@ class ContractVersionsFixture extends TestFixture
                 'number_of_amendments' => 1,
                 'note' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
                 'created' => 1669802822,
-                'created_by' => 1,
+                'created_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
                 'modified' => 1669802822,
-                'modified_by' => 1,
+                'modified_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
             ],
         ];
         parent::init();

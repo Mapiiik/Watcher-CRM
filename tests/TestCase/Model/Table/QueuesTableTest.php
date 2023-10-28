@@ -16,7 +16,7 @@ class QueuesTableTest extends TestCase
      *
      * @var \App\Model\Table\QueuesTable
      */
-    protected $QueuesTable;
+    protected $Queues;
 
     /**
      * Fixtures
@@ -24,7 +24,9 @@ class QueuesTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
+        'app.AppUsers',
         'app.Queues',
+        'app.ServiceTypes',
         'app.Services',
     ];
 
@@ -33,11 +35,11 @@ class QueuesTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Queues') ? [] : ['className' => QueuesTable::class];
-        $this->QueuesTable = $this->getTableLocator()->get('Queues', $config);
+        $this->Queues = $this->getTableLocator()->get('Queues', $config);
     }
 
     /**
@@ -45,9 +47,9 @@ class QueuesTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
-        unset($this->QueuesTable);
+        unset($this->Queues);
 
         parent::tearDown();
     }

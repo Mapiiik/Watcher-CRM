@@ -26,9 +26,9 @@ class ContractStatesFixture extends TestFixture
                 'billed' => 1,
                 'blocked' => 1,
                 'created' => 1669643075,
-                'created_by' => 1,
+                'created_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
                 'modified' => 1669643075,
-                'modified_by' => 1,
+                'modified_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
             ],
         ];
         parent::init();

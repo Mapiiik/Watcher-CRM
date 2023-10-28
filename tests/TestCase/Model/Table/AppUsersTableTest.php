@@ -3,20 +3,20 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\LoginsTable;
+use App\Model\Table\AppUsersTable;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\LoginsTable Test Case
+ * App\Model\Table\AppUsersTable Test Case
  */
-class LoginsTableTest extends TestCase
+class AppUsersTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \App\Model\Table\LoginsTable
+     * @var \App\Model\Table\AppUsersTable
      */
-    protected $Logins;
+    protected $AppUsers;
 
     /**
      * Fixtures
@@ -25,9 +25,6 @@ class LoginsTableTest extends TestCase
      */
     protected array $fixtures = [
         'app.AppUsers',
-        'app.TaxRates',
-        'app.Customers',
-        'app.Logins',
     ];
 
     /**
@@ -38,8 +35,8 @@ class LoginsTableTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Logins') ? [] : ['className' => LoginsTable::class];
-        $this->Logins = $this->getTableLocator()->get('Logins', $config);
+        $config = $this->getTableLocator()->exists('AppUsers') ? [] : ['className' => AppUsersTable::class];
+        $this->AppUsers = $this->getTableLocator()->get('AppUsers', $config);
     }
 
     /**
@@ -49,7 +46,7 @@ class LoginsTableTest extends TestCase
      */
     protected function tearDown(): void
     {
-        unset($this->Logins);
+        unset($this->AppUsers);
 
         parent::tearDown();
     }
@@ -58,20 +55,9 @@ class LoginsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\LoginsTable::validationDefault()
+     * @uses \App\Model\Table\PaymentPurposesTable::validationDefault()
      */
     public function testValidationDefault(): void
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test buildRules method
-     *
-     * @return void
-     * @uses \App\Model\Table\LoginsTable::buildRules()
-     */
-    public function testBuildRules(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

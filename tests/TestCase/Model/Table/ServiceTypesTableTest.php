@@ -24,8 +24,16 @@ class ServiceTypesTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
+        'app.AppUsers',
+        'app.TaxRates',
+        'app.Customers',
+        'app.Countries',
+        'app.Addresses',
+        'app.Commissions',
+        'app.ContractStates',
         'app.ServiceTypes',
         'app.Contracts',
+        'app.Queues',
         'app.Services',
     ];
 
@@ -60,6 +68,17 @@ class ServiceTypesTableTest extends TestCase
      * @uses \App\Model\Table\ServiceTypesTable::validationDefault()
      */
     public function testValidationDefault(): void
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test buildRules method
+     *
+     * @return void
+     * @uses \App\Model\Table\ServiceTypesTable::buildRules()
+     */
+    public function testBuildRules(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

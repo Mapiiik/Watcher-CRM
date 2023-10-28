@@ -16,7 +16,7 @@ class BorrowedEquipmentsTableTest extends TestCase
      *
      * @var \App\Model\Table\BorrowedEquipmentsTable
      */
-    protected $BorrowedEquipmentsTable;
+    protected $BorrowedEquipments;
 
     /**
      * Fixtures
@@ -24,10 +24,17 @@ class BorrowedEquipmentsTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.BorrowedEquipments',
+        'app.AppUsers',
+        'app.TaxRates',
         'app.Customers',
+        'app.Countries',
+        'app.Addresses',
+        'app.Commissions',
+        'app.ContractStates',
+        'app.ServiceTypes',
         'app.Contracts',
         'app.EquipmentTypes',
+        'app.BorrowedEquipments',
     ];
 
     /**
@@ -35,11 +42,11 @@ class BorrowedEquipmentsTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('BorrowedEquipments') ? [] : ['className' => BorrowedEquipmentsTable::class];
-        $this->BorrowedEquipmentsTable = $this->getTableLocator()->get('BorrowedEquipments', $config);
+        $this->BorrowedEquipments = $this->getTableLocator()->get('BorrowedEquipments', $config);
     }
 
     /**
@@ -47,9 +54,9 @@ class BorrowedEquipmentsTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
-        unset($this->BorrowedEquipmentsTable);
+        unset($this->BorrowedEquipments);
 
         parent::tearDown();
     }

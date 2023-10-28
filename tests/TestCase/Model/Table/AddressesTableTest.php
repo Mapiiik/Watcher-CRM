@@ -16,7 +16,7 @@ class AddressesTableTest extends TestCase
      *
      * @var \App\Model\Table\AddressesTable
      */
-    protected $AddressesTable;
+    protected $Addresses;
 
     /**
      * Fixtures
@@ -24,9 +24,15 @@ class AddressesTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.Addresses',
+        'app.AppUsers',
+        'app.TaxRates',
         'app.Customers',
         'app.Countries',
+        'app.Addresses',
+        'app.ServiceTypes',
+        'app.Commissions',
+        'app.ContractStates',
+        'app.Contracts',
     ];
 
     /**
@@ -34,11 +40,11 @@ class AddressesTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Addresses') ? [] : ['className' => AddressesTable::class];
-        $this->AddressesTable = $this->getTableLocator()->get('Addresses', $config);
+        $this->Addresses = $this->getTableLocator()->get('Addresses', $config);
     }
 
     /**
@@ -46,9 +52,9 @@ class AddressesTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
-        unset($this->AddressesTable);
+        unset($this->Addresses);
 
         parent::tearDown();
     }

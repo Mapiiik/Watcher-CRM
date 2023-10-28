@@ -16,7 +16,7 @@ class SoldEquipmentsTableTest extends TestCase
      *
      * @var \App\Model\Table\SoldEquipmentsTable
      */
-    protected $SoldEquipmentsTable;
+    protected $SoldEquipments;
 
     /**
      * Fixtures
@@ -24,10 +24,17 @@ class SoldEquipmentsTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.SoldEquipments',
+        'app.AppUsers',
+        'app.TaxRates',
         'app.Customers',
+        'app.Countries',
+        'app.Addresses',
+        'app.Commissions',
+        'app.ContractStates',
+        'app.ServiceTypes',
         'app.Contracts',
         'app.EquipmentTypes',
+        'app.SoldEquipments',
     ];
 
     /**
@@ -35,11 +42,11 @@ class SoldEquipmentsTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('SoldEquipments') ? [] : ['className' => SoldEquipmentsTable::class];
-        $this->SoldEquipmentsTable = $this->getTableLocator()->get('SoldEquipments', $config);
+        $this->SoldEquipments = $this->getTableLocator()->get('SoldEquipments', $config);
     }
 
     /**
@@ -47,9 +54,9 @@ class SoldEquipmentsTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
-        unset($this->SoldEquipmentsTable);
+        unset($this->SoldEquipments);
 
         parent::tearDown();
     }

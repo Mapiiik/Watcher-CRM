@@ -16,7 +16,7 @@ class BillingsTableTest extends TestCase
      *
      * @var \App\Model\Table\BillingsTable
      */
-    protected $BillingsTable;
+    protected $Billings;
 
     /**
      * Fixtures
@@ -24,10 +24,18 @@ class BillingsTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.Billings',
+        'app.AppUsers',
+        'app.TaxRates',
         'app.Customers',
-        'app.Services',
+        'app.Countries',
+        'app.Addresses',
+        'app.Commissions',
+        'app.ContractStates',
+        'app.ServiceTypes',
         'app.Contracts',
+        'app.Queues',
+        'app.Services',
+        'app.Billings',
     ];
 
     /**
@@ -35,11 +43,11 @@ class BillingsTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Billings') ? [] : ['className' => BillingsTable::class];
-        $this->BillingsTable = $this->getTableLocator()->get('Billings', $config);
+        $this->Billings = $this->getTableLocator()->get('Billings', $config);
     }
 
     /**
@@ -47,9 +55,9 @@ class BillingsTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
-        unset($this->BillingsTable);
+        unset($this->Billings);
 
         parent::tearDown();
     }

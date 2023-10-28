@@ -16,7 +16,7 @@ class CommissionsTableTest extends TestCase
      *
      * @var \App\Model\Table\CommissionsTable
      */
-    protected $CommissionsTable;
+    protected $Commissions;
 
     /**
      * Fixtures
@@ -24,9 +24,16 @@ class CommissionsTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
+        'app.AppUsers',
+        'app.TaxRates',
+        'app.Customers',
+        'app.Countries',
+        'app.Addresses',
         'app.Commissions',
-        'app.DealerCommissions',
+        'app.ContractStates',
+        'app.ServiceTypes',
         'app.Contracts',
+        'app.DealerCommissions',
     ];
 
     /**
@@ -34,11 +41,11 @@ class CommissionsTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Commissions') ? [] : ['className' => CommissionsTable::class];
-        $this->CommissionsTable = $this->getTableLocator()->get('Commissions', $config);
+        $this->Commissions = $this->getTableLocator()->get('Commissions', $config);
     }
 
     /**
@@ -46,9 +53,9 @@ class CommissionsTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
-        unset($this->CommissionsTable);
+        unset($this->Commissions);
 
         parent::tearDown();
     }
@@ -60,6 +67,17 @@ class CommissionsTableTest extends TestCase
      * @uses \App\Model\Table\CommissionsTable::validationDefault()
      */
     public function testValidationDefault(): void
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test buildRules method
+     *
+     * @return void
+     * @uses \App\Model\Table\CommissionsTable::buildRules()
+     */
+    public function testBuildRules(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

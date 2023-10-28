@@ -20,7 +20,7 @@ class InvoicesFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'customer_id' => 1,
+                'customer_id' => '403bab0e-52cd-4a8e-83f8-43c2457d0481',
                 'number' => 1,
                 'variable_symbol' => 1,
                 'creation_date' => '2021-12-09',
@@ -32,9 +32,9 @@ class InvoicesFixture extends TestFixture
                 'send_by_email' => 1,
                 'email_sent' => 1639064191,
                 'created' => 1639064191,
-                'created_by' => 1,
+                'created_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
                 'modified' => 1639064191,
-                'modified_by' => 1,
+                'modified_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
             ],
         ];
         parent::init();

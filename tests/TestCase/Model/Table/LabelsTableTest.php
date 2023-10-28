@@ -16,7 +16,7 @@ class LabelsTableTest extends TestCase
      *
      * @var \App\Model\Table\LabelsTable
      */
-    protected $LabelsTable;
+    protected $Labels;
 
     /**
      * Fixtures
@@ -24,6 +24,9 @@ class LabelsTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
+        'app.AppUsers',
+        'app.TaxRates',
+        'app.Customers',
         'app.Labels',
         'app.CustomerLabels',
     ];
@@ -33,11 +36,11 @@ class LabelsTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Labels') ? [] : ['className' => LabelsTable::class];
-        $this->LabelsTable = $this->getTableLocator()->get('Labels', $config);
+        $this->Labels = $this->getTableLocator()->get('Labels', $config);
     }
 
     /**
@@ -45,9 +48,9 @@ class LabelsTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
-        unset($this->LabelsTable);
+        unset($this->Labels);
 
         parent::tearDown();
     }

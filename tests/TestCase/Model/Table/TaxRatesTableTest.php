@@ -24,6 +24,7 @@ class TaxRatesTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
+        'app.AppUsers',
         'app.TaxRates',
         'app.Customers',
     ];
@@ -59,6 +60,17 @@ class TaxRatesTableTest extends TestCase
      * @uses \App\Model\Table\TaxRatesTable::validationDefault()
      */
     public function testValidationDefault(): void
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test buildRules method
+     *
+     * @return void
+     * @uses \App\Model\Table\TaxRatesTable::buildRules()
+     */
+    public function testBuildRules(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

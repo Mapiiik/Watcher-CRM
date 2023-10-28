@@ -16,7 +16,7 @@ class TaskStatesTableTest extends TestCase
      *
      * @var \App\Model\Table\TaskStatesTable
      */
-    protected $TaskStatesTable;
+    protected $TaskStates;
 
     /**
      * Fixtures
@@ -24,7 +24,17 @@ class TaskStatesTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
+        'app.AppUsers',
+        'app.TaxRates',
+        'app.Customers',
+        'app.Countries',
+        'app.Addresses',
+        'app.Commissions',
+        'app.ContractStates',
+        'app.ServiceTypes',
+        'app.Contracts',
         'app.TaskStates',
+        'app.TaskTypes',
         'app.Tasks',
     ];
 
@@ -33,11 +43,11 @@ class TaskStatesTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('TaskStates') ? [] : ['className' => TaskStatesTable::class];
-        $this->TaskStatesTable = $this->getTableLocator()->get('TaskStates', $config);
+        $this->TaskStates = $this->getTableLocator()->get('TaskStates', $config);
     }
 
     /**
@@ -45,9 +55,9 @@ class TaskStatesTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
-        unset($this->TaskStatesTable);
+        unset($this->TaskStates);
 
         parent::tearDown();
     }
@@ -59,6 +69,17 @@ class TaskStatesTableTest extends TestCase
      * @uses \App\Model\Table\TaskStatesTable::validationDefault()
      */
     public function testValidationDefault(): void
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test buildRules method
+     *
+     * @return void
+     * @uses \App\Model\Table\TaskStatesTable::buildRules()
+     */
+    public function testBuildRules(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

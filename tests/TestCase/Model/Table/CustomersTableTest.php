@@ -16,7 +16,7 @@ class CustomersTableTest extends TestCase
      *
      * @var \App\Model\Table\CustomersTable
      */
-    protected $CustomersTable;
+    protected $Customers;
 
     /**
      * Fixtures
@@ -24,20 +24,34 @@ class CustomersTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.Customers',
+        'app.AppUsers',
         'app.TaxRates',
+        'app.Customers',
+        'app.Countries',
         'app.Addresses',
-        'app.Billings',
-        'app.BorrowedEquipments',
+        'app.Commissions',
+        'app.ContractStates',
+        'app.ServiceTypes',
         'app.Contracts',
+        'app.Queues',
+        'app.Services',
+        'app.Billings',
+        'app.EquipmentTypes',
+        'app.BorrowedEquipments',
         'app.Emails',
-        'app.Ips',
+        'app.Labels',
         'app.CustomerLabels',
         'app.Logins',
         'app.Phones',
-        'app.RemovedIps',
         'app.SoldEquipments',
+        'app.Ips',
+        'app.RemovedIps',
+        'app.IpNetworks',
+        'app.RemovedIpNetworks',
+        'app.TaskStates',
+        'app.TaskTypes',
         'app.Tasks',
+        'app.DealerCommissions',
     ];
 
     /**
@@ -45,11 +59,11 @@ class CustomersTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Customers') ? [] : ['className' => CustomersTable::class];
-        $this->CustomersTable = $this->getTableLocator()->get('Customers', $config);
+        $this->Customers = $this->getTableLocator()->get('Customers', $config);
     }
 
     /**
@@ -57,9 +71,9 @@ class CustomersTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
-        unset($this->CustomersTable);
+        unset($this->Customers);
 
         parent::tearDown();
     }

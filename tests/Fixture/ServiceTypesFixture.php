@@ -19,11 +19,10 @@ class ServiceTypesFixture extends TestFixture
     {
         $this->records = [
             [
-                'created' => 1636113918,
-                'modified' => 1636113918,
+                'created' => 1698516638,
+                'modified' => 1698516638,
                 'name' => 'Lorem ipsum dolor sit amet',
                 'contract_number_format' => 'Lorem ipsum dolor sit amet',
-                'subscriber_verification_code_format' => 'Lorem ipsum dolor sit amet',
                 'activation_fee' => 1,
                 'activation_fee_with_obligation' => 1,
                 'separate_invoice' => 1,
@@ -36,6 +35,10 @@ class ServiceTypesFixture extends TestFixture
                 'have_equipments' => 1,
                 'have_ip_addresses' => 1,
                 'have_radius_accounts' => 1,
+                'subscriber_verification_code_format' => 'Lorem ipsum dolor sit amet',
+                'id' => '907cbc5c-af88-43b6-b535-959b4fa2ce3d',
+                'created_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
+                'modified_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
             ],
         ];
         parent::init();

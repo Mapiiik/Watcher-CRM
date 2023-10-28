@@ -16,7 +16,7 @@ class IpsTableTest extends TestCase
      *
      * @var \App\Model\Table\IpsTable
      */
-    protected $IpsTable;
+    protected $Ips;
 
     /**
      * Fixtures
@@ -24,9 +24,16 @@ class IpsTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.Ips',
+        'app.AppUsers',
+        'app.TaxRates',
         'app.Customers',
+        'app.Countries',
+        'app.Addresses',
+        'app.Commissions',
+        'app.ContractStates',
+        'app.ServiceTypes',
         'app.Contracts',
+        'app.Ips',
     ];
 
     /**
@@ -34,11 +41,11 @@ class IpsTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Ips') ? [] : ['className' => IpsTable::class];
-        $this->IpsTable = $this->getTableLocator()->get('Ips', $config);
+        $this->Ips = $this->getTableLocator()->get('Ips', $config);
     }
 
     /**
@@ -46,9 +53,9 @@ class IpsTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
-        unset($this->IpsTable);
+        unset($this->Ips);
 
         parent::tearDown();
     }

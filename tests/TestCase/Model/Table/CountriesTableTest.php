@@ -16,7 +16,7 @@ class CountriesTableTest extends TestCase
      *
      * @var \App\Model\Table\CountriesTable
      */
-    protected $CountriesTable;
+    protected $Countries;
 
     /**
      * Fixtures
@@ -24,6 +24,9 @@ class CountriesTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
+        'app.AppUsers',
+        'app.TaxRates',
+        'app.Customers',
         'app.Countries',
         'app.Addresses',
     ];
@@ -33,11 +36,11 @@ class CountriesTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Countries') ? [] : ['className' => CountriesTable::class];
-        $this->CountriesTable = $this->getTableLocator()->get('Countries', $config);
+        $this->Countries = $this->getTableLocator()->get('Countries', $config);
     }
 
     /**
@@ -45,9 +48,9 @@ class CountriesTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
-        unset($this->CountriesTable);
+        unset($this->Countries);
 
         parent::tearDown();
     }
