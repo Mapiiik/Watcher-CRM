@@ -1,12 +1,11 @@
 <?php
+use Doctrine\SqlFormatter\NullHighlighter;
+use Doctrine\SqlFormatter\SqlFormatter;
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Label $label
  */
-
-use Doctrine\SqlFormatter\NullHighlighter;
-use Doctrine\SqlFormatter\SqlFormatter;
-
 ?>
 <div class="row">
     <aside class="column">
