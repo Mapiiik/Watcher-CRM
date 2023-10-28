@@ -21,9 +21,11 @@ class DealerCommissionsControllerTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.DealerCommissions',
+        'app.AppUsers',
+        'app.TaxRates',
         'app.Customers',
         'app.Commissions',
+        'app.DealerCommissions',
     ];
 
     /**

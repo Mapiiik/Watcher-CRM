@@ -21,8 +21,16 @@ class ContractVersionsControllerTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.ContractVersions',
+        'app.AppUsers',
+        'app.TaxRates',
+        'app.Customers',
+        'app.Countries',
+        'app.Addresses',
+        'app.Commissions',
+        'app.ContractStates',
+        'app.ServiceTypes',
         'app.Contracts',
+        'app.ContractVersions',
     ];
 
     /**

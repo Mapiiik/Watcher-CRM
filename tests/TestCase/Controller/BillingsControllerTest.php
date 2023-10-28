@@ -21,10 +21,18 @@ class BillingsControllerTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.Billings',
+        'app.AppUsers',
+        'app.TaxRates',
         'app.Customers',
-        'app.Services',
+        'app.Countries',
+        'app.Addresses',
+        'app.Commissions',
+        'app.ContractStates',
+        'app.ServiceTypes',
         'app.Contracts',
+        'app.Queues',
+        'app.Services',
+        'app.Billings',
     ];
 
     /**

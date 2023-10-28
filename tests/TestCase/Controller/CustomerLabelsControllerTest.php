@@ -21,9 +21,11 @@ class CustomerLabelsControllerTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.CustomerLabels',
-        'app.Labels',
+        'app.AppUsers',
+        'app.TaxRates',
         'app.Customers',
+        'app.Labels',
+        'app.CustomerLabels',
     ];
 
     /**

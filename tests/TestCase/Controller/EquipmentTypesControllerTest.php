@@ -21,6 +21,15 @@ class EquipmentTypesControllerTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
+        'app.AppUsers',
+        'app.TaxRates',
+        'app.Customers',
+        'app.Countries',
+        'app.Addresses',
+        'app.Commissions',
+        'app.ContractStates',
+        'app.ServiceTypes',
+        'app.Contracts',
         'app.EquipmentTypes',
         'app.BorrowedEquipments',
         'app.SoldEquipments',
