@@ -14,7 +14,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\DateTime|null $modified
  * @property string|null $modified_by
  * @property \App\Model\Entity\AppUser|null $modifier
- * @property int $id
+ * @property string $id
  * @property string $username
  * @property string $password
  * @property int $type
