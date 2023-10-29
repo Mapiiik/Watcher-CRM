@@ -1,4 +1,5 @@
 -- Run this on slave DB, after primary DB is migrated to 20231029090040_MigratePrimaryKeyToUuidOnAccounts
+-- (You will probably need to manually resync the table from the master to the slave DB and if you are using Bucardo you will need to re-set the sync due to the change in primary key type)
 
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
