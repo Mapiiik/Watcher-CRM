@@ -24,7 +24,7 @@ class QueueMailer extends Mailer
      * Service Change
      *
      * @param array<string> $emails
-     * @param array<string> $data
+     * @param array<string|int|float> $data
      */
     public function serviceChange(array $emails, array $data): void
     {

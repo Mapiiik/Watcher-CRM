@@ -56,6 +56,21 @@ use App\Model\Entity\Billing;
                     'default' => true,
                     'onchange' => 'this.form.submit();',
                 ]) ?>
+                <?= $this->Form->control('price', [
+                    'label' => __('Price'),
+                    'type' => 'number',
+                    'onchange' => 'this.form.submit();',
+                ]) ?>
+                <?= $this->Form->control('fixed_discount', [
+                    'label' => __('Fixed Discount'),
+                    'type' => 'number',
+                    'onchange' => 'this.form.submit();',
+                ]) ?>
+                <?= $this->Form->control('percentage_discount', [
+                    'label' => __('Percentage Discount'),
+                    'type' => 'number',
+                    'onchange' => 'this.form.submit();',
+                ]) ?>
                 <?= $this->Form->control('access_point_id', [
                     'label' => __('Access Point'),
                     'options' => $accessPoints,
@@ -82,6 +97,20 @@ use App\Model\Entity\Billing;
                         'required' => true,
                     ]);
                     ?>
+                </fieldset>
+                <fieldset>
+                    <?= $this->Form->control('price', [
+                        'label' => __('Price'),
+                        'type' => 'number',
+                    ]) ?>
+                    <?= $this->Form->control('fixed_discount', [
+                        'label' => __('Fixed Discount'),
+                        'type' => 'number',
+                    ]) ?>
+                    <?= $this->Form->control('percentage_discount', [
+                        'label' => __('Percentage Discount'),
+                        'type' => 'number',
+                    ]) ?>
                 </fieldset>
                 <?= $this->Form->button(
                     __('Submit'),

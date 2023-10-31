@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\ApiClient;
 use App\Mailer\QueueMailer;
+use App\Model\Entity\Billing;
 use Cake\Utility\Text;
 use Cake\Validation\Validation;
 use SplObjectStorage;
@@ -318,6 +319,25 @@ class BillingsController extends AppController
                 'Billings.fixed_discount IS NULL',
                 'Billings.percentage_discount IS NULL',
             ]);
+        } else {
+            $price = $this->getRequest()->getQuery('price');
+            if (!empty($price)) {
+                $billingsQuery->where([
+                    'Billings.price' => (float)$price,
+                ]);
+            }
+            $fixed_discount = $this->getRequest()->getQuery('fixed_discount');
+            if (!empty($fixed_discount)) {
+                $billingsQuery->where([
+                    'Billings.fixed_discount' => (float)$fixed_discount,
+                ]);
+            }
+            $percentage_discount = $this->getRequest()->getQuery('percentage_discount');
+            if (!empty($percentage_discount)) {
+                $billingsQuery->where([
+                    'Billings.percentage_discount' => (float)$percentage_discount,
+                ]);
+            }
         }
 
         $processing_limit = $this->getRequest()->getQuery('processing_limit');
@@ -347,72 +367,9 @@ class BillingsController extends AppController
         if ($this->getRequest()->is('post')) {
             foreach ($billings as $original_billing) {
                 /** @var \App\Model\Entity\Billing $original_billing */
-
-                // create new billing entity
-                $original_billing_data = $original_billing->toArray();
-                unset(
-                    $original_billing_data['id'],
-                    $original_billing_data['created'],
-                    $original_billing_data['created_by'],
-                    $original_billing_data['modified'],
-                    $original_billing_data['modified_by'],
-                    $original_billing_data['contract'],
-                    $original_billing_data['customer'],
-                    $original_billing_data['service'],
-                );
-                $new_billing = $this->Billings->newEntity($original_billing_data);
-                $new_billing = $this->Billings->patchEntity($new_billing, $this->getRequest()->getData());
-                $new_billing->service = $this->Billings->Services->get($new_billing->service_id); // load associated service
-
-                // update original entity
-                $original_billing = $this->Billings->patchEntity($original_billing, [
-                    'billing_until' => $new_billing->billing_from->subDays(1),
-                ]);
-
-                // save new and modified entity to database
-                if (
-                    $this->Billings->saveMany(
-                        [
-                            $original_billing,
-                            $new_billing,
-                        ],
-                        [
-                            '_auditQueue' => new SplObjectStorage(),
-                            '_auditTransaction' => Text::uuid(),
-                        ]
-                    ) === false
-                ) {
-                    $this->Flash->error(
-                        __('The billing could not be saved. Please, try again.')
-                        . ' (' . __('Contract Number') . ': ' . $original_billing->contract->number . ')'
-                    );
-
+                if ($this->processServiceChange($original_billing) === false) {
                     return $this->redirect([]);
-                } else {
-                    $mailer = new QueueMailer();
-                    $mailer->push(
-                        'serviceChange',
-                        [
-                            array_column($original_billing->customer->billing_emails, 'email'),
-                            [
-                                'customer_name' => $original_billing->customer->name,
-                                'contract_number' => $original_billing->contract->number,
-                                'installation_address' => $original_billing->contract->installation_address->address,
-                                'original_billing_name' => $original_billing->name,
-                                'original_billing_sum' => $original_billing->total_price,
-                                'new_billing_name' => $new_billing->name,
-                                'new_billing_sum' => $new_billing->total_price,
-                                'new_billing_from' => h($new_billing->billing_from),
-                            ],
-                        ],
-                        options: [
-                            'mailerConfig' => 'contracts',
-                        ]
-                    );
                 }
-
-                unset($original_billing);
-                unset($new_billing);
             }
 
             $this->Flash->success(__('The billing has been saved.'));
@@ -422,5 +379,87 @@ class BillingsController extends AppController
 
         // set data
         $this->set(compact('billings', 'services'));
+    }
+
+    /**
+     * Process Service Change method
+     *
+     * @param \App\Model\Entity\Billing $original_billing Original billing entity
+     * @return \App\Model\Entity\Billing|false New billing entity
+     */
+    private function processServiceChange(Billing $original_billing): Billing|false
+    {
+        // create new billing entity
+        $original_billing_data = $original_billing->toArray();
+        unset(
+            $original_billing_data['id'],
+            $original_billing_data['created'],
+            $original_billing_data['created_by'],
+            $original_billing_data['modified'],
+            $original_billing_data['modified_by'],
+            $original_billing_data['contract'],
+            $original_billing_data['customer'],
+            $original_billing_data['service'],
+        );
+        $new_billing = $this->Billings->newEntity($original_billing_data);
+        $new_billing = $this->Billings->patchEntity($new_billing, $this->getRequest()->getData());
+        $new_billing->service = $this->Billings->Services->get($new_billing->service_id); // load associated service
+
+        // update original entity
+        $original_billing = $this->Billings->patchEntity($original_billing, [
+            'billing_until' => $new_billing->billing_from->subDays(1),
+        ]);
+
+        // save new and modified entity to database
+        if (
+            $this->Billings->saveMany(
+                [
+                    $original_billing,
+                    $new_billing,
+                ],
+                [
+                    '_auditQueue' => new SplObjectStorage(),
+                    '_auditTransaction' => Text::uuid(),
+                ]
+            ) === false
+        ) {
+            $this->Flash->error(
+                __('The billing could not be saved. Please, try again.')
+                . ' (' . __('Contract Number') . ': ' . $original_billing->contract->number . ')'
+            );
+
+            return false;
+        } else {
+            $mailer = new QueueMailer();
+            $mailer->push(
+                'serviceChange',
+                [
+                    array_column($original_billing->customer->billing_emails, 'email'),
+                    [
+                        'customer_name' => $original_billing->customer->name,
+                        'contract_number' => $original_billing->contract->number,
+                        'installation_address' => $original_billing->contract->installation_address->address,
+                        'original_billing_name' => $original_billing->name,
+                        'original_billing_sum' => $original_billing->sum,
+                        'original_billing_percentage_discount' => $original_billing->percentage_discount,
+                        'original_billing_percentage_discount_sum' => $original_billing->percentage_discount_sum,
+                        'original_billing_fixed_discount_sum' => $original_billing->fixed_discount_sum,
+                        'original_billing_total_price' => $original_billing->total_price,
+                        'new_billing_name' => $new_billing->name,
+                        'new_billing_sum' => $new_billing->sum,
+                        'new_billing_percentage_discount' => $new_billing->percentage_discount,
+                        'new_billing_percentage_discount_sum' => $new_billing->percentage_discount_sum,
+                        'new_billing_fixed_discount_sum' => $new_billing->fixed_discount_sum,
+                        'new_billing_total_price' => $new_billing->total_price,
+                        'new_billing_from' => h($new_billing->billing_from),
+                    ],
+                ],
+                options: [
+                    'mailerConfig' => 'contracts',
+                ]
+            );
+        }
+
+        return $new_billing;
     }
 }
