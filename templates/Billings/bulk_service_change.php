@@ -43,6 +43,12 @@ use App\Model\Entity\Billing;
                     'required' => true,
                     'onchange' => 'this.form.submit();',
                 ]) ?>
+                <?= $this->Form->control('access_point_id', [
+                    'label' => __('Access Point'),
+                    'options' => $accessPoints,
+                    'empty' => true,
+                    'onchange' => 'this.form.submit();',
+                ]) ?>
                 <?= $this->Form->control('processing_limit', [
                     'label' => __('Processing Limit'),
                     'type' => 'number',
@@ -56,6 +62,8 @@ use App\Model\Entity\Billing;
                     'default' => true,
                     'onchange' => 'this.form.submit();',
                 ]) ?>
+            </fieldset>
+            <fieldset>
                 <?= $this->Form->control('price', [
                     'label' => __('Price'),
                     'type' => 'number',
@@ -71,10 +79,10 @@ use App\Model\Entity\Billing;
                     'type' => 'number',
                     'onchange' => 'this.form.submit();',
                 ]) ?>
-                <?= $this->Form->control('access_point_id', [
-                    'label' => __('Access Point'),
-                    'options' => $accessPoints,
-                    'empty' => true,
+                <?= $this->Form->control('empty_is_null', [
+                    'label' => __('Empty field means only unset values'),
+                    'type' => 'checkbox',
+                    'default' => false,
                     'onchange' => 'this.form.submit();',
                 ]) ?>
             </fieldset>

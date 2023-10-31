@@ -320,22 +320,35 @@ class BillingsController extends AppController
                 'Billings.percentage_discount IS NULL',
             ]);
         } else {
+            $empty_is_null = $this->getRequest()->getQuery('empty_is_null') !== '0';
             $price = $this->getRequest()->getQuery('price');
-            if (!empty($price)) {
+            if (is_numeric($price)) {
                 $billingsQuery->where([
                     'Billings.price' => (float)$price,
                 ]);
+            } elseif ($empty_is_null) {
+                $billingsQuery->where([
+                    'Billings.price IS NULL',
+                ]);
             }
             $fixed_discount = $this->getRequest()->getQuery('fixed_discount');
-            if (!empty($fixed_discount)) {
+            if (is_numeric($fixed_discount)) {
                 $billingsQuery->where([
                     'Billings.fixed_discount' => (float)$fixed_discount,
                 ]);
+            } elseif ($empty_is_null) {
+                $billingsQuery->where([
+                    'Billings.fixed_discount IS NULL',
+                ]);
             }
             $percentage_discount = $this->getRequest()->getQuery('percentage_discount');
-            if (!empty($percentage_discount)) {
+            if (is_numeric($percentage_discount)) {
                 $billingsQuery->where([
                     'Billings.percentage_discount' => (float)$percentage_discount,
+                ]);
+            } elseif ($empty_is_null) {
+                $billingsQuery->where([
+                    'Billings.percentage_discount IS NULL',
                 ]);
             }
         }
