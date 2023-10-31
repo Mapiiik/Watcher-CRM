@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-10-24 23:32+0200\n"
+"POT-Creation-Date: 2023-10-31 13:52+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -48,45 +48,45 @@ msgstr ""
 msgid "Added IPv6 record {0} to {1}."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:167
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:194
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:168
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:195
 msgid "The invoice has been saved."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:171
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:198
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:172
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:199
 msgid "The invoice could not be saved. Please, try again."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:220
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:221
 msgid "The invoice has been deleted."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:223
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:224
 msgid "The invoice could not be deleted. Please, try again."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:248
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:249
 msgid "The invoices has been marked to be sent by email ({0})."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:256
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:257
 msgid "No invoices could be marked to be sent by email. Please, try again."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:591
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:602
 msgid "The import file is missing some required columns."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:637
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:640
 msgid "Invoice {0} could not be loaded."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:646
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:649
 msgid "Successfully imported {0} invoices. Created {1}, modified {2} and skipped {3} records."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:86
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:87
 msgid "Invoice to send in the queue, {0} email left."
 msgid_plural "Invoices to send in the queue, {0} emails left."
 msgstr[0] ""
@@ -167,8 +167,8 @@ msgstr ""
 
 #: ./plugins/BookkeepingPohoda/templates/Invoices/add.php:48
 #: ./plugins/BookkeepingPohoda/templates/Invoices/edit.php:56
-#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:111
-#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:133
+#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:108
+#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:130
 #: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:56
 #: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:81
 #: ./plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:24
@@ -257,13 +257,13 @@ msgstr ""
 msgid "CSV for verification"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:98
-#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:120
+#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:95
+#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:117
 msgid "Name"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:99
-#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:121
+#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:96
+#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:118
 msgid "Price"
 msgstr ""
 
