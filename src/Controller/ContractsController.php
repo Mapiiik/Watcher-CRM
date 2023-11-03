@@ -187,7 +187,7 @@ class ContractsController extends AppController
             ],
         );
         $serviceTypes = $this->Contracts->ServiceTypes->find('list', order: [
-            'id',
+            'name',
         ]);
         $installationTechnicians = $this->Contracts->InstallationTechnicians
             ->find()
@@ -302,7 +302,7 @@ class ContractsController extends AppController
         $serviceTypes = $this->Contracts->ServiceTypes->find(
             'list',
             order: [
-                'id',
+                'name',
             ],
         );
         $installationTechnicians = $this->Contracts->InstallationTechnicians
