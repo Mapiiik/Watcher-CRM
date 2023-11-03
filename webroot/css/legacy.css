@@ -268,6 +268,11 @@ tr:hover td {
     color: var(--color-message-error-text);
     border-color: var(--color-message-error-border);
 }
+.error-message {
+    padding: 0.5rem;
+    background: var(--color-message-error-bg);
+    color: var(--color-message-error-text);
+}
 /* Arrangement of DIVs */
 .container {
     margin: 0 auto;

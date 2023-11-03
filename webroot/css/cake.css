@@ -408,6 +408,12 @@ nav.top-nav {
     border-color: var(--color-message-error-border);
 }
 
+.error-message {
+    padding: 0.5rem;
+    background: var(--color-message-error-bg);
+    color: var(--color-message-error-text);
+}
+
 /* Forms */
 .input.radio,
 .input.checkbox,
