@@ -140,6 +140,7 @@ class TasksController extends AppController
 
         $this->paginate = [
             'sortableFields' => [
+                'nid',
                 'task_type_id',
                 'priority',
                 'TaskStates.priority',
@@ -623,9 +624,9 @@ class TasksController extends AppController
         }
 
         if ($new) {
-            $title = __('You have a new task # {0}', $task->nid);
+            $title = __('You have a new task # {0}', $task->number);
         } else {
-            $title = __('You have changes in task # {0}', $task->nid);
+            $title = __('You have changes in task # {0}', $task->number);
         }
 
         $mailer->setSubject($title . ' - ' . $task->summary_text);

@@ -32,6 +32,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\DateTime|null $estimated_date
  * @property \Cake\I18n\DateTime|null $critical_date
  * @property string|null $access_point_id
+ * @property string $number
  * @property string $summary_text
  * @property string $style
  *
@@ -80,6 +81,18 @@ class Task extends Entity
         'access_point_id' => true,
         'access_point' => true,
     ];
+
+    /**
+     * getter for task number
+     *
+     * @return string
+     */
+    protected function _getNumber(): string
+    {
+        $number = strval($this->nid);
+
+        return $number;
+    }
 
     /**
      * getter for acess point (try to load via ApiClient)

@@ -12,7 +12,7 @@
             <?= $this->AuthLink->postLink(
                 __('Delete Task'),
                 ['action' => 'delete', $task->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $task->nid), 'class' => 'side-nav-item']
+                ['confirm' => __('Are you sure you want to delete # {0}?', $task->number), 'class' => 'side-nav-item']
             ) ?>
             <?= $this->AuthLink->link(__('List Tasks'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Task'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
@@ -20,7 +20,7 @@
     </aside>
     <div class="column column-90">
         <div class="tasks view content">
-            <h3><?= h($task->nid) ?></h3>
+            <?= __('Task No.') ?><h3><?= h($task->number) ?></h3>
             <div class="row">
                 <div class="column">
                     <table>

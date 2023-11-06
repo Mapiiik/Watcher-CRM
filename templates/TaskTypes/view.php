@@ -87,6 +87,7 @@
                     <div class="table-responsive">
                     <table>
                         <tr>
+                            <th><?= __('Number') ?></th>
                             <th><?= __('Priority') ?></th>
                             <th><?= __('Task State') ?></th>
                             <th><?= __('Dealer') ?></th>
@@ -105,6 +106,7 @@
                         </tr>
                         <?php foreach ($taskType->tasks as $task) : ?>
                         <tr style="<?= $task->style ?>">
+                            <td><?= h($task->number) ?></td>
                             <td><?= h($task->getPriorityName()) ?></td>
                             <td><?= $task->__isset('task_state') ?
                                 $this->Html->link(
@@ -149,7 +151,7 @@
                                 <?= $this->AuthLink->postLink(
                                     __('Delete'),
                                     ['controller' => 'Tasks', 'action' => 'delete', $task->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $task->nid)]
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $task->number)]
                                 ) ?>
                             </td>
                         </tr>
