@@ -122,7 +122,12 @@ class TasksController extends AppController
                 'OR' => [
                     'Tasks.subject ILIKE' => '%' . trim($search) . '%',
                     'Tasks.text ILIKE' => '%' . trim($search) . '%',
-                ],
+                ] + (
+                    is_numeric($search) ?
+                    [
+                        'Tasks.nid' => (int)trim($search),
+                    ] : []
+                ),
             ];
         }
 
