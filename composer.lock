@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3fe7997b6b8a139433bcc9e41714e94f",
+    "content-hash": "1bb9bddf1e77fdbd5e0a71ae0cae2690",
     "packages": [
         {
             "name": "brick/math",
@@ -282,23 +282,23 @@
         },
         {
             "name": "cakephp/authorization",
-            "version": "3.0.1",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/authorization.git",
-                "reference": "d11757715be992f290d5599c0cb7105d0ce9b73d"
+                "reference": "818429555f41dcda794a1b4b98477c18808fec65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/authorization/zipball/d11757715be992f290d5599c0cb7105d0ce9b73d",
-                "reference": "d11757715be992f290d5599c0cb7105d0ce9b73d",
+                "url": "https://api.github.com/repos/cakephp/authorization/zipball/818429555f41dcda794a1b4b98477c18808fec65",
+                "reference": "818429555f41dcda794a1b4b98477c18808fec65",
                 "shasum": ""
             },
             "require": {
                 "cakephp/http": "^5.0",
                 "php": ">=8.1",
                 "psr/http-client": "^1.0",
-                "psr/http-message": "^2.0",
+                "psr/http-message": "^1.1 || ^2.0",
                 "psr/http-server-handler": "^1.0",
                 "psr/http-server-middleware": "^1.0"
             },
@@ -307,7 +307,6 @@
                 "cakephp/bake": "^3.0",
                 "cakephp/cakephp": "^5.0",
                 "cakephp/cakephp-codesniffer": "^5.0",
-                "cakephp/plugin-installer": "^1.3",
                 "phpunit/phpunit": "^10.1.0"
             },
             "suggest": {
@@ -344,7 +343,7 @@
                 "issues": "https://github.com/cakephp/authorization/issues",
                 "source": "https://github.com/cakephp/authorization"
             },
-            "time": "2023-09-10T03:43:35+00:00"
+            "time": "2023-11-10T21:04:21+00:00"
         },
         {
             "name": "cakephp/cakephp",
@@ -521,23 +520,23 @@
         },
         {
             "name": "cakephp/migrations",
-            "version": "4.1.0",
+            "version": "4.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/migrations.git",
-                "reference": "7659d42eca36fed9c75912116043497e40923734"
+                "reference": "6967ac2dc17efc4658aaee35e96c94a618d4d453"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/migrations/zipball/7659d42eca36fed9c75912116043497e40923734",
-                "reference": "7659d42eca36fed9c75912116043497e40923734",
+                "url": "https://api.github.com/repos/cakephp/migrations/zipball/6967ac2dc17efc4658aaee35e96c94a618d4d453",
+                "reference": "6967ac2dc17efc4658aaee35e96c94a618d4d453",
                 "shasum": ""
             },
             "require": {
                 "cakephp/cache": "^5.0",
                 "cakephp/orm": "^5.0",
                 "php": ">=8.1",
-                "robmorgan/phinx": "^0.15.2"
+                "robmorgan/phinx": "^0.15.3"
             },
             "require-dev": {
                 "cakephp/bake": "^3.0",
@@ -577,7 +576,7 @@
                 "issues": "https://github.com/cakephp/migrations/issues",
                 "source": "https://github.com/cakephp/migrations"
             },
-            "time": "2023-09-23T01:13:42+00:00"
+            "time": "2023-11-11T03:24:05+00:00"
         },
         {
             "name": "cakephp/plugin-installer",
@@ -3279,27 +3278,27 @@
         },
         {
             "name": "robmorgan/phinx",
-            "version": "0.15.2",
+            "version": "0.15.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/phinx.git",
-                "reference": "26753bdb66827383781eb0033b34cb467da1d12c"
+                "reference": "ccbb7f2b4bf1297fec64447d1f4a773f5d9455e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/phinx/zipball/26753bdb66827383781eb0033b34cb467da1d12c",
-                "reference": "26753bdb66827383781eb0033b34cb467da1d12c",
+                "url": "https://api.github.com/repos/cakephp/phinx/zipball/ccbb7f2b4bf1297fec64447d1f4a773f5d9455e0",
+                "reference": "ccbb7f2b4bf1297fec64447d1f4a773f5d9455e0",
                 "shasum": ""
             },
             "require": {
-                "cakephp/database": "^5.0",
+                "cakephp/database": "^5.0.2",
                 "php-64bit": ">=8.1",
-                "psr/container": "^2.0",
+                "psr/container": "^1.1|^2.0",
                 "symfony/config": "^3.4|^4.0|^5.0|^6.0",
                 "symfony/console": "^6.0"
             },
             "require-dev": {
-                "cakephp/cakephp": "^5.0",
+                "cakephp/cakephp": "^5.0.2",
                 "cakephp/cakephp-codesniffer": "^5.0",
                 "ext-json": "*",
                 "ext-pdo": "*",
@@ -3359,9 +3358,9 @@
             ],
             "support": {
                 "issues": "https://github.com/cakephp/phinx/issues",
-                "source": "https://github.com/cakephp/phinx/tree/0.15.2"
+                "source": "https://github.com/cakephp/phinx/tree/0.15.3"
             },
-            "time": "2023-09-22T18:18:07+00:00"
+            "time": "2023-11-09T19:51:49+00:00"
         },
         {
             "name": "spatie/ssh",
@@ -3424,16 +3423,16 @@
         },
         {
             "name": "symfony/config",
-            "version": "v6.3.2",
+            "version": "v6.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "b47ca238b03e7b0d7880ffd1cf06e8d637ca1467"
+                "reference": "b7a63887960359e5b59b15826fa9f9be10acbe88"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/b47ca238b03e7b0d7880ffd1cf06e8d637ca1467",
-                "reference": "b47ca238b03e7b0d7880ffd1cf06e8d637ca1467",
+                "url": "https://api.github.com/repos/symfony/config/zipball/b7a63887960359e5b59b15826fa9f9be10acbe88",
+                "reference": "b7a63887960359e5b59b15826fa9f9be10acbe88",
                 "shasum": ""
             },
             "require": {
@@ -3479,7 +3478,7 @@
             "description": "Helps you find, load, combine, autofill and validate configuration values of any kind",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/config/tree/v6.3.2"
+                "source": "https://github.com/symfony/config/tree/v6.3.8"
             },
             "funding": [
                 {
@@ -3495,20 +3494,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-07-19T20:22:16+00:00"
+            "time": "2023-11-09T08:28:21+00:00"
         },
         {
             "name": "symfony/console",
-            "version": "v6.3.4",
+            "version": "v6.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "eca495f2ee845130855ddf1cf18460c38966c8b6"
+                "reference": "0d14a9f6d04d4ac38a8cea1171f4554e325dae92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/eca495f2ee845130855ddf1cf18460c38966c8b6",
-                "reference": "eca495f2ee845130855ddf1cf18460c38966c8b6",
+                "url": "https://api.github.com/repos/symfony/console/zipball/0d14a9f6d04d4ac38a8cea1171f4554e325dae92",
+                "reference": "0d14a9f6d04d4ac38a8cea1171f4554e325dae92",
                 "shasum": ""
             },
             "require": {
@@ -3569,7 +3568,7 @@
                 "terminal"
             ],
             "support": {
-                "source": "https://github.com/symfony/console/tree/v6.3.4"
+                "source": "https://github.com/symfony/console/tree/v6.3.8"
             },
             "funding": [
                 {
@@ -3585,7 +3584,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-08-16T10:10:12+00:00"
+            "time": "2023-10-31T08:09:35+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -4259,16 +4258,16 @@
         },
         {
             "name": "symfony/string",
-            "version": "v6.3.5",
+            "version": "v6.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "13d76d0fb049051ed12a04bef4f9de8715bea339"
+                "reference": "13880a87790c76ef994c91e87efb96134522577a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/13d76d0fb049051ed12a04bef4f9de8715bea339",
-                "reference": "13d76d0fb049051ed12a04bef4f9de8715bea339",
+                "url": "https://api.github.com/repos/symfony/string/zipball/13880a87790c76ef994c91e87efb96134522577a",
+                "reference": "13880a87790c76ef994c91e87efb96134522577a",
                 "shasum": ""
             },
             "require": {
@@ -4325,7 +4324,7 @@
                 "utf8"
             ],
             "support": {
-                "source": "https://github.com/symfony/string/tree/v6.3.5"
+                "source": "https://github.com/symfony/string/tree/v6.3.8"
             },
             "funding": [
                 {
@@ -4341,7 +4340,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-09-18T10:38:32+00:00"
+            "time": "2023-11-09T08:28:21+00:00"
         },
         {
             "name": "tecnickcom/tcpdf",
