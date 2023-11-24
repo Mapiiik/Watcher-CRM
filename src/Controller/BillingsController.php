@@ -270,6 +270,55 @@ class BillingsController extends AppController
     }
 
     /**
+     * Service Change method
+     *
+     * @param string|null $id Billing id.
+     * @return \Cake\Http\Response|null|void Renders view
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function serviceChange(?string $id = null)
+    {
+        $billing = $this->Billings->get($id, contain: [
+            'Contracts' => [
+                'ContractStates',
+                'InstallationAddresses',
+            ],
+            'Customers' => [
+                'Emails',
+            ],
+            'Services',
+            'Creators',
+            'Modifiers',
+        ]);
+
+        // process change request
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $new_billing = $this->processServiceChange($billing);
+
+            if ($new_billing === false) {
+                return $this->redirect([]);
+            }
+
+            $this->Flash->success(__('The billing has been saved.'));
+
+            return $this->redirect(['action' => 'view', $new_billing->id]);
+        }
+
+        // get data
+        $services = $this->Billings->Services
+            ->find('list')
+            ->orderBy(['name'])
+            ->where(['OR' => [
+                'service_type_id' => $billing->contract->service_type_id,
+                'service_type_id IS NULL',
+            ]])
+            ->all();
+
+        // set data
+        $this->set(compact('billing', 'services'));
+    }
+
+    /**
      * Bulk Service Change method
      *
      * @return \Cake\Http\Response|null|void Renders view

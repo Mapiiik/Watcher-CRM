@@ -91,55 +91,54 @@ use App\Model\Entity\Billing;
             <hr />
 
             <?= $this->Form->create(new Billing()) ?>
-                <fieldset>
-                    <legend><?= __('New Service') ?></legend>
-                    <?php
-                    echo $this->Form->control('service_id', [
-                        'label' => __('Service'),
-                        'options' => $services,
-                        'empty' => true,
-                        'required' => true,
-                    ]);
-                    echo $this->Form->control('billing_from', [
-                        'empty' => true,
-                        'required' => true,
-                    ]);
-                    ?>
-                </fieldset>
-                <fieldset>
-                    <?= $this->Form->control('price', [
-                        'label' => __('Price'),
-                        'type' => 'number',
-                    ]) ?>
-                    <?= $this->Form->control('fixed_discount', [
-                        'label' => __('Fixed Discount'),
-                        'type' => 'number',
-                    ]) ?>
-                    <?= $this->Form->control('percentage_discount', [
-                        'label' => __('Percentage Discount'),
-                        'type' => 'number',
-                    ]) ?>
-                </fieldset>
-                <?= $this->Form->button(
-                    __('Submit'),
-                    [
-                        'confirm' => __(
-                            'Do you really want to change the original service to the new service'
-                            . ' for all the billings listed below from the date set?'
-                        ),
-                    ]
-                ) ?>
-                <?= $this->Form->end() ?>
-            </div>
-            <hr />
-            <div class="billings index content">
-                <h3><?= __('Billings') . ' - ' . __('Bulk Service Change') ?></h3>
-                <?= $this->element('Contracts/Billings', [
-                    'billings' => $billings,
-                    'customer_column' => true,
-                    'contract_column' => true,
+            <fieldset>
+                <legend><?= __('New Service') ?></legend>
+                <?php
+                echo $this->Form->control('service_id', [
+                    'label' => __('Service'),
+                    'options' => $services,
+                    'empty' => true,
+                    'required' => true,
+                ]);
+                echo $this->Form->control('billing_from', [
+                    'empty' => true,
+                    'required' => true,
+                ]);
+                ?>
+            </fieldset>
+            <fieldset>
+                <?= $this->Form->control('price', [
+                    'label' => __('Price'),
+                    'type' => 'number',
                 ]) ?>
-            </div>
+                <?= $this->Form->control('fixed_discount', [
+                    'label' => __('Fixed Discount'),
+                    'type' => 'number',
+                ]) ?>
+                <?= $this->Form->control('percentage_discount', [
+                    'label' => __('Percentage Discount'),
+                    'type' => 'number',
+                ]) ?>
+            </fieldset>
+            <?= $this->Form->button(
+                __('Submit'),
+                [
+                    'confirm' => __(
+                        'Do you really want to change the original service to the new service'
+                        . ' for all the billings listed below from the date set?'
+                    ),
+                ]
+            ) ?>
+            <?= $this->Form->end() ?>
+        </div>
+        <hr />
+        <div class="billings index content">
+            <h3><?= __('Billings') . ' - ' . __('Bulk Service Change') ?></h3>
+            <?= $this->element('Contracts/Billings', [
+                'billings' => $billings,
+                'customer_column' => true,
+                'contract_column' => true,
+            ]) ?>
         </div>
     </div>
 </div>

@@ -1,9 +1,8 @@
 <?php
-use Cake\I18n\Date;
-
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Billing $billing
+ * @var \Cake\Collection\CollectionInterface|array<string> $services
  */
 ?>
 <div class="row">
@@ -26,11 +25,6 @@ use Cake\I18n\Date;
     </aside>
     <div class="column column-90">
         <div class="billings view content">
-            <?= $this->AuthLink->link(
-                __('Service Change'),
-                ['action' => 'serviceChange', $billing->id],
-                ['class' => 'button float-right win-link']
-            ) ?>
             <h3><?= h($billing->name) ?></h3>
             <div class="row">
                 <div class="column">
@@ -154,80 +148,50 @@ use Cake\I18n\Date;
                     <?= $this->Text->autoParagraph(h($billing->note)); ?>
                 </blockquote>
             </div>
-
-            <div class="related">
+        </div>
+        <hr />
+        <div class="billings form content">
+            <?= $this->Form->create($billing, ['method' => 'post']) ?>
+            <fieldset>
+                <legend><?= __('New Service') ?></legend>
                 <?php
-                // show three billing calculations from start
-                $bill_dates = [
-                    $billing->billing_from->day(1),
-                    $billing->billing_from->day(1)->addMonths(1),
-                    $billing->billing_from->day(1)->addMonths(2),
-                ];
+                echo $this->Form->control('service_id', [
+                    'label' => __('Service'),
+                    'options' => $services,
+                    'empty' => true,
+                    'required' => true,
+                ]);
+                echo $this->Form->control('billing_from', [
+                    'empty' => true,
+                    'value' => '',
+                    'required' => true,
+                ]);
                 ?>
-                <h4><?= __('Billing Preview - Start') ?></h4>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __('Billing Date') ?></th>
-                            <th><?= __('Period From') ?></th>
-                            <th><?= __('Period Until') ?></th>
-                            <th><?= __('Price') ?></th>
-                        </tr>
-                        <?php foreach ($bill_dates as $bill_date) : ?>
-                        <tr style="<?=
-                            $bill_date->subDays(1) == Date::now()->lastOfMonth() ?
-                                'background-color: #ffd500;' : ''
-                        ?>">
-                            <td><?= $bill_date->subDays(1) ?></td>
-                            <td><?= $bill_date->subMonths(1) ?></td>
-                            <td><?= $bill_date->subDays(1) ?></td>
-                            <td><?= $this->Number->currency($billing->periodTotal(
-                                $bill_date->subMonths(1),
-                                $bill_date->subDays(1)
-                            )) ?></td>
-                        </tr>
-                        <?php endforeach ?>
-                    </table>
-                </div>
-            </div>
-
-            <?php if (isset($billing->billing_until)) : ?>
-            <div class="related">
-                <?php
-                // show three billing calculations before end
-                $bill_dates = [
-                    $billing->billing_until->day(1),
-                    $billing->billing_until->day(1)->addMonths(1),
-                    $billing->billing_until->day(1)->addMonths(2),
-                ];
-                ?>
-                <h4><?= __('Billing Preview - End') ?></h4>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __('Billing Date') ?></th>
-                            <th><?= __('Period From') ?></th>
-                            <th><?= __('Period Until') ?></th>
-                            <th><?= __('Price') ?></th>
-                        </tr>
-                        <?php foreach ($bill_dates as $bill_date) : ?>
-                        <tr style="<?=
-                            $bill_date->subDays(1) == Date::now()->lastOfMonth() ?
-                                'background-color: #ffd500;' : ''
-                        ?>">
-                            <td><?= $bill_date->subDays(1) ?></td>
-                            <td><?= $bill_date->subMonths(1) ?></td>
-                            <td><?= $bill_date->subDays(1) ?></td>
-                            <td><?= $this->Number->currency($billing->periodTotal(
-                                $bill_date->subMonths(1),
-                                $bill_date->subDays(1)
-                            )) ?></td>
-                        </tr>
-                        <?php endforeach ?>
-                    </table>
-                </div>
-            </div>
-            <?php endif ?>
+            </fieldset>
+            <fieldset>
+                <?= $this->Form->control('price', [
+                    'label' => __('Price'),
+                    'type' => 'number',
+                ]) ?>
+                <?= $this->Form->control('fixed_discount', [
+                    'label' => __('Fixed Discount'),
+                    'type' => 'number',
+                ]) ?>
+                <?= $this->Form->control('percentage_discount', [
+                    'label' => __('Percentage Discount'),
+                    'type' => 'number',
+                ]) ?>
+            </fieldset>
+            <?= $this->Form->button(
+                __('Submit'),
+                [
+                    'confirm' => __(
+                        'Do you really want to change the original service to the new service'
+                        . ' for the billing listed above from the date set?'
+                    ),
+                ]
+            ) ?>
+            <?= $this->Form->end() ?>
         </div>
     </div>
 </div>

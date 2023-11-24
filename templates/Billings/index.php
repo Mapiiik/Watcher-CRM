@@ -1,6 +1,4 @@
 <?php
-use Cake\I18n\Number;
-
 /**
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Billing> $billings
@@ -72,7 +70,7 @@ use Cake\I18n\Number;
                     </td>
                     <td><?= h($billing->fixed_discount) ?></td>
                     <td><?= h($billing->percentage_discount) ?></td>
-                    <td><?= Number::currency($billing->total_price) ?></td>
+                    <td><?= $this->Number->currency($billing->total_price) ?></td>
                     <td><?= h($billing->billing_from) ?></td>
                     <td><?= h($billing->billing_until) ?></td>
                     <td><?= $billing->active ? __('Yes') : __('No'); ?></td>
