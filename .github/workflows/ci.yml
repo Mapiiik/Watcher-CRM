@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.1', '8.2']
+        php-version: ['8.1', '8.2', '8.3']
         db-type: [pgsql]
         prefer-lowest: ['']
     name: PHP ${{ matrix.php-version }}
@@ -38,10 +38,6 @@ jobs:
         ports:
           - 6379/tcp
         options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=3
-      memcached:
-        image: memcached
-        ports:
-          - 11211/tcp
 
     steps:
       - name: Checkout
@@ -57,10 +53,6 @@ jobs:
       - name: Composer install
         uses: ramsey/composer-install@v2
 
-      - name: Composer post install command
-        run: composer run-script post-install-cmd --no-interaction
-    
-      # Add a step to run migrations if required
       - name: Test with phpunit
         run: vendor/bin/phpunit
         env:
@@ -79,16 +71,13 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.3'
           extensions: mbstring, intl, redis, dbase
           tools: cs2pr
           coverage: none
 
       - name: Composer install
         uses: ramsey/composer-install@v2
-
-      - name: Composer post install command
-        run: composer run-script post-install-cmd --no-interaction
 
       - name: Run PHP CodeSniffer
         run: vendor/bin/phpcs --report=checkstyle | cs2pr
