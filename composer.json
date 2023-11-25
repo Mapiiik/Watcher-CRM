@@ -30,7 +30,7 @@
         "mapik/pohoda-xml": "^1.16",
         "mapik/radius-client": "^1.0",
         "mlocati/ip-lib": "^1.18",
-        "mobiledetect/mobiledetectlib": "^3.74",
+        "mobiledetect/mobiledetectlib": "^4.8",
         "tecnickcom/tcpdf": "^6.4"
     },
     "require-dev": {
