@@ -20,7 +20,11 @@ jobs:
       matrix:
         php-version: ['8.1', '8.2', '8.3']
         db-type: [pgsql]
-        prefer-lowest: ['']
+        dependencies: ['locked']
+        include:
+          - php-version: '8.1'
+            dependencies: 'highest'
+
     name: PHP ${{ matrix.php-version }}
 
     services:
@@ -52,6 +56,11 @@ jobs:
 
       - name: Composer install
         uses: ramsey/composer-install@v2
+        with:
+          dependency-versions: ${{ matrix.dependencies }}
+
+      - name: Composer post install command
+        run: composer run-script post-install-cmd --no-interaction
 
       - name: Test with phpunit
         run: vendor/bin/phpunit
