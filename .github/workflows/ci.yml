@@ -24,7 +24,6 @@ jobs:
         include:
           - php-version: '8.1'
             dependencies: 'highest'
-            post-install-cmd: true
 
     name: PHP ${{ matrix.php-version }} (${{ matrix.dependencies }})
 
@@ -61,7 +60,7 @@ jobs:
           dependency-versions: ${{ matrix.dependencies }}
 
       - name: Composer post install command
-        if: ${{ matrix.post-install-cmd }}
+        if: ${{ matrix.dependencies != 'locked' }}
         run: composer run-script post-install-cmd --no-interaction
 
       - name: Test with phpunit
