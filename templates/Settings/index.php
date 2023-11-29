@@ -23,34 +23,19 @@
         </div>
 
         <div class="related">
-            <h4><?= __('System Related') ?></h4>
+            <h4><?= __('Billing Functions') ?></h4>
             <div>
                 <?= $this->AuthLink->link(
-                    __('List Labels'),
-                    ['controller' => 'Labels', 'action' => 'index', 'plugin' => null],
-                    ['class' => 'side-nav-item']
-                ) ?>
-                <?= $this->AuthLink->link(
-                    __('List Countries'),
-                    ['controller' => 'Countries', 'action' => 'index', 'plugin' => null],
-                    ['class' => 'side-nav-item']
-                ) ?>
-                <?= $this->AuthLink->link(
-                    __('List Tax Rates'),
-                    ['controller' => 'TaxRates', 'action' => 'index', 'plugin' => null],
+                    __('Bulk Service Change'),
+                    ['controller' => 'Billings', 'action' => 'bulkServiceChange', 'plugin' => null],
                     ['class' => 'side-nav-item']
                 ) ?>
             </div>
         </div>
 
         <div class="related">
-            <h4><?= __('Contract Related') ?></h4>
+            <h4><?= __('Contract Functions') ?></h4>
             <div>
-                <?= $this->AuthLink->link(
-                    __('List Contract States'),
-                    ['controller' => 'ContractStates', 'action' => 'index', 'plugin' => null],
-                    ['class' => 'side-nav-item']
-                ) ?>
                 <?= $this->AuthLink->postLink(
                     __('Addition of Contract Numbers'),
                     [
@@ -111,9 +96,36 @@
                         'class' => 'side-nav-item',
                     ]
                 ) ?>
+            </div>
+        </div>
+
+        <div class="related">
+            <h4><?= __('System Related') ?></h4>
+            <div>
                 <?= $this->AuthLink->link(
-                    __('Billings') . ' - ' . __('Bulk Service Change'),
-                    ['controller' => 'Billings', 'action' => 'bulkServiceChange', 'plugin' => null],
+                    __('List Labels'),
+                    ['controller' => 'Labels', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('List Countries'),
+                    ['controller' => 'Countries', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('List Tax Rates'),
+                    ['controller' => 'TaxRates', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
+            </div>
+        </div>
+
+        <div class="related">
+            <h4><?= __('Contract Related') ?></h4>
+            <div>
+                <?= $this->AuthLink->link(
+                    __('List Contract States'),
+                    ['controller' => 'ContractStates', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item']
                 ) ?>
             </div>
