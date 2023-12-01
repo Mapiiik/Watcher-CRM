@@ -427,9 +427,6 @@ class TasksController extends AppController
         if (isset($this->customer_id)) {
             $customers->where(['Customers.id' => $this->customer_id]);
         }
-        if (isset($this->contract_id)) {
-            $contracts->where(['Contracts.id' => $this->contract_id]);
-        }
 
         // preset start date
         if (empty($task->start_date)) {
@@ -534,10 +531,6 @@ class TasksController extends AppController
 
         if (isset($this->customer_id)) {
             $customers->where(['Customers.id' => $this->customer_id]);
-        }
-
-        if (isset($this->contract_id)) {
-            $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
         // add task text header
