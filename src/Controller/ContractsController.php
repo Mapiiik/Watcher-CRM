@@ -966,17 +966,41 @@ class ContractsController extends AppController
 
             $active_billings_collection = $billings_collection->reject(
                 function ($billing, $key) use ($contract_version) {
-                    return ($billing->__isset('billing_from') && $billing->billing_from > $contract_version->valid_from)
-                        ||
-                        ($billing->__isset('billing_until') && $billing->billing_until < $contract_version->valid_from);
+                    return (
+                            $billing->__isset('billing_from')
+                            && $billing->billing_from > $contract_version->valid_from
+                        ) || (
+                            $billing->__isset('billing_until')
+                            && $billing->billing_until < $contract_version->valid_from
+                        );
                 }
             );
 
-            $contract->individual_billings = $active_billings_collection->filter(function ($billing, $key) {
+            $contract['individual_billings'] = $active_billings_collection->filter(function ($billing, $key) {
                 return $billing->__isset('price');
             })->toArray();
 
-            $contract->standard_billings = $active_billings_collection->filter(function ($billing, $key) {
+            $contract['standard_billings'] = $active_billings_collection->filter(function ($billing, $key) {
+                return !$billing->__isset('price');
+            })->toArray();
+
+            $future_billings_collection = $billings_collection->reject(
+                function ($billing, $key) use ($contract_version) {
+                    return (
+                            $billing->__isset('billing_from')
+                            && $billing->billing_from <= $contract_version->valid_from
+                        ) || (
+                            $billing->__isset('billing_until')
+                            && $billing->billing_until < $contract_version->valid_from
+                        );
+                }
+            );
+
+            $contract['future_individual_billings'] = $future_billings_collection->filter(function ($billing, $key) {
+                return $billing->__isset('price');
+            })->toArray();
+
+            $contract['future_standard_billings'] = $future_billings_collection->filter(function ($billing, $key) {
                 return !$billing->__isset('price');
             })->toArray();
         }

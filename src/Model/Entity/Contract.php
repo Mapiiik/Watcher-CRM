@@ -64,8 +64,6 @@ use Exception;
  * @property \App\Model\Entity\RemovedIpNetwork[] $removed_ip_networks
  * @property \App\Model\Entity\SoldEquipment[] $sold_equipments
  * @property \App\Model\Entity\Task[] $tasks
- * @property \App\Model\Entity\Billing[] $individual_billings
- * @property \App\Model\Entity\Billing[] $standard_billings
  * @property \Cake\ORM\Entity|null $access_point
  */
 class Contract extends Entity

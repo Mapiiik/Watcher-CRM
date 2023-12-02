@@ -56,6 +56,58 @@ class ContractPDF extends TCPDF
     }
 
     /**
+     * prints billing table
+     *
+     * @param iterable $billings Billings
+     * @param \App\Model\Entity\ContractVersion $contract_version Contract version
+     * @param string $format Additional font format
+     * @return float Total cost
+     */
+    private function billingTable(iterable $billings, ContractVersion $contract_version, string $format): float
+    {
+        $this->SetFont('DejaVuSerif', '' . $format, 8);
+        $this->Cell(4, 4);
+        $this->Cell(135, 4, 'služba:');
+        $this->Cell(40, 4, 'cena / měsíc:', align: 'R');
+        $this->Ln();
+
+        $totalCost = 0;
+
+        foreach ($billings as $billing) {
+            $this->SetFont('DejaVuSerif', 'B' . $format, 8);
+            $this->Cell(4, 4);
+            $this->Cell(
+                135,
+                4,
+                $billing->name
+                . ($billing->billing_from > $contract_version->valid_from ? ' od ' . $billing->billing_from : '')
+                . ($billing->billing_until ? ' do ' . $billing->billing_until : '')
+            );
+            $this->Cell(40, 4, Number::currency($billing->sum), align: 'R');
+            $this->Ln();
+
+            if ($billing->percentage_discount_sum > 0) {
+                $this->SetFont('DejaVuSerif', '' . $format, 8);
+                $this->Cell(4, 4);
+                $this->Cell(135, 4, ' - sleva ve výši ' . $billing->percentage_discount . ' % z ceny této služby');
+                $this->Cell(40, 4, Number::currency(-$billing->percentage_discount_sum), align: 'R');
+                $this->Ln();
+            }
+            if ($billing->fixed_discount_sum > 0) {
+                $this->SetFont('DejaVuSerif', '' . $format, 8);
+                $this->Cell(4, 4);
+                $this->Cell(135, 4, ' - sleva v pevné výši z ceny této služby');
+                $this->Cell(40, 4, Number::currency(-$billing->fixed_discount_sum), align: 'R');
+                $this->Ln();
+            }
+
+            $totalCost += $billing->total_price;
+        }
+
+        return $totalCost;
+    }
+
+    /**
      * getter for contract duration text - long
      *
      * @param int|null $duration Duration in months
@@ -1136,7 +1188,7 @@ class ContractPDF extends TCPDF
             $totalCost = 0;
 
             // billing of pricelist items
-            if (count($contract->standard_billings) > 0) {
+            if (count($contract['standard_billings']) > 0) {
                 $this->SetFont('DejaVuSerif', 'B' . $format, 9);
                 $this->Cell(187, 3, 'Seznam poskytovaných služeb a údaje o jejich aktuálních cenách dle Ceníku včetně DPH');
                 $this->Ln();
@@ -1145,41 +1197,13 @@ class ContractPDF extends TCPDF
                 $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
                 $this->Ln(1);
 
-                $this->SetFont('DejaVuSerif', '' . $format, 8);
-                $this->Cell(4, 4);
-                $this->Cell(135, 4, 'služba:');
-                $this->Cell(40, 4, 'cena / měsíc:', align: 'R');
-                $this->Ln();
+                $totalCost += $this->billingTable($contract['standard_billings'], $contract_version, $format);
 
-                foreach ($contract->standard_billings as $billing) {
-                    $this->SetFont('DejaVuSerif', 'B' . $format, 8);
-                    $this->Cell(4, 4);
-                    $this->Cell(135, 4, $billing->name);
-                    $this->Cell(40, 4, Number::currency($billing->sum), align: 'R');
-                    $this->Ln();
-
-                    if ($billing->percentage_discount_sum > 0) {
-                        $this->SetFont('DejaVuSerif', '' . $format, 8);
-                        $this->Cell(4, 4);
-                        $this->Cell(135, 4, ' - sleva ve výši ' . $billing->percentage_discount . ' % z ceny této služby');
-                        $this->Cell(40, 4, Number::currency(-$billing->percentage_discount_sum), align: 'R');
-                        $this->Ln();
-                    }
-                    if ($billing->fixed_discount_sum > 0) {
-                        $this->SetFont('DejaVuSerif', '' . $format, 8);
-                        $this->Cell(4, 4);
-                        $this->Cell(135, 4, ' - sleva v pevné výši z ceny této služby');
-                        $this->Cell(40, 4, Number::currency(-$billing->fixed_discount_sum), align: 'R');
-                        $this->Ln();
-                    }
-
-                    $totalCost += $billing->total_price;
-                }
                 $this->Ln();
             }
 
             // billing of non-pricelist items
-            if (count($contract->individual_billings) > 0) {
+            if (count($contract['individual_billings']) > 0) {
                 $this->SetFont('DejaVuSerif', 'B' . $format, 9);
                 $this->Cell(187, 3, 'Seznam poskytovaných služeb a údaje o jejich individuálních cenách včetně DPH');
                 $this->Ln();
@@ -1188,36 +1212,41 @@ class ContractPDF extends TCPDF
                 $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
                 $this->Ln(1);
 
-                $this->SetFont('DejaVuSerif', $format, 8);
+                $totalCost += $this->billingTable($contract['individual_billings'], $contract_version, $format);
+
+                $this->SetFont('DejaVuSerif', $format, 7);
                 $this->Cell(4, 4);
-                $this->Cell(135, 4, 'služba:');
-                $this->Cell(40, 4, 'cena / měsíc:', align: 'R');
+                $this->MultiCell(180, 4, 'Smluvní strany ujednávají, že výše cen za Poskytovatelovy služby je touto smlouvou ujednána oproti Ceníku v individuální výši. Včetně všech svých složek má proto povahu Poskytovatelova obchodního tajemství dle § 504 zákona č. 89/2012 Sb., občanského zákoníku.', align: 'L');
+
+                $this->Ln();
+            }
+
+            // future billing of pricelist items
+            if (count($contract['future_standard_billings']) > 0) {
+                $this->SetFont('DejaVuSerif', 'B' . $format, 9);
+                $this->Cell(187, 3, 'Seznam budoucích poskytovaných služeb a údaje o jejich aktuálních cenách dle Ceníku včetně DPH');
                 $this->Ln();
 
-                foreach ($contract->individual_billings as $billing) {
-                    $this->SetFont('DejaVuSerif', 'B' . $format, 8);
-                    $this->Cell(4, 4);
-                    $this->Cell(135, 4, $billing->name);
-                    $this->Cell(40, 4, Number::currency($billing->sum), align: 'R');
-                    $this->Ln();
+                $this->Ln(0.4);
+                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+                $this->Ln(1);
 
-                    if ($billing->percentage_discount_sum > 0) {
-                        $this->SetFont('DejaVuSerif', $format, 8);
-                        $this->Cell(4, 4);
-                        $this->Cell(135, 4, ' - sleva ve výši ' . $billing->percentage_discount . ' % z ceny této služby');
-                        $this->Cell(40, 4, Number::currency(-$billing->percentage_discount_sum), align: 'R');
-                        $this->Ln();
-                    }
-                    if ($billing->fixed_discount_sum > 0) {
-                        $this->SetFont('DejaVuSerif', $format, 8);
-                        $this->Cell(4, 4);
-                        $this->Cell(135, 4, ' - sleva v pevné výši z ceny této služby');
-                        $this->Cell(40, 4, Number::currency(-$billing->fixed_discount_sum), align: 'R');
-                        $this->Ln();
-                    }
+                $this->billingTable($contract['future_standard_billings'], $contract_version, $format);
 
-                    $totalCost += $billing->total_price;
-                }
+                $this->Ln();
+            }
+
+            // future billing of non-pricelist items
+            if (count($contract['future_individual_billings']) > 0) {
+                $this->SetFont('DejaVuSerif', 'B' . $format, 9);
+                $this->Cell(187, 3, 'Seznam budoucích poskytovaných služeb a údaje o jejich individuálních cenách včetně DPH');
+                $this->Ln();
+
+                $this->Ln(0.4);
+                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+                $this->Ln(1);
+
+                $this->billingTable($contract['future_individual_billings'], $contract_version, $format);
 
                 $this->SetFont('DejaVuSerif', $format, 7);
                 $this->Cell(4, 4);
@@ -1237,8 +1266,8 @@ class ContractPDF extends TCPDF
             $this->SetFont('DejaVuSerif', $format, 8);
             $this->Cell(45, 4, 'perioda platby:', align: 'C');
             $this->Cell(45, 4, 'způsob úhrady:', align: 'C');
-            $this->Cell(45, 4, 'datum 1. úhrady:', align: 'C');
-            $this->Cell(45, 4, 'měsíční platba za služby celkem:', align: 'C');
+            $this->Cell(45, 4, 'datum první úhrady:', align: 'C');
+            $this->Cell(45, 4, 'první platba za služby celkem:', align: 'C');
             $this->Ln();
 
             $this->SetFont('DejaVuSerif', 'B' . $format, 8);
