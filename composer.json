@@ -1,15 +1,15 @@
 {
     "name": "mapik/watcher-crm",
     "description": "Watcher CRM",
-    "homepage": "https://github.com/Mapiiik/Watcher-CRM",
-    "type": "project",
     "license": "GPL-2.0-only",
+    "type": "project",
     "authors": [
         {
             "name": "Martin Patočka",
             "email": "mapik@mapik.net"
         }
     ],
+    "homepage": "https://github.com/Mapiiik/Watcher-CRM",
     "support": {
         "issues": "https://github.com/Mapiiik/Watcher-CRM/issues",
         "source": "https://github.com/Mapiiik/Watcher-CRM"
@@ -45,36 +45,51 @@
         "psalm/phar": "^5.12"
     },
     "suggest": {
-        "markstory/asset_compress": "An asset compression plugin which provides file concatenation and a flexible filter system for preprocessing and minification.",
         "dereuromark/cakephp-ide-helper": "After baking your code, this keeps your annotations in sync with the code evolving from there on for maximum IDE and PHPStan/Psalm compatibility.",
+        "markstory/asset_compress": "An asset compression plugin which provides file concatenation and a flexible filter system for preprocessing and minification.",
         "phpstan/phpstan": "PHPStan focuses on finding errors in your code without actually running it. It catches whole classes of bugs even before you write tests for the code."
     },
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "App\\": "src/",
-            "Ruian\\": "plugins/Ruian/src/",
+            "BookkeepingPohoda\\": "plugins/BookkeepingPohoda/src/",
             "Radius\\": "plugins/Radius/src/",
-            "BookkeepingPohoda\\": "plugins/BookkeepingPohoda/src/"
+            "Ruian\\": "plugins/Ruian/src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "App\\Test\\": "tests/",
+            "BookkeepingPohoda\\Test\\": "plugins/BookkeepingPohoda/tests/",
             "Cake\\Test\\": "vendor/cakephp/cakephp/tests/",
-            "Ruian\\Test\\": "plugins/Ruian/tests/",
             "Radius\\Test\\": "plugins/Radius/tests/",
-            "BookkeepingPohoda\\Test\\": "plugins/BookkeepingPohoda/tests/"
+            "Ruian\\Test\\": "plugins/Ruian/tests/"
         }
     },
+    "config": {
+        "allow-plugins": {
+            "cakephp/plugin-installer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpstan/extension-installer": true
+        },
+        "sort-packages": true
+    },
     "scripts": {
-        "post-create-project-cmd": [
-            "@migrations",
-            "@schema-cache"
-        ],
         "post-install-cmd": [
             "App\\Console\\Installer::postInstall"
         ],
         "post-update-cmd": [],
+        "post-create-project-cmd": [
+            "@migrations",
+            "@schema-cache"
+        ],
+        "check": [
+            "@test",
+            "@cs-check"
+        ],
+        "cs-check": "phpcs --colors -p",
+        "cs-fix": "phpcbf --colors -p",
         "migrations": [
             "bin/cake migrations migrate --plugin CakeDC/Users",
             "bin/cake migrations migrate --plugin Cake/Queue",
@@ -84,22 +99,7 @@
         "schema-cache": [
             "bin/cake schema_cache build"
         ],
-        "check": [
-            "@test",
-            "@cs-check"
-        ],
-        "cs-check": "phpcs --colors -p",
-        "cs-fix": "phpcbf --colors -p",
         "stan": "phpstan analyse",
         "test": "phpunit --colors=always"
-    },
-    "prefer-stable": true,
-    "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "cakephp/plugin-installer": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true,
-            "phpstan/extension-installer": true
-        }
     }
 }
