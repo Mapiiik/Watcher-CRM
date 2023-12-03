@@ -24,7 +24,7 @@ services:
       - 80:80/tcp
 
   database-dev:
-    image: postgres
+    image: postgres:16-alpine
     tmpfs:
       - /var/lib/postgresql/data:exec
     environment:
@@ -35,7 +35,7 @@ services:
       - 5432:5432/tcp
 
   cache-dev:
-    image: redis
+    image: redis:alpine
     tmpfs: 
       - /data:exec
     ports:

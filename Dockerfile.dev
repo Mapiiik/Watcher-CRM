@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM webdevops/php-nginx-dev:8.2
+FROM webdevops/php-nginx-dev:8.3-alpine
 
 ARG buildno
 ARG gitcommithash
@@ -11,16 +11,17 @@ RUN echo "Based on commit: $gitcommithash"
 ENV DEBUG "true"
 ENV WEB_DOCUMENT_ROOT "/app/webroot"
 
+# Install ping command
+RUN set -x \
+ && apk add -U --no-cache iputils \
+ && docker-image-cleanup
+
 # Install PECL-DBASE extension
 RUN set -x \
+ && apk add -U --no-cache autoconf gcc libc-dev make \
  && CPPFLAGS="-DHAVE_SYS_FILE_H" pecl install dbase \
  && docker-php-ext-enable dbase \
  && docker-run-bootstrap \
- && docker-image-cleanup
-
-# Install ping command
-RUN apt-get update -y \
- && apt-get install iputils-ping -y \
  && docker-image-cleanup
 
 # Add on-start commands

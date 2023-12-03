@@ -23,7 +23,7 @@ services:
       - 443:443/tcp
 
   database:
-    image: postgres
+    image: postgres:16-alpine
     volumes:
       - app-database:/var/lib/postgresql/data:Z
     restart: always
@@ -33,7 +33,7 @@ services:
       POSTGRES_DB: watcher_crm
 
   cache:
-    image: redis
+    image: redis:alpine
     volumes: 
       - app-cache:/data
     restart: always
