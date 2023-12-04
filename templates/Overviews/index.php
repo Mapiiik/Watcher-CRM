@@ -65,6 +65,11 @@
                     ['controller' => 'Contracts', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item']
                 ) ?>
+                <?= $this->AuthLink->link(
+                    __('List Access Credentials'),
+                    ['controller' => 'AccessCredentials', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
             </div>
         </div>
 

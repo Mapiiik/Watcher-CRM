@@ -26,6 +26,12 @@
                 ['action' => 'print', $contract->id],
                 ['class' => 'side-nav-item']
             ) ?>
+            <br>
+            <?= $this->AuthLink->link(
+                __('List Access Credentials'),
+                ['controller' => 'AccessCredentials', 'action' => 'index'],
+                ['class' => 'side-nav-item']
+            ) ?>
         </div>
         <br>
         <div class="side-labels">

@@ -63,6 +63,12 @@ class CustomersTable extends AppTable
             'foreignKey' => 'tax_rate_id',
             'joinType' => 'INNER',
         ]);
+        $this->hasMany('AccessCredentials', [
+            'foreignKey' => 'customer_id',
+            'sort' => [
+                'AccessCredentials.name',
+            ],
+        ]);
         $this->hasMany('Addresses', [
             'foreignKey' => 'customer_id',
             'sort' => [
@@ -299,6 +305,7 @@ class CustomersTable extends AppTable
             ]
         );
 
+        $rules->addDelete($rules->isNotLinkedTo('AccessCredentials'));
         $rules->addDelete($rules->isNotLinkedTo('Addresses'));
         $rules->addDelete($rules->isNotLinkedTo('Billings'));
         $rules->addDelete($rules->isNotLinkedTo('BorrowedEquipments'));

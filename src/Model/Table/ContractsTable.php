@@ -96,6 +96,12 @@ class ContractsTable extends AppTable
                 'Billings.billing_from' => 'DESC',
             ],
         ]);
+        $this->hasMany('AccessCredentials', [
+            'foreignKey' => 'contract_id',
+            'sort' => [
+                'AccessCredentials.name',
+            ],
+        ]);
         $this->hasMany('BorrowedEquipments', [
             'foreignKey' => 'contract_id',
             'sort' => [
@@ -310,6 +316,7 @@ class ContractsTable extends AppTable
             ]
         );
 
+        $rules->addDelete($rules->isNotLinkedTo('AccessCredentials'));
         $rules->addDelete($rules->isNotLinkedTo('Billings'));
         $rules->addDelete($rules->isNotLinkedTo('BorrowedEquipments'));
         $rules->addDelete($rules->isNotLinkedTo('ContractVersions'));
