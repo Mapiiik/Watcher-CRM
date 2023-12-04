@@ -40,7 +40,8 @@ class CreateRemovedIpNetworks extends AbstractMigration
             'limit' => null,
             'null' => true,
         ]);
-        $table->addColumn('removed', 'datetime', [
+        $table->addColumn('removed', 'timestamp', [
+            'timezone' => true,
             'default' => null,
             'null' => false,
         ]);

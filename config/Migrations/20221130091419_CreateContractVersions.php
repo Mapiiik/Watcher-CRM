@@ -54,7 +54,8 @@ class CreateContractVersions extends AbstractMigration
             'default' => null,
             'null' => true,
         ]);
-        $table->addColumn('created', 'datetime', [
+        $table->addColumn('created', 'timestamp', [
+            'timezone' => true,
             'default' => null,
             'null' => true,
         ]);
@@ -63,7 +64,8 @@ class CreateContractVersions extends AbstractMigration
             'limit' => 10,
             'null' => true,
         ]);
-        $table->addColumn('modified', 'datetime', [
+        $table->addColumn('modified', 'timestamp', [
+            'timezone' => true,
             'default' => null,
             'null' => true,
         ]);

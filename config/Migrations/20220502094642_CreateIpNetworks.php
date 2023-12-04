@@ -40,7 +40,8 @@ class CreateIpNetworks extends AbstractMigration
             'limit' => null,
             'null' => true,
         ]);
-        $table->addColumn('created', 'datetime', [
+        $table->addColumn('created', 'timestamp', [
+            'timezone' => true,
             'default' => null,
             'null' => false,
         ]);
@@ -49,7 +50,8 @@ class CreateIpNetworks extends AbstractMigration
             'limit' => 11,
             'null' => false,
         ]);
-        $table->addColumn('modified', 'datetime', [
+        $table->addColumn('modified', 'timestamp', [
+            'timezone' => true,
             'default' => null,
             'null' => false,
         ]);
