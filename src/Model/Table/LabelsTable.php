@@ -19,17 +19,17 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Label[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \App\Model\Entity\Label|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Label saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Label[]|iterable<\Cake\Datasource\EntityInterface>|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\Label[]|iterable<\Cake\Datasource\EntityInterface> saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\Label[]|iterable<\Cake\Datasource\EntityInterface>|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\Label[]|iterable<\Cake\Datasource\EntityInterface> deleteManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\Label>|false saveMany(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\Label> saveManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\Label>|false deleteMany(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\Label> deleteManyOrFail(iterable $entities, $options = [])
  */
 class LabelsTable extends AppTable
 {
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param array<string, mixed> $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void

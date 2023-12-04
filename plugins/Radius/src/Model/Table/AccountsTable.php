@@ -26,10 +26,10 @@ use Cake\Validation\Validator;
  * @method \Radius\Model\Entity\Account[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \Radius\Model\Entity\Account|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \Radius\Model\Entity\Account saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \Radius\Model\Entity\Account[]|iterable<\Cake\Datasource\EntityInterface>|false saveMany(iterable $entities, $options = [])
- * @method \Radius\Model\Entity\Account[]|iterable<\Cake\Datasource\EntityInterface> saveManyOrFail(iterable $entities, $options = [])
- * @method \Radius\Model\Entity\Account[]|iterable<\Cake\Datasource\EntityInterface>|false deleteMany(iterable $entities, $options = [])
- * @method \Radius\Model\Entity\Account[]|iterable<\Cake\Datasource\EntityInterface> deleteManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\Radius\Model\Entity\Account>|false saveMany(iterable $entities, $options = [])
+ * @method iterable<\Radius\Model\Entity\Account> saveManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\Radius\Model\Entity\Account>|false deleteMany(iterable $entities, $options = [])
+ * @method iterable<\Radius\Model\Entity\Account> deleteManyOrFail(iterable $entities, $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class AccountsTable extends AppTable
@@ -37,7 +37,7 @@ class AccountsTable extends AppTable
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param array<string, mixed> $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void

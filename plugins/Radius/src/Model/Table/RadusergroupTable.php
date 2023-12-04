@@ -23,17 +23,17 @@ use Cake\Validation\Validator;
  * @method \Radius\Model\Entity\Radusergroup[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \Radius\Model\Entity\Radusergroup|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \Radius\Model\Entity\Radusergroup saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \Radius\Model\Entity\Radusergroup[]|iterable<\Cake\Datasource\EntityInterface>|false saveMany(iterable $entities, $options = [])
- * @method \Radius\Model\Entity\Radusergroup[]|iterable<\Cake\Datasource\EntityInterface> saveManyOrFail(iterable $entities, $options = [])
- * @method \Radius\Model\Entity\Radusergroup[]|iterable<\Cake\Datasource\EntityInterface>|false deleteMany(iterable $entities, $options = [])
- * @method \Radius\Model\Entity\Radusergroup[]|iterable<\Cake\Datasource\EntityInterface> deleteManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\Radius\Model\Entity\Radusergroup>|false saveMany(iterable $entities, $options = [])
+ * @method iterable<\Radius\Model\Entity\Radusergroup> saveManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\Radius\Model\Entity\Radusergroup>|false deleteMany(iterable $entities, $options = [])
+ * @method iterable<\Radius\Model\Entity\Radusergroup> deleteManyOrFail(iterable $entities, $options = [])
  */
 class RadusergroupTable extends AppTable
 {
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param array<string, mixed> $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void

@@ -22,10 +22,10 @@ use Cake\Validation\Validator;
  * @method \BookkeepingPohoda\Model\Entity\Invoice[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \BookkeepingPohoda\Model\Entity\Invoice|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \BookkeepingPohoda\Model\Entity\Invoice saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \BookkeepingPohoda\Model\Entity\Invoice[]|iterable<\Cake\Datasource\EntityInterface>|false saveMany(iterable $entities, $options = [])
- * @method \BookkeepingPohoda\Model\Entity\Invoice[]|iterable<\Cake\Datasource\EntityInterface> saveManyOrFail(iterable $entities, $options = [])
- * @method \BookkeepingPohoda\Model\Entity\Invoice[]|iterable<\Cake\Datasource\EntityInterface>|false deleteMany(iterable $entities, $options = [])
- * @method \BookkeepingPohoda\Model\Entity\Invoice[]|iterable<\Cake\Datasource\EntityInterface> deleteManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\BookkeepingPohoda\Model\Entity\Invoice>|false saveMany(iterable $entities, $options = [])
+ * @method iterable<\BookkeepingPohoda\Model\Entity\Invoice> saveManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\BookkeepingPohoda\Model\Entity\Invoice>|false deleteMany(iterable $entities, $options = [])
+ * @method iterable<\BookkeepingPohoda\Model\Entity\Invoice> deleteManyOrFail(iterable $entities, $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class InvoicesTable extends Table
@@ -33,7 +33,7 @@ class InvoicesTable extends Table
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param array<string, mixed> $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void

@@ -20,10 +20,10 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\CustomerLabel[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \App\Model\Entity\CustomerLabel|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\CustomerLabel saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\CustomerLabel[]|iterable<\Cake\Datasource\EntityInterface>|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\CustomerLabel[]|iterable<\Cake\Datasource\EntityInterface> saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\CustomerLabel[]|iterable<\Cake\Datasource\EntityInterface>|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\CustomerLabel[]|iterable<\Cake\Datasource\EntityInterface> deleteManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\CustomerLabel>|false saveMany(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\CustomerLabel> saveManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\CustomerLabel>|false deleteMany(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\CustomerLabel> deleteManyOrFail(iterable $entities, $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class CustomerLabelsTable extends AppTable
@@ -31,7 +31,7 @@ class CustomerLabelsTable extends AppTable
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param array<string, mixed> $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void

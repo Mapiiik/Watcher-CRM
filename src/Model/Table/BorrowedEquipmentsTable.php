@@ -21,10 +21,10 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\BorrowedEquipment[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \App\Model\Entity\BorrowedEquipment|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\BorrowedEquipment saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\BorrowedEquipment[]|iterable<\Cake\Datasource\EntityInterface>|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\BorrowedEquipment[]|iterable<\Cake\Datasource\EntityInterface> saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\BorrowedEquipment[]|iterable<\Cake\Datasource\EntityInterface>|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\BorrowedEquipment[]|iterable<\Cake\Datasource\EntityInterface> deleteManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\BorrowedEquipment>|false saveMany(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\BorrowedEquipment> saveManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\BorrowedEquipment>|false deleteMany(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\BorrowedEquipment> deleteManyOrFail(iterable $entities, $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class BorrowedEquipmentsTable extends AppTable
@@ -32,7 +32,7 @@ class BorrowedEquipmentsTable extends AppTable
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param array<string, mixed> $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void

@@ -34,10 +34,10 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Contract[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \App\Model\Entity\Contract|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Contract saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Contract[]|iterable<\Cake\Datasource\EntityInterface>|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\Contract[]|iterable<\Cake\Datasource\EntityInterface> saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\Contract[]|iterable<\Cake\Datasource\EntityInterface>|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\Contract[]|iterable<\Cake\Datasource\EntityInterface> deleteManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\Contract>|false saveMany(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\Contract> saveManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\Contract>|false deleteMany(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\Contract> deleteManyOrFail(iterable $entities, $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class ContractsTable extends AppTable
@@ -45,7 +45,7 @@ class ContractsTable extends AppTable
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param array<string, mixed> $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void

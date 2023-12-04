@@ -20,17 +20,17 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\EquipmentType[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \App\Model\Entity\EquipmentType|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\EquipmentType saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\EquipmentType[]|iterable<\Cake\Datasource\EntityInterface>|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\EquipmentType[]|iterable<\Cake\Datasource\EntityInterface> saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\EquipmentType[]|iterable<\Cake\Datasource\EntityInterface>|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\EquipmentType[]|iterable<\Cake\Datasource\EntityInterface> deleteManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\EquipmentType>|false saveMany(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\EquipmentType> saveManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\EquipmentType>|false deleteMany(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\EquipmentType> deleteManyOrFail(iterable $entities, $options = [])
  */
 class EquipmentTypesTable extends AppTable
 {
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param array<string, mixed> $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void

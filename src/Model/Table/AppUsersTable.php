@@ -19,10 +19,10 @@ use CakeDC\Users\Model\Table\UsersTable;
  * @method \App\Model\Entity\AppUser[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \App\Model\Entity\AppUser|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\AppUser saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\AppUser[]|iterable<\Cake\Datasource\EntityInterface>|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\AppUser[]|iterable<\Cake\Datasource\EntityInterface> saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\AppUser[]|iterable<\Cake\Datasource\EntityInterface>|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\AppUser[]|iterable<\Cake\Datasource\EntityInterface> deleteManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\AppUser>|false saveMany(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\AppUser> saveManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\AppUser>|false deleteMany(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\AppUser> deleteManyOrFail(iterable $entities, $options = [])
  */
 class AppUsersTable extends UsersTable
 {

@@ -20,10 +20,10 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\ServiceType[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \App\Model\Entity\ServiceType|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\ServiceType saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\ServiceType[]|iterable<\Cake\Datasource\EntityInterface>|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\ServiceType[]|iterable<\Cake\Datasource\EntityInterface> saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\ServiceType[]|iterable<\Cake\Datasource\EntityInterface>|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\ServiceType[]|iterable<\Cake\Datasource\EntityInterface> deleteManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\ServiceType>|false saveMany(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\ServiceType> saveManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\ServiceType>|false deleteMany(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\ServiceType> deleteManyOrFail(iterable $entities, $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class ServiceTypesTable extends AppTable
@@ -31,7 +31,7 @@ class ServiceTypesTable extends AppTable
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param array<string, mixed> $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void

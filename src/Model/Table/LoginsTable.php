@@ -19,10 +19,10 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Login[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \App\Model\Entity\Login|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Login saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Login[]|iterable<\Cake\Datasource\EntityInterface>|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\Login[]|iterable<\Cake\Datasource\EntityInterface> saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\Login[]|iterable<\Cake\Datasource\EntityInterface>|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\Login[]|iterable<\Cake\Datasource\EntityInterface> deleteManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\Login>|false saveMany(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\Login> saveManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\Login>|false deleteMany(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\Login> deleteManyOrFail(iterable $entities, $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class LoginsTable extends AppTable
@@ -30,7 +30,7 @@ class LoginsTable extends AppTable
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param array<string, mixed> $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void

@@ -18,10 +18,10 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\AuditLog[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \App\Model\Entity\AuditLog|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\AuditLog saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\AuditLog[]|iterable<\Cake\Datasource\EntityInterface>|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\AuditLog[]|iterable<\Cake\Datasource\EntityInterface> saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\AuditLog[]|iterable<\Cake\Datasource\EntityInterface>|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\AuditLog[]|iterable<\Cake\Datasource\EntityInterface> deleteManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\AuditLog>|false saveMany(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\AuditLog> saveManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\AuditLog>|false deleteMany(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\AuditLog> deleteManyOrFail(iterable $entities, $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class AuditLogsTable extends Table
@@ -29,7 +29,7 @@ class AuditLogsTable extends Table
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param array<string, mixed> $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void
