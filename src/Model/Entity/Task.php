@@ -115,7 +115,7 @@ class Task extends Entity
      */
     protected function _getSummaryText(): string
     {
-        $summary_text = $this->subject ?? $this->task_type->name;
+        $summary_text = $this->subject ?? $this->task_type->name ?? '';
 
         if (isset($this->customer)) {
             $summary_text .= ' - ' . ($this->customer->company ?? $this->customer->last_name ?? '');
