@@ -115,10 +115,7 @@ class Task extends Entity
      */
     protected function _getSummaryText(): string
     {
-        $summary_text = '';
-
-        $summary_text .= $this->contract->number ?? $this->customer->number ?? '';
-        $summary_text .= (!empty($summary_text) ? ' - ' : '') . $this->task_type->name;
+        $summary_text = $this->subject ?? $this->task_type->name;
 
         if (isset($this->customer)) {
             $summary_text .= ' - ' . ($this->customer->company ?? $this->customer->last_name ?? '');
@@ -141,10 +138,18 @@ class Task extends Entity
         }
 
         if (isset($this->phone)) {
-            $summary_text .= ', ' . $this->phone;
+            if (filter_var(env('STRIP_PHONE_PREFIX_FOR_SUMMARY_TEXT', false), FILTER_VALIDATE_BOOLEAN)) {
+                $summary_text .= ', ' . str_replace('+420 ', '', $this->phone);
+            } else {
+                $summary_text .= ', ' . $this->phone;
+            }
         }
 
-        $summary_text .= ' - ' . $this->subject;
+        if (isset($this->contract->number) || isset($this->customer->number)) {
+            $summary_text .= ' (';
+            $summary_text .= $this->contract->number ?? $this->customer->number;
+            $summary_text .= ')';
+        }
 
         return $summary_text;
     }
