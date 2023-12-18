@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-10-24 23:32+0200\n"
-"PO-Revision-Date: 2023-10-24 23:34+0200\n"
+"POT-Creation-Date: 2023-12-18 16:58+0100\n"
+"PO-Revision-Date: 2023-12-18 17:02+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -13,56 +13,58 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.4\n"
+"X-Generator: Poedit 3.4.1\n"
 
-#: plugins/Radius/src/Controller/AccountsController.php:169
-#: plugins/Radius/src/Controller/AccountsController.php:272
+#: plugins/Radius/src/Controller/AccountsController.php:170
+#: plugins/Radius/src/Controller/AccountsController.php:273
 msgid "The RADIUS account has been saved."
 msgstr "Účet RADIUS byl uložen."
 
-#: plugins/Radius/src/Controller/AccountsController.php:173
-#: plugins/Radius/src/Controller/AccountsController.php:276
+#: plugins/Radius/src/Controller/AccountsController.php:174
+#: plugins/Radius/src/Controller/AccountsController.php:277
 msgid "The RADIUS account could not be saved. Please, try again."
 msgstr "Účet RADIUS nelze uložit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/AccountsController.php:321
+#: plugins/Radius/src/Controller/AccountsController.php:322
 msgid "The RADIUS account has been deleted."
 msgstr "Účet RADIUS byl odstraněn."
 
-#: plugins/Radius/src/Controller/AccountsController.php:324
+#: plugins/Radius/src/Controller/AccountsController.php:325
 msgid "The RADIUS account could not be deleted. Please, try again."
 msgstr "Účet RADIUS nelze odstranit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/AccountsController.php:349
-msgid "No active RADIUS session found."
-msgstr "Nebyla nalezena žádná aktivní relace RADIUS."
+#: plugins/Radius/src/Controller/AccountsController.php:352
+#: plugins/Radius/src/Controller/AccountsController.php:453
+msgid ""
+"The RADIUS session for {0} started on {1} could not be disconnected ({2})."
+msgstr "Relace RADIUS pro {0} zahájená {1} nemohla být odpojena ({2})."
 
-#: plugins/Radius/src/Controller/AccountsController.php:371
-#: plugins/Radius/src/Controller/AccountsController.php:468
-msgid "The RADIUS session started on {0} could not be disconnected ({1})."
-msgstr "Relaci RADIUS zahájenou {0} nelze odpojit ({1})."
+#: plugins/Radius/src/Controller/AccountsController.php:443
+msgid "The RADIUS session for {0} started on {1} has been disconnected ({2})."
+msgstr "Relace RADIUS pro {0} zahájená {1} byla odpojena ({2})."
 
-#: plugins/Radius/src/Controller/AccountsController.php:461
-msgid "The RADIUS session started on {0} has been disconnected ({1})."
-msgstr "Relace RADIUS zahájená {0} byla odpojena ({1})."
+#: plugins/Radius/src/Controller/AccountsController.php:484
+#: plugins/Radius/src/Controller/AccountsController.php:642
+msgid "No active RADIUS session for {0} found."
+msgstr "Nebyla nalezena žádná aktivní relace RADIUS pro {0}."
 
-#: plugins/Radius/src/Controller/AccountsController.php:505
+#: plugins/Radius/src/Controller/AccountsController.php:525
 msgid "The RADIUS account has been updated."
 msgstr "Účet RADIUS byl aktualizován."
 
-#: plugins/Radius/src/Controller/AccountsController.php:507
+#: plugins/Radius/src/Controller/AccountsController.php:527
 msgid "The RADIUS account could not be updated. Please, try again."
 msgstr "Účet RADIUS nelze aktualizovat. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/AccountsController.php:560
+#: plugins/Radius/src/Controller/AccountsController.php:608
 msgid "Nothing has been selected for update."
 msgstr "Nic nebylo vybráno k aktualizaci."
 
-#: plugins/Radius/src/Controller/AccountsController.php:569
+#: plugins/Radius/src/Controller/AccountsController.php:620
 msgid "The RADIUS account {0} could not be updated. Please, try again."
 msgstr "Účet RADIUS {0} se nepodařilo aktualizovat. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/AccountsController.php:580
+#: plugins/Radius/src/Controller/AccountsController.php:660
 msgid ""
 "Related entries for {0} RADIUS accounts were processed, {1} accounts were "
 "updated, and {2} accounts failed to update."
@@ -70,7 +72,7 @@ msgstr ""
 "Související záznamy pro {0} účtů RADIUS byly zpracovány, {1} účtů bylo "
 "aktualizováno a {2} účtů se nepodařilo aktualizovat."
 
-#: plugins/Radius/src/Controller/AccountsController.php:708
+#: plugins/Radius/src/Controller/AccountsController.php:788
 msgid ""
 "The RADIUS replies for {0} could not be found automatically. Please, set it "
 "manually."
@@ -78,11 +80,11 @@ msgstr ""
 "Odpovědi RADIUS pro {0} nebyly automaticky nalezeny. Nastavte je prosím "
 "ručně."
 
-#: plugins/Radius/src/Controller/AccountsController.php:714
+#: plugins/Radius/src/Controller/AccountsController.php:794
 msgid "The IP addresses for the contract are probably not set correctly."
 msgstr "IP adresy pro smlouvu pravděpodobně nejsou správně nastaveny."
 
-#: plugins/Radius/src/Controller/AccountsController.php:775
+#: plugins/Radius/src/Controller/AccountsController.php:855
 msgid ""
 "The RADIUS user groups for {0} could not be found automatically. Please, set "
 "it manually."
@@ -90,7 +92,7 @@ msgstr ""
 "Skupiny uživatelů RADIUS pro {0} nebyly nalezeny automaticky. Nastavte je "
 "prosím ručně."
 
-#: plugins/Radius/src/Controller/AccountsController.php:781
+#: plugins/Radius/src/Controller/AccountsController.php:861
 msgid ""
 "The billings for the contract for the current or upcoming period are "
 "probably not set correctly."
@@ -361,7 +363,7 @@ msgstr "Aktivní"
 
 #: plugins/Radius/templates/Accounts/add.php:73
 #: plugins/Radius/templates/Accounts/edit.php:77
-#: plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:50
+#: plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:55
 #: plugins/Radius/templates/Nas/add.php:34
 #: plugins/Radius/templates/Nas/edit.php:42
 #: plugins/Radius/templates/Radacct/add.php:54
@@ -844,7 +846,11 @@ msgstr "Aktualizace odpovědí RADIUS"
 msgid "Update RADIUS User Groups"
 msgstr "Aktualizace skupin uživatelů RADIUS"
 
-#: plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:52
+#: plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:48
+msgid "Reconnect Modified RADIUS Accounts"
+msgstr "Opětovné připojení upravených účtů RADIUS"
+
+#: plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:57
 msgid "Are you sure you want to update related records for all accounts?"
 msgstr "Opravdu chcete aktualizovat související záznamy pro všechny účty?"
 

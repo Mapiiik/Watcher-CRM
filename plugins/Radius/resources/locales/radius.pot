@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-10-24 23:32+0200\n"
+"POT-Creation-Date: 2023-12-18 16:58+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,70 +14,71 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:169
-#: ./plugins/Radius/src/Controller/AccountsController.php:272
+#: ./plugins/Radius/src/Controller/AccountsController.php:170
+#: ./plugins/Radius/src/Controller/AccountsController.php:273
 msgid "The RADIUS account has been saved."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:173
-#: ./plugins/Radius/src/Controller/AccountsController.php:276
+#: ./plugins/Radius/src/Controller/AccountsController.php:174
+#: ./plugins/Radius/src/Controller/AccountsController.php:277
 msgid "The RADIUS account could not be saved. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:321
+#: ./plugins/Radius/src/Controller/AccountsController.php:322
 msgid "The RADIUS account has been deleted."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:324
+#: ./plugins/Radius/src/Controller/AccountsController.php:325
 msgid "The RADIUS account could not be deleted. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:349
-msgid "No active RADIUS session found."
+#: ./plugins/Radius/src/Controller/AccountsController.php:352
+#: ./plugins/Radius/src/Controller/AccountsController.php:453
+msgid "The RADIUS session for {0} started on {1} could not be disconnected ({2})."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:371
-#: ./plugins/Radius/src/Controller/AccountsController.php:468
-msgid "The RADIUS session started on {0} could not be disconnected ({1})."
+#: ./plugins/Radius/src/Controller/AccountsController.php:443
+msgid "The RADIUS session for {0} started on {1} has been disconnected ({2})."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:461
-msgid "The RADIUS session started on {0} has been disconnected ({1})."
+#: ./plugins/Radius/src/Controller/AccountsController.php:484
+#: ./plugins/Radius/src/Controller/AccountsController.php:642
+msgid "No active RADIUS session for {0} found."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:505
+#: ./plugins/Radius/src/Controller/AccountsController.php:525
 msgid "The RADIUS account has been updated."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:507
+#: ./plugins/Radius/src/Controller/AccountsController.php:527
 msgid "The RADIUS account could not be updated. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:560
+#: ./plugins/Radius/src/Controller/AccountsController.php:608
 msgid "Nothing has been selected for update."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:569
+#: ./plugins/Radius/src/Controller/AccountsController.php:620
 msgid "The RADIUS account {0} could not be updated. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:580
+#: ./plugins/Radius/src/Controller/AccountsController.php:660
 msgid "Related entries for {0} RADIUS accounts were processed, {1} accounts were updated, and {2} accounts failed to update."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:708
+#: ./plugins/Radius/src/Controller/AccountsController.php:788
 msgid "The RADIUS replies for {0} could not be found automatically. Please, set it manually."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:714
+#: ./plugins/Radius/src/Controller/AccountsController.php:794
 msgid "The IP addresses for the contract are probably not set correctly."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:775
+#: ./plugins/Radius/src/Controller/AccountsController.php:855
 msgid "The RADIUS user groups for {0} could not be found automatically. Please, set it manually."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:781
+#: ./plugins/Radius/src/Controller/AccountsController.php:861
 msgid "The billings for the contract for the current or upcoming period are probably not set correctly."
 msgstr ""
 
@@ -344,7 +345,7 @@ msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/add.php:73
 #: ./plugins/Radius/templates/Accounts/edit.php:77
-#: ./plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:50
+#: ./plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:55
 #: ./plugins/Radius/templates/Nas/add.php:34
 #: ./plugins/Radius/templates/Nas/edit.php:42
 #: ./plugins/Radius/templates/Radacct/add.php:54
@@ -823,7 +824,11 @@ msgstr ""
 msgid "Update RADIUS User Groups"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:52
+#: ./plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:48
+msgid "Reconnect Modified RADIUS Accounts"
+msgstr ""
+
+#: ./plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:57
 msgid "Are you sure you want to update related records for all accounts?"
 msgstr ""
 

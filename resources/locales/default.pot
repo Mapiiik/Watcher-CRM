@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-12-04 16:30+0100\n"
+"POT-Creation-Date: 2023-12-18 16:58+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -111,7 +111,7 @@ msgstr ""
 #: ./src/ContractPDF.php:419
 #: ./templates/AccessCredentials/add.php:59
 #: ./templates/AccessCredentials/edit.php:67
-#: ./templates/AccessCredentials/index.php:35
+#: ./templates/AccessCredentials/index.php:39
 #: ./templates/AccessCredentials/view.php:71
 #: ./templates/Ips/add.php:28
 #: ./templates/Ips/add_from_range.php:77
@@ -170,21 +170,21 @@ msgstr ""
 msgid "Subscriber Verification Code"
 msgstr ""
 
-#: ./src/Controller/AccessCredentialsController.php:94
-#: ./src/Controller/AccessCredentialsController.php:152
+#: ./src/Controller/AccessCredentialsController.php:99
+#: ./src/Controller/AccessCredentialsController.php:157
 msgid "The access credential has been saved."
 msgstr ""
 
-#: ./src/Controller/AccessCredentialsController.php:98
-#: ./src/Controller/AccessCredentialsController.php:156
+#: ./src/Controller/AccessCredentialsController.php:103
+#: ./src/Controller/AccessCredentialsController.php:161
 msgid "The access credential could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/AccessCredentialsController.php:206
+#: ./src/Controller/AccessCredentialsController.php:211
 msgid "The access credential has been deleted."
 msgstr ""
 
-#: ./src/Controller/AccessCredentialsController.php:208
+#: ./src/Controller/AccessCredentialsController.php:213
 msgid "The access credential could not be deleted. Please, try again."
 msgstr ""
 
@@ -1281,19 +1281,19 @@ msgstr ""
 msgid "Specialist"
 msgstr ""
 
-#: ./src/Model/Entity/Task.php:176
+#: ./src/Model/Entity/Task.php:181
 msgid "Low"
 msgstr ""
 
-#: ./src/Model/Entity/Task.php:177
+#: ./src/Model/Entity/Task.php:182
 msgid "Normal"
 msgstr ""
 
-#: ./src/Model/Entity/Task.php:178
+#: ./src/Model/Entity/Task.php:183
 msgid "High"
 msgstr ""
 
-#: ./src/Model/Entity/Task.php:179
+#: ./src/Model/Entity/Task.php:184
 msgid "Urgent"
 msgstr ""
 
@@ -1332,7 +1332,7 @@ msgstr ""
 
 #: ./templates/AccessCredentials/add.php:12
 #: ./templates/AccessCredentials/edit.php:12
-#: ./templates/AccessCredentials/index.php:37
+#: ./templates/AccessCredentials/index.php:41
 #: ./templates/AccessCredentials/view.php:10
 #: ./templates/Addresses/add.php:12
 #: ./templates/Addresses/edit.php:12
@@ -1572,7 +1572,7 @@ msgid "Submit"
 msgstr ""
 
 #: ./templates/AccessCredentials/edit.php:14
-#: ./templates/AccessCredentials/index.php:71
+#: ./templates/AccessCredentials/index.php:79
 #: ./templates/Addresses/edit.php:14
 #: ./templates/Addresses/index.php:98
 #: ./templates/Billings/edit.php:15
@@ -1661,7 +1661,7 @@ msgid "Delete"
 msgstr ""
 
 #: ./templates/AccessCredentials/edit.php:17
-#: ./templates/AccessCredentials/index.php:73
+#: ./templates/AccessCredentials/index.php:81
 #: ./templates/AccessCredentials/view.php:20
 #: ./templates/Addresses/edit.php:16
 #: ./templates/Addresses/index.php:100
@@ -1825,7 +1825,7 @@ msgstr ""
 msgid "Access Credentials"
 msgstr ""
 
-#: ./templates/AccessCredentials/index.php:31
+#: ./templates/AccessCredentials/index.php:32
 #: ./templates/Addresses/index.php:27
 #: ./templates/Addresses/view.php:39
 #: ./templates/Billings/index.php:27
@@ -1871,7 +1871,7 @@ msgstr ""
 msgid "Customer Number"
 msgstr ""
 
-#: ./templates/AccessCredentials/index.php:62
+#: ./templates/AccessCredentials/index.php:70
 #: ./templates/Addresses/index.php:91
 #: ./templates/Billings/index.php:79
 #: ./templates/BorrowedEquipments/index.php:71
@@ -1938,7 +1938,7 @@ msgstr ""
 msgid "View"
 msgstr ""
 
-#: ./templates/AccessCredentials/index.php:66
+#: ./templates/AccessCredentials/index.php:74
 #: ./templates/Addresses/index.php:93
 #: ./templates/Billings/index.php:81
 #: ./templates/BorrowedEquipments/index.php:73
@@ -2000,7 +2000,7 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: ./templates/AccessCredentials/index.php:83
+#: ./templates/AccessCredentials/index.php:91
 #: ./templates/Addresses/index.php:110
 #: ./templates/Billings/index.php:98
 #: ./templates/BorrowedEquipments/index.php:90
@@ -2032,7 +2032,7 @@ msgstr ""
 msgid "first"
 msgstr ""
 
-#: ./templates/AccessCredentials/index.php:84
+#: ./templates/AccessCredentials/index.php:92
 #: ./templates/Addresses/index.php:111
 #: ./templates/Billings/index.php:99
 #: ./templates/BorrowedEquipments/index.php:91
@@ -2064,7 +2064,7 @@ msgstr ""
 msgid "previous"
 msgstr ""
 
-#: ./templates/AccessCredentials/index.php:86
+#: ./templates/AccessCredentials/index.php:94
 #: ./templates/Addresses/index.php:113
 #: ./templates/Billings/index.php:101
 #: ./templates/BorrowedEquipments/index.php:93
@@ -2096,7 +2096,7 @@ msgstr ""
 msgid "next"
 msgstr ""
 
-#: ./templates/AccessCredentials/index.php:87
+#: ./templates/AccessCredentials/index.php:95
 #: ./templates/Addresses/index.php:114
 #: ./templates/Billings/index.php:102
 #: ./templates/BorrowedEquipments/index.php:94
@@ -2128,7 +2128,7 @@ msgstr ""
 msgid "last"
 msgstr ""
 
-#: ./templates/AccessCredentials/index.php:90
+#: ./templates/AccessCredentials/index.php:98
 #: ./templates/Addresses/index.php:117
 #: ./templates/Billings/index.php:105
 #: ./templates/BorrowedEquipments/index.php:97
