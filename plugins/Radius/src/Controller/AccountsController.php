@@ -13,6 +13,7 @@ use Mapik\RadiusClient\Exceptions\ClientException;
 use Mapik\RadiusClient\Packet;
 use Mapik\RadiusClient\PacketType;
 use Radius\Model\Entity\Account;
+use Radius\Model\Entity\Radacct;
 
 /**
  * Accounts Controller
@@ -328,6 +329,140 @@ class AccountsController extends AppController
     }
 
     /**
+     * Send disconnect request method
+     *
+     * @param \Radius\Model\Entity\Radacct $session RADIUS Accounting Record.
+     * @return bool Returns true if the disconnection was successful.
+     */
+    private function sendDisconnectRequest(Radacct $session): bool
+    {
+        $disconnected = false;
+
+        $client = new Client('udp://' . $session->nasipaddress . ':1700', /* timeout */ 3);
+        try {
+            $response = $client->send(
+                new Packet(PacketType::DISCONNECT_REQUEST(), /* secret */ env('RADIUS_SECRET'), [
+                    'User-Name' => $session->username,
+                    'Acct-Session-Id' => $session->acctsessionid,
+                    'Framed-IP-Address' => $session->framedipaddress,
+                    'NAS-IP-Address' => $session->nasipaddress,
+                ])
+            );
+        } catch (ClientException $e) {
+            $this->Flash->error(__d(
+                'radius',
+                'The RADIUS session for {0} started on {1} could not be disconnected ({2}).',
+                $session->username,
+                $session->acctstarttime,
+                $e->getMessage()
+            ));
+
+            // skip further processing and return false
+            return false;
+        }
+
+        // detect response type
+        switch ($response->getType()) {
+            case PacketType::COA_ACK():
+                $result = 'CoA-ACK';
+                $disconnected = true;
+                break;
+            case PacketType::DISCONNECT_ACK():
+                $result = 'Disconnect-ACK';
+                $disconnected = true;
+                break;
+            case PacketType::COA_NAK():
+                $result = 'CoA-NAK';
+                break;
+            case PacketType::DISCONNECT_NAK():
+                $result = 'Disconnect-NAK';
+                break;
+            default:
+                $result = 'Unsupported reply';
+        }
+
+        // detect error causes
+        $errors = [];
+        $attributes = $response->getAttributes();
+        if (isset($attributes['Error-Cause']) && is_array($attributes['Error-Cause'])) {
+            foreach ($attributes['Error-Cause'] as $error_code) {
+                switch ($error_code) {
+                    case 401:
+                        $errors[] = 'Unsupported Attribute';
+                        break;
+                    case 402:
+                        $errors[] = 'Missing Attribute';
+                        break;
+                    case 403:
+                        $errors[] = 'NAS Identification Mismatch';
+                        break;
+                    case 404:
+                        $errors[] = 'Invalid Request';
+                        break;
+                    case 405:
+                        $errors[] = 'Unsupported Service';
+                        break;
+                    case 406:
+                        $errors[] = 'Unsupported Extension';
+                        break;
+                    case 407:
+                        $errors[] = 'Invalid Attribute Value';
+                        break;
+                    case 501:
+                        $errors[] = 'Administratively Prohibited';
+                        break;
+                    case 502:
+                        $errors[] = 'Request Not Routable (Proxy)';
+                        break;
+                    case 503:
+                        $errors[] = 'Session Context Not Found';
+                        break;
+                    case 504:
+                        $errors[] = 'Session Context Not Removable';
+                        break;
+                    case 505:
+                        $errors[] = 'Other Proxy Processing Error';
+                        break;
+                    case 506:
+                        $errors[] = 'Resources Unavailable';
+                        break;
+                    case 507:
+                        $errors[] = 'Request Initiated';
+                        break;
+                    case 508:
+                        $errors[] = 'Multiple Session Selection Unsupported';
+                        break;
+                    default:
+                        $errors[] = 'Unsupported Error-Cause';
+                }
+            }
+        }
+        $error = implode(', ', $errors);
+
+        if ($disconnected) {
+            $this->Flash->success(__d(
+                'radius',
+                'The RADIUS session for {0} started on {1} has been disconnected ({2}).',
+                $session->username,
+                $session->acctstarttime,
+                $error ? $result . ' - ' . $error : $result
+            ));
+
+            return true;
+        } else {
+            $this->Flash->error(__d(
+                'radius',
+                'The RADIUS session for {0} started on {1} could not be disconnected ({2}).',
+                $session->username,
+                $session->acctstarttime,
+                $error ? $result . ' - ' . $error : $result
+            ));
+
+            return false;
+        }
+    }
+
+    /**
      * Disconnect request method
      *
      * @param string|null $id Account id.
@@ -348,130 +483,15 @@ class AccountsController extends AppController
         if (empty($account->radacct)) {
             $this->Flash->warning(__d(
                 'radius',
-                'No active RADIUS session found.'
+                'No active RADIUS session for {0} found.',
+                $account->username
             ));
 
             return $this->redirect(['action' => 'monitoring', $account->id]);
         }
 
         foreach ($account->radacct as $session) {
-            $disconnected = false;
-
-            $client = new Client('udp://' . $session->nasipaddress . ':1700', /* timeout */ 3);
-            try {
-                $response = $client->send(
-                    new Packet(PacketType::DISCONNECT_REQUEST(), /* secret */ env('RADIUS_SECRET'), [
-                        'User-Name' => $session->username,
-                        'Acct-Session-Id' => $session->acctsessionid,
-                        'Framed-IP-Address' => $session->framedipaddress,
-                        'NAS-IP-Address' => $session->nasipaddress,
-                    ])
-                );
-            } catch (ClientException $e) {
-                $this->Flash->error(__d(
-                    'radius',
-                    'The RADIUS session started on {0} could not be disconnected ({1}).',
-                    $session->acctstarttime,
-                    $e->getMessage()
-                ));
-
-                // skip further processing and go to the next record
-                continue;
-            }
-
-            // detect response type
-            switch ($response->getType()) {
-                case PacketType::COA_ACK():
-                    $result = 'CoA-ACK';
-                    $disconnected = true;
-                    break;
-                case PacketType::DISCONNECT_ACK():
-                    $result = 'Disconnect-ACK';
-                    $disconnected = true;
-                    break;
-                case PacketType::COA_NAK():
-                    $result = 'CoA-NAK';
-                    break;
-                case PacketType::DISCONNECT_NAK():
-                    $result = 'Disconnect-NAK';
-                    break;
-                default:
-                    $result = 'Unsupported reply';
-            }
-
-            // detect error causes
-            $errors = [];
-            $attributes = $response->getAttributes();
-            if (isset($attributes['Error-Cause']) && is_array($attributes['Error-Cause'])) {
-                foreach ($attributes['Error-Cause'] as $error_code) {
-                    switch ($error_code) {
-                        case 401:
-                            $errors[] = 'Unsupported Attribute';
-                            break;
-                        case 402:
-                            $errors[] = 'Missing Attribute';
-                            break;
-                        case 403:
-                            $errors[] = 'NAS Identification Mismatch';
-                            break;
-                        case 404:
-                            $errors[] = 'Invalid Request';
-                            break;
-                        case 405:
-                            $errors[] = 'Unsupported Service';
-                            break;
-                        case 406:
-                            $errors[] = 'Unsupported Extension';
-                            break;
-                        case 407:
-                            $errors[] = 'Invalid Attribute Value';
-                            break;
-                        case 501:
-                            $errors[] = 'Administratively Prohibited';
-                            break;
-                        case 502:
-                            $errors[] = 'Request Not Routable (Proxy)';
-                            break;
-                        case 503:
-                            $errors[] = 'Session Context Not Found';
-                            break;
-                        case 504:
-                            $errors[] = 'Session Context Not Removable';
-                            break;
-                        case 505:
-                            $errors[] = 'Other Proxy Processing Error';
-                            break;
-                        case 506:
-                            $errors[] = 'Resources Unavailable';
-                            break;
-                        case 507:
-                            $errors[] = 'Request Initiated';
-                            break;
-                        case 508:
-                            $errors[] = 'Multiple Session Selection Unsupported';
-                            break;
-                        default:
-                            $errors[] = 'Unsupported Error-Cause';
-                    }
-                }
-            }
-            $error = implode(', ', $errors);
-
-            if ($disconnected) {
-                $this->Flash->success(__d(
-                    'radius',
-                    'The RADIUS session started on {0} has been disconnected ({1}).',
-                    $session->acctstarttime,
-                    $error ? $result . ' - ' . $error : $result
-                ));
-            } else {
-                $this->Flash->error(__d(
-                    'radius',
-                    'The RADIUS session started on {0} could not be disconnected ({1}).',
-                    $session->acctstarttime,
-                    $error ? $result . ' - ' . $error : $result
-                ));
-            }
+            $this->sendDisconnectRequest($session);
         }
 
         // wait one second for RADIUS records to update
@@ -534,25 +554,53 @@ class AccountsController extends AppController
             }
 
             $processed = 0;
-            $failures = 0;
+            $modified = 0;
+            $failed = 0;
+
             $something_to_do = false;
 
             /** @var iterable<\Radius\Model\Entity\Account> $accounts */
             $accounts = $accountsQuery->all();
 
             foreach ($accounts as $account) {
+                $is_modified = false;
+
                 // autogenerate related records
                 if ($this->getRequest()->getData('radcheck') == '1') {
-                    $account->radcheck = $this->autoRadcheckData($account);
                     $something_to_do = true;
+
+                    $radcheck = $this->autoRadcheckData($account);
+                    sort($radcheck);
+                    sort($account->radcheck);
+                    if ($account->radcheck != $radcheck) {
+                        $is_modified = true;
+                        $account->radcheck = $radcheck;
+                    }
+                    unset($radcheck);
                 }
                 if ($this->getRequest()->getData('radreply') == '1') {
-                    $account->radreply = $this->autoRadreplyData($account);
                     $something_to_do = true;
+
+                    $radreply = $this->autoRadreplyData($account);
+                    sort($radreply);
+                    sort($account->radreply);
+                    if ($account->radreply != $radreply) {
+                        $is_modified = true;
+                        $account->radreply = $radreply;
+                    }
+                    unset($radreply);
                 }
                 if ($this->getRequest()->getData('radusergroup') == '1') {
-                    $account->radusergroup = $this->autoRadusergroupData($account);
                     $something_to_do = true;
+
+                    $radusergroup = $this->autoRadusergroupData($account);
+                    sort($radusergroup);
+                    sort($account->radusergroup);
+                    if ($account->radusergroup != $radusergroup) {
+                        $is_modified = true;
+                        $account->radusergroup = $radusergroup;
+                    }
+                    unset($radusergroup);
                 }
 
                 // stop processing if there is nothing to do
@@ -563,16 +611,48 @@ class AccountsController extends AppController
                 }
 
                 $processed++;
-                if ($this->Accounts->save($account) === false) {
-                    $failures++;
-                    $this->Flash->error(
-                        __d(
-                            'radius',
-                            'The RADIUS account {0} could not be updated. Please, try again.',
-                            $account->username
-                        )
-                    );
-                    Log::warning('The RADIUS account ' . $account->username . ' could not be updated.');
+                if ($is_modified) {
+                    // save modified data
+                    if ($this->Accounts->save($account) === false) {
+                        $failed++;
+
+                        $this->Flash->error(
+                            __d(
+                                'radius',
+                                'The RADIUS account {0} could not be updated. Please, try again.',
+                                $account->username
+                            )
+                        );
+                        Log::warning('The RADIUS account ' . $account->username . ' could not be updated.');
+                    } else {
+                        $modified++;
+
+                        // Send RADIUS disconnect request for modified
+                        if ($this->getRequest()->getData('reconnect_modified_accounts') == '1') {
+                            $radaccts = $this->Accounts->Radacct
+                                ->find()
+                                ->where([
+                                    'Radacct.username' => $account->username,
+                                    'Radacct.acctstoptime IS' => null,
+                                ])
+                                ->all()
+                                ->toArray();
+
+                            if (empty($radaccts)) {
+                                $this->Flash->warning(__d(
+                                    'radius',
+                                    'No active RADIUS session for {0} found.',
+                                    $account->username
+                                ));
+                            }
+
+                            foreach ($radaccts as $session) {
+                                $this->sendDisconnectRequest($session);
+                            }
+
+                            unset($radaccts);
+                        }
+                    }
                 }
             }
 
@@ -582,14 +662,14 @@ class AccountsController extends AppController
                     'Related entries for {0} RADIUS accounts were processed,'
                         . ' {1} accounts were updated, and {2} accounts failed to update.',
                     Number::format($processed),
-                    Number::format($processed - $failures),
-                    Number::format($failures),
+                    Number::format($modified),
+                    Number::format($failed),
                 )
             );
             Log::info(
                 'Related entries for ' . Number::format($processed) . ' RADIUS accounts were processed, '
-                    . Number::format($processed - $failures) . ' accounts were updated, and '
-                    . Number::format($failures) . ' accounts failed to update.'
+                    . Number::format($modified) . ' accounts were updated, and '
+                    . Number::format($failed) . ' accounts failed to update.'
             );
         }
     }

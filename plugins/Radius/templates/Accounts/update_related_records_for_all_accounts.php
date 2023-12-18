@@ -44,6 +44,11 @@
                     'type' => 'checkbox',
                     'default' => true,
                 ]);
+                echo $this->Form->control('reconnect_modified_accounts', [
+                    'label' => __d('radius', 'Reconnect Modified RADIUS Accounts'),
+                    'type' => 'checkbox',
+                    'default' => true,
+                ]);
                 ?>
             </fieldset>
             <?= $this->Form->button(
