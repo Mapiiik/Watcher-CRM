@@ -27,9 +27,13 @@
         <table>
             <thead>
                 <tr>
+                    <?php if (!isset($customer_id)) : ?>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id', __('Customer Number')) ?></th>
+                    <?php endif; ?>
+                    <?php if (!isset($contract_id)) : ?>
                     <th><?= $this->Paginator->sort('contract_id') ?></th>
+                    <?php endif; ?>
                     <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('username') ?></th>
                     <th><?= $this->Paginator->sort('ip', __('IP Address')) ?></th>
@@ -40,6 +44,7 @@
             <tbody>
                 <?php foreach ($accessCredentials as $accessCredential) : ?>
                 <tr>
+                    <?php if (!isset($customer_id)) : ?>
                     <td><?= $accessCredential->hasValue('customer') ?
                         $this->Html->link(
                             $accessCredential->customer->name,
@@ -47,11 +52,14 @@
                         ) : '' ?></td>
                     <td><?= $accessCredential->hasValue('customer') ?
                         h($accessCredential->customer->number) : '' ?></td>
+                    <?php endif; ?>
+                    <?php if (!isset($contract_id)) : ?>
                     <td><?= $accessCredential->hasValue('contract') ?
                         $this->Html->link(
                             $accessCredential->contract->name,
                             ['controller' => 'Contracts', 'action' => 'view', $accessCredential->contract->id]
                         ) : '' ?></td>
+                    <?php endif; ?>
                     <td><?= h($accessCredential->name) ?></td>
                     <td><?= h($accessCredential->username) ?></td>
                     <td><?= h($accessCredential->ip) ?></td>

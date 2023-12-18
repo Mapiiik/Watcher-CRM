@@ -23,7 +23,12 @@ class AccessCredentialsController extends AppController
             $conditions += ['AccessCredentials.customer_id' => $this->customer_id];
         }
         if (isset($this->contract_id)) {
-            $conditions += ['AccessCredentials.contract_id' => $this->contract_id];
+            $conditions += [
+                'OR' => [
+                    'AccessCredentials.contract_id' => $this->contract_id,
+                    'AccessCredentials.contract_id IS NULL',
+                ],
+            ];
         }
 
         // search
