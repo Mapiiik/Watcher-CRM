@@ -329,6 +329,58 @@ class AccountsController extends AppController
     }
 
     /**
+     * This private function handles disconnect errors and returns a string representation of the errors.
+     *
+     * @param array $attributes The attributes containing the disconnect errors.
+     * @return string The string representation of the disconnect errors.
+     */
+    private function handleDisconnectErrors(array $attributes): string
+    {
+        $errors = [];
+
+        // Check if the 'Error-Cause' attribute exists and is an array
+        if (isset($attributes['Error-Cause']) && is_array($attributes['Error-Cause'])) {
+            foreach ($attributes['Error-Cause'] as $error_code) {
+                $errors[] = $this->getDisconnectErrorMessage($error_code);
+            }
+        }
+
+        // Return a string representation of the errors array, with each error separated by a comma and space
+        return implode(', ', $errors);
+    }
+
+    /**
+     * This function returns the error message based on the error code.
+     *
+     * @param int $error_code The error code to retrieve the error message for.
+     * @return string The error message corresponding to the error code.
+     */
+    private function getDisconnectErrorMessage(int $error_code): string
+    {
+        // Define an array of error messages with their corresponding error codes.
+        $errorMessages = [
+            401 => 'Unsupported Attribute',
+            402 => 'Missing Attribute',
+            403 => 'NAS Identification Mismatch',
+            404 => 'Invalid Request',
+            405 => 'Unsupported Service',
+            406 => 'Unsupported Extension',
+            407 => 'Invalid Attribute Value',
+            501 => 'Administratively Prohibited',
+            502 => 'Request Not Routable (Proxy)',
+            503 => 'Session Context Not Found',
+            504 => 'Session Context Not Removable',
+            505 => 'Other Proxy Processing Error',
+            506 => 'Resources Unavailable',
+            507 => 'Request Initiated',
+            508 => 'Multiple Session Selection Unsupported',
+        ];
+
+        // Return the error message corresponding to the error code, or 'Unsupported Error-Cause' if the error code is not found.
+        return $errorMessages[$error_code] ?? 'Unsupported Error-Cause';
+    }
+
+    /**
      * Send disconnect request method
      *
      * @param \Radius\Model\Entity\Radacct $session RADIUS Accounting Record.
@@ -382,62 +434,7 @@ class AccountsController extends AppController
         }
 
         // detect error causes
-        $errors = [];
-        $attributes = $response->getAttributes();
-        if (isset($attributes['Error-Cause']) && is_array($attributes['Error-Cause'])) {
-            foreach ($attributes['Error-Cause'] as $error_code) {
-                switch ($error_code) {
-                    case 401:
-                        $errors[] = 'Unsupported Attribute';
-                        break;
-                    case 402:
-                        $errors[] = 'Missing Attribute';
-                        break;
-                    case 403:
-                        $errors[] = 'NAS Identification Mismatch';
-                        break;
-                    case 404:
-                        $errors[] = 'Invalid Request';
-                        break;
-                    case 405:
-                        $errors[] = 'Unsupported Service';
-                        break;
-                    case 406:
-                        $errors[] = 'Unsupported Extension';
-                        break;
-                    case 407:
-                        $errors[] = 'Invalid Attribute Value';
-                        break;
-                    case 501:
-                        $errors[] = 'Administratively Prohibited';
-                        break;
-                    case 502:
-                        $errors[] = 'Request Not Routable (Proxy)';
-                        break;
-                    case 503:
-                        $errors[] = 'Session Context Not Found';
-                        break;
-                    case 504:
-                        $errors[] = 'Session Context Not Removable';
-                        break;
-                    case 505:
-                        $errors[] = 'Other Proxy Processing Error';
-                        break;
-                    case 506:
-                        $errors[] = 'Resources Unavailable';
-                        break;
-                    case 507:
-                        $errors[] = 'Request Initiated';
-                        break;
-                    case 508:
-                        $errors[] = 'Multiple Session Selection Unsupported';
-                        break;
-                    default:
-                        $errors[] = 'Unsupported Error-Cause';
-                }
-            }
-        }
-        $error = implode(', ', $errors);
+        $error = $this->handleDisconnectErrors($response->getAttributes());
 
         if ($disconnected) {
             $this->Flash->success(__d(
