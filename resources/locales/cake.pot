@@ -4,8 +4,8 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: CakePHP 5.0.3\n"
-"POT-Creation-Date: 2023-11-29 13:48+0100\n"
+"Project-Id-Version: CakePHP 5.0.4\n"
+"POT-Creation-Date: 2023-12-29 11:50+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -510,7 +510,7 @@ msgstr ""
 msgid "New {0}"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1963
+#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1964
 msgid "Submit"
 msgstr ""
 

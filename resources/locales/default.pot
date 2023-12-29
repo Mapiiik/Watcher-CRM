@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-12-18 16:58+0100\n"
+"POT-Creation-Date: 2023-12-29 11:50+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1315,6 +1315,10 @@ msgstr ""
 
 #: ./src/Model/Table/IpsTable.php:86
 msgid "This IP address is already in use."
+msgstr ""
+
+#: ./src/Model/Table/PhonesTable.php:119
+msgid "The phone number is not valid."
 msgstr ""
 
 #: ./src/Model/Table/TasksTable.php:167
