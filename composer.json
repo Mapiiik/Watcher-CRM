@@ -25,6 +25,7 @@
         "enqueue/fs": "^0.10.19",
         "enqueue/redis": "^0.10.19",
         "evilfreelancer/routeros-api-php": "^1.5",
+        "giggsey/libphonenumber-for-php": "^8.13",
         "league/oauth2-google": "^4.0",
         "mapik/audit-log": "^5.0",
         "mapik/pohoda-xml": "^1.16",

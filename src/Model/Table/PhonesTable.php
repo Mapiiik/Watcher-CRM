@@ -7,6 +7,9 @@ use ArrayObject;
 use Cake\Event\EventInterface;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
+use libphonenumber\NumberParseException;
+use libphonenumber\PhoneNumberFormat;
+use libphonenumber\PhoneNumberUtil;
 
 /**
  * Phones Model
@@ -99,11 +102,29 @@ class PhonesTable extends AppTable
     {
         $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
 
+        $rules->add(
+            function ($entity, $options) {
+                $phoneUtil = PhoneNumberUtil::getInstance();
+                try {
+                    $phoneNumber = $phoneUtil->parse($entity->phone, env('APP_DEFAULT_PHONE_REGION'));
+
+                    return $phoneUtil->isValidNumber($phoneNumber);
+                } catch (NumberParseException $e) {
+                    return false;
+                }
+            },
+            'isPhoneNumberValid',
+            [
+                'errorField' => 'phone',
+                'message' => __('The phone number is not valid.'),
+            ]
+        );
+
         return $rules;
     }
 
     /**
-     * Normalise phone numbers
+     * Normalization of phone numbers
      *
      * @param \Cake\Event\EventInterface $event Event
      * @param \ArrayObject $data Data
@@ -113,28 +134,17 @@ class PhonesTable extends AppTable
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
         if (isset($data['phone']) && is_string($data['phone']) && (strlen($data['phone']) > 0)) {
-            $phone = $data['phone'];
+            $phoneUtil = PhoneNumberUtil::getInstance();
+            try {
+                $phoneNumber = $phoneUtil->parse($data['phone'], env('APP_DEFAULT_PHONE_REGION'));
 
-            $phone = trim(str_replace(['+', '-', ' '], ['', '', ''], $phone));
-
-            switch (strlen($phone)) {
-                case 9:
-                        $phone = '420' . $phone;
-                    break;
-                case 12:
-                        $phone = $phone;
-                    break;
-                case 11: //some other countries, Netherlands etc.
-                        $phone = $phone;
-                    break;
-                default:
-                        $data['phone'] = null;
-
-                    return;
+                if ($phoneUtil->isValidNumber($phoneNumber)) {
+                    // The phone number is fine, formatting...
+                    $data['phone'] = $phoneUtil->format($phoneNumber, PhoneNumberFormat::INTERNATIONAL);
+                }
+            } catch (NumberParseException $e) {
+                // The problem will be caught by the "isPhoneNumberValid" validator
             }
-
-            $phone = substr($phone, 0, 3) . ' ' . substr($phone, 3);
-            $data['phone'] = '+' . $phone;
         }
     }
 }
