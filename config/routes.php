@@ -65,7 +65,7 @@ if (!(php_sapi_name() == 'cli')) {
 $routes->setRouteClass(DashedRoute::class);
 
 $routes->scope('/', function (RouteBuilder $builder): void {
-    $builder->setExtensions(['pdf']);
+    $builder->setExtensions(['pdf', 'csv']);
 
     /*
      * Contracts - nested routes
