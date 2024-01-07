@@ -40,6 +40,7 @@ class AddressesController extends AppController
                     'Addresses.number ILIKE' => '%' . trim($search) . '%',
                     'Addresses.city ILIKE' => '%' . trim($search) . '%',
                     'Addresses.zip ILIKE' => '%' . trim($search) . '%',
+                    'Addresses.ruian_gid' => (int)trim($search),
                 ],
             ];
         }
