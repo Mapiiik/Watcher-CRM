@@ -9,6 +9,7 @@ use App\Model\Entity\Contract;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 use Cake\Database\Exception\MissingConnectionException;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\I18n\Date;
 use Cake\ORM\Entity;
 use Cake\ORM\Query\SelectQuery;
@@ -243,6 +244,9 @@ class OverviewsController extends AppController
                                             ->address;
                                     } catch (MissingConnectionException $missingConnectionError) {
                                         $address['ruian_address'] = null;
+                                    } catch (RecordNotFoundException $recordNotFoundError) {
+                                        $address['ruian_address'] = null;
+                                        $this->Flash->warning(__('Invalid RUIAN GID: {0}', $ruian_gid));
                                     }
 
                                     $address['cto_category'] = $cto_category;
@@ -418,6 +422,9 @@ class OverviewsController extends AppController
                                             ->address;
                                     } catch (MissingConnectionException $missingConnectionError) {
                                         $address['ruian_address'] = null;
+                                    } catch (RecordNotFoundException $recordNotFoundError) {
+                                        $address['ruian_address'] = null;
+                                        $this->Flash->warning(__('Invalid RUIAN GID: {0}', $ruian_gid));
                                     }
 
                                     $address['cto_category'] = $cto_category;
