@@ -30,6 +30,7 @@ class PhonesController extends AppController
             $conditions[] = [
                 'OR' => [
                     'Phones.phone ILIKE' => '%' . trim($search) . '%',
+                    "REPLACE(Phones.phone, ' ', '') ILIKE" => '%' . trim($search) . '%',
                 ],
             ];
         }

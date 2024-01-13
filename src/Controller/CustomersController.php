@@ -68,7 +68,8 @@ FROM
     LEFT JOIN (
         SELECT 
             Phones.customer_id, 
-            STRING_AGG(Phones.phone, ' ') AS txt 
+            STRING_AGG(Phones.phone, ' ') AS txt_1,
+            STRING_AGG(REPLACE(Phones.phone, ' ', ''), ' ') AS txt_2
         FROM 
             Phones 
         GROUP BY 
@@ -100,7 +101,8 @@ WHERE
             Contracts.txt,
             Addresses.txt,
             Emails.txt,
-            Phones.txt, 
+            Phones.txt_1,
+            Phones.txt_2,
             Ips.txt
         )
     ) @@ websearch_to_tsquery(:search) 
