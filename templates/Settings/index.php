@@ -34,6 +34,27 @@
         </div>
 
         <div class="related">
+            <h4><?= __('Customer Functions') ?></h4>
+            <div>
+                <?= $this->AuthLink->postLink(
+                    __('Update Phone Number Format'),
+                    [
+                        'controller' => 'Phones',
+                        'action' => 'formatAll',
+                        'plugin' => null,
+                        false,
+                    ],
+                    [
+                        'confirm' => __(
+                            'Do you really want to update all phones for all customers?'
+                        ),
+                        'class' => 'side-nav-item',
+                    ]
+                ) ?>
+            </div>
+        </div>
+
+        <div class="related">
             <h4><?= __('Contract Functions') ?></h4>
             <div>
                 <?= $this->AuthLink->postLink(

@@ -3,6 +3,12 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Utility\Text;
+use libphonenumber\NumberParseException;
+use libphonenumber\PhoneNumberFormat;
+use libphonenumber\PhoneNumberUtil;
+use SplObjectStorage;
+
 /**
  * Phones Controller
  *
@@ -155,5 +161,66 @@ class PhonesController extends AppController
         }
 
         return $this->afterDeleteRedirect(['action' => 'index']);
+    }
+
+    /**
+     * Format all method
+     *
+     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @throws \Cake\Http\Exception\MethodNotAllowedException When badly called.
+     */
+    public function formatAll()
+    {
+        $this->getRequest()->allowMethod(['post']);
+
+        $phones = $this->Phones->find()->all();
+
+        $phoneUtil = PhoneNumberUtil::getInstance();
+
+        // check the formatting of the phone number and update it if necessary
+        foreach ($phones as $phone) {
+            try {
+                $phoneNumber = $phoneUtil->parse($phone->phone, env('APP_DEFAULT_PHONE_REGION'));
+
+                if ($phoneUtil->isValidNumber($phoneNumber)) {
+                    // The phone number is fine, formatting...
+                    $phoneString = $phoneUtil->format($phoneNumber, PhoneNumberFormat::INTERNATIONAL);
+
+                    // If the phone number format is different, update the record
+                    if ($phone->phone !== $phoneString) {
+                        $phone->phone = $phoneString;
+                    }
+                } else {
+                    $this->Flash->error(
+                        __('The phone number is invalid: {0}', $phone->phone),
+                    );
+                }
+            } catch (NumberParseException $e) {
+                $this->Flash->error(
+                    __('The phone number is invalid: {0}', $phone->phone),
+                );
+            }
+        }
+
+        // save all changes
+        if (
+            $this->Phones->saveMany(
+                $phones,
+                [
+                    '_auditQueue' => new SplObjectStorage(),
+                    '_auditTransaction' => Text::uuid(),
+                ]
+            ) === false
+        ) {
+            $this->Flash->error(
+                __('The phones could not be updated. Please, try again.')
+            );
+        } else {
+            $this->Flash->success(
+                __('The phones have been updated.')
+            );
+        }
+
+        return $this->redirect(['action' => 'index']);
     }
 }
