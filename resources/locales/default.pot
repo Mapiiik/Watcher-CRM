@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-12-29 11:50+0100\n"
+"POT-Creation-Date: 2024-01-13 14:36+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -188,33 +188,33 @@ msgstr ""
 msgid "The access credential could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:115
-#: ./src/Controller/AddressesController.php:164
+#: ./src/Controller/AddressesController.php:116
+#: ./src/Controller/AddressesController.php:165
 msgid "The address has been saved."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:119
-#: ./src/Controller/AddressesController.php:168
+#: ./src/Controller/AddressesController.php:120
+#: ./src/Controller/AddressesController.php:169
 msgid "The address could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:199
+#: ./src/Controller/AddressesController.php:200
 msgid "The address has been deleted."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:202
+#: ./src/Controller/AddressesController.php:203
 msgid "The address could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:282
+#: ./src/Controller/AddressesController.php:283
 msgid "Multiple ({0}) RUIAN addresses found."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:286
+#: ./src/Controller/AddressesController.php:287
 msgid "Address found in RUIAN."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:294
+#: ./src/Controller/AddressesController.php:295
 msgid "Address could not be found in RUIAN."
 msgstr ""
 
@@ -258,7 +258,7 @@ msgstr ""
 #: ./src/Controller/BillingsController.php:424
 #: ./src/Controller/ContractsController.php:254
 #: ./src/Controller/ContractsController.php:364
-#: ./src/Controller/OverviewsController.php:173
+#: ./src/Controller/OverviewsController.php:174
 #: ./src/Controller/TasksController.php:257
 #: ./src/Controller/TasksController.php:450
 #: ./src/Controller/TasksController.php:549
@@ -504,7 +504,7 @@ msgid "Please set the date of conclusion of the original contract version."
 msgstr ""
 
 #: ./src/Controller/ContractsController.php:960
-#: ./src/Controller/CustomersController.php:453
+#: ./src/Controller/CustomersController.php:455
 msgid "Invalid type of document requested."
 msgstr ""
 
@@ -544,33 +544,33 @@ msgstr ""
 msgid "The customer label could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:201
+#: ./src/Controller/CustomersController.php:203
 msgid "Please use the customer number or company identification number in the search."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:356
-#: ./src/Controller/CustomersController.php:382
+#: ./src/Controller/CustomersController.php:358
+#: ./src/Controller/CustomersController.php:384
 msgid "The customer has been saved."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:360
-#: ./src/Controller/CustomersController.php:386
+#: ./src/Controller/CustomersController.php:362
+#: ./src/Controller/CustomersController.php:388
 msgid "The customer could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:407
+#: ./src/Controller/CustomersController.php:409
 msgid "The customer has been deleted."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:410
+#: ./src/Controller/CustomersController.php:412
 msgid "The customer could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:427
+#: ./src/Controller/CustomersController.php:429
 msgid "Consent to the processing of personal data"
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:428
+#: ./src/Controller/CustomersController.php:430
 msgid "Consent to the processing of personal data (change)"
 msgstr ""
 
@@ -751,26 +751,44 @@ msgstr ""
 msgid "The login could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:609
+#: ./src/Controller/OverviewsController.php:249
+#: ./src/Controller/OverviewsController.php:427
+msgid "Invalid RUIAN GID: {0}"
+msgstr ""
+
+#: ./src/Controller/OverviewsController.php:616
 msgid "unknown dealer"
 msgstr ""
 
-#: ./src/Controller/PhonesController.php:87
-#: ./src/Controller/PhonesController.php:119
+#: ./src/Controller/PhonesController.php:94
+#: ./src/Controller/PhonesController.php:126
 msgid "The phone has been saved."
 msgstr ""
 
-#: ./src/Controller/PhonesController.php:91
-#: ./src/Controller/PhonesController.php:123
+#: ./src/Controller/PhonesController.php:98
+#: ./src/Controller/PhonesController.php:130
 msgid "The phone could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/PhonesController.php:150
+#: ./src/Controller/PhonesController.php:157
 msgid "The phone has been deleted."
 msgstr ""
 
-#: ./src/Controller/PhonesController.php:153
+#: ./src/Controller/PhonesController.php:160
 msgid "The phone could not be deleted. Please, try again."
+msgstr ""
+
+#: ./src/Controller/PhonesController.php:195
+#: ./src/Controller/PhonesController.php:200
+msgid "The phone number is invalid: {0}"
+msgstr ""
+
+#: ./src/Controller/PhonesController.php:216
+msgid "The phones could not be updated. Please, try again."
+msgstr ""
+
+#: ./src/Controller/PhonesController.php:220
+msgid "The phones have been updated."
 msgstr ""
 
 #: ./src/Controller/QueuesController.php:78
@@ -2956,7 +2974,7 @@ msgstr ""
 #: ./templates/Commissions/add.php:11
 #: ./templates/Commissions/edit.php:16
 #: ./templates/Commissions/view.php:21
-#: ./templates/Settings/index.php:180
+#: ./templates/Settings/index.php:201
 msgid "List Commissions"
 msgstr ""
 
@@ -3099,7 +3117,7 @@ msgstr ""
 #: ./templates/ContractStates/add.php:12
 #: ./templates/ContractStates/edit.php:20
 #: ./templates/ContractStates/view.php:25
-#: ./templates/Settings/index.php:127
+#: ./templates/Settings/index.php:148
 msgid "List Contract States"
 msgstr ""
 
@@ -3508,7 +3526,7 @@ msgstr ""
 #: ./templates/Countries/add.php:11
 #: ./templates/Countries/edit.php:16
 #: ./templates/Countries/view.php:21
-#: ./templates/Settings/index.php:111
+#: ./templates/Settings/index.php:132
 msgid "List Countries"
 msgstr ""
 
@@ -3830,7 +3848,7 @@ msgstr ""
 #: ./templates/DealerCommissions/add.php:14
 #: ./templates/DealerCommissions/edit.php:22
 #: ./templates/DealerCommissions/view.php:25
-#: ./templates/Settings/index.php:185
+#: ./templates/Settings/index.php:206
 msgid "List Dealer Commissions"
 msgstr ""
 
@@ -3879,7 +3897,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/add.php:12
 #: ./templates/EquipmentTypes/edit.php:20
 #: ./templates/EquipmentTypes/view.php:25
-#: ./templates/Settings/index.php:153
+#: ./templates/Settings/index.php:174
 msgid "List Equipment Types"
 msgstr ""
 
@@ -3994,7 +4012,7 @@ msgstr ""
 #: ./templates/Labels/add.php:14
 #: ./templates/Labels/edit.php:19
 #: ./templates/Labels/view.php:24
-#: ./templates/Settings/index.php:106
+#: ./templates/Settings/index.php:127
 msgid "List Labels"
 msgstr ""
 
@@ -4086,7 +4104,7 @@ msgid "Overviews"
 msgstr ""
 
 #: ./templates/Overviews/index.php:10
-#: ./templates/Settings/index.php:135
+#: ./templates/Settings/index.php:156
 msgid "Service Related"
 msgstr ""
 
@@ -4123,7 +4141,7 @@ msgid "List Phones"
 msgstr ""
 
 #: ./templates/Overviews/index.php:77
-#: ./templates/Settings/index.php:124
+#: ./templates/Settings/index.php:145
 msgid "Contract Related"
 msgstr ""
 
@@ -4325,7 +4343,7 @@ msgstr ""
 #: ./templates/Queues/add.php:11
 #: ./templates/Queues/edit.php:16
 #: ./templates/Queues/view.php:21
-#: ./templates/Settings/index.php:148
+#: ./templates/Settings/index.php:169
 msgid "List Queues"
 msgstr ""
 
@@ -4431,7 +4449,7 @@ msgstr ""
 #: ./templates/ServiceTypes/add.php:11
 #: ./templates/ServiceTypes/edit.php:19
 #: ./templates/ServiceTypes/view.php:24
-#: ./templates/Settings/index.php:143
+#: ./templates/Settings/index.php:164
 msgid "List Service Types"
 msgstr ""
 
@@ -4510,7 +4528,7 @@ msgstr ""
 #: ./templates/Services/add.php:13
 #: ./templates/Services/edit.php:18
 #: ./templates/Services/view.php:23
-#: ./templates/Settings/index.php:138
+#: ./templates/Settings/index.php:159
 msgid "List Services"
 msgstr ""
 
@@ -4552,70 +4570,82 @@ msgid "Billing Functions"
 msgstr ""
 
 #: ./templates/Settings/index.php:37
-msgid "Contract Functions"
+msgid "Customer Functions"
 msgstr ""
 
 #: ./templates/Settings/index.php:40
-#: ./templates/Settings/index.php:55
-msgid "Addition of Contract Numbers"
+msgid "Update Phone Number Format"
 msgstr ""
 
 #: ./templates/Settings/index.php:48
+msgid "Do you really want to update all phones for all customers?"
+msgstr ""
+
+#: ./templates/Settings/index.php:58
+msgid "Contract Functions"
+msgstr ""
+
+#: ./templates/Settings/index.php:61
+#: ./templates/Settings/index.php:76
+msgid "Addition of Contract Numbers"
+msgstr ""
+
+#: ./templates/Settings/index.php:69
 msgid "Do you really want to add a contract number for all contracts?"
 msgstr ""
 
-#: ./templates/Settings/index.php:55
-#: ./templates/Settings/index.php:85
+#: ./templates/Settings/index.php:76
+#: ./templates/Settings/index.php:106
 msgid "Force Overwrite"
 msgstr ""
 
-#: ./templates/Settings/index.php:63
+#: ./templates/Settings/index.php:84
 msgid "Do you really want to re-set a contract number for all contracts?"
 msgstr ""
 
-#: ./templates/Settings/index.php:70
-#: ./templates/Settings/index.php:85
+#: ./templates/Settings/index.php:91
+#: ./templates/Settings/index.php:106
 msgid "Addition of Subscriber Verification Codes"
 msgstr ""
 
-#: ./templates/Settings/index.php:78
+#: ./templates/Settings/index.php:99
 msgid "Do you really want to add a subscriber verification code for all contracts?"
 msgstr ""
 
-#: ./templates/Settings/index.php:93
+#: ./templates/Settings/index.php:114
 msgid "Do you really want to re-set a subscriber verification code for all contracts?"
 msgstr ""
 
-#: ./templates/Settings/index.php:103
+#: ./templates/Settings/index.php:124
 msgid "System Related"
 msgstr ""
 
-#: ./templates/Settings/index.php:116
+#: ./templates/Settings/index.php:137
 #: ./templates/TaxRates/add.php:11
 #: ./templates/TaxRates/edit.php:16
 #: ./templates/TaxRates/view.php:21
 msgid "List Tax Rates"
 msgstr ""
 
-#: ./templates/Settings/index.php:161
+#: ./templates/Settings/index.php:182
 msgid "Task Related"
 msgstr ""
 
-#: ./templates/Settings/index.php:164
+#: ./templates/Settings/index.php:185
 #: ./templates/TaskStates/add.php:11
 #: ./templates/TaskStates/edit.php:16
 #: ./templates/TaskStates/view.php:21
 msgid "List Task States"
 msgstr ""
 
-#: ./templates/Settings/index.php:169
+#: ./templates/Settings/index.php:190
 #: ./templates/TaskTypes/add.php:11
 #: ./templates/TaskTypes/edit.php:16
 #: ./templates/TaskTypes/view.php:21
 msgid "List Task Types"
 msgstr ""
 
-#: ./templates/Settings/index.php:177
+#: ./templates/Settings/index.php:198
 msgid "Commission Related"
 msgstr ""
 

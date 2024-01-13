@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-12-29 11:50+0100\n"
-"PO-Revision-Date: 2023-12-29 11:53+0100\n"
+"POT-Creation-Date: 2024-01-13 14:36+0100\n"
+"PO-Revision-Date: 2024-01-13 14:38+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -168,33 +168,33 @@ msgstr "Přístupové pověření bylo odstraněno."
 msgid "The access credential could not be deleted. Please, try again."
 msgstr "Přístupové oprávnění se nepodařilo odstranit. Zkuste to prosím znovu."
 
-#: src/Controller/AddressesController.php:115
-#: src/Controller/AddressesController.php:164
+#: src/Controller/AddressesController.php:116
+#: src/Controller/AddressesController.php:165
 msgid "The address has been saved."
 msgstr "Adresa byla uložena."
 
-#: src/Controller/AddressesController.php:119
-#: src/Controller/AddressesController.php:168
+#: src/Controller/AddressesController.php:120
+#: src/Controller/AddressesController.php:169
 msgid "The address could not be saved. Please, try again."
 msgstr "Adresu nelze uložit. Opakujte akci."
 
-#: src/Controller/AddressesController.php:199
+#: src/Controller/AddressesController.php:200
 msgid "The address has been deleted."
 msgstr "Adresa byla odstraněna."
 
-#: src/Controller/AddressesController.php:202
+#: src/Controller/AddressesController.php:203
 msgid "The address could not be deleted. Please, try again."
 msgstr "Adresu nelze odstranit. Opakujte akci."
 
-#: src/Controller/AddressesController.php:282
+#: src/Controller/AddressesController.php:283
 msgid "Multiple ({0}) RUIAN addresses found."
 msgstr "Bylo nalezeno více ({0}) adres RUIAN."
 
-#: src/Controller/AddressesController.php:286
+#: src/Controller/AddressesController.php:287
 msgid "Address found in RUIAN."
 msgstr "Adresa nalezena v RUIAN."
 
-#: src/Controller/AddressesController.php:294
+#: src/Controller/AddressesController.php:295
 msgid "Address could not be found in RUIAN."
 msgstr "Adresa nebyla v RUIAN nalezena."
 
@@ -238,7 +238,7 @@ msgstr "Fakturace nelze odstranit. Opakujte akci."
 #: src/Controller/BillingsController.php:424
 #: src/Controller/ContractsController.php:254
 #: src/Controller/ContractsController.php:364
-#: src/Controller/OverviewsController.php:173
+#: src/Controller/OverviewsController.php:174
 #: src/Controller/TasksController.php:257
 #: src/Controller/TasksController.php:450
 #: src/Controller/TasksController.php:549
@@ -492,7 +492,7 @@ msgid "Please set the date of conclusion of the original contract version."
 msgstr "Nastavte prosím datum uzavření původní verze smlouvy."
 
 #: src/Controller/ContractsController.php:960
-#: src/Controller/CustomersController.php:453
+#: src/Controller/CustomersController.php:455
 msgid "Invalid type of document requested."
 msgstr "Neplatný typ požadovaného dokumentu."
 
@@ -532,7 +532,7 @@ msgstr "Štítek zákazníka byl odstraněn."
 msgid "The customer label could not be deleted. Please, try again."
 msgstr "Štítek zákazníka nelze odstranit. Zkuste to prosím znovu."
 
-#: src/Controller/CustomersController.php:201
+#: src/Controller/CustomersController.php:203
 msgid ""
 "Please use the customer number or company identification number in the "
 "search."
@@ -540,29 +540,29 @@ msgstr ""
 "Při vyhledávání prosím použijte zákaznické číslo nebo identifikační číslo "
 "společnosti."
 
-#: src/Controller/CustomersController.php:356
-#: src/Controller/CustomersController.php:382
+#: src/Controller/CustomersController.php:358
+#: src/Controller/CustomersController.php:384
 msgid "The customer has been saved."
 msgstr "Zákazník byl uložen."
 
-#: src/Controller/CustomersController.php:360
-#: src/Controller/CustomersController.php:386
+#: src/Controller/CustomersController.php:362
+#: src/Controller/CustomersController.php:388
 msgid "The customer could not be saved. Please, try again."
 msgstr "Zákazníka nelze uložit. Opakujte akci."
 
-#: src/Controller/CustomersController.php:407
+#: src/Controller/CustomersController.php:409
 msgid "The customer has been deleted."
 msgstr "Zákazník byl odstraněn."
 
-#: src/Controller/CustomersController.php:410
+#: src/Controller/CustomersController.php:412
 msgid "The customer could not be deleted. Please, try again."
 msgstr "Zákazníka nelze odstranit. Opakujte akci."
 
-#: src/Controller/CustomersController.php:427
+#: src/Controller/CustomersController.php:429
 msgid "Consent to the processing of personal data"
 msgstr "Souhlas se zpracováním osobních údajů"
 
-#: src/Controller/CustomersController.php:428
+#: src/Controller/CustomersController.php:430
 msgid "Consent to the processing of personal data (change)"
 msgstr "Souhlas se zpracováním osobních údajů (změna)"
 
@@ -745,27 +745,45 @@ msgstr "Přihlášení bylo odstraněno."
 msgid "The login could not be deleted. Please, try again."
 msgstr "Přihlášení nelze odstranit. Prosím, zkuste to znovu."
 
-#: src/Controller/OverviewsController.php:609
+#: src/Controller/OverviewsController.php:249
+#: src/Controller/OverviewsController.php:427
+msgid "Invalid RUIAN GID: {0}"
+msgstr "Neplatné RÚIAN GID: {0}"
+
+#: src/Controller/OverviewsController.php:616
 msgid "unknown dealer"
 msgstr "neznámý dealer"
 
-#: src/Controller/PhonesController.php:87
-#: src/Controller/PhonesController.php:119
+#: src/Controller/PhonesController.php:94
+#: src/Controller/PhonesController.php:126
 msgid "The phone has been saved."
 msgstr "Telefon byl uložen."
 
-#: src/Controller/PhonesController.php:91
-#: src/Controller/PhonesController.php:123
+#: src/Controller/PhonesController.php:98
+#: src/Controller/PhonesController.php:130
 msgid "The phone could not be saved. Please, try again."
 msgstr "Telefon nelze uložit. Opakujte akci."
 
-#: src/Controller/PhonesController.php:150
+#: src/Controller/PhonesController.php:157
 msgid "The phone has been deleted."
 msgstr "Telefon byl odstraněn."
 
-#: src/Controller/PhonesController.php:153
+#: src/Controller/PhonesController.php:160
 msgid "The phone could not be deleted. Please, try again."
 msgstr "Telefon nelze odstranit. Opakujte akci."
+
+#: src/Controller/PhonesController.php:195
+#: src/Controller/PhonesController.php:200
+msgid "The phone number is invalid: {0}"
+msgstr "Telefonní číslo je neplatné: {0}"
+
+#: src/Controller/PhonesController.php:216
+msgid "The phones could not be updated. Please, try again."
+msgstr "Telefony nebylo možné aktualizovat. Zkuste to prosím znovu."
+
+#: src/Controller/PhonesController.php:220
+msgid "The phones have been updated."
+msgstr "Telefony byly aktualizovány."
 
 #: src/Controller/QueuesController.php:78
 #: src/Controller/QueuesController.php:100
@@ -2316,7 +2334,7 @@ msgid "Borrowed Until"
 msgstr "Zapůjčené do"
 
 #: templates/Commissions/add.php:11 templates/Commissions/edit.php:16
-#: templates/Commissions/view.php:21 templates/Settings/index.php:180
+#: templates/Commissions/view.php:21 templates/Settings/index.php:201
 msgid "List Commissions"
 msgstr "Seznam provizí"
 
@@ -2423,7 +2441,7 @@ msgid "Date of Termination of Services"
 msgstr "Datum ukončení poskytování služeb"
 
 #: templates/ContractStates/add.php:12 templates/ContractStates/edit.php:20
-#: templates/ContractStates/view.php:25 templates/Settings/index.php:127
+#: templates/ContractStates/view.php:25 templates/Settings/index.php:148
 msgid "List Contract States"
 msgstr "Seznam stavů smlouvy"
 
@@ -2768,7 +2786,7 @@ msgid "Other Customer Tasks"
 msgstr "Další úkoly zákazníka"
 
 #: templates/Countries/add.php:11 templates/Countries/edit.php:16
-#: templates/Countries/view.php:21 templates/Settings/index.php:111
+#: templates/Countries/view.php:21 templates/Settings/index.php:132
 msgid "List Countries"
 msgstr "Seznam zemí"
 
@@ -3036,7 +3054,7 @@ msgstr "Související odebrané IP sítě"
 
 #: templates/DealerCommissions/add.php:14
 #: templates/DealerCommissions/edit.php:22
-#: templates/DealerCommissions/view.php:25 templates/Settings/index.php:185
+#: templates/DealerCommissions/view.php:25 templates/Settings/index.php:206
 msgid "List Dealer Commissions"
 msgstr "Seznam provizí dealerů"
 
@@ -3080,7 +3098,7 @@ msgid "Delete Email"
 msgstr "Odstranit e-mail"
 
 #: templates/EquipmentTypes/add.php:12 templates/EquipmentTypes/edit.php:20
-#: templates/EquipmentTypes/view.php:25 templates/Settings/index.php:153
+#: templates/EquipmentTypes/view.php:25 templates/Settings/index.php:174
 msgid "List Equipment Types"
 msgstr "Seznam typů zařízení"
 
@@ -3177,7 +3195,7 @@ msgid "Device"
 msgstr "Zařízení"
 
 #: templates/Labels/add.php:14 templates/Labels/edit.php:19
-#: templates/Labels/view.php:24 templates/Settings/index.php:106
+#: templates/Labels/view.php:24 templates/Settings/index.php:127
 msgid "List Labels"
 msgstr "Seznam štítků"
 
@@ -3260,7 +3278,7 @@ msgstr "Smazat přihlášení"
 msgid "Overviews"
 msgstr "Přehledy"
 
-#: templates/Overviews/index.php:10 templates/Settings/index.php:135
+#: templates/Overviews/index.php:10 templates/Settings/index.php:156
 msgid "Service Related"
 msgstr "Související se službou"
 
@@ -3293,7 +3311,7 @@ msgstr "Související se zákazníkem"
 msgid "List Phones"
 msgstr "Seznam telefonů"
 
-#: templates/Overviews/index.php:77 templates/Settings/index.php:124
+#: templates/Overviews/index.php:77 templates/Settings/index.php:145
 msgid "Contract Related"
 msgstr "Související se smlouvou"
 
@@ -3486,7 +3504,7 @@ msgid "Delete Phone"
 msgstr "Odstranit telefon"
 
 #: templates/Queues/add.php:11 templates/Queues/edit.php:16
-#: templates/Queues/view.php:21 templates/Settings/index.php:148
+#: templates/Queues/view.php:21 templates/Settings/index.php:169
 msgid "List Queues"
 msgstr "Seznam front"
 
@@ -3583,7 +3601,7 @@ msgid "Delete Removed IP Address"
 msgstr "Odstranit odebranou IP adresu"
 
 #: templates/ServiceTypes/add.php:11 templates/ServiceTypes/edit.php:19
-#: templates/ServiceTypes/view.php:24 templates/Settings/index.php:143
+#: templates/ServiceTypes/view.php:24 templates/Settings/index.php:164
 msgid "List Service Types"
 msgstr "Seznam typů služeb"
 
@@ -3654,7 +3672,7 @@ msgid "Have Equipments"
 msgstr "Má zařízení"
 
 #: templates/Services/add.php:13 templates/Services/edit.php:18
-#: templates/Services/view.php:23 templates/Settings/index.php:138
+#: templates/Services/view.php:23 templates/Settings/index.php:159
 msgid "List Services"
 msgstr "Seznam služeb"
 
@@ -3695,65 +3713,77 @@ msgid "Billing Functions"
 msgstr "Funkce fakturace"
 
 #: templates/Settings/index.php:37
+msgid "Customer Functions"
+msgstr "Funkce zákazníka"
+
+#: templates/Settings/index.php:40
+msgid "Update Phone Number Format"
+msgstr "Aktualizace formátu telefonního čísla"
+
+#: templates/Settings/index.php:48
+msgid "Do you really want to update all phones for all customers?"
+msgstr "Opravdu chcete aktualizovat všechny telefony pro všechny zákazníky?"
+
+#: templates/Settings/index.php:58
 msgid "Contract Functions"
 msgstr "Funkce smlouvy"
 
-#: templates/Settings/index.php:40 templates/Settings/index.php:55
+#: templates/Settings/index.php:61 templates/Settings/index.php:76
 msgid "Addition of Contract Numbers"
 msgstr "Přidání čísel smluv"
 
-#: templates/Settings/index.php:48
+#: templates/Settings/index.php:69
 msgid "Do you really want to add a contract number for all contracts?"
 msgstr "Opravdu chcete přidat číslo smlouvy pro všechny smlouvy?"
 
-#: templates/Settings/index.php:55 templates/Settings/index.php:85
+#: templates/Settings/index.php:76 templates/Settings/index.php:106
 msgid "Force Overwrite"
 msgstr "Vynutit přepsání"
 
-#: templates/Settings/index.php:63
+#: templates/Settings/index.php:84
 msgid "Do you really want to re-set a contract number for all contracts?"
 msgstr "Opravdu chcete znovu nastavit číslo smlouvy pro všechny smlouvy?"
 
-#: templates/Settings/index.php:70 templates/Settings/index.php:85
+#: templates/Settings/index.php:91 templates/Settings/index.php:106
 msgid "Addition of Subscriber Verification Codes"
 msgstr "Přidání kódů pro ověřování účastníků"
 
-#: templates/Settings/index.php:78
+#: templates/Settings/index.php:99
 msgid ""
 "Do you really want to add a subscriber verification code for all contracts?"
 msgstr "Opravdu chcete přidat ověřovací kód účastníka pro všechny smlouvy?"
 
-#: templates/Settings/index.php:93
+#: templates/Settings/index.php:114
 msgid ""
 "Do you really want to re-set a subscriber verification code for all "
 "contracts?"
 msgstr ""
 "Opravdu chcete znovu nastavit ověřovací kód účastníka pro všechny smlouvy?"
 
-#: templates/Settings/index.php:103
+#: templates/Settings/index.php:124
 msgid "System Related"
 msgstr "Související se systémem"
 
-#: templates/Settings/index.php:116 templates/TaxRates/add.php:11
+#: templates/Settings/index.php:137 templates/TaxRates/add.php:11
 #: templates/TaxRates/edit.php:16 templates/TaxRates/view.php:21
 msgid "List Tax Rates"
 msgstr "Seznam daňových sazeb"
 
-#: templates/Settings/index.php:161
+#: templates/Settings/index.php:182
 msgid "Task Related"
 msgstr "Související s úkolem"
 
-#: templates/Settings/index.php:164 templates/TaskStates/add.php:11
+#: templates/Settings/index.php:185 templates/TaskStates/add.php:11
 #: templates/TaskStates/edit.php:16 templates/TaskStates/view.php:21
 msgid "List Task States"
 msgstr "Seznam stavů úkolů"
 
-#: templates/Settings/index.php:169 templates/TaskTypes/add.php:11
+#: templates/Settings/index.php:190 templates/TaskTypes/add.php:11
 #: templates/TaskTypes/edit.php:16 templates/TaskTypes/view.php:21
 msgid "List Task Types"
 msgstr "Seznam typů úkolů"
 
-#: templates/Settings/index.php:177
+#: templates/Settings/index.php:198
 msgid "Commission Related"
 msgstr "Související s provizí"
 
