@@ -90,9 +90,6 @@ class UpdateRelatedRecordsForAccountsCommand extends Command
         // Creating an instance of the AccountsController
         $controller = new AccountsController($serverRequest);
 
-        // Getting the Controller instance from the appropriate Shell
-        $controller->setRequest($serverRequest);
-
         // Disable FormProtection Component
         $controller->FormProtection->setConfig('validate', false);
 
