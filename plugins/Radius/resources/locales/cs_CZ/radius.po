@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-12-29 11:50+0100\n"
-"PO-Revision-Date: 2023-12-29 11:51+0100\n"
+"POT-Creation-Date: 2024-01-22 18:49+0100\n"
+"PO-Revision-Date: 2024-01-22 18:51+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -13,7 +13,32 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.4.1\n"
+"X-Generator: Poedit 3.4.2\n"
+
+#: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:35
+msgid "Required state of accounts."
+msgstr "Požadovaný stav účtů."
+
+#: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:46
+msgid "Update RADIUS Checks."
+msgstr "Aktualizace kontrol RADIUS."
+
+#: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:50
+msgid "Update RADIUS Replies."
+msgstr "Aktualizace odpovědí RADIUS."
+
+#: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:54
+msgid "Update RADIUS User Groups."
+msgstr "Aktualizace skupin uživatelů RADIUS."
+
+#: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:59
+msgid "Reconnect Modified RADIUS Accounts."
+msgstr "Opětovné připojení upravených účtů RADIUS."
+
+#: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:116
+msgid "Update of related records for accounts failed. Please try again."
+msgstr ""
+"Aktualizace souvisejících záznamů pro účty selhala. Zkuste to prosím znovu."
 
 #: plugins/Radius/src/Controller/AccountsController.php:170
 #: plugins/Radius/src/Controller/AccountsController.php:273

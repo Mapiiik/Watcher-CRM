@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-12-29 11:50+0100\n"
+"POT-Creation-Date: 2024-01-22 18:49+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -13,6 +13,30 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:35
+msgid "Required state of accounts."
+msgstr ""
+
+#: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:46
+msgid "Update RADIUS Checks."
+msgstr ""
+
+#: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:50
+msgid "Update RADIUS Replies."
+msgstr ""
+
+#: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:54
+msgid "Update RADIUS User Groups."
+msgstr ""
+
+#: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:59
+msgid "Reconnect Modified RADIUS Accounts."
+msgstr ""
+
+#: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:116
+msgid "Update of related records for accounts failed. Please try again."
+msgstr ""
 
 #: ./plugins/Radius/src/Controller/AccountsController.php:170
 #: ./plugins/Radius/src/Controller/AccountsController.php:273
