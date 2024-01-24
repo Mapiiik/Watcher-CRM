@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2024-01-22 18:49+0100\n"
-"PO-Revision-Date: 2024-01-22 18:51+0100\n"
+"POT-Creation-Date: 2024-01-24 13:07+0100\n"
+"PO-Revision-Date: 2024-01-24 13:38+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -35,7 +35,7 @@ msgstr "Aktualizace skupin uživatelů RADIUS."
 msgid "Reconnect Modified RADIUS Accounts."
 msgstr "Opětovné připojení upravených účtů RADIUS."
 
-#: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:116
+#: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:113
 msgid "Update of related records for accounts failed. Please try again."
 msgstr ""
 "Aktualizace souvisejících záznamů pro účty selhala. Zkuste to prosím znovu."
