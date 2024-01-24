@@ -42,7 +42,10 @@
                     <th><?= $this->Paginator->sort('have_equipments') ?></th>
                     <th><?= $this->Paginator->sort('have_ip_addresses', __('Have IP Addresses')) ?></th>
                     <th><?= $this->Paginator->sort('have_radius_accounts', __('Have RADIUS Accounts')) ?></th>
-                    <th><?= $this->Paginator->sort('assign_ip_addresses_from_behind', __('Assign IP addresses from behind')) ?></th>
+                    <th><?= $this->Paginator->sort(
+                        'assign_ip_addresses_from_behind',
+                        __('Assign IP addresses from behind')
+                    ) ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>

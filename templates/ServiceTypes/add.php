@@ -17,22 +17,24 @@
             <fieldset>
                 <legend><?= __('Add Service Type') ?></legend>
                 <?php
-                    echo $this->Form->control('name');
-                    echo $this->Form->control('contract_number_format');
-                    echo $this->Form->control('subscriber_verification_code_format');
-                    echo $this->Form->control('activation_fee');
-                    echo $this->Form->control('activation_fee_with_obligation');
-                    echo $this->Form->control('invoice_text');
-                    echo $this->Form->control('separate_invoice');
-                    echo $this->Form->control('invoice_with_items');
-                    echo $this->Form->control('installation_address_required');
-                    echo $this->Form->control('access_point_required');
-                    echo $this->Form->control('normally_with_borrowed_equipment');
-                    echo $this->Form->control('have_contract_versions');
-                    echo $this->Form->control('have_equipments');
-                    echo $this->Form->control('have_ip_addresses', ['label' => __('Have IP Addresses')]);
-                    echo $this->Form->control('have_radius_accounts', ['label' => __('Have RADIUS Accounts')]);
-                    echo $this->Form->control('assign_ip_addresses_from_behind', ['label' => __('Assign IP addresses from behind')]);
+                echo $this->Form->control('name');
+                echo $this->Form->control('contract_number_format');
+                echo $this->Form->control('subscriber_verification_code_format');
+                echo $this->Form->control('activation_fee');
+                echo $this->Form->control('activation_fee_with_obligation');
+                echo $this->Form->control('invoice_text');
+                echo $this->Form->control('separate_invoice');
+                echo $this->Form->control('invoice_with_items');
+                echo $this->Form->control('installation_address_required');
+                echo $this->Form->control('access_point_required');
+                echo $this->Form->control('normally_with_borrowed_equipment');
+                echo $this->Form->control('have_contract_versions');
+                echo $this->Form->control('have_equipments');
+                echo $this->Form->control('have_ip_addresses', ['label' => __('Have IP Addresses')]);
+                echo $this->Form->control('have_radius_accounts', ['label' => __('Have RADIUS Accounts')]);
+                echo $this->Form->control('assign_ip_addresses_from_behind', [
+                    'label' => __('Assign IP addresses from behind'),
+                ]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
