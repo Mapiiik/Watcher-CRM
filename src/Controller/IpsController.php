@@ -193,7 +193,13 @@ class IpsController extends AppController
         // load IP address ranges from NMS
         $ip_address_ranges_filter = [];
         if (isset($ip->contract_id)) {
-            $contract = $this->Ips->Contracts->get($ip->contract_id);
+            $contract = $this->Ips->Contracts->get(
+                $ip->contract_id,
+                contain: [
+                    'ServiceTypes',
+                ]
+            );
+
             if (isset($contract->access_point_id)) {
                 $ip_address_ranges_filter['access_point_id'] = $contract->access_point_id;
             }
@@ -292,7 +298,13 @@ class IpsController extends AppController
                 }
             }
         }
-        $this->set('ips', $ips);
+
+        // reverse order of IP addresses, if required by service type
+        if (!empty($contract->service_type->assign_ip_addresses_from_behind)) {
+            $this->set('ips', array_reverse($ips));
+        } else {
+            $this->set('ips', $ips);
+        }
 
         $this->set(compact('ip', 'customers', 'contracts'));
     }

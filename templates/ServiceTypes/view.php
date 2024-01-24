@@ -91,6 +91,10 @@
                             <th><?= __('Have RADIUS Accounts') ?></th>
                             <td><?= $serviceType->have_radius_accounts ? __('Yes') : __('No'); ?></td>
                         </tr>
+                        <tr>
+                            <th><?= __('Assign IP addresses from behind') ?></th>
+                            <td><?= $serviceType->assign_ip_addresses_from_behind ? __('Yes') : __('No'); ?></td>
+                        </tr>
                     </table>
                 </div>
                 <div class="column">

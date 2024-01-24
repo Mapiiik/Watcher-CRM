@@ -126,6 +126,10 @@ class ServiceTypesTable extends AppTable
             ->boolean('have_radius_accounts')
             ->notEmptyString('have_radius_accounts');
 
+        $validator
+            ->boolean('assign_ip_addresses_from_behind')
+            ->notEmptyString('assign_ip_addresses_from_behind');
+
         return $validator;
     }
 

@@ -31,6 +31,7 @@ use Cake\ORM\Entity;
  * @property bool $have_equipments
  * @property bool $have_ip_addresses
  * @property bool $have_radius_accounts
+ * @property bool $assign_ip_addresses_from_behind
  *
  * @property \App\Model\Entity\Contract[] $contracts
  * @property \App\Model\Entity\Service[] $services
@@ -66,6 +67,7 @@ class ServiceType extends Entity
         'have_equipments' => true,
         'have_ip_addresses' => true,
         'have_radius_accounts' => true,
+        'assign_ip_addresses_from_behind' => true,
         'contracts' => true,
         'services' => true,
     ];

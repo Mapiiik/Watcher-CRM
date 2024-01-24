@@ -35,6 +35,7 @@ class ServiceTypesFixture extends TestFixture
                 'have_equipments' => 1,
                 'have_ip_addresses' => 1,
                 'have_radius_accounts' => 1,
+                'assign_ip_addresses_from_behind' => 1,
                 'subscriber_verification_code_format' => 'Lorem ipsum dolor sit amet',
                 'id' => '907cbc5c-af88-43b6-b535-959b4fa2ce3d',
                 'created_by' => '11edb519-be76-4d66-aea0-34188d31eae1',

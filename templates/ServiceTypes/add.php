@@ -32,6 +32,7 @@
                     echo $this->Form->control('have_equipments');
                     echo $this->Form->control('have_ip_addresses', ['label' => __('Have IP Addresses')]);
                     echo $this->Form->control('have_radius_accounts', ['label' => __('Have RADIUS Accounts')]);
+                    echo $this->Form->control('assign_ip_addresses_from_behind', ['label' => __('Assign IP addresses from behind')]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

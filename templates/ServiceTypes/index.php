@@ -42,6 +42,7 @@
                     <th><?= $this->Paginator->sort('have_equipments') ?></th>
                     <th><?= $this->Paginator->sort('have_ip_addresses', __('Have IP Addresses')) ?></th>
                     <th><?= $this->Paginator->sort('have_radius_accounts', __('Have RADIUS Accounts')) ?></th>
+                    <th><?= $this->Paginator->sort('assign_ip_addresses_from_behind', __('Assign IP addresses from behind')) ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -63,6 +64,7 @@
                     <td><?= $serviceType->have_equipments ? __('Yes') : __('No'); ?></td>
                     <td><?= $serviceType->have_ip_addresses ? __('Yes') : __('No'); ?></td>
                     <td><?= $serviceType->have_radius_accounts ? __('Yes') : __('No'); ?></td>
+                    <td><?= $serviceType->assign_ip_addresses_from_behind ? __('Yes') : __('No'); ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $serviceType->id]) ?>
                         <?= $this->AuthLink->link(
