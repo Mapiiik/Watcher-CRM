@@ -65,7 +65,7 @@ class Account extends Entity
     /**
      * Fields that are excluded from JSON versions of the entity.
      *
-     * @var array<string>
+     * @var list<string>
      */
     protected array $_hidden = [
         'password',
