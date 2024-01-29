@@ -97,10 +97,23 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php
+                                        /**
+                                         * List invoices from CRM (non-standard prices in red)
+                                         *
+                                         * @var \App\Model\Entity\Billing $item
+                                         * */
+                                        ?>
                                         <?php foreach ($customer_comparision['crm']['items'] as $item) : ?>
                                         <tr>
                                             <td><?= h($item->name) ?></td>
-                                            <td><?= $this->Number->currency($item->period_total) ?></td>
+                                            <td style="<?=
+                                                !empty($item->price)
+                                                || !empty($item->fixed_discount)
+                                                || !empty($item->percentage_discount)
+                                                    ? 'color: red;'
+                                                    : ''
+                                            ?>"><?= $this->Number->currency($item->period_total) ?></td>
                                         </tr>
                                         <?php endforeach; ?>
                                     </tbody>
