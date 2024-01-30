@@ -379,10 +379,11 @@ $permissions = [
                 'download',
             ],
         ],
-        //enable debtor blocking/unblocking for network managers
+        //enable debtor blocking/unblocking for network managers and sales
         [
             'role' => [
                 'network-manager',
+                'sales-representative',
             ],
             'plugin' => 'BookkeepingPohoda',
             'controller' => [
