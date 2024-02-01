@@ -3,22 +3,19 @@ declare(strict_types=1);
 
 namespace Radius\Command;
 
-use App\Command\Traits\FlashMessageHandlerTrait;
+use App\Command\Traits\MessageHandlerTrait;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
-use Cake\Http\ServerRequest;
-use Cake\Log\Log;
-use Closure;
-use Radius\Controller\AccountsController;
+use Radius\Updater\AccountsUpdater;
 
 /**
  * Update related records for accounts command.
  */
 class UpdateRelatedRecordsForAccountsCommand extends Command
 {
-    use FlashMessageHandlerTrait;
+    use MessageHandlerTrait;
 
     /**
      * Hook method for defining this command's option parser.
@@ -73,45 +70,14 @@ class UpdateRelatedRecordsForAccountsCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        // Data to be passed
-        $postData = $args->getOptions();
+        // load accounts updater
+        $accountsUpdater = new AccountsUpdater();
 
-        // Creating an instance of the ServerRequest with the provided data
-        $serverRequest = new ServerRequest([
-            'environment' => [
-                'REQUEST_METHOD' => 'POST',
-            ],
-            'params' => [
-                'plugin' => 'Radius',
-            ],
-            'post' => $postData,
-        ]);
+        // update related records for all accounts
+        $accountsUpdater->updateRelatedRecordsForAllAccounts($args->getOptions());
 
-        // Creating an instance of the AccountsController
-        $controller = new AccountsController($serverRequest);
-
-        // Disable FormProtection Component
-        $controller->FormProtection->setConfig('validate', false);
-
-        // Disable automatic action rendering
-        $controller->disableAutoRender();
-
-        // Perform the startup process for Controller
-        $controller->startupProcess();
-
-        // Calling the action in the Controller
-        $controller->invokeAction(Closure::fromCallable([$controller, 'updateRelatedRecordsForAllAccounts']), []);
-
-        // Getting the response from the Controller after the action is invoked
-        $response = $controller->getResponse();
-
-        // Processing the response
-        if ($response->getStatusCode() === 200) {
-            $this->handleFlashMessages($controller->getRequest(), $io);
-        } else {
-            Log::error('Update of related records for accounts failed. Please try again.');
-            $io->error(__d('radius', 'Update of related records for accounts failed. Please try again.'));
-        }
+        // load messages from accounts updater and generate flash messages
+        $this->handleMessages($accountsUpdater->Messages->getMessages(), $io);
     }
 
     /**

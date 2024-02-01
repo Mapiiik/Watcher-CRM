@@ -3,17 +3,10 @@ declare(strict_types=1);
 
 namespace Radius\Controller;
 
+use App\Controller\Traits\MessageHandlerTrait;
 use App\Strings;
-use Cake\I18n\Date;
-use Cake\I18n\Number;
-use Cake\Log\Log;
-use Cake\ORM\Query\SelectQuery;
-use Mapik\RadiusClient\Client;
-use Mapik\RadiusClient\Exceptions\ClientException;
-use Mapik\RadiusClient\Packet;
-use Mapik\RadiusClient\PacketType;
-use Radius\Model\Entity\Account;
-use Radius\Model\Entity\Radacct;
+use Radius\Updater\AccountsUpdater;
+use Radius\Updater\RadiusRequestSender;
 
 /**
  * Accounts Controller
@@ -23,6 +16,8 @@ use Radius\Model\Entity\Radacct;
  */
 class AccountsController extends AppController
 {
+    use MessageHandlerTrait;
+
     /**
      * Index method
      *
@@ -160,10 +155,16 @@ class AccountsController extends AppController
                 // only refresh
             } else {
                 if (!$account->hasErrors()) {
+                    // load accounts updater
+                    $accountsUpdater = new AccountsUpdater();
+
                     // autogenerate related records
-                    $account->radcheck = $this->autoRadcheckData($account);
-                    $account->radreply = $this->autoRadreplyData($account);
-                    $account->radusergroup = $this->autoRadusergroupData($account);
+                    $account->radcheck = $accountsUpdater->autoRadcheckData($account);
+                    $account->radreply = $accountsUpdater->autoRadreplyData($account);
+                    $account->radusergroup = $accountsUpdater->autoRadusergroupData($account);
+
+                    // load messages from accounts updater and generate flash messages
+                    $this->handleMessages($accountsUpdater->Messages->getMessages());
                 }
 
                 if ($this->Accounts->save($account)) {
@@ -265,8 +266,14 @@ class AccountsController extends AppController
                 // only refresh
             } else {
                 if (!$account->hasErrors()) {
+                    // load accounts updater
+                    $accountsUpdater = new AccountsUpdater();
+
                     // autogenerate related records
-                    $account->radcheck = $this->autoRadcheckData($account);
+                    $account->radcheck = $accountsUpdater->autoRadcheckData($account);
+
+                    // load messages from accounts updater and generate flash messages
+                    $this->handleMessages($accountsUpdater->Messages->getMessages());
                 }
 
                 if ($this->Accounts->save($account)) {
@@ -329,137 +336,6 @@ class AccountsController extends AppController
     }
 
     /**
-     * This private function handles disconnect errors and returns a string representation of the errors.
-     *
-     * @param array $attributes The attributes containing the disconnect errors.
-     * @return string The string representation of the disconnect errors.
-     */
-    private function handleDisconnectErrors(array $attributes): string
-    {
-        $errors = [];
-
-        // Check if the 'Error-Cause' attribute exists and is an array
-        if (isset($attributes['Error-Cause']) && is_array($attributes['Error-Cause'])) {
-            foreach ($attributes['Error-Cause'] as $error_code) {
-                $errors[] = $this->getDisconnectErrorMessage($error_code);
-            }
-        }
-
-        // Return a string representation of the errors array, with each error separated by a comma and space
-        return implode(', ', $errors);
-    }
-
-    /**
-     * This function returns the error message based on the error code.
-     *
-     * @param int $error_code The error code to retrieve the error message for.
-     * @return string The error message corresponding to the error code.
-     */
-    private function getDisconnectErrorMessage(int $error_code): string
-    {
-        // Define an array of error messages with their corresponding error codes.
-        $errorMessages = [
-            401 => 'Unsupported Attribute',
-            402 => 'Missing Attribute',
-            403 => 'NAS Identification Mismatch',
-            404 => 'Invalid Request',
-            405 => 'Unsupported Service',
-            406 => 'Unsupported Extension',
-            407 => 'Invalid Attribute Value',
-            501 => 'Administratively Prohibited',
-            502 => 'Request Not Routable (Proxy)',
-            503 => 'Session Context Not Found',
-            504 => 'Session Context Not Removable',
-            505 => 'Other Proxy Processing Error',
-            506 => 'Resources Unavailable',
-            507 => 'Request Initiated',
-            508 => 'Multiple Session Selection Unsupported',
-        ];
-
-        // Return the error message corresponding to the error code, or 'Unsupported Error-Cause' if the error code is not found.
-        return $errorMessages[$error_code] ?? 'Unsupported Error-Cause';
-    }
-
-    /**
-     * Send disconnect request method
-     *
-     * @param \Radius\Model\Entity\Radacct $session RADIUS Accounting Record.
-     * @return bool Returns true if the disconnection was successful.
-     */
-    private function sendDisconnectRequest(Radacct $session): bool
-    {
-        $disconnected = false;
-
-        $client = new Client('udp://' . $session->nasipaddress . ':1700', /* timeout */ 3);
-        try {
-            $response = $client->send(
-                new Packet(PacketType::DISCONNECT_REQUEST(), /* secret */ env('RADIUS_SECRET'), [
-                    'User-Name' => $session->username,
-                    'Acct-Session-Id' => $session->acctsessionid,
-                    'Framed-IP-Address' => $session->framedipaddress,
-                    'NAS-IP-Address' => $session->nasipaddress,
-                ])
-            );
-        } catch (ClientException $e) {
-            $this->Flash->error(__d(
-                'radius',
-                'The RADIUS session for {0} started on {1} could not be disconnected ({2}).',
-                $session->username,
-                $session->acctstarttime,
-                $e->getMessage()
-            ));
-
-            // skip further processing and return false
-            return false;
-        }
-
-        // detect response type
-        switch ($response->getType()) {
-            case PacketType::COA_ACK():
-                $result = 'CoA-ACK';
-                $disconnected = true;
-                break;
-            case PacketType::DISCONNECT_ACK():
-                $result = 'Disconnect-ACK';
-                $disconnected = true;
-                break;
-            case PacketType::COA_NAK():
-                $result = 'CoA-NAK';
-                break;
-            case PacketType::DISCONNECT_NAK():
-                $result = 'Disconnect-NAK';
-                break;
-            default:
-                $result = 'Unsupported reply';
-        }
-
-        // detect error causes
-        $error = $this->handleDisconnectErrors($response->getAttributes());
-
-        if ($disconnected) {
-            $this->Flash->success(__d(
-                'radius',
-                'The RADIUS session for {0} started on {1} has been disconnected ({2}).',
-                $session->username,
-                $session->acctstarttime,
-                $error ? $result . ' - ' . $error : $result
-            ));
-
-            return true;
-        } else {
-            $this->Flash->error(__d(
-                'radius',
-                'The RADIUS session for {0} started on {1} could not be disconnected ({2}).',
-                $session->username,
-                $session->acctstarttime,
-                $error ? $result . ' - ' . $error : $result
-            ));
-
-            return false;
-        }
-    }
-
-    /**
      * Disconnect request method
      *
      * @param string|null $id Account id.
@@ -487,9 +363,15 @@ class AccountsController extends AppController
             return $this->redirect(['action' => 'monitoring', $account->id]);
         }
 
+        // load RADIUS Request sender
+        $radiusRequestSender = new RadiusRequestSender();
+
+        // send RADIUS disconnect requests for all open sessions
         foreach ($account->radacct as $session) {
-            $this->sendDisconnectRequest($session);
+            $radiusRequestSender->sendDisconnectRequest($session);
         }
+        // load messages from RADIUS Request sender and generate flash messages
+        $this->handleMessages($radiusRequestSender->Messages->getMessages());
 
         // wait one second for RADIUS records to update
         sleep(1);
@@ -507,24 +389,17 @@ class AccountsController extends AppController
     public function updateRelatedRecords(?string $id = null)
     {
         $this->getRequest()->allowMethod(['post']);
-        $account = $this->Accounts->get($id, contain: [
-            'Radcheck',
-            'Radreply',
-            'Radusergroup',
-        ]);
 
-        // autogenerate related records
-        $account->radcheck = $this->autoRadcheckData($account);
-        $account->radreply = $this->autoRadreplyData($account);
-        $account->radusergroup = $this->autoRadusergroupData($account);
+        // load accounts updater
+        $accountsUpdater = new AccountsUpdater();
 
-        if ($this->Accounts->save($account)) {
-            $this->Flash->success(__d('radius', 'The RADIUS account has been updated.'));
-        } else {
-            $this->Flash->error(__d('radius', 'The RADIUS account could not be updated. Please, try again.'));
-        }
+        // update related records for account
+        $accountsUpdater->updateRelatedRecords($id);
 
-        return $this->redirect($this->referer(['action' => 'view', $account->id]));
+        // load messages from accounts updater and generate flash messages
+        $this->handleMessages($accountsUpdater->Messages->getMessages());
+
+        return $this->redirect($this->referer(['action' => 'view', $id]));
     }
 
     /**
@@ -535,354 +410,14 @@ class AccountsController extends AppController
     public function updateRelatedRecordsForAllAccounts()
     {
         if ($this->getRequest()->is(['post'])) {
-            $accountsQuery = $this->Accounts->find('all', contain: [
-                'Radcheck',
-                'Radreply',
-                'Radusergroup',
-            ]);
+            // load accounts updater
+            $accountsUpdater = new AccountsUpdater();
 
-            switch ($this->getRequest()->getData('state')) {
-                case 'active':
-                    $accountsQuery->where(['active' => true]);
-                    break;
-                case 'inactive':
-                    $accountsQuery->where(['active' => false]);
-                    break;
-            }
+            // update related records for all accounts
+            $accountsUpdater->updateRelatedRecordsForAllAccounts($this->getRequest()->getData());
 
-            $processed = 0;
-            $modified = 0;
-            $failed = 0;
-
-            $something_to_do = false;
-
-            /** @var iterable<\Radius\Model\Entity\Account> $accounts */
-            $accounts = $accountsQuery->all();
-
-            foreach ($accounts as $account) {
-                $is_modified = false;
-
-                // autogenerate related records
-                if ($this->getRequest()->getData('radcheck') == '1') {
-                    $something_to_do = true;
-
-                    $radcheck = $this->autoRadcheckData($account);
-                    sort($radcheck);
-                    sort($account->radcheck);
-                    if ($account->radcheck != $radcheck) {
-                        $is_modified = true;
-                        $account->radcheck = $radcheck;
-                    }
-                    unset($radcheck);
-                }
-                if ($this->getRequest()->getData('radreply') == '1') {
-                    $something_to_do = true;
-
-                    $radreply = $this->autoRadreplyData($account);
-                    sort($radreply);
-                    sort($account->radreply);
-                    if ($account->radreply != $radreply) {
-                        $is_modified = true;
-                        $account->radreply = $radreply;
-                    }
-                    unset($radreply);
-                }
-                if ($this->getRequest()->getData('radusergroup') == '1') {
-                    $something_to_do = true;
-
-                    $radusergroup = $this->autoRadusergroupData($account);
-                    sort($radusergroup);
-                    sort($account->radusergroup);
-                    if ($account->radusergroup != $radusergroup) {
-                        $is_modified = true;
-                        $account->radusergroup = $radusergroup;
-                    }
-                    unset($radusergroup);
-                }
-
-                // stop processing if there is nothing to do
-                if (!$something_to_do) {
-                    $this->Flash->warning(__d('radius', 'Nothing has been selected for update.'));
-
-                    return;
-                }
-
-                $processed++;
-                if ($is_modified) {
-                    // save modified data
-                    if ($this->Accounts->save($account) === false) {
-                        $failed++;
-
-                        $this->Flash->error(
-                            __d(
-                                'radius',
-                                'The RADIUS account {0} could not be updated. Please, try again.',
-                                $account->username
-                            )
-                        );
-                        Log::warning('The RADIUS account ' . $account->username . ' could not be updated.');
-                    } else {
-                        $modified++;
-
-                        // Send RADIUS disconnect request for modified
-                        if ($this->getRequest()->getData('reconnect_modified_accounts') == '1') {
-                            $radaccts = $this->Accounts->Radacct
-                                ->find()
-                                ->where([
-                                    'Radacct.username' => $account->username,
-                                    'Radacct.acctstoptime IS' => null,
-                                ])
-                                ->all()
-                                ->toArray();
-
-                            if (empty($radaccts)) {
-                                $this->Flash->warning(__d(
-                                    'radius',
-                                    'No active RADIUS session for {0} found.',
-                                    $account->username
-                                ));
-                            }
-
-                            foreach ($radaccts as $session) {
-                                $this->sendDisconnectRequest($session);
-                            }
-
-                            unset($radaccts);
-                        }
-                    }
-                }
-            }
-
-            $this->Flash->success(
-                __d(
-                    'radius',
-                    'Related entries for {0} RADIUS accounts were processed,'
-                        . ' {1} accounts were updated, and {2} accounts failed to update.',
-                    Number::format($processed),
-                    Number::format($modified),
-                    Number::format($failed),
-                )
-            );
-            Log::info(
-                'Related entries for ' . Number::format($processed) . ' RADIUS accounts were processed, '
-                    . Number::format($modified) . ' accounts were updated, and '
-                    . Number::format($failed) . ' accounts failed to update.'
-            );
+            // load messages from accounts updater and generate flash messages
+            $this->handleMessages($accountsUpdater->Messages->getMessages());
         }
-    }
-
-    /**
-     * generate data for radcheck table for customer
-     *
-     * @param \Radius\Model\Entity\Account $account RADIUS account entity
-     * @return array<\Radius\Model\Entity\Radcheck>
-     */
-    private function autoRadcheckData(Account $account): array
-    {
-        $radcheck = [];
-
-        $radcheck[] = $this->fetchTable('Radius.Radcheck')
-            ->findOrNewEntity([
-                'username' => $account->username,
-                'attribute' => 'Cleartext-Password',
-                'op' => ':=',
-                'value' => $account->password,
-            ]);
-        if (!$account->active) {
-            $radcheck[] = $this->fetchTable('Radius.Radcheck')
-                ->findOrNewEntity([
-                    'username' => $account->username,
-                    'attribute' => 'Auth-Type',
-                    'op' => ':=',
-                    'value' => 'Reject',
-                ]);
-        }
-
-        return $radcheck;
-    }
-
-    /**
-     * generate data for radreply table for customer
-     *
-     * @param \Radius\Model\Entity\Account $account RADIUS account entity
-     * @return array<\Radius\Model\Entity\Radreply>
-     */
-    private function autoRadreplyData(Account $account): array
-    {
-        /** @var \App\Model\Entity\Contract $contract */
-        $contract = $this->fetchTable('Contracts')->get($account->contract_id, contain: [
-            'IpNetworks',
-            'Ips',
-        ]);
-
-        $radreply = [];
-
-        foreach ($contract->ips as $ip) {
-            // Skip IP addresses without RADIUS usage type
-            if (!($ip->type_of_use === 00)) {
-                continue;
-            }
-
-            [$address] = explode('/', $ip->ip);
-
-            if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-                $radreply[] = $this->fetchTable('Radius.Radreply')
-                    ->findOrNewEntity([
-                        'username' => $account->username,
-                        'attribute' => 'Framed-IP-Address',
-                        'op' => '=',
-                        'value' => $address,
-                    ]);
-            }
-            if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-                $radreply[] = $this->fetchTable('Radius.Radreply')
-                    ->findOrNewEntity([
-                        'username' => $account->username,
-                        'attribute' => 'Framed-IPv6-Address',
-                        'op' => '=',
-                        'value' => $address,
-                    ]);
-            }
-        }
-
-        foreach ($contract->ip_networks as $ipNetwork) {
-            // Skip IP networks without RADIUS usage type
-            if (!($ipNetwork->type_of_use === 00)) {
-                continue;
-            }
-
-            [$address, $mask] = explode('/', $ipNetwork->ip_network);
-
-            if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-                $radreply[] = $this->fetchTable('Radius.Radreply')
-                    ->findOrNewEntity([
-                        'username' => $account->username,
-                        'attribute' => 'Framed-Route',
-                        'op' => '=',
-                        'value' => $address . '/' . $mask,
-                    ]);
-            }
-            if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-                $radreply[] = $this->fetchTable('Radius.Radreply')
-                    ->findOrNewEntity([
-                        'username' => $account->username,
-                        'attribute' => 'Framed-IPv6-Prefix',
-                        'op' => '=',
-                        'value' => $address . '/' . $mask,
-                    ]);
-                $radreply[] = $this->fetchTable('Radius.Radreply')
-                    ->findOrNewEntity([
-                        'username' => $account->username,
-                        'attribute' => 'Delegated-IPv6-Prefix',
-                        'op' => '=',
-                        'value' => $address . '/' . $mask,
-                    ]);
-            }
-        }
-
-        if (empty($radreply)) {
-            $this->Flash->warning(
-                __d(
-                    'radius',
-                    'The RADIUS replies for {0} could not be found automatically. Please, set it manually.',
-                    $account->username
-                )
-                . ' ('
-                . __d('radius', 'The IP addresses for the contract are probably not set correctly.')
-                . ')'
-            );
-            Log::warning('The RADIUS replies for ' . $account->username . ' could not be found automatically.');
-        }
-
-        if (empty($radreply)) {
-            // return current radusergroup records
-            if (is_array($account->radreply)) {
-                foreach ($account->radreply as $current_radreply) {
-                    $radreply[] = $current_radreply;
-                }
-            }
-        }
-
-        return $radreply;
-    }
-
-    /**
-     * generate data for radusergroup table for customer
-     *
-     * @param \Radius\Model\Entity\Account $account RADIUS account entity
-     * @return array<\Radius\Model\Entity\Radusergroup>
-     */
-    private function autoRadusergroupData(Account $account): array
-    {
-        $contract = $this->fetchTable('Contracts')->get($account->contract_id, contain: [
-            'Billings' => [
-                'queryBuilder' => function (SelectQuery $q) {
-                    return $q->where([
-                        'Queues.name IS NOT NULL',
-                        'Billings.billing_from <=' => Date::now()->addMonths(1),
-                    ])
-                    ->andWhere([
-                        'OR' => [
-                            'Billings.billing_until IS NULL',
-                            'Billings.billing_until >=' => Date::now(),
-                        ],
-                    ])
-                    ->orderBy([
-                        'Billings.billing_from' => 'ASC',
-                    ]);
-                },
-                'Services' => 'Queues',
-            ],
-        ]);
-
-        $radusergroup = [];
-
-        if (isset($contract->billings[0])) {
-            // return radusergroup record with current (or the near future) queue name as groupname
-            $radusergroup[] = $this->fetchTable('Radius.Radusergroup')
-                ->findOrNewEntity([
-                    'username' => $account->username,
-                    'groupname' => $contract->billings[0]->service->queue->name,
-                    'priority' => 0,
-                ]);
-        }
-
-        if (empty($radusergroup)) {
-            $this->Flash->warning(
-                __d(
-                    'radius',
-                    'The RADIUS user groups for {0} could not be found automatically. Please, set it manually.',
-                    $account->username
-                )
-                . ' ('
-                . __d(
-                    'radius',
-                    'The billings for the contract for the current or upcoming period are probably not set correctly.'
-                )
-                . ')'
-            );
-            Log::warning('The RADIUS user groups for ' . $account->username . ' could not be found automatically.');
-        }
-
-        if (empty($radusergroup) && env('RADIUS_DEFAULT_USER_GROUP')) {
-            // return radusergroup record with default user group if set in configuration
-            $radusergroup[] = $this->fetchTable('Radius.Radusergroup')
-                ->findOrNewEntity([
-                    'username' => $account->username,
-                    'groupname' => env('RADIUS_DEFAULT_USER_GROUP'),
-                    'priority' => 0,
-                ]);
-        }
-
-        if (empty($radusergroup)) {
-            // return current radusergroup records if exists
-            if (is_array($account->radusergroup)) {
-                foreach ($account->radusergroup as $current_radusergroup) {
-                    $radusergroup[] = $current_radusergroup;
-                }
-            }
-        }
-
-        return $radusergroup;
     }
 }

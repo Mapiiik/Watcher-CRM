@@ -23,18 +23,18 @@ trait FlashMessageHandlerTrait
 
         // Process each flash message
         foreach ($flashMessages as $flashMessage) {
-            $this->handleFlashMessage($io, $flashMessage);
+            $this->handleFlashMessage($flashMessage, $io);
         }
     }
 
     /**
      * Handles a single flash message.
      *
-     * @param \Cake\Console\ConsoleIo $io The console io.
      * @param array $flashMessage The flash message.
+     * @param \Cake\Console\ConsoleIo $io The console io.
      * @return void
      */
-    protected function handleFlashMessage(ConsoleIo $io, array $flashMessage): void
+    protected function handleFlashMessage(array $flashMessage, ConsoleIo $io): void
     {
         // Extract the message type from the flash message element
         $type = str_replace('flash/', '', $flashMessage['element']);
