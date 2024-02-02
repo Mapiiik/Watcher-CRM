@@ -238,7 +238,9 @@ class AccountsUpdater
                 $mailer->addTo($email);
             }
 
-            $mailer->setSubject(__d('radius', 'Automatic RADIUS account changes') . ' - ' . Date::now()->i18nFormat('yyyy-MM-dd'));
+            $mailer->setSubject(
+                __d('radius', 'Automatic RADIUS account changes') . ' - ' . Date::now()->i18nFormat('yyyy-MM-dd')
+            );
             $mailer->setEmailFormat('html');
 
             $mailer->viewBuilder()
