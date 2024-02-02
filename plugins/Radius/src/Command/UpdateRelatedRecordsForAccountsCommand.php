@@ -57,6 +57,11 @@ class UpdateRelatedRecordsForAccountsCommand extends Command
             'boolean' => true,
         ]);
 
+        $parser->addOption('send_change_log_by_email', [
+            'help' => __d('radius', 'Send the change log by email.'),
+            'boolean' => true,
+        ]);
+
         return $parser;
     }
 

@@ -7,8 +7,10 @@ use App\Messages\Messages;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
 use Cake\Log\Log;
+use Cake\Mailer\Mailer;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\ORM\Query\SelectQuery;
+use Exception;
 use Radius\Model\Entity\Account;
 use Radius\Model\Table\AccountsTable;
 use Radius\Model\Table\RadcheckTable;
@@ -110,6 +112,7 @@ class AccountsUpdater
             'radreply' => false,
             'radusergrioup' => false,
             'reconnect_modified_accounts' => false,
+            'send_change_log_by_email' => false,
         ] + $options;
 
         // load accounts and related records
@@ -226,6 +229,39 @@ class AccountsUpdater
                 . Number::format($modified) . ' accounts were updated, and '
                 . Number::format($failed) . ' accounts failed to update.'
         );
+
+        // send change log by email
+        if ($options['send_change_log_by_email'] == true) {
+            $mailer = new Mailer('default');
+
+            foreach (explode(' ', (string)env('REPORT_EMAILS')) as $email) {
+                $mailer->addTo($email);
+            }
+
+            $mailer->setSubject(__d('radius', 'Automatic RADIUS account changes') . ' - ' . Date::now()->i18nFormat('yyyy-MM-dd'));
+            $mailer->setEmailFormat('html');
+
+            $mailer->viewBuilder()
+                ->setLayout('default')
+                ->setTemplate('Radius.UpdateRelatedRecordsSummary');
+
+            $mailer->setViewVars([
+                'title' => __d('radius', 'These automatic RADIUS account changes have just taken place.'),
+                'changelog' => $changelog,
+            ]);
+
+            try {
+                $mailer->deliver();
+                Log::write('debug', 'Automatic RADIUS account changes have been reported.');
+                $this->Messages->info(__d('radius', 'Automatic RADIUS account changes have been reported.'));
+            } catch (Exception $e) {
+                Log::write(
+                    'error',
+                    'Automatic RADIUS account changes cannot be reported. (' . $e->getMessage() . ')'
+                );
+                $this->Messages->error(__d('radius', 'Automatic RADIUS account changes cannot be reported.'));
+            }
+        }
 
         return $changelog;
     }
