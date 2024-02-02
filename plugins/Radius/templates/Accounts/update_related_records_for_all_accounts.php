@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
+ * @var \Radius\Updater\ChangeLog\ChangeLog|null $changelog
  */
 ?>
 <div class="row">
@@ -59,5 +60,14 @@
             ) ?>
             <?= $this->Form->end() ?>
         </div>
+        <?php if (isset($changelog)) : ?>
+        <br>
+        <div class="accounts view content">
+            <h4><?= __d('radius', 'Change Log') ?></h4>
+            <?= $this->element('Accounts/UpdateRelatedRecordsSummary', [
+                'changelog' => $changelog,
+            ]) ?>
+        </div>
+        <?php endif; ?>
     </div>
 </div>

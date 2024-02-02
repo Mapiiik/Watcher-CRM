@@ -74,10 +74,32 @@ class UpdateRelatedRecordsForAccountsCommand extends Command
         $accountsUpdater = new AccountsUpdater();
 
         // update related records for all accounts
-        $accountsUpdater->updateRelatedRecordsForAllAccounts($args->getOptions());
+        $changelog = $accountsUpdater->updateRelatedRecordsForAllAccounts($args->getOptions());
 
         // load messages from accounts updater and generate flash messages
         $this->handleMessages($accountsUpdater->Messages->getMessages(), $io);
+
+        // generate summary table
+        $tableData = [];
+        $tableData[] = [
+            __d('radius', 'Customer'),
+            __d('radius', 'Contract'),
+            __d('radius', 'RADIUS Username'),
+            __d('radius', 'RADIUS Checks'),
+            __d('radius', 'RADIUS Replies'),
+            __d('radius', 'RADIUS User Groups'),
+        ];
+        foreach ($changelog->getChanges() as $change) {
+            $tableData[] = [
+                $change->getCustomer()->name,
+                $change->getContract()->number,
+                $change->getAccount()->username,
+                $change->getRadcheckChange() ? __d('radius', 'Modified') : '',
+                $change->getRadreplyChange() ? __d('radius', 'Modified') : '',
+                $change->getRadusergroupChange() ? __d('radius', 'Modified') : '',
+            ];
+        }
+        $io->helper('Table')->output($tableData);
     }
 
     /**

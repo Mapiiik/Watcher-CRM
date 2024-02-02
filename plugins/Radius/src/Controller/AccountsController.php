@@ -414,10 +414,13 @@ class AccountsController extends AppController
             $accountsUpdater = new AccountsUpdater();
 
             // update related records for all accounts
-            $accountsUpdater->updateRelatedRecordsForAllAccounts($this->getRequest()->getData());
+            $changelog = $accountsUpdater->updateRelatedRecordsForAllAccounts($this->getRequest()->getData());
 
             // load messages from accounts updater and generate flash messages
             $this->handleMessages($accountsUpdater->Messages->getMessages());
+
+            // changelog
+            $this->set('changelog', $changelog);
         }
     }
 }

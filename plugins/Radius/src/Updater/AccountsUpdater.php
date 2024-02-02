@@ -14,6 +14,7 @@ use Radius\Model\Table\AccountsTable;
 use Radius\Model\Table\RadcheckTable;
 use Radius\Model\Table\RadreplyTable;
 use Radius\Model\Table\RadusergroupTable;
+use Radius\Updater\ChangeLog\ChangeLog;
 
 /**
  * Accounts Updater
@@ -97,8 +98,10 @@ class AccountsUpdater
 
     /**
      * Update related records for all accounts method
+     *
+     * @return \Radius\Updater\ChangeLog\ChangeLog ChangeLog with changed accounts and details of what has changed.
      */
-    public function updateRelatedRecordsForAllAccounts(?array $options): void
+    public function updateRelatedRecordsForAllAccounts(?array $options): ChangeLog
     {
         // load options
         $options = $options + [
@@ -116,6 +119,17 @@ class AccountsUpdater
             'Radusergroup',
         ]);
 
+        // initializes the change log
+        $changelog = new ChangeLog();
+
+        // stop processing if there is nothing to do
+        if (!(($options['radcheck'] == true) | ($options['radreply'] == true) | ($options['radusergroup'] == true))) {
+            $this->Messages->warning(__d('radius', 'Nothing has been selected for update.'));
+
+            return $changelog;
+        }
+
+        // filter accounts by required state
         switch ($options['state']) {
             case 'active':
                 $accountsQuery->where(['active' => true]);
@@ -125,65 +139,28 @@ class AccountsUpdater
                 break;
         }
 
+        // initialization of counters
         $processed = 0;
         $modified = 0;
         $failed = 0;
-
-        $something_to_do = false;
 
         /** @var iterable<\Radius\Model\Entity\Account> $accounts */
         $accounts = $accountsQuery->all();
 
         foreach ($accounts as $account) {
-            $is_modified = false;
-
             // autogenerate related records
             if ($options['radcheck'] == true) {
-                $something_to_do = true;
-
-                $radcheck = $this->autoRadcheckData($account);
-                sort($radcheck);
-                sort($account->radcheck);
-                if ($account->radcheck != $radcheck) {
-                    $is_modified = true;
-                    $account->radcheck = $radcheck;
-                }
-                unset($radcheck);
+                $this->autoDataHandler('radcheck', 'autoRadcheckData', $account, $changelog);
             }
             if ($options['radreply'] == true) {
-                $something_to_do = true;
-
-                $radreply = $this->autoRadreplyData($account);
-                sort($radreply);
-                sort($account->radreply);
-                if ($account->radreply != $radreply) {
-                    $is_modified = true;
-                    $account->radreply = $radreply;
-                }
-                unset($radreply);
+                $this->autoDataHandler('radreply', 'autoRadreplyData', $account, $changelog);
             }
             if ($options['radusergroup'] == true) {
-                $something_to_do = true;
-
-                $radusergroup = $this->autoRadusergroupData($account);
-                sort($radusergroup);
-                sort($account->radusergroup);
-                if ($account->radusergroup != $radusergroup) {
-                    $is_modified = true;
-                    $account->radusergroup = $radusergroup;
-                }
-                unset($radusergroup);
-            }
-
-            // stop processing if there is nothing to do
-            if (!$something_to_do) {
-                $this->Messages->warning(__d('radius', 'Nothing has been selected for update.'));
-
-                return;
+                $this->autoDataHandler('radusergroup', 'autoRadusergroupData', $account, $changelog);
             }
 
             $processed++;
-            if ($is_modified) {
+            if ($changelog->hasChange($account->username)) {
                 // save modified data
                 if ($this->Accounts->save($account) === false) {
                     $failed++;
@@ -249,6 +226,38 @@ class AccountsUpdater
                 . Number::format($modified) . ' accounts were updated, and '
                 . Number::format($failed) . ' accounts failed to update.'
         );
+
+        return $changelog;
+    }
+
+    /**
+     * Handles automatic data generation for related records.
+     *
+     * @param string $relatedData The name of the related data.
+     * @param string $autoDataMethod The name of the method to generate the data.
+     * @param \Radius\Model\Entity\Account $account RADIUS account entity
+     * @param \Radius\Updater\ChangeLog\ChangeLog $changelog Reference to the ChangeLog.
+     */
+    private function autoDataHandler(
+        string $relatedData,
+        string $autoDataMethod,
+        Account &$account,
+        ChangeLog &$changelog,
+    ): void {
+        $data = $this->$autoDataMethod($account);
+        sort($data);
+        sort($account->$relatedData);
+        if ($account->$relatedData != $data) {
+            // write changes to the change log
+            $changelog->addChangeForRelatedData(
+                $account,
+                $relatedData,
+                original: $account->$relatedData,
+                changed: $data,
+            );
+
+            $account->$relatedData = $data;
+        }
     }
 
     /**
