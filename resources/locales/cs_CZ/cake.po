@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CakePHP 4.2.4\n"
-"POT-Creation-Date: 2023-12-29 11:50+0100\n"
-"PO-Revision-Date: 2023-12-29 11:52+0100\n"
+"POT-Creation-Date: 2024-02-02 18:25+0100\n"
+"PO-Revision-Date: 2024-02-02 18:34+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -24,11 +24,11 @@ msgid "The requested address {0} was not found on this server."
 msgstr "Požadovaná adresa {0} nebyla na tomto serveru nalezena."
 
 #: templates/Error/error500.php:47
-#: vendor/cakephp/cakephp/src/Error/Renderer/WebExceptionRenderer.php:360
+#: vendor/cakephp/cakephp/src/Error/Renderer/WebExceptionRenderer.php:359
 msgid "An Internal Error Has Occurred."
 msgstr "Došlo k vnitřní chybě."
 
-#: vendor/cakephp/cakephp/src/Error/Renderer/WebExceptionRenderer.php:358
+#: vendor/cakephp/cakephp/src/Error/Renderer/WebExceptionRenderer.php:357
 msgid "Not Found"
 msgstr "Nenalezeno"
 
@@ -52,11 +52,11 @@ msgstr ""
 msgid "Missing or incorrect CSRF session key"
 msgstr "Chybějící nebo nesprávný klíč relace CSRF"
 
-#: vendor/cakephp/cakephp/src/Http/Response.php:1428
+#: vendor/cakephp/cakephp/src/Http/Response.php:1429
 msgid "The requested file contains `..` and will not be read."
 msgstr "Požadovaný soubor obsahuje '.. ' a nebude načten."
 
-#: vendor/cakephp/cakephp/src/Http/Response.php:1436
+#: vendor/cakephp/cakephp/src/Http/Response.php:1437
 msgid "The requested file was not found"
 msgstr "Požadovaný soubor nebyl nalezen"
 
@@ -255,7 +255,7 @@ msgstr "Nelze upravit řádek: omezení pro asociaci `{0}` selhalo."
 msgid "The count does not match {0}{1}"
 msgstr "Součet nesedí {0}{1}"
 
-#: vendor/cakephp/cakephp/src/Utility/Text.php:902
+#: vendor/cakephp/cakephp/src/Utility/Text.php:900
 msgid "and"
 msgstr "a"
 

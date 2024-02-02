@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2024-01-24 13:33+0100\n"
+"POT-Creation-Date: 2024-02-02 18:25+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1109,9 +1109,6 @@ msgstr ""
 #: ./templates/Phones/view.php:52
 #: ./templates/Phones/view.php:56
 #: ./templates/Queues/view.php:132
-#: ./templates/ServiceTypes/index.php:58
-#: ./templates/ServiceTypes/index.php:59
-#: ./templates/ServiceTypes/index.php:60
 #: ./templates/ServiceTypes/index.php:61
 #: ./templates/ServiceTypes/index.php:62
 #: ./templates/ServiceTypes/index.php:63
@@ -1119,6 +1116,9 @@ msgstr ""
 #: ./templates/ServiceTypes/index.php:65
 #: ./templates/ServiceTypes/index.php:66
 #: ./templates/ServiceTypes/index.php:67
+#: ./templates/ServiceTypes/index.php:68
+#: ./templates/ServiceTypes/index.php:69
+#: ./templates/ServiceTypes/index.php:70
 #: ./templates/ServiceTypes/view.php:60
 #: ./templates/ServiceTypes/view.php:64
 #: ./templates/ServiceTypes/view.php:68
@@ -1202,9 +1202,6 @@ msgstr ""
 #: ./templates/Phones/view.php:52
 #: ./templates/Phones/view.php:56
 #: ./templates/Queues/view.php:132
-#: ./templates/ServiceTypes/index.php:58
-#: ./templates/ServiceTypes/index.php:59
-#: ./templates/ServiceTypes/index.php:60
 #: ./templates/ServiceTypes/index.php:61
 #: ./templates/ServiceTypes/index.php:62
 #: ./templates/ServiceTypes/index.php:63
@@ -1212,6 +1209,9 @@ msgstr ""
 #: ./templates/ServiceTypes/index.php:65
 #: ./templates/ServiceTypes/index.php:66
 #: ./templates/ServiceTypes/index.php:67
+#: ./templates/ServiceTypes/index.php:68
+#: ./templates/ServiceTypes/index.php:69
+#: ./templates/ServiceTypes/index.php:70
 #: ./templates/ServiceTypes/view.php:60
 #: ./templates/ServiceTypes/view.php:64
 #: ./templates/ServiceTypes/view.php:68
@@ -1475,7 +1475,7 @@ msgstr ""
 #: ./templates/RemovedIps/view.php:10
 #: ./templates/ServiceTypes/add.php:10
 #: ./templates/ServiceTypes/edit.php:10
-#: ./templates/ServiceTypes/index.php:46
+#: ./templates/ServiceTypes/index.php:49
 #: ./templates/ServiceTypes/view.php:10
 #: ./templates/ServiceTypes/view.php:149
 #: ./templates/ServiceTypes/view.php:203
@@ -1580,8 +1580,8 @@ msgstr ""
 #: ./templates/RemovedIpNetworks/edit.php:45
 #: ./templates/RemovedIps/add.php:37
 #: ./templates/RemovedIps/edit.php:42
-#: ./templates/ServiceTypes/add.php:38
-#: ./templates/ServiceTypes/edit.php:46
+#: ./templates/ServiceTypes/add.php:40
+#: ./templates/ServiceTypes/edit.php:48
 #: ./templates/Services/add.php:29
 #: ./templates/Services/edit.php:34
 #: ./templates/SoldEquipments/add.php:38
@@ -1657,7 +1657,7 @@ msgstr ""
 #: ./templates/RemovedIps/edit.php:14
 #: ./templates/RemovedIps/index.php:66
 #: ./templates/ServiceTypes/edit.php:12
-#: ./templates/ServiceTypes/index.php:76
+#: ./templates/ServiceTypes/index.php:79
 #: ./templates/ServiceTypes/view.php:173
 #: ./templates/ServiceTypes/view.php:271
 #: ./templates/Services/edit.php:14
@@ -1769,7 +1769,7 @@ msgstr ""
 #: ./templates/RemovedIps/index.php:68
 #: ./templates/RemovedIps/view.php:19
 #: ./templates/ServiceTypes/edit.php:15
-#: ./templates/ServiceTypes/index.php:78
+#: ./templates/ServiceTypes/index.php:81
 #: ./templates/ServiceTypes/view.php:20
 #: ./templates/ServiceTypes/view.php:175
 #: ./templates/ServiceTypes/view.php:273
@@ -1939,7 +1939,7 @@ msgstr ""
 #: ./templates/Queues/view.php:135
 #: ./templates/RemovedIpNetworks/index.php:57
 #: ./templates/RemovedIps/index.php:59
-#: ./templates/ServiceTypes/index.php:69
+#: ./templates/ServiceTypes/index.php:72
 #: ./templates/ServiceTypes/view.php:164
 #: ./templates/ServiceTypes/view.php:262
 #: ./templates/Services/index.php:53
@@ -2002,7 +2002,7 @@ msgstr ""
 #: ./templates/Queues/view.php:139
 #: ./templates/RemovedIpNetworks/index.php:59
 #: ./templates/RemovedIps/index.php:61
-#: ./templates/ServiceTypes/index.php:71
+#: ./templates/ServiceTypes/index.php:74
 #: ./templates/ServiceTypes/view.php:168
 #: ./templates/ServiceTypes/view.php:266
 #: ./templates/Services/index.php:55
@@ -2048,7 +2048,7 @@ msgstr ""
 #: ./templates/Queues/index.php:72
 #: ./templates/RemovedIpNetworks/index.php:76
 #: ./templates/RemovedIps/index.php:78
-#: ./templates/ServiceTypes/index.php:88
+#: ./templates/ServiceTypes/index.php:91
 #: ./templates/Services/index.php:72
 #: ./templates/SoldEquipments/index.php:83
 #: ./templates/TaskStates/index.php:60
@@ -2080,7 +2080,7 @@ msgstr ""
 #: ./templates/Queues/index.php:73
 #: ./templates/RemovedIpNetworks/index.php:77
 #: ./templates/RemovedIps/index.php:79
-#: ./templates/ServiceTypes/index.php:89
+#: ./templates/ServiceTypes/index.php:92
 #: ./templates/Services/index.php:73
 #: ./templates/SoldEquipments/index.php:84
 #: ./templates/TaskStates/index.php:61
@@ -2112,7 +2112,7 @@ msgstr ""
 #: ./templates/Queues/index.php:75
 #: ./templates/RemovedIpNetworks/index.php:79
 #: ./templates/RemovedIps/index.php:81
-#: ./templates/ServiceTypes/index.php:91
+#: ./templates/ServiceTypes/index.php:94
 #: ./templates/Services/index.php:75
 #: ./templates/SoldEquipments/index.php:86
 #: ./templates/TaskStates/index.php:63
@@ -2144,7 +2144,7 @@ msgstr ""
 #: ./templates/Queues/index.php:76
 #: ./templates/RemovedIpNetworks/index.php:80
 #: ./templates/RemovedIps/index.php:82
-#: ./templates/ServiceTypes/index.php:92
+#: ./templates/ServiceTypes/index.php:95
 #: ./templates/Services/index.php:76
 #: ./templates/SoldEquipments/index.php:87
 #: ./templates/TaskStates/index.php:64
@@ -2176,7 +2176,7 @@ msgstr ""
 #: ./templates/Queues/index.php:79
 #: ./templates/RemovedIpNetworks/index.php:83
 #: ./templates/RemovedIps/index.php:85
-#: ./templates/ServiceTypes/index.php:95
+#: ./templates/ServiceTypes/index.php:98
 #: ./templates/Services/index.php:79
 #: ./templates/SoldEquipments/index.php:90
 #: ./templates/TaskStates/index.php:67
@@ -4475,9 +4475,9 @@ msgstr ""
 msgid "Have RADIUS Accounts"
 msgstr ""
 
-#: ./templates/ServiceTypes/add.php:35
-#: ./templates/ServiceTypes/edit.php:43
-#: ./templates/ServiceTypes/index.php:45
+#: ./templates/ServiceTypes/add.php:36
+#: ./templates/ServiceTypes/edit.php:44
+#: ./templates/ServiceTypes/index.php:47
 #: ./templates/ServiceTypes/view.php:95
 msgid "Assign IP addresses from behind"
 msgstr ""

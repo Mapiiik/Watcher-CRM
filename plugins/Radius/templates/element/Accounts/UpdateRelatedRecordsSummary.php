@@ -11,7 +11,7 @@
         <tr>
             <th><?= __d('radius', 'Customer') ?></th>
             <th><?= __d('radius', 'Contract') ?></th>
-            <th><?= __d('radius', 'RADIUS') . ' - ' . __d('radius', 'Username') ?></th>
+            <th><?= __d('radius', 'RADIUS Username') ?></th>
             <th><?= __d('radius', 'RADIUS Checks') . ' - ' . __d('radius', 'Original') ?></th>
             <th><?= __d('radius', 'RADIUS Checks') . ' - ' . __d('radius', 'Changed') ?></th>
             <th><?= __d('radius', 'RADIUS Replies') . ' - ' . __d('radius', 'Original') ?></th>

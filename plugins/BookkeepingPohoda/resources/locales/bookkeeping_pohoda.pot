@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-10-31 13:52+0100\n"
+"POT-Creation-Date: 2024-02-02 18:26+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -167,8 +167,8 @@ msgstr ""
 
 #: ./plugins/BookkeepingPohoda/templates/Invoices/add.php:48
 #: ./plugins/BookkeepingPohoda/templates/Invoices/edit.php:56
-#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:108
-#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:130
+#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:121
+#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:143
 #: ./plugins/BookkeepingPohoda/templates/Invoices/index.php:56
 #: ./plugins/BookkeepingPohoda/templates/Invoices/view.php:81
 #: ./plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:24
@@ -258,12 +258,12 @@ msgid "CSV for verification"
 msgstr ""
 
 #: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:95
-#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:117
+#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:130
 msgid "Name"
 msgstr ""
 
 #: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:96
-#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:118
+#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:131
 msgid "Price"
 msgstr ""
 
