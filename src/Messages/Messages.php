@@ -18,7 +18,7 @@ class Messages
      *
      * @var array<\App\Messages\Message>
      */
-    private static array $messages;
+    private static array $messages = [];
 
     /**
      * Magic method for set method based on element names.
