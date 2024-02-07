@@ -24,7 +24,7 @@ services:
       - 80:80/tcp
 
   database-dev:
-    image: postgres:16-alpine
+    image: postgres:16
     tmpfs:
       - /var/lib/postgresql/data:exec
     environment:

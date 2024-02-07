@@ -23,7 +23,7 @@ services:
       - 443:443/tcp
 
   database:
-    image: postgres:16-alpine
+    image: postgres:16
     volumes:
       - app-database:/var/lib/postgresql/data:Z
     restart: always
