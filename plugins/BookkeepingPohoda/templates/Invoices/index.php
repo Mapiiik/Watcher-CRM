@@ -39,6 +39,11 @@
         ['action' => 'importFromDBF'],
         ['class' => 'button float-right']
     ) ?>
+    <?= $this->AuthLink->link(
+        __d('bookkeeping_pohoda', 'List Debtors'),
+        ['controller' => 'Debtors', 'action' => 'index'],
+        ['class' => 'button float-right']
+    ) ?>
     <h3><?= __d('bookkeeping_pohoda', 'Invoices') ?></h3>
     <div class="table-responsive">
         <table>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace BookkeepingPohoda\Controller;
 
 use App\Strings;
+use BookkeepingPohoda\Debtors\DebtorsProcessor;
 use RouterOS\Client;
 use RouterOS\Query;
 
@@ -15,6 +16,24 @@ use RouterOS\Query;
  */
 class DebtorsController extends AppController
 {
+    /**
+     * Index method
+     *
+     * @return \Cake\Http\Response|null|void Renders view
+     */
+    public function index()
+    {
+        $debtorsProcessor = new DebtorsProcessor(
+            allowed_payment_delay: (int)$this->getRequest()->getQuery('allowed_payment_delay', 0),
+            allowed_total_debt: (float)$this->getRequest()->getQuery('allowed_total_debt', 0),
+            allowed_debt_per_invoice: (float)$this->getRequest()->getQuery('allowed_debt_per_invoice', 0),
+        );
+
+        $debtors = $debtorsProcessor->getDeptors();
+
+        $this->set(compact('debtors'));
+    }
+
     /**
      * Unblock method
      *
