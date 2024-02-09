@@ -31,6 +31,20 @@ use BookkeepingPohoda\Debtors\Debtor;
         ['controller' => 'Invoices', 'action' => 'index'],
         ['class' => 'button float-right']
     ) ?>
+    <?= $this->AuthLink->postLink(
+        __d('bookkeeping_pohoda', 'Block Debtors'),
+        [
+            'plugin' => 'BookkeepingPohoda',
+            'controller' => 'Debtors',
+            'action' => 'index',
+            '?' => $this->getRequest()->getQueryParams(),
+        ],
+        [
+            'data' => ['block_debtors' => 1],
+            'class' => 'button float-right',
+            'confirm' => __('Are you sure you want to block all listed customers?'),
+        ]
+    ) ?>
     <h3><?= __d('bookkeeping_pohoda', 'Debtors') ?></h3>
     <div class="table-responsive">
         <table>

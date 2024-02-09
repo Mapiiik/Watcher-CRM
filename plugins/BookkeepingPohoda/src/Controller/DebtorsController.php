@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace BookkeepingPohoda\Controller;
 
+use BookkeepingPohoda\Debtors\Debtor;
 use BookkeepingPohoda\Debtors\DebtorsProcessor;
 
 /**
@@ -25,9 +26,30 @@ class DebtorsController extends AppController
             allowed_total_overdue_debt: (float)$this->getRequest()->getQuery('allowed_total_overdue_debt', 0),
         );
 
-        $debtors = $debtorsProcessor->getDeptors();
+        $debtors = $debtorsProcessor->getDebtors();
 
         $this->set(compact('debtors'));
+
+        if ($this->getRequest()->is(['post'])) {
+            // block debtors
+            if ($this->getRequest()->getData('block_debtors') == true) {
+                $result = $debtorsProcessor->blockMany(
+                    $debtors
+                        ->extract(
+                            function (Debtor $debtor) {
+                                return $debtor->getCustomer()->id;
+                            }
+                        )
+                        ->toArray()
+                );
+
+                $this->Flash->success(
+                    '<strong>' . __d('bookkeeping_pohoda', 'Routers updated.') . '</strong><br>'
+                        . ($result ? nl2br($result) : __d('bookkeeping_pohoda', 'Nothing has changed.')),
+                    ['escape' => false]
+                );
+            }
+        }
     }
 
     /**

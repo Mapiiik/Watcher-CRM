@@ -32,11 +32,11 @@ class DebtorsProcessor
     }
 
     /**
-     * Load Deptors from Database
+     * Load Debtors from Database
      *
      * @return void
      */
-    private function loadDeptorsFromDatabase(): void
+    private function loadDebtorsFromDatabase(): void
     {
         self::$debtors = $this->fetchTable('BookkeepingPohoda.Invoices')
             ->find()
@@ -70,18 +70,18 @@ class DebtorsProcessor
     }
 
     /**
-     * Get Deptors
+     * Get Debtors
      *
      * @return \Cake\Collection\CollectionInterface|iterable<\BookkeepingPohoda\Debtors\Debtor>
      */
-    public function getDeptors(): CollectionInterface|iterable
+    public function getDebtors(): CollectionInterface|iterable
     {
-        // Load deptors if not already loaded
+        // Load debtors if not already loaded
         if (!isset(self::$debtors)) {
-            $this->loadDeptorsFromDatabase();
+            $this->loadDebtorsFromDatabase();
         }
 
-        // Return filtered deptors
+        // Return filtered debtors
         return self::$debtors
             ->filter(
                 function (Debtor $debtor) {
@@ -92,9 +92,9 @@ class DebtorsProcessor
     }
 
     /**
-     * Block Deptor
+     * Block Debtor
      *
-     * @param string|null $id Customer id.
+     * @param string|null $id Customer ID.
      * @return string List of performed changes.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -106,9 +106,9 @@ class DebtorsProcessor
     }
 
     /**
-     * Unblock Deptor
+     * Unblock Debtor
      *
-     * @param string|null $id Customer id.
+     * @param string|null $id Customer ID.
      * @return string List of performed changes.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -120,11 +120,45 @@ class DebtorsProcessor
     }
 
     /**
+     * Block Many Debtors
+     *
+     * @param array<string> $ids Customer IDs.
+     * @return string List of performed changes.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function blockMany(array $ids): string
+    {
+        $customer_ips = [];
+        foreach ($ids as $id) {
+            $customer_ips = array_merge_recursive($customer_ips, $this->getCustomerIps($id, 'MANUAL ENTRY - '));
+        }
+
+        return $this->updateRouters($customer_ips, true);
+    }
+
+    /**
+     * Unblock Many Debtors
+     *
+     * @param array<string> $ids Customer IDs.
+     * @return string List of performed changes.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function unblockMany(array $ids): string
+    {
+        $customer_ips = [];
+        foreach ($ids as $id) {
+            $customer_ips = array_merge_recursive($customer_ips, $this->getCustomerIps($id, 'MANUAL ENTRY - '));
+        }
+
+        return $this->updateRouters($customer_ips, false);
+    }
+
+    /**
      * Get Customer IPs
      *
      * Return example: ['ipv4' => ['0.0.0.0' => 'comment'], 'ipv6' => ['0::1/128' => 'comment']]
      *
-     * @param string|null $id Customer id.
+     * @param string|null $id Customer ID.
      * @param string $comment_prefix IP comment prefix.
      * @return array List of IPv4 and IPv6 adresses/networks.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
