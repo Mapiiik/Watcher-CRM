@@ -40,9 +40,28 @@ use BookkeepingPohoda\Debtors\Debtor;
             '?' => $this->getRequest()->getQueryParams(),
         ],
         [
-            'data' => ['block_debtors' => 1],
+            'data' => [
+                'debtors_block' => 1,
+            ],
             'class' => 'button float-right',
             'confirm' => __('Are you sure you want to block all listed customers?'),
+        ]
+    ) ?>
+    <?= $this->AuthLink->postLink(
+        __d('bookkeeping_pohoda', 'Update Debtors Blocking'),
+        [
+            'plugin' => 'BookkeepingPohoda',
+            'controller' => 'Debtors',
+            'action' => 'index',
+            '?' => $this->getRequest()->getQueryParams(),
+        ],
+        [
+            'data' => [
+                'debtors_block' => 1,
+                'debtors_block_clear' => 1,
+            ],
+            'class' => 'button float-right',
+            'confirm' => __('Are you sure you want to block all listed customers and unblock the others?'),
         ]
     ) ?>
     <h3><?= __d('bookkeeping_pohoda', 'Debtors') ?></h3>

@@ -32,7 +32,7 @@ class DebtorsController extends AppController
 
         if ($this->getRequest()->is(['post'])) {
             // block debtors
-            if ($this->getRequest()->getData('block_debtors') == true) {
+            if ($this->getRequest()->getData('debtors_block') == true) {
                 $result = $debtorsProcessor->blockMany(
                     $debtors
                         ->extract(
@@ -40,7 +40,8 @@ class DebtorsController extends AppController
                                 return $debtor->getCustomer()->id;
                             }
                         )
-                        ->toArray()
+                        ->toArray(),
+                    $this->getRequest()->getData('debtors_block_clear', 0) == true
                 );
 
                 $this->Flash->success(

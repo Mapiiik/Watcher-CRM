@@ -123,17 +123,18 @@ class DebtorsProcessor
      * Block Many Debtors
      *
      * @param array<string> $ids Customer IDs.
+     * @param bool $clear Before the operation, clear the address list on the router. Default (false).
      * @return string List of performed changes.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function blockMany(array $ids): string
+    public function blockMany(array $ids, bool $clear = false): string
     {
         $customer_ips = [];
         foreach ($ids as $id) {
             $customer_ips = array_merge_recursive($customer_ips, $this->getCustomerIps($id, 'MANUAL ENTRY - '));
         }
 
-        return $this->updateRouters($customer_ips, true);
+        return $this->updateRouters($customer_ips, true, $clear);
     }
 
     /**
@@ -223,11 +224,12 @@ class DebtorsProcessor
      *
      * @param array $ips List of IPv4 and IPv6 adresses/networks.
      * @param bool $block Defaults to unblock (false) / block (true)
+     * @param bool $clear Before the operation, clear the address list on the router. Default (false).
      * @return string List of performed changes
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      * @throws \InvalidArgumentException When incorrect IP addresses input format.
      */
-    private function updateRouters(array $ips, bool $block = false): string
+    private function updateRouters(array $ips, bool $block = false, bool $clear = false): string
     {
         if (!isset($ips['ipv4']) || !isset($ips['ipv6']) || !is_array($ips['ipv4']) || !is_array($ips['ipv6'])) {
             throw new InvalidArgumentException('Incorrect IP addresses input format.');
@@ -242,12 +244,12 @@ class DebtorsProcessor
                 'pass' => env('DEBTORS_ROUTERS_PASSWORD', ''),
             ]);
 
-            foreach ($ips['ipv4'] as $ipv4 => $comment) {
+            // process IPv4 firewall address list
+            if ($clear) {
                 $query = new Query('/ip/firewall/address-list/print');
                 $query
-                    ->where('address', $ipv4)
                     ->where('list', env('DEBTORS_ADDRESS_LIST', ''))
-                    ->equal('.proplist', '.id');
+                    ->equal('.proplist', '.id,address');
 
                 $response = $client->query($query)->read();
 
@@ -262,9 +264,38 @@ class DebtorsProcessor
                         $result .= __d(
                             'bookkeeping_pohoda',
                             'Removed IPv4 record {0} from router {1}.',
-                            $ipv4,
+                            $item['address'],
                             $router
                         ) . PHP_EOL;
+                    }
+                }
+            }
+
+            foreach ($ips['ipv4'] as $ipv4 => $comment) {
+                if (!$clear) {
+                    $query = new Query('/ip/firewall/address-list/print');
+                    $query
+                        ->where('address', $ipv4)
+                        ->where('list', env('DEBTORS_ADDRESS_LIST', ''))
+                        ->equal('.proplist', '.id');
+
+                    $response = $client->query($query)->read();
+
+                    foreach ($response as $item) {
+                        $query = new Query('/ip/firewall/address-list/remove');
+                        $query->equal('.id', $item['.id']);
+
+                        $response = $client->query($query)->read();
+
+                        // check if no error message
+                        if (empty($response)) {
+                            $result .= __d(
+                                'bookkeeping_pohoda',
+                                'Removed IPv4 record {0} from router {1}.',
+                                $ipv4,
+                                $router
+                            ) . PHP_EOL;
+                        }
                     }
                 }
 
@@ -289,12 +320,13 @@ class DebtorsProcessor
                     }
                 }
             }
-            foreach ($ips['ipv6'] as $ipv6 => $comment) {
+
+            // process IPv6 firewall address list
+            if ($clear) {
                 $query = new Query('/ipv6/firewall/address-list/print');
                 $query
-                    ->where('address', $ipv6)
                     ->where('list', env('DEBTORS_ADDRESS_LIST', ''))
-                    ->equal('.proplist', '.id');
+                    ->equal('.proplist', '.id,address');
 
                 $response = $client->query($query)->read();
 
@@ -309,9 +341,38 @@ class DebtorsProcessor
                         $result .= __d(
                             'bookkeeping_pohoda',
                             'Removed IPv6 record {0} from router {1}.',
-                            $ipv6,
+                            $item['address'],
                             $router
                         ) . PHP_EOL;
+                    }
+                }
+            }
+
+            foreach ($ips['ipv6'] as $ipv6 => $comment) {
+                if (!$clear) {
+                    $query = new Query('/ipv6/firewall/address-list/print');
+                    $query
+                        ->where('address', $ipv6)
+                        ->where('list', env('DEBTORS_ADDRESS_LIST', ''))
+                        ->equal('.proplist', '.id');
+
+                    $response = $client->query($query)->read();
+
+                    foreach ($response as $item) {
+                        $query = new Query('/ipv6/firewall/address-list/remove');
+                        $query->equal('.id', $item['.id']);
+
+                        $response = $client->query($query)->read();
+
+                        // check if no error message
+                        if (empty($response)) {
+                            $result .= __d(
+                                'bookkeeping_pohoda',
+                                'Removed IPv6 record {0} from router {1}.',
+                                $ipv6,
+                                $router
+                            ) . PHP_EOL;
+                        }
                     }
                 }
 
