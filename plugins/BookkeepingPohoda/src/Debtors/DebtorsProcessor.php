@@ -7,6 +7,7 @@ use App\Strings;
 use Cake\Collection\CollectionInterface;
 use Cake\I18n\Date;
 use Cake\ORM\Locator\LocatorAwareTrait;
+use InvalidArgumentException;
 use RouterOS\Client;
 use RouterOS\Query;
 
@@ -94,38 +95,42 @@ class DebtorsProcessor
      * Block Deptor
      *
      * @param string|null $id Customer id.
-     * @return string List of performed changes
+     * @return string List of performed changes.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function block(?string $id): string
     {
-        return $this->updateRouters($id, true);
+        $customer_ips = $this->getCustomerIps($id, 'MANUAL ENTRY - ');
+
+        return $this->updateRouters($customer_ips, true);
     }
 
     /**
      * Unblock Deptor
      *
      * @param string|null $id Customer id.
-     * @return string List of performed changes
+     * @return string List of performed changes.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function unblock(?string $id): string
     {
-        return $this->updateRouters($id, false);
+        $customer_ips = $this->getCustomerIps($id, 'MANUAL ENTRY - ');
+
+        return $this->updateRouters($customer_ips, false);
     }
 
     /**
-     * Update routers method
+     * Get Customer IPs
+     *
+     * Return example: ['ipv4' => ['0.0.0.0' => 'comment'], 'ipv6' => ['0::1/128' => 'comment']]
      *
      * @param string|null $id Customer id.
-     * @param bool $block Defaults to unblock (false) / block (true)
-     * @return string List of performed changes
+     * @param string $comment_prefix IP comment prefix.
+     * @return array List of IPv4 and IPv6 adresses/networks.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    private function updateRouters(?string $id = null, bool $block = false): string
+    private function getCustomerIps(?string $id, string $comment_prefix = ''): array
     {
-        $result = '';
-
         /** @var \App\Model\Entity\Customer $customer */
         $customer = $this->fetchTable('Customers')->get($id, contain: [
             'IpNetworks' => [
@@ -139,26 +144,61 @@ class DebtorsProcessor
         $ipv4s = [];
         $ipv6s = [];
 
+        // IP addresses
         foreach ($customer->ips as $ip) {
+            // split address and mask
             [$address] = explode('/', $ip->ip);
-
+            // prepare comment
+            $comment = $comment_prefix . ($ip->contract->number ?? $customer->number) . ' - ' . $customer->name;
+            // IPv4
             if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-                $ipv4s[] = $address;
+                $ipv4s[$address] = $comment;
             }
+            // IPv6
             if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-                $ipv6s[] = $address;
+                $ipv6s[$address] = $comment;
             }
         }
+        // IP networks
         foreach ($customer->ip_networks as $ip_network) {
+            // split address and mask
             [$address, $mask] = explode('/', $ip_network->ip_network);
-
+            // prepare comment
+            $comment = $comment_prefix . ($ip->contract->number ?? $customer->number) . ' - ' . $customer->name;
+            // IPv4
             if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-                $ipv4s[] = $address . '/' . $mask;
+                $ipv4s[$address . '/' . $mask] = $comment;
             }
+            // IPv6
             if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-                $ipv6s[] = $address . '/' . $mask;
+                $ipv6s[$address . '/' . $mask] = $comment;
             }
         }
+
+        // return resulting array
+        return [
+            'ipv4' => $ipv4s,
+            'ipv6' => $ipv6s,
+        ];
+    }
+
+    /**
+     * Update routers method
+     *
+     * Input example: ['ipv4' => ['0.0.0.0' => 'comment'], 'ipv6' => ['0::1/128' => 'comment']]
+     *
+     * @param array $ips List of IPv4 and IPv6 adresses/networks.
+     * @param bool $block Defaults to unblock (false) / block (true)
+     * @return string List of performed changes
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @throws \InvalidArgumentException When incorrect IP addresses input format.
+     */
+    private function updateRouters(array $ips, bool $block = false): string
+    {
+        if (!isset($ips['ipv4']) || !isset($ips['ipv6']) || !is_array($ips['ipv4']) || !is_array($ips['ipv6'])) {
+            throw new InvalidArgumentException('Incorrect IP addresses input format.');
+        }
+        $result = '';
 
         $routers = explode(' ', env('DEBTORS_ROUTERS_IP_ADDRESSES', ''));
         foreach ($routers as $router) {
@@ -168,7 +208,7 @@ class DebtorsProcessor
                 'pass' => env('DEBTORS_ROUTERS_PASSWORD', ''),
             ]);
 
-            foreach ($ipv4s as $ipv4) {
+            foreach ($ips['ipv4'] as $ipv4 => $comment) {
                 $query = new Query('/ip/firewall/address-list/print');
                 $query
                     ->where('address', $ipv4)
@@ -187,7 +227,7 @@ class DebtorsProcessor
                     if (empty($response)) {
                         $result .= __d(
                             'bookkeeping_pohoda',
-                            'Removed IPv4 record {0} from {1}.',
+                            'Removed IPv4 record {0} from router {1}.',
                             $ipv4,
                             $router
                         ) . PHP_EOL;
@@ -199,12 +239,7 @@ class DebtorsProcessor
                     $query
                         ->equal('address', $ipv4)
                         ->equal('list', env('DEBTORS_ADDRESS_LIST', ''))
-                        ->equal(
-                            'comment',
-                            addslashes(Strings::removeAccents(
-                                'MANUAL ENTRY - ' . $customer->number . ' - ' . $customer->name
-                            ))
-                        );
+                        ->equal('comment', addslashes(Strings::removeAccents($comment)));
 
                     $response = $client->query($query)->read();
 
@@ -212,14 +247,15 @@ class DebtorsProcessor
                     if (isset($response['after']['ret'])) {
                         $result .= __d(
                             'bookkeeping_pohoda',
-                            'Added IPv4 record {0} to {1}.',
+                            'Added IPv4 record {0} ({1}) to router {2}.',
                             $ipv4,
+                            Strings::removeAccents($comment),
                             $router
                         ) . PHP_EOL;
                     }
                 }
             }
-            foreach ($ipv6s as $ipv6) {
+            foreach ($ips['ipv6'] as $ipv6 => $comment) {
                 $query = new Query('/ipv6/firewall/address-list/print');
                 $query
                     ->where('address', $ipv6)
@@ -238,7 +274,7 @@ class DebtorsProcessor
                     if (empty($response)) {
                         $result .= __d(
                             'bookkeeping_pohoda',
-                            'Removed IPv6 record {0} from {1}.',
+                            'Removed IPv6 record {0} from router {1}.',
                             $ipv6,
                             $router
                         ) . PHP_EOL;
@@ -250,12 +286,7 @@ class DebtorsProcessor
                     $query
                         ->equal('address', $ipv6)
                         ->equal('list', env('DEBTORS_ADDRESS_LIST', ''))
-                        ->equal(
-                            'comment',
-                            addslashes(Strings::removeAccents(
-                                'MANUAL ENTRY - ' . $customer->number . ' - ' . $customer->name
-                            ))
-                        );
+                        ->equal('comment', addslashes(Strings::removeAccents($comment)));
 
                     $response = $client->query($query)->read();
 
@@ -263,8 +294,9 @@ class DebtorsProcessor
                     if (isset($response['after']['ret'])) {
                         $result .= __d(
                             'bookkeeping_pohoda',
-                            'Added IPv6 record {0} to {1}.',
+                            'Added IPv6 record {0} ({1}) to router {2}.',
                             $ipv6,
+                            Strings::removeAccents($comment),
                             $router
                         ) . PHP_EOL;
                     }
