@@ -25,8 +25,7 @@ class DebtorsController extends AppController
     {
         $debtorsProcessor = new DebtorsProcessor(
             allowed_payment_delay: (int)$this->getRequest()->getQuery('allowed_payment_delay', 0),
-            allowed_total_debt: (float)$this->getRequest()->getQuery('allowed_total_debt', 0),
-            allowed_debt_per_invoice: (float)$this->getRequest()->getQuery('allowed_debt_per_invoice', 0),
+            allowed_total_overdue_debt: (float)$this->getRequest()->getQuery('allowed_total_overdue_debt', 0),
         );
 
         $debtors = $debtorsProcessor->getDeptors();

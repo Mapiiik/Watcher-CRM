@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace BookkeepingPohoda\Debtors;
 
 use App\Model\Entity\Customer;
+use BookkeepingPohoda\Model\Entity\Invoice;
 use Cake\Collection\Collection;
 use Cake\I18n\Date;
 
@@ -17,6 +18,7 @@ class Debtor
     private Customer $customer;
     private Date $due_date;
     private float $total_debt;
+    private float $total_overdue_debt;
 
     /**
      * Constructor
@@ -32,6 +34,13 @@ class Debtor
         $this->customer = $invoicesCollection->first()->customer;
         $this->due_date = $invoicesCollection->min('due_date')->due_date;
         $this->total_debt = $invoicesCollection->sumOf('debt');
+        $this->total_overdue_debt = $invoicesCollection
+            ->filter(
+                function (Invoice $invoice) {
+                    return $invoice->due_date < Date::now();
+                }
+            )
+            ->sumOf('debt');
     }
 
     /**
@@ -72,5 +81,15 @@ class Debtor
     public function getTotalDebt(): float
     {
         return $this->total_debt;
+    }
+
+    /**
+     * Get total overdue debt
+     *
+     * @return float
+     */
+    public function getTotalOverdueDebt(): float
+    {
+        return $this->total_overdue_debt;
     }
 }

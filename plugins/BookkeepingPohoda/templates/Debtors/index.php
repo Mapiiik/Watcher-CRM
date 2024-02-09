@@ -16,15 +16,8 @@ use BookkeepingPohoda\Debtors\Debtor;
         ]) ?>
     </div>
     <div class="column">
-        <?= $this->Form->control('allowed_total_debt', [
-            'label' => __d('bookkeeping_pohoda', 'Allowed Total Debt'),
-            'type' => 'number',
-            'onchange' => 'this.form.submit();',
-        ]) ?>
-    </div>
-    <div class="column">
-        <?= $this->Form->control('allowed_debt_per_invoice', [
-            'label' => __d('bookkeeping_pohoda', 'Allowed Debt per Invoice'),
+        <?= $this->Form->control('allowed_total_overdue_debt', [
+            'label' => __d('bookkeeping_pohoda', 'Allowed Total Overdue Debt'),
             'type' => 'number',
             'onchange' => 'this.form.submit();',
         ]) ?>
@@ -45,8 +38,11 @@ use BookkeepingPohoda\Debtors\Debtor;
                 <tr>
                     <th><?= __d('bookkeeping_pohoda', 'Customer') ?></th>
                     <th><?= __d('bookkeeping_pohoda', 'Customer Number') ?></th>
+                    <th><?= __d('bookkeeping_pohoda', 'Emails') ?></th>
+                    <th><?= __d('bookkeeping_pohoda', 'Phones') ?></th>
                     <th><?= __d('bookkeeping_pohoda', 'Due Date') ?></th>
                     <th><?= __d('bookkeeping_pohoda', 'Total Debt') ?></th>
+                    <th><?= __d('bookkeeping_pohoda', 'Total Overdue Debt') ?></th>
                     <th><?= __d('bookkeeping_pohoda', 'Invoices') ?></th>
                 </tr>
             </thead>
@@ -64,8 +60,11 @@ use BookkeepingPohoda\Debtors\Debtor;
                             ]
                         ) ?></td>
                     <td><?= h($debtor->getCustomer()->number) ?></td>
+                    <td><?= implode('<br>', array_column($debtor->getCustomer()->emails, 'email')) ?></td>
+                    <td><?= implode('<br>', array_column($debtor->getCustomer()->phones, 'phone')) ?></td>
                     <td><?= h($debtor->getDueDate()) ?></td>
                     <td><?= $this->Number->currency($debtor->getTotalDebt()) ?></td>
+                    <td><?= $this->Number->currency($debtor->getTotalOverdueDebt()) ?></td>
                     <td><table>
                         <thead>
                             <th><?= __d('bookkeeping_pohoda', 'Number') ?></th>
@@ -116,9 +115,14 @@ use BookkeepingPohoda\Debtors\Debtor;
         </table>
     </div>
     <div>
-        <?= __d('bookkeeping_pohoda', 'Total Overdue Debt') . ': ' . $this->Number->currency($debtors->sumOf(
+        <?= __d('bookkeeping_pohoda', 'Total Debt') . ': ' . $this->Number->currency($debtors->sumOf(
             function (Debtor $debtor) {
                 return $debtor->getTotalDebt();
+            }
+        )) ?><br>
+        <?= __d('bookkeeping_pohoda', 'Total Overdue Debt') . ': ' . $this->Number->currency($debtors->sumOf(
+            function (Debtor $debtor) {
+                return $debtor->getTotalOverdueDebt();
             }
         )) ?><br>
     </div>

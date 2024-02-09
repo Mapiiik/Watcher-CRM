@@ -11,31 +11,30 @@ class DebtorsProcessor
 {
     use LocatorAwareTrait;
 
+    private static CollectionInterface $debtors;
+
     private int $allowed_payment_delay;
-    private float $allowed_total_debt;
-    private float $allowed_debt_per_invoice;
+    private float $allowed_total_overdue_debt;
 
     /**
      * Constructor
      */
     public function __construct(
         int $allowed_payment_delay = 0,
-        float $allowed_total_debt = 0,
-        float $allowed_debt_per_invoice = 0,
+        float $allowed_total_overdue_debt = 0,
     ) {
         $this->allowed_payment_delay = $allowed_payment_delay;
-        $this->allowed_total_debt = $allowed_total_debt;
-        $this->allowed_debt_per_invoice = $allowed_debt_per_invoice;
+        $this->allowed_total_overdue_debt = $allowed_total_overdue_debt;
     }
 
     /**
-     * Get Deptors
+     * Load Deptors from Database
      *
-     * @return \Cake\Collection\CollectionInterface|iterable<\BookkeepingPohoda\Debtors\Debtor>
+     * @return void
      */
-    public function getDeptors(): CollectionInterface|iterable
+    private function loadDeptorsFromDatabase(): void
     {
-        return $this->fetchTable('BookkeepingPohoda.Invoices')
+        self::$debtors = $this->fetchTable('BookkeepingPohoda.Invoices')
             ->find()
             ->contain([
                 'Customers' => [
@@ -45,8 +44,7 @@ class DebtorsProcessor
                 ],
             ])
             ->where([
-                'Invoices.debt >' => $this->allowed_debt_per_invoice,
-                'Invoices.due_date <' => Date::now()->subDays($this->allowed_payment_delay),
+                'Invoices.debt >' => 0,
             ])
             ->orderBy([
                 'Invoices.customer_id' => 'ASC',
@@ -60,14 +58,31 @@ class DebtorsProcessor
                     return new Debtor($invoices);
                 }
             )
-            ->filter(
-                function (Debtor $debtor) {
-                    return $debtor->getTotalDebt() > $this->allowed_total_debt;
-                }
-            )
             ->sortBy(
                 function (Debtor $debtor) {
                     return $debtor->getTotalDebt();
+                }
+            );
+    }
+
+    /**
+     * Get Deptors
+     *
+     * @return \Cake\Collection\CollectionInterface|iterable<\BookkeepingPohoda\Debtors\Debtor>
+     */
+    public function getDeptors(): CollectionInterface|iterable
+    {
+        // Load deptors if not already loaded
+        if (!isset(self::$debtors)) {
+            $this->loadDeptorsFromDatabase();
+        }
+
+        // Return filtered deptors
+        return self::$debtors
+            ->filter(
+                function (Debtor $debtor) {
+                    return $debtor->getDueDate() < Date::now()->subDays($this->allowed_payment_delay)
+                        && $debtor->getTotalOverdueDebt() > $this->allowed_total_overdue_debt;
                 }
             );
     }
