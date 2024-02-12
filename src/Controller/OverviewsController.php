@@ -463,11 +463,7 @@ class OverviewsController extends AppController
                                                 return '30_100';
                                             }
                                         } elseif (in_array($cto_category, ['s2_fttb', 's2_ftth'])) {
-                                            if ($speed >= 1024000) {
-                                                return '1000';
-                                            } else {
-                                                return '300_1000';
-                                            }
+                                            return '1000';
                                         } else {
                                             return 'unknown';
                                         }
