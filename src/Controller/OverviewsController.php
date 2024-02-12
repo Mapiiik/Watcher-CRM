@@ -496,7 +496,7 @@ class OverviewsController extends AppController
                                                 $cto_category
                                             ),
                                             'maximal_upload_category' => $categoryFinder(
-                                                $maximal_download,
+                                                $maximal_upload,
                                                 $cto_category
                                             ),
                                             'effective_upload_category' => $categoryFinder(
