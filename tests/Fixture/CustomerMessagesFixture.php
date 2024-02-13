@@ -29,7 +29,7 @@ class CustomerMessagesFixture extends TestFixture
                 'body_format' => 0,
                 'delivery_status' => 0,
                 'processed' => 1707837371,
-                'identifier' => 'Lorem ipsum dolor sit amet',                
+                'identifier' => 'Lorem ipsum dolor sit amet',
                 'created' => 1707837371,
                 'created_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
                 'modified' => 1707837371,
