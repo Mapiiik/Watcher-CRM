@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\CustomerMessage $customerMessage
- * @var \Cake\Collection\CollectionInterface|string[] $customers
+ * @var \Cake\Collection\CollectionInterface|array<string> $customers
  */
 ?>
 <div class="row">
@@ -22,7 +22,7 @@
             <fieldset>
                 <legend><?= __('Add Customer Message') ?></legend>
                 <?php
-                    echo $this->Form->control('customer_id', ['options' => $customers]);
+                    echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
                     echo $this->Form->control('type');
                     echo $this->Form->control('direction');
                     echo $this->Form->control('recipients');

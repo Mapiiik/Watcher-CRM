@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\CustomerMessage $customerMessage
- * @var string[]|\Cake\Collection\CollectionInterface $customers
+ * @var \Cake\Collection\CollectionInterface|array<string> $customers
  */
 ?>
 <div class="row">
@@ -17,7 +17,11 @@
                     'class' => 'side-nav-item',
                 ]
             ) ?>
-            <?= $this->AuthLink->link(__('List Customer Messages'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __('List Customer Messages'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item']
+            ) ?>
         </div>
     </aside>
     <div class="column column-90">

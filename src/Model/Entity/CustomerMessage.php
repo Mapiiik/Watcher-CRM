@@ -58,4 +58,24 @@ class CustomerMessage extends Entity
         'creator' => true,
         'modifier' => true,
     ];
+
+    /**
+     * Convert recipients to array if string
+     *
+     * Allowed separators: " ,;" (space, comma, semicolon)
+     *
+     * @param mixed $recipients Recipients input
+     * @return array
+     */
+    protected function _setRecipients(mixed $recipients): array
+    {
+        if (is_array($recipients)) {
+            return $recipients;
+        }
+        if (is_string($recipients)) {
+            return explode(' ', str_replace([',', ';', '  '], ' ', $recipients));
+        }
+
+        return [];
+    }
 }

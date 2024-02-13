@@ -49,7 +49,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Recipients') ?></th>
-                            <td><?= h($customerMessage->recipients) ?></td>
+                            <td><?= implode('<br>', $customerMessage->recipients) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Subject') ?></th>

@@ -15,7 +15,6 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('type') ?></th>
                     <th><?= $this->Paginator->sort('direction') ?></th>
@@ -26,16 +25,13 @@
                     <th><?= $this->Paginator->sort('processed') ?></th>
                     <th><?= $this->Paginator->sort('identifier') ?></th>
                     <th><?= $this->Paginator->sort('created') ?></th>
-                    <th><?= $this->Paginator->sort('created_by') ?></th>
                     <th><?= $this->Paginator->sort('modified') ?></th>
-                    <th><?= $this->Paginator->sort('modified_by') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($customerMessages as $customerMessage) : ?>
                 <tr>
-                    <td><?= h($customerMessage->id) ?></td>
                     <td><?= $customerMessage->hasValue('customer') ?
                         $this->AuthLink->link(
                             $customerMessage->customer->name,
@@ -43,7 +39,7 @@
                         ) : '' ?></td>
                     <td><?= $customerMessage->type === null ? '' : h($customerMessage->type->label()) ?></td>
                     <td><?= $customerMessage->direction === null ? '' : h($customerMessage->direction->label()) ?></td>
-                    <td><?= h($customerMessage->recipients) ?></td>
+                    <td><?= implode('<br>', $customerMessage->recipients) ?></td>
                     <td><?= h($customerMessage->subject) ?></td>
                     <td><?= $customerMessage->body_format === null ?
                         '' : h($customerMessage->body_format->label()) ?></td>
@@ -52,9 +48,7 @@
                     <td><?= h($customerMessage->processed) ?></td>
                     <td><?= h($customerMessage->identifier) ?></td>
                     <td><?= h($customerMessage->created) ?></td>
-                    <td><?= h($customerMessage->created_by) ?></td>
                     <td><?= h($customerMessage->modified) ?></td>
-                    <td><?= h($customerMessage->modified_by) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(
                             __('View'),
