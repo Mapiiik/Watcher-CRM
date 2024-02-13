@@ -12,6 +12,7 @@ use Cake\Utility\Inflector;
 enum CustomerMessageDeliveryStatus: int implements EnumLabelInterface
 {
     case Pending = 0;
+    case Processed = 1;
     case Sent = 10;
     case Delivered = 20;
     case Failed = 30;
