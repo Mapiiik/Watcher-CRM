@@ -58,7 +58,7 @@ class Installer
     {
         $io = $event->getIO();
 
-        $rootDir = dirname(dirname(__DIR__));
+        $rootDir = dirname(__DIR__, 2);
 
         static::createAppLocalConfig($rootDir, $io);
         static::createWritableDirectories($rootDir, $io);
@@ -119,7 +119,7 @@ class Installer
     {
         // ask if the permissions should be changed
         if ($io->isInteractive()) {
-            $validator = function ($arg) {
+            $validator = function (string $arg): string {
                 if (in_array($arg, ['Y', 'y', 'N', 'n'])) {
                     return $arg;
                 }
@@ -138,7 +138,7 @@ class Installer
         }
 
         // Change the permissions on a path and output the results.
-        $changePerms = function ($path) use ($io): void {
+        $changePerms = function (string $path) use ($io): void {
             $currentPerms = fileperms($path) & 0777;
             $worldWritable = $currentPerms | 0007;
             if ($worldWritable == $currentPerms) {
@@ -153,7 +153,7 @@ class Installer
             }
         };
 
-        $walker = function ($dir) use (&$walker, $changePerms): void {
+        $walker = function (string $dir) use (&$walker, $changePerms): void {
             $files = array_diff(scandir($dir), ['.', '..']);
             foreach ($files as $file) {
                 $path = $dir . '/' . $file;

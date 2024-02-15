@@ -2,7 +2,7 @@
 use Cake\I18n\Date;
 
 /**
- * @var \App\View\AppView $this
+ * @var \Cake\View\View $this
  * @var array<string|int|float> $data
  */
 

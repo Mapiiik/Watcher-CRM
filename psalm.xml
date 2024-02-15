@@ -8,14 +8,14 @@
     autoloader="config/bootstrap.php"
 >
     <projectFiles>
-        <directory name="src" />
-        <directory name="templates" />
-        <directory name="tests" />
-        <directory name="plugins" />
-        <directory name="config" />
+        <directory name="src/"/>
+        <directory name="templates/"/>
+        <directory name="tests/"/>
+        <directory name="plugins/"/>
+        <directory name="config/"/>
         <ignoreFiles>
-            <directory name="templates/AppUsers/" />
-            <directory name="vendor" />
+            <directory name="templates/AppUsers/"/>
+            <directory name="vendor/"/>
         </ignoreFiles>
     </projectFiles>
 </psalm>

@@ -2,7 +2,7 @@
 use Cake\Routing\Router;
 
 /**
- * @var \App\View\AppView $this
+ * @var \Cake\View\View $this
  * @var string $title
  * @var \App\Model\Entity\Task $task
  */
