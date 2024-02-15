@@ -98,7 +98,7 @@ class AppController extends Controller
             );
 
             // Redirect if not called from CLI
-            if (PHP_SAPI == 'cli') {
+            if (PHP_SAPI === 'cli') {
                 throw new NotFoundException('Redirect to ' . $response->getHeaderLine('Location') . ' for non-CLI.');
             } else {
                 header('Location: ' . $response->getHeaderLine('Location'), true, 303);
