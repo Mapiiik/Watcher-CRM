@@ -22,7 +22,7 @@ use Exception;
 use InvalidArgumentException;
 
 /**
- * SendIssuedInvoices command.
+ * Process SMS command.
  */
 class ProcessSmsCommand extends Command
 {
@@ -126,9 +126,14 @@ class ProcessSmsCommand extends Command
                     // submit a message to the Android SMS gateway
                     $messageState = $client->Send($message);
                     // info to console
-                    $io->info(__('Message sent with ID: {0}', $messageState->ID()));
+                    $io->info(__(
+                        'Message with ID {0} was sent with identifier: {1}',
+                        $smsMessage->id,
+                        $messageState->ID(),
+                    ));
                     // patch entity data
                     $smsMessage->processed = DateTime::now();
+                    $smsMessage->identifier = $messageState->ID();
                 } catch (Exception $e) {
                     // log error and abort processing
                     Log::error('Error sending message with ID ' . $smsMessage->id . ': ' . $e->getMessage());
@@ -142,9 +147,9 @@ class ProcessSmsCommand extends Command
             // Find out the status of individual messages
             try {
                 // get message status from Android SMS gateway
-                $messageState = $client->GetState($smsMessage->id);
+                $messageState = $client->GetState($smsMessage->identifier);
                 // info to console
-                $io->info(__('Message status with ID {0}: {1}', $messageState->ID(), $messageState->State()));
+                $io->info(__('Message status with ID {0}: {1}', $smsMessage->id, $messageState->State()));
                 // patch entity data
                 $smsMessage->delivery_status = $this->getMessageState($messageState);
             } catch (Exception $e) {
