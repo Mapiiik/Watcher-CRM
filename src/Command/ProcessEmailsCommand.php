@@ -48,7 +48,7 @@ class ProcessEmailsCommand extends Command
             case CustomerMessageBodyFormat::Html:
                 return Message::MESSAGE_HTML;
             default:
-                throw new InvalidArgumentException('Unknown customer message body format: ' . $format);
+                throw new InvalidArgumentException('Unsupported customer message body format: ' . $format->name);
         }
     }
 
@@ -67,7 +67,7 @@ class ProcessEmailsCommand extends Command
             case CustomerMessageType::EmailSupport:
                 return 'support';
             default:
-                throw new InvalidArgumentException('Unknown customer message type: ' . $type);
+                throw new InvalidArgumentException('Unsupported customer message type: ' . $type->name);
         }
     }
 
