@@ -174,17 +174,6 @@ return [
             'tls' => false,
             'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
         ],
-        'invoices' => [
-            'className' => MailTransport::class,
-            'host' => 'localhost',
-            'port' => 25,
-            'timeout' => 30,
-            'username' => null,
-            'password' => null,
-            'client' => null,
-            'tls' => false,
-            'url' => env('EMAIL_TRANSPORT_INVOICES_URL', null),
-        ],
         'contracts' => [
             'className' => MailTransport::class,
             'host' => 'localhost',
@@ -196,6 +185,28 @@ return [
             'tls' => false,
             'url' => env('EMAIL_TRANSPORT_CONTRACTS_URL', null),
         ],
+        'invoices' => [
+            'className' => MailTransport::class,
+            'host' => 'localhost',
+            'port' => 25,
+            'timeout' => 30,
+            'username' => null,
+            'password' => null,
+            'client' => null,
+            'tls' => false,
+            'url' => env('EMAIL_TRANSPORT_INVOICES_URL', null),
+        ],
+        'support' => [
+            'className' => MailTransport::class,
+            'host' => 'localhost',
+            'port' => 25,
+            'timeout' => 30,
+            'username' => null,
+            'password' => null,
+            'client' => null,
+            'tls' => false,
+            'url' => env('EMAIL_TRANSPORT_SUPPORT_URL', null),
+        ],
     ],
     'Email' => [
         'default' => [
@@ -206,6 +217,20 @@ return [
             ],
             'cc' => env('EMAIL_DEFAULT_COPY_TO_EMAIL', null),
             'replyTo' => env('EMAIL_DEFAULT_REPLY_TO_EMAIL', null),
+            /*
+             * Will by default be set to config value of App.encoding, if that exists otherwise to UTF-8.
+             */
+            'charset' => 'utf-8',
+            'headerCharset' => 'utf-8',
+        ],
+        'contracts' => [
+            'transport' => 'contracts',
+            'from' => [
+                (string)env('EMAIL_CONTRACTS_SENDER_EMAIL', 'default@localhost')
+                => (string)env('EMAIL_CONTRACTS_SENDER_NAME', 'Default'),
+            ],
+            'cc' => env('EMAIL_CONTRACTS_COPY_TO_EMAIL', null),
+            'replyTo' => env('EMAIL_CONTRACTS_REPLY_TO_EMAIL', null),
             /*
              * Will by default be set to config value of App.encoding, if that exists otherwise to UTF-8.
              */
@@ -226,14 +251,14 @@ return [
             'charset' => 'utf-8',
             'headerCharset' => 'utf-8',
         ],
-        'contracts' => [
-            'transport' => 'contracts',
+        'support' => [
+            'transport' => 'support',
             'from' => [
-                (string)env('EMAIL_CONTRACTS_SENDER_EMAIL', 'default@localhost')
-                => (string)env('EMAIL_CONTRACTS_SENDER_NAME', 'Default'),
+                (string)env('EMAIL_SUPPORT_SENDER_EMAIL', 'default@localhost')
+                => (string)env('EMAIL_SUPPORT_SENDER_NAME', 'Default'),
             ],
-            'cc' => env('EMAIL_CONTRACTS_COPY_TO_EMAIL', null),
-            'replyTo' => env('EMAIL_CONTRACTS_REPLY_TO_EMAIL', null),
+            'cc' => env('EMAIL_SUPPORT_COPY_TO_EMAIL', null),
+            'replyTo' => env('EMAIL_SUPPORT_REPLY_TO_EMAIL', null),
             /*
              * Will by default be set to config value of App.encoding, if that exists otherwise to UTF-8.
              */

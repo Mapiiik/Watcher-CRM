@@ -12,6 +12,9 @@ use Cake\Utility\Inflector;
 enum CustomerMessageType: int implements EnumLabelInterface
 {
     case Email = 10;
+    case EmailContracts = 11;
+    case EmailInvoices = 12;
+    case EmailSupport = 13;
     case Sms = 20;
 
     /**

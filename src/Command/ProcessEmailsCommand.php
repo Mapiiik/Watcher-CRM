@@ -48,7 +48,26 @@ class ProcessEmailsCommand extends Command
             case CustomerMessageBodyFormat::Html:
                 return Message::MESSAGE_HTML;
             default:
-                throw new InvalidArgumentException('Invalid email format: ' . $format);
+                throw new InvalidArgumentException('Unknown customer message body format: ' . $format);
+        }
+    }
+
+    /**
+     * Get Mailer Config
+     */
+    private function getMailerConfig(CustomerMessageType $type): string
+    {
+        switch ($type) {
+            case CustomerMessageType::Email:
+                return 'default';
+            case CustomerMessageType::EmailContracts:
+                return 'contracts';
+            case CustomerMessageType::EmailInvoices:
+                return 'invoices';
+            case CustomerMessageType::EmailSupport:
+                return 'support';
+            default:
+                throw new InvalidArgumentException('Unknown customer message type: ' . $type);
         }
     }
 
@@ -69,7 +88,12 @@ class ProcessEmailsCommand extends Command
         $emailMessages = $customerMessagesTable
             ->find()
             ->where([
-                'CustomerMessages.type' => CustomerMessageType::Email,
+                'CustomerMessages.type IN' => [
+                    CustomerMessageType::Email,
+                    CustomerMessageType::EmailContracts,
+                    CustomerMessageType::EmailInvoices,
+                    CustomerMessageType::EmailSupport,
+                ],
                 'CustomerMessages.direction' => CustomerMessageDirection::Outgoing,
                 'CustomerMessages.delivery_status IN' => [
                     CustomerMessageDeliveryStatus::Pending,
@@ -84,7 +108,7 @@ class ProcessEmailsCommand extends Command
             // Submit messages that have not yet been processed
             if ($emailMessage->delivery_status == CustomerMessageDeliveryStatus::Pending) {
                 // prepare message object
-                $mailer = new Mailer();
+                $mailer = new Mailer($this->getMailerConfig($emailMessage->type));
                 $mailer->setEmailFormat($this->getEmailFormat($emailMessage->body_format));
                 $mailer->setTo($emailMessage->recipients);
                 $mailer->setSubject($emailMessage->subject);
