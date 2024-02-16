@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "00cf1cab0ae166e2cd034b4bf59aa18e",
+    "content-hash": "c93f598ec5b72cae7787276a62821e7d",
     "packages": [
         {
             "name": "brick/math",
@@ -693,20 +693,21 @@
         },
         {
             "name": "capcom6/android-sms-gateway",
-            "version": "v1.1.0",
+            "version": "dev-patch-1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/capcom6/android-sms-gateway-php.git",
-                "reference": "402c8802f48db39c1f06aec20e8c28753810ba93"
+                "url": "https://github.com/Mapiiik/android-sms-gateway-php.git",
+                "reference": "f31be94ae374eb0342181825d8c281ea00de8e93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/capcom6/android-sms-gateway-php/zipball/402c8802f48db39c1f06aec20e8c28753810ba93",
-                "reference": "402c8802f48db39c1f06aec20e8c28753810ba93",
+                "url": "https://api.github.com/repos/Mapiiik/android-sms-gateway-php/zipball/f31be94ae374eb0342181825d8c281ea00de8e93",
+                "reference": "f31be94ae374eb0342181825d8c281ea00de8e93",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.4",
+                "php-http/discovery": "^1.17",
                 "psr/http-client-implementation": "^1.0"
             },
             "require-dev": {
@@ -723,7 +724,19 @@
                     "AndroidSmsGateway\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "AndroidSmsGateway\\Tests\\": "tests/"
+                }
+            },
+            "archive": {
+                "exclude": [
+                    "tests/",
+                    "vendor/",
+                    "nbproject/",
+                    ".github/"
+                ]
+            },
             "license": [
                 "Apache-2.0"
             ],
@@ -735,10 +748,9 @@
             ],
             "description": "Provides access to Android SMS Gateway API",
             "support": {
-                "issues": "https://github.com/capcom6/android-sms-gateway-php/issues",
-                "source": "https://github.com/capcom6/android-sms-gateway-php/tree/v1.1.0"
+                "source": "https://github.com/Mapiiik/android-sms-gateway-php/tree/patch-1"
             },
-            "time": "2024-01-31T02:07:39+00:00"
+            "time": "2024-02-16T21:03:55+00:00"
         },
         {
             "name": "clue/socket-raw",
@@ -1879,16 +1891,16 @@
         },
         {
             "name": "laminas/laminas-diactoros",
-            "version": "3.3.0",
+            "version": "3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-diactoros.git",
-                "reference": "4db52734837c60259c9b2d7caf08eef8f7f9b9ac"
+                "reference": "74cfb9a7522ffd2a161d1ebe10db2fc2abb9df45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-diactoros/zipball/4db52734837c60259c9b2d7caf08eef8f7f9b9ac",
-                "reference": "4db52734837c60259c9b2d7caf08eef8f7f9b9ac",
+                "url": "https://api.github.com/repos/laminas/laminas-diactoros/zipball/74cfb9a7522ffd2a161d1ebe10db2fc2abb9df45",
+                "reference": "74cfb9a7522ffd2a161d1ebe10db2fc2abb9df45",
                 "shasum": ""
             },
             "require": {
@@ -1908,9 +1920,9 @@
                 "http-interop/http-factory-tests": "^0.9.0",
                 "laminas/laminas-coding-standard": "~2.5.0",
                 "php-http/psr7-integration-tests": "^1.3",
-                "phpunit/phpunit": "^9.5.28",
+                "phpunit/phpunit": "^9.6.16",
                 "psalm/plugin-phpunit": "^0.18.4",
-                "vimeo/psalm": "^5.15.0"
+                "vimeo/psalm": "^5.22.1"
             },
             "type": "library",
             "extra": {
@@ -1960,7 +1972,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2023-10-26T11:01:07+00:00"
+            "time": "2024-02-16T16:06:16+00:00"
         },
         {
             "name": "laminas/laminas-httphandlerrunner",
@@ -2710,71 +2722,6 @@
             "time": "2022-02-16T17:07:03+00:00"
         },
         {
-            "name": "php-http/cakephp-adapter",
-            "version": "0.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-http/cakephp-adapter.git",
-                "reference": "63506877f56c217133080079948efe6e13b2f522"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-http/cakephp-adapter/zipball/63506877f56c217133080079948efe6e13b2f522",
-                "reference": "63506877f56c217133080079948efe6e13b2f522",
-                "shasum": ""
-            },
-            "require": {
-                "cakephp/cakephp": "^5.0",
-                "php": ">=8.1",
-                "php-http/discovery": "^1.0",
-                "php-http/httplug": "^2.0"
-            },
-            "provide": {
-                "php-http/client-implementation": "1.0",
-                "psr/http-client-implementation": "1.0"
-            },
-            "require-dev": {
-                "php-http/message-factory": "^1.0.2",
-                "phpunit/phpunit": "^9.5",
-                "spryker/code-sniffer": "^0.17.15"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.3-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Http\\Adapter\\Cake\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Joel Wurtz",
-                    "email": "joel.wurtz@gmail.com"
-                }
-            ],
-            "description": "CakePHP adapter for PHP-HTTP",
-            "homepage": "https://httplug.io",
-            "keywords": [
-                "cake",
-                "cakephp",
-                "http",
-                "httplug"
-            ],
-            "support": {
-                "issues": "https://github.com/php-http/cakephp-adapter/issues",
-                "source": "https://github.com/php-http/cakephp-adapter/tree/0.4.0"
-            },
-            "abandoned": "cakephp/http",
-            "time": "2023-09-21T10:08:03+00:00"
-        },
-        {
             "name": "php-http/discovery",
             "version": "1.19.2",
             "source": {
@@ -2851,115 +2798,6 @@
                 "source": "https://github.com/php-http/discovery/tree/1.19.2"
             },
             "time": "2023-11-30T16:49:05+00:00"
-        },
-        {
-            "name": "php-http/httplug",
-            "version": "2.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-http/httplug.git",
-                "reference": "625ad742c360c8ac580fcc647a1541d29e257f67"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-http/httplug/zipball/625ad742c360c8ac580fcc647a1541d29e257f67",
-                "reference": "625ad742c360c8ac580fcc647a1541d29e257f67",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1 || ^8.0",
-                "php-http/promise": "^1.1",
-                "psr/http-client": "^1.0",
-                "psr/http-message": "^1.0 || ^2.0"
-            },
-            "require-dev": {
-                "friends-of-phpspec/phpspec-code-coverage": "^4.1 || ^5.0 || ^6.0",
-                "phpspec/phpspec": "^5.1 || ^6.0 || ^7.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Http\\Client\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Eric GELOEN",
-                    "email": "geloen.eric@gmail.com"
-                },
-                {
-                    "name": "Márk Sági-Kazár",
-                    "email": "mark.sagikazar@gmail.com",
-                    "homepage": "https://sagikazarmark.hu"
-                }
-            ],
-            "description": "HTTPlug, the HTTP client abstraction for PHP",
-            "homepage": "http://httplug.io",
-            "keywords": [
-                "client",
-                "http"
-            ],
-            "support": {
-                "issues": "https://github.com/php-http/httplug/issues",
-                "source": "https://github.com/php-http/httplug/tree/2.4.0"
-            },
-            "time": "2023-04-14T15:10:03+00:00"
-        },
-        {
-            "name": "php-http/promise",
-            "version": "1.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-http/promise.git",
-                "reference": "2916a606d3b390f4e9e8e2b8dd68581508be0f07"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-http/promise/zipball/2916a606d3b390f4e9e8e2b8dd68581508be0f07",
-                "reference": "2916a606d3b390f4e9e8e2b8dd68581508be0f07",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1 || ^8.0"
-            },
-            "require-dev": {
-                "friends-of-phpspec/phpspec-code-coverage": "^4.3.2 || ^6.3",
-                "phpspec/phpspec": "^5.1.2 || ^6.2 || ^7.4"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Http\\Promise\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Joel Wurtz",
-                    "email": "joel.wurtz@gmail.com"
-                },
-                {
-                    "name": "Márk Sági-Kazár",
-                    "email": "mark.sagikazar@gmail.com"
-                }
-            ],
-            "description": "Promise used for asynchronous HTTP requests",
-            "homepage": "http://httplug.io",
-            "keywords": [
-                "promise"
-            ],
-            "support": {
-                "issues": "https://github.com/php-http/promise/issues",
-                "source": "https://github.com/php-http/promise/tree/1.3.0"
-            },
-            "time": "2024-01-04T18:49:48+00:00"
         },
         {
             "name": "psr/container",
@@ -8125,16 +7963,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.8.1",
+            "version": "3.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCSStandards/PHP_CodeSniffer.git",
-                "reference": "14f5fff1e64118595db5408e946f3a22c75807f7"
+                "reference": "d63cee4890a8afaf86a22e51ad4d97c91dd4579b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCSStandards/PHP_CodeSniffer/zipball/14f5fff1e64118595db5408e946f3a22c75807f7",
-                "reference": "14f5fff1e64118595db5408e946f3a22c75807f7",
+                "url": "https://api.github.com/repos/PHPCSStandards/PHP_CodeSniffer/zipball/d63cee4890a8afaf86a22e51ad4d97c91dd4579b",
+                "reference": "d63cee4890a8afaf86a22e51ad4d97c91dd4579b",
                 "shasum": ""
             },
             "require": {
@@ -8201,7 +8039,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-01-11T20:47:48+00:00"
+            "time": "2024-02-16T15:06:51+00:00"
         },
         {
             "name": "symfony/finder",
@@ -8700,7 +8538,8 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "cakephp/cakephp": 20
+        "cakephp/cakephp": 20,
+        "capcom6/android-sms-gateway": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

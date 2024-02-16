@@ -14,6 +14,12 @@
         "issues": "https://github.com/Mapiiik/Watcher-CRM/issues",
         "source": "https://github.com/Mapiiik/Watcher-CRM"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Mapiiik/android-sms-gateway-php"
+        }
+    ],
     "require": {
         "php": ">=8.1",
         "cakedc/users": "^12.0.0",
@@ -21,7 +27,7 @@
         "cakephp/migrations": "^4.0.0",
         "cakephp/plugin-installer": "^2.0",
         "cakephp/queue": "^2.0.1",
-        "capcom6/android-sms-gateway": "^1.1",
+        "capcom6/android-sms-gateway": "dev-patch-1",
         "doctrine/sql-formatter": "^1.1.3",
         "enqueue/fs": "^0.10.19",
         "enqueue/redis": "^0.10.19",
@@ -33,7 +39,6 @@
         "mapik/radius-client": "^1.0",
         "mlocati/ip-lib": "^1.18",
         "mobiledetect/mobiledetectlib": "^4.8",
-        "php-http/cakephp-adapter": "^0.4.0",
         "tecnickcom/tcpdf": "^6.4"
     },
     "require-dev": {
