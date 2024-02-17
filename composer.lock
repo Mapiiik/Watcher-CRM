@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c93f598ec5b72cae7787276a62821e7d",
+    "content-hash": "bcc77886402669d332d9d2fabfe0915f",
     "packages": [
         {
             "name": "brick/math",
@@ -693,16 +693,16 @@
         },
         {
             "name": "capcom6/android-sms-gateway",
-            "version": "dev-patch-1",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Mapiiik/android-sms-gateway-php.git",
-                "reference": "f31be94ae374eb0342181825d8c281ea00de8e93"
+                "url": "https://github.com/capcom6/android-sms-gateway-php.git",
+                "reference": "fc7546cac10da09bc32eb2254c485f243da02c1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Mapiiik/android-sms-gateway-php/zipball/f31be94ae374eb0342181825d8c281ea00de8e93",
-                "reference": "f31be94ae374eb0342181825d8c281ea00de8e93",
+                "url": "https://api.github.com/repos/capcom6/android-sms-gateway-php/zipball/fc7546cac10da09bc32eb2254c485f243da02c1f",
+                "reference": "fc7546cac10da09bc32eb2254c485f243da02c1f",
                 "shasum": ""
             },
             "require": {
@@ -724,19 +724,7 @@
                     "AndroidSmsGateway\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "AndroidSmsGateway\\Tests\\": "tests/"
-                }
-            },
-            "archive": {
-                "exclude": [
-                    "tests/",
-                    "vendor/",
-                    "nbproject/",
-                    ".github/"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -748,9 +736,10 @@
             ],
             "description": "Provides access to Android SMS Gateway API",
             "support": {
-                "source": "https://github.com/Mapiiik/android-sms-gateway-php/tree/patch-1"
+                "issues": "https://github.com/capcom6/android-sms-gateway-php/issues",
+                "source": "https://github.com/capcom6/android-sms-gateway-php/tree/v1.1.1"
             },
-            "time": "2024-02-16T21:03:55+00:00"
+            "time": "2024-02-17T07:21:42+00:00"
         },
         {
             "name": "clue/socket-raw",
@@ -8538,8 +8527,7 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "cakephp/cakephp": 20,
-        "capcom6/android-sms-gateway": 20
+        "cakephp/cakephp": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
