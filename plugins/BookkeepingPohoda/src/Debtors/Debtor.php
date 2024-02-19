@@ -92,4 +92,22 @@ class Debtor
     {
         return $this->total_overdue_debt;
     }
+
+    /**
+     * Get total overdue debt for specific date
+     *
+     * @return float
+     */
+    public function getTotalOverdueDebtForDate(Date $date): float
+    {
+        $invoicesCollection = new Collection($this->invoices);
+
+        return $invoicesCollection
+        ->filter(
+            function (Invoice $invoice) use ($date) {
+                return $invoice->due_date < $date;
+            }
+        )
+        ->sumOf('debt');
+    }
 }

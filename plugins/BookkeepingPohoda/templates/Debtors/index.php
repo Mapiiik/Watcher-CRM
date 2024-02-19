@@ -4,9 +4,10 @@ use BookkeepingPohoda\Debtors\Debtor;
 /**
  * @var \App\View\AppView $this
  * @var \Cake\Collection\CollectionInterface|iterable<\BookkeepingPohoda\Debtors\Debtor> $debtors
+ * @var \Cake\Form\Form $filterForm
  */
 ?>
-<?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
+<?= $this->Form->create($filterForm, ['type' => 'get', 'valueSources' => ['context']]) ?>
 <div class="row">
     <div class="column">
         <?= $this->Form->control('allowed_payment_delay', [
@@ -32,36 +33,15 @@ use BookkeepingPohoda\Debtors\Debtor;
         ['class' => 'button float-right']
     ) ?>
     <?= $this->AuthLink->postLink(
-        __d('bookkeeping_pohoda', 'Block Debtors'),
-        [
-            'plugin' => 'BookkeepingPohoda',
-            'controller' => 'Debtors',
-            'action' => 'index',
-            '?' => $this->getRequest()->getQueryParams(),
-        ],
-        [
-            'data' => [
-                'debtors_block' => 1,
-            ],
-            'class' => 'button float-right',
-            'confirm' => __('Are you sure you want to block all listed customers?'),
-        ]
-    ) ?>
-    <?= $this->AuthLink->postLink(
         __d('bookkeeping_pohoda', 'Update Debtors Blocking'),
         [
             'plugin' => 'BookkeepingPohoda',
             'controller' => 'Debtors',
-            'action' => 'index',
-            '?' => $this->getRequest()->getQueryParams(),
+            'action' => 'blockingUpdate',
         ],
         [
-            'data' => [
-                'debtors_block' => 1,
-                'debtors_block_clear' => 1,
-            ],
             'class' => 'button float-right',
-            'confirm' => __('Are you sure you want to block all listed customers and unblock the others?'),
+            'confirm' => __('Are you sure you want to automatically update the debtors blocking?'),
         ]
     ) ?>
     <h3><?= __d('bookkeeping_pohoda', 'Debtors') ?></h3>

@@ -72,9 +72,29 @@ class DebtorsProcessor
     /**
      * Get Debtors
      *
+     * All debtors, even those who are not overdue.
+     *
      * @return \Cake\Collection\CollectionInterface|iterable<\BookkeepingPohoda\Debtors\Debtor>
      */
     public function getDebtors(): CollectionInterface|iterable
+    {
+        // Load debtors if not already loaded
+        if (!isset(self::$debtors)) {
+            $this->loadDebtorsFromDatabase();
+        }
+
+        // Return debtors
+        return self::$debtors;
+    }
+
+    /**
+     * Get Overdue Debtors
+     *
+     * Debtors who are overdue and do not even meet the set exceptions.
+     *
+     * @return \Cake\Collection\CollectionInterface|iterable<\BookkeepingPohoda\Debtors\Debtor>
+     */
+    public function getOverdueDebtors(): CollectionInterface|iterable
     {
         // Load debtors if not already loaded
         if (!isset(self::$debtors)) {
@@ -85,8 +105,11 @@ class DebtorsProcessor
         return self::$debtors
             ->filter(
                 function (Debtor $debtor) {
-                    return $debtor->getDueDate() < Date::now()->subDays($this->allowed_payment_delay)
-                        && $debtor->getTotalOverdueDebt() > $this->allowed_total_overdue_debt;
+                    // virtual day in the past to allow for payment delays
+                    $date = Date::now()->subDays($this->allowed_payment_delay);
+
+                    return $debtor->getDueDate() < $date
+                        && $debtor->getTotalOverdueDebtForDate($date) > $this->allowed_total_overdue_debt;
                 }
             );
     }
@@ -102,7 +125,11 @@ class DebtorsProcessor
     {
         $customer_ips = $this->getCustomerIps($id, 'MANUAL ENTRY - ');
 
-        return $this->updateRouters($customer_ips, true);
+        return $this->updateRouters(
+            ips: $customer_ips,
+            block: true,
+            clear: false,
+        );
     }
 
     /**
@@ -116,25 +143,35 @@ class DebtorsProcessor
     {
         $customer_ips = $this->getCustomerIps($id, 'MANUAL ENTRY - ');
 
-        return $this->updateRouters($customer_ips, false);
+        return $this->updateRouters(
+            ips: $customer_ips,
+            block: false,
+            clear: false,
+        );
     }
 
     /**
      * Block Many Debtors
      *
      * @param array<string> $ids Customer IDs.
-     * @param bool $clear Before the operation, clear the address list on the router. Default (false).
      * @return string List of performed changes.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function blockMany(array $ids, bool $clear = false): string
+    public function blockMany(array $ids): string
     {
         $customer_ips = [];
         foreach ($ids as $id) {
-            $customer_ips = array_merge_recursive($customer_ips, $this->getCustomerIps($id, 'MANUAL ENTRY - '));
+            $customer_ips = array_merge_recursive(
+                $customer_ips,
+                $this->getCustomerIps($id, 'MANUAL ENTRY - ')
+            );
         }
 
-        return $this->updateRouters($customer_ips, true, $clear);
+        return $this->updateRouters(
+            ips: $customer_ips,
+            block: true,
+            clear: false,
+        );
     }
 
     /**
@@ -148,10 +185,40 @@ class DebtorsProcessor
     {
         $customer_ips = [];
         foreach ($ids as $id) {
-            $customer_ips = array_merge_recursive($customer_ips, $this->getCustomerIps($id, 'MANUAL ENTRY - '));
+            $customer_ips = array_merge_recursive(
+                $customer_ips,
+                $this->getCustomerIps($id, 'MANUAL ENTRY - ')
+            );
         }
 
-        return $this->updateRouters($customer_ips, false);
+        return $this->updateRouters(
+            ips: $customer_ips,
+            block: false,
+            clear: false,
+        );
+    }
+
+    /**
+     * Automatic Update of Debtor Blocking
+     *
+     * @return string List of performed changes.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function blockingUpdate(): string
+    {
+        $customer_ips = [];
+        foreach ($this->getOverdueDebtors() as $debtor) {
+            $customer_ips = array_merge_recursive(
+                $customer_ips,
+                $this->getCustomerIps($debtor->getCustomer()->id)
+            );
+        }
+
+        return $this->updateRouters(
+            ips: $customer_ips,
+            block: true,
+            clear: true,
+        );
     }
 
     /**
