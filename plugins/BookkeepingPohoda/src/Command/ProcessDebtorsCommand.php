@@ -47,8 +47,8 @@ class ProcessDebtorsCommand extends Command
     public function execute(Arguments $args, ConsoleIo $io)
     {
         $debtorsProcessor = new DebtorsProcessor(
-            allowed_payment_delay: (int)env('DEBTORS_ALLOWED_PAYMENT_DELAY', 0),
-            allowed_total_overdue_debt: (float)env('DEBTORS_ALLOWED_TOTAL_OVERDUE_DEBT', 0)
+            allowed_payment_delay: (int)env('DEBTORS_ALLOWED_PAYMENT_DELAY', '0'),
+            allowed_total_overdue_debt: (float)env('DEBTORS_ALLOWED_TOTAL_OVERDUE_DEBT', '0')
         );
 
         $debtorsToNotify = $debtorsProcessor
@@ -88,6 +88,7 @@ class ProcessDebtorsCommand extends Command
             }
         }
 
+        /** @var \BookkeepingPohoda\Debtors\Debtor $debtor */
         foreach ($debtorsToBlock as $debtor) {
             $emails_available = (count($debtor->getCustomer()->emails) > 0);
             $phones_available = (count($debtor->getCustomer()->phones) > 0);
