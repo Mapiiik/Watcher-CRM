@@ -78,7 +78,7 @@ class CreateCustomerMessages extends AbstractMigration
         ]);
         $table->addColumn('created_by', 'uuid', [
             'default' => null,
-            'null' => false,
+            'null' => true,
         ]);
         $table->addColumn('modified', 'timestamp', [
             'timezone' => true,
@@ -87,7 +87,7 @@ class CreateCustomerMessages extends AbstractMigration
         ]);
         $table->addColumn('modified_by', 'uuid', [
             'default' => null,
-            'null' => false,
+            'null' => true,
         ]);
 
         $table->addForeignKey('customer_id', 'customers', 'id');

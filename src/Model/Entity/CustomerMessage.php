@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use InvalidArgumentException;
 
 /**
  * CustomerMessage Entity
@@ -64,18 +65,40 @@ class CustomerMessage extends Entity
      *
      * Allowed separators: " ,;" (space, comma, semicolon)
      *
-     * @param mixed $recipients Recipients input
-     * @return array
+     * @param mixed $recipientsInput Recipients input
+     * @return array<string>
      */
-    protected function _setRecipients(mixed $recipients): array
+    protected function _setRecipients(mixed $recipientsInput): array
     {
-        if (is_array($recipients)) {
-            return $recipients;
-        }
-        if (is_string($recipients)) {
-            return explode(' ', str_replace([',', ';', '  '], ' ', $recipients));
+        $inputCopy = $recipientsInput;
+
+        if (is_string($inputCopy)) {
+            $inputCopy = explode(' ', str_replace([',', ';'], ' ', $inputCopy));
         }
 
-        return [];
+        if (is_array($inputCopy)) {
+            $recipientsOutput = [];
+            foreach ($inputCopy as $item) {
+                if ($item instanceof Email) {
+                    // emails
+                    $recipientsOutput[] = str_replace(' ', '', $item->email);
+                } elseif ($item instanceof Phone) {
+                    // phones
+                    $recipientsOutput[] = str_replace(' ', '', $item->phone);
+                } elseif (is_string($item)) {
+                    // strings
+                    $item = trim($item);
+                    if (!empty($item)) {
+                        $recipientsOutput[] = str_replace(' ', '', $item);
+                    }
+                } else {
+                    throw new InvalidArgumentException("Invalid recipients data: $recipientsInput");
+                }
+            }
+
+            return $recipientsOutput;
+        }
+
+        throw new InvalidArgumentException("Invalid recipients data: $recipientsInput");
     }
 }

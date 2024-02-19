@@ -90,11 +90,35 @@ class DebtorsProcessor
     /**
      * Get Overdue Debtors
      *
-     * Debtors who are overdue and do not even meet the set exceptions.
+     * Debtors who are overdue (ignoring exceptions).
      *
      * @return \Cake\Collection\CollectionInterface|iterable<\BookkeepingPohoda\Debtors\Debtor>
      */
     public function getOverdueDebtors(): CollectionInterface|iterable
+    {
+        // Load debtors if not already loaded
+        if (!isset(self::$debtors)) {
+            $this->loadDebtorsFromDatabase();
+        }
+
+        // Return filtered debtors
+        return self::$debtors
+            ->filter(
+                function (Debtor $debtor) {
+                    return $debtor->getDueDate() < Date::now()
+                        && $debtor->getTotalOverdueDebt() > 0;
+                }
+            );
+    }
+
+    /**
+     * Get Filtered Overdue Debtors
+     *
+     * Debtors who are overdue and do not even meet the set exceptions.
+     *
+     * @return \Cake\Collection\CollectionInterface|iterable<\BookkeepingPohoda\Debtors\Debtor>
+     */
+    public function getFilteredOverdueDebtors(): CollectionInterface|iterable
     {
         // Load debtors if not already loaded
         if (!isset(self::$debtors)) {
@@ -207,7 +231,7 @@ class DebtorsProcessor
     public function blockingUpdate(): string
     {
         $customer_ips = [];
-        foreach ($this->getOverdueDebtors() as $debtor) {
+        foreach ($this->getFilteredOverdueDebtors() as $debtor) {
             $customer_ips = array_merge_recursive(
                 $customer_ips,
                 $this->getCustomerIps($debtor->getCustomer()->id)

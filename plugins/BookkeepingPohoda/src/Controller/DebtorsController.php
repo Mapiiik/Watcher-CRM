@@ -42,7 +42,7 @@ class DebtorsController extends AppController
             allowed_total_overdue_debt: $allowed_total_overdue_debt
         );
 
-        $debtors = $debtorsProcessor->getOverdueDebtors();
+        $debtors = $debtorsProcessor->getFilteredOverdueDebtors();
 
         $this->set(compact('debtors'));
     }

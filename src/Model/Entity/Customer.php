@@ -61,6 +61,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\CustomerLabel[] $customer_labels
  * @property \App\Model\Entity\Login[] $logins
  * @property \App\Model\Entity\Phone[] $phones
+ * @property \App\Model\Entity\Phone[] $billing_phones
  * @property \App\Model\Entity\SoldEquipment[] $sold_equipments
  * @property \App\Model\Entity\Task[] $tasks
  *
@@ -280,6 +281,23 @@ class Customer extends Entity
         $phone = implode(', ', array_column($this->phones, 'phone'));
 
         return $phone;
+    }
+
+    /**
+     * all customer phones for billing
+     *
+     * @return array
+     */
+    protected function _getBillingPhones(): array
+    {
+        $billing_phones = [];
+        foreach ($this->phones as $phone) {
+            if ($phone->use_for_billing) {
+                $billing_phones[] = $phone;
+            }
+        }
+
+        return $billing_phones;
     }
 
     /**
