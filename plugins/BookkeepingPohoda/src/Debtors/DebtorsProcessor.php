@@ -161,10 +161,11 @@ class DebtorsProcessor
      *
      * @param string|null $id Customer ID.
      * @param string $comment_prefix IP comment prefix.
+     * @param bool $skip_vip Skip VIP contracts.
      * @return array List of IPv4 and IPv6 adresses/networks.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    private function getCustomerIps(?string $id, string $comment_prefix = ''): array
+    private function getCustomerIps(?string $id, string $comment_prefix = '', bool $skip_vip = true): array
     {
         /** @var \App\Model\Entity\Customer $customer */
         $customer = $this->fetchTable('Customers')->get($id, contain: [
@@ -181,6 +182,10 @@ class DebtorsProcessor
 
         // IP addresses
         foreach ($customer->ips as $ip) {
+            // skip VIP contracts
+            if ($skip_vip && $ip->contract->vip === true) {
+                continue;
+            }
             // split address and mask
             [$address] = explode('/', $ip->ip);
             // prepare comment
@@ -196,6 +201,10 @@ class DebtorsProcessor
         }
         // IP networks
         foreach ($customer->ip_networks as $ip_network) {
+            // skip VIP contracts
+            if ($skip_vip && $ip_network->contract->vip === true) {
+                continue;
+            }
             // split address and mask
             [$address, $mask] = explode('/', $ip_network->ip_network);
             // prepare comment
