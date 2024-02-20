@@ -87,6 +87,9 @@ class ProcessSmsCommand extends Command
                     CustomerMessageDeliveryStatus::Sent,
                 ],
             ])
+            ->orderBy([
+                'CustomerMessages.created',
+            ])
             ->limit(50)
             ->all();
 
@@ -141,7 +144,7 @@ class ProcessSmsCommand extends Command
                 }
 
                 // sleep for a while to slow down the sending
-                sleep(rand(1, 5));
+                sleep(rand(5, 10));
             }
 
             // Find out the status of individual messages

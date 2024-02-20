@@ -99,6 +99,9 @@ class ProcessEmailsCommand extends Command
                     CustomerMessageDeliveryStatus::Pending,
                 ],
             ])
+            ->orderBy([
+                'CustomerMessages.created',
+            ])
             ->limit(50)
             ->all();
 
