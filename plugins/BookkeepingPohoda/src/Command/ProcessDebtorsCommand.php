@@ -99,7 +99,7 @@ class ProcessDebtorsCommand extends Command
              */
             }
 
-            if (!$emails_available && $phones_available) {
+            if ($phones_available) {
                 $customerMessage = $this->generateBlockSms($debtor);
                 $io->info(__d(
                     'bookkeeping_pohoda',
@@ -159,7 +159,7 @@ class ProcessDebtorsCommand extends Command
         $contentTemplate =
             // phpcs:ignore
             'Vážený zákazníku, rádi bychom Vás upozornili, že k dnešnímu dni evidujeme neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}. Pokud máte vše uhrazeno, kontaktujte nás prosím.'
-            . ' NETAIR, s.r.o., mail: fakturace@netair.cz, tel: +420488572511, č.ú.: 207385091/0100 (KB).';
+            . ' NETAIR, s.r.o., tel: +420488572511, č.ú.: 207385091/0100';
 
         return $this->generateSms($debtor, $debtor->getCustomer()->billing_phones, $subjectTemplate, $contentTemplate);
     }
@@ -175,7 +175,7 @@ class ProcessDebtorsCommand extends Command
         $contentTemplate =
             // phpcs:ignore
             'Vážený zákazníku, naše služby byly pozastaveny z důvodu neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}. Pokud máte vše uhrazeno, kontaktujte nás prosím.'
-            . ' NETAIR, s.r.o., mail: fakturace@netair.cz, tel: +420488572511, č.ú.: 207385091/0100 (KB).';
+            . ' NETAIR, s.r.o., tel: +420488572511, č.ú.: 207385091/0100';
 
         return $this->generateSms($debtor, $debtor->getCustomer()->phones, $subjectTemplate, $contentTemplate);
     }
