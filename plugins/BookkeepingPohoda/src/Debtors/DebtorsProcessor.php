@@ -43,6 +43,9 @@ class DebtorsProcessor
             ->contain([
                 'Customers' => [
                     'strategy' => 'select',
+                    'Contracts' => [
+                        'ContractStates',
+                    ],
                     'Emails',
                     'Phones',
                 ],

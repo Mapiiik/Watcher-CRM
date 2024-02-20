@@ -234,7 +234,7 @@ class Contract extends Entity
      * @return bool
      * @throws \Exception When contract state data not available.
      */
-    protected function _getActive(): bool
+    protected function _getActiveServices(): bool
     {
         if (isset($this->contract_state)) {
             return $this->contract_state->active_services;

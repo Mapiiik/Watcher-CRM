@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Exception;
 
 /**
  * Customer Entity
@@ -42,6 +43,8 @@ use Cake\ORM\Entity;
  * @property string $phone
  * @property string $number
  * @property bool $ic_verified
+ * @property bool $active_services
+ * @property bool $billed
  *
  * @property \App\Model\Entity\TaxRate $tax_rate
  * @property \App\Model\Entity\Address[] $addresses
@@ -467,6 +470,50 @@ class Customer extends Entity
     {
         return $this->getInvoiceDeliveryTypeOptions()[$this->invoice_delivery_type] ??
             (string)$this->invoice_delivery_type;
+    }
+
+    /**
+     * getter for active_services
+     *
+     * @return bool
+     * @throws \Exception When contracts data not available.
+     */
+    protected function _getActiveServices(): bool
+    {
+        if (isset($this->contracts) && is_array($this->contracts)) {
+            foreach ($this->contracts as $contract) {
+                if ($contract->active_services === true) {
+                    // contract with active services found
+                    return true;
+                }
+            }
+            // contract with active services not found
+            return false;
+        }
+
+        throw new Exception(__('Contracts data not available.'));
+    }
+
+    /**
+     * getter for billed
+     *
+     * @return bool
+     * @throws \Exception When contracts data not available.
+     */
+    protected function _getBilled(): bool
+    {
+        if (isset($this->contracts) && is_array($this->contracts)) {
+            foreach ($this->contracts as $contract) {
+                if ($contract->billed === true) {
+                    // billed contract found
+                    return true;
+                }
+            }
+            // billed contract not found
+            return false;
+        }
+
+        throw new Exception(__('Contracts data not available.'));
     }
 
     /**

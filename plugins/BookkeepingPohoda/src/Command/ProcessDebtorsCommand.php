@@ -100,7 +100,11 @@ class ProcessDebtorsCommand extends Command
             }
 
             if ($phones_available) {
-                $customerMessage = $this->generateBlockSms($debtor);
+                if ($debtor->getCustomer()->active_services) {
+                    $customerMessage = $this->generateBlockSms($debtor);
+                } else {
+                    $customerMessage = $this->generateNotifySmsForInactiveServices($debtor);
+                }
                 $io->info(__d(
                     'bookkeeping_pohoda',
                     'Blocking SMS has been generated, recipients: {recipients}, content: {body}',
@@ -155,10 +159,26 @@ class ProcessDebtorsCommand extends Command
     {
         $subjectTemplate =
             // phpcs:ignore
-            'NETAIR - neuhrazené pohledávky za služby ke dni {date} - VS: {customer_number}';
+            'NETAIR - neuhrazené pohledávky ke dni {date} - VS: {customer_number}';
         $contentTemplate =
             // phpcs:ignore
             'Vážený zákazníku, rádi bychom Vás upozornili, že k dnešnímu dni evidujeme neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}. Pokud máte vše uhrazeno, kontaktujte nás prosím.'
+            . ' NETAIR, s.r.o., tel: +420488572511, č.ú.: 207385091/0100';
+
+        return $this->generateSms($debtor, $debtor->getCustomer()->billing_phones, $subjectTemplate, $contentTemplate);
+    }
+
+    /**
+     * Generate Notify SMS message
+     */
+    private function generateNotifySmsForInactiveServices(Debtor $debtor): CustomerMessage
+    {
+        $subjectTemplate =
+            // phpcs:ignore
+            'NETAIR - neaktivní služby - neuhrazené pohledávky ke dni {date} - VS: {customer_number}';
+        $contentTemplate =
+            // phpcs:ignore
+            'Vážený zákazníku, rádi bychom Vás upozornili, že k dnešnímu dni stále evidujeme neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}. Pokud máte vše uhrazeno, kontaktujte nás prosím.'
             . ' NETAIR, s.r.o., tel: +420488572511, č.ú.: 207385091/0100';
 
         return $this->generateSms($debtor, $debtor->getCustomer()->billing_phones, $subjectTemplate, $contentTemplate);
@@ -171,7 +191,7 @@ class ProcessDebtorsCommand extends Command
     {
         $subjectTemplate =
             // phpcs:ignore
-            'NETAIR - pozastavení služeb - neuhrazené pohledávky za služby ke dni {date} - VS: {customer_number}';
+            'NETAIR - pozastavení služeb - neuhrazené pohledávky ke dni {date} - VS: {customer_number}';
         $contentTemplate =
             // phpcs:ignore
             'Vážený zákazníku, naše služby byly pozastaveny z důvodu neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}. Pokud máte vše uhrazeno, kontaktujte nás prosím.'
