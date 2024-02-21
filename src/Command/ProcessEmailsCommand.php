@@ -34,6 +34,12 @@ class ProcessEmailsCommand extends Command
     {
         $parser = parent::buildOptionParser($parser);
 
+        $parser->addOption('limit', [
+            'help' => __('Number of emails to process.'),
+            'default' => '50',
+            'required' => false,
+        ]);
+
         return $parser;
     }
 
@@ -102,7 +108,7 @@ class ProcessEmailsCommand extends Command
             ->orderBy([
                 'CustomerMessages.created',
             ])
-            ->limit(50)
+            ->limit((int)$args->getOption('limit'))
             ->all();
 
         $io->info(__('Processing email messages:'));
@@ -130,19 +136,12 @@ class ProcessEmailsCommand extends Command
                     $emailMessage->processed = DateTime::now();
                     $emailMessage->identifier = $mailer->getMessageId();
                     $emailMessage->delivery_status = CustomerMessageDeliveryStatus::Sent;
+                    $customerMessagesTable->saveOrFail($emailMessage);
                 } catch (Exception $e) {
                     // log error and abort processing
                     Log::error('Error sending message with ID ' . $emailMessage->id . ': ' . $e->getMessage());
                     $io->abort(__('Error sending message with ID {0}: {1}', $emailMessage->id, $e->getMessage()));
                 }
-
-                // sleep for a while to slow down the sending
-                sleep(rand(1, 5));
-            }
-
-            // saving the entity to DB if changes have been made
-            if ($emailMessage->isDirty()) {
-                $customerMessagesTable->saveOrFail($emailMessage);
             }
         }
         $io->info(__('Done'));
