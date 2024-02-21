@@ -37,6 +37,12 @@ class ProcessSmsCommand extends Command
     {
         $parser = parent::buildOptionParser($parser);
 
+        $parser->addOption('limit', [
+            'help' => __('Number of SMS to process.'),
+            'default' => '50',
+            'required' => false,
+        ]);
+
         return $parser;
     }
 
@@ -90,7 +96,7 @@ class ProcessSmsCommand extends Command
             ->orderBy([
                 'CustomerMessages.created',
             ])
-            ->limit(50)
+            ->limit((int)$args->getOption('limit'))
             ->all();
 
         $io->info(__('Processing SMS messages:'));
@@ -117,12 +123,15 @@ class ProcessSmsCommand extends Command
 
         foreach ($smsMessages as $smsMessage) {
             // Submit messages that have not yet been processed
-            if ($smsMessage->delivery_status == CustomerMessageDeliveryStatus::Pending) {
+            if (
+                $smsMessage->delivery_status == CustomerMessageDeliveryStatus::Pending
+                && $smsMessage->identifier === null
+            ) {
                 // prepare message object
                 $message = new Message(
-                    id: $smsMessage->id,
                     message: $smsMessage->body,
                     phoneNumbers: $smsMessage->recipients,
+                    ttl: 86400,
                 );
 
                 try {
@@ -137,6 +146,8 @@ class ProcessSmsCommand extends Command
                     // patch entity data
                     $smsMessage->processed = DateTime::now();
                     $smsMessage->identifier = $messageState->ID();
+                    $smsMessage->delivery_status = $this->getMessageState($messageState);
+                    $customerMessagesTable->saveOrFail($smsMessage);
                 } catch (Exception $e) {
                     // log error and abort processing
                     Log::error('Error sending message with ID ' . $smsMessage->id . ': ' . $e->getMessage());
@@ -155,15 +166,11 @@ class ProcessSmsCommand extends Command
                 $io->info(__('Message status with ID {0}: {1}', $smsMessage->id, $messageState->State()));
                 // patch entity data
                 $smsMessage->delivery_status = $this->getMessageState($messageState);
+                $customerMessagesTable->saveOrFail($smsMessage);
             } catch (Exception $e) {
                 // log error and abort processing
                 Log::error('Error getting message status with ID ' . $smsMessage->id . ': ' . $e->getMessage());
                 $io->abort(__('Error getting message status with ID {0}: {1}', $smsMessage->id, $e->getMessage()));
-            }
-
-            // saving the entity to DB if changes have been made
-            if ($smsMessage->isDirty()) {
-                $customerMessagesTable->saveOrFail($smsMessage);
             }
         }
         $io->info(__('Done'));
