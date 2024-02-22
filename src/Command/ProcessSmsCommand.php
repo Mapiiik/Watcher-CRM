@@ -179,7 +179,7 @@ class ProcessSmsCommand extends Command
                 }
 
                 // sleep for a while to slow down the sending
-                sleep(rand((int)$args->getOption('wait_min'), (int)$args->getOption('wait_max')));
+                sleep(max(0, rand((int)$args->getOption('wait_min'), (int)$args->getOption('wait_max'))));
             }
 
             // Find out the status of individual messages

@@ -156,7 +156,7 @@ class ProcessEmailsCommand extends Command
                 }
 
                 // sleep for a while to slow down the sending
-                sleep(rand((int)$args->getOption('wait_min'), (int)$args->getOption('wait_max')));
+                sleep(max(0, rand((int)$args->getOption('wait_min'), (int)$args->getOption('wait_max'))));
             }
         }
         $io->info(__('Done'));
