@@ -43,6 +43,18 @@ class ProcessSmsCommand extends Command
             'required' => false,
         ]);
 
+        $parser->addOption('wait_min', [
+            'help' => __('Minimum waiting time after request to send (seconds).'),
+            'default' => '60',
+            'required' => false,
+        ]);
+
+        $parser->addOption('wait_max', [
+            'help' => __('Maximum waiting time after request to send (seconds).'),
+            'default' => '90',
+            'required' => false,
+        ]);
+
         return $parser;
     }
 
@@ -155,7 +167,7 @@ class ProcessSmsCommand extends Command
                 }
 
                 // sleep for a while to slow down the sending
-                sleep(rand(5, 10));
+                sleep(rand((int)$args->getOption('wait_min'), (int)$args->getOption('wait_max')));
             }
 
             // Find out the status of individual messages
