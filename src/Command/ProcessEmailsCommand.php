@@ -40,6 +40,18 @@ class ProcessEmailsCommand extends Command
             'required' => false,
         ]);
 
+        $parser->addOption('wait_min', [
+            'help' => __('Minimum waiting time after request to send (seconds).'),
+            'default' => '0',
+            'required' => false,
+        ]);
+
+        $parser->addOption('wait_max', [
+            'help' => __('Maximum waiting time after request to send (seconds).'),
+            'default' => '0',
+            'required' => false,
+        ]);
+
         return $parser;
     }
 
@@ -142,6 +154,9 @@ class ProcessEmailsCommand extends Command
                     Log::error('Error sending message with ID ' . $emailMessage->id . ': ' . $e->getMessage());
                     $io->abort(__('Error sending message with ID {0}: {1}', $emailMessage->id, $e->getMessage()));
                 }
+
+                // sleep for a while to slow down the sending
+                sleep(rand((int)$args->getOption('wait_min'), (int)$args->getOption('wait_max')));
             }
         }
         $io->info(__('Done'));
