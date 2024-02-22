@@ -108,8 +108,12 @@ class ProcessSmsCommand extends Command
             ->orderBy([
                 'CustomerMessages.created',
             ])
-            ->limit((int)$args->getOption('limit'))
             ->all();
+
+        // set send limit from option or default setting
+        $send_limit = (int)$args->getOption('limit');
+        // initialization of the send counter
+        $send_count = 0;
 
         $io->info(__('Processing SMS messages:'));
 
@@ -139,6 +143,11 @@ class ProcessSmsCommand extends Command
                 $smsMessage->delivery_status == CustomerMessageDeliveryStatus::Pending
                 && $smsMessage->identifier === null
             ) {
+                // do not send if we have already reached the limit
+                if ($send_count >= $send_limit) {
+                    continue;
+                }
+
                 // prepare message object
                 $message = new Message(
                     message: $smsMessage->body,
@@ -160,6 +169,9 @@ class ProcessSmsCommand extends Command
                     $smsMessage->identifier = $messageState->ID();
                     $smsMessage->delivery_status = $this->getMessageState($messageState);
                     $customerMessagesTable->saveOrFail($smsMessage);
+
+                    // increase the send counter
+                    $send_count++;
                 } catch (Exception $e) {
                     // log error and abort processing
                     Log::error('Error sending message with ID ' . $smsMessage->id . ': ' . $e->getMessage());
