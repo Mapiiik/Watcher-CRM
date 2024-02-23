@@ -62,7 +62,10 @@ class LabelsController extends AppController
     public function view(?string $id = null)
     {
         $label = $this->Labels->get($id, contain: [
-            'CustomerLabels' => ['Customers'],
+            'CustomerLabels' => [
+                'Customers',
+                'Contracts',
+            ],
             'Creators',
             'Modifiers',
         ]);

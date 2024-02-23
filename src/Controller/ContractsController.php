@@ -104,6 +104,12 @@ class ContractsController extends AppController
                     'sort' => [
                         'Labels.name',
                     ],
+                    'conditions' => [
+                        'OR' => [
+                            'CustomerLabels.contract_id' => $id,
+                            'CustomerLabels.contract_id IS' => null,
+                        ],
+                    ],
                 ],
                 'Tasks' => [
                     'Contracts',

@@ -244,6 +244,9 @@ class CustomersController extends AppController
                 'sort' => [
                     'Labels.name',
                 ],
+                'conditions' => [
+                    'CustomerLabels.contract_id IS' => null,
+                ],
             ],
             'IpNetworks' => [
                 'Contracts',
@@ -297,6 +300,9 @@ class CustomersController extends AppController
                 'Labels',
                 'sort' => [
                     'Labels.name',
+                ],
+                'conditions' => [
+                    'CustomerLabels.contract_id IS' => null,
                 ],
             ],
             'Emails',

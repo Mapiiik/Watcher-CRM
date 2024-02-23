@@ -52,6 +52,18 @@
                                 h($customerLabel->customer->number) : '' ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Contract') ?></th>
+                            <td><?= $customerLabel->__isset('contract') ? $this->Html->link(
+                                $customerLabel->contract->number ?? '--',
+                                [
+                                    'controller' => 'Contracts',
+                                    'action' => 'view',
+                                    'customer_id' => $customerLabel->customer_id,
+                                    $customerLabel->contract->id,
+                                ]
+                            ) : '' ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Label') ?></th>
                             <td><?= $customerLabel->__isset('label') ? $this->Html->link(
                                 $customerLabel->label->name,

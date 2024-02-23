@@ -23,6 +23,7 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\Label $label
  * @property \App\Model\Entity\Customer $customer
+ * @property \App\Model\Entity\Contract $contract
  */
 class CustomerLabel extends Entity
 {

@@ -69,6 +69,14 @@ class CustomerLabelsTable extends AppTable
     public function validationDefault(Validator $validator): Validator
     {
         $validator
+            ->uuid('customer_id')
+            ->notEmptyString('customer_id');
+
+        $validator
+            ->uuid('contract_id')
+            ->allowEmptyString('contract_id');
+
+        $validator
             ->scalar('note')
             ->allowEmptyString('note');
 

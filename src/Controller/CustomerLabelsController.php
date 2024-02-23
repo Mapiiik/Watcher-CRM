@@ -43,6 +43,7 @@ class CustomerLabelsController extends AppController
             'all',
             contain: [
                 'Customers',
+                'Contracts',
                 'Labels',
             ],
             conditions: $conditions
@@ -63,6 +64,7 @@ class CustomerLabelsController extends AppController
         $customerLabel = $this->CustomerLabels->get($id, contain: [
             'Labels',
             'Customers',
+            'Contracts',
             'Creators',
             'Modifiers',
         ]);
@@ -85,13 +87,18 @@ class CustomerLabelsController extends AppController
 
         if ($this->getRequest()->is('post')) {
             $customerLabel = $this->CustomerLabels->patchEntity($customerLabel, $this->getRequest()->getData());
-            if ($this->CustomerLabels->save($customerLabel)) {
-                $this->Flash->success(__('The customer label has been saved.'));
+            if ($this->getRequest()->getData('refresh') == 'refresh') {
+                // only refresh
+            } else {
+                if ($this->CustomerLabels->save($customerLabel)) {
+                    $this->Flash->success(__('The customer label has been saved.'));
 
-                return $this->afterAddRedirect(['action' => 'view', $customerLabel->id]);
+                    return $this->afterAddRedirect(['action' => 'view', $customerLabel->id]);
+                }
+                $this->Flash->error(__('The customer label could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__('The customer label could not be saved. Please, try again.'));
         }
+
         $labels = $this->CustomerLabels->Labels->find('list', order: [
             'name',
         ]);
@@ -100,7 +107,23 @@ class CustomerLabelsController extends AppController
             'last_name',
             'first_name',
         ]);
-        $this->set(compact('customerLabel', 'labels', 'customers'));
+        $contracts = isset($customerLabel->customer_id) ?
+            $this->CustomerLabels->Contracts->find(
+                'list',
+                contain: [
+                    'InstallationAddresses',
+                    'ServiceTypes',
+                ],
+                conditions: [
+                    'Contracts.customer_id' => $customerLabel->customer_id,
+                ],
+                order: [
+                    'Contracts.number',
+                ],
+            ) :
+            [];
+
+        $this->set(compact('customerLabel', 'labels', 'customers', 'contracts'));
     }
 
     /**
@@ -115,13 +138,18 @@ class CustomerLabelsController extends AppController
         $customerLabel = $this->CustomerLabels->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $customerLabel = $this->CustomerLabels->patchEntity($customerLabel, $this->getRequest()->getData());
-            if ($this->CustomerLabels->save($customerLabel)) {
-                $this->Flash->success(__('The customer label has been saved.'));
+            if ($this->getRequest()->getData('refresh') == 'refresh') {
+                // only refresh
+            } else {
+                if ($this->CustomerLabels->save($customerLabel)) {
+                    $this->Flash->success(__('The customer label has been saved.'));
 
-                return $this->afterEditRedirect(['action' => 'view', $customerLabel->id]);
+                    return $this->afterEditRedirect(['action' => 'view', $customerLabel->id]);
+                }
+                $this->Flash->error(__('The customer label could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__('The customer label could not be saved. Please, try again.'));
         }
+
         $labels = $this->CustomerLabels->Labels->find('list', order: [
             'name',
         ]);
@@ -130,7 +158,23 @@ class CustomerLabelsController extends AppController
             'last_name',
             'first_name',
         ]);
-        $this->set(compact('customerLabel', 'labels', 'customers'));
+        $contracts = isset($customerLabel->customer_id) ?
+            $this->CustomerLabels->Contracts->find(
+                'list',
+                contain: [
+                    'InstallationAddresses',
+                    'ServiceTypes',
+                ],
+                conditions: [
+                    'Contracts.customer_id' => $customerLabel->customer_id,
+                ],
+                order: [
+                    'Contracts.number',
+                ],
+            ) :
+            [];
+
+        $this->set(compact('customerLabel', 'labels', 'customers', 'contracts'));
     }
 
     /**

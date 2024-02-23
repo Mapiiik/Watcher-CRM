@@ -122,6 +122,7 @@ use Doctrine\SqlFormatter\SqlFormatter;
                         <tr>
                             <th><?= __('Customer') ?></th>
                             <th><?= __('Customer Number') ?></th>
+                            <th><?= __('Contract') ?></th>
                             <th><?= __('Note') ?></th>
                             <th><?= __('Created') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
@@ -135,6 +136,16 @@ use Doctrine\SqlFormatter\SqlFormatter;
                                 ) : '' ?></td>
                             <td><?= $customerLabel->__isset('customer') ?
                                 h($customerLabel->customer->number) : '' ?></td>
+                            <td><?= $customerLabel->__isset('contract') ?
+                                $this->Html->link(
+                                    $customerLabel->contract->number ?? '--',
+                                    [
+                                        'controller' => 'Contracts',
+                                        'action' => 'view',
+                                        'customer_id' => $customerLabel->customer_id,
+                                        $customerLabel->contract->id,
+                                    ]
+                                ) : '' ?></td>
                             <td><?= h($customerLabel->note) ?></td>
                             <td><?= h($customerLabel->created) ?></td>
                             <td class="actions">

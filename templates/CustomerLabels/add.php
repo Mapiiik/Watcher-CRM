@@ -4,6 +4,7 @@
  * @var \App\Model\Entity\CustomerLabel $customerLabel
  * @var \Cake\Collection\CollectionInterface|array<string> $labels
  * @var \Cake\Collection\CollectionInterface|array<string> $customers
+ * @var \Cake\Collection\CollectionInterface|array<string> $contracts
  */
 ?>
 <div class="row">
@@ -25,8 +26,21 @@
                 <?php
                 echo $this->Form->control('label_id', ['options' => $labels]);
                 if (!isset($customer_id)) {
-                    echo $this->Form->control('customer_id', ['options' => $customers]);
+                    echo $this->Form->control('customer_id', [
+                        'options' => $customers,
+                        'empty' => true,
+                        'onchange' => '
+                            var refresh = document.createElement("input");
+                            refresh.type = "hidden";
+                            refresh.name = "refresh";
+                            refresh.value = "refresh";
+                            this.form.appendChild(refresh);
+                            this.form.submit();
+                        ',
+                    ]);
+                    $this->Form->unlockField('refresh'); //disable form security check
                 }
+                echo $this->Form->control('contract_id', ['options' => $contracts]);
                 echo $this->Form->control('note');
                 ?>
             </fieldset>

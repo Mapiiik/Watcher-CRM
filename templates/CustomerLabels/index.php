@@ -29,6 +29,7 @@
                 <tr>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id', __('Customer Number')) ?></th>
+                    <th><?= $this->Paginator->sort('contract_id') ?></th>
                     <th><?= $this->Paginator->sort('label_id') ?></th>
                     <th><?= $this->Paginator->sort('note') ?></th>
                     <th><?= $this->Paginator->sort('created') ?></th>
@@ -38,19 +39,27 @@
             <tbody>
                 <?php foreach ($customerLabels as $customerLabel) : ?>
                 <tr>
-                    <td>
-                        <?= $customerLabel->__isset('customer') ? $this->Html->link(
+                    <td><?= $customerLabel->__isset('customer') ?
+                        $this->Html->link(
                             $customerLabel->customer->name,
                             ['controller' => 'Customers', 'action' => 'view', $customerLabel->customer->id]
-                        ) : '' ?>
-                    </td>
+                        ) : '' ?></td>
                     <td><?= $customerLabel->__isset('customer') ? h($customerLabel->customer->number) : '' ?></td>
-                    <td>
-                        <?= $customerLabel->__isset('label') ? $this->Html->link(
+                    <td><?= $customerLabel->__isset('contract') ?
+                        $this->Html->link(
+                            $customerLabel->contract->number ?? '--',
+                            [
+                                'controller' => 'Contracts',
+                                'action' => 'view',
+                                'customer_id' => $customerLabel->customer_id,
+                                $customerLabel->contract->id,
+                            ]
+                        ) : '' ?></td>
+                    <td><?= $customerLabel->__isset('label') ?
+                        $this->Html->link(
                             $customerLabel->label->name,
                             ['controller' => 'Labels', 'action' => 'view', $customerLabel->label->id]
-                        ) : '' ?>
-                    </td>
+                        ) : '' ?></td>
                     <td><?= h($customerLabel->note) ?></td>
                     <td><?= h($customerLabel->created) ?></td>
                     <td class="actions">
