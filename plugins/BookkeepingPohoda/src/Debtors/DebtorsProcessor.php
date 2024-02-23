@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace BookkeepingPohoda\Debtors;
 
+use App\Model\Entity\CustomerLabel;
 use App\Strings;
 use Cake\Collection\CollectionInterface;
 use Cake\I18n\Date;
+use Cake\I18n\DateTime;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use InvalidArgumentException;
 use RouterOS\Client;
@@ -152,6 +154,8 @@ class DebtorsProcessor
     {
         $customer_ips = $this->getCustomerIps($id, 'MANUAL ENTRY - ');
 
+        $this->addLabel($id);
+
         return $this->updateRouters(
             ips: $customer_ips,
             block: true,
@@ -169,6 +173,8 @@ class DebtorsProcessor
     public function unblock(?string $id): string
     {
         $customer_ips = $this->getCustomerIps($id, 'MANUAL ENTRY - ');
+
+        $this->removeLabel($id);
 
         return $this->updateRouters(
             ips: $customer_ips,
@@ -192,6 +198,8 @@ class DebtorsProcessor
                 $customer_ips,
                 $this->getCustomerIps($id, 'MANUAL ENTRY - ')
             );
+
+            $this->addLabel($id);
         }
 
         return $this->updateRouters(
@@ -216,6 +224,8 @@ class DebtorsProcessor
                 $customer_ips,
                 $this->getCustomerIps($id, 'MANUAL ENTRY - ')
             );
+
+            $this->removeLabel($id);
         }
 
         return $this->updateRouters(
@@ -233,18 +243,114 @@ class DebtorsProcessor
      */
     public function blockingUpdate(): string
     {
+        $start_time = DateTime::now();
+
         $customer_ips = [];
         foreach ($this->getFilteredOverdueDebtors() as $debtor) {
             $customer_ips = array_merge_recursive(
                 $customer_ips,
                 $this->getCustomerIps($debtor->getCustomer()->id)
             );
+
+            $this->addLabel($debtor->getCustomer()->id);
         }
+
+        $this->clearLabel($start_time);
 
         return $this->updateRouters(
             ips: $customer_ips,
             block: true,
             clear: true,
+        );
+    }
+
+    /**
+     * Adds a label for the customer
+     *
+     * @param string $id Customer ID.
+     */
+    private function addLabel(string $id): CustomerLabel|false
+    {
+        // check if label is configured
+        $label_id = env('DEBTORS_BLOCKED_LABEL_ID');
+
+        // check that the label is configured
+        if (empty($label_id)) {
+            return false;
+        }
+        /** @var \App\Model\Table\CustomerLabelsTable $customer_labels_table */
+        $customer_labels_table = $this->fetchTable('CustomerLabels');
+        /** @var \App\Model\Entity\CustomerLabel $customer_label */
+        $customer_label = $customer_labels_table->findOrNewEntity([
+            'label_id' => $label_id,
+            'customer_id' => $id,
+            'contract_id IS' => null,
+            'note' => __('debtor'),
+        ]);
+
+        // update modification time
+        $customer_label->modified = DateTime::now();
+
+        return $customer_labels_table->saveOrFail($customer_label);
+    }
+
+    /**
+     * Removes the label for the customer
+     *
+     * @param string $id Customer ID.
+     * @return iterable<\App\Model\Entity\CustomerLabel>|false Entities list
+     *   on success, false on failure.
+     */
+    private function removeLabel(string $id): iterable|false
+    {
+        // check if label is configured
+        $label_id = env('DEBTORS_BLOCKED_LABEL_ID');
+
+        // check that the label is configured
+        if (empty($label_id)) {
+            return false;
+        }
+        /** @var \App\Model\Table\CustomerLabelsTable $customer_labels_table */
+        $customer_labels_table = $this->fetchTable('CustomerLabels');
+
+        return $customer_labels_table->deleteMany(
+            $customer_labels_table
+                ->find()
+                ->where([
+                    'label_id' => $label_id,
+                    'customer_id' => $id,
+                ])
+                ->all()
+        );
+    }
+
+    /**
+     * Removes the label for all customers
+     *
+     * @param \Cake\I18n\DateTime $older_than Only labels with last modification older than this parameter.
+     * @return iterable<\App\Model\Entity\CustomerLabel>|false Entities list
+     *   on success, false on failure.
+     */
+    private function clearLabel(DateTime $older_than): iterable|false
+    {
+        // check if label is configured
+        $label_id = env('DEBTORS_BLOCKED_LABEL_ID');
+
+        // check that the label is configured
+        if (empty($label_id)) {
+            return false;
+        }
+        /** @var \App\Model\Table\CustomerLabelsTable $customer_labels_table */
+        $customer_labels_table = $this->fetchTable('CustomerLabels');
+
+        return $customer_labels_table->deleteMany(
+            $customer_labels_table
+                ->find()
+                ->where([
+                    'label_id' => $label_id,
+                    'modified <' => $older_than,
+                ])
+                ->all()
         );
     }
 
@@ -329,7 +435,6 @@ class DebtorsProcessor
      * @param bool $block Defaults to unblock (false) / block (true)
      * @param bool $clear Before the operation, clear the address list on the router. Default (false).
      * @return string List of performed changes
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      * @throws \InvalidArgumentException When incorrect IP addresses input format.
      */
     private function updateRouters(array $ips, bool $block = false, bool $clear = false): string
