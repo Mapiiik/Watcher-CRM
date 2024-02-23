@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use Cake\Collection\Collection;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -10,8 +11,8 @@ use Cake\Console\ConsoleOptionParser;
 use Cake\Datasource\ConnectionManager;
 use Cake\I18n\DateTime;
 use Cake\Log\Log;
-use Cake\Utility\Hash;
 use Cake\Utility\Text;
+use PDO;
 use PDOException;
 use SplObjectStorage;
 
@@ -67,8 +68,6 @@ class UpdateCustomerLabelsCommand extends Command
 
             $io->info(__('Processing') . ': ' . $label->name . ' (' . $label->id . ')');
 
-            $current_customer_ids = Hash::extract($label->customer_labels, '{n}.customer_id');
-
             // is label dynamic?
             if ($label->dynamic) {
                 // DYNAMIC
@@ -80,7 +79,7 @@ class UpdateCustomerLabelsCommand extends Command
 
                         $dynamic_sql_results = $connection
                             ->execute($label->dynamic_sql)
-                            ->fetchAll();
+                            ->fetchAll(PDO::FETCH_ASSOC);
                     } catch (PDOException $e) {
                         Log::error(
                             'The dynamic SQL query could not be processed for label.' . PHP_EOL
@@ -94,36 +93,56 @@ class UpdateCustomerLabelsCommand extends Command
                         );
                     }
 
+                    // convert customer lables to collection
+                    $customer_labels = new Collection($label->customer_labels);
+
                     foreach ($dynamic_sql_results as $dynamic_sql_result) {
-                        $customer_label_data = [
-                            'label_id' => $label->id,
-                            'customer_id' => $dynamic_sql_result[0],
-                            'note' =>
-                                __('dynamic')
-                                . (!empty($dynamic_sql_result[1]) ? ' - ' . $dynamic_sql_result[1] : '')
-                            ,
-                        ];
-
-                        $current_customer_label_key = array_search($dynamic_sql_result[0], $current_customer_ids);
-
-                        if ($current_customer_label_key === false) {
-                            // prepare new entity
-                            $label->customer_labels[] = $labels_table->CustomerLabels
-                                ->newEntity($customer_label_data);
-                        } else {
-                            // patch current entity
-                            $label->customer_labels[$current_customer_label_key] = $labels_table->CustomerLabels
-                                ->patchEntity(
-                                    $label->customer_labels[$current_customer_label_key],
-                                    $customer_label_data
-                                );
-                            // update modification time
-                            $label->customer_labels[$current_customer_label_key]
-                                ->modified = DateTime::now();
+                        // check required value
+                        if (!isset($dynamic_sql_result['customer_id'])) {
+                            Log::error(
+                                'The dynamic SQL query did not return a customer_id value for label.' . PHP_EOL
+                                . '- ID: ' . $label->id
+                            );
+                            $io->abort(
+                                __('The dynamic SQL query did not return a customer_id value for label.') . PHP_EOL
+                                . '- ID: ' . $label->id
+                            );
                         }
 
-                        unset($customer_label_data);
-                        unset($current_customer_label_key);
+                        // find an existing customer label (creates a reference) or create new
+                        /** @var \App\Model\Entity\CustomerLabel $customer_label */
+                        $customer_label =
+                            $customer_labels->firstMatch([
+                                'customer_id' => $dynamic_sql_result['customer_id'],
+                                'contract_id' => $dynamic_sql_result['contract_id'] ?? null,
+                            ])
+                            ??
+                            $labels_table->CustomerLabels->newEmptyEntity();
+
+                        // if it is a new record, add the entity to the array
+                        if ($customer_label->isNew()) {
+                            $label->customer_labels[] = $customer_label;
+                        }
+
+                        // patch customer label entity
+                        $customer_label = $labels_table->CustomerLabels->patchEntity(
+                            $customer_label,
+                            [
+                                'label_id' => $label->id,
+                                'customer_id' => $dynamic_sql_result['customer_id'],
+                                'contract_id' => $dynamic_sql_result['contract_id'] ?? null,
+                                'note' =>
+                                    __('dynamic')
+                                    . (!empty($dynamic_sql_result['note']) ? ' - ' . $dynamic_sql_result['note'] : '')
+                                ,
+                            ]
+                        );
+
+                        // update modification time
+                        $customer_label->modified = DateTime::now();
+
+                        // unlink the reference to the CustomerLabel entity
+                        unset($customer_label);
                     }
                 }
 
