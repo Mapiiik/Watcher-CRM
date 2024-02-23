@@ -11,6 +11,7 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\LabelsTable&\Cake\ORM\Association\BelongsTo $Labels
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
+ * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
  * @method \App\Model\Entity\CustomerLabel newEmptyEntity()
  * @method \App\Model\Entity\CustomerLabel newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\CustomerLabel[] newEntities(array $data, array $options = [])
@@ -54,6 +55,9 @@ class CustomerLabelsTable extends AppTable
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER',
         ]);
+        $this->belongsTo('Contracts', [
+            'foreignKey' => 'contract_id',
+        ]);
     }
 
     /**
@@ -88,6 +92,7 @@ class CustomerLabelsTable extends AppTable
         $rules->add($rules->isUnique(['id']), ['errorField' => 'id']);
         $rules->add($rules->existsIn(['label_id'], 'Labels'), ['errorField' => 'label_id']);
         $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
+        $rules->add($rules->existsIn(['contract_id'], 'Contracts'), ['errorField' => 'contract_id']);
 
         return $rules;
     }

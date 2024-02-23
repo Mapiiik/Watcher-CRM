@@ -16,6 +16,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\AppUser|null $modifier
  * @property int $label_id
  * @property string $customer_id
+ * @property ?string $contract_id
  * @property string|null $note
  * @property string $id
  * @property int $nid
@@ -41,6 +42,7 @@ class CustomerLabel extends Entity
         'modified_by' => true,
         'label_id' => true,
         'customer_id' => true,
+        'contract_id' => true,
         'note' => true,
         'label' => true,
         'customer' => true,

@@ -25,6 +25,7 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\RemovedIpNetworksTable&\Cake\ORM\Association\HasMany $RemovedIpNetworks
  * @property \App\Model\Table\SoldEquipmentsTable&\Cake\ORM\Association\HasMany $SoldEquipments
  * @property \App\Model\Table\TasksTable&\Cake\ORM\Association\HasMany $Tasks
+ * @property \App\Model\Table\CustomerLabelsTable&\Cake\ORM\Association\HasMany $CustomerLabels
  * @method \App\Model\Entity\Contract newEmptyEntity()
  * @method \App\Model\Entity\Contract newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Contract[] newEntities(array $data, array $options = [])
@@ -153,6 +154,9 @@ class ContractsTable extends AppTable
                 'Tasks.priority' => 'DESC',
                 'Tasks.nid' => 'DESC',
             ],
+        ]);
+        $this->hasMany('CustomerLabels', [
+            'foreignKey' => 'customer_id',
         ]);
     }
 
@@ -326,6 +330,7 @@ class ContractsTable extends AppTable
         $rules->addDelete($rules->isNotLinkedTo('RemovedIpNetworks'));
         $rules->addDelete($rules->isNotLinkedTo('SoldEquipments'));
         $rules->addDelete($rules->isNotLinkedTo('Tasks'));
+        $rules->addDelete($rules->isNotLinkedTo('CustomerLabels'));
 
         return $rules;
     }
