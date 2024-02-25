@@ -439,6 +439,7 @@ $permissions = [
                 'monitoring',
                 'disconnectRequest',
                 'updateRelatedRecords',
+                'removeMacAddress',
             ],
         ],
     ],
