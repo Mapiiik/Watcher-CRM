@@ -5,8 +5,11 @@ namespace Radius\Controller;
 
 use App\Controller\Traits\MessageHandlerTrait;
 use App\Strings;
+use Radius\Model\Entity\Radacct;
 use Radius\Updater\AccountsUpdater;
 use Radius\Updater\RadiusRequestSender;
+use RouterOS\Client;
+use RouterOS\Query;
 
 /**
  * Accounts Controller
@@ -333,6 +336,88 @@ class AccountsController extends AppController
         }
 
         return $this->afterDeleteRedirect(['action' => 'index']);
+    }
+
+    /**
+     * Remove MAC address method
+     *
+     * @param string|null $id Account id.
+     * @return \Cake\Http\Response|null|void Redirects always to monitoring.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function removeMacAddress(?string $id = null)
+    {
+        $this->getRequest()->allowMethod(['post']);
+        $account = $this->Accounts->get($id, contain: [
+            'Radacct' => [
+                'sort' => [
+                    'Radacct.acctstarttime' => 'DESC',
+                ],
+            ],
+        ]);
+
+        if (empty($account->radacct)) {
+            $this->Flash->warning(__d(
+                'radius',
+                'No RADIUS session for {0} found.',
+                $account->username
+            ));
+
+            return $this->redirect(['action' => 'monitoring', $account->id]);
+        }
+
+        if ($account->radacct[0] instanceof Radacct) {
+            $session = $account->radacct[0];
+
+            $result = '';
+
+            $client = new Client([
+                'host' => $session->nasipaddress,
+                'user' => env('ROUTEROS_USERNAME', 'admin'),
+                'pass' => env('ROUTEROS_PASSWORD', ''),
+            ]);
+
+            $query = new Query('/interface/wireless/access-list/print');
+            $query
+                ->where('mac-address', $session->callingstationid)
+                ->equal('.proplist', '.id,interface,mac-address');
+
+            $response = $client->query($query)->read();
+
+            foreach ($response as $item) {
+                $query = new Query('/interface/wireless/access-list/remove');
+                $query->equal('.id', $item['.id']);
+
+                $response = $client->query($query)->read();
+
+                // check if no error message
+                if (empty($response)) {
+                    $result .= __d(
+                        'radius',
+                        'Removed MAC address entry {0} on interface {1} from router {2}.',
+                        $item['mac-address'],
+                        $item['interface'],
+                        $session->nasipaddress
+                    ) . PHP_EOL;
+                }
+            }
+
+            $this->Flash->success(
+                '<strong>' . __d('radius', 'Access point updated.') . '</strong><br>'
+                    . ($result ? nl2br($result) : __d('radius', 'Nothing has changed.')),
+                ['escape' => false]
+            );
+        } else {
+            $this->Flash->warning(__d(
+                'radius',
+                'Invalid RADIUS session for {0}.',
+                $account->username
+            ));
+
+            return $this->redirect(['action' => 'monitoring', $account->id]);
+        }
+
+        return $this->redirect($this->referer(['action' => 'monitoring', $account->id]));
     }
 
     /**

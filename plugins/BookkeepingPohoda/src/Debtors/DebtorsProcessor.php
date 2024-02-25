@@ -448,7 +448,7 @@ class DebtorsProcessor
         foreach ($routers as $router) {
             $client = new Client([
                 'host' => $router,
-                'user' => env('DEBTORS_ROUTERS_USERNAME', ''),
+                'user' => env('DEBTORS_ROUTERS_USERNAME', 'admin'),
                 'pass' => env('DEBTORS_ROUTERS_PASSWORD', ''),
             ]);
 

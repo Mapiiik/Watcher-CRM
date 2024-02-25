@@ -46,6 +46,19 @@ use Cake\I18n\DateTime;
                 ['class' => 'button float-right']
             ) ?>
             <?= $this->AuthLink->postLink(
+                __d('radius', 'Remove MAC address'),
+                ['action' => 'removeMacAddress', $account->id],
+                [
+                    'confirm' => __d(
+                        'radius',
+                        'Are you sure you want to remove the last active MAC address'
+                            . ' from the access list on the access point for account {0}?',
+                        $account->username
+                    ),
+                    'class' => 'button float-right',
+                ]
+            ) ?>
+            <?= $this->AuthLink->postLink(
                 __d('radius', 'RADIUS Disconnect Request'),
                 ['action' => 'disconnectRequest', $account->id],
                 [
