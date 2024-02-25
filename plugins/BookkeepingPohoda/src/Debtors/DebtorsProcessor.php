@@ -285,7 +285,7 @@ class DebtorsProcessor
             'label_id' => $label_id,
             'customer_id' => $id,
             'contract_id IS' => null,
-            'note' => __('debtor'),
+            'note' => __d('bookkeeping_pohoda', 'debtor'),
         ]);
 
         // update modification time

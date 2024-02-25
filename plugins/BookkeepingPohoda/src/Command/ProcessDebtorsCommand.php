@@ -102,21 +102,30 @@ class ProcessDebtorsCommand extends Command
             if ($phones_available) {
                 if ($debtor->getCustomer()->active_services) {
                     $customerMessage = $this->generateBlockSms($debtor);
+                    $io->info(__d(
+                        'bookkeeping_pohoda',
+                        'Blocking SMS has been generated, recipients: {recipients}, content: {body}',
+                        [
+                            'recipients' => implode(', ', $customerMessage->recipients),
+                            'body' => $customerMessage->body,
+                        ]
+                    ));
                 } else {
                     $customerMessage = $this->generateNotifySmsForInactiveServices($debtor);
+                    $io->info(__d(
+                        'bookkeeping_pohoda',
+                        'Notification SMS has been generated for inactive services'
+                            . ', recipients: {recipients}, content: {body}',
+                        [
+                            'recipients' => implode(', ', $customerMessage->recipients),
+                            'body' => $customerMessage->body,
+                        ]
+                    ));
                 }
-                $io->info(__d(
-                    'bookkeeping_pohoda',
-                    'Blocking SMS has been generated, recipients: {recipients}, content: {body}',
-                    [
-                        'recipients' => implode(', ', $customerMessage->recipients),
-                        'body' => $customerMessage->body,
-                    ]
-                ));
                 unset($customerMessage);
             }
         }
-        $io->info(__('Done'));
+        $io->info(__d('bookkeeping_pohoda', 'Done'));
     }
 
     /**

@@ -41,7 +41,10 @@ use BookkeepingPohoda\Debtors\Debtor;
         ],
         [
             'class' => 'button float-right',
-            'confirm' => __('Are you sure you want to automatically update the debtors blocking?'),
+            'confirm' => __d(
+                'bookkeeping_pohoda',
+                'Are you sure you want to automatically update the debtors blocking?'
+            ),
         ]
     ) ?>
     <h3><?= __d('bookkeeping_pohoda', 'Debtors') ?></h3>
