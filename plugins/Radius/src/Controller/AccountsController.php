@@ -9,6 +9,7 @@ use Radius\Model\Entity\Radacct;
 use Radius\Updater\AccountsUpdater;
 use Radius\Updater\RadiusRequestSender;
 use RouterOS\Client;
+use RouterOS\Exceptions\ClientException;
 use RouterOS\Query;
 
 /**
@@ -371,11 +372,21 @@ class AccountsController extends AppController
 
             $result = '';
 
-            $client = new Client([
-                'host' => $session->nasipaddress,
-                'user' => env('ROUTEROS_USERNAME', 'admin'),
-                'pass' => env('ROUTEROS_PASSWORD', ''),
-            ]);
+            try {
+                $client = new Client([
+                    'host' => $session->nasipaddress,
+                    'user' => env('ROUTEROS_USERNAME', 'admin'),
+                    'pass' => env('ROUTEROS_PASSWORD', ''),
+                ]);
+            } catch (ClientException $e) {
+                $this->Flash->error(__d(
+                    'radius',
+                    'Problem connecting to an access point: {0}',
+                    $e->getMessage(),
+                ));
+
+                return $this->redirect(['action' => 'monitoring', $account->id]);
+            }
 
             $query = new Query('/interface/wireless/access-list/print');
             $query
