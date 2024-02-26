@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2024-02-25 17:55+0100\n"
+"POT-Creation-Date: 2024-02-26 17:11+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,27 +14,39 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:79
-msgid "Notification SMS has been generated, recipients: {recipients}, content: {body}"
+#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:74
+msgid "Notification email has been generated for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:105
-msgid "Blocking SMS has been generated, recipients: {recipients}, content: {body}"
+#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:89
+msgid "Notification SMS has been generated for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:115
-msgid "Notification SMS has been generated for inactive services, recipients: {recipients}, content: {body}"
+#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:111
+msgid "Blocking email has been generated for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:128
+#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:122
+msgid "Notification email has been generated for inactive services for customer {customer_number}, recipients: {recipients}"
+msgstr ""
+
+#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:139
+msgid "Blocking SMS has been generated for customer {customer_number}, recipients: {recipients}"
+msgstr ""
+
+#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:150
+msgid "Notification SMS has been generated for inactive services for customer {customer_number}, recipients: {recipients}"
+msgstr ""
+
+#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:163
 msgid "Done"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:123
+#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:124
 msgid "Email was successfully sent."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:130
+#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:131
 msgid "The email cannot be sent."
 msgstr ""
 

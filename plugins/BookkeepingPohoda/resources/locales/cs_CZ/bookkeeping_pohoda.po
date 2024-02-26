@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2024-02-25 17:55+0100\n"
-"PO-Revision-Date: 2024-02-25 17:58+0100\n"
+"POT-Creation-Date: 2024-02-26 17:11+0100\n"
+"PO-Revision-Date: 2024-02-26 17:22+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -15,35 +15,63 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 "X-Generator: Poedit 3.4.2\n"
 
-#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:79
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:74
 msgid ""
-"Notification SMS has been generated, recipients: {recipients}, content: "
-"{body}"
+"Notification email has been generated for customer {customer_number}, "
+"recipients: {recipients}"
 msgstr ""
-"Byla vygenerována notifikační SMS, příjemci: {recipients}, obsah: {body}"
+"Byl vygenerován oznamovací e-mail pro zákazníka {customer_number}, příjemci: "
+"{recipients}"
 
-#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:105
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:89
 msgid ""
-"Blocking SMS has been generated, recipients: {recipients}, content: {body}"
-msgstr "Byla vygenerována blokovací SMS, příjemci: {recipients}, obsah: {body}"
-
-#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:115
-msgid ""
-"Notification SMS has been generated for inactive services, recipients: "
-"{recipients}, content: {body}"
+"Notification SMS has been generated for customer {customer_number}, "
+"recipients: {recipients}"
 msgstr ""
-"Byla vygenerována notifikační SMS pro neaktivní služby, příjemci: "
-"{recipients}, obsah: {body}"
+"Byla vygenerována notifikační SMS pro zákazníka {customer_number}, příjemci: "
+"{recipients}"
 
-#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:128
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:111
+msgid ""
+"Blocking email has been generated for customer {customer_number}, "
+"recipients: {recipients}"
+msgstr ""
+"Byl vygenerován blokovací e-mail pro zákazníka {customer_number}, příjemci: "
+"{recipients}"
+
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:122
+msgid ""
+"Notification email has been generated for inactive services for customer "
+"{customer_number}, recipients: {recipients}"
+msgstr ""
+"Byl vygenerován oznamovací e-mail pro neaktivní služby pro zákazníka "
+"{customer_number}, příjemci: {recipients}"
+
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:139
+msgid ""
+"Blocking SMS has been generated for customer {customer_number}, recipients: "
+"{recipients}"
+msgstr ""
+"Byla vygenerována blokovací SMS pro zákazníka {customer_number}, příjemci: "
+"{recipients}"
+
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:150
+msgid ""
+"Notification SMS has been generated for inactive services for customer "
+"{customer_number}, recipients: {recipients}"
+msgstr ""
+"Byla vygenerována notifikační SMS pro neaktivní služby pro zákazníka "
+"{customer_number}, příjemci: {recipients}"
+
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:163
 msgid "Done"
 msgstr "Hotovo"
 
-#: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:123
+#: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:124
 msgid "Email was successfully sent."
 msgstr "E-mail byl úspěšně odeslán."
 
-#: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:130
+#: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:131
 msgid "The email cannot be sent."
 msgstr "E-mail nelze odeslat."
 
@@ -485,6 +513,12 @@ msgstr "Upravil"
 #: plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:69
 msgid "Show also paid invoices"
 msgstr "Zobrazit také zaplacené faktury"
+
+#~ msgid ""
+#~ "Notification SMS has been generated, recipients: {recipients}, content: "
+#~ "{body}"
+#~ msgstr ""
+#~ "Byla vygenerována notifikační SMS, příjemci: {recipients}, obsah: {body}"
 
 #~ msgid "Import from DBF"
 #~ msgstr "Import z DBF"

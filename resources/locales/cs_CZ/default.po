@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2024-02-25 17:38+0100\n"
-"PO-Revision-Date: 2024-02-25 17:46+0100\n"
+"POT-Creation-Date: 2024-02-26 17:11+0100\n"
+"PO-Revision-Date: 2024-02-26 17:18+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -31,17 +31,17 @@ msgstr "Maximální čekací doba po požadavku na odeslání (sekundy)."
 msgid "Processing email messages:"
 msgstr "Zpracování e-mailových zpráv:"
 
-#: src/Command/ProcessEmailsCommand.php:142
+#: src/Command/ProcessEmailsCommand.php:147
 #: src/Command/ProcessSmsCommand.php:162
 msgid "Message with ID {0} was sent with identifier: {1}"
 msgstr "Zpráva s ID {0} byla odeslána s identifikátorem: {1}"
 
-#: src/Command/ProcessEmailsCommand.php:155
+#: src/Command/ProcessEmailsCommand.php:160
 #: src/Command/ProcessSmsCommand.php:178
 msgid "Error sending message with ID {0}: {1}"
 msgstr "Chyba při odesílání zprávy s ID {0}: {1}"
 
-#: src/Command/ProcessEmailsCommand.php:162
+#: src/Command/ProcessEmailsCommand.php:167
 #: src/Command/ProcessSmsCommand.php:200
 msgid "Done"
 msgstr "Hotovo"
@@ -2983,6 +2983,10 @@ msgstr "Identifikátor"
 #: templates/CustomerMessages/view.php:124
 msgid "Body"
 msgstr "Tělo"
+
+#: templates/CustomerMessages/view.php:128
+msgid "Attachments"
+msgstr "Přílohy"
 
 #: templates/Customers/add.php:12 templates/Customers/edit.php:17
 #: templates/Customers/view.php:21
