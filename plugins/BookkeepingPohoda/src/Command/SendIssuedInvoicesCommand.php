@@ -43,8 +43,8 @@ class SendIssuedInvoicesCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        $issued_invoices_table = $this->fetchTable('BookkeepingPohoda.Invoices');
-        $issued_invoices = $issued_invoices_table
+        $invoices_table = $this->fetchTable('BookkeepingPohoda.Invoices');
+        $invoices = $invoices_table
             ->find()
             ->contain([
                 'Customers' => [
@@ -59,32 +59,33 @@ class SendIssuedInvoicesCommand extends Command
             ->all();
 
         echo 'Sending notifications:' . "\n";
-        foreach ($issued_invoices as $issued_invoice) {
+        foreach ($invoices as $invoice) {
             if (
-                $issued_invoice->__isset('customer') &&
-                $issued_invoice->customer->agree_mailing_billing &&
-                count($issued_invoice->customer->billing_emails) > 0
+                $invoice->__isset('customer') &&
+                $invoice->customer->agree_mailing_billing &&
+                count($invoice->customer->billing_emails) > 0
             ) {
                 // send email with notification
-                echo 'Invoice - ' . $issued_invoice->number . ' - ' . $issued_invoice->customer->billing_email . ' - ';
+                echo 'Invoice - ' . $invoice->number . ' - ' . $invoice->customer->billing_email . ' - ';
 
                 $mailer = new Mailer('invoices');
 
-                foreach ($issued_invoice->customer->billing_emails as $email) {
+                foreach ($invoice->customer->billing_emails as $email) {
                     $mailer->addTo($email->email);
                 }
                 $mailer->setSubject(
-                    'NETAIR - ' . $issued_invoice->text
-                        . ' - ' . $issued_invoice->number
-                        . ' - VS' . $issued_invoice->variable_symbol
+                    'NETAIR - ' . $invoice->text
+                        . ' - ' . $invoice->number
+                        . ' - VS' . $invoice->variable_symbol
                 );
 
                 $mailer->setAttachments([
-                    'NETAIR-' . $issued_invoice->number . '-VS' . $issued_invoice->variable_symbol . '.pdf' => [
-                        'file' => '/data/nginx/crm.netair.net/data/invoices/'
-                                    . 'Faktura_' . $issued_invoice->number . '.pdf',
+                    'Faktura_' . $invoice->number . '.pdf' => [
+                        'file' =>
+                            env('DATA_ROOT', DS . 'data' . DS)
+                            . 'invoices' . DS . 'Faktura_' . $invoice->number . '.pdf',
                         'mimetype' => 'application/pdf',
-                        'contentId' => 'issued-invoice-' . $issued_invoice->number,
+                        'contentId' => 'invoice-' . $invoice->number,
                     ],
                 ]);
 
@@ -94,13 +95,13 @@ class SendIssuedInvoicesCommand extends Command
                 $message =
                     'Vážený zákazníku,' . PHP_EOL
                     . PHP_EOL
-                    . 'dne ' . $issued_invoice->creation_date
-                    . ' Vám byla vystavena faktura - daňový doklad č. ' . $issued_invoice->number
-                    . ' splatná ' . $issued_invoice->due_date . '.' . PHP_EOL
+                    . 'dne ' . $invoice->creation_date
+                    . ' Vám byla vystavena faktura - daňový doklad č. ' . $invoice->number
+                    . ' splatná ' . $invoice->due_date . '.' . PHP_EOL
                     . PHP_EOL
-                    . 'Variabilní symbol pro platbu: ' . $issued_invoice->variable_symbol . PHP_EOL
+                    . 'Variabilní symbol pro platbu: ' . $invoice->variable_symbol . PHP_EOL
                     . 'Číslo našeho účtu: 207385091/0100' . PHP_EOL
-                    . 'Celková částka (včetně DPH): ' . Number::currency($issued_invoice->total) . PHP_EOL
+                    . 'Celková částka (včetně DPH): ' . Number::currency($invoice->total) . PHP_EOL
                     . PHP_EOL
                     . 'V příloze Vám zasíláme doklad ve formátu PDF.' . PHP_EOL
                     . PHP_EOL
@@ -123,8 +124,8 @@ class SendIssuedInvoicesCommand extends Command
                     $io->info(__d('bookkeeping_pohoda', 'Email was successfully sent.'));
 
                     // save the date of submission to the database
-                    $issued_invoice->email_sent = DateTime::now();
-                    $issued_invoices_table->save($issued_invoice);
+                    $invoice->email_sent = DateTime::now();
+                    $invoices_table->save($invoice);
                 } catch (Exception $e) {
                     Log::write('warning', 'The email cannot be sent. (' . $e->getMessage() . ')');
                     $io->abort(__d('bookkeeping_pohoda', 'The email cannot be sent.'));
@@ -134,11 +135,11 @@ class SendIssuedInvoicesCommand extends Command
                 unset($mailer);
             } else {
                 Log::write('warning', 'Skipping invoice because no valid contact found.'
-                    . ' (' . $issued_invoice->number . ' - ' . $issued_invoice->variable_symbol . ')');
+                    . ' (' . $invoice->number . ' - ' . $invoice->variable_symbol . ')');
 
                 // do not attempt to re-deliver this invoice by email
-                $issued_invoice->send_by_email = false;
-                $issued_invoices_table->save($issued_invoice);
+                $invoice->send_by_email = false;
+                $invoices_table->save($invoice);
             }
         }
         echo 'Done' . "\n";

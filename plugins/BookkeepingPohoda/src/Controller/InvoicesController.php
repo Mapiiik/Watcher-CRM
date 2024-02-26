@@ -142,13 +142,13 @@ class InvoicesController extends AppController
             'Customers',
         ]);
 
-        $filename = env('DATA_ROOT', DS . 'data' . DS) . 'invoices' . DS
-                    . 'Faktura_' . $invoice->number . '.pdf';
+        $filename =
+            env('DATA_ROOT', DS . 'data' . DS)
+            . 'invoices' . DS . 'Faktura_' . $invoice->number . '.pdf';
 
         $response = $this->response->withFile($filename, [
             'download' => true,
-            'name' => 'Faktura-' . $invoice->number
-                    . '-VS' . $invoice->variable_symbol . '.pdf',
+            'name' => 'Faktura_' . $invoice->number . '.pdf',
         ]);
 
         return $response;
