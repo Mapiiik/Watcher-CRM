@@ -68,20 +68,31 @@ class ProcessDebtorsCommand extends Command
             $emails_available = (count($debtor->getCustomer()->billing_emails) > 0);
             $phones_available = (count($debtor->getCustomer()->billing_phones) > 0);
 
+            // notify emails
             if ($emails_available) {
-            /**
-             * TODO: It needs to be finished
-             */
+                $customerMessage = $this->generateNotifyEmail($debtor);
+                $io->info(__d(
+                    'bookkeeping_pohoda',
+                    'Notification email has been generated'
+                        . ' for customer {customer_number}, recipients: {recipients}',
+                    [
+                        'customer_number' => $debtor->getCustomer()->number,
+                        'recipients' => implode(', ', $customerMessage->recipients),
+                    ]
+                ));
+                unset($customerMessage);
             }
 
+            // notify SMS
             if (!$emails_available && $phones_available) {
                 $customerMessage = $this->generateNotifySms($debtor);
                 $io->info(__d(
                     'bookkeeping_pohoda',
-                    'Notification SMS has been generated, recipients: {recipients}, content: {body}',
+                    'Notification SMS has been generated'
+                        . ' for customer {customer_number}, recipients: {recipients}',
                     [
+                        'customer_number' => $debtor->getCustomer()->number,
                         'recipients' => implode(', ', $customerMessage->recipients),
-                        'body' => $customerMessage->body,
                     ]
                 ));
                 unset($customerMessage);
@@ -93,21 +104,45 @@ class ProcessDebtorsCommand extends Command
             $emails_available = (count($debtor->getCustomer()->emails) > 0);
             $phones_available = (count($debtor->getCustomer()->phones) > 0);
 
+            // block emails
             if ($emails_available) {
-            /**
-             * TODO: It needs to be finished
-             */
+                if ($debtor->getCustomer()->active_services) {
+                    $customerMessage = $this->generateBlockEmail($debtor);
+                    $io->info(__d(
+                        'bookkeeping_pohoda',
+                        'Blocking email has been generated'
+                            . ' for customer {customer_number}, recipients: {recipients}',
+                        [
+                            'customer_number' => $debtor->getCustomer()->number,
+                            'recipients' => implode(', ', $customerMessage->recipients),
+                        ]
+                    ));
+                } else {
+                    $customerMessage = $this->generateNotifyEmailForInactiveServices($debtor);
+                    $io->info(__d(
+                        'bookkeeping_pohoda',
+                        'Notification email has been generated for inactive services'
+                            . ' for customer {customer_number}, recipients: {recipients}',
+                        [
+                            'customer_number' => $debtor->getCustomer()->number,
+                            'recipients' => implode(', ', $customerMessage->recipients),
+                        ]
+                    ));
+                }
+                unset($customerMessage);
             }
 
+            // block SMS
             if ($phones_available) {
                 if ($debtor->getCustomer()->active_services) {
                     $customerMessage = $this->generateBlockSms($debtor);
                     $io->info(__d(
                         'bookkeeping_pohoda',
-                        'Blocking SMS has been generated, recipients: {recipients}, content: {body}',
+                        'Blocking SMS has been generated'
+                            . ' for customer {customer_number}, recipients: {recipients}',
                         [
+                            'customer_number' => $debtor->getCustomer()->number,
                             'recipients' => implode(', ', $customerMessage->recipients),
-                            'body' => $customerMessage->body,
                         ]
                     ));
                 } else {
@@ -115,10 +150,10 @@ class ProcessDebtorsCommand extends Command
                     $io->info(__d(
                         'bookkeeping_pohoda',
                         'Notification SMS has been generated for inactive services'
-                            . ', recipients: {recipients}, content: {body}',
+                            . ' for customer {customer_number}, recipients: {recipients}',
                         [
+                            'customer_number' => $debtor->getCustomer()->number,
                             'recipients' => implode(', ', $customerMessage->recipients),
-                            'body' => $customerMessage->body,
                         ]
                     ));
                 }
@@ -129,7 +164,229 @@ class ProcessDebtorsCommand extends Command
     }
 
     /**
-     * Generate SMS message
+     * Get Invoices Table
+     */
+    private function getInvoicesTable(Debtor $debtor): string
+    {
+        $text =
+            sprintf('%-15s', 'Číslo faktury') . "\t"
+            . sprintf('%-12s', 'Var. symbol') . "\t"
+            . sprintf('%-10s', 'Datum') . "\t"
+            . sprintf('%-10s', 'Splatnost') . "\t"
+            . sprintf('%-12s', 'Cena') . "\t"
+            . sprintf('%-12s', 'Dluh')
+            . PHP_EOL;
+
+        // phpcs:ignore
+        $text .= '-------------------------------------------------------------------------------------------' . PHP_EOL;
+
+        foreach ($debtor->getInvoices() as $invoice) {
+            $text .=
+                sprintf('%-15s', $invoice->number) . "\t"
+                . sprintf('%-12s', $invoice->variable_symbol) . "\t"
+                . sprintf('%-10s', $invoice->creation_date) . "\t"
+                . sprintf('%-10s', $invoice->due_date) . "\t"
+                . sprintf('%-12s', Number::currency($invoice->total)) . "\t"
+                . sprintf('%-12s', Number::currency($invoice->debt))
+                . PHP_EOL;
+        }
+
+        // phpcs:ignore
+        $text .= '-------------------------------------------------------------------------------------------' . PHP_EOL;
+
+        $text .=
+            sprintf('%-15s', 'Dluh celkem:') . "\t"
+            . sprintf('%-12s', '') . "\t"
+            . sprintf('%-10s', '') . "\t"
+            . sprintf('%-10s', '') . "\t"
+            . sprintf('%-12s', '') . "\t"
+            . sprintf('%-12s', Number::currency($debtor->getTotalDebt()))
+            . PHP_EOL;
+
+        // phpcs:ignore
+        $text .= '===========================================================================================' . PHP_EOL;
+
+        return $text;
+    }
+
+    /**
+     * Get Attachments
+     */
+    private function getAttachments(Debtor $debtor): array
+    {
+        $attachments = [];
+
+        foreach ($debtor->getInvoices() as $invoice) {
+            $attachments['Faktura_' . $invoice->number . '.pdf'] = [
+                'file' =>
+                    env('DATA_ROOT', DS . 'data' . DS)
+                    . 'invoices' . DS . 'Faktura_' . $invoice->number . '.pdf',
+                'mimetype' => 'application/pdf',
+                'contentId' => 'invoice-' . $invoice->number,
+            ];
+        }
+
+        return $attachments;
+    }
+
+    /**
+     * Generate Email Message
+     */
+    private function generateEmail(
+        Debtor $debtor,
+        array $recipients,
+        string $subjectTemplate,
+        string $contentTemplate
+    ): CustomerMessage {
+        $replacements = [
+            '{date}' => Date::now(),
+            '{total_overdue_debt}' => Number::currency($debtor->getTotalOverdueDebt()),
+            '{customer_number}' => $debtor->getCustomer()->number,
+            '{invoices_table}' => $this->getInvoicesTable($debtor),
+        ];
+
+        /** @var \App\Model\Table\CustomerMessagesTable $customerMessagesTable */
+        $customerMessagesTable = $this->fetchTable('CustomerMessages');
+
+        $customerMessage = $customerMessagesTable->newEmptyEntity();
+
+        $customerMessage->type = CustomerMessageType::EmailInvoices;
+        $customerMessage->direction = CustomerMessageDirection::Outgoing;
+        $customerMessage->body_format = CustomerMessageBodyFormat::Plaintext;
+        $customerMessage->delivery_status = CustomerMessageDeliveryStatus::Pending;
+
+        $customerMessage->customer_id = $debtor->getCustomer()->id;
+        $customerMessage->recipients = $recipients;
+        $customerMessage->subject = strtr($subjectTemplate, $replacements);
+        $customerMessage->body = strtr($contentTemplate, $replacements);
+
+        $customerMessage->attachments = $this->getAttachments($debtor);
+
+        return $customerMessagesTable->saveOrFail($customerMessage);
+    }
+
+    /**
+     * Generate Notify Email Message
+     */
+    private function generateNotifyEmail(Debtor $debtor): CustomerMessage
+    {
+        // phpcs:disable
+        $subjectTemplate =
+            'NETAIR - neuhrazené pohledávky ke dni {date} - VS: {customer_number}';
+        $contentTemplate =
+            'Vážený zákazníku,' . PHP_EOL
+            . PHP_EOL
+            . 'rádi bychom Vás upozornili, že k dnešnímu dni evidujeme neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}.' . PHP_EOL
+            . PHP_EOL
+            . '{invoices_table}'
+            . PHP_EOL
+            . 'Pokud máte vše uhrazeno, kontaktujte nás prosím a sdělte nám datum, variabilní symbol a číslo účtu, ze kterého byly platby provedeny.' . PHP_EOL
+            . PHP_EOL
+            . 'Pokud se jedná o nedoplatek, je to pravděpodobně způsobeno tím, že jste nedávno byli převedeni na nové tarify, o čemž jsme vás s dostatečným předstihem informovali e-mailem.' . PHP_EOL
+            . PHP_EOL
+            . 'Kontakty na naše účetní oddělení' . PHP_EOL
+            . 'Mail: fakturace@netair.cz' . PHP_EOL
+            . 'Telefon: +420 488572511' . PHP_EOL
+            . 'Číslo účtu: 207385091/0100' . PHP_EOL
+            . PHP_EOL
+            . 'Volat můžete od pondělí do pátku mezi 08:00-12:00 a 13:00-17:00.' . PHP_EOL
+            . PHP_EOL
+            . 'Pokud Vám nepřichází faktury do emailu, zkontrolujte si prosím zda jste odsouhlasili, že je chcete dostávat.' . PHP_EOL
+            . 'Potřebné souhlasy je možné udělit v sekci Uživatelské údaje, po přihlášení do Uživatelského portálu: https://nms.netair.cz/netair/' . PHP_EOL
+            . 'Pokud nemáte přihlašovací údaje, můžete si je vyžádat zde: https://netair.cz/podpora/zrizeni-pristupu-do-uzivatelskeho-portalu/' . PHP_EOL
+            . PHP_EOL
+            . 'NETAIR, s.r.o.' . PHP_EOL
+            . 'Jablonec nad Jizerou 299' . PHP_EOL
+            . '512 43 Jablonec nad Jizerou' . PHP_EOL
+            . 'IČ: 27496139, DIČ: CZ27496139' . PHP_EOL;
+        // phpcs:enable
+
+        return $this->generateEmail(
+            $debtor,
+            $debtor->getCustomer()->billing_emails,
+            $subjectTemplate,
+            $contentTemplate
+        );
+    }
+
+    /**
+     * Generate Notify Email Message for Inactive Services
+     */
+    private function generateNotifyEmailForInactiveServices(Debtor $debtor): CustomerMessage
+    {
+        // phpcs:disable
+        $subjectTemplate =
+            'NETAIR - neaktivní služby - neuhrazené pohledávky ke dni {date} - VS: {customer_number}';
+        $contentTemplate =
+            'Vážený zákazníku,' . PHP_EOL
+            . PHP_EOL
+            . 'rádi bychom Vás upozornili, že k dnešnímu dni stále evidujeme neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}.' . PHP_EOL
+            . PHP_EOL
+            . '{invoices_table}'
+            . PHP_EOL
+            . 'Pokud máte vše uhrazeno, kontaktujte nás prosím a sdělte nám datum, variabilní symbol a číslo účtu, ze kterého byly platby provedeny.' . PHP_EOL
+            . PHP_EOL
+            . 'Kontakty na naše účetní oddělení' . PHP_EOL
+            . 'Mail: fakturace@netair.cz' . PHP_EOL
+            . 'Telefon: +420 488572511' . PHP_EOL
+            . 'Číslo účtu: 207385091/0100' . PHP_EOL
+            . PHP_EOL
+            . 'Volat můžete od pondělí do pátku mezi 08:00-12:00 a 13:00-17:00.' . PHP_EOL
+            . PHP_EOL
+            . 'Pokud Vám nepřichází faktury do emailu, zkontrolujte si prosím zda jste odsouhlasili, že je chcete dostávat.' . PHP_EOL
+            . 'Potřebné souhlasy je možné udělit v sekci Uživatelské údaje, po přihlášení do Uživatelského portálu: https://nms.netair.cz/netair/' . PHP_EOL
+            . 'Pokud nemáte přihlašovací údaje, můžete si je vyžádat zde: https://netair.cz/podpora/zrizeni-pristupu-do-uzivatelskeho-portalu/' . PHP_EOL
+            . PHP_EOL
+            . 'NETAIR, s.r.o.' . PHP_EOL
+            . 'Jablonec nad Jizerou 299' . PHP_EOL
+            . '512 43 Jablonec nad Jizerou' . PHP_EOL
+            . 'IČ: 27496139, DIČ: CZ27496139' . PHP_EOL;
+        // phpcs:enable
+
+        return $this->generateEmail($debtor, $debtor->getCustomer()->emails, $subjectTemplate, $contentTemplate);
+    }
+
+    /**
+     * Generate Block Email Message
+     */
+    private function generateBlockEmail(Debtor $debtor): CustomerMessage
+    {
+        // phpcs:disable
+        $subjectTemplate =
+            'NETAIR - pozastavení služeb - neuhrazené pohledávky ke dni {date} - VS: {customer_number}';
+        $contentTemplate =
+            'Vážený zákazníku,' . PHP_EOL
+            . PHP_EOL
+            . 'rádi bychom Vás upozornili, že naše služby byly pozastaveny z důvodu neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}.' . PHP_EOL
+            . PHP_EOL
+            . '{invoices_table}'
+            . PHP_EOL
+            . 'Pokud máte vše uhrazeno, kontaktujte nás prosím a sdělte nám datum, variabilní symbol a číslo účtu, ze kterého byly platby provedeny.' . PHP_EOL
+            . PHP_EOL
+            . 'Pokud se jedná o nedoplatek, je to pravděpodobně způsobeno tím, že jste nedávno byli převedeni na nové tarify, o čemž jsme vás s dostatečným předstihem informovali e-mailem.' . PHP_EOL
+            . PHP_EOL
+            . 'Kontakty na naše účetní oddělení' . PHP_EOL
+            . 'Mail: fakturace@netair.cz' . PHP_EOL
+            . 'Telefon: +420 488572511' . PHP_EOL
+            . 'Číslo účtu: 207385091/0100' . PHP_EOL
+            . PHP_EOL
+            . 'Volat můžete od pondělí do pátku mezi 08:00-12:00 a 13:00-17:00.' . PHP_EOL
+            . PHP_EOL
+            . 'Pokud Vám nepřichází faktury do emailu, zkontrolujte si prosím zda jste odsouhlasili, že je chcete dostávat.' . PHP_EOL
+            . 'Potřebné souhlasy je možné udělit v sekci Uživatelské údaje, po přihlášení do Uživatelského portálu: https://nms.netair.cz/netair/' . PHP_EOL
+            . 'Pokud nemáte přihlašovací údaje, můžete si je vyžádat zde: https://netair.cz/podpora/zrizeni-pristupu-do-uzivatelskeho-portalu/' . PHP_EOL
+            . PHP_EOL
+            . 'NETAIR, s.r.o.' . PHP_EOL
+            . 'Jablonec nad Jizerou 299' . PHP_EOL
+            . '512 43 Jablonec nad Jizerou' . PHP_EOL
+            . 'IČ: 27496139, DIČ: CZ27496139' . PHP_EOL;
+        // phpcs:enable
+
+        return $this->generateEmail($debtor, $debtor->getCustomer()->emails, $subjectTemplate, $contentTemplate);
+    }
+
+    /**
+     * Generate SMS Message
      */
     private function generateSms(
         Debtor $debtor,
@@ -162,7 +419,7 @@ class ProcessDebtorsCommand extends Command
     }
 
     /**
-     * Generate Notify SMS message
+     * Generate Notify SMS Message
      */
     private function generateNotifySms(Debtor $debtor): CustomerMessage
     {
@@ -178,7 +435,7 @@ class ProcessDebtorsCommand extends Command
     }
 
     /**
-     * Generate Notify SMS message
+     * Generate Notify SMS Message for Inactive Services
      */
     private function generateNotifySmsForInactiveServices(Debtor $debtor): CustomerMessage
     {
@@ -190,11 +447,11 @@ class ProcessDebtorsCommand extends Command
             'Vážený zákazníku, rádi bychom Vás upozornili, že k dnešnímu dni stále evidujeme neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}. Pokud máte vše uhrazeno, kontaktujte nás prosím.'
             . ' NETAIR, s.r.o., tel: +420488572511, č.ú.: 207385091/0100';
 
-        return $this->generateSms($debtor, $debtor->getCustomer()->billing_phones, $subjectTemplate, $contentTemplate);
+        return $this->generateSms($debtor, $debtor->getCustomer()->phones, $subjectTemplate, $contentTemplate);
     }
 
     /**
-     * Generate Block SMS message
+     * Generate Block SMS Message
      */
     private function generateBlockSms(Debtor $debtor): CustomerMessage
     {

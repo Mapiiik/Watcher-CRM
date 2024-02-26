@@ -76,7 +76,7 @@ class SendIssuedInvoicesCommand extends Command
                 $mailer->setSubject(
                     'NETAIR - ' . $invoice->text
                         . ' - ' . $invoice->number
-                        . ' - VS' . $invoice->variable_symbol
+                        . ' - VS: ' . $invoice->variable_symbol
                 );
 
                 $mailer->setAttachments([
