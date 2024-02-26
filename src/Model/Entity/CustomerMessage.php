@@ -24,6 +24,7 @@ use InvalidArgumentException;
  * @property string $created_by
  * @property \Cake\I18n\DateTime $modified
  * @property string $modified_by
+ * @property ?array $attachments
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\AppUser $creator
@@ -55,6 +56,7 @@ class CustomerMessage extends Entity
         'created_by' => true,
         'modified' => true,
         'modified_by' => true,
+        'attachments' => true,
         'customer' => true,
         'creator' => true,
         'modifier' => true,

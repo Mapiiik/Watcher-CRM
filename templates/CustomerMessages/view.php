@@ -122,9 +122,15 @@
             </div>
             <div class="text">
                 <strong><?= __('Body') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($customerMessage->body)); ?>
-                </blockquote>
+                <pre><?= $this->Text->autoParagraph(h($customerMessage->body)); ?></pre>
+            </div>
+            <div class="text">
+                <strong><?= __('Attachments') ?></strong>
+                <pre><?= $customerMessage->__isset('attachments') ?
+                    h(json_encode(
+                        $customerMessage->attachments,
+                        JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
+                    )) : '' ?></pre>
             </div>
         </div>
     </div>

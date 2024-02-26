@@ -134,6 +134,11 @@ class ProcessEmailsCommand extends Command
                 $mailer->setTo($emailMessage->recipients);
                 $mailer->setSubject($emailMessage->subject);
 
+                // add attachments
+                if (is_array($emailMessage->attachments)) {
+                    $mailer->setAttachments($emailMessage->attachments);
+                }
+
                 try {
                     // send message
                     $mailer->deliver($emailMessage->body);
