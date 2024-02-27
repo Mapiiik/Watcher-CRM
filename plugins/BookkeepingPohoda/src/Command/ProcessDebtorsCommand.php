@@ -33,6 +33,33 @@ class ProcessDebtorsCommand extends Command
     {
         $parser = parent::buildOptionParser($parser);
 
+        $parser->addOption('only_notify', [
+            'help' => __d(
+                'bookkeeping_pohoda',
+                'Send only a notification of an overdue claims (within the allowed payment delay).'
+            ),
+            'boolean' => true,
+        ]);
+
+        $parser->addOption('only_block', [
+            'help' => __d(
+                'bookkeeping_pohoda',
+                'Send only a notification of blocking (or continuing debt for services no longer active)'
+                . ' for overdue claims (after an allowed delay in payment).'
+            ),
+            'boolean' => true,
+        ]);
+
+        $parser->addOption('skip_emails', [
+            'help' => __d('bookkeeping_pohoda', 'Do not send emails, the operation will be skipped.'),
+            'boolean' => true,
+        ]);
+
+        $parser->addOption('skip_sms', [
+            'help' => __d('bookkeeping_pohoda', 'Do not send SMS, the operation will be skipped.'),
+            'boolean' => true,
+        ]);
+
         return $parser;
     }
 
@@ -51,17 +78,25 @@ class ProcessDebtorsCommand extends Command
             allowed_total_overdue_debt: (float)env('DEBTORS_ALLOWED_TOTAL_OVERDUE_DEBT', '0')
         );
 
-        $debtorsToNotify = $debtorsProcessor
-            ->getOverdueDebtors()
-            ->filter(
-                function (Debtor $debtor) {
+        // get debtors to notify
+        $debtorsToNotify = !$args->getOption('only_block') ?
+            $debtorsProcessor
+                ->getOverdueDebtors()
+                ->filter(
+                    function (Debtor $debtor) {
 
-                    return $debtor->getDueDate() == Date::now()->subDays(5)
-                        || $debtor->getDueDate() == Date::now()->subDays(10);
-                }
-            );
+                        return $debtor->getDueDate() == Date::now()->subDays(5)
+                            || $debtor->getDueDate() == Date::now()->subDays(10);
+                    }
+                )
+            :
+            [];
 
-        $debtorsToBlock = $debtorsProcessor->getFilteredOverdueDebtors();
+        // get debtors to block (or continuing debt for services no longer active)
+        $debtorsToBlock = !$args->getOption('only_notify') ?
+            $debtorsProcessor->getFilteredOverdueDebtors()
+            :
+            [];
 
         /** @var \BookkeepingPohoda\Debtors\Debtor $debtor */
         foreach ($debtorsToNotify as $debtor) {
@@ -69,7 +104,7 @@ class ProcessDebtorsCommand extends Command
             $phones_available = (count($debtor->getCustomer()->billing_phones) > 0);
 
             // notify emails
-            if ($emails_available) {
+            if ($emails_available && !$args->getOption('skip_emails')) {
                 $customerMessage = $this->generateNotifyEmail($debtor);
                 $io->info(__d(
                     'bookkeeping_pohoda',
@@ -84,7 +119,7 @@ class ProcessDebtorsCommand extends Command
             }
 
             // notify SMS
-            if (!$emails_available && $phones_available) {
+            if (!$emails_available && $phones_available && !$args->getOption('skip_sms')) {
                 $customerMessage = $this->generateNotifySms($debtor);
                 $io->info(__d(
                     'bookkeeping_pohoda',
@@ -105,7 +140,7 @@ class ProcessDebtorsCommand extends Command
             $phones_available = (count($debtor->getCustomer()->phones) > 0);
 
             // block emails
-            if ($emails_available) {
+            if ($emails_available && !$args->getOption('skip_emails')) {
                 if ($debtor->getCustomer()->active_services) {
                     $customerMessage = $this->generateBlockEmail($debtor);
                     $io->info(__d(
@@ -133,7 +168,7 @@ class ProcessDebtorsCommand extends Command
             }
 
             // block SMS
-            if ($phones_available) {
+            if ($phones_available && !$args->getOption('skip_sms')) {
                 if ($debtor->getCustomer()->active_services) {
                     $customerMessage = $this->generateBlockSms($debtor);
                     $io->info(__d(
