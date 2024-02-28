@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2024-02-26 17:11+0100\n"
-"PO-Revision-Date: 2024-02-26 17:22+0100\n"
+"POT-Creation-Date: 2024-02-28 16:15+0100\n"
+"PO-Revision-Date: 2024-02-28 16:25+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -15,7 +15,32 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 "X-Generator: Poedit 3.4.2\n"
 
-#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:74
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:37
+msgid ""
+"Send only a notification of an overdue claims (within the allowed payment "
+"delay)."
+msgstr ""
+"Odeslat pouze oznámení o pohledávce po splatnosti (v rámci povoleného "
+"zpoždění platby)."
+
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:45
+msgid ""
+"Send only a notification of blocking (or continuing debt for services no "
+"longer active) for overdue claims (after an allowed delay in payment)."
+msgstr ""
+"Odeslat pouze oznámení o zablokování (nebo trvajícím dluhu za služby, které "
+"již nejsou aktivní) u pohledávek po splatnosti (po povoleném zpoždění "
+"platby)."
+
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:54
+msgid "Do not send emails, the operation will be skipped."
+msgstr "Neodesílat e-maily, operace bude přeskočena."
+
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:59
+msgid "Do not send SMS, the operation will be skipped."
+msgstr "Neodesílat SMS, operace bude přeskočena."
+
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:109
 msgid ""
 "Notification email has been generated for customer {customer_number}, "
 "recipients: {recipients}"
@@ -23,7 +48,7 @@ msgstr ""
 "Byl vygenerován oznamovací e-mail pro zákazníka {customer_number}, příjemci: "
 "{recipients}"
 
-#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:89
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:124
 msgid ""
 "Notification SMS has been generated for customer {customer_number}, "
 "recipients: {recipients}"
@@ -31,7 +56,7 @@ msgstr ""
 "Byla vygenerována notifikační SMS pro zákazníka {customer_number}, příjemci: "
 "{recipients}"
 
-#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:111
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:146
 msgid ""
 "Blocking email has been generated for customer {customer_number}, "
 "recipients: {recipients}"
@@ -39,7 +64,7 @@ msgstr ""
 "Byl vygenerován blokovací e-mail pro zákazníka {customer_number}, příjemci: "
 "{recipients}"
 
-#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:122
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:157
 msgid ""
 "Notification email has been generated for inactive services for customer "
 "{customer_number}, recipients: {recipients}"
@@ -47,7 +72,7 @@ msgstr ""
 "Byl vygenerován oznamovací e-mail pro neaktivní služby pro zákazníka "
 "{customer_number}, příjemci: {recipients}"
 
-#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:139
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:174
 msgid ""
 "Blocking SMS has been generated for customer {customer_number}, recipients: "
 "{recipients}"
@@ -55,7 +80,7 @@ msgstr ""
 "Byla vygenerována blokovací SMS pro zákazníka {customer_number}, příjemci: "
 "{recipients}"
 
-#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:150
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:185
 msgid ""
 "Notification SMS has been generated for inactive services for customer "
 "{customer_number}, recipients: {recipients}"
@@ -63,7 +88,7 @@ msgstr ""
 "Byla vygenerována notifikační SMS pro neaktivní služby pro zákazníka "
 "{customer_number}, příjemci: {recipients}"
 
-#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:163
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:198
 msgid "Done"
 msgstr "Hotovo"
 
