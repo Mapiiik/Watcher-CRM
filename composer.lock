@@ -4716,16 +4716,16 @@
         },
         {
             "name": "cakedc/cakephp-phpstan",
-            "version": "3.1.1",
+            "version": "3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CakeDC/cakephp-phpstan.git",
-                "reference": "7f44da9b8c45b5d5f1afae0f1891818e3f813c36"
+                "reference": "3ea916bf4a6bac6e42a2d9a8a35be98ff9567373"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CakeDC/cakephp-phpstan/zipball/7f44da9b8c45b5d5f1afae0f1891818e3f813c36",
-                "reference": "7f44da9b8c45b5d5f1afae0f1891818e3f813c36",
+                "url": "https://api.github.com/repos/CakeDC/cakephp-phpstan/zipball/3ea916bf4a6bac6e42a2d9a8a35be98ff9567373",
+                "reference": "3ea916bf4a6bac6e42a2d9a8a35be98ff9567373",
                 "shasum": ""
             },
             "require": {
@@ -4766,9 +4766,9 @@
             "description": "CakePHP 5 plugin extension for PHPStan.",
             "support": {
                 "issues": "https://github.com/CakeDC/cakephp-phpstan/issues",
-                "source": "https://github.com/CakeDC/cakephp-phpstan/tree/3.1.1"
+                "source": "https://github.com/CakeDC/cakephp-phpstan/tree/3.1.2"
             },
-            "time": "2024-02-23T17:11:00+00:00"
+            "time": "2024-02-27T16:33:04+00:00"
         },
         {
             "name": "cakephp/bake",
