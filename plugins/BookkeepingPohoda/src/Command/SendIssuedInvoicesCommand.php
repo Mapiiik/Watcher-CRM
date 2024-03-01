@@ -30,6 +30,12 @@ class SendIssuedInvoicesCommand extends Command
     {
         $parser = parent::buildOptionParser($parser);
 
+        $parser->addOption('limit', [
+            'help' => __('Number of emails to process.'),
+            'default' => '50',
+            'required' => false,
+        ]);
+
         return $parser;
     }
 
@@ -55,7 +61,7 @@ class SendIssuedInvoicesCommand extends Command
                 'send_by_email' => true,
                 'email_sent IS' => null,
             ])
-            ->limit(50)
+            ->limit((int)$args->getOption('limit'))
             ->all();
 
         echo 'Sending notifications:' . "\n";
