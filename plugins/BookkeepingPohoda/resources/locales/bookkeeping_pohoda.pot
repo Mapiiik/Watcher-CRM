@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2024-02-28 16:15+0100\n"
+"POT-Creation-Date: 2024-03-05 19:34+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -55,14 +55,27 @@ msgid "Notification SMS has been generated for inactive services for customer {c
 msgstr ""
 
 #: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:198
+#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:159
 msgid "Done"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:124
+#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:34
+msgid "Number of emails to process."
+msgstr ""
+
+#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:67
+msgid "Sending invoices:"
+msgstr ""
+
+#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:77
+msgid "Invoice - {0} - {1}"
+msgstr ""
+
+#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:138
 msgid "Email was successfully sent."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:131
+#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:145
 msgid "The email cannot be sent."
 msgstr ""
 

@@ -31,7 +31,7 @@ class SendIssuedInvoicesCommand extends Command
         $parser = parent::buildOptionParser($parser);
 
         $parser->addOption('limit', [
-            'help' => __('Number of emails to process.'),
+            'help' => __d('bookkeeping_pohoda', 'Number of emails to process.'),
             'default' => '50',
             'required' => false,
         ]);
@@ -64,7 +64,8 @@ class SendIssuedInvoicesCommand extends Command
             ->limit((int)$args->getOption('limit'))
             ->all();
 
-        echo 'Sending notifications:' . "\n";
+        $io->info(__d('bookkeeping_pohoda', 'Sending invoices:'));
+
         foreach ($invoices as $invoice) {
             if (
                 $invoice->__isset('customer') &&
@@ -72,7 +73,14 @@ class SendIssuedInvoicesCommand extends Command
                 count($invoice->customer->billing_emails) > 0
             ) {
                 // send email with notification
-                echo 'Invoice - ' . $invoice->number . ' - ' . $invoice->customer->billing_email . ' - ';
+                $io->info(
+                    __d(
+                        'bookkeeping_pohoda',
+                        'Invoice - {0} - {1}',
+                        $invoice->number,
+                        $invoice->customer->billing_email
+                    )
+                );
 
                 $mailer = new Mailer('invoices');
 
@@ -148,6 +156,6 @@ class SendIssuedInvoicesCommand extends Command
                 $invoices_table->save($invoice);
             }
         }
-        echo 'Done' . "\n";
+        $io->info(__d('bookkeeping_pohoda', 'Done'));
     }
 }
