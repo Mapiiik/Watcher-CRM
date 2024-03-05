@@ -17,8 +17,29 @@ class CustomerMessagesController extends AppController
      */
     public function index()
     {
+        // filter
+        $conditions = [];
+        if (isset($this->customer_id)) {
+            $conditions = ['CustomerMessages.customer_id' => $this->customer_id];
+        }
+
+        // search
+        $search = $this->getRequest()->getQuery('search');
+        if (!empty($search)) {
+            $conditions[] = [
+                'OR' => [
+                    'CustomerMessages.subject ILIKE' => '%' . trim($search) . '%',
+                    'CustomerMessages.body ILIKE' => '%' . trim($search) . '%',
+                ],
+            ];
+        }
+
         $query = $this->CustomerMessages->find()
-            ->contain(['Customers']);
+            ->contain([
+                'Customers',
+            ])
+            ->where($conditions);
+
         $customerMessages = $this->paginate($query);
 
         $this->set(compact('customerMessages'));
