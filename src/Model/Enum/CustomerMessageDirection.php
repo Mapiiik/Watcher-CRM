@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Model\Enum;
 
 use Cake\Database\Type\EnumLabelInterface;
-use Cake\Utility\Inflector;
 
 /**
  * CustomerMessageDirection Enum
@@ -19,6 +18,13 @@ enum CustomerMessageDirection: int implements EnumLabelInterface
      */
     public function label(): string
     {
-        return Inflector::humanize(Inflector::underscore($this->name));
+        switch ($this->value) {
+            case $this::Outgoing->value:
+                return __('Outgoing');
+            case $this::Incoming->value:
+                return __('Incoming');
+        }
+
+        //return Inflector::humanize(Inflector::underscore($this->name));
     }
 }

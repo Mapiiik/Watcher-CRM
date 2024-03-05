@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Model\Enum;
 
 use Cake\Database\Type\EnumLabelInterface;
-use Cake\Utility\Inflector;
 
 /**
  * CustomerMessageDeliveryStatus Enum
@@ -22,6 +21,19 @@ enum CustomerMessageDeliveryStatus: int implements EnumLabelInterface
      */
     public function label(): string
     {
-        return Inflector::humanize(Inflector::underscore($this->name));
+        switch ($this->value) {
+            case $this::Pending->value:
+                return __('Pending');
+            case $this::Processed->value:
+                return __('Processed');
+            case $this::Sent->value:
+                return __('Sent');
+            case $this::Delivered->value:
+                return __('Delivered');
+            case $this::Failed->value:
+                return __('Failed');
+        }
+
+        //return Inflector::humanize(Inflector::underscore($this->name));
     }
 }
