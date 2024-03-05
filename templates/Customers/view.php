@@ -28,6 +28,11 @@
             ) ?>
             <br>
             <?= $this->AuthLink->link(
+                __('List Customer Messages'),
+                ['controller' => 'Customer Messages', 'action' => 'index'],
+                ['class' => 'side-nav-item']
+            ) ?>
+            <?= $this->AuthLink->link(
                 __('List Access Credentials'),
                 ['controller' => 'AccessCredentials', 'action' => 'index'],
                 ['class' => 'side-nav-item']
