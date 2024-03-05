@@ -338,6 +338,21 @@ $permissions = [
                 'delete',
             ],
         ],
+        //allow add/edit/delete of access credentials for network-managers
+        [
+            'role' => [
+                'network-manager',
+            ],
+            'plugin' => null,
+            'controller' => [
+                'AccessCredentials',
+            ],
+            'action' => [
+                'add',
+                'edit',
+                'delete',
+            ],
+        ],
         //allow some overviews for network-managers
         [
             'role' => [
