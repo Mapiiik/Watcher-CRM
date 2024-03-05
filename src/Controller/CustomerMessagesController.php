@@ -40,7 +40,11 @@ class CustomerMessagesController extends AppController
             ])
             ->where($conditions);
 
-        $customerMessages = $this->paginate($query);
+        $customerMessages = $this->paginate($query, [
+            'order' => [
+                'CustomerMessages.created' => 'DESC',
+            ],
+        ]);
 
         $this->set(compact('customerMessages'));
     }
