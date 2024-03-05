@@ -21,18 +21,13 @@ enum CustomerMessageDeliveryStatus: int implements EnumLabelInterface
      */
     public function label(): string
     {
-        switch ($this->value) {
-            case $this::Pending->value:
-                return __('Pending');
-            case $this::Processed->value:
-                return __('Processed');
-            case $this::Sent->value:
-                return __('Sent');
-            case $this::Delivered->value:
-                return __('Delivered');
-            case $this::Failed->value:
-                return __('Failed');
-        }
+        return match ($this) {
+            self::Pending => __('Pending'),
+            self::Processed => __('Processed'),
+            self::Sent => __('Sent'),
+            self::Delivered => __('Delivered'),
+            self::Failed => __('Failed'),
+        };
 
         //return Inflector::humanize(Inflector::underscore($this->name));
     }

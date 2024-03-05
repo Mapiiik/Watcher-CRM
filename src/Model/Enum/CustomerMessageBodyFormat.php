@@ -18,12 +18,10 @@ enum CustomerMessageBodyFormat: int implements EnumLabelInterface
      */
     public function label(): string
     {
-        switch ($this->value) {
-            case $this::Plaintext->value:
-                return __('Plain Text');
-            case $this::Html->value:
-                return __('HTML');
-        }
+        return match ($this) {
+            self::Plaintext => __('Plain Text'),
+            self::Html => __('HTML'),
+        };
 
         //return Inflector::humanize(Inflector::underscore($this->name));
     }

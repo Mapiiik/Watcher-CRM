@@ -21,18 +21,13 @@ enum CustomerMessageType: int implements EnumLabelInterface
      */
     public function label(): string
     {
-        switch ($this->value) {
-            case $this::Email->value:
-                return __('Email');
-            case $this::EmailContracts->value:
-                return __('Email - Contracts');
-            case $this::EmailInvoices->value:
-                return __('Email - Invoices');
-            case $this::EmailSupport->value:
-                return __('Email - Support');
-            case $this::Sms->value:
-                return __('SMS');
-        }
+        return match ($this) {
+            self::Email => __('Email'),
+            self::EmailContracts => __('Email - Contracts'),
+            self::EmailInvoices => __('Email - Invoices'),
+            self::EmailSupport => __('Email - Support'),
+            self::Sms => __('SMS'),
+        };
 
         //return Inflector::humanize(Inflector::underscore($this->name));
     }

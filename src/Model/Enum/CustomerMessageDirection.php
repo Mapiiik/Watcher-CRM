@@ -18,12 +18,10 @@ enum CustomerMessageDirection: int implements EnumLabelInterface
      */
     public function label(): string
     {
-        switch ($this->value) {
-            case $this::Outgoing->value:
-                return __('Outgoing');
-            case $this::Incoming->value:
-                return __('Incoming');
-        }
+        return match ($this) {
+            self::Outgoing => __('Outgoing'),
+            self::Incoming => __('Incoming'),
+        };
 
         //return Inflector::humanize(Inflector::underscore($this->name));
     }
