@@ -139,6 +139,7 @@ class CustomerMessagesController extends AppController
         } else {
             $customers = [];
         }
+        /** @var iterable<\App\Model\Entity\Customer> $customers */
 
         $customerMessage = $this->CustomerMessages->newEmptyEntity();
         if ($this->request->is('post')) {
