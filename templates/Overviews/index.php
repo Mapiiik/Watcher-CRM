@@ -67,7 +67,7 @@
                 ) ?>
                 <?= $this->AuthLink->link(
                     __('List Customer Messages'),
-                    ['controller' => 'Customer Messages', 'action' => 'index'],
+                    ['controller' => 'CustomerMessages', 'action' => 'index'],
                     ['class' => 'side-nav-item']
                 ) ?>
                 <?= $this->AuthLink->link(
