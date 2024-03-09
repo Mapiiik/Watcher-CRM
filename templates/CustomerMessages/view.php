@@ -31,6 +31,11 @@
                 ['action' => 'add'],
                 ['class' => 'side-nav-item']
             ) ?>
+            <?= $this->AuthLink->link(
+                __('New Bulk Customer Message'),
+                ['action' => 'add-bulk'],
+                ['class' => 'side-nav-item']
+            ) ?>
         </div>
     </aside>
     <div class="column column-90">

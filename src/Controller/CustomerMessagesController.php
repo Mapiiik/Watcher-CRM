@@ -3,6 +3,13 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Enum\CustomerMessageDeliveryStatus;
+use App\Model\Enum\CustomerMessageDirection;
+use App\Model\Enum\CustomerMessageType;
+use Cake\Utility\Text;
+use Cake\Validation\Validation;
+use SplObjectStorage;
+
 /**
  * CustomerMessages Controller
  *
@@ -81,7 +88,6 @@ class CustomerMessagesController extends AppController
 
                 return $this->afterAddRedirect(['action' => 'view', $customerMessage->id]);
             }
-            debug($customerMessage->getErrors());
             $this->Flash->error(__('The customer message could not be saved. Please, try again.'));
         }
         $customers = $this->CustomerMessages->Customers->find('list', order: [
@@ -90,6 +96,92 @@ class CustomerMessagesController extends AppController
             'first_name',
         ])->all();
         $this->set(compact('customerMessage', 'customers'));
+    }
+
+    /**
+     * Add Bulk method
+     *
+     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     */
+    public function addBulk()
+    {
+        /** @var \App\Model\Table\LabelsTable $labelsTable */
+        $labelsTable = $this->fetchTable('Labels');
+        $labels = $labelsTable->find('list', order: [
+            'name',
+        ])->all();
+
+        $labelId = $this->getRequest()->getQuery('label_id');
+
+        if (Validation::uuid($labelId)) {
+            $customerLabelsQuery = $labelsTable->CustomerLabels->find()
+                ->select([
+                    'customer_id',
+                ])
+                ->distinct()
+                ->where([
+                    'CustomerLabels.label_id IS' => $labelId,
+                ]);
+
+            $customers = $this->CustomerMessages->Customers->find()
+                ->contain([
+                    'Emails',
+                    'Phones',
+                ])
+                ->where([
+                    'Customers.id IN' => $customerLabelsQuery,
+                ])
+                ->orderBy([
+                    'Customers.company',
+                    'Customers.last_name',
+                    'Customers.first_name',
+                ]);
+        } else {
+            $customers = [];
+        }
+
+        $customerMessage = $this->CustomerMessages->newEmptyEntity();
+        if ($this->request->is('post')) {
+            if (empty($customers)) {
+                $this->Flash->error(__('No customers were selected.'));
+            } else {
+                $customerMessage = $this->CustomerMessages->patchEntity($customerMessage, $this->request->getData());
+
+                $customerMessage->direction = CustomerMessageDirection::Outgoing;
+                $customerMessage->delivery_status = CustomerMessageDeliveryStatus::Pending;
+
+                $customerMessages = [];
+                foreach ($customers as $customer) {
+                    $thisMessage = clone $customerMessage;
+                    $thisMessage->customer_id = $customer->id;
+                    $thisMessage->recipients = match ($thisMessage->type) {
+                        CustomerMessageType::Sms => $customer->phones,
+                        CustomerMessageType::Email,
+                        CustomerMessageType::EmailContracts,
+                        CustomerMessageType::EmailInvoices,
+                        CustomerMessageType::EmailSupport => $customer->emails,
+                    };
+                    $customerMessages[] = $thisMessage;
+                    unset($thisMessage);
+                }
+
+                if (
+                    $this->CustomerMessages->saveMany(
+                        $customerMessages,
+                        [
+                            '_auditQueue' => new SplObjectStorage(),
+                            '_auditTransaction' => Text::uuid(),
+                        ]
+                    )
+                ) {
+                    $this->Flash->success(__('The bulk customer message has been saved.'));
+
+                    return $this->afterAddRedirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('The bulk customer message could not be saved. Please, try again.'));
+            }
+        }
+        $this->set(compact('customerMessage', 'labels', 'customers'));
     }
 
     /**
