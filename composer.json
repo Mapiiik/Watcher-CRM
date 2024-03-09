@@ -16,8 +16,8 @@
     },
     "require": {
         "php": ">=8.1",
-        "cakedc/users": "^12.0.0",
-        "cakephp/cakephp": "5.x-dev#02f7c1e38edf00ad1a05783b4c8186551ad5c5c7 as 5.0.5.1",
+        "cakedc/users": "^14.0.0",
+        "cakephp/cakephp": "^5.0.6",
         "cakephp/migrations": "^4.0.0",
         "cakephp/plugin-installer": "^2.0",
         "cakephp/queue": "^2.0.1",
