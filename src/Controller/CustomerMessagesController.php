@@ -162,6 +162,16 @@ class CustomerMessagesController extends AppController
                         CustomerMessageType::EmailInvoices,
                         CustomerMessageType::EmailSupport => $customer->emails,
                     };
+
+                    // skip messages without recipients
+                    if (empty($thisMessage->recipients)) {
+                        $this->Flash->warning(__('No contact was found for customer number {number}.', [
+                            'number' => $customer->number,
+                        ]));
+
+                        continue;
+                    }
+
                     $customerMessages[] = $thisMessage;
                     unset($thisMessage);
                 }
