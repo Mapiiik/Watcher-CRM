@@ -682,7 +682,7 @@ class ContractPDF extends TCPDF
                 $this->Ln(1);
 
                 $this->SetFont('DejaVuSerif', 'B', 8);
-                $this->MultiCell(180, 4, 'Uživatel potvrzuje, že souhlasí s tím, že v případě předčasné výpovědi smlouvy z jeho strany bude povinen uhradit dodavateli výši rozdílu mezi běžnou cenou zařízení a smluvenou cenou, a to v paušální částce ' . Number::currency($conditional_discount) . '.' . PHP_EOL, align: 'J');
+                $this->MultiCell(180, 4, 'Uživatel potvrzuje, že souhlasí s tím, že v případě předčasné výpovědi smlouvy z jeho strany bude povinen uhradit Poskytovateli výši rozdílu mezi běžnou cenou zařízení a smluvenou cenou, a to v paušální částce ' . Number::currency($conditional_discount) . '.' . PHP_EOL, align: 'J');
                 $this->Ln(3);
             }
 
