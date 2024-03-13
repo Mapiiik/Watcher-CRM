@@ -6,12 +6,12 @@ namespace App\Controller;
 use Cake\I18n\DateTime;
 
 /**
- * RemovedIps Controller
+ * RemovedIpAddresses Controller
  *
- * @property \App\Model\Table\RemovedIpsTable $RemovedIps
- * @method \App\Model\Entity\RemovedIp[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @property \App\Model\Table\RemovedIpAddressesTable $RemovedIpAddresses
+ * @method \App\Model\Entity\RemovedIpAddress[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class RemovedIpsController extends AppController
+class RemovedIpAddressesController extends AppController
 {
     /**
      * Index method
@@ -23,10 +23,10 @@ class RemovedIpsController extends AppController
         // filter
         $conditions = [];
         if (isset($this->customer_id)) {
-            $conditions += ['RemovedIps.customer_id' => $this->customer_id];
+            $conditions += ['RemovedIpAddresses.customer_id' => $this->customer_id];
         }
         if (isset($this->contract_id)) {
-            $conditions += ['RemovedIps.contract_id' => $this->contract_id];
+            $conditions += ['RemovedIpAddresses.contract_id' => $this->contract_id];
         }
 
         // search
@@ -34,7 +34,7 @@ class RemovedIpsController extends AppController
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
-                    'RemovedIps.ip::character varying ILIKE' => '%' . trim($search) . '%',
+                    'RemovedIpAddresses.ip_address::character varying ILIKE' => '%' . trim($search) . '%',
                     'Contracts.number ILIKE' => '%' . trim($search) . '%',
                 ],
             ];
@@ -45,7 +45,7 @@ class RemovedIpsController extends AppController
                 'id' => 'DESC',
             ],
         ];
-        $removedIps = $this->paginate($this->RemovedIps->find(
+        $removedIpAddresses = $this->paginate($this->RemovedIpAddresses->find(
             'all',
             contain: [
                 'Contracts',
@@ -54,19 +54,19 @@ class RemovedIpsController extends AppController
             conditions: $conditions
         ));
 
-        $this->set(compact('removedIps'));
+        $this->set(compact('removedIpAddresses'));
     }
 
     /**
      * View method
      *
-     * @param string|null $id Removed Ip id.
+     * @param string|null $id Removed IP Address id.
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view(?string $id = null)
     {
-        $removedIp = $this->RemovedIps->get($id, contain: [
+        $removedIpAddress = $this->RemovedIpAddresses->get($id, contain: [
             'Customers',
             'Contracts',
             'Creators',
@@ -74,7 +74,7 @@ class RemovedIpsController extends AppController
             'Removers',
         ]);
 
-        $this->set(compact('removedIp'));
+        $this->set(compact('removedIpAddress'));
     }
 
     /**
@@ -84,30 +84,33 @@ class RemovedIpsController extends AppController
      */
     public function add()
     {
-        $removedIp = $this->RemovedIps->newEmptyEntity();
+        $removedIpAddress = $this->RemovedIpAddresses->newEmptyEntity();
 
         if (isset($this->customer_id)) {
-            $removedIp->customer_id = $this->customer_id;
+            $removedIpAddress->customer_id = $this->customer_id;
         }
         if (isset($this->contract_id)) {
-            $removedIp->contract_id = $this->contract_id;
+            $removedIpAddress->contract_id = $this->contract_id;
         }
 
         if ($this->getRequest()->is('post')) {
-            $removedIp = $this->RemovedIps->patchEntity($removedIp, $this->getRequest()->getData());
+            $removedIpAddress = $this->RemovedIpAddresses->patchEntity(
+                $removedIpAddress,
+                $this->getRequest()->getData()
+            );
 
             // TODO - add who and when deleted this
-            $removedIp->removed = DateTime::now();
-            $removedIp->removed_by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
+            $removedIpAddress->removed = DateTime::now();
+            $removedIpAddress->removed_by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
 
-            if ($this->RemovedIps->save($removedIp)) {
+            if ($this->RemovedIpAddresses->save($removedIpAddress)) {
                 $this->Flash->success(__('The removed IP address has been saved.'));
 
-                return $this->afterAddRedirect(['action' => 'view', $removedIp->id]);
+                return $this->afterAddRedirect(['action' => 'view', $removedIpAddress->id]);
             }
             $this->Flash->error(__('The removed IP address could not be saved. Please, try again.'));
         }
-        $customers = $this->RemovedIps->Customers->find(
+        $customers = $this->RemovedIpAddresses->Customers->find(
             'list',
             order: [
                 'company',
@@ -115,7 +118,7 @@ class RemovedIpsController extends AppController
                 'first_name',
             ],
         );
-        $contracts = $this->RemovedIps->Contracts->find(
+        $contracts = $this->RemovedIpAddresses->Contracts->find(
             'list',
             contain: [
                 'InstallationAddresses',
@@ -134,35 +137,39 @@ class RemovedIpsController extends AppController
             $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
-        $this->set(compact('removedIp', 'customers', 'contracts'));
+        $this->set(compact('removedIpAddress', 'customers', 'contracts'));
     }
 
     /**
      * Edit method
      *
-     * @param string|null $id Removed Ip id.
+     * @param string|null $id Removed IP Address id.
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit(?string $id = null)
     {
-        $removedIp = $this->RemovedIps->get($id, contain: []);
+        $removedIpAddress = $this->RemovedIpAddresses->get($id, contain: []);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
-            $removedIp = $this->RemovedIps->patchEntity($removedIp, $this->getRequest()->getData());
-            if ($this->RemovedIps->save($removedIp)) {
+            $removedIpAddress = $this->RemovedIpAddresses->patchEntity(
+                $removedIpAddress,
+                $this->getRequest()->getData()
+            );
+
+            if ($this->RemovedIpAddresses->save($removedIpAddress)) {
                 $this->Flash->success(__('The removed IP address has been saved.'));
 
-                return $this->afterEditRedirect(['action' => 'view', $removedIp->id]);
+                return $this->afterEditRedirect(['action' => 'view', $removedIpAddress->id]);
             }
             $this->Flash->error(__('The removed IP address could not be saved. Please, try again.'));
         }
-        $customers = $this->RemovedIps->Customers->find('list', order: [
+        $customers = $this->RemovedIpAddresses->Customers->find('list', order: [
             'company',
             'last_name',
             'first_name',
         ]);
-        $contracts = $this->RemovedIps->Contracts->find(
+        $contracts = $this->RemovedIpAddresses->Contracts->find(
             'list',
             contain: [
                 'InstallationAddresses',
@@ -181,24 +188,24 @@ class RemovedIpsController extends AppController
             $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
-        $this->set(compact('removedIp', 'customers', 'contracts'));
+        $this->set(compact('removedIpAddress', 'customers', 'contracts'));
     }
 
     /**
      * Delete method
      *
-     * @param string|null $id Removed Ip id.
+     * @param string|null $id Removed IP Address id.
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete(?string $id = null)
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
-        $removedIp = $this->RemovedIps->get($id);
-        if ($this->RemovedIps->delete($removedIp)) {
+        $removedIpAddress = $this->RemovedIpAddresses->get($id);
+        if ($this->RemovedIpAddresses->delete($removedIpAddress)) {
             $this->Flash->success(__('The removed IP address has been deleted.'));
         } else {
-            $this->flashValidationErrors($removedIp->getErrors());
+            $this->flashValidationErrors($removedIpAddress->getErrors());
             $this->Flash->error(__('The removed IP address could not be deleted. Please, try again.'));
         }
 

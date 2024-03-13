@@ -64,7 +64,7 @@
                 echo $this->Form->control('name');
                 echo $this->Form->control('username');
                 echo $this->Form->control('password', ['type' => 'text']);
-                echo $this->Form->control('ip', ['label' => __('IP Address')]);
+                echo $this->Form->control('ip_address', ['label' => __('IP Address')]);
                 echo $this->Form->control('port');
                 echo $this->Form->control('note');
                 ?>

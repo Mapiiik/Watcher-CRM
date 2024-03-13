@@ -103,7 +103,7 @@
                 ) ?>
                 <?= $this->AuthLink->link(
                     __('List IP Addresses'),
-                    ['controller' => 'Ips', 'action' => 'index', 'plugin' => null],
+                    ['controller' => 'IpAddresses', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item']
                 ) ?>
                 <?= $this->AuthLink->link(
@@ -113,7 +113,7 @@
                 ) ?>
                 <?= $this->AuthLink->link(
                     __('List Removed IP Addresses'),
-                    ['controller' => 'RemovedIps', 'action' => 'index', 'plugin' => null],
+                    ['controller' => 'RemovedIpAddresses', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item']
                 ) ?>
                 <?= $this->AuthLink->link(

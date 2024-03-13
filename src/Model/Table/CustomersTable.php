@@ -18,8 +18,8 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\CustomerLabelsTable&\Cake\ORM\Association\HasMany $CustomerLabels
  * @property \App\Model\Table\LoginsTable&\Cake\ORM\Association\HasMany $Logins
  * @property \App\Model\Table\PhonesTable&\Cake\ORM\Association\HasMany $Phones
- * @property \App\Model\Table\IpsTable&\Cake\ORM\Association\HasMany $Ips
- * @property \App\Model\Table\RemovedIpsTable&\Cake\ORM\Association\HasMany $RemovedIps
+ * @property \App\Model\Table\IpAddressesTable&\Cake\ORM\Association\HasMany $IpAddresses
+ * @property \App\Model\Table\RemovedIpAddressesTable&\Cake\ORM\Association\HasMany $RemovedIpAddresses
  * @property \App\Model\Table\IpNetworksTable&\Cake\ORM\Association\HasMany $IpNetworks
  * @property \App\Model\Table\RemovedIpNetworksTable&\Cake\ORM\Association\HasMany $RemovedIpNetworks
  * @property \App\Model\Table\SoldEquipmentsTable&\Cake\ORM\Association\HasMany $SoldEquipments
@@ -130,20 +130,20 @@ class CustomersTable extends AppTable
                 'SoldEquipments.id' => 'DESC',
             ],
         ]);
-        $this->hasMany('Ips', [
+        $this->hasMany('IpAddresses', [
             'foreignKey' => 'customer_id',
             'sort' => [
                 'Contracts.service_type_id',
-                'Ips.contract_id' => 'DESC',
-                'Ips.ip',
+                'IpAddresses.contract_id' => 'DESC',
+                'IpAddresses.ip_address',
             ],
         ]);
-        $this->hasMany('RemovedIps', [
+        $this->hasMany('RemovedIpAddresses', [
             'foreignKey' => 'customer_id',
             'sort' => [
                 'Contracts.service_type_id',
-                'RemovedIps.contract_id' => 'DESC',
-                'RemovedIps.ip',
+                'RemovedIpAddresses.contract_id' => 'DESC',
+                'RemovedIpAddresses.ip_address',
             ],
         ]);
         $this->hasMany('IpNetworks', [
@@ -315,8 +315,8 @@ class CustomersTable extends AppTable
         $rules->addDelete($rules->isNotLinkedTo('Logins'));
         $rules->addDelete($rules->isNotLinkedTo('Phones'));
         $rules->addDelete($rules->isNotLinkedTo('SoldEquipments'));
-        $rules->addDelete($rules->isNotLinkedTo('Ips'));
-        $rules->addDelete($rules->isNotLinkedTo('RemovedIps'));
+        $rules->addDelete($rules->isNotLinkedTo('IpAddresses'));
+        $rules->addDelete($rules->isNotLinkedTo('RemovedIpAddresses'));
         $rules->addDelete($rules->isNotLinkedTo('IpNetworks'));
         $rules->addDelete($rules->isNotLinkedTo('RemovedIpNetworks'));
         $rules->addDelete($rules->isNotLinkedTo('Tasks'));

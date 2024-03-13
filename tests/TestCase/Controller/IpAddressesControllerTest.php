@@ -7,11 +7,11 @@ use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Controller\RemovedIpsController Test Case
+ * App\Controller\IpAddressesController Test Case
  *
- * @uses \App\Controller\RemovedIpsController
+ * @uses \App\Controller\IpAddressesController
  */
-class RemovedIpsControllerTest extends TestCase
+class IpAddressesControllerTest extends TestCase
 {
     use IntegrationTestTrait;
 
@@ -30,14 +30,14 @@ class RemovedIpsControllerTest extends TestCase
         'app.ContractStates',
         'app.ServiceTypes',
         'app.Contracts',
-        'app.RemovedIps',
+        'app.IpAddresses',
     ];
 
     /**
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\RemovedIpsController::index()
+     * @uses \App\Controller\IpAddressesController::index()
      */
     public function testIndex(): void
     {
@@ -48,7 +48,7 @@ class RemovedIpsControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\RemovedIpsController::view()
+     * @uses \App\Controller\IpAddressesController::view()
      */
     public function testView(): void
     {
@@ -59,7 +59,7 @@ class RemovedIpsControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\RemovedIpsController::add()
+     * @uses \App\Controller\IpAddressesController::add()
      */
     public function testAdd(): void
     {
@@ -70,7 +70,7 @@ class RemovedIpsControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\RemovedIpsController::edit()
+     * @uses \App\Controller\IpAddressesController::edit()
      */
     public function testEdit(): void
     {
@@ -81,7 +81,7 @@ class RemovedIpsControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\RemovedIpsController::delete()
+     * @uses \App\Controller\IpAddressesController::delete()
      */
     public function testDelete(): void
     {

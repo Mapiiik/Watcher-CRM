@@ -126,10 +126,10 @@ class ContractsController extends AppController
             ],
             'InstallationAddresses',
             'InstallationTechnicians',
+            'IpAddresses',
             'IpNetworks',
-            'Ips',
+            'RemovedIpAddresses',
             'RemovedIpNetworks',
-            'RemovedIps',
             'ServiceTypes',
             'Tasks' => [
                 'TaskTypes',
@@ -726,8 +726,8 @@ class ContractsController extends AppController
             ],
             'InstallationAddresses',
             'InstallationTechnicians',
+            'IpAddresses',
             'IpNetworks',
-            'Ips',
             'ServiceTypes',
             'SoldEquipments.EquipmentTypes' => function (SelectQuery $query) {
                 return $query->where([

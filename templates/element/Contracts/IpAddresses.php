@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var iterable<\App\Model\Entity\Ip> $ip_addresses
+ * @var iterable<\App\Model\Entity\IpAddress> $ip_addresses
  * @var bool $contract_column
  */
 ?>
@@ -20,26 +20,26 @@
             <th><?= __('IP Address Range') ?></th>
             <th class="actions"><?= __('Actions') ?></th>
         </tr>
-        <?php foreach ($ip_addresses as $ip) : ?>
-        <tr style="<?= $ip->style ?>">
+        <?php foreach ($ip_addresses as $ipAddress) : ?>
+        <tr style="<?= $ipAddress->style ?>">
             <?php if (!empty($contract_column)) : ?>
-            <td><?= $ip->__isset('contract') ?
+            <td><?= $ipAddress->__isset('contract') ?
                 $this->Html->link(
-                    $ip->contract->number ?? '--',
-                    ['controller' => 'Contracts', 'action' => 'view', $ip->contract->id]
+                    $ipAddress->contract->number ?? '--',
+                    ['controller' => 'Contracts', 'action' => 'view', $ipAddress->contract->id]
                 ) : '' ?></td>
             <?php endif; ?>
-            <td><?= h($ip->ip) ?></td>
-            <td><?= h($ip->getTypeOfUseName()) ?></td>
-            <td><?= h($ip->note) ?></td>
+            <td><?= h($ipAddress->ip_address) ?></td>
+            <td><?= h($ipAddress->getTypeOfUseName()) ?></td>
+            <td><?= h($ipAddress->note) ?></td>
             <td class="to-center"><?=
-                $this->Html->image('ping/status.png.php?host=' . h($ip->ip), [
+                $this->Html->image('ping/status.png.php?host=' . h($ipAddress->ip_address), [
                     'class' => 'ping-status',
                     'onclick' => 'this.src = this.src',
                 ]) ?></td>
             <td><?php
-            if (isset($ip->routeros_devices)) {
-                $device = $ip->routeros_devices->first();
+            if (isset($ipAddress->routeros_devices)) {
+                $device = $ipAddress->routeros_devices->first();
                 echo isset($device['id']) ?
                     $this->Html->link(
                         $device['system_description'],
@@ -50,8 +50,8 @@
             }
             ?></td>
             <td><?php
-            if (isset($ip->ip_address_ranges)) {
-                $range = $ip->ip_address_ranges->first();
+            if (isset($ipAddress->ip_address_ranges)) {
+                $range = $ipAddress->ip_address_ranges->first();
                 echo isset($range['access_point']['id']) ?
                     __('Access Point') . ': ' . $this->Html->link(
                         $range['access_point']['name'],
@@ -71,17 +71,17 @@
             <td class="actions">
                 <?= $this->AuthLink->link(
                     __('View'),
-                    ['controller' => 'Ips', 'action' => 'view', $ip->id]
+                    ['controller' => 'IpAddresses', 'action' => 'view', $ipAddress->id]
                 ) ?>
                 <?= $this->AuthLink->link(
                     __('Edit'),
-                    ['controller' => 'Ips', 'action' => 'edit', $ip->id],
+                    ['controller' => 'IpAddresses', 'action' => 'edit', $ipAddress->id],
                     ['class' => 'win-link']
                 ) ?>
                 <?= $this->AuthLink->postLink(
                     __('Delete'),
-                    ['controller' => 'Ips', 'action' => 'delete', $ip->id],
-                    ['confirm' => __('Are you sure you want to delete # {0}?', $ip->ip)]
+                    ['controller' => 'IpAddresses', 'action' => 'delete', $ipAddress->id],
+                    ['confirm' => __('Are you sure you want to delete # {0}?', $ipAddress->ip_address)]
                 ) ?>
             </td>
         </tr>

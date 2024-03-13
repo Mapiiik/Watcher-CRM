@@ -58,8 +58,8 @@ use Exception;
  * @property \App\Model\Entity\Contract[] $contracts
  * @property \App\Model\Entity\Email[] $emails
  * @property \App\Model\Entity\Email[] $billing_emails
- * @property \App\Model\Entity\Ip[] $ips
- * @property \App\Model\Entity\RemovedIp[] $removed_ips
+ * @property \App\Model\Entity\IpAddress[] $ip_addresses
+ * @property \App\Model\Entity\RemovedIpAddress[] $removed_ip_addresses
  * @property \App\Model\Entity\IpNetwork[] $ip_networks
  * @property \App\Model\Entity\RemovedIpNetwork[] $removed_ip_networks
  * @property \App\Model\Entity\CustomerLabel[] $customer_labels
@@ -117,11 +117,11 @@ class Customer extends Entity
         'borrowed_equipments' => true,
         'contracts' => true,
         'emails' => true,
-        'ips' => true,
+        'ip_addresses' => true,
         'customer_labels' => true,
         'logins' => true,
         'phones' => true,
-        'removed_ips' => true,
+        'removed_ip_addresses' => true,
         'sold_equipments' => true,
         'tasks' => true,
     ];

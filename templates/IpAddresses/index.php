@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var iterable<\App\Model\Entity\Ip> $ips
+ * @var iterable<\App\Model\Entity\IpAddress> $ipAddresses
  */
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
@@ -16,7 +16,7 @@
 </div>
 <?= $this->Form->end() ?>
 
-<div class="ips index content">
+<div class="ipAddresses index content">
     <?= $this->AuthLink->link(__('New IP Address'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
     <h3><?= __('IP Addresses') ?></h3>
     <div class="table-responsive">
@@ -26,40 +26,40 @@
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
                     <th><?= $this->Paginator->sort('customer_id', __('Customer Number')) ?></th>
                     <th><?= $this->Paginator->sort('contract_id') ?></th>
-                    <th><?= $this->Paginator->sort('ip', __('IP Address')) ?></th>
+                    <th><?= $this->Paginator->sort('ip_address', __('IP Address')) ?></th>
                     <th><?= $this->Paginator->sort('type_of_use') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($ips as $ip) : ?>
-                <tr style="<?= $ip->style ?>">
+                <?php foreach ($ipAddresses as $ipAddress) : ?>
+                <tr style="<?= $ipAddress->style ?>">
                     <td>
-                        <?= $ip->__isset('customer') ? $this->Html->link(
-                            $ip->customer->name,
-                            ['controller' => 'Customers', 'action' => 'view', $ip->customer->id]
+                        <?= $ipAddress->__isset('customer') ? $this->Html->link(
+                            $ipAddress->customer->name,
+                            ['controller' => 'Customers', 'action' => 'view', $ipAddress->customer->id]
                         ) : '' ?>
                     </td>
-                    <td><?= $ip->__isset('customer') ? h($ip->customer->number) : '' ?></td>
+                    <td><?= $ipAddress->__isset('customer') ? h($ipAddress->customer->number) : '' ?></td>
                     <td>
-                        <?= $ip->__isset('contract') ? $this->Html->link(
-                            $ip->contract->number ?? '--',
-                            ['controller' => 'Contracts', 'action' => 'view', $ip->contract->id]
+                        <?= $ipAddress->__isset('contract') ? $this->Html->link(
+                            $ipAddress->contract->number ?? '--',
+                            ['controller' => 'Contracts', 'action' => 'view', $ipAddress->contract->id]
                         ) : '' ?>
                     </td>
-                    <td><?= h($ip->ip) ?></td>
-                    <td><?= h($ip->getTypeOfUseName()) ?></td>
+                    <td><?= h($ipAddress->ip_address) ?></td>
+                    <td><?= h($ipAddress->getTypeOfUseName()) ?></td>
                     <td class="actions">
-                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $ip->id]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $ipAddress->id]) ?>
                         <?= $this->AuthLink->link(
                             __('Edit'),
-                            ['action' => 'edit', $ip->id],
+                            ['action' => 'edit', $ipAddress->id],
                             ['class' => 'win-link']
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
-                            ['action' => 'delete', $ip->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $ip->id)]
+                            ['action' => 'delete', $ipAddress->id],
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $ipAddress->id)]
                         ) ?>
                     </td>
                 </tr>

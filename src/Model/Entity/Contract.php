@@ -58,8 +58,8 @@ use Exception;
  * @property \App\Model\Entity\Billing[] $billings
  * @property \App\Model\Entity\BorrowedEquipment[] $borrowed_equipments
  * @property \App\Model\Entity\ContractVersion[] $contract_versions
- * @property \App\Model\Entity\Ip[] $ips
- * @property \App\Model\Entity\RemovedIp[] $removed_ips
+ * @property \App\Model\Entity\IpAddress[] $ip_addresses
+ * @property \App\Model\Entity\RemovedIpAddress[] $removed_ip_addresses
  * @property \App\Model\Entity\IpNetwork[] $ip_networks
  * @property \App\Model\Entity\RemovedIpNetwork[] $removed_ip_networks
  * @property \App\Model\Entity\SoldEquipment[] $sold_equipments
@@ -112,8 +112,8 @@ class Contract extends Entity
         'billings' => true,
         'borrowed_equipments' => true,
         'contract_versions' => true,
-        'ips' => true,
-        'removed_ips' => true,
+        'ip_addresses' => true,
+        'removed_ip_addresses' => true,
         'ip_networks' => true,
         'removed_ip_networks' => true,
         'sold_equipments' => true,

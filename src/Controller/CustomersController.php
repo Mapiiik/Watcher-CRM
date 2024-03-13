@@ -79,14 +79,14 @@ FROM
     ) 
     LEFT JOIN (
         SELECT 
-            Ips.customer_id, 
-            STRING_AGG(Ips.ip :: character varying, ' ') AS txt 
+        Ip_Addresses.customer_id, 
+            STRING_AGG(Ip_Addresses.ip_address :: character varying, ' ') AS txt 
         FROM 
-            Ips
+            Ip_Addresses
         GROUP BY 
             1
-    ) Ips ON (
-        Ips.customer_id = Customers.id
+    ) Ip_Addresses ON (
+        Ip_Addresses.customer_id = Customers.id
     ) 
 WHERE 
     to_tsvector (
@@ -103,7 +103,7 @@ WHERE
             Emails.txt,
             Phones.txt_1,
             Phones.txt_2,
-            Ips.txt
+            Ip_Addresses.txt
         )
     ) @@ websearch_to_tsquery(:search) 
 GROUP BY 
@@ -248,10 +248,10 @@ class CustomersController extends AppController
                     'CustomerLabels.contract_id IS' => null,
                 ],
             ],
-            'IpNetworks' => [
+            'IpAddresses' => [
                 'Contracts',
             ],
-            'Ips' => [
+            'IpNetworks' => [
                 'Contracts',
             ],
             'TaxRates',
@@ -321,12 +321,12 @@ class CustomersController extends AppController
                 'Dealers',
             ],
             'TaxRates',
-            'Ips' => [
+            'IpAddresses' => [
                 'Contracts' => [
                     'ContractStates',
                 ],
             ],
-            'RemovedIps' => [
+            'RemovedIpAddresses' => [
                 'Contracts' => [
                     'ContractStates',
                 ],

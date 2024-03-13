@@ -14,7 +14,7 @@ use Cake\ORM\Entity;
  * @property string|null $name
  * @property string|null $username
  * @property string|null $password
- * @property string|null $ip
+ * @property string|null $ip_address
  * @property int|null $port
  * @property string|null $note
  * @property \Cake\I18n\DateTime|null $created
@@ -44,7 +44,7 @@ class AccessCredential extends Entity
         'name' => true,
         'username' => true,
         'password' => true,
-        'ip' => true,
+        'ip_address' => true,
         'port' => true,
         'note' => true,
         'created' => true,

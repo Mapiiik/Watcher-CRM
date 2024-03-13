@@ -123,8 +123,8 @@
                                 } ?>
                             </td>
                             <td>
-                                <?php foreach ($customer->ips as $ip) {
-                                    echo h($ip->ip) . '<br>';
+                                <?php foreach ($customer->ip_addresses as $ipAddress) {
+                                    echo h($ipAddress->ip_address) . '<br>';
                                 } ?>
                             </td>
                             <td class="actions">

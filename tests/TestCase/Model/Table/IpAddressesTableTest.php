@@ -3,20 +3,20 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\IpsTable;
+use App\Model\Table\IpAddressesTable;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\IpsTable Test Case
+ * App\Model\Table\IpAddressesTable Test Case
  */
-class IpsTableTest extends TestCase
+class IpAddressesTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \App\Model\Table\IpsTable
+     * @var \App\Model\Table\IpAddressesTable
      */
-    protected $Ips;
+    protected $IpAddresses;
 
     /**
      * Fixtures
@@ -33,7 +33,7 @@ class IpsTableTest extends TestCase
         'app.ContractStates',
         'app.ServiceTypes',
         'app.Contracts',
-        'app.Ips',
+        'app.IpAddresses',
     ];
 
     /**
@@ -44,8 +44,8 @@ class IpsTableTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Ips') ? [] : ['className' => IpsTable::class];
-        $this->Ips = $this->getTableLocator()->get('Ips', $config);
+        $config = $this->getTableLocator()->exists('IpAddresses') ? [] : ['className' => IpAddressesTable::class];
+        $this->IpAddresses = $this->getTableLocator()->get('IpAddresses', $config);
     }
 
     /**
@@ -55,7 +55,7 @@ class IpsTableTest extends TestCase
      */
     protected function tearDown(): void
     {
-        unset($this->Ips);
+        unset($this->IpAddresses);
 
         parent::tearDown();
     }
@@ -64,7 +64,7 @@ class IpsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\IpsTable::validationDefault()
+     * @uses \App\Model\Table\IpAddressesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -75,7 +75,7 @@ class IpsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\IpsTable::buildRules()
+     * @uses \App\Model\Table\IpAddressesTable::buildRules()
      */
     public function testBuildRules(): void
     {

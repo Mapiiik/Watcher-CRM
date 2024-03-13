@@ -7,25 +7,26 @@ use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 
 /**
- * RemovedIps Model
+ * IpAddresses Model
  *
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
  * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
- * @method \App\Model\Entity\RemovedIp newEmptyEntity()
- * @method \App\Model\Entity\RemovedIp newEntity(array $data, array $options = [])
- * @method \App\Model\Entity\RemovedIp[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\RemovedIp get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
- * @method \App\Model\Entity\RemovedIp findOrCreate($search, ?callable $callback = null, $options = [])
- * @method \App\Model\Entity\RemovedIp patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\RemovedIp[] patchEntities(iterable $entities, array $data, array $options = [])
- * @method \App\Model\Entity\RemovedIp|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\RemovedIp saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method iterable<\App\Model\Entity\RemovedIp>|false saveMany(iterable $entities, $options = [])
- * @method iterable<\App\Model\Entity\RemovedIp> saveManyOrFail(iterable $entities, $options = [])
- * @method iterable<\App\Model\Entity\RemovedIp>|false deleteMany(iterable $entities, $options = [])
- * @method iterable<\App\Model\Entity\RemovedIp> deleteManyOrFail(iterable $entities, $options = [])
+ * @method \App\Model\Entity\IpAddress newEmptyEntity()
+ * @method \App\Model\Entity\IpAddress newEntity(array $data, array $options = [])
+ * @method \App\Model\Entity\IpAddress[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\IpAddress get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
+ * @method \App\Model\Entity\IpAddress findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \App\Model\Entity\IpAddress patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\IpAddress[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \App\Model\Entity\IpAddress|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\IpAddress saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method iterable<\App\Model\Entity\IpAddress>|false saveMany(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\IpAddress> saveManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\IpAddress>|false deleteMany(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\IpAddress> deleteManyOrFail(iterable $entities, $options = [])
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class RemovedIpsTable extends AppTable
+class IpAddressesTable extends AppTable
 {
     /**
      * Initialize method
@@ -37,10 +38,12 @@ class RemovedIpsTable extends AppTable
     {
         parent::initialize($config);
 
-        $this->setTable('removed_ips');
-        $this->setDisplayField('ip');
+        $this->setTable('ip_addresses');
+        $this->setDisplayField('ip_address');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('Timestamp');
+        $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
 
         $this->belongsTo('Customers', [
@@ -49,6 +52,7 @@ class RemovedIpsTable extends AppTable
         ]);
         $this->belongsTo('Contracts', [
             'foreignKey' => 'contract_id',
+            'joinType' => 'INNER',
         ]);
     }
 
@@ -73,18 +77,14 @@ class RemovedIpsTable extends AppTable
             ->notEmptyString('contract_id');
 
         $validator
-            ->uuid('removed_by')
-            ->notEmptyString('removed_by');
-
-        $validator
-            ->dateTime('removed')
-            ->requirePresence('removed', 'create')
-            ->notEmptyDateTime('removed');
-
-        $validator
-            ->ip('ip')
-            ->requirePresence('ip', 'create')
-            ->notEmptyString('ip');
+            ->ip('ip_address')
+            ->requirePresence('ip_address', 'create')
+            ->notEmptyString('ip_address')
+            ->add('ip_address', 'unique', [
+                'rule' => 'validateUnique',
+                'provider' => 'table',
+                'message' => __('This IP address is already in use.'),
+            ]);
 
         $validator
             ->scalar('note')
@@ -107,6 +107,7 @@ class RemovedIpsTable extends AppTable
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
+        $rules->add($rules->isUnique(['ip_address']), ['errorField' => 'ip_address']);
         $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
         $rules->add($rules->existsIn(['contract_id'], 'Contracts'), ['errorField' => 'contract_id']);
 

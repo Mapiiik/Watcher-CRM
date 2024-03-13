@@ -8,7 +8,7 @@ use Cake\Collection\CollectionInterface;
 use Cake\ORM\Entity;
 
 /**
- * Ip Entity
+ * IpAddress Entity
  *
  * @property \Cake\I18n\DateTime|null $created
  * @property string|null $created_by
@@ -16,7 +16,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\DateTime|null $modified
  * @property string|null $modified_by
  * @property \App\Model\Entity\AppUser|null $modifier
- * @property string $ip
+ * @property string $ip_address
  * @property string $customer_id
  * @property string|null $note
  * @property string $contract_id
@@ -30,7 +30,7 @@ use Cake\ORM\Entity;
  * @property \Cake\Collection\CollectionInterface|null $routeros_devices
  * @property \Cake\Collection\CollectionInterface|null $ip_address_ranges
  */
-class Ip extends Entity
+class IpAddress extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -46,7 +46,7 @@ class Ip extends Entity
         'created_by' => true,
         'modified' => true,
         'modified_by' => true,
-        'ip' => true,
+        'ip_address' => true,
         'customer_id' => true,
         'note' => true,
         'contract_id' => true,
@@ -78,7 +78,7 @@ class Ip extends Entity
      */
     protected function _getRouterosDevices(): ?CollectionInterface
     {
-        $routerosDevices = ApiClient::getRouterosDevicesForIp($this->ip);
+        $routerosDevices = ApiClient::getRouterosDevicesForIp($this->ip_address);
 
         if ($routerosDevices) {
             return $routerosDevices;
@@ -94,7 +94,7 @@ class Ip extends Entity
      */
     protected function _getIpAddressRanges(): ?CollectionInterface
     {
-        $ipAddressRanges = ApiClient::getIpAddressRangesForIp($this->ip);
+        $ipAddressRanges = ApiClient::getIpAddressRangesForIp($this->ip_address);
 
         if ($ipAddressRanges) {
             return $ipAddressRanges;

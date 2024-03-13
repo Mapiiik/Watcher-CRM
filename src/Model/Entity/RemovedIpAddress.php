@@ -8,7 +8,7 @@ use Cake\Collection\CollectionInterface;
 use Cake\ORM\Entity;
 
 /**
- * RemovedIp Entity
+ * RemovedIpAddress Entity
  *
  * @property \Cake\I18n\DateTime|null $created
  * @property string|null $created_by
@@ -21,7 +21,7 @@ use Cake\ORM\Entity;
  * @property \CakeDC\Users\Model\Entity\User|null $remover
  * @property string $id
  * @property int $nid
- * @property string $ip
+ * @property string $ip_address
  * @property string $customer_id
  * @property string|null $note
  * @property string $contract_id
@@ -32,7 +32,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Contract $contract
  * @property \Cake\Collection\CollectionInterface|null $ip_address_ranges
  */
-class RemovedIp extends Entity
+class RemovedIpAddress extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -50,7 +50,7 @@ class RemovedIp extends Entity
         'modified_by' => true,
         'removed' => true,
         'removed_by' => true,
-        'ip' => true,
+        'ip_address' => true,
         'type_of_use' => true,
         'customer_id' => true,
         'note' => true,
@@ -82,7 +82,7 @@ class RemovedIp extends Entity
      */
     protected function _getIpAddressRanges(): ?CollectionInterface
     {
-        $ipAddressRanges = ApiClient::getIpAddressRangesForIp($this->ip);
+        $ipAddressRanges = ApiClient::getIpAddressRangesForIp($this->ip_address);
 
         if ($ipAddressRanges) {
             return $ipAddressRanges;

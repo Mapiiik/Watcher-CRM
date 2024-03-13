@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Ip $ip
+ * @var \App\Model\Entity\IpAddress $ipAddress
  * @var \Cake\Collection\CollectionInterface|array<string> $customers
  * @var \Cake\Collection\CollectionInterface|array<string> $contracts
  */
@@ -15,8 +15,8 @@
         </div>
     </aside>
     <div class="column column-90">
-        <div class="ips form content">
-            <?= $this->Form->create($ip) ?>
+        <div class="ipAddresses form content">
+            <?= $this->Form->create($ipAddress) ?>
             <fieldset>
                 <legend><?= __('Add IP Address From Range') ?></legend>
                 <?php
@@ -49,7 +49,7 @@
                     ]);
                 }
                 echo $this->Form->control('type_of_use', [
-                    'options' => $ip->getTypeOfUseOptions(),
+                    'options' => $ipAddress->getTypeOfUseOptions(),
                     'onchange' => '
                         var refresh = document.createElement("input");
                         refresh.type = "hidden";
@@ -73,7 +73,7 @@
                 ]);
                 $this->Form->unlockField('refresh'); //disable form security check
 
-                echo $this->Form->control('ip', [
+                echo $this->Form->control('ip_address', [
                     'label' => __('IP Address'),
                     'empty' => true,
                 ]);

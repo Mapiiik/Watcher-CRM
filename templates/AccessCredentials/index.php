@@ -36,7 +36,7 @@
                     <?php endif; ?>
                     <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('username') ?></th>
-                    <th><?= $this->Paginator->sort('ip', __('IP Address')) ?></th>
+                    <th><?= $this->Paginator->sort('ip_address', __('IP Address')) ?></th>
                     <th><?= $this->Paginator->sort('port') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
@@ -62,7 +62,7 @@
                     <?php endif; ?>
                     <td><?= h($accessCredential->name) ?></td>
                     <td><?= h($accessCredential->username) ?></td>
-                    <td><?= h($accessCredential->ip) ?></td>
+                    <td><?= h($accessCredential->ip_address) ?></td>
                     <td><?= $accessCredential->port === null ?
                         '' : $this->Number->format($accessCredential->port) ?></td>
                     <td class="actions">

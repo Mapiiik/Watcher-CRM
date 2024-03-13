@@ -69,7 +69,7 @@
                         </tr>
                         <tr>
                             <th><?= __('IP Address') ?></th>
-                            <td><?= h($accessCredential->ip) ?></td>
+                            <td><?= h($accessCredential->ip_address) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Port') ?></th>

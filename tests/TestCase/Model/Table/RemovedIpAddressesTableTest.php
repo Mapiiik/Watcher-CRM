@@ -3,20 +3,20 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\RemovedIpsTable;
+use App\Model\Table\RemovedIpAddressesTable;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\RemovedIpsTable Test Case
+ * App\Model\Table\RemovedIpAddressesTable Test Case
  */
-class RemovedIpsTableTest extends TestCase
+class RemovedIpAddressesTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \App\Model\Table\RemovedIpsTable
+     * @var \App\Model\Table\RemovedIpAddressesTable
      */
-    protected $RemovedIps;
+    protected $RemovedIpAddresses;
 
     /**
      * Fixtures
@@ -33,7 +33,7 @@ class RemovedIpsTableTest extends TestCase
         'app.ContractStates',
         'app.ServiceTypes',
         'app.Contracts',
-        'app.RemovedIps',
+        'app.RemovedIpAddresses',
     ];
 
     /**
@@ -44,8 +44,8 @@ class RemovedIpsTableTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('RemovedIps') ? [] : ['className' => RemovedIpsTable::class];
-        $this->RemovedIps = $this->getTableLocator()->get('RemovedIps', $config);
+        $config = $this->getTableLocator()->exists('RemovedIpAddresses') ? [] : ['className' => RemovedIpAddressesTable::class];
+        $this->RemovedIpAddresses = $this->getTableLocator()->get('RemovedIpAddresses', $config);
     }
 
     /**
@@ -55,7 +55,7 @@ class RemovedIpsTableTest extends TestCase
      */
     protected function tearDown(): void
     {
-        unset($this->RemovedIps);
+        unset($this->RemovedIpAddresses);
 
         parent::tearDown();
     }
@@ -64,7 +64,7 @@ class RemovedIpsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\RemovedIpsTable::validationDefault()
+     * @uses \App\Model\Table\RemovedIpAddressesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -75,7 +75,7 @@ class RemovedIpsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\RemovedIpsTable::buildRules()
+     * @uses \App\Model\Table\RemovedIpAddressesTable::buildRules()
      */
     public function testBuildRules(): void
     {

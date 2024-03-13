@@ -58,7 +58,9 @@ class TaxRatesController extends AppController
             'Customers' => [
                 'TaxRates',
                 'Contracts',
-                'Ips' => ['Contracts'],
+                'IpAddresses' => [
+                    'Contracts',
+                ],
             ],
             'Creators',
             'Modifiers',

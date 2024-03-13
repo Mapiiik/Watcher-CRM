@@ -60,7 +60,7 @@ class IpNetworksController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Ip Network id.
+     * @param string|null $id IP Network id.
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -134,7 +134,7 @@ class IpNetworksController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id Ip Network id.
+     * @param string|null $id IP Network id.
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -183,7 +183,7 @@ class IpNetworksController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Ip Network id.
+     * @param string|null $id IP Network id.
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -207,18 +207,18 @@ class IpNetworksController extends AppController
     /**
      * Add IP network to removed IP networks table (usage before delete)
      *
-     * @param string|null $id Ip Network id.
+     * @param string|null $id IP Network id.
      * @return bool
      */
     private function addToRemovedIpNetworks(?string $id = null)
     {
-        $ip = $this->IpNetworks->get($id);
+        $ipNetwork = $this->IpNetworks->get($id);
 
         /** @var \App\Model\Table\RemovedIpNetworksTable $removedIpNetworksTable */
         $removedIpNetworksTable = $this->fetchTable('RemovedIpNetworks');
 
         $removedIpNetwork = $removedIpNetworksTable->newEmptyEntity();
-        $removedIpNetwork = $removedIpNetworksTable->patchEntity($removedIpNetwork, $ip->toArray());
+        $removedIpNetwork = $removedIpNetworksTable->patchEntity($removedIpNetwork, $ipNetwork->toArray());
 
         // TODO - add who and when deleted this
         $removedIpNetwork->removed = DateTime::now();

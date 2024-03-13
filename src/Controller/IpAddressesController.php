@@ -8,12 +8,12 @@ use Cake\I18n\DateTime;
 use IPLib\Range\Subnet;
 
 /**
- * Ips Controller
+ * IpAddresses Controller
  *
- * @property \App\Model\Table\IpsTable $Ips
- * @method \App\Model\Entity\Ip[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @property \App\Model\Table\IpAddressesTable $IpAddresses
+ * @method \App\Model\Entity\IpAddress[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class IpsController extends AppController
+class IpAddressesController extends AppController
 {
     /**
      * Index method
@@ -25,10 +25,10 @@ class IpsController extends AppController
         // filter
         $conditions = [];
         if (isset($this->customer_id)) {
-            $conditions += ['Ips.customer_id' => $this->customer_id];
+            $conditions += ['IpAddresses.customer_id' => $this->customer_id];
         }
         if (isset($this->contract_id)) {
-            $conditions += ['Ips.contract_id' => $this->contract_id];
+            $conditions += ['IpAddresses.contract_id' => $this->contract_id];
         }
 
         // search
@@ -36,7 +36,7 @@ class IpsController extends AppController
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
-                    'Ips.ip::character varying ILIKE' => '%' . trim($search) . '%',
+                    'IpAddresses.ip_address::character varying ILIKE' => '%' . trim($search) . '%',
                     'Contracts.number ILIKE' => '%' . trim($search) . '%',
                 ],
             ];
@@ -47,7 +47,7 @@ class IpsController extends AppController
                 'id' => 'DESC',
             ],
         ];
-        $ips = $this->paginate($this->Ips->find(
+        $ipAddresses = $this->paginate($this->IpAddresses->find(
             'all',
             contain: [
                 'Contracts',
@@ -56,26 +56,26 @@ class IpsController extends AppController
             conditions: $conditions
         ));
 
-        $this->set(compact('ips'));
+        $this->set(compact('ipAddresses'));
     }
 
     /**
      * View method
      *
-     * @param string|null $id Ip id.
+     * @param string|null $id IpAddress id.
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view(?string $id = null)
     {
-        $ip = $this->Ips->get($id, contain: [
+        $ipAddress = $this->IpAddresses->get($id, contain: [
             'Contracts',
             'Customers',
             'Creators',
             'Modifiers',
         ]);
 
-        $this->set(compact('ip'));
+        $this->set(compact('ipAddress'));
     }
 
     /**
@@ -85,25 +85,25 @@ class IpsController extends AppController
      */
     public function add()
     {
-        $ip = $this->Ips->newEmptyEntity();
+        $ipAddress = $this->IpAddresses->newEmptyEntity();
 
         if (isset($this->customer_id)) {
-            $ip->customer_id = $this->customer_id;
+            $ipAddress->customer_id = $this->customer_id;
         }
         if (isset($this->contract_id)) {
-            $ip->contract_id = $this->contract_id;
+            $ipAddress->contract_id = $this->contract_id;
         }
 
         if ($this->getRequest()->is('post')) {
-            $ip = $this->Ips->patchEntity($ip, $this->getRequest()->getData());
-            if ($this->Ips->save($ip)) {
+            $ipAddress = $this->IpAddresses->patchEntity($ipAddress, $this->getRequest()->getData());
+            if ($this->IpAddresses->save($ipAddress)) {
                 $this->Flash->success(__('The IP address has been saved.'));
 
-                return $this->afterAddRedirect(['action' => 'view', $ip->id]);
+                return $this->afterAddRedirect(['action' => 'view', $ipAddress->id]);
             }
             $this->Flash->error(__('The IP address could not be saved. Please, try again.'));
         }
-        $customers = $this->Ips->Customers->find(
+        $customers = $this->IpAddresses->Customers->find(
             'list',
             order: [
                 'company',
@@ -111,7 +111,7 @@ class IpsController extends AppController
                 'first_name',
             ],
         );
-        $contracts = $this->Ips->Contracts->find(
+        $contracts = $this->IpAddresses->Contracts->find(
             'list',
             contain: [
                 'InstallationAddresses',
@@ -130,7 +130,7 @@ class IpsController extends AppController
             $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
-        $this->set(compact('ip', 'customers', 'contracts'));
+        $this->set(compact('ipAddress', 'customers', 'contracts'));
     }
 
     /**
@@ -140,30 +140,30 @@ class IpsController extends AppController
      */
     public function addFromRange()
     {
-        $ip = $this->Ips->newEmptyEntity();
+        $ipAddress = $this->IpAddresses->newEmptyEntity();
 
         if (isset($this->customer_id)) {
-            $ip->customer_id = $this->customer_id;
+            $ipAddress->customer_id = $this->customer_id;
         }
         if (isset($this->contract_id)) {
-            $ip->contract_id = $this->contract_id;
+            $ipAddress->contract_id = $this->contract_id;
         }
 
         if ($this->getRequest()->is('post')) {
-            $ip = $this->Ips->patchEntity($ip, $this->getRequest()->getData());
+            $ipAddress = $this->IpAddresses->patchEntity($ipAddress, $this->getRequest()->getData());
 
             if ($this->getRequest()->getData('refresh') == 'refresh') {
                 // only refresh
             } else {
-                if ($this->Ips->save($ip)) {
+                if ($this->IpAddresses->save($ipAddress)) {
                     $this->Flash->success(__('The IP address has been saved.'));
 
-                    return $this->afterAddRedirect(['action' => 'view', $ip->id]);
+                    return $this->afterAddRedirect(['action' => 'view', $ipAddress->id]);
                 }
                 $this->Flash->error(__('The IP address could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->Ips->Customers->find(
+        $customers = $this->IpAddresses->Customers->find(
             'list',
             order: [
                 'company',
@@ -171,7 +171,7 @@ class IpsController extends AppController
                 'first_name',
             ],
         );
-        $contracts = $this->Ips->Contracts->find(
+        $contracts = $this->IpAddresses->Contracts->find(
             'list',
             contain: [
                 'InstallationAddresses',
@@ -192,9 +192,9 @@ class IpsController extends AppController
 
         // load IP address ranges from NMS
         $ip_address_ranges_filter = [];
-        if (isset($ip->contract_id)) {
-            $contract = $this->Ips->Contracts->get(
-                $ip->contract_id,
+        if (isset($ipAddress->contract_id)) {
+            $contract = $this->IpAddresses->Contracts->get(
+                $ipAddress->contract_id,
                 contain: [
                     'ServiceTypes',
                 ]
@@ -204,7 +204,11 @@ class IpsController extends AppController
                 $ip_address_ranges_filter['access_point_id'] = $contract->access_point_id;
             }
         }
-        switch ($ip->type_of_use ?? $this->Ips->getSchema()->getColumn('type_of_use')['default'] ?? null) {
+        switch (
+            $ipAddress->type_of_use
+            ?? $this->IpAddresses->getSchema()->getColumn('type_of_use')['default']
+            ?? null
+        ) {
             case 00:
                 $ip_address_ranges_filter['for_customer_addresses_set_via_radius'] = '1';
                 break;
@@ -229,7 +233,7 @@ class IpsController extends AppController
         }
 
         // load available IP addresses if IP address range is selected
-        $ips = [];
+        $ipAddresses = [];
         if ($this->getRequest()->getData('ip_address_range') !== null) {
             $ip_address_range = $ip_address_ranges->firstMatch([
                 'id' => $this->getRequest()->getData('ip_address_range'),
@@ -241,10 +245,10 @@ class IpsController extends AppController
                 $range_size = $range->getSize();
 
                 // load already used IP addresses
-                $used_ips = $this->Ips->find('list')
+                $used_ip_addresses = $this->IpAddresses->find('list')
                     ->where([
-                        'Ips.ip >=' => $range->getStartAddress(),
-                        'Ips.ip <=' => $range->getEndAddress(),
+                        'IpAddresses.ip_address >=' => $range->getStartAddress(),
+                        'IpAddresses.ip_address <=' => $range->getEndAddress(),
                     ])
                     ->toArray();
 
@@ -258,32 +262,32 @@ class IpsController extends AppController
                     }
 
                     // skip already used IP addresses
-                    if (in_array($ip_from_range->toString(), $used_ips)) {
+                    if (in_array($ip_from_range->toString(), $used_ip_addresses)) {
                         continue 1;
                     }
 
                     // add IP address for selection
-                    $ips[$ip_from_range->toString()] = $ip_from_range->toString();
+                    $ipAddresses[$ip_from_range->toString()] = $ip_from_range->toString();
 
                     // retrieve previous IP address usage
-                    /** @var \App\Model\Entity\RemovedIp|null $previous_ip_address_usage */
-                    $previous_ip_address_usage = $this->fetchTable('RemovedIps')
+                    /** @var \App\Model\Entity\RemovedIpAddress|null $previous_ip_address_usage */
+                    $previous_ip_address_usage = $this->fetchTable('RemovedIpAddresses')
                         ->find()
                         ->contain([
                             'Contracts',
                             'Customers',
                         ])
                         ->where([
-                            'RemovedIps.ip' => $ip_from_range->toString(),
+                            'RemovedIpAddresses.ip_address' => $ip_from_range->toString(),
                         ])
                         ->orderBy([
-                            'RemovedIps.removed' => 'DESC',
+                            'RemovedIpAddresses.removed' => 'DESC',
                         ])
                         ->first();
 
                     // add retrieved previous IP address usage to description
                     if ($previous_ip_address_usage) {
-                        $ips[$ip_from_range->toString()] .=
+                        $ipAddresses[$ip_from_range->toString()] .=
                             ' ('
                             . __(
                                 'last used until {0} by {1}',
@@ -301,40 +305,40 @@ class IpsController extends AppController
 
         // reverse order of IP addresses, if required by service type
         if (!empty($contract->service_type->assign_ip_addresses_from_behind)) {
-            $this->set('ips', array_reverse($ips));
+            $this->set('ipAddresses', array_reverse($ipAddresses));
         } else {
-            $this->set('ips', $ips);
+            $this->set('ipAddresses', $ipAddresses);
         }
 
-        $this->set(compact('ip', 'customers', 'contracts'));
+        $this->set(compact('ipAddress', 'customers', 'contracts'));
     }
 
     /**
      * Edit method
      *
-     * @param string|null $id Ip id.
+     * @param string|null $id IP Address id.
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit(?string $id = null)
     {
-        $ip = $this->Ips->get($id);
+        $ipAddress = $this->IpAddresses->get($id);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
-            $ip = $this->Ips->patchEntity($ip, $this->getRequest()->getData());
-            if ($this->Ips->save($ip)) {
+            $ipAddress = $this->IpAddresses->patchEntity($ipAddress, $this->getRequest()->getData());
+            if ($this->IpAddresses->save($ipAddress)) {
                 $this->Flash->success(__('The IP address has been saved.'));
 
-                return $this->afterEditRedirect(['action' => 'view', $ip->id]);
+                return $this->afterEditRedirect(['action' => 'view', $ipAddress->id]);
             }
             $this->Flash->error(__('The IP address could not be saved. Please, try again.'));
         }
-        $customers = $this->Ips->Customers->find('list', order: [
+        $customers = $this->IpAddresses->Customers->find('list', order: [
             'company',
             'last_name',
             'first_name',
         ]);
-        $contracts = $this->Ips->Contracts->find(
+        $contracts = $this->IpAddresses->Contracts->find(
             'list',
             contain: [
                 'InstallationAddresses',
@@ -353,26 +357,26 @@ class IpsController extends AppController
             $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
-        $this->set(compact('ip', 'customers', 'contracts'));
+        $this->set(compact('ipAddress', 'customers', 'contracts'));
     }
 
     /**
      * Delete method
      *
-     * @param string|null $id Ip id.
+     * @param string|null $id IP Address id.
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete(?string $id = null)
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
-        $ip = $this->Ips->get($id);
+        $ipAddress = $this->IpAddresses->get($id);
 
-        if ($this->addToRemovedIps($id)) {
-            if ($this->Ips->delete($ip)) {
+        if ($this->addToRemovedIpAddresses($id)) {
+            if ($this->IpAddresses->delete($ipAddress)) {
                 $this->Flash->success(__('The IP address has been deleted.'));
             } else {
-                $this->flashValidationErrors($ip->getErrors());
+                $this->flashValidationErrors($ipAddress->getErrors());
                 $this->Flash->error(__('The IP address could not be deleted. Please, try again.'));
             }
         }
@@ -383,24 +387,24 @@ class IpsController extends AppController
     /**
      * Add IP to removed IPs table (usage before delete)
      *
-     * @param string|null $id Ip id.
+     * @param string|null $id IP Address id.
      * @return bool
      */
-    private function addToRemovedIps(?string $id = null)
+    private function addToRemovedIpAddresses(?string $id = null)
     {
-        $ip = $this->Ips->get($id);
+        $ipAddress = $this->IpAddresses->get($id);
 
-        /** @var \App\Model\Table\RemovedIpsTable $removedIpsTable */
-        $removedIpsTable = $this->fetchTable('RemovedIps');
+        /** @var \App\Model\Table\RemovedIpAddressesTable $removedIpAddressesTable */
+        $removedIpAddressesTable = $this->fetchTable('RemovedIpAddresses');
 
-        $removedIp = $removedIpsTable->newEmptyEntity();
-        $removedIp = $removedIpsTable->patchEntity($removedIp, $ip->toArray());
+        $removedIpAddress = $removedIpAddressesTable->newEmptyEntity();
+        $removedIpAddress = $removedIpAddressesTable->patchEntity($removedIpAddress, $ipAddress->toArray());
 
         // TODO - add who and when deleted this
-        $removedIp->removed = DateTime::now();
-        $removedIp->removed_by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
+        $removedIpAddress->removed = DateTime::now();
+        $removedIpAddress->removed_by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
 
-        if ($removedIpsTable->save($removedIp)) {
+        if ($removedIpAddressesTable->save($removedIpAddress)) {
             $this->Flash->success(__('The removed IP address has been saved.'));
 
             return true;

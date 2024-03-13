@@ -409,7 +409,7 @@ class ContractPDF extends TCPDF
 
             $this->Ln(1);
 
-            if (!empty($contract->ips)) {
+            if (!empty($contract->ip_addresses)) {
                 $this->SetFont('DejaVuSerif', '', 8);
                 $this->Write(4, __('Assigned IP Addresses') . ':');
                 $this->Ln(5);
@@ -422,17 +422,17 @@ class ContractPDF extends TCPDF
                 $this->Ln();
 
                 $this->SetFont('DejaVuSerif', '', 8);
-                foreach ($contract->ips as $ip) {
+                foreach ($contract->ip_addresses as $ipAddress) {
                     // load range for customer address set manually
-                    if ($ip->type_of_use == 10 && isset($ip->ip_address_ranges)) {
-                        $range = $ip->ip_address_ranges->first();
+                    if ($ipAddress->type_of_use == 10 && isset($ipAddress->ip_address_ranges)) {
+                        $range = $ipAddress->ip_address_ranges->first();
                     }
                     // skip processing for technology address set manually
-                    if ($ip->type_of_use == 20) {
+                    if ($ipAddress->type_of_use == 20) {
                         continue 1;
                     }
                     $this->Cell(4, 5);
-                    $this->Cell(60, 5, $ip->ip, border: 1, align: 'C');
+                    $this->Cell(60, 5, $ipAddress->ip_address, border: 1, align: 'C');
                     $this->Cell(60, 5, $range['ip_network'] ?? '-', border: 1, align: 'C');
                     $this->Cell(60, 5, $range['ip_gateway'] ?? '-', border: 1, align: 'C');
                     $this->Ln();

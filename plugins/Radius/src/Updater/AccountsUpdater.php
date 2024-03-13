@@ -338,19 +338,19 @@ class AccountsUpdater
     {
         /** @var \App\Model\Entity\Contract $contract */
         $contract = $this->fetchTable('Contracts')->get($account->contract_id, contain: [
+            'IpAddresses',
             'IpNetworks',
-            'Ips',
         ]);
 
         $radreply = [];
 
-        foreach ($contract->ips as $ip) {
+        foreach ($contract->ip_addresses as $ipAddress) {
             // Skip IP addresses without RADIUS usage type
-            if (!($ip->type_of_use === 00)) {
+            if (!($ipAddress->type_of_use === 00)) {
                 continue;
             }
 
-            [$address] = explode('/', $ip->ip);
+            [$address] = explode('/', $ipAddress->ip_address);
 
             if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
                 $radreply[] = $this->Radreply

@@ -92,7 +92,7 @@
             ) ?>
             <?= $this->AuthLink->link(
                 __('IP Addresses'),
-                ['action' => 'view', $contract->id, '#' => 'ips'],
+                ['action' => 'view', $contract->id, '#' => 'ip_addresses'],
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->AuthLink->link(
@@ -426,17 +426,17 @@
                     <div class="related">
                         <?= $this->AuthLink->link(
                             __('New IP Address'),
-                            ['controller' => 'Ips', 'action' => 'add'],
+                            ['controller' => 'IpAddresses', 'action' => 'add'],
                             ['class' => 'button button-small float-right win-link']
                         ) ?>
                         <?= $contract->__isset('access_point') ? $this->AuthLink->link(
                             __('New IP Address From Range'),
-                            ['controller' => 'Ips', 'action' => 'addFromRange'],
+                            ['controller' => 'IpAddresses', 'action' => 'addFromRange'],
                             ['class' => 'button button-small float-right win-link']
                         ) : '' ?>
-                        <h4 id="ips"><?= __('IP Addresses') ?></h4>
+                        <h4 id="ip_addresses"><?= __('IP Addresses') ?></h4>
                         <?= $this->element('Contracts/IpAddresses', [
-                            'ip_addresses' => $contract->ips,
+                            'ip_addresses' => $contract->ip_addresses,
                         ]) ?>
                     </div>
                 </div>
@@ -459,12 +459,12 @@
                     <div class="related">
                         <?= $this->AuthLink->link(
                             __('New Removed IP Address'),
-                            ['controller' => 'RemovedIps', 'action' => 'add'],
+                            ['controller' => 'RemovedIpAddresses', 'action' => 'add'],
                             ['class' => 'button button-small float-right win-link']
                         ) ?>
                         <h4><?= __('Removed IP Addresses') ?></h4>
                         <?= $this->element('Contracts/RemovedIpAddresses', [
-                            'removed_ip_addresses' => $contract->removed_ips,
+                            'removed_ip_addresses' => $contract->removed_ip_addresses,
                         ]) ?>
                     </div>
                 </div>

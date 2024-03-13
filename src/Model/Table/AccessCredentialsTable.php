@@ -84,9 +84,8 @@ class AccessCredentialsTable extends AppTable
             ->allowEmptyString('password');
 
         $validator
-            ->scalar('ip')
-            ->maxLength('ip', 39)
-            ->allowEmptyString('ip');
+            ->ip('ip_address')
+            ->allowEmptyString('ip_address');
 
         $validator
             ->integer('port')

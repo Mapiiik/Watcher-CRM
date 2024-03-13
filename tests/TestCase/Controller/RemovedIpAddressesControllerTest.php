@@ -7,11 +7,11 @@ use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Controller\IpsController Test Case
+ * App\Controller\RemovedIpAddressesController Test Case
  *
- * @uses \App\Controller\IpsController
+ * @uses \App\Controller\RemovedIpAddressesController
  */
-class IpsControllerTest extends TestCase
+class RemovedIpAddressesControllerTest extends TestCase
 {
     use IntegrationTestTrait;
 
@@ -30,14 +30,14 @@ class IpsControllerTest extends TestCase
         'app.ContractStates',
         'app.ServiceTypes',
         'app.Contracts',
-        'app.Ips',
+        'app.RemovedIpAddresses',
     ];
 
     /**
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\IpsController::index()
+     * @uses \App\Controller\RemovedIpAddressesController::index()
      */
     public function testIndex(): void
     {
@@ -48,7 +48,7 @@ class IpsControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\IpsController::view()
+     * @uses \App\Controller\RemovedIpAddressesController::view()
      */
     public function testView(): void
     {
@@ -59,7 +59,7 @@ class IpsControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\IpsController::add()
+     * @uses \App\Controller\RemovedIpAddressesController::add()
      */
     public function testAdd(): void
     {
@@ -70,7 +70,7 @@ class IpsControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\IpsController::edit()
+     * @uses \App\Controller\RemovedIpAddressesController::edit()
      */
     public function testEdit(): void
     {
@@ -81,7 +81,7 @@ class IpsControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\IpsController::delete()
+     * @uses \App\Controller\RemovedIpAddressesController::delete()
      */
     public function testDelete(): void
     {

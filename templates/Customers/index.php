@@ -80,8 +80,8 @@
                         <?php endforeach; ?>
                     </td>
                     <td>
-                        <?php foreach ($customer->ips as $ip) : ?>
-                        <span><?= h($ip->ip) ?></span><br>
+                        <?php foreach ($customer->ip_addresses as $ipAddress) : ?>
+                        <span><?= h($ipAddress->ip_address) ?></span><br>
                         <?php endforeach; ?>
                         <?php foreach ($customer->ip_networks as $ip_network) : ?>
                         <span><?= h($ip_network->ip_network) ?></span><br>

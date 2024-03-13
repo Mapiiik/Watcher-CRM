@@ -19,8 +19,8 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\BillingsTable&\Cake\ORM\Association\HasMany $Billings
  * @property \App\Model\Table\BorrowedEquipmentsTable&\Cake\ORM\Association\HasMany $BorrowedEquipments
  * @property \App\Model\Table\ContractVersionsTable&\Cake\ORM\Association\HasMany $ContractVersions
- * @property \App\Model\Table\IpsTable&\Cake\ORM\Association\HasMany $Ips
- * @property \App\Model\Table\RemovedIpsTable&\Cake\ORM\Association\HasMany $RemovedIps
+ * @property \App\Model\Table\IpAddressesTable&\Cake\ORM\Association\HasMany $IpAddresses
+ * @property \App\Model\Table\RemovedIpAddressesTable&\Cake\ORM\Association\HasMany $RemovedIpAddresses
  * @property \App\Model\Table\IpNetworksTable&\Cake\ORM\Association\HasMany $IpNetworks
  * @property \App\Model\Table\RemovedIpNetworksTable&\Cake\ORM\Association\HasMany $RemovedIpNetworks
  * @property \App\Model\Table\SoldEquipmentsTable&\Cake\ORM\Association\HasMany $SoldEquipments
@@ -116,16 +116,16 @@ class ContractsTable extends AppTable
                 'ContractVersions.valid_from' => 'DESC',
             ],
         ]);
-        $this->hasMany('Ips', [
+        $this->hasMany('IpAddresses', [
             'foreignKey' => 'contract_id',
             'sort' => [
-                'Ips.ip',
+                'IpAddresses.ip_address',
             ],
         ]);
-        $this->hasMany('RemovedIps', [
+        $this->hasMany('RemovedIpAddresses', [
             'foreignKey' => 'contract_id',
             'sort' => [
-                'RemovedIps.ip',
+                'RemovedIpAddresses.ip_address',
             ],
         ]);
         $this->hasMany('IpNetworks', [
@@ -324,8 +324,8 @@ class ContractsTable extends AppTable
         $rules->addDelete($rules->isNotLinkedTo('Billings'));
         $rules->addDelete($rules->isNotLinkedTo('BorrowedEquipments'));
         $rules->addDelete($rules->isNotLinkedTo('ContractVersions'));
-        $rules->addDelete($rules->isNotLinkedTo('Ips'));
-        $rules->addDelete($rules->isNotLinkedTo('RemovedIps'));
+        $rules->addDelete($rules->isNotLinkedTo('IpAddresses'));
+        $rules->addDelete($rules->isNotLinkedTo('RemovedIpAddresses'));
         $rules->addDelete($rules->isNotLinkedTo('IpNetworks'));
         $rules->addDelete($rules->isNotLinkedTo('RemovedIpNetworks'));
         $rules->addDelete($rules->isNotLinkedTo('SoldEquipments'));

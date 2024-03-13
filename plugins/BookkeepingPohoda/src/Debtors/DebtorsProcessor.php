@@ -369,10 +369,10 @@ class DebtorsProcessor
     {
         /** @var \App\Model\Entity\Customer $customer */
         $customer = $this->fetchTable('Customers')->get($id, contain: [
-            'IpNetworks' => [
+            'IpAddresses' => [
                 'Contracts',
             ],
-            'Ips' => [
+            'IpNetworks' => [
                 'Contracts',
             ],
         ]);
@@ -381,15 +381,15 @@ class DebtorsProcessor
         $ipv6s = [];
 
         // IP addresses
-        foreach ($customer->ips as $ip) {
+        foreach ($customer->ip_addresses as $ipAddress) {
             // skip VIP contracts
-            if ($skip_vip && $ip->contract->vip === true) {
+            if ($skip_vip && $ipAddress->contract->vip === true) {
                 continue;
             }
             // split address and mask
-            [$address] = explode('/', $ip->ip);
+            [$address] = explode('/', $ipAddress->ip_address);
             // prepare comment
-            $comment = $comment_prefix . ($ip->contract->number ?? $customer->number) . ' - ' . $customer->name;
+            $comment = $comment_prefix . ($ipAddress->contract->number ?? $customer->number) . ' - ' . $customer->name;
             // IPv4
             if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
                 $ipv4s[$address] = $comment;
@@ -400,15 +400,15 @@ class DebtorsProcessor
             }
         }
         // IP networks
-        foreach ($customer->ip_networks as $ip_network) {
+        foreach ($customer->ip_networks as $ipNetwork) {
             // skip VIP contracts
-            if ($skip_vip && $ip_network->contract->vip === true) {
+            if ($skip_vip && $ipNetwork->contract->vip === true) {
                 continue;
             }
             // split address and mask
-            [$address, $mask] = explode('/', $ip_network->ip_network);
+            [$address, $mask] = explode('/', $ipNetwork->ip_network);
             // prepare comment
-            $comment = $comment_prefix . ($ip->contract->number ?? $customer->number) . ' - ' . $customer->name;
+            $comment = $comment_prefix . ($ipNetwork->contract->number ?? $customer->number) . ' - ' . $customer->name;
             // IPv4
             if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
                 $ipv4s[$address . '/' . $mask] = $comment;

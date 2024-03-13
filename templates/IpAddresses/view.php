@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\RemovedIp $removedIp
+ * @var \App\Model\Entity\IpAddress $ipAddress
  */
 ?>
 <div class="row">
@@ -9,64 +9,71 @@
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->AuthLink->link(
-                __('Edit Removed IP Address'),
-                ['action' => 'edit', $removedIp->id],
+                __('Edit IP Address'),
+                ['action' => 'edit', $ipAddress->id],
                 ['class' => 'side-nav-item']
             ) ?>
             <?= $this->AuthLink->postLink(
-                __('Delete Removed IP Address'),
-                ['action' => 'delete', $removedIp->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $removedIp->id), 'class' => 'side-nav-item']
+                __('Delete IP Address'),
+                ['action' => 'delete', $ipAddress->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $ipAddress->id), 'class' => 'side-nav-item']
             ) ?>
-            <?= $this->AuthLink->link(
-                __('List Removed IP Addresses'),
-                ['action' => 'index'],
-                ['class' => 'side-nav-item']
-            ) ?>
-            <?= $this->AuthLink->link(
-                __('New Removed IP Address'),
-                ['action' => 'add'],
-                ['class' => 'side-nav-item']
-            ) ?>
+            <?= $this->AuthLink->link(__('List IP Addresses'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__('New IP Address'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column column-90">
-        <div class="removedIps view content">
-            <h3><?= h($removedIp->ip) ?></h3>
+        <div class="ipAddresses view content">
+            <h3><?= h($ipAddress->ip_address) ?></h3>
             <div class="row">
                 <div class="column">
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $removedIp->__isset('customer') ? $this->Html->link(
-                                $removedIp->customer->name,
-                                ['controller' => 'Customers', 'action' => 'view', $removedIp->customer->id]
+                            <td><?= $ipAddress->__isset('customer') ? $this->Html->link(
+                                $ipAddress->customer->name,
+                                ['controller' => 'Customers', 'action' => 'view', $ipAddress->customer->id]
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $removedIp->__isset('customer') ? h($removedIp->customer->number) : '' ?></td>
+                            <td><?= $ipAddress->__isset('customer') ? h($ipAddress->customer->number) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Contract') ?></th>
-                            <td><?= $removedIp->__isset('contract') ? $this->Html->link(
-                                $removedIp->contract->number ?? '--',
-                                ['controller' => 'Contracts', 'action' => 'view', $removedIp->contract->id]
+                            <td><?= $ipAddress->__isset('contract') ? $this->Html->link(
+                                $ipAddress->contract->number ?? '--',
+                                ['controller' => 'Contracts', 'action' => 'view', $ipAddress->contract->id]
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('IP Address') ?></th>
-                            <td><?= h($removedIp->ip) ?></td>
+                            <td><?= h($ipAddress->ip_address) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Type Of Use') ?></th>
-                            <td><?= h($removedIp->getTypeOfUseName()) ?></td>
+                            <td><?= h($ipAddress->getTypeOfUseName()) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Device') ?></th>
+                            <td><?php
+                            if (isset($ipAddress->routeros_devices)) {
+                                $device = $ipAddress->routeros_devices->first();
+                                echo isset($device['id']) ?
+                                    $this->Html->link(
+                                        $device['system_description'],
+                                        env('WATCHER_NMS_URL') . '/routeros-devices/view/' . $device['id'],
+                                        ['target' => '_blank']
+                                    ) . '<br>' : '';
+                                unset($device);
+                            }
+                            ?></td>
                         </tr>
                         <tr>
                             <th><?= __('IP Address Range') ?></th>
                             <td><?php
-                            if (isset($removedIp->ip_address_ranges)) {
-                                $range = $removedIp->ip_address_ranges->first();
+                            if (isset($ipAddress->ip_address_ranges)) {
+                                $range = $ipAddress->ip_address_ranges->first();
                                 echo isset($range['access_point']['id']) ?
                                     __('Access Point') . ': ' . $this->Html->link(
                                         $range['access_point']['name'],
@@ -89,52 +96,37 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= h($removedIp->id) ?></td>
+                            <td><?= h($ipAddress->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>
-                            <td><?= h($removedIp->created) ?></td>
+                            <td><?= h($ipAddress->created) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $removedIp->__isset('creator') ? $this->Html->link(
-                                $removedIp->creator->username,
+                            <td><?= $ipAddress->__isset('creator') ? $this->Html->link(
+                                $ipAddress->creator->username,
                                 [
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
-                                    $removedIp->creator->id,
+                                    $ipAddress->creator->id,
                                 ]
-                            ) : h($removedIp->created_by) ?></td>
+                            ) : h($ipAddress->created_by) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Modified') ?></th>
-                            <td><?= h($removedIp->modified) ?></td>
+                            <td><?= h($ipAddress->modified) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $removedIp->__isset('modifier') ? $this->Html->link(
-                                $removedIp->modifier->username,
+                            <td><?= $ipAddress->__isset('modifier') ? $this->Html->link(
+                                $ipAddress->modifier->username,
                                 [
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
-                                    $removedIp->modifier->id,
+                                    $ipAddress->modifier->id,
                                 ]
-                            ) : h($removedIp->modified_by) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Removed') ?></th>
-                            <td><?= h($removedIp->removed) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Removed By') ?></th>
-                            <td><?= $removedIp->__isset('remover') ? $this->Html->link(
-                                $removedIp->remover->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $removedIp->remover->id,
-                                ]
-                            ) : h($removedIp->removed_by) ?></td>
+                            ) : h($ipAddress->modified_by) ?></td>
                         </tr>
                     </table>
                 </div>
@@ -142,7 +134,7 @@
             <div class="text">
                 <strong><?= __('Note') ?></strong>
                 <blockquote>
-                    <?= $this->Text->autoParagraph(h($removedIp->note)); ?>
+                    <?= $this->Text->autoParagraph(h($ipAddress->note)); ?>
                 </blockquote>
             </div>
         </div>

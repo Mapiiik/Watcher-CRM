@@ -137,15 +137,15 @@ class ApiClient
     /**
      * Get access points for IP method
      *
-     * @param string $ip IP address.
+     * @param string $ipAddress IP address.
      * @return \Cake\Collection\CollectionInterface|null Return result from API or from cache if valid
      */
-    public static function getAccessPointsForIp(string $ip): ?CollectionInterface
+    public static function getAccessPointsForIp(string $ipAddress): ?CollectionInterface
     {
         return Cache::remember(
-            'access_points_for_ip_' . strtr($ip, ['.' => '-', ':' => '-', '/' => '-mask-']),
-            function () use ($ip) {
-                return ApiClient::searchAccessPoints(['ip_address' => $ip]);
+            'access_points_for_ip_' . strtr($ipAddress, ['.' => '-', ':' => '-', '/' => '-mask-']),
+            function () use ($ipAddress) {
+                return ApiClient::searchAccessPoints(['ip_address' => $ipAddress]);
             },
             'api_client'
         );
@@ -261,15 +261,15 @@ class ApiClient
     /**
      * Get IP address ranges for IP method
      *
-     * @param string $ip IP address.
+     * @param string $ipAddress IP address.
      * @return \Cake\Collection\CollectionInterface|null Return result from API or from cache if valid
      */
-    public static function getIpAddressRangesForIp(string $ip): ?CollectionInterface
+    public static function getIpAddressRangesForIp(string $ipAddress): ?CollectionInterface
     {
         return Cache::remember(
-            'ip_address_ranges_for_ip_' . strtr($ip, ['.' => '-', ':' => '-', '/' => '-mask-']),
-            function () use ($ip) {
-                return ApiClient::searchIpAddressRanges(['ip_address' => $ip]);
+            'ip_address_ranges_for_ip_' . strtr($ipAddress, ['.' => '-', ':' => '-', '/' => '-mask-']),
+            function () use ($ipAddress) {
+                return ApiClient::searchIpAddressRanges(['ip_address' => $ipAddress]);
             },
             'api_client'
         );
@@ -303,15 +303,15 @@ class ApiClient
     /**
      * Get RouterOS Device for IP method
      *
-     * @param string $ip IP address.
+     * @param string $ipAddress IP address.
      * @return \Cake\Collection\CollectionInterface|null Return result from API or from cache if valid
      */
-    public static function getRouterosDevicesForIp(string $ip): ?CollectionInterface
+    public static function getRouterosDevicesForIp(string $ipAddress): ?CollectionInterface
     {
         return Cache::remember(
-            'routeros_devices_for_ip_' . strtr($ip, ['.' => '-', ':' => '-', '/' => '-mask-']),
-            function () use ($ip) {
-                return ApiClient::searchRouterosDevices(['ip_address' => $ip]);
+            'routeros_devices_for_ip_' . strtr($ipAddress, ['.' => '-', ':' => '-', '/' => '-mask-']),
+            function () use ($ipAddress) {
+                return ApiClient::searchRouterosDevices(['ip_address' => $ipAddress]);
             },
             'api_client'
         );

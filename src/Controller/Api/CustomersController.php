@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Controller\AppController;
+use App\Model\Entity\Contract;
+use App\Model\Entity\IpAddress;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
@@ -73,12 +75,18 @@ class CustomersController extends AppController
                 'Labels',
             ],
             'Emails',
-            'Ips' => [
+            'IpAddresses' => [
+                'Contracts',
+            ],
+            'IpNetworks' => [
                 'Contracts',
             ],
             'Logins',
             'Phones',
-            'RemovedIps' => [
+            'RemovedIpAddresses' => [
+                'Contracts',
+            ],
+            'RemovedIpNetworks' => [
                 'Contracts',
             ],
             'SoldEquipments' => [
@@ -172,7 +180,7 @@ class CustomersController extends AppController
         $customerPoints = $this->fetchTable('Contracts')->find()
             ->contain('InstallationAddresses')
             ->contain('Customers')
-            ->contain('Ips')
+            ->contain('IpAddresses')
             ->formatResults(
                 function (CollectionInterface $customerPoints) {
                     return $customerPoints
@@ -233,7 +241,7 @@ class CustomersController extends AppController
                                     'gps_x' => $address->gps_x,
                                     'note' => is_numeric($key) ? 'RUIAN: ' . $key : $key,
                                     'CustomerConnections' => (new Collection($contracts))->map(
-                                        function ($contract) {
+                                        function (Contract $contract) {
                                             return [
                                                 'name' => $contract->installation_address->name ??
                                                     $contract->customer->name,
@@ -254,15 +262,16 @@ class CustomersController extends AppController
                                                 ]),
                                                 'access_point_id' => $contract->access_point_id,
                                                 'note' => $contract->note,
-                                                'CustomerConnectionIps' => (new Collection($contract->ips))->map(
-                                                    function ($ip) {
-                                                        return [
-                                                            'ip_address' => $ip->ip,
-                                                            'name' => $ip->note,
-                                                            'note' => $ip->note,
-                                                        ];
-                                                    }
-                                                ),
+                                                'CustomerConnectionIps' => (new Collection($contract->ip_addresses))
+                                                    ->map(
+                                                        function (IpAddress $ipAddress) {
+                                                            return [
+                                                                'ip_address' => $ipAddress->ip_address,
+                                                                'name' => $ipAddress->note,
+                                                                'note' => $ipAddress->note,
+                                                            ];
+                                                        }
+                                                    ),
                                             ];
                                         }
                                     ),
