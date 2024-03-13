@@ -109,7 +109,7 @@ use Cake\I18n\DateTime;
                         </tr>
                         <tr>
                             <th><?= __d('radius', 'Type') ?></th>
-                            <td><?= h($account->getTypeName()) ?></td>
+                            <td><?= h($account->type->label()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __d('radius', 'Active') ?></th>

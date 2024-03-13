@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace Radius\Model\Table;
 
 use App\Model\Table\AppTable;
+use Cake\Database\Type\EnumType;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
+use Radius\Model\Enum\AccountType;
 
 /**
  * Accounts Model
@@ -47,6 +49,11 @@ class AccountsTable extends AppTable
         $this->setTable('accounts');
         $this->setDisplayField('username');
         $this->setPrimaryKey('id');
+
+        $this->getSchema()->setColumnType(
+            'type',
+            EnumType::from(AccountType::class)
+        );
 
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
@@ -123,7 +130,7 @@ class AccountsTable extends AppTable
             ->notEmptyString('password');
 
         $validator
-            ->integer('type')
+            ->enum('type', AccountType::class)
             ->notEmptyString('type');
 
         $validator

@@ -17,7 +17,7 @@ use Cake\ORM\Entity;
  * @property string $id
  * @property string $username
  * @property string $password
- * @property int $type
+ * @property \Radius\Model\Enum\AccountType $type
  * @property bool $active
  * @property string $customer_id
  * @property string $contract_id
@@ -89,27 +89,5 @@ class Account extends Entity
         }
 
         return $style;
-    }
-
-    /**
-     * Get account type options method
-     *
-     * @return array<int, string>
-     */
-    public function getTypeOptions(): array
-    {
-        return [
-            0 => 'PPPoE',
-        ];
-    }
-
-    /**
-     * Get account type name method
-     *
-     * @return string
-     */
-    public function getTypeName(): string
-    {
-        return $this->getTypeOptions()[$this->type] ?? (string)$this->type;
     }
 }

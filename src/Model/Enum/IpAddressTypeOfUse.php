@@ -6,7 +6,7 @@ namespace App\Model\Enum;
 use Cake\Database\Type\EnumLabelInterface;
 
 /**
- * AddressType Enum
+ * IpAddressTypeOfUse Enum
  */
 enum IpAddressTypeOfUse: int implements EnumLabelInterface
 {
