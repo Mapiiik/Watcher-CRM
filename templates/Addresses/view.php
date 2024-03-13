@@ -41,7 +41,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Type') ?></th>
-                            <td><?= h($address->getTypeName()) ?></td>
+                            <td><?= h($address->type->label()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Company') ?></th>
@@ -77,7 +77,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Number Type') ?></th>
-                            <td><?= h($address->getNumberTypeName()) ?></td>
+                            <td><?= h($address->number_type->label()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('City') ?></th>

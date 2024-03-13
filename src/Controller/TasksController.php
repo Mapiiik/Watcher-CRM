@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\ApiClient;
+use App\Model\Enum\AddressType;
 use Cake\Form\Form;
 use Cake\I18n\DateTime;
 use Cake\Mailer\Mailer;
@@ -409,8 +410,8 @@ class TasksController extends AppController
                     // contract unknown
                     foreach ($customer->addresses as $address) {
                         // add all customer installation addresses to the text
-                        if ($address->type === 0) {
-                            $task->text .= $address->getTypeName() . ': ';
+                        if ($address->type == AddressType::Installation) {
+                            $task->text .= $address->type->label() . ': ';
                             $task->text .= $address->full_address . PHP_EOL;
                         }
                     }

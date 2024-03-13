@@ -204,7 +204,7 @@ class CustomerPDF extends TCPDF
 
         foreach ($customer->addresses as $address) {
             $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Cell(30, 4, $address->getTypeName() . ': ');
+            $this->Cell(30, 4, $address->type->label() . ': ');
             $this->Ln();
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(30, 4);

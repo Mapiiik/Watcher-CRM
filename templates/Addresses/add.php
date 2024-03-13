@@ -26,7 +26,6 @@
                         }
                         echo $this->Form->control('type', [
                             'empty' => true,
-                            'options' => $address->getTypeOptions(),
                         ]);
                         echo $this->Form->control('company');
                         echo $this->Form->control('title');
@@ -39,7 +38,7 @@
                         <?php
                         echo $this->Form->control('street');
                         echo $this->Form->control('number');
-                        echo $this->Form->control('number_type', ['options' => $address->getNumberTypeOptions()]);
+                        echo $this->Form->control('number_type');
                         echo $this->Form->control('city');
                         echo $this->Form->control('zip', ['pattern' => '[0-9]*']);
                         echo $this->Form->control('country_id', ['options' => $countries]);

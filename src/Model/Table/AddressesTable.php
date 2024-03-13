@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Enum\AddressNumberType;
+use App\Model\Enum\AddressType;
+use Cake\Database\Type\EnumType;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 
@@ -41,6 +44,16 @@ class AddressesTable extends AppTable
         $this->setTable('addresses');
         $this->setDisplayField('address');
         $this->setPrimaryKey('id');
+
+        $this->getSchema()->setColumnType(
+            'type',
+            EnumType::from(AddressType::class)
+        );
+
+        $this->getSchema()->setColumnType(
+            'number_type',
+            EnumType::from(AddressNumberType::class)
+        );
 
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');

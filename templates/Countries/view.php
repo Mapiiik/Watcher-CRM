@@ -104,7 +104,7 @@
                                 ) : '' ?>
                             </td>
                             <td><?= $address->__isset('customer') ? h($address->customer->number) : '' ?></td>
-                            <td><?= h($address->getTypeName()) ?></td>
+                            <td><?= h($address->type->label()) ?></td>
                             <td><?= h($address->company) ?></td>
                             <td><?= h($address->title) ?></td>
                             <td><?= h($address->first_name) ?></td>

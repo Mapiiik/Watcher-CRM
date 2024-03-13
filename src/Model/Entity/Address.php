@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\Model\Enum\AddressNumberType;
 use Cake\ORM\Entity;
 
 /**
@@ -16,8 +17,8 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\AppUser|null $modifier
  * @property string $id
  * @property int $nid
- * @property int $type
- * @property int $number_type
+ * @property \App\Model\Enum\AddressType $type
+ * @property \App\Model\Enum\AddressNumberType $number_type
  * @property string $customer_id
  * @property string|null $title
  * @property string|null $first_name
@@ -166,7 +167,8 @@ class Address extends Entity
         if (isset($this->street)) {
                 $street_and_number .= $this->street . ' ' . $this->number;
         } elseif (isset($this->number)) {
-                $street_and_number .= $this->number_type == 1 ? 'č.ev. ' : 'č.p. ' . $this->number;
+                $street_and_number .=
+                    $this->number_type == AddressNumberType::Registration ? 'č.ev. ' : 'č.p. ' . $this->number;
         }
 
         return $street_and_number;
@@ -206,53 +208,5 @@ class Address extends Entity
         $address .= $this->address;
 
         return $address;
-    }
-
-    /**
-     * Get address type options method
-     *
-     * @return array<int, string>
-     */
-    public function getTypeOptions(): array
-    {
-        return [
-            0 => __('Installation Address'),
-            1 => __('Billing Address'),
-            2 => __('Delivery Address'),
-            3 => __('Permanent Address'),
-        ];
-    }
-
-    /**
-     * Get address type name method
-     *
-     * @return string
-     */
-    public function getTypeName(): string
-    {
-        return $this->getTypeOptions()[$this->type] ?? (string)$this->type;
-    }
-
-    /**
-     * Get number type options method
-     *
-     * @return array<int, string>
-     */
-    public function getNumberTypeOptions(): array
-    {
-        return [
-            0 => __('House Number'),
-            1 => __('Registration Number'),
-        ];
-    }
-
-    /**
-     * Get number type name method
-     *
-     * @return string
-     */
-    public function getNumberTypeName(): string
-    {
-        return $this->getNumberTypeOptions()[$this->number_type] ?? (string)$this->number_type;
     }
 }

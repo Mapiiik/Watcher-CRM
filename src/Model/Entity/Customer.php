@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\Model\Enum\AddressType;
 use Cake\ORM\Entity;
 use Exception;
 
@@ -314,7 +315,7 @@ class Customer extends Entity
 
         // take last installation address
         foreach ($this->addresses as $address) {
-            if ($address->type == 0) {
+            if ($address->type == AddressType::Installation) {
                 $installation_address = $address;
             }
         }
@@ -333,7 +334,7 @@ class Customer extends Entity
 
         // take last billing address
         foreach ($this->addresses as $address) {
-            if ($address->type == 1) {
+            if ($address->type == AddressType::Billing) {
                 $billing_address = $address;
             }
         }
@@ -362,7 +363,7 @@ class Customer extends Entity
 
         // take last delivery address
         foreach ($this->addresses as $address) {
-            if ($address->type == 2) {
+            if ($address->type == AddressType::Delivery) {
                 $delivery_address = $address;
             }
         }
@@ -381,7 +382,7 @@ class Customer extends Entity
 
         // take last permanent address
         foreach ($this->addresses as $address) {
-            if ($address->type == 3) {
+            if ($address->type == AddressType::Permanent) {
                 $permanent_address = $address;
             }
         }

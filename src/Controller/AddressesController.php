@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Model\Entity\Address;
+use App\Model\Enum\AddressNumberType;
 
 /**
  * Addresses Controller
@@ -214,7 +215,7 @@ class AddressesController extends AppController
      */
     private function findRuianData(Address $address): array
     {
-        $typ_so = $address->number_type == 1 ? 'č.ev.' : 'č.p.';
+        $typ_so = $address->number_type == AddressNumberType::Registration ? 'č.ev.' : 'č.p.';
         $cislo = explode('/', $address->number ?? '');
         $cislo_domovni = isset($cislo[0]) ? (int)$cislo[0] : null;
         $cislo_orientacni = isset($cislo[1]) ? (int)$cislo[1] : null;

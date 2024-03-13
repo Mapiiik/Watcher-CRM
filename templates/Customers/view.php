@@ -464,7 +464,7 @@
                         </tr>
                         <?php foreach ($customer->addresses as $address) : ?>
                         <tr>
-                            <td><?= h($address->getTypeName()) ?></td>
+                            <td><?= h($address->type->label()) ?></td>
                             <td><?= h($address->company) ?></td>
                             <td><?= h($address->title) ?></td>
                             <td><?= h($address->first_name) ?></td>
