@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\Fixture;
 
+use App\Model\Enum\AddressType;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
@@ -20,7 +21,7 @@ class AddressesFixture extends TestFixture
         $this->records = [
             [
                 'id' => 'ab4bab00-9fe8-48b1-beef-3832a4f933a8',
-                'type' => 1,
+                'type' => AddressType::Installation,
                 'customer_id' => '403bab0e-52cd-4a8e-83f8-43c2457d0481',
                 'title' => 'Lorem ipsum dolor sit amet',
                 'first_name' => 'Lorem ipsum dolor sit amet',
