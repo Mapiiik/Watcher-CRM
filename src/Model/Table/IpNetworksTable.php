@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Enum\IpNetworkTypeOfUse;
+use Cake\Database\Type\EnumType;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 
@@ -41,6 +43,11 @@ class IpNetworksTable extends AppTable
         $this->setTable('ip_networks');
         $this->setDisplayField('ip_network');
         $this->setPrimaryKey('id');
+
+        $this->getSchema()->setColumnType(
+            'type_of_use',
+            EnumType::from(IpNetworkTypeOfUse::class)
+        );
 
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
@@ -83,7 +90,7 @@ class IpNetworksTable extends AppTable
             ]);
 
         $validator
-            ->integer('type_of_use')
+            ->requirePresence('type_of_use', 'create')
             ->notEmptyString('type_of_use');
 
         $validator

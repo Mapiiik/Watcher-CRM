@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Radius\Updater;
 
 use App\Messages\Messages;
+use App\Model\Enum\IpAddressTypeOfUse;
+use App\Model\Enum\IpNetworkTypeOfUse;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
 use Cake\Log\Log;
@@ -346,7 +348,7 @@ class AccountsUpdater
 
         foreach ($contract->ip_addresses as $ipAddress) {
             // Skip IP addresses without RADIUS usage type
-            if (!($ipAddress->type_of_use === 00)) {
+            if (!($ipAddress->type_of_use == IpAddressTypeOfUse::CustomerRADIUS)) {
                 continue;
             }
 
@@ -374,7 +376,7 @@ class AccountsUpdater
 
         foreach ($contract->ip_networks as $ipNetwork) {
             // Skip IP networks without RADIUS usage type
-            if (!($ipNetwork->type_of_use === 00)) {
+            if (!($ipNetwork->type_of_use == IpNetworkTypeOfUse::CustomerRADIUS)) {
                 continue;
             }
 

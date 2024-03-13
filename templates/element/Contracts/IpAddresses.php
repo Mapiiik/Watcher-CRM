@@ -30,7 +30,7 @@
                 ) : '' ?></td>
             <?php endif; ?>
             <td><?= h($ipAddress->ip_address) ?></td>
-            <td><?= h($ipAddress->getTypeOfUseName()) ?></td>
+            <td><?= h($ipAddress->type_of_use->label()) ?></td>
             <td><?= h($ipAddress->note) ?></td>
             <td class="to-center"><?=
                 $this->Html->image('ping/status.png.php?host=' . h($ipAddress->ip_address), [

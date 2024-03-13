@@ -31,7 +31,7 @@
                     echo $this->Form->control('contract_id', ['options' => $contracts]);
                 }
                 echo $this->Form->control('ip_address', ['label' => __('IP Address'), 'disabled' => true]);
-                echo $this->Form->control('type_of_use', ['options' => $ipAddress->getTypeOfUseOptions()]);
+                echo $this->Form->control('type_of_use');
                 echo $this->Form->control('note');
                 ?>
             </fieldset>

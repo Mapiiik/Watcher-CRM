@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\ApiClient;
+use App\Model\Enum\IpAddressTypeOfUse;
 use Cake\I18n\DateTime;
 use IPLib\Range\Subnet;
 
@@ -206,16 +207,16 @@ class IpAddressesController extends AppController
         }
         switch (
             $ipAddress->type_of_use
-            ?? $this->IpAddresses->getSchema()->getColumn('type_of_use')['default']
+            ?? IpAddressTypeOfUse::tryFrom((int)$this->IpAddresses->getSchema()->getColumn('type_of_use')['default'])
             ?? null
         ) {
-            case 00:
+            case IpAddressTypeOfUse::CustomerRADIUS:
                 $ip_address_ranges_filter['for_customer_addresses_set_via_radius'] = '1';
                 break;
-            case 10:
+            case IpAddressTypeOfUse::CustomerManually:
                 $ip_address_ranges_filter['for_customer_addresses_set_manually'] = '1';
                 break;
-            case 20:
+            case IpAddressTypeOfUse::TechnologyManually:
                 $ip_address_ranges_filter['for_technology_addresses_set_manually'] = '1';
                 break;
         }
@@ -410,6 +411,7 @@ class IpAddressesController extends AppController
             return true;
         }
 
+        $this->flashValidationErrors($removedIpAddress->getErrors());
         $this->Flash->error(__('The removed IP address could not be saved. Please, try again.'));
 
         return false;

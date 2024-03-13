@@ -32,7 +32,7 @@
                 ) : '' ?></td>
             <?php endif; ?>
             <td><?= h($removedIpNetwork->ip_network) ?></td>
-            <td><?= h($removedIpNetwork->getTypeOfUseName()) ?></td>
+            <td><?= h($removedIpNetwork->type_of_use->label()) ?></td>
             <td><?= h($removedIpNetwork->note) ?></td>
             <td><?= h($removedIpNetwork->removed) ?></td>
             <td class="actions">

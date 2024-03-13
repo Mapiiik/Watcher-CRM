@@ -52,7 +52,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Type Of Use') ?></th>
-                            <td><?= h($ipAddress->getTypeOfUseName()) ?></td>
+                            <td><?= h($ipAddress->type_of_use->label()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Device') ?></th>

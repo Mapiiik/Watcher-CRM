@@ -50,7 +50,7 @@
                             ['controller' => 'Contracts', 'action' => 'view', $ipNetwork->contract->id]
                         ) : '' ?></td>
                     <td><?= h($ipNetwork->ip_network) ?></td>
-                    <td><?= h($ipNetwork->getTypeOfUseName()) ?></td>
+                    <td><?= h($ipNetwork->type_of_use->label()) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(
                             __('View'),

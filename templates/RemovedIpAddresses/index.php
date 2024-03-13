@@ -53,7 +53,7 @@
                         ) : '' ?>
                     </td>
                     <td><?= h($removedIpAddress->ip_address) ?></td>
-                    <td><?= h($removedIpAddress->getTypeOfUseName()) ?></td>
+                    <td><?= h($removedIpAddress->type_of_use->label()) ?></td>
                     <td><?= h($removedIpAddress->removed) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $removedIpAddress->id]) ?>

@@ -30,7 +30,7 @@
                     echo $this->Form->control('contract_id', ['options' => $contracts, 'empty' => true]);
                 }
                 echo $this->Form->control('ip_network', ['label' => __('IP Network')]);
-                echo $this->Form->control('type_of_use', ['options' => $ipNetwork->getTypeOfUseOptions()]);
+                echo $this->Form->control('type_of_use');
                 echo $this->Form->control('note');
                 ?>
             </fieldset>

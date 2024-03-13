@@ -49,7 +49,6 @@
                     ]);
                 }
                 echo $this->Form->control('type_of_use', [
-                    'options' => $ipAddress->getTypeOfUseOptions(),
                     'onchange' => '
                         var refresh = document.createElement("input");
                         refresh.type = "hidden";

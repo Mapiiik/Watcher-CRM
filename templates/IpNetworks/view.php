@@ -62,7 +62,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Type Of Use') ?></th>
-                            <td><?= h($ipNetwork->getTypeOfUseName()) ?></td>
+                            <td><?= h($ipNetwork->type_of_use->label()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('IP Address Range') ?></th>

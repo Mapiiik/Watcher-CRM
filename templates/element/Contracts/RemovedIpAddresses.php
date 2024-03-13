@@ -28,7 +28,7 @@
                 ) : '' ?></td>
             <?php endif; ?>
             <td><?= h($removedIpAddress->ip_address) ?></td>
-            <td><?= h($removedIpAddress->getTypeOfUseName()) ?></td>
+            <td><?= h($removedIpAddress->type_of_use->label()) ?></td>
             <td><?= h($removedIpAddress->note) ?></td>
             <td><?= h($removedIpAddress->removed) ?></td>
             <td class="actions">

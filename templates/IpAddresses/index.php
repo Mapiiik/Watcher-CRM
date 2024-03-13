@@ -48,7 +48,7 @@
                         ) : '' ?>
                     </td>
                     <td><?= h($ipAddress->ip_address) ?></td>
-                    <td><?= h($ipAddress->getTypeOfUseName()) ?></td>
+                    <td><?= h($ipAddress->type_of_use->label()) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $ipAddress->id]) ?>
                         <?= $this->AuthLink->link(

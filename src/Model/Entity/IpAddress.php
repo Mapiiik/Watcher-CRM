@@ -22,7 +22,7 @@ use Cake\ORM\Entity;
  * @property string $contract_id
  * @property string $id
  * @property int $nid
- * @property int $type_of_use
+ * @property \App\Model\Enum\IpAddressTypeOfUse $type_of_use
  * @property string $style
  *
  * @property \App\Model\Entity\Customer $customer
@@ -101,29 +101,5 @@ class IpAddress extends Entity
         }
 
         return null;
-    }
-
-    /**
-     * Get IP address type of use options method
-     *
-     * @return array<int, string>
-     */
-    public function getTypeOfUseOptions(): array
-    {
-        return [
-            00 => __('Customer address set via RADIUS'),
-            10 => __('Customer address set manually'),
-            20 => __('Technology address set manually'),
-        ];
-    }
-
-    /**
-     * Get IP address type of use name method
-     *
-     * @return string
-     */
-    public function getTypeOfUseName(): string
-    {
-        return $this->getTypeOfUseOptions()[$this->type_of_use] ?? (string)$this->type_of_use;
     }
 }

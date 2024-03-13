@@ -5,6 +5,7 @@ namespace App;
 
 use App\Model\Entity\Contract;
 use App\Model\Entity\ContractVersion;
+use App\Model\Enum\IpAddressTypeOfUse;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
 use stdClass;
@@ -424,11 +425,14 @@ class ContractPDF extends TCPDF
                 $this->SetFont('DejaVuSerif', '', 8);
                 foreach ($contract->ip_addresses as $ipAddress) {
                     // load range for customer address set manually
-                    if ($ipAddress->type_of_use == 10 && isset($ipAddress->ip_address_ranges)) {
+                    if (
+                        $ipAddress->type_of_use == IpAddressTypeOfUse::CustomerManually
+                        && isset($ipAddress->ip_address_ranges)
+                    ) {
                         $range = $ipAddress->ip_address_ranges->first();
                     }
                     // skip processing for technology address set manually
-                    if ($ipAddress->type_of_use == 20) {
+                    if ($ipAddress->type_of_use == IpAddressTypeOfUse::TechnologyManually) {
                         continue 1;
                     }
                     $this->Cell(4, 5);

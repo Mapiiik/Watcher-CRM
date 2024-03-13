@@ -28,7 +28,7 @@
                 ) : '' ?></td>
             <?php endif; ?>
             <td><?= h($ipNetwork->ip_network) ?></td>
-            <td><?= h($ipNetwork->getTypeOfUseName()) ?></td>
+            <td><?= h($ipNetwork->type_of_use->label()) ?></td>
             <td><?= h($ipNetwork->note) ?></td>
             <td><?php
             if (isset($ipNetwork->ip_address_ranges)) {

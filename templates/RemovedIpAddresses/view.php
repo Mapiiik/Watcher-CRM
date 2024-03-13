@@ -64,7 +64,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Type Of Use') ?></th>
-                            <td><?= h($removedIpAddress->getTypeOfUseName()) ?></td>
+                            <td><?= h($removedIpAddress->type_of_use->label()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('IP Address Range') ?></th>

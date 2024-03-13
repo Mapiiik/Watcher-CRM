@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Enum\IpNetworkTypeOfUse;
+use Cake\Database\Type\EnumType;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 
@@ -41,6 +43,11 @@ class RemovedIpNetworksTable extends AppTable
         $this->setDisplayField('ip_network');
         $this->setPrimaryKey('id');
 
+        $this->getSchema()->setColumnType(
+            'type_of_use',
+            EnumType::from(IpNetworkTypeOfUse::class)
+        );
+
         $this->addBehavior('StringModifications');
 
         $this->belongsTo('Customers', [
@@ -75,7 +82,7 @@ class RemovedIpNetworksTable extends AppTable
             ->notEmptyString('ip_network');
 
         $validator
-            ->integer('type_of_use')
+            ->requirePresence('type_of_use', 'create')
             ->notEmptyString('type_of_use');
 
         $validator

@@ -21,7 +21,7 @@ use Cake\ORM\Entity;
  * @property string $customer_id
  * @property string $contract_id
  * @property string $ip_network
- * @property int $type_of_use
+ * @property \App\Model\Enum\IpNetworkTypeOfUse $type_of_use
  * @property string|null $note
  * @property string $style
  *
@@ -84,29 +84,5 @@ class IpNetwork extends Entity
         }
 
         return null;
-    }
-
-    /**
-     * Get IP network type of use options method
-     *
-     * @return array<int, string>
-     */
-    public function getTypeOfUseOptions(): array
-    {
-        return [
-            00 => __('Customer network set via RADIUS'),
-            10 => __('Customer network set manually'),
-            20 => __('Technology network set manually'),
-        ];
-    }
-
-    /**
-     * Get IP network type of use name method
-     *
-     * @return string
-     */
-    public function getTypeOfUseName(): string
-    {
-        return $this->getTypeOfUseOptions()[$this->type_of_use] ?? (string)$this->type_of_use;
     }
 }
