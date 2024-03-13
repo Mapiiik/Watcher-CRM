@@ -590,7 +590,12 @@ class ContractPDF extends TCPDF
             $this->Ln();
 
             $this->SetFont('DejaVuSerif', '', 8);
+            $conditional_discount = 0;
             foreach ($contract->sold_equipments as $sold_equipment) {
+                // conditional discount sum
+                if ($sold_equipment->equipment_type->price < 0) {
+                    $conditional_discount += -$sold_equipment->equipment_type->price;
+                }
                 $subtotal += $sold_equipment->equipment_type->price;
                 $this->Cell(4, 5);
                 $this->Cell(130, 5, $sold_equipment->equipment_type->name, 1);
@@ -666,6 +671,21 @@ class ContractPDF extends TCPDF
             $this->MultiCell(180, 4, 'Uživatel a Poskytovatel tímto stvrzují, že: ___________________________________________________________________________________' . PHP_EOL, align: 'J');
             $this->Ln(6);
 
+            // EARLY TERMINATION TERMS
+            if ($conditional_discount > 0) {
+                $this->SetFont('DejaVuSerif', 'B', 9);
+                $this->Write(4, 'Podmínky předčasného ukončení smlouvy');
+                $this->Ln();
+
+                $this->Ln(0.4);
+                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+                $this->Ln(1);
+
+                $this->SetFont('DejaVuSerif', 'B', 8);
+                $this->MultiCell(180, 4, 'Uživatel potvrzuje, že souhlasí s tím, že v případě předčasné výpovědi smlouvy z jeho strany bude povinen uhradit dodavateli výši rozdílu mezi běžnou cenou zařízení a smluvenou cenou, a to v paušální částce ' . Number::currency($conditional_discount) . '.' . PHP_EOL, align: 'J');
+                $this->Ln(3);
+            }
+
             // FINAL STATEMENTS
             $this->SetFont('DejaVuSerif', 'B', 9);
             $this->Write(4, 'Závěrečná ustanovení');
@@ -678,7 +698,9 @@ class ContractPDF extends TCPDF
             $this->SetFont('DejaVuSerif', '', 8);
             $this->MultiCell(180, 4, 'Uživatel svým podpisem stvrzuje, že výše uvedená zařízení převzal nainstalovaná a plně funkční, a zároveň se zavazuje uhradit částku aktivačního poplatku i cenu dodaných zařízení a příslušenství a prací nad rámec aktivačního poplatku nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené příjmovým pokladním dokladem).' . PHP_EOL, align: 'J');
             $this->Ln(3);
-            $this->MultiCell(180, 4, 'Uživatel dále potvrzuje, že  souhlasí s provedenou instalací a nemá vůči ní žádné námitky a zároveň prohlašuje, že objednané služby jsou plně funkční.' . PHP_EOL, align: 'J');
+            $this->MultiCell(180, 4, 'Uživatel dále potvrzuje, že souhlasí s provedenou instalací a nemá vůči ní žádné námitky a zároveň prohlašuje, že objednané služby jsou plně funkční.' . PHP_EOL, align: 'J');
+            $this->Ln(3);
+            $this->MultiCell(180, 4, 'Uživatel dále potvrzuje, že bere na vědomí a plně souhlasí s podmínkami uvedenými v tomto předávacím protokolu.' . PHP_EOL, align: 'J');
             $this->Ln(3);
             $this->MultiCell(180, 4, 'Tento předávací protokol (ke smlouvě č. ' . $contract->number . ') je vyhotoven ve dvou stejnopisech.' . PHP_EOL, align: 'J');
             $this->Ln(3);
