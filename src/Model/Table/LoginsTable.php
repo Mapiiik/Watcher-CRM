@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Enum\LoginRights;
+use Cake\Database\Type\EnumType;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 
@@ -40,6 +42,11 @@ class LoginsTable extends AppTable
         $this->setTable('logins');
         $this->setDisplayField('login');
         $this->setPrimaryKey('id');
+
+        $this->getSchema()->setColumnType(
+            'rights',
+            EnumType::from(LoginRights::class)
+        );
 
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');

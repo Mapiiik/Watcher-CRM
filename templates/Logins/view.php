@@ -45,7 +45,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Rights') ?></th>
-                            <td><?= h($login->getRightsName()) ?></td>
+                            <td><?= h($login->rights->label()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Locked') ?></th>

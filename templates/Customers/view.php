@@ -407,7 +407,7 @@
                         <?php foreach ($customer->logins as $login) : ?>
                         <tr>
                             <td><?= h($login->login) ?></td>
-                            <td><?= h($login->getRightsName()) ?></td>
+                            <td><?= h($login->rights->label()) ?></td>
                             <td><?= $login->locked ? __('Yes') : __('No'); ?></td>
                             <td><?= h($login->last_granted) ?></td>
                             <td><?= h($login->last_granted_ip) ?></td>

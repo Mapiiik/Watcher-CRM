@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\Fixture;
 
+use App\Model\Enum\LoginRights;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
@@ -21,7 +22,7 @@ class LoginsFixture extends TestFixture
             [
                 'login' => 'Lorem ipsum dolor sit amet',
                 'password' => 'Lorem ipsum dolor sit amet',
-                'rights' => 1,
+                'rights' => LoginRights::User,
                 'locked' => 1,
                 'last_granted' => 1698516611,
                 'last_granted_ip' => 'Lorem ipsum dolor sit amet',

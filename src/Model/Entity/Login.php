@@ -20,7 +20,7 @@ use Cake\Utility\Security;
  * @property string $customer_id
  * @property string $login
  * @property string $password
- * @property int $rights
+ * @property \App\Model\Enum\LoginRights $rights
  * @property int $locked
  * @property \Cake\I18n\DateTime|null $last_granted
  * @property string|null $last_granted_ip
@@ -79,31 +79,5 @@ class Login extends Entity
         }
 
         return null;
-    }
-
-    /**
-     * Get rights options method
-     *
-     * @return array<int, string>
-     */
-    public function getRightsOptions(): array
-    {
-        return [
-            0 => __('Guest'),
-            1 => __('User'),
-            2 => __('Technician'),
-            3 => __('Administrator'),
-            4 => __('Specialist'),
-        ];
-    }
-
-    /**
-     * Get rights name method
-     *
-     * @return string
-     */
-    public function getRightsName(): string
-    {
-        return $this->getRightsOptions()[$this->rights] ?? (string)$this->rights;
     }
 }
