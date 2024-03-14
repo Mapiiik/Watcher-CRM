@@ -18,7 +18,7 @@ use Exception;
  * @property \App\Model\Entity\AppUser|null $modifier
  * @property string $id
  * @property int $nid
- * @property int $dealer
+ * @property \App\Model\Enum\CustomerDealer $dealer
  * @property string|null $title
  * @property string|null $first_name
  * @property string|null $last_name
@@ -32,7 +32,7 @@ use Exception;
  * @property string|null $dic
  * @property string|null $www
  * @property string|null $internal_note
- * @property int $invoice_delivery_type
+ * @property \App\Model\Enum\CustomerInvoiceDeliveryType $invoice_delivery_type
  * @property string|null $note
  * @property string|null $identity_card_number
  * @property \Cake\I18n\Date|null $date_of_birth
@@ -423,54 +423,6 @@ class Customer extends Entity
         }
 
         return (int)$ic[7] === $c;
-    }
-
-    /**
-     * Get dealer state options method
-     *
-     * @return array<int, string>
-     */
-    public function getDealerStateOptions(): array
-    {
-        return [
-            0 => __('No'),
-            1 => __('Yes') . ' (' . __('current') . ')',
-            2 => __('Yes') . ' (' . __('former') . ')',
-        ];
-    }
-
-    /**
-     * Get dealer state name method
-     *
-     * @return string
-     */
-    public function getDealerStateName(): string
-    {
-        return $this->getDealerStateOptions()[$this->dealer] ?? strval($this->dealer);
-    }
-
-    /**
-     * Get invoice delivery type options method
-     *
-     * @return array<int, string>
-     */
-    public function getInvoiceDeliveryTypeOptions(): array
-    {
-        return [
-            0 => __('Do not send'),
-            1 => __('Send by email'),
-        ];
-    }
-
-    /**
-     * Get invoice delivery type options name method
-     *
-     * @return string
-     */
-    public function getInvoiceDeliveryTypeName(): string
-    {
-        return $this->getInvoiceDeliveryTypeOptions()[$this->invoice_delivery_type] ??
-            (string)$this->invoice_delivery_type;
     }
 
     /**

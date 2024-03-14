@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Test\Fixture;
 
+use App\Model\Enum\CustomerDealer;
+use App\Model\Enum\CustomerInvoiceDeliveryType;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
@@ -20,7 +22,7 @@ class CustomersFixture extends TestFixture
         $this->records = [
             [
                 'nid' => 1,
-                'dealer' => 0,
+                'dealer' => CustomerDealer::Never,
                 'title' => 'Lorem ipsum dolor sit amet',
                 'first_name' => 'Lorem ipsum dolor sit amet',
                 'last_name' => 'Lorem ipsum dolor sit amet',
@@ -35,7 +37,7 @@ class CustomersFixture extends TestFixture
                 'dic' => 'Lorem ipsum d',
                 'www' => 'Lorem ipsum dolor sit amet',
                 'internal_note' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-                'invoice_delivery_type' => 1,
+                'invoice_delivery_type' => CustomerInvoiceDeliveryType::Email,
                 'note' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
                 'identity_card_number' => 'Lorem ipsu',
                 'date_of_birth' => '2023-10-28',
@@ -50,7 +52,7 @@ class CustomersFixture extends TestFixture
             ],
             [
                 'nid' => 2,
-                'dealer' => 1,
+                'dealer' => CustomerDealer::Current,
                 'title' => 'Lorem ipsum dolor sit amet',
                 'first_name' => 'Lorem ipsum dolor sit amet',
                 'last_name' => 'Lorem ipsum dolor sit amet',
@@ -65,7 +67,7 @@ class CustomersFixture extends TestFixture
                 'dic' => 'Lorem ipsum d',
                 'www' => 'Lorem ipsum dolor sit amet',
                 'internal_note' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-                'invoice_delivery_type' => 1,
+                'invoice_delivery_type' => CustomerInvoiceDeliveryType::Email,
                 'note' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
                 'identity_card_number' => 'Lorem ipsu',
                 'date_of_birth' => '2023-10-28',

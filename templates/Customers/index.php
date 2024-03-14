@@ -105,7 +105,7 @@
                         <?php endforeach; ?>
                     </td>
                     <td><?= $customer->__isset('tax_rate') ? h($customer->tax_rate->name) : '' ?></td>
-                    <td><?= h($customer->getDealerStateName()) ?></td>
+                    <td><?= h($customer->dealer->label()) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(
                             __('View'),

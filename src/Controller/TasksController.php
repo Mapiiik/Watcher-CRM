@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\ApiClient;
 use App\Model\Enum\AddressType;
+use App\Model\Enum\CustomerDealer;
 use Cake\Form\Form;
 use Cake\I18n\DateTime;
 use Cake\Mailer\Mailer;
@@ -196,7 +197,7 @@ class TasksController extends AppController
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
-                    'style' => $dealer->dealer === 1 ? null : 'color: darkgray;',
+                    'style' => $dealer->dealer == CustomerDealer::Current ? null : 'color: darkgray;',
                 ];
             })
             ->prependItem([
@@ -350,7 +351,7 @@ class TasksController extends AppController
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
-                    'style' => $dealer->dealer === 1 ? null : 'color: darkgray;',
+                    'style' => $dealer->dealer == CustomerDealer::Current ? null : 'color: darkgray;',
                 ];
             });
         $taskStates = $this->Tasks->TaskStates->find('list', order: [
@@ -507,7 +508,7 @@ class TasksController extends AppController
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
-                    'style' => $dealer->dealer === 1 ? null : 'color: darkgray;',
+                    'style' => $dealer->dealer == CustomerDealer::Current ? null : 'color: darkgray;',
                 ];
             });
         $taskStates = $this->Tasks->TaskStates->find('list', order: [

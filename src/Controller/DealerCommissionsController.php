@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Enum\CustomerDealer;
+
 /**
  * DealerCommissions Controller
  *
@@ -102,7 +104,7 @@ class DealerCommissionsController extends AppController
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
-                    'style' => $dealer->dealer === 1 ? null : 'color: darkgray;',
+                    'style' => $dealer->dealer == CustomerDealer::Current ? null : 'color: darkgray;',
                 ];
             });
         $commissions = $this->DealerCommissions->Commissions->find('list', order: [
@@ -145,7 +147,7 @@ class DealerCommissionsController extends AppController
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
-                    'style' => $dealer->dealer === 1 ? null : 'color: darkgray;',
+                    'style' => $dealer->dealer == CustomerDealer::Current ? null : 'color: darkgray;',
                 ];
             });
         $commissions = $this->DealerCommissions->Commissions->find('list', order: [

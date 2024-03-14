@@ -99,11 +99,11 @@
                         </tr>
                         <tr>
                             <th><?= __('Dealer') ?></th>
-                            <td><?= h($customer->getDealerStateName()) ?></td>
+                            <td><?= h($customer->dealer->label()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Invoice Delivery Type') ?></th>
-                            <td><?= h($customer->getInvoiceDeliveryTypeName()) ?></td>
+                            <td><?= h($customer->invoice_delivery_type->label()) ?></td>
                         </tr>
                     </table>
                     <table>

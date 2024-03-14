@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Enum\CustomerDealer;
+use App\Model\Enum\CustomerInvoiceDeliveryType;
+use Cake\Database\Type\EnumType;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 
@@ -54,6 +57,16 @@ class CustomersTable extends AppTable
         $this->setTable('customers');
         $this->setDisplayField('name_for_lists');
         $this->setPrimaryKey('id');
+
+        $this->getSchema()->setColumnType(
+            'dealer',
+            EnumType::from(CustomerDealer::class)
+        );
+
+        $this->getSchema()->setColumnType(
+            'invoice_delivery_type',
+            EnumType::from(CustomerInvoiceDeliveryType::class)
+        );
 
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');

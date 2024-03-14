@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\ApiClient;
+use App\Model\Enum\CustomerDealer;
 use App\View\PdfView;
 use Cake\Collection\Collection;
 use Cake\Database\Exception\MissingConnectionException;
@@ -198,7 +199,7 @@ class ContractsController extends AppController
         $installationTechnicians = $this->Contracts->InstallationTechnicians
             ->find()
             ->where([
-                'dealer' => 1, // only current dealers
+                'dealer' => CustomerDealer::Current,
             ])
             ->orderBy([
                 'dealer',
@@ -211,13 +212,13 @@ class ContractsController extends AppController
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
-                    'style' => $dealer->dealer === 1 ? null : 'color: darkgray;',
+                    'style' => $dealer->dealer == CustomerDealer::Current ? null : 'color: darkgray;',
                 ];
             });
         $uninstallationTechnicians = $this->Contracts->UninstallationTechnicians
             ->find()
             ->where([
-                'dealer' => 1, // only current dealers
+                'dealer' => CustomerDealer::Current,
             ])
             ->orderBy([
                 'dealer',
@@ -230,7 +231,7 @@ class ContractsController extends AppController
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
-                    'style' => $dealer->dealer === 1 ? null : 'color: darkgray;',
+                    'style' => $dealer->dealer == CustomerDealer::Current ? null : 'color: darkgray;',
                 ];
             });
         $commissions = $this->Contracts->Commissions->find('list', order: [
@@ -324,7 +325,7 @@ class ContractsController extends AppController
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
-                    'style' => $dealer->dealer === 1 ? null : 'color: darkgray;',
+                    'style' => $dealer->dealer == CustomerDealer::Current ? null : 'color: darkgray;',
                 ];
             });
         $uninstallationTechnicians = $this->Contracts->UninstallationTechnicians
@@ -340,7 +341,7 @@ class ContractsController extends AppController
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
-                    'style' => $dealer->dealer === 1 ? null : 'color: darkgray;',
+                    'style' => $dealer->dealer == CustomerDealer::Current ? null : 'color: darkgray;',
                 ];
             });
         $commissions = $this->Contracts->Commissions->find('list', order: [
