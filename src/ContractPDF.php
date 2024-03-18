@@ -128,7 +128,7 @@ class ContractPDF extends TCPDF
     }
 
     /**
-     * generate PDF document - hanover protocol
+     * generate PDF document - handover protocol
      *
      * @param \App\Model\Entity\Contract $contract Contract with all related data
      * @param \App\Model\Entity\ContractVersion $contract_version Contract version for dates
@@ -396,16 +396,16 @@ class ContractPDF extends TCPDF
 
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(4, 5);
-            $this->Cell(60, 5, __('Access Point') . ' / ' . __('SSID'), border: 1, align: 'C');
-            $this->Cell(60, 5, __('Username'), border: 1, align: 'C');
-            $this->Cell(60, 5, __('Password'), border: 1, align: 'C');
+            //$this->Cell(60, 5, __('Access Point') . ' / ' . __('SSID'), border: 1, align: 'C');
+            $this->Cell(90, 5, __('Username'), border: 1, align: 'C');
+            $this->Cell(90, 5, __('Password'), border: 1, align: 'C');
             $this->Ln();
 
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Cell(4, 5);
-            $this->Cell(60, 5, $technical_details->access_point ?? '-', border: 1, align: 'C');
-            $this->Cell(60, 5, $technical_details->radius_username ?? '-', border: 1, align: 'C');
-            $this->Cell(60, 5, $technical_details->radius_password ?? '-', border: 1, align: 'C');
+            //$this->Cell(60, 5, $technical_details->access_point ?? '-', border: 1, align: 'C');
+            $this->Cell(90, 5, $technical_details->radius_username ?? '-', border: 1, align: 'C');
+            $this->Cell(90, 5, $technical_details->radius_password ?? '-', border: 1, align: 'C');
             $this->Ln();
 
             $this->Ln(1);
