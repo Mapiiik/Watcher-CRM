@@ -1,12 +1,11 @@
 <?php
+use Cake\Routing\Router;
+
 /**
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\IpNetwork> $ip_networks
  * @var bool $contract_column
  */
-
-use Cake\Routing\Router;
-
 ?>
 <?php if (!empty($ip_networks)) : ?>
 <div class="table-responsive">
