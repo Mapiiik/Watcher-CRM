@@ -4,6 +4,9 @@
  * @var iterable<\App\Model\Entity\IpNetwork> $ip_networks
  * @var bool $contract_column
  */
+
+use Cake\Routing\Router;
+
 ?>
 <?php if (!empty($ip_networks)) : ?>
 <div class="table-responsive">
@@ -30,25 +33,17 @@
             <td><?= h($ipNetwork->ip_network) ?></td>
             <td><?= h($ipNetwork->type_of_use->label()) ?></td>
             <td><?= h($ipNetwork->note) ?></td>
-            <td><?php
-            if (isset($ipNetwork->ip_address_ranges)) {
-                $range = $ipNetwork->ip_address_ranges->first();
-                echo isset($range['access_point']['id']) ?
-                    __('Access Point') . ': ' . $this->Html->link(
-                        $range['access_point']['name'],
-                        env('WATCHER_NMS_URL')
-                            . '/access-points/view/' . $range['access_point']['id'],
-                        ['target' => '_blank']
-                    ) . '<br>' : '';
-                echo isset($range['id']) ?
-                    __('Range') . ': ' . $this->Html->link(
-                        $range['name'],
-                        env('WATCHER_NMS_URL') . '/ip-address-ranges/view/' . $range['id'],
-                        ['target' => '_blank']
-                    ) . '<br>' : '';
-                unset($range);
-            }
-            ?></td>
+            <td>
+                <div
+                    hx-get="<?= Router::url([
+                        'prefix' => 'Api',
+                        'controller' => 'IpNetworks',
+                        'action' => 'ipAddressRanges',
+                        'ip_network' => strtr($ipNetwork->ip_network, ['/' => '-mask-']),
+                        '_ext' => 'ajax',
+                    ]) ?>"
+                    hx-trigger="load"><?= __('Loading...') ?></div>
+            </td>
             <td class="actions">
                 <?= $this->AuthLink->link(
                     __('View'),

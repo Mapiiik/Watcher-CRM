@@ -218,6 +218,19 @@ $permissions = [
                 'view',
             ],
         ],
+        [
+            'role' => '*',
+            'prefix' => 'Api',
+            'plugin' => null,
+            'controller' => [
+                'IpAddresses',
+                'IpNetworks',
+            ],
+            'action' => [
+                'ipAddressRanges',
+                'routerosDevices',
+            ],
+        ],
         //allow tasks for technicians, sales and bookkeepers
         [
             'role' => [

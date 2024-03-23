@@ -4,6 +4,9 @@
  * @var iterable<\App\Model\Entity\IpAddress> $ip_addresses
  * @var bool $contract_column
  */
+
+use Cake\Routing\Router;
+
 ?>
 <?php if (!empty($ip_addresses)) : ?>
 <div class="table-responsive">
@@ -37,37 +40,28 @@
                     'class' => 'ping-status',
                     'onclick' => 'this.src = this.src',
                 ]) ?></td>
-            <td><?php
-            if (isset($ipAddress->routeros_devices)) {
-                $device = $ipAddress->routeros_devices->first();
-                echo isset($device['id']) ?
-                    $this->Html->link(
-                        $device['system_description'],
-                        env('WATCHER_NMS_URL') . '/routeros-devices/view/' . $device['id'],
-                        ['target' => '_blank']
-                    ) . '<br>' : '';
-                unset($device);
-            }
-            ?></td>
-            <td><?php
-            if (isset($ipAddress->ip_address_ranges)) {
-                $range = $ipAddress->ip_address_ranges->first();
-                echo isset($range['access_point']['id']) ?
-                    __('Access Point') . ': ' . $this->Html->link(
-                        $range['access_point']['name'],
-                        env('WATCHER_NMS_URL')
-                            . '/access-points/view/' . $range['access_point']['id'],
-                        ['target' => '_blank']
-                    ) . '<br>' : '';
-                echo isset($range['id']) ?
-                    __('Range') . ': ' . $this->Html->link(
-                        $range['name'],
-                        env('WATCHER_NMS_URL') . '/ip-address-ranges/view/' . $range['id'],
-                        ['target' => '_blank']
-                    ) . '<br>' : '';
-                unset($range);
-            }
-            ?></td>
+            <td>
+                <div
+                    hx-get="<?= Router::url([
+                        'prefix' => 'Api',
+                        'controller' => 'IpAddresses',
+                        'action' => 'routerosDevices',
+                        'ip_address' => $ipAddress->ip_address,
+                        '_ext' => 'ajax',
+                    ]) ?>"
+                    hx-trigger="load"><?= __('Loading...') ?></div>
+            </td>
+            <td>
+                <div
+                    hx-get="<?= Router::url([
+                        'prefix' => 'Api',
+                        'controller' => 'IpAddresses',
+                        'action' => 'ipAddressRanges',
+                        'ip_address' => $ipAddress->ip_address,
+                        '_ext' => 'ajax',
+                    ]) ?>"
+                    hx-trigger="load"><?= __('Loading...') ?></div>
+            </td>
             <td class="actions">
                 <?= $this->AuthLink->link(
                     __('View'),

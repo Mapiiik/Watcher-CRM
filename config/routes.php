@@ -192,12 +192,32 @@ return function (RouteBuilder $routes): void {
 
     // API access
     $routes->prefix('Api', function (RouteBuilder $builder): void {
-        $builder->setExtensions(['json']);
+        $builder->setExtensions(['json', 'ajax']);
 
         $builder->resources('Customers', [
             'map' => [
                 'customer-points' => [
                     'action' => 'customerPoints',
+                    'method' => 'GET',
+                ],
+            ],
+        ]);
+        $builder->resources('IpAddresses', [
+            'map' => [
+                'routeros-devices/{ip_address}' => [
+                    'action' => 'routerosDevices',
+                    'method' => 'GET',
+                ],
+                'ip-address-ranges/{ip_address}' => [
+                    'action' => 'ipAddressRanges',
+                    'method' => 'GET',
+                ],
+            ],
+        ]);
+        $builder->resources('IpNetworks', [
+            'map' => [
+                'ip-address-ranges/{ip_network}' => [
+                    'action' => 'ipAddressRanges',
                     'method' => 'GET',
                 ],
             ],
