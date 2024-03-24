@@ -1,5 +1,6 @@
 <?php
 use Cake\I18n\DateTime;
+use Cake\Routing\Router;
 
 /**
  * @var \App\View\AppView $this
@@ -269,24 +270,18 @@ use Cake\I18n\DateTime;
                             <?php if ($details) : ?>
                             <td><?= h($radacct->nasporttype) ?></td>
                             <?php endif ?>
-                            <td><?php
-                            if (isset($radacct->routeros_devices_for_nas)) {
-                                $device = $radacct->routeros_devices_for_nas->first();
-                                echo isset($device['access_point']['id']) ?
-                                    __d('radius', 'Access Point') . ': ' . $this->Html->link(
-                                        $device['access_point']['name'],
-                                        env('WATCHER_NMS_URL') . '/access-points/view/' . $device['access_point']['id'],
-                                        ['target' => '_blank']
-                                    ) . '<br>' : '';
-                                echo isset($device['id']) ?
-                                    $this->Html->link(
-                                        $device['name'],
-                                        env('WATCHER_NMS_URL') . '/routeros-devices/view/' . $device['id'],
-                                        ['target' => '_blank']
-                                    ) . '<br>' : '';
-                                unset($device);
-                            }
-                            ?></td>
+                            <td>
+                                <div
+                                    hx-get="<?= Router::url([
+                                        'prefix' => 'Api',
+                                        'plugin' => null,
+                                        'controller' => 'NetworkManagementSystemBridge',
+                                        'action' => 'accessPoints',
+                                        'ip_address' => $radacct->nasipaddress,
+                                        '_ext' => 'ajax',
+                                    ]) ?>"
+                                    hx-trigger="load"><?= __d('radius', 'Loading...') ?></div>
+                            </td>
                             <td><?= h($radacct->acctstarttime) ?></td>
                             <?php if ($details) : ?>
                             <td><?= h($radacct->acctupdatetime) ?></td>

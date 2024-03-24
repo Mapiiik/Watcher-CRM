@@ -9,12 +9,11 @@ use App\View\AjaxView;
 use Cake\View\JsonView;
 
 /**
- * IpNetworks Controller
+ * Network Management System Bridge Controller
  *
- * @property \App\Model\Table\IpAddressesTable $IpAddresses
  * @method \App\Model\Entity\Customer[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class IpNetworksController extends AppController
+class NetworkManagementSystemBridgeController extends AppController
 {
     /**
      * Returns supported output types
@@ -22,6 +21,30 @@ class IpNetworksController extends AppController
     public function viewClasses(): array
     {
         return [JsonView::class, AjaxView::class];
+    }
+
+    /**
+     * RouterOS Devices method
+     *
+     * @return \Cake\Http\Response|null|void Renders view
+     */
+    public function routerosDevices()
+    {
+        $ip_address = $this->getRequest()->getParam('ip_address');
+        $routerosDevices = ApiClient::getRouterosDevicesForIp($ip_address);
+
+        $this->set('routerosDevices', $routerosDevices);
+        $this->viewBuilder()->setOption('serialize', ['routerosDevices']);
+    }
+
+    /**
+     * Access Points method
+     *
+     * @return \Cake\Http\Response|null|void Renders view
+     */
+    public function accessPoints()
+    {
+        $this->routerosDevices();
     }
 
     /**

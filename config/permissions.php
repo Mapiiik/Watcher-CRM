@@ -223,12 +223,12 @@ $permissions = [
             'prefix' => 'Api',
             'plugin' => null,
             'controller' => [
-                'IpAddresses',
-                'IpNetworks',
+                'NetworkManagementSystemBridge',
             ],
             'action' => [
-                'ipAddressRanges',
+                'accessPoints',
                 'routerosDevices',
+                'ipAddressRanges',
             ],
         ],
         //allow tasks for technicians, sales and bookkeepers

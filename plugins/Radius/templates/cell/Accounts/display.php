@@ -1,4 +1,6 @@
 <?php
+use Cake\Routing\Router;
+
 /**
  * @var \App\View\AppView $this
  * @var \Cake\ORM\ResultSet<\Radius\Model\Entity\Account> $accounts
@@ -58,24 +60,20 @@
             }
             ?></td>
             <td><?= h($account->radacct[0]->nasipaddress ?? '') ?></td>
-            <td><?php
-            if (isset($account->radacct[0]->routeros_devices_for_nas)) {
-                $device = $account->radacct[0]->routeros_devices_for_nas->first();
-                echo isset($device['access_point']['id']) ?
-                    __d('radius', 'Access Point') . ': ' . $this->Html->link(
-                        $device['access_point']['name'],
-                        env('WATCHER_NMS_URL') . '/access-points/view/' . $device['access_point']['id'],
-                        ['target' => '_blank']
-                    ) . '<br>' : '';
-                echo isset($device['id']) ?
-                    $this->Html->link(
-                        $device['name'],
-                        env('WATCHER_NMS_URL') . '/routeros-devices/view/' . $device['id'],
-                        ['target' => '_blank']
-                    ) . '<br>' : '';
-                unset($device);
-            }
-            ?></td>
+            <td>
+                <?php if (isset($account->radacct[0]->nasipaddress)) : ?>
+                <div
+                    hx-get="<?= Router::url([
+                        'prefix' => 'Api',
+                        'plugin' => null,
+                        'controller' => 'NetworkManagementSystemBridge',
+                        'action' => 'accessPoints',
+                        'ip_address' => $account->radacct[0]->nasipaddress,
+                        '_ext' => 'ajax',
+                    ]) ?>"
+                    hx-trigger="load"><?= __d('radius', 'Loading...') ?></div>
+                <?php endif; ?>
+            </td>
             <td class="actions">
                 <?= $this->AuthLink->link(
                     __d('radius', 'View'),

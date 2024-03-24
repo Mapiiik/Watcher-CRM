@@ -36,7 +36,7 @@ use Cake\Routing\Router;
                 <div
                     hx-get="<?= Router::url([
                         'prefix' => 'Api',
-                        'controller' => 'IpNetworks',
+                        'controller' => 'NetworkManagementSystemBridge',
                         'action' => 'ipAddressRanges',
                         'ip_network' => strtr($ipNetwork->ip_network, ['/' => '-mask-']),
                         '_ext' => 'ajax',

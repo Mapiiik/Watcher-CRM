@@ -202,20 +202,21 @@ return function (RouteBuilder $routes): void {
                 ],
             ],
         ]);
-        $builder->resources('IpAddresses', [
+        $builder->resources('NetworkManagementSystemBridge', [
+            'only' => [
+                'access-points/{ip_address}',
+                'routeros-devices/{ip_address}',
+                'ip-address-ranges/{ip_network}',
+            ],
             'map' => [
+                'access-points/{ip_address}' => [
+                    'action' => 'accessPoints',
+                    'method' => 'GET',
+                ],
                 'routeros-devices/{ip_address}' => [
                     'action' => 'routerosDevices',
                     'method' => 'GET',
                 ],
-                'ip-address-ranges/{ip_address}' => [
-                    'action' => 'ipAddressRanges',
-                    'method' => 'GET',
-                ],
-            ],
-        ]);
-        $builder->resources('IpNetworks', [
-            'map' => [
                 'ip-address-ranges/{ip_network}' => [
                     'action' => 'ipAddressRanges',
                     'method' => 'GET',

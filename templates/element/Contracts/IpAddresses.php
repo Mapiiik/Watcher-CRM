@@ -43,7 +43,7 @@ use Cake\Routing\Router;
                 <div
                     hx-get="<?= Router::url([
                         'prefix' => 'Api',
-                        'controller' => 'IpAddresses',
+                        'controller' => 'NetworkManagementSystemBridge',
                         'action' => 'routerosDevices',
                         'ip_address' => $ipAddress->ip_address,
                         '_ext' => 'ajax',
@@ -54,9 +54,9 @@ use Cake\Routing\Router;
                 <div
                     hx-get="<?= Router::url([
                         'prefix' => 'Api',
-                        'controller' => 'IpAddresses',
+                        'controller' => 'NetworkManagementSystemBridge',
                         'action' => 'ipAddressRanges',
-                        'ip_address' => $ipAddress->ip_address,
+                        'ip_network' => $ipAddress->ip_address,
                         '_ext' => 'ajax',
                     ]) ?>"
                     hx-trigger="load"><?= __('Loading...') ?></div>
