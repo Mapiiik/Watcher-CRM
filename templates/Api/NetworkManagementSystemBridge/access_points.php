@@ -7,7 +7,7 @@
 if (isset($routerosDevices)) {
     $device = $routerosDevices->first();
     echo isset($device['access_point']['id']) ?
-        __d('radius', 'Access Point') . ': ' . $this->Html->link(
+        __('Access Point') . ': ' . $this->Html->link(
             $device['access_point']['name'],
             env('WATCHER_NMS_URL') . '/access-points/view/' . $device['access_point']['id'],
             ['target' => '_blank']

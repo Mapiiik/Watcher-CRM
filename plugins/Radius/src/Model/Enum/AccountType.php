@@ -18,7 +18,7 @@ enum AccountType: int implements EnumLabelInterface
     public function label(): string
     {
         return match ($this) {
-            self::PPPoE => __('PPPoE'),
+            self::PPPoE => __d('radius', 'PPPoE'),
         };
 
         //return Inflector::humanize(Inflector::underscore($this->name));
