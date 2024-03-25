@@ -152,7 +152,7 @@ class DebtorsProcessor
      */
     public function block(?string $id): string
     {
-        $customer_ips = $this->getCustomerIps($id, 'MANUAL ENTRY - ');
+        $customer_ips = $this->getCustomerIps($id, 'MANUAL ENTRY - ', false);
 
         $this->addLabel($id);
 
@@ -172,7 +172,7 @@ class DebtorsProcessor
      */
     public function unblock(?string $id): string
     {
-        $customer_ips = $this->getCustomerIps($id, 'MANUAL ENTRY - ');
+        $customer_ips = $this->getCustomerIps($id, 'MANUAL ENTRY - ', false);
 
         $this->removeLabel($id);
 
@@ -196,7 +196,7 @@ class DebtorsProcessor
         foreach ($ids as $id) {
             $customer_ips = array_merge_recursive(
                 $customer_ips,
-                $this->getCustomerIps($id, 'MANUAL ENTRY - ')
+                $this->getCustomerIps($id, 'MANUAL ENTRY - ', false)
             );
 
             $this->addLabel($id);
@@ -222,7 +222,7 @@ class DebtorsProcessor
         foreach ($ids as $id) {
             $customer_ips = array_merge_recursive(
                 $customer_ips,
-                $this->getCustomerIps($id, 'MANUAL ENTRY - ')
+                $this->getCustomerIps($id, 'MANUAL ENTRY - ', false)
             );
 
             $this->removeLabel($id);
