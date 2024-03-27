@@ -160,7 +160,7 @@ $urlWithQuery = function ($query = []) use ($request) {
                 ['controller' => 'Settings', 'action' => 'index', 'plugin' => null, 'customer_id' => false],
                 ['class' => 'button button-small' . $buttonSelected([
                     'Settings',
-                    'Users',
+                    'AppUsers',
                 ])]
             ) ?>
 
