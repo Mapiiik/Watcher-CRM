@@ -95,7 +95,7 @@
                         ) : '' ?>
                     </td>
                     <td>
-                        <?= h($task->subject) ?>
+                        <?= h($task->subject) ?? '&nbsp;' ?>
                         <blockquote><i><?= h($task->summary_text) ?></i></blockquote>
                     </td>
                     <td style="overflow-wrap: break-word; max-width: 600px;"><?= nl2br($task->text ?? '') ?></td>
