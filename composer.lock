@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3a690bf67bf48156aea8de6257e87ab8",
+    "content-hash": "183344cdd0427b7e7fad4b9a514f1b7c",
     "packages": [
         {
             "name": "brick/math",
@@ -884,6 +884,47 @@
                 }
             ],
             "time": "2024-03-15T14:00:32+00:00"
+        },
+        {
+            "name": "dereuromark/cakephp-decimal",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dereuromark/cakephp-decimal.git",
+                "reference": "574c29679e56a593ca23915ed4a26fa196e8c885"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dereuromark/cakephp-decimal/zipball/574c29679e56a593ca23915ed4a26fa196e8c885",
+                "reference": "574c29679e56a593ca23915ed4a26fa196e8c885",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "^5.0.0",
+                "php": ">=8.1",
+                "php-collective/decimal-object": "^1.0.0"
+            },
+            "require-dev": {
+                "fig-r/psr2r-sniffer": "dev-next",
+                "phpunit/phpunit": "^10.2"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "CakeDecimal\\": "src/",
+                    "CakeDecimal\\Test\\Fixture\\": "tests/Fixture/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "CakePHP plugin for decimal handling via value object. Provides DecimalType class.",
+            "support": {
+                "issues": "https://github.com/dereuromark/cakephp-decimal/issues",
+                "source": "https://github.com/dereuromark/cakephp-decimal/tree/2.1.0"
+            },
+            "time": "2023-11-22T20:23:04+00:00"
         },
         {
             "name": "doctrine/sql-formatter",
@@ -2708,6 +2749,62 @@
                 "source": "https://github.com/paragonie/random_compat"
             },
             "time": "2022-02-16T17:07:03+00:00"
+        },
+        {
+            "name": "php-collective/decimal-object",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-collective/decimal-object.git",
+                "reference": "45892c18fd8ef158741c8ac32ab4118a48dc8b5e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-collective/decimal-object/zipball/45892c18fd8ef158741c8ac32ab4118a48dc8b5e",
+                "reference": "45892c18fd8ef158741c8ac32ab4118a48dc8b5e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-bcmath": "*",
+                "ext-json": "*",
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "php-collective/code-sniffer": "^0.2.1",
+                "phpstan/phpstan": "^1.0.0",
+                "phpunit/phpunit": "^10.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PhpCollective\\DecimalObject\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "The PHP Collective",
+                    "homepage": "https://github.com/php-collective"
+                },
+                {
+                    "name": "Spryker Systems GmbH",
+                    "homepage": "https://spryker.com"
+                }
+            ],
+            "description": "PHP decimal handling as value object",
+            "support": {
+                "issues": "https://github.com/php-collective/decimal-object/issues",
+                "source": "https://github.com/php-collective/decimal-object/tree/1.2.1"
+            },
+            "time": "2023-12-07T13:56:17+00:00"
         },
         {
             "name": "php-http/discovery",

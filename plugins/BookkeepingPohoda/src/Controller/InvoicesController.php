@@ -9,6 +9,7 @@ use Cake\Collection\CollectionInterface;
 use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
 use Cake\Validation\Validation;
+use PhpCollective\DecimalObject\Decimal;
 use stdClass;
 
 /**
@@ -384,12 +385,12 @@ class InvoicesController extends AppController
                     /** @var \App\Model\Entity\Customer $customer */
 
                     // declare billing data
-                    $billing_data['total'] = 0;
+                    $billing_data['total'] = Decimal::create(0, 2);
                     $billing_data['items'] = [];
 
                     foreach ($customer->contracts as $contract) {
                         foreach ($contract->billings as $billing) {
-                            $billing_data['total'] += $billing->period_total;
+                            $billing_data['total'] = $billing_data['total']->add($billing->period_total);
                             $billing_data['items'][] = $billing;
                         }
                     }
@@ -405,7 +406,7 @@ class InvoicesController extends AppController
                             $verification_data[$customer->number]['crm'] = $billing_data;
                         }
                     } else {
-                        if ($billing_data['total'] <> 0) {
+                        if (!$billing_data['total']->isZero()) {
                             // create missing verification data if there are non zero billing items
                             $verification_data[$customer->number]['customer'] = $customer;
                             $verification_data[$customer->number]['crm'] = $billing_data;
@@ -457,16 +458,16 @@ class InvoicesController extends AppController
                 /** @var \App\Model\Entity\Customer $customer */
 
                 // declare customer billing data
-                $billing_customer['total'] = 0;
+                $billing_customer['total'] = Decimal::create(0, 2);
                 $billing_customer['items'] = [];
 
                 foreach ($customer->contracts as $contract) {
                     // declare contract billing data
-                    $billing_contract['total'] = 0;
+                    $billing_contract['total'] = Decimal::create(0, 2);
                     $billing_contract['items'] = [];
 
                     foreach ($contract->billings as $billing) {
-                        if ($billing->isSeparateInvoice() && $billing->period_total <> 0) {
+                        if ($billing->isSeparateInvoice() && !$billing->period_total->isZero()) {
                             $invoice = $this->Invoices->newEmptyEntity();
                             $invoice->number = $prefix + $index;
                             $invoice->customer = $customer;
@@ -483,12 +484,12 @@ class InvoicesController extends AppController
                             unset($invoice);
                             $index++;
                         } else {
-                            $billing_contract['total'] += $billing->period_total;
+                            $billing_contract['total'] = $billing_contract['total']->add($billing->period_total);
                             $billing_contract['items'][] = $billing;
                         }
                     }
 
-                    if ($contract->isSeparateInvoice() && $billing_contract['total'] <> 0) {
+                    if ($contract->isSeparateInvoice() && !$billing_contract['total']->isZero()) {
                         $invoice = $this->Invoices->newEmptyEntity();
                         $invoice->number = $prefix + $index;
                         $invoice->customer = $customer;
@@ -512,7 +513,7 @@ class InvoicesController extends AppController
                         unset($invoice);
                         $index++;
                     } else {
-                        $billing_customer['total'] += $billing_contract['total'];
+                        $billing_customer['total'] = $billing_customer['total']->add($billing_contract['total']);
                         $billing_customer['items'] = array_merge(
                             array_values($billing_customer['items']),
                             array_values($billing_contract['items'])
@@ -522,7 +523,7 @@ class InvoicesController extends AppController
                     unset($billing_contract);
                 }
 
-                if ($billing_customer['total'] <> 0) {
+                if (!$billing_customer['total']->isZero()) {
                     $invoice = $this->Invoices->newEmptyEntity();
                     $invoice->number = $prefix + $index;
                     $invoice->customer = $customer;

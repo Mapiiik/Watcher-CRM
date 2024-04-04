@@ -84,8 +84,16 @@ class BillingsTable extends AppTable
             ->allowEmptyString('text');
 
         $validator
-            ->integer('price')
+            ->decimal('price')
             ->allowEmptyString('price');
+
+        $validator
+            ->decimal('fixed_discount')
+            ->allowEmptyString('fixed_discount');
+
+        $validator
+            ->integer('percentage_discount')
+            ->allowEmptyString('percentage_discount');
 
         $validator
             ->date('billing_from');

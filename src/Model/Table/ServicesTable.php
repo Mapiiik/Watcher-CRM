@@ -75,7 +75,7 @@ class ServicesTable extends AppTable
             ->allowEmptyString('name');
 
         $validator
-            ->integer('price')
+            ->decimal('price')
             ->allowEmptyString('price');
 
         $validator

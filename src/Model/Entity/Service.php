@@ -17,7 +17,7 @@ use Cake\ORM\Entity;
  * @property string $id
  * @property int $nid
  * @property string|null $name
- * @property int|null $price
+ * @property \PhpCollective\DecimalObject\Decimal|null $price
  * @property int|null $service_type_id
  * @property int|null $queue_id
  * @property bool $not_for_new_customers

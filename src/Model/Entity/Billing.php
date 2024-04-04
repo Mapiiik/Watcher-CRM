@@ -6,6 +6,7 @@ namespace App\Model\Entity;
 use Cake\I18n\Date;
 use Cake\ORM\Entity;
 use Exception;
+use PhpCollective\DecimalObject\Decimal;
 
 /**
  * Billing Entity
@@ -20,7 +21,7 @@ use Exception;
  * @property int $nid
  * @property string $customer_id
  * @property string|null $text
- * @property int|null $price
+ * @property \PhpCollective\DecimalObject\Decimal|null $price
  * @property \Cake\I18n\Date|null $billing_from
  * @property string|null $note
  * @property bool $active
@@ -29,18 +30,18 @@ use Exception;
  * @property int|null $service_id
  * @property int $quantity
  * @property string $contract_id
- * @property int|null $fixed_discount
+ * @property \PhpCollective\DecimalObject\Decimal|null $fixed_discount
  * @property int|null $percentage_discount
- * @property float $sum
- * @property float $fixed_discount_sum
- * @property float $percentage_discount_sum
- * @property float $discount
- * @property float $total_price
- * @property float $vat
- * @property float $vat_base
+ * @property \PhpCollective\DecimalObject\Decimal $sum
+ * @property \PhpCollective\DecimalObject\Decimal $fixed_discount_sum
+ * @property \PhpCollective\DecimalObject\Decimal $percentage_discount_sum
+ * @property \PhpCollective\DecimalObject\Decimal $discount
+ * @property \PhpCollective\DecimalObject\Decimal $total_price
+ * @property \PhpCollective\DecimalObject\Decimal $vat
+ * @property \PhpCollective\DecimalObject\Decimal $vat_base
  * @property string $style
  * @property string $name
- * @property float $period_total
+ * @property \PhpCollective\DecimalObject\Decimal $period_total
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Service $service
@@ -104,11 +105,11 @@ class Billing extends Entity
     /**
      * getter for sum of price (use local price or from service and multiply by quantity)
      *
-     * @return float
+     * @return \PhpCollective\DecimalObject\Decimal
      */
-    protected function _getSum(): float
+    protected function _getSum(): Decimal
     {
-        $sum = 0;
+        $sum = Decimal::create(0, 2);
 
         if (isset($this->price)) {
             $sum = $this->price;
@@ -116,7 +117,7 @@ class Billing extends Entity
             $sum = $this->service->price;
         }
 
-        $sum = $sum * $this->quantity;
+        $sum = $sum->multiply($this->quantity);
 
         return $sum;
     }
@@ -124,11 +125,11 @@ class Billing extends Entity
     /**
      * getter for sum of fixed discount (0 when not set)
      *
-     * @return float
+     * @return \PhpCollective\DecimalObject\Decimal
      */
-    protected function _getFixedDiscountSum(): float
+    protected function _getFixedDiscountSum(): Decimal
     {
-        $discount = 0;
+        $discount = Decimal::create(0, 2);
 
         if (isset($this->fixed_discount)) {
             $discount = $this->fixed_discount;
@@ -140,14 +141,14 @@ class Billing extends Entity
     /**
      * getter for sum of percentage discount from calculated sum (0 when not set)
      *
-     * @return float
+     * @return \PhpCollective\DecimalObject\Decimal
      */
-    protected function _getPercentageDiscountSum(): float
+    protected function _getPercentageDiscountSum(): Decimal
     {
-        $discount = 0;
+        $discount = Decimal::create(0, 2);
 
         if (isset($this->percentage_discount)) {
-            $discount = $this->sum * $this->percentage_discount / 100;
+            $discount = $this->sum->multiply($this->percentage_discount)->divide(100, 2);
         }
 
         return $discount;
@@ -156,41 +157,69 @@ class Billing extends Entity
     /**
      * getter for sum of all discounts from calculated sum
      *
-     * @return float
+     * @return \PhpCollective\DecimalObject\Decimal
      */
-    protected function _getDiscount(): float
+    protected function _getDiscount(): Decimal
     {
-        return $this->fixed_discount_sum + $this->percentage_discount_sum;
+        return $this->fixed_discount_sum->add($this->percentage_discount_sum);
     }
 
     /**
      * getter for total price (sum - discount)
      *
-     * @return float
+     * @return \PhpCollective\DecimalObject\Decimal
      */
-    protected function _getTotalPrice(): float
+    protected function _getTotalPrice(): Decimal
     {
-        return $this->sum - $this->discount;
+        return $this->sum->subtract($this->discount);
     }
 
     /**
-     * getter for vat base (total - vat)
+     * Calculate VAT from total.
      *
-     * @return float
+     * @param \PhpCollective\DecimalObject\Decimal $total Total price.
+     * @param float $vat_rate VAT rate.
+     * @return \PhpCollective\DecimalObject\Decimal
      */
-    protected function _getVatBase(): float
+    public static function calcVatFromTotal(Decimal $total, float $vat_rate): Decimal
     {
-        return $this->total_price - $this->vat;
+        return $total->subtract(
+            $total->divide(1 + $vat_rate, 2)
+        );
+    }
+
+    /**
+     * Calculate VAT base from total.
+     *
+     * @param \PhpCollective\DecimalObject\Decimal $total Total price.
+     * @param float $vat_rate VAT rate.
+     * @return \PhpCollective\DecimalObject\Decimal
+     */
+    public static function calcVatBaseFromTotal(Decimal $total, float $vat_rate): Decimal
+    {
+        return $total->subtract(
+            self::calcVatFromTotal($total, $vat_rate)
+        );
     }
 
     /**
      * getter for VAT
      *
-     * @return float
+     * @return \PhpCollective\DecimalObject\Decimal
      */
-    protected function _getVat(): float
+    protected function _getVat(): Decimal
     {
-        return round($this->total_price - ($this->total_price / (1 + $this->customer->tax_rate->vat_rate)), 2);
+        return self::calcVatFromTotal($this->total_price, $this->customer->tax_rate->vat_rate);
+    }
+
+    /**
+     * getter for vat base (total - vat)
+     *
+     * @return \PhpCollective\DecimalObject\Decimal
+     */
+    protected function _getVatBase(): Decimal
+    {
+        return self::calcVatBaseFromTotal($this->total_price, $this->customer->tax_rate->vat_rate);
     }
 
     /**
@@ -198,52 +227,56 @@ class Billing extends Entity
      *
      * @param \Cake\I18n\Date $from First day of period
      * @param \Cake\I18n\Date $until Last day of period
-     * @return float
+     * @return \PhpCollective\DecimalObject\Decimal
+     * @throws \Exception When something goes wrong.
      */
-    public function periodTotal(Date $from, Date $until): float
+    public function periodTotal(Date $from, Date $until): Decimal
     {
         $period_days = $from->diffInDays($until->addDays(1));
 
         // billing_from not set
         if (is_null($this->billing_from)) {
-            return 0;
+            return Decimal::create(0, 2);
         }
 
         // billing_from in future period
         if ($this->billing_from > $until) {
-            return 0;
+            return Decimal::create(0, 2);
         }
 
         // billing_until before period
         if (!is_null($this->billing_until) && $this->billing_until < $from) {
-            return 0;
+            return Decimal::create(0, 2);
         }
 
         if (is_null($this->billing_until) || (!is_null($this->billing_until) && $this->billing_until >= $until)) { // billing_until is not limiting
             // whole period
             if ($this->billing_from <= $from) {
-                return ceil($this->total_price);
+                return $this->total_price;
             }
             // later billing_from
             if ($this->billing_from <= $until) {
-                return ceil($this->total_price / $period_days
-                    * $this->billing_from->diffInDays($until->addDays(1)));
+                return $this->total_price
+                    ->multiply($this->billing_from->diffInDays($until->addDays(1)))
+                    ->divide($period_days, 2);
             }
         } else { // billing_until is limiting
             // earlier billing_until
             if ($this->billing_from <= $from) {
-                return ceil($this->total_price / $period_days
-                    * $from->diffInDays($this->billing_until->addDays(1)));
+                return $this->total_price
+                    ->multiply($from->diffInDays($this->billing_until->addDays(1)))
+                    ->divide($period_days, 2);
             }
             // later billing_from and earlier billing_until
             if ($this->billing_from <= $until) {
-                return ceil($this->total_price / $period_days
-                    * $this->billing_from->diffInDays($this->billing_until->addDays(1)));
+                return $this->total_price
+                    ->multiply($this->billing_from->diffInDays($this->billing_until->addDays(1)))
+                    ->divide($period_days, 2);
             }
         }
 
-        // this should never happen
-        return 0;
+        // This should never happen :-)
+        throw new Exception('This should never happen :-)');
     }
 
     /**

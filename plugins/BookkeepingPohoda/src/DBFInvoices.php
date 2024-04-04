@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace BookkeepingPohoda;
 
+use App\Model\Entity\Billing;
 use App\Model\Entity\TaxRate;
 use BookkeepingPohoda\Model\Entity\Invoice;
 
@@ -100,10 +101,10 @@ class DBFInvoices
      */
     public function addRecord(Invoice $invoice, TaxRate $tax_rate): void
     {
-        $totalcost = $invoice->total;
+        $totalcost = $invoice->total->toFloat();
 
     //START add record to dBase file
-        $dph = round($totalcost - ($totalcost / (1 + $tax_rate->vat_rate)), 2);
+        $dph = Billing::calcVatFromTotal($invoice->total, $tax_rate->vat_rate)->toFloat();
 
         $data[] = $invoice->number; //cislo faktury
         $data[] = $invoice->variable_symbol; //variabilni symbol

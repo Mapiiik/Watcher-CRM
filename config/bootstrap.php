@@ -34,6 +34,7 @@ require CORE_PATH . 'config' . DS . 'bootstrap.php';
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Core\Configure\Engine\PhpConfig;
+use Cake\Database\TypeFactory;
 use Cake\Datasource\ConnectionManager;
 use Cake\Error\ErrorTrap;
 use Cake\Error\ExceptionTrap;
@@ -228,3 +229,11 @@ ServerRequest::addDetector('tablet', function ($request) {
 // and https://unicode-org.github.io/icu/userguide/format_parse/datetime/#datetime-format-syntax
 //\Cake\I18n\Date::setToStringFormat('dd.MM.yyyy');
 //\Cake\I18n\Time::setToStringFormat('dd.MM.yyyy HH:mm');
+
+/*
+ * CakeDecimal plugin
+ */
+TypeFactory::map(
+    'decimal',
+    'CakeDecimal\Database\Type\DecimalObjectType',
+);

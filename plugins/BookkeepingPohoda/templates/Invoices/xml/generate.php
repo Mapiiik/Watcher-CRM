@@ -1,4 +1,6 @@
 <?php
+
+use App\Model\Entity\Billing;
 use Riesenia\Pohoda;
 
 /**
@@ -75,14 +77,8 @@ foreach ($invoices as $invoice) {
             'rateVAT' => 'high',
             'homeCurrency' => [
                 'unitPrice' => $item->period_total,
-                'price' => $item->period_total - round(
-                    $item->period_total - ($item->period_total / (1 + $tax_rate->vat_rate)),
-                    2
-                ),
-                'priceVAT' => $tax_rate->reverse_charge ? 0 : round(
-                    $item->period_total - ($item->period_total / (1 + $tax_rate->vat_rate)),
-                    2
-                ),
+                'price' => Billing::calcVatBaseFromTotal($item->period_total, $tax_rate->vat_rate)->toFloat(),
+                'priceVAT' => $tax_rate->reverse_charge ? 0 : Billing::calcVatFromTotal($item->period_total, $tax_rate->vat_rate)->toFloat(),
             ],
             'PDP' => $tax_rate->reverse_charge,
         ]);
@@ -95,14 +91,8 @@ foreach ($invoices as $invoice) {
         'homeCurrency' => [
             'priceNone' => 0,
             'priceLow' => 0,
-            'priceHigh' => $invoice->total - round(
-                $invoice->total - ($invoice->total / (1 + $tax_rate->vat_rate)),
-                2
-            ),
-            'priceHighVAT' => $tax_rate->reverse_charge ? 0 : round(
-                $invoice->total - ($invoice->total / (1 + $tax_rate->vat_rate)),
-                2
-            ),
+            'priceHigh' => Billing::calcVatBaseFromTotal($invoice->total, $tax_rate->vat_rate)->toFloat(),
+            'priceHighVAT' => $tax_rate->reverse_charge ? 0 : Billing::calcVatFromTotal($invoice->total, $tax_rate->vat_rate)->toFloat(),
             'round' => [
                 'priceRound' => 0,
             ],

@@ -6,6 +6,7 @@ namespace App\Model\Entity;
 use App\ApiClient;
 use Cake\ORM\Entity;
 use Exception;
+use PhpCollective\DecimalObject\Decimal;
 
 /**
  * Contract Entity
@@ -32,10 +33,10 @@ use Exception;
  * @property \Cake\I18n\Date|null $uninstallation_date
  * @property \Cake\I18n\Date|null $termination_date
  * @property string|null $access_description
- * @property int|null $activation_fee
- * @property int|null $activation_fee_with_obligation
- * @property int|null $activation_fee_sum
- * @property int|null $activation_fee_with_obligation_sum
+ * @property \PhpCollective\DecimalObject\Decimal|null $activation_fee
+ * @property \PhpCollective\DecimalObject\Decimal|null $activation_fee_with_obligation
+ * @property \PhpCollective\DecimalObject\Decimal|null $activation_fee_sum
+ * @property \PhpCollective\DecimalObject\Decimal|null $activation_fee_with_obligation_sum
  * @property string|null $number_of_the_contract_to_be_terminated
  * @property string|null $access_point_id
  * @property string $contract_state_id
@@ -123,9 +124,9 @@ class Contract extends Entity
     /**
      * getter for activation_fee (local or from service_type)
      *
-     * @return int|null
+     * @return \PhpCollective\DecimalObject\Decimal|null
      */
-    protected function _getActivationFeeSum(): ?int
+    protected function _getActivationFeeSum(): ?Decimal
     {
         if (isset($this->activation_fee)) {
             return $this->activation_fee;
@@ -141,9 +142,9 @@ class Contract extends Entity
     /**
      * getter for activation_fee_with_obligation (local or from service_type)
      *
-     * @return int|null
+     * @return \PhpCollective\DecimalObject\Decimal|null
      */
-    protected function _getActivationFeeWithObligationSum(): ?int
+    protected function _getActivationFeeWithObligationSum(): ?Decimal
     {
         if (isset($this->activation_fee_with_obligation)) {
             return $this->activation_fee_with_obligation;

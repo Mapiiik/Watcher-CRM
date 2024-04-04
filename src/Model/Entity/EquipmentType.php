@@ -17,7 +17,7 @@ use Cake\ORM\Entity;
  * @property string $id
  * @property int $nid
  * @property string $name
- * @property int|null $price
+ * @property \PhpCollective\DecimalObject\Decimal|null $price
  *
  * @property \App\Model\Entity\BorrowedEquipment[] $borrowed_equipments
  * @property \App\Model\Entity\SoldEquipment[] $sold_equipments

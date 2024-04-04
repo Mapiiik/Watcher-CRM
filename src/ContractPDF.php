@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Model\Entity\Billing;
 use App\Model\Entity\Contract;
 use App\Model\Entity\ContractVersion;
 use App\Model\Enum\IpAddressTypeOfUse;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
+use PhpCollective\DecimalObject\Decimal;
 use stdClass;
 use TCPDF;
 
@@ -59,12 +61,12 @@ class ContractPDF extends TCPDF
     /**
      * prints billing table
      *
-     * @param iterable $billings Billings
+     * @param iterable<\App\Model\Entity\Billing> $billings Billings
      * @param \App\Model\Entity\ContractVersion $contract_version Contract version
      * @param string $format Additional font format
-     * @return float Total cost
+     * @return \PhpCollective\DecimalObject\Decimal Total cost
      */
-    private function billingTable(iterable $billings, ContractVersion $contract_version, string $format): float
+    private function billingTable(iterable $billings, ContractVersion $contract_version, string $format): Decimal
     {
         $this->SetFont('DejaVuSerif', '' . $format, 8);
         $this->Cell(4, 4);
@@ -72,7 +74,7 @@ class ContractPDF extends TCPDF
         $this->Cell(40, 4, 'cena / měsíc:', align: 'R');
         $this->Ln();
 
-        $totalCost = 0;
+        $totalCost = Decimal::create(0, 2);
 
         foreach ($billings as $billing) {
             $this->SetFont('DejaVuSerif', 'B' . $format, 8);
@@ -84,25 +86,25 @@ class ContractPDF extends TCPDF
                 . ($billing->billing_from > $contract_version->valid_from ? ' od ' . $billing->billing_from : '')
                 . ($billing->billing_until ? ' do ' . $billing->billing_until : '')
             );
-            $this->Cell(40, 4, Number::currency($billing->sum), align: 'R');
+            $this->Cell(40, 4, Number::currency($billing->sum->toFloat()), align: 'R');
             $this->Ln();
 
-            if ($billing->percentage_discount_sum > 0) {
+            if ($billing->percentage_discount_sum->isPositive()) {
                 $this->SetFont('DejaVuSerif', '' . $format, 8);
                 $this->Cell(4, 4);
                 $this->Cell(135, 4, ' - sleva ve výši ' . $billing->percentage_discount . ' % z ceny této služby');
-                $this->Cell(40, 4, Number::currency(-$billing->percentage_discount_sum), align: 'R');
+                $this->Cell(40, 4, Number::currency($billing->percentage_discount_sum->negate()->toFloat()), align: 'R');
                 $this->Ln();
             }
-            if ($billing->fixed_discount_sum > 0) {
+            if ($billing->fixed_discount_sum->isPositive()) {
                 $this->SetFont('DejaVuSerif', '' . $format, 8);
                 $this->Cell(4, 4);
                 $this->Cell(135, 4, ' - sleva v pevné výši z ceny této služby');
-                $this->Cell(40, 4, Number::currency(-$billing->fixed_discount_sum), align: 'R');
+                $this->Cell(40, 4, Number::currency($billing->fixed_discount_sum->negate()->toFloat()), align: 'R');
                 $this->Ln();
             }
 
-            $totalCost += $billing->total_price;
+            $totalCost = $totalCost->add($billing->total_price);
         }
 
         return $totalCost;
@@ -532,7 +534,7 @@ class ContractPDF extends TCPDF
                     $this->Cell(4, 5);
                     $this->Cell(130, 5, $borrowed_equipment->equipment_type->name, 1);
                     $this->Cell(25, 5, $borrowed_equipment->serial_number, border: 1, align: 'C');
-                    $this->Cell(25, 5, Number::currency($borrowed_equipment->equipment_type->price), border: 1, align: 'R');
+                    $this->Cell(25, 5, Number::currency($borrowed_equipment->equipment_type->price->toFloat()), border: 1, align: 'R');
                     $this->Ln();
                 }
 
@@ -576,7 +578,7 @@ class ContractPDF extends TCPDF
 
             $this->Cell(4, 5);
             $this->Cell(155, 5, 'Aktivační poplatek', 1);
-            $this->Cell(25, 5, Number::currency($subtotal = $contract_version->minimum_duration <= 0 ? $contract->activation_fee_sum : $contract->activation_fee_with_obligation_sum), border: 1, align: 'R');
+            $this->Cell(25, 5, Number::currency($subtotal = $contract_version->minimum_duration <= 0 ? $contract->activation_fee_sum->toFloat() : $contract->activation_fee_with_obligation_sum->toFloat()), border: 1, align: 'R');
             $this->Ln();
 
             $this->Ln(2);
@@ -594,17 +596,17 @@ class ContractPDF extends TCPDF
             $this->Ln();
 
             $this->SetFont('DejaVuSerif', '', 8);
-            $conditional_discount = 0;
+            $conditional_discount = Decimal::create(0, 2);
             foreach ($contract->sold_equipments as $sold_equipment) {
                 // conditional discount sum
-                if ($sold_equipment->equipment_type->price < 0) {
-                    $conditional_discount += -$sold_equipment->equipment_type->price;
+                if ($sold_equipment->equipment_type->price->isNegative()) {
+                    $conditional_discount = $conditional_discount->subtract($sold_equipment->equipment_type->price);
                 }
                 $subtotal += $sold_equipment->equipment_type->price;
                 $this->Cell(4, 5);
                 $this->Cell(130, 5, $sold_equipment->equipment_type->name, 1);
                 $this->Cell(25, 5, $sold_equipment->serial_number, border: 1, align: 'C');
-                $this->Cell(25, 5, Number::currency($sold_equipment->equipment_type->price), border: 1, align: 'R');
+                $this->Cell(25, 5, Number::currency($sold_equipment->equipment_type->price->toFloat()), border: 1, align: 'R');
                 $this->Ln();
             }
             $count = 6 - min(6, count($contract->sold_equipments));
@@ -676,7 +678,7 @@ class ContractPDF extends TCPDF
             $this->Ln(6);
 
             // EARLY TERMINATION TERMS
-            if ($conditional_discount > 0) {
+            if ($conditional_discount->isPositive()) {
                 $this->SetFont('DejaVuSerif', 'B', 9);
                 $this->Write(4, 'Podmínky předčasného ukončení smlouvy');
                 $this->Ln();
@@ -686,7 +688,7 @@ class ContractPDF extends TCPDF
                 $this->Ln(1);
 
                 $this->SetFont('DejaVuSerif', 'B', 8);
-                $this->MultiCell(180, 4, 'Uživatel potvrzuje, že souhlasí s tím, že v případě předčasné výpovědi smlouvy z jeho strany bude povinen uhradit Poskytovateli výši rozdílu mezi běžnou cenou zařízení a smluvenou cenou, a to v paušální částce ' . Number::currency($conditional_discount) . '.' . PHP_EOL, align: 'J');
+                $this->MultiCell(180, 4, 'Uživatel potvrzuje, že souhlasí s tím, že v případě předčasné výpovědi smlouvy z jeho strany bude povinen uhradit Poskytovateli výši rozdílu mezi běžnou cenou zařízení a smluvenou cenou, a to v paušální částce ' . Number::currency($conditional_discount->toFloat()) . '.' . PHP_EOL, align: 'J');
                 $this->Ln(3);
             }
 
@@ -740,7 +742,7 @@ class ContractPDF extends TCPDF
                 $this->Cell(4, 5);
                 $this->Cell(130, 5, $borrowed_equipment->equipment_type->name, 1);
                 $this->Cell(25, 5, $borrowed_equipment->serial_number, border: 1, align: 'C');
-                $this->Cell(25, 5, Number::currency($borrowed_equipment->equipment_type->price), border: 1, align: 'R');
+                $this->Cell(25, 5, Number::currency($borrowed_equipment->equipment_type->price->toFloat()), border: 1, align: 'R');
                 $this->Ln();
             }
             $count = 5 - min(5, count($contract->borrowed_equipments));
@@ -1211,7 +1213,7 @@ class ContractPDF extends TCPDF
             }
 
             // sum of all items
-            $totalCost = 0;
+            $totalCost = Decimal::create(0, 2);
 
             // billing of pricelist items
             if (count($contract['standard_billings']) > 0) {
@@ -1223,7 +1225,7 @@ class ContractPDF extends TCPDF
                 $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
                 $this->Ln(1);
 
-                $totalCost += $this->billingTable($contract['standard_billings'], $contract_version, $format);
+                $totalCost = $totalCost->add($this->billingTable($contract['standard_billings'], $contract_version, $format));
 
                 $this->Ln();
             }
@@ -1238,7 +1240,7 @@ class ContractPDF extends TCPDF
                 $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
                 $this->Ln(1);
 
-                $totalCost += $this->billingTable($contract['individual_billings'], $contract_version, $format);
+                $totalCost = $totalCost->add($this->billingTable($contract['individual_billings'], $contract_version, $format));
 
                 $this->SetFont('DejaVuSerif', $format, 7);
                 $this->Cell(4, 4);
@@ -1303,7 +1305,14 @@ class ContractPDF extends TCPDF
 
             // reverse charge
             if ($contract->customer->tax_rate->reverse_charge) {
-                $this->Cell(45, 4, Number::currency($totalCost - round($totalCost - ($totalCost / (1 + $contract->customer->tax_rate->vat_rate)), 2)) . ' *', align: 'C');
+                $this->Cell(
+                    45,
+                    4,
+                    Number::currency(
+                        Billing::calcVatBaseFromTotal($totalCost, $contract->customer->tax_rate->vat_rate)->toFloat()
+                    ) . ' *',
+                    align: 'C'
+                );
                 $this->Ln();
 
                 $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
@@ -1313,7 +1322,7 @@ class ContractPDF extends TCPDF
                 $this->Cell(4, 4);
                 $this->MultiCell(180, 4, '*faktury budou vystaveny v režimu přenesené daňové povinnosti dle § 92a zákona o dani z přidané hodnoty, kdy výši daně je povinen doplnit a přiznat plátce, pro kterého je plnění uskutečněno' . PHP_EOL, align: 'J');
             } else {
-                $this->Cell(45, 4, Number::currency($totalCost), align: 'C');
+                $this->Cell(45, 4, Number::currency($totalCost->toFloat()), align: 'C');
                 $this->Ln();
             }
 
@@ -1396,7 +1405,7 @@ class ContractPDF extends TCPDF
                 foreach ($contract->borrowed_equipments as $borrowed_equipment) {
                     $this->Cell(4, 5);
                     $this->Cell(130, 5, $borrowed_equipment->equipment_type->name, 1);
-                    $this->Cell(30, 5, Number::currency((float)$borrowed_equipment->equipment_type->price), border: 1, align: 'R');
+                    $this->Cell(30, 5, Number::currency($borrowed_equipment->equipment_type->price->toFloat()), border: 1, align: 'R');
                     $this->Ln();
                 }
 
@@ -1418,20 +1427,20 @@ class ContractPDF extends TCPDF
                 $this->MultiCell(180, 4, 'Náklady spojené s instalací dalších zařízení nebo další kabeláže se řídí aktuálně účinným Ceníkem Poskytovatele.' . PHP_EOL, align: 'J');
                 $this->Ln(3);
 
-                if ($contract->activation_fee_sum > 0) {
+                if ($contract->activation_fee_sum->isPositive()) {
                     $this->SetFont('DejaVuSerif', 'B', 8);
 
                     if ($contract_version->minimum_duration <= 0) {
                         if ($type === 'contract-new') {
-                            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . Number::currency((float)$contract->activation_fee_sum) . ' zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci Poskytnutých zařízení.' . PHP_EOL, align: 'J');
+                            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . Number::currency($contract->activation_fee_sum->toFloat()) . ' zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci Poskytnutých zařízení.' . PHP_EOL, align: 'J');
                             $this->Ln(3);
                         }
                     } else {
                         if ($type === 'contract-new') {
-                            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . Number::currency((float)$contract->activation_fee_with_obligation_sum) . ' zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci Poskytnutých zařízení.' . PHP_EOL, align: 'J');
+                            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . Number::currency($contract->activation_fee_with_obligation_sum->toFloat()) . ' zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci Poskytnutých zařízení.' . PHP_EOL, align: 'J');
                             $this->Ln(3);
                         }
-                        $this->MultiCell(180, 4, 'Poskytnutá zařízení jsou Uživateli poskytnuta Poskytovatelem za zvýhodněných podmínek (bezúplatně). V případě zániku této smlouvy před uplynutím ' . $this->contractDurationBefore($contract_version->minimum_duration) . ' od jejího uzavření je proto Uživatel povinen nahradit Poskytovateli náklady spojené s výše uvedenými Poskytnutými zařízeními, a to v paušální částce ' . Number::currency((float)$contract->activation_fee_sum - $contract->activation_fee_with_obligation_sum) . ' (' . Number::currency((float)$contract->activation_fee_sum) . ' je aktivační poplatek při smlouvě bez úvazku).' . PHP_EOL, align: 'J');
+                        $this->MultiCell(180, 4, 'Poskytnutá zařízení jsou Uživateli poskytnuta Poskytovatelem za zvýhodněných podmínek (bezúplatně). V případě zániku této smlouvy před uplynutím ' . $this->contractDurationBefore($contract_version->minimum_duration) . ' od jejího uzavření je proto Uživatel povinen nahradit Poskytovateli náklady spojené s výše uvedenými Poskytnutými zařízeními, a to v paušální částce ' . Number::currency($contract->activation_fee_sum->subtract($contract->activation_fee_with_obligation_sum)->toFloat()) . ' (' . Number::currency($contract->activation_fee_sum->toFloat()) . ' je aktivační poplatek při smlouvě bez úvazku).' . PHP_EOL, align: 'J');
                         $this->Ln(3);
                     }
                 }
@@ -1440,20 +1449,20 @@ class ContractPDF extends TCPDF
                 $this->MultiCell(180, 4, 'Cena za případnou instalaci Uživatelových zařízení včetně případných souvisejících nákladů (např. kabeláž) se řídí aktuálním Ceníkem Poskytovatele.' . PHP_EOL, align: 'J');
                 $this->Ln(3);
 
-                if ($contract->activation_fee_sum > 0) {
+                if ($contract->activation_fee_sum->isPositive()) {
                     $this->SetFont('DejaVuSerif', 'B', 8);
 
                     if ($contract_version->minimum_duration <= 0) {
                         if ($type === 'contract-new') {
-                            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . Number::currency((float)$contract->activation_fee_sum) . ' zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací.' . PHP_EOL, align: 'J');
+                            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . Number::currency($contract->activation_fee_sum->toFloat()) . ' zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací.' . PHP_EOL, align: 'J');
                             $this->Ln(3);
                         }
                     } else {
                         if ($type === 'contract-new') {
-                            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . Number::currency((float)$contract->activation_fee_with_obligation_sum) . ' zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací.' . PHP_EOL, align: 'J');
+                            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši ' . Number::currency($contract->activation_fee_with_obligation_sum->toFloat()) . ' zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací.' . PHP_EOL, align: 'J');
                             $this->Ln(3);
                         }
-                        $this->MultiCell(180, 4, 'Aktivační poplatek je Uživateli poskytnut Poskytovatelem za zvýhodněných podmínek. V případě zániku této smlouvy před uplynutím ' . $this->contractDurationBefore($contract_version->minimum_duration) . ' od jejího uzavření je proto Uživatel povinen nahradit Poskytovateli náklady spojené se zřízením koncového bodu Poskytovatelovy sítě elektronických komunikací, a to v paušální částce ' . Number::currency((float)($contract->activation_fee_sum - $contract->activation_fee_with_obligation_sum)) . ' (' . Number::currency((float)$contract->activation_fee_sum) . ' je aktivační poplatek při smlouvě bez úvazku).' . PHP_EOL, align: 'J');
+                        $this->MultiCell(180, 4, 'Aktivační poplatek je Uživateli poskytnut Poskytovatelem za zvýhodněných podmínek. V případě zániku této smlouvy před uplynutím ' . $this->contractDurationBefore($contract_version->minimum_duration) . ' od jejího uzavření je proto Uživatel povinen nahradit Poskytovateli náklady spojené se zřízením koncového bodu Poskytovatelovy sítě elektronických komunikací, a to v paušální částce ' . Number::currency($contract->activation_fee_sum->subtract($contract->activation_fee_with_obligation_sum)->toFloat()) . ' (' . Number::currency($contract->activation_fee_sum->toFloat()) . ' je aktivační poplatek při smlouvě bez úvazku).' . PHP_EOL, align: 'J');
                         $this->Ln(3);
                     }
                 }

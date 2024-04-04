@@ -19,8 +19,8 @@ use Cake\ORM\Entity;
  * @property string|null $name
  * @property string|null $contract_number_format
  * @property string|null $subscriber_verification_code_format
- * @property int|null $activation_fee
- * @property int|null $activation_fee_with_obligation
+ * @property \PhpCollective\DecimalObject\Decimal|null $activation_fee
+ * @property \PhpCollective\DecimalObject\Decimal|null $activation_fee_with_obligation
  * @property bool $separate_invoice
  * @property bool $invoice_with_items
  * @property string|null $invoice_text

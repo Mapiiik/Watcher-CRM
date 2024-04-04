@@ -71,7 +71,7 @@ class EquipmentTypesTable extends AppTable
             ->notEmptyString('name');
 
         $validator
-            ->integer('price')
+            ->decimal('price')
             ->allowEmptyString('price');
 
         return $validator;

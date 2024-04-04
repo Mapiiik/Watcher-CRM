@@ -23,8 +23,8 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\Date|null $creation_date
  * @property \Cake\I18n\Date|null $due_date
  * @property string|null $text
- * @property float|null $total
- * @property float|null $debt
+ * @property \PhpCollective\DecimalObject\Decimal|null $total
+ * @property \PhpCollective\DecimalObject\Decimal|null $debt
  * @property \Cake\I18n\Date|null $payment_date
  * @property bool $send_by_email
  * @property \Cake\I18n\DateTime|null $email_sent
@@ -75,11 +75,11 @@ class Invoice extends Entity
         $style = '';
         $now = Date::now();
 
-        if ($this->debt > 0) {
+        if ($this->debt->isPositive()) {
             $style = 'color: red;';
         }
 
-        if ($this->debt > 0 && $this->due_date < $now) {
+        if ($this->debt->isPositive() && $this->due_date < $now) {
             $style = 'background-color: #ffc0c0; color: red;';
         }
 

@@ -221,8 +221,8 @@ class ProcessDebtorsCommand extends Command
                 . sprintf('%-12s', $invoice->variable_symbol) . "\t"
                 . sprintf('%-10s', $invoice->creation_date) . "\t"
                 . sprintf('%-10s', $invoice->due_date) . "\t"
-                . sprintf('%-12s', Number::currency($invoice->total)) . "\t"
-                . sprintf('%-12s', Number::currency($invoice->debt))
+                . sprintf('%-12s', Number::currency($invoice->total->toFloat())) . "\t"
+                . sprintf('%-12s', Number::currency($invoice->debt->toFloat()))
                 . PHP_EOL;
         }
 

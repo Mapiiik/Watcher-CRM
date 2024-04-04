@@ -229,11 +229,11 @@ class ContractsTable extends AppTable
             ->allowEmptyString('access_description');
 
         $validator
-            ->integer('activation_fee')
+            ->decimal('activation_fee')
             ->allowEmptyString('activation_fee');
 
         $validator
-            ->integer('activation_fee_with_obligation')
+            ->decimal('activation_fee_with_obligation')
             ->allowEmptyString('activation_fee_with_obligation');
 
         $validator
