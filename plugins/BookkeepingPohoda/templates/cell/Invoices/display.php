@@ -1,4 +1,6 @@
 <?php
+
+use BookkeepingPohoda\Model\Entity\Invoice;
 use Cake\I18n\Date;
 
 /**
@@ -74,14 +76,22 @@ use Cake\I18n\Date;
     </div>
     <div>
         <?= __d('bookkeeping_pohoda', 'Total Debt') . ': '
-            . $this->Number->currency($invoices->sumOf('debt')) ?><br>
+            . $this->Number->currency($invoices->sumOf(
+                function (Invoice $invoice) {
+                    return $invoice->debt->toFloat();
+                }
+            )) ?><br>
         <?= __d('bookkeeping_pohoda', 'Total Overdue Debt') . ': '
             . $this->Number->currency(
                 $invoices
                     ->filter(function ($value, $key) {
                         return $value->due_date < Date::now();
                     })
-                    ->sumOf('debt')
+                    ->sumOf(
+                        function (Invoice $invoice) {
+                            return $invoice->debt->toFloat();
+                        }
+                    )
             )
         ?>
     </div>
