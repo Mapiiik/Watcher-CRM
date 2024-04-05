@@ -35,8 +35,8 @@ use PhpCollective\DecimalObject\Decimal;
  * @property string|null $access_description
  * @property \PhpCollective\DecimalObject\Decimal|null $activation_fee
  * @property \PhpCollective\DecimalObject\Decimal|null $activation_fee_with_obligation
- * @property \PhpCollective\DecimalObject\Decimal|null $activation_fee_sum
- * @property \PhpCollective\DecimalObject\Decimal|null $activation_fee_with_obligation_sum
+ * @property \PhpCollective\DecimalObject\Decimal $activation_fee_sum
+ * @property \PhpCollective\DecimalObject\Decimal $activation_fee_with_obligation_sum
  * @property string|null $number_of_the_contract_to_be_terminated
  * @property string|null $access_point_id
  * @property string $contract_state_id
@@ -124,9 +124,9 @@ class Contract extends Entity
     /**
      * getter for activation_fee (local or from service_type)
      *
-     * @return \PhpCollective\DecimalObject\Decimal|null
+     * @return \PhpCollective\DecimalObject\Decimal
      */
-    protected function _getActivationFeeSum(): ?Decimal
+    protected function _getActivationFeeSum(): Decimal
     {
         if (isset($this->activation_fee)) {
             return $this->activation_fee;
@@ -136,15 +136,15 @@ class Contract extends Entity
             return $this->service_type->activation_fee;
         }
 
-        return null;
+        return Decimal::create(0, 2);
     }
 
     /**
      * getter for activation_fee_with_obligation (local or from service_type)
      *
-     * @return \PhpCollective\DecimalObject\Decimal|null
+     * @return \PhpCollective\DecimalObject\Decimal
      */
-    protected function _getActivationFeeWithObligationSum(): ?Decimal
+    protected function _getActivationFeeWithObligationSum(): Decimal
     {
         if (isset($this->activation_fee_with_obligation)) {
             return $this->activation_fee_with_obligation;
@@ -154,7 +154,7 @@ class Contract extends Entity
             return $this->service_type->activation_fee_with_obligation;
         }
 
-        return null;
+        return Decimal::create(0, 2);
     }
 
     /**
