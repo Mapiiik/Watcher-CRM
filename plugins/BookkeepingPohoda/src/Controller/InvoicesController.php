@@ -363,15 +363,16 @@ class InvoicesController extends AppController
                     }
 
                     if (!isset($verification_data[$customer_number])) {
-                        $verification_data[$customer_number]['csv']['total'] = 0;
+                        $verification_data[$customer_number]['csv']['total'] = Decimal::create(0, 2);
                         $verification_data[$customer_number]['csv']['items'] = [];
                     }
 
                     $item = new stdClass();
-                    $item->period_total = isset($parsed_line[1]) ? trim($parsed_line[1]) : '';
+                    $item->period_total = Decimal::create(isset($parsed_line[1]) ? trim($parsed_line[1]) : '', 2);
                     $item->name = isset($parsed_line[2]) ? trim($parsed_line[2]) : '';
 
-                    $verification_data[$customer_number]['csv']['total'] += $item->period_total;
+                    $verification_data[$customer_number]['csv']['total'] =
+                        $verification_data[$customer_number]['csv']['total']->add($item->period_total);
                     $verification_data[$customer_number]['csv']['items'][] = $item;
 
                     unset($item);
