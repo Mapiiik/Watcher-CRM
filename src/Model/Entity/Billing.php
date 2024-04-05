@@ -148,7 +148,7 @@ class Billing extends Entity
         $discount = Decimal::create(0, 2);
 
         if (isset($this->percentage_discount)) {
-            $discount = $this->sum->multiply($this->percentage_discount)->divide(100, 2);
+            $discount = $this->sum->multiply($this->percentage_discount)->divide(100, 4)->round(2);
         }
 
         return $discount;
@@ -184,7 +184,7 @@ class Billing extends Entity
     public static function calcVatFromTotal(Decimal $total, float $vat_rate): Decimal
     {
         return $total->subtract(
-            $total->divide(1 + $vat_rate, 2)
+            $total->divide(1 + $vat_rate, 4)->round(2)
         );
     }
 
@@ -258,20 +258,23 @@ class Billing extends Entity
             if ($this->billing_from <= $until) {
                 return $this->total_price
                     ->multiply($this->billing_from->diffInDays($until->addDays(1)))
-                    ->divide($period_days, 2);
+                    ->divide($period_days, 4)
+                    ->round(2);
             }
         } else { // billing_until is limiting
             // earlier billing_until
             if ($this->billing_from <= $from) {
                 return $this->total_price
                     ->multiply($from->diffInDays($this->billing_until->addDays(1)))
-                    ->divide($period_days, 2);
+                    ->divide($period_days, 4)
+                    ->round(2);
             }
             // later billing_from and earlier billing_until
             if ($this->billing_from <= $until) {
                 return $this->total_price
                     ->multiply($this->billing_from->diffInDays($this->billing_until->addDays(1)))
-                    ->divide($period_days, 2);
+                    ->divide($period_days, 4)
+                    ->round(2);
             }
         }
 
