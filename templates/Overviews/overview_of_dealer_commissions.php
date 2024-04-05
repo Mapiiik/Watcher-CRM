@@ -39,15 +39,15 @@
                     <div class="related">
                         <h5><?= $dealerCommission->commission->name ?></h5>
                         <div><?= __('Fixed') . ': '
-                            . $this->Number->currency((int)$dealerCommission->fixed)?></div>
+                            . $this->Number->currency($dealerCommission->fixed ?? 0)?></div>
                         <div><?= __('Percentage') . ': '
-                            . $this->Number->toPercentage((int)$dealerCommission->percentage)?></div>
+                            . $this->Number->toPercentage($dealerCommission->percentage ?? 0)?></div>
 
                         <br>
 
                         <?php if (!empty($dealerCommission->commission->contracts)) : ?>
                         <div><?= __('Total Price') . ': '
-                            . $this->Number->currency((int)$dealerCommission->commission['total_price']) ?></div>
+                            . $this->Number->currency($dealerCommission->commission['total_price']) ?></div>
                         <div class="table-responsive">
                             <table>
                                 <tr>
@@ -97,7 +97,7 @@
                                             ' (' . h($billing->service->price) . ')' : '' ?></td>
                                         <td><?= h($billing->fixed_discount) ?></td>
                                         <td><?= h($billing->percentage_discount) ?></td>
-                                        <td><?= $this->Number->currency((int)$billing->total_price) ?></td>
+                                        <td><?= $this->Number->currency($billing->total_price) ?></td>
                                         <td><?= h($billing->billing_from) ?></td>
                                         <td><?= h($billing->billing_until) ?></td>
                                         <td class="actions">

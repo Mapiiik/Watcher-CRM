@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\ApiClient;
+use App\Model\Entity\Billing;
 use App\Model\Entity\Commission;
 use App\Model\Entity\Contract;
 use Cake\Collection\Collection;
@@ -82,24 +83,48 @@ class OverviewsController extends AppController
                             ->sumOf('quantity');
 
                         $service['sum'] = $billings
-                            ->sumOf('sum');
+                            ->sumOf(
+                                function (Billing $billing) {
+                                    return $billing->sum->toFloat();
+                                }
+                            );
 
                         $service['fixed_discount_sum'] = $billings
-                            ->sumOf('fixed_discount_sum');
+                            ->sumOf(
+                                function (Billing $billing) {
+                                    return $billing->fixed_discount_sum->toFloat();
+                                }
+                            );
 
                         $service['percentage_discount_sum'] = $billings
-                            ->sumOf('percentage_discount_sum');
+                            ->sumOf(
+                                function (Billing $billing) {
+                                    return $billing->percentage_discount_sum->toFloat();
+                                }
+                            );
 
                         $service['total_sum'] = $billings
-                            ->sumOf('total_price');
+                            ->sumOf(
+                                function (Billing $billing) {
+                                    return $billing->total_price->toFloat();
+                                }
+                            );
 
                         $service['total_sum_nonbusiness'] = $billings
                             ->match(['customer.ic' => null])
-                            ->sumOf('total_price');
+                            ->sumOf(
+                                function (Billing $billing) {
+                                    return $billing->total_price->toFloat();
+                                }
+                            );
 
                         $service['total_sum_unbilled'] = $billings
                             ->match(['contract.billed' => false])
-                            ->sumOf('total_price');
+                            ->sumOf(
+                                function (Billing $billing) {
+                                    return $billing->total_price->toFloat();
+                                }
+                            );
 
                         unset($billings);
 
@@ -590,7 +615,11 @@ class OverviewsController extends AppController
                         // format results
                         ->formatResults(function (CollectionInterface $contracts) {
                             return $contracts->map(function (Contract $contract) {
-                                $contract['total_price'] = (new Collection($contract->billings))->sumOf('total_price');
+                                $contract['total_price'] = (new Collection($contract->billings))->sumOf(
+                                    function (Billing $billing) {
+                                        return $billing->total_price->toFloat();
+                                    }
+                                );
 
                                 return $contract;
                             });

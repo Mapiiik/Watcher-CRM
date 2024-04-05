@@ -1,4 +1,6 @@
 <?php
+
+use App\Model\Entity\Billing;
 use Cake\Collection\Collection;
 
 /**
@@ -167,10 +169,16 @@ use Cake\Collection\Collection;
                 <div>
                     <?= __('Total sum of active') . ': ' . $this->Number->currency(
                         (new Collection($service->billings))
-                            ->filter(function ($billing) {
-                                return $billing->active;
-                            })
-                            ->sumOf('total_price')
+                            ->filter(
+                                function (Billing $billing) {
+                                    return $billing->active;
+                                }
+                            )
+                            ->sumOf(
+                                function (Billing $billing) {
+                                    return $billing->total_price->toFloat();
+                                }
+                            )
                     ) ?><br>
                 </div>
                 <?php endif; ?>
