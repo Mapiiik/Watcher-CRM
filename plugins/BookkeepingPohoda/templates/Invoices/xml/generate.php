@@ -78,7 +78,8 @@ foreach ($invoices as $invoice) {
             'homeCurrency' => [
                 'unitPrice' => $item->period_total,
                 'price' => Billing::calcVatBaseFromTotal($item->period_total, $tax_rate->vat_rate)->toFloat(),
-                'priceVAT' => $tax_rate->reverse_charge ? 0 : Billing::calcVatFromTotal($item->period_total, $tax_rate->vat_rate)->toFloat(),
+                'priceVAT' => $tax_rate->reverse_charge ?
+                    0 : Billing::calcVatFromTotal($item->period_total, $tax_rate->vat_rate)->toFloat(),
             ],
             'PDP' => $tax_rate->reverse_charge,
         ]);
@@ -92,7 +93,8 @@ foreach ($invoices as $invoice) {
             'priceNone' => 0,
             'priceLow' => 0,
             'priceHigh' => Billing::calcVatBaseFromTotal($invoice->total, $tax_rate->vat_rate)->toFloat(),
-            'priceHighVAT' => $tax_rate->reverse_charge ? 0 : Billing::calcVatFromTotal($invoice->total, $tax_rate->vat_rate)->toFloat(),
+            'priceHighVAT' => $tax_rate->reverse_charge ?
+                0 : Billing::calcVatFromTotal($invoice->total, $tax_rate->vat_rate)->toFloat(),
             'round' => [
                 'priceRound' => 0,
             ],
