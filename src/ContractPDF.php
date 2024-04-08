@@ -708,6 +708,8 @@ class ContractPDF extends TCPDF
             $this->Ln(3);
             $this->MultiCell(180, 4, 'Uživatel dále potvrzuje, že bere na vědomí a plně souhlasí s podmínkami uvedenými v tomto předávacím protokolu.' . PHP_EOL, align: 'J');
             $this->Ln(3);
+            $this->MultiCell(180, 4, 'Všechny ceny uvedené v tomto předávacím protokolu jsou vyjádřeny včetně daně z přidané hodnoty, pokud není výslovně stanoveno jinak.' . PHP_EOL, align: 'J');
+            $this->Ln(3);
             $this->MultiCell(180, 4, 'Tento předávací protokol (ke smlouvě č. ' . $contract->number . ') je vyhotoven ve dvou stejnopisech.' . PHP_EOL, align: 'J');
             $this->Ln(3);
         endif;
@@ -840,11 +842,15 @@ class ContractPDF extends TCPDF
 
             $this->SetFont('DejaVuSerif', '', 8);
             $this->MultiCell(180, 4, 'Poskytovatel svým podpisem stvrzuje, že uvedená zařízení převzal ve stavu popsaném výše.' . PHP_EOL, align: 'J');
-            $this->Ln(1);
+            $this->Ln(3);
             $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit hodnotu zařízení v případě jejich viditelné vady, poškození nebo zjištěné nefunkčnosti nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené výše).' . PHP_EOL, align: 'J');
-            $this->Ln(1);
+            $this->Ln(3);
             $this->MultiCell(180, 4, 'Uživatel dále potvrzuje, že souhlasí s provedenou deinstalací a nemá vůči ní žádné námitky.' . PHP_EOL, align: 'J');
-            $this->Ln(1);
+            $this->Ln(3);
+            $this->MultiCell(180, 4, 'Všechny ceny uvedené v tomto předávacím protokolu jsou vyjádřeny včetně daně z přidané hodnoty, pokud není výslovně stanoveno jinak.' . PHP_EOL, align: 'J');
+            $this->Ln(3);
+            $this->MultiCell(180, 4, 'Tento předávací protokol (ke smlouvě č. ' . $contract_version['number_of_the_contract_to_be_terminated'] . ') je vyhotoven ve dvou stejnopisech.' . PHP_EOL, align: 'J');
+            $this->Ln(3);
         endif;
         // END UNINSTALLATION
 
@@ -1506,6 +1512,8 @@ class ContractPDF extends TCPDF
                 true,
                 ''
             );
+            $this->Ln(3);
+            $this->MultiCell(180, 4, 'Všechny ceny uvedené v této smlouvě jsou vyjádřeny včetně daně z přidané hodnoty, pokud není výslovně stanoveno jinak.' . PHP_EOL, align: 'J');
             $this->Ln(3);
             $this->MultiCell(180, 4, 'Tato smlouva (č. ' . $contract->number . ') je vyhotovena ve dvou stejnopisech.' . PHP_EOL, align: 'J');
             $this->Ln(3);
