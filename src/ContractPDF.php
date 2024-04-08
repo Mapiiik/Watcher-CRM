@@ -462,7 +462,7 @@ class ContractPDF extends TCPDF
             }
 
             $this->SetFont('DejaVuSerif', '', 8);
-            $this->Write(4, 'Nastavení zařízení ve vnitřní síti Uživatele:');
+            $this->Write(4, 'Výchozí nastavení pro zařízení ve vnitřní síti Uživatele:');
             $this->Ln(5);
 
             $this->SetFont('DejaVuSerif', 'B', 8);
