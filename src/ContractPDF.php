@@ -574,11 +574,11 @@ class ContractPDF extends TCPDF
             }
             $this->Ln(1);
 
-            $subtotal = 0;
+            $subtotal = $contract_version->minimum_duration <= 0 ? $contract->activation_fee_sum : $contract->activation_fee_with_obligation_sum;
 
             $this->Cell(4, 5);
             $this->Cell(155, 5, 'Aktivační poplatek', 1);
-            $this->Cell(25, 5, Number::currency($subtotal = $contract_version->minimum_duration <= 0 ? $contract->activation_fee_sum->toFloat() : $contract->activation_fee_with_obligation_sum->toFloat()), border: 1, align: 'R');
+            $this->Cell(25, 5, Number::currency($contract_version->minimum_duration <= 0 ? $contract->activation_fee_sum->toFloat() : $contract->activation_fee_with_obligation_sum->toFloat()), border: 1, align: 'R');
             $this->Ln();
 
             $this->Ln(2);
@@ -602,7 +602,7 @@ class ContractPDF extends TCPDF
                 if ($sold_equipment->equipment_type->price->isNegative()) {
                     $conditional_discount = $conditional_discount->subtract($sold_equipment->equipment_type->price);
                 }
-                $subtotal += $sold_equipment->equipment_type->price;
+                $subtotal = $subtotal->add($sold_equipment->equipment_type->price);
                 $this->Cell(4, 5);
                 $this->Cell(130, 5, $sold_equipment->equipment_type->name, 1);
                 $this->Cell(25, 5, $sold_equipment->serial_number, border: 1, align: 'C');
@@ -626,7 +626,7 @@ class ContractPDF extends TCPDF
 
             $this->Cell(4, 5);
             $this->Cell(155, 5, 'Celkem k úhradě', 1);
-            $this->Cell(25, 5, Number::currency($subtotal), border: 1, align: 'R');
+            $this->Cell(25, 5, Number::currency($subtotal->toFloat()), border: 1, align: 'R');
             $this->Ln();
 
             $this->Ln(6);
