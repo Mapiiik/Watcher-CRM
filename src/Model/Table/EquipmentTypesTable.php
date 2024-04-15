@@ -74,6 +74,10 @@ class EquipmentTypesTable extends AppTable
             ->decimal('price')
             ->allowEmptyString('price');
 
+        $validator
+            ->decimal('price_with_obligation')
+            ->allowEmptyString('price_with_obligation');
+
         return $validator;
     }
 

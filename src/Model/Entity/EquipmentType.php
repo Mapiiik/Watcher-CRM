@@ -18,6 +18,7 @@ use Cake\ORM\Entity;
  * @property int $nid
  * @property string $name
  * @property \PhpCollective\DecimalObject\Decimal|null $price
+ * @property \PhpCollective\DecimalObject\Decimal|null $price_with_obligation
  *
  * @property \App\Model\Entity\BorrowedEquipment[] $borrowed_equipments
  * @property \App\Model\Entity\SoldEquipment[] $sold_equipments
@@ -40,6 +41,7 @@ class EquipmentType extends Entity
         'modified_by' => true,
         'name' => true,
         'price' => true,
+        'price_with_obligation' => true,
         'borrowed_equipments' => true,
         'sold_equipments' => true,
     ];

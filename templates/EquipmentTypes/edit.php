@@ -31,6 +31,7 @@
                 <?php
                     echo $this->Form->control('name');
                     echo $this->Form->control('price');
+                    echo $this->Form->control('price_with_obligation');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

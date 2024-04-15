@@ -48,6 +48,11 @@
                             <td><?= $equipmentType->price === null ?
                                 '' : $this->Number->currency($equipmentType->price) ?></td>
                         </tr>
+                        <tr>
+                            <th><?= __('Price With Obligation') ?></th>
+                            <td><?= $equipmentType->price_with_obligation === null ?
+                                '' : $this->Number->currency($equipmentType->price_with_obligation) ?></td>
+                        </tr>
                     </table>
                 </div>
                 <div class="column">

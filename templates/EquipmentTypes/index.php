@@ -29,6 +29,7 @@
                 <tr>
                     <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('price') ?></th>
+                    <th><?= $this->Paginator->sort('price_with_obligation') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -36,7 +37,10 @@
                 <?php foreach ($equipmentTypes as $equipmentType) : ?>
                 <tr>
                     <td><?= h($equipmentType->name) ?></td>
-                    <td><?= $equipmentType->price === null ? '' : $this->Number->currency($equipmentType->price) ?></td>
+                    <td><?= $equipmentType->price === null ?
+                        '' : $this->Number->currency($equipmentType->price) ?></td>
+                    <td><?= $equipmentType->price_with_obligation === null ?
+                        '' : $this->Number->currency($equipmentType->price_with_obligation) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $equipmentType->id]) ?>
                         <?= $this->AuthLink->link(
