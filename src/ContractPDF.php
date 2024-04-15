@@ -596,18 +596,35 @@ class ContractPDF extends TCPDF
             $this->Ln();
 
             $this->SetFont('DejaVuSerif', '', 8);
-            $conditional_discount = Decimal::create(0, 2);
+            $sold_equipments_discount = Decimal::create(0, 2);
+            $sold_equipments_value = Decimal::create(0, 2);
             foreach ($contract->sold_equipments as $sold_equipment) {
                 // conditional discount sum
-                if ($sold_equipment->equipment_type->price->isNegative()) {
-                    $conditional_discount = $conditional_discount->subtract($sold_equipment->equipment_type->price);
+                if (
+                    $contract_version->minimum_duration > 0
+                    && isset($sold_equipment->equipment_type->price_with_obligation)
+                ) {
+                    $sold_equipments_discount = $sold_equipments_discount->add(
+                        $sold_equipment->equipment_type->price->subtract($sold_equipment->equipment_type->price_with_obligation)
+                    );
+
+                    $sold_equipment_price = $sold_equipment->equipment_type->price_with_obligation;
+                } else {
+                    $sold_equipment_price = $sold_equipment->equipment_type->price;
                 }
-                $subtotal = $subtotal->add($sold_equipment->equipment_type->price);
+
+                $sold_equipments_value = $sold_equipments_value->add(
+                    $sold_equipment->equipment_type->price
+                );
+
+                $subtotal = $subtotal->add($sold_equipment_price);
                 $this->Cell(4, 5);
                 $this->Cell(130, 5, $sold_equipment->equipment_type->name, 1);
                 $this->Cell(25, 5, $sold_equipment->serial_number, border: 1, align: 'C');
-                $this->Cell(25, 5, Number::currency($sold_equipment->equipment_type->price->toFloat()), border: 1, align: 'R');
+                $this->Cell(25, 5, Number::currency($sold_equipment_price->toFloat()), border: 1, align: 'R');
                 $this->Ln();
+
+                unset($sold_equipment_price);
             }
             $count = 6 - min(6, count($contract->sold_equipments));
             for ($i = 1; $i <= $count; $i++) {
@@ -678,7 +695,7 @@ class ContractPDF extends TCPDF
             $this->Ln(6);
 
             // EARLY TERMINATION TERMS
-            if ($conditional_discount->isPositive()) {
+            if ($sold_equipments_discount->isPositive()) {
                 $this->SetFont('DejaVuSerif', 'B', 9);
                 $this->Write(4, 'Podmínky předčasného ukončení smlouvy');
                 $this->Ln();
@@ -688,7 +705,16 @@ class ContractPDF extends TCPDF
                 $this->Ln(1);
 
                 $this->SetFont('DejaVuSerif', 'B', 8);
-                $this->MultiCell(180, 4, 'Uživatel potvrzuje, že souhlasí s tím, že v případě předčasné výpovědi smlouvy z jeho strany bude povinen uhradit Poskytovateli výši rozdílu mezi běžnou cenou zařízení a smluvenou cenou, a to v paušální částce ' . Number::currency($conditional_discount->toFloat()) . '.' . PHP_EOL, align: 'J');
+                $this->MultiCell(
+                    180,
+                    4,
+                    'Smluvní strany konstatují, že běžná prodejní cena dodaných zařízení je ' . Number::currency($sold_equipments_value->toFloat())
+                        . ', avšak s ohledem na uzavření smlouvy s minimální dobou plnění v trvání ' . $this->contractDurationBefore($contract_version->minimum_duration)
+                        . ' byla tato zařízení Uživateli prodána pouze za ' . Number::currency($sold_equipments_value->subtract($sold_equipments_discount)->toFloat())
+                        . ', proto v případě předčasného ukončení smlouvy z důvodu na straně Uživatele se tento zavazuje Poskytovateli doplatit zbývajících ' . Number::currency($sold_equipments_discount->toFloat())
+                        . '.' . PHP_EOL,
+                    align: 'J'
+                );
                 $this->Ln(3);
             }
 
