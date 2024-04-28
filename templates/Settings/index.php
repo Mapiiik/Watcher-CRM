@@ -117,6 +117,11 @@
                         'class' => 'side-nav-item',
                     ]
                 ) ?>
+                <?= $this->AuthLink->link(
+                    __('Bulk IP Address Reassignment'),
+                    ['controller' => 'IpAddresses', 'action' => 'bulkReassignment', 'plugin' => null],
+                    ['class' => 'side-nav-item']
+                ) ?>
             </div>
         </div>
 
