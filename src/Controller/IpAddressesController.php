@@ -456,13 +456,24 @@ class IpAddressesController extends AppController
 
                         foreach ($ipAddresses as $ipAddressToProcess) {
                             // reassign IP address
-                            if ($this->getRequest()->getData('reassing_ip_address.' . $ipAddressToProcess->id) == $ipAddressToProcess->id) {
+                            if (
+                                $this->getRequest()->getData(
+                                    'reassing_ip_address.' . $ipAddressToProcess->id
+                                ) == $ipAddressToProcess->id
+                            ) {
                                 if ($this->addToRemovedIpAddresses($ipAddressToProcess)) {
                                     if ($this->IpAddresses->delete($ipAddressToProcess)) {
                                         $this->Flash->success(__('The IP address has been deleted.'));
 
                                         // take available IP address (reverse order of IP addresses, if required by service type)
-                                        if (!empty($ipAddressToProcess->contract->service_type->assign_ip_addresses_from_behind)) {
+                                        if (
+                                            !empty(
+                                                $ipAddressToProcess
+                                                    ->contract
+                                                    ->service_type
+                                                    ->assign_ip_addresses_from_behind
+                                            )
+                                        ) {
                                             $availableIpAddress = array_pop($availableIpAddresses);
                                         } else {
                                             $availableIpAddress = array_shift($availableIpAddresses);
@@ -484,11 +495,15 @@ class IpAddressesController extends AppController
                                             $this->Flash->success(__('The IP address has been saved.'));
                                         } else {
                                             $this->flashValidationErrors($newIpAddress->getErrors());
-                                            $this->Flash->error(__('The IP address could not be saved. Please, try again.'));
+                                            $this->Flash->error(
+                                                __('The IP address could not be saved. Please, try again.')
+                                            );
                                         }
                                     } else {
                                         $this->flashValidationErrors($ipAddressToProcess->getErrors());
-                                        $this->Flash->error(__('The IP address could not be deleted. Please, try again.'));
+                                        $this->Flash->error(
+                                            __('The IP address could not be deleted. Please, try again.')
+                                        );
                                     }
                                 }
                             }
