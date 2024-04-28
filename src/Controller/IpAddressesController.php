@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\ApiClient;
+use App\Model\Entity\IpAddress;
 use App\Model\Enum\IpAddressTypeOfUse;
 use Cake\I18n\DateTime;
+use Cake\Validation\Validation;
 use IPLib\Range\Subnet;
 
 /**
@@ -192,7 +194,7 @@ class IpAddressesController extends AppController
         }
 
         // load IP address ranges from NMS
-        $ip_address_ranges_filter = [];
+        $ipAddressRangesFilter = [];
         if (isset($ipAddress->contract_id)) {
             $contract = $this->IpAddresses->Contracts->get(
                 $ipAddress->contract_id,
@@ -202,7 +204,7 @@ class IpAddressesController extends AppController
             );
 
             if (isset($contract->access_point_id)) {
-                $ip_address_ranges_filter['access_point_id'] = $contract->access_point_id;
+                $ipAddressRangesFilter['access_point_id'] = $contract->access_point_id;
             }
         }
         switch (
@@ -211,22 +213,27 @@ class IpAddressesController extends AppController
             ?? null
         ) {
             case IpAddressTypeOfUse::CustomerRADIUS:
-                $ip_address_ranges_filter['for_customer_addresses_set_via_radius'] = '1';
+                $ipAddressRangesFilter['for_customer_addresses_set_via_radius'] = '1';
                 break;
             case IpAddressTypeOfUse::CustomerManually:
-                $ip_address_ranges_filter['for_customer_addresses_set_manually'] = '1';
+                $ipAddressRangesFilter['for_customer_addresses_set_manually'] = '1';
                 break;
             case IpAddressTypeOfUse::TechnologyManually:
-                $ip_address_ranges_filter['for_technology_addresses_set_manually'] = '1';
+                $ipAddressRangesFilter['for_technology_addresses_set_manually'] = '1';
                 break;
         }
-        $ip_address_ranges = ApiClient::searchIpAddressRanges($ip_address_ranges_filter);
-        unset($ip_address_ranges_filter);
+        $ipAddressRanges = ApiClient::searchIpAddressRanges($ipAddressRangesFilter);
+        unset($ipAddressRangesFilter);
 
-        if ($ip_address_ranges) {
+        if ($ipAddressRanges) {
             $this->set(
                 'ipAddressRanges',
-                $ip_address_ranges->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name')
+                $ipAddressRanges->sortBy('name', SORT_ASC, SORT_NATURAL)->combine(
+                    'id',
+                    function (array $ipAddressRange) {
+                        return $ipAddressRange['name'] . ' (' . $ipAddressRange['ip_network'] . ')';
+                    }
+                )
             );
         } else {
             $this->Flash->warning(__('The IP address ranges list could not be loaded. Please, try again.'));
@@ -236,71 +243,12 @@ class IpAddressesController extends AppController
         // load available IP addresses if IP address range is selected
         $ipAddresses = [];
         if ($this->getRequest()->getData('ip_address_range') !== null) {
-            $ip_address_range = $ip_address_ranges->firstMatch([
+            $ipAddressRange = $ipAddressRanges->firstMatch([
                 'id' => $this->getRequest()->getData('ip_address_range'),
             ]);
 
-            if ($ip_address_range) {
-                // parse range CIDR
-                $range = Subnet::parseString($ip_address_range['ip_network']);
-                $range_size = $range->getSize();
-
-                // load already used IP addresses
-                $used_ip_addresses = $this->IpAddresses->find('list')
-                    ->where([
-                        'IpAddresses.ip_address >=' => $range->getStartAddress(),
-                        'IpAddresses.ip_address <=' => $range->getEndAddress(),
-                    ])
-                    ->toArray();
-
-                // test all IP addresses in range for availability
-                for ($i = 1; $i < $range_size - 1; $i++) {
-                    $ip_from_range = $range->getAddressAtOffset($i);
-
-                    // skip IP gateway
-                    if ($ip_address_range['ip_gateway'] === $ip_from_range->toString()) {
-                        continue 1;
-                    }
-
-                    // skip already used IP addresses
-                    if (in_array($ip_from_range->toString(), $used_ip_addresses)) {
-                        continue 1;
-                    }
-
-                    // add IP address for selection
-                    $ipAddresses[$ip_from_range->toString()] = $ip_from_range->toString();
-
-                    // retrieve previous IP address usage
-                    /** @var \App\Model\Entity\RemovedIpAddress|null $previous_ip_address_usage */
-                    $previous_ip_address_usage = $this->fetchTable('RemovedIpAddresses')
-                        ->find()
-                        ->contain([
-                            'Contracts',
-                            'Customers',
-                        ])
-                        ->where([
-                            'RemovedIpAddresses.ip_address' => $ip_from_range->toString(),
-                        ])
-                        ->orderBy([
-                            'RemovedIpAddresses.removed' => 'DESC',
-                        ])
-                        ->first();
-
-                    // add retrieved previous IP address usage to description
-                    if ($previous_ip_address_usage) {
-                        $ipAddresses[$ip_from_range->toString()] .=
-                            ' ('
-                            . __(
-                                'last used until {0} by {1}',
-                                $previous_ip_address_usage->removed->i18nFormat(),
-                                $previous_ip_address_usage->contract->number
-                                ?? $previous_ip_address_usage->customer->number
-                                ?? __('unknown customer')
-                            )
-                            . ')';
-                    }
-                    unset($previous_ip_address_usage);
-                }
+            if ($ipAddressRange) {
+                $ipAddresses = $this->loadAvailableIpAddresses($ipAddressRange);
             }
         }
 
@@ -373,7 +321,7 @@ class IpAddressesController extends AppController
         $this->getRequest()->allowMethod(['post', 'delete']);
         $ipAddress = $this->IpAddresses->get($id);
 
-        if ($this->addToRemovedIpAddresses($id)) {
+        if ($this->addToRemovedIpAddresses($ipAddress)) {
             if ($this->IpAddresses->delete($ipAddress)) {
                 $this->Flash->success(__('The IP address has been deleted.'));
             } else {
@@ -388,20 +336,21 @@ class IpAddressesController extends AppController
     /**
      * Add IP to removed IPs table (usage before delete)
      *
-     * @param string|null $id IP Address id.
+     * @param \App\Model\Entity\IpAddress $ipAddress IP Address Entity.
      * @return bool
      */
-    private function addToRemovedIpAddresses(?string $id = null)
+    private function addToRemovedIpAddresses(IpAddress $ipAddress)
     {
-        $ipAddress = $this->IpAddresses->get($id);
-
         /** @var \App\Model\Table\RemovedIpAddressesTable $removedIpAddressesTable */
         $removedIpAddressesTable = $this->fetchTable('RemovedIpAddresses');
 
-        $removedIpAddress = $removedIpAddressesTable->newEmptyEntity();
-        $removedIpAddress = $removedIpAddressesTable->patchEntity($removedIpAddress, $ipAddress->toArray());
+        $removedIpAddress = $removedIpAddressesTable->newEntity($ipAddress->toArray());
 
-        // TODO - add who and when deleted this
+        // remove associated data
+        unset($removedIpAddress['contract']);
+        unset($removedIpAddress['customer']);
+
+        // add who and when deleted this
         $removedIpAddress->removed = DateTime::now();
         $removedIpAddress->removed_by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
 
@@ -415,5 +364,232 @@ class IpAddressesController extends AppController
         $this->Flash->error(__('The removed IP address could not be saved. Please, try again.'));
 
         return false;
+    }
+
+    /**
+     * Bulk Reassignment
+     *
+     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     */
+    public function bulkReassignment()
+    {
+        $ipAddress = $this->IpAddresses->newEmptyEntity();
+
+        if ($this->getRequest()->is('post')) {
+            $ipAddress = $this->IpAddresses->patchEntity($ipAddress, $this->getRequest()->getData());
+        }
+
+        // load IP addresses
+        $accessPointId = $this->getRequest()->getData('access_point_id');
+        if (Validation::uuid($accessPointId) && isset($ipAddress->type_of_use)) {
+            $ipAddresses = $this->IpAddresses
+                ->find()
+                ->contain([
+                    'Contracts' => [
+                        'InstallationAddresses',
+                        'ServiceTypes',
+                    ],
+                    'Customers',
+                ])
+                ->orderBy([
+                    'Contracts.number',
+                ])
+                ->where([
+                    'Contracts.access_point_id' => $accessPointId,
+                    'IpAddresses.type_of_use' => $ipAddress->type_of_use,
+                ]);
+        } else {
+            $ipAddresses = [];
+        }
+
+        // load IP address ranges from NMS
+        $ipAddressRangesFilter = [];
+        if (Validation::uuid($accessPointId)) {
+            $ipAddressRangesFilter['access_point_id'] = $accessPointId;
+        }
+        switch (
+            $ipAddress->type_of_use
+            ?? IpAddressTypeOfUse::tryFrom((int)$this->IpAddresses->getSchema()->getColumn('type_of_use')['default'])
+            ?? null
+        ) {
+            case IpAddressTypeOfUse::CustomerRADIUS:
+                $ipAddressRangesFilter['for_customer_addresses_set_via_radius'] = '1';
+                break;
+            case IpAddressTypeOfUse::CustomerManually:
+                $ipAddressRangesFilter['for_customer_addresses_set_manually'] = '1';
+                break;
+            case IpAddressTypeOfUse::TechnologyManually:
+                $ipAddressRangesFilter['for_technology_addresses_set_manually'] = '1';
+                break;
+        }
+        $ipAddressRanges = ApiClient::searchIpAddressRanges($ipAddressRangesFilter);
+        unset($ipAddressRangesFilter);
+
+        if ($ipAddressRanges) {
+            $this->set(
+                'ipAddressRanges',
+                $ipAddressRanges->sortBy('name', SORT_ASC, SORT_NATURAL)->combine(
+                    'id',
+                    function (array $ipAddressRange) {
+                        return $ipAddressRange['name'] . ' (' . $ipAddressRange['ip_network'] . ')';
+                    }
+                )
+            );
+        } else {
+            $this->Flash->warning(__('The IP address ranges list could not be loaded. Please, try again.'));
+            $this->set('ipAddressRanges', []);
+        }
+
+        // bulk reassignment
+        if ($this->getRequest()->is('post')) {
+            if ($this->getRequest()->getData('refresh') == 'refresh') {
+                // only refresh
+            } else {
+                // load available IP addresses if IP address range is selected
+                if ($this->getRequest()->getData('ip_address_range') !== null) {
+                    $ipAddressRange = $ipAddressRanges->firstMatch([
+                        'id' => $this->getRequest()->getData('ip_address_range'),
+                    ]);
+
+                    if ($ipAddressRange) {
+                        $availableIpAddresses = array_keys($this->loadAvailableIpAddresses($ipAddressRange, 365));
+
+                        foreach ($ipAddresses as $ipAddressToProcess) {
+                            // reassign IP address
+                            if ($this->getRequest()->getData('reassing_ip_address.' . $ipAddressToProcess->id) == $ipAddressToProcess->id) {
+                                if ($this->addToRemovedIpAddresses($ipAddressToProcess)) {
+                                    if ($this->IpAddresses->delete($ipAddressToProcess)) {
+                                        $this->Flash->success(__('The IP address has been deleted.'));
+
+                                        // take available IP address (reverse order of IP addresses, if required by service type)
+                                        if (!empty($ipAddressToProcess->contract->service_type->assign_ip_addresses_from_behind)) {
+                                            $availableIpAddress = array_pop($availableIpAddresses);
+                                        } else {
+                                            $availableIpAddress = array_shift($availableIpAddresses);
+                                        }
+
+                                        // create a new entity (with data from the original entity)
+                                        $newIpAddress = $this->IpAddresses->newEntity($ipAddressToProcess->toArray());
+
+                                        // remove associated data
+                                        unset($newIpAddress['contract']);
+                                        unset($newIpAddress['customer']);
+
+                                        // assign new IP address
+                                        $newIpAddress->ip_address = $availableIpAddress;
+                                        $ipAddressToProcess['reassigned_ip_address'] = $availableIpAddress;
+
+                                        // save new IP address entity
+                                        if ($this->IpAddresses->save($newIpAddress)) {
+                                            $this->Flash->success(__('The IP address has been saved.'));
+                                        } else {
+                                            $this->flashValidationErrors($newIpAddress->getErrors());
+                                            $this->Flash->error(__('The IP address could not be saved. Please, try again.'));
+                                        }
+                                    } else {
+                                        $this->flashValidationErrors($ipAddressToProcess->getErrors());
+                                        $this->Flash->error(__('The IP address could not be deleted. Please, try again.'));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                $this->Flash->info(__('Processing completed.'));
+            }
+        }
+
+        $this->set(compact('ipAddress', 'ipAddresses'));
+
+        // load access points from NMS if possible
+        $accessPoints = ApiClient::getAccessPoints();
+        if ($accessPoints) {
+            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
+        } else {
+            $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
+            $this->set('accessPoints', []);
+        }
+    }
+
+    /**
+     * Load vailable IP Addresses
+     *
+     * @param array $ipAddressRange IP address range.
+     * @param int $daysUnused Minimum number of days since last use.
+     * @return array List of available IP addresses.
+     */
+    public function loadAvailableIpAddresses(array $ipAddressRange, int $daysUnused = 0): array
+    {
+        $availableIpAddresses = [];
+
+        // parse range CIDR
+        $range = Subnet::parseString($ipAddressRange['ip_network']);
+        $rangeSize = $range->getSize();
+
+        // load already used IP addresses
+        $usedIpAddresses = $this->IpAddresses->find('list')
+            ->where([
+                'IpAddresses.ip_address >=' => $range->getStartAddress(),
+                'IpAddresses.ip_address <=' => $range->getEndAddress(),
+            ])
+            ->toArray();
+
+        // test all IP addresses in range for availability
+        for ($i = 1; $i < $rangeSize - 1; $i++) {
+            $ipFromRange = $range->getAddressAtOffset($i);
+
+            // skip IP gateway
+            if ($ipAddressRange['ip_gateway'] === $ipFromRange->toString()) {
+                continue 1;
+            }
+
+            // skip already used IP addresses
+            if (in_array($ipFromRange->toString(), $usedIpAddresses)) {
+                continue 1;
+            }
+
+            // retrieve previous IP address usage
+            /** @var \App\Model\Entity\RemovedIpAddress|null $previousIpAddressUsage */
+            $previousIpAddressUsage = $this->fetchTable('RemovedIpAddresses')
+                ->find()
+                ->contain([
+                    'Contracts',
+                    'Customers',
+                ])
+                ->where([
+                    'RemovedIpAddresses.ip_address' => $ipFromRange->toString(),
+                ])
+                ->orderBy([
+                    'RemovedIpAddresses.removed' => 'DESC',
+                ])
+                ->first();
+
+            if ($previousIpAddressUsage) {
+                // check minimum number of days since last use
+                if ($previousIpAddressUsage->removed->diffInDays() < $daysUnused) {
+                    continue 1;
+                }
+
+                // add IP address for selection (with the last use of the IP address in the description)
+                $availableIpAddresses[$ipFromRange->toString()] =
+                    $ipFromRange->toString()
+                    . ' ('
+                    . __(
+                        'last used until {0} by {1}',
+                        $previousIpAddressUsage->removed->i18nFormat(),
+                        $previousIpAddressUsage->contract->number
+                        ?? $previousIpAddressUsage->customer->number
+                        ?? __('unknown customer')
+                    )
+                    . ')';
+            } else {
+                // add IP address for selection
+                $availableIpAddresses[$ipFromRange->toString()] = $ipFromRange->toString();
+            }
+            unset($previousIpAddressUsage);
+        }
+
+        return $availableIpAddresses;
     }
 }
