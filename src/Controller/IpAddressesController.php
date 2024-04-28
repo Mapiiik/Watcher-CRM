@@ -382,6 +382,7 @@ class IpAddressesController extends AppController
         // load IP addresses
         $accessPointId = $this->getRequest()->getData('access_point_id');
         if (Validation::uuid($accessPointId) && isset($ipAddress->type_of_use)) {
+            /** @var iterable<\App\Model\Entity\IpAddress> $ipAddresses */
             $ipAddresses = $this->IpAddresses
                 ->find()
                 ->contain([
