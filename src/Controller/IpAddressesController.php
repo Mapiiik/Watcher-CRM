@@ -455,7 +455,7 @@ class IpAddressesController extends AppController
                     if ($ipAddressRange) {
                         $availableIpAddresses = array_keys($this->loadAvailableIpAddresses(
                             $ipAddressRange,
-                            env('MINIMUM_NUMBER_OF_DAYS_SINCE_LAST_USE_FOR_AVAILABLE_IP_ADDRESSES', 365)
+                            (int)env('MINIMUM_NUMBER_OF_DAYS_SINCE_LAST_USE_FOR_AVAILABLE_IP_ADDRESSES', '365')
                         ));
 
                         foreach ($ipAddresses as $ipAddressToProcess) {
@@ -555,7 +555,7 @@ class IpAddressesController extends AppController
             ->toArray();
 
         // test all IP addresses in range for availability
-        for ($i = env('OFFSET_OF_FIRST_AVAILABLE_IP_ADDRESS', 1); $i < $rangeSize - 1; $i++) {
+        for ($i = (int)env('OFFSET_OF_FIRST_AVAILABLE_IP_ADDRESS', '1'); $i < $rangeSize - 1; $i++) {
             $ipFromRange = $range->getAddressAtOffset($i);
 
             // skip IP gateway
