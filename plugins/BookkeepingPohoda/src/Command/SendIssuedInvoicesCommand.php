@@ -50,6 +50,7 @@ class SendIssuedInvoicesCommand extends Command
     public function execute(Arguments $args, ConsoleIo $io)
     {
         $invoices_table = $this->fetchTable('BookkeepingPohoda.Invoices');
+        /** @var iterable<\BookkeepingPohoda\Model\Entity\Invoice> $invoices */
         $invoices = $invoices_table
             ->find()
             ->contain([
@@ -115,7 +116,7 @@ class SendIssuedInvoicesCommand extends Command
                     . PHP_EOL
                     . 'Variabilní symbol pro platbu: ' . $invoice->variable_symbol . PHP_EOL
                     . 'Číslo našeho účtu: 207385091/0100' . PHP_EOL
-                    . 'Celková částka (včetně DPH): ' . Number::currency($invoice->total) . PHP_EOL
+                    . 'Celková částka (včetně DPH): ' . Number::currency($invoice->total->toFloat()) . PHP_EOL
                     . PHP_EOL
                     . 'V příloze Vám zasíláme doklad ve formátu PDF.' . PHP_EOL
                     . PHP_EOL

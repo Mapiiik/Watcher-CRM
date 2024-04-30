@@ -41,6 +41,7 @@ use Exception;
  * @property bool|null $agree_mailing_commercial
  * @property bool|null $agree_mailing_billing
  * @property string $email
+ * @property string $billing_email
  * @property string $phone
  * @property string $number
  * @property bool $ic_verified
