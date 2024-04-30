@@ -252,14 +252,15 @@ class Billing extends Entity
         if (is_null($this->billing_until) || (!is_null($this->billing_until) && $this->billing_until >= $until)) { // billing_until is not limiting
             // whole period
             if ($this->billing_from <= $from) {
-                return $this->total_price;
+                return $this->total_price
+                    ->round(0, Decimal::ROUND_CEIL);
             }
             // later billing_from
             if ($this->billing_from <= $until) {
                 return $this->total_price
                     ->multiply($this->billing_from->diffInDays($until->addDays(1)))
                     ->divide($period_days, 4)
-                    ->round(2);
+                    ->round(0, Decimal::ROUND_CEIL);
             }
         } else { // billing_until is limiting
             // earlier billing_until
@@ -267,14 +268,14 @@ class Billing extends Entity
                 return $this->total_price
                     ->multiply($from->diffInDays($this->billing_until->addDays(1)))
                     ->divide($period_days, 4)
-                    ->round(2);
+                    ->round(0, Decimal::ROUND_CEIL);
             }
             // later billing_from and earlier billing_until
             if ($this->billing_from <= $until) {
                 return $this->total_price
                     ->multiply($this->billing_from->diffInDays($this->billing_until->addDays(1)))
                     ->divide($period_days, 4)
-                    ->round(2);
+                    ->round(0, Decimal::ROUND_CEIL);
             }
         }
 
