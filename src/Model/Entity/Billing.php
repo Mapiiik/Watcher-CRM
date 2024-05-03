@@ -298,7 +298,11 @@ class Billing extends Entity
         }
 
         if (isset($this->billing_until) && $this->billing_until < $now) {
-            $style = 'color: darkgray; text-decoration: line-through;';
+            if ($this->billing_until < $now->firstOfMonth()) {
+                $style = 'color: darkgray; text-decoration: line-through;';
+            } else {
+                $style = 'color: darkgray;';
+            }
         }
 
         if (isset($this->contract->style)) {
