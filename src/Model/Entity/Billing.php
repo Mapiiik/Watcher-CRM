@@ -203,6 +203,26 @@ class Billing extends Entity
     }
 
     /**
+     * Round for the billing period.
+     *
+     * @param \PhpCollective\DecimalObject\Decimal $price Unrounded price.
+     * @return \PhpCollective\DecimalObject\Decimal Rounded price.
+     * @throws \Exception When BILLING_PERIOD_ROUNDING_TYPE has an invalid value.
+     */
+    public static function roundForBillingPeriod(Decimal $price): Decimal
+    {
+        return $price->round(
+            (int)env('BILLING_PERIOD_ROUNDING_PLACES', '2'),
+            match (env('BILLING_PERIOD_ROUNDING_TYPE', 'HALF_UP')) {
+                'HALF_UP' => Decimal::ROUND_HALF_UP,
+                'CEIL' => Decimal::ROUND_CEIL,
+                'FLOOR' => Decimal::ROUND_FLOOR,
+                default => throw new Exception('BILLING_PERIOD_ROUNDING_TYPE has an invalid value.'),
+            }
+        );
+    }
+
+    /**
      * getter for VAT
      *
      * @return \PhpCollective\DecimalObject\Decimal
@@ -252,30 +272,32 @@ class Billing extends Entity
         if (is_null($this->billing_until) || (!is_null($this->billing_until) && $this->billing_until >= $until)) { // billing_until is not limiting
             // whole period
             if ($this->billing_from <= $from) {
-                return $this->total_price
-                    ->round(0, Decimal::ROUND_CEIL);
+                return self::roundForBillingPeriod($this->total_price);
             }
             // later billing_from
             if ($this->billing_from <= $until) {
-                return $this->total_price
-                    ->multiply($this->billing_from->diffInDays($until->addDays(1)))
-                    ->divide($period_days, 4)
-                    ->round(0, Decimal::ROUND_CEIL);
+                return self::roundForBillingPeriod(
+                    $this->total_price
+                        ->multiply($this->billing_from->diffInDays($until->addDays(1)))
+                        ->divide($period_days, 4)
+                );
             }
         } else { // billing_until is limiting
             // earlier billing_until
             if ($this->billing_from <= $from) {
-                return $this->total_price
+                return self::roundForBillingPeriod(
+                    $this->total_price
                     ->multiply($from->diffInDays($this->billing_until->addDays(1)))
                     ->divide($period_days, 4)
-                    ->round(0, Decimal::ROUND_CEIL);
+                );
             }
             // later billing_from and earlier billing_until
             if ($this->billing_from <= $until) {
-                return $this->total_price
-                    ->multiply($this->billing_from->diffInDays($this->billing_until->addDays(1)))
-                    ->divide($period_days, 4)
-                    ->round(0, Decimal::ROUND_CEIL);
+                return self::roundForBillingPeriod(
+                    $this->total_price
+                        ->multiply($this->billing_from->diffInDays($this->billing_until->addDays(1)))
+                        ->divide($period_days, 4)
+                );
             }
         }
 
