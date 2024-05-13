@@ -69,7 +69,8 @@ FROM
         SELECT 
             Phones.customer_id, 
             STRING_AGG(Phones.phone, ' ') AS txt_1,
-            STRING_AGG(REPLACE(Phones.phone, ' ', ''), ' ') AS txt_2
+            STRING_AGG(REPLACE(Phones.phone, ' ', ''), ' ') AS txt_2,
+            STRING_AGG(REGEXP_REPLACE(REGEXP_REPLACE(Phones.phone, '\+\d+', ''), '\s', '', 'g'), ' ') AS txt_3
         FROM 
             Phones 
         GROUP BY 
@@ -103,6 +104,7 @@ WHERE
             Emails.txt,
             Phones.txt_1,
             Phones.txt_2,
+            Phones.txt_3,
             Ip_Addresses.txt
         )
     ) @@ websearch_to_tsquery(:search) 
