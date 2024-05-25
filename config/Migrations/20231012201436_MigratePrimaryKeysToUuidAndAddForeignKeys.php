@@ -282,7 +282,8 @@ class MigratePrimaryKeysToUuidAndAddForeignKeys extends AbstractMigration
                         'nullable' => true,
                         'add_fk' => true,
                     ],
-                    [ # Migration should be in CakeDC/Users plugin, but for simplicity it's now here
+                    # Migration should be in CakeDC/Users plugin, but for simplicity it's now here
+                    [
                         'table' => 'users',
                         'original' => 'customer_id',
                         'backup' => 'customer_nid',
@@ -470,17 +471,26 @@ class MigratePrimaryKeysToUuidAndAddForeignKeys extends AbstractMigration
                     ],
                 ],
             ],
-            'social_accounts' => [ # Migration should be in CakeDC/Users plugin, but for simplicity it's now here
+            # Migration should be in CakeDC/Users plugin, but for simplicity it's now here
+            'social_accounts' => [
                 'original' => 'id',
                 'backup' => 'nid',
                 'related' => [
                 ],
             ],
-            'users' => [ # Migration should be in CakeDC/Users plugin, but for simplicity it's now here
+            # Migration should be in CakeDC/Users plugin, but for simplicity it's now here
+            'users' => [
                 'original' => 'id',
                 'backup' => 'nid',
                 'keep_backup' => true,
                 'related' => [
+                    [
+                        'table' => 'failed_password_attempts',
+                        'original' => 'user_id',
+                        'backup' => 'user_nid',
+                        'nullable' => false,
+                        'add_fk' => true,
+                    ],
                     [
                         'table' => 'social_accounts',
                         'original' => 'user_id',

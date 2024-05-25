@@ -1247,6 +1247,10 @@ class InitialCRM extends AbstractMigration
             ->create();
 
         // hack CakeDC/Users tables to use integer IDs
+        $this->table('failed_password_attempts')
+            ->removeColumn('user_id')
+            ->save();
+
         $this->table('social_accounts')
             ->removeColumn('id')
             ->removeColumn('user_id')
@@ -1269,6 +1273,15 @@ class InitialCRM extends AbstractMigration
                 'null' => true,
             ])
             ->changePrimaryKey(['id'])
+            ->save();
+
+        $this->table('failed_password_attempts')
+            ->addColumn('user_id', 'integer', [
+                'default' => null,
+                'limit' => 10,
+                'null' => false,
+            ])
+            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->save();
 
         $this->table('social_accounts')
