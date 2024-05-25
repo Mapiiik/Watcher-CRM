@@ -255,8 +255,32 @@ class ContractsController extends AppController
 
         // load access points from NMS if possible
         $accessPoints = ApiClient::getAccessPoints();
-        if ($accessPoints) {
-            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
+        $ipAddressRanges = ApiClient::searchIpAddressRanges([]);
+        if ($accessPoints && $ipAddressRanges) {
+            $this->set(
+                'accessPoints',
+                $accessPoints = $accessPoints
+                    ->sortBy('name', SORT_ASC, SORT_NATURAL)
+                    ->map(
+                        function ($accessPoint) use ($ipAddressRanges) {
+                            $text = $accessPoint['name'];
+
+                            $ranges = $ipAddressRanges
+                                ->match(['access_point_id' => $accessPoint['id']])
+                                ->sortBy('name', SORT_ASC, SORT_NATURAL);
+
+                            if ($ranges) {
+                                $rangeNames = $ranges->extract('name');
+                                $text .= '     ' . '[' . implode(', ', $rangeNames->toArray()) . ']';
+                            }
+
+                            return [
+                                'value' => $accessPoint['id'],
+                                'text' => $text,
+                            ];
+                        }
+                    )
+            );
         } else {
             $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
             $this->set('accessPoints', []);
@@ -365,8 +389,32 @@ class ContractsController extends AppController
 
         // load access points from NMS if possible
         $accessPoints = ApiClient::getAccessPoints();
-        if ($accessPoints) {
-            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
+        $ipAddressRanges = ApiClient::searchIpAddressRanges([]);
+        if ($accessPoints && $ipAddressRanges) {
+            $this->set(
+                'accessPoints',
+                $accessPoints = $accessPoints
+                    ->sortBy('name', SORT_ASC, SORT_NATURAL)
+                    ->map(
+                        function ($accessPoint) use ($ipAddressRanges) {
+                            $text = $accessPoint['name'];
+
+                            $ranges = $ipAddressRanges
+                                ->match(['access_point_id' => $accessPoint['id']])
+                                ->sortBy('name', SORT_ASC, SORT_NATURAL);
+
+                            if ($ranges) {
+                                $rangeNames = $ranges->extract('name');
+                                $text .= '     ' . '[' . implode(', ', $rangeNames->toArray()) . ']';
+                            }
+
+                            return [
+                                'value' => $accessPoint['id'],
+                                'text' => $text,
+                            ];
+                        }
+                    )
+            );
         } else {
             $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
             $this->set('accessPoints', []);
