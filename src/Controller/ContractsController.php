@@ -269,7 +269,7 @@ class ContractsController extends AppController
                                 ->match(['access_point_id' => $accessPoint['id']])
                                 ->sortBy('name', SORT_ASC, SORT_NATURAL);
 
-                            if ($ranges) {
+                            if ($ranges->isEmpty()) {
                                 $rangeNames = $ranges->extract('name');
                                 $text .= '     ' . '[' . implode(', ', $rangeNames->toArray()) . ']';
                             }
@@ -403,7 +403,7 @@ class ContractsController extends AppController
                                 ->match(['access_point_id' => $accessPoint['id']])
                                 ->sortBy('name', SORT_ASC, SORT_NATURAL);
 
-                            if ($ranges) {
+                            if ($ranges->isEmpty()) {
                                 $rangeNames = $ranges->extract('name');
                                 $text .= '     ' . '[' . implode(', ', $rangeNames->toArray()) . ']';
                             }
