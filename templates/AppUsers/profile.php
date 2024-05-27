@@ -44,7 +44,7 @@
                     <p><?= h($user->email) ?></p>
                     <h6 class="subheader"><?= __d('app_users', 'Role') ?></h6>
                     <p><?= h($user->getRoleName()) ?></p>
-                    <?= $this->User->socialConnectLinkList($user->social_accounts) ?>
+                    <?= $this->User->socialConnectLinkList($user->social_accounts ?? []) ?>
                     <?php
                     if (!empty($user->social_accounts)) :
                         ?>
