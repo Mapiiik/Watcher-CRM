@@ -59,6 +59,14 @@
                     'label' => __d('app_users', 'Customers') . ' - ' . __d('app_users', 'Advanced Search'),
                     'type' => 'checkbox',
                 ]);
+                echo $this->Form->control('user_settings.tasks.all_by_default', [
+                    'label' =>
+                        __d('app_users', 'Tasks')
+                        . ' - '
+                        . __d('app_users', 'Show Tasks for All Users by Default')
+                    ,
+                    'type' => 'checkbox',
+                ]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__d('app_users', 'Submit')) ?>

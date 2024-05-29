@@ -10,6 +10,7 @@ use Cake\Form\Form;
 use Cake\I18n\DateTime;
 use Cake\Mailer\Mailer;
 use Cake\ORM\Query\SelectQuery;
+use Cake\Utility\Hash;
 use Cake\Validation\Validation;
 use Cake\View\Helper\HtmlHelper;
 use Cake\View\View;
@@ -88,7 +89,12 @@ class TasksController extends AppController
                 'TaskStates.completed' => 0,
             ];
         }
-        $dealer_id = $filter['dealer_id'] ?? $this->getRequest()->getAttribute('identity')['customer_id'] ?? null;
+
+        if (Hash::get($this->user_settings, 'tasks.all_by_default', false)) {
+            $dealer_id = $filter['dealer_id'] ?? null;
+        } else {
+            $dealer_id = $filter['dealer_id'] ?? $this->getRequest()->getAttribute('identity')['customer_id'] ?? null;
+        }
         if (!empty($dealer_id)) {
             if ($dealer_id === 'none') {
                 $conditions[] = [
