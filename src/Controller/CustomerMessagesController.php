@@ -119,6 +119,17 @@ class CustomerMessagesController extends AppController
         $ruianAddresses = $ruianAddressesTable->find(
             'list',
             valueField: 'address',
+            where: [
+                'Addresses.kod_adm IN' =>
+                    $this->CustomerMessages->Customers->Contracts->InstallationAddresses
+                        ->find(
+                            'list',
+                            valueField: 'ruian_gid'
+                        )
+                        ->all()
+                        ->toArray()
+                ,
+            ],
             order: [
                 'obec_nazev',
                 'cast_obce_nazev',
