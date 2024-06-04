@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\ApiClient;
 use App\Model\Enum\CustomerMessageDeliveryStatus;
 use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessageType;
@@ -105,16 +106,36 @@ class CustomerMessagesController extends AppController
      */
     public function addBulk()
     {
+        // load labels
         /** @var \App\Model\Table\LabelsTable $labelsTable */
         $labelsTable = $this->fetchTable('Labels');
         $labels = $labelsTable->find('list', order: [
             'name',
         ])->all();
 
-        $labelId = $this->getRequest()->getQuery('label_id');
+        // load RUIAN addresses
+        /** @var \RUIAN\Model\Table\AddressesTable $ruianAddressesTable */
+        $ruianAddressesTable = $this->fetchTable('Ruian.Addresses');
+        $ruianAddresses = $ruianAddressesTable->find(
+            'list',
+            valueField: 'address',
+            order: [
+                'obec_nazev',
+                'cast_obce_nazev',
+                'ulice_nazev',
+                'typ_so',
+                'cislo_domovni',
+                'cislo_orientacni',
+                'cislo_orientacni_znak',
+            ]
+        )->all();
 
+        // customers filter
+        $customersFilter = [];
+
+        $labelId = $this->getRequest()->getQuery('label_id');
         if (Validation::uuid($labelId)) {
-            $customerLabelsQuery = $labelsTable->CustomerLabels->find()
+            $filterQuery = $labelsTable->CustomerLabels->find()
                 ->select([
                     'customer_id',
                 ])
@@ -123,19 +144,61 @@ class CustomerMessagesController extends AppController
                     'CustomerLabels.label_id IS' => $labelId,
                 ]);
 
-            $customers = $this->CustomerMessages->Customers->find()
-                ->contain([
-                    'Emails',
-                    'Phones',
+            $customersFilter[] = [
+                'Customers.id IN' => $filterQuery,
+            ];
+            unset($filterQuery);
+        }
+
+        $accessPointId = $this->getRequest()->getQuery('access_point_id');
+        if (Validation::uuid($accessPointId)) {
+            $filterQuery = $this->CustomerMessages->Customers->Contracts->find()
+                ->select([
+                    'customer_id',
                 ])
+                ->distinct()
                 ->where([
-                    'Customers.id IN' => $customerLabelsQuery,
-                ])
-                ->orderBy([
-                    'Customers.company',
-                    'Customers.last_name',
-                    'Customers.first_name',
+                    'Contracts.access_point_id IS' => $accessPointId,
                 ]);
+
+            $customersFilter[] = [
+                'Customers.id IN' => $filterQuery,
+            ];
+            unset($filterQuery);
+        }
+
+        $ruianAddressId = $this->getRequest()->getQuery('ruian_address_id');
+        if (Validation::numeric($ruianAddressId)) {
+            $filterQuery = $this->CustomerMessages->Customers->Contracts->find()
+                ->select([
+                    'customer_id',
+                ])
+                ->contain([
+                    'InstallationAddresses',
+                ])
+                ->distinct()
+                ->where([
+                    'InstallationAddresses.ruian_gid IS' => $ruianAddressId,
+                ]);
+
+            $customersFilter[] = [
+                'Customers.id IN' => $filterQuery,
+            ];
+            unset($filterQuery);
+        }
+
+        if (!empty($customersFilter)) {
+            $customers = $this->CustomerMessages->Customers->find()
+            ->contain([
+                'Emails',
+                'Phones',
+            ])
+            ->where($customersFilter)
+            ->orderBy([
+                'Customers.company',
+                'Customers.last_name',
+                'Customers.first_name',
+            ]);
         } else {
             $customers = [];
         }
@@ -192,7 +255,21 @@ class CustomerMessagesController extends AppController
                 $this->Flash->error(__('The bulk customer message could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('customerMessage', 'labels', 'customers'));
+        $this->set(compact(
+            'customerMessage',
+            'labels',
+            'ruianAddresses',
+            'customers',
+        ));
+
+        // load access points from NMS if possible
+        $accessPoints = ApiClient::getAccessPoints();
+        if ($accessPoints) {
+            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
+        } else {
+            $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
+            $this->set('accessPoints', []);
+        }
     }
 
     /**

@@ -27,6 +27,16 @@
                     'empty' => true,
                     'onchange' => 'this.form.submit();',
                 ]) ?>
+                <?= $this->Form->control('access_point_id', [
+                    'options' => $accessPoints,
+                    'empty' => true,
+                    'onchange' => 'this.form.submit();',
+                ]) ?>
+                <?= $this->Form->control('ruian_address_id', [
+                    'options' => $ruianAddresses,
+                    'empty' => true,
+                    'onchange' => 'this.form.submit();',
+                ]) ?>
             </fieldset>
             <?= $this->Form->end() ?>
             
