@@ -4,6 +4,8 @@
  * @var \App\Model\Entity\CustomerMessage $customerMessage
  * @var iterable<\App\Model\Entity\Customer> $customers
  * @var \Cake\Collection\CollectionInterface|array<string> $labels
+ * @var \Cake\Collection\CollectionInterface|array<string> $accessPoints
+ * @var \Cake\Collection\CollectionInterface|array<string> $ruianAddresses
  */
 ?>
 <div class="row">

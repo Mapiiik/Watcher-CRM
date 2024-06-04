@@ -114,7 +114,7 @@ class CustomerMessagesController extends AppController
         ])->all();
 
         // load RUIAN addresses
-        /** @var \RUIAN\Model\Table\AddressesTable $ruianAddressesTable */
+        /** @var \Ruian\Model\Table\AddressesTable $ruianAddressesTable */
         $ruianAddressesTable = $this->fetchTable('Ruian.Addresses');
         $ruianAddresses = $ruianAddressesTable->find(
             'list',
