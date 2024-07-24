@@ -13,16 +13,14 @@ ENV WEB_DOCUMENT_ROOT "/app/webroot"
 
 # Install ping command
 RUN set -x \
- && apk add -U --no-cache iputils \
- && docker-image-cleanup
+ && apk add -U --no-cache iputils
 
 # Install PECL-DBASE extension
 RUN set -x \
  && apk add -U --no-cache autoconf gcc libc-dev make \
  && CPPFLAGS="-DHAVE_SYS_FILE_H" pecl install dbase \
  && docker-php-ext-enable dbase \
- && docker-run-bootstrap \
- && docker-image-cleanup
+ && docker-run-bootstrap
 
 # Add on-start commands
 RUN echo '# Composer oprations' >> /opt/docker/provision/entrypoint.d/99-composer.sh \
