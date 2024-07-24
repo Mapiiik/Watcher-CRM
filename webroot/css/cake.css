@@ -65,6 +65,8 @@
 .select2-container {
     color: black;
     margin-bottom: 1rem;
+    display: table;
+    table-layout: fixed;
 }
 
 .select2-container

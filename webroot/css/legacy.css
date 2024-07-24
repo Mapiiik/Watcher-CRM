@@ -42,6 +42,11 @@
 }
 
 /* Select2 overrides */
+
+.select2-container {
+    display: table;
+    table-layout: fixed;
+}
 .select2-container
 .select2-selection {
     border-radius: 0px;
