@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-08-01 18:35+0200\n"
+"POT-Creation-Date: 2024-07-24 16:22+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -57,7 +57,7 @@ msgstr ""
 #: ./templates/AppUsers/request_reset_password.php:15
 #: ./templates/AppUsers/resend_token_validation.php:16
 #: ./templates/AppUsers/social_email.php:14
-#: ./templates/AppUsers/user_settings.php:64
+#: ./templates/AppUsers/user_settings.php:72
 msgid "Submit"
 msgstr ""
 
@@ -331,7 +331,15 @@ msgid "Customers"
 msgstr ""
 
 #: ./templates/AppUsers/user_settings.php:59
-msgid "Advanced Search"
+msgid "Advanced Search by Default"
+msgstr ""
+
+#: ./templates/AppUsers/user_settings.php:64
+msgid "Tasks"
+msgstr ""
+
+#: ./templates/AppUsers/user_settings.php:66
+msgid "Show Tasks for All Users by Default"
 msgstr ""
 
 #: ./templates/AppUsers/verify.php:21

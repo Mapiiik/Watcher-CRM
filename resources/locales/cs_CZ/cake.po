@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CakePHP 4.2.4\n"
-"POT-Creation-Date: 2024-04-06 19:22+0200\n"
-"PO-Revision-Date: 2024-04-06 19:25+0200\n"
+"POT-Creation-Date: 2024-07-24 16:22+0200\n"
+"PO-Revision-Date: 2024-07-24 16:28+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 
 #: templates/Error/error400.php:25 templates/Error/error500.php:39
 msgid "Error"
@@ -24,11 +24,11 @@ msgid "The requested address {0} was not found on this server."
 msgstr "Požadovaná adresa {0} nebyla na tomto serveru nalezena."
 
 #: templates/Error/error500.php:37
-#: vendor/cakephp/cakephp/src/Error/Renderer/WebExceptionRenderer.php:366
+#: vendor/cakephp/cakephp/src/Error/Renderer/WebExceptionRenderer.php:367
 msgid "An Internal Error Has Occurred."
 msgstr "Došlo k vnitřní chybě."
 
-#: vendor/cakephp/cakephp/src/Error/Renderer/WebExceptionRenderer.php:364
+#: vendor/cakephp/cakephp/src/Error/Renderer/WebExceptionRenderer.php:365
 msgid "Not Found"
 msgstr "Nenalezeno"
 
@@ -529,7 +529,7 @@ msgstr "Upravit {0}"
 msgid "New {0}"
 msgstr "Nový {0}"
 
-#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1964
+#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1968
 msgid "Submit"
 msgstr "Potvrdit"
 

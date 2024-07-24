@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CakeDC Users\n"
-"POT-Creation-Date: 2023-08-01 18:35+0200\n"
-"PO-Revision-Date: 2023-08-01 18:43+0200\n"
+"POT-Creation-Date: 2024-07-24 16:22+0200\n"
+"PO-Revision-Date: 2024-07-24 16:28+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: Martin Patočka <mapik@mapik.net>\n"
 "Language: cs_CZ\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.4\n"
 
 #: src/Controller/Traits/UserSettingsTrait.php:37
 msgid "You are not allowed to edit another user's settings."
@@ -49,7 +49,7 @@ msgstr "Přidat uživatele"
 #: templates/AppUsers/request_reset_password.php:15
 #: templates/AppUsers/resend_token_validation.php:16
 #: templates/AppUsers/social_email.php:14
-#: templates/AppUsers/user_settings.php:64
+#: templates/AppUsers/user_settings.php:72
 msgid "Submit"
 msgstr "Odeslat"
 
@@ -309,8 +309,16 @@ msgid "Customers"
 msgstr "Zákazníci"
 
 #: templates/AppUsers/user_settings.php:59
-msgid "Advanced Search"
-msgstr "Pokročilé vyhledávání"
+msgid "Advanced Search by Default"
+msgstr "Pokročilé vyhledávání ve výchozím nastavení"
+
+#: templates/AppUsers/user_settings.php:64
+msgid "Tasks"
+msgstr "Úkoly"
+
+#: templates/AppUsers/user_settings.php:66
+msgid "Show Tasks for All Users by Default"
+msgstr "Zobrazení úloh pro všechny uživatele ve výchozím nastavení"
 
 #: templates/AppUsers/verify.php:21
 msgid "Verification Code"
