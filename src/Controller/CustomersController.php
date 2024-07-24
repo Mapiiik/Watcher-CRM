@@ -173,9 +173,10 @@ class CustomersController extends AppController
         $search = (string)($filter['search'] ?? '');
         $labels = $filter['labels'] ?? [];
         $allow_advanced_search = in_array($this->getRequest()->getAttribute('identity')['role'] ?? null, [
-            'admin',
             'network-manager',
             'sales-manager',
+            'bookkeeper',
+            'admin',
         ]);
 
         $customersQuery = $this->Customers->find();
