@@ -203,6 +203,55 @@ class Billing extends Entity
     }
 
     /**
+     * Custom Decimal Rounding
+     */
+    private static function decimalRoundV2(
+        Decimal $number,
+        int $scale = 0,
+        int $roundMode = Decimal::ROUND_HALF_UP
+    ): Decimal {
+        $exponent = $scale + 6;
+
+        $e = bcpow('10', (string)$exponent);
+        switch ($roundMode) {
+            case Decimal::ROUND_FLOOR:
+                $result = bcdiv(
+                    bcadd(
+                        bcmul((string)$number, $e, 0),
+                        $number->isNegative() ? '-999999' : '0'
+                    ),
+                    $e,
+                    $scale
+                );
+
+                break;
+            case Decimal::ROUND_CEIL:
+                $result = bcdiv(
+                    bcadd(
+                        bcmul((string)$number, $e, 0),
+                        $number->isNegative() ? '0' : '999999'
+                    ),
+                    $e,
+                    $scale
+                );
+
+                break;
+            case Decimal::ROUND_HALF_UP:
+            default:
+                $result = bcdiv(
+                    bcadd(
+                        bcmul((string)$number, $e, 0),
+                        $number->isNegative() ? '-500000' : '500000'
+                    ),
+                    $e,
+                    $scale
+                );
+        }
+
+        return new Decimal($result);
+    }
+
+    /**
      * Round for the billing period.
      *
      * @param \PhpCollective\DecimalObject\Decimal $price Unrounded price.
@@ -211,7 +260,20 @@ class Billing extends Entity
      */
     public static function roundForBillingPeriod(Decimal $price): Decimal
     {
+        /*
         return $price->round(
+            (int)env('BILLING_PERIOD_ROUNDING_PLACES', '2'),
+            match (env('BILLING_PERIOD_ROUNDING_TYPE', 'HALF_UP')) {
+                'HALF_UP' => Decimal::ROUND_HALF_UP,
+                'CEIL' => Decimal::ROUND_CEIL,
+                'FLOOR' => Decimal::ROUND_FLOOR,
+                default => throw new Exception('BILLING_PERIOD_ROUNDING_TYPE has an invalid value.'),
+            }
+        );
+        */
+
+        return self::decimalRoundV2(
+            $price,
             (int)env('BILLING_PERIOD_ROUNDING_PLACES', '2'),
             match (env('BILLING_PERIOD_ROUNDING_TYPE', 'HALF_UP')) {
                 'HALF_UP' => Decimal::ROUND_HALF_UP,
