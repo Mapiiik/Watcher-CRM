@@ -530,16 +530,16 @@
         },
         {
             "name": "cakephp/migrations",
-            "version": "4.3.1",
+            "version": "4.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/migrations.git",
-                "reference": "c3eef97e5d214e7a859cce51f631cc50dd4e635d"
+                "reference": "ff26043d1b01321d59f44143167c898f19bcd536"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/migrations/zipball/c3eef97e5d214e7a859cce51f631cc50dd4e635d",
-                "reference": "c3eef97e5d214e7a859cce51f631cc50dd4e635d",
+                "url": "https://api.github.com/repos/cakephp/migrations/zipball/ff26043d1b01321d59f44143167c898f19bcd536",
+                "reference": "ff26043d1b01321d59f44143167c898f19bcd536",
                 "shasum": ""
             },
             "require": {
@@ -550,7 +550,7 @@
             },
             "require-dev": {
                 "cakephp/bake": "^3.0",
-                "cakephp/cakephp": "^5.0",
+                "cakephp/cakephp": "^5.0.3",
                 "cakephp/cakephp-codesniffer": "^5.0",
                 "phpunit/phpunit": "^10.1.0"
             },
@@ -586,7 +586,7 @@
                 "issues": "https://github.com/cakephp/migrations/issues",
                 "source": "https://github.com/cakephp/migrations"
             },
-            "time": "2024-05-13T15:47:20+00:00"
+            "time": "2024-07-30T14:41:32+00:00"
         },
         {
             "name": "cakephp/plugin-installer",
@@ -6755,16 +6755,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "10.5.28",
+            "version": "10.5.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "ff7fb85cdf88131b83e721fb2a327b664dbed275"
+                "reference": "8e9e80872b4e8064401788ee8a32d40b4455318f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/ff7fb85cdf88131b83e721fb2a327b664dbed275",
-                "reference": "ff7fb85cdf88131b83e721fb2a327b664dbed275",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/8e9e80872b4e8064401788ee8a32d40b4455318f",
+                "reference": "8e9e80872b4e8064401788ee8a32d40b4455318f",
                 "shasum": ""
             },
             "require": {
@@ -6836,7 +6836,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.5.28"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.5.29"
             },
             "funding": [
                 {
@@ -6852,7 +6852,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-07-18T14:54:16+00:00"
+            "time": "2024-07-30T11:08:00+00:00"
         },
         {
             "name": "psalm/phar",
