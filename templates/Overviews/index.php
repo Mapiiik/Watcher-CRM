@@ -15,6 +15,11 @@
                     ['class' => 'side-nav-item']
                 ) ?>
                 <?= $this->AuthLink->link(
+                    __('Overview of Customer Connection Speeds') . ' (' . __('Reports for CTO') . ')',
+                    ['action' => 'overviewOfCustomerConnectionSpeeds'],
+                    ['class' => 'side-nav-item']
+                ) ?>
+                <?= $this->AuthLink->link(
                     __('Overview of Customer Connection Points') . ' (' . __('Reports for CTO') . ')',
                     ['action' => 'overviewOfCustomerConnectionPoints'],
                     ['class' => 'side-nav-item']

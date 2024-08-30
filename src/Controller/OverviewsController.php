@@ -583,6 +583,134 @@ class OverviewsController extends AppController
     }
 
     /**
+     * Overview of connection speeds method
+     *
+     * @param string|null $category Optional parameter, CTO category.
+     * @return \Cake\Http\Response|null|void Renders view
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function overviewOfCustomerConnectionSpeeds(?string $category = null)
+    {
+        $month_to_display = new Date($this->getRequest()->getQuery('month_to_display', 'now'));
+
+        $cto_categories = $this->fetchTable('Billings')->find()
+            ->contain('Customers')
+            ->contain([
+                'Contracts' => [
+                    'InstallationAddresses',
+                ],
+            ])
+            ->contain([
+                'Services' => [
+                    'ServiceTypes',
+                    'Queues',
+                ],
+            ])
+
+            ->where([
+                'Billings.billing_from <=' => $month_to_display->lastOfMonth(), //last day of month
+            ])
+            ->andWhere([
+                'OR' => [
+                    'Billings.billing_until IS NULL',
+                    'Billings.billing_until >=' => $month_to_display->firstOfMonth(), //first day of month
+                ],
+            ])
+
+            ->where(['Queues.speed_down IS NOT NULL'])
+            ->where(['Queues.speed_up IS NOT NULL'])
+            ->where(['Queues.cto_category IS NOT NULL'])
+            ->where(['InstallationAddresses.ruian_gid IS NOT NULL'])
+
+            ->orderBy([
+                'Queues.cto_category',
+                'InstallationAddresses.city',
+            ])
+
+            ->formatResults(
+                function (CollectionInterface $billings) {
+                    return $billings
+                        ->groupBy('service.queue.cto_category')
+                        ->map(function ($category_billings, $cto_category) {
+                            return (new Collection($category_billings))
+                                ->groupBy('contract.installation_address.city')
+                                ->map(function ($billings, $city) use ($cto_category) {
+                                    $billings_collection = (new Collection($billings));
+
+                                    $address = new Entity();
+
+                                    $address['billings'] = $billings_collection;
+
+                                    $address['city'] = $city;
+
+                                    $address['cto_category'] = $cto_category;
+
+                                    $address['active_connections'] = $billings_collection->count();
+                                    $address['active_connections_nonbusiness'] = $billings_collection
+                                        ->match(['customer.ic' => null])
+                                        ->count();
+
+                                    $address['advertised_speeds'] = new Entity(
+                                        $billings_collection
+                                        ->countBy(function ($billing) {
+                                            $advertised_download_speed
+                                                = $billing->service->queue->speed_down;
+
+                                            if ($advertised_download_speed < 2048) {
+                                                return 'speed_0_2';
+                                            } elseif ($advertised_download_speed < 10240) {
+                                                return 'speed_2_10';
+                                            } elseif ($advertised_download_speed < 30720) {
+                                                return 'speed_10_30';
+                                            } elseif ($advertised_download_speed < 102400) {
+                                                return 'speed_30_100';
+                                            } elseif ($advertised_download_speed < 1024000) {
+                                                return 'speed_100_1000';
+                                            } else {
+                                                return 'speed_1000_plus';
+                                            }
+                                        })
+                                        ->toArray()
+                                    );
+
+                                    $address['advertised_speeds_nonbusiness'] = new Entity(
+                                        $billings_collection
+                                        ->countBy(function ($billing) {
+                                            // skip business customers
+                                            if ($billing->customer->ic !== null) {
+                                                return 'business';
+                                            }
+
+                                            $advertised_download_speed
+                                                = $billing->service->queue->speed_down;
+
+                                            if ($advertised_download_speed < 2048) {
+                                                return 'speed_0_2';
+                                            } elseif ($advertised_download_speed < 10240) {
+                                                return 'speed_2_10';
+                                            } elseif ($advertised_download_speed < 30720) {
+                                                return 'speed_10_30';
+                                            } elseif ($advertised_download_speed < 102400) {
+                                                return 'speed_30_100';
+                                            } elseif ($advertised_download_speed < 1024000) {
+                                                return 'speed_100_1000';
+                                            } else {
+                                                return 'speed_1000_plus';
+                                            }
+                                        })
+                                        ->toArray()
+                                    );
+
+                                    return $address;
+                                });
+                        });
+                }
+            );
+
+        $this->set(compact('cto_categories', 'month_to_display'));
+    }
+
+    /**
      * Overview of dealer commissions
      *
      * @return \Cake\Http\Response|null|void Renders view
