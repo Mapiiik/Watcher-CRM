@@ -93,9 +93,17 @@ class ServicesController extends AppController
         $serviceTypes = $this->Services->ServiceTypes->find('list', order: [
             'name',
         ]);
-        $queues = $this->Services->Queues->find('list', order: [
-            'name',
-        ]);
+        $queues = $this->Services->Queues->find(
+            'list',
+            valueField: [
+                'name',
+                'caption',
+            ],
+            valueSeparator: ' | ',
+            order: [
+                'name',
+            ],
+        );
         $this->set(compact('service', 'serviceTypes', 'queues'));
     }
 
@@ -121,9 +129,17 @@ class ServicesController extends AppController
         $serviceTypes = $this->Services->ServiceTypes->find('list', order: [
             'name',
         ]);
-        $queues = $this->Services->Queues->find('list', order: [
-            'name',
-        ]);
+        $queues = $this->Services->Queues->find(
+            'list',
+            valueField: [
+                'name',
+                'caption',
+            ],
+            valueSeparator: ' | ',
+            order: [
+                'name',
+            ],
+        );
         $this->set(compact('service', 'serviceTypes', 'queues'));
     }
 
