@@ -52,8 +52,6 @@
                             <th><?= __('Advertised  30-100 Mbps') . ' ' . __('(nonbusiness)') ?></th>
                             <th><?= __('Advertised  100-1000 Mbps') . ' ' . __('(nonbusiness)') ?></th>
                             <th><?= __('Advertised  1000+ Mbps') . ' ' . __('(nonbusiness)') ?></th>
-                            <th><?= __('Address') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -108,15 +106,6 @@
                                 '' :
                                 $this->Number->format($connection_point->advertised_speeds_nonbusiness->speed_1000_plus)
                             ?></td>
-                            <td><?= h($connection_point->ruian_address) ?></td>
-                            <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), [
-                                    'plugin' => 'Ruian',
-                                    'controller' => 'Addresses',
-                                    'action' => 'view',
-                                    $connection_point->ruian_gid,
-                                ]) ?>
-                            </td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
