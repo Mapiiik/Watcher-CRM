@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2024-07-24 16:22+0200\n"
+"POT-Creation-Date: 2024-08-31 17:23+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -535,7 +535,7 @@ msgid "Please set the date of conclusion of the original contract version."
 msgstr ""
 
 #: ./src/Controller/ContractsController.php:1015
-#: ./src/Controller/CustomersController.php:464
+#: ./src/Controller/CustomersController.php:465
 msgid "Invalid type of document requested."
 msgstr ""
 
@@ -609,33 +609,33 @@ msgstr ""
 msgid "The customer message could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:206
+#: ./src/Controller/CustomersController.php:207
 msgid "Please use the customer number or company identification number in the search."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:367
-#: ./src/Controller/CustomersController.php:393
+#: ./src/Controller/CustomersController.php:368
+#: ./src/Controller/CustomersController.php:394
 msgid "The customer has been saved."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:371
-#: ./src/Controller/CustomersController.php:397
+#: ./src/Controller/CustomersController.php:372
+#: ./src/Controller/CustomersController.php:398
 msgid "The customer could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:418
+#: ./src/Controller/CustomersController.php:419
 msgid "The customer has been deleted."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:421
+#: ./src/Controller/CustomersController.php:422
 msgid "The customer could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:438
+#: ./src/Controller/CustomersController.php:439
 msgid "Consent to the processing of personal data"
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:439
+#: ./src/Controller/CustomersController.php:440
 msgid "Consent to the processing of personal data (change)"
 msgstr ""
 
@@ -826,11 +826,10 @@ msgid "The login could not be deleted. Please, try again."
 msgstr ""
 
 #: ./src/Controller/OverviewsController.php:274
-#: ./src/Controller/OverviewsController.php:452
 msgid "Invalid RUIAN GID: {0}"
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:641
+#: ./src/Controller/OverviewsController.php:591
 msgid "unknown dealer"
 msgstr ""
 
@@ -1113,7 +1112,7 @@ msgstr ""
 msgid "API"
 msgstr ""
 
-#: ./src/Model/Entity/Billing.php:359
+#: ./src/Model/Entity/Billing.php:421
 msgid "Contract data not available."
 msgstr ""
 
@@ -1197,7 +1196,6 @@ msgstr ""
 #: ./templates/Labels/view.php:60
 #: ./templates/Logins/index.php:50
 #: ./templates/Logins/view.php:52
-#: ./templates/Overviews/overview_of_customer_connection_points_obsolete.php:91
 #: ./templates/Phones/index.php:46
 #: ./templates/Phones/index.php:47
 #: ./templates/Phones/index.php:48
@@ -1290,7 +1288,6 @@ msgstr ""
 #: ./templates/Labels/view.php:60
 #: ./templates/Logins/index.php:50
 #: ./templates/Logins/view.php:52
-#: ./templates/Overviews/overview_of_customer_connection_points_obsolete.php:91
 #: ./templates/Phones/index.php:46
 #: ./templates/Phones/index.php:47
 #: ./templates/Phones/index.php:48
@@ -1586,8 +1583,8 @@ msgstr ""
 #: ./templates/Overviews/overview_of_active_services.php:68
 #: ./templates/Overviews/overview_of_customer_connection_points.php:11
 #: ./templates/Overviews/overview_of_customer_connection_points.php:64
-#: ./templates/Overviews/overview_of_customer_connection_points_obsolete.php:11
-#: ./templates/Overviews/overview_of_customer_connection_points_obsolete.php:64
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:11
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:56
 #: ./templates/Overviews/overview_of_dealer_commissions.php:11
 #: ./templates/Overviews/overview_of_dealer_commissions.php:66
 #: ./templates/Phones/add.php:11
@@ -2079,7 +2076,7 @@ msgstr ""
 #: ./templates/Logins/index.php:56
 #: ./templates/Overviews/overview_of_active_services.php:108
 #: ./templates/Overviews/overview_of_customer_connection_points.php:90
-#: ./templates/Overviews/overview_of_customer_connection_points_obsolete.php:94
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:113
 #: ./templates/Overviews/overview_of_dealer_commissions.php:105
 #: ./templates/Phones/index.php:50
 #: ./templates/Queues/index.php:53
@@ -2811,6 +2808,7 @@ msgstr ""
 #: ./templates/Addresses/view.php:83
 #: ./templates/Countries/view.php:92
 #: ./templates/Customers/view.php:457
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:40
 msgid "City"
 msgstr ""
 
@@ -4398,11 +4396,13 @@ msgid "Service Related"
 msgstr ""
 
 #: ./templates/Overviews/index.php:13
+#: ./templates/Overviews/overview_of_active_services.php:17
 msgid "Overview of Active Services"
 msgstr ""
 
 #: ./templates/Overviews/index.php:18
-msgid "Overview of Customer Connection Points"
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:17
+msgid "Overview of Customer Connection Speeds"
 msgstr ""
 
 #: ./templates/Overviews/index.php:18
@@ -4411,10 +4411,12 @@ msgid "Reports for CTO"
 msgstr ""
 
 #: ./templates/Overviews/index.php:23
-msgid "Overview of Customer Connection Points (Obsolete)"
+#: ./templates/Overviews/overview_of_customer_connection_points.php:28
+msgid "Overview of Customer Connection Points"
 msgstr ""
 
 #: ./templates/Overviews/index.php:28
+#: ./templates/Overviews/overview_of_dealer_commissions.php:17
 msgid "Overview of Dealer Commissions"
 msgstr ""
 
@@ -4457,25 +4459,21 @@ msgstr ""
 
 #: ./templates/Overviews/overview_of_active_services.php:12
 #: ./templates/Overviews/overview_of_customer_connection_points.php:12
-#: ./templates/Overviews/overview_of_customer_connection_points_obsolete.php:12
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:12
 #: ./templates/Overviews/overview_of_dealer_commissions.php:12
 msgid "List Overviews"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:17
-msgid "Overview of active services"
-msgstr ""
-
 #: ./templates/Overviews/overview_of_active_services.php:25
 #: ./templates/Overviews/overview_of_customer_connection_points.php:36
-#: ./templates/Overviews/overview_of_customer_connection_points_obsolete.php:36
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:25
 #: ./templates/Overviews/overview_of_dealer_commissions.php:25
 msgid "Month To Display"
 msgstr ""
 
 #: ./templates/Overviews/overview_of_active_services.php:26
 #: ./templates/Overviews/overview_of_customer_connection_points.php:37
-#: ./templates/Overviews/overview_of_customer_connection_points_obsolete.php:37
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:26
 #: ./templates/Overviews/overview_of_dealer_commissions.php:26
 msgid "YYYY-MM"
 msgstr ""
@@ -4520,42 +4518,32 @@ msgid "Total Sum (unbilled)"
 msgstr ""
 
 #: ./templates/Overviews/overview_of_customer_connection_points.php:19
-#: ./templates/Overviews/overview_of_customer_connection_points_obsolete.php:19
 msgid "Export"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_customer_connection_points.php:28
-#: ./templates/Overviews/overview_of_customer_connection_points_obsolete.php:28
-msgid "Overview of customer connection points"
-msgstr ""
-
 #: ./templates/Overviews/overview_of_customer_connection_points.php:51
-#: ./templates/Overviews/overview_of_customer_connection_points_obsolete.php:51
 msgid "RUIAN GID"
 msgstr ""
 
 #: ./templates/Overviews/overview_of_customer_connection_points.php:52
-#: ./templates/Overviews/overview_of_customer_connection_points_obsolete.php:52
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:41
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:48
 msgid "Active Connections"
 msgstr ""
 
 #: ./templates/Overviews/overview_of_customer_connection_points.php:53
-#: ./templates/Overviews/overview_of_customer_connection_points_obsolete.php:53
 msgid "Active Connections (nonbusiness)"
 msgstr ""
 
 #: ./templates/Overviews/overview_of_customer_connection_points.php:54
-#: ./templates/Overviews/overview_of_customer_connection_points_obsolete.php:54
 msgid "Active 0-30 Mbps"
 msgstr ""
 
 #: ./templates/Overviews/overview_of_customer_connection_points.php:55
-#: ./templates/Overviews/overview_of_customer_connection_points_obsolete.php:55
 msgid "Active 30-100 Mbps"
 msgstr ""
 
 #: ./templates/Overviews/overview_of_customer_connection_points.php:56
-#: ./templates/Overviews/overview_of_customer_connection_points_obsolete.php:56
 msgid "Active 100+ Mbps"
 msgstr ""
 
@@ -4584,36 +4572,48 @@ msgid "VHCN Network Category"
 msgstr ""
 
 #: ./templates/Overviews/overview_of_customer_connection_points.php:63
-#: ./templates/Overviews/overview_of_customer_connection_points_obsolete.php:63
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:55
 msgid "Address"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_customer_connection_points_obsolete.php:57
-msgid "Available 0-30 Mbps"
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:42
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:49
+msgid "Advertised  0-2 Mbps"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_customer_connection_points_obsolete.php:58
-msgid "Available 30-100 Mbps"
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:43
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:50
+msgid "Advertised  2-10 Mbps"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_customer_connection_points_obsolete.php:59
-msgid "Available 100-300 Mbps"
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:44
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:51
+msgid "Advertised  10-30 Mbps"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_customer_connection_points_obsolete.php:60
-msgid "Available 300-1000 Mbps"
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:45
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:52
+msgid "Advertised  30-100 Mbps"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_customer_connection_points_obsolete.php:61
-msgid "Available 1000+ Mbps"
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:46
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:53
+msgid "Advertised  100-1000 Mbps"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_customer_connection_points_obsolete.php:62
-msgid "VHCN"
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:47
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:54
+msgid "Advertised  1000+ Mbps"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_dealer_commissions.php:17
-msgid "Overview of dealer commissions"
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:48
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:49
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:50
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:51
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:52
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:53
+#: ./templates/Overviews/overview_of_customer_connection_speeds.php:54
+msgid "(nonbusiness)"
 msgstr ""
 
 #: ./templates/Phones/add.php:19

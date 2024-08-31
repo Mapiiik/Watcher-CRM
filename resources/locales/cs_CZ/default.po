@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2024-07-24 16:22+0200\n"
-"PO-Revision-Date: 2024-07-24 16:31+0200\n"
+"POT-Creation-Date: 2024-08-31 17:23+0200\n"
+"PO-Revision-Date: 2024-08-31 17:25+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.4.4\n"
+"X-Generator: Poedit 3.5\n"
 
 #: src/Command/ProcessEmailsCommand.php:38
 msgid "Number of emails to process."
@@ -531,7 +531,7 @@ msgid "Please set the date of conclusion of the original contract version."
 msgstr "Nastavte prosím datum uzavření původní verze smlouvy."
 
 #: src/Controller/ContractsController.php:1015
-#: src/Controller/CustomersController.php:464
+#: src/Controller/CustomersController.php:465
 msgid "Invalid type of document requested."
 msgstr "Neplatný typ požadovaného dokumentu."
 
@@ -606,7 +606,7 @@ msgstr "Zpráva pro zákazníka byla smazána."
 msgid "The customer message could not be deleted. Please, try again."
 msgstr "Zprávu pro zákazníka nebylo možné odstranit. Zkuste to prosím znovu."
 
-#: src/Controller/CustomersController.php:206
+#: src/Controller/CustomersController.php:207
 msgid ""
 "Please use the customer number or company identification number in the "
 "search."
@@ -614,29 +614,29 @@ msgstr ""
 "Při vyhledávání prosím použijte zákaznické číslo nebo identifikační číslo "
 "společnosti."
 
-#: src/Controller/CustomersController.php:367
-#: src/Controller/CustomersController.php:393
+#: src/Controller/CustomersController.php:368
+#: src/Controller/CustomersController.php:394
 msgid "The customer has been saved."
 msgstr "Zákazník byl uložen."
 
-#: src/Controller/CustomersController.php:371
-#: src/Controller/CustomersController.php:397
+#: src/Controller/CustomersController.php:372
+#: src/Controller/CustomersController.php:398
 msgid "The customer could not be saved. Please, try again."
 msgstr "Zákazníka nelze uložit. Opakujte akci."
 
-#: src/Controller/CustomersController.php:418
+#: src/Controller/CustomersController.php:419
 msgid "The customer has been deleted."
 msgstr "Zákazník byl odstraněn."
 
-#: src/Controller/CustomersController.php:421
+#: src/Controller/CustomersController.php:422
 msgid "The customer could not be deleted. Please, try again."
 msgstr "Zákazníka nelze odstranit. Opakujte akci."
 
-#: src/Controller/CustomersController.php:438
+#: src/Controller/CustomersController.php:439
 msgid "Consent to the processing of personal data"
 msgstr "Souhlas se zpracováním osobních údajů"
 
-#: src/Controller/CustomersController.php:439
+#: src/Controller/CustomersController.php:440
 msgid "Consent to the processing of personal data (change)"
 msgstr "Souhlas se zpracováním osobních údajů (změna)"
 
@@ -831,11 +831,10 @@ msgid "The login could not be deleted. Please, try again."
 msgstr "Přihlášení nelze odstranit. Prosím, zkuste to znovu."
 
 #: src/Controller/OverviewsController.php:274
-#: src/Controller/OverviewsController.php:452
 msgid "Invalid RUIAN GID: {0}"
 msgstr "Neplatné RÚIAN GID: {0}"
 
-#: src/Controller/OverviewsController.php:641
+#: src/Controller/OverviewsController.php:591
 msgid "unknown dealer"
 msgstr "neznámý dealer"
 
@@ -1116,7 +1115,7 @@ msgstr "Admin"
 msgid "API"
 msgstr "API"
 
-#: src/Model/Entity/Billing.php:359
+#: src/Model/Entity/Billing.php:421
 msgid "Contract data not available."
 msgstr "Údaje o smlouvě nejsou k dispozici."
 
@@ -1176,7 +1175,6 @@ msgstr "Evidenční číslo"
 #: templates/Emails/view.php:52 templates/Emails/view.php:56
 #: templates/Labels/index.php:54 templates/Labels/view.php:60
 #: templates/Logins/index.php:50 templates/Logins/view.php:52
-#: templates/Overviews/overview_of_customer_connection_points_obsolete.php:91
 #: templates/Phones/index.php:46 templates/Phones/index.php:47
 #: templates/Phones/index.php:48 templates/Phones/view.php:48
 #: templates/Phones/view.php:52 templates/Phones/view.php:56
@@ -1225,7 +1223,6 @@ msgstr "Ne"
 #: templates/Emails/view.php:52 templates/Emails/view.php:56
 #: templates/Labels/index.php:54 templates/Labels/view.php:60
 #: templates/Logins/index.php:50 templates/Logins/view.php:52
-#: templates/Overviews/overview_of_customer_connection_points_obsolete.php:91
 #: templates/Phones/index.php:46 templates/Phones/index.php:47
 #: templates/Phones/index.php:48 templates/Phones/view.php:48
 #: templates/Phones/view.php:52 templates/Phones/view.php:56
@@ -1459,8 +1456,8 @@ msgstr "Není nainstalováno přes Git"
 #: templates/Overviews/overview_of_active_services.php:68
 #: templates/Overviews/overview_of_customer_connection_points.php:11
 #: templates/Overviews/overview_of_customer_connection_points.php:64
-#: templates/Overviews/overview_of_customer_connection_points_obsolete.php:11
-#: templates/Overviews/overview_of_customer_connection_points_obsolete.php:64
+#: templates/Overviews/overview_of_customer_connection_speeds.php:11
+#: templates/Overviews/overview_of_customer_connection_speeds.php:56
 #: templates/Overviews/overview_of_dealer_commissions.php:11
 #: templates/Overviews/overview_of_dealer_commissions.php:66
 #: templates/Phones/add.php:11 templates/Phones/edit.php:11
@@ -1763,7 +1760,7 @@ msgstr "Číslo zákazníka"
 #: templates/Labels/view.php:153 templates/Logins/index.php:56
 #: templates/Overviews/overview_of_active_services.php:108
 #: templates/Overviews/overview_of_customer_connection_points.php:90
-#: templates/Overviews/overview_of_customer_connection_points_obsolete.php:94
+#: templates/Overviews/overview_of_customer_connection_speeds.php:113
 #: templates/Overviews/overview_of_dealer_commissions.php:105
 #: templates/Phones/index.php:50 templates/Queues/index.php:53
 #: templates/Queues/view.php:135 templates/RemovedIpAddresses/index.php:59
@@ -2227,6 +2224,7 @@ msgstr "Typ čísla"
 
 #: templates/Addresses/view.php:83 templates/Countries/view.php:92
 #: templates/Customers/view.php:457
+#: templates/Overviews/overview_of_customer_connection_speeds.php:40
 msgid "City"
 msgstr "Město"
 
@@ -3579,22 +3577,26 @@ msgid "Service Related"
 msgstr "Související se službou"
 
 #: templates/Overviews/index.php:13
+#: templates/Overviews/overview_of_active_services.php:17
 msgid "Overview of Active Services"
 msgstr "Přehled aktivních služeb"
 
 #: templates/Overviews/index.php:18
-msgid "Overview of Customer Connection Points"
-msgstr "Přehled přípojných bodů zákazníků"
+#: templates/Overviews/overview_of_customer_connection_speeds.php:17
+msgid "Overview of Customer Connection Speeds"
+msgstr "Přehled rychlostí připojení zákazníků"
 
 #: templates/Overviews/index.php:18 templates/Overviews/index.php:23
 msgid "Reports for CTO"
 msgstr "Reporty pro ČTU"
 
 #: templates/Overviews/index.php:23
-msgid "Overview of Customer Connection Points (Obsolete)"
-msgstr "Přehled přípojných bodů zákazníků (zastaralé)"
+#: templates/Overviews/overview_of_customer_connection_points.php:28
+msgid "Overview of Customer Connection Points"
+msgstr "Přehled přípojných bodů zákazníků"
 
 #: templates/Overviews/index.php:28
+#: templates/Overviews/overview_of_dealer_commissions.php:17
 msgid "Overview of Dealer Commissions"
 msgstr "Přehled provizí dealerů"
 
@@ -3630,25 +3632,21 @@ msgstr "Seznam odebraných IP sítí"
 
 #: templates/Overviews/overview_of_active_services.php:12
 #: templates/Overviews/overview_of_customer_connection_points.php:12
-#: templates/Overviews/overview_of_customer_connection_points_obsolete.php:12
+#: templates/Overviews/overview_of_customer_connection_speeds.php:12
 #: templates/Overviews/overview_of_dealer_commissions.php:12
 msgid "List Overviews"
 msgstr "Seznam přehledů"
 
-#: templates/Overviews/overview_of_active_services.php:17
-msgid "Overview of active services"
-msgstr "Přehled aktivních služeb"
-
 #: templates/Overviews/overview_of_active_services.php:25
 #: templates/Overviews/overview_of_customer_connection_points.php:36
-#: templates/Overviews/overview_of_customer_connection_points_obsolete.php:36
+#: templates/Overviews/overview_of_customer_connection_speeds.php:25
 #: templates/Overviews/overview_of_dealer_commissions.php:25
 msgid "Month To Display"
 msgstr "Měsíc k zobrazení"
 
 #: templates/Overviews/overview_of_active_services.php:26
 #: templates/Overviews/overview_of_customer_connection_points.php:37
-#: templates/Overviews/overview_of_customer_connection_points_obsolete.php:37
+#: templates/Overviews/overview_of_customer_connection_speeds.php:26
 #: templates/Overviews/overview_of_dealer_commissions.php:26
 msgid "YYYY-MM"
 msgstr "RRRR-MM"
@@ -3692,42 +3690,32 @@ msgid "Total Sum (unbilled)"
 msgstr "Celkový součet (nefakturováno)"
 
 #: templates/Overviews/overview_of_customer_connection_points.php:19
-#: templates/Overviews/overview_of_customer_connection_points_obsolete.php:19
 msgid "Export"
 msgstr "Export"
 
-#: templates/Overviews/overview_of_customer_connection_points.php:28
-#: templates/Overviews/overview_of_customer_connection_points_obsolete.php:28
-msgid "Overview of customer connection points"
-msgstr "Přehled přípojných bodů zákazníků"
-
 #: templates/Overviews/overview_of_customer_connection_points.php:51
-#: templates/Overviews/overview_of_customer_connection_points_obsolete.php:51
 msgid "RUIAN GID"
 msgstr "RUIAN GID"
 
 #: templates/Overviews/overview_of_customer_connection_points.php:52
-#: templates/Overviews/overview_of_customer_connection_points_obsolete.php:52
+#: templates/Overviews/overview_of_customer_connection_speeds.php:41
+#: templates/Overviews/overview_of_customer_connection_speeds.php:48
 msgid "Active Connections"
 msgstr "Aktivní připojení"
 
 #: templates/Overviews/overview_of_customer_connection_points.php:53
-#: templates/Overviews/overview_of_customer_connection_points_obsolete.php:53
 msgid "Active Connections (nonbusiness)"
 msgstr "Aktivní připojení (neobchodní)"
 
 #: templates/Overviews/overview_of_customer_connection_points.php:54
-#: templates/Overviews/overview_of_customer_connection_points_obsolete.php:54
 msgid "Active 0-30 Mbps"
 msgstr "Aktivní 0-30 Mb/s"
 
 #: templates/Overviews/overview_of_customer_connection_points.php:55
-#: templates/Overviews/overview_of_customer_connection_points_obsolete.php:55
 msgid "Active 30-100 Mbps"
 msgstr "Aktivní 30-100 Mb/s"
 
 #: templates/Overviews/overview_of_customer_connection_points.php:56
-#: templates/Overviews/overview_of_customer_connection_points_obsolete.php:56
 msgid "Active 100+ Mbps"
 msgstr "Aktivní 100+ Mb/s"
 
@@ -3756,37 +3744,49 @@ msgid "VHCN Network Category"
 msgstr "Kategorie sítě VHCN"
 
 #: templates/Overviews/overview_of_customer_connection_points.php:63
-#: templates/Overviews/overview_of_customer_connection_points_obsolete.php:63
+#: templates/Overviews/overview_of_customer_connection_speeds.php:55
 msgid "Address"
 msgstr "Adresa"
 
-#: templates/Overviews/overview_of_customer_connection_points_obsolete.php:57
-msgid "Available 0-30 Mbps"
-msgstr "K dispozici 0-30 Mbps"
+#: templates/Overviews/overview_of_customer_connection_speeds.php:42
+#: templates/Overviews/overview_of_customer_connection_speeds.php:49
+msgid "Advertised  0-2 Mbps"
+msgstr "Inzerováno 0-2 Mb/s"
 
-#: templates/Overviews/overview_of_customer_connection_points_obsolete.php:58
-msgid "Available 30-100 Mbps"
-msgstr "K dispozici 30-100 Mbps"
+#: templates/Overviews/overview_of_customer_connection_speeds.php:43
+#: templates/Overviews/overview_of_customer_connection_speeds.php:50
+msgid "Advertised  2-10 Mbps"
+msgstr "Inzerováno 2-10 Mb/s"
 
-#: templates/Overviews/overview_of_customer_connection_points_obsolete.php:59
-msgid "Available 100-300 Mbps"
-msgstr "K dispozici 100-300 Mbps"
+#: templates/Overviews/overview_of_customer_connection_speeds.php:44
+#: templates/Overviews/overview_of_customer_connection_speeds.php:51
+msgid "Advertised  10-30 Mbps"
+msgstr "Inzerováno 10-30 Mb/s"
 
-#: templates/Overviews/overview_of_customer_connection_points_obsolete.php:60
-msgid "Available 300-1000 Mbps"
-msgstr "K dispozici 300-1000 Mbps"
+#: templates/Overviews/overview_of_customer_connection_speeds.php:45
+#: templates/Overviews/overview_of_customer_connection_speeds.php:52
+msgid "Advertised  30-100 Mbps"
+msgstr "Inzerováno 30-100 Mb/s"
 
-#: templates/Overviews/overview_of_customer_connection_points_obsolete.php:61
-msgid "Available 1000+ Mbps"
-msgstr "K dispozici 1000+ Mb/s"
+#: templates/Overviews/overview_of_customer_connection_speeds.php:46
+#: templates/Overviews/overview_of_customer_connection_speeds.php:53
+msgid "Advertised  100-1000 Mbps"
+msgstr "Inzerováno 100-1000 Mb/s"
 
-#: templates/Overviews/overview_of_customer_connection_points_obsolete.php:62
-msgid "VHCN"
-msgstr "VHCN"
+#: templates/Overviews/overview_of_customer_connection_speeds.php:47
+#: templates/Overviews/overview_of_customer_connection_speeds.php:54
+msgid "Advertised  1000+ Mbps"
+msgstr "Inzerováno 1000+ Mbps"
 
-#: templates/Overviews/overview_of_dealer_commissions.php:17
-msgid "Overview of dealer commissions"
-msgstr "Přehled provizí dealerů"
+#: templates/Overviews/overview_of_customer_connection_speeds.php:48
+#: templates/Overviews/overview_of_customer_connection_speeds.php:49
+#: templates/Overviews/overview_of_customer_connection_speeds.php:50
+#: templates/Overviews/overview_of_customer_connection_speeds.php:51
+#: templates/Overviews/overview_of_customer_connection_speeds.php:52
+#: templates/Overviews/overview_of_customer_connection_speeds.php:53
+#: templates/Overviews/overview_of_customer_connection_speeds.php:54
+msgid "(nonbusiness)"
+msgstr "(neobchodní)"
 
 #: templates/Phones/add.php:19
 msgid "Add Phone"
@@ -4306,6 +4306,39 @@ msgstr "Verze"
 #: templates/layout/error.php:36
 msgid "Back"
 msgstr "Zpět"
+
+#~ msgid "Overview of Customer Connection Points (Obsolete)"
+#~ msgstr "Přehled přípojných bodů zákazníků (zastaralé)"
+
+#~ msgid "Overview of active services"
+#~ msgstr "Přehled aktivních služeb"
+
+#~ msgid "Overview of customer connection points"
+#~ msgstr "Přehled přípojných bodů zákazníků"
+
+#~ msgid "Available 0-30 Mbps"
+#~ msgstr "K dispozici 0-30 Mbps"
+
+#~ msgid "Available 30-100 Mbps"
+#~ msgstr "K dispozici 30-100 Mbps"
+
+#~ msgid "Available 100-300 Mbps"
+#~ msgstr "K dispozici 100-300 Mbps"
+
+#~ msgid "Available 300-1000 Mbps"
+#~ msgstr "K dispozici 300-1000 Mbps"
+
+#~ msgid "Available 1000+ Mbps"
+#~ msgstr "K dispozici 1000+ Mb/s"
+
+#~ msgid "VHCN"
+#~ msgstr "VHCN"
+
+#~ msgid "Overview of customer connection speeds"
+#~ msgstr "Přehled rychlostí připojení zákazníků"
+
+#~ msgid "Overview of dealer commissions"
+#~ msgstr "Přehled provizí dealerů"
 
 #~ msgid "SSID"
 #~ msgstr "SSID"

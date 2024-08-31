@@ -14,7 +14,7 @@
     </aside>
     <div class="column column-90">
         <div class="overviews index content">
-            <h3><?= __('Overview of active services')
+            <h3><?= __('Overview of Active Services')
                 . ' - '
                 . $month_to_display->i18nFormat('LLLL yyyy') ?></h3>
 

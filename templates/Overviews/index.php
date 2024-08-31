@@ -25,11 +25,6 @@
                     ['class' => 'side-nav-item']
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __('Overview of Customer Connection Points (Obsolete)') . ' (' . __('Reports for CTO') . ')',
-                    ['action' => 'overviewOfCustomerConnectionPointsObsolete'],
-                    ['class' => 'side-nav-item']
-                ) ?>
-                <?= $this->AuthLink->link(
                     __('Overview of Dealer Commissions'),
                     ['action' => 'overviewOfDealerCommissions'],
                     ['class' => 'side-nav-item']
