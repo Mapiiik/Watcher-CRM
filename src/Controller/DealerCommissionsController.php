@@ -9,7 +9,6 @@ use App\Model\Enum\CustomerDealer;
  * DealerCommissions Controller
  *
  * @property \App\Model\Table\DealerCommissionsTable $DealerCommissions
- * @method \App\Model\Entity\DealerCommission[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class DealerCommissionsController extends AppController
 {

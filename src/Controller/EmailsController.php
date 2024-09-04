@@ -7,7 +7,6 @@ namespace App\Controller;
  * Emails Controller
  *
  * @property \App\Model\Table\EmailsTable $Emails
- * @method \App\Model\Entity\Email[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class EmailsController extends AppController
 {

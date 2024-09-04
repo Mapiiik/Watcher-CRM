@@ -995,6 +995,7 @@ class MigratePrimaryKeysToUuidAndAddForeignKeys extends AbstractMigration
                     }
 
                     // add foreign key if required
+                    /** @psalm-suppress RedundantCondition */
                     if ($related_table['add_fk'] === true) {
                         $rtable->addForeignKey(
                             $related_table['original'],

@@ -9,6 +9,7 @@ use Cake\Collection\CollectionInterface;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\ORM\Locator\LocatorAwareTrait;
+use Exception;
 use InvalidArgumentException;
 use RouterOS\Client;
 use RouterOS\Query;
@@ -17,7 +18,7 @@ class DebtorsProcessor
 {
     use LocatorAwareTrait;
 
-    private static CollectionInterface $debtors;
+    private static ?CollectionInterface $debtors;
 
     private int $allowed_payment_delay;
     private float $allowed_total_overdue_debt;
@@ -89,7 +90,11 @@ class DebtorsProcessor
         }
 
         // Return debtors
-        return self::$debtors;
+        if (isset(self::$debtors)) {
+            return self::$debtors;
+        } else {
+            throw new Exception(__('Debtors data is not available.'));
+        }
     }
 
     /**
@@ -101,13 +106,9 @@ class DebtorsProcessor
      */
     public function getOverdueDebtors(): CollectionInterface|iterable
     {
-        // Load debtors if not already loaded
-        if (!isset(self::$debtors)) {
-            $this->loadDebtorsFromDatabase();
-        }
-
         // Return filtered debtors
-        return self::$debtors
+        return $this
+            ->getDebtors()
             ->filter(
                 function (Debtor $debtor) {
                     return $debtor->getDueDate() < Date::now()
@@ -125,13 +126,9 @@ class DebtorsProcessor
      */
     public function getFilteredOverdueDebtors(): CollectionInterface|iterable
     {
-        // Load debtors if not already loaded
-        if (!isset(self::$debtors)) {
-            $this->loadDebtorsFromDatabase();
-        }
-
         // Return filtered debtors
-        return self::$debtors
+        return $this
+            ->getDebtors()
             ->filter(
                 function (Debtor $debtor) {
                     // virtual day in the past to allow for payment delays

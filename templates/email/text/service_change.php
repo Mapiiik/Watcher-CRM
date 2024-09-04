@@ -6,7 +6,7 @@ use Cake\I18n\Date;
  * @var array<string|int|float> $data
  */
 
-$billing_date = (new Date($data['new_billing_from']))->lastOfMonth();
+$billing_date = (new Date((string)$data['new_billing_from']))->lastOfMonth();
 ?>
 Vážený zákazníku,
 

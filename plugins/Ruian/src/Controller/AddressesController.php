@@ -7,7 +7,6 @@ namespace Ruian\Controller;
  * Addresses Controller
  *
  * @property \Ruian\Model\Table\AddressesTable $Addresses
- * @method \Ruian\Model\Entity\Address[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class AddressesController extends AppController
 {
@@ -80,7 +79,7 @@ class AddressesController extends AppController
             if ($this->Addresses->save($address)) {
                 $this->Flash->success(__d('ruian', 'The address has been saved.'));
 
-                return $this->afterAddRedirect(['action' => 'view', $address->id]);
+                return $this->afterAddRedirect(['action' => 'view', $address->kod_adm]);
             }
             $this->Flash->error(__d('ruian', 'The address could not be saved. Please, try again.'));
         }
@@ -102,7 +101,7 @@ class AddressesController extends AppController
             if ($this->Addresses->save($address)) {
                 $this->Flash->success(__d('ruian', 'The address has been saved.'));
 
-                return $this->afterEditRedirect(['action' => 'view', $address->id]);
+                return $this->afterEditRedirect(['action' => 'view', $address->kod_adm]);
             }
             $this->Flash->error(__d('ruian', 'The address could not be saved. Please, try again.'));
         }

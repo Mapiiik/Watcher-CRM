@@ -7,7 +7,6 @@ namespace App\Controller;
  * TaskTypes Controller
  *
  * @property \App\Model\Table\TaskTypesTable $TaskTypes
- * @method \App\Model\Entity\TaskType[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class TaskTypesController extends AppController
 {

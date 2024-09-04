@@ -9,7 +9,6 @@ use Cake\I18n\DateTime;
  * RemovedIpNetworks Controller
  *
  * @property \App\Model\Table\RemovedIpNetworksTable $RemovedIpNetworks
- * @method \App\Model\Entity\RemovedIpNetwork[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class RemovedIpNetworksController extends AppController
 {

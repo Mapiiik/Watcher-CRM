@@ -16,7 +16,6 @@ use RouterOS\Query;
  * Accounts Controller
  *
  * @property \Radius\Model\Table\AccountsTable $Accounts
- * @method \Radius\Model\Entity\Account[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class AccountsController extends AppController
 {

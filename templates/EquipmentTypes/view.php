@@ -46,12 +46,12 @@
                         <tr>
                             <th><?= __('Price') ?></th>
                             <td><?= $equipmentType->price === null ?
-                                '' : $this->Number->currency($equipmentType->price) ?></td>
+                                '' : $this->Number->currency($equipmentType->price->toString()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Price With Obligation') ?></th>
                             <td><?= $equipmentType->price_with_obligation === null ?
-                                '' : $this->Number->currency($equipmentType->price_with_obligation) ?></td>
+                                '' : $this->Number->currency($equipmentType->price_with_obligation->toString()) ?></td>
                         </tr>
                     </table>
                 </div>

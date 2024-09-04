@@ -7,7 +7,6 @@ namespace Radius\Controller;
  * Radgroupcheck Controller
  *
  * @property \Radius\Model\Table\RadgroupcheckTable $Radgroupcheck
- * @method \Radius\Model\Entity\Radgroupcheck[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class RadgroupcheckController extends AppController
 {

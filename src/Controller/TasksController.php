@@ -20,7 +20,6 @@ use Exception;
  * Tasks Controller
  *
  * @property \App\Model\Table\TasksTable $Tasks
- * @method \App\Model\Entity\Task[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class TasksController extends AppController
 {

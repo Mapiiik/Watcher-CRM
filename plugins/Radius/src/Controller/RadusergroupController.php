@@ -7,7 +7,6 @@ namespace Radius\Controller;
  * Radusergroup Controller
  *
  * @property \Radius\Model\Table\RadusergroupTable $Radusergroup
- * @method \Radius\Model\Entity\Radusergroup[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class RadusergroupController extends AppController
 {

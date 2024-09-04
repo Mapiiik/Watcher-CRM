@@ -7,7 +7,6 @@ namespace App\Controller;
  * EquipmentTypes Controller
  *
  * @property \App\Model\Table\EquipmentTypesTable $EquipmentTypes
- * @method \App\Model\Entity\EquipmentType[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class EquipmentTypesController extends AppController
 {

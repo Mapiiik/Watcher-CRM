@@ -43,6 +43,7 @@ class Versioning
             'app_version',
             function () {
                 if (Versioning::gitRepositoryPresent() && Versioning::gitBinaryCallable()) {
+                    /** @psalm-suppress ForbiddenCode */
                     $version = shell_exec('git describe --tags 2>/dev/null');
                     if (is_string($version)) {
                         return rtrim($version);
@@ -65,6 +66,7 @@ class Versioning
             'app_changelog',
             function () {
                 if (Versioning::gitRepositoryPresent() && Versioning::gitBinaryCallable()) {
+                    /** @psalm-suppress ForbiddenCode */
                     $changelog = shell_exec('git log -10 --decorate=short');
                     if (is_string($changelog)) {
                             return rtrim($changelog);

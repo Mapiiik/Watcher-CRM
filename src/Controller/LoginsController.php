@@ -9,7 +9,6 @@ use App\Strings;
  * Logins Controller
  *
  * @property \App\Model\Table\LoginsTable $Logins
- * @method \App\Model\Entity\Login[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class LoginsController extends AppController
 {

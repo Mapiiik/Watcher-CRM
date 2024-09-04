@@ -10,7 +10,6 @@ use Cake\Form\Form;
  * Invoices Controller
  *
  * @property \BookkeepingPohoda\Model\Table\InvoicesTable $Invoices
- * @method \BookkeepingPohoda\Model\Entity\Invoice[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class DebtorsController extends AppController
 {

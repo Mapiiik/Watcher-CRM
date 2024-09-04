@@ -7,7 +7,6 @@ namespace App\Controller;
  * Commissions Controller
  *
  * @property \App\Model\Table\CommissionsTable $Commissions
- * @method \App\Model\Entity\Commission[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class CommissionsController extends AppController
 {

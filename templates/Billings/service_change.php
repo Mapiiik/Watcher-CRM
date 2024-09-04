@@ -101,7 +101,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Total Price') ?></th>
-                            <td><?= $this->Number->currency($billing->total_price) ?></td>
+                            <td><?= $this->Number->currency($billing->total_price->toString()) ?></td>
                         </tr>
                     </table>
                     <table>

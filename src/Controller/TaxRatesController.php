@@ -7,7 +7,6 @@ namespace App\Controller;
  * TaxRates Controller
  *
  * @property \App\Model\Table\TaxRatesTable $TaxRates
- * @method \App\Model\Entity\TaxRate[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class TaxRatesController extends AppController
 {

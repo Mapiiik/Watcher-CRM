@@ -7,7 +7,6 @@ namespace App\Controller;
  * ContractVersions Controller
  *
  * @property \App\Model\Table\ContractVersionsTable $ContractVersions
- * @method \App\Model\Entity\ContractVersion[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class ContractVersionsController extends AppController
 {

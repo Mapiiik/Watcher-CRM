@@ -112,7 +112,7 @@ class AccountsUpdater
             'state' => 'active',
             'radcheck' => false,
             'radreply' => false,
-            'radusergrioup' => false,
+            'radusergroup' => false,
             'reconnect_modified_accounts' => false,
             'send_change_log_by_email' => false,
         ] + $options;
@@ -128,7 +128,7 @@ class AccountsUpdater
         $changelog = new ChangeLog();
 
         // stop processing if there is nothing to do
-        if (!(($options['radcheck'] == true) | ($options['radreply'] == true) | ($options['radusergroup'] == true))) {
+        if (!(($options['radcheck'] == true) || ($options['radreply'] == true) || ($options['radusergroup'] == true))) {
             $this->Messages->warning(__d('radius', 'Nothing has been selected for update.'));
 
             return $changelog;
@@ -443,6 +443,7 @@ class AccountsUpdater
      */
     public function autoRadusergroupData(Account $account): array
     {
+        /** @var \App\Model\Entity\Contract $contract */
         $contract = $this->fetchTable('Contracts')->get($account->contract_id, contain: [
             'Billings' => [
                 'queryBuilder' => function (SelectQuery $q) {

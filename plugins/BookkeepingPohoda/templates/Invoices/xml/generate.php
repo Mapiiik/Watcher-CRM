@@ -21,7 +21,7 @@ $pohoda->setApplicationName(env('APP_NAME', 'Watcher CRM'));
 $xml_filename = TMP . uniqid('invoices-', true) . '.xml';
 
 // create file
-$pohoda->open($xml_filename, $invoiced_month->i18nFormat('yyyy-MM'), 'Import invoices');
+$pohoda->open($xml_filename, (string)$invoiced_month->i18nFormat('yyyy-MM'), 'Import invoices');
 
 foreach ($invoices as $invoice) {
     /** @var \BookkeepingPohoda\Model\Entity\Invoice $invoice */

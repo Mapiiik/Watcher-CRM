@@ -18,8 +18,6 @@ use Cake\Validation\Validation;
 
 /**
  * Overviews Controller
- *
- * @method \App\Model\Entity\Overview[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class OverviewsController extends AppController
 {
@@ -264,7 +262,9 @@ class OverviewsController extends AppController
 
                                     // retrieve full address if RUIAN is connected
                                     try {
-                                        $address['ruian_address'] = $this->fetchTable('Ruian.Addresses')
+                                        /** @var \Ruian\Model\Table\AddressesTable $ruianAddressesTable */
+                                        $ruianAddressesTable = $this->fetchTable('Ruian.Addresses');
+                                        $address['ruian_address'] = $ruianAddressesTable
                                             ->get($ruian_gid)
                                             ->address;
                                     } catch (MissingConnectionException $missingConnectionError) {

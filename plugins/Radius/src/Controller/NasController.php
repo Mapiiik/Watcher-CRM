@@ -7,7 +7,6 @@ namespace Radius\Controller;
  * Nas Controller
  *
  * @property \Radius\Model\Table\NasTable $Nas
- * @method \Radius\Model\Entity\Nas[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class NasController extends AppController
 {

@@ -13,7 +13,6 @@ use SplObjectStorage;
  * Phones Controller
  *
  * @property \App\Model\Table\PhonesTable $Phones
- * @method \App\Model\Entity\Phone[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class PhonesController extends AppController
 {

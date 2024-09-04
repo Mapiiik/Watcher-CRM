@@ -18,7 +18,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\AppUser|null $modifier
  * @property \Cake\I18n\DateTime|null $removed
  * @property int|null $removed_by
- * @property \CakeDC\Users\Model\Entity\User|null $remover
+ * @property \App\Model\Entity\AppUser|null $remover
  * @property string $id
  * @property int $nid
  * @property string $ip_address

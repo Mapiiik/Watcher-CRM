@@ -7,7 +7,6 @@ namespace Radius\Controller;
  * Radreply Controller
  *
  * @property \Radius\Model\Table\RadreplyTable $Radreply
- * @method \Radius\Model\Entity\Radreply[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class RadreplyController extends AppController
 {

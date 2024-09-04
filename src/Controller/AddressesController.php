@@ -10,7 +10,6 @@ use App\Model\Enum\AddressNumberType;
  * Addresses Controller
  *
  * @property \App\Model\Table\AddressesTable $Addresses
- * @method \App\Model\Entity\Address[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class AddressesController extends AppController
 {

@@ -14,7 +14,6 @@ use IPLib\Range\Subnet;
  * IpAddresses Controller
  *
  * @property \App\Model\Table\IpAddressesTable $IpAddresses
- * @method \App\Model\Entity\IpAddress[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class IpAddressesController extends AppController
 {

@@ -7,7 +7,6 @@ namespace App\Controller;
  * BorrowedEquipments Controller
  *
  * @property \App\Model\Table\BorrowedEquipmentsTable $BorrowedEquipments
- * @method \App\Model\Entity\BorrowedEquipment[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class BorrowedEquipmentsController extends AppController
 {

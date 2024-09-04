@@ -138,6 +138,7 @@ class PagesControllerTest extends TestCase
         $this->enableCsrfToken();
         $this->post('/pages/home', ['hello' => 'world']);
 
+        /** @psalm-suppress InternalClass, InternalMethod */
         $this->assertThat(403, $this->logicalNot(new StatusCode($this->_response)));
         $this->assertResponseNotContains('CSRF');
     }

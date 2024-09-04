@@ -7,7 +7,6 @@ namespace Radius\Controller;
  * Radpostauth Controller
  *
  * @property \Radius\Model\Table\RadpostauthTable $Radpostauth
- * @method \Radius\Model\Entity\Radpostauth[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class RadpostauthController extends AppController
 {

@@ -185,6 +185,7 @@ class AppController extends Controller
         );
 
         // Persisting audit log - current user
+        /** @psalm-suppress RedundantCondition */
         if ($identity != null) {
             EventManager::instance()->on(
                 new RequestMetadata($this->getRequest(), $identity['username'])

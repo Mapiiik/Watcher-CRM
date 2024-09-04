@@ -7,7 +7,6 @@ namespace App\Controller;
  * CustomerLabels Controller
  *
  * @property \App\Model\Table\CustomerLabelsTable $CustomerLabels
- * @method \App\Model\Entity\CustomerLabel[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class CustomerLabelsController extends AppController
 {

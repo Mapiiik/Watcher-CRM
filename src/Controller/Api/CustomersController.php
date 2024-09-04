@@ -17,7 +17,6 @@ use Ruian\Model\Entity\Address;
  * Customers Controller
  *
  * @property \App\Model\Table\CustomersTable $Customers
- * @method \App\Model\Entity\Customer[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class CustomersController extends AppController
 {

@@ -107,7 +107,7 @@ use Cake\I18n\Date;
                         </tr>
                         <tr>
                             <th><?= __('Total Price') ?></th>
-                            <td><?= $this->Number->currency($billing->total_price) ?></td>
+                            <td><?= $this->Number->currency($billing->total_price->toString()) ?></td>
                         </tr>
                     </table>
                     <table>
@@ -184,7 +184,7 @@ use Cake\I18n\Date;
                             <td><?= $this->Number->currency($billing->periodTotal(
                                 $bill_date->subMonths(1),
                                 $bill_date->subDays(1)
-                            )) ?></td>
+                            )->toString()) ?></td>
                         </tr>
                         <?php endforeach ?>
                     </table>
@@ -221,7 +221,7 @@ use Cake\I18n\Date;
                             <td><?= $this->Number->currency($billing->periodTotal(
                                 $bill_date->subMonths(1),
                                 $bill_date->subDays(1)
-                            )) ?></td>
+                            )->toString()) ?></td>
                         </tr>
                         <?php endforeach ?>
                     </table>

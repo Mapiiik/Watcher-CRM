@@ -7,7 +7,6 @@ namespace App\Controller;
  * Queues Controller
  *
  * @property \App\Model\Table\QueuesTable $Queues
- * @method \App\Model\Entity\Queue[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class QueuesController extends AppController
 {

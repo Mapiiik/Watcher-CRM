@@ -8,6 +8,7 @@ use CakeDC\Users\Model\Entity\User;
 /**
  * Application specific User Entity with non plugin conform field(s)
  *
+ * @property string $id
  * @property string|null $first_name
  * @property string|null $last_name
  * @property bool $active

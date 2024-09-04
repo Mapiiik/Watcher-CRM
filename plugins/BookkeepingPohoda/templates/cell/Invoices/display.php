@@ -49,8 +49,8 @@ use Cake\I18n\Date;
             <td><?= h($invoice->due_date) ?></td>
             <td><?= h($invoice->payment_date) ?></td>
             <td><?= h($invoice->text) ?></td>
-            <td><?= $invoice->total === null ? '' : $this->Number->currency($invoice->total) ?></td>
-            <td><?= $invoice->debt === null ? '' : $this->Number->currency($invoice->debt) ?></td>
+            <td><?= $invoice->total === null ? '' : $this->Number->currency($invoice->total->toString()) ?></td>
+            <td><?= $invoice->debt === null ? '' : $this->Number->currency($invoice->debt->toString()) ?></td>
             <td><?= $invoice->send_by_email ?
                 __d('bookkeeping_pohoda', 'Yes') : __d('bookkeeping_pohoda', 'No'); ?></td>
             <td><?= h($invoice->email_sent) ?></td>

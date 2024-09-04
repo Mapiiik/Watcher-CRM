@@ -7,7 +7,6 @@ namespace Radius\Controller;
  * Radacct Controller
  *
  * @property \Radius\Model\Table\RadacctTable $Radacct
- * @method \Radius\Model\Entity\Radacct[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class RadacctController extends AppController
 {
@@ -56,7 +55,7 @@ class RadacctController extends AppController
             if ($this->Radacct->save($radacct)) {
                 $this->Flash->success(__d('radius', 'The RADIUS accounting has been saved.'));
 
-                return $this->afterAddRedirect(['action' => 'view', $radacct->id]);
+                return $this->afterAddRedirect(['action' => 'view', $radacct->radacctid]);
             }
             $this->Flash->error(__d('radius', 'The RADIUS accounting could not be saved. Please, try again.'));
         }
@@ -81,7 +80,7 @@ class RadacctController extends AppController
             if ($this->Radacct->save($radacct)) {
                 $this->Flash->success(__d('radius', 'The RADIUS accounting has been saved.'));
 
-                return $this->afterEditRedirect(['action' => 'view', $radacct->id]);
+                return $this->afterEditRedirect(['action' => 'view', $radacct->radacctid]);
             }
             $this->Flash->error(__d('radius', 'The RADIUS accounting could not be saved. Please, try again.'));
         }

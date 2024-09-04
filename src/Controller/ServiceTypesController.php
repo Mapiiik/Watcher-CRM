@@ -7,7 +7,6 @@ namespace App\Controller;
  * ServiceTypes Controller
  *
  * @property \App\Model\Table\ServiceTypesTable $ServiceTypes
- * @method \App\Model\Entity\ServiceType[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class ServiceTypesController extends AppController
 {

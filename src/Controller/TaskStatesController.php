@@ -7,7 +7,6 @@ namespace App\Controller;
  * TaskStates Controller
  *
  * @property \App\Model\Table\TaskStatesTable $TaskStates
- * @method \App\Model\Entity\TaskState[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class TaskStatesController extends AppController
 {

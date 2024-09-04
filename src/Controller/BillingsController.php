@@ -14,7 +14,6 @@ use SplObjectStorage;
  * Billings Controller
  *
  * @property \App\Model\Table\BillingsTable $Billings
- * @method \App\Model\Entity\Billing[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class BillingsController extends AppController
 {

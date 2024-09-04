@@ -10,7 +10,6 @@ use Cake\Console\CommandRunner;
  * Labels Controller
  *
  * @property \App\Model\Table\LabelsTable $Labels
- * @method \App\Model\Entity\Label[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class LabelsController extends AppController
 {

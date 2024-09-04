@@ -16,7 +16,6 @@ use stdClass;
  * Invoices Controller
  *
  * @property \BookkeepingPohoda\Model\Table\InvoicesTable $Invoices
- * @method \BookkeepingPohoda\Model\Entity\Invoice[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class InvoicesController extends AppController
 {
@@ -344,6 +343,7 @@ class InvoicesController extends AppController
 
         if ($this->getRequest()->is(['post'])) {
             $invoiced_month = new Date($this->getRequest()->getData('invoiced_month', 'now'));
+            /** @var \App\Model\Entity\TaxRate $tax_rate */
             $tax_rate = $this->fetchTable('TaxRates')->get($this->getRequest()->getData('tax_rate_id'));
             /** @var \Laminas\Diactoros\UploadedFile $csv_for_verification */
             $csv_for_verification = $this->getRequest()->getData('csv_for_verification');
@@ -515,6 +515,7 @@ class InvoicesController extends AppController
                         $index++;
                     } else {
                         $billing_customer['total'] = $billing_customer['total']->add($billing_contract['total']);
+                        /** @psalm-suppress RedundantFunctionCall */
                         $billing_customer['items'] = array_merge(
                             array_values($billing_customer['items']),
                             array_values($billing_contract['items'])

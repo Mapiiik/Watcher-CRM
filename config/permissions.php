@@ -479,6 +479,7 @@ $permissions = [
 $localPermissionsFile = CONFIG . 'permissions_local.php';
 if (file_exists($localPermissionsFile)) {
     $localPermissions = include $localPermissionsFile;
+    /** @psalm-suppress RedundantCondition */
     if (is_array($localPermissions)) {
         // merge permissions - local first in order
         $permissions = array_merge_recursive($localPermissions, $permissions);

@@ -54,7 +54,7 @@ class Debtor
     /**
      * Get invoices
      *
-     * @return array<\BookkeepingPohoda\Model\Entity\Invoice>
+     * @return list<\BookkeepingPohoda\Model\Entity\Invoice>
      */
     public function getInvoices(): array
     {

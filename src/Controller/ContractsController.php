@@ -17,7 +17,6 @@ use stdClass;
  * Contracts Controller
  *
  * @property \App\Model\Table\ContractsTable $Contracts
- * @method \App\Model\Entity\Contract[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class ContractsController extends AppController
 {

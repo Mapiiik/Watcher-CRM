@@ -7,7 +7,6 @@ namespace App\Controller;
  * ContractStates Controller
  *
  * @property \App\Model\Table\ContractStatesTable $ContractStates
- * @method \App\Model\Entity\ContractState[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class ContractStatesController extends AppController
 {

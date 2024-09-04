@@ -38,9 +38,9 @@
                 <tr>
                     <td><?= h($equipmentType->name) ?></td>
                     <td><?= $equipmentType->price === null ?
-                        '' : $this->Number->currency($equipmentType->price) ?></td>
+                        '' : $this->Number->currency($equipmentType->price->toString()) ?></td>
                     <td><?= $equipmentType->price_with_obligation === null ?
-                        '' : $this->Number->currency($equipmentType->price_with_obligation) ?></td>
+                        '' : $this->Number->currency($equipmentType->price_with_obligation->toString()) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $equipmentType->id]) ?>
                         <?= $this->AuthLink->link(

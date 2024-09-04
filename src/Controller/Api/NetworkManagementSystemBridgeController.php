@@ -10,8 +10,6 @@ use Cake\View\JsonView;
 
 /**
  * Network Management System Bridge Controller
- *
- * @method \App\Model\Entity\Customer[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class NetworkManagementSystemBridgeController extends AppController
 {

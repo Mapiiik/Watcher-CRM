@@ -56,7 +56,7 @@
                 ' (' . h($billing->service->price) . ')' : '' ?></td>
             <td><?= h($billing->fixed_discount) ?></td>
             <td><?= h($billing->percentage_discount) ?></td>
-            <td><?= $this->Number->currency($billing->total_price) ?></td>
+            <td><?= $this->Number->currency($billing->total_price->toString()) ?></td>
             <td><?= h($billing->billing_from) ?></td>
             <td><?= h($billing->billing_until) ?></td>
             <td><?= $billing->active ? __('Yes') : __('No'); ?></td>

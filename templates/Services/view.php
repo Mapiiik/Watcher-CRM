@@ -52,7 +52,7 @@ use Cake\Collection\Collection;
                         </tr>
                         <tr>
                             <th><?= __('Price') ?></th>
-                            <td><?= $service->price === null ? '' : $this->Number->currency($service->price) ?></td>
+                            <td><?= $service->price === null ? '' : $this->Number->currency($service->price->toString()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Not For New Customers') ?></th>
@@ -140,7 +140,7 @@ use Cake\Collection\Collection;
                                 ' (' . h($billing->service->price) . ')' : '' ?></td>
                             <td><?= h($billing->fixed_discount) ?></td>
                             <td><?= h($billing->percentage_discount) ?></td>
-                            <td><?= $this->Number->currency($billing->total_price) ?></td>
+                            <td><?= $this->Number->currency($billing->total_price->toString()) ?></td>
                             <td><?= h($billing->billing_from) ?></td>
                             <td><?= h($billing->billing_until) ?></td>
                             <td><?= $billing->active ? __('Yes') : __('No'); ?></td>
