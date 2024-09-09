@@ -110,7 +110,7 @@ class RadiusRequestSender
     /**
      * This private function handles disconnect errors and returns a string representation of the errors.
      *
-     * @param array $attributes The attributes containing the disconnect errors.
+     * @param array<string, mixed[]> $attributes The attributes containing the disconnect errors.
      * @return string The string representation of the disconnect errors.
      */
     private function handleDisconnectErrors(array $attributes): string

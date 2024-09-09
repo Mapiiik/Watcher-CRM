@@ -20,6 +20,9 @@ class RadusergroupChange
 
     /**
      * Constructor
+     *
+     * @param array<\Radius\Model\Entity\Radusergroup> $original
+     * @param array<\Radius\Model\Entity\Radusergroup> $changed
      */
     public function __construct(array $original, array $changed)
     {

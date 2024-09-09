@@ -246,6 +246,8 @@ class ProcessDebtorsCommand extends Command
 
     /**
      * Get Attachments
+     *
+     * @return array<string, mixed>
      */
     private function getAttachments(Debtor $debtor): array
     {
@@ -266,6 +268,8 @@ class ProcessDebtorsCommand extends Command
 
     /**
      * Generate Email Message
+     *
+     * @param array<\App\Model\Entity\Email>|array<string> $recipients
      */
     private function generateEmail(
         Debtor $debtor,
@@ -422,6 +426,8 @@ class ProcessDebtorsCommand extends Command
 
     /**
      * Generate SMS Message
+     *
+     * @param array<\App\Model\Entity\Phone>|array<string> $recipients
      */
     private function generateSms(
         Debtor $debtor,

@@ -533,9 +533,9 @@ class IpAddressesController extends AppController
     /**
      * Load vailable IP Addresses
      *
-     * @param array $ipAddressRange IP address range.
+     * @param array<string, mixed> $ipAddressRange IP address range.
      * @param int $daysUnused Minimum number of days since last use.
-     * @return array List of available IP addresses.
+     * @return array<string, string> List of available IP addresses.
      */
     public function loadAvailableIpAddresses(array $ipAddressRange, int $daysUnused = 0): array
     {

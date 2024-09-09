@@ -17,7 +17,7 @@ trait RedirectionTrait
     /**
      * Redirect to proper path after add
      *
-     * @param \Psr\Http\Message\UriInterface|array|string $url A string, array-based URL or UriInterface instance.
+     * @param \Psr\Http\Message\UriInterface|array<mixed>|string $url A string, array-based URL or UriInterface instance.
      * @param int $status HTTP status code. Defaults to `302`.
      * @return \Cake\Http\Response|null
      */
@@ -57,7 +57,7 @@ trait RedirectionTrait
     /**
      * Redirect to proper path after edit
      *
-     * @param \Psr\Http\Message\UriInterface|array|string $url A string, array-based URL or UriInterface instance.
+     * @param \Psr\Http\Message\UriInterface|array<mixed>|string $url A string, array-based URL or UriInterface instance.
      * @param int $status HTTP status code. Defaults to `302`.
      * @return \Cake\Http\Response|null
      */
@@ -70,7 +70,7 @@ trait RedirectionTrait
     /**
      * Redirect to proper path after delete
      *
-     * @param \Psr\Http\Message\UriInterface|array|string $url A string, array-based URL or UriInterface instance.
+     * @param \Psr\Http\Message\UriInterface|array<mixed>|string $url A string, array-based URL or UriInterface instance.
      * @param int $status HTTP status code. Defaults to `302`.
      * @return \Cake\Http\Response|null
      */

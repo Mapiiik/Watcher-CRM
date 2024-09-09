@@ -11,7 +11,7 @@ trait ErrorFormatterTrait
     /**
      * Get text with Validation errors
      *
-     * @param array $validationErrors The Validation Errors from an entity
+     * @param array<string> $validationErrors The Validation Errors from an entity
      * @return string
      */
     public function formatValidationErrors(array $validationErrors = []): string
@@ -25,7 +25,7 @@ trait ErrorFormatterTrait
     /**
      * Generate Flash message with Validation errors
      *
-     * @param array $validationErrors The Validation Errors from an entity
+     * @param array<string> $validationErrors The Validation Errors from an entity
      * @return void
      */
     public function flashValidationErrors(array $validationErrors = []): void

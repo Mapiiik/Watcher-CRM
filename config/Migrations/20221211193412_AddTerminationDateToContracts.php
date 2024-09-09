@@ -24,8 +24,7 @@ class AddTerminationDateToContracts extends AbstractMigration
 
         // set termination date where previously set on customer
         if ($this->isMigratingUp()) {
-            /** @var \Cake\Database\Query\SelectQuery $selectBuilder */
-            $selectBuilder = $this->getQueryBuilder('select');
+            $selectBuilder = $this->getSelectBuilder();
             $customers = $selectBuilder
                 ->select(['id', 'termination_date'])
                 ->from('customers')
@@ -37,8 +36,7 @@ class AddTerminationDateToContracts extends AbstractMigration
                 ->fetchAll('assoc');
 
             foreach ($customers as $customer) {
-                /** @var \Cake\Database\Query\UpdateQuery $updateBuilder */
-                $updateBuilder = $this->getQueryBuilder('update');
+                $updateBuilder = $this->getUpdateBuilder();
                 $updateBuilder
                     ->update('contracts')
                     ->set('termination_date', $customer['termination_date'])

@@ -52,7 +52,8 @@ use Cake\Collection\Collection;
                         </tr>
                         <tr>
                             <th><?= __('Price') ?></th>
-                            <td><?= $service->price === null ? '' : $this->Number->currency($service->price->toString()) ?></td>
+                            <td><?= $service->price === null ?
+                                '' : $this->Number->currency($service->price->toString()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Not For New Customers') ?></th>

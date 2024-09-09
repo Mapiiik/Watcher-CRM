@@ -359,7 +359,7 @@ class DebtorsProcessor
      * @param string|null $id Customer ID.
      * @param string $comment_prefix IP comment prefix.
      * @param bool $skip_vip Skip VIP contracts.
-     * @return array List of IPv4 and IPv6 adresses/networks.
+     * @return array<string, mixed> List of IPv4 and IPv6 adresses/networks.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     private function getCustomerIps(?string $id, string $comment_prefix = '', bool $skip_vip = true): array
@@ -428,7 +428,7 @@ class DebtorsProcessor
      *
      * Input example: ['ipv4' => ['0.0.0.0' => 'comment'], 'ipv6' => ['0::1/128' => 'comment']]
      *
-     * @param array $ips List of IPv4 and IPv6 adresses/networks.
+     * @param array<string, mixed> $ips List of IPv4 and IPv6 adresses/networks.
      * @param bool $block Defaults to unblock (false) / block (true)
      * @param bool $clear Before the operation, clear the address list on the router. Default (false).
      * @return string List of performed changes

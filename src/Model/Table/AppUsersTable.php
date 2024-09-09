@@ -29,7 +29,7 @@ class AppUsersTable extends UsersTable
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param array<array-key, mixed> $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void

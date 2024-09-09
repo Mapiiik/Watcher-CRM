@@ -15,16 +15,14 @@ class UpdateUserRoles extends AbstractMigration
      */
     public function up(): void
     {
-        /** @var \Cake\Database\Query\UpdateQuery $updateBuilder */
-        $updateBuilder = $this->getQueryBuilder('update');
+        $updateBuilder = $this->getUpdateBuilder();
         $updateBuilder
             ->update('users')
             ->set('role', 'sales-representative')
             ->where(['role' => 'manager'])
             ->execute();
 
-        /** @var \Cake\Database\Query\UpdateQuery $updateBuilder */
-        $updateBuilder = $this->getQueryBuilder('update');
+        $updateBuilder = $this->getUpdateBuilder();
         $updateBuilder
             ->update('users')
             ->set('role', 'customer-service-technician')
@@ -42,16 +40,14 @@ class UpdateUserRoles extends AbstractMigration
      */
     public function down(): void
     {
-        /** @var \Cake\Database\Query\UpdateQuery $updateBuilder */
-        $updateBuilder = $this->getQueryBuilder('update');
+        $updateBuilder = $this->getUpdateBuilder();
         $updateBuilder
             ->update('users')
             ->set('role', 'manager')
             ->where(['role' => 'sales-representative'])
             ->execute();
 
-        /** @var \Cake\Database\Query\UpdateQuery $updateBuilder */
-        $updateBuilder = $this->getQueryBuilder('update');
+        $updateBuilder = $this->getUpdateBuilder();
         $updateBuilder
             ->update('users')
             ->set('role', 'technician')

@@ -20,6 +20,9 @@ class RadreplyChange
 
     /**
      * Constructor
+     *
+     * @param array<\Radius\Model\Entity\Radreply> $original
+     * @param array<\Radius\Model\Entity\Radreply> $changed
      */
     public function __construct(array $original, array $changed)
     {

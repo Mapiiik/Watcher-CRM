@@ -250,7 +250,7 @@ class Customer extends Entity
     /**
      * all customer emails for billing
      *
-     * @return array
+     * @return array<\App\Model\Entity\Email>
      */
     protected function _getBillingEmails(): array
     {
@@ -291,7 +291,7 @@ class Customer extends Entity
     /**
      * all customer phones for billing
      *
-     * @return array
+     * @return array<\App\Model\Entity\Phone>
      */
     protected function _getBillingPhones(): array
     {

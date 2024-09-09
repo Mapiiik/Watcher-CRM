@@ -103,9 +103,10 @@ class AccountsUpdater
     /**
      * Update related records for all accounts method
      *
+     * @param array<string, mixed> $options
      * @return \Radius\Updater\ChangeLog\ChangeLog ChangeLog with changed accounts and details of what has changed.
      */
-    public function updateRelatedRecordsForAllAccounts(?array $options): ChangeLog
+    public function updateRelatedRecordsForAllAccounts(array $options = []): ChangeLog
     {
         // load options
         $options = $options + [

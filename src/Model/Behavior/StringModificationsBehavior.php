@@ -26,9 +26,9 @@ class StringModificationsBehavior extends Behavior
     /**
      * String modifications
      *
-     * @param \Cake\Event\EventInterface $event Event
-     * @param \ArrayObject $data Data
-     * @param \ArrayObject $options Options
+     * @param \Cake\Event\EventInterface<\Cake\ORM\Table> $event Event
+     * @param \ArrayObject<string, mixed> $data Data
+     * @param \ArrayObject<string, mixed> $options Options
      * @return void
      */
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void

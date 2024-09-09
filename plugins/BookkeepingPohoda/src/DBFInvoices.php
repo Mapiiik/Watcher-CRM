@@ -23,7 +23,15 @@ class DBFInvoices
      * @var resource|false
      */
     public $dbf;
+
+    /**
+     * @var string
+     */
     public string $charset;
+
+    /**
+     * @var array<string>
+     */
     private array $structure;
 
     /**

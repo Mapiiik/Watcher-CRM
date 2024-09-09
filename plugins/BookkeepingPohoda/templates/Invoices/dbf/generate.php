@@ -6,7 +6,7 @@ use BookkeepingPohoda\DBFInvoices;
  * @psalm-scope-this \App\View\AppView
  * @var iterable<\BookkeepingPohoda\Model\Entity\Invoice> $invoices
  * @var \Cake\I18n\Date $invoiced_month
- * @var array $tax_rates
+ * @var \Cake\Collection\CollectionInterface|array<string> $tax_rates
  * @var \App\Model\Entity\TaxRate $tax_rate
  */
 

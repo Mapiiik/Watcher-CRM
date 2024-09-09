@@ -63,8 +63,7 @@ class MigratePrimaryKeyToUuidAndAddForeignKeysOnInvoices extends AbstractMigrati
             /** @var \Cake\Database\Connection $connection */
             $connection = ConnectionManager::get('default', false);
 
-            /** @var \Cake\Database\Query\SelectQuery $selectBuilder */
-            $selectBuilder = $this->getQueryBuilder('select')->setConnection($connection);
+            $selectBuilder = $this->getSelectBuilder()->setConnection($connection);
             $customers = $selectBuilder
                 ->select(['id', 'nid'])
                 ->from('customers')
@@ -72,8 +71,7 @@ class MigratePrimaryKeyToUuidAndAddForeignKeysOnInvoices extends AbstractMigrati
                 ->fetchAll('assoc');
 
             foreach ($customers as $customer) {
-                /** @var \Cake\Database\Query\UpdateQuery $updateBuilder */
-                $updateBuilder = $this->getQueryBuilder('update');
+                $updateBuilder = $this->getUpdateBuilder();
                 $updateBuilder
                     ->update('invoices')
                     ->set('customer_id', $customer['id'])
@@ -84,8 +82,7 @@ class MigratePrimaryKeyToUuidAndAddForeignKeysOnInvoices extends AbstractMigrati
             unset($customers);
             unset($selectBuilder);
 
-            /** @var \Cake\Database\Query\SelectQuery $selectBuilder */
-            $selectBuilder = $this->getQueryBuilder('select')->setConnection($connection);
+            $selectBuilder = $this->getSelectBuilder()->setConnection($connection);
             $users = $selectBuilder
                 ->select(['id', 'nid'])
                 ->from('users')
@@ -93,8 +90,7 @@ class MigratePrimaryKeyToUuidAndAddForeignKeysOnInvoices extends AbstractMigrati
                 ->fetchAll('assoc');
 
             foreach ($users as $user) {
-                /** @var \Cake\Database\Query\UpdateQuery $updateBuilder */
-                $updateBuilder = $this->getQueryBuilder('update');
+                $updateBuilder = $this->getUpdateBuilder();
                 $updateBuilder
                     ->update('invoices')
                     ->set('created_by', $user['id'])

@@ -20,6 +20,9 @@ class RadcheckChange
 
     /**
      * Constructor
+     *
+     * @param array<\Radius\Model\Entity\Radcheck> $original
+     * @param array<\Radius\Model\Entity\Radcheck> $changed
      */
     public function __construct(array $original, array $changed)
     {

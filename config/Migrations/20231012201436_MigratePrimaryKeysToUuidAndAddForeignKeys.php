@@ -965,8 +965,7 @@ class MigratePrimaryKeysToUuidAndAddForeignKeys extends AbstractMigration
 
                 // set new UUID keys for the related table
                 if ($this->isMigratingUp()) {
-                    /** @var \Cake\Database\Query\SelectQuery $selectBuilder */
-                    $selectBuilder = $this->getQueryBuilder('select');
+                    $selectBuilder = $this->getSelectBuilder();
                     $main_rows = $selectBuilder
                         ->select([$main_table_data['original'], $main_table_data['backup']])
                         ->from($main_table)
@@ -974,8 +973,7 @@ class MigratePrimaryKeysToUuidAndAddForeignKeys extends AbstractMigration
                         ->fetchAll('assoc');
 
                     foreach ($main_rows as $main_row) {
-                        /** @var \Cake\Database\Query\UpdateQuery $updateBuilder */
-                        $updateBuilder = $this->getQueryBuilder('update');
+                        $updateBuilder = $this->getUpdateBuilder();
                         $updateBuilder
                             ->update($related_table['table'])
                             ->set($related_table['original'], $main_row[$main_table_data['original']])

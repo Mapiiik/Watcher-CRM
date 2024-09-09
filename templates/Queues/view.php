@@ -122,7 +122,8 @@
                         <?php foreach ($queue->services as $service) : ?>
                         <tr>
                             <td><?= h($service->name) ?></td>
-                            <td><?= $service->price === null ? '' : $this->Number->currency($service->price->toString()) ?></td>
+                            <td><?= $service->price === null ?
+                                '' : $this->Number->currency($service->price->toString()) ?></td>
                             <td>
                                 <?= $service->__isset('service_type') ? $this->Html->link(
                                     $service->service_type->name,

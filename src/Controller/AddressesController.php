@@ -210,7 +210,7 @@ class AddressesController extends AppController
      * Find RUIAN data for address
      *
      * @param \App\Model\Entity\Address $address Address to be find in RUIAN
-     * @return array
+     * @return array<string, mixed> array (ruian_gid, gps_y, gps_x)
      */
     private function findRuianData(Address $address): array
     {

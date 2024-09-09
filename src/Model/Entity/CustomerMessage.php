@@ -67,7 +67,7 @@ class CustomerMessage extends Entity
      *
      * Allowed separators: " ,;" (space, comma, semicolon)
      *
-     * @param mixed $recipientsInput Recipients input
+     * @param array<\App\Model\Entity\Email|\App\Model\Entity\Phone|string>|string $recipientsInput Recipients input
      * @return array<string>
      */
     protected function _setRecipients(mixed $recipientsInput): array

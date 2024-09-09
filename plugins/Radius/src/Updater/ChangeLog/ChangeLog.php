@@ -56,6 +56,8 @@ class ChangeLog
     /**
      * Add change for related data
      *
+     * @param array<\Radius\Model\Entity\Radcheck>|array<\Radius\Model\Entity\Radreply>|array<\Radius\Model\Entity\Radusergroup> $original
+     * @param array<\Radius\Model\Entity\Radcheck>|array<\Radius\Model\Entity\Radreply>|array<\Radius\Model\Entity\Radusergroup> $changed
      * @throws \InvalidArgumentException When unsupported related data.
      */
     public function addChangeForRelatedData(

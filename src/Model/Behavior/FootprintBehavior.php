@@ -28,7 +28,7 @@ class FootprintBehavior extends Behavior
     /**
      * Check if needed fields exist
      *
-     * @param \Cake\Event\EventInterface $event Event
+     * @param \Cake\Event\EventInterface<\Cake\ORM\Table> $event Event
      * @return bool
      */
     private function fieldsExist(EventInterface $event): bool
@@ -43,9 +43,9 @@ class FootprintBehavior extends Behavior
     /**
      * Add creator/modifier to actual Entity
      *
-     * @param \Cake\Event\EventInterface $event Event
+     * @param \Cake\Event\EventInterface<\Cake\ORM\Table> $event Event
      * @param \Cake\Datasource\EntityInterface $entity Entity
-     * @param \ArrayObject $options Options
+     * @param \ArrayObject<string, mixed> $options Options
      * @return void
      */
     public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void

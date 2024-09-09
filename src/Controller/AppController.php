@@ -45,8 +45,10 @@ class AppController extends Controller
     use ErrorFormatterTrait;
     use RedirectionTrait;
 
-    /*
+    /**
      * User settings
+     *
+     * @var array<string, mixed>
      */
     protected array $user_settings = [];
 
@@ -198,7 +200,7 @@ class AppController extends Controller
     /**
      * Generate actual URL with added query paramaters
      *
-     * @param array $query Query parameters to be added to the URL
+     * @param array <string, mixed> $query Query parameters to be added to the URL
      * @return string
      */
     public function urlWithQuery(array $query = []): string

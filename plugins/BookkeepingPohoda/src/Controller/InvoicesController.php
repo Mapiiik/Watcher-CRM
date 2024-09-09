@@ -266,7 +266,7 @@ class InvoicesController extends AppController
      *
      * @param \Cake\I18n\Date $invoiced_month Month for billing
      * @param string $tax_rate_id month Id of tax rate for billing
-     * @return \Cake\ORM\Query\SelectQuery
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Customer>
      */
     private function getQueryForBillingDataForMonth(Date $invoiced_month, string $tax_rate_id): SelectQuery
     {

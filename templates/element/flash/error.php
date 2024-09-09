@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var array $params
+ * @var array<string, mixed> $params
  * @var string $message
  */
 if (!isset($params['escape']) || $params['escape'] !== false) {

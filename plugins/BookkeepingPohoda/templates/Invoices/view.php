@@ -79,11 +79,13 @@
                         </tr>
                         <tr>
                             <th><?= __d('bookkeeping_pohoda', 'Total') ?></th>
-                            <td><?= $invoice->total === null ? '' : $this->Number->currency($invoice->total->toString()) ?></td>
+                            <td><?= $invoice->total === null ?
+                                '' : $this->Number->currency($invoice->total->toString()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __d('bookkeeping_pohoda', 'Debt') ?></th>
-                            <td><?= $invoice->debt === null ? '' : $this->Number->currency($invoice->debt->toString()) ?></td>
+                            <td><?= $invoice->debt === null ?
+                                '' : $this->Number->currency($invoice->debt->toString()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __d('bookkeeping_pohoda', 'Payment Date') ?></th>

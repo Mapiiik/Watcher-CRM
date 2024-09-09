@@ -60,7 +60,7 @@ class AppTable extends Table
     /**
      * Finds an existing record or prepare a new entity.
      *
-     * @param array $search Data to be searched in existing records or added to new entity
+     * @param array<string, mixed> $search Data to be searched in existing records or added to new entity
      * @return \Cake\Datasource\EntityInterface An entity.
      */
     public function findOrNewEntity(array $search): EntityInterface
