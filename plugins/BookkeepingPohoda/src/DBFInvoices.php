@@ -30,7 +30,7 @@ class DBFInvoices
     public string $charset;
 
     /**
-     * @var array<string>
+     * @var array<array<mixed>>
      */
     private array $structure;
 
@@ -42,9 +42,9 @@ class DBFInvoices
     //Set charset
         $this->charset = 'CP852';
     //DB structure
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'Cislo'), 'C', '10']; //cislo faktury
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'VarSym'), 'C', '20']; //variabilni symbol
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'SText'), 'C', '240']; //obecny text
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'Cislo'), 'C', 10]; //cislo faktury
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'VarSym'), 'C', 20]; //variabilni symbol
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'SText'), 'C', 240]; //obecny text
         $this->structure[] = [iconv('UTF-8', $this->charset, 'Datum'), 'D']; //datum vystaveni
         $this->structure[] = [iconv('UTF-8', $this->charset, 'DatUcP'), 'D']; //posledni den v mesici
         $this->structure[] = [iconv('UTF-8', $this->charset, 'DatSplat'), 'D']; //datum splatnosti
@@ -61,19 +61,19 @@ class DBFInvoices
         $this->structure[] = [iconv('UTF-8', $this->charset, 'KcU'), 'N', 8, 2]; //vždy 0
         $this->structure[] = [iconv('UTF-8', $this->charset, 'KcZaokr'), 'N', 8, 2]; //vždy 0
 
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'Firma'), 'C', '96']; //název firmy
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'Utvar'), 'C', '32']; //provozovna
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'Jmeno'), 'C', '32']; //jméno + příjmení
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'Ulice'), 'C', '32']; //ulice
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'PSC'), 'C', '7']; //PSČ
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'Obec'), 'C', '35']; //Obec
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'ICO'), 'C', '12']; //IČ
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'DIC'), 'C', '15']; //DIČ
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'Firma'), 'C', 96]; //název firmy
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'Utvar'), 'C', 32]; //provozovna
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'Jmeno'), 'C', 32]; //jméno + příjmení
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'Ulice'), 'C', 32]; //ulice
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'PSC'), 'C', 7]; //PSČ
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'Obec'), 'C', 35]; //Obec
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'ICO'), 'C', 12]; //IČ
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'DIC'), 'C', 15]; //DIČ
 
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'KonstSym'), 'C', '4']; //konstantní symbol 0308
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'KonstSym'), 'C', 4]; //konstantní symbol 0308
 
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'Pozn'), 'C', '240']; //poznámka
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'Pozn2'), 'C', '240']; //interní poznámka
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'Pozn'), 'C', 240]; //poznámka
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'Pozn2'), 'C', 240]; //interní poznámka
     }
 
     /**

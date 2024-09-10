@@ -80,12 +80,15 @@ class ChangeLog
 
         switch ($relatedData) {
             case 'radcheck':
+                /** @psalm-suppress InvalidArgument */
                 $change->setRadcheckChange(new RadcheckChange($original, $changed));
                 break;
             case 'radreply':
+                /** @psalm-suppress InvalidArgument */
                 $change->setRadreplyChange(new RadreplyChange($original, $changed));
                 break;
             case 'radusergroup':
+                /** @psalm-suppress InvalidArgument */
                 $change->setRadusergroupChange(new RadusergroupChange($original, $changed));
                 break;
             default:

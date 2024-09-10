@@ -161,6 +161,7 @@ class Billing extends Entity
      */
     protected function _getDiscount(): Decimal
     {
+        /** @psalm-suppress ImplicitToStringCast */
         return $this->fixed_discount_sum->add($this->percentage_discount_sum);
     }
 
@@ -171,6 +172,7 @@ class Billing extends Entity
      */
     protected function _getTotalPrice(): Decimal
     {
+        /** @psalm-suppress ImplicitToStringCast */
         return $this->sum->subtract($this->discount);
     }
 
@@ -197,6 +199,7 @@ class Billing extends Entity
      */
     public static function calcVatBaseFromTotal(Decimal $total, float $vat_rate): Decimal
     {
+        /** @psalm-suppress ImplicitToStringCast */
         return $total->subtract(
             self::calcVatFromTotal($total, $vat_rate)
         );

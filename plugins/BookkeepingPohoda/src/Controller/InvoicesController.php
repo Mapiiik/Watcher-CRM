@@ -266,11 +266,14 @@ class InvoicesController extends AppController
      *
      * @param \Cake\I18n\Date $invoiced_month Month for billing
      * @param string $tax_rate_id month Id of tax rate for billing
-     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Customer>
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Customer|array<array-key, mixed>>
      */
     private function getQueryForBillingDataForMonth(Date $invoiced_month, string $tax_rate_id): SelectQuery
     {
-        return $this->fetchTable('Customers')
+        /** @var \App\Model\Table\CustomersTable $customersTable */
+        $customersTable = $this->fetchTable('Customers');
+
+        return $customersTable
             ->find()
             ->contain('Addresses')
             ->contain('Contracts', function (SelectQuery $q) use ($invoiced_month) {
@@ -332,6 +335,7 @@ class InvoicesController extends AppController
      * Generate method
      *
      * @return \Cake\Http\Response|null|void Renders generateInvoices
+     * @psalm-suppress ImplicitToStringCast
      */
     public function generate()
     {
