@@ -19,6 +19,7 @@ class RuianPlugin extends BasePlugin
      * The host application is provided as an argument. This allows you to load
      * additional plugin dependencies, or attach events.
      *
+     * @phpstan-ignore-next-line
      * @param \Cake\Core\PluginApplicationInterface $app The host application
      * @return void
      */
