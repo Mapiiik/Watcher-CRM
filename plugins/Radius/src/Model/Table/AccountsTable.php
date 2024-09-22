@@ -96,6 +96,10 @@ class AccountsTable extends AppTable
             'foreignKey' => 'username',
             'bindingKey' => 'username',
         ]);
+
+        // set the association strategy to "select" for Creators/Modifiers
+        $this->getAssociation('Creators')->setStrategy('select');
+        $this->getAssociation('Modifiers')->setStrategy('select');
     }
 
     /**
