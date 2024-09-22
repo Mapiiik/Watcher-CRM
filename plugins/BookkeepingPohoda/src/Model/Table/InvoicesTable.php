@@ -53,11 +53,11 @@ class InvoicesTable extends Table
             'className' => 'Customers',
         ]);
         $this->belongsTo('Creators', [
-            'className' => 'CakeDC/Users.Users',
+            'className' => 'AppUsers',
             'foreignKey' => 'created_by',
         ]);
         $this->belongsTo('Modifiers', [
-            'className' => 'CakeDC/Users.Users',
+            'className' => 'AppUsers',
             'foreignKey' => 'modified_by',
         ]);
     }

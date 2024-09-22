@@ -67,16 +67,6 @@ class AccountsTable extends AppTable
             'foreignKey' => 'contract_id',
             'strategy' => 'select',
         ]);
-        $this->belongsTo('Creators', [
-            'className' => 'CakeDC/Users.Users',
-            'foreignKey' => 'created_by',
-            'strategy' => 'select',
-        ]);
-        $this->belongsTo('Modifiers', [
-            'className' => 'CakeDC/Users.Users',
-            'foreignKey' => 'modified_by',
-            'strategy' => 'select',
-        ]);
         $this->hasMany('Radius.Radcheck', [
             'foreignKey' => 'username',
             'bindingKey' => 'username',
