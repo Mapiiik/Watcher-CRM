@@ -93,7 +93,7 @@ class DebtorsProcessor
         if (isset(self::$debtors)) {
             return self::$debtors;
         } else {
-            throw new Exception(__('Debtors data is not available.'));
+            throw new Exception(__d('bookkeeping_pohoda', 'Debtors data is not available.'));
         }
     }
 

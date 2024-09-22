@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2023-10-24 23:32+0200\n"
-"PO-Revision-Date: 2023-10-24 23:34+0200\n"
+"POT-Creation-Date: 2024-09-22 11:08+0200\n"
+"PO-Revision-Date: 2024-09-22 11:16+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -13,23 +13,23 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.4\n"
+"X-Generator: Poedit 3.5\n"
 
-#: plugins/Ruian/src/Controller/AddressesController.php:81
-#: plugins/Ruian/src/Controller/AddressesController.php:103
+#: plugins/Ruian/src/Controller/AddressesController.php:80
+#: plugins/Ruian/src/Controller/AddressesController.php:102
 msgid "The address has been saved."
 msgstr "Adresa byla uložena."
 
-#: plugins/Ruian/src/Controller/AddressesController.php:85
-#: plugins/Ruian/src/Controller/AddressesController.php:107
+#: plugins/Ruian/src/Controller/AddressesController.php:84
+#: plugins/Ruian/src/Controller/AddressesController.php:106
 msgid "The address could not be saved. Please, try again."
 msgstr "Adresu nelze uložit. Opakujte akci."
 
-#: plugins/Ruian/src/Controller/AddressesController.php:124
+#: plugins/Ruian/src/Controller/AddressesController.php:123
 msgid "The address has been deleted."
 msgstr "Adresa byla odstraněna."
 
-#: plugins/Ruian/src/Controller/AddressesController.php:127
+#: plugins/Ruian/src/Controller/AddressesController.php:126
 msgid "The address could not be deleted. Please, try again."
 msgstr "Adresu nelze odstranit. Opakujte akci."
 

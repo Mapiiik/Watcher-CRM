@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2024-03-24 15:06+0100\n"
-"PO-Revision-Date: 2024-03-24 15:07+0100\n"
+"POT-Creation-Date: 2024-09-22 11:08+0200\n"
+"PO-Revision-Date: 2024-09-22 11:15+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.5\n"
 
 #: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:32
 msgid "Required state of accounts."
@@ -97,194 +97,194 @@ msgstr "Skupiny uživatelů RADIUS"
 msgid "Modified"
 msgstr "Upraveno"
 
-#: plugins/Radius/src/Controller/AccountsController.php:175
-#: plugins/Radius/src/Controller/AccountsController.php:284
+#: plugins/Radius/src/Controller/AccountsController.php:174
+#: plugins/Radius/src/Controller/AccountsController.php:283
 msgid "The RADIUS account has been saved."
 msgstr "Účet RADIUS byl uložen."
 
-#: plugins/Radius/src/Controller/AccountsController.php:179
-#: plugins/Radius/src/Controller/AccountsController.php:288
+#: plugins/Radius/src/Controller/AccountsController.php:178
+#: plugins/Radius/src/Controller/AccountsController.php:287
 msgid "The RADIUS account could not be saved. Please, try again."
 msgstr "Účet RADIUS nelze uložit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/AccountsController.php:333
+#: plugins/Radius/src/Controller/AccountsController.php:332
 msgid "The RADIUS account has been deleted."
 msgstr "Účet RADIUS byl odstraněn."
 
-#: plugins/Radius/src/Controller/AccountsController.php:336
+#: plugins/Radius/src/Controller/AccountsController.php:335
 msgid "The RADIUS account could not be deleted. Please, try again."
 msgstr "Účet RADIUS nelze odstranit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/AccountsController.php:361
+#: plugins/Radius/src/Controller/AccountsController.php:360
 msgid "No RADIUS session for {0} found."
 msgstr "Nebyla nalezena žádná relace RADIUS pro {0}."
 
-#: plugins/Radius/src/Controller/AccountsController.php:382
+#: plugins/Radius/src/Controller/AccountsController.php:381
 msgid "Problem connecting to an access point: {0}"
 msgstr "Problém s připojením k přístupovému bodu: {0}"
 
-#: plugins/Radius/src/Controller/AccountsController.php:406
+#: plugins/Radius/src/Controller/AccountsController.php:405
 msgid "Removed MAC address entry {0} on interface {1} from router {2}."
 msgstr "Odstraněn záznam adresy MAC {0} na rozhraní {1} ze směrovače {2}."
 
-#: plugins/Radius/src/Controller/AccountsController.php:417
+#: plugins/Radius/src/Controller/AccountsController.php:416
 msgid "Access point updated."
 msgstr "Přístupový bod aktualizován."
 
-#: plugins/Radius/src/Controller/AccountsController.php:418
+#: plugins/Radius/src/Controller/AccountsController.php:417
 msgid "Nothing has changed."
 msgstr "Nic se nezměnilo."
 
-#: plugins/Radius/src/Controller/AccountsController.php:422
+#: plugins/Radius/src/Controller/AccountsController.php:421
 msgid "Invalid RADIUS session for {0}."
 msgstr "Neplatná relace RADIUS pro {0}."
 
-#: plugins/Radius/src/Controller/AccountsController.php:453
-#: plugins/Radius/src/Updater/AccountsUpdater.php:196
+#: plugins/Radius/src/Controller/AccountsController.php:452
+#: plugins/Radius/src/Updater/AccountsUpdater.php:197
 msgid "No active RADIUS session for {0} found."
 msgstr "Nebyla nalezena žádná aktivní relace RADIUS pro {0}."
 
-#: plugins/Radius/src/Controller/NasController.php:55
-#: plugins/Radius/src/Controller/NasController.php:77
+#: plugins/Radius/src/Controller/NasController.php:54
+#: plugins/Radius/src/Controller/NasController.php:76
 msgid "The RADIUS NAS has been saved."
 msgstr "RADIUS NAS byl uložen."
 
-#: plugins/Radius/src/Controller/NasController.php:59
-#: plugins/Radius/src/Controller/NasController.php:81
+#: plugins/Radius/src/Controller/NasController.php:58
+#: plugins/Radius/src/Controller/NasController.php:80
 msgid "The RADIUS NAS could not be saved. Please, try again."
 msgstr "RADIUS NAS nelze uložit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/NasController.php:98
+#: plugins/Radius/src/Controller/NasController.php:97
 msgid "The RADIUS NAS has been deleted."
 msgstr "RADIUS NAS byl odstraněn."
 
-#: plugins/Radius/src/Controller/NasController.php:101
+#: plugins/Radius/src/Controller/NasController.php:100
 msgid "The RADIUS NAS could not be deleted. Please, try again."
 msgstr "RADIUS NAS nelze odstranit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/RadacctController.php:57
-#: plugins/Radius/src/Controller/RadacctController.php:82
+#: plugins/Radius/src/Controller/RadacctController.php:56
+#: plugins/Radius/src/Controller/RadacctController.php:81
 msgid "The RADIUS accounting has been saved."
 msgstr "Monitorování účtů RADIUS bylo uloženo."
 
-#: plugins/Radius/src/Controller/RadacctController.php:61
-#: plugins/Radius/src/Controller/RadacctController.php:86
+#: plugins/Radius/src/Controller/RadacctController.php:60
+#: plugins/Radius/src/Controller/RadacctController.php:85
 msgid "The RADIUS accounting could not be saved. Please, try again."
 msgstr "Monitorování účtů RADIUS nelze uložit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/RadacctController.php:106
+#: plugins/Radius/src/Controller/RadacctController.php:105
 msgid "The RADIUS accounting has been deleted."
 msgstr "Monitorování účtů RADIUS bylo odstraněno."
 
-#: plugins/Radius/src/Controller/RadacctController.php:109
+#: plugins/Radius/src/Controller/RadacctController.php:108
 msgid "The RADIUS accounting could not be deleted. Please, try again."
 msgstr "Monitorování účtů RADIUS nelze odstranit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/RadcheckController.php:57
-#: plugins/Radius/src/Controller/RadcheckController.php:82
+#: plugins/Radius/src/Controller/RadcheckController.php:56
+#: plugins/Radius/src/Controller/RadcheckController.php:81
 msgid "The RADIUS check has been saved."
 msgstr "Kontrola RADIUS byla uložena."
 
-#: plugins/Radius/src/Controller/RadcheckController.php:61
-#: plugins/Radius/src/Controller/RadcheckController.php:86
+#: plugins/Radius/src/Controller/RadcheckController.php:60
+#: plugins/Radius/src/Controller/RadcheckController.php:85
 msgid "The RADIUS check could not be saved. Please, try again."
 msgstr "Kontrolu RADIUS nelze uložit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/RadcheckController.php:106
+#: plugins/Radius/src/Controller/RadcheckController.php:105
 msgid "The RADIUS check has been deleted."
 msgstr "Kontrola RADIUS byla odstraněna."
 
-#: plugins/Radius/src/Controller/RadcheckController.php:109
+#: plugins/Radius/src/Controller/RadcheckController.php:108
 msgid "The RADIUS check could not be deleted. Please, try again."
 msgstr "Kontrolu RADIUS nelze odstranit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/RadgroupcheckController.php:55
-#: plugins/Radius/src/Controller/RadgroupcheckController.php:77
+#: plugins/Radius/src/Controller/RadgroupcheckController.php:54
+#: plugins/Radius/src/Controller/RadgroupcheckController.php:76
 msgid "The RADIUS group check has been saved."
 msgstr "Kontrola skupiny RADIUS byla uložena."
 
-#: plugins/Radius/src/Controller/RadgroupcheckController.php:59
-#: plugins/Radius/src/Controller/RadgroupcheckController.php:81
+#: plugins/Radius/src/Controller/RadgroupcheckController.php:58
+#: plugins/Radius/src/Controller/RadgroupcheckController.php:80
 msgid "The RADIUS group check could not be saved. Please, try again."
 msgstr "Kontrolu skupiny RADIUS nelze uložit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/RadgroupcheckController.php:98
+#: plugins/Radius/src/Controller/RadgroupcheckController.php:97
 msgid "The RADIUS group check has been deleted."
 msgstr "Kontrola skupiny RADIUS byla odstraněna."
 
-#: plugins/Radius/src/Controller/RadgroupcheckController.php:101
+#: plugins/Radius/src/Controller/RadgroupcheckController.php:100
 msgid "The RADIUS group check could not be deleted. Please, try again."
 msgstr "Kontrolu skupiny RADIUS nelze odstranit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/RadgroupreplyController.php:55
-#: plugins/Radius/src/Controller/RadgroupreplyController.php:77
+#: plugins/Radius/src/Controller/RadgroupreplyController.php:54
+#: plugins/Radius/src/Controller/RadgroupreplyController.php:76
 msgid "The RADIUS group reply has been saved."
 msgstr "Odpověď skupiny RADIUS byla uložena."
 
-#: plugins/Radius/src/Controller/RadgroupreplyController.php:59
-#: plugins/Radius/src/Controller/RadgroupreplyController.php:81
+#: plugins/Radius/src/Controller/RadgroupreplyController.php:58
+#: plugins/Radius/src/Controller/RadgroupreplyController.php:80
 msgid "The RADIUS group reply could not be saved. Please, try again."
 msgstr "Odpověď skupiny RADIUS nelze uložit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/RadgroupreplyController.php:98
+#: plugins/Radius/src/Controller/RadgroupreplyController.php:97
 msgid "The RADIUS group reply has been deleted."
 msgstr "Odpověď skupiny RADIUS byla odstraněna."
 
-#: plugins/Radius/src/Controller/RadgroupreplyController.php:101
+#: plugins/Radius/src/Controller/RadgroupreplyController.php:100
 msgid "The RADIUS group reply could not be deleted. Please, try again."
 msgstr "Odpověď skupiny RADIUS nelze odstranit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/RadpostauthController.php:57
-#: plugins/Radius/src/Controller/RadpostauthController.php:82
+#: plugins/Radius/src/Controller/RadpostauthController.php:56
+#: plugins/Radius/src/Controller/RadpostauthController.php:81
 msgid "The RADIUS post authentication has been saved."
 msgstr "Následné ověření RADIUS bylo uloženo."
 
-#: plugins/Radius/src/Controller/RadpostauthController.php:61
-#: plugins/Radius/src/Controller/RadpostauthController.php:86
+#: plugins/Radius/src/Controller/RadpostauthController.php:60
+#: plugins/Radius/src/Controller/RadpostauthController.php:85
 msgid "The RADIUS post authentication could not be saved. Please, try again."
 msgstr "Následné ověření RADIUS nelze uložit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/RadpostauthController.php:106
+#: plugins/Radius/src/Controller/RadpostauthController.php:105
 msgid "The RADIUS post authentication has been deleted."
 msgstr "Následné ověření RADIUS bylo odstraněno."
 
-#: plugins/Radius/src/Controller/RadpostauthController.php:110
+#: plugins/Radius/src/Controller/RadpostauthController.php:109
 msgid "The RADIUS post authentication could not be deleted. Please, try again."
 msgstr "Následné ověření RADIUS nelze odstranit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/RadreplyController.php:57
-#: plugins/Radius/src/Controller/RadreplyController.php:82
+#: plugins/Radius/src/Controller/RadreplyController.php:56
+#: plugins/Radius/src/Controller/RadreplyController.php:81
 msgid "The RADIUS reply has been saved."
 msgstr "Odpověď RADIUS byla uložena."
 
-#: plugins/Radius/src/Controller/RadreplyController.php:61
-#: plugins/Radius/src/Controller/RadreplyController.php:86
+#: plugins/Radius/src/Controller/RadreplyController.php:60
+#: plugins/Radius/src/Controller/RadreplyController.php:85
 msgid "The RADIUS reply could not be saved. Please, try again."
 msgstr "Odpověď RADIUS nelze uložit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/RadreplyController.php:106
+#: plugins/Radius/src/Controller/RadreplyController.php:105
 msgid "The RADIUS reply has been deleted."
 msgstr "Odpověď RADIUS byla odstraněna."
 
-#: plugins/Radius/src/Controller/RadreplyController.php:109
+#: plugins/Radius/src/Controller/RadreplyController.php:108
 msgid "The RADIUS reply could not be deleted. Please, try again."
 msgstr "Odpověď RADIUS nelze odstranit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/RadusergroupController.php:57
-#: plugins/Radius/src/Controller/RadusergroupController.php:93
+#: plugins/Radius/src/Controller/RadusergroupController.php:56
+#: plugins/Radius/src/Controller/RadusergroupController.php:92
 msgid "The RADIUS user group has been saved."
 msgstr "Skupina uživatelů RADIUS byla uložena."
 
-#: plugins/Radius/src/Controller/RadusergroupController.php:61
-#: plugins/Radius/src/Controller/RadusergroupController.php:97
+#: plugins/Radius/src/Controller/RadusergroupController.php:60
+#: plugins/Radius/src/Controller/RadusergroupController.php:96
 msgid "The RADIUS user group could not be saved. Please, try again."
 msgstr "Skupinu uživatelů RADIUS nelze uložit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/RadusergroupController.php:128
+#: plugins/Radius/src/Controller/RadusergroupController.php:127
 msgid "The RADIUS user group has been deleted."
 msgstr "Skupina uživatelů RADIUS byla odstraněna."
 
-#: plugins/Radius/src/Controller/RadusergroupController.php:131
+#: plugins/Radius/src/Controller/RadusergroupController.php:130
 msgid "The RADIUS user group could not be deleted. Please, try again."
 msgstr "Skupinu uživatelů RADIUS nelze odstranit. Zkuste to prosím znovu."
 
@@ -300,15 +300,15 @@ msgstr "Účet RADIUS byl aktualizován."
 msgid "The RADIUS account could not be updated. Please, try again."
 msgstr "Účet RADIUS nelze aktualizovat. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:132
+#: plugins/Radius/src/Updater/AccountsUpdater.php:133
 msgid "Nothing has been selected for update."
 msgstr "Nic nebylo vybráno k aktualizaci."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:174
+#: plugins/Radius/src/Updater/AccountsUpdater.php:175
 msgid "The RADIUS account {0} could not be updated. Please, try again."
 msgstr "Účet RADIUS {0} se nepodařilo aktualizovat. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:220
+#: plugins/Radius/src/Updater/AccountsUpdater.php:221
 msgid ""
 "Related entries for {0} RADIUS accounts were processed, {1} accounts were "
 "updated, and {2} accounts failed to update."
@@ -316,23 +316,23 @@ msgstr ""
 "Související záznamy pro {0} účtů RADIUS byly zpracovány, {1} účtů bylo "
 "aktualizováno a {2} účtů se nepodařilo aktualizovat."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:244
+#: plugins/Radius/src/Updater/AccountsUpdater.php:245
 msgid "Automatic RADIUS account changes"
 msgstr "Automatické změny účtu RADIUS"
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:253
+#: plugins/Radius/src/Updater/AccountsUpdater.php:254
 msgid "These automatic RADIUS account changes have just taken place."
 msgstr "Tyto automatické změny účtu RADIUS právě proběhly."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:260
+#: plugins/Radius/src/Updater/AccountsUpdater.php:261
 msgid "Automatic RADIUS account changes have been reported."
 msgstr "Byly nahlášeny automatické změny účtu RADIUS."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:266
+#: plugins/Radius/src/Updater/AccountsUpdater.php:267
 msgid "Automatic RADIUS account changes cannot be reported."
 msgstr "Automatické změny účtu RADIUS nelze nahlásit."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:414
+#: plugins/Radius/src/Updater/AccountsUpdater.php:415
 msgid ""
 "The RADIUS replies for {0} could not be found automatically. Please, set it "
 "manually."
@@ -340,11 +340,11 @@ msgstr ""
 "Odpovědi RADIUS pro {0} nebyly automaticky nalezeny. Nastavte je prosím "
 "ručně."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:420
+#: plugins/Radius/src/Updater/AccountsUpdater.php:421
 msgid "The IP addresses for the contract are probably not set correctly."
 msgstr "IP adresy pro smlouvu pravděpodobně nejsou správně nastaveny."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:481
+#: plugins/Radius/src/Updater/AccountsUpdater.php:483
 msgid ""
 "The RADIUS user groups for {0} could not be found automatically. Please, set "
 "it manually."
@@ -352,7 +352,7 @@ msgstr ""
 "Skupiny uživatelů RADIUS pro {0} nebyly nalezeny automaticky. Nastavte je "
 "prosím ručně."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:487
+#: plugins/Radius/src/Updater/AccountsUpdater.php:489
 msgid ""
 "The billings for the contract for the current or upcoming period are "
 "probably not set correctly."
