@@ -59,6 +59,7 @@ session_id('cli');
 
 // Connection aliasing needs to happen before migrations are run.
 // Otherwise, table objects inside migrations would use the default datasource
+/** @psalm-suppress InternalMethod */
 ConnectionHelper::addTestAliases();
 
 // Use migrations to build test database schema.
