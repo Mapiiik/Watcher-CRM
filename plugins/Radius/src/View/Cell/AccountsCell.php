@@ -16,7 +16,7 @@ class AccountsCell extends Cell
      * List of valid options that can be passed into this
      * cell's constructor.
      *
-     * @var array<string>
+     * @var list<string>
      */
     protected array $_validCellOptions = ['show_contracts'];
 

@@ -21,7 +21,7 @@ class RadgroupcheckTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var array<string>
+     * @var list<string>
      */
     protected array $fixtures = [
         'plugin.Radius.Radgroupcheck',
