@@ -1455,9 +1455,11 @@ class ContractPDF extends TCPDF
                     $this->Ln(3);
                 }
 
+                /*
                 $this->SetFont('DejaVuSerif', 'B', 8);
                 $this->MultiCell(180, 4, 'Uživatel je srozuměn se skutečností, že při bezúplatném poskytnutí zařízení Poskytovatel neumožňuje změnu tarifu na tarif, který má dle Ceníku nižší měsíční cenu než 250,- Kč.' . PHP_EOL, align: 'J');
                 $this->Ln(3);
+                */
 
                 $this->SetFont('DejaVuSerif', '', 8);
                 $this->MultiCell(180, 4, 'Uživatel je povinen tato zařízení Poskytovateli vrátit bez zbytečných odkladů nejpozději po zániku této Smlouvy.' . PHP_EOL, align: 'J');
