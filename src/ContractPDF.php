@@ -70,8 +70,8 @@ class ContractPDF extends TCPDF
     {
         $this->SetFont('DejaVuSerif', '' . $format, 8);
         $this->Cell(4, 4);
-        $this->Cell(135, 4, 'služba:');
-        $this->Cell(40, 4, 'cena / měsíc:', align: 'R');
+        $this->Cell(140, 4, 'služba:');
+        $this->Cell(35, 4, 'cena / měsíc:', align: 'R');
         $this->Ln();
 
         $totalCost = Decimal::create(0, 2);
@@ -80,27 +80,29 @@ class ContractPDF extends TCPDF
             $this->SetFont('DejaVuSerif', 'B' . $format, 8);
             $this->Cell(4, 4);
             $this->Cell(
-                135,
+                140,
                 4,
                 $billing->name
                 . ($billing->billing_from > $contract_version->valid_from ? ' od ' . $billing->billing_from : '')
-                . ($billing->billing_until ? ' do ' . $billing->billing_until : '')
+                . ($billing->billing_until ? ' do ' . $billing->billing_until : ''),
+                align: 'L',
+                stretch: 1,
             );
-            $this->Cell(40, 4, Number::currency($billing->sum->toFloat()), align: 'R');
+            $this->Cell(35, 4, Number::currency($billing->sum->toFloat()), align: 'R');
             $this->Ln();
 
             if ($billing->percentage_discount_sum->isPositive()) {
                 $this->SetFont('DejaVuSerif', '' . $format, 8);
                 $this->Cell(4, 4);
-                $this->Cell(135, 4, ' - sleva ve výši ' . $billing->percentage_discount . ' % z ceny této služby');
-                $this->Cell(40, 4, Number::currency($billing->percentage_discount_sum->negate()->toFloat()), align: 'R');
+                $this->Cell(140, 4, ' - sleva ve výši ' . $billing->percentage_discount . ' % z ceny této služby');
+                $this->Cell(35, 4, Number::currency($billing->percentage_discount_sum->negate()->toFloat()), align: 'R');
                 $this->Ln();
             }
             if ($billing->fixed_discount_sum->isPositive()) {
                 $this->SetFont('DejaVuSerif', '' . $format, 8);
                 $this->Cell(4, 4);
-                $this->Cell(135, 4, ' - sleva v pevné výši z ceny této služby');
-                $this->Cell(40, 4, Number::currency($billing->fixed_discount_sum->negate()->toFloat()), align: 'R');
+                $this->Cell(140, 4, ' - sleva v pevné výši z ceny této služby');
+                $this->Cell(35, 4, Number::currency($billing->fixed_discount_sum->negate()->toFloat()), align: 'R');
                 $this->Ln();
             }
 
