@@ -70,8 +70,8 @@
                                 [
                                     'controller' => 'Contracts',
                                     'action' => 'view',
-                                    'customer_id' => $customer->id,
                                     $contract->id,
+                                    'customer_id' => $customer->id,
                                 ]
                             ) ?>
                             <?= $contract->__isset('contract_state') ?

@@ -42,7 +42,12 @@
                     <td><?=
                         $contractVersion->__isset('contract') ? $this->Html->link(
                             $contractVersion->contract->name,
-                            ['controller' => 'Contracts', 'action' => 'view', $contractVersion->contract->id]
+                            [
+                                'controller' => 'Contracts',
+                                'action' => 'view',
+                                $contractVersion->contract->id,
+                                'customer_id' => $contractVersion->contract->customer_id,
+                            ]
                         ) : '' ?></td>
                     <td><?= h($contractVersion->valid_from) ?></td>
                     <td><?= h($contractVersion->valid_until) ?></td>

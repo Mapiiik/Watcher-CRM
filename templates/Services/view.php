@@ -133,7 +133,12 @@ use Cake\Collection\Collection;
                             <td><?= $billing->__isset('contract') ?
                                 $this->Html->link(
                                     $billing->contract->number ?? '--',
-                                    ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]
+                                    [
+                                        'controller' => 'Contracts',
+                                        'action' => 'view',
+                                        $billing->contract->id,
+                                        'customer_id' => $billing->contract->customer_id,
+                                    ]
                                 ) : '' ?></td>
                             <td><?= h($billing->text) ?></td>
                             <td><?= h($billing->quantity) ?></td>

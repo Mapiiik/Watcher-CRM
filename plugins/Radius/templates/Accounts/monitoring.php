@@ -95,8 +95,8 @@ use Cake\Routing\Router;
                                     'plugin' => null,
                                     'controller' => 'Contracts',
                                     'action' => 'view',
-                                    'customer_id' => $account->contract->customer_id,
                                     $account->contract->id,
+                                    'customer_id' => $account->contract->customer_id,
                                 ]
                             ) : '' ?></td>
                         </tr>

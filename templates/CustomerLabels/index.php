@@ -51,8 +51,8 @@
                             [
                                 'controller' => 'Contracts',
                                 'action' => 'view',
-                                'customer_id' => $customerLabel->customer_id,
                                 $customerLabel->contract->id,
+                                'customer_id' => $customerLabel->contract->customer_id,
                             ]
                         ) : '' ?></td>
                     <td><?= $customerLabel->__isset('label') ?

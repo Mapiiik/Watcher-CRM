@@ -48,7 +48,12 @@
                     <td><?= $removedIpNetwork->__isset('contract') ?
                         $this->Html->link(
                             $removedIpNetwork->contract->number ?? '--',
-                            ['controller' => 'Contracts', 'action' => 'view', $removedIpNetwork->contract->id]
+                            [
+                                'controller' => 'Contracts',
+                                'action' => 'view',
+                                $removedIpNetwork->contract->id,
+                                'customer_id' => $removedIpNetwork->contract->customer_id,
+                            ]
                         ) : '' ?></td>
                     <td><?= h($removedIpNetwork->ip_network) ?></td>
                     <td><?= h($removedIpNetwork->type_of_use->label()) ?></td>

@@ -44,7 +44,12 @@
                             <th><?= __('Contract') ?></th>
                             <td><?= $billing->__isset('contract') ? $this->Html->link(
                                 $billing->contract->number ?? '--',
-                                ['controller' => 'Contracts', 'action' => 'view', $billing->contract->id]
+                                [
+                                    'controller' => 'Contracts',
+                                    'action' => 'view',
+                                    $billing->contract->id,
+                                    'customer_id' => $billing->contract->customer_id,
+                                ]
                             ) : '' ?></td>
                         </tr>
                         <tr>

@@ -42,8 +42,8 @@
                         'plugin' => null,
                         'controller' => 'Contracts',
                         'action' => 'view',
-                        'customer_id' => $change->getContract()->customer_id,
                         $change->getContract()->id,
+                        'customer_id' => $change->getContract()->customer_id,
                     ]
                 ) ?></td>
             <td><?= $this->Html

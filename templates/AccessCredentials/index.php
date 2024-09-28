@@ -57,7 +57,12 @@
                     <td><?= $accessCredential->hasValue('contract') ?
                         $this->Html->link(
                             $accessCredential->contract->name,
-                            ['controller' => 'Contracts', 'action' => 'view', $accessCredential->contract->id]
+                            [
+                                'controller' => 'Contracts',
+                                'action' => 'view',
+                                $accessCredential->contract->id,
+                                'customer_id' => $accessCredential->contract->customer_id,
+                            ]
                         ) : '' ?></td>
                     <?php endif; ?>
                     <td><?= h($accessCredential->name) ?></td>

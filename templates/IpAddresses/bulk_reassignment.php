@@ -92,8 +92,8 @@
                                         [
                                             'controller' => 'Contracts',
                                             'action' => 'view',
-                                            'customer_id' => $ipAddress->contract->customer_id,
                                             $ipAddress->contract->id,
+                                            'customer_id' => $ipAddress->contract->customer_id,
                                         ]
                                     ) : '' ?>
                                 </td>

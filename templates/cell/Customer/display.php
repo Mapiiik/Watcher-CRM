@@ -20,13 +20,25 @@
                 if ($this->getRequest()->getParam('contract_id') == $contract->id) {
                     echo $this->AuthLink->link(
                         $contract->name,
-                        ['plugin' => null, 'controller' => 'Contracts', 'action' => 'view', $contract->id],
+                        [
+                            'plugin' => null,
+                            'controller' => 'Contracts',
+                            'action' => 'view',
+                            $contract->id,
+                            'customer_id' => $contract->customer_id,
+                        ],
                         ['class' => 'button button-small button-selected']
                     );
                 } elseif (!$compact) { //skip non selected contracts in compact mode
                     echo $this->AuthLink->link(
                         $contract->name,
-                        ['plugin' => null, 'controller' => 'Contracts', 'action' => 'view', $contract->id],
+                        [
+                            'plugin' => null,
+                            'controller' => 'Contracts',
+                            'action' => 'view',
+                            $contract->id,
+                            'customer_id' => $contract->customer_id,
+                        ],
                         [
                             'class' => 'button button-small',
                             'style' => $contract->style . ' color: inherit;',

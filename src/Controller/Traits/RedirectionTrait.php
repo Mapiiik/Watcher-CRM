@@ -32,6 +32,7 @@ trait RedirectionTrait
                     'controller' => 'Contracts',
                     'action' => 'view',
                     $this->contract_id,
+                    'customer_id' => $this->customer_id,
                 ]);
             }
 
@@ -102,6 +103,7 @@ trait RedirectionTrait
                     'controller' => 'Contracts',
                     'action' => 'view',
                     $this->contract_id,
+                    'customer_id' => $this->customer_id,
                 ]);
             }
 

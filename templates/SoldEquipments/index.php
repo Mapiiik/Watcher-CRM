@@ -49,7 +49,12 @@
                     <td>
                         <?= $soldEquipment->__isset('contract') ? $this->Html->link(
                             $soldEquipment->contract->number ?? '--',
-                            ['controller' => 'Contracts', 'action' => 'view', $soldEquipment->contract->id]
+                            [
+                                'controller' => 'Contracts',
+                                'action' => 'view',
+                                $soldEquipment->contract->id,
+                                'customer_id' => $soldEquipment->contract->customer_id,
+                            ]
                         ) : '' ?>
                     </td>
                     <td>

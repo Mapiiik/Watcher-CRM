@@ -53,7 +53,12 @@
                             <td><?= $ipNetwork->__isset('contract') ?
                                 $this->Html->link(
                                     $ipNetwork->contract->number ?? '--',
-                                    ['controller' => 'Contracts', 'action' => 'view', $ipNetwork->contract->id]
+                                    [
+                                        'controller' => 'Contracts',
+                                        'action' => 'view',
+                                        $ipNetwork->contract->id,
+                                        'customer_id' => $ipNetwork->contract->customer_id,
+                                    ]
                                 ) : '' ?></td>
                         </tr>
                         <tr>

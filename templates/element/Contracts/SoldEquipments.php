@@ -27,6 +27,7 @@
                         'controller' => 'Contracts',
                         'action' => 'view',
                         $soldEquipment->contract->id,
+                        'customer_id' => $soldEquipment->contract->customer_id,
                     ]
                 ) : '' ?></td>
             <?php endif; ?>

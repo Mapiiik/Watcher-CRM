@@ -28,6 +28,7 @@
                         'controller' => 'Contracts',
                         'action' => 'view',
                         $removedIpNetwork->contract->id,
+                        'customer_id' => $removedIpNetwork->contract->customer_id,
                     ]
                 ) : '' ?></td>
             <?php endif; ?>

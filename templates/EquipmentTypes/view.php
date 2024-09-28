@@ -121,7 +121,12 @@
                             <td><?= $borrowedEquipment->__isset('contract') ?
                                 $this->Html->link(
                                     $borrowedEquipment->contract->number ?? '--',
-                                    ['controller' => 'Contracts', 'action' => 'view', $borrowedEquipment->contract->id]
+                                    [
+                                        'controller' => 'Contracts',
+                                        'action' => 'view',
+                                        $borrowedEquipment->contract->id,
+                                        'customer_id' => $borrowedEquipment->contract->customer_id,
+                                    ]
                                 ) : '' ?></td>
                             <td><?= h($borrowedEquipment->serial_number) ?></td>
                             <td><?= h($borrowedEquipment->borrowed_from) ?></td>
@@ -177,7 +182,12 @@
                             <td><?= $soldEquipment->__isset('contract') ?
                                 $this->Html->link(
                                     $soldEquipment->contract->number ?? '--',
-                                    ['controller' => 'Contracts', 'action' => 'view', $soldEquipment->contract->id]
+                                    [
+                                        'controller' => 'Contracts',
+                                        'action' => 'view',
+                                        $soldEquipment->contract->id,
+                                        'customer_id' => $soldEquipment->contract->customer_id,
+                                    ]
                                 ) : '' ?></td>
                             <td><?= h($soldEquipment->serial_number) ?></td>
                             <td><?= h($soldEquipment->date_of_sale) ?></td>

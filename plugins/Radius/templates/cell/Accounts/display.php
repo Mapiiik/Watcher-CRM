@@ -33,7 +33,13 @@ use Cake\Routing\Router;
             <td><?= $account->__isset('contract') ?
                 $this->Html->link(
                     $account->contract->number ?? '--',
-                    ['plugin' => null, 'controller' => 'Contracts', 'action' => 'view', $account->contract->id]
+                    [
+                        'plugin' => null,
+                        'controller' => 'Contracts',
+                        'action' => 'view',
+                        $account->contract->id,
+                        'customer_id' => $account->contract->customer_id,
+                    ]
                 ) : '' ?></td>
             <?php endif; ?>
             <td><?= h($account->username) ?></td>

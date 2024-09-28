@@ -201,7 +201,12 @@
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
-                                    ['controller' => 'Contracts', 'action' => 'view', $contract->id]
+                                    [
+                                        'controller' => 'Contracts',
+                                        'action' => 'view',
+                                        $contract->id,
+                                        'customer_id' => $contract->customer_id,
+                                    ]
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __('Edit'),
