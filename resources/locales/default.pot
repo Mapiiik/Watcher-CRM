@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2024-09-22 11:09+0200\n"
+"POT-Creation-Date: 2024-10-21 17:22+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -91,14 +91,14 @@ msgstr ""
 msgid "The related static customer labels could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/ContractPDF.php:284
-#: ./src/ContractPDF.php:1112
+#: ./src/ContractPDF.php:286
+#: ./src/ContractPDF.php:1114
 #: ./src/Model/Enum/AddressType.php:25
 msgid "Billing Address"
 msgstr ""
 
-#: ./src/ContractPDF.php:358
-#: ./src/ContractPDF.php:1187
+#: ./src/ContractPDF.php:360
+#: ./src/ContractPDF.php:1189
 #: ./src/Controller/TasksController.php:412
 #: ./src/Model/Enum/AddressType.php:24
 #: ./templates/Commissions/view.php:132
@@ -110,89 +110,89 @@ msgstr ""
 msgid "Installation Address"
 msgstr ""
 
-#: ./src/ContractPDF.php:367
-#: ./src/ContractPDF.php:1196
+#: ./src/ContractPDF.php:369
+#: ./src/ContractPDF.php:1198
 #: ./src/Model/Enum/AddressType.php:26
 msgid "Delivery Address"
 msgstr ""
 
-#: ./src/ContractPDF.php:375
-#: ./src/ContractPDF.php:1204
+#: ./src/ContractPDF.php:377
+#: ./src/ContractPDF.php:1206
 #: ./src/Model/Enum/AddressType.php:27
 msgid "Permanent Address"
 msgstr ""
 
-#: ./src/ContractPDF.php:403
-#: ./templates/AccessCredentials/view.php:63
+#: ./src/ContractPDF.php:405
+#: ./templates/AccessCredentials/view.php:68
 msgid "Username"
 msgstr ""
 
-#: ./src/ContractPDF.php:404
-#: ./templates/AccessCredentials/view.php:67
+#: ./src/ContractPDF.php:406
+#: ./templates/AccessCredentials/view.php:72
 msgid "Password"
 msgstr ""
 
-#: ./src/ContractPDF.php:418
+#: ./src/ContractPDF.php:420
 msgid "Assigned IP Addresses"
 msgstr ""
 
-#: ./src/ContractPDF.php:423
+#: ./src/ContractPDF.php:425
 #: ./templates/AccessCredentials/add.php:59
 #: ./templates/AccessCredentials/edit.php:67
 #: ./templates/AccessCredentials/index.php:39
-#: ./templates/AccessCredentials/view.php:71
+#: ./templates/AccessCredentials/view.php:76
 #: ./templates/IpAddresses/add.php:28
 #: ./templates/IpAddresses/add_from_range.php:76
 #: ./templates/IpAddresses/bulk_reassignment.php:73
 #: ./templates/IpAddresses/edit.php:33
 #: ./templates/IpAddresses/index.php:29
-#: ./templates/IpAddresses/view.php:50
+#: ./templates/IpAddresses/view.php:55
 #: ./templates/RemovedIpAddresses/add.php:32
 #: ./templates/RemovedIpAddresses/edit.php:40
 #: ./templates/RemovedIpAddresses/index.php:33
-#: ./templates/RemovedIpAddresses/view.php:62
+#: ./templates/RemovedIpAddresses/view.php:67
 #: ./templates/element/Contracts/IpAddresses.php:17
 #: ./templates/element/Contracts/RemovedIpAddresses.php:15
 msgid "IP Address"
 msgstr ""
 
-#: ./src/ContractPDF.php:424
-#: ./src/ContractPDF.php:471
+#: ./src/ContractPDF.php:426
+#: ./src/ContractPDF.php:473
 #: ./templates/IpNetworks/add.php:32
 #: ./templates/IpNetworks/edit.php:37
 #: ./templates/IpNetworks/index.php:33
-#: ./templates/IpNetworks/view.php:60
+#: ./templates/IpNetworks/view.php:65
 #: ./templates/RemovedIpNetworks/add.php:32
 #: ./templates/RemovedIpNetworks/edit.php:40
 #: ./templates/RemovedIpNetworks/index.php:33
-#: ./templates/RemovedIpNetworks/view.php:65
+#: ./templates/RemovedIpNetworks/view.php:70
 #: ./templates/element/Contracts/IpNetworks.php:17
 #: ./templates/element/Contracts/RemovedIpNetworks.php:15
 msgid "IP Network"
 msgstr ""
 
-#: ./src/ContractPDF.php:425
-#: ./src/ContractPDF.php:472
+#: ./src/ContractPDF.php:427
+#: ./src/ContractPDF.php:474
 msgid "IP Gateway"
 msgstr ""
 
-#: ./src/ContractPDF.php:455
+#: ./src/ContractPDF.php:457
 msgid "Assigned IP Networks"
 msgstr ""
 
-#: ./src/ContractPDF.php:473
+#: ./src/ContractPDF.php:475
 msgid "DNS Servers"
 msgstr ""
 
-#: ./src/ContractPDF.php:487
+#: ./src/ContractPDF.php:489
 msgid "WiFi - SSID"
 msgstr ""
 
-#: ./src/ContractPDF.php:488
+#: ./src/ContractPDF.php:490
 msgid "WiFi - Password"
 msgstr ""
 
-#: ./src/ContractPDF.php:1098
+#: ./src/ContractPDF.php:1100
 #: ./templates/Contracts/print.php:70
 #: ./templates/Contracts/view.php:157
 #: ./templates/Customers/view.php:541
@@ -289,7 +289,7 @@ msgstr ""
 #: ./src/Controller/ContractsController.php:418
 #: ./src/Controller/CustomerMessagesController.php:281
 #: ./src/Controller/IpAddressesController.php:528
-#: ./src/Controller/OverviewsController.php:197
+#: ./src/Controller/OverviewsController.php:199
 #: ./src/Controller/TasksController.php:264
 #: ./src/Controller/TasksController.php:457
 #: ./src/Controller/TasksController.php:556
@@ -825,11 +825,11 @@ msgstr ""
 msgid "The login could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:274
+#: ./src/Controller/OverviewsController.php:276
 msgid "Invalid RUIAN GID: {0}"
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:591
+#: ./src/Controller/OverviewsController.php:593
 msgid "unknown dealer"
 msgstr ""
 
@@ -1153,12 +1153,12 @@ msgstr ""
 
 #: ./src/Model/Enum/CustomerDealer.php:23
 #: ./templates/Addresses/view.php:132
-#: ./templates/Billings/index.php:76
-#: ./templates/Billings/index.php:77
-#: ./templates/Billings/service_change.php:75
-#: ./templates/Billings/service_change.php:79
-#: ./templates/Billings/view.php:81
-#: ./templates/Billings/view.php:85
+#: ./templates/Billings/index.php:81
+#: ./templates/Billings/index.php:82
+#: ./templates/Billings/service_change.php:80
+#: ./templates/Billings/service_change.php:84
+#: ./templates/Billings/view.php:86
+#: ./templates/Billings/view.php:90
 #: ./templates/Commissions/view.php:177
 #: ./templates/ContractStates/index.php:43
 #: ./templates/ContractStates/index.php:44
@@ -1227,8 +1227,8 @@ msgstr ""
 #: ./templates/ServiceTypes/view.php:233
 #: ./templates/Services/index.php:51
 #: ./templates/Services/view.php:60
-#: ./templates/Services/view.php:147
-#: ./templates/Services/view.php:148
+#: ./templates/Services/view.php:152
+#: ./templates/Services/view.php:153
 #: ./templates/TaskStates/index.php:39
 #: ./templates/TaskStates/view.php:45
 #: ./templates/TaskTypes/index.php:36
@@ -1237,20 +1237,20 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:41
 #: ./templates/TaxRates/index.php:40
 #: ./templates/TaxRates/view.php:41
-#: ./templates/element/Contracts/Billings.php:62
-#: ./templates/element/Contracts/Billings.php:63
+#: ./templates/element/Contracts/Billings.php:70
+#: ./templates/element/Contracts/Billings.php:71
 msgid "No"
 msgstr ""
 
 #: ./src/Model/Enum/CustomerDealer.php:24
 #: ./src/Model/Enum/CustomerDealer.php:25
 #: ./templates/Addresses/view.php:132
-#: ./templates/Billings/index.php:76
-#: ./templates/Billings/index.php:77
-#: ./templates/Billings/service_change.php:75
-#: ./templates/Billings/service_change.php:79
-#: ./templates/Billings/view.php:81
-#: ./templates/Billings/view.php:85
+#: ./templates/Billings/index.php:81
+#: ./templates/Billings/index.php:82
+#: ./templates/Billings/service_change.php:80
+#: ./templates/Billings/service_change.php:84
+#: ./templates/Billings/view.php:86
+#: ./templates/Billings/view.php:90
 #: ./templates/Commissions/view.php:177
 #: ./templates/ContractStates/index.php:43
 #: ./templates/ContractStates/index.php:44
@@ -1319,8 +1319,8 @@ msgstr ""
 #: ./templates/ServiceTypes/view.php:233
 #: ./templates/Services/index.php:51
 #: ./templates/Services/view.php:60
-#: ./templates/Services/view.php:147
-#: ./templates/Services/view.php:148
+#: ./templates/Services/view.php:152
+#: ./templates/Services/view.php:153
 #: ./templates/TaskStates/index.php:39
 #: ./templates/TaskStates/view.php:45
 #: ./templates/TaskTypes/index.php:36
@@ -1329,8 +1329,8 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:41
 #: ./templates/TaxRates/index.php:40
 #: ./templates/TaxRates/view.php:41
-#: ./templates/element/Contracts/Billings.php:62
-#: ./templates/element/Contracts/Billings.php:63
+#: ./templates/element/Contracts/Billings.php:70
+#: ./templates/element/Contracts/Billings.php:71
 msgid "Yes"
 msgstr ""
 
@@ -1558,7 +1558,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/index.php:33
 #: ./templates/EquipmentTypes/view.php:10
 #: ./templates/EquipmentTypes/view.php:109
-#: ./templates/EquipmentTypes/view.php:166
+#: ./templates/EquipmentTypes/view.php:171
 #: ./templates/IpAddresses/add.php:12
 #: ./templates/IpAddresses/add_from_range.php:13
 #: ./templates/IpAddresses/bulk_reassignment.php:15
@@ -1579,8 +1579,8 @@ msgstr ""
 #: ./templates/Logins/edit.php:11
 #: ./templates/Logins/index.php:35
 #: ./templates/Logins/view.php:10
-#: ./templates/Overviews/overview_of_active_services.php:11
-#: ./templates/Overviews/overview_of_active_services.php:68
+#: ./templates/Overviews/overview_of_active_services.php:12
+#: ./templates/Overviews/overview_of_active_services.php:77
 #: ./templates/Overviews/overview_of_customer_connection_points.php:11
 #: ./templates/Overviews/overview_of_customer_connection_points.php:64
 #: ./templates/Overviews/overview_of_customer_connection_speeds.php:11
@@ -1637,7 +1637,7 @@ msgstr ""
 #: ./templates/TaxRates/index.php:32
 #: ./templates/TaxRates/view.php:10
 #: ./templates/TaxRates/view.php:110
-#: ./templates/element/Contracts/Billings.php:32
+#: ./templates/element/Contracts/Billings.php:34
 #: ./templates/element/Contracts/BorrowedEquipments.php:19
 #: ./templates/element/Contracts/ContractVersions.php:18
 #: ./templates/element/Contracts/IpAddresses.php:23
@@ -1668,7 +1668,7 @@ msgstr ""
 #: ./templates/Billings/add.php:63
 #: ./templates/Billings/bulk_service_change.php:124
 #: ./templates/Billings/edit.php:68
-#: ./templates/Billings/service_change.php:186
+#: ./templates/Billings/service_change.php:191
 #: ./templates/BorrowedEquipments/add.php:39
 #: ./templates/BorrowedEquipments/edit.php:47
 #: ./templates/Commissions/add.php:23
@@ -1732,22 +1732,22 @@ msgid "Submit"
 msgstr ""
 
 #: ./templates/AccessCredentials/edit.php:14
-#: ./templates/AccessCredentials/index.php:79
+#: ./templates/AccessCredentials/index.php:84
 #: ./templates/Addresses/edit.php:14
 #: ./templates/Addresses/index.php:98
 #: ./templates/Billings/edit.php:15
-#: ./templates/Billings/index.php:86
+#: ./templates/Billings/index.php:91
 #: ./templates/BorrowedEquipments/edit.php:15
-#: ./templates/BorrowedEquipments/index.php:78
+#: ./templates/BorrowedEquipments/index.php:83
 #: ./templates/Commissions/edit.php:12
 #: ./templates/Commissions/index.php:42
 #: ./templates/Commissions/view.php:110
-#: ./templates/Commissions/view.php:212
+#: ./templates/Commissions/view.php:217
 #: ./templates/ContractStates/edit.php:12
 #: ./templates/ContractStates/index.php:57
-#: ./templates/ContractStates/view.php:198
+#: ./templates/ContractStates/view.php:203
 #: ./templates/ContractVersions/edit.php:13
-#: ./templates/ContractVersions/index.php:63
+#: ./templates/ContractVersions/index.php:68
 #: ./templates/Contracts/edit.php:20
 #: ./templates/Contracts/index.php:105
 #: ./templates/Contracts/view.php:561
@@ -1772,12 +1772,12 @@ msgstr ""
 #: ./templates/Emails/index.php:57
 #: ./templates/EquipmentTypes/edit.php:12
 #: ./templates/EquipmentTypes/index.php:52
-#: ./templates/EquipmentTypes/view.php:140
-#: ./templates/EquipmentTypes/view.php:195
+#: ./templates/EquipmentTypes/view.php:145
+#: ./templates/EquipmentTypes/view.php:205
 #: ./templates/IpAddresses/edit.php:14
-#: ./templates/IpAddresses/index.php:60
+#: ./templates/IpAddresses/index.php:65
 #: ./templates/IpNetworks/edit.php:14
-#: ./templates/IpNetworks/index.php:65
+#: ./templates/IpNetworks/index.php:70
 #: ./templates/Labels/edit.php:15
 #: ./templates/Labels/index.php:75
 #: ./templates/Labels/view.php:162
@@ -1789,18 +1789,18 @@ msgstr ""
 #: ./templates/Queues/index.php:60
 #: ./templates/Queues/view.php:145
 #: ./templates/RemovedIpAddresses/edit.php:14
-#: ./templates/RemovedIpAddresses/index.php:66
+#: ./templates/RemovedIpAddresses/index.php:71
 #: ./templates/RemovedIpNetworks/edit.php:14
-#: ./templates/RemovedIpNetworks/index.php:64
+#: ./templates/RemovedIpNetworks/index.php:69
 #: ./templates/ServiceTypes/edit.php:12
 #: ./templates/ServiceTypes/index.php:79
 #: ./templates/ServiceTypes/view.php:174
-#: ./templates/ServiceTypes/view.php:272
+#: ./templates/ServiceTypes/view.php:277
 #: ./templates/Services/edit.php:14
 #: ./templates/Services/index.php:60
-#: ./templates/Services/view.php:161
+#: ./templates/Services/view.php:166
 #: ./templates/SoldEquipments/edit.php:15
-#: ./templates/SoldEquipments/index.php:71
+#: ./templates/SoldEquipments/index.php:76
 #: ./templates/TaskStates/edit.php:12
 #: ./templates/TaskStates/index.php:48
 #: ./templates/TaskStates/view.php:156
@@ -1811,41 +1811,41 @@ msgstr ""
 #: ./templates/TaxRates/edit.php:12
 #: ./templates/TaxRates/index.php:52
 #: ./templates/TaxRates/view.php:141
-#: ./templates/element/Contracts/Billings.php:76
-#: ./templates/element/Contracts/BorrowedEquipments.php:59
+#: ./templates/element/Contracts/Billings.php:85
+#: ./templates/element/Contracts/BorrowedEquipments.php:60
 #: ./templates/element/Contracts/ContractVersions.php:45
-#: ./templates/element/Contracts/IpAddresses.php:75
-#: ./templates/element/Contracts/IpNetworks.php:57
-#: ./templates/element/Contracts/RemovedIpAddresses.php:45
-#: ./templates/element/Contracts/RemovedIpNetworks.php:57
-#: ./templates/element/Contracts/SoldEquipments.php:55
+#: ./templates/element/Contracts/IpAddresses.php:80
+#: ./templates/element/Contracts/IpNetworks.php:62
+#: ./templates/element/Contracts/RemovedIpAddresses.php:50
+#: ./templates/element/Contracts/RemovedIpNetworks.php:58
+#: ./templates/element/Contracts/SoldEquipments.php:56
 msgid "Delete"
 msgstr ""
 
 #: ./templates/AccessCredentials/edit.php:17
-#: ./templates/AccessCredentials/index.php:81
+#: ./templates/AccessCredentials/index.php:86
 #: ./templates/AccessCredentials/view.php:20
 #: ./templates/Addresses/edit.php:16
 #: ./templates/Addresses/index.php:100
 #: ./templates/Addresses/view.php:19
 #: ./templates/Billings/edit.php:17
-#: ./templates/Billings/index.php:88
+#: ./templates/Billings/index.php:93
 #: ./templates/Billings/service_change.php:20
 #: ./templates/Billings/view.php:21
 #: ./templates/BorrowedEquipments/edit.php:18
-#: ./templates/BorrowedEquipments/index.php:80
+#: ./templates/BorrowedEquipments/index.php:85
 #: ./templates/BorrowedEquipments/view.php:20
 #: ./templates/Commissions/edit.php:14
 #: ./templates/Commissions/index.php:44
 #: ./templates/Commissions/view.php:19
 #: ./templates/Commissions/view.php:112
-#: ./templates/Commissions/view.php:214
+#: ./templates/Commissions/view.php:219
 #: ./templates/ContractStates/edit.php:15
 #: ./templates/ContractStates/index.php:59
 #: ./templates/ContractStates/view.php:20
-#: ./templates/ContractStates/view.php:200
+#: ./templates/ContractStates/view.php:205
 #: ./templates/ContractVersions/edit.php:16
-#: ./templates/ContractVersions/index.php:65
+#: ./templates/ContractVersions/index.php:70
 #: ./templates/ContractVersions/view.php:20
 #: ./templates/Contracts/edit.php:22
 #: ./templates/Contracts/index.php:107
@@ -1879,13 +1879,13 @@ msgstr ""
 #: ./templates/EquipmentTypes/edit.php:15
 #: ./templates/EquipmentTypes/index.php:54
 #: ./templates/EquipmentTypes/view.php:20
-#: ./templates/EquipmentTypes/view.php:146
-#: ./templates/EquipmentTypes/view.php:197
+#: ./templates/EquipmentTypes/view.php:151
+#: ./templates/EquipmentTypes/view.php:207
 #: ./templates/IpAddresses/edit.php:16
-#: ./templates/IpAddresses/index.php:62
+#: ./templates/IpAddresses/index.php:67
 #: ./templates/IpAddresses/view.php:19
 #: ./templates/IpNetworks/edit.php:16
-#: ./templates/IpNetworks/index.php:67
+#: ./templates/IpNetworks/index.php:72
 #: ./templates/IpNetworks/view.php:19
 #: ./templates/Labels/edit.php:17
 #: ./templates/Labels/index.php:77
@@ -1902,22 +1902,22 @@ msgstr ""
 #: ./templates/Queues/view.php:19
 #: ./templates/Queues/view.php:147
 #: ./templates/RemovedIpAddresses/edit.php:17
-#: ./templates/RemovedIpAddresses/index.php:68
+#: ./templates/RemovedIpAddresses/index.php:73
 #: ./templates/RemovedIpAddresses/view.php:20
 #: ./templates/RemovedIpNetworks/edit.php:17
-#: ./templates/RemovedIpNetworks/index.php:66
+#: ./templates/RemovedIpNetworks/index.php:71
 #: ./templates/RemovedIpNetworks/view.php:20
 #: ./templates/ServiceTypes/edit.php:15
 #: ./templates/ServiceTypes/index.php:81
 #: ./templates/ServiceTypes/view.php:20
 #: ./templates/ServiceTypes/view.php:176
-#: ./templates/ServiceTypes/view.php:274
+#: ./templates/ServiceTypes/view.php:279
 #: ./templates/Services/edit.php:16
 #: ./templates/Services/index.php:62
 #: ./templates/Services/view.php:23
-#: ./templates/Services/view.php:163
+#: ./templates/Services/view.php:168
 #: ./templates/SoldEquipments/edit.php:18
-#: ./templates/SoldEquipments/index.php:73
+#: ./templates/SoldEquipments/index.php:78
 #: ./templates/SoldEquipments/view.php:20
 #: ./templates/TaskStates/edit.php:14
 #: ./templates/TaskStates/index.php:50
@@ -1933,14 +1933,14 @@ msgstr ""
 #: ./templates/TaxRates/index.php:54
 #: ./templates/TaxRates/view.php:19
 #: ./templates/TaxRates/view.php:143
-#: ./templates/element/Contracts/Billings.php:78
-#: ./templates/element/Contracts/BorrowedEquipments.php:66
+#: ./templates/element/Contracts/Billings.php:87
+#: ./templates/element/Contracts/BorrowedEquipments.php:67
 #: ./templates/element/Contracts/ContractVersions.php:47
-#: ./templates/element/Contracts/IpAddresses.php:77
-#: ./templates/element/Contracts/IpNetworks.php:60
-#: ./templates/element/Contracts/RemovedIpAddresses.php:47
-#: ./templates/element/Contracts/RemovedIpNetworks.php:64
-#: ./templates/element/Contracts/SoldEquipments.php:62
+#: ./templates/element/Contracts/IpAddresses.php:82
+#: ./templates/element/Contracts/IpNetworks.php:65
+#: ./templates/element/Contracts/RemovedIpAddresses.php:52
+#: ./templates/element/Contracts/RemovedIpNetworks.php:65
+#: ./templates/element/Contracts/SoldEquipments.php:63
 msgid "Are you sure you want to delete # {0}?"
 msgstr ""
 
@@ -2011,7 +2011,7 @@ msgstr ""
 #: ./templates/Emails/index.php:27
 #: ./templates/Emails/view.php:39
 #: ./templates/EquipmentTypes/view.php:104
-#: ./templates/EquipmentTypes/view.php:162
+#: ./templates/EquipmentTypes/view.php:167
 #: ./templates/IpAddresses/bulk_reassignment.php:71
 #: ./templates/IpAddresses/index.php:27
 #: ./templates/IpAddresses/view.php:39
@@ -2035,20 +2035,20 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:99
 #: ./templates/Tasks/index.php:64
 #: ./templates/Tasks/view.php:78
-#: ./templates/element/Contracts/Billings.php:15
+#: ./templates/element/Contracts/Billings.php:16
 msgid "Customer Number"
 msgstr ""
 
-#: ./templates/AccessCredentials/index.php:70
+#: ./templates/AccessCredentials/index.php:75
 #: ./templates/Addresses/index.php:91
-#: ./templates/Billings/index.php:79
-#: ./templates/BorrowedEquipments/index.php:71
+#: ./templates/Billings/index.php:84
+#: ./templates/BorrowedEquipments/index.php:76
 #: ./templates/Commissions/index.php:35
 #: ./templates/Commissions/view.php:101
 #: ./templates/Commissions/view.php:203
 #: ./templates/ContractStates/index.php:48
 #: ./templates/ContractStates/view.php:189
-#: ./templates/ContractVersions/index.php:54
+#: ./templates/ContractVersions/index.php:59
 #: ./templates/Contracts/index.php:98
 #: ./templates/Contracts/view.php:552
 #: ./templates/Contracts/view.php:610
@@ -2066,27 +2066,27 @@ msgstr ""
 #: ./templates/DealerCommissions/index.php:57
 #: ./templates/Emails/index.php:50
 #: ./templates/EquipmentTypes/index.php:45
-#: ./templates/EquipmentTypes/view.php:131
-#: ./templates/EquipmentTypes/view.php:186
-#: ./templates/IpAddresses/index.php:53
-#: ./templates/IpNetworks/index.php:56
+#: ./templates/EquipmentTypes/view.php:136
+#: ./templates/EquipmentTypes/view.php:196
+#: ./templates/IpAddresses/index.php:58
+#: ./templates/IpNetworks/index.php:61
 #: ./templates/Labels/index.php:68
 #: ./templates/Labels/view.php:153
 #: ./templates/Logins/index.php:56
-#: ./templates/Overviews/overview_of_active_services.php:108
+#: ./templates/Overviews/overview_of_active_services.php:125
 #: ./templates/Overviews/overview_of_customer_connection_points.php:90
 #: ./templates/Overviews/overview_of_dealer_commissions.php:105
 #: ./templates/Phones/index.php:50
 #: ./templates/Queues/index.php:53
 #: ./templates/Queues/view.php:136
-#: ./templates/RemovedIpAddresses/index.php:59
-#: ./templates/RemovedIpNetworks/index.php:57
+#: ./templates/RemovedIpAddresses/index.php:64
+#: ./templates/RemovedIpNetworks/index.php:62
 #: ./templates/ServiceTypes/index.php:72
 #: ./templates/ServiceTypes/view.php:165
 #: ./templates/ServiceTypes/view.php:263
 #: ./templates/Services/index.php:53
-#: ./templates/Services/view.php:152
-#: ./templates/SoldEquipments/index.php:64
+#: ./templates/Services/view.php:157
+#: ./templates/SoldEquipments/index.php:69
 #: ./templates/TaskStates/index.php:41
 #: ./templates/TaskStates/view.php:147
 #: ./templates/TaskTypes/index.php:39
@@ -2094,28 +2094,28 @@ msgstr ""
 #: ./templates/Tasks/index.php:127
 #: ./templates/TaxRates/index.php:45
 #: ./templates/TaxRates/view.php:132
-#: ./templates/element/Contracts/Billings.php:67
-#: ./templates/element/Contracts/BorrowedEquipments.php:42
+#: ./templates/element/Contracts/Billings.php:76
+#: ./templates/element/Contracts/BorrowedEquipments.php:43
 #: ./templates/element/Contracts/ContractVersions.php:36
-#: ./templates/element/Contracts/IpAddresses.php:66
-#: ./templates/element/Contracts/IpNetworks.php:48
-#: ./templates/element/Contracts/RemovedIpAddresses.php:36
-#: ./templates/element/Contracts/RemovedIpNetworks.php:40
-#: ./templates/element/Contracts/SoldEquipments.php:46
-#: ./vendor/cakephp/cakephp/src/View/Helper/PaginatorHelper.php:1162
+#: ./templates/element/Contracts/IpAddresses.php:71
+#: ./templates/element/Contracts/IpNetworks.php:53
+#: ./templates/element/Contracts/RemovedIpAddresses.php:41
+#: ./templates/element/Contracts/RemovedIpNetworks.php:41
+#: ./templates/element/Contracts/SoldEquipments.php:47
+#: ./vendor/cakephp/cakephp/src/View/Helper/PaginatorHelper.php:1178
 msgid "View"
 msgstr ""
 
-#: ./templates/AccessCredentials/index.php:74
+#: ./templates/AccessCredentials/index.php:79
 #: ./templates/Addresses/index.php:93
-#: ./templates/Billings/index.php:81
-#: ./templates/BorrowedEquipments/index.php:73
+#: ./templates/Billings/index.php:86
+#: ./templates/BorrowedEquipments/index.php:78
 #: ./templates/Commissions/index.php:37
 #: ./templates/Commissions/view.php:105
-#: ./templates/Commissions/view.php:207
+#: ./templates/Commissions/view.php:212
 #: ./templates/ContractStates/index.php:52
-#: ./templates/ContractStates/view.php:193
-#: ./templates/ContractVersions/index.php:58
+#: ./templates/ContractStates/view.php:198
+#: ./templates/ContractVersions/index.php:63
 #: ./templates/Contracts/index.php:100
 #: ./templates/Contracts/view.php:556
 #: ./templates/Contracts/view.php:614
@@ -2133,24 +2133,24 @@ msgstr ""
 #: ./templates/DealerCommissions/index.php:59
 #: ./templates/Emails/index.php:52
 #: ./templates/EquipmentTypes/index.php:47
-#: ./templates/EquipmentTypes/view.php:135
-#: ./templates/EquipmentTypes/view.php:190
-#: ./templates/IpAddresses/index.php:55
-#: ./templates/IpNetworks/index.php:60
+#: ./templates/EquipmentTypes/view.php:140
+#: ./templates/EquipmentTypes/view.php:200
+#: ./templates/IpAddresses/index.php:60
+#: ./templates/IpNetworks/index.php:65
 #: ./templates/Labels/index.php:70
 #: ./templates/Labels/view.php:157
 #: ./templates/Logins/index.php:58
 #: ./templates/Phones/index.php:52
 #: ./templates/Queues/index.php:55
 #: ./templates/Queues/view.php:140
-#: ./templates/RemovedIpAddresses/index.php:61
-#: ./templates/RemovedIpNetworks/index.php:59
+#: ./templates/RemovedIpAddresses/index.php:66
+#: ./templates/RemovedIpNetworks/index.php:64
 #: ./templates/ServiceTypes/index.php:74
 #: ./templates/ServiceTypes/view.php:169
-#: ./templates/ServiceTypes/view.php:267
+#: ./templates/ServiceTypes/view.php:272
 #: ./templates/Services/index.php:55
-#: ./templates/Services/view.php:156
-#: ./templates/SoldEquipments/index.php:66
+#: ./templates/Services/view.php:161
+#: ./templates/SoldEquipments/index.php:71
 #: ./templates/TaskStates/index.php:43
 #: ./templates/TaskStates/view.php:151
 #: ./templates/TaskTypes/index.php:41
@@ -2158,24 +2158,24 @@ msgstr ""
 #: ./templates/Tasks/index.php:131
 #: ./templates/TaxRates/index.php:47
 #: ./templates/TaxRates/view.php:136
-#: ./templates/element/Contracts/Billings.php:71
-#: ./templates/element/Contracts/BorrowedEquipments.php:50
+#: ./templates/element/Contracts/Billings.php:80
+#: ./templates/element/Contracts/BorrowedEquipments.php:51
 #: ./templates/element/Contracts/ContractVersions.php:40
-#: ./templates/element/Contracts/IpAddresses.php:70
-#: ./templates/element/Contracts/IpNetworks.php:52
-#: ./templates/element/Contracts/RemovedIpAddresses.php:40
-#: ./templates/element/Contracts/RemovedIpNetworks.php:48
-#: ./templates/element/Contracts/SoldEquipments.php:50
+#: ./templates/element/Contracts/IpAddresses.php:75
+#: ./templates/element/Contracts/IpNetworks.php:57
+#: ./templates/element/Contracts/RemovedIpAddresses.php:45
+#: ./templates/element/Contracts/RemovedIpNetworks.php:49
+#: ./templates/element/Contracts/SoldEquipments.php:51
 msgid "Edit"
 msgstr ""
 
-#: ./templates/AccessCredentials/index.php:91
+#: ./templates/AccessCredentials/index.php:96
 #: ./templates/Addresses/index.php:110
-#: ./templates/Billings/index.php:98
-#: ./templates/BorrowedEquipments/index.php:90
+#: ./templates/Billings/index.php:103
+#: ./templates/BorrowedEquipments/index.php:95
 #: ./templates/Commissions/index.php:54
 #: ./templates/ContractStates/index.php:69
-#: ./templates/ContractVersions/index.php:75
+#: ./templates/ContractVersions/index.php:80
 #: ./templates/Contracts/index.php:117
 #: ./templates/Countries/index.php:54
 #: ./templates/CustomerLabels/index.php:85
@@ -2184,17 +2184,17 @@ msgstr ""
 #: ./templates/DealerCommissions/index.php:76
 #: ./templates/Emails/index.php:69
 #: ./templates/EquipmentTypes/index.php:64
-#: ./templates/IpAddresses/index.php:72
-#: ./templates/IpNetworks/index.php:77
+#: ./templates/IpAddresses/index.php:77
+#: ./templates/IpNetworks/index.php:82
 #: ./templates/Labels/index.php:87
 #: ./templates/Logins/index.php:75
 #: ./templates/Phones/index.php:69
 #: ./templates/Queues/index.php:72
-#: ./templates/RemovedIpAddresses/index.php:78
-#: ./templates/RemovedIpNetworks/index.php:76
+#: ./templates/RemovedIpAddresses/index.php:83
+#: ./templates/RemovedIpNetworks/index.php:81
 #: ./templates/ServiceTypes/index.php:91
 #: ./templates/Services/index.php:72
-#: ./templates/SoldEquipments/index.php:83
+#: ./templates/SoldEquipments/index.php:88
 #: ./templates/TaskStates/index.php:60
 #: ./templates/TaskTypes/index.php:58
 #: ./templates/Tasks/index.php:143
@@ -2202,13 +2202,13 @@ msgstr ""
 msgid "first"
 msgstr ""
 
-#: ./templates/AccessCredentials/index.php:92
+#: ./templates/AccessCredentials/index.php:97
 #: ./templates/Addresses/index.php:111
-#: ./templates/Billings/index.php:99
-#: ./templates/BorrowedEquipments/index.php:91
+#: ./templates/Billings/index.php:104
+#: ./templates/BorrowedEquipments/index.php:96
 #: ./templates/Commissions/index.php:55
 #: ./templates/ContractStates/index.php:70
-#: ./templates/ContractVersions/index.php:76
+#: ./templates/ContractVersions/index.php:81
 #: ./templates/Contracts/index.php:118
 #: ./templates/Countries/index.php:55
 #: ./templates/CustomerLabels/index.php:86
@@ -2217,17 +2217,17 @@ msgstr ""
 #: ./templates/DealerCommissions/index.php:77
 #: ./templates/Emails/index.php:70
 #: ./templates/EquipmentTypes/index.php:65
-#: ./templates/IpAddresses/index.php:73
-#: ./templates/IpNetworks/index.php:78
+#: ./templates/IpAddresses/index.php:78
+#: ./templates/IpNetworks/index.php:83
 #: ./templates/Labels/index.php:88
 #: ./templates/Logins/index.php:76
 #: ./templates/Phones/index.php:70
 #: ./templates/Queues/index.php:73
-#: ./templates/RemovedIpAddresses/index.php:79
-#: ./templates/RemovedIpNetworks/index.php:77
+#: ./templates/RemovedIpAddresses/index.php:84
+#: ./templates/RemovedIpNetworks/index.php:82
 #: ./templates/ServiceTypes/index.php:92
 #: ./templates/Services/index.php:73
-#: ./templates/SoldEquipments/index.php:84
+#: ./templates/SoldEquipments/index.php:89
 #: ./templates/TaskStates/index.php:61
 #: ./templates/TaskTypes/index.php:59
 #: ./templates/Tasks/index.php:144
@@ -2235,13 +2235,13 @@ msgstr ""
 msgid "previous"
 msgstr ""
 
-#: ./templates/AccessCredentials/index.php:94
+#: ./templates/AccessCredentials/index.php:99
 #: ./templates/Addresses/index.php:113
-#: ./templates/Billings/index.php:101
-#: ./templates/BorrowedEquipments/index.php:93
+#: ./templates/Billings/index.php:106
+#: ./templates/BorrowedEquipments/index.php:98
 #: ./templates/Commissions/index.php:57
 #: ./templates/ContractStates/index.php:72
-#: ./templates/ContractVersions/index.php:78
+#: ./templates/ContractVersions/index.php:83
 #: ./templates/Contracts/index.php:120
 #: ./templates/Countries/index.php:57
 #: ./templates/CustomerLabels/index.php:88
@@ -2250,17 +2250,17 @@ msgstr ""
 #: ./templates/DealerCommissions/index.php:79
 #: ./templates/Emails/index.php:72
 #: ./templates/EquipmentTypes/index.php:67
-#: ./templates/IpAddresses/index.php:75
-#: ./templates/IpNetworks/index.php:80
+#: ./templates/IpAddresses/index.php:80
+#: ./templates/IpNetworks/index.php:85
 #: ./templates/Labels/index.php:90
 #: ./templates/Logins/index.php:78
 #: ./templates/Phones/index.php:72
 #: ./templates/Queues/index.php:75
-#: ./templates/RemovedIpAddresses/index.php:81
-#: ./templates/RemovedIpNetworks/index.php:79
+#: ./templates/RemovedIpAddresses/index.php:86
+#: ./templates/RemovedIpNetworks/index.php:84
 #: ./templates/ServiceTypes/index.php:94
 #: ./templates/Services/index.php:75
-#: ./templates/SoldEquipments/index.php:86
+#: ./templates/SoldEquipments/index.php:91
 #: ./templates/TaskStates/index.php:63
 #: ./templates/TaskTypes/index.php:61
 #: ./templates/Tasks/index.php:146
@@ -2268,13 +2268,13 @@ msgstr ""
 msgid "next"
 msgstr ""
 
-#: ./templates/AccessCredentials/index.php:95
+#: ./templates/AccessCredentials/index.php:100
 #: ./templates/Addresses/index.php:114
-#: ./templates/Billings/index.php:102
-#: ./templates/BorrowedEquipments/index.php:94
+#: ./templates/Billings/index.php:107
+#: ./templates/BorrowedEquipments/index.php:99
 #: ./templates/Commissions/index.php:58
 #: ./templates/ContractStates/index.php:73
-#: ./templates/ContractVersions/index.php:79
+#: ./templates/ContractVersions/index.php:84
 #: ./templates/Contracts/index.php:121
 #: ./templates/Countries/index.php:58
 #: ./templates/CustomerLabels/index.php:89
@@ -2283,17 +2283,17 @@ msgstr ""
 #: ./templates/DealerCommissions/index.php:80
 #: ./templates/Emails/index.php:73
 #: ./templates/EquipmentTypes/index.php:68
-#: ./templates/IpAddresses/index.php:76
-#: ./templates/IpNetworks/index.php:81
+#: ./templates/IpAddresses/index.php:81
+#: ./templates/IpNetworks/index.php:86
 #: ./templates/Labels/index.php:91
 #: ./templates/Logins/index.php:79
 #: ./templates/Phones/index.php:73
 #: ./templates/Queues/index.php:76
-#: ./templates/RemovedIpAddresses/index.php:82
-#: ./templates/RemovedIpNetworks/index.php:80
+#: ./templates/RemovedIpAddresses/index.php:87
+#: ./templates/RemovedIpNetworks/index.php:85
 #: ./templates/ServiceTypes/index.php:95
 #: ./templates/Services/index.php:76
-#: ./templates/SoldEquipments/index.php:87
+#: ./templates/SoldEquipments/index.php:92
 #: ./templates/TaskStates/index.php:64
 #: ./templates/TaskTypes/index.php:62
 #: ./templates/Tasks/index.php:147
@@ -2301,13 +2301,13 @@ msgstr ""
 msgid "last"
 msgstr ""
 
-#: ./templates/AccessCredentials/index.php:98
+#: ./templates/AccessCredentials/index.php:103
 #: ./templates/Addresses/index.php:117
-#: ./templates/Billings/index.php:105
-#: ./templates/BorrowedEquipments/index.php:97
+#: ./templates/Billings/index.php:110
+#: ./templates/BorrowedEquipments/index.php:102
 #: ./templates/Commissions/index.php:61
 #: ./templates/ContractStates/index.php:76
-#: ./templates/ContractVersions/index.php:82
+#: ./templates/ContractVersions/index.php:87
 #: ./templates/Contracts/index.php:124
 #: ./templates/Countries/index.php:61
 #: ./templates/CustomerLabels/index.php:92
@@ -2316,17 +2316,17 @@ msgstr ""
 #: ./templates/DealerCommissions/index.php:83
 #: ./templates/Emails/index.php:76
 #: ./templates/EquipmentTypes/index.php:71
-#: ./templates/IpAddresses/index.php:79
-#: ./templates/IpNetworks/index.php:84
+#: ./templates/IpAddresses/index.php:84
+#: ./templates/IpNetworks/index.php:89
 #: ./templates/Labels/index.php:94
 #: ./templates/Logins/index.php:82
 #: ./templates/Phones/index.php:76
 #: ./templates/Queues/index.php:79
-#: ./templates/RemovedIpAddresses/index.php:85
-#: ./templates/RemovedIpNetworks/index.php:83
+#: ./templates/RemovedIpAddresses/index.php:90
+#: ./templates/RemovedIpNetworks/index.php:88
 #: ./templates/ServiceTypes/index.php:98
 #: ./templates/Services/index.php:79
-#: ./templates/SoldEquipments/index.php:90
+#: ./templates/SoldEquipments/index.php:95
 #: ./templates/TaskStates/index.php:67
 #: ./templates/TaskTypes/index.php:65
 #: ./templates/Tasks/index.php:150
@@ -2354,7 +2354,7 @@ msgstr ""
 #: ./templates/Customers/view.php:69
 #: ./templates/Emails/view.php:32
 #: ./templates/EquipmentTypes/view.php:103
-#: ./templates/EquipmentTypes/view.php:161
+#: ./templates/EquipmentTypes/view.php:166
 #: ./templates/IpAddresses/bulk_reassignment.php:70
 #: ./templates/IpAddresses/view.php:32
 #: ./templates/IpNetworks/view.php:40
@@ -2370,7 +2370,7 @@ msgstr ""
 #: ./templates/TaskStates/view.php:102
 #: ./templates/TaskTypes/view.php:98
 #: ./templates/Tasks/view.php:67
-#: ./templates/element/Contracts/Billings.php:14
+#: ./templates/element/Contracts/Billings.php:15
 #: ./templates/email/html/task_notification.php:62
 msgid "Customer"
 msgstr ""
@@ -2385,7 +2385,7 @@ msgstr ""
 #: ./templates/CustomerLabels/view.php:55
 #: ./templates/Customers/view.php:753
 #: ./templates/EquipmentTypes/view.php:105
-#: ./templates/EquipmentTypes/view.php:163
+#: ./templates/EquipmentTypes/view.php:168
 #: ./templates/IpAddresses/bulk_reassignment.php:72
 #: ./templates/IpAddresses/view.php:43
 #: ./templates/IpNetworks/view.php:52
@@ -2396,7 +2396,7 @@ msgstr ""
 #: ./templates/Services/view.php:111
 #: ./templates/SoldEquipments/view.php:55
 #: ./templates/Tasks/view.php:82
-#: ./templates/element/Contracts/Billings.php:18
+#: ./templates/element/Contracts/Billings.php:19
 #: ./templates/element/Contracts/BorrowedEquipments.php:13
 #: ./templates/element/Contracts/IpAddresses.php:15
 #: ./templates/element/Contracts/IpNetworks.php:15
@@ -2407,7 +2407,7 @@ msgstr ""
 msgid "Contract"
 msgstr ""
 
-#: ./templates/AccessCredentials/view.php:59
+#: ./templates/AccessCredentials/view.php:64
 #: ./templates/Commissions/view.php:32
 #: ./templates/ContractStates/view.php:43
 #: ./templates/Countries/view.php:32
@@ -2425,18 +2425,18 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: ./templates/AccessCredentials/view.php:75
+#: ./templates/AccessCredentials/view.php:80
 msgid "Port"
 msgstr ""
 
-#: ./templates/AccessCredentials/view.php:84
+#: ./templates/AccessCredentials/view.php:89
 #: ./templates/Addresses/view.php:149
-#: ./templates/Billings/service_change.php:109
-#: ./templates/Billings/view.php:115
-#: ./templates/BorrowedEquipments/view.php:90
+#: ./templates/Billings/service_change.php:114
+#: ./templates/Billings/view.php:120
+#: ./templates/BorrowedEquipments/view.php:95
 #: ./templates/Commissions/view.php:40
 #: ./templates/ContractStates/view.php:69
-#: ./templates/ContractVersions/view.php:90
+#: ./templates/ContractVersions/view.php:95
 #: ./templates/Contracts/print.php:160
 #: ./templates/Contracts/view.php:269
 #: ./templates/Countries/view.php:40
@@ -2447,17 +2447,17 @@ msgstr ""
 #: ./templates/DealerCommissions/view.php:71
 #: ./templates/Emails/view.php:63
 #: ./templates/EquipmentTypes/view.php:61
-#: ./templates/IpAddresses/view.php:98
-#: ./templates/IpNetworks/view.php:93
+#: ./templates/IpAddresses/view.php:103
+#: ./templates/IpNetworks/view.php:98
 #: ./templates/Labels/view.php:67
 #: ./templates/Logins/view.php:77
 #: ./templates/Phones/view.php:63
 #: ./templates/Queues/view.php:74
-#: ./templates/RemovedIpAddresses/view.php:95
-#: ./templates/RemovedIpNetworks/view.php:98
+#: ./templates/RemovedIpAddresses/view.php:100
+#: ./templates/RemovedIpNetworks/view.php:103
 #: ./templates/ServiceTypes/view.php:103
 #: ./templates/Services/view.php:67
-#: ./templates/SoldEquipments/view.php:85
+#: ./templates/SoldEquipments/view.php:90
 #: ./templates/TaskStates/view.php:52
 #: ./templates/TaskTypes/view.php:48
 #: ./templates/Tasks/view.php:116
@@ -2466,14 +2466,14 @@ msgstr ""
 msgid "Id"
 msgstr ""
 
-#: ./templates/AccessCredentials/view.php:88
+#: ./templates/AccessCredentials/view.php:93
 #: ./templates/Addresses/view.php:153
-#: ./templates/Billings/service_change.php:113
-#: ./templates/Billings/view.php:119
-#: ./templates/BorrowedEquipments/view.php:94
+#: ./templates/Billings/service_change.php:118
+#: ./templates/Billings/view.php:124
+#: ./templates/BorrowedEquipments/view.php:99
 #: ./templates/Commissions/view.php:44
 #: ./templates/ContractStates/view.php:73
-#: ./templates/ContractVersions/view.php:94
+#: ./templates/ContractVersions/view.php:99
 #: ./templates/Contracts/print.php:164
 #: ./templates/Contracts/view.php:273
 #: ./templates/Countries/view.php:44
@@ -2484,18 +2484,18 @@ msgstr ""
 #: ./templates/DealerCommissions/view.php:75
 #: ./templates/Emails/view.php:67
 #: ./templates/EquipmentTypes/view.php:65
-#: ./templates/IpAddresses/view.php:102
-#: ./templates/IpNetworks/view.php:97
+#: ./templates/IpAddresses/view.php:107
+#: ./templates/IpNetworks/view.php:102
 #: ./templates/Labels/view.php:71
 #: ./templates/Labels/view.php:127
 #: ./templates/Logins/view.php:81
 #: ./templates/Phones/view.php:67
 #: ./templates/Queues/view.php:78
-#: ./templates/RemovedIpAddresses/view.php:99
-#: ./templates/RemovedIpNetworks/view.php:102
+#: ./templates/RemovedIpAddresses/view.php:104
+#: ./templates/RemovedIpNetworks/view.php:107
 #: ./templates/ServiceTypes/view.php:107
 #: ./templates/Services/view.php:71
-#: ./templates/SoldEquipments/view.php:89
+#: ./templates/SoldEquipments/view.php:94
 #: ./templates/TaskStates/view.php:56
 #: ./templates/TaskTypes/view.php:52
 #: ./templates/Tasks/view.php:120
@@ -2504,14 +2504,14 @@ msgstr ""
 msgid "Created"
 msgstr ""
 
-#: ./templates/AccessCredentials/view.php:92
+#: ./templates/AccessCredentials/view.php:97
 #: ./templates/Addresses/view.php:157
-#: ./templates/Billings/service_change.php:117
-#: ./templates/Billings/view.php:123
-#: ./templates/BorrowedEquipments/view.php:98
+#: ./templates/Billings/service_change.php:122
+#: ./templates/Billings/view.php:128
+#: ./templates/BorrowedEquipments/view.php:103
 #: ./templates/Commissions/view.php:48
 #: ./templates/ContractStates/view.php:77
-#: ./templates/ContractVersions/view.php:98
+#: ./templates/ContractVersions/view.php:103
 #: ./templates/Contracts/print.php:168
 #: ./templates/Contracts/view.php:277
 #: ./templates/Countries/view.php:48
@@ -2522,17 +2522,17 @@ msgstr ""
 #: ./templates/DealerCommissions/view.php:79
 #: ./templates/Emails/view.php:71
 #: ./templates/EquipmentTypes/view.php:69
-#: ./templates/IpAddresses/view.php:106
-#: ./templates/IpNetworks/view.php:101
+#: ./templates/IpAddresses/view.php:111
+#: ./templates/IpNetworks/view.php:106
 #: ./templates/Labels/view.php:75
 #: ./templates/Logins/view.php:85
 #: ./templates/Phones/view.php:71
 #: ./templates/Queues/view.php:82
-#: ./templates/RemovedIpAddresses/view.php:103
-#: ./templates/RemovedIpNetworks/view.php:106
+#: ./templates/RemovedIpAddresses/view.php:108
+#: ./templates/RemovedIpNetworks/view.php:111
 #: ./templates/ServiceTypes/view.php:111
 #: ./templates/Services/view.php:75
-#: ./templates/SoldEquipments/view.php:93
+#: ./templates/SoldEquipments/view.php:98
 #: ./templates/TaskStates/view.php:60
 #: ./templates/TaskTypes/view.php:56
 #: ./templates/Tasks/view.php:124
@@ -2541,14 +2541,14 @@ msgstr ""
 msgid "Created By"
 msgstr ""
 
-#: ./templates/AccessCredentials/view.php:103
+#: ./templates/AccessCredentials/view.php:108
 #: ./templates/Addresses/view.php:168
-#: ./templates/Billings/service_change.php:128
-#: ./templates/Billings/view.php:134
-#: ./templates/BorrowedEquipments/view.php:109
+#: ./templates/Billings/service_change.php:133
+#: ./templates/Billings/view.php:139
+#: ./templates/BorrowedEquipments/view.php:114
 #: ./templates/Commissions/view.php:59
 #: ./templates/ContractStates/view.php:88
-#: ./templates/ContractVersions/view.php:109
+#: ./templates/ContractVersions/view.php:114
 #: ./templates/Contracts/print.php:179
 #: ./templates/Contracts/view.php:288
 #: ./templates/Countries/view.php:59
@@ -2559,17 +2559,17 @@ msgstr ""
 #: ./templates/DealerCommissions/view.php:90
 #: ./templates/Emails/view.php:82
 #: ./templates/EquipmentTypes/view.php:80
-#: ./templates/IpAddresses/view.php:117
-#: ./templates/IpNetworks/view.php:112
+#: ./templates/IpAddresses/view.php:122
+#: ./templates/IpNetworks/view.php:117
 #: ./templates/Labels/view.php:86
 #: ./templates/Logins/view.php:96
 #: ./templates/Phones/view.php:82
 #: ./templates/Queues/view.php:93
-#: ./templates/RemovedIpAddresses/view.php:114
-#: ./templates/RemovedIpNetworks/view.php:117
+#: ./templates/RemovedIpAddresses/view.php:119
+#: ./templates/RemovedIpNetworks/view.php:122
 #: ./templates/ServiceTypes/view.php:122
 #: ./templates/Services/view.php:86
-#: ./templates/SoldEquipments/view.php:104
+#: ./templates/SoldEquipments/view.php:109
 #: ./templates/TaskStates/view.php:71
 #: ./templates/TaskTypes/view.php:67
 #: ./templates/Tasks/view.php:135
@@ -2578,14 +2578,14 @@ msgstr ""
 msgid "Modified"
 msgstr ""
 
-#: ./templates/AccessCredentials/view.php:107
+#: ./templates/AccessCredentials/view.php:112
 #: ./templates/Addresses/view.php:172
-#: ./templates/Billings/service_change.php:132
-#: ./templates/Billings/view.php:138
-#: ./templates/BorrowedEquipments/view.php:113
+#: ./templates/Billings/service_change.php:137
+#: ./templates/Billings/view.php:143
+#: ./templates/BorrowedEquipments/view.php:118
 #: ./templates/Commissions/view.php:63
 #: ./templates/ContractStates/view.php:92
-#: ./templates/ContractVersions/view.php:113
+#: ./templates/ContractVersions/view.php:118
 #: ./templates/Contracts/print.php:183
 #: ./templates/Contracts/view.php:292
 #: ./templates/Countries/view.php:63
@@ -2596,17 +2596,17 @@ msgstr ""
 #: ./templates/DealerCommissions/view.php:94
 #: ./templates/Emails/view.php:86
 #: ./templates/EquipmentTypes/view.php:84
-#: ./templates/IpAddresses/view.php:121
-#: ./templates/IpNetworks/view.php:116
+#: ./templates/IpAddresses/view.php:126
+#: ./templates/IpNetworks/view.php:121
 #: ./templates/Labels/view.php:90
 #: ./templates/Logins/view.php:100
 #: ./templates/Phones/view.php:86
 #: ./templates/Queues/view.php:97
-#: ./templates/RemovedIpAddresses/view.php:118
-#: ./templates/RemovedIpNetworks/view.php:121
+#: ./templates/RemovedIpAddresses/view.php:123
+#: ./templates/RemovedIpNetworks/view.php:126
 #: ./templates/ServiceTypes/view.php:126
 #: ./templates/Services/view.php:90
-#: ./templates/SoldEquipments/view.php:108
+#: ./templates/SoldEquipments/view.php:113
 #: ./templates/TaskStates/view.php:75
 #: ./templates/TaskTypes/view.php:71
 #: ./templates/Tasks/view.php:139
@@ -2615,12 +2615,12 @@ msgstr ""
 msgid "Modified By"
 msgstr ""
 
-#: ./templates/AccessCredentials/view.php:121
+#: ./templates/AccessCredentials/view.php:126
 #: ./templates/Addresses/view.php:186
-#: ./templates/Billings/service_change.php:146
-#: ./templates/Billings/view.php:152
+#: ./templates/Billings/service_change.php:151
+#: ./templates/Billings/view.php:157
 #: ./templates/ContractStates/view.php:106
-#: ./templates/ContractVersions/view.php:127
+#: ./templates/ContractVersions/view.php:132
 #: ./templates/Contracts/view.php:316
 #: ./templates/CustomerLabels/view.php:115
 #: ./templates/Customers/view.php:272
@@ -2629,14 +2629,14 @@ msgstr ""
 #: ./templates/Customers/view.php:460
 #: ./templates/Customers/view.php:542
 #: ./templates/Emails/view.php:100
-#: ./templates/IpAddresses/view.php:135
-#: ./templates/IpNetworks/view.php:130
+#: ./templates/IpAddresses/view.php:140
+#: ./templates/IpNetworks/view.php:135
 #: ./templates/Labels/view.php:126
 #: ./templates/Phones/view.php:100
-#: ./templates/RemovedIpAddresses/view.php:147
-#: ./templates/RemovedIpNetworks/view.php:150
+#: ./templates/RemovedIpAddresses/view.php:152
+#: ./templates/RemovedIpNetworks/view.php:155
 #: ./templates/Services/view.php:122
-#: ./templates/element/Contracts/Billings.php:31
+#: ./templates/element/Contracts/Billings.php:32
 #: ./templates/element/Contracts/ContractVersions.php:17
 #: ./templates/element/Contracts/IpAddresses.php:19
 #: ./templates/element/Contracts/IpNetworks.php:19
@@ -2841,10 +2841,10 @@ msgstr ""
 #: ./templates/Contracts/print.php:87
 #: ./templates/Contracts/view.php:196
 #: ./templates/Customers/view.php:537
-#: ./templates/IpAddresses/view.php:78
-#: ./templates/IpNetworks/view.php:73
-#: ./templates/RemovedIpAddresses/view.php:75
-#: ./templates/RemovedIpNetworks/view.php:78
+#: ./templates/IpAddresses/view.php:83
+#: ./templates/IpNetworks/view.php:78
+#: ./templates/RemovedIpAddresses/view.php:80
+#: ./templates/RemovedIpNetworks/view.php:83
 #: ./templates/ServiceTypes/view.php:197
 #: ./templates/TaskStates/view.php:104
 #: ./templates/TaskTypes/view.php:100
@@ -2854,10 +2854,10 @@ msgid "Access Point"
 msgstr ""
 
 #: ./templates/Api/NetworkManagementSystemBridge/ip_address_ranges.php:17
-#: ./templates/IpAddresses/view.php:84
-#: ./templates/IpNetworks/view.php:79
-#: ./templates/RemovedIpAddresses/view.php:81
-#: ./templates/RemovedIpNetworks/view.php:84
+#: ./templates/IpAddresses/view.php:89
+#: ./templates/IpNetworks/view.php:84
+#: ./templates/RemovedIpAddresses/view.php:86
+#: ./templates/RemovedIpNetworks/view.php:89
 msgid "Range"
 msgstr ""
 
@@ -2906,10 +2906,10 @@ msgstr ""
 
 #: ./templates/Billings/bulk_service_change.php:34
 #: ./templates/Billings/bulk_service_change.php:98
-#: ./templates/Billings/service_change.php:51
-#: ./templates/Billings/service_change.php:159
-#: ./templates/Billings/view.php:57
-#: ./templates/element/Contracts/Billings.php:20
+#: ./templates/Billings/service_change.php:56
+#: ./templates/Billings/service_change.php:164
+#: ./templates/Billings/view.php:62
+#: ./templates/element/Contracts/Billings.php:21
 msgid "Service"
 msgstr ""
 
@@ -2927,40 +2927,40 @@ msgstr ""
 
 #: ./templates/Billings/bulk_service_change.php:68
 #: ./templates/Billings/bulk_service_change.php:111
-#: ./templates/Billings/service_change.php:90
-#: ./templates/Billings/service_change.php:173
-#: ./templates/Billings/view.php:96
-#: ./templates/Billings/view.php:174
-#: ./templates/Billings/view.php:211
+#: ./templates/Billings/service_change.php:95
+#: ./templates/Billings/service_change.php:178
+#: ./templates/Billings/view.php:101
+#: ./templates/Billings/view.php:179
+#: ./templates/Billings/view.php:216
 #: ./templates/EquipmentTypes/view.php:47
 #: ./templates/Overviews/overview_of_dealer_commissions.php:60
 #: ./templates/Queues/view.php:117
 #: ./templates/ServiceTypes/view.php:146
 #: ./templates/Services/view.php:54
 #: ./templates/Services/view.php:114
-#: ./templates/element/Contracts/Billings.php:23
+#: ./templates/element/Contracts/Billings.php:24
 msgid "Price"
 msgstr ""
 
 #: ./templates/Billings/bulk_service_change.php:73
 #: ./templates/Billings/bulk_service_change.php:115
-#: ./templates/Billings/service_change.php:95
-#: ./templates/Billings/service_change.php:177
-#: ./templates/Billings/view.php:101
+#: ./templates/Billings/service_change.php:100
+#: ./templates/Billings/service_change.php:182
+#: ./templates/Billings/view.php:106
 #: ./templates/Overviews/overview_of_dealer_commissions.php:61
 #: ./templates/Services/view.php:115
-#: ./templates/element/Contracts/Billings.php:24
+#: ./templates/element/Contracts/Billings.php:25
 msgid "Fixed Discount"
 msgstr ""
 
 #: ./templates/Billings/bulk_service_change.php:78
 #: ./templates/Billings/bulk_service_change.php:119
-#: ./templates/Billings/service_change.php:99
-#: ./templates/Billings/service_change.php:181
-#: ./templates/Billings/view.php:105
+#: ./templates/Billings/service_change.php:104
+#: ./templates/Billings/service_change.php:186
+#: ./templates/Billings/view.php:110
 #: ./templates/Overviews/overview_of_dealer_commissions.php:62
 #: ./templates/Services/view.php:116
-#: ./templates/element/Contracts/Billings.php:25
+#: ./templates/element/Contracts/Billings.php:26
 msgid "Percentage Discount"
 msgstr ""
 
@@ -2969,7 +2969,7 @@ msgid "Empty field means only unset values"
 msgstr ""
 
 #: ./templates/Billings/bulk_service_change.php:95
-#: ./templates/Billings/service_change.php:156
+#: ./templates/Billings/service_change.php:161
 #: ./templates/Services/index.php:20
 #: ./templates/Services/view.php:26
 msgid "New Service"
@@ -2984,6 +2984,7 @@ msgstr ""
 #: ./templates/Contracts/view.php:79
 #: ./templates/Contracts/view.php:355
 #: ./templates/Customers/view.php:89
+#: ./templates/Overviews/overview_of_active_services.php:67
 msgid "Billings"
 msgstr ""
 
@@ -3011,8 +3012,8 @@ msgstr ""
 msgid "Delete Billing"
 msgstr ""
 
-#: ./templates/Billings/service_change.php:58
-#: ./templates/Billings/view.php:64
+#: ./templates/Billings/service_change.php:63
+#: ./templates/Billings/view.php:69
 #: ./templates/Contracts/view.php:536
 #: ./templates/Contracts/view.php:582
 #: ./templates/Customers/view.php:752
@@ -3020,60 +3021,60 @@ msgstr ""
 #: ./templates/TaskStates/view.php:99
 #: ./templates/TaskTypes/view.php:95
 #: ./templates/Tasks/view.php:163
-#: ./templates/element/Contracts/Billings.php:21
+#: ./templates/element/Contracts/Billings.php:22
 #: ./templates/email/html/task_notification.php:145
 msgid "Text"
 msgstr ""
 
-#: ./templates/Billings/service_change.php:64
-#: ./templates/Billings/view.php:70
+#: ./templates/Billings/service_change.php:69
+#: ./templates/Billings/view.php:75
 #: ./templates/Overviews/overview_of_dealer_commissions.php:64
 #: ./templates/Services/view.php:118
-#: ./templates/element/Contracts/Billings.php:27
+#: ./templates/element/Contracts/Billings.php:28
 msgid "Billing From"
 msgstr ""
 
-#: ./templates/Billings/service_change.php:68
-#: ./templates/Billings/view.php:74
+#: ./templates/Billings/service_change.php:73
+#: ./templates/Billings/view.php:79
 #: ./templates/Overviews/overview_of_dealer_commissions.php:65
 #: ./templates/Services/view.php:119
-#: ./templates/element/Contracts/Billings.php:28
+#: ./templates/element/Contracts/Billings.php:29
 msgid "Billing Until"
 msgstr ""
 
-#: ./templates/Billings/service_change.php:74
-#: ./templates/Billings/view.php:80
+#: ./templates/Billings/service_change.php:79
+#: ./templates/Billings/view.php:85
 #: ./templates/Services/view.php:120
-#: ./templates/element/Contracts/Billings.php:29
+#: ./templates/element/Contracts/Billings.php:30
 msgid "Active"
 msgstr ""
 
-#: ./templates/Billings/service_change.php:78
-#: ./templates/Billings/view.php:84
+#: ./templates/Billings/service_change.php:83
+#: ./templates/Billings/view.php:89
 #: ./templates/ServiceTypes/view.php:59
 #: ./templates/Services/view.php:121
-#: ./templates/element/Contracts/Billings.php:30
+#: ./templates/element/Contracts/Billings.php:31
 msgid "Separate Invoice"
 msgstr ""
 
-#: ./templates/Billings/service_change.php:86
-#: ./templates/Billings/view.php:92
+#: ./templates/Billings/service_change.php:91
+#: ./templates/Billings/view.php:97
 #: ./templates/Overviews/overview_of_dealer_commissions.php:59
 #: ./templates/Services/view.php:113
-#: ./templates/element/Contracts/Billings.php:22
+#: ./templates/element/Contracts/Billings.php:23
 msgid "Quantity"
 msgstr ""
 
-#: ./templates/Billings/service_change.php:103
-#: ./templates/Billings/view.php:109
+#: ./templates/Billings/service_change.php:108
+#: ./templates/Billings/view.php:114
 #: ./templates/Overviews/overview_of_dealer_commissions.php:49
 #: ./templates/Overviews/overview_of_dealer_commissions.php:63
 #: ./templates/Services/view.php:117
-#: ./templates/element/Contracts/Billings.php:26
+#: ./templates/element/Contracts/Billings.php:27
 msgid "Total Price"
 msgstr ""
 
-#: ./templates/Billings/service_change.php:188
+#: ./templates/Billings/service_change.php:193
 msgid "Do you really want to change the original service to the new service for the billing listed above from the date set?"
 msgstr ""
 
@@ -3081,26 +3082,26 @@ msgstr ""
 msgid "Service Change"
 msgstr ""
 
-#: ./templates/Billings/view.php:167
+#: ./templates/Billings/view.php:172
 msgid "Billing Preview - Start"
 msgstr ""
 
-#: ./templates/Billings/view.php:171
-#: ./templates/Billings/view.php:208
+#: ./templates/Billings/view.php:176
+#: ./templates/Billings/view.php:213
 msgid "Billing Date"
 msgstr ""
 
-#: ./templates/Billings/view.php:172
-#: ./templates/Billings/view.php:209
+#: ./templates/Billings/view.php:177
+#: ./templates/Billings/view.php:214
 msgid "Period From"
 msgstr ""
 
-#: ./templates/Billings/view.php:173
-#: ./templates/Billings/view.php:210
+#: ./templates/Billings/view.php:178
+#: ./templates/Billings/view.php:215
 msgid "Period Until"
 msgstr ""
 
-#: ./templates/Billings/view.php:204
+#: ./templates/Billings/view.php:209
 msgid "Billing Preview - End"
 msgstr ""
 
@@ -3136,29 +3137,29 @@ msgstr ""
 msgid "Delete Borrowed Equipment"
 msgstr ""
 
-#: ./templates/BorrowedEquipments/view.php:63
-#: ./templates/SoldEquipments/view.php:62
+#: ./templates/BorrowedEquipments/view.php:68
+#: ./templates/SoldEquipments/view.php:67
 #: ./templates/element/Contracts/BorrowedEquipments.php:15
 #: ./templates/element/Contracts/SoldEquipments.php:15
 msgid "Equipment Type"
 msgstr ""
 
-#: ./templates/BorrowedEquipments/view.php:74
+#: ./templates/BorrowedEquipments/view.php:79
 #: ./templates/EquipmentTypes/view.php:106
-#: ./templates/EquipmentTypes/view.php:164
-#: ./templates/SoldEquipments/view.php:73
+#: ./templates/EquipmentTypes/view.php:169
+#: ./templates/SoldEquipments/view.php:78
 #: ./templates/element/Contracts/BorrowedEquipments.php:16
 #: ./templates/element/Contracts/SoldEquipments.php:16
 msgid "Serial Number"
 msgstr ""
 
-#: ./templates/BorrowedEquipments/view.php:78
+#: ./templates/BorrowedEquipments/view.php:83
 #: ./templates/EquipmentTypes/view.php:107
 #: ./templates/element/Contracts/BorrowedEquipments.php:17
 msgid "Borrowed From"
 msgstr ""
 
-#: ./templates/BorrowedEquipments/view.php:82
+#: ./templates/BorrowedEquipments/view.php:87
 #: ./templates/EquipmentTypes/view.php:108
 #: ./templates/element/Contracts/BorrowedEquipments.php:18
 msgid "Borrowed Until"
@@ -3243,7 +3244,7 @@ msgstr ""
 #: ./templates/Contracts/print.php:59
 #: ./templates/Contracts/view.php:146
 #: ./templates/Customers/view.php:534
-#: ./templates/Overviews/overview_of_active_services.php:58
+#: ./templates/Overviews/overview_of_active_services.php:64
 #: ./templates/Queues/view.php:118
 #: ./templates/Services/view.php:40
 msgid "Service Type"
@@ -3407,27 +3408,27 @@ msgstr ""
 msgid "Validity"
 msgstr ""
 
-#: ./templates/ContractVersions/view.php:66
+#: ./templates/ContractVersions/view.php:71
 #: ./templates/element/Contracts/ContractVersions.php:12
 msgid "Valid From"
 msgstr ""
 
-#: ./templates/ContractVersions/view.php:70
+#: ./templates/ContractVersions/view.php:75
 #: ./templates/element/Contracts/ContractVersions.php:13
 msgid "Valid Until"
 msgstr ""
 
-#: ./templates/ContractVersions/view.php:74
+#: ./templates/ContractVersions/view.php:79
 #: ./templates/element/Contracts/ContractVersions.php:14
 msgid "Obligation Until"
 msgstr ""
 
-#: ./templates/ContractVersions/view.php:78
+#: ./templates/ContractVersions/view.php:83
 #: ./templates/element/Contracts/ContractVersions.php:15
 msgid "Conclusion Date"
 msgstr ""
 
-#: ./templates/ContractVersions/view.php:82
+#: ./templates/ContractVersions/view.php:87
 #: ./templates/element/Contracts/ContractVersions.php:16
 msgid "Number Of Amendments"
 msgstr ""
@@ -4099,7 +4100,7 @@ msgid "Related Borrowed Equipments"
 msgstr ""
 
 #: ./templates/Customers/view.php:629
-#: ./templates/EquipmentTypes/view.php:156
+#: ./templates/EquipmentTypes/view.php:161
 msgid "Related Sold Equipments"
 msgstr ""
 
@@ -4201,8 +4202,8 @@ msgstr ""
 msgid "Price With Obligation"
 msgstr ""
 
-#: ./templates/EquipmentTypes/view.php:165
-#: ./templates/SoldEquipments/view.php:77
+#: ./templates/EquipmentTypes/view.php:170
+#: ./templates/SoldEquipments/view.php:82
 #: ./templates/element/Contracts/SoldEquipments.php:17
 msgid "Date Of Sale"
 msgstr ""
@@ -4226,10 +4227,10 @@ msgstr ""
 
 #: ./templates/IpAddresses/add_from_range.php:62
 #: ./templates/IpAddresses/bulk_reassignment.php:47
-#: ./templates/IpAddresses/view.php:73
-#: ./templates/IpNetworks/view.php:68
-#: ./templates/RemovedIpAddresses/view.php:70
-#: ./templates/RemovedIpNetworks/view.php:73
+#: ./templates/IpAddresses/view.php:78
+#: ./templates/IpNetworks/view.php:73
+#: ./templates/RemovedIpAddresses/view.php:75
+#: ./templates/RemovedIpNetworks/view.php:78
 #: ./templates/element/Contracts/IpAddresses.php:22
 #: ./templates/element/Contracts/IpNetworks.php:20
 msgid "IP Address Range"
@@ -4245,10 +4246,10 @@ msgid "Reassigned IP Address"
 msgstr ""
 
 #: ./templates/IpAddresses/bulk_reassignment.php:75
-#: ./templates/IpAddresses/view.php:54
-#: ./templates/IpNetworks/view.php:64
-#: ./templates/RemovedIpAddresses/view.php:66
-#: ./templates/RemovedIpNetworks/view.php:69
+#: ./templates/IpAddresses/view.php:59
+#: ./templates/IpNetworks/view.php:69
+#: ./templates/RemovedIpAddresses/view.php:71
+#: ./templates/RemovedIpNetworks/view.php:74
 #: ./templates/element/Contracts/IpAddresses.php:18
 #: ./templates/element/Contracts/IpNetworks.php:18
 #: ./templates/element/Contracts/RemovedIpAddresses.php:16
@@ -4269,7 +4270,7 @@ msgstr ""
 msgid "Delete IP Address"
 msgstr ""
 
-#: ./templates/IpAddresses/view.php:58
+#: ./templates/IpAddresses/view.php:63
 #: ./templates/element/Contracts/IpAddresses.php:21
 msgid "Device"
 msgstr ""
@@ -4394,7 +4395,7 @@ msgid "Service Related"
 msgstr ""
 
 #: ./templates/Overviews/index.php:13
-#: ./templates/Overviews/overview_of_active_services.php:17
+#: ./templates/Overviews/overview_of_active_services.php:18
 msgid "Overview of Active Services"
 msgstr ""
 
@@ -4455,64 +4456,72 @@ msgstr ""
 msgid "List Removed IP Networks"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:12
+#: ./templates/Overviews/overview_of_active_services.php:13
 #: ./templates/Overviews/overview_of_customer_connection_points.php:12
 #: ./templates/Overviews/overview_of_customer_connection_speeds.php:12
 #: ./templates/Overviews/overview_of_dealer_commissions.php:12
 msgid "List Overviews"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:25
+#: ./templates/Overviews/overview_of_active_services.php:26
 #: ./templates/Overviews/overview_of_customer_connection_points.php:36
 #: ./templates/Overviews/overview_of_customer_connection_speeds.php:25
 #: ./templates/Overviews/overview_of_dealer_commissions.php:25
 msgid "Month To Display"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:26
+#: ./templates/Overviews/overview_of_active_services.php:27
 #: ./templates/Overviews/overview_of_customer_connection_points.php:37
 #: ./templates/Overviews/overview_of_customer_connection_speeds.php:26
 #: ./templates/Overviews/overview_of_dealer_commissions.php:26
 msgid "YYYY-MM"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:59
+#: ./templates/Overviews/overview_of_active_services.php:32
+msgid "Show Billings"
+msgstr ""
+
+#: ./templates/Overviews/overview_of_active_services.php:65
 #: ./templates/ServiceTypes/view.php:147
 #: ./templates/Services/view.php:47
 msgid "Queue"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:60
+#: ./templates/Overviews/overview_of_active_services.php:69
 msgid "Number of Uses"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:61
+#: ./templates/Overviews/overview_of_active_services.php:70
 msgid "Number of Uses (nonbusiness)"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:62
+#: ./templates/Overviews/overview_of_active_services.php:71
 msgid "Sum"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:63
+#: ./templates/Overviews/overview_of_active_services.php:72
 msgid "Fixed Discount Sum"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:64
+#: ./templates/Overviews/overview_of_active_services.php:73
 msgid "Percentage Discount Sum"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:65
-#: ./templates/Overviews/overview_of_active_services.php:120
+#: ./templates/Overviews/overview_of_active_services.php:74
+#: ./templates/Overviews/overview_of_active_services.php:138
 msgid "Total Sum"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:66
+#: ./templates/Overviews/overview_of_active_services.php:75
 msgid "Total Sum (nonbusiness)"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:67
+#: ./templates/Overviews/overview_of_active_services.php:76
 msgid "Total Sum (unbilled)"
+msgstr ""
+
+#: ./templates/Overviews/overview_of_active_services.php:137
+msgid "Total Number of Uses"
 msgstr ""
 
 #: ./templates/Overviews/overview_of_customer_connection_points.php:19
@@ -4707,15 +4716,15 @@ msgstr ""
 msgid "Delete Removed IP Address"
 msgstr ""
 
-#: ./templates/RemovedIpAddresses/view.php:129
-#: ./templates/RemovedIpNetworks/view.php:132
+#: ./templates/RemovedIpAddresses/view.php:134
+#: ./templates/RemovedIpNetworks/view.php:137
 #: ./templates/element/Contracts/RemovedIpAddresses.php:18
 #: ./templates/element/Contracts/RemovedIpNetworks.php:18
 msgid "Removed"
 msgstr ""
 
-#: ./templates/RemovedIpAddresses/view.php:133
-#: ./templates/RemovedIpNetworks/view.php:136
+#: ./templates/RemovedIpAddresses/view.php:138
+#: ./templates/RemovedIpNetworks/view.php:141
 msgid "Removed By"
 msgstr ""
 
@@ -4842,7 +4851,7 @@ msgstr ""
 msgid "Delete Service"
 msgstr ""
 
-#: ./templates/Services/view.php:171
+#: ./templates/Services/view.php:176
 msgid "Total sum of active"
 msgstr ""
 
@@ -5135,9 +5144,9 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: ./templates/element/Contracts/IpAddresses.php:51
-#: ./templates/element/Contracts/IpAddresses.php:62
-#: ./templates/element/Contracts/IpNetworks.php:44
+#: ./templates/element/Contracts/IpAddresses.php:56
+#: ./templates/element/Contracts/IpAddresses.php:67
+#: ./templates/element/Contracts/IpNetworks.php:49
 msgid "Loading..."
 msgstr ""
 

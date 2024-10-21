@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2024-09-22 11:08+0200\n"
-"PO-Revision-Date: 2024-09-22 11:15+0200\n"
+"POT-Creation-Date: 2024-10-21 17:23+0200\n"
+"PO-Revision-Date: 2024-10-21 17:25+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -535,7 +535,7 @@ msgstr "Odstranit účet RADIUS"
 #: plugins/Radius/templates/Radusergroup/view.php:20
 #: plugins/Radius/templates/Radusergroup/view.php:91
 #: plugins/Radius/templates/Radusergroup/view.php:135
-#: plugins/Radius/templates/cell/Accounts/display.php:105
+#: plugins/Radius/templates/cell/Accounts/display.php:111
 msgid "Are you sure you want to delete # {0}?"
 msgstr "Opravdu chcete odstranit # {0}?"
 
@@ -585,19 +585,19 @@ msgstr "Vytvořeno"
 #: plugins/Radius/templates/Accounts/index.php:71
 #: plugins/Radius/templates/Accounts/monitoring.php:117
 #: plugins/Radius/templates/Accounts/view.php:98
-#: plugins/Radius/templates/cell/Accounts/display.php:41
+#: plugins/Radius/templates/cell/Accounts/display.php:47
 msgid "Yes"
 msgstr "Ano"
 
 #: plugins/Radius/templates/Accounts/index.php:71
 #: plugins/Radius/templates/Accounts/monitoring.php:117
 #: plugins/Radius/templates/Accounts/view.php:98
-#: plugins/Radius/templates/cell/Accounts/display.php:41
+#: plugins/Radius/templates/cell/Accounts/display.php:47
 msgid "No"
 msgstr "Ne"
 
 #: plugins/Radius/templates/Accounts/index.php:77
-#: plugins/Radius/templates/cell/Accounts/display.php:109
+#: plugins/Radius/templates/cell/Accounts/display.php:115
 msgid "Monitoring"
 msgstr "Monitorování"
 
@@ -619,7 +619,7 @@ msgstr "Monitorování"
 #: plugins/Radius/templates/Radusergroup/index.php:31
 #: plugins/Radius/templates/Radusergroup/view.php:80
 #: plugins/Radius/templates/Radusergroup/view.php:124
-#: plugins/Radius/templates/cell/Accounts/display.php:79
+#: plugins/Radius/templates/cell/Accounts/display.php:85
 msgid "View"
 msgstr "Zobrazit"
 
@@ -641,7 +641,7 @@ msgstr "Zobrazit"
 #: plugins/Radius/templates/Radusergroup/index.php:33
 #: plugins/Radius/templates/Radusergroup/view.php:84
 #: plugins/Radius/templates/Radusergroup/view.php:128
-#: plugins/Radius/templates/cell/Accounts/display.php:88
+#: plugins/Radius/templates/cell/Accounts/display.php:94
 msgid "Edit"
 msgstr "Upravit"
 
@@ -663,7 +663,7 @@ msgstr "Upravit"
 #: plugins/Radius/templates/Radusergroup/index.php:38
 #: plugins/Radius/templates/Radusergroup/view.php:89
 #: plugins/Radius/templates/Radusergroup/view.php:133
-#: plugins/Radius/templates/cell/Accounts/display.php:98
+#: plugins/Radius/templates/cell/Accounts/display.php:104
 msgid "Delete"
 msgstr "Odstranit"
 
@@ -762,7 +762,7 @@ msgid "RADIUS Disconnect Request"
 msgstr "Požadavek na odpojení RADIUS"
 
 #: plugins/Radius/templates/Accounts/monitoring.php:66
-#: plugins/Radius/templates/cell/Accounts/display.php:138
+#: plugins/Radius/templates/cell/Accounts/display.php:144
 msgid "Are you sure you want to disconnect {0}?"
 msgstr "Opravdu chcete odpojit {0}?"
 
@@ -908,7 +908,7 @@ msgid "Downloaded"
 msgstr "Staženo"
 
 #: plugins/Radius/templates/Accounts/monitoring.php:283
-#: plugins/Radius/templates/cell/Accounts/display.php:74
+#: plugins/Radius/templates/cell/Accounts/display.php:80
 msgid "Loading..."
 msgstr "Načítání…"
 
@@ -979,7 +979,7 @@ msgid "RADIUS Account Monitoring"
 msgstr "Monitorování účtu RADIUS"
 
 #: plugins/Radius/templates/Accounts/view.php:47
-#: plugins/Radius/templates/cell/Accounts/display.php:126
+#: plugins/Radius/templates/cell/Accounts/display.php:132
 msgid "Are you sure you want to update related records?"
 msgstr "Opravdu chcete aktualizovat související záznamy?"
 
@@ -1371,11 +1371,11 @@ msgstr "Související se systémem RADIUS"
 msgid "IP Addresses"
 msgstr "IP adresy"
 
-#: plugins/Radius/templates/cell/Accounts/display.php:118
+#: plugins/Radius/templates/cell/Accounts/display.php:124
 msgid "Update"
 msgstr "Aktualizovat"
 
-#: plugins/Radius/templates/cell/Accounts/display.php:130
+#: plugins/Radius/templates/cell/Accounts/display.php:136
 msgid "Disconnect"
 msgstr "Odpojit"
 
