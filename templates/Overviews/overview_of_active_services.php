@@ -3,6 +3,7 @@
  * @var \App\View\AppView $this
  * @var \Cake\Collection\CollectionInterface $services
  * @var \Cake\I18n\Date $month_to_display
+ * @var bool $show_billings
  */
 ?>
 <div class="row">
@@ -25,6 +26,11 @@
                         'label' => __('Month To Display'),
                         'placeholder' => __('YYYY-MM'),
                         'type' => 'month',
+                        'onchange' => 'this.form.submit();',
+                    ]) ?>
+                    <?= $this->Form->control('show_billings', [
+                        'label' => __('Show Billings'),
+                        'type' => 'checkbox',
                         'onchange' => 'this.form.submit();',
                     ]) ?>
                 </div>
@@ -57,6 +63,9 @@
                             <th><?= $this->Paginator->sort('price') ?></th>
                             <th><?= $this->Paginator->sort('ServiceTypes.name', __('Service Type')) ?></th>
                             <th><?= $this->Paginator->sort('Queues.name', __('Queue')) ?></th>
+                            <?php if ($show_billings) : ?>
+                            <th><?= __('Billings') ?></th>
+                            <?php endif; ?>
                             <th><?= __('Number of Uses') ?></th>
                             <th><?= __('Number of Uses (nonbusiness)') ?></th>
                             <th><?= __('Sum') ?></th>
@@ -88,6 +97,14 @@
                                 'action' => 'view',
                                 $service->queue->id,
                             ]) : '' ?></td>
+                            <?php if ($show_billings) : ?>
+                            <td><?= $this->element('Contracts/Billings', [
+                                'billings' => $service['billings'],
+                                'customer_column' => true,
+                                'contract_column' => true,
+                                'disable_actions' => true,
+                            ]) ?></td>
+                            <?php endif; ?>
                             <td><?= $service->number_of_uses === null ?
                                 '' : $this->Number->format($service->number_of_uses) ?></td>
                             <td><?= $service->number_of_uses_nonbusiness === null ?

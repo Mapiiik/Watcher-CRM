@@ -43,6 +43,8 @@ class OverviewsController extends AppController
         $cto_category = $this->getRequest()->getQuery('cto_category');
         $access_point_id = $this->getRequest()->getQuery('access_point_id');
 
+        $this->set('show_billings', $this->getRequest()->getQuery('show_billings') == '1');
+
         $servicesQuery = $this->fetchTable('Services')
             ->find()
             ->contain('Billings', function (SelectQuery $q) use ($month_to_display, $access_point_id) {

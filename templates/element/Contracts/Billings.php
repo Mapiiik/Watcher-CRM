@@ -4,6 +4,7 @@
  * @var iterable<\App\Model\Entity\Billing> $billings
  * @var bool $customer_column
  * @var bool $contract_column
+ * @var bool $disable_actions
  */
 ?>
 <?php if (!empty($billings)) : ?>
@@ -29,7 +30,9 @@
             <th><?= __('Active') ?></th>
             <th><?= __('Separate Invoice') ?></th>
             <th><?= __('Note') ?></th>
+            <?php if (empty($disable_actions)) : ?>
             <th class="actions"><?= __('Actions') ?></th>
+            <?php endif; ?>
         </tr>
         <?php foreach ($billings as $billing) : ?>
         <tr style="<?= $billing->style ?>">
@@ -67,6 +70,7 @@
             <td><?= $billing->active ? __('Yes') : __('No'); ?></td>
             <td><?= $billing->separate_invoice ? __('Yes') : __('No'); ?></td>
             <td><?= h($billing->note) ?></td>
+            <?php if (empty($disable_actions)) : ?>
             <td class="actions">
                 <?= $this->AuthLink->link(
                     __('View'),
@@ -83,6 +87,7 @@
                     ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id)]
                 ) ?>
             </td>
+            <?php endif; ?>
         </tr>
         <?php endforeach; ?>
     </table>
