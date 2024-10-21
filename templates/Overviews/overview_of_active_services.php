@@ -134,6 +134,7 @@
                 </table>
             </div>
             <div>
+                <?= __('Total Number of Uses') . ': ' . $this->Number->format($services->sumOf('number_of_uses')) ?><br>
                 <?= __('Total Sum') . ': ' . $this->Number->currency($services->sumOf('total_sum')) ?><br>
             </div>
         </div>
