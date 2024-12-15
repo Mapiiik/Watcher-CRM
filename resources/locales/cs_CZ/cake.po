@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CakePHP 4.2.4\n"
-"POT-Creation-Date: 2024-10-21 17:22+0200\n"
-"PO-Revision-Date: 2024-10-21 17:25+0200\n"
+"POT-Creation-Date: 2024-12-15 23:30+0100\n"
+"PO-Revision-Date: 2024-12-15 23:32+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -28,7 +28,7 @@ msgstr "Požadovaná adresa {0} nebyla na tomto serveru nalezena."
 msgid "An Internal Error Has Occurred."
 msgstr "Došlo k vnitřní chybě."
 
-#: vendor/cakephp/cakephp/src/Command/PluginListCommand.php:57
+#: vendor/cakephp/cakephp/src/Command/PluginListCommand.php:65
 msgid "No plugins have been found."
 msgstr "Nebyly nalezeny žádné pluginy."
 
@@ -56,11 +56,11 @@ msgstr ""
 msgid "Missing or incorrect CSRF session key"
 msgstr "Chybějící nebo nesprávný klíč relace CSRF"
 
-#: vendor/cakephp/cakephp/src/Http/Response.php:1429
+#: vendor/cakephp/cakephp/src/Http/Response.php:1431
 msgid "The requested file contains `..` and will not be read."
 msgstr "Požadovaný soubor obsahuje '.. ' a nebude načten."
 
-#: vendor/cakephp/cakephp/src/Http/Response.php:1437
+#: vendor/cakephp/cakephp/src/Http/Response.php:1439
 msgid "The requested file was not found"
 msgstr "Požadovaný soubor nebyl nalezen"
 
@@ -525,15 +525,15 @@ msgstr "Toto pole je povinné"
 msgid "The provided value is invalid"
 msgstr "Zadaná hodnota je neplatná"
 
-#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:991
+#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1015
 msgid "Edit {0}"
 msgstr "Upravit {0}"
 
-#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:993
+#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1017
 msgid "New {0}"
 msgstr "Nový {0}"
 
-#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1964
+#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:2011
 msgid "Submit"
 msgstr "Potvrdit"
 

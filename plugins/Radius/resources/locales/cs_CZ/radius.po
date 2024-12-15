@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2024-10-21 17:23+0200\n"
-"PO-Revision-Date: 2024-10-21 17:25+0200\n"
+"POT-Creation-Date: 2024-12-15 23:29+0100\n"
+"PO-Revision-Date: 2024-12-15 23:31+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -140,7 +140,7 @@ msgid "Invalid RADIUS session for {0}."
 msgstr "Neplatná relace RADIUS pro {0}."
 
 #: plugins/Radius/src/Controller/AccountsController.php:452
-#: plugins/Radius/src/Updater/AccountsUpdater.php:197
+#: plugins/Radius/src/Updater/AccountsUpdater.php:193
 msgid "No active RADIUS session for {0} found."
 msgstr "Nebyla nalezena žádná aktivní relace RADIUS pro {0}."
 
@@ -292,23 +292,23 @@ msgstr "Skupinu uživatelů RADIUS nelze odstranit. Zkuste to prosím znovu."
 msgid "PPPoE"
 msgstr "PPPoE"
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:93
+#: plugins/Radius/src/Updater/AccountsUpdater.php:89
 msgid "The RADIUS account has been updated."
 msgstr "Účet RADIUS byl aktualizován."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:97
+#: plugins/Radius/src/Updater/AccountsUpdater.php:93
 msgid "The RADIUS account could not be updated. Please, try again."
 msgstr "Účet RADIUS nelze aktualizovat. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:133
+#: plugins/Radius/src/Updater/AccountsUpdater.php:129
 msgid "Nothing has been selected for update."
 msgstr "Nic nebylo vybráno k aktualizaci."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:175
+#: plugins/Radius/src/Updater/AccountsUpdater.php:171
 msgid "The RADIUS account {0} could not be updated. Please, try again."
 msgstr "Účet RADIUS {0} se nepodařilo aktualizovat. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:221
+#: plugins/Radius/src/Updater/AccountsUpdater.php:217
 msgid ""
 "Related entries for {0} RADIUS accounts were processed, {1} accounts were "
 "updated, and {2} accounts failed to update."
@@ -316,23 +316,23 @@ msgstr ""
 "Související záznamy pro {0} účtů RADIUS byly zpracovány, {1} účtů bylo "
 "aktualizováno a {2} účtů se nepodařilo aktualizovat."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:245
+#: plugins/Radius/src/Updater/AccountsUpdater.php:241
 msgid "Automatic RADIUS account changes"
 msgstr "Automatické změny účtu RADIUS"
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:254
+#: plugins/Radius/src/Updater/AccountsUpdater.php:250
 msgid "These automatic RADIUS account changes have just taken place."
 msgstr "Tyto automatické změny účtu RADIUS právě proběhly."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:261
+#: plugins/Radius/src/Updater/AccountsUpdater.php:257
 msgid "Automatic RADIUS account changes have been reported."
 msgstr "Byly nahlášeny automatické změny účtu RADIUS."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:267
+#: plugins/Radius/src/Updater/AccountsUpdater.php:263
 msgid "Automatic RADIUS account changes cannot be reported."
 msgstr "Automatické změny účtu RADIUS nelze nahlásit."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:415
+#: plugins/Radius/src/Updater/AccountsUpdater.php:411
 msgid ""
 "The RADIUS replies for {0} could not be found automatically. Please, set it "
 "manually."
@@ -340,11 +340,11 @@ msgstr ""
 "Odpovědi RADIUS pro {0} nebyly automaticky nalezeny. Nastavte je prosím "
 "ručně."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:421
+#: plugins/Radius/src/Updater/AccountsUpdater.php:417
 msgid "The IP addresses for the contract are probably not set correctly."
 msgstr "IP adresy pro smlouvu pravděpodobně nejsou správně nastaveny."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:483
+#: plugins/Radius/src/Updater/AccountsUpdater.php:479
 msgid ""
 "The RADIUS user groups for {0} could not be found automatically. Please, set "
 "it manually."
@@ -352,7 +352,7 @@ msgstr ""
 "Skupiny uživatelů RADIUS pro {0} nebyly nalezeny automaticky. Nastavte je "
 "prosím ručně."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:489
+#: plugins/Radius/src/Updater/AccountsUpdater.php:485
 msgid ""
 "The billings for the contract for the current or upcoming period are "
 "probably not set correctly."

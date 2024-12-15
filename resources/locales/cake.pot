@@ -4,8 +4,8 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: CakePHP 5.1.1\n"
-"POT-Creation-Date: 2024-10-21 17:22+0200\n"
+"Project-Id-Version: CakePHP 5.1.4\n"
+"POT-Creation-Date: 2024-12-15 23:30+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -28,7 +28,7 @@ msgstr ""
 msgid "An Internal Error Has Occurred."
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Command/PluginListCommand.php:57
+#: ./vendor/cakephp/cakephp/src/Command/PluginListCommand.php:65
 msgid "No plugins have been found."
 msgstr ""
 
@@ -53,11 +53,11 @@ msgstr ""
 msgid "Missing or incorrect CSRF session key"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Http/Response.php:1429
+#: ./vendor/cakephp/cakephp/src/Http/Response.php:1431
 msgid "The requested file contains `..` and will not be read."
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Http/Response.php:1437
+#: ./vendor/cakephp/cakephp/src/Http/Response.php:1439
 msgid "The requested file was not found"
 msgstr ""
 
@@ -506,15 +506,15 @@ msgstr ""
 msgid "The provided value is invalid"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:991
+#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1015
 msgid "Edit {0}"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:993
+#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1017
 msgid "New {0}"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1964
+#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:2011
 msgid "Submit"
 msgstr ""
 
