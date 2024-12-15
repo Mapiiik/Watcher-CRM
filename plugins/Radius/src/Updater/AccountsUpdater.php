@@ -59,13 +59,9 @@ class AccountsUpdater
     {
         $this->Messages = new Messages();
 
-        /** @phpstan-ignore-next-line */
         $this->Accounts = $this->fetchTable('Radius.Accounts');
-        /** @phpstan-ignore-next-line */
         $this->Radcheck = $this->fetchTable('Radius.Radcheck');
-        /** @phpstan-ignore-next-line */
         $this->Radreply = $this->fetchTable('Radius.Radreply');
-        /** @phpstan-ignore-next-line */
         $this->Radusergroup = $this->fetchTable('Radius.Radusergroup');
     }
 
