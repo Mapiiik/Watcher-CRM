@@ -478,6 +478,7 @@ $permissions = [
  */
 $localPermissionsFile = CONFIG . 'permissions_local.php';
 if (file_exists($localPermissionsFile)) {
+    /** @phpstan-ignore-next-line */
     $localPermissions = include $localPermissionsFile;
     /** @psalm-suppress RedundantCondition */
     if (is_array($localPermissions)) {

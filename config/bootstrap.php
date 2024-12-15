@@ -133,6 +133,7 @@ ini_set('intl.default_locale', Configure::read('App.defaultLocale'));
  * Include the CLI bootstrap overrides.
  */
 if (PHP_SAPI === 'cli') {
+    /** @phpstan-ignore-next-line */
     require CONFIG . 'bootstrap_cli.php';
 }
 

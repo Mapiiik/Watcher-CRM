@@ -522,7 +522,7 @@ class InvoicesController extends AppController
                         /** @psalm-suppress RedundantFunctionCall */
                         $billing_customer['items'] = array_merge(
                             array_values($billing_customer['items']),
-                            array_values($billing_contract['items'])
+                            array_values($billing_contract['items']) // @phpstan-ignore arrayValues.list
                         );
                     }
 

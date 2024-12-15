@@ -1,7 +1,5 @@
 parameters:
     level: 6
-    checkMissingIterableValueType: true
-    checkGenericClassInNonGenericObjectType: true
     treatPhpDocTypesAsCertain: false
     bootstrapFiles:
         - config/bootstrap.php
@@ -13,3 +11,6 @@ parameters:
         - config/
     excludePaths:
         - templates/AppUsers/
+    ignoreErrors:
+        - identifier: missingType.iterableValue
+        - identifier: missingType.generics

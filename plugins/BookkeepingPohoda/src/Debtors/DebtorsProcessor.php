@@ -18,7 +18,7 @@ class DebtorsProcessor
 {
     use LocatorAwareTrait;
 
-    private static ?CollectionInterface $debtors;
+    private static ?CollectionInterface $debtors = null;
 
     private int $allowed_payment_delay;
     private float $allowed_total_overdue_debt;

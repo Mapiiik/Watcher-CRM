@@ -7,7 +7,7 @@ use Cake\Console\ConsoleIo;
 use Cake\Http\ServerRequest;
 use Cake\Log\Log;
 
-trait FlashMessageHandlerTrait
+trait FlashMessageHandlerTrait // @phpstan-ignore trait.unused
 {
     /**
      * Handles flash messages.

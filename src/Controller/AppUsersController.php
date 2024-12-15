@@ -19,7 +19,7 @@ use CakeDC\Users\Controller\Traits\Webauthn2faTrait;
  * Users Controller
  *
  * @property \App\Model\Table\AppUsersTable $Users
- * @property \Cake\Controller\Component\SecurityComponent $Security
+ * @property \Cake\Controller\Component\FormProtectionComponent $FormProtection
  */
 class AppUsersController extends AppController
 {
