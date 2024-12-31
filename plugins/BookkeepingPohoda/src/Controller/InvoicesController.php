@@ -9,8 +9,8 @@ use Cake\Collection\CollectionInterface;
 use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
 use Cake\Validation\Validation;
+use Exception;
 use PhpCollective\DecimalObject\Decimal;
-use stdClass;
 
 /**
  * Invoices Controller
@@ -75,7 +75,7 @@ class InvoicesController extends AppController
         ));
 
         // notify about unsent invoices
-        $unsent_invoices = $this->Invoices
+        $unsentInvoices = $this->Invoices
             ->find()
             ->where([
                 'send_by_email' => true,
@@ -83,13 +83,13 @@ class InvoicesController extends AppController
             ])
             ->count();
 
-        if ($unsent_invoices > 0) {
+        if ($unsentInvoices > 0) {
             $this->Flash->warning(__dn(
                 'bookkeeping_pohoda',
                 'Invoice to send in the queue, {0} email left.',
                 'Invoices to send in the queue, {0} emails left.',
-                $unsent_invoices,
-                $unsent_invoices,
+                $unsentInvoices,
+                $unsentInvoices,
             ));
         }
 
@@ -264,11 +264,11 @@ class InvoicesController extends AppController
     /**
      * get SelectQuery with billing data for selected month
      *
-     * @param \Cake\I18n\Date $invoiced_month Month for billing
-     * @param string $tax_rate_id month Id of tax rate for billing
+     * @param \Cake\I18n\Date $invoicedMonth Month for billing
+     * @param string $taxRateId month Id of tax rate for billing
      * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Customer|array<array-key, mixed>>
      */
-    private function getQueryForBillingDataForMonth(Date $invoiced_month, string $tax_rate_id): SelectQuery
+    private function getQueryForBillingDataForMonth(Date $invoicedMonth, string $taxRateId): SelectQuery
     {
         /** @var \App\Model\Table\CustomersTable $customersTable */
         $customersTable = $this->fetchTable('Customers');
@@ -276,22 +276,22 @@ class InvoicesController extends AppController
         return $customersTable
             ->find()
             ->contain('Addresses')
-            ->contain('Contracts', function (SelectQuery $q) use ($invoiced_month) {
+            ->contain('Contracts', function (SelectQuery $q) use ($invoicedMonth) {
                 return $q
                     ->contain('ContractStates')
                     ->contain('ServiceTypes')
-                    ->contain('Billings', function (SelectQuery $q) use ($invoiced_month) {
+                    ->contain('Billings', function (SelectQuery $q) use ($invoicedMonth) {
                         return $q
                             ->contain([
                                 'Services',
                             ])
                             ->where([
-                                'Billings.billing_from <=' => $invoiced_month->lastOfMonth(), //last day of month
+                                'Billings.billing_from <=' => $invoicedMonth->lastOfMonth(), //last day of month
                             ])
                             ->andWhere([
                                 'OR' => [
                                     'Billings.billing_until IS NULL',
-                                    'Billings.billing_until >=' => $invoiced_month->firstOfMonth(), //first day of month
+                                    'Billings.billing_until >=' => $invoicedMonth->firstOfMonth(), //first day of month
                                 ],
                             ])
                             // order by billing ID
@@ -300,11 +300,11 @@ class InvoicesController extends AppController
                             ])
                             // format results
                             ->formatResults(
-                                function (CollectionInterface $billings) use ($invoiced_month) {
-                                    return $billings->map(function ($billing) use ($invoiced_month) {
+                                function (CollectionInterface $billings) use ($invoicedMonth) {
+                                    return $billings->map(function ($billing) use ($invoicedMonth) {
                                         $billing['period_total'] = $billing->periodTotal(
-                                            $invoiced_month->firstOfMonth(),
-                                            $invoiced_month->lastOfMonth()
+                                            $invoicedMonth->firstOfMonth(),
+                                            $invoicedMonth->lastOfMonth()
                                         );
 
                                         return $billing;
@@ -323,12 +323,49 @@ class InvoicesController extends AppController
             })
             // only customers with the selected tax rate
             ->where([
-                'Customers.tax_rate_id' => $tax_rate_id,
+                'Customers.tax_rate_id' => $taxRateId,
             ])
             // order by customer ID
             ->orderBy([
                 'Customers.nid',
             ]);
+    }
+
+    /**
+     * Validate and process CSV line
+     */
+    private function validateAndProcessCsvLine(array $parsedLine): ?array
+    {
+        $customerNumber = isset($parsedLine[0]) ? trim((string)$parsedLine[0]) : null;
+        $periodTotalRaw = isset($parsedLine[1]) ? trim((string)$parsedLine[1]) : null;
+        $name = isset($parsedLine[2]) ? trim((string)$parsedLine[2]) : '';
+
+        // Normalize decimal separator
+        $periodTotalNormalized = str_replace(',', '.', $periodTotalRaw);
+
+        if (!is_numeric($customerNumber)) {
+            $this->Flash->error(
+                __d('bookkeeping_pohoda', 'Invalid customer number in CSV file: {0}', [$parsedLine[0] ?? ''])
+            );
+
+            return null;
+        }
+
+        if (!is_numeric($periodTotalNormalized)) {
+            $this->Flash->error(
+                __d('bookkeeping_pohoda', 'Invalid price in CSV file: {0}', [$parsedLine[1] ?? ''])
+            );
+
+            return null;
+        }
+
+        return [
+            'customerNumber' => $customerNumber,
+            'item' => (object)[
+                'period_total' => Decimal::create($periodTotalNormalized, 2),
+                'name' => $name,
+            ],
+        ];
     }
 
     /**
@@ -339,99 +376,114 @@ class InvoicesController extends AppController
      */
     public function generate()
     {
-        $tax_rates = $this->fetchTable('TaxRates')
+        $taxRates = $this->fetchTable('TaxRates')
             ->find('list', order: [
                 'name',
             ])
             ->toArray();
 
         if ($this->getRequest()->is(['post'])) {
-            $invoiced_month = new Date($this->getRequest()->getData('invoiced_month', 'now'));
-            /** @var \App\Model\Entity\TaxRate $tax_rate */
-            $tax_rate = $this->fetchTable('TaxRates')->get($this->getRequest()->getData('tax_rate_id'));
-            /** @var \Laminas\Diactoros\UploadedFile $csv_for_verification */
-            $csv_for_verification = $this->getRequest()->getData('csv_for_verification');
+            $invoicedMonth = new Date($this->getRequest()->getData('invoiced_month', 'now'));
+            /** @var \App\Model\Entity\TaxRate $taxRate */
+            $taxRate = $this->fetchTable('TaxRates')->get($this->getRequest()->getData('tax_rate_id'));
+            /** @var \Laminas\Diactoros\UploadedFile $csvForVerification */
+            $csvForVerification = $this->getRequest()->getData('csv_for_verification');
 
             // VERIFICATION DATA CHECK
-            if ($csv_for_verification->getSize() > 0) {
+            if ($csvForVerification->getSize() > 0) {
                 // load verification data from CSV
-                $lines = explode(PHP_EOL, $csv_for_verification->getStream()->getContents());
-                $verification_data = [];
+                $csvStream = $csvForVerification->getStream();
+                $csvStream->rewind();
+                $csvResource = $csvStream->detach();
+                unset($csvStream);
 
-                foreach ($lines as $line) {
-                    $parsed_line = explode(',', $line);
-                    $customer_number = trim($parsed_line[0]);
-
-                    if (!is_numeric($customer_number)) {
-                        continue; // if there is no customer number in the first column, skip the line
-                    }
-
-                    if (!isset($verification_data[$customer_number])) {
-                        $verification_data[$customer_number]['csv']['total'] = Decimal::create(0, 2);
-                        $verification_data[$customer_number]['csv']['items'] = [];
-                    }
-
-                    $item = new stdClass();
-                    $item->period_total = Decimal::create(isset($parsed_line[1]) ? trim($parsed_line[1]) : '', 2);
-                    $item->name = isset($parsed_line[2]) ? trim($parsed_line[2]) : '';
-
-                    $verification_data[$customer_number]['csv']['total'] =
-                        $verification_data[$customer_number]['csv']['total']->add($item->period_total);
-                    $verification_data[$customer_number]['csv']['items'][] = $item;
-
-                    unset($item);
-                    unset($customer_number);
-                    unset($parsed_line);
+                if ($csvResource === null) {
+                    throw new Exception(__d('bookkeeping_pohoda', 'Unable to process CSV file.'));
                 }
-                unset($lines);
+
+                // create verification data array
+                $verificationData = [];
+
+                try {
+                    while (($parsedLine = fgetcsv($csvResource, 1000, ',')) !== false) {
+                        // skip empty lines
+                        if (empty(array_filter($parsedLine))) {
+                            continue;
+                        }
+
+                        $result = $this->validateAndProcessCsvLine($parsedLine);
+                        if ($result === null) {
+                            continue;
+                        }
+
+                        $customerNumber = $result['customerNumber'];
+                        $item = $result['item'];
+
+                        if (!isset($verificationData[$customerNumber])) {
+                            $verificationData[$customerNumber]['csv']['total'] = Decimal::create(0, 2);
+                            $verificationData[$customerNumber]['csv']['items'] = [];
+                        }
+
+                        $verificationData[$customerNumber]['csv']['total'] =
+                            $verificationData[$customerNumber]['csv']['total']->add($item->period_total);
+                        $verificationData[$customerNumber]['csv']['items'][] = $item;
+                    }
+                } catch (Exception $e) {
+                    fclose($csvResource);
+                    throw new Exception(__d('bookkeeping_pohoda', 'Error processing CSV file: {0}', $e->getMessage()));
+                } finally {
+                    fclose($csvResource);
+                }
+
+                unset($csvResource);
 
                 // compare verification data with CRM billings
-                foreach ($this->getQueryForBillingDataForMonth($invoiced_month, $tax_rate->id) as $customer) {
+                foreach ($this->getQueryForBillingDataForMonth($invoicedMonth, $taxRate->id) as $customer) {
                     /** @var \App\Model\Entity\Customer $customer */
 
                     // declare billing data
-                    $billing_data['total'] = Decimal::create(0, 2);
-                    $billing_data['items'] = [];
+                    $billingData['total'] = Decimal::create(0, 2);
+                    $billingData['items'] = [];
 
                     foreach ($customer->contracts as $contract) {
                         foreach ($contract->billings as $billing) {
-                            $billing_data['total'] = $billing_data['total']->add($billing->period_total);
-                            $billing_data['items'][] = $billing;
+                            $billingData['total'] = $billingData['total']->add($billing->period_total);
+                            $billingData['items'][] = $billing;
                         }
                     }
 
                     // compare billing data with verification data
-                    if (isset($verification_data[$customer->number])) {
-                        if ($verification_data[$customer->number]['csv']['total'] == $billing_data['total']) {
+                    if (isset($verificationData[$customer->number])) {
+                        if ($verificationData[$customer->number]['csv']['total'] == $billingData['total']) {
                             // remove from verification if OK
-                            unset($verification_data[$customer->number]);
+                            unset($verificationData[$customer->number]);
                         } else {
                             // add billing data to verification if not OK
-                            $verification_data[$customer->number]['customer'] = $customer;
-                            $verification_data[$customer->number]['crm'] = $billing_data;
+                            $verificationData[$customer->number]['customer'] = $customer;
+                            $verificationData[$customer->number]['crm'] = $billingData;
                         }
                     } else {
-                        if (!$billing_data['total']->isZero()) {
+                        if (!$billingData['total']->isZero()) {
                             // create missing verification data if there are non zero billing items
-                            $verification_data[$customer->number]['customer'] = $customer;
-                            $verification_data[$customer->number]['crm'] = $billing_data;
+                            $verificationData[$customer->number]['customer'] = $customer;
+                            $verificationData[$customer->number]['crm'] = $billingData;
                         }
                     }
 
                     // clear billing_data for this customer
-                    unset($billing_data);
+                    unset($billingData);
                 }
             }
 
-            if (isset($verification_data) && !empty($verification_data)) {
-                $this->set('verification_data', $verification_data);
+            if (isset($verificationData) && !empty($verificationData)) {
+                $this->set('verificationData', $verificationData);
             } else {
                 return $this->redirect([
                     'action' => 'generate',
                     '_ext' => $this->getRequest()->getData('output_format'),
                     '?' => [
-                        'invoiced_month' => $invoiced_month->i18nFormat('yyyy-MM'),
-                        'tax_rate_id' => $tax_rate->id,
+                        'invoiced_month' => $invoicedMonth->i18nFormat('yyyy-MM'),
+                        'tax_rate_id' => $taxRate->id,
                     ],
                 ]);
             }
@@ -439,19 +491,19 @@ class InvoicesController extends AppController
 
         // DOWNLOAD INVOICES
         if ($this->getRequest()->getParam('_ext') === 'dbf' || $this->getRequest()->getParam('_ext') === 'xml') {
-            $invoiced_month = new Date($this->getRequest()->getQuery('invoiced_month', 'now'));
+            $invoicedMonth = new Date($this->getRequest()->getQuery('invoiced_month', 'now'));
 
-            /** @var \App\Model\Entity\TaxRate $tax_rate */
-            $tax_rate = $this->fetchTable('TaxRates')->get($this->getRequest()->getQuery('tax_rate_id'));
+            /** @var \App\Model\Entity\TaxRate $taxRate */
+            $taxRate = $this->fetchTable('TaxRates')->get($this->getRequest()->getQuery('tax_rate_id'));
 
-            if ($tax_rate->reverse_charge) {
-                $prefix = 10000000 * ($invoiced_month->year - 1980)
+            if ($taxRate->reverse_charge) {
+                $prefix = 10000000 * ($invoicedMonth->year - 1980)
                         + 1000000 * 8
-                        + 10000 * $invoiced_month->month;
+                        + 10000 * $invoicedMonth->month;
             } else {
-                $prefix = 10000000 * ($invoiced_month->year - 1980)
+                $prefix = 10000000 * ($invoicedMonth->year - 1980)
                         + 1000000 * 9
-                        + 10000 * $invoiced_month->month;
+                        + 10000 * $invoicedMonth->month;
             }
 
             // invoice number index
@@ -459,17 +511,17 @@ class InvoicesController extends AppController
 
             $invoices = [];
 
-            foreach ($this->getQueryForBillingDataForMonth($invoiced_month, $tax_rate->id) as $customer) {
+            foreach ($this->getQueryForBillingDataForMonth($invoicedMonth, $taxRate->id) as $customer) {
                 /** @var \App\Model\Entity\Customer $customer */
 
                 // declare customer billing data
-                $billing_customer['total'] = Decimal::create(0, 2);
-                $billing_customer['items'] = [];
+                $billingCustomer['total'] = Decimal::create(0, 2);
+                $billingCustomer['items'] = [];
 
                 foreach ($customer->contracts as $contract) {
                     // declare contract billing data
-                    $billing_contract['total'] = Decimal::create(0, 2);
-                    $billing_contract['items'] = [];
+                    $billingContract['total'] = Decimal::create(0, 2);
+                    $billingContract['items'] = [];
 
                     foreach ($contract->billings as $billing) {
                         if ($billing->isSeparateInvoice() && !$billing->period_total->isZero()) {
@@ -477,10 +529,10 @@ class InvoicesController extends AppController
                             $invoice->number = $prefix + $index;
                             $invoice->customer = $customer;
                             $invoice->variable_symbol = (int)$customer->number;
-                            $invoice->creation_date = $invoiced_month->lastOfMonth();
-                            $invoice->due_date = $invoiced_month->lastOfMonth()->addDays(10);
+                            $invoice->creation_date = $invoicedMonth->lastOfMonth();
+                            $invoice->due_date = $invoicedMonth->lastOfMonth()->addDays(10);
                             $invoice->text = $billing->name
-                                . ' za období ' . $invoiced_month->i18nFormat('MM/yyyy');
+                                . ' za období ' . $invoicedMonth->i18nFormat('MM/yyyy');
                             $invoice->internal_note = 'separate';
                             $invoice->total = $billing->period_total;
                             //$invoice->items = [$billing];
@@ -489,69 +541,69 @@ class InvoicesController extends AppController
                             unset($invoice);
                             $index++;
                         } else {
-                            $billing_contract['total'] = $billing_contract['total']->add($billing->period_total);
-                            $billing_contract['items'][] = $billing;
+                            $billingContract['total'] = $billingContract['total']->add($billing->period_total);
+                            $billingContract['items'][] = $billing;
                         }
                     }
 
-                    if ($contract->isSeparateInvoice() && !$billing_contract['total']->isZero()) {
+                    if ($contract->isSeparateInvoice() && !$billingContract['total']->isZero()) {
                         $invoice = $this->Invoices->newEmptyEntity();
                         $invoice->number = $prefix + $index;
                         $invoice->customer = $customer;
                         $invoice->variable_symbol = (int)$customer->number;
-                        $invoice->creation_date = $invoiced_month->lastOfMonth();
-                        $invoice->due_date = $invoiced_month->lastOfMonth()->addDays(10);
+                        $invoice->creation_date = $invoicedMonth->lastOfMonth();
+                        $invoice->due_date = $invoicedMonth->lastOfMonth()->addDays(10);
                         if ($contract->getInvoiceText()) {
                             $invoice->text = strtr($contract->getInvoiceText(), [
                                 '{number}' => $contract->number,
-                                '{month}' => $invoiced_month->i18nFormat('MM/yyyy'),
+                                '{month}' => $invoicedMonth->i18nFormat('MM/yyyy'),
                             ]);
                         } else {
                             $invoice->text = 'Faktura za poskytované služby dle smlouvy '
                                 . $contract->number
-                                . ' za období ' . $invoiced_month->i18nFormat('MM/yyyy');
+                                . ' za období ' . $invoicedMonth->i18nFormat('MM/yyyy');
                         }
                         $invoice->internal_note = 'separate';
-                        $invoice->total = $billing_contract['total'];
-                        $invoice->items = $contract->isInvoiceWithItems() ? $billing_contract['items'] : [];
+                        $invoice->total = $billingContract['total'];
+                        $invoice->items = $contract->isInvoiceWithItems() ? $billingContract['items'] : [];
                         $invoices[] = $invoice;
                         unset($invoice);
                         $index++;
                     } else {
-                        $billing_customer['total'] = $billing_customer['total']->add($billing_contract['total']);
+                        $billingCustomer['total'] = $billingCustomer['total']->add($billingContract['total']);
                         /** @psalm-suppress RedundantFunctionCall */
-                        $billing_customer['items'] = array_merge(
-                            array_values($billing_customer['items']),
-                            array_values($billing_contract['items']) // @phpstan-ignore arrayValues.list
+                        $billingCustomer['items'] = array_merge(
+                            array_values($billingCustomer['items']),
+                            array_values($billingContract['items']) // @phpstan-ignore arrayValues.list
                         );
                     }
 
-                    unset($billing_contract);
+                    unset($billingContract);
                 }
 
-                if (!$billing_customer['total']->isZero()) {
+                if (!$billingCustomer['total']->isZero()) {
                     $invoice = $this->Invoices->newEmptyEntity();
                     $invoice->number = $prefix + $index;
                     $invoice->customer = $customer;
                     $invoice->variable_symbol = (int)$customer->number;
-                    $invoice->creation_date = $invoiced_month->lastOfMonth();
-                    $invoice->due_date = $invoiced_month->lastOfMonth()->addDays(10);
+                    $invoice->creation_date = $invoicedMonth->lastOfMonth();
+                    $invoice->due_date = $invoicedMonth->lastOfMonth()->addDays(10);
                     $invoice->text = 'Faktura za poskytované služby dle smlouvy'
-                        . ' za období ' . $invoiced_month->i18nFormat('MM/yyyy');
-                    $invoice->total = $billing_customer['total'];
-                    $invoice->items = $customer->isInvoiceWithItems() ? $billing_customer['items'] : [];
+                        . ' za období ' . $invoicedMonth->i18nFormat('MM/yyyy');
+                    $invoice->total = $billingCustomer['total'];
+                    $invoice->items = $customer->isInvoiceWithItems() ? $billingCustomer['items'] : [];
                     $invoices[] = $invoice;
                     unset($invoice);
                     $index++;
                 }
 
-                unset($billing_customer);
+                unset($billingCustomer);
             }
 
-            $this->set(compact('invoices', 'tax_rate', 'invoiced_month'));
+            $this->set(compact('invoices', 'taxRate', 'invoicedMonth'));
         }
 
-        $this->set(compact('tax_rates'));
+        $this->set(compact('taxRates'));
     }
 
     /**

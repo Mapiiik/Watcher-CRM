@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2024-09-22 11:13+0200\n"
-"PO-Revision-Date: 2024-09-22 11:14+0200\n"
+"POT-Creation-Date: 2024-12-31 13:45+0100\n"
+"PO-Revision-Date: 2024-12-31 13:46+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -152,15 +152,31 @@ msgid "No invoices could be marked to be sent by email. Please, try again."
 msgstr ""
 "Žádné faktury nelze označit k odeslání e-mailem. Zkuste to prosím znovu."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:609
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:348
+msgid "Invalid customer number in CSV file: {0}"
+msgstr "Neplatné číslo zákazníka v souboru CSV: {0}"
+
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:356
+msgid "Invalid price in CSV file: {0}"
+msgstr "Neplatná cena v souboru CSV: {0}"
+
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:401
+msgid "Unable to process CSV file."
+msgstr "Nelze zpracovat soubor CSV."
+
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:433
+msgid "Error processing CSV file: {0}"
+msgstr "Chyba při zpracování souboru CSV: {0}"
+
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:661
 msgid "The import file is missing some required columns."
 msgstr "V souboru importu chybí některé povinné sloupce."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:647
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:699
 msgid "Invoice {0} could not be loaded."
 msgstr "Fakturu {0} nelze načíst."
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:656
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:708
 msgid ""
 "Successfully imported {0} invoices. Created {1}, modified {2} and skipped "
 "{3} records."
@@ -453,6 +469,10 @@ msgstr "Výstupní formát"
 #: plugins/BookkeepingPohoda/templates/Invoices/generate.php:52
 msgid "CSV for verification"
 msgstr "CSV pro ověření"
+
+#: plugins/BookkeepingPohoda/templates/Invoices/generate.php:73
+msgid "A price in red indicates a non-standard price."
+msgstr "Červeně označená cena znamená nestandardní cenu."
 
 #: plugins/BookkeepingPohoda/templates/Invoices/generate.php:95
 #: plugins/BookkeepingPohoda/templates/Invoices/generate.php:130

@@ -7,9 +7,9 @@ use Riesenia\Pohoda;
  * @var \App\View\AppView $this
  * @psalm-scope-this \App\View\AppView
  * @var iterable<\BookkeepingPohoda\Model\Entity\Invoice> $invoices
- * @var \Cake\I18n\Date $invoiced_month
- * @var \Cake\Collection\CollectionInterface|array<string> $tax_rates
- * @var \App\Model\Entity\TaxRate $tax_rate
+ * @var \Cake\I18n\Date $invoicedMonth
+ * @var \Cake\Collection\CollectionInterface|array<string> $taxRates
+ * @var \App\Model\Entity\TaxRate $taxRate
  */
 
 Pohoda::$encoding = 'UTF-8';
@@ -18,10 +18,10 @@ $pohoda = new Pohoda('27496139');
 $pohoda->setApplicationName(env('APP_NAME', 'Watcher CRM'));
 
 // Generate XML file name
-$xml_filename = TMP . uniqid('invoices-', true) . '.xml';
+$xmlFilename = TMP . uniqid('invoices-', true) . '.xml';
 
 // create file
-$pohoda->open($xml_filename, (string)$invoiced_month->i18nFormat('yyyy-MM'), 'Import invoices');
+$pohoda->open($xmlFilename, (string)$invoicedMonth->i18nFormat('yyyy-MM'), 'Import invoices');
 
 foreach ($invoices as $invoice) {
     /** @var \BookkeepingPohoda\Model\Entity\Invoice $invoice */
@@ -36,10 +36,10 @@ foreach ($invoices as $invoice) {
         'dateAccounting' => $invoice->creation_date->i18nFormat('yyyy-MM-dd'),
         'dateDue' => $invoice->due_date->i18nFormat('yyyy-MM-dd'),
         'accounting' => [
-            'ids' => $tax_rate->accounting_assignment_code ?? '2Fv',
+            'ids' => $taxRate->accounting_assignment_code ?? '2Fv',
         ],
         'classificationVAT' => [
-            'ids' => $tax_rate->reverse_charge ? 'UDpdp' : 'UD',
+            'ids' => $taxRate->reverse_charge ? 'UDpdp' : 'UD',
         ],
         'text' => $invoice->text ?? '',
         'partnerIdentity' => [
@@ -57,11 +57,11 @@ foreach ($invoices as $invoice) {
             'paymentType' => 'draft',
         ],
         'account' => [
-            'ids' => $tax_rate->bank_account_code ?? 'KB',
+            'ids' => $taxRate->bank_account_code ?? 'KB',
         ],
         'symConst' => '0308',
         'activity' => [
-            'ids' => $tax_rate->activity_code ?? 'internet',
+            'ids' => $taxRate->activity_code ?? 'internet',
         ],
         'note' => $invoice->note ?? '',
         'intNote' => $invoice->internal_note ?? '',
@@ -77,11 +77,11 @@ foreach ($invoices as $invoice) {
             'rateVAT' => 'high',
             'homeCurrency' => [
                 'unitPrice' => $item->period_total,
-                'price' => Billing::calcVatBaseFromTotal($item->period_total, $tax_rate->vat_rate)->toFloat(),
-                'priceVAT' => $tax_rate->reverse_charge ?
-                    0 : Billing::calcVatFromTotal($item->period_total, $tax_rate->vat_rate)->toFloat(),
+                'price' => Billing::calcVatBaseFromTotal($item->period_total, $taxRate->vat_rate)->toFloat(),
+                'priceVAT' => $taxRate->reverse_charge ?
+                    0 : Billing::calcVatFromTotal($item->period_total, $taxRate->vat_rate)->toFloat(),
             ],
-            'PDP' => $tax_rate->reverse_charge,
+            'PDP' => $taxRate->reverse_charge,
         ]);
     }
 
@@ -92,9 +92,9 @@ foreach ($invoices as $invoice) {
         'homeCurrency' => [
             'priceNone' => 0,
             'priceLow' => 0,
-            'priceHigh' => Billing::calcVatBaseFromTotal($invoice->total, $tax_rate->vat_rate)->toFloat(),
-            'priceHighVAT' => $tax_rate->reverse_charge ?
-                0 : Billing::calcVatFromTotal($invoice->total, $tax_rate->vat_rate)->toFloat(),
+            'priceHigh' => Billing::calcVatBaseFromTotal($invoice->total, $taxRate->vat_rate)->toFloat(),
+            'priceHighVAT' => $taxRate->reverse_charge ?
+                0 : Billing::calcVatFromTotal($invoice->total, $taxRate->vat_rate)->toFloat(),
             'round' => [
                 'priceRound' => 0,
             ],
@@ -111,13 +111,13 @@ $pohoda->close();
 // set for download with specified filename
 $this->setResponse(
     $this->getResponse()->withDownload(
-        'Invoices' . '-' . strtolower($tax_rate->name)
-            . '-' . $invoiced_month->i18nFormat('yyyy-MM') . '.xml'
+        'Invoices' . '-' . strtolower($taxRate->name)
+            . '-' . $invoicedMonth->i18nFormat('yyyy-MM') . '.xml'
     )
 );
 
 //read file to output
-readfile($xml_filename);
+readfile($xmlFilename);
 
 //remove file
-unlink($xml_filename);
+unlink($xmlFilename);

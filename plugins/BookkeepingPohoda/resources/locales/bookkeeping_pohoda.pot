@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2024-09-22 11:13+0200\n"
+"POT-Creation-Date: 2024-12-31 13:45+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -117,15 +117,31 @@ msgstr ""
 msgid "No invoices could be marked to be sent by email. Please, try again."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:609
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:348
+msgid "Invalid customer number in CSV file: {0}"
+msgstr ""
+
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:356
+msgid "Invalid price in CSV file: {0}"
+msgstr ""
+
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:401
+msgid "Unable to process CSV file."
+msgstr ""
+
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:433
+msgid "Error processing CSV file: {0}"
+msgstr ""
+
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:661
 msgid "The import file is missing some required columns."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:647
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:699
 msgid "Invoice {0} could not be loaded."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:656
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:708
 msgid "Successfully imported {0} invoices. Created {1}, modified {2} and skipped {3} records."
 msgstr ""
 
@@ -412,6 +428,10 @@ msgstr ""
 
 #: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:52
 msgid "CSV for verification"
+msgstr ""
+
+#: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:73
+msgid "A price in red indicates a non-standard price."
 msgstr ""
 
 #: ./plugins/BookkeepingPohoda/templates/Invoices/generate.php:95

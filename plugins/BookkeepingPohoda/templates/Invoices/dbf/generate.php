@@ -5,20 +5,20 @@ use BookkeepingPohoda\DBFInvoices;
  * @var \App\View\AppView $this
  * @psalm-scope-this \App\View\AppView
  * @var iterable<\BookkeepingPohoda\Model\Entity\Invoice> $invoices
- * @var \Cake\I18n\Date $invoiced_month
- * @var \Cake\Collection\CollectionInterface|array<string> $tax_rates
- * @var \App\Model\Entity\TaxRate $tax_rate
+ * @var \Cake\I18n\Date $invoicedMonth
+ * @var \Cake\Collection\CollectionInterface|array<string> $taxRates
+ * @var \App\Model\Entity\TaxRate $taxRate
  */
 
 $dbf = new DBFInvoices();
 
 // Generate DBF file name
-$dbf_filename = TMP . uniqid('invoices-', true) . '.dbf';
+$dbfFilename = TMP . uniqid('invoices-', true) . '.dbf';
 
-$dbf->createDBF($dbf_filename);
+$dbf->createDBF($dbfFilename);
 
 foreach ($invoices as $invoice) {
-    $dbf->addRecord($invoice, $tax_rate);
+    $dbf->addRecord($invoice, $taxRate);
 }
 
 $dbf->closeDBF();
@@ -26,13 +26,13 @@ $dbf->closeDBF();
 // set for download with specified filename
 $this->setResponse(
     $this->getResponse()->withDownload(
-        'Invoices' . '-' . strtolower($tax_rate->name)
-            . '-' . $invoiced_month->i18nFormat('yyyy-MM') . '.dbf'
+        'Invoices' . '-' . strtolower($taxRate->name)
+            . '-' . $invoicedMonth->i18nFormat('yyyy-MM') . '.dbf'
     )
 );
 
 //read file to output
-readfile($dbf_filename);
+readfile($dbfFilename);
 
 //remove file
-unlink($dbf_filename);
+unlink($dbfFilename);

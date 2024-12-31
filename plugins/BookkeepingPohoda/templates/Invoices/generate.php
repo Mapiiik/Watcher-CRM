@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface|array<string> $tax_rates
+ * @var \Cake\Collection\CollectionInterface|array<string> $taxRates
  */
 ?>
 <div class="row">
@@ -31,7 +31,7 @@
                     <?php
                         echo $this->Form->control('tax_rate_id', [
                             'label' => __d('bookkeeping_pohoda', 'Tax Rate'),
-                            'options' => $tax_rates,
+                            'options' => $taxRates,
                             'empty' => true,
                             'required' => true,
                         ]);
@@ -63,32 +63,32 @@
             <?= $this->Form->end() ?>
         </div>
 
-        <?php if (isset($verification_data)) : ?>
+        <?php if (isset($verificationData)) : ?>
         <br>
         <div class="table-responsive">
             <table>
                 <thead>
                     <tr>
                         <th><?= __d('bookkeeping_pohoda', 'Customer') ?></th>
-                        <th>CRM</th>
+                        <th>CRM (<span style="color: red; font-weight: normal;"><?= __d('bookkeeping_pohoda', 'A price in red indicates a non-standard price.') ?></span>)</th>
                         <th>CSV</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($verification_data as $customer_number => $customer_comparision) : ?>
+                    <?php foreach ($verificationData as $customerNumber => $customerComparision) : ?>
                     <tr>
                         <td><?=
-                            isset($customer_comparision['customer']) ?
-                                $this->Html->link($customer_number . ' - ' . $customer_comparision['customer']->name, [
+                            isset($customerComparision['customer']) ?
+                                $this->Html->link($customerNumber . ' - ' . $customerComparision['customer']->name, [
                                     'plugin' => null,
                                     'controller' => 'Customers',
                                     'action' => 'view',
-                                    $customer_comparision['customer']->id,
+                                    $customerComparision['customer']->id,
                                 ], ['target' => '_blank'])
                                 :
-                                h($customer_number) ?></td>
+                                h($customerNumber) ?></td>
                         <td>
-                            <?php if (isset($customer_comparision['crm'])) : ?>
+                            <?php if (isset($customerComparision['crm'])) : ?>
                                 <table>
                                     <thead>
                                         <tr>
@@ -104,7 +104,7 @@
                                          * @var \App\Model\Entity\Billing $item
                                          * */
                                         ?>
-                                        <?php foreach ($customer_comparision['crm']['items'] as $item) : ?>
+                                        <?php foreach ($customerComparision['crm']['items'] as $item) : ?>
                                         <tr>
                                             <td><?= h($item->name) ?></td>
                                             <td style="<?=
@@ -119,11 +119,11 @@
                                     </tbody>
                                 </table>
                                 <?= __d('bookkeeping_pohoda', 'Total')
-                                    . ': ' . $this->Number->currency($customer_comparision['crm']['total']) ?>
+                                    . ': ' . $this->Number->currency($customerComparision['crm']['total']) ?>
                             <?php endif; ?>
                         </td>
                         <td>
-                            <?php if (isset($customer_comparision['csv'])) : ?>
+                            <?php if (isset($customerComparision['csv'])) : ?>
                                 <table>
                                     <thead>
                                         <tr>
@@ -132,7 +132,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($customer_comparision['csv']['items'] as $item) : ?>
+                                        <?php foreach ($customerComparision['csv']['items'] as $item) : ?>
                                         <tr>
                                             <td><?= h($item->name) ?></td>
                                             <td><?= $this->Number->currency($item->period_total) ?></td>
@@ -141,7 +141,7 @@
                                     </tbody>
                                 </table>
                                 <?= __d('bookkeeping_pohoda', 'Total')
-                                    . ': ' . $this->Number->currency($customer_comparision['csv']['total']) ?>
+                                    . ': ' . $this->Number->currency($customerComparision['csv']['total']) ?>
                             <?php endif; ?>
                         </td>
                     </tr>
