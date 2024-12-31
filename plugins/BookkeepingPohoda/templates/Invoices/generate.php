@@ -70,7 +70,15 @@
                 <thead>
                     <tr>
                         <th><?= __d('bookkeeping_pohoda', 'Customer') ?></th>
-                        <th>CRM (<span style="color: red; font-weight: normal;"><?= __d('bookkeeping_pohoda', 'A price in red indicates a non-standard price.') ?></span>)</th>
+                        <th>
+                            CRM
+                            <span style="color: red; font-weight: normal; float:right;">
+                                <?= __d(
+                                    'bookkeeping_pohoda',
+                                    'A price in red indicates a non-standard price.',
+                                ) ?>
+                            </span>
+                        </th>
                         <th>CSV</th>
                     </tr>
                 </thead>
