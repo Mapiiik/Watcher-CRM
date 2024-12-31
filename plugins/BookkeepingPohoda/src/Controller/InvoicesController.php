@@ -341,7 +341,7 @@ class InvoicesController extends AppController
         $name = isset($parsedLine[2]) ? trim((string)$parsedLine[2]) : '';
 
         // Normalize decimal separator
-        $periodTotalNormalized = str_replace(',', '.', $periodTotalRaw);
+        $periodTotalNormalized = $periodTotalRaw !== null ? str_replace(',', '.', $periodTotalRaw) : null;
 
         if (!is_numeric($customerNumber)) {
             $this->Flash->error(
