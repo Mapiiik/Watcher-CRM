@@ -136,16 +136,16 @@
         },
         {
             "name": "cakedc/users",
-            "version": "14.3.2",
+            "version": "14.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CakeDC/users.git",
-                "reference": "6954c7248a20162d89481641d356cd5d619681ff"
+                "reference": "02d83df351addaf6ac929ce2ef171a7501a3f8a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CakeDC/users/zipball/6954c7248a20162d89481641d356cd5d619681ff",
-                "reference": "6954c7248a20162d89481641d356cd5d619681ff",
+                "url": "https://api.github.com/repos/CakeDC/users/zipball/02d83df351addaf6ac929ce2ef171a7501a3f8a9",
+                "reference": "02d83df351addaf6ac929ce2ef171a7501a3f8a9",
                 "shasum": ""
             },
             "require": {
@@ -215,7 +215,7 @@
                 "issues": "https://github.com/CakeDC/users/issues",
                 "source": "https://github.com/CakeDC/users"
             },
-            "time": "2025-01-09T15:39:30+00:00"
+            "time": "2025-01-17T11:26:13+00:00"
         },
         {
             "name": "cakephp/authentication",
@@ -286,16 +286,16 @@
         },
         {
             "name": "cakephp/authorization",
-            "version": "3.4.0",
+            "version": "3.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/authorization.git",
-                "reference": "ed52f1ae48357cdc90dc1aa92ad6544cf0cbfee9"
+                "reference": "ff151d694b592a683350f420dd9e58b7c0a762c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/authorization/zipball/ed52f1ae48357cdc90dc1aa92ad6544cf0cbfee9",
-                "reference": "ed52f1ae48357cdc90dc1aa92ad6544cf0cbfee9",
+                "url": "https://api.github.com/repos/cakephp/authorization/zipball/ff151d694b592a683350f420dd9e58b7c0a762c4",
+                "reference": "ff151d694b592a683350f420dd9e58b7c0a762c4",
                 "shasum": ""
             },
             "require": {
@@ -347,20 +347,20 @@
                 "issues": "https://github.com/cakephp/authorization/issues",
                 "source": "https://github.com/cakephp/authorization"
             },
-            "time": "2025-01-13T04:11:12+00:00"
+            "time": "2025-01-23T11:43:11+00:00"
         },
         {
             "name": "cakephp/cakephp",
-            "version": "5.1.4",
+            "version": "5.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "c8e4f57dcb812255c8af24b44a967e9a6ac5662e"
+                "reference": "b7cfdcda0e54b2993a08a87bf2f1de252e88865d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/c8e4f57dcb812255c8af24b44a967e9a6ac5662e",
-                "reference": "c8e4f57dcb812255c8af24b44a967e9a6ac5662e",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/b7cfdcda0e54b2993a08a87bf2f1de252e88865d",
+                "reference": "b7cfdcda0e54b2993a08a87bf2f1de252e88865d",
                 "shasum": ""
             },
             "require": {
@@ -421,7 +421,6 @@
             "suggest": {
                 "ext-curl": "To enable more efficient network calls in Http\\Client.",
                 "ext-openssl": "To use Security::encrypt() or have secure CSRF token generation.",
-                "lib-ICU": "To use locale-aware features in the I18n and Database packages",
                 "paragonie/csp-builder": "CSP builder, to use the CSP Middleware"
             },
             "type": "library",
@@ -467,7 +466,7 @@
                 "issues": "https://github.com/cakephp/cakephp/issues",
                 "source": "https://github.com/cakephp/cakephp"
             },
-            "time": "2024-12-13T03:56:40+00:00"
+            "time": "2025-01-17T04:15:57+00:00"
         },
         {
             "name": "cakephp/chronos",
@@ -530,16 +529,16 @@
         },
         {
             "name": "cakephp/migrations",
-            "version": "4.5.0",
+            "version": "4.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/migrations.git",
-                "reference": "32afa21c95062819eef8f19a74862dbc21b31d0c"
+                "reference": "675b494235a3d3d8b76fda6a684f4ab38b5a6f7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/migrations/zipball/32afa21c95062819eef8f19a74862dbc21b31d0c",
-                "reference": "32afa21c95062819eef8f19a74862dbc21b31d0c",
+                "url": "https://api.github.com/repos/cakephp/migrations/zipball/675b494235a3d3d8b76fda6a684f4ab38b5a6f7f",
+                "reference": "675b494235a3d3d8b76fda6a684f4ab38b5a6f7f",
                 "shasum": ""
             },
             "require": {
@@ -586,7 +585,7 @@
                 "issues": "https://github.com/cakephp/migrations/issues",
                 "source": "https://github.com/cakephp/migrations"
             },
-            "time": "2024-11-24T03:11:14+00:00"
+            "time": "2025-01-16T15:21:04+00:00"
         },
         {
             "name": "cakephp/plugin-installer",
@@ -1472,16 +1471,16 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php",
-            "version": "8.13.52",
+            "version": "8.13.53",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php.git",
-                "reference": "cc9a82b237d79a85be47c0b06e3943f75ab35c32"
+                "reference": "b3362a3c04f87b02c6e712774d20f9e577c3918c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/cc9a82b237d79a85be47c0b06e3943f75ab35c32",
-                "reference": "cc9a82b237d79a85be47c0b06e3943f75ab35c32",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/b3362a3c04f87b02c6e712774d20f9e577c3918c",
+                "reference": "b3362a3c04f87b02c6e712774d20f9e577c3918c",
                 "shasum": ""
             },
             "require": {
@@ -1545,7 +1544,7 @@
                 "issues": "https://github.com/giggsey/libphonenumber-for-php/issues",
                 "source": "https://github.com/giggsey/libphonenumber-for-php"
             },
-            "time": "2024-12-13T09:08:43+00:00"
+            "time": "2025-01-15T17:09:39+00:00"
         },
         {
             "name": "giggsey/locale",
@@ -4983,16 +4982,16 @@
         },
         {
             "name": "cakephp/bake",
-            "version": "3.2.1",
+            "version": "3.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/bake.git",
-                "reference": "e94334bbd5b46ffe0ea8f9388988380d833a5fa1"
+                "reference": "165e2bd9cc407b0ea19f8a3b48927c10607f3963"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/bake/zipball/e94334bbd5b46ffe0ea8f9388988380d833a5fa1",
-                "reference": "e94334bbd5b46ffe0ea8f9388988380d833a5fa1",
+                "url": "https://api.github.com/repos/cakephp/bake/zipball/165e2bd9cc407b0ea19f8a3b48927c10607f3963",
+                "reference": "165e2bd9cc407b0ea19f8a3b48927c10607f3963",
                 "shasum": ""
             },
             "require": {
@@ -5034,7 +5033,7 @@
                 "issues": "https://github.com/cakephp/bake/issues",
                 "source": "https://github.com/cakephp/bake"
             },
-            "time": "2024-12-24T10:08:51+00:00"
+            "time": "2025-01-17T14:18:00+00:00"
         },
         {
             "name": "cakephp/cakephp-codesniffer",
@@ -5290,16 +5289,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "2.8.4",
+            "version": "2.8.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "112e37d1dca22b3fdb81cf3524ab4994f47fdb8c"
+                "reference": "ae208dc1e182bd45d99fcecb956501da212454a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/112e37d1dca22b3fdb81cf3524ab4994f47fdb8c",
-                "reference": "112e37d1dca22b3fdb81cf3524ab4994f47fdb8c",
+                "url": "https://api.github.com/repos/composer/composer/zipball/ae208dc1e182bd45d99fcecb956501da212454a1",
+                "reference": "ae208dc1e182bd45d99fcecb956501da212454a1",
                 "shasum": ""
             },
             "require": {
@@ -5384,7 +5383,7 @@
                 "irc": "ircs://irc.libera.chat:6697/composer",
                 "issues": "https://github.com/composer/composer/issues",
                 "security": "https://github.com/composer/composer/security/policy",
-                "source": "https://github.com/composer/composer/tree/2.8.4"
+                "source": "https://github.com/composer/composer/tree/2.8.5"
             },
             "funding": [
                 {
@@ -5400,7 +5399,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-12-11T10:57:47+00:00"
+            "time": "2025-01-21T14:23:40+00:00"
         },
         {
             "name": "composer/metadata-minifier",
@@ -6438,16 +6437,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.1",
+            "version": "2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "cd6e973e04b4c2b94c86e8612b5a65f0da0e08e7"
+                "reference": "7d08f569e582ade182a375c366cbd896eccadd3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/cd6e973e04b4c2b94c86e8612b5a65f0da0e08e7",
-                "reference": "cd6e973e04b4c2b94c86e8612b5a65f0da0e08e7",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/7d08f569e582ade182a375c366cbd896eccadd3a",
+                "reference": "7d08f569e582ade182a375c366cbd896eccadd3a",
                 "shasum": ""
             },
             "require": {
@@ -6492,7 +6491,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-05T16:43:48+00:00"
+            "time": "2025-01-21T14:54:06+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -6817,16 +6816,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "10.5.40",
+            "version": "10.5.41",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "e6ddda95af52f69c1e0c7b4f977cccb58048798c"
+                "reference": "e76586fa3d49714f230221734b44892e384109d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/e6ddda95af52f69c1e0c7b4f977cccb58048798c",
-                "reference": "e6ddda95af52f69c1e0c7b4f977cccb58048798c",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/e76586fa3d49714f230221734b44892e384109d7",
+                "reference": "e76586fa3d49714f230221734b44892e384109d7",
                 "shasum": ""
             },
             "require": {
@@ -6898,7 +6897,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.5.40"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.5.41"
             },
             "funding": [
                 {
@@ -6914,7 +6913,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-12-21T05:49:06+00:00"
+            "time": "2025-01-13T09:33:05+00:00"
         },
         {
             "name": "psalm/phar",
