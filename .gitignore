@@ -3,6 +3,7 @@
 /config/app_local.php
 /config/permissions_local.php
 /config/.env
+/data/*
 /logs/*
 /tmp/*
 /vendor/*
