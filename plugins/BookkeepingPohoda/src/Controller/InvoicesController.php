@@ -693,7 +693,7 @@ class InvoicesController extends AppController
                             $modified++;
                         }
 
-                        $this->Invoices->save($invoice);
+                        $this->Invoices->saveOrFail($invoice);
 
                         if ($invoice->hasErrors()) {
                             $this->Flash->error(__d(

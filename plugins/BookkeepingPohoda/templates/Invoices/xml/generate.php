@@ -14,8 +14,8 @@ use Riesenia\Pohoda;
 
 Pohoda::$encoding = 'UTF-8';
 
-$pohoda = new Pohoda('27496139');
-$pohoda->setApplicationName(env('APP_NAME', 'Watcher CRM'));
+$pohoda = new Pohoda(env('POHODA_COMPANY_ID', '00000000'));
+$pohoda->setApplicationName('Watcher CRM');
 
 // Generate XML file name
 $xmlFilename = TMP . uniqid('invoices-', true) . '.xml';
