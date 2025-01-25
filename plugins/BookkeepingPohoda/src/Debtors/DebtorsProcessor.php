@@ -55,6 +55,7 @@ class DebtorsProcessor
             ])
             ->where([
                 'Invoices.debt >' => 0,
+                'Invoices.customer_id IS NOT NULL',
             ])
             ->orderBy([
                 'Invoices.customer_id' => 'ASC',

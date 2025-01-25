@@ -50,6 +50,14 @@ class ProcessDebtorsCommand extends Command
             'boolean' => true,
         ]);
 
+        $parser->addOption('update_routers', [
+            'help' => __d(
+                'bookkeeping_pohoda',
+                'Automatically update the blocking of debtors in routers.'
+            ),
+            'boolean' => true,
+        ]);
+
         $parser->addOption('skip_emails', [
             'help' => __d('bookkeeping_pohoda', 'Do not send emails, the operation will be skipped.'),
             'boolean' => true,
@@ -77,6 +85,16 @@ class ProcessDebtorsCommand extends Command
             allowed_payment_delay: (int)env('DEBTORS_ALLOWED_PAYMENT_DELAY', '0'),
             allowed_total_overdue_debt: (float)env('DEBTORS_ALLOWED_TOTAL_OVERDUE_DEBT', '0')
         );
+
+        // automatically update the blocking of debtors in routers, if requested
+        if ($args->getOption('update_routers')) {
+            $result = $debtorsProcessor->blockingUpdate();
+
+            $io->info(
+                __d('bookkeeping_pohoda', 'Routers updated.') . PHP_EOL
+                    . ($result ? $result : __d('bookkeeping_pohoda', 'Nothing has changed.')),
+            );
+        }
 
         // get debtors to notify
         $debtorsToNotify = !$args->getOption('only_block') ?
