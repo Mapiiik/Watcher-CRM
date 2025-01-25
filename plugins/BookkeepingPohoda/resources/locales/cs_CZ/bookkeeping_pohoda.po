@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2024-12-31 13:45+0100\n"
-"PO-Revision-Date: 2024-12-31 13:46+0100\n"
+"POT-Creation-Date: 2025-01-25 18:00+0100\n"
+"PO-Revision-Date: 2025-01-25 18:10+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -14,6 +14,117 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 "X-Generator: Poedit 3.5\n"
+
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:47
+msgid ""
+"Override the saved date and time of the last synchronisation. Only invoices "
+"changed after this date and time of change will be retrieved. Format: YYYY-"
+"MM-DD HH:MM:SS (e.g., 2024-10-28 15:45:00). If not provided, the date from "
+"the last successful synchronization will be used."
+msgstr ""
+"Přepsat uložené datum a čas poslední synchronizace. Budou načteny pouze "
+"faktury změněné po tomto datu a čase změny. Formát: RRRR-MM-DD HH:MM:SS "
+"(např. 2024-10-28 15:45:00). Pokud není zadáno, použije se datum z poslední "
+"úspěšné synchronizace."
+
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:83
+msgid "Using last changes time: {0}"
+msgstr "Použití času posledních změn: {0}"
+
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:105
+msgid "Error connecting to server: {0}"
+msgstr "Chyba při připojování k serveru: {0}"
+
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:116
+msgid "Invalid response from the server ({0})"
+msgstr "Neplatná odpověď serveru ({0})"
+
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:130
+msgid "Invalid XML response"
+msgstr "Neplatná odpověď XML"
+
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:144
+msgid ""
+"The server returned an XML error response (ID: {0}, STATE: {1}, NOTE: {2})"
+msgstr "Server vrátil chybovou odpověď XML (ID: {0}, STATE: {1}, NOTE: {2})"
+
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:153
+msgid ""
+"The server returned a valid XML response (ID: {0}, STATE: {1}, NOTE: {2})"
+msgstr "Server vrátil platnou odpověď XML (ID: {0}, STATE: {1}, NOTE: {2})"
+
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:165
+msgid "Invoice Number: {0}"
+msgstr "Číslo faktury: {0}"
+
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:170
+msgid "Variable Symbol: {0}"
+msgstr "Variabilní symbol: {0}"
+
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:175
+msgid "Issue Date: {0}"
+msgstr "Datum vystavení: {0}"
+
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:180
+msgid "Due Date: {0}"
+msgstr "Datum splatnosti: {0}"
+
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:185
+msgid "Text: {0}"
+msgstr "Text: {0}"
+
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:190
+msgid "Total Amount: {0}"
+msgstr "Celková částka: {0}"
+
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:195
+msgid "Liquidation Date: {0}"
+msgstr "Datum likvidace: {0}"
+
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:200
+msgid "Remaining Debt: {0}"
+msgstr "Zbývající dluh: {0}"
+
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:347
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:661
+msgid "The import file is missing some required columns."
+msgstr "V souboru importu chybí některé povinné sloupce."
+
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:385
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:699
+msgid "Invoice {0} could not be loaded."
+msgstr "Fakturu {0} nelze načíst."
+
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:394
+#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:708
+msgid ""
+"Successfully imported {0} invoices. Created {1}, modified {2} and skipped "
+"{3} records."
+msgstr ""
+"Počet úspěšně importovaných faktur: {0}. Vytvořeno {1}, upraveno {2} a "
+"přeskočeno {3} záznamů."
+
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:426
+msgid "Invalid date and time format. Use YYYY-MM-DD HH:MM:SS, Error: {0}"
+msgstr "Nesprávný formát data a času. Použijte RRRR-MM-DD HH:MM:SS, Chyba: {0}"
+
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:438
+msgid "No previous synchronization time found. Using default/initial time."
+msgstr ""
+"Nebyl nalezen žádný předchozí čas synchronizace. Používá se výchozí/"
+"iniciální čas."
+
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:466
+msgid "Error reading last sync time from file: {0}"
+msgstr "Chyba při čtení času poslední synchronizace ze souboru: {0}"
+
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:479
+msgid "Error parsing last sync time from file: {0}"
+msgstr "Chyba při parsování času poslední synchronizace ze souboru: {0}"
+
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:503
+msgid "Error saving last sync time to file: {0}"
+msgstr "Chyba při ukládání času poslední synchronizace do souboru: {0}"
 
 #: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:37
 msgid ""
@@ -33,14 +144,32 @@ msgstr ""
 "platby)."
 
 #: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:54
+msgid "Automatically update the blocking of debtors in routers."
+msgstr "Automatická aktualizace blokování dlužníků ve směrovačích."
+
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:62
 msgid "Do not send emails, the operation will be skipped."
 msgstr "Neodesílat e-maily, operace bude přeskočena."
 
-#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:59
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:67
 msgid "Do not send SMS, the operation will be skipped."
 msgstr "Neodesílat SMS, operace bude přeskočena."
 
-#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:109
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:94
+#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:67
+#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:94
+#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:122
+msgid "Routers updated."
+msgstr "Směrovače byly aktualizovány."
+
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:95
+#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:68
+#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:95
+#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:123
+msgid "Nothing has changed."
+msgstr "Nic se nezměnilo."
+
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:127
 msgid ""
 "Notification email has been generated for customer {customer_number}, "
 "recipients: {recipients}"
@@ -48,7 +177,7 @@ msgstr ""
 "Byl vygenerován oznamovací e-mail pro zákazníka {customer_number}, příjemci: "
 "{recipients}"
 
-#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:124
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:142
 msgid ""
 "Notification SMS has been generated for customer {customer_number}, "
 "recipients: {recipients}"
@@ -56,7 +185,7 @@ msgstr ""
 "Byla vygenerována notifikační SMS pro zákazníka {customer_number}, příjemci: "
 "{recipients}"
 
-#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:146
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:164
 msgid ""
 "Blocking email has been generated for customer {customer_number}, "
 "recipients: {recipients}"
@@ -64,7 +193,7 @@ msgstr ""
 "Byl vygenerován blokovací e-mail pro zákazníka {customer_number}, příjemci: "
 "{recipients}"
 
-#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:157
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:175
 msgid ""
 "Notification email has been generated for inactive services for customer "
 "{customer_number}, recipients: {recipients}"
@@ -72,7 +201,7 @@ msgstr ""
 "Byl vygenerován oznamovací e-mail pro neaktivní služby pro zákazníka "
 "{customer_number}, příjemci: {recipients}"
 
-#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:174
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:192
 msgid ""
 "Blocking SMS has been generated for customer {customer_number}, recipients: "
 "{recipients}"
@@ -80,7 +209,7 @@ msgstr ""
 "Byla vygenerována blokovací SMS pro zákazníka {customer_number}, příjemci: "
 "{recipients}"
 
-#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:185
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:203
 msgid ""
 "Notification SMS has been generated for inactive services for customer "
 "{customer_number}, recipients: {recipients}"
@@ -88,7 +217,7 @@ msgstr ""
 "Byla vygenerována notifikační SMS pro neaktivní služby pro zákazníka "
 "{customer_number}, příjemci: {recipients}"
 
-#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:198
+#: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:216
 #: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:160
 msgid "Done"
 msgstr "Hotovo"
@@ -112,18 +241,6 @@ msgstr "E-mail byl úspěšně odeslán."
 #: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:146
 msgid "The email cannot be sent."
 msgstr "E-mail nelze odeslat."
-
-#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:67
-#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:94
-#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:122
-msgid "Routers updated."
-msgstr "Směrovače byly aktualizovány."
-
-#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:68
-#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:95
-#: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:123
-msgid "Nothing has changed."
-msgstr "Nic se nezměnilo."
 
 #: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:168
 #: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:195
@@ -168,22 +285,6 @@ msgstr "Nelze zpracovat soubor CSV."
 msgid "Error processing CSV file: {0}"
 msgstr "Chyba při zpracování souboru CSV: {0}"
 
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:661
-msgid "The import file is missing some required columns."
-msgstr "V souboru importu chybí některé povinné sloupce."
-
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:699
-msgid "Invoice {0} could not be loaded."
-msgstr "Fakturu {0} nelze načíst."
-
-#: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:708
-msgid ""
-"Successfully imported {0} invoices. Created {1}, modified {2} and skipped "
-"{3} records."
-msgstr ""
-"Počet úspěšně importovaných faktur: {0}. Vytvořeno {1}, upraveno {2} a "
-"přeskočeno {3} záznamů."
-
 #: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:87
 msgid "Invoice to send in the queue, {0} email left."
 msgid_plural "Invoices to send in the queue, {0} emails left."
@@ -191,29 +292,29 @@ msgstr[0] "Faktura k odeslání ve frontě, zbývá {0} e-mail."
 msgstr[1] "Faktury k odeslání ve frontě, zbývají {0} e-maily."
 msgstr[2] "Faktury k odeslání ve frontě, zbývá {0} e-mailů."
 
-#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:96
+#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:97
 msgid "Debtors data is not available."
 msgstr "Údaje o dlužnících nejsou k dispozici."
 
-#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:285
+#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:286
 msgid "debtor"
 msgstr "dlužník"
 
-#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:469
-#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:497
+#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:470
+#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:498
 msgid "Removed IPv4 record {0} from router {1}."
 msgstr "Odstraněn záznam IPv4 {0} ze směrovače {1}."
 
-#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:518
+#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:519
 msgid "Added IPv4 record {0} ({1}) to router {2}."
 msgstr "Přidán záznam IPv4 {0} ({1}) do směrovače {2}."
 
-#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:546
-#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:574
+#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:547
+#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:575
 msgid "Removed IPv6 record {0} from router {1}."
 msgstr "Odstraněn záznam IPv6 {0} ze směrovače {1}."
 
-#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:595
+#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:596
 msgid "Added IPv6 record {0} ({1}) to router {2}."
 msgstr "Přidán záznam IPv6 {0} ({1}) do směrovače {2}."
 
@@ -349,8 +450,8 @@ msgstr "Text"
 #: plugins/BookkeepingPohoda/templates/Debtors/index.php:92
 #: plugins/BookkeepingPohoda/templates/Invoices/add.php:48
 #: plugins/BookkeepingPohoda/templates/Invoices/edit.php:56
-#: plugins/BookkeepingPohoda/templates/Invoices/generate.php:121
-#: plugins/BookkeepingPohoda/templates/Invoices/generate.php:143
+#: plugins/BookkeepingPohoda/templates/Invoices/generate.php:129
+#: plugins/BookkeepingPohoda/templates/Invoices/generate.php:151
 #: plugins/BookkeepingPohoda/templates/Invoices/index.php:61
 #: plugins/BookkeepingPohoda/templates/Invoices/view.php:81
 #: plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:26
@@ -470,17 +571,17 @@ msgstr "Výstupní formát"
 msgid "CSV for verification"
 msgstr "CSV pro ověření"
 
-#: plugins/BookkeepingPohoda/templates/Invoices/generate.php:73
+#: plugins/BookkeepingPohoda/templates/Invoices/generate.php:76
 msgid "A price in red indicates a non-standard price."
 msgstr "Červeně označená cena znamená nestandardní cenu."
 
-#: plugins/BookkeepingPohoda/templates/Invoices/generate.php:95
-#: plugins/BookkeepingPohoda/templates/Invoices/generate.php:130
+#: plugins/BookkeepingPohoda/templates/Invoices/generate.php:103
+#: plugins/BookkeepingPohoda/templates/Invoices/generate.php:138
 msgid "Name"
 msgstr "Jméno"
 
-#: plugins/BookkeepingPohoda/templates/Invoices/generate.php:96
-#: plugins/BookkeepingPohoda/templates/Invoices/generate.php:131
+#: plugins/BookkeepingPohoda/templates/Invoices/generate.php:104
+#: plugins/BookkeepingPohoda/templates/Invoices/generate.php:139
 msgid "Price"
 msgstr "Cena"
 
