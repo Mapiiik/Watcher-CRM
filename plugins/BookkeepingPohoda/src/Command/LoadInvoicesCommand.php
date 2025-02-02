@@ -238,8 +238,19 @@ class LoadInvoicesCommand extends Command
         ]);
 
         // Add filter for last changes
+        /*
         $request->addFilter([
             'lastChanges' => $lastChanges, # all records that have a "saved" date later than this date
+        ]);
+        */
+        $request->addQueryFilter([
+            'textName' => "(Uloženo >= {$lastChanges->toDateTimeString()}; Likv. >= {$lastChanges->toDateString()})",
+            'filter' =>
+                '('
+                . "FA.DatSave>=CONVERT(DATETIME, '{$lastChanges->format('m/d/Y H:i:s')}', 101)"
+                . ' OR '
+                . "FA.DatLikv>=CONVERT(DATETIME, '{$lastChanges->format('m/d/Y')}', 101)"
+                . ')',
         ]);
 
         $pohoda->addItem('list_001', $request);

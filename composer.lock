@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9602aa4ea99e47c36746a4024741f33e",
+    "content-hash": "f4c06f8001863ae7c67e3e96a1edb7b9",
     "packages": [
         {
             "name": "brick/math",
@@ -2379,16 +2379,16 @@
         },
         {
             "name": "mapik/pohoda-xml",
-            "version": "v1.19.2",
+            "version": "v1.22.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Mapiiik/pohoda-xml.git",
-                "reference": "31517845a9cbd95e959ebd015fbe92d78113f5b8"
+                "reference": "c8966b8094c2bdb3ec4f2a2793ee52564376b8dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Mapiiik/pohoda-xml/zipball/31517845a9cbd95e959ebd015fbe92d78113f5b8",
-                "reference": "31517845a9cbd95e959ebd015fbe92d78113f5b8",
+                "url": "https://api.github.com/repos/Mapiiik/pohoda-xml/zipball/c8966b8094c2bdb3ec4f2a2793ee52564376b8dd",
+                "reference": "c8966b8094c2bdb3ec4f2a2793ee52564376b8dd",
                 "shasum": ""
             },
             "require": {
@@ -2428,7 +2428,7 @@
                 "issues": "https://github.com/Mapiiik/pohoda-xml/issues",
                 "source": "https://github.com/Mapiiik/pohoda-xml"
             },
-            "time": "2024-04-23T14:46:12+00:00"
+            "time": "2025-02-02T14:59:21+00:00"
         },
         {
             "name": "mapik/radius-client",
