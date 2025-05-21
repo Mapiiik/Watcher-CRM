@@ -14,7 +14,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Email newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Email[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\Email get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
- * @method \App\Model\Entity\Email findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \App\Model\Entity\Email findOrCreate($search, callable|array|null $callback = null, $options = [])
  * @method \App\Model\Entity\Email patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Email[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \App\Model\Entity\Email|false save(\Cake\Datasource\EntityInterface $entity, $options = [])

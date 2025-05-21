@@ -16,7 +16,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\SoldEquipment newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\SoldEquipment[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\SoldEquipment get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
- * @method \App\Model\Entity\SoldEquipment findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \App\Model\Entity\SoldEquipment findOrCreate($search, callable|array|null $callback = null, $options = [])
  * @method \App\Model\Entity\SoldEquipment patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\SoldEquipment[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \App\Model\Entity\SoldEquipment|false save(\Cake\Datasource\EntityInterface $entity, $options = [])

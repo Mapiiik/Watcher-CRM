@@ -15,7 +15,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\AccessCredential newEntity(array $data, array $options = [])
  * @method array<\App\Model\Entity\AccessCredential> newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\AccessCredential get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
- * @method \App\Model\Entity\AccessCredential findOrCreate($search, ?callable $callback = null, array $options = [])
+ * @method \App\Model\Entity\AccessCredential findOrCreate($search, callable|array|null $callback = null, $options = [])
  * @method \App\Model\Entity\AccessCredential patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method array<\App\Model\Entity\AccessCredential> patchEntities(iterable $entities, array $data, array $options = [])
  * @method \App\Model\Entity\AccessCredential|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])

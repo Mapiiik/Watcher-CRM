@@ -16,7 +16,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Service newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Service[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\Service get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
- * @method \App\Model\Entity\Service findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \App\Model\Entity\Service findOrCreate($search, callable|array|null $callback = null, $options = [])
  * @method \App\Model\Entity\Service patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Service[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \App\Model\Entity\Service|false save(\Cake\Datasource\EntityInterface $entity, $options = [])

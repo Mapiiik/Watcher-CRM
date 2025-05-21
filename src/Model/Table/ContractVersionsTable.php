@@ -14,7 +14,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\ContractVersion newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\ContractVersion[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\ContractVersion get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
- * @method \App\Model\Entity\ContractVersion findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \App\Model\Entity\ContractVersion findOrCreate($search, callable|array|null $callback = null, $options = [])
  * @method \App\Model\Entity\ContractVersion patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\ContractVersion[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \App\Model\Entity\ContractVersion|false save(\Cake\Datasource\EntityInterface $entity, $options = [])

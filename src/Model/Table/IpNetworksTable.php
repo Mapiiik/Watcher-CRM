@@ -17,7 +17,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\IpNetwork newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\IpNetwork[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\IpNetwork get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
- * @method \App\Model\Entity\IpNetwork findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \App\Model\Entity\IpNetwork findOrCreate($search, callable|array|null $callback = null, $options = [])
  * @method \App\Model\Entity\IpNetwork patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\IpNetwork[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \App\Model\Entity\IpNetwork|false save(\Cake\Datasource\EntityInterface $entity, $options = [])

@@ -23,7 +23,7 @@ use Radius\Model\Enum\AccountType;
  * @method \Radius\Model\Entity\Account newEntity(array $data, array $options = [])
  * @method \Radius\Model\Entity\Account[] newEntities(array $data, array $options = [])
  * @method \Radius\Model\Entity\Account get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
- * @method \Radius\Model\Entity\Account findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \Radius\Model\Entity\Account findOrCreate($search, callable|array|null $callback = null, $options = [])
  * @method \Radius\Model\Entity\Account patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \Radius\Model\Entity\Account[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \Radius\Model\Entity\Account|false save(\Cake\Datasource\EntityInterface $entity, $options = [])

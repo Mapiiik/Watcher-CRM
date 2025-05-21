@@ -14,7 +14,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\TaxRate newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\TaxRate[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\TaxRate get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
- * @method \App\Model\Entity\TaxRate findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \App\Model\Entity\TaxRate findOrCreate($search, callable|array|null $callback = null, $options = [])
  * @method \App\Model\Entity\TaxRate patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\TaxRate[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \App\Model\Entity\TaxRate|false save(\Cake\Datasource\EntityInterface $entity, $options = [])

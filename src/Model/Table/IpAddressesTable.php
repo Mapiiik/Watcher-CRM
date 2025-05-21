@@ -17,7 +17,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\IpAddress newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\IpAddress[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\IpAddress get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
- * @method \App\Model\Entity\IpAddress findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \App\Model\Entity\IpAddress findOrCreate($search, callable|array|null $callback = null, $options = [])
  * @method \App\Model\Entity\IpAddress patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\IpAddress[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \App\Model\Entity\IpAddress|false save(\Cake\Datasource\EntityInterface $entity, $options = [])

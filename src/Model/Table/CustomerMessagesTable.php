@@ -19,7 +19,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\CustomerMessage newEntity(array $data, array $options = [])
  * @method array<\App\Model\Entity\CustomerMessage> newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\CustomerMessage get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
- * @method \App\Model\Entity\CustomerMessage findOrCreate($search, ?callable $callback = null, array $options = [])
+ * @method \App\Model\Entity\CustomerMessage findOrCreate($search, callable|array|null $callback = null, $options = [])
  * @method \App\Model\Entity\CustomerMessage patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method array<\App\Model\Entity\CustomerMessage> patchEntities(iterable $entities, array $data, array $options = [])
  * @method \App\Model\Entity\CustomerMessage|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])

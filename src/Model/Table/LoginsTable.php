@@ -16,7 +16,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Login newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Login[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\Login get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
- * @method \App\Model\Entity\Login findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \App\Model\Entity\Login findOrCreate($search, callable|array|null $callback = null, $options = [])
  * @method \App\Model\Entity\Login patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Login[] patchEntities(iterable $entities, array $data, array $options = [])
  * @method \App\Model\Entity\Login|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
