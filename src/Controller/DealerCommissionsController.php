@@ -43,7 +43,7 @@ class DealerCommissionsController extends AppController
                 'Commissions',
                 'Dealers',
             ],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('dealerCommissions'));

@@ -11,12 +11,12 @@
             <?= $this->AuthLink->link(
                 __('Edit Tax Rate'),
                 ['action' => 'edit', $taxRate->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete Tax Rate'),
                 ['action' => 'delete', $taxRate->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $taxRate->id), 'class' => 'side-nav-item']
+                ['confirm' => __('Are you sure you want to delete # {0}?', $taxRate->id), 'class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(__('List Tax Rates'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Tax Rate'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
@@ -72,7 +72,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $taxRate->creator->id,
-                                ]
+                                ],
                             ) : h($taxRate->created_by) ?></td>
                         </tr>
                         <tr>
@@ -87,7 +87,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $taxRate->modifier->id,
-                                ]
+                                ],
                             ) : h($taxRate->modified_by) ?></td>
                         </tr>
                     </table>
@@ -130,17 +130,17 @@
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
-                                    ['controller' => 'Customers', 'action' => 'view', $customer->id]
+                                    ['controller' => 'Customers', 'action' => 'view', $customer->id],
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __('Edit'),
                                     ['controller' => 'Customers', 'action' => 'edit', $customer->id],
-                                    ['class' => 'win-link']
+                                    ['class' => 'win-link'],
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
                                     __('Delete'),
                                     ['controller' => 'Customers', 'action' => 'delete', $customer->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id)]
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id)],
                                 ) ?>
                             </td>
                         </tr>

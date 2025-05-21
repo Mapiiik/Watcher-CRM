@@ -29,7 +29,7 @@
                         'action' => 'view',
                         $removedIpNetwork->contract->id,
                         'customer_id' => $removedIpNetwork->contract->customer_id,
-                    ]
+                    ],
                 ) : '' ?></td>
             <?php endif; ?>
             <td><?= h($removedIpNetwork->ip_network) ?></td>
@@ -43,7 +43,7 @@
                         'controller' => 'RemovedIpNetworks',
                         'action' => 'view',
                         $removedIpNetwork->id,
-                    ]
+                    ],
                 ) ?>
                 <?= $this->AuthLink->link(
                     __('Edit'),
@@ -52,7 +52,7 @@
                         'action' => 'edit',
                         $removedIpNetwork->id,
                     ],
-                    ['class' => 'win-link']
+                    ['class' => 'win-link'],
                 ) ?>
                 <?= $this->AuthLink->postLink(
                     __('Delete'),
@@ -64,9 +64,9 @@
                     [
                         'confirm' => __(
                             'Are you sure you want to delete # {0}?',
-                            $removedIpNetwork->id
+                            $removedIpNetwork->id,
                         ),
-                    ]
+                    ],
                 ) ?>
             </td>
         </tr>

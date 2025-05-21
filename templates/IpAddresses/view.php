@@ -11,12 +11,12 @@
             <?= $this->AuthLink->link(
                 __('Edit IP Address'),
                 ['action' => 'edit', $ipAddress->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete IP Address'),
                 ['action' => 'delete', $ipAddress->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $ipAddress->id), 'class' => 'side-nav-item']
+                ['confirm' => __('Are you sure you want to delete # {0}?', $ipAddress->id), 'class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(__('List IP Addresses'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New IP Address'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
@@ -32,7 +32,7 @@
                             <th><?= __('Customer') ?></th>
                             <td><?= $ipAddress->__isset('customer') ? $this->Html->link(
                                 $ipAddress->customer->name,
-                                ['controller' => 'Customers', 'action' => 'view', $ipAddress->customer->id]
+                                ['controller' => 'Customers', 'action' => 'view', $ipAddress->customer->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -48,7 +48,7 @@
                                     'action' => 'view',
                                     $ipAddress->contract->id,
                                     'customer_id' => $ipAddress->contract->customer_id,
-                                ]
+                                ],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -68,7 +68,7 @@
                                     $this->Html->link(
                                         $device['system_description'],
                                         env('WATCHER_NMS_URL') . '/routeros-devices/view/' . $device['id'],
-                                        ['target' => '_blank']
+                                        ['target' => '_blank'],
                                     ) . '<br>' : '';
                                 unset($device);
                             }
@@ -83,13 +83,13 @@
                                     __('Access Point') . ': ' . $this->Html->link(
                                         $range['access_point']['name'],
                                         env('WATCHER_NMS_URL') . '/access-points/view/' . $range['access_point']['id'],
-                                        ['target' => '_blank']
+                                        ['target' => '_blank'],
                                     ) . '<br>' : '';
                                 echo isset($range['id']) ?
                                     __('Range') . ': ' . $this->Html->link(
                                         $range['name'],
                                         env('WATCHER_NMS_URL') . '/ip-address-ranges/view/' . $range['id'],
-                                        ['target' => '_blank']
+                                        ['target' => '_blank'],
                                     ) . '<br>' : '';
                                     unset($range);
                             }
@@ -115,7 +115,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $ipAddress->creator->id,
-                                ]
+                                ],
                             ) : h($ipAddress->created_by) ?></td>
                         </tr>
                         <tr>
@@ -130,7 +130,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $ipAddress->modifier->id,
-                                ]
+                                ],
                             ) : h($ipAddress->modified_by) ?></td>
                         </tr>
                     </table>

@@ -12,12 +12,12 @@
             <?= $this->AuthLink->link(
                 __('View Customer'),
                 ['action' => 'view', $customer->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('Edit Customer'),
                 ['action' => 'edit', $customer->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
@@ -94,7 +94,7 @@
                             <th><?= __('Tax Rate') ?></th>
                             <td><?= $customer->__isset('tax_rate') ? $this->Html->link(
                                 $customer->tax_rate->name,
-                                ['controller' => 'TaxRates', 'action' => 'view', $customer->tax_rate->id]
+                                ['controller' => 'TaxRates', 'action' => 'view', $customer->tax_rate->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -141,7 +141,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $customer->creator->id,
-                                ]
+                                ],
                             ) : h($customer->created_by) ?></td>
                         </tr>
                         <tr>
@@ -156,7 +156,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $customer->modifier->id,
-                                ]
+                                ],
                             ) : h($customer->modified_by) ?></td>
                         </tr>
 

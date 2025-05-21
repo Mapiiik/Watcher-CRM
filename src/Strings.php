@@ -65,7 +65,7 @@ class Strings
      */
     public static function generatePassword(
         int $length = 8,
-        string $possible = '123456789ABCDEFGHJKLMNPQRSTUVWXabcdefghjkmnopqrstuvwx'
+        string $possible = '123456789ABCDEFGHJKLMNPQRSTUVWXabcdefghjkmnopqrstuvwx',
     ): string {
         // start with a blank password
         $password = '';

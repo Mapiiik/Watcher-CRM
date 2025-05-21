@@ -8,7 +8,7 @@
     <?= $this->AuthLink->link(
         __d('radius', 'New RADIUS Post Authentication'),
         ['action' => 'add'],
-        ['class' => 'button float-right win-link']
+        ['class' => 'button float-right win-link'],
     ) ?>
     <h3><?= __d('radius', 'RADIUS Post Authentications') ?></h3>
     <div class="table-responsive">
@@ -38,12 +38,12 @@
                         <?= $this->AuthLink->link(
                             __d('radius', 'Edit'),
                             ['action' => 'edit', $radpostauth->id],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __d('radius', 'Delete'),
                             ['action' => 'delete', $radpostauth->id],
-                            ['confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radpostauth->id)]
+                            ['confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radpostauth->id)],
                         ) ?>
                     </td>
                 </tr>
@@ -60,7 +60,7 @@
             <?= $this->Paginator->last(__d('radius', 'last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __d('radius', 'Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __d('radius', 'Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
         ) ?></p>
     </div>
 </div>

@@ -50,7 +50,7 @@ class RemovedIpAddressesController extends AppController
                 'Contracts',
                 'Customers',
             ],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('removedIpAddresses'));
@@ -95,7 +95,7 @@ class RemovedIpAddressesController extends AppController
         if ($this->getRequest()->is('post')) {
             $removedIpAddress = $this->RemovedIpAddresses->patchEntity(
                 $removedIpAddress,
-                $this->getRequest()->getData()
+                $this->getRequest()->getData(),
             );
 
             // TODO - add who and when deleted this
@@ -153,7 +153,7 @@ class RemovedIpAddressesController extends AppController
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $removedIpAddress = $this->RemovedIpAddresses->patchEntity(
                 $removedIpAddress,
-                $this->getRequest()->getData()
+                $this->getRequest()->getData(),
             );
 
             if ($this->RemovedIpAddresses->save($removedIpAddress)) {

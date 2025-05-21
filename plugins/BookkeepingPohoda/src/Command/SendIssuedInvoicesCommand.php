@@ -79,8 +79,8 @@ class SendIssuedInvoicesCommand extends Command
                         'bookkeeping_pohoda',
                         'Invoice - {0} - {1}',
                         $invoice->number,
-                        $invoice->customer->billing_email
-                    )
+                        $invoice->customer->billing_email,
+                    ),
                 );
 
                 $mailer = new Mailer('invoices');
@@ -91,7 +91,7 @@ class SendIssuedInvoicesCommand extends Command
                 $mailer->setSubject(
                     'NETAIR - ' . $invoice->text
                         . ' - ' . $invoice->number
-                        . ' - VS: ' . $invoice->variable_symbol
+                        . ' - VS: ' . $invoice->variable_symbol,
                 );
 
                 $mailer->setAttachments([

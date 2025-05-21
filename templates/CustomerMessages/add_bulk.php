@@ -15,7 +15,7 @@
             <?= $this->AuthLink->link(
                 __('List Customer Messages'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>

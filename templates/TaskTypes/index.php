@@ -40,12 +40,12 @@
                         <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $taskType->id],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
                             ['action' => 'delete', $taskType->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $taskType->id)]
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $taskType->id)],
                         ) ?>
                     </td>
                 </tr>
@@ -62,7 +62,7 @@
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
         ) ?></p>
     </div>
 </div>

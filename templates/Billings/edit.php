@@ -14,7 +14,7 @@
             <?= $this->AuthLink->postLink(
                 __('Delete'),
                 ['action' => 'delete', $billing->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id), 'class' => 'side-nav-item']
+                ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id), 'class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(__('List Billings'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>

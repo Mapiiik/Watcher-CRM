@@ -33,7 +33,7 @@ class ContractPDF extends TCPDF
         mixed $stretch = 0,
         mixed $ignore_min_height = false,
         mixed $calign = 'T',
-        mixed $valign = ''
+        mixed $valign = '',
     ): void {
         $valign = $valign == '' ? ($border == 0 ? 'T' : 'M') : $valign;
         parent::Cell($w, $h, $txt, $border, $ln, $align, $fill, $link, $stretch, $ignore_min_height, $calign, $valign);
@@ -505,7 +505,7 @@ class ContractPDF extends TCPDF
                 false,
                 false,
                 true,
-                ''
+                '',
             );
 
             $this->Ln(4);
@@ -609,7 +609,7 @@ class ContractPDF extends TCPDF
                 ) {
                     /** @psalm-suppress ImplicitToStringCast */
                     $sold_equipments_discount = $sold_equipments_discount->add(
-                        $sold_equipment->equipment_type->price->subtract($sold_equipment->equipment_type->price_with_obligation)
+                        $sold_equipment->equipment_type->price->subtract($sold_equipment->equipment_type->price_with_obligation),
                     );
 
                     $sold_equipment_price = $sold_equipment->equipment_type->price_with_obligation;
@@ -619,7 +619,7 @@ class ContractPDF extends TCPDF
 
                 /** @psalm-suppress ImplicitToStringCast */
                 $sold_equipments_value = $sold_equipments_value->add(
-                    $sold_equipment->equipment_type->price
+                    $sold_equipment->equipment_type->price,
                 );
 
                 /** @psalm-suppress ImplicitToStringCast */
@@ -720,7 +720,7 @@ class ContractPDF extends TCPDF
                         . ' byla tato zařízení Uživateli prodána pouze za ' . Number::currency($sold_equipments_value->subtract($sold_equipments_discount)->toFloat())
                         . ', proto v případě předčasného ukončení smlouvy z důvodu na straně Uživatele se tento zavazuje Poskytovateli doplatit zbývajících ' . Number::currency($sold_equipments_discount->toFloat())
                         . '.' . PHP_EOL,
-                    align: 'J'
+                    align: 'J',
                 );
                 $this->Ln(3);
             }
@@ -1350,9 +1350,9 @@ class ContractPDF extends TCPDF
                     45,
                     4,
                     Number::currency(
-                        Billing::calcVatBaseFromTotal($totalCost, $contract->customer->tax_rate->vat_rate)->toFloat()
+                        Billing::calcVatBaseFromTotal($totalCost, $contract->customer->tax_rate->vat_rate)->toFloat(),
                     ) . ' *',
-                    align: 'C'
+                    align: 'C',
                 );
                 $this->Ln();
 
@@ -1549,7 +1549,7 @@ class ContractPDF extends TCPDF
                 false,
                 false,
                 true,
-                ''
+                '',
             );
             $this->Ln(3);
             $this->MultiCell(180, 4, 'Všechny ceny uvedené v této smlouvě jsou vyjádřeny včetně daně z přidané hodnoty, pokud není výslovně stanoveno jinak.' . PHP_EOL, align: 'J');

@@ -34,7 +34,7 @@ trait UserSettingsTrait
             $redirect = Configure::read('Users.Profile.route');
         } else {
             $this->Flash->error(
-                __d('app_users', "You are not allowed to edit another user's settings.")
+                __d('app_users', "You are not allowed to edit another user's settings."),
             );
             $this->redirect(Configure::read('Users.Profile.route'));
 
@@ -51,7 +51,7 @@ trait UserSettingsTrait
                 'username',
                 'user_settings',
             ],
-            contain: []
+            contain: [],
         );
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {

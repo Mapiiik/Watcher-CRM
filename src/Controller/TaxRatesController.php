@@ -38,7 +38,7 @@ class TaxRatesController extends AppController
         $taxRates = $this->paginate($this->TaxRates->find(
             'all',
             contain: [],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('taxRates'));

@@ -22,7 +22,7 @@ class RadacctController extends AppController
             contain: [
                 'Accounts',
             ],
-            conditions: []
+            conditions: [],
         ));
 
         $this->set(compact('radaccts'));

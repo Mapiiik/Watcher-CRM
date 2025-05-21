@@ -11,7 +11,7 @@
             <?= $this->AuthLink->link(
                 __d('radius', 'List RADIUS Accounts'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
@@ -56,7 +56,7 @@
                 __d('radius', 'Submit'),
                 [
                     'confirm' => __d('radius', 'Are you sure you want to update related records for all accounts?'),
-                ]
+                ],
             ) ?>
             <?= $this->Form->end() ?>
         </div>

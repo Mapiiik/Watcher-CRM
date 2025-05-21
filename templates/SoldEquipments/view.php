@@ -11,7 +11,7 @@
             <?= $this->AuthLink->link(
                 __('Edit Sold Equipment'),
                 ['action' => 'edit', $soldEquipment->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete Sold Equipment'),
@@ -19,17 +19,17 @@
                 [
                     'confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id),
                     'class' => 'side-nav-item',
-                ]
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __('List Sold Equipments'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('New Sold Equipment'),
                 ['action' => 'add'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
@@ -43,7 +43,7 @@
                             <th><?= __('Customer') ?></th>
                             <td><?= $soldEquipment->__isset('customer') ? $this->Html->link(
                                 $soldEquipment->customer->name,
-                                ['controller' => 'Customers', 'action' => 'view', $soldEquipment->customer->id]
+                                ['controller' => 'Customers', 'action' => 'view', $soldEquipment->customer->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -60,7 +60,7 @@
                                     'action' => 'view',
                                     $soldEquipment->contract->id,
                                     'customer_id' => $soldEquipment->contract->customer_id,
-                                ]
+                                ],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -71,7 +71,7 @@
                                     'controller' => 'EquipmentTypes',
                                     'action' => 'view',
                                     $soldEquipment->equipment_type->id,
-                                ]
+                                ],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -102,7 +102,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $soldEquipment->creator->id,
-                                ]
+                                ],
                             ) : h($soldEquipment->created_by) ?></td>
                         </tr>
                         <tr>
@@ -117,7 +117,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $soldEquipment->modifier->id,
-                                ]
+                                ],
                             ) : h($soldEquipment->modified_by) ?></td>
                         </tr>
                     </table>

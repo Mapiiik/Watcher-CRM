@@ -11,22 +11,22 @@
             <?= $this->AuthLink->link(
                 __('Edit IP Network'),
                 ['action' => 'edit', $ipNetwork->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete IP Network'),
                 ['action' => 'delete', $ipNetwork->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $ipNetwork->id), 'class' => 'side-nav-item']
+                ['confirm' => __('Are you sure you want to delete # {0}?', $ipNetwork->id), 'class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('List IP Networks'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('New IP Network'),
                 ['action' => 'add'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
@@ -41,7 +41,7 @@
                             <td><?= $ipNetwork->__isset('customer') ?
                                 $this->Html->link(
                                     $ipNetwork->customer->name,
-                                    ['controller' => 'Customers', 'action' => 'view', $ipNetwork->customer->id]
+                                    ['controller' => 'Customers', 'action' => 'view', $ipNetwork->customer->id],
                                 ) : '' ?></td>
                         </tr>
                         <tr>
@@ -58,7 +58,7 @@
                                         'action' => 'view',
                                         $ipNetwork->contract->id,
                                         'customer_id' => $ipNetwork->contract->customer_id,
-                                    ]
+                                    ],
                                 ) : '' ?></td>
                         </tr>
                         <tr>
@@ -78,13 +78,13 @@
                                     __('Access Point') . ': ' . $this->Html->link(
                                         $range['access_point']['name'],
                                         env('WATCHER_NMS_URL') . '/access-points/view/' . $range['access_point']['id'],
-                                        ['target' => '_blank']
+                                        ['target' => '_blank'],
                                     ) . '<br>' : '';
                                 echo isset($range['id']) ?
                                     __('Range') . ': ' . $this->Html->link(
                                         $range['name'],
                                         env('WATCHER_NMS_URL') . '/ip-address-ranges/view/' . $range['id'],
-                                        ['target' => '_blank']
+                                        ['target' => '_blank'],
                                     ) . '<br>' : '';
                                     unset($range);
                             }
@@ -110,7 +110,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $ipNetwork->creator->id,
-                                ]
+                                ],
                             ) : h($ipNetwork->created_by) ?></td>
                         </tr>
                         <tr>
@@ -125,7 +125,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $ipNetwork->modifier->id,
-                                ]
+                                ],
                             ) : h($ipNetwork->modified_by) ?></td>
                         </tr>
                     </table>

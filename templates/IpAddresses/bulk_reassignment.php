@@ -82,7 +82,7 @@
                                 <td>
                                     <?= $ipAddress->__isset('customer') ? $this->Html->link(
                                         $ipAddress->customer->name,
-                                        ['controller' => 'Customers', 'action' => 'view', $ipAddress->customer->id]
+                                        ['controller' => 'Customers', 'action' => 'view', $ipAddress->customer->id],
                                     ) : '' ?>
                                 </td>
                                 <td><?= $ipAddress->__isset('customer') ? h($ipAddress->customer->number) : '' ?></td>
@@ -94,7 +94,7 @@
                                             'action' => 'view',
                                             $ipAddress->contract->id,
                                             'customer_id' => $ipAddress->contract->customer_id,
-                                        ]
+                                        ],
                                     ) : '' ?>
                                 </td>
                                 <td><?= h($ipAddress->ip_address) ?></td>

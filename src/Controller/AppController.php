@@ -79,7 +79,7 @@ class AppController extends Controller
      */
     public function paginate(
         RepositoryInterface|QueryInterface|string|null $object = null,
-        array $settings = []
+        array $settings = [],
     ): PaginatedInterface {
         try {
             // set maximal limit
@@ -92,11 +92,11 @@ class AppController extends Controller
         } catch (NotFoundException $e) {
             $this->Flash->error(__(
                 'Unable to find results on page {0}. Redirect to page 1.',
-                $this->getRequest()->getQuery('page')
+                $this->getRequest()->getQuery('page'),
             ));
             $response = $this->redirect(
                 ['?' => ['page' => '1'] + $this->getRequest()->getQueryParams()]
-                + $this->getRequest()->getParam('pass')
+                + $this->getRequest()->getParam('pass'),
             );
 
             // Redirect if not called from CLI
@@ -134,7 +134,7 @@ class AppController extends Controller
         if ($this->getRequest()->getQuery('language')) {
             $this->getRequest()->getSession()->write(
                 'Config.UI.language',
-                $this->getRequest()->getQuery('language')
+                $this->getRequest()->getQuery('language'),
             );
         }
 
@@ -143,8 +143,8 @@ class AppController extends Controller
             'UI.language',
             $this->getRequest()->getSession()->read(
                 'Config.UI.language',
-                $this->user_settings['language'] ?? I18n::getDefaultLocale()
-            )
+                $this->user_settings['language'] ?? I18n::getDefaultLocale(),
+            ),
         );
 
         # Language settings in i18n locale
@@ -156,7 +156,7 @@ class AppController extends Controller
         if ($this->getRequest()->getQuery('theme')) {
             $this->getRequest()->getSession()->write(
                 'Config.UI.theme',
-                $this->getRequest()->getQuery('theme')
+                $this->getRequest()->getQuery('theme'),
             );
         }
 
@@ -165,15 +165,15 @@ class AppController extends Controller
             'UI.theme',
             $this->getRequest()->getSession()->read(
                 'Config.UI.theme',
-                ($this->user_settings['theme'] ?? 'default')
-            )
+                ($this->user_settings['theme'] ?? 'default'),
+            ),
         );
 
         # Determine if we want to set a pagination limit
         if (is_numeric($this->getRequest()->getQuery('limit'))) {
             $this->getRequest()->getSession()->write(
                 'Config.UI.number_of_rows_per_page',
-                (int)$this->getRequest()->getQuery('limit')
+                (int)$this->getRequest()->getQuery('limit'),
             );
         }
 
@@ -182,15 +182,15 @@ class AppController extends Controller
             'UI.number_of_rows_per_page',
             $this->getRequest()->getSession()->read(
                 'Config.UI.number_of_rows_per_page',
-                (int)($this->user_settings['number_of_rows_per_page'] ?? 20)
-            )
+                (int)($this->user_settings['number_of_rows_per_page'] ?? 20),
+            ),
         );
 
         // Persisting audit log - current user
         /** @psalm-suppress RedundantCondition */
         if ($identity != null) {
             EventManager::instance()->on(
-                new RequestMetadata($this->getRequest(), $identity['username'])
+                new RequestMetadata($this->getRequest(), $identity['username']),
             );
         }
 
@@ -208,7 +208,7 @@ class AppController extends Controller
         $request = $this->getRequest();
 
         return Router::url(
-            ['?' => $query + $request->getQueryParams()] + $request->getParam('pass')
+            ['?' => $query + $request->getQueryParams()] + $request->getParam('pass'),
         );
     }
 }

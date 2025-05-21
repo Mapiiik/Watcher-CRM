@@ -11,12 +11,12 @@
             <?= $this->AuthLink->link(
                 __('Edit Phone'),
                 ['action' => 'edit', $phone->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete Phone'),
                 ['action' => 'delete', $phone->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $phone->id), 'class' => 'side-nav-item']
+                ['confirm' => __('Are you sure you want to delete # {0}?', $phone->id), 'class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(__('List Phones'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Phone'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
@@ -32,7 +32,7 @@
                             <th><?= __('Customer') ?></th>
                             <td><?= $phone->__isset('customer') ? $this->Html->link(
                                 $phone->customer->name,
-                                ['controller' => 'Customers', 'action' => 'view', $phone->customer->id]
+                                ['controller' => 'Customers', 'action' => 'view', $phone->customer->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -75,7 +75,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $phone->creator->id,
-                                ]
+                                ],
                             ) : h($phone->created_by) ?></td>
                         </tr>
                         <tr>
@@ -90,7 +90,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $phone->modifier->id,
-                                ]
+                                ],
                             ) : h($phone->modified_by) ?></td>
                         </tr>
                     </table>

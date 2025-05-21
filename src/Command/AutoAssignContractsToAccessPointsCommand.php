@@ -88,11 +88,11 @@ class AutoAssignContractsToAccessPointsCommand extends Command
                             Log::write(
                                 'debug',
                                 'Assigning access point ID: ' . $routeros_device['access_point_id']
-                                . ' to contract ' . $contract->number
+                                . ' to contract ' . $contract->number,
                             );
                             $io->info(
                                 'Assigning access point ID: ' . $routeros_device['access_point_id']
-                                . ' to contract ' . $contract->number
+                                . ' to contract ' . $contract->number,
                             );
 
                             $query = $contracts_table->updateQuery()
@@ -110,11 +110,11 @@ class AutoAssignContractsToAccessPointsCommand extends Command
                                 Log::write(
                                     'error',
                                     'Error when assigning access point ID: ' . $routeros_device['access_point_id']
-                                    . ' to contract ' . $contract->number
+                                    . ' to contract ' . $contract->number,
                                 );
                                 $io->error(
                                     'Error when assigning access point ID: ' . $routeros_device['access_point_id']
-                                    . ' to contract ' . $contract->number
+                                    . ' to contract ' . $contract->number,
                                 );
                             }
                         }

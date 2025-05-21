@@ -29,7 +29,7 @@
                         'action' => 'view',
                         $removedIpAddress->contract->id,
                         'customer_id' => $removedIpAddress->contract->customer_id,
-                    ]
+                    ],
                 ) : '' ?></td>
             <?php endif; ?>
             <td><?= h($removedIpAddress->ip_address) ?></td>
@@ -39,17 +39,17 @@
             <td class="actions">
                 <?= $this->AuthLink->link(
                     __('View'),
-                    ['controller' => 'RemovedIpAddresses', 'action' => 'view', $removedIpAddress->id]
+                    ['controller' => 'RemovedIpAddresses', 'action' => 'view', $removedIpAddress->id],
                 ) ?>
                 <?= $this->AuthLink->link(
                     __('Edit'),
                     ['controller' => 'RemovedIpAddresses', 'action' => 'edit', $removedIpAddress->id],
-                    ['class' => 'win-link']
+                    ['class' => 'win-link'],
                 ) ?>
                 <?= $this->AuthLink->postLink(
                     __('Delete'),
                     ['controller' => 'RemovedIpAddresses', 'action' => 'delete', $removedIpAddress->id],
-                    ['confirm' => __('Are you sure you want to delete # {0}?', $removedIpAddress->id)]
+                    ['confirm' => __('Are you sure you want to delete # {0}?', $removedIpAddress->id)],
                 ) ?>
             </td>
         </tr>

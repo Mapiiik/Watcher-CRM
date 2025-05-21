@@ -56,7 +56,7 @@ class AddressesController extends AppController
                 'Countries',
                 'Customers',
             ],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('addresses'));

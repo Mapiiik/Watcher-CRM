@@ -14,12 +14,12 @@
                 [
                     'confirm' => __d('ruian', 'Are you sure you want to delete # {0}?', $address->kod_adm),
                     'class' => 'side-nav-item',
-                ]
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __d('ruian', 'List Addresses'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>

@@ -112,7 +112,7 @@ class CreateInvoices extends AbstractMigration
                 [
                     'number',
                 ],
-                ['unique' => true]
+                ['unique' => true],
             )
             ->create();
     }

@@ -11,7 +11,7 @@
             <?= $this->AuthLink->link(
                 __('Edit Customer Label'),
                 ['action' => 'edit', $customerLabel->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete Customer Label'),
@@ -19,17 +19,17 @@
                 [
                     'confirm' => __('Are you sure you want to delete # {0}?', $customerLabel->id),
                     'class' => 'side-nav-item',
-                ]
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __('List Customer Labels'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('New Customer Label'),
                 ['action' => 'add'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
@@ -43,7 +43,7 @@
                             <th><?= __('Customer') ?></th>
                             <td><?= $customerLabel->__isset('customer') ? $this->Html->link(
                                 $customerLabel->customer->name,
-                                ['controller' => 'Customers', 'action' => 'view', $customerLabel->customer->id]
+                                ['controller' => 'Customers', 'action' => 'view', $customerLabel->customer->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -60,14 +60,14 @@
                                     'action' => 'view',
                                     $customerLabel->contract->id,
                                     'customer_id' => $customerLabel->contract->customer_id,
-                                ]
+                                ],
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Label') ?></th>
                             <td><?= $customerLabel->__isset('label') ? $this->Html->link(
                                 $customerLabel->label->name,
-                                ['controller' => 'Labels', 'action' => 'view', $customerLabel->label->id]
+                                ['controller' => 'Labels', 'action' => 'view', $customerLabel->label->id],
                             ) : '' ?></td>
                         </tr>
                     </table>
@@ -90,7 +90,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $customerLabel->creator->id,
-                                ]
+                                ],
                             ) : h($customerLabel->created_by) ?></td>
                         </tr>
                         <tr>
@@ -105,7 +105,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $customerLabel->modifier->id,
-                                ]
+                                ],
                             ) : h($customerLabel->modified_by) ?></td>
                         </tr>
                     </table>

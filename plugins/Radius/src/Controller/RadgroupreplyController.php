@@ -20,7 +20,7 @@ class RadgroupreplyController extends AppController
         $radgroupreplies = $this->paginate($this->Radgroupreply->find(
             'all',
             contain: [],
-            conditions: []
+            conditions: [],
         ));
 
         $this->set(compact('radgroupreplies'));

@@ -11,12 +11,12 @@
             <?= $this->AuthLink->link(
                 __('Edit Customer'),
                 ['action' => 'edit', $customer->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete Customer'),
                 ['action' => 'delete', $customer->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id), 'class' => 'side-nav-item']
+                ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id), 'class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(__('List Customers'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Customer'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
@@ -24,18 +24,18 @@
             <?= $this->AuthLink->link(
                 __('Print to PDF'),
                 ['action' => 'print', $customer->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <br>
             <?= $this->AuthLink->link(
                 __('List Customer Messages'),
                 ['controller' => 'CustomerMessages', 'action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('List Access Credentials'),
                 ['controller' => 'AccessCredentials', 'action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
         <br>
@@ -51,7 +51,7 @@
                             . $customer_label->created . PHP_EOL
                             . $customer_label->note,
                         'style' => 'background-color: ' . $customer_label->label->color . ';',
-                    ]
+                    ],
                 ) ?>
             <?php endforeach ?>
         </div>
@@ -59,7 +59,7 @@
             <?= $this->AuthLink->link(
                 __('New Customer Label'),
                 ['controller' => 'CustomerLabels', 'action' => 'add'],
-                ['class' => 'side-nav-item win-link']
+                ['class' => 'side-nav-item win-link'],
             ) ?>
         </div>
         <?php if (!($this->getRequest()->getQuery('win-link') == 'true')) : ?>
@@ -68,52 +68,52 @@
             <?= $this->AuthLink->link(
                 __('Customer'),
                 ['action' => 'view', $customer->id, '#' => 'customer'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('Logins'),
                 ['action' => 'view', $customer->id, '#' => 'logins'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('Addresses'),
                 ['action' => 'view', $customer->id, '#' => 'addresses'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('Contracts'),
                 ['action' => 'view', $customer->id, '#' => 'contracts'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('Billings'),
                 ['action' => 'view', $customer->id, '#' => 'billings'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('RADIUS Accounts'),
                 ['action' => 'view', $customer->id, '#' => 'radius-accounts'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('Equipments'),
                 ['action' => 'view', $customer->id, '#' => 'borrowed-equipments'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('IP Addresses'),
                 ['action' => 'view', $customer->id, '#' => 'ip_addresses'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('Invoices'),
                 ['action' => 'view', $customer->id, '#' => 'invoices'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('Tasks'),
                 ['action' => 'view', $customer->id, '#' => 'tasks'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
         <?php endif; ?>
@@ -123,7 +123,7 @@
             <?= $this->AuthLink->link(
                 __('Print to PDF'),
                 ['action' => 'print', $customer->id],
-                ['class' => 'button float-right']
+                ['class' => 'button float-right'],
             ) ?>
             <a id="customer"></a>
             <?= __('Customer No.') ?><h3><?= h($customer->number) ?></h3>
@@ -197,7 +197,7 @@
                             <th><?= __('Tax Rate') ?></th>
                             <td><?= $customer->__isset('tax_rate') ? $this->Html->link(
                                 $customer->tax_rate->name,
-                                ['controller' => 'TaxRates', 'action' => 'view', $customer->tax_rate->id]
+                                ['controller' => 'TaxRates', 'action' => 'view', $customer->tax_rate->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -244,7 +244,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $customer->creator->id,
-                                ]
+                                ],
                             ) : h($customer->created_by) ?></td>
                         </tr>
                         <tr>
@@ -259,7 +259,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $customer->modifier->id,
-                                ]
+                                ],
                             ) : h($customer->modified_by) ?></td>
                         </tr>
 
@@ -290,7 +290,7 @@
                         <?= $this->AuthLink->link(
                             __('New Email'),
                             ['controller' => 'Emails', 'action' => 'add'],
-                            ['class' => 'button button-small float-right win-link']
+                            ['class' => 'button button-small float-right win-link'],
                         ) ?>
                         <h4><?= __('Emails') ?></h4>
                         <?php if (!empty($customer->emails)) : ?>
@@ -314,17 +314,17 @@
                                     <td class="actions">
                                         <?= $this->AuthLink->link(
                                             __('View'),
-                                            ['controller' => 'Emails', 'action' => 'view', $email->id]
+                                            ['controller' => 'Emails', 'action' => 'view', $email->id],
                                         ) ?>
                                         <?= $this->AuthLink->link(
                                             __('Edit'),
                                             ['controller' => 'Emails', 'action' => 'edit', $email->id],
-                                            ['class' => 'win-link']
+                                            ['class' => 'win-link'],
                                         ) ?>
                                         <?= $this->AuthLink->postLink(
                                             __('Delete'),
                                             ['controller' => 'Emails', 'action' => 'delete', $email->id],
-                                            ['confirm' => __('Are you sure you want to delete # {0}?', $email->id)]
+                                            ['confirm' => __('Are you sure you want to delete # {0}?', $email->id)],
                                         ) ?>
                                     </td>
                                 </tr>
@@ -339,7 +339,7 @@
                         <?= $this->AuthLink->link(
                             __('New Phone'),
                             ['controller' => 'Phones', 'action' => 'add'],
-                            ['class' => 'button button-small float-right win-link']
+                            ['class' => 'button button-small float-right win-link'],
                         ) ?>
                         <h4><?= __('Phones') ?></h4>
                         <?php if (!empty($customer->phones)) : ?>
@@ -363,17 +363,17 @@
                                     <td class="actions">
                                         <?= $this->AuthLink->link(
                                             __('View'),
-                                            ['controller' => 'Phones', 'action' => 'view', $phone->id]
+                                            ['controller' => 'Phones', 'action' => 'view', $phone->id],
                                         ) ?>
                                         <?= $this->AuthLink->link(
                                             __('Edit'),
                                             ['controller' => 'Phones', 'action' => 'edit', $phone->id],
-                                            ['class' => 'win-link']
+                                            ['class' => 'win-link'],
                                         ) ?>
                                         <?= $this->AuthLink->postLink(
                                             __('Delete'),
                                             ['controller' => 'Phones', 'action' => 'delete', $phone->id],
-                                            ['confirm' => __('Are you sure you want to delete # {0}?', $phone->id)]
+                                            ['confirm' => __('Are you sure you want to delete # {0}?', $phone->id)],
                                         ) ?>
                                     </td>
                                 </tr>
@@ -388,7 +388,7 @@
                 <?= $this->AuthLink->link(
                     __('New Login'),
                     ['controller' => 'Logins', 'action' => 'add'],
-                    ['class' => 'button button-small float-right win-link']
+                    ['class' => 'button button-small float-right win-link'],
                 ) ?>
                 <h4 id="logins"><?= __('Logins') ?></h4>
                 <?php if (!empty($customer->logins)) : ?>
@@ -416,17 +416,17 @@
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
-                                    ['controller' => 'Logins', 'action' => 'view', $login->id]
+                                    ['controller' => 'Logins', 'action' => 'view', $login->id],
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __('Edit'),
                                     ['controller' => 'Logins', 'action' => 'edit', $login->id],
-                                    ['class' => 'win-link']
+                                    ['class' => 'win-link'],
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
                                     __('Delete'),
                                     ['controller' => 'Logins', 'action' => 'delete', $login->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $login->id)]
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $login->id)],
                                 ) ?>
                             </td>
                         </tr>
@@ -439,7 +439,7 @@
                 <?= $this->AuthLink->link(
                     __('New Address'),
                     ['controller' => 'Addresses', 'action' => 'add'],
-                    ['class' => 'button button-small float-right win-link']
+                    ['class' => 'button button-small float-right win-link'],
                 ) ?>
                 <h4 id="addresses"><?= __('Addresses') ?></h4>
                 <?php if (!empty($customer->addresses)) : ?>
@@ -487,29 +487,29 @@
                                     __('Google Maps'),
                                     'https://maps.google.com/maps?q='
                                         . h("{$address->gps_y},{$address->gps_x}"),
-                                    ['target' => '_blank']
+                                    ['target' => '_blank'],
                                 ) : '' ?>
                                 <?= $address->__isset('gps_x') && $address->__isset('gps_y') ? $this->Html->link(
                                     __('Mapy.cz'),
                                     'https://mapy.cz/zakladni?source=coor&id='
                                         . h("{$address->gps_x},{$address->gps_y}"),
-                                    ['target' => '_blank']
+                                    ['target' => '_blank'],
                                 ) : ''?>
                             </td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
-                                    ['controller' => 'Addresses', 'action' => 'view', $address->id]
+                                    ['controller' => 'Addresses', 'action' => 'view', $address->id],
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __('Edit'),
                                     ['controller' => 'Addresses', 'action' => 'edit', $address->id],
-                                    ['class' => 'win-link']
+                                    ['class' => 'win-link'],
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
                                     __('Delete'),
                                     ['controller' => 'Addresses', 'action' => 'delete', $address->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $address->id)]
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $address->id)],
                                 ) ?>
                             </td>
                         </tr>
@@ -522,7 +522,7 @@
                 <?= $this->AuthLink->link(
                     __('New Contract'),
                     ['controller' => 'Contracts', 'action' => 'add'],
-                    ['class' => 'button button-small float-right']
+                    ['class' => 'button button-small float-right'],
                 ) ?>
                 <h4 id="contracts"><?= __('Contracts') ?></h4>
                 <?php if (!empty($customer->contracts)) : ?>
@@ -560,17 +560,17 @@
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
-                                    ['controller' => 'Contracts', 'action' => 'view', $contract->id]
+                                    ['controller' => 'Contracts', 'action' => 'view', $contract->id],
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __('Edit'),
                                     ['controller' => 'Contracts', 'action' => 'edit', $contract->id],
-                                    ['class' => 'win-link']
+                                    ['class' => 'win-link'],
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
                                     __('Delete'),
                                     ['controller' => 'Contracts', 'action' => 'delete', $contract->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $contract->id)]
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $contract->id)],
                                 ) ?>
                             </td>
                         </tr>
@@ -584,7 +584,7 @@
                 <?= $this->AuthLink->link(
                     __('New Billing'),
                     ['controller' => 'Billings', 'action' => 'add'],
-                    ['class' => 'button button-small float-right win-link']
+                    ['class' => 'button button-small float-right win-link'],
                 ) ?>
                 <h4 id="billings"><?= __('Related Billings') ?></h4>
                 <?= $this->element('Contracts/Billings', [
@@ -596,12 +596,12 @@
                 <?= $this->AuthLink->link(
                     __('New RADIUS Account'),
                     ['plugin' => 'Radius', 'controller' => 'Accounts', 'action' => 'add'],
-                    ['class' => 'button button-small float-right win-link']
+                    ['class' => 'button button-small float-right win-link'],
                 ) ?>
                 <h4 id="radius-accounts"><?= __('Related RADIUS Accounts') ?></h4>
                 <?= $this->cell(
                     'Radius.Accounts',
-                    [['Accounts.customer_id' => $customer->id]]
+                    [['Accounts.customer_id' => $customer->id]],
                 ) ?>
             </div>
             <div class="row">
@@ -610,7 +610,7 @@
                         <?= $this->AuthLink->link(
                             __('New Borrowed Equipment'),
                             ['controller' => 'BorrowedEquipments', 'action' => 'add'],
-                            ['class' => 'button button-small float-right win-link']
+                            ['class' => 'button button-small float-right win-link'],
                         ) ?>
                         <h4 id="borrowed-equipments"><?= __('Related Borrowed Equipments') ?></h4>
                         <?= $this->element('Contracts/BorrowedEquipments', [
@@ -624,7 +624,7 @@
                         <?= $this->AuthLink->link(
                             __('New Sold Equipment'),
                             ['controller' => 'SoldEquipments', 'action' => 'add'],
-                            ['class' => 'button button-small float-right win-link']
+                            ['class' => 'button button-small float-right win-link'],
                         ) ?>
                         <h4><?= __('Related Sold Equipments') ?></h4>
                         <?= $this->element('Contracts/SoldEquipments', [
@@ -640,12 +640,12 @@
                         <?= $this->AuthLink->link(
                             __('New IP Address'),
                             ['controller' => 'IpAddresses', 'action' => 'add'],
-                            ['class' => 'button button-small float-right win-link']
+                            ['class' => 'button button-small float-right win-link'],
                         ) ?>
                         <?= $this->AuthLink->link(
                             __('New IP Address From Range'),
                             ['controller' => 'IpAddresses', 'action' => 'addFromRange'],
-                            ['class' => 'button button-small float-right win-link']
+                            ['class' => 'button button-small float-right win-link'],
                         ) ?>
                         <h4 id="ip_addresses"><?= __('Related IP Addresses') ?></h4>
                         <?= $this->element('Contracts/IpAddresses', [
@@ -659,7 +659,7 @@
                         <?= $this->AuthLink->link(
                             __('New IP Network'),
                             ['controller' => 'IpNetworks', 'action' => 'add'],
-                            ['class' => 'button button-small float-right win-link']
+                            ['class' => 'button button-small float-right win-link'],
                         ) ?>
                         <h4><?= __('Related IP Networks') ?></h4>
                         <?= $this->element('Contracts/IpNetworks', [
@@ -675,7 +675,7 @@
                         <?= $this->AuthLink->link(
                             __('New Removed IP Address'),
                             ['controller' => 'RemovedIpAddresses', 'action' => 'add'],
-                            ['class' => 'button button-small float-right win-link']
+                            ['class' => 'button button-small float-right win-link'],
                         ) ?>
                         <h4><?= __('Related Removed IP Addresses') ?></h4>
                         <?= $this->element('Contracts/RemovedIpAddresses', [
@@ -689,7 +689,7 @@
                         <?= $this->AuthLink->link(
                             __('New Removed IP Network'),
                             ['controller' => 'RemovedIpNetworks', 'action' => 'add'],
-                            ['class' => 'button button-small float-right win-link']
+                            ['class' => 'button button-small float-right win-link'],
                         ) ?>
                         <h4><?= __('Related Removed IP Networks') ?></h4>
                         <?= $this->element('Contracts/RemovedIpNetworks', [
@@ -712,7 +712,7 @@
                     [
                         'class' => 'button button-small float-right',
                         'confirm' => __('Are you sure you want to unblock # {0}?', $customer->id),
-                    ]
+                    ],
                 ) ?>
                 <?= $this->AuthLink->postLink(
                     __('Block Debtor'),
@@ -725,20 +725,20 @@
                     [
                         'class' => 'button button-small float-right',
                         'confirm' => __('Are you sure you want to block # {0}?', $customer->id),
-                    ]
+                    ],
                 ) ?>
                 <h4 id="invoices"><?= __('Invoices') ?></h4>
                 <?= $this->cell(
                     'BookkeepingPohoda.Invoices',
                     [['Invoices.customer_id' => $customer->id]],
-                    ['show_customers' => false]
+                    ['show_customers' => false],
                 ) ?>
             </div>
             <div class="related">
                 <?= $this->AuthLink->link(
                     __('New Task'),
                     ['controller' => 'Tasks', 'action' => 'add'],
-                    ['class' => 'button button-small float-right win-link']
+                    ['class' => 'button button-small float-right win-link'],
                 ) ?>
                 <h4 id="tasks"><?= __('Tasks') ?></h4>
                 <?php if (!empty($customer->tasks)) : ?>
@@ -771,24 +771,24 @@
                                         'action' => 'view',
                                         $task->contract->id,
                                         'customer_id' => $task->contract->customer_id,
-                                    ]
+                                    ],
                                 ) : '' ?>
                             </td>
                             <td><?= $task->__isset('dealer') ? h($task->dealer->name) : '' ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
-                                    ['controller' => 'Tasks', 'action' => 'view', $task->id]
+                                    ['controller' => 'Tasks', 'action' => 'view', $task->id],
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __('Edit'),
                                     ['controller' => 'Tasks', 'action' => 'edit', $task->id],
-                                    ['class' => 'win-link']
+                                    ['class' => 'win-link'],
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
                                     __('Delete'),
                                     ['controller' => 'Tasks', 'action' => 'delete', $task->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $task->number)]
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $task->number)],
                                 ) ?>
                             </td>
                         </tr>

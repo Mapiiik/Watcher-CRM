@@ -62,5 +62,5 @@ use Cake\TestSuite\Fixture\SchemaLoader;
         dirname(__DIR__) . '/config/ManualMigrations/2001_PreMigrateRelatedKeysToUuidOnAccounts.sql',
         dirname(__DIR__) . '/config/ManualMigrations/2002_PostMigrateRelatedKeysToUuidOnAccounts.sql',
     ],
-    'test'
+    'test',
 );

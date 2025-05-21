@@ -61,7 +61,7 @@ class AccountsCell extends Cell
                         [
                             'Radacct.username = RadacctLast.username',
                             'Radacct.acctstarttime = RadacctLast.max_acctstarttime',
-                        ]
+                        ],
                     );
             },
             'Radreply',

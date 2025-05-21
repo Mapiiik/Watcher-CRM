@@ -20,7 +20,7 @@
     <?= $this->AuthLink->link(
         __('New Dealer Commission'),
         ['action' => 'add'],
-        ['class' => 'button float-right win-link']
+        ['class' => 'button float-right win-link'],
     ) ?>
     <h3><?= __('Dealer Commissions') ?></h3>
     <div class="table-responsive">
@@ -40,13 +40,13 @@
                     <td>
                         <?= $dealerCommission->__isset('dealer') ? $this->Html->link(
                             $dealerCommission->dealer->name,
-                            ['controller' => 'Customers', 'action' => 'view', $dealerCommission->dealer->id]
+                            ['controller' => 'Customers', 'action' => 'view', $dealerCommission->dealer->id],
                         ) : '' ?>
                     </td>
                     <td>
                         <?= $dealerCommission->__isset('commission') ? $this->Html->link(
                             $dealerCommission->commission->name,
-                            ['controller' => 'Commissions', 'action' => 'view', $dealerCommission->commission->id]
+                            ['controller' => 'Commissions', 'action' => 'view', $dealerCommission->commission->id],
                         ) : '' ?>
                     </td>
                     <td><?= $dealerCommission->fixed === null ?
@@ -58,12 +58,12 @@
                         <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $dealerCommission->id],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
                             ['action' => 'delete', $dealerCommission->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $dealerCommission->id)]
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $dealerCommission->id)],
                         ) ?>
                     </td>
                 </tr>
@@ -80,7 +80,7 @@
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
         ) ?></p>
     </div>
 </div>

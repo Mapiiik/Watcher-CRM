@@ -38,7 +38,7 @@ class TaskStatesController extends AppController
         $taskStates = $this->paginate($this->TaskStates->find(
             'all',
             contain: [],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('taskStates'));

@@ -11,7 +11,7 @@
             <?= $this->AuthLink->link(
                 __('Edit Equipment Type'),
                 ['action' => 'edit', $equipmentType->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete Equipment Type'),
@@ -19,17 +19,17 @@
                 [
                     'confirm' => __('Are you sure you want to delete # {0}?', $equipmentType->id),
                     'class' => 'side-nav-item',
-                ]
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __('List Equipment Types'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('New Equipment Type'),
                 ['action' => 'add'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
@@ -73,7 +73,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $equipmentType->creator->id,
-                                ]
+                                ],
                             ) : h($equipmentType->created_by) ?></td>
                         </tr>
                         <tr>
@@ -88,7 +88,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $equipmentType->modifier->id,
-                                ]
+                                ],
                             ) : h($equipmentType->modified_by) ?></td>
                         </tr>
                     </table>
@@ -113,7 +113,7 @@
                             <td><?= $borrowedEquipment->__isset('customer') ?
                                 $this->Html->link(
                                     $borrowedEquipment->customer->name,
-                                    ['controller' => 'Customers', 'action' => 'view', $borrowedEquipment->customer->id]
+                                    ['controller' => 'Customers', 'action' => 'view', $borrowedEquipment->customer->id],
                                 ) : '' ?></td>
                             <td><?= $borrowedEquipment->__isset('customer') ?
                                 h($borrowedEquipment->customer->number) : ''
@@ -126,7 +126,7 @@
                                         'action' => 'view',
                                         $borrowedEquipment->contract->id,
                                         'customer_id' => $borrowedEquipment->contract->customer_id,
-                                    ]
+                                    ],
                                 ) : '' ?></td>
                             <td><?= h($borrowedEquipment->serial_number) ?></td>
                             <td><?= h($borrowedEquipment->borrowed_from) ?></td>
@@ -134,12 +134,12 @@
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
-                                    ['controller' => 'BorrowedEquipments', 'action' => 'view', $borrowedEquipment->id]
+                                    ['controller' => 'BorrowedEquipments', 'action' => 'view', $borrowedEquipment->id],
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __('Edit'),
                                     ['controller' => 'BorrowedEquipments', 'action' => 'edit', $borrowedEquipment->id],
-                                    ['class' => 'win-link']
+                                    ['class' => 'win-link'],
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
                                     __('Delete'),
@@ -148,7 +148,7 @@
                                         'action' => 'delete',
                                         $borrowedEquipment->id,
                                     ],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id)]
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id)],
                                 ) ?>
                             </td>
                         </tr>
@@ -175,7 +175,7 @@
                             <td><?= $soldEquipment->__isset('customer') ?
                                 $this->Html->link(
                                     $soldEquipment->customer->name,
-                                    ['controller' => 'Customers', 'action' => 'view', $soldEquipment->customer->id]
+                                    ['controller' => 'Customers', 'action' => 'view', $soldEquipment->customer->id],
                                 ) : '' ?></td>
                             <td><?= $soldEquipment->__isset('customer') ?
                                 h($soldEquipment->customer->number) : '' ?></td>
@@ -187,24 +187,24 @@
                                         'action' => 'view',
                                         $soldEquipment->contract->id,
                                         'customer_id' => $soldEquipment->contract->customer_id,
-                                    ]
+                                    ],
                                 ) : '' ?></td>
                             <td><?= h($soldEquipment->serial_number) ?></td>
                             <td><?= h($soldEquipment->date_of_sale) ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
-                                    ['controller' => 'SoldEquipments', 'action' => 'view', $soldEquipment->id]
+                                    ['controller' => 'SoldEquipments', 'action' => 'view', $soldEquipment->id],
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __('Edit'),
                                     ['controller' => 'SoldEquipments', 'action' => 'edit', $soldEquipment->id],
-                                    ['class' => 'win-link']
+                                    ['class' => 'win-link'],
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
                                     __('Delete'),
                                     ['controller' => 'SoldEquipments', 'action' => 'delete', $soldEquipment->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id)]
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id)],
                                 ) ?>
                             </td>
                         </tr>

@@ -186,7 +186,7 @@ class Billing extends Entity
     public static function calcVatFromTotal(Decimal $total, float $vat_rate): Decimal
     {
         return $total->subtract(
-            $total->divide(1 + $vat_rate, 4)->round(2)
+            $total->divide(1 + $vat_rate, 4)->round(2),
         );
     }
 
@@ -201,7 +201,7 @@ class Billing extends Entity
     {
         /** @psalm-suppress ImplicitToStringCast */
         return $total->subtract(
-            self::calcVatFromTotal($total, $vat_rate)
+            self::calcVatFromTotal($total, $vat_rate),
         );
     }
 
@@ -211,7 +211,7 @@ class Billing extends Entity
     private static function decimalRoundV2(
         Decimal $number,
         int $scale = 0,
-        int $roundMode = Decimal::ROUND_HALF_UP
+        int $roundMode = Decimal::ROUND_HALF_UP,
     ): Decimal {
         $exponent = $scale + 6;
 
@@ -221,10 +221,10 @@ class Billing extends Entity
                 $result = bcdiv(
                     bcadd(
                         bcmul((string)$number, $e, 0),
-                        $number->isNegative() ? '-999999' : '0'
+                        $number->isNegative() ? '-999999' : '0',
                     ),
                     $e,
-                    $scale
+                    $scale,
                 );
 
                 break;
@@ -232,10 +232,10 @@ class Billing extends Entity
                 $result = bcdiv(
                     bcadd(
                         bcmul((string)$number, $e, 0),
-                        $number->isNegative() ? '0' : '999999'
+                        $number->isNegative() ? '0' : '999999',
                     ),
                     $e,
-                    $scale
+                    $scale,
                 );
 
                 break;
@@ -244,10 +244,10 @@ class Billing extends Entity
                 $result = bcdiv(
                     bcadd(
                         bcmul((string)$number, $e, 0),
-                        $number->isNegative() ? '-500000' : '500000'
+                        $number->isNegative() ? '-500000' : '500000',
                     ),
                     $e,
-                    $scale
+                    $scale,
                 );
         }
 
@@ -283,7 +283,7 @@ class Billing extends Entity
                 'CEIL' => Decimal::ROUND_CEIL,
                 'FLOOR' => Decimal::ROUND_FLOOR,
                 default => throw new Exception('BILLING_PERIOD_ROUNDING_TYPE has an invalid value.'),
-            }
+            },
         );
     }
 
@@ -344,7 +344,7 @@ class Billing extends Entity
                 return self::roundForBillingPeriod(
                     $this->total_price
                         ->multiply($this->billing_from->diffInDays($until->addDays(1)))
-                        ->divide($period_days, 4)
+                        ->divide($period_days, 4),
                 );
             }
         } else { // billing_until is limiting
@@ -353,7 +353,7 @@ class Billing extends Entity
                 return self::roundForBillingPeriod(
                     $this->total_price
                     ->multiply($from->diffInDays($this->billing_until->addDays(1)))
-                    ->divide($period_days, 4)
+                    ->divide($period_days, 4),
                 );
             }
             // later billing_from and earlier billing_until
@@ -361,7 +361,7 @@ class Billing extends Entity
                 return self::roundForBillingPeriod(
                     $this->total_price
                         ->multiply($this->billing_from->diffInDays($this->billing_until->addDays(1)))
-                        ->divide($period_days, 4)
+                        ->divide($period_days, 4),
                 );
             }
         }

@@ -11,7 +11,7 @@
             <?= $this->AuthLink->link(
                 __('Edit Removed IP Network'),
                 ['action' => 'edit', $removedIpNetwork->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete Removed IP Network'),
@@ -19,17 +19,17 @@
                 [
                     'confirm' => __('Are you sure you want to delete # {0}?', $removedIpNetwork->id),
                     'class' => 'side-nav-item',
-                ]
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __('List Removed IP Networks'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('New Removed IP Network'),
                 ['action' => 'add'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
@@ -44,7 +44,7 @@
                             <td><?= $removedIpNetwork->__isset('customer') ?
                                 $this->Html->link(
                                     $removedIpNetwork->customer->name,
-                                    ['controller' => 'Customers', 'action' => 'view', $removedIpNetwork->customer->id]
+                                    ['controller' => 'Customers', 'action' => 'view', $removedIpNetwork->customer->id],
                                 ) : '' ?></td>
                         </tr>
                         <tr>
@@ -63,7 +63,7 @@
                                         'action' => 'view',
                                         $removedIpNetwork->contract->id,
                                         'customer_id' => $removedIpNetwork->contract->customer_id,
-                                    ]
+                                    ],
                                 ) : '' ?></td>
                         </tr>
                         <tr>
@@ -83,13 +83,13 @@
                                     __('Access Point') . ': ' . $this->Html->link(
                                         $range['access_point']['name'],
                                         env('WATCHER_NMS_URL') . '/access-points/view/' . $range['access_point']['id'],
-                                        ['target' => '_blank']
+                                        ['target' => '_blank'],
                                     ) . '<br>' : '';
                                 echo isset($range['id']) ?
                                     __('Range') . ': ' . $this->Html->link(
                                         $range['name'],
                                         env('WATCHER_NMS_URL') . '/ip-address-ranges/view/' . $range['id'],
-                                        ['target' => '_blank']
+                                        ['target' => '_blank'],
                                     ) . '<br>' : '';
                                     unset($range);
                             }
@@ -115,7 +115,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $removedIpNetwork->creator->id,
-                                ]
+                                ],
                             ) : h($removedIpNetwork->created_by) ?></td>
                         </tr>
                         <tr>
@@ -130,7 +130,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $removedIpNetwork->modifier->id,
-                                ]
+                                ],
                             ) : h($removedIpNetwork->modified_by) ?></td>
                         </tr>
                         <tr>
@@ -145,7 +145,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $removedIpNetwork->remover->id,
-                                ]
+                                ],
                             ) : h($removedIpNetwork->removed_by) ?></td>
                         </tr>
                     </table>

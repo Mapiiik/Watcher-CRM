@@ -52,7 +52,7 @@ class AccountsTable extends AppTable
 
         $this->getSchema()->setColumnType(
             'type',
-            EnumType::from(AccountType::class)
+            EnumType::from(AccountType::class),
         );
 
         $this->addBehavior('Timestamp');

@@ -35,7 +35,7 @@
                     <th><?= $this->Paginator->sort('installation_technician_id') ?></th>
                     <th><?= $this->Paginator->sort(
                         'uninstallation_date',
-                        __('Uninstallation/Cancellation Date')
+                        __('Uninstallation/Cancellation Date'),
                     ) ?></th>
                     <th><?= $this->Paginator->sort('uninstallation_technician_id') ?></th>
                     <th><?= $this->Paginator->sort('termination_date', __('Date of Termination of Services')) ?></th>
@@ -50,24 +50,24 @@
                     <td><?=
                         $contract->__isset('customer') ? $this->Html->link(
                             $contract->customer->name,
-                            ['controller' => 'Customers', 'action' => 'view', $contract->customer->id]
+                            ['controller' => 'Customers', 'action' => 'view', $contract->customer->id],
                         ) : '' ?></td>
                     <td><?= $contract->__isset('customer') ? h($contract->customer->number) : '' ?></td>
                     <td><?= h($contract->number) ?></td>
                     <td><?=
                         $contract->__isset('contract_state') ? $this->Html->link(
                             $contract->contract_state->name,
-                            ['controller' => 'ContractStates', 'action' => 'view', $contract->contract_state->id]
+                            ['controller' => 'ContractStates', 'action' => 'view', $contract->contract_state->id],
                         ) : '' ?></td>
                     <td><?=
                         $contract->__isset('service_type') ? $this->Html->link(
                             $contract->service_type->name,
-                            ['controller' => 'ServiceTypes', 'action' => 'view', $contract->service_type->id]
+                            ['controller' => 'ServiceTypes', 'action' => 'view', $contract->service_type->id],
                         ) : '' ?></td>
                     <td><?=
                         $contract->__isset('installation_address') ? $this->Html->link(
                             $contract->installation_address->full_address,
-                            ['controller' => 'Addresses', 'action' => 'view', $contract->installation_address->id]
+                            ['controller' => 'Addresses', 'action' => 'view', $contract->installation_address->id],
                         ) : '' ?></td>
                     <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
                     <td><?= $contract->__isset('access_point') ? h($contract->access_point['name']) : '' ?></td>
@@ -75,7 +75,7 @@
                     <td><?=
                         $contract->__isset('installation_technician') ? $this->Html->link(
                             $contract->installation_technician->name,
-                            ['controller' => 'Customers', 'action' => 'view', $contract->installation_technician->id]
+                            ['controller' => 'Customers', 'action' => 'view', $contract->installation_technician->id],
                         ) : '' ?></td>
                     <td><?= h($contract->uninstallation_date) ?></td>
                     <td><?=
@@ -85,13 +85,13 @@
                                 'controller' => 'Customers',
                                 'action' => 'view',
                                 $contract->uninstallation_technician->id,
-                            ]
+                            ],
                         ) : '' ?></td>
                     <td><?= h($contract->termination_date) ?></td>
                     <td><?=
                         $contract->__isset('commission') ? $this->Html->link(
                             $contract->commission->name,
-                            ['controller' => 'Commissions', 'action' => 'view', $contract->commission->id]
+                            ['controller' => 'Commissions', 'action' => 'view', $contract->commission->id],
                         ) : '' ?></td>
                     <td><?= h($contract->subscriber_verification_code) ?></td>
                     <td class="actions">
@@ -99,12 +99,12 @@
                         <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $contract->id],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
                             ['action' => 'delete', $contract->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $contract->id)]
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $contract->id)],
                         ) ?>
                     </td>
                 </tr>
@@ -121,7 +121,7 @@
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
         ) ?></p>
     </div>
 </div>

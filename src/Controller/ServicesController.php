@@ -42,7 +42,7 @@ class ServicesController extends AppController
                 'Queues',
                 'ServiceTypes',
             ],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('services'));

@@ -11,7 +11,7 @@
             <?= $this->AuthLink->link(
                 __('Edit Customer Message'),
                 ['action' => 'edit', $customerMessage->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete Customer Message'),
@@ -19,22 +19,22 @@
                 [
                     'confirm' => __('Are you sure you want to delete # {0}?', $customerMessage->id),
                     'class' => 'side-nav-item',
-                ]
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __('List Customer Messages'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('New Customer Message'),
                 ['action' => 'add'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('New Bulk Customer Message'),
                 ['action' => 'add-bulk'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
@@ -49,7 +49,7 @@
                             <td><?= $customerMessage->hasValue('customer') ?
                                 $this->AuthLink->link(
                                     $customerMessage->customer->name,
-                                    ['controller' => 'Customers', 'action' => 'view', $customerMessage->customer->id]
+                                    ['controller' => 'Customers', 'action' => 'view', $customerMessage->customer->id],
                                 ) : '' ?></td>
                         </tr>
                         <tr>
@@ -104,7 +104,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $customerMessage->creator->id,
-                                ]
+                                ],
                             ) : h($customerMessage->created_by) ?></td>
                         </tr>
                         <tr>
@@ -119,7 +119,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $customerMessage->modifier->id,
-                                ]
+                                ],
                             ) : h($customerMessage->modified_by) ?></td>
                         </tr>
                     </table>
@@ -134,7 +134,7 @@
                 <pre><?= $customerMessage->__isset('attachments') ?
                     h(json_encode(
                         $customerMessage->attachments,
-                        JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
+                        JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES,
                     )) : '' ?></pre>
             </div>
         </div>

@@ -45,7 +45,7 @@ class LoginsTable extends AppTable
 
         $this->getSchema()->setColumnType(
             'rights',
-            EnumType::from(LoginRights::class)
+            EnumType::from(LoginRights::class),
         );
 
         $this->addBehavior('Timestamp');

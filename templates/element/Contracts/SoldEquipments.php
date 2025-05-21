@@ -28,7 +28,7 @@
                         'action' => 'view',
                         $soldEquipment->contract->id,
                         'customer_id' => $soldEquipment->contract->customer_id,
-                    ]
+                    ],
                 ) : '' ?></td>
             <?php endif; ?>
             <td><?= $soldEquipment->__isset('equipment_type') ?
@@ -38,19 +38,19 @@
                         'controller' => 'EquipmentTypes',
                         'action' => 'view',
                         $soldEquipment->equipment_type->id,
-                    ]
+                    ],
                 ) : '' ?></td>
             <td><?= h($soldEquipment->serial_number) ?></td>
             <td><?= h($soldEquipment->date_of_sale) ?></td>
             <td class="actions">
                 <?= $this->AuthLink->link(
                     __('View'),
-                    ['controller' => 'SoldEquipments', 'action' => 'view', $soldEquipment->id]
+                    ['controller' => 'SoldEquipments', 'action' => 'view', $soldEquipment->id],
                 ) ?>
                 <?= $this->AuthLink->link(
                     __('Edit'),
                     ['controller' => 'SoldEquipments', 'action' => 'edit', $soldEquipment->id],
-                    ['class' => 'win-link']
+                    ['class' => 'win-link'],
                 ) ?>
                 <?= $this->AuthLink->postLink(
                     __('Delete'),
@@ -62,9 +62,9 @@
                     [
                         'confirm' => __(
                             'Are you sure you want to delete # {0}?',
-                            $soldEquipment->id
+                            $soldEquipment->id,
                         ),
-                    ]
+                    ],
                 ) ?>
             </td>
         </tr>

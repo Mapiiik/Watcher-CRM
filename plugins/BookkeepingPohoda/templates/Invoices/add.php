@@ -12,7 +12,7 @@
             <?= $this->AuthLink->link(
                 __d('bookkeeping_pohoda', 'List Invoices'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>

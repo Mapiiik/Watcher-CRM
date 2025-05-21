@@ -34,37 +34,37 @@ class TasksController extends AppController
         if (!is_null($this->getRequest()->getQuery('show_completed'))) {
             $this->getRequest()->getSession()->write(
                 'Config.Tasks.filter.show_completed',
-                $this->getRequest()->getQuery('show_completed')
+                $this->getRequest()->getQuery('show_completed'),
             );
         }
         if (!is_null($this->getRequest()->getQuery('dealer_id'))) {
             $this->getRequest()->getSession()->write(
                 'Config.Tasks.filter.dealer_id',
-                $this->getRequest()->getQuery('dealer_id')
+                $this->getRequest()->getQuery('dealer_id'),
             );
         }
         if (!is_null($this->getRequest()->getQuery('task_type_id'))) {
             $this->getRequest()->getSession()->write(
                 'Config.Tasks.filter.task_type_id',
-                $this->getRequest()->getQuery('task_type_id')
+                $this->getRequest()->getQuery('task_type_id'),
             );
         }
         if (!is_null($this->getRequest()->getQuery('task_state_id'))) {
             $this->getRequest()->getSession()->write(
                 'Config.Tasks.filter.task_state_id',
-                $this->getRequest()->getQuery('task_state_id')
+                $this->getRequest()->getQuery('task_state_id'),
             );
         }
         if (!is_null($this->getRequest()->getQuery('access_point_id'))) {
             $this->getRequest()->getSession()->write(
                 'Config.Tasks.filter.access_point_id',
-                $this->getRequest()->getQuery('access_point_id')
+                $this->getRequest()->getQuery('access_point_id'),
             );
         }
         if (!is_null($this->getRequest()->getQuery('search'))) {
             $this->getRequest()->getSession()->write(
                 'Config.Tasks.filter.search',
-                $this->getRequest()->getQuery('search')
+                $this->getRequest()->getQuery('search'),
             );
         }
         $filter = $this->getRequest()->getSession()->read('Config.Tasks.filter');
@@ -187,7 +187,7 @@ class TasksController extends AppController
                 'TaskStates',
                 'TaskTypes',
             ],
-            conditions: $conditions
+            conditions: $conditions,
         ));
         $dealers = $this->Tasks->Dealers
             ->find()
@@ -239,11 +239,11 @@ class TasksController extends AppController
                         'task_state_id' => '',
                         'access_point_id' => '',
                         'show_completed' => 0,
-                    ]]
+                    ]],
                 ),
                 [
                     'escape' => false,
-                ]
+                ],
             );
         }
 

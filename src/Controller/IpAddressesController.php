@@ -55,7 +55,7 @@ class IpAddressesController extends AppController
                 'Contracts',
                 'Customers',
             ],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('ipAddresses'));
@@ -199,7 +199,7 @@ class IpAddressesController extends AppController
                 $ipAddress->contract_id,
                 contain: [
                     'ServiceTypes',
-                ]
+                ],
             );
 
             if (isset($contract->access_point_id)) {
@@ -231,8 +231,8 @@ class IpAddressesController extends AppController
                     'id',
                     function (array $ipAddressRange) {
                         return $ipAddressRange['name'] . ' (' . $ipAddressRange['ip_network'] . ')';
-                    }
-                )
+                    },
+                ),
             );
         } else {
             $this->Flash->warning(__('The IP address ranges list could not be loaded. Please, try again.'));
@@ -432,8 +432,8 @@ class IpAddressesController extends AppController
                     'id',
                     function (array $ipAddressRange) {
                         return $ipAddressRange['name'] . ' (' . $ipAddressRange['ip_network'] . ')';
-                    }
-                )
+                    },
+                ),
             );
         } else {
             $this->Flash->warning(__('The IP address ranges list could not be loaded. Please, try again.'));
@@ -454,14 +454,14 @@ class IpAddressesController extends AppController
                     if ($ipAddressRange) {
                         $availableIpAddresses = array_keys($this->loadAvailableIpAddresses(
                             $ipAddressRange,
-                            (int)env('MINIMUM_NUMBER_OF_DAYS_SINCE_LAST_USE_FOR_AVAILABLE_IP_ADDRESSES', '365')
+                            (int)env('MINIMUM_NUMBER_OF_DAYS_SINCE_LAST_USE_FOR_AVAILABLE_IP_ADDRESSES', '365'),
                         ));
 
                         foreach ($ipAddresses as $ipAddressToProcess) {
                             // reassign IP address
                             if (
                                 $this->getRequest()->getData(
-                                    'reassing_ip_address.' . $ipAddressToProcess->id
+                                    'reassing_ip_address.' . $ipAddressToProcess->id,
                                 ) == $ipAddressToProcess->id
                             ) {
                                 if ($this->addToRemovedIpAddresses($ipAddressToProcess)) {
@@ -499,13 +499,13 @@ class IpAddressesController extends AppController
                                         } else {
                                             $this->flashValidationErrors($newIpAddress->getErrors());
                                             $this->Flash->error(
-                                                __('The IP address could not be saved. Please, try again.')
+                                                __('The IP address could not be saved. Please, try again.'),
                                             );
                                         }
                                     } else {
                                         $this->flashValidationErrors($ipAddressToProcess->getErrors());
                                         $this->Flash->error(
-                                            __('The IP address could not be deleted. Please, try again.')
+                                            __('The IP address could not be deleted. Please, try again.'),
                                         );
                                     }
                                 }
@@ -598,7 +598,7 @@ class IpAddressesController extends AppController
                         $previousIpAddressUsage->removed->i18nFormat(),
                         $previousIpAddressUsage->contract->number
                         ?? $previousIpAddressUsage->customer->number
-                        ?? __('unknown customer')
+                        ?? __('unknown customer'),
                     )
                     . ')';
             } else {

@@ -20,7 +20,7 @@
     <?= $this->AuthLink->link(
         __d('ruian', 'New Address'),
         ['action' => 'add'],
-        ['class' => 'button float-right win-link']
+        ['class' => 'button float-right win-link'],
     ) ?>
     <h3><?= __d('ruian', 'Addresses') ?></h3>
     <div class="table-responsive">
@@ -79,12 +79,12 @@
                         <?= $this->AuthLink->link(
                             __d('ruian', 'Edit'),
                             ['action' => 'edit', $address->kod_adm],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __d('ruian', 'Delete'),
                             ['action' => 'delete', $address->kod_adm],
-                            ['confirm' => __d('ruian', 'Are you sure you want to delete # {0}?', $address->kod_adm)]
+                            ['confirm' => __d('ruian', 'Are you sure you want to delete # {0}?', $address->kod_adm)],
                         ) ?>
                     </td>
                 </tr>
@@ -101,7 +101,7 @@
             <?= $this->Paginator->last(__d('ruian', 'last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __d('ruian', 'Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __d('ruian', 'Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
         ) ?></p>
     </div>
 </div>

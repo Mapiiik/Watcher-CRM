@@ -44,7 +44,7 @@ class BookkeepingPohodaPlugin extends BasePlugin
                 $builder->setExtensions(['dbf', 'xml']);
 
                 $builder->fallbacks();
-            }
+            },
         );
         parent::routes($routes);
     }

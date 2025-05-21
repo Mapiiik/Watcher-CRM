@@ -117,7 +117,7 @@ class PhonesTable extends AppTable
             [
                 'errorField' => 'phone',
                 'message' => __('The phone number is not valid.'),
-            ]
+            ],
         );
 
         return $rules;

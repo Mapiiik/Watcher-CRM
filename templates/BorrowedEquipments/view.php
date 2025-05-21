@@ -11,7 +11,7 @@
             <?= $this->AuthLink->link(
                 __('Edit Borrowed Equipment'),
                 ['action' => 'edit', $borrowedEquipment->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete Borrowed Equipment'),
@@ -19,17 +19,17 @@
                 [
                     'confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id),
                     'class' => 'side-nav-item',
-                ]
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __('List Borrowed Equipments'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('New Borrowed Equipment'),
                 ['action' => 'add'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
@@ -43,7 +43,7 @@
                             <th><?= __('Customer') ?></th>
                             <td><?= $borrowedEquipment->__isset('customer') ? $this->Html->link(
                                 $borrowedEquipment->customer->name,
-                                ['controller' => 'Customers', 'action' => 'view', $borrowedEquipment->customer->id]
+                                ['controller' => 'Customers', 'action' => 'view', $borrowedEquipment->customer->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -61,7 +61,7 @@
                                     'action' => 'view',
                                     $borrowedEquipment->contract->id,
                                     'customer_id' => $borrowedEquipment->contract->customer_id,
-                                ]
+                                ],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -72,7 +72,7 @@
                                     'controller' => 'EquipmentTypes',
                                     'action' => 'view',
                                     $borrowedEquipment->equipment_type->id,
-                                ]
+                                ],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -107,7 +107,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $borrowedEquipment->creator->id,
-                                ]
+                                ],
                             ) : h($borrowedEquipment->created_by) ?></td>
                         </tr>
                         <tr>
@@ -122,7 +122,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $borrowedEquipment->modifier->id,
-                                ]
+                                ],
                             ) : h($borrowedEquipment->modified_by) ?></td>
                         </tr>
                     </table>

@@ -39,7 +39,7 @@ class ServiceTypesController extends AppController
         $serviceTypes = $this->paginate($this->ServiceTypes->find(
             'all',
             contain: [],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('serviceTypes'));

@@ -22,7 +22,7 @@ class RadpostauthController extends AppController
             contain: [
                 'Accounts',
             ],
-            conditions: []
+            conditions: [],
         ));
 
         $this->set(compact('radpostauths'));
@@ -106,7 +106,7 @@ class RadpostauthController extends AppController
         } else {
             $this->flashValidationErrors($radpostauth->getErrors());
             $this->Flash->error(
-                __d('radius', 'The RADIUS post authentication could not be deleted. Please, try again.')
+                __d('radius', 'The RADIUS post authentication could not be deleted. Please, try again.'),
             );
         }
 

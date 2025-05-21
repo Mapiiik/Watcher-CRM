@@ -34,17 +34,17 @@
             <td class="actions">
                 <?= $this->AuthLink->link(
                     __('View'),
-                    ['controller' => 'ContractVersions', 'action' => 'view', $contractVersion->id]
+                    ['controller' => 'ContractVersions', 'action' => 'view', $contractVersion->id],
                 ) ?>
                 <?= $this->AuthLink->link(
                     __('Edit'),
                     ['controller' => 'ContractVersions', 'action' => 'edit', $contractVersion->id],
-                    ['class' => 'win-link']
+                    ['class' => 'win-link'],
                 ) ?>
                 <?= $this->AuthLink->postLink(
                     __('Delete'),
                     ['controller' => 'ContractVersions', 'action' => 'delete', $contractVersion->id],
-                    ['confirm' => __('Are you sure you want to delete # {0}?', $contractVersion->id)]
+                    ['confirm' => __('Are you sure you want to delete # {0}?', $contractVersion->id)],
                 ) ?>
             </td>
         </tr>

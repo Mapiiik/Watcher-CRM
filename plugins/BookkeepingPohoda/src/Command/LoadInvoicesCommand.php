@@ -83,7 +83,7 @@ class LoadInvoicesCommand extends Command
         $io->info(__d(
             'bookkeeping_pohoda',
             'Using last changes time: {0}',
-            [$lastChanges->format('Y-m-d H:i:s')]
+            [$lastChanges->format('Y-m-d H:i:s')],
         ));
 
         $http = new Client([
@@ -99,13 +99,13 @@ class LoadInvoicesCommand extends Command
         try {
             $response = $http->post(
                 $url . '/xml',
-                $this->generateXMLRequest($lastChanges)
+                $this->generateXMLRequest($lastChanges),
             );
         } catch (Exception $e) {
             $io->error(__d(
                 'bookkeeping_pohoda',
                 'Error connecting to server: {0}',
-                [$e->getMessage()]
+                [$e->getMessage()],
             ));
 
             return static::CODE_ERROR;
@@ -116,7 +116,7 @@ class LoadInvoicesCommand extends Command
             $io->error(__d(
                 'bookkeeping_pohoda',
                 'Invalid response from the server ({0})',
-                [$response->getReasonPhrase()]
+                [$response->getReasonPhrase()],
             ));
 
             return static::CODE_ERROR;
@@ -129,7 +129,7 @@ class LoadInvoicesCommand extends Command
             // Handle error if the response cannot be parsed as valid XML
             $io->error(__d(
                 'bookkeeping_pohoda',
-                'Invalid XML response'
+                'Invalid XML response',
             ));
 
             return static::CODE_ERROR;
@@ -144,7 +144,7 @@ class LoadInvoicesCommand extends Command
             $io->error(__d(
                 'bookkeeping_pohoda',
                 'The server returned an XML error response (ID: {0}, STATE: {1}, NOTE: {2})',
-                [($id ?? 'N/A'), ($state ?? 'N/A'), ($note ?? 'N/A')]
+                [($id ?? 'N/A'), ($state ?? 'N/A'), ($note ?? 'N/A')],
             ));
 
             return static::CODE_ERROR;
@@ -153,7 +153,7 @@ class LoadInvoicesCommand extends Command
         $io->info(__d(
             'bookkeeping_pohoda',
             'The server returned a valid XML response (ID: {0}, STATE: {1}, NOTE: {2})',
-            [($id ?? 'N/A'), $state, ($note ?? 'N/A')]
+            [($id ?? 'N/A'), $state, ($note ?? 'N/A')],
         ));
 
         // Retrieve invoices from XML
@@ -165,42 +165,42 @@ class LoadInvoicesCommand extends Command
                 $io->out(__d(
                     'bookkeeping_pohoda',
                     'Invoice Number: {0}',
-                    [$invoiceData['numberRequested'] ?? 'N/A']
+                    [$invoiceData['numberRequested'] ?? 'N/A'],
                 ));
                 $io->out(__d(
                     'bookkeeping_pohoda',
                     'Variable Symbol: {0}',
-                    [$invoiceData['symVar'] ?? 'N/A']
+                    [$invoiceData['symVar'] ?? 'N/A'],
                 ));
                 $io->out(__d(
                     'bookkeeping_pohoda',
                     'Issue Date: {0}',
-                    [$invoiceData['date'] ?? 'N/A']
+                    [$invoiceData['date'] ?? 'N/A'],
                 ));
                 $io->out(__d(
                     'bookkeeping_pohoda',
                     'Due Date: {0}',
-                    [$invoiceData['dateDue'] ?? 'N/A']
+                    [$invoiceData['dateDue'] ?? 'N/A'],
                 ));
                 $io->out(__d(
                     'bookkeeping_pohoda',
                     'Text: {0}',
-                    [$invoiceData['text'] ?? 'N/A']
+                    [$invoiceData['text'] ?? 'N/A'],
                 ));
                 $io->out(__d(
                     'bookkeeping_pohoda',
                     'Total Amount: {0}',
-                    [$invoiceData['totalAmount'] ?? 'N/A']
+                    [$invoiceData['totalAmount'] ?? 'N/A'],
                 ));
                 $io->out(__d(
                     'bookkeeping_pohoda',
                     'Liquidation Date: {0}',
-                    [$invoiceData['liquidationDate'] ?? 'N/A']
+                    [$invoiceData['liquidationDate'] ?? 'N/A'],
                 ));
                 $io->out(__d(
                     'bookkeeping_pohoda',
                     'Remaining Debt: {0}',
-                    [$invoiceData['remainingDebt'] ?? 'N/A']
+                    [$invoiceData['remainingDebt'] ?? 'N/A'],
                 ));
                 $io->out('--------------------');
             }
@@ -337,7 +337,7 @@ class LoadInvoicesCommand extends Command
         ->find(
             'list',
             keyField: 'nid',
-            valueField: 'id'
+            valueField: 'id',
         )
         ->toArray();
 
@@ -357,7 +357,7 @@ class LoadInvoicesCommand extends Command
             ) {
                 $io->error(__d(
                     'bookkeeping_pohoda',
-                    'The import file is missing some required columns.'
+                    'The import file is missing some required columns.',
                 ));
 
                 return false;
@@ -396,7 +396,7 @@ class LoadInvoicesCommand extends Command
                     $io->error(__d(
                         'bookkeeping_pohoda',
                         'Invoice {0} could not be loaded.',
-                        $invoice->number
+                        $invoice->number,
                     ));
                 }
             }
@@ -408,7 +408,7 @@ class LoadInvoicesCommand extends Command
             $imported,
             $created,
             $modified,
-            $imported - $created - $modified
+            $imported - $created - $modified,
         ));
 
         return true;
@@ -423,7 +423,7 @@ class LoadInvoicesCommand extends Command
      */
     private function getSynchronizationDateTime(
         Arguments $args,
-        ConsoleIo $io
+        ConsoleIo $io,
     ): ?DateTime {
         $lastChangesString = $args->getOption('last_changes');
 
@@ -431,13 +431,13 @@ class LoadInvoicesCommand extends Command
             try {
                 $lastChanges = DateTime::createFromFormat(
                     'Y-m-d H:i:s',
-                    $lastChangesString
+                    $lastChangesString,
                 );
             } catch (InvalidArgumentException $e) {
                 $io->error(__d(
                     'bookkeeping_pohoda',
                     'Invalid date and time format. Use YYYY-MM-DD HH:MM:SS, Error: {0}',
-                    [$e->getMessage()]
+                    [$e->getMessage()],
                 ));
 
                 return null;
@@ -449,7 +449,7 @@ class LoadInvoicesCommand extends Command
                 $io->warning(__d(
                     'bookkeeping_pohoda',
                     'No previous synchronization time found. ' .
-                    'Using default/initial time.'
+                    'Using default/initial time.',
                 ));
                 // Set default/initial time (3 month ago).
                 $lastChanges = new DateTime('-3 month');
@@ -477,7 +477,7 @@ class LoadInvoicesCommand extends Command
             Log::error(__d(
                 'bookkeeping_pohoda',
                 'Error reading last sync time from file: {0}',
-                [$filename]
+                [$filename],
             ));
 
             return null;
@@ -490,7 +490,7 @@ class LoadInvoicesCommand extends Command
             Log::error(__d(
                 'bookkeeping_pohoda',
                 'Error parsing last sync time from file: {0}',
-                [$e->getMessage()]
+                [$e->getMessage()],
             ));
 
             return null;
@@ -514,7 +514,7 @@ class LoadInvoicesCommand extends Command
             Log::error(__d(
                 'bookkeeping_pohoda',
                 'Error saving last sync time to file: {0}',
-                [$filename]
+                [$filename],
             ));
         }
     }

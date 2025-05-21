@@ -55,7 +55,7 @@ class Application extends BaseApplication
         if (PHP_SAPI !== 'cli') {
             FactoryLocator::add(
                 'Table',
-                (new TableLocator())->allowFallbackClass(false)
+                (new TableLocator())->allowFallbackClass(false),
             );
         }
 
@@ -113,7 +113,7 @@ class Application extends BaseApplication
                     ->setXFrameOptions()
                     ->setXssProtection()
                     ->noOpen()
-                    ->noSniff()
+                    ->noSniff(),
             )
 
             // Cross Site Request Forgery (CSRF) Protection Middleware

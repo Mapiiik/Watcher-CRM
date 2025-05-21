@@ -86,28 +86,28 @@ class OverviewsController extends AppController
                             ->sumOf(
                                 function (Billing $billing) {
                                     return $billing->sum->toFloat();
-                                }
+                                },
                             );
 
                         $service['fixed_discount_sum'] = $billings
                             ->sumOf(
                                 function (Billing $billing) {
                                     return $billing->fixed_discount_sum->toFloat();
-                                }
+                                },
                             );
 
                         $service['percentage_discount_sum'] = $billings
                             ->sumOf(
                                 function (Billing $billing) {
                                     return $billing->percentage_discount_sum->toFloat();
-                                }
+                                },
                             );
 
                         $service['total_sum'] = $billings
                             ->sumOf(
                                 function (Billing $billing) {
                                     return $billing->total_price->toFloat();
-                                }
+                                },
                             );
 
                         $service['total_sum_nonbusiness'] = $billings
@@ -115,7 +115,7 @@ class OverviewsController extends AppController
                             ->sumOf(
                                 function (Billing $billing) {
                                     return $billing->total_price->toFloat();
-                                }
+                                },
                             );
 
                         $service['total_sum_unbilled'] = $billings
@@ -123,7 +123,7 @@ class OverviewsController extends AppController
                             ->sumOf(
                                 function (Billing $billing) {
                                     return $billing->total_price->toFloat();
-                                }
+                                },
                             );
 
                         unset($billings);
@@ -142,7 +142,7 @@ class OverviewsController extends AppController
                     }
 
                     return $services;
-                }
+                },
             );
 
         // filter by service type
@@ -174,7 +174,7 @@ class OverviewsController extends AppController
             'serviceTypes',
             $this->fetchTable('ServiceTypes')->find('list', order: [
                 'name',
-            ])
+            ]),
         );
 
         // load CTO categories
@@ -188,7 +188,7 @@ class OverviewsController extends AppController
                     keyField: 'cto_category',
                     valueField: 'cto_category',
                 )
-                ->whereNotNull('cto_category')
+                ->whereNotNull('cto_category'),
         );
 
         // load access points from NMS if possible
@@ -254,7 +254,7 @@ class OverviewsController extends AppController
                             return (new Collection($category_billings))
                                 ->groupBy('contract.installation_address.ruian_gid')
                                 ->map(function ($billings, $ruian_gid) use ($cto_category) {
-                                    $billings_collection = (new Collection($billings));
+                                    $billings_collection = new Collection($billings);
 
                                     $address = new Entity();
 
@@ -297,7 +297,7 @@ class OverviewsController extends AppController
                                                 return 'speed_100_plus';
                                             }
                                         })
-                                        ->toArray()
+                                        ->toArray(),
                                     );
 
                                     $categoryFinder = function ($speed, $cto_category) {
@@ -334,21 +334,21 @@ class OverviewsController extends AppController
                                         [
                                             'maximal_download_category' => $categoryFinder(
                                                 $maximal_download,
-                                                $cto_category
+                                                $cto_category,
                                             ),
                                             'effective_download_category' => $categoryFinder(
                                                 $effective_download,
-                                                $cto_category
+                                                $cto_category,
                                             ),
                                             'maximal_upload_category' => $categoryFinder(
                                                 $maximal_upload,
-                                                $cto_category
+                                                $cto_category,
                                             ),
                                             'effective_upload_category' => $categoryFinder(
                                                 $effective_upload,
-                                                $cto_category
+                                                $cto_category,
                                             ),
-                                        ]
+                                        ],
                                     );
 
                                     $address['vhcn_category'] = in_array($cto_category, ['s2_fttb', 's2_ftth']) ? 1 : 0;
@@ -356,7 +356,7 @@ class OverviewsController extends AppController
                                     return $address;
                                 });
                         });
-                }
+                },
             );
 
         // DOWNLOAD CSV FOR CATEGORY
@@ -397,7 +397,7 @@ class OverviewsController extends AppController
                 ->withStringBody(iconv('UTF-8', 'CP1250', $csv_data))
                 ->withType('csv')
                 ->withDownload(
-                    $category . '.csv'
+                    $category . '.csv',
                 );
         }
 
@@ -457,7 +457,7 @@ class OverviewsController extends AppController
                             return (new Collection($category_billings))
                                 ->groupBy('contract.installation_address.city')
                                 ->map(function ($billings, $city) use ($cto_category) {
-                                    $billings_collection = (new Collection($billings));
+                                    $billings_collection = new Collection($billings);
 
                                     $address = new Entity();
 
@@ -492,7 +492,7 @@ class OverviewsController extends AppController
                                                 return 'speed_1000_plus';
                                             }
                                         })
-                                        ->toArray()
+                                        ->toArray(),
                                     );
 
                                     $address['advertised_speeds_nonbusiness'] = new Entity(
@@ -520,13 +520,13 @@ class OverviewsController extends AppController
                                                 return 'speed_1000_plus';
                                             }
                                         })
-                                        ->toArray()
+                                        ->toArray(),
                                     );
 
                                     return $address;
                                 });
                         });
-                }
+                },
             );
 
         $this->set(compact('cto_categories', 'month_to_display'));
@@ -568,7 +568,7 @@ class OverviewsController extends AppController
                                 $contract['total_price'] = (new Collection($contract->billings))->sumOf(
                                     function (Billing $billing) {
                                         return $billing->total_price->toFloat();
-                                    }
+                                    },
                                 );
 
                                 return $contract;

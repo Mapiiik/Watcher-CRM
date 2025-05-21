@@ -11,7 +11,7 @@
             <?= $this->AuthLink->link(
                 __d('radius', 'Edit RADIUS Group Check'),
                 ['action' => 'edit', $radgroupcheck->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __d('radius', 'Delete RADIUS Group Check'),
@@ -19,17 +19,17 @@
                 [
                     'confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radgroupcheck->id),
                     'class' => 'side-nav-item',
-                ]
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __d('radius', 'List RADIUS Group Checks'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __d('radius', 'New RADIUS Group Check'),
                 ['action' => 'add'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
@@ -77,12 +77,12 @@
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __d('radius', 'View'),
-                                    ['controller' => 'Radusergroup', 'action' => 'view', $radusergroup->id]
+                                    ['controller' => 'Radusergroup', 'action' => 'view', $radusergroup->id],
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __d('radius', 'Edit'),
                                     ['controller' => 'Radusergroup', 'action' => 'edit', $radusergroup->id],
-                                    ['class' => 'win-link']
+                                    ['class' => 'win-link'],
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
                                     __d('radius', 'Delete'),
@@ -90,8 +90,8 @@
                                     ['confirm' => __d(
                                         'radius',
                                         'Are you sure you want to delete # {0}?',
-                                        $radusergroup->id
-                                    )]
+                                        $radusergroup->id,
+                                    )],
                                 ) ?>
                             </td>
                         </tr>

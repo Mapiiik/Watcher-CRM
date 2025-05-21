@@ -11,7 +11,7 @@
             <?= $this->AuthLink->link(
                 __('Edit Contract State'),
                 ['action' => 'edit', $contractState->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete Contract State'),
@@ -19,17 +19,17 @@
                 [
                     'confirm' => __('Are you sure you want to delete # {0}?', $contractState->id),
                     'class' => 'side-nav-item',
-                ]
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __('List Contract States'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('New Contract State'),
                 ['action' => 'add'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
@@ -81,7 +81,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $contractState->creator->id,
-                                ]
+                                ],
                             ) : h($contractState->created_by) ?></td>
                         </tr>
                         <tr>
@@ -96,7 +96,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $contractState->modifier->id,
-                                ]
+                                ],
                             ) : h($contractState->modified_by) ?></td>
                         </tr>
                     </table>
@@ -134,7 +134,7 @@
                             <td><?=
                                 $contract->__isset('customer') ? $this->Html->link(
                                     $contract->customer->name,
-                                    ['controller' => 'Customers', 'action' => 'view', $contract->customer->id]
+                                    ['controller' => 'Customers', 'action' => 'view', $contract->customer->id],
                                 ) : '' ?></td>
                             <td><?= $contract->__isset('customer') ? h($contract->customer->number) : '' ?></td>
                             <td><?= h($contract->number) ?></td>
@@ -145,7 +145,7 @@
                                         'controller' => 'Addresses',
                                         'action' => 'view',
                                         $contract->service_type->id,
-                                    ]
+                                    ],
                                 ) : '' ?></td>
                             <td><?=
                                 $contract->__isset('installation_address') ? $this->Html->link(
@@ -154,7 +154,7 @@
                                         'controller' => 'Addresses',
                                         'action' => 'view',
                                         $contract->installation_address->id,
-                                    ]
+                                    ],
                                 ) : '' ?></td>
                             <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
                             <td><?= $contract->__isset('access_point') ? h($contract->access_point['name']) : '' ?></td>
@@ -166,7 +166,7 @@
                                         'controller' => 'Customers',
                                         'action' => 'view',
                                         $contract->installation_technician->id,
-                                    ]
+                                    ],
                                 ) : '' ?></td>
                             <td><?= h($contract->uninstallation_date) ?></td>
                             <td><?=
@@ -176,13 +176,13 @@
                                         'controller' => 'Customers',
                                         'action' => 'view',
                                         $contract->uninstallation_technician->id,
-                                    ]
+                                    ],
                                 ) : '' ?></td>
                             <td><?= h($contract->termination_date) ?></td>
                             <td><?=
                                 $contract->__isset('commission') ? $this->Html->link(
                                     $contract->commission->name,
-                                    ['controller' => 'Commissions', 'action' => 'view', $contract->commission->id]
+                                    ['controller' => 'Commissions', 'action' => 'view', $contract->commission->id],
                                 ) : '' ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
@@ -192,17 +192,17 @@
                                         'action' => 'view',
                                         $contract->id,
                                         'customer_id' => $contract->customer_id,
-                                    ]
+                                    ],
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __('Edit'),
                                     ['controller' => 'Contracts', 'action' => 'edit', $contract->id],
-                                    ['class' => 'win-link']
+                                    ['class' => 'win-link'],
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
                                     __('Delete'),
                                     ['controller' => 'Contracts', 'action' => 'delete', $contract->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $contract->id)]
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $contract->id)],
                                 ) ?>
                             </td>
                         </tr>

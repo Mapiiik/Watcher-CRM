@@ -78,7 +78,7 @@ class RadiusPlugin extends BasePlugin
                     ]);
 
                 $builder->fallbacks();
-            }
+            },
         );
         parent::routes($routes);
     }

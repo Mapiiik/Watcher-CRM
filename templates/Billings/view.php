@@ -13,12 +13,12 @@ use Cake\I18n\Date;
             <?= $this->AuthLink->link(
                 __('Edit Billing'),
                 ['action' => 'edit', $billing->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete Billing'),
                 ['action' => 'delete', $billing->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id), 'class' => 'side-nav-item']
+                ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id), 'class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(__('List Billings'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Billing'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
@@ -29,7 +29,7 @@ use Cake\I18n\Date;
             <?= $this->AuthLink->link(
                 __('Service Change'),
                 ['action' => 'serviceChange', $billing->id],
-                ['class' => 'button float-right win-link']
+                ['class' => 'button float-right win-link'],
             ) ?>
             <h3><?= h($billing->name) ?></h3>
             <div class="row">
@@ -39,7 +39,7 @@ use Cake\I18n\Date;
                             <th><?= __('Customer') ?></th>
                             <td><?= $billing->__isset('customer') ? $this->Html->link(
                                 $billing->customer->name,
-                                ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]
+                                ['controller' => 'Customers', 'action' => 'view', $billing->customer->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -55,14 +55,14 @@ use Cake\I18n\Date;
                                     'action' => 'view',
                                     $billing->contract->id,
                                     'customer_id' => $billing->contract->customer_id,
-                                ]
+                                ],
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Service') ?></th>
                             <td><?= $billing->__isset('service') ? $this->Html->link(
                                 $billing->service->name,
-                                ['controller' => 'Services', 'action' => 'view', $billing->service->id]
+                                ['controller' => 'Services', 'action' => 'view', $billing->service->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -132,7 +132,7 @@ use Cake\I18n\Date;
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $billing->creator->id,
-                                ]
+                                ],
                             ) : h($billing->created_by) ?></td>
                         </tr>
                         <tr>
@@ -147,7 +147,7 @@ use Cake\I18n\Date;
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $billing->modifier->id,
-                                ]
+                                ],
                             ) : h($billing->modified_by) ?></td>
                         </tr>
                     </table>
@@ -188,7 +188,7 @@ use Cake\I18n\Date;
                             <td><?= $bill_date->subDays(1) ?></td>
                             <td><?= $this->Number->currency($billing->periodTotal(
                                 $bill_date->subMonths(1),
-                                $bill_date->subDays(1)
+                                $bill_date->subDays(1),
                             )->toString()) ?></td>
                         </tr>
                         <?php endforeach ?>
@@ -225,7 +225,7 @@ use Cake\I18n\Date;
                             <td><?= $bill_date->subDays(1) ?></td>
                             <td><?= $this->Number->currency($billing->periodTotal(
                                 $bill_date->subMonths(1),
-                                $bill_date->subDays(1)
+                                $bill_date->subDays(1),
                             )->toString()) ?></td>
                         </tr>
                         <?php endforeach ?>

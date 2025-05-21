@@ -22,7 +22,7 @@ class RadreplyController extends AppController
             contain: [
                 'Accounts',
             ],
-            conditions: []
+            conditions: [],
         ));
 
         $this->set(compact('radreplies'));

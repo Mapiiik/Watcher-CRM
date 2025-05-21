@@ -46,7 +46,7 @@ class IpNetworksTable extends AppTable
 
         $this->getSchema()->setColumnType(
             'type_of_use',
-            EnumType::from(IpNetworkTypeOfUse::class)
+            EnumType::from(IpNetworkTypeOfUse::class),
         );
 
         $this->addBehavior('Timestamp');

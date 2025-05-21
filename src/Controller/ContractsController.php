@@ -70,7 +70,7 @@ class ContractsController extends AppController
                 'ServiceTypes',
                 'UninstallationTechnicians',
             ],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('contracts'));
@@ -249,7 +249,7 @@ class ContractsController extends AppController
             'serviceTypes',
             'installationTechnicians',
             'uninstallationTechnicians',
-            'commissions'
+            'commissions',
         ));
 
         // load access points from NMS if possible
@@ -277,8 +277,8 @@ class ContractsController extends AppController
                                 'value' => $accessPoint['id'],
                                 'text' => $text,
                             ];
-                        }
-                    )
+                        },
+                    ),
             );
         } else {
             $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
@@ -383,7 +383,7 @@ class ContractsController extends AppController
             'serviceTypes',
             'installationTechnicians',
             'uninstallationTechnicians',
-            'commissions'
+            'commissions',
         ));
 
         // load access points from NMS if possible
@@ -411,8 +411,8 @@ class ContractsController extends AppController
                                 'value' => $accessPoint['id'],
                                 'text' => $text,
                             ];
-                        }
-                    )
+                        },
+                    ),
             );
         } else {
             $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
@@ -513,14 +513,14 @@ class ContractsController extends AppController
                 } else {
                     $this->Flash->error(
                         __('The contract numbers could not be updated. Please, try again.')
-                        . ' (ID: ' . $contract->id . ')'
+                        . ' (ID: ' . $contract->id . ')',
                     );
                 }
             }
         }
 
         $this->Flash->success(
-            __('The contract numbers have been updated.') . ' (' . Number::format($count) . ')'
+            __('The contract numbers have been updated.') . ' (' . Number::format($count) . ')',
         );
 
         return $this->redirect(['action' => 'index']);
@@ -593,14 +593,14 @@ class ContractsController extends AppController
                 } else {
                     $this->Flash->error(
                         __('The subscriber verification codes could not be updated. Please, try again.')
-                        . ' (ID: ' . $contract->id . ')'
+                        . ' (ID: ' . $contract->id . ')',
                     );
                 }
             }
         }
 
         $this->Flash->success(
-            __('The subscriber verification codes have been updated.') . ' (' . Number::format($count) . ')'
+            __('The subscriber verification codes have been updated.') . ' (' . Number::format($count) . ')',
         );
 
         return $this->redirect(['action' => 'index']);
@@ -641,13 +641,13 @@ class ContractsController extends AppController
                         $this->Flash->success(
                             __('Installation') . ': '
                             . $borrowed_equipment->equipment_type->name
-                            . ' - ' . __('The borrowed equipment has been saved.')
+                            . ' - ' . __('The borrowed equipment has been saved.'),
                         );
                     } else {
                         $this->Flash->error(
                             __('Installation') . ': '
                             . $borrowed_equipment->equipment_type->name
-                            . ' - ' . __('The borrowed equipment could not be saved. Please, try again.')
+                            . ' - ' . __('The borrowed equipment could not be saved. Please, try again.'),
                         );
                     }
                 }
@@ -667,13 +667,13 @@ class ContractsController extends AppController
                         $this->Flash->success(
                             __('Uninstallation') . ': '
                             . $borrowed_equipment->equipment_type->name
-                            . ' - ' . __('The borrowed equipment has been saved.')
+                            . ' - ' . __('The borrowed equipment has been saved.'),
                         );
                     } else {
                         $this->Flash->error(
                             __('Uninstallation') . ': '
                             . $borrowed_equipment->equipment_type->name
-                            . ' - ' . __('The borrowed equipment could not be saved. Please, try again.')
+                            . ' - ' . __('The borrowed equipment could not be saved. Please, try again.'),
                         );
                     }
                 }
@@ -715,11 +715,11 @@ class ContractsController extends AppController
 
                     if ($this->Contracts->Billings->save($billing)) {
                         $this->Flash->success(
-                            $billing->name . ' - ' . __('The billing has been saved.')
+                            $billing->name . ' - ' . __('The billing has been saved.'),
                         );
                     } else {
                         $this->Flash->error(
-                            $billing->name . ' - ' . __('The billing could not be saved. Please, try again.')
+                            $billing->name . ' - ' . __('The billing could not be saved. Please, try again.'),
                         );
                     }
                 }
@@ -792,7 +792,7 @@ class ContractsController extends AppController
                 'value' => $contract_version->id,
                 'text' => $contract_version->valid_from
                     . ' - '
-                    . ($contract_version->valid_until ? $contract_version->valid_until : __('indefinitely')),
+                    . ($contract_version->valid_until ?: __('indefinitely')),
             ];
         })->toArray();
 
@@ -820,7 +820,7 @@ class ContractsController extends AppController
             ) {
                 $this->Flash->error(__(
                     'A borrowed equipment is not assigned, although it should normally be for this type of service.'
-                    . ' Please confirm that the customer has their own equipment or add it.'
+                    . ' Please confirm that the customer has their own equipment or add it.',
                 ));
 
                 return $this->redirect(['action' => 'print', $id, '?' => $query]);
@@ -1027,7 +1027,7 @@ class ContractsController extends AppController
                             $billing->__isset('billing_until')
                             && $billing->billing_until < $contract_version->valid_from
                         );
-                }
+                },
             );
 
             $contract['individual_billings'] = $active_billings_collection->filter(function ($billing, $key) {
@@ -1047,7 +1047,7 @@ class ContractsController extends AppController
                             $billing->__isset('billing_until')
                             && $billing->billing_until < $contract_version->valid_from
                         );
-                }
+                },
             );
 
             $contract['future_individual_billings'] = $future_billings_collection->filter(function ($billing, $key) {
@@ -1062,7 +1062,7 @@ class ContractsController extends AppController
             'contract',
             'contractVersions',
             'type',
-            'query'
+            'query',
         ));
     }
 }

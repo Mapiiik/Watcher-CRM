@@ -47,7 +47,7 @@ class ContractVersionsController extends AppController
             contain: [
                 'Contracts',
             ],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('contractVersions'));

@@ -38,7 +38,7 @@ class TaskTypesController extends AppController
         $taskTypes = $this->paginate($this->TaskTypes->find(
             'all',
             contain: [],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('taskTypes'));

@@ -26,7 +26,7 @@ class CustomerPDF extends TCPDF
         mixed $stretch = 0,
         mixed $ignore_min_height = false,
         mixed $calign = 'T',
-        mixed $valign = ''
+        mixed $valign = '',
     ): void {
         $valign = $valign == '' ? ($border == 0 ? 'T' : 'M') : $valign;
         parent::Cell($w, $h, $txt, $border, $ln, $align, $fill, $link, $stretch, $ignore_min_height, $calign, $valign);

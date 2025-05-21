@@ -11,7 +11,7 @@
             <?= $this->AuthLink->link(
                 __d('ruian', 'List Addresses'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>

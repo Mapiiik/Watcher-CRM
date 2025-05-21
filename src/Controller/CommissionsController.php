@@ -38,7 +38,7 @@ class CommissionsController extends AppController
         $commissions = $this->paginate($this->Commissions->find(
             'all',
             contain: [],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('commissions'));

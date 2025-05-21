@@ -11,7 +11,7 @@
             <?= $this->AuthLink->postLink(
                 __('Delete'),
                 ['action' => 'delete', $country->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $country->id), 'class' => 'side-nav-item']
+                ['confirm' => __('Are you sure you want to delete # {0}?', $country->id), 'class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(__('List Countries'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>

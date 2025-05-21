@@ -22,27 +22,27 @@
     <?= $this->AuthLink->link(
         __d('bookkeeping_pohoda', 'New Invoice'),
         ['action' => 'add'],
-        ['class' => 'button float-right win-link']
+        ['class' => 'button float-right win-link'],
     ) ?>
     <?= $this->AuthLink->link(
         __d('bookkeeping_pohoda', 'Send By Email'),
         ['action' => 'sendByEmail'],
-        ['class' => 'button float-right']
+        ['class' => 'button float-right'],
     ) ?>
     <?= $this->AuthLink->link(
         __d('bookkeeping_pohoda', 'Generate Invoices'),
         ['action' => 'generate'],
-        ['class' => 'button float-right']
+        ['class' => 'button float-right'],
     ) ?>
     <?= $this->AuthLink->link(
         __d('bookkeeping_pohoda', 'Import Invoices from DBF'),
         ['action' => 'importFromDBF'],
-        ['class' => 'button float-right']
+        ['class' => 'button float-right'],
     ) ?>
     <?= $this->AuthLink->link(
         __d('bookkeeping_pohoda', 'List Debtors'),
         ['controller' => 'Debtors', 'action' => 'index'],
-        ['class' => 'button float-right']
+        ['class' => 'button float-right'],
     ) ?>
     <h3><?= __d('bookkeeping_pohoda', 'Invoices') ?></h3>
     <div class="table-responsive">
@@ -54,7 +54,7 @@
                     <th><?= $this->Paginator->sort('number', __d('bookkeeping_pohoda', 'Number')) ?></th>
                     <th><?= $this->Paginator->sort(
                         'variable_symbol',
-                        __d('bookkeeping_pohoda', 'Variable Symbol')
+                        __d('bookkeeping_pohoda', 'Variable Symbol'),
                     ) ?></th>
                     <th><?= $this->Paginator->sort('creation_date', __d('bookkeeping_pohoda', 'Creation Date')) ?></th>
                     <th><?= $this->Paginator->sort('due_date', __d('bookkeeping_pohoda', 'Due Date')) ?></th>
@@ -74,7 +74,7 @@
                     <td>
                         <?= $invoice->__isset('customer') ? $this->Html->link(
                             $invoice->customer->name,
-                            ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $invoice->customer->id]
+                            ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $invoice->customer->id],
                         ) : '' ?>
                     </td>
                     <td><?= $invoice->__isset('customer') ? h($invoice->customer->number) : '' ?></td>
@@ -94,16 +94,16 @@
                         <?= $this->AuthLink->link(
                             __d('bookkeeping_pohoda', 'Download'),
                             ['action' => 'download', $invoice->id],
-                            ['target' => '_blank']
+                            ['target' => '_blank'],
                         ) ?>
                         <?= $this->AuthLink->link(
                             __d('bookkeeping_pohoda', 'View'),
-                            ['action' => 'view', $invoice->id]
+                            ['action' => 'view', $invoice->id],
                         ) ?>
                         <?= $this->AuthLink->link(
                             __d('bookkeeping_pohoda', 'Edit'),
                             ['action' => 'edit', $invoice->id],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __d('bookkeeping_pohoda', 'Delete'),
@@ -111,8 +111,8 @@
                             ['confirm' => __d(
                                 'bookkeeping_pohoda',
                                 'Are you sure you want to delete # {0}?',
-                                $invoice->id
-                            )]
+                                $invoice->id,
+                            )],
                         ) ?>
                     </td>
                 </tr>
@@ -135,8 +135,8 @@
         <p><?= $this->Paginator->counter(
             __d(
                 'bookkeeping_pohoda',
-                'Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'
-            )
+                'Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total',
+            ),
         ) ?></p>
     </div>
 </div>

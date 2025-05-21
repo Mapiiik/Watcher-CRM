@@ -16,12 +16,12 @@ use App\Model\Entity\Billing;
             <?= $this->AuthLink->link(
                 __('Settings'),
                 ['controller' => 'Settings', 'action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('List Billings'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
@@ -125,9 +125,9 @@ use App\Model\Entity\Billing;
                 [
                     'confirm' => __(
                         'Do you really want to change the original service to the new service'
-                        . ' for all the billings listed below from the date set?'
+                        . ' for all the billings listed below from the date set?',
                     ),
-                ]
+                ],
             ) ?>
             <?= $this->Form->end() ?>
         </div>

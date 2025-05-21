@@ -20,7 +20,7 @@
     <?= $this->AuthLink->link(
         __('New Borrowed Equipment'),
         ['action' => 'add'],
-        ['class' => 'button float-right win-link']
+        ['class' => 'button float-right win-link'],
     ) ?>
     <h3><?= __('Borrowed Equipments') ?></h3>
     <div class="table-responsive">
@@ -43,7 +43,7 @@
                     <td>
                         <?= $borrowedEquipment->__isset('customer') ? $this->Html->link(
                             $borrowedEquipment->customer->name,
-                            ['controller' => 'Customers', 'action' => 'view', $borrowedEquipment->customer->id]
+                            ['controller' => 'Customers', 'action' => 'view', $borrowedEquipment->customer->id],
                         ) : '' ?>
                     </td>
                     <td><?= $borrowedEquipment->__isset('customer') ?
@@ -56,7 +56,7 @@
                                 'action' => 'view',
                                 $borrowedEquipment->contract->id,
                                 'customer_id' => $borrowedEquipment->contract->customer_id,
-                            ]
+                            ],
                         ) : '' ?>
                     </td>
                     <td>
@@ -66,7 +66,7 @@
                                 'controller' => 'EquipmentTypes',
                                 'action' => 'view',
                                 $borrowedEquipment->equipment_type->id,
-                            ]
+                            ],
                         ) : '' ?>
                     </td>
                     <td><?= h($borrowedEquipment->serial_number) ?></td>
@@ -77,12 +77,12 @@
                         <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $borrowedEquipment->id],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
                             ['action' => 'delete', $borrowedEquipment->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id)]
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $borrowedEquipment->id)],
                         ) ?>
                     </td>
                 </tr>
@@ -99,7 +99,7 @@
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
         ) ?></p>
     </div>
 </div>

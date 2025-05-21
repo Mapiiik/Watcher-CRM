@@ -47,12 +47,12 @@ class AddressesTable extends AppTable
 
         $this->getSchema()->setColumnType(
             'type',
-            EnumType::from(AddressType::class)
+            EnumType::from(AddressType::class),
         );
 
         $this->getSchema()->setColumnType(
             'number_type',
-            EnumType::from(AddressNumberType::class)
+            EnumType::from(AddressNumberType::class),
         );
 
         $this->addBehavior('Timestamp');

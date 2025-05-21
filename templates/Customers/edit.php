@@ -12,7 +12,7 @@
             <?= $this->AuthLink->postLink(
                 __('Delete'),
                 ['action' => 'delete', $customer->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id), 'class' => 'side-nav-item']
+                ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id), 'class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(__('List Customers'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>

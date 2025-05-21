@@ -140,13 +140,13 @@ class CustomersController extends AppController
         if (!is_null($this->getRequest()->getQuery('advanced_search'))) {
             $this->getRequest()->getSession()->write(
                 'Config.Customers.filter.advanced_search',
-                $this->getRequest()->getQuery('advanced_search') == '1'
+                $this->getRequest()->getQuery('advanced_search') == '1',
             );
         }
         if (!is_null($this->getRequest()->getQuery('search'))) {
             $this->getRequest()->getSession()->write(
                 'Config.Customers.filter.search',
-                trim($this->getRequest()->getQuery('search'))
+                trim($this->getRequest()->getQuery('search')),
             );
         }
         if (!is_null($this->getRequest()->getQuery('labels'))) {
@@ -160,7 +160,7 @@ class CustomersController extends AppController
             }
             $this->getRequest()->getSession()->write(
                 'Config.Customers.filter.labels',
-                $labels
+                $labels,
             );
             unset($labels);
         }

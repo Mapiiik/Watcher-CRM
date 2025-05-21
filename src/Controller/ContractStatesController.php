@@ -38,7 +38,7 @@ class ContractStatesController extends AppController
         $contractStates = $this->paginate($this->ContractStates->find(
             'all',
             contain: [],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('contractStates'));

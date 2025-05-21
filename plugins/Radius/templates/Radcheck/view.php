@@ -11,7 +11,7 @@
             <?= $this->AuthLink->link(
                 __d('radius', 'Edit RADIUS Check'),
                 ['action' => 'edit', $radcheck->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __d('radius', 'Delete RADIUS Check'),
@@ -19,17 +19,17 @@
                 [
                     'confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radcheck->id),
                     'class' => 'side-nav-item',
-                ]
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __d('radius', 'List RADIUS Checks'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __d('radius', 'New RADIUS Check'),
                 ['action' => 'add'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
@@ -41,7 +41,7 @@
                     <th><?= __d('radius', 'Username') ?></th>
                     <td><?= $radcheck->__isset('account') ? $this->Html->link(
                         $radcheck->account->username,
-                        ['controller' => 'Accounts', 'action' => 'view', $radcheck->account->id]
+                        ['controller' => 'Accounts', 'action' => 'view', $radcheck->account->id],
                     ) : $radcheck->username ?></td>
                 </tr>
                 <tr>

@@ -67,12 +67,12 @@ class DebtorsProcessor
             ->map(
                 function ($invoices, $customer_id) {
                     return new Debtor($invoices);
-                }
+                },
             )
             ->sortBy(
                 function (Debtor $debtor) {
                     return $debtor->getTotalDebt();
-                }
+                },
             );
     }
 
@@ -114,7 +114,7 @@ class DebtorsProcessor
                 function (Debtor $debtor) {
                     return $debtor->getDueDate() < Date::now()
                         && $debtor->getTotalOverdueDebt() > 0;
-                }
+                },
             );
     }
 
@@ -137,7 +137,7 @@ class DebtorsProcessor
 
                     return $debtor->getDueDate() < $date
                         && $debtor->getTotalOverdueDebtForDate($date) > $this->allowed_total_overdue_debt;
-                }
+                },
             );
     }
 
@@ -194,7 +194,7 @@ class DebtorsProcessor
         foreach ($ids as $id) {
             $customer_ips = array_merge_recursive(
                 $customer_ips,
-                $this->getCustomerIps($id, 'MANUAL ENTRY - ', false)
+                $this->getCustomerIps($id, 'MANUAL ENTRY - ', false),
             );
 
             $this->addLabel($id);
@@ -220,7 +220,7 @@ class DebtorsProcessor
         foreach ($ids as $id) {
             $customer_ips = array_merge_recursive(
                 $customer_ips,
-                $this->getCustomerIps($id, 'MANUAL ENTRY - ', false)
+                $this->getCustomerIps($id, 'MANUAL ENTRY - ', false),
             );
 
             $this->removeLabel($id);
@@ -247,7 +247,7 @@ class DebtorsProcessor
         foreach ($this->getFilteredOverdueDebtors() as $debtor) {
             $customer_ips = array_merge_recursive(
                 $customer_ips,
-                $this->getCustomerIps($debtor->getCustomer()->id)
+                $this->getCustomerIps($debtor->getCustomer()->id),
             );
 
             $this->addLabel($debtor->getCustomer()->id);
@@ -318,7 +318,7 @@ class DebtorsProcessor
                     'label_id' => $label_id,
                     'customer_id' => $id,
                 ])
-                ->all()
+                ->all(),
         );
     }
 
@@ -348,7 +348,7 @@ class DebtorsProcessor
                     'label_id' => $label_id,
                     'modified <' => $older_than,
                 ])
-                ->all()
+                ->all(),
         );
     }
 
@@ -471,7 +471,7 @@ class DebtorsProcessor
                             'bookkeeping_pohoda',
                             'Removed IPv4 record {0} from router {1}.',
                             $item['address'],
-                            $router
+                            $router,
                         ) . PHP_EOL;
                     }
                 }
@@ -499,7 +499,7 @@ class DebtorsProcessor
                                 'bookkeeping_pohoda',
                                 'Removed IPv4 record {0} from router {1}.',
                                 $ipv4,
-                                $router
+                                $router,
                             ) . PHP_EOL;
                         }
                     }
@@ -521,7 +521,7 @@ class DebtorsProcessor
                             'Added IPv4 record {0} ({1}) to router {2}.',
                             $ipv4,
                             Strings::removeAccents($comment),
-                            $router
+                            $router,
                         ) . PHP_EOL;
                     }
                 }
@@ -548,7 +548,7 @@ class DebtorsProcessor
                             'bookkeeping_pohoda',
                             'Removed IPv6 record {0} from router {1}.',
                             $item['address'],
-                            $router
+                            $router,
                         ) . PHP_EOL;
                     }
                 }
@@ -576,7 +576,7 @@ class DebtorsProcessor
                                 'bookkeeping_pohoda',
                                 'Removed IPv6 record {0} from router {1}.',
                                 $ipv6,
-                                $router
+                                $router,
                             ) . PHP_EOL;
                         }
                     }
@@ -598,7 +598,7 @@ class DebtorsProcessor
                             'Added IPv6 record {0} ({1}) to router {2}.',
                             $ipv6,
                             Strings::removeAccents($comment),
-                            $router
+                            $router,
                         ) . PHP_EOL;
                     }
                 }

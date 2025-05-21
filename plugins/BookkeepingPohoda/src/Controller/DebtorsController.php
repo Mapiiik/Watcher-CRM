@@ -38,7 +38,7 @@ class DebtorsController extends AppController
 
         $debtorsProcessor = new DebtorsProcessor(
             allowed_payment_delay: $allowed_payment_delay,
-            allowed_total_overdue_debt: $allowed_total_overdue_debt
+            allowed_total_overdue_debt: $allowed_total_overdue_debt,
         );
 
         $debtors = $debtorsProcessor->getFilteredOverdueDebtors();
@@ -66,7 +66,7 @@ class DebtorsController extends AppController
         $this->Flash->success(
             '<strong>' . __d('bookkeeping_pohoda', 'Routers updated.') . '</strong><br>'
                 . ($result ? nl2br($result) : __d('bookkeeping_pohoda', 'Nothing has changed.')),
-            ['escape' => false]
+            ['escape' => false],
         );
 
         return $this->redirect($this->referer([
@@ -93,7 +93,7 @@ class DebtorsController extends AppController
         $this->Flash->success(
             '<strong>' . __d('bookkeeping_pohoda', 'Routers updated.') . '</strong><br>'
                 . ($result ? nl2br($result) : __d('bookkeeping_pohoda', 'Nothing has changed.')),
-            ['escape' => false]
+            ['escape' => false],
         );
 
         return $this->redirect($this->referer([
@@ -121,7 +121,7 @@ class DebtorsController extends AppController
         $this->Flash->success(
             '<strong>' . __d('bookkeeping_pohoda', 'Routers updated.') . '</strong><br>'
                 . ($result ? nl2br($result) : __d('bookkeeping_pohoda', 'Nothing has changed.')),
-            ['escape' => false]
+            ['escape' => false],
         );
 
         return $this->redirect($this->referer([

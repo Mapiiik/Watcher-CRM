@@ -11,13 +11,13 @@ if (isset($ipAddressRanges)) {
             $range['access_point']['name'],
             env('WATCHER_NMS_URL')
                 . '/access-points/view/' . $range['access_point']['id'],
-            ['target' => '_blank']
+            ['target' => '_blank'],
         ) . '<br>' : '';
     echo isset($range['id']) ?
         __('Range') . ': ' . $this->Html->link(
             $range['name'],
             env('WATCHER_NMS_URL') . '/ip-address-ranges/view/' . $range['id'],
-            ['target' => '_blank']
+            ['target' => '_blank'],
         ) . '<br>' : '';
     unset($range);
 }

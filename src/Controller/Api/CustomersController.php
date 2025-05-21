@@ -269,15 +269,15 @@ class CustomersController extends AppController
                                                                 'name' => $ipAddress->note,
                                                                 'note' => $ipAddress->note,
                                                             ];
-                                                        }
+                                                        },
                                                     ),
                                             ];
-                                        }
+                                        },
                                     ),
                                 ];
-                            }
+                            },
                         );
-                }
+                },
             );
 
         $this->set('customerPoints', $customerPoints);

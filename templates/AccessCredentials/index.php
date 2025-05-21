@@ -20,7 +20,7 @@
     <?= $this->AuthLink->link(
         __('New Access Credential'),
         ['action' => 'add'],
-        ['class' => 'button float-right win-link']
+        ['class' => 'button float-right win-link'],
     ) ?>
     <h3><?= __('Access Credentials') ?></h3>
     <div class="table-responsive">
@@ -48,7 +48,7 @@
                     <td><?= $accessCredential->hasValue('customer') ?
                         $this->Html->link(
                             $accessCredential->customer->name,
-                            ['controller' => 'Customers', 'action' => 'view', $accessCredential->customer->id]
+                            ['controller' => 'Customers', 'action' => 'view', $accessCredential->customer->id],
                         ) : '' ?></td>
                     <td><?= $accessCredential->hasValue('customer') ?
                         h($accessCredential->customer->number) : '' ?></td>
@@ -62,7 +62,7 @@
                                 'action' => 'view',
                                 $accessCredential->contract->id,
                                 'customer_id' => $accessCredential->contract->customer_id,
-                            ]
+                            ],
                         ) : '' ?></td>
                     <?php endif; ?>
                     <td><?= h($accessCredential->name) ?></td>
@@ -73,17 +73,17 @@
                     <td class="actions">
                         <?= $this->AuthLink->link(
                             __('View'),
-                            ['action' => 'view', $accessCredential->id]
+                            ['action' => 'view', $accessCredential->id],
                         ) ?>
                         <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $accessCredential->id],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
                             ['action' => 'delete', $accessCredential->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $accessCredential->id)]
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $accessCredential->id)],
                         ) ?>
                     </td>
                 </tr>
@@ -100,7 +100,7 @@
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
         ) ?></p>
     </div>
 </div>

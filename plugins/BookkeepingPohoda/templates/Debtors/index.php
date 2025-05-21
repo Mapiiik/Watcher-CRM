@@ -30,7 +30,7 @@ use BookkeepingPohoda\Debtors\Debtor;
     <?= $this->AuthLink->link(
         __d('bookkeeping_pohoda', 'List Invoices'),
         ['controller' => 'Invoices', 'action' => 'index'],
-        ['class' => 'button float-right']
+        ['class' => 'button float-right'],
     ) ?>
     <?= $this->AuthLink->postLink(
         __d('bookkeeping_pohoda', 'Update Debtors Blocking'),
@@ -43,9 +43,9 @@ use BookkeepingPohoda\Debtors\Debtor;
             'class' => 'button float-right',
             'confirm' => __d(
                 'bookkeeping_pohoda',
-                'Are you sure you want to automatically update the debtors blocking?'
+                'Are you sure you want to automatically update the debtors blocking?',
             ),
-        ]
+        ],
     ) ?>
     <h3><?= __d('bookkeeping_pohoda', 'Debtors') ?></h3>
     <div class="table-responsive">
@@ -73,7 +73,7 @@ use BookkeepingPohoda\Debtors\Debtor;
                                 'controller' => 'Customers',
                                 'action' => 'view',
                                 $debtor->getCustomer()->id,
-                            ]
+                            ],
                         ) ?></td>
                     <td><?= h($debtor->getCustomer()->number) ?></td>
                     <td><?= implode('<br>', array_column($debtor->getCustomer()->emails, 'email')) ?></td>
@@ -120,7 +120,7 @@ use BookkeepingPohoda\Debtors\Debtor;
                                             'action' => 'download',
                                             $invoice->id,
                                         ],
-                                        ['target' => '_blank']
+                                        ['target' => '_blank'],
                                     ) ?>
                                 </td>
                             </tr>
@@ -136,12 +136,12 @@ use BookkeepingPohoda\Debtors\Debtor;
         <?= __d('bookkeeping_pohoda', 'Total Debt') . ': ' . $this->Number->currency($debtors->sumOf(
             function (Debtor $debtor) {
                 return $debtor->getTotalDebt();
-            }
+            },
         )) ?><br>
         <?= __d('bookkeeping_pohoda', 'Total Overdue Debt') . ': ' . $this->Number->currency($debtors->sumOf(
             function (Debtor $debtor) {
                 return $debtor->getTotalOverdueDebt();
-            }
+            },
         )) ?><br>
     </div>
 </div>

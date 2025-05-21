@@ -11,12 +11,12 @@
             <?= $this->AuthLink->link(
                 __('Edit Email'),
                 ['action' => 'edit', $email->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete Email'),
                 ['action' => 'delete', $email->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $email->id), 'class' => 'side-nav-item']
+                ['confirm' => __('Are you sure you want to delete # {0}?', $email->id), 'class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(__('List Emails'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Email'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
@@ -32,7 +32,7 @@
                             <th><?= __('Customer') ?></th>
                             <td><?= $email->__isset('customer') ? $this->Html->link(
                                 $email->customer->name,
-                                ['controller' => 'Customers', 'action' => 'view', $email->customer->id]
+                                ['controller' => 'Customers', 'action' => 'view', $email->customer->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -75,7 +75,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $email->creator->id,
-                                ]
+                                ],
                             ) : h($email->created_by) ?></td>
                         </tr>
                         <tr>
@@ -90,7 +90,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $email->modifier->id,
-                                ]
+                                ],
                             ) : h($email->modified_by) ?></td>
                         </tr>
                     </table>

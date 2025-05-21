@@ -46,7 +46,7 @@
                     <td>
                         <?= $billing->__isset('customer') ? $this->Html->link(
                             $billing->customer->name,
-                            ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]
+                            ['controller' => 'Customers', 'action' => 'view', $billing->customer->id],
                         ) : '' ?>
                     </td>
                     <td><?= $billing->__isset('customer') ? h($billing->customer->number) : '' ?></td>
@@ -58,13 +58,13 @@
                                 'action' => 'view',
                                 $billing->contract->id,
                                 'customer_id' => $billing->contract->customer_id,
-                            ]
+                            ],
                         ) : '' ?>
                     </td>
                     <td>
                         <?= $billing->__isset('service') ? $this->Html->link(
                             $billing->service->name,
-                            ['controller' => 'Services', 'action' => 'view', $billing->service->id]
+                            ['controller' => 'Services', 'action' => 'view', $billing->service->id],
                         ) : '' ?>
                     </td>
                     <td><?= h($billing->text) ?></td>
@@ -85,12 +85,12 @@
                         <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $billing->id],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
                             ['action' => 'delete', $billing->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id)]
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id)],
                         ) ?>
                     </td>
                 </tr>
@@ -107,7 +107,7 @@
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
         ) ?></p>
     </div>
 </div>

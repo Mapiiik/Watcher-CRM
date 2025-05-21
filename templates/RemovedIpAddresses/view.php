@@ -11,7 +11,7 @@
             <?= $this->AuthLink->link(
                 __('Edit Removed IP Address'),
                 ['action' => 'edit', $removedIpAddress->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete Removed IP Address'),
@@ -19,17 +19,17 @@
                 [
                     'confirm' => __('Are you sure you want to delete # {0}?', $removedIpAddress->id),
                     'class' => 'side-nav-item',
-                ]
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __('List Removed IP Addresses'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('New Removed IP Address'),
                 ['action' => 'add'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
@@ -43,7 +43,7 @@
                             <th><?= __('Customer') ?></th>
                             <td><?= $removedIpAddress->__isset('customer') ? $this->Html->link(
                                 $removedIpAddress->customer->name,
-                                ['controller' => 'Customers', 'action' => 'view', $removedIpAddress->customer->id]
+                                ['controller' => 'Customers', 'action' => 'view', $removedIpAddress->customer->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -60,7 +60,7 @@
                                     'action' => 'view',
                                     $removedIpAddress->contract->id,
                                     'customer_id' => $removedIpAddress->contract->customer_id,
-                                ]
+                                ],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -80,13 +80,13 @@
                                     __('Access Point') . ': ' . $this->Html->link(
                                         $range['access_point']['name'],
                                         env('WATCHER_NMS_URL') . '/access-points/view/' . $range['access_point']['id'],
-                                        ['target' => '_blank']
+                                        ['target' => '_blank'],
                                     ) . '<br>' : '';
                                 echo isset($range['id']) ?
                                     __('Range') . ': ' . $this->Html->link(
                                         $range['name'],
                                         env('WATCHER_NMS_URL') . '/ip-address-ranges/view/' . $range['id'],
-                                        ['target' => '_blank']
+                                        ['target' => '_blank'],
                                     ) . '<br>' : '';
                                     unset($range);
                             }
@@ -112,7 +112,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $removedIpAddress->creator->id,
-                                ]
+                                ],
                             ) : h($removedIpAddress->created_by) ?></td>
                         </tr>
                         <tr>
@@ -127,7 +127,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $removedIpAddress->modifier->id,
-                                ]
+                                ],
                             ) : h($removedIpAddress->modified_by) ?></td>
                         </tr>
                         <tr>
@@ -142,7 +142,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $removedIpAddress->remover->id,
-                                ]
+                                ],
                             ) : h($removedIpAddress->removed_by) ?></td>
                         </tr>
                     </table>

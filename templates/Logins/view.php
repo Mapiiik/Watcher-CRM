@@ -11,12 +11,12 @@
             <?= $this->AuthLink->link(
                 __('Edit Login'),
                 ['action' => 'edit', $login->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete Login'),
                 ['action' => 'delete', $login->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $login->id), 'class' => 'side-nav-item']
+                ['confirm' => __('Are you sure you want to delete # {0}?', $login->id), 'class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(__('List Logins'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Login'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
@@ -32,7 +32,7 @@
                             <th><?= __('Customer') ?></th>
                             <td><?= $login->__isset('customer') ? $this->Html->link(
                                 $login->customer->name,
-                                ['controller' => 'Customers', 'action' => 'view', $login->customer->id]
+                                ['controller' => 'Customers', 'action' => 'view', $login->customer->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -89,7 +89,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $login->creator->id,
-                                ]
+                                ],
                             ) : h($login->created_by) ?></td>
                         </tr>
                         <tr>
@@ -104,7 +104,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $login->modifier->id,
-                                ]
+                                ],
                             ) : h($login->modified_by) ?></td>
                         </tr>
                     </table>

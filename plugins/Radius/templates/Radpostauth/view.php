@@ -11,7 +11,7 @@
             <?= $this->AuthLink->link(
                 __d('radius', 'Edit RADIUS Post Authentication'),
                 ['action' => 'edit', $radpostauth->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __d('radius', 'Delete RADIUS Post Authentication'),
@@ -19,17 +19,17 @@
                 [
                     'confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radpostauth->id),
                     'class' => 'side-nav-item',
-                ]
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __d('radius', 'List RADIUS Post Authentications'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __d('radius', 'New RADIUS Post Authentication'),
                 ['action' => 'add'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
@@ -41,7 +41,7 @@
                     <th><?= __d('radius', 'Username') ?></th>
                     <td><?= $radpostauth->__isset('account') ? $this->Html->link(
                         $radpostauth->account->username,
-                        ['controller' => 'Accounts', 'action' => 'view', $radpostauth->account->id]
+                        ['controller' => 'Accounts', 'action' => 'view', $radpostauth->account->id],
                     ) : $radpostauth->username ?></td>
                 </tr>
                 <tr>

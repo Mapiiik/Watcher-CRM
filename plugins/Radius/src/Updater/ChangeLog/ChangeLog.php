@@ -64,7 +64,7 @@ class ChangeLog
         Account $account,
         string $relatedData,
         array $original,
-        array $changed
+        array $changed,
     ): void {
         if (!$this->hasChange($account->username)) {
             /** @var \App\Model\Entity\Customer $customer */

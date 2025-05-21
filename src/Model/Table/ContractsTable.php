@@ -259,27 +259,27 @@ class ContractsTable extends AppTable
         $rules->add($rules->isUnique(['number']), ['errorField' => 'number']);
         $rules->add(
             $rules->isUnique(['subscriber_verification_code']),
-            ['errorField' => 'subscriber_verification_code']
+            ['errorField' => 'subscriber_verification_code'],
         );
         $rules->add(
             $rules->existsIn(['customer_id'], 'Customers'),
-            ['errorField' => 'customer_id']
+            ['errorField' => 'customer_id'],
         );
         $rules->add(
             $rules->existsIn(['installation_address_id'], 'InstallationAddresses'),
-            ['errorField' => 'installation_address_id']
+            ['errorField' => 'installation_address_id'],
         );
         $rules->add(
             $rules->existsIn(['service_type_id'], 'ServiceTypes'),
-            ['errorField' => 'service_type_id']
+            ['errorField' => 'service_type_id'],
         );
         $rules->add(
             $rules->existsIn(['installation_technician_id'], 'InstallationTechnicians'),
-            ['errorField' => 'installation_technician_id']
+            ['errorField' => 'installation_technician_id'],
         );
         $rules->add(
             $rules->existsIn(['uninstallation_technician_id'], 'UninstallationTechnicians'),
-            ['errorField' => 'uninstallation_technician_id']
+            ['errorField' => 'uninstallation_technician_id'],
         );
         $rules->add($rules->existsIn(['commission_id'], 'Commissions'), ['errorField' => 'commission_id']);
         $rules->add($rules->existsIn(['contract_state_id'], 'ContractStates'), ['errorField' => 'contract_state_id']);
@@ -299,7 +299,7 @@ class ContractsTable extends AppTable
             [
                 'errorField' => 'installation_address_id',
                 'message' => __('The specified service type requires the assignment of an installation address.'),
-            ]
+            ],
         );
 
         $rules->add(
@@ -317,7 +317,7 @@ class ContractsTable extends AppTable
             [
                 'errorField' => 'access_point_id',
                 'message' => __('The specified service type requires the assignment of an access point.'),
-            ]
+            ],
         );
 
         $rules->addDelete($rules->isNotLinkedTo('AccessCredentials'));

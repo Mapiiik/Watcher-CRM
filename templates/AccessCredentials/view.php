@@ -11,7 +11,7 @@
             <?= $this->AuthLink->link(
                 __('Edit Access Credential'),
                 ['action' => 'edit', $accessCredential->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete Access Credential'),
@@ -19,17 +19,17 @@
                 [
                     'confirm' => __('Are you sure you want to delete # {0}?', $accessCredential->id),
                     'class' => 'side-nav-item',
-                ]
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __('List Access Credentials'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('New Access Credential'),
                 ['action' => 'add'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
@@ -44,7 +44,7 @@
                             <td><?= $accessCredential->hasValue('customer') ?
                                 $this->Html->link(
                                     $accessCredential->customer->name_for_lists,
-                                    ['controller' => 'Customers', 'action' => 'view', $accessCredential->customer->id]
+                                    ['controller' => 'Customers', 'action' => 'view', $accessCredential->customer->id],
                                 ) : '' ?></td>
                         </tr>
                         <tr>
@@ -57,7 +57,7 @@
                                         'action' => 'view',
                                         $accessCredential->contract->id,
                                         'customer_id' => $accessCredential->contract->customer_id,
-                                    ]
+                                    ],
                                 ) : '' ?></td>
                         </tr>
                         <tr>
@@ -101,7 +101,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $accessCredential->creator->id,
-                                ]
+                                ],
                             ) : h($accessCredential->created_by) ?></td>
                         </tr>
                         <tr>
@@ -116,7 +116,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $accessCredential->modifier->id,
-                                ]
+                                ],
                             ) : h($accessCredential->modified_by) ?></td>
                         </tr>
                     </table>

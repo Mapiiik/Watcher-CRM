@@ -38,7 +38,7 @@
                     <td>
                         <?= $phone->__isset('customer') ? $this->Html->link(
                             $phone->customer->name,
-                            ['controller' => 'Customers', 'action' => 'view', $phone->customer->id]
+                            ['controller' => 'Customers', 'action' => 'view', $phone->customer->id],
                         ) : '' ?>
                     </td>
                     <td><?= $phone->__isset('customer') ? h($phone->customer->number) : '' ?></td>
@@ -51,12 +51,12 @@
                         <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $phone->id],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
                             ['action' => 'delete', $phone->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $phone->id)]
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $phone->id)],
                         ) ?>
                     </td>
                 </tr>
@@ -73,7 +73,7 @@
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
         ) ?></p>
     </div>
 </div>

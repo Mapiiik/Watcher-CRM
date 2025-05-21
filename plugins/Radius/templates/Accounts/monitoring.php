@@ -17,7 +17,7 @@ use Cake\Routing\Router;
             <?= $this->AuthLink->link(
                 __d('radius', 'Edit RADIUS Account'),
                 ['action' => 'edit', $account->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __d('radius', 'Delete RADIUS Account'),
@@ -25,17 +25,17 @@ use Cake\Routing\Router;
                 [
                     'confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $account->id),
                     'class' => 'side-nav-item',
-                ]
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __d('radius', 'List RADIUS Accounts'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __d('radius', 'New RADIUS Account'),
                 ['action' => 'add'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
@@ -44,7 +44,7 @@ use Cake\Routing\Router;
             <?= $this->AuthLink->link(
                 __d('radius', 'View RADIUS Account'),
                 ['action' => 'view', $account->id],
-                ['class' => 'button float-right']
+                ['class' => 'button float-right'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __d('radius', 'Remove MAC address'),
@@ -54,10 +54,10 @@ use Cake\Routing\Router;
                         'radius',
                         'Are you sure you want to remove the last active MAC address'
                             . ' from the access list on the access point for account {0}?',
-                        $account->username
+                        $account->username,
                     ),
                     'class' => 'button float-right',
-                ]
+                ],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __d('radius', 'RADIUS Disconnect Request'),
@@ -65,7 +65,7 @@ use Cake\Routing\Router;
                 [
                     'confirm' => __d('radius', 'Are you sure you want to disconnect {0}?', $account->username),
                     'class' => 'button float-right',
-                ]
+                ],
             ) ?>
             <h3><?= h($account->username) ?></h3>
             <div class="row">
@@ -80,7 +80,7 @@ use Cake\Routing\Router;
                                     'controller' => 'Customers',
                                     'action' => 'view',
                                     $account->customer->id,
-                                ]
+                                ],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -97,7 +97,7 @@ use Cake\Routing\Router;
                                     'action' => 'view',
                                     $account->contract->id,
                                     'customer_id' => $account->contract->customer_id,
-                                ]
+                                ],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -137,7 +137,7 @@ use Cake\Routing\Router;
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $account->creator->id,
-                                ]
+                                ],
                             ) : h($account->created_by) ?></td>
                         </tr>
                         <tr>
@@ -153,7 +153,7 @@ use Cake\Routing\Router;
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $account->modifier->id,
-                                ]
+                                ],
                             ) : h($account->modified_by) ?></td>
                         </tr>
                     </table>
@@ -304,12 +304,12 @@ use Cake\Routing\Router;
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __d('radius', 'View'),
-                                    ['controller' => 'Radacct', 'action' => 'view', $radacct->radacctid]
+                                    ['controller' => 'Radacct', 'action' => 'view', $radacct->radacctid],
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __d('radius', 'Edit'),
                                     ['controller' => 'Radacct', 'action' => 'edit', $radacct->radacctid],
-                                    ['class' => 'win-link']
+                                    ['class' => 'win-link'],
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
                                     __d('radius', 'Delete'),
@@ -317,8 +317,8 @@ use Cake\Routing\Router;
                                     ['confirm' => __d(
                                         'radius',
                                         'Are you sure you want to delete # {0}?',
-                                        $radacct->radacctid
-                                    )]
+                                        $radacct->radacctid,
+                                    )],
                                 ) ?>
                             </td>
                         </tr>
@@ -337,8 +337,8 @@ use Cake\Routing\Router;
                         $this->Paginator->counter(
                             __d(
                                 'radius',
-                                'Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'
-                            )
+                                'Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total',
+                            ),
                         ) ?></p>
                 </div>
                 <?php endif; ?>
@@ -385,12 +385,12 @@ use Cake\Routing\Router;
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __d('radius', 'View'),
-                                    ['controller' => 'Radpostauth', 'action' => 'view', $radpostauth->id]
+                                    ['controller' => 'Radpostauth', 'action' => 'view', $radpostauth->id],
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __d('radius', 'Edit'),
                                     ['controller' => 'Radpostauth', 'action' => 'edit', $radpostauth->id],
-                                    ['class' => 'win-link']
+                                    ['class' => 'win-link'],
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
                                     __d('radius', 'Delete'),
@@ -398,8 +398,8 @@ use Cake\Routing\Router;
                                     ['confirm' => __d(
                                         'radius',
                                         'Are you sure you want to delete # {0}?',
-                                        $radpostauth->id
-                                    )]
+                                        $radpostauth->id,
+                                    )],
                                 ) ?>
                             </td>
                         </tr>
@@ -418,8 +418,8 @@ use Cake\Routing\Router;
                         $this->Paginator->counter(
                             __d(
                                 'radius',
-                                'Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'
-                            )
+                                'Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total',
+                            ),
                         ) ?></p>
                 </div>
                 <?php endif; ?>

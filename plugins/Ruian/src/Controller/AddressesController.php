@@ -46,7 +46,7 @@ class AddressesController extends AppController
         $addresses = $this->paginate($this->Addresses->find(
             'all',
             contain: [],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('addresses'));

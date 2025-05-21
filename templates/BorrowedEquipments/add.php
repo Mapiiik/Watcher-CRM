@@ -14,7 +14,7 @@
             <?= $this->AuthLink->link(
                 __('List Borrowed Equipments'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>

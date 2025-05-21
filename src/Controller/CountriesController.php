@@ -38,7 +38,7 @@ class CountriesController extends AppController
         $countries = $this->paginate($this->Countries->find(
             'all',
             contain: [],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('countries'));

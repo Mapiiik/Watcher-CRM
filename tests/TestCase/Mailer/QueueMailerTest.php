@@ -64,7 +64,7 @@ class QueueMailerTest extends TestCase
                     'new_billing_total_price' => 200.20,
                     'new_billing_from' => h(new Date()),
                 ],
-            ]
+            ],
         );
 
         $this->assertMailSentTo('test@test.test');

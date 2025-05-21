@@ -24,18 +24,18 @@ $this->Html->script('CakeDC/Users.u2f-api.js', ['block' => true]);
                     <h3 class='text-center'><?= __d('app_users', 'Please insert and tap your yubico key') ?></h3>
                     <p><?= __d(
                         'app_users',
-                        'In order to enable your YubiKey the first step is to perform a registration.'
+                        'In order to enable your YubiKey the first step is to perform a registration.',
                     ) ?></p>
                     <p><?= __d(
                         'app_users',
                         'When the YubiKey starts blinking, press the golden disc to activate it.'
                         . ' Depending on the web browser you might need to confirm the use of extended information'
-                        . ' from the YubiKey.'
+                        . ' from the YubiKey.',
                     ) ?></p>
                     <p class="text-center"><?= $this->Html->link(
                         __d('app_users', 'Reload'),
                         ['action' => 'u2fRegister'],
-                        ['class' => 'btn btn-primary']
+                        ['class' => 'btn btn-primary'],
                     ) ?></p>
                 </fieldset>
                 <?= $this->Form->hidden('registerResponse', ['secure' => false, 'id' => 'registerResponse'])?>

@@ -58,7 +58,7 @@ class AccountsController extends AppController
                 'Contracts',
                 'Customers',
             ],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('accounts'));
@@ -113,7 +113,7 @@ class AccountsController extends AppController
                 'order' => [
                     'acctstarttime' => 'DESC',
                 ],
-            ]
+            ],
         );
 
         $radpostauths = $this->paginate(
@@ -127,7 +127,7 @@ class AccountsController extends AppController
                 'order' => [
                     'authdate' => 'DESC',
                 ],
-            ]
+            ],
         );
 
         $details = $this->getRequest()->getQuery('show_details') == true;
@@ -219,7 +219,7 @@ class AccountsController extends AppController
 
                 if (empty($customer->company)) {
                     $new_username = strtolower(Strings::removeAccents(
-                        $customer->last_name . '.' . $customer->first_name
+                        $customer->last_name . '.' . $customer->first_name,
                     ));
                     $new_username = strtr($new_username, [' - ' => '-', ' ' => '-']);
                 } else {
@@ -360,7 +360,7 @@ class AccountsController extends AppController
             $this->Flash->warning(__d(
                 'radius',
                 'No RADIUS session for {0} found.',
-                $account->username
+                $account->username,
             ));
 
             return $this->redirect(['action' => 'monitoring', $account->id]);
@@ -407,7 +407,7 @@ class AccountsController extends AppController
                         'Removed MAC address entry {0} on interface {1} from router {2}.',
                         $item['mac-address'],
                         $item['interface'],
-                        $session->nasipaddress
+                        $session->nasipaddress,
                     ) . PHP_EOL;
                 }
             }
@@ -415,13 +415,13 @@ class AccountsController extends AppController
             $this->Flash->success(
                 '<strong>' . __d('radius', 'Access point updated.') . '</strong><br>'
                     . ($result ? nl2br($result) : __d('radius', 'Nothing has changed.')),
-                ['escape' => false]
+                ['escape' => false],
             );
         } else {
             $this->Flash->warning(__d(
                 'radius',
                 'Invalid RADIUS session for {0}.',
-                $account->username
+                $account->username,
             ));
 
             return $this->redirect(['action' => 'monitoring', $account->id]);
@@ -452,7 +452,7 @@ class AccountsController extends AppController
             $this->Flash->warning(__d(
                 'radius',
                 'No active RADIUS session for {0} found.',
-                $account->username
+                $account->username,
             ));
 
             return $this->redirect(['action' => 'monitoring', $account->id]);

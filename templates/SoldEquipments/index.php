@@ -20,7 +20,7 @@
     <?= $this->AuthLink->link(
         __('New Sold Equipment'),
         ['action' => 'add'],
-        ['class' => 'button float-right win-link']
+        ['class' => 'button float-right win-link'],
     ) ?>
     <h3><?= __('Sold Equipments') ?></h3>
     <div class="table-responsive">
@@ -42,7 +42,7 @@
                     <td>
                         <?= $soldEquipment->__isset('customer') ? $this->Html->link(
                             $soldEquipment->customer->name,
-                            ['controller' => 'Customers', 'action' => 'view', $soldEquipment->customer->id]
+                            ['controller' => 'Customers', 'action' => 'view', $soldEquipment->customer->id],
                         ) : '' ?>
                     </td>
                     <td><?= $soldEquipment->__isset('customer') ? h($soldEquipment->customer->number) : '' ?></td>
@@ -54,13 +54,13 @@
                                 'action' => 'view',
                                 $soldEquipment->contract->id,
                                 'customer_id' => $soldEquipment->contract->customer_id,
-                            ]
+                            ],
                         ) : '' ?>
                     </td>
                     <td>
                         <?= $soldEquipment->__isset('equipment_type') ? $this->Html->link(
                             $soldEquipment->equipment_type->name,
-                            ['controller' => 'EquipmentTypes', 'action' => 'view', $soldEquipment->equipment_type->id]
+                            ['controller' => 'EquipmentTypes', 'action' => 'view', $soldEquipment->equipment_type->id],
                         ) : '' ?>
                     </td>
                     <td><?= h($soldEquipment->serial_number) ?></td>
@@ -70,12 +70,12 @@
                         <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $soldEquipment->id],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
                             ['action' => 'delete', $soldEquipment->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id)]
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $soldEquipment->id)],
                         ) ?>
                     </td>
                 </tr>
@@ -92,7 +92,7 @@
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
         ) ?></p>
     </div>
 </div>

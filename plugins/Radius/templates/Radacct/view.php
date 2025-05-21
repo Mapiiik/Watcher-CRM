@@ -11,7 +11,7 @@
             <?= $this->AuthLink->link(
                 __d('radius', 'Edit RADIUS Accounting'),
                 ['action' => 'edit', $radacct->radacctid],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __d('radius', 'Delete RADIUS Accounting'),
@@ -19,17 +19,17 @@
                 [
                     'confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radacct->radacctid),
                     'class' => 'side-nav-item',
-                ]
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __d('radius', 'List RADIUS Accountings'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __d('radius', 'New RADIUS Accounting'),
                 ['action' => 'add'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
@@ -41,7 +41,7 @@
                     <th><?= __d('radius', 'Username') ?></th>
                     <td><?= $radacct->__isset('account') ? $this->Html->link(
                         $radacct->account->username,
-                        ['controller' => 'Accounts', 'action' => 'view', $radacct->account->id]
+                        ['controller' => 'Accounts', 'action' => 'view', $radacct->account->id],
                     ) : h($radacct->username) ?></td>
                 </tr>
                 <tr>

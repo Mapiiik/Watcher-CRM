@@ -50,7 +50,7 @@ class BorrowedEquipmentsController extends AppController
                 'Customers',
                 'EquipmentTypes',
             ],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('borrowedEquipments'));

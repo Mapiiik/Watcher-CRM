@@ -60,12 +60,12 @@ class CustomersTable extends AppTable
 
         $this->getSchema()->setColumnType(
             'dealer',
-            EnumType::from(CustomerDealer::class)
+            EnumType::from(CustomerDealer::class),
         );
 
         $this->getSchema()->setColumnType(
             'invoice_delivery_type',
-            EnumType::from(CustomerInvoiceDeliveryType::class)
+            EnumType::from(CustomerInvoiceDeliveryType::class),
         );
 
         $this->addBehavior('Timestamp');
@@ -315,7 +315,7 @@ class CustomersTable extends AppTable
             [
                 'errorField' => 'ic',
                 'message' => __('The specified identification number is not valid.'),
-            ]
+            ],
         );
 
         $rules->addDelete($rules->isNotLinkedTo('AccessCredentials'));

@@ -171,8 +171,8 @@ class AccountsUpdater
                         __d(
                             'radius',
                             'The RADIUS account {0} could not be updated. Please, try again.',
-                            $account->username
-                        )
+                            $account->username,
+                        ),
                     );
                     Log::warning('The RADIUS account ' . $account->username . ' could not be updated.');
                 } else {
@@ -193,7 +193,7 @@ class AccountsUpdater
                             $this->Messages->warning(__d(
                                 'radius',
                                 'No active RADIUS session for {0} found.',
-                                $account->username
+                                $account->username,
                             ));
                         } else {
                             // load RADIUS request sender if required
@@ -221,12 +221,12 @@ class AccountsUpdater
                 Number::format($processed),
                 Number::format($modified),
                 Number::format($failed),
-            )
+            ),
         );
         Log::info(
             'Related entries for ' . Number::format($processed) . ' RADIUS accounts were processed, '
                 . Number::format($modified) . ' accounts were updated, and '
-                . Number::format($failed) . ' accounts failed to update.'
+                . Number::format($failed) . ' accounts failed to update.',
         );
 
         // send change log by email
@@ -238,7 +238,7 @@ class AccountsUpdater
             }
 
             $mailer->setSubject(
-                __d('radius', 'Automatic RADIUS account changes') . ' - ' . Date::now()->i18nFormat('yyyy-MM-dd')
+                __d('radius', 'Automatic RADIUS account changes') . ' - ' . Date::now()->i18nFormat('yyyy-MM-dd'),
             );
             $mailer->setEmailFormat('html');
 
@@ -258,7 +258,7 @@ class AccountsUpdater
             } catch (Exception $e) {
                 Log::write(
                     'error',
-                    'Automatic RADIUS account changes cannot be reported. (' . $e->getMessage() . ')'
+                    'Automatic RADIUS account changes cannot be reported. (' . $e->getMessage() . ')',
                 );
                 $this->Messages->error(__d('radius', 'Automatic RADIUS account changes cannot be reported.'));
             }
@@ -411,11 +411,11 @@ class AccountsUpdater
                 __d(
                     'radius',
                     'The RADIUS replies for {0} could not be found automatically. Please, set it manually.',
-                    $account->username
+                    $account->username,
                 )
                 . ' ('
                 . __d('radius', 'The IP addresses for the contract are probably not set correctly.')
-                . ')'
+                . ')',
             );
             Log::warning('The RADIUS replies for ' . $account->username . ' could not be found automatically.');
         }
@@ -479,14 +479,14 @@ class AccountsUpdater
                 __d(
                     'radius',
                     'The RADIUS user groups for {0} could not be found automatically. Please, set it manually.',
-                    $account->username
+                    $account->username,
                 )
                 . ' ('
                 . __d(
                     'radius',
-                    'The billings for the contract for the current or upcoming period are probably not set correctly.'
+                    'The billings for the contract for the current or upcoming period are probably not set correctly.',
                 )
-                . ')'
+                . ')',
             );
             Log::warning('The RADIUS user groups for ' . $account->username . ' could not be found automatically.');
         }

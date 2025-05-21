@@ -32,7 +32,7 @@
                         'controller' => 'Customers',
                         'action' => 'view',
                         $change->getCustomer()->id,
-                    ]
+                    ],
                 ) ?></td>
             <td><?= $this->Html
                 ->link(
@@ -44,7 +44,7 @@
                         'action' => 'view',
                         $change->getContract()->id,
                         'customer_id' => $change->getContract()->customer_id,
-                    ]
+                    ],
                 ) ?></td>
             <td><?= $this->Html
                 ->link(
@@ -57,7 +57,7 @@
                         'customer_id' => $change->getAccount()->customer_id,
                         'contract_id' => $change->getAccount()->contract_id,
                         $change->getAccount()->id,
-                    ]
+                    ],
                 ) ?></td>
             <td><pre><?= $change->getRadcheckChange() ?
                 h(json_encode($change->getRadcheckChange()->getOriginal(), JSON_PRETTY_PRINT)) : '' ?></pre></td>

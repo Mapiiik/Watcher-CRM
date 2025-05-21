@@ -20,7 +20,7 @@
     <?= $this->AuthLink->link(
         __('New Equipment Type'),
         ['action' => 'add'],
-        ['class' => 'button float-right win-link']
+        ['class' => 'button float-right win-link'],
     ) ?>
     <h3><?= __('Equipment Types') ?></h3>
     <div class="table-responsive">
@@ -46,12 +46,12 @@
                         <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $equipmentType->id],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
                             ['action' => 'delete', $equipmentType->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $equipmentType->id)]
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $equipmentType->id)],
                         ) ?>
                     </td>
                 </tr>
@@ -68,7 +68,7 @@
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
         ) ?></p>
     </div>
 </div>

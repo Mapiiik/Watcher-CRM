@@ -45,7 +45,7 @@ class RemovedIpAddressesTable extends AppTable
 
         $this->getSchema()->setColumnType(
             'type_of_use',
-            EnumType::from(IpAddressTypeOfUse::class)
+            EnumType::from(IpAddressTypeOfUse::class),
         );
 
         $this->addBehavior('StringModifications');

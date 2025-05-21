@@ -50,7 +50,7 @@ class PhonesController extends AppController
             contain: [
                 'Customers',
             ],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('phones'));
@@ -208,15 +208,15 @@ class PhonesController extends AppController
                 [
                     '_auditQueue' => new SplObjectStorage(),
                     '_auditTransaction' => Text::uuid(),
-                ]
+                ],
             ) === false
         ) {
             $this->Flash->error(
-                __('The phones could not be updated. Please, try again.')
+                __('The phones could not be updated. Please, try again.'),
             );
         } else {
             $this->Flash->success(
-                __('The phones have been updated.')
+                __('The phones have been updated.'),
             );
         }
 

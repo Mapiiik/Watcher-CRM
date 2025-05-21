@@ -47,7 +47,7 @@
                     <td>
                         <?= $address->__isset('customer') ? $this->Html->link(
                             $address->customer->name,
-                            ['controller' => 'Customers', 'action' => 'view', $address->customer->id]
+                            ['controller' => 'Customers', 'action' => 'view', $address->customer->id],
                         ) : '' ?>
                     </td>
                     <td><?= $address->__isset('customer') ? h($address->customer->number) : '' ?></td>
@@ -64,7 +64,7 @@
                     <td>
                         <?= $address->__isset('country') ? $this->Html->link(
                             $address->country->name,
-                            ['controller' => 'Countries', 'action' => 'view', $address->country->id]
+                            ['controller' => 'Countries', 'action' => 'view', $address->country->id],
                         ) : '' ?>
                     </td>
                     <td><?= $address->ruian_gid === null ?
@@ -78,13 +78,13 @@
                             __('Google Maps'),
                             'https://maps.google.com/maps?q='
                                 . h("{$address->gps_y},{$address->gps_x}"),
-                            ['target' => '_blank']
+                            ['target' => '_blank'],
                         ) : '' ?>
                         <?= $address->__isset('gps_x') && $address->__isset('gps_y') ? $this->Html->link(
                             __('Mapy.cz'),
                             'https://mapy.cz/zakladni?source=coor&id='
                                 . h("{$address->gps_x},{$address->gps_y}"),
-                            ['target' => '_blank']
+                            ['target' => '_blank'],
                         ) : ''?>
                     </td>
                     <td class="actions">
@@ -92,12 +92,12 @@
                         <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $address->id],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
                             ['action' => 'delete', $address->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $address->id)]
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $address->id)],
                         ) ?>
                     </td>
                 </tr>
@@ -114,7 +114,7 @@
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
         ) ?></p>
     </div>
 </div>

@@ -13,17 +13,17 @@
             <?= $this->AuthLink->link(
                 __('View Contract'),
                 ['action' => 'view', $contract->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('Edit Contract'),
                 ['action' => 'edit', $contract->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('List Contracts'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
@@ -41,7 +41,7 @@
                             <th><?= __('Customer') ?></th>
                             <td><?= $contract->__isset('customer') ? $this->Html->link(
                                 $contract->customer->name,
-                                ['controller' => 'Customers', 'action' => 'view', $contract->customer->id]
+                                ['controller' => 'Customers', 'action' => 'view', $contract->customer->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -52,14 +52,14 @@
                             <th><?= __('Contract State') ?></th>
                             <td><?= $contract->__isset('contract_state') ? $this->Html->link(
                                 $contract->contract_state->name,
-                                ['controller' => 'ContractStates', 'action' => 'view', $contract->contract_state->id]
+                                ['controller' => 'ContractStates', 'action' => 'view', $contract->contract_state->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Service Type') ?></th>
                             <td><?= $contract->__isset('service_type') ? $this->Html->link(
                                 $contract->service_type->name,
-                                ['controller' => 'ServiceTypes', 'action' => 'view', $contract->service_type->id]
+                                ['controller' => 'ServiceTypes', 'action' => 'view', $contract->service_type->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -74,7 +74,7 @@
                             <th><?= __('Installation Address') ?></th>
                             <td><?= $contract->__isset('installation_address') ? $this->Html->link(
                                 $contract->installation_address->full_address,
-                                ['controller' => 'Addresses', 'action' => 'view', $contract->installation_address->id]
+                                ['controller' => 'Addresses', 'action' => 'view', $contract->installation_address->id],
                             ) . ($contract->installation_address->note ?
                                 ' (' . h($contract->installation_address->note) . ')' : ''
                             ) : '' ?></td>
@@ -91,7 +91,7 @@
                             <th><?= __('Commission') ?></th>
                             <td><?= $contract->__isset('commission') ? $this->Html->link(
                                 $contract->commission->name,
-                                ['controller' => 'Commissions', 'action' => 'view', $contract->commission->id]
+                                ['controller' => 'Commissions', 'action' => 'view', $contract->commission->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -130,7 +130,7 @@
                                     'controller' => 'Customers',
                                     'action' => 'view',
                                     $contract->installation_technician->id,
-                                ]
+                                ],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -145,7 +145,7 @@
                                     'controller' => 'Customers',
                                     'action' => 'view',
                                     $contract->uninstallation_technician->id,
-                                ]
+                                ],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -172,7 +172,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $contract->creator->id,
-                                ]
+                                ],
                             ) : h($contract->created_by) ?></td>
                         </tr>
                         <tr>
@@ -187,7 +187,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $contract->modifier->id,
-                                ]
+                                ],
                             ) : h($contract->modified_by) ?></td>
                         </tr>
                     </table>
@@ -198,7 +198,7 @@
                 <?= $this->AuthLink->link(
                     __('New Contract Version'),
                     ['controller' => 'ContractVersions', 'action' => 'add'],
-                    ['class' => 'button button-small float-right win-link']
+                    ['class' => 'button button-small float-right win-link'],
                 ) ?>
                 <h4><?= __('Contract Versions') ?></h4>
                 <?= $this->element('Contracts/ContractVersions', [

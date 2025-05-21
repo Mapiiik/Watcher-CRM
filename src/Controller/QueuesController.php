@@ -39,7 +39,7 @@ class QueuesController extends AppController
         $queues = $this->paginate($this->Queues->find(
             'all',
             contain: [],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('queues'));

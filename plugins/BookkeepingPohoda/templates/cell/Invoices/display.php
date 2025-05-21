@@ -38,7 +38,7 @@ use Cake\I18n\Date;
             <td>
                 <?= $invoice->__isset('customer') ? $this->Html->link(
                     $invoice->customer->name,
-                    ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $invoice->customer->id]
+                    ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $invoice->customer->id],
                 ) : '' ?>
             </td>
             <td><?= $invoice->__isset('customer') ? h($invoice->customer->number) : '' ?></td>
@@ -58,7 +58,7 @@ use Cake\I18n\Date;
                 <?= $this->AuthLink->link(
                     __d('bookkeeping_pohoda', 'Download'),
                     ['plugin' => 'BookkeepingPohoda', 'controller' => 'Invoices', 'action' => 'download', $invoice->id],
-                    ['target' => '_blank']
+                    ['target' => '_blank'],
                 ) ?>
             </td>
         </tr>
@@ -79,7 +79,7 @@ use Cake\I18n\Date;
             . $this->Number->currency($invoices->sumOf(
                 function (Invoice $invoice) {
                     return $invoice->debt->toFloat();
-                }
+                },
             )) ?><br>
         <?= __d('bookkeeping_pohoda', 'Total Overdue Debt') . ': '
             . $this->Number->currency(
@@ -90,8 +90,8 @@ use Cake\I18n\Date;
                     ->sumOf(
                         function (Invoice $invoice) {
                             return $invoice->debt->toFloat();
-                        }
-                    )
+                        },
+                    ),
             )
         ?>
     </div>

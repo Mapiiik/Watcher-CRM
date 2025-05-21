@@ -20,7 +20,7 @@
     <?= $this->AuthLink->link(
         __('New Label'),
         ['action' => 'add'],
-        ['class' => 'button float-right win-link']
+        ['class' => 'button float-right win-link'],
     ) ?>
     <?= $this->AuthLink->postLink(
         __('Update Related Customer Labels'),
@@ -28,7 +28,7 @@
         [
             'confirm' => __('Are you sure you want to update related customer labels # {0}?', __('All')),
             'class' => 'button float-right',
-        ]
+        ],
     ) ?>
     <h3><?= __('Labels') ?></h3>
     <div class="table-responsive">
@@ -60,8 +60,8 @@
                             ['action' => 'updateRelatedCustomerLabels', $label->id],
                             ['confirm' => __(
                                 'Are you sure you want to update related customer labels # {0}?',
-                                $label->id
-                            )]
+                                $label->id,
+                            )],
                         ) ?>
                     </td>
                     <td class="actions">
@@ -69,12 +69,12 @@
                         <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $label->id],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
                             ['action' => 'delete', $label->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $label->id)]
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $label->id)],
                         ) ?>
                     </td>
                 </tr>
@@ -91,7 +91,7 @@
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
         ) ?></p>
     </div>
 </div>

@@ -43,7 +43,7 @@ class EmailsController extends AppController
             contain: [
                 'Customers',
             ],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('emails'));

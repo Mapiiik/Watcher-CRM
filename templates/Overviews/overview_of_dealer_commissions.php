@@ -75,7 +75,7 @@
                                                     'controller' => 'Customers',
                                                     'action' => 'view',
                                                     $contract->customer->id,
-                                                ]
+                                                ],
                                             ) : '' ?></td>
                                         <td><?= $contract->__isset('customer')
                                             ? h($contract->customer->number) : '' ?></td>
@@ -87,7 +87,7 @@
                                                     'action' => 'view',
                                                     $contract->id,
                                                     'customer_id' => $contract->customer_id,
-                                                ]
+                                                ],
                                             ) ?></td>
                                         <td><?= $contract->__isset('contract_state') ?
                                             h($contract->contract_state->name) : '' ?></td>
@@ -103,7 +103,7 @@
                                         <td class="actions">
                                             <?= $this->AuthLink->link(
                                                 __('View'),
-                                                ['controller' => 'Billings', 'action' => 'view', $billing->id]
+                                                ['controller' => 'Billings', 'action' => 'view', $billing->id],
                                             ) ?>
                                         </td>
                                     </tr>

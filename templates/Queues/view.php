@@ -11,12 +11,12 @@
             <?= $this->AuthLink->link(
                 __('Edit Queue'),
                 ['action' => 'edit', $queue->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete Queue'),
                 ['action' => 'delete', $queue->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $queue->id), 'class' => 'side-nav-item']
+                ['confirm' => __('Are you sure you want to delete # {0}?', $queue->id), 'class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(__('List Queues'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Queue'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
@@ -86,7 +86,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $queue->creator->id,
-                                ]
+                                ],
                             ) : h($queue->created_by) ?></td>
                         </tr>
                         <tr>
@@ -101,7 +101,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $queue->modifier->id,
-                                ]
+                                ],
                             ) : h($queue->modified_by) ?></td>
                         </tr>
                     </table>
@@ -127,24 +127,24 @@
                             <td>
                                 <?= $service->__isset('service_type') ? $this->Html->link(
                                     $service->service_type->name,
-                                    ['controller' => 'ServiceTypes', 'action' => 'view', $service->service_type->id]
+                                    ['controller' => 'ServiceTypes', 'action' => 'view', $service->service_type->id],
                                 ) : '' ?>
                             </td>
                             <td><?= $service->not_for_new_customers ? __('Yes') : __('No'); ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
-                                    ['controller' => 'Services', 'action' => 'view', $service->id]
+                                    ['controller' => 'Services', 'action' => 'view', $service->id],
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __('Edit'),
                                     ['controller' => 'Services', 'action' => 'edit', $service->id],
-                                    ['class' => 'win-link']
+                                    ['class' => 'win-link'],
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
                                     __('Delete'),
                                     ['controller' => 'Services', 'action' => 'delete', $service->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $service->id)]
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $service->id)],
                                 ) ?>
                             </td>
                         </tr>

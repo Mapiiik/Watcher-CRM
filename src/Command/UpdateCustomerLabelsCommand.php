@@ -84,12 +84,12 @@ class UpdateCustomerLabelsCommand extends Command
                         Log::error(
                             'The dynamic SQL query could not be processed for label.' . PHP_EOL
                             . '- ID: ' . $label->id . PHP_EOL
-                            . '- ' . $e->getMessage()
+                            . '- ' . $e->getMessage(),
                         );
                         $io->abort(
                             __('The dynamic SQL query could not be processed for label.') . PHP_EOL
                             . '- ID: ' . $label->id . PHP_EOL
-                            . '- ' . $e->getMessage()
+                            . '- ' . $e->getMessage(),
                         );
                     }
 
@@ -101,11 +101,11 @@ class UpdateCustomerLabelsCommand extends Command
                         if (!isset($dynamic_sql_result['customer_id'])) {
                             Log::error(
                                 'The dynamic SQL query did not return a customer_id value for label.' . PHP_EOL
-                                . '- ID: ' . $label->id
+                                . '- ID: ' . $label->id,
                             );
                             $io->abort(
                                 __('The dynamic SQL query did not return a customer_id value for label.') . PHP_EOL
-                                . '- ID: ' . $label->id
+                                . '- ID: ' . $label->id,
                             );
                         }
 
@@ -135,7 +135,7 @@ class UpdateCustomerLabelsCommand extends Command
                                     __('dynamic')
                                     . (!empty($dynamic_sql_result['note']) ? ' - ' . $dynamic_sql_result['note'] : '')
                                 ,
-                            ]
+                            ],
                         );
 
                         // update modification time
@@ -153,7 +153,7 @@ class UpdateCustomerLabelsCommand extends Command
                         [
                             '_auditQueue' => new SplObjectStorage(),
                             '_auditTransaction' => Text::uuid(),
-                        ]
+                        ],
                     ) === false
                 ) {
                     Log::error('The related dynamic customer labels could not be saved. Please, try again.');
@@ -167,7 +167,7 @@ class UpdateCustomerLabelsCommand extends Command
                             $labels_table->CustomerLabels->find()->where([
                                 'label_id' => $label->id,
                                 'modified <' => $start_time->subDays($label->validity),
-                            ])->all()
+                            ])->all(),
                         ) === false
                     ) {
                         Log::error('The related dynamic customer labels could not be deleted. Please, try again.');
@@ -183,7 +183,7 @@ class UpdateCustomerLabelsCommand extends Command
                             $labels_table->CustomerLabels->find()->where([
                                 'label_id' => $label->id,
                                 'created <' => $start_time->subDays($label->validity),
-                            ])->all()
+                            ])->all(),
                         ) === false
                     ) {
                         Log::error('The related static customer labels could not be deleted. Please, try again.');

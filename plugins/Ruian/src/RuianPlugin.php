@@ -42,7 +42,7 @@ class RuianPlugin extends BasePlugin
             ['path' => '/ruian'],
             function (RouteBuilder $builder): void {
                 $builder->fallbacks();
-            }
+            },
         );
         parent::routes($routes);
     }

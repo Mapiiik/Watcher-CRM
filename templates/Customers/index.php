@@ -72,7 +72,7 @@
                                     'action' => 'view',
                                     $contract->id,
                                     'customer_id' => $customer->id,
-                                ]
+                                ],
                             ) ?>
                             <?= $contract->__isset('contract_state') ?
                                 '(' . h($contract->contract_state->name) . ')' : '' ?>
@@ -99,7 +99,7 @@
                                         . $customer_label->created . PHP_EOL
                                         . $customer_label->note,
                                     'style' => 'color: white; background-color: ' . $customer_label->label->color . ';',
-                                ]
+                                ],
                             ) ?>
                         </span><br>
                         <?php endforeach; ?>
@@ -109,12 +109,12 @@
                     <td class="actions">
                         <?= $this->AuthLink->link(
                             __('View'),
-                            ['action' => 'view', $customer->id]
+                            ['action' => 'view', $customer->id],
                         ) ?>
                         <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $customer->id],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                     </td>
                 </tr>
@@ -131,7 +131,7 @@
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
         ) ?></p>
     </div>
 </div>

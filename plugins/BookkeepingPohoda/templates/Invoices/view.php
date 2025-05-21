@@ -11,7 +11,7 @@
             <?= $this->AuthLink->link(
                 __d('bookkeeping_pohoda', 'Edit Invoice'),
                 ['action' => 'edit', $invoice->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __d('bookkeeping_pohoda', 'Delete Invoice'),
@@ -19,23 +19,23 @@
                 [
                     'confirm' => __d('bookkeeping_pohoda', 'Are you sure you want to delete # {0}?', $invoice->id),
                     'class' => 'side-nav-item',
-                ]
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __d('bookkeeping_pohoda', 'List Invoices'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __d('bookkeeping_pohoda', 'New Invoice'),
                 ['action' => 'add'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <br>
             <?= $this->AuthLink->link(
                 __d('bookkeeping_pohoda', 'Download Invoice'),
                 ['action' => 'download', $invoice->id],
-                ['class' => 'side-nav-item', 'target' => '_blank']
+                ['class' => 'side-nav-item', 'target' => '_blank'],
             ) ?>
         </div>
     </aside>
@@ -54,7 +54,7 @@
                                     'controller' => 'Customers',
                                     'action' => 'view',
                                     $invoice->customer->id,
-                                ]
+                                ],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -121,7 +121,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $invoice->creator->id,
-                                ]
+                                ],
                             ) : h($invoice->created_by) ?></td>
                         </tr>
                         <tr>
@@ -137,7 +137,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $invoice->modifier->id,
-                                ]
+                                ],
                             ) : h($invoice->modified_by) ?></td>
                         </tr>
                     </table>

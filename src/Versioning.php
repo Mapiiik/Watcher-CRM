@@ -51,7 +51,7 @@ class Versioning
                 }
 
                 return __('Not installed via Git');
-            }
+            },
         );
     }
 
@@ -74,7 +74,7 @@ class Versioning
                 }
 
                 return __('Not installed via Git');
-            }
+            },
         );
     }
 }

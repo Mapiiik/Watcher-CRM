@@ -35,7 +35,7 @@ trait ErrorFormatterTrait
             '<strong>' . __('Errors') . ':</strong><br>' . PHP_EOL . $this->formatValidationErrors($validationErrors),
             [
                 'escape' => false,
-            ]
+            ],
         );
     }
 }

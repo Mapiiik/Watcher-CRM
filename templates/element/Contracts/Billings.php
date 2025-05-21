@@ -40,7 +40,7 @@
             <td><?= $billing->__isset('customer') ?
                 $this->Html->link(
                     $billing->customer->name,
-                    ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]
+                    ['controller' => 'Customers', 'action' => 'view', $billing->customer->id],
                 ) : '' ?>
             </td>
             <td><?= $billing->__isset('customer') ? h($billing->customer->number) : '' ?></td>
@@ -54,7 +54,7 @@
                         'action' => 'view',
                         $billing->contract->id,
                         'customer_id' => $billing->contract->customer_id,
-                    ]
+                    ],
                 ) : '' ?></td>
             <?php endif; ?>
             <td><?= $billing->__isset('service') ? h($billing->service->name) : '' ?></td>
@@ -74,17 +74,17 @@
             <td class="actions">
                 <?= $this->AuthLink->link(
                     __('View'),
-                    ['controller' => 'Billings', 'action' => 'view', $billing->id]
+                    ['controller' => 'Billings', 'action' => 'view', $billing->id],
                 ) ?>
                 <?= $this->AuthLink->link(
                     __('Edit'),
                     ['controller' => 'Billings', 'action' => 'edit', $billing->id],
-                    ['class' => 'win-link']
+                    ['class' => 'win-link'],
                 ) ?>
                 <?= $this->AuthLink->postLink(
                     __('Delete'),
                     ['controller' => 'Billings', 'action' => 'delete', $billing->id],
-                    ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id)]
+                    ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id)],
                 ) ?>
             </td>
             <?php endif; ?>

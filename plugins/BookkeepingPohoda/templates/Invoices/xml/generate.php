@@ -112,8 +112,8 @@ $pohoda->close();
 $this->setResponse(
     $this->getResponse()->withDownload(
         'Invoices' . '-' . strtolower($taxRate->name)
-            . '-' . $invoicedMonth->i18nFormat('yyyy-MM') . '.xml'
-    )
+            . '-' . $invoicedMonth->i18nFormat('yyyy-MM') . '.xml',
+    ),
 );
 
 //read file to output

@@ -39,13 +39,13 @@
                     <td>
                         <?= $service->__isset('service_type') ? $this->Html->link(
                             $service->service_type->name,
-                            ['controller' => 'ServiceTypes', 'action' => 'view', $service->service_type->id]
+                            ['controller' => 'ServiceTypes', 'action' => 'view', $service->service_type->id],
                         ) : '' ?>
                     </td>
                     <td>
                         <?= $service->__isset('queue') ? $this->Html->link(
                             $service->queue->name,
-                            ['controller' => 'Queues', 'action' => 'view', $service->queue->id]
+                            ['controller' => 'Queues', 'action' => 'view', $service->queue->id],
                         ) : '' ?>
                     </td>
                     <td><?= $service->not_for_new_customers ? __('Yes') : __('No'); ?></td>
@@ -54,12 +54,12 @@
                         <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $service->id],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
                             ['action' => 'delete', $service->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $service->id)]
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $service->id)],
                         ) ?>
                     </td>
                 </tr>
@@ -76,7 +76,7 @@
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
         ) ?></p>
     </div>
 </div>

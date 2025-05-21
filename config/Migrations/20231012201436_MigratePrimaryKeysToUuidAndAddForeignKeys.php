@@ -1002,7 +1002,7 @@ class MigratePrimaryKeysToUuidAndAddForeignKeys extends AbstractMigration
                             [
                                 'delete' => 'NO_ACTION',
                                 'update' => 'NO_ACTION',
-                            ]
+                            ],
                         );
                     }
 

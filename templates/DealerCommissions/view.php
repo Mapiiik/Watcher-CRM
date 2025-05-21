@@ -11,7 +11,7 @@
             <?= $this->AuthLink->link(
                 __('Edit Dealer Commission'),
                 ['action' => 'edit', $dealerCommission->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete Dealer Commission'),
@@ -19,17 +19,17 @@
                 [
                     'confirm' => __('Are you sure you want to delete # {0}?', $dealerCommission->id),
                     'class' => 'side-nav-item',
-                ]
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __('List Dealer Commissions'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('New Dealer Commission'),
                 ['action' => 'add'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
@@ -43,14 +43,14 @@
                             <th><?= __('Dealer') ?></th>
                             <td><?= $dealerCommission->__isset('dealer') ? $this->Html->link(
                                 $dealerCommission->dealer->name,
-                                ['controller' => 'Customers', 'action' => 'view', $dealerCommission->dealer->id]
+                                ['controller' => 'Customers', 'action' => 'view', $dealerCommission->dealer->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Commission') ?></th>
                             <td><?= $dealerCommission->__isset('commission') ? $this->Html->link(
                                 $dealerCommission->commission->name,
-                                ['controller' => 'Commissions', 'action' => 'view', $dealerCommission->commission->id]
+                                ['controller' => 'Commissions', 'action' => 'view', $dealerCommission->commission->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -83,7 +83,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $dealerCommission->creator->id,
-                                ]
+                                ],
                             ) : h($dealerCommission->created_by) ?></td>
                         </tr>
                         <tr>
@@ -98,7 +98,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $dealerCommission->modifier->id,
-                                ]
+                                ],
                             ) : h($dealerCommission->modified_by) ?></td>
                         </tr>
                     </table>

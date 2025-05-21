@@ -17,12 +17,12 @@
                 [
                     'confirm' => __('Are you sure you want to delete # {0}?', $customerLabel->id),
                     'class' => 'side-nav-item',
-                ]
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __('List Customer Labels'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>

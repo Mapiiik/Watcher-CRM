@@ -165,7 +165,7 @@ class TasksTable extends AppTable
             [
                 'errorField' => 'customer_id',
                 'message' => __('The specified task type requires the assignment of an customer.'),
-            ]
+            ],
         );
 
         $rules->add(
@@ -183,7 +183,7 @@ class TasksTable extends AppTable
             [
                 'errorField' => 'contract_id',
                 'message' => __('The specified task type requires the assignment of an contract.'),
-            ]
+            ],
         );
 
         return $rules;

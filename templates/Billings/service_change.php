@@ -12,12 +12,12 @@
             <?= $this->AuthLink->link(
                 __('Edit Billing'),
                 ['action' => 'edit', $billing->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete Billing'),
                 ['action' => 'delete', $billing->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id), 'class' => 'side-nav-item']
+                ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id), 'class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(__('List Billings'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Billing'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
@@ -33,7 +33,7 @@
                             <th><?= __('Customer') ?></th>
                             <td><?= $billing->__isset('customer') ? $this->Html->link(
                                 $billing->customer->name,
-                                ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]
+                                ['controller' => 'Customers', 'action' => 'view', $billing->customer->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -49,14 +49,14 @@
                                     'action' => 'view',
                                     $billing->contract->id,
                                     'customer_id' => $billing->contract->customer_id,
-                                ]
+                                ],
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Service') ?></th>
                             <td><?= $billing->__isset('service') ? $this->Html->link(
                                 $billing->service->name,
-                                ['controller' => 'Services', 'action' => 'view', $billing->service->id]
+                                ['controller' => 'Services', 'action' => 'view', $billing->service->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -126,7 +126,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $billing->creator->id,
-                                ]
+                                ],
                             ) : h($billing->created_by) ?></td>
                         </tr>
                         <tr>
@@ -141,7 +141,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $billing->modifier->id,
-                                ]
+                                ],
                             ) : h($billing->modified_by) ?></td>
                         </tr>
                     </table>
@@ -192,9 +192,9 @@
                 [
                     'confirm' => __(
                         'Do you really want to change the original service to the new service'
-                        . ' for the billing listed above from the date set?'
+                        . ' for the billing listed above from the date set?',
                     ),
-                ]
+                ],
             ) ?>
             <?= $this->Form->end() ?>
         </div>

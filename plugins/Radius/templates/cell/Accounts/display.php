@@ -39,7 +39,7 @@ use Cake\Routing\Router;
                         'action' => 'view',
                         $account->contract->id,
                         'customer_id' => $account->contract->customer_id,
-                    ]
+                    ],
                 ) : '' ?></td>
             <?php endif; ?>
             <td><?= h($account->username) ?></td>
@@ -88,7 +88,7 @@ use Cake\Routing\Router;
                         'controller' => 'Accounts',
                         'action' => 'view',
                         $account->id,
-                    ]
+                    ],
                 ) ?>
                 <?= $this->AuthLink->link(
                     __d('radius', 'Edit'),
@@ -98,7 +98,7 @@ use Cake\Routing\Router;
                         'action' => 'edit',
                         $account->id,
                     ],
-                    ['class' => 'win-link']
+                    ['class' => 'win-link'],
                 ) ?>
                 <?= $this->AuthLink->postLink(
                     __d('radius', 'Delete'),
@@ -108,7 +108,7 @@ use Cake\Routing\Router;
                         'action' => 'delete',
                         $account->id,
                     ],
-                    ['confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $account->username)]
+                    ['confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $account->username)],
                 ) ?>
                 <br>
                 <?= $this->AuthLink->link(
@@ -118,7 +118,7 @@ use Cake\Routing\Router;
                         'controller' => 'Accounts',
                         'action' => 'monitoring',
                         $account->id,
-                    ]
+                    ],
                 ) ?>
                 <?= $this->AuthLink->postLink(
                     __d('radius', 'Update'),
@@ -130,7 +130,7 @@ use Cake\Routing\Router;
                     ],
                     [
                         'confirm' => __d('radius', 'Are you sure you want to update related records?'),
-                    ]
+                    ],
                 ) ?>
                 <?= $this->AuthLink->postLink(
                     __d('radius', 'Disconnect'),
@@ -142,7 +142,7 @@ use Cake\Routing\Router;
                     ],
                     [
                         'confirm' => __d('radius', 'Are you sure you want to disconnect {0}?', $account->username),
-                    ]
+                    ],
                 ) ?>
             </td>
         </tr>

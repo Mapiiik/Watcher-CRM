@@ -11,7 +11,7 @@
             <?= $this->AuthLink->link(
                 __('Edit Contract Version'),
                 ['action' => 'edit', $contractVersion->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete Contract Version'),
@@ -19,17 +19,17 @@
                 [
                     'confirm' => __('Are you sure you want to delete # {0}?', $contractVersion->id),
                     'class' => 'side-nav-item',
-                ]
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __('List Contract Versions'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('New Contract Version'),
                 ['action' => 'add'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
@@ -64,7 +64,7 @@
                                     'action' => 'view',
                                     $contractVersion->contract->id,
                                     'customer_id' => $contractVersion->contract->customer_id,
-                                ]
+                                ],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -107,7 +107,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $contractVersion->creator->id,
-                                ]
+                                ],
                             ) : h($contractVersion->created_by) ?></td>
                         </tr>
                         <tr>
@@ -122,7 +122,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $contractVersion->modifier->id,
-                                ]
+                                ],
                             ) : h($contractVersion->modified_by) ?></td>
                         </tr>
                     </table>

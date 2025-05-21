@@ -20,7 +20,7 @@
     <?= $this->AuthLink->link(
         __('New Removed IP Address'),
         ['action' => 'add'],
-        ['class' => 'button float-right win-link']
+        ['class' => 'button float-right win-link'],
     ) ?>
     <h3><?= __('Removed IP Addresses') ?></h3>
     <div class="table-responsive">
@@ -42,7 +42,7 @@
                     <td>
                         <?= $removedIpAddress->__isset('customer') ? $this->Html->link(
                             $removedIpAddress->customer->name,
-                            ['controller' => 'Customers', 'action' => 'view', $removedIpAddress->customer->id]
+                            ['controller' => 'Customers', 'action' => 'view', $removedIpAddress->customer->id],
                         ) : '' ?>
                     </td>
                     <td><?= $removedIpAddress->__isset('customer') ? h($removedIpAddress->customer->number) : '' ?></td>
@@ -54,7 +54,7 @@
                                 'action' => 'view',
                                 $removedIpAddress->contract->id,
                                 'customer_id' => $removedIpAddress->contract->customer_id,
-                            ]
+                            ],
                         ) : '' ?>
                     </td>
                     <td><?= h($removedIpAddress->ip_address) ?></td>
@@ -65,12 +65,12 @@
                         <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $removedIpAddress->id],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
                             ['action' => 'delete', $removedIpAddress->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $removedIpAddress->id)]
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $removedIpAddress->id)],
                         ) ?>
                     </td>
                 </tr>
@@ -87,7 +87,7 @@
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
         ) ?></p>
     </div>
 </div>

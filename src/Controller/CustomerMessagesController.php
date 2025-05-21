@@ -124,7 +124,7 @@ class CustomerMessagesController extends AppController
                     $this->CustomerMessages->Customers->Contracts->InstallationAddresses
                         ->find(
                             'list',
-                            valueField: 'ruian_gid'
+                            valueField: 'ruian_gid',
                         )
                         ->all()
                         ->toArray()
@@ -138,7 +138,7 @@ class CustomerMessagesController extends AppController
                 'cislo_domovni',
                 'cislo_orientacni',
                 'cislo_orientacni_znak',
-            ]
+            ],
         )->all();
 
         // customers filter
@@ -256,7 +256,7 @@ class CustomerMessagesController extends AppController
                         [
                             '_auditQueue' => new SplObjectStorage(),
                             '_auditTransaction' => Text::uuid(),
-                        ]
+                        ],
                     )
                 ) {
                     $this->Flash->success(__('The bulk customer message has been saved.'));

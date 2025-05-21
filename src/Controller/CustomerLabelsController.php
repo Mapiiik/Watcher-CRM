@@ -45,7 +45,7 @@ class CustomerLabelsController extends AppController
                 'Contracts',
                 'Labels',
             ],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('customerLabels'));

@@ -20,7 +20,7 @@
     <?= $this->AuthLink->link(
         __('New Service Type'),
         ['action' => 'add'],
-        ['class' => 'button float-right win-link']
+        ['class' => 'button float-right win-link'],
     ) ?>
     <h3><?= __('Service Types') ?></h3>
     <div class="table-responsive">
@@ -44,7 +44,7 @@
                     <th><?= $this->Paginator->sort('have_radius_accounts', __('Have RADIUS Accounts')) ?></th>
                     <th><?= $this->Paginator->sort(
                         'assign_ip_addresses_from_behind',
-                        __('Assign IP addresses from behind')
+                        __('Assign IP addresses from behind'),
                     ) ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
@@ -73,12 +73,12 @@
                         <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $serviceType->id],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
                             ['action' => 'delete', $serviceType->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $serviceType->id)]
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $serviceType->id)],
                         ) ?>
                     </td>
                 </tr>
@@ -95,7 +95,7 @@
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
         ) ?></p>
     </div>
 </div>

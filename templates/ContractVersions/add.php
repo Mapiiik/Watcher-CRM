@@ -14,7 +14,7 @@ use Cake\I18n\Date;
             <?= $this->AuthLink->link(
                 __('List Contract Versions'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>

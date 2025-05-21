@@ -29,7 +29,7 @@
                         'action' => 'view',
                         $borrowedEquipment->contract->id,
                         'customer_id' => $borrowedEquipment->contract->customer_id,
-                    ]
+                    ],
                 ) : '' ?></td>
             <?php endif; ?>
             <td><?= $borrowedEquipment->__isset('equipment_type') ?
@@ -45,7 +45,7 @@
                         'controller' => 'BorrowedEquipments',
                         'action' => 'view',
                         $borrowedEquipment->id,
-                    ]
+                    ],
                 ) ?>
                 <?= $this->AuthLink->link(
                     __('Edit'),
@@ -54,7 +54,7 @@
                         'action' => 'edit',
                         $borrowedEquipment->id,
                     ],
-                    ['class' => 'win-link']
+                    ['class' => 'win-link'],
                 ) ?>
                 <?= $this->AuthLink->postLink(
                     __('Delete'),
@@ -66,9 +66,9 @@
                     [
                         'confirm' => __(
                             'Are you sure you want to delete # {0}?',
-                            $borrowedEquipment->id
+                            $borrowedEquipment->id,
                         ),
-                    ]
+                    ],
                 ) ?>
             </td>
         </tr>

@@ -11,7 +11,7 @@
             <?= $this->AuthLink->postLink(
                 __('Delete'),
                 ['action' => 'delete', $taskState->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $taskState->id), 'class' => 'side-nav-item']
+                ['confirm' => __('Are you sure you want to delete # {0}?', $taskState->id), 'class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(__('List Task States'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>

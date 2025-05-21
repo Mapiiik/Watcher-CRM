@@ -15,12 +15,12 @@ use Cake\Collection\Collection;
             <?= $this->AuthLink->link(
                 __('Edit Service'),
                 ['action' => 'edit', $service->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete Service'),
                 ['action' => 'delete', $service->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $service->id), 'class' => 'side-nav-item']
+                ['confirm' => __('Are you sure you want to delete # {0}?', $service->id), 'class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(__('List Services'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Service'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
@@ -40,14 +40,14 @@ use Cake\Collection\Collection;
                             <th><?= __('Service Type') ?></th>
                             <td><?= $service->__isset('service_type') ? $this->Html->link(
                                 $service->service_type->name,
-                                ['controller' => 'ServiceTypes', 'action' => 'view', $service->service_type->id]
+                                ['controller' => 'ServiceTypes', 'action' => 'view', $service->service_type->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Queue') ?></th>
                             <td><?= $service->__isset('queue') ? $this->Html->link(
                                 $service->queue->name,
-                                ['controller' => 'Queues', 'action' => 'view', $service->queue->id]
+                                ['controller' => 'Queues', 'action' => 'view', $service->queue->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -79,7 +79,7 @@ use Cake\Collection\Collection;
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $service->creator->id,
-                                ]
+                                ],
                             ) : h($service->created_by) ?></td>
                         </tr>
                         <tr>
@@ -94,7 +94,7 @@ use Cake\Collection\Collection;
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $service->modifier->id,
-                                ]
+                                ],
                             ) : h($service->modified_by) ?></td>
                         </tr>
                     </table>
@@ -127,7 +127,7 @@ use Cake\Collection\Collection;
                             <td><?= $billing->__isset('customer') ?
                                 $this->Html->link(
                                     $billing->customer->name,
-                                    ['controller' => 'Customers', 'action' => 'view', $billing->customer->id]
+                                    ['controller' => 'Customers', 'action' => 'view', $billing->customer->id],
                                 ) : '' ?></td>
                             <td><?= $billing->__isset('customer') ? h($billing->customer->number) : '' ?></td>
                             <td><?= $billing->__isset('contract') ?
@@ -138,7 +138,7 @@ use Cake\Collection\Collection;
                                         'action' => 'view',
                                         $billing->contract->id,
                                         'customer_id' => $billing->contract->customer_id,
-                                    ]
+                                    ],
                                 ) : '' ?></td>
                             <td><?= h($billing->text) ?></td>
                             <td><?= h($billing->quantity) ?></td>
@@ -155,17 +155,17 @@ use Cake\Collection\Collection;
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
-                                    ['controller' => 'Billings', 'action' => 'view', $billing->id]
+                                    ['controller' => 'Billings', 'action' => 'view', $billing->id],
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __('Edit'),
                                     ['controller' => 'Billings', 'action' => 'edit', $billing->id],
-                                    ['class' => 'win-link']
+                                    ['class' => 'win-link'],
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
                                     __('Delete'),
                                     ['controller' => 'Billings', 'action' => 'delete', $billing->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id)]
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id)],
                                 ) ?>
                             </td>
                         </tr>
@@ -178,13 +178,13 @@ use Cake\Collection\Collection;
                             ->filter(
                                 function (Billing $billing) {
                                     return $billing->active;
-                                }
+                                },
                             )
                             ->sumOf(
                                 function (Billing $billing) {
                                     return $billing->total_price->toFloat();
-                                }
-                            )
+                                },
+                            ),
                     ) ?><br>
                 </div>
                 <?php endif; ?>

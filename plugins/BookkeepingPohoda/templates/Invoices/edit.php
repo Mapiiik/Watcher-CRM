@@ -15,12 +15,12 @@
                 [
                     'confirm' => __d('bookkeeping_pohoda', 'Are you sure you want to delete # {0}?', $invoice->id),
                     'class' => 'side-nav-item',
-                ]
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __d('bookkeeping_pohoda', 'List Invoices'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>

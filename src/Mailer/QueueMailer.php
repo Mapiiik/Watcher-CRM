@@ -34,8 +34,8 @@ class QueueMailer extends Mailer
                 sprintf(
                     'NETAIR - změna služeb od %s na Vaší přípojce č. %s',
                     $data['new_billing_from'],
-                    $data['contract_number']
-                )
+                    $data['contract_number'],
+                ),
             )
             ->setViewVars(['data' => $data]);
     }

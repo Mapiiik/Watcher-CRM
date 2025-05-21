@@ -63,7 +63,7 @@ class ApiClient
             function () {
                 return ApiClient::fetchAccessPoints();
             },
-            'api_client'
+            'api_client',
         );
     }
 
@@ -105,7 +105,7 @@ class ApiClient
             function () use ($id) {
                 return ApiClient::fetchAccessPoint($id);
             },
-            'api_client'
+            'api_client',
         );
     }
 
@@ -147,7 +147,7 @@ class ApiClient
             function () use ($ipAddress) {
                 return ApiClient::searchAccessPoints(['ip_address' => $ipAddress]);
             },
-            'api_client'
+            'api_client',
         );
     }
 
@@ -187,7 +187,7 @@ class ApiClient
             function () {
                 return ApiClient::fetchIpAddressRanges();
             },
-            'api_client'
+            'api_client',
         );
     }
 
@@ -229,7 +229,7 @@ class ApiClient
             function () use ($id) {
                 return ApiClient::fetchIpAddressRange($id);
             },
-            'api_client'
+            'api_client',
         );
     }
 
@@ -271,7 +271,7 @@ class ApiClient
             function () use ($ipAddress) {
                 return ApiClient::searchIpAddressRanges(['ip_address' => $ipAddress]);
             },
-            'api_client'
+            'api_client',
         );
     }
 
@@ -313,7 +313,7 @@ class ApiClient
             function () use ($ipAddress) {
                 return ApiClient::searchRouterosDevices(['ip_address' => $ipAddress]);
             },
-            'api_client'
+            'api_client',
         );
     }
 }

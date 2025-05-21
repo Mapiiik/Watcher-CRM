@@ -10,7 +10,7 @@ if (isset($routerosDevices)) {
         $this->Html->link(
             $device['system_description'],
             env('WATCHER_NMS_URL') . '/routeros-devices/view/' . $device['id'],
-            ['target' => '_blank']
+            ['target' => '_blank'],
         ) . '<br>' : '';
     unset($device);
 }

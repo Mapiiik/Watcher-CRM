@@ -12,12 +12,12 @@
             <?= $this->Html->link(
                 __d('app_users', 'Change Password'),
                 ['action' => 'changePassword'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ); ?>
             <?= $this->AuthLink->link(
                 __d('app_users', 'User Settings'),
                 ['action' => 'userSettings'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
@@ -32,7 +32,7 @@
                 $this->Html->tag(
                     'span',
                     __d('app_users', '{0} {1}', $user->first_name, $user->last_name),
-                    ['class' => 'full_name']
+                    ['class' => 'full_name'],
                 )
                 ?>
             </h3>
@@ -69,7 +69,7 @@
                                     <td><?=
                                         $this->Html->image(
                                             $socialAccount->avatar,
-                                            ['width' => '90', 'height' => '90']
+                                            ['width' => '90', 'height' => '90'],
                                         ) ?>
                                     </td>
                                     <td><?= h($socialAccount->provider) ?></td>
@@ -77,7 +77,7 @@
                                         $socialAccount->link && $socialAccount->link != '#' ? $this->Html->link(
                                             $linkText,
                                             $socialAccount->link,
-                                            ['target' => '_blank']
+                                            ['target' => '_blank'],
                                         ) : '-' ?></td>
                                 </tr>
                                 <?php

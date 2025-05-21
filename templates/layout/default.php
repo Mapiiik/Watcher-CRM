@@ -40,7 +40,7 @@ $buttonSelected = function ($haystack = []) use ($controller, $action) {
 
 $urlWithQuery = function ($query = []) use ($request) {
     return $this->Url->build(
-        ['?' => $query + $request->getQueryParams()] + $request->getParam('pass')
+        ['?' => $query + $request->getQueryParams()] + $request->getParam('pass'),
     );
 };
 ?>
@@ -118,17 +118,17 @@ $urlWithQuery = function ($query = []) use ($request) {
             <?= $this->AuthLink->link(
                 __('Customers'),
                 ['controller' => 'Customers', 'action' => 'index', 'plugin' => null],
-                ['class' => 'button button-small' . $buttonSelected(['Customers'])]
+                ['class' => 'button button-small' . $buttonSelected(['Customers'])],
             ) ?>
             <?= $this->AuthLink->link(
                 __('Tasks'),
                 ['controller' => 'Tasks', 'action' => 'index', 'plugin' => null, 'customer_id' => false],
-                ['class' => 'button button-small' . $buttonSelected(['Tasks'])]
+                ['class' => 'button button-small' . $buttonSelected(['Tasks'])],
             ) ?>
             <?= $this->AuthLink->link(
                 __('Bookkeeping'),
                 ['controller' => 'Invoices', 'action' => 'index', 'plugin' => 'BookkeepingPohoda'],
-                ['class' => 'button button-small' . $buttonSelected(['Invoices'])]
+                ['class' => 'button button-small' . $buttonSelected(['Invoices'])],
             ) ?>
             <?= $this->AuthLink->link(
                 __('RADIUS'),
@@ -143,17 +143,17 @@ $urlWithQuery = function ($query = []) use ($request) {
                     'Radpostauth',
                     'Radreply',
                     'Radusergroup',
-                ])]
+                ])],
             ) ?>
             <?= $this->AuthLink->link(
                 __('RÚIAN'),
                 ['controller' => 'Addresses', 'action' => 'index', 'plugin' => 'Ruian'],
-                ['class' => 'button button-small' . $buttonSelected(['Addresses'])]
+                ['class' => 'button button-small' . $buttonSelected(['Addresses'])],
             ) ?>
             <?= $this->AuthLink->link(
                 __('Overviews'),
                 ['controller' => 'Overviews', 'action' => 'index', 'plugin' => null, 'customer_id' => false],
-                ['class' => 'button button-small' . $buttonSelected(['Overviews'])]
+                ['class' => 'button button-small' . $buttonSelected(['Overviews'])],
             ) ?>
             <?= $this->AuthLink->link(
                 __('Settings'),
@@ -161,7 +161,7 @@ $urlWithQuery = function ($query = []) use ($request) {
                 ['class' => 'button button-small' . $buttonSelected([
                     'Settings',
                     'AppUsers',
-                ])]
+                ])],
             ) ?>
 
             <?php if (file_exists(WWW_ROOT . 'legacy' . DS) && is_dir(WWW_ROOT . 'legacy' . DS)) : ?>
@@ -169,13 +169,13 @@ $urlWithQuery = function ($query = []) use ($request) {
                     <?= $this->Html->link(
                         __('Old NMS'),
                         '/legacy/redirect.php?customer_id=' . $request->getParam('customer_id'),
-                        ['class' => 'button button-small']
+                        ['class' => 'button button-small'],
                     ) ?>
                 <?php } elseif ($this->getName() == 'Tasks' && $request->getParam('id')) { ?>
                     <?= $this->Html->link(
                         __('Old NMS'),
                         '/legacy/redirect.php?task_id=' . $request->getParam('id'),
-                        ['class' => 'button button-small']
+                        ['class' => 'button button-small'],
                     ) ?>
                 <?php } else { ?>
                     <?= $this->Html->link(__('Old NMS'), '/legacy', ['class' => 'button button-small']) ?>
@@ -186,7 +186,7 @@ $urlWithQuery = function ($query = []) use ($request) {
                 $this->Html->link(
                     __('Network Management System'),
                     env('WATCHER_NMS_URL'),
-                    ['class' => 'button button-small']
+                    ['class' => 'button button-small'],
                 ) : '' ?>
 
             <?= $request->getParam('action') == 'index' ? $this->Form->select(
@@ -205,7 +205,7 @@ $urlWithQuery = function ($query = []) use ($request) {
                     'escape' => false,
                     'onchange' => 'location = this.value;',
                     'class' => 'button button-small button-outline',
-                ]
+                ],
             ) : '' ?>
 
             <?= $this->Form->select(
@@ -221,7 +221,7 @@ $urlWithQuery = function ($query = []) use ($request) {
                     'escape' => false,
                     'onchange' => 'location = this.value;',
                     'class' => 'button button-small button-outline',
-                ]
+                ],
             ) ?>
 
             <?= $this->Form->select(
@@ -235,13 +235,13 @@ $urlWithQuery = function ($query = []) use ($request) {
                     'escape' => false,
                     'onchange' => 'location = this.value;',
                     'class' => 'button button-small button-outline',
-                ]
+                ],
             ) ?>
 
             <?= $request->getAttribute('identity') != null ? $this->AuthLink->link(
                 __('Logout'),
                 ['controller' => 'AppUsers', 'action' => 'logout', 'plugin' => null],
-                ['class' => 'button button-small button-outline']
+                ['class' => 'button button-small button-outline'],
             ) : '' ?>
         </div>
         <?php endif; ?>
@@ -250,7 +250,7 @@ $urlWithQuery = function ($query = []) use ($request) {
     <?= $request->getParam('customer_id') ? $this->cell(
         'Customer',
         [$request->getParam('customer_id')],
-        ['compact' => ($request->getQuery('win-link') == 'true')]
+        ['compact' => ($request->getQuery('win-link') == 'true')],
     ) : '' ?>
 
     <main class="main">

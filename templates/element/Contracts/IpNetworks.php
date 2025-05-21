@@ -31,7 +31,7 @@ use Cake\Routing\Router;
                         'action' => 'view',
                         $ipNetwork->contract->id,
                         'customer_id' => $ipNetwork->contract->customer_id,
-                    ]
+                    ],
                 ) : '' ?></td>
             <?php endif; ?>
             <td><?= h($ipNetwork->ip_network) ?></td>
@@ -51,12 +51,12 @@ use Cake\Routing\Router;
             <td class="actions">
                 <?= $this->AuthLink->link(
                     __('View'),
-                    ['controller' => 'IpNetworks', 'action' => 'view', $ipNetwork->id]
+                    ['controller' => 'IpNetworks', 'action' => 'view', $ipNetwork->id],
                 ) ?>
                 <?= $this->AuthLink->link(
                     __('Edit'),
                     ['controller' => 'IpNetworks', 'action' => 'edit', $ipNetwork->id],
-                    ['class' => 'win-link']
+                    ['class' => 'win-link'],
                 ) ?>
                 <?= $this->AuthLink->postLink(
                     __('Delete'),
@@ -64,9 +64,9 @@ use Cake\Routing\Router;
                     [
                         'confirm' => __(
                             'Are you sure you want to delete # {0}?',
-                            $ipNetwork->ip_network
+                            $ipNetwork->ip_network,
                         ),
-                    ]
+                    ],
                 ) ?>
             </td>
         </tr>

@@ -11,7 +11,7 @@
             <?= $this->AuthLink->link(
                 __d('radius', 'Edit RADIUS User Group'),
                 ['action' => 'edit', $radusergroup->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __d('radius', 'Delete RADIUS User Group'),
@@ -19,17 +19,17 @@
                 [
                     'confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radusergroup->id),
                     'class' => 'side-nav-item',
-                ]
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __d('radius', 'List RADIUS User Groups'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __d('radius', 'New RADIUS User Group'),
                 ['action' => 'add'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
@@ -41,7 +41,7 @@
                     <th><?= __d('radius', 'Username') ?></th>
                     <td><?= $radusergroup->__isset('account') ? $this->Html->link(
                         $radusergroup->account->username,
-                        ['controller' => 'Accounts', 'action' => 'view', $radusergroup->account->id]
+                        ['controller' => 'Accounts', 'action' => 'view', $radusergroup->account->id],
                     ) : $radusergroup->username ?></td>
                 </tr>
                 <tr>
@@ -78,12 +78,12 @@
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __d('radius', 'View'),
-                                    ['controller' => 'Radgroupcheck', 'action' => 'view', $radgroupcheck->id]
+                                    ['controller' => 'Radgroupcheck', 'action' => 'view', $radgroupcheck->id],
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __d('radius', 'Edit'),
                                     ['controller' => 'Radgroupcheck', 'action' => 'edit', $radgroupcheck->id],
-                                    ['class' => 'win-link']
+                                    ['class' => 'win-link'],
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
                                     __d('radius', 'Delete'),
@@ -91,8 +91,8 @@
                                     ['confirm' => __d(
                                         'radius',
                                         'Are you sure you want to delete # {0}?',
-                                        $radgroupcheck->id
-                                    )]
+                                        $radgroupcheck->id,
+                                    )],
                                 ) ?>
                             </td>
                         </tr>
@@ -122,12 +122,12 @@
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __d('radius', 'View'),
-                                    ['controller' => 'Radgroupreply', 'action' => 'view', $radgroupreply->id]
+                                    ['controller' => 'Radgroupreply', 'action' => 'view', $radgroupreply->id],
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __d('radius', 'Edit'),
                                     ['controller' => 'Radgroupreply', 'action' => 'edit', $radgroupreply->id],
-                                    ['class' => 'win-link']
+                                    ['class' => 'win-link'],
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
                                     __d('radius', 'Delete'),
@@ -135,8 +135,8 @@
                                     ['confirm' => __d(
                                         'radius',
                                         'Are you sure you want to delete # {0}?',
-                                        $radgroupreply->id
-                                    )]
+                                        $radgroupreply->id,
+                                    )],
                                 ) ?>
                             </td>
                         </tr>

@@ -23,7 +23,7 @@
                 </fieldset>
                 <?= $this->Form->button(
                     __d('app_users', '<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Verify'),
-                    ['class' => 'btn btn-primary', 'escapeTitle' => false]
+                    ['class' => 'btn btn-primary', 'escapeTitle' => false],
                 ); ?>
                 <?= $this->Form->end() ?>
             </div>

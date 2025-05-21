@@ -13,7 +13,7 @@
             <?= $this->AuthLink->link(
                 __('List Access Credentials'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>

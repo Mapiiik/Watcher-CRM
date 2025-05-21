@@ -36,18 +36,18 @@ class Debtor
         $this->total_debt = $invoicesCollection->sumOf(
             function (Invoice $invoice) {
                 return $invoice->debt->toFloat();
-            }
+            },
         );
         $this->total_overdue_debt = $invoicesCollection
             ->filter(
                 function (Invoice $invoice) {
                     return $invoice->due_date < Date::now();
-                }
+                },
             )
             ->sumOf(
                 function (Invoice $invoice) {
                     return $invoice->debt->toFloat();
-                }
+                },
             );
     }
 
@@ -114,12 +114,12 @@ class Debtor
         ->filter(
             function (Invoice $invoice) use ($date) {
                 return $invoice->due_date < $date;
-            }
+            },
         )
         ->sumOf(
             function (Invoice $invoice) {
                 return $invoice->debt->toFloat();
-            }
+            },
         );
     }
 }

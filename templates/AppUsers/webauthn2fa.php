@@ -21,13 +21,13 @@ $this->assign('title', __d('app_users', 'Two-factor authentication'));
                         <h3 class='text-center'><?= __d('app_users', 'Please insert and tap your yubico key') ?></h3>
                         <p><?= __d(
                             'app_users',
-                            'In order to enable your YubiKey the first step is to perform a registration.'
+                            'In order to enable your YubiKey the first step is to perform a registration.',
                         ) ?></p>
                         <p><?= __d(
                             'app_users',
                             'When the YubiKey starts blinking, press the golden disc to activate it.'
                             . ' Depending on the web browser you might need to confirm the use of extended information'
-                            . ' from the YubiKey.'
+                            . ' from the YubiKey.',
                         ) ?></p>
                     </div>
                     <div id="webauthn2faAuthenticateInfo" style="display:none;">
@@ -35,19 +35,19 @@ $this->assign('title', __d('app_users', 'Two-factor authentication'));
                         <h3 class='text-center'><?= __d('app_users', 'Please insert and tap your yubico key') ?></h3>
                         <p><?= __d(
                             'app_users',
-                            'You can now finish the authentication process using the registered device.'
+                            'You can now finish the authentication process using the registered device.',
                         ) ?></p>
                         <p><?= __d(
                             'app_users',
                             'When the YubiKey starts blinking, press the golden disc to activate it.'
                             . ' Depending on the web browser you might need to confirm the use of extended information'
-                            . ' from the YubiKey.'
+                            . ' from the YubiKey.',
                         ) ?></p>
                     </div>
                     <p class="text-center"><?= $this->Html->link(
                         __d('app_users', 'Reload'),
                         ['action' => 'webauthn2fa'],
-                        ['class' => 'btn btn-primary']
+                        ['class' => 'btn btn-primary'],
                     )?></p>
                 </fieldset>
             </div>

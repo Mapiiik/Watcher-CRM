@@ -15,12 +15,12 @@
                 [
                     'confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radcheck->id),
                     'class' => 'side-nav-item',
-                ]
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __d('radius', 'List RADIUS Checks'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>

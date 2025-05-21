@@ -11,7 +11,7 @@
             <?= $this->AuthLink->postLink(
                 __('Delete'),
                 ['action' => 'delete', $taxRate->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $taxRate->id), 'class' => 'side-nav-item']
+                ['confirm' => __('Are you sure you want to delete # {0}?', $taxRate->id), 'class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(__('List Tax Rates'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>

@@ -11,7 +11,7 @@
             <h4><?= $this->AuthLink->link(
                 h($customer->name),
                 ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $customer->id],
-                ['escape' => false, 'class' => '']
+                ['escape' => false, 'class' => ''],
             ) ?></h4>
         </div>
         <div class="nav-content-right">
@@ -27,7 +27,7 @@
                             $contract->id,
                             'customer_id' => $contract->customer_id,
                         ],
-                        ['class' => 'button button-small button-selected']
+                        ['class' => 'button button-small button-selected'],
                     );
                 } elseif (!$compact) { //skip non selected contracts in compact mode
                     echo $this->AuthLink->link(
@@ -42,7 +42,7 @@
                         [
                             'class' => 'button button-small',
                             'style' => $contract->style . ' color: inherit;',
-                        ]
+                        ],
                     );
                 }
                 ?>

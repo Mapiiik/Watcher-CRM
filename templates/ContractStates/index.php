@@ -20,7 +20,7 @@
     <?= $this->AuthLink->link(
         __('New Contract State'),
         ['action' => 'add'],
-        ['class' => 'button float-right win-link']
+        ['class' => 'button float-right win-link'],
     ) ?>
     <h3><?= __('Contract States') ?></h3>
     <div class="table-responsive">
@@ -46,17 +46,17 @@
                     <td class="actions">
                         <?= $this->AuthLink->link(
                             __('View'),
-                            ['action' => 'view', $contractState->id]
+                            ['action' => 'view', $contractState->id],
                         ) ?>
                         <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $contractState->id],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
                             ['action' => 'delete', $contractState->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $contractState->id)]
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $contractState->id)],
                         ) ?>
                     </td>
                 </tr>
@@ -73,7 +73,7 @@
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
         ) ?></p>
     </div>
 </div>

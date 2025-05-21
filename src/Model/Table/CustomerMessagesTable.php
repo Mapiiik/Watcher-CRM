@@ -50,19 +50,19 @@ class CustomerMessagesTable extends AppTable
 
         $this->getSchema()->setColumnType(
             'type',
-            EnumType::from(CustomerMessageType::class)
+            EnumType::from(CustomerMessageType::class),
         );
         $this->getSchema()->setColumnType(
             'direction',
-            EnumType::from(CustomerMessageDirection::class)
+            EnumType::from(CustomerMessageDirection::class),
         );
         $this->getSchema()->setColumnType(
             'body_format',
-            EnumType::from(CustomerMessageBodyFormat::class)
+            EnumType::from(CustomerMessageBodyFormat::class),
         );
         $this->getSchema()->setColumnType(
             'delivery_status',
-            EnumType::from(CustomerMessageDeliveryStatus::class)
+            EnumType::from(CustomerMessageDeliveryStatus::class),
         );
 
         $this->addBehavior('Timestamp');

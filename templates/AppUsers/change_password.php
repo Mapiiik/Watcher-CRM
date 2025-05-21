@@ -13,12 +13,12 @@
             <?= $this->AuthLink->link(
                 __d('app_users', 'List Users'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->Html->link(
                 __d('app_users', 'User Profile'),
                 ['action' => 'profile'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>

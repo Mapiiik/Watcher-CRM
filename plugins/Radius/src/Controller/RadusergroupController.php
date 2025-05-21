@@ -22,7 +22,7 @@ class RadusergroupController extends AppController
             contain: [
                 'Accounts',
             ],
-            conditions: []
+            conditions: [],
         ));
 
         $this->set(compact('radusergroups'));

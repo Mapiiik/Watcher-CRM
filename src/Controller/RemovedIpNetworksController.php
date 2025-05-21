@@ -50,7 +50,7 @@ class RemovedIpNetworksController extends AppController
                 'Contracts',
                 'Customers',
             ],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('removedIpNetworks'));

@@ -20,12 +20,12 @@
     <?= $this->AuthLink->link(
         __('New Customer Message'),
         ['action' => 'add'],
-        ['class' => 'button float-right win-link']
+        ['class' => 'button float-right win-link'],
     ) ?>
     <?= $this->AuthLink->link(
         __('New Bulk Customer Message'),
         ['action' => 'add-bulk'],
-        ['class' => 'button float-right win-link']
+        ['class' => 'button float-right win-link'],
     ) ?>
     <h3><?= __('Customer Messages') ?></h3>
     <div class="table-responsive">
@@ -52,7 +52,7 @@
                     <td><?= $customerMessage->hasValue('customer') ?
                         $this->AuthLink->link(
                             $customerMessage->customer->name,
-                            ['controller' => 'Customers', 'action' => 'view', $customerMessage->customer->id]
+                            ['controller' => 'Customers', 'action' => 'view', $customerMessage->customer->id],
                         ) : '' ?></td>
                     <td><?= $customerMessage->type === null ? '' : h($customerMessage->type->label()) ?></td>
                     <td><?= $customerMessage->direction === null ? '' : h($customerMessage->direction->label()) ?></td>
@@ -69,17 +69,17 @@
                     <td class="actions">
                         <?= $this->AuthLink->link(
                             __('View'),
-                            ['action' => 'view', $customerMessage->id]
+                            ['action' => 'view', $customerMessage->id],
                         ) ?>
                         <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $customerMessage->id],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
                             ['action' => 'delete', $customerMessage->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $customerMessage->id)]
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $customerMessage->id)],
                         ) ?>
                     </td>
                 </tr>
@@ -96,7 +96,7 @@
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
         ) ?></p>
     </div>
 </div>

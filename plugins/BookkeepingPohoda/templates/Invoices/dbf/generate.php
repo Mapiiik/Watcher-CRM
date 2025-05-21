@@ -27,8 +27,8 @@ $dbf->closeDBF();
 $this->setResponse(
     $this->getResponse()->withDownload(
         'Invoices' . '-' . strtolower($taxRate->name)
-            . '-' . $invoicedMonth->i18nFormat('yyyy-MM') . '.dbf'
-    )
+            . '-' . $invoicedMonth->i18nFormat('yyyy-MM') . '.dbf',
+    ),
 );
 
 //read file to output

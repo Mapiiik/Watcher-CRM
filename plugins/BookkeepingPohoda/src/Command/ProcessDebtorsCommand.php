@@ -36,7 +36,7 @@ class ProcessDebtorsCommand extends Command
         $parser->addOption('only_notify', [
             'help' => __d(
                 'bookkeeping_pohoda',
-                'Send only a notification of an overdue claims (within the allowed payment delay).'
+                'Send only a notification of an overdue claims (within the allowed payment delay).',
             ),
             'boolean' => true,
         ]);
@@ -45,7 +45,7 @@ class ProcessDebtorsCommand extends Command
             'help' => __d(
                 'bookkeeping_pohoda',
                 'Send only a notification of blocking (or continuing debt for services no longer active)'
-                . ' for overdue claims (after an allowed delay in payment).'
+                . ' for overdue claims (after an allowed delay in payment).',
             ),
             'boolean' => true,
         ]);
@@ -53,7 +53,7 @@ class ProcessDebtorsCommand extends Command
         $parser->addOption('update_routers', [
             'help' => __d(
                 'bookkeeping_pohoda',
-                'Automatically update the blocking of debtors in routers.'
+                'Automatically update the blocking of debtors in routers.',
             ),
             'boolean' => true,
         ]);
@@ -83,7 +83,7 @@ class ProcessDebtorsCommand extends Command
     {
         $debtorsProcessor = new DebtorsProcessor(
             allowed_payment_delay: (int)env('DEBTORS_ALLOWED_PAYMENT_DELAY', '0'),
-            allowed_total_overdue_debt: (float)env('DEBTORS_ALLOWED_TOTAL_OVERDUE_DEBT', '0')
+            allowed_total_overdue_debt: (float)env('DEBTORS_ALLOWED_TOTAL_OVERDUE_DEBT', '0'),
         );
 
         // automatically update the blocking of debtors in routers, if requested
@@ -92,7 +92,7 @@ class ProcessDebtorsCommand extends Command
 
             $io->info(
                 __d('bookkeeping_pohoda', 'Routers updated.') . PHP_EOL
-                    . ($result ? $result : __d('bookkeeping_pohoda', 'Nothing has changed.')),
+                    . ($result ?: __d('bookkeeping_pohoda', 'Nothing has changed.')),
             );
         }
 
@@ -105,7 +105,7 @@ class ProcessDebtorsCommand extends Command
 
                         return $debtor->getDueDate() == Date::now()->subDays(5)
                             || $debtor->getDueDate() == Date::now()->subDays(10);
-                    }
+                    },
                 )
             :
             [];
@@ -131,7 +131,7 @@ class ProcessDebtorsCommand extends Command
                     [
                         'customer_number' => $debtor->getCustomer()->number,
                         'recipients' => implode(', ', $customerMessage->recipients),
-                    ]
+                    ],
                 ));
                 unset($customerMessage);
             }
@@ -146,7 +146,7 @@ class ProcessDebtorsCommand extends Command
                     [
                         'customer_number' => $debtor->getCustomer()->number,
                         'recipients' => implode(', ', $customerMessage->recipients),
-                    ]
+                    ],
                 ));
                 unset($customerMessage);
             }
@@ -168,7 +168,7 @@ class ProcessDebtorsCommand extends Command
                         [
                             'customer_number' => $debtor->getCustomer()->number,
                             'recipients' => implode(', ', $customerMessage->recipients),
-                        ]
+                        ],
                     ));
                 } else {
                     $customerMessage = $this->generateNotifyEmailForInactiveServices($debtor);
@@ -179,7 +179,7 @@ class ProcessDebtorsCommand extends Command
                         [
                             'customer_number' => $debtor->getCustomer()->number,
                             'recipients' => implode(', ', $customerMessage->recipients),
-                        ]
+                        ],
                     ));
                 }
                 unset($customerMessage);
@@ -196,7 +196,7 @@ class ProcessDebtorsCommand extends Command
                         [
                             'customer_number' => $debtor->getCustomer()->number,
                             'recipients' => implode(', ', $customerMessage->recipients),
-                        ]
+                        ],
                     ));
                 } else {
                     $customerMessage = $this->generateNotifySmsForInactiveServices($debtor);
@@ -207,7 +207,7 @@ class ProcessDebtorsCommand extends Command
                         [
                             'customer_number' => $debtor->getCustomer()->number,
                             'recipients' => implode(', ', $customerMessage->recipients),
-                        ]
+                        ],
                     ));
                 }
                 unset($customerMessage);
@@ -293,7 +293,7 @@ class ProcessDebtorsCommand extends Command
         Debtor $debtor,
         array $recipients,
         string $subjectTemplate,
-        string $contentTemplate
+        string $contentTemplate,
     ): CustomerMessage {
         $replacements = [
             '{date}' => Date::now(),
@@ -362,7 +362,7 @@ class ProcessDebtorsCommand extends Command
             $debtor,
             $debtor->getCustomer()->billing_emails,
             $subjectTemplate,
-            $contentTemplate
+            $contentTemplate,
         );
     }
 
@@ -451,7 +451,7 @@ class ProcessDebtorsCommand extends Command
         Debtor $debtor,
         array $recipients,
         string $subjectTemplate,
-        string $contentTemplate
+        string $contentTemplate,
     ): CustomerMessage {
         $replacements = [
             '{date}' => Date::now(),

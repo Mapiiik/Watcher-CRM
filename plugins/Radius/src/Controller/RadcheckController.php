@@ -22,7 +22,7 @@ class RadcheckController extends AppController
             contain: [
                 'Accounts',
             ],
-            conditions: []
+            conditions: [],
         ));
 
         $this->set(compact('radchecks'));

@@ -71,7 +71,7 @@ class InvoicesController extends AppController
             contain: [
                 'Customers',
             ],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         // notify about unsent invoices
@@ -105,7 +105,7 @@ class InvoicesController extends AppController
             'total_overdue_debt',
             $query
                 ->where(['Invoices.due_date < NOW()'])
-                ->first()['debt'] ?? 0
+                ->first()['debt'] ?? 0,
         );
 
         $this->set(compact('invoices'));
@@ -242,21 +242,21 @@ class InvoicesController extends AppController
                 [ // conditions
                     'send_by_email' => false,
                     'creation_date' => new Date($this->getRequest()->getData('creation_date')),
-                ]
+                ],
             );
 
             if ($count > 0) {
                 $this->Flash->success(__d(
                     'bookkeeping_pohoda',
                     'The invoices has been marked to be sent by email ({0}).',
-                    $count
+                    $count,
                 ));
 
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->warning(__d(
                 'bookkeeping_pohoda',
-                'No invoices could be marked to be sent by email. Please, try again.'
+                'No invoices could be marked to be sent by email. Please, try again.',
             ));
         }
     }
@@ -304,12 +304,12 @@ class InvoicesController extends AppController
                                     return $billings->map(function ($billing) use ($invoicedMonth) {
                                         $billing['period_total'] = $billing->periodTotal(
                                             $invoicedMonth->firstOfMonth(),
-                                            $invoicedMonth->lastOfMonth()
+                                            $invoicedMonth->lastOfMonth(),
                                         );
 
                                         return $billing;
                                     });
-                                }
+                                },
                             );
                     })
                     // only contracts with billed states
@@ -345,7 +345,7 @@ class InvoicesController extends AppController
 
         if (!is_numeric($customerNumber)) {
             $this->Flash->error(
-                __d('bookkeeping_pohoda', 'Invalid customer number in CSV file: {0}', [$parsedLine[0] ?? ''])
+                __d('bookkeeping_pohoda', 'Invalid customer number in CSV file: {0}', [$parsedLine[0] ?? '']),
             );
 
             return null;
@@ -353,7 +353,7 @@ class InvoicesController extends AppController
 
         if (!is_numeric($periodTotalNormalized)) {
             $this->Flash->error(
-                __d('bookkeeping_pohoda', 'Invalid price in CSV file: {0}', [$parsedLine[1] ?? ''])
+                __d('bookkeeping_pohoda', 'Invalid price in CSV file: {0}', [$parsedLine[1] ?? '']),
             );
 
             return null;
@@ -574,7 +574,7 @@ class InvoicesController extends AppController
                         /** @psalm-suppress RedundantFunctionCall */
                         $billingCustomer['items'] = array_merge(
                             array_values($billingCustomer['items']),
-                            array_values($billingContract['items']) // @phpstan-ignore arrayValues.list
+                            array_values($billingContract['items']), // @phpstan-ignore arrayValues.list
                         );
                     }
 
@@ -625,7 +625,7 @@ class InvoicesController extends AppController
             ->find(
                 'list',
                 keyField: 'nid',
-                valueField: 'id'
+                valueField: 'id',
             )
             ->toArray();
 
@@ -660,7 +660,7 @@ class InvoicesController extends AppController
                     ) {
                         $this->Flash->error(__d(
                             'bookkeeping_pohoda',
-                            'The import file is missing some required columns.'
+                            'The import file is missing some required columns.',
                         ));
 
                         return null;
@@ -699,7 +699,7 @@ class InvoicesController extends AppController
                             $this->Flash->error(__d(
                                 'bookkeeping_pohoda',
                                 'Invoice {0} could not be loaded.',
-                                $invoice->number
+                                $invoice->number,
                             ));
                         }
                     }
@@ -711,7 +711,7 @@ class InvoicesController extends AppController
                             $record_count,
                             $created,
                             $modified,
-                            $record_count - $created - $modified
+                            $record_count - $created - $modified,
                         ));
                     }
                 }

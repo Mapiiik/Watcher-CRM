@@ -20,12 +20,12 @@
     <?= $this->AuthLink->link(
         __d('radius', 'Settings'),
         ['controller' => 'Settings', 'action' => 'index'],
-        ['class' => 'button float-right']
+        ['class' => 'button float-right'],
     ) ?>
     <?= $this->AuthLink->link(
         __d('radius', 'New RADIUS Account'),
         ['action' => 'add'],
-        ['class' => 'button float-right win-link']
+        ['class' => 'button float-right win-link'],
     ) ?>
     <h3><?= __d('radius', 'RADIUS Accounts') ?></h3>
     <div class="table-responsive">
@@ -50,7 +50,7 @@
                     <td>
                         <?= $account->__isset('customer') ? $this->Html->link(
                             $account->customer->name,
-                            ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $account->customer->id]
+                            ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $account->customer->id],
                         ) : '' ?>
                     </td>
                     <td><?= $account->__isset('customer') ? h($account->customer->number) : '' ?></td>
@@ -63,7 +63,7 @@
                                 'action' => 'view',
                                 $account->contract->id,
                                 'customer_id' => $account->contract->customer_id,
-                            ]
+                            ],
                         ) : '' ?>
                     </td>
                     <td><?= h($account->username) ?></td>
@@ -75,18 +75,18 @@
                     <td class="actions">
                         <?= $this->AuthLink->link(
                             __d('radius', 'Monitoring'),
-                            ['action' => 'monitoring', $account->id]
+                            ['action' => 'monitoring', $account->id],
                         ) ?>
                         <?= $this->AuthLink->link(__d('radius', 'View'), ['action' => 'view', $account->id]) ?>
                         <?= $this->AuthLink->link(
                             __d('radius', 'Edit'),
                             ['action' => 'edit', $account->id],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __d('radius', 'Delete'),
                             ['action' => 'delete', $account->id],
-                            ['confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $account->id)]
+                            ['confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $account->id)],
                         ) ?>
                     </td>
                 </tr>
@@ -103,7 +103,7 @@
             <?= $this->Paginator->last(__d('radius', 'last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __d('radius', 'Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __d('radius', 'Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
         ) ?></p>
     </div>
 </div>

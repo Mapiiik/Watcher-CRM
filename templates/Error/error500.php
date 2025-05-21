@@ -25,7 +25,7 @@ if (Configure::read('debug')) :
         <strong>Error in: </strong>
         <?= $this->Html->link(
             sprintf('%s, line %s', Debugger::trimPath($file), $line),
-            Debugger::editorUrl($file, $line)
+            Debugger::editorUrl($file, $line),
         ); ?>
     <?php endif; ?>
     <?php

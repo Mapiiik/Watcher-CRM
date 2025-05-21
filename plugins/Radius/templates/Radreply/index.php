@@ -8,7 +8,7 @@
     <?= $this->AuthLink->link(
         __d('radius', 'New RADIUS Reply'),
         ['action' => 'add'],
-        ['class' => 'button float-right win-link']
+        ['class' => 'button float-right win-link'],
     ) ?>
     <h3><?= __d('radius', 'RADIUS Replies') ?></h3>
     <div class="table-responsive">
@@ -28,7 +28,7 @@
                     <td>
                         <?= $radreply->__isset('account') ? $this->Html->link(
                             $radreply->account->username,
-                            ['controller' => 'Accounts', 'action' => 'view', $radreply->account->id]
+                            ['controller' => 'Accounts', 'action' => 'view', $radreply->account->id],
                         ) : $radreply->username ?>
                     </td>
                     <td><?= h($radreply->attribute) ?></td>
@@ -39,12 +39,12 @@
                         <?= $this->AuthLink->link(
                             __d('radius', 'Edit'),
                             ['action' => 'edit', $radreply->id],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __d('radius', 'Delete'),
                             ['action' => 'delete', $radreply->id],
-                            ['confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radreply->id)]
+                            ['confirm' => __d('radius', 'Are you sure you want to delete # {0}?', $radreply->id)],
                         ) ?>
                     </td>
                 </tr>
@@ -61,7 +61,7 @@
             <?= $this->Paginator->last(__d('radius', 'last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __d('radius', 'Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __d('radius', 'Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
         ) ?></p>
     </div>
 </div>

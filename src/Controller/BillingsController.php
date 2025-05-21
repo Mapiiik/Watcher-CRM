@@ -59,7 +59,7 @@ class BillingsController extends AppController
                 'Customers',
                 'Services',
             ],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('billings'));
@@ -481,12 +481,12 @@ class BillingsController extends AppController
                 [
                     '_auditQueue' => new SplObjectStorage(),
                     '_auditTransaction' => Text::uuid(),
-                ]
+                ],
             ) === false
         ) {
             $this->Flash->error(
                 __('The billing could not be saved. Please, try again.')
-                . ' (' . __('Contract Number') . ': ' . $original_billing->contract->number . ')'
+                . ' (' . __('Contract Number') . ': ' . $original_billing->contract->number . ')',
             );
 
             return false;
@@ -518,7 +518,7 @@ class BillingsController extends AppController
                 ],
                 options: [
                     'mailerConfig' => 'contracts',
-                ]
+                ],
             );
         }
 

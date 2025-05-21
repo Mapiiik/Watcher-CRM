@@ -90,7 +90,7 @@
                                         'controller' => 'ServiceTypes',
                                         'action' => 'view',
                                         $service->service_type->id,
-                                    ]
+                                    ],
                                 ) : '' ?></td>
                             <td><?= $service->__isset('queue') ? $this->Html->link($service->queue->name, [
                                 'controller' => 'Queues',

@@ -11,7 +11,7 @@
             <?= $this->AuthLink->link(
                 __d('ruian', 'Edit Address'),
                 ['action' => 'edit', $address->kod_adm],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __d('ruian', 'Delete Address'),
@@ -19,17 +19,17 @@
                 [
                     'confirm' => __d('ruian', 'Are you sure you want to delete # {0}?', $address->kod_adm),
                     'class' => 'side-nav-item',
-                ]
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __d('ruian', 'List Addresses'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __d('ruian', 'New Address'),
                 ['action' => 'add'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>

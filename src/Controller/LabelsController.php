@@ -45,7 +45,7 @@ class LabelsController extends AppController
             contain: [
                 'CustomerLabels',
             ],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('labels'));
@@ -87,7 +87,7 @@ class LabelsController extends AppController
                 // bad SQL - set error
                 $label->setError(
                     'dynamic_sql',
-                    __('An expression for data modification was detected in the SQL query, which is forbidden.')
+                    __('An expression for data modification was detected in the SQL query, which is forbidden.'),
                 );
             } else {
                 // good SQL - proceed
@@ -119,7 +119,7 @@ class LabelsController extends AppController
                 // bad SQL - set error
                 $label->setError(
                     'dynamic_sql',
-                    __('An expression for data modification was detected in the SQL query, which is forbidden.')
+                    __('An expression for data modification was detected in the SQL query, which is forbidden.'),
                 );
             } else {
                 // good SQL - proceed

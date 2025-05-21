@@ -14,12 +14,12 @@ use Doctrine\SqlFormatter\SqlFormatter;
             <?= $this->AuthLink->link(
                 __('Edit Label'),
                 ['action' => 'edit', $label->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete Label'),
                 ['action' => 'delete', $label->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $label->id), 'class' => 'side-nav-item']
+                ['confirm' => __('Are you sure you want to delete # {0}?', $label->id), 'class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(__('List Labels'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Label'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
@@ -33,7 +33,7 @@ use Doctrine\SqlFormatter\SqlFormatter;
                 [
                     'confirm' => __('Are you sure you want to update related customer labels # {0}?', $label->id),
                     'class' => 'button float-right',
-                ]
+                ],
             ) ?>
             <h3><?= h($label->name) ?></h3>
             <div class="row">
@@ -79,7 +79,7 @@ use Doctrine\SqlFormatter\SqlFormatter;
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $label->creator->id,
-                                ]
+                                ],
                             ) : h($label->created_by) ?></td>
                         </tr>
                         <tr>
@@ -94,7 +94,7 @@ use Doctrine\SqlFormatter\SqlFormatter;
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $label->modifier->id,
-                                ]
+                                ],
                             ) : h($label->modified_by) ?></td>
                         </tr>
                     </table>
@@ -110,7 +110,7 @@ use Doctrine\SqlFormatter\SqlFormatter;
                             HtmlHighlighter::HIGHLIGHT_NUMBER => 'style="color: #ec407a;"',
                             HtmlHighlighter::HIGHLIGHT_WORD => 'style="color: #9c27b0;"',
                             HtmlHighlighter::HIGHLIGHT_PRE => 'style="color: #222; background-color: transparent;"',
-                        ])
+                        ]),
                     ))
                     ->format($label->dynamic_sql ?? '') ?>
             </div>
@@ -132,7 +132,7 @@ use Doctrine\SqlFormatter\SqlFormatter;
                             <td><?= $customerLabel->__isset('customer') ?
                                 $this->Html->link(
                                     $customerLabel->customer->name,
-                                    ['controller' => 'Customers', 'action' => 'view', $customerLabel->customer->id]
+                                    ['controller' => 'Customers', 'action' => 'view', $customerLabel->customer->id],
                                 ) : '' ?></td>
                             <td><?= $customerLabel->__isset('customer') ?
                                 h($customerLabel->customer->number) : '' ?></td>
@@ -144,24 +144,24 @@ use Doctrine\SqlFormatter\SqlFormatter;
                                         'action' => 'view',
                                         $customerLabel->contract->id,
                                         'customer_id' => $customerLabel->contract->customer_id,
-                                    ]
+                                    ],
                                 ) : '' ?></td>
                             <td><?= h($customerLabel->note) ?></td>
                             <td><?= h($customerLabel->created) ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
-                                    ['controller' => 'CustomerLabels', 'action' => 'view', $customerLabel->id]
+                                    ['controller' => 'CustomerLabels', 'action' => 'view', $customerLabel->id],
                                 ) ?>
                                 <?= $this->AuthLink->link(
                                     __('Edit'),
                                     ['controller' => 'CustomerLabels', 'action' => 'edit', $customerLabel->id],
-                                    ['class' => 'win-link']
+                                    ['class' => 'win-link'],
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
                                     __('Delete'),
                                     ['controller' => 'CustomerLabels', 'action' => 'delete', $customerLabel->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $customerLabel->id)]
+                                    ['confirm' => __('Are you sure you want to delete # {0}?', $customerLabel->id)],
                                 ) ?>
                             </td>
                         </tr>

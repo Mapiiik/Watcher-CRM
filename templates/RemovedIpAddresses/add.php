@@ -13,7 +13,7 @@
             <?= $this->AuthLink->link(
                 __('List Removed IP Addresses'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>

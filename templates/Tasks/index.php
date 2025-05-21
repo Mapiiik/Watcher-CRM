@@ -78,20 +78,20 @@
                     <td>
                         <?= $task->__isset('task_type') ? $this->Html->link(
                             $task->task_type->name,
-                            ['controller' => 'TaskTypes', 'action' => 'view', $task->task_type->id]
+                            ['controller' => 'TaskTypes', 'action' => 'view', $task->task_type->id],
                         ) : '' ?>
                     </td>
                     <td><?= h($task->getPriorityName()) ?></td>
                     <td>
                         <?= $task->__isset('task_state') ? $this->Html->link(
                             $task->task_state->name,
-                            ['controller' => 'TaskStates', 'action' => 'view', $task->task_state->id]
+                            ['controller' => 'TaskStates', 'action' => 'view', $task->task_state->id],
                         ) : '' ?>
                     </td>
                     <td>
                         <?= $task->__isset('dealer') ? $this->Html->link(
                             $task->dealer->name,
-                            ['controller' => 'Customers', 'action' => 'view', $task->dealer->id]
+                            ['controller' => 'Customers', 'action' => 'view', $task->dealer->id],
                         ) : '' ?>
                     </td>
                     <td>
@@ -102,7 +102,7 @@
                     <td>
                         <?= $task->__isset('customer') ? $this->Html->link(
                             $task->customer->name,
-                            ['controller' => 'Customers', 'action' => 'view', $task->customer->id]
+                            ['controller' => 'Customers', 'action' => 'view', $task->customer->id],
                         ) : '' ?>
                     </td>
                     <td><?= $task->__isset('customer') ? h($task->customer->number) : '' ?></td>
@@ -114,7 +114,7 @@
                                 'action' => 'view',
                                 $task->contract->id,
                                 'customer_id' => $task->contract->customer_id,
-                            ]
+                            ],
                         ) : '' ?>
                     </td>
                     <td><?= $task->__isset('access_point') ? h($task->access_point['name']) : '' ?></td>
@@ -125,12 +125,12 @@
                     <td class="actions">
                         <?= $this->AuthLink->link(
                             __('View'),
-                            ['action' => 'view', $task->id]
+                            ['action' => 'view', $task->id],
                         ) ?>
                         <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $task->id],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                     </td>
                 </tr>
@@ -147,7 +147,7 @@
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
         ) ?></p>
     </div>
 </div>

@@ -20,7 +20,7 @@ class NasController extends AppController
         $nases = $this->paginate($this->Nas->find(
             'all',
             contain: [],
-            conditions: []
+            conditions: [],
         ));
 
         $this->set(compact('nases'));

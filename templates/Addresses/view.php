@@ -11,12 +11,12 @@
             <?= $this->AuthLink->link(
                 __('Edit Address'),
                 ['action' => 'edit', $address->id],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete Address'),
                 ['action' => 'delete', $address->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $address->id), 'class' => 'side-nav-item']
+                ['confirm' => __('Are you sure you want to delete # {0}?', $address->id), 'class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(__('List Addresses'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Address'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
@@ -32,7 +32,7 @@
                             <th><?= __('Customer') ?></th>
                             <td><?= $address->__isset('customer') ? $this->Html->link(
                                 $address->customer->name,
-                                ['controller' => 'Customers', 'action' => 'view', $address->customer->id]
+                                ['controller' => 'Customers', 'action' => 'view', $address->customer->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -91,7 +91,7 @@
                             <th><?= __('Country') ?></th>
                             <td><?= $address->__isset('country') ? $this->Html->link(
                                 $address->country->name,
-                                ['controller' => 'Countries', 'action' => 'view', $address->country->id]
+                                ['controller' => 'Countries', 'action' => 'view', $address->country->id],
                             ) : '' ?></td>
                         </tr>
                     </table>
@@ -110,13 +110,13 @@
                                     __('Google Maps'),
                                     'https://maps.google.com/maps?q='
                                         . h("{$address->gps_y},{$address->gps_x}"),
-                                    ['target' => '_blank']
+                                    ['target' => '_blank'],
                                 ) : '' ?>
                                 <?= $address->__isset('gps_x') && $address->__isset('gps_y') ? $this->Html->link(
                                     __('Mapy.cz'),
                                     'https://mapy.cz/zakladni?source=coor&id='
                                         . h("{$address->gps_x},{$address->gps_y}"),
-                                    ['target' => '_blank']
+                                    ['target' => '_blank'],
                                 ) : ''?>
                             </td>
                         </tr>
@@ -161,7 +161,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $address->creator->id,
-                                ]
+                                ],
                             ) : h($address->created_by) ?></td>
                         </tr>
                         <tr>
@@ -176,7 +176,7 @@
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
                                     $address->modifier->id,
-                                ]
+                                ],
                             ) : h($address->modified_by) ?></td>
                         </tr>
                     </table>

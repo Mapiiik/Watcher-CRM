@@ -46,7 +46,7 @@ class RadiusRequestSender
                     'Acct-Session-Id' => $session->acctsessionid,
                     'Framed-IP-Address' => $session->framedipaddress,
                     'NAS-IP-Address' => $session->nasipaddress,
-                ])
+                ]),
             );
         } catch (ClientException $e) {
             $this->Messages->error(__d(
@@ -54,7 +54,7 @@ class RadiusRequestSender
                 'The RADIUS session for {0} started on {1} could not be disconnected ({2}).',
                 $session->username,
                 $session->acctstarttime,
-                $e->getMessage()
+                $e->getMessage(),
             ));
 
             // skip further processing and return false
@@ -90,7 +90,7 @@ class RadiusRequestSender
                 'The RADIUS session for {0} started on {1} has been disconnected ({2}).',
                 $session->username,
                 $session->acctstarttime,
-                $error ? $result . ' - ' . $error : $result
+                $error ? $result . ' - ' . $error : $result,
             ));
 
             return true;
@@ -100,7 +100,7 @@ class RadiusRequestSender
                 'The RADIUS session for {0} started on {1} could not be disconnected ({2}).',
                 $session->username,
                 $session->acctstarttime,
-                $error ? $result . ' - ' . $error : $result
+                $error ? $result . ' - ' . $error : $result,
             ));
 
             return false;

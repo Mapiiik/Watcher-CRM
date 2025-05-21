@@ -15,7 +15,7 @@
             <?= $this->AuthLink->link(
                 __d('radius', 'List RADIUS Accounts'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>

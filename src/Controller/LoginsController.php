@@ -45,7 +45,7 @@ class LoginsController extends AppController
             contain: [
                 'Customers',
             ],
-            conditions: $conditions
+            conditions: $conditions,
         ));
 
         $this->set(compact('logins'));

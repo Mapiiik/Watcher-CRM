@@ -20,7 +20,7 @@
     <?= $this->AuthLink->link(
         __('New Customer Label'),
         ['action' => 'add'],
-        ['class' => 'button float-right win-link']
+        ['class' => 'button float-right win-link'],
     ) ?>
     <h3><?= __('Customer Labels') ?></h3>
     <div class="table-responsive">
@@ -42,7 +42,7 @@
                     <td><?= $customerLabel->__isset('customer') ?
                         $this->Html->link(
                             $customerLabel->customer->name,
-                            ['controller' => 'Customers', 'action' => 'view', $customerLabel->customer->id]
+                            ['controller' => 'Customers', 'action' => 'view', $customerLabel->customer->id],
                         ) : '' ?></td>
                     <td><?= $customerLabel->__isset('customer') ? h($customerLabel->customer->number) : '' ?></td>
                     <td><?= $customerLabel->__isset('contract') ?
@@ -53,12 +53,12 @@
                                 'action' => 'view',
                                 $customerLabel->contract->id,
                                 'customer_id' => $customerLabel->contract->customer_id,
-                            ]
+                            ],
                         ) : '' ?></td>
                     <td><?= $customerLabel->__isset('label') ?
                         $this->Html->link(
                             $customerLabel->label->name,
-                            ['controller' => 'Labels', 'action' => 'view', $customerLabel->label->id]
+                            ['controller' => 'Labels', 'action' => 'view', $customerLabel->label->id],
                         ) : '' ?></td>
                     <td><?= h($customerLabel->note) ?></td>
                     <td><?= h($customerLabel->created) ?></td>
@@ -67,12 +67,12 @@
                         <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $customerLabel->id],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
                             ['action' => 'delete', $customerLabel->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $customerLabel->id)]
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $customerLabel->id)],
                         ) ?>
                     </td>
                 </tr>
@@ -89,7 +89,7 @@
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
         ) ?></p>
     </div>
 </div>

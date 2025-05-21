@@ -20,7 +20,7 @@
     <?= $this->AuthLink->link(
         __('New Removed IP Network'),
         ['action' => 'add'],
-        ['class' => 'button float-right win-link']
+        ['class' => 'button float-right win-link'],
     ) ?>
     <h3><?= __('Removed IP Networks') ?></h3>
     <div class="table-responsive">
@@ -42,7 +42,7 @@
                     <td><?= $removedIpNetwork->__isset('customer') ?
                         $this->Html->link(
                             $removedIpNetwork->customer->name,
-                            ['controller' => 'Customers', 'action' => 'view', $removedIpNetwork->customer->id]
+                            ['controller' => 'Customers', 'action' => 'view', $removedIpNetwork->customer->id],
                         ) : '' ?></td>
                     <td><?= $removedIpNetwork->__isset('customer') ? h($removedIpNetwork->customer->number) : '' ?></td>
                     <td><?= $removedIpNetwork->__isset('contract') ?
@@ -53,7 +53,7 @@
                                 'action' => 'view',
                                 $removedIpNetwork->contract->id,
                                 'customer_id' => $removedIpNetwork->contract->customer_id,
-                            ]
+                            ],
                         ) : '' ?></td>
                     <td><?= h($removedIpNetwork->ip_network) ?></td>
                     <td><?= h($removedIpNetwork->type_of_use->label()) ?></td>
@@ -63,12 +63,12 @@
                         <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $removedIpNetwork->id],
-                            ['class' => 'win-link']
+                            ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
                             ['action' => 'delete', $removedIpNetwork->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $removedIpNetwork->id)]
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $removedIpNetwork->id)],
                         ) ?>
                     </td>
                 </tr>
@@ -85,7 +85,7 @@
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(
-            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')
+            __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
         ) ?></p>
     </div>
 </div>

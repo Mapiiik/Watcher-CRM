@@ -14,7 +14,7 @@ $user = ${$tableAlias};
             <?= $this->Html->link(
                 __d('app_users', 'List Users'),
                 ['action' => 'index'],
-                ['class' => 'side-nav-item']
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
