@@ -9,6 +9,7 @@ use Cake\Validation\Validator;
 /**
  * Addresses Model
  *
+ * @extends \Cake\ORM\Table<array<string, \Cake\ORM\Behavior>>
  * @method \Ruian\Model\Entity\Address newEmptyEntity()
  * @method \Ruian\Model\Entity\Address newEntity(array $data, array $options = [])
  * @method \Ruian\Model\Entity\Address[] newEntities(array $data, array $options = [])

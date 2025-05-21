@@ -114,7 +114,7 @@ class AppController extends Controller
      * Global beforeFilter
      *
      * @param \Cake\Event\EventInterface<\Cake\Controller\Controller> $event An Event instance
-     * @return \Cake\Http\Response|null|void
+     * @return void
      * @link https://book.cakephp.org/5/en/controllers.html#request-life-cycle-callbacks
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */

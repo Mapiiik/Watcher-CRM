@@ -10,6 +10,7 @@ use Cake\Validation\Validator;
 /**
  * Invoices Model
  *
+ * @extends \Cake\ORM\Table<array<string, \Cake\ORM\Behavior>>
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
  * @property \CakeDC\Users\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Creators
  * @property \CakeDC\Users\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Modifiers

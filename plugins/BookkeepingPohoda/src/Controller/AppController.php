@@ -12,7 +12,7 @@ class AppController extends BaseController
      * Global beforeFilter
      *
      * @param \Cake\Event\EventInterface<\Cake\Controller\Controller> $event An Event instance
-     * @return \Cake\Http\Response|null|void
+     * @return void
      */
     public function beforeFilter(EventInterface $event)
     {

@@ -9,6 +9,7 @@ use Cake\Validation\Validator;
 /**
  * AuditLogs Model
  *
+ * @extends \Cake\ORM\Table<array<string, \Cake\ORM\Behavior>>
  * @method \App\Model\Entity\AuditLog newEmptyEntity()
  * @method \App\Model\Entity\AuditLog newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\AuditLog[] newEntities(array $data, array $options = [])

@@ -10,6 +10,7 @@ use Cake\ORM\Table;
 /**
  * Single database table
  *
+ * @extends \Cake\ORM\Table<array<string, \Cake\ORM\Behavior>>
  * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Creators
  * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Modifiers
  * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Removers
