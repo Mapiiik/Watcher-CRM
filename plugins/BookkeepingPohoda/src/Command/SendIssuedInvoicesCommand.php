@@ -94,16 +94,6 @@ class SendIssuedInvoicesCommand extends Command
                         . ' - VS: ' . $invoice->variable_symbol,
                 );
 
-                $mailer->setAttachments([
-                    'Faktura_' . $invoice->number . '.pdf' => [
-                        'file' =>
-                            env('DATA_ROOT', DS . 'data' . DS)
-                            . 'invoices' . DS . 'Faktura_' . $invoice->number . '.pdf',
-                        'mimetype' => 'application/pdf',
-                        'contentId' => 'invoice-' . $invoice->number,
-                    ],
-                ]);
-
                 // define date format
                 Date::setToStringFormat('dd.MM.yyyy');
 
@@ -134,22 +124,62 @@ class SendIssuedInvoicesCommand extends Command
                     . 'IČ: 27496139, DIČ: CZ27496139';
 
                 try {
+                    // add attachment
+                    $mailer->setAttachments([
+                        'Faktura_' . $invoice->number . '.pdf' => [
+                            'file' =>
+                                env('DATA_ROOT', DS . 'data' . DS)
+                                . 'invoices' . DS . 'Faktura_' . $invoice->number . '.pdf',
+                            'mimetype' => 'application/pdf',
+                            'contentId' => 'invoice-' . $invoice->number,
+                        ],
+                    ]);
+
+                    // send message
                     $mailer->deliver($message);
-                    Log::write('debug', 'Email was successfully sent.');
+
+                    // info to console
                     $io->info(__d('bookkeeping_pohoda', 'Email was successfully sent.'));
 
                     // save the date of submission to the database
                     $invoice->email_sent = DateTime::now();
                     $invoices_table->save($invoice);
                 } catch (Exception $e) {
-                    Log::write('warning', 'The email cannot be sent. (' . $e->getMessage() . ')');
-                    $io->abort(__d('bookkeeping_pohoda', 'The email cannot be sent.'));
+                    Log::error('Error sending email message with issued invoice ID ' . $invoice->id . ': ' . $e->getMessage());
+                    $io->error(__d(
+                        'bookkeeping_pohoda',
+                        'Error sending email message with issued invoice ID {0}: {1}',
+                        $invoice->id,
+                        $e->getMessage(),
+                    ));
+
+                    // try to send a notification of the problem to mail (if it fails it will crash)
+                    $errorMailer = new Mailer('default');
+
+                    foreach (explode(' ', (string)env('REPORT_EMAILS')) as $email) {
+                        $errorMailer->addTo($email);
+                    }
+
+                    $errorMailer->setSubject(__d(
+                        'bookkeeping_pohoda',
+                        'Error sending email message with issued invoice ID {0}',
+                        $invoice->id,
+                    ));
+
+                    $errorMailer->deliver(__d(
+                        'bookkeeping_pohoda',
+                        'Error sending email message with issued invoice ID {0}: {1}',
+                        $invoice->id,
+                        $e->getMessage(),
+                    ));
+
+                    unset($errorMailer);
                 }
 
                 // clean mailer
                 unset($mailer);
             } else {
-                Log::write('warning', 'Skipping invoice because no valid contact found.'
+                Log::warning('Skipping invoice because no valid contact found.'
                     . ' (' . $invoice->number . ' - ' . $invoice->variable_symbol . ')');
 
                 // do not attempt to re-deliver this invoice by email

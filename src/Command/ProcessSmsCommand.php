@@ -18,6 +18,7 @@ use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\I18n\DateTime;
 use Cake\Log\Log;
+use Cake\Mailer\Mailer;
 use Exception;
 use InvalidArgumentException;
 
@@ -173,8 +174,23 @@ class ProcessSmsCommand extends Command
                     // increase the send counter
                     $send_count++;
                 } catch (Exception $e) {
-                    // log error and abort processing
+                    // log error
                     Log::error('Error sending message with ID ' . $smsMessage->id . ': ' . $e->getMessage());
+
+                    // try to send a notification of the problem to mail (if it fails it will crash)
+                    $errorMailer = new Mailer('default');
+
+                    foreach (explode(' ', (string)env('REPORT_EMAILS')) as $email) {
+                        $errorMailer->addTo($email);
+                    }
+
+                    $errorMailer->setSubject(__('Error sending SMS message with ID {0}', $smsMessage->id));
+
+                    $errorMailer->deliver(__('Error sending message with ID {0}: {1}', $smsMessage->id, $e->getMessage()));
+
+                    unset($errorMailer);
+
+                    // abort processing
                     $io->abort(__('Error sending message with ID {0}: {1}', $smsMessage->id, $e->getMessage()));
                 }
 

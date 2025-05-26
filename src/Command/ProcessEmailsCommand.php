@@ -134,12 +134,12 @@ class ProcessEmailsCommand extends Command
                 $mailer->setTo($emailMessage->recipients);
                 $mailer->setSubject($emailMessage->subject);
 
-                // add attachments
-                if (is_array($emailMessage->attachments)) {
-                    $mailer->setAttachments($emailMessage->attachments);
-                }
-
                 try {
+                    // add attachments
+                    if (is_array($emailMessage->attachments)) {
+                        $mailer->setAttachments($emailMessage->attachments);
+                    }
+
                     // send message
                     $mailer->deliver($emailMessage->body);
 
@@ -155,9 +155,22 @@ class ProcessEmailsCommand extends Command
                     $emailMessage->delivery_status = CustomerMessageDeliveryStatus::Sent;
                     $customerMessagesTable->saveOrFail($emailMessage);
                 } catch (Exception $e) {
-                    // log error and abort processing
+                    // log error and continue processing
                     Log::error('Error sending message with ID ' . $emailMessage->id . ': ' . $e->getMessage());
-                    $io->abort(__('Error sending message with ID {0}: {1}', $emailMessage->id, $e->getMessage()));
+                    $io->error(__('Error sending message with ID {0}: {1}', $emailMessage->id, $e->getMessage()));
+
+                    // try to send a notification of the problem to mail (if it fails it will crash)
+                    $errorMailer = new Mailer('default');
+
+                    foreach (explode(' ', (string)env('REPORT_EMAILS')) as $email) {
+                        $errorMailer->addTo($email);
+                    }
+
+                    $errorMailer->setSubject(__('Error sending email message with ID {0}', $emailMessage->id));
+
+                    $errorMailer->deliver(__('Error sending message with ID {0}: {1}', $emailMessage->id, $e->getMessage()));
+
+                    unset($errorMailer);
                 }
 
                 // sleep for a while to slow down the sending
