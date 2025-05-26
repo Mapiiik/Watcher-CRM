@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-05-26 11:49+0200\n"
-"PO-Revision-Date: 2025-05-26 11:50+0200\n"
+"POT-Creation-Date: 2025-05-26 13:53+0200\n"
+"PO-Revision-Date: 2025-05-26 13:55+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -218,7 +218,7 @@ msgstr ""
 "{customer_number}, příjemci: {recipients}"
 
 #: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:216
-#: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:160
+#: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:190
 msgid "Done"
 msgstr "Hotovo"
 
@@ -234,13 +234,18 @@ msgstr "Odesílání faktur:"
 msgid "Invoice - {0} - {1}"
 msgstr "Faktura - {0} - {1}"
 
-#: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:139
+#: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:142
 msgid "Email was successfully sent."
 msgstr "E-mail byl úspěšně odeslán."
 
-#: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:146
-msgid "The email cannot be sent."
-msgstr "E-mail nelze odeslat."
+#: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:149
+#: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:169
+msgid "Error sending email message with issued invoice ID {0}: {1}"
+msgstr "Chyba při odesílání e-mailové zprávy s ID vydané faktury {0}: {1}"
+
+#: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:163
+msgid "Error sending email message with issued invoice ID {0}"
+msgstr "Chyba při odesílání e-mailové zprávy s ID vydané faktury {0}"
 
 #: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:168
 #: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:195
@@ -676,6 +681,9 @@ msgstr "Upravil"
 #: plugins/BookkeepingPohoda/templates/cell/Invoices/display.php:71
 msgid "Show also paid invoices"
 msgstr "Zobrazit také zaplacené faktury"
+
+#~ msgid "The email cannot be sent."
+#~ msgstr "E-mail nelze odeslat."
 
 #~ msgid ""
 #~ "Notification SMS has been generated, recipients: {recipients}, content: "
