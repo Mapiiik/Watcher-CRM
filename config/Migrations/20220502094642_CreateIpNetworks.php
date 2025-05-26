@@ -64,7 +64,7 @@ class CreateIpNetworks extends AbstractMigration
             [
                 'ip_network',
             ],
-            ['unique' => true]
+            ['unique' => true],
         );
         $table->create();
     }

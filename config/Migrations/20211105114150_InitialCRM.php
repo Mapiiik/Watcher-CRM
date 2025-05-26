@@ -301,7 +301,7 @@ class InitialCRM extends AbstractMigration
                     'dealer_id',
                     'brokerage_id',
                 ],
-                ['unique' => true]
+                ['unique' => true],
             )
             ->create();
 
@@ -429,7 +429,7 @@ class InitialCRM extends AbstractMigration
                 [
                     'number',
                 ],
-                ['unique' => true]
+                ['unique' => true],
             )
             ->create();
 
@@ -677,7 +677,7 @@ class InitialCRM extends AbstractMigration
                 [
                     'ip',
                 ],
-                ['unique' => true]
+                ['unique' => true],
             )
             ->create();
 
@@ -827,7 +827,7 @@ class InitialCRM extends AbstractMigration
                 [
                     'login',
                 ],
-                ['unique' => true]
+                ['unique' => true],
             )
             ->create();
 
