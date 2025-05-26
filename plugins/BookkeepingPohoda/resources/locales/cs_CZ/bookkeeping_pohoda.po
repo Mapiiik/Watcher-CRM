@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-01-25 18:00+0100\n"
-"PO-Revision-Date: 2025-01-25 18:10+0100\n"
+"POT-Creation-Date: 2025-05-26 11:49+0200\n"
+"PO-Revision-Date: 2025-05-26 11:50+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.6\n"
 
 #: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:47
 msgid ""
@@ -85,17 +85,17 @@ msgstr "Datum likvidace: {0}"
 msgid "Remaining Debt: {0}"
 msgstr "Zbývající dluh: {0}"
 
-#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:347
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:358
 #: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:661
 msgid "The import file is missing some required columns."
 msgstr "V souboru importu chybí některé povinné sloupce."
 
-#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:385
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:396
 #: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:699
 msgid "Invoice {0} could not be loaded."
 msgstr "Fakturu {0} nelze načíst."
 
-#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:394
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:405
 #: plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:708
 msgid ""
 "Successfully imported {0} invoices. Created {1}, modified {2} and skipped "
@@ -104,25 +104,25 @@ msgstr ""
 "Počet úspěšně importovaných faktur: {0}. Vytvořeno {1}, upraveno {2} a "
 "přeskočeno {3} záznamů."
 
-#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:426
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:437
 msgid "Invalid date and time format. Use YYYY-MM-DD HH:MM:SS, Error: {0}"
 msgstr "Nesprávný formát data a času. Použijte RRRR-MM-DD HH:MM:SS, Chyba: {0}"
 
-#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:438
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:449
 msgid "No previous synchronization time found. Using default/initial time."
 msgstr ""
 "Nebyl nalezen žádný předchozí čas synchronizace. Používá se výchozí/"
 "iniciální čas."
 
-#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:466
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:477
 msgid "Error reading last sync time from file: {0}"
 msgstr "Chyba při čtení času poslední synchronizace ze souboru: {0}"
 
-#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:479
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:490
 msgid "Error parsing last sync time from file: {0}"
 msgstr "Chyba při parsování času poslední synchronizace ze souboru: {0}"
 
-#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:503
+#: plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:514
 msgid "Error saving last sync time to file: {0}"
 msgstr "Chyba při ukládání času poslední synchronizace do souboru: {0}"
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-01-25 18:00+0100\n"
+"POT-Creation-Date: 2025-05-26 11:49+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -74,38 +74,38 @@ msgstr ""
 msgid "Remaining Debt: {0}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:347
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:358
 #: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:661
 msgid "The import file is missing some required columns."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:385
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:396
 #: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:699
 msgid "Invoice {0} could not be loaded."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:394
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:405
 #: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:708
 msgid "Successfully imported {0} invoices. Created {1}, modified {2} and skipped {3} records."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:426
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:437
 msgid "Invalid date and time format. Use YYYY-MM-DD HH:MM:SS, Error: {0}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:438
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:449
 msgid "No previous synchronization time found. Using default/initial time."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:466
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:477
 msgid "Error reading last sync time from file: {0}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:479
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:490
 msgid "Error parsing last sync time from file: {0}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:503
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:514
 msgid "Error saving last sync time to file: {0}"
 msgstr ""
 

@@ -4,8 +4,8 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: CakePHP 5.1.5\n"
-"POT-Creation-Date: 2025-01-25 17:12+0100\n"
+"Project-Id-Version: CakePHP 5.2.4\n"
+"POT-Creation-Date: 2025-05-26 11:49+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -24,7 +24,7 @@ msgid "The requested address {0} was not found on this server."
 msgstr ""
 
 #: ./templates/Error/error500.php:37
-#: ./vendor/cakephp/cakephp/src/Error/Renderer/WebExceptionRenderer.php:367
+#: ./vendor/cakephp/cakephp/src/Error/Renderer/WebExceptionRenderer.php:354
 msgid "An Internal Error Has Occurred."
 msgstr ""
 
@@ -32,7 +32,7 @@ msgstr ""
 msgid "No plugins have been found."
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Error/Renderer/WebExceptionRenderer.php:365
+#: ./vendor/cakephp/cakephp/src/Error/Renderer/WebExceptionRenderer.php:352
 msgid "Not Found"
 msgstr ""
 
@@ -53,11 +53,11 @@ msgstr ""
 msgid "Missing or incorrect CSRF session key"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Http/Response.php:1431
+#: ./vendor/cakephp/cakephp/src/Http/Response.php:1174
 msgid "The requested file contains `..` and will not be read."
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Http/Response.php:1439
+#: ./vendor/cakephp/cakephp/src/Http/Response.php:1182
 msgid "The requested file was not found"
 msgstr ""
 
@@ -252,269 +252,269 @@ msgstr ""
 msgid "and"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1079
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:3066
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1071
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:3058
 #: ./vendor/cakephp/cakephp/src/View/Form/ArrayContext.php:232
 msgid "This field cannot be left empty"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1106
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1098
 msgid "The provided value must be alphanumeric"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1133
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1125
 msgid "The provided value must not be alphanumeric"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1160
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1152
 msgid "The provided value must be ASCII-alphanumeric"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1187
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1179
 msgid "The provided value must not be ASCII-alphanumeric"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1230
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1222
 msgid "The length of the provided value must be between `{0}` and `{1}`, inclusively"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1281
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1273
 msgid "The provided value must be a valid credit card number of any type"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1286
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1278
 msgid "The provided value must be a valid credit card number of these types: `{0}`"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1322
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1314
 msgid "The provided value must be greater than `{0}`"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1354
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1346
 msgid "The provided value must be greater than or equal to `{0}`"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1386
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1378
 msgid "The provided value must be less than `{0}`"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1418
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1410
 msgid "The provided value must be less than or equal to `{0}`"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1450
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1442
 msgid "The provided value must be equal to `{0}`"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1482
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1474
 msgid "The provided value must not be equal to `{0}`"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1516
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1508
 msgid "The provided value must be same as `{0}`"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1549
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1541
 msgid "The provided value must not be same as `{0}`"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1582
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1574
 msgid "The provided value must be equal to the one of field `{0}`"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1619
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1611
 msgid "The provided value must not be equal to the one of field `{0}`"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1656
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1648
 msgid "The provided value must be greater than the one of field `{0}`"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1696
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1688
 msgid "The provided value must be greater than or equal to the one of field `{0}`"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1733
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1725
 msgid "The provided value must be less than the one of field `{0}`"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1773
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1765
 msgid "The provided value must be less than or equal to the one of field `{0}`"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1828
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1820
 msgid "The provided value must be a date of one of these formats: `{0}`"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1890
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1882
 msgid "The provided value must be a date and time of one of these formats: `{0}`"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1921
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1913
 msgid "The provided value must be a time"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1953
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1945
 msgid "The provided value must be a localized time, date or date and time"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1980
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:1972
 msgid "The provided value must be a boolean"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2016
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2008
 msgid "The provided value must be decimal with any number of decimal places, including none"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2021
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2013
 msgid "The provided value must be decimal with `{0}` decimal places"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2057
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2049
 msgid "The provided value must be an e-mail address"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2098
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2090
 msgid "The provided value must be one of `{0}`"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2127
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2119
 msgid "The provided value must be an IP address"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2154
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2146
 msgid "The provided value must be an IPv4 address"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2181
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2173
 msgid "The provided value must be an IPv6 address"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2209
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2201
 msgid "The provided value must be at least `{0}` characters long"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2237
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2229
 msgid "The provided value must be at least `{0}` bytes long"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2265
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2257
 msgid "The provided value must be at most `{0}` characters long"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2293
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2285
 msgid "The provided value must be at most `{0}` bytes long"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2320
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2312
 msgid "The provided value must be numeric"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2347
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2339
 msgid "The provided value must be a natural number"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2374
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2366
 msgid "The provided value must be a non-negative integer"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2413
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2405
 msgid "The provided value must be between `{0}` and `{1}`, inclusively"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2447
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2439
 msgid "The provided value must be a URL"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2476
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2468
 msgid "The provided value must be a URL with protocol"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2506
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2498
 msgid "The provided value must be one of: `{0}`"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2537
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2529
 msgid "The provided value must be a UUID"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2569
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2561
 msgid "The provided value must be an uploaded file"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2598
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2590
 msgid "The provided value must be a latitude/longitude coordinate"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2625
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2617
 msgid "The provided value must be a latitude"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2652
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2644
 msgid "The provided value must be a longitude"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2679
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2671
 msgid "The provided value must be ASCII bytes only"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2706
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2698
 msgid "The provided value must be UTF-8 bytes only"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2735
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2727
 msgid "The provided value must be 3 and 4 byte UTF-8 sequences only"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2762
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2754
 msgid "The provided value must be an integer"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2789
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2781
 msgid "The provided value must be an array"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2815
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2807
 msgid "The provided value must be scalar"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2841
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2833
 msgid "The provided value must be a hex color"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2873
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2865
 msgid "The provided value must be a set of multiple options"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2904
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2896
 msgid "The provided value must have at least `{0}` elements"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2939
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2931
 msgid "The provided value must have at most `{0}` elements"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:3006
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:2998
 msgid "The provided value must match against the pattern `{0}`"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:3037
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:3029
 msgid "This field is required"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:3190
+#: ./vendor/cakephp/cakephp/src/Validation/Validator.php:3180
 msgid "The provided value is invalid"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1015
+#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1025
 msgid "Edit {0}"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1017
+#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1027
 msgid "New {0}"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:2012
+#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:2050
 msgid "Submit"
 msgstr ""
 
