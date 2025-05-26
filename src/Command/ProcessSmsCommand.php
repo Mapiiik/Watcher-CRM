@@ -186,7 +186,11 @@ class ProcessSmsCommand extends Command
 
                     $errorMailer->setSubject(__('Error sending SMS message with ID {0}', $smsMessage->id));
 
-                    $errorMailer->deliver(__('Error sending message with ID {0}: {1}', $smsMessage->id, $e->getMessage()));
+                    $errorMailer->deliver(__(
+                        'Error sending message with ID {0}: {1}',
+                        $smsMessage->id,
+                        $e->getMessage(),
+                    ));
 
                     unset($errorMailer);
 

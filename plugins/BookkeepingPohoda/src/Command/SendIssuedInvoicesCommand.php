@@ -145,7 +145,8 @@ class SendIssuedInvoicesCommand extends Command
                     $invoice->email_sent = DateTime::now();
                     $invoices_table->save($invoice);
                 } catch (Exception $e) {
-                    Log::error('Error sending email message with issued invoice ID ' . $invoice->id . ': ' . $e->getMessage());
+                    Log::error('Error sending email message with issued invoice ID '
+                        . $invoice->id . ': ' . $e->getMessage());
                     $io->error(__d(
                         'bookkeeping_pohoda',
                         'Error sending email message with issued invoice ID {0}: {1}',

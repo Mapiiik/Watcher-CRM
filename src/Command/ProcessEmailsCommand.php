@@ -168,7 +168,11 @@ class ProcessEmailsCommand extends Command
 
                     $errorMailer->setSubject(__('Error sending email message with ID {0}', $emailMessage->id));
 
-                    $errorMailer->deliver(__('Error sending message with ID {0}: {1}', $emailMessage->id, $e->getMessage()));
+                    $errorMailer->deliver(__(
+                        'Error sending message with ID {0}: {1}',
+                        $emailMessage->id,
+                        $e->getMessage(),
+                    ));
 
                     unset($errorMailer);
                 }
