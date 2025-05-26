@@ -346,7 +346,7 @@ class ProcessDebtorsCommand extends Command
             . 'Telefon: +420 488572511' . PHP_EOL
             . 'Číslo účtu: 207385091/0100' . PHP_EOL
             . PHP_EOL
-            . 'Volat můžete od pondělí do pátku mezi 08:00-12:00 a 13:00-17:00.' . PHP_EOL
+            . 'Volat můžete od pondělí do pátku mezi 08:00-12:00 a 13:00-16:00.' . PHP_EOL
             . PHP_EOL
             . 'Pokud Vám nepřichází faktury do emailu, zkontrolujte si prosím zda jste odsouhlasili, že je chcete dostávat.' . PHP_EOL
             . 'Potřebné souhlasy je možné udělit v sekci Uživatelské údaje, po přihlášení do Uživatelského portálu: https://nms.netair.cz/netair/' . PHP_EOL
@@ -388,7 +388,7 @@ class ProcessDebtorsCommand extends Command
             . 'Telefon: +420 488572511' . PHP_EOL
             . 'Číslo účtu: 207385091/0100' . PHP_EOL
             . PHP_EOL
-            . 'Volat můžete od pondělí do pátku mezi 08:00-12:00 a 13:00-17:00.' . PHP_EOL
+            . 'Volat můžete od pondělí do pátku mezi 08:00-12:00 a 13:00-16:00.' . PHP_EOL
             . PHP_EOL
             . 'Pokud Vám nepřichází faktury do emailu, zkontrolujte si prosím zda jste odsouhlasili, že je chcete dostávat.' . PHP_EOL
             . 'Potřebné souhlasy je možné udělit v sekci Uživatelské údaje, po přihlášení do Uživatelského portálu: https://nms.netair.cz/netair/' . PHP_EOL
@@ -427,7 +427,7 @@ class ProcessDebtorsCommand extends Command
             . 'Telefon: +420 488572511' . PHP_EOL
             . 'Číslo účtu: 207385091/0100' . PHP_EOL
             . PHP_EOL
-            . 'Volat můžete od pondělí do pátku mezi 08:00-12:00 a 13:00-17:00.' . PHP_EOL
+            . 'Volat můžete od pondělí do pátku mezi 08:00-12:00 a 13:00-16:00.' . PHP_EOL
             . PHP_EOL
             . 'Pokud Vám nepřichází faktury do emailu, zkontrolujte si prosím zda jste odsouhlasili, že je chcete dostávat.' . PHP_EOL
             . 'Potřebné souhlasy je možné udělit v sekci Uživatelské údaje, po přihlášení do Uživatelského portálu: https://nms.netair.cz/netair/' . PHP_EOL
@@ -487,7 +487,7 @@ class ProcessDebtorsCommand extends Command
             'NETAIR - neuhrazené pohledávky ke dni {date} - VS: {customer_number}';
         $contentTemplate =
             // phpcs:ignore
-            'Vážený zákazníku, rádi bychom Vás upozornili, že k dnešnímu dni evidujeme neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}. Pokud máte vše uhrazeno, kontaktujte nás prosím (8:00-17:00).'
+            'Vážený zákazníku, rádi bychom Vás upozornili, že k dnešnímu dni evidujeme neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}. Pokud máte vše uhrazeno, kontaktujte nás prosím (8:00-16:00).'
             . ' NETAIR, s.r.o., tel: +420488572511, č.ú.: 207385091/0100';
 
         return $this->generateSms($debtor, $debtor->getCustomer()->billing_phones, $subjectTemplate, $contentTemplate);
@@ -503,7 +503,7 @@ class ProcessDebtorsCommand extends Command
             'NETAIR - neaktivní služby - neuhrazené pohledávky ke dni {date} - VS: {customer_number}';
         $contentTemplate =
             // phpcs:ignore
-            'Vážený zákazníku, rádi bychom Vás upozornili, že k dnešnímu dni stále evidujeme neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}. Pokud máte vše uhrazeno, kontaktujte nás prosím (8:00-17:00).'
+            'Vážený zákazníku, rádi bychom Vás upozornili, že k dnešnímu dni stále evidujeme neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}. Pokud máte vše uhrazeno, kontaktujte nás prosím (8:00-16:00).'
             . ' NETAIR, s.r.o., tel: +420488572511, č.ú.: 207385091/0100';
 
         return $this->generateSms($debtor, $debtor->getCustomer()->phones, $subjectTemplate, $contentTemplate);
@@ -519,7 +519,7 @@ class ProcessDebtorsCommand extends Command
             'NETAIR - pozastavení služeb - neuhrazené pohledávky ke dni {date} - VS: {customer_number}';
         $contentTemplate =
             // phpcs:ignore
-            'Vážený zákazníku, naše služby byly pozastaveny z důvodu neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}. Pokud máte vše uhrazeno, kontaktujte nás prosím (8:00-17:00).'
+            'Vážený zákazníku, naše služby byly pozastaveny z důvodu neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}. Pokud máte vše uhrazeno, kontaktujte nás prosím (8:00-16:00).'
             . ' NETAIR, s.r.o., tel: +420488572511, č.ú.: 207385091/0100';
 
         return $this->generateSms($debtor, $debtor->getCustomer()->phones, $subjectTemplate, $contentTemplate);
