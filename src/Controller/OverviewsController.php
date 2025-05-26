@@ -15,6 +15,7 @@ use Cake\I18n\Date;
 use Cake\ORM\Entity;
 use Cake\ORM\Query\SelectQuery;
 use Cake\Validation\Validation;
+use Exception;
 
 /**
  * Overviews Controller
@@ -28,6 +29,194 @@ class OverviewsController extends AppController
      */
     public function index()
     {
+    }
+
+    /**
+     * Overview of contracts method
+     *
+     * @return \Cake\Http\Response|null|void Renders view
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function overviewOfContracts()
+    {
+        // get contracts table
+        /** @var \App\Model\Table\ContractsTable $contractsTable */
+        $contractsTable = $this->fetchTable('Contracts');
+
+        // load labels
+        /** @var \App\Model\Table\LabelsTable $labelsTable */
+        $labelsTable = $this->fetchTable('Labels');
+        $labels = $labelsTable->find('list', order: [
+            'name',
+        ])->all();
+
+        // load RUIAN addresses
+        /** @var \Ruian\Model\Table\AddressesTable $ruianAddressesTable */
+        $ruianAddressesTable = $this->fetchTable('Ruian.Addresses');
+        $ruianAddresses = [];
+
+        try {
+            $ruianAddresses = $ruianAddressesTable->find(
+                'list',
+                valueField: 'address',
+                where: [
+                    'Addresses.kod_adm IN' =>
+                        $contractsTable->InstallationAddresses
+                            ->find(
+                                'list',
+                                valueField: 'ruian_gid',
+                            )
+                            ->all()
+                            ->toArray()
+                    ,
+                ],
+                order: [
+                    'obec_nazev',
+                    'cast_obce_nazev',
+                    'ulice_nazev',
+                    'typ_so',
+                    'cislo_domovni',
+                    'cislo_orientacni',
+                    'cislo_orientacni_znak',
+                ],
+            )->all();
+        } catch (Exception $exception) {
+            // TODO
+        }
+
+        // contracts filter
+        $contractsFilter = [];
+
+        // filter by labels
+        if (!empty($this->getRequest()->getQuery('label_ids'))) {
+            $uuidLabels = [];
+            if (is_array($this->getRequest()->getQuery('label_ids'))) {
+                foreach ($this->getRequest()->getQuery('label_ids') as $labelId) {
+                    if (Validation::uuid($labelId)) {
+                        $uuidLabels[] = "'{$labelId}'::uuid";
+                    }
+                }
+            }
+
+            $contractsFilter[] = [
+                'Customers.id IN ('
+                . ' SELECT customer_id FROM customer_labels '
+                . 'GROUP BY customer_id '
+                . 'HAVING array_agg(label_id) @> ARRAY[' . implode(',', $uuidLabels) . ']'
+                . ')',
+            ];
+
+            unset($uuidLabels);
+        }
+
+        // filter by CTO category
+        $ctoCategory = $this->getRequest()->getQuery('cto_category');
+        if (!empty($ctoCategory)) {
+            $filterQuery = $contractsTable->Billings->find()
+                ->select([
+                    'Billings.contract_id',
+                ])
+                ->innerJoinWith('Services')
+                ->innerJoinWith('Services.Queues')
+                ->distinct()
+                ->where([
+                    'Queues.cto_category' => $ctoCategory,
+                ]);
+
+            $contractsFilter[] = [
+                'Contracts.id IN' => $filterQuery,
+            ];
+            unset($filterQuery);
+        }
+
+        // contracts query
+        $contractsQuery = $contractsTable
+            ->find()
+            ->contain('ContractStates')
+            ->contain('ServiceTypes')
+            ->contain('InstallationAddresses')
+            ->contain('Billings', function (SelectQuery $q) {
+                $q->contain('Services');
+                $q->contain('Services.Queues');
+
+                return $q;
+            })
+            ->contain('Customers', function (SelectQuery $q) {
+                return $q
+                    ->contain('Emails')
+                    ->contain('Phones');
+            })
+            ->where($contractsFilter)
+            ->orderBy([
+                'Customers.company',
+                'Customers.last_name',
+                'Customers.first_name',
+            ]);
+
+        // filter by access point
+        $accessPointId = $this->getRequest()->getQuery('access_point_id');
+        if (Validation::uuid($accessPointId)) {
+            $contractsQuery->where(['Contracts.access_point_id' => $accessPointId]);
+        }
+        unset($accessPointId);
+
+        // filter by service type
+        $serviceTypeId = $this->getRequest()->getQuery('service_type_id');
+        if (Validation::uuid($serviceTypeId)) {
+            $contractsQuery->where(['Contracts.service_type_id' => $serviceTypeId]);
+        }
+        unset($serviceTypeId);
+
+        // filter by RUIAN address
+        $ruianAddressId = $this->getRequest()->getQuery('ruian_address_id');
+        if (Validation::numeric($ruianAddressId)) {
+            $contractsQuery->where(['InstallationAddresses.ruian_gid' => $ruianAddressId]);
+        }
+        unset($ruianAddressId);
+
+        // load contracts with paginator
+        /** @var iterable<\App\Model\Entity\Contract> $contracts */
+        $contracts = $this->paginate($contractsQuery, [
+            //'limit' => PHP_INT_MAX,
+            'maxLimit' => PHP_INT_MAX,
+        ]);
+
+        $this->set(compact(
+            'labels',
+            'ruianAddresses',
+            'contracts',
+        ));
+
+        // load service types
+        $this->set(
+            'serviceTypes',
+            $this->fetchTable('ServiceTypes')->find('list', order: [
+                'name',
+            ]),
+        );
+
+        // load CTO categories
+        $this->set(
+            'ctoCategories',
+            $this->fetchTable('Queues')
+                ->find(
+                    'list',
+                    order: 'cto_category',
+                    group: 'cto_category',
+                    keyField: 'cto_category',
+                    valueField: 'cto_category',
+                )
+                ->whereNotNull('cto_category'),
+        );
+
+        // load access points from NMS if possible
+        $accessPoints = ApiClient::getAccessPoints();
+        if ($accessPoints) {
+            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
+        } else {
+            $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
+            $this->set('accessPoints', []);
+        }
     }
 
     /**
