@@ -153,12 +153,12 @@ class OverviewsController extends AppController
                 'Customers.first_name',
             ]);
 
-        // filter by access point
-        $accessPointId = $this->getRequest()->getQuery('access_point_id');
-        if (Validation::uuid($accessPointId)) {
-            $contractsQuery->where(['Contracts.access_point_id' => $accessPointId]);
+        // filter by contract state
+        $contractStateId = $this->getRequest()->getQuery('contract_state_id');
+        if (Validation::uuid($contractStateId)) {
+            $contractsQuery->where(['Contracts.contract_state_id' => $contractStateId]);
         }
-        unset($accessPointId);
+        unset($contractStateId);
 
         // filter by service type
         $serviceTypeId = $this->getRequest()->getQuery('service_type_id');
@@ -166,6 +166,13 @@ class OverviewsController extends AppController
             $contractsQuery->where(['Contracts.service_type_id' => $serviceTypeId]);
         }
         unset($serviceTypeId);
+
+        // filter by access point
+        $accessPointId = $this->getRequest()->getQuery('access_point_id');
+        if (Validation::uuid($accessPointId)) {
+            $contractsQuery->where(['Contracts.access_point_id' => $accessPointId]);
+        }
+        unset($accessPointId);
 
         // filter by RUIAN address
         $ruianAddressId = $this->getRequest()->getQuery('ruian_address_id');
@@ -186,6 +193,14 @@ class OverviewsController extends AppController
             'ruianAddresses',
             'contracts',
         ));
+
+        // load contract states
+        $this->set(
+            'contractStates',
+            $this->fetchTable('ContractStates')->find('list', order: [
+                'name',
+            ]),
+        );
 
         // load service types
         $this->set(

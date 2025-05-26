@@ -20,16 +20,11 @@
 
             <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
             <fieldset>
+                <?= $this->Form->control('contract_state_id', [
+                    'empty' => true,
+                    'onchange' => 'this.form.submit();',
+                ]) ?>
                 <?= $this->Form->control('service_type_id', [
-                    'empty' => true,
-                    'onchange' => 'this.form.submit();',
-                ]) ?>
-                <?= $this->Form->control('cto_category', [
-                    'empty' => true,
-                    'onchange' => 'this.form.submit();',
-                ]) ?>
-                <?= $this->Form->control('access_point_id', [
-                    'options' => $accessPoints,
                     'empty' => true,
                     'onchange' => 'this.form.submit();',
                 ]) ?>
@@ -38,6 +33,15 @@
                     'options' => $labels,
                     'multiple' => 'multiple',
                     'style' => 'height: 100px;',
+                    'onchange' => 'this.form.submit();',
+                ]) ?>
+                <?= $this->Form->control('access_point_id', [
+                    'options' => $accessPoints,
+                    'empty' => true,
+                    'onchange' => 'this.form.submit();',
+                ]) ?>
+                <?= $this->Form->control('cto_category', [
+                    'empty' => true,
                     'onchange' => 'this.form.submit();',
                 ]) ?>
                 <?= $this->Form->control('ruian_address_id', [
