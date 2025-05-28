@@ -109,6 +109,27 @@ class OverviewsController extends AppController
             unset($uuidLabels);
         }
 
+        // filter by not labels
+        if (!empty($this->getRequest()->getQuery('not_label_ids'))) {
+            $uuidLabels = [];
+            if (is_array($this->getRequest()->getQuery('not_label_ids'))) {
+                foreach ($this->getRequest()->getQuery('not_label_ids') as $labelId) {
+                    if (Validation::uuid($labelId)) {
+                        $uuidLabels[] = "'{$labelId}'::uuid";
+                    }
+                }
+            }
+
+            $contractsFilter[] = [
+                'Customers.id NOT IN (
+                    SELECT customer_id FROM customer_labels
+                    WHERE label_id = ANY(ARRAY[' . implode(',', $uuidLabels) . '])
+                )',
+            ];
+
+            unset($uuidLabels);
+        }
+
         // filter by CTO category
         $ctoCategory = $this->getRequest()->getQuery('cto_category');
         if (!empty($ctoCategory)) {
