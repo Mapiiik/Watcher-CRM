@@ -68,6 +68,27 @@ class ApiClient
     }
 
     /**
+     * Get access points list
+     *
+     * @return array<string>|null Return result from API or from cache if valid
+     */
+    public static function getAccessPointsList(): ?array
+    {
+        return Cache::remember(
+            'access_points_list',
+            function () {
+                $accessPoints = ApiClient::getAccessPoints();
+                if ($accessPoints) {
+                    return $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name')->toArray();
+                } else {
+                    return null;
+                }
+            },
+            'api_client',
+        );
+    }
+
+    /**
      * Fetch access point method
      *
      * @param string $id Access Point id.

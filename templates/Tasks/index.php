@@ -117,7 +117,7 @@
                             ],
                         ) : '' ?>
                     </td>
-                    <td><?= $task->__isset('access_point') ? h($task->access_point['name']) : '' ?></td>
+                    <td><?= $task->__isset('access_point_name') ? h($task->access_point_name) : '' ?></td>
                     <td><?= h($task->start_date) ?></td>
                     <td><?= h($task->estimated_date) ?></td>
                     <td><?= h($task->critical_date) ?></td>

@@ -178,7 +178,8 @@
                                 ) : '' ?>
                             </td>
                             <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
-                            <td><?= $contract->__isset('access_point') ? h($contract->access_point['name']) : '' ?></td>
+                            <td><?= $contract->__isset('access_point_name') ?
+                                h($contract->access_point_name) : '' ?></td>
                             <td><?= h($contract->installation_date) ?></td>
                             <td>
                                 <?= $contract->__isset('installation_technician') ? $this->Html->link(

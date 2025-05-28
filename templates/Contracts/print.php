@@ -85,7 +85,8 @@
                     <table>
                         <tr>
                             <th><?= __('Access Point') ?></th>
-                            <td><?= $contract->__isset('access_point') ? h($contract->access_point['name']) : '' ?></td>
+                            <td><?= $contract->__isset('access_point_name') ?
+                                h($contract->access_point_name) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Commission') ?></th>

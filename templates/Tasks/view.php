@@ -61,7 +61,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Access Point') ?></th>
-                            <td><?= $task->__isset('access_point') ? h($task->access_point['name']) : '' ?></td>
+                            <td><?= $task->__isset('access_point_name') ? h($task->access_point_name) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Customer') ?></th>

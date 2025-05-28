@@ -122,7 +122,8 @@
                                     ],
                                 ) : '' ?></td>
                             <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
-                            <td><?= $contract->__isset('access_point_id') ? h($accessPoints[$contract->access_point_id]) : '' ?></td>
+                            <td><?= $contract->__isset('access_point_name') ?
+                                h($contract->access_point_name) : '' ?></td>
                             <td><?= h($contract->installation_date) ?></td>
                             <td><?= h($contract->uninstallation_date) ?></td>
                             <td><?= h($contract->termination_date) ?></td>

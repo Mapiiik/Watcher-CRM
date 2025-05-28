@@ -241,7 +241,7 @@ class OverviewsController extends AppController
         // load access points from NMS if possible
         $accessPoints = ApiClient::getAccessPoints();
         if ($accessPoints) {
-            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name')->toArray());
+            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
         } else {
             $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
             $this->set('accessPoints', []);

@@ -66,6 +66,7 @@ use PhpCollective\DecimalObject\Decimal;
  * @property \App\Model\Entity\SoldEquipment[] $sold_equipments
  * @property \App\Model\Entity\Task[] $tasks
  * @property \Cake\ORM\Entity|null $access_point
+ * @property string|null $access_point_name
  */
 class Contract extends Entity
 {
@@ -208,6 +209,23 @@ class Contract extends Entity
     {
         if ($this->access_point_id) {
             return ApiClient::getAccessPoint($this->access_point_id);
+        }
+
+        return null;
+    }
+
+    /**
+     * getter for acess point name (try to load via ApiClient)
+     *
+     * @return string|null
+     */
+    protected function _getAccessPointName(): ?string
+    {
+        // load access points from NMS if possible
+        $accessPoints = ApiClient::getAccessPointsList();
+
+        if ($accessPoints && $this->access_point_id) {
+            return $accessPoints[$this->access_point_id] ?? null;
         }
 
         return null;
