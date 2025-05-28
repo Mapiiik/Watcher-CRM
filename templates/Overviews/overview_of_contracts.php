@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var iterable<\App\Model\Entity\Customer> $customers
+ * @var iterable<\App\Model\Entity\Contract> $contracts
  * @var \Cake\Collection\CollectionInterface|array<string> $labels
  * @var \Cake\Collection\CollectionInterface|array<string> $accessPoints
  * @var \Cake\Collection\CollectionInterface|array<string> $ruianAddresses
@@ -60,8 +60,8 @@
                 <table>
                     <thead>
                         <tr>
-                            <th><?= $this->Paginator->sort('customer_id') ?></th>
-                            <th><?= $this->Paginator->sort('customer_id', __('Customer Number')) ?></th>
+                            <th><?= $this->Paginator->sort('', __('Customer')) ?></th>
+                            <th><?= $this->Paginator->sort('Customers.nid', __('Customer Number')) ?></th>
                             <th><?= $this->Paginator->sort('number') ?></th>
                             <th><?= $this->Paginator->sort('contract_state_id') ?></th>
                             <th><?= $this->Paginator->sort('service_type_id') ?></th>
@@ -122,7 +122,7 @@
                                     ],
                                 ) : '' ?></td>
                             <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
-                            <td><?= $contract->__isset('access_point') ? h($contract->access_point['name']) : '' ?></td>
+                            <td><?= $contract->__isset('access_point_id') ? h($accessPoints[$contract->access_point_id]) : '' ?></td>
                             <td><?= h($contract->installation_date) ?></td>
                             <td><?= h($contract->uninstallation_date) ?></td>
                             <td><?= h($contract->termination_date) ?></td>
@@ -132,16 +132,6 @@
                                 <?= $this->AuthLink->link(
                                     __('View'),
                                     ['controller' => 'Contracts', 'action' => 'view', $contract->id],
-                                ) ?>
-                                <?= $this->AuthLink->link(
-                                    __('Edit'),
-                                    ['controller' => 'Contracts', 'action' => 'edit', $contract->id],
-                                    ['class' => 'win-link'],
-                                ) ?>
-                                <?= $this->AuthLink->postLink(
-                                    __('Delete'),
-                                    ['controller' => 'Contracts', 'action' => 'delete', $contract->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $contract->id)],
                                 ) ?>
                             </td>
                         </tr>

@@ -146,12 +146,7 @@ class OverviewsController extends AppController
                     ->contain('Emails')
                     ->contain('Phones');
             })
-            ->where($contractsFilter)
-            ->orderBy([
-                'Customers.company',
-                'Customers.last_name',
-                'Customers.first_name',
-            ]);
+            ->where($contractsFilter);
 
         // filter by contract state
         $contractStateId = $this->getRequest()->getQuery('contract_state_id');
@@ -184,7 +179,26 @@ class OverviewsController extends AppController
         // load contracts with paginator
         /** @var iterable<\App\Model\Entity\Contract> $contracts */
         $contracts = $this->paginate($contractsQuery, [
-            //'limit' => PHP_INT_MAX,
+            'sortableFields' => [
+                'Customers.company',
+                'Customers.last_name',
+                'Customers.first_name',
+                'Customers.nid',
+                'number',
+                'contract_state_id',
+                'service_type_id',
+                'installation_address_id',
+                'vip',
+                'access_point_id',
+                'installation_date',
+                'uninstallation_date',
+                'termination_date',
+            ],
+            'order' => [
+                'Customers.company' => 'ASC',
+                'Customers.last_name' => 'ASC',
+                'Customers.first_name' => 'ASC',
+            ],
             'maxLimit' => PHP_INT_MAX,
         ]);
 
@@ -227,7 +241,7 @@ class OverviewsController extends AppController
         // load access points from NMS if possible
         $accessPoints = ApiClient::getAccessPoints();
         if ($accessPoints) {
-            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
+            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name')->toArray());
         } else {
             $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
             $this->set('accessPoints', []);
