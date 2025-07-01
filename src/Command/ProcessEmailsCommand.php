@@ -156,7 +156,7 @@ class ProcessEmailsCommand extends Command
                     $customerMessagesTable->saveOrFail($emailMessage);
                 } catch (Exception $e) {
                     // log error and continue processing
-                    Log::error('Error sending message with ID ' . $emailMessage->id . ': ' . $e->getMessage());
+                    Log::error('Error sending email message with ID ' . $emailMessage->id . ': ' . $e->getMessage());
                     $io->error(__('Error sending message with ID {0}: {1}', $emailMessage->id, $e->getMessage()));
 
                     // try to send a notification of the problem to mail (if it fails it will crash)
