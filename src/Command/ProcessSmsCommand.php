@@ -150,7 +150,7 @@ class ProcessSmsCommand extends Command
                 }
 
                 // prepare message object
-                $message = new MessageBuilder($smsMessage->body, $smsMessage->recipients)
+                $message = (new MessageBuilder($smsMessage->body, $smsMessage->recipients))
                     ->setTtl(86400)
                     ->setWithDeliveryReport(true)
                     ->build();
