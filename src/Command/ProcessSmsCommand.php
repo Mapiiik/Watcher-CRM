@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use AndroidSmsGateway\Client;
-use AndroidSmsGateway\Domain\Message;
+use AndroidSmsGateway\Domain\MessageBuilder;
 use AndroidSmsGateway\Domain\MessageState;
 use AndroidSmsGateway\Encryptor;
 use AndroidSmsGateway\Enums\ProcessState;
@@ -150,15 +150,14 @@ class ProcessSmsCommand extends Command
                 }
 
                 // prepare message object
-                $message = new Message(
-                    message: $smsMessage->body,
-                    phoneNumbers: $smsMessage->recipients,
-                    ttl: 86400,
-                );
+                $message = new MessageBuilder($smsMessage->body, $smsMessage->recipients)
+                    ->setTtl(86400)
+                    ->setWithDeliveryReport(true)
+                    ->build();
 
                 try {
                     // submit a message to the Android SMS gateway
-                    $messageState = $client->Send($message);
+                    $messageState = $client->SendMessage($message);
                     // info to console
                     $io->info(__(
                         'Message with ID {0} was sent with identifier: {1}',
@@ -205,7 +204,7 @@ class ProcessSmsCommand extends Command
             // Find out the status of individual messages
             try {
                 // get message status from Android SMS gateway
-                $messageState = $client->GetState($smsMessage->identifier);
+                $messageState = $client->GetMessageState($smsMessage->identifier);
                 // info to console
                 $io->info(__('Message status with ID {0}: {1}', $smsMessage->id, $messageState->State()));
                 // patch entity data
