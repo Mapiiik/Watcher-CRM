@@ -104,7 +104,7 @@ class AddressesController extends AppController
                 // only refresh
             } else {
                 // update RUIAN data
-                $address->set($this->findRuianData($address));
+                $address->patch($this->findRuianData($address));
 
                 // set manual coordinate if defined
                 if ($address->manual_coordinate_setting) {
@@ -153,7 +153,7 @@ class AddressesController extends AppController
                 // only refresh
             } else {
                 // update RUIAN data
-                $address->set($this->findRuianData($address));
+                $address->patch($this->findRuianData($address));
 
                 // set manual coordinate if defined
                 if ($address->manual_coordinate_setting) {

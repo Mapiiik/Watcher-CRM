@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface $services
+ * @var \Cake\Datasource\Paging\PaginatedResultSet<\App\Model\Entity\Service> $services
  * @var \Cake\I18n\Date $month_to_display
  * @var bool $show_billings
  */
@@ -134,8 +134,12 @@
                 </table>
             </div>
             <div>
-                <?= __('Total Number of Uses') . ': ' . $this->Number->format($services->sumOf('number_of_uses')) ?><br>
-                <?= __('Total Sum') . ': ' . $this->Number->currency($services->sumOf('total_sum')) ?><br>
+                <?php
+                /** @var \Cake\ORM\ResultSet<\App\Model\Entity\Service> $serviceItems */
+                $serviceItems = $services->items();
+                ?>
+                <?= __('Total Number of Uses') . ': ' . $this->Number->format($serviceItems->sumOf('number_of_uses')) ?><br>
+                <?= __('Total Sum') . ': ' . $this->Number->currency($serviceItems->sumOf('total_sum')) ?><br>
             </div>
         </div>
     </div>
