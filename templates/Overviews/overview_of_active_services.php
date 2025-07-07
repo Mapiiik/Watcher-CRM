@@ -138,8 +138,10 @@
                 /** @var \Cake\ORM\ResultSet<\App\Model\Entity\Service> $serviceItems */
                 $serviceItems = $services->items();
                 ?>
-                <?= __('Total Number of Uses') . ': ' . $this->Number->format($serviceItems->sumOf('number_of_uses')) ?><br>
-                <?= __('Total Sum') . ': ' . $this->Number->currency($serviceItems->sumOf('total_sum')) ?><br>
+                <?= __('Total Number of Uses') . ': '
+                    . $this->Number->format($serviceItems->sumOf('number_of_uses')) ?><br>
+                <?= __('Total Sum') . ': '
+                    . $this->Number->currency($serviceItems->sumOf('total_sum')) ?><br>
             </div>
         </div>
     </div>
