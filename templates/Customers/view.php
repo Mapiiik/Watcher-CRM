@@ -91,11 +91,6 @@
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
-                __('RADIUS Accounts'),
-                ['action' => 'view', $customer->id, '#' => 'radius-accounts'],
-                ['class' => 'side-nav-item'],
-            ) ?>
-            <?= $this->AuthLink->link(
                 __('Equipments'),
                 ['action' => 'view', $customer->id, '#' => 'borrowed-equipments'],
                 ['class' => 'side-nav-item'],
@@ -103,6 +98,11 @@
             <?= $this->AuthLink->link(
                 __('IP Addresses'),
                 ['action' => 'view', $customer->id, '#' => 'ip_addresses'],
+                ['class' => 'side-nav-item'],
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('RADIUS Accounts'),
+                ['action' => 'view', $customer->id, '#' => 'radius-accounts'],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
@@ -593,18 +593,6 @@
                     'contract_column' => true,
                 ]) ?>
             </div>
-            <div class="related">
-                <?= $this->AuthLink->link(
-                    __('New RADIUS Account'),
-                    ['plugin' => 'Radius', 'controller' => 'Accounts', 'action' => 'add'],
-                    ['class' => 'button button-small float-right win-link'],
-                ) ?>
-                <h4 id="radius-accounts"><?= __('Related RADIUS Accounts') ?></h4>
-                <?= $this->cell(
-                    'Radius.Accounts',
-                    [['Accounts.customer_id' => $customer->id]],
-                ) ?>
-            </div>
             <div class="row">
                 <div class="column">
                     <div class="related">
@@ -699,6 +687,18 @@
                         ]) ?>
                     </div>
                 </div>
+            </div>
+            <div class="related">
+                <?= $this->AuthLink->link(
+                    __('New RADIUS Account'),
+                    ['plugin' => 'Radius', 'controller' => 'Accounts', 'action' => 'add'],
+                    ['class' => 'button button-small float-right win-link'],
+                ) ?>
+                <h4 id="radius-accounts"><?= __('Related RADIUS Accounts') ?></h4>
+                <?= $this->cell(
+                    'Radius.Accounts',
+                    [['Accounts.customer_id' => $customer->id]],
+                ) ?>
             </div>
             <hr />
             <div class="related">

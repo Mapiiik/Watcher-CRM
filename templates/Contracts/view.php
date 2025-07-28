@@ -81,11 +81,6 @@
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
-                __('RADIUS Accounts'),
-                ['action' => 'view', $contract->id, '#' => 'radius-accounts'],
-                ['class' => 'side-nav-item'],
-            ) ?>
-            <?= $this->AuthLink->link(
                 __('Equipments'),
                 ['action' => 'view', $contract->id, '#' => 'borrowed-equipments'],
                 ['class' => 'side-nav-item'],
@@ -93,6 +88,11 @@
             <?= $this->AuthLink->link(
                 __('IP Addresses'),
                 ['action' => 'view', $contract->id, '#' => 'ip_addresses'],
+                ['class' => 'side-nav-item'],
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('RADIUS Accounts'),
+                ['action' => 'view', $contract->id, '#' => 'radius-accounts'],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
@@ -358,21 +358,6 @@
                     'billings' => $contract->billings,
                 ]) ?>
             </div>
-            <?php if ($contract->__isset('service_type') && $contract->service_type->have_radius_accounts) : ?>
-            <div class="related">
-                <?= $this->AuthLink->link(
-                    __('New RADIUS Account'),
-                    ['plugin' => 'Radius', 'controller' => 'Accounts', 'action' => 'add'],
-                    ['class' => 'button button-small float-right win-link'],
-                ) ?>
-                <h4 id="radius-accounts"><?= __('RADIUS Accounts') ?></h4>
-                <?= $this->cell(
-                    'Radius.Accounts',
-                    [['Accounts.contract_id' => $contract->id]],
-                    ['show_contracts' => false],
-                ) ?>
-            </div>
-            <?php endif; ?>
             <?php if ($contract->__isset('service_type') && $contract->service_type->have_equipments) : ?>
             <div class="row">
                 <div class="column">
@@ -482,6 +467,21 @@
                         ]) ?>
                     </div>
                 </div>
+            </div>
+            <?php endif; ?>
+            <?php if ($contract->__isset('service_type') && $contract->service_type->have_radius_accounts) : ?>
+            <div class="related">
+                <?= $this->AuthLink->link(
+                    __('New RADIUS Account'),
+                    ['plugin' => 'Radius', 'controller' => 'Accounts', 'action' => 'add'],
+                    ['class' => 'button button-small float-right win-link'],
+                ) ?>
+                <h4 id="radius-accounts"><?= __('RADIUS Accounts') ?></h4>
+                <?= $this->cell(
+                    'Radius.Accounts',
+                    [['Accounts.contract_id' => $contract->id]],
+                    ['show_contracts' => false],
+                ) ?>
             </div>
             <?php endif; ?>
             <hr />
