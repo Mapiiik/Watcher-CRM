@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-05-26 13:53+0200\n"
-"PO-Revision-Date: 2025-05-26 13:55+0200\n"
+"POT-Creation-Date: 2025-07-28 12:37+0200\n"
+"PO-Revision-Date: 2025-07-28 12:39+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -218,7 +218,7 @@ msgstr ""
 "{customer_number}, příjemci: {recipients}"
 
 #: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:216
-#: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:190
+#: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:191
 msgid "Done"
 msgstr "Hotovo"
 
@@ -238,12 +238,12 @@ msgstr "Faktura - {0} - {1}"
 msgid "Email was successfully sent."
 msgstr "E-mail byl úspěšně odeslán."
 
-#: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:149
-#: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:169
+#: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:150
+#: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:170
 msgid "Error sending email message with issued invoice ID {0}: {1}"
 msgstr "Chyba při odesílání e-mailové zprávy s ID vydané faktury {0}: {1}"
 
-#: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:163
+#: plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:164
 msgid "Error sending email message with issued invoice ID {0}"
 msgstr "Chyba při odesílání e-mailové zprávy s ID vydané faktury {0}"
 

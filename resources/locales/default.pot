@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-05-28 14:27+0200\n"
+"POT-Creation-Date: 2025-07-28 12:37+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -33,14 +33,14 @@ msgid "Processing email messages:"
 msgstr ""
 
 #: ./src/Command/ProcessEmailsCommand.php:147
-#: ./src/Command/ProcessSmsCommand.php:163
+#: ./src/Command/ProcessSmsCommand.php:162
 msgid "Message with ID {0} was sent with identifier: {1}"
 msgstr ""
 
 #: ./src/Command/ProcessEmailsCommand.php:160
 #: ./src/Command/ProcessEmailsCommand.php:171
-#: ./src/Command/ProcessSmsCommand.php:189
-#: ./src/Command/ProcessSmsCommand.php:198
+#: ./src/Command/ProcessSmsCommand.php:188
+#: ./src/Command/ProcessSmsCommand.php:197
 msgid "Error sending message with ID {0}: {1}"
 msgstr ""
 
@@ -49,7 +49,7 @@ msgid "Error sending email message with ID {0}"
 msgstr ""
 
 #: ./src/Command/ProcessEmailsCommand.php:184
-#: ./src/Command/ProcessSmsCommand.php:220
+#: ./src/Command/ProcessSmsCommand.php:238
 msgid "Done"
 msgstr ""
 
@@ -61,15 +61,20 @@ msgstr ""
 msgid "Processing SMS messages:"
 msgstr ""
 
-#: ./src/Command/ProcessSmsCommand.php:187
+#: ./src/Command/ProcessSmsCommand.php:186
 msgid "Error sending SMS message with ID {0}"
 msgstr ""
 
-#: ./src/Command/ProcessSmsCommand.php:210
+#: ./src/Command/ProcessSmsCommand.php:209
 msgid "Message status with ID {0}: {1}"
 msgstr ""
 
-#: ./src/Command/ProcessSmsCommand.php:217
+#: ./src/Command/ProcessSmsCommand.php:224
+msgid "Error getting SMS message status with ID {0}"
+msgstr ""
+
+#: ./src/Command/ProcessSmsCommand.php:226
+#: ./src/Command/ProcessSmsCommand.php:235
 msgid "Error getting message status with ID {0}: {1}"
 msgstr ""
 
@@ -4543,7 +4548,7 @@ msgid "Percentage Discount Sum"
 msgstr ""
 
 #: ./templates/Overviews/overview_of_active_services.php:74
-#: ./templates/Overviews/overview_of_active_services.php:138
+#: ./templates/Overviews/overview_of_active_services.php:143
 msgid "Total Sum"
 msgstr ""
 
@@ -4555,7 +4560,7 @@ msgstr ""
 msgid "Total Sum (unbilled)"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:137
+#: ./templates/Overviews/overview_of_active_services.php:141
 msgid "Total Number of Uses"
 msgstr ""
 

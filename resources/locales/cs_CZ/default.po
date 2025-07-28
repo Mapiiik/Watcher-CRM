@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-05-28 14:27+0200\n"
-"PO-Revision-Date: 2025-05-28 14:28+0200\n"
+"POT-Creation-Date: 2025-07-28 12:37+0200\n"
+"PO-Revision-Date: 2025-07-28 12:40+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -32,13 +32,13 @@ msgid "Processing email messages:"
 msgstr "Zpracování e-mailových zpráv:"
 
 #: src/Command/ProcessEmailsCommand.php:147
-#: src/Command/ProcessSmsCommand.php:163
+#: src/Command/ProcessSmsCommand.php:162
 msgid "Message with ID {0} was sent with identifier: {1}"
 msgstr "Zpráva s ID {0} byla odeslána s identifikátorem: {1}"
 
 #: src/Command/ProcessEmailsCommand.php:160
 #: src/Command/ProcessEmailsCommand.php:171
-#: src/Command/ProcessSmsCommand.php:189 src/Command/ProcessSmsCommand.php:198
+#: src/Command/ProcessSmsCommand.php:188 src/Command/ProcessSmsCommand.php:197
 msgid "Error sending message with ID {0}: {1}"
 msgstr "Chyba při odesílání zprávy s ID {0}: {1}"
 
@@ -47,7 +47,7 @@ msgid "Error sending email message with ID {0}"
 msgstr "Chyba při odesílání e-mailové zprávy s ID {0}"
 
 #: src/Command/ProcessEmailsCommand.php:184
-#: src/Command/ProcessSmsCommand.php:220
+#: src/Command/ProcessSmsCommand.php:238
 msgid "Done"
 msgstr "Hotovo"
 
@@ -59,15 +59,19 @@ msgstr "Počet SMS ke zpracování."
 msgid "Processing SMS messages:"
 msgstr "Zpracování zpráv SMS:"
 
-#: src/Command/ProcessSmsCommand.php:187
+#: src/Command/ProcessSmsCommand.php:186
 msgid "Error sending SMS message with ID {0}"
 msgstr "Chyba při odesílání SMS zprávy s ID {0}"
 
-#: src/Command/ProcessSmsCommand.php:210
+#: src/Command/ProcessSmsCommand.php:209
 msgid "Message status with ID {0}: {1}"
 msgstr "Stav zprávy s ID {0}: {1}"
 
-#: src/Command/ProcessSmsCommand.php:217
+#: src/Command/ProcessSmsCommand.php:224
+msgid "Error getting SMS message status with ID {0}"
+msgstr "Chyba při získávání stavu SMS zprávy s ID {0}"
+
+#: src/Command/ProcessSmsCommand.php:226 src/Command/ProcessSmsCommand.php:235
 msgid "Error getting message status with ID {0}: {1}"
 msgstr "Chyba při získávání stavu zprávy s ID {0}: {1}"
 
@@ -3722,7 +3726,7 @@ msgid "Percentage Discount Sum"
 msgstr "Součet procentuálních slev"
 
 #: templates/Overviews/overview_of_active_services.php:74
-#: templates/Overviews/overview_of_active_services.php:138
+#: templates/Overviews/overview_of_active_services.php:143
 msgid "Total Sum"
 msgstr "Celkový součet"
 
@@ -3734,7 +3738,7 @@ msgstr "Celkový součet (neobchodní)"
 msgid "Total Sum (unbilled)"
 msgstr "Celkový součet (nefakturováno)"
 
-#: templates/Overviews/overview_of_active_services.php:137
+#: templates/Overviews/overview_of_active_services.php:141
 msgid "Total Number of Uses"
 msgstr "Celkový počet použití"
 
