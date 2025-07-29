@@ -64,7 +64,7 @@ class DebtorsController extends AppController
         $result = $debtorsProcessor->blockingUpdate();
 
         $this->Flash->success(
-            '<strong>' . __d('bookkeeping_pohoda', 'Routers updated.') . '</strong><br>'
+            '<strong>' . __d('bookkeeping_pohoda', 'Systems updated.') . '</strong><br>'
                 . ($result ? nl2br($result) : __d('bookkeeping_pohoda', 'Nothing has changed.')),
             ['escape' => false],
         );
@@ -91,7 +91,7 @@ class DebtorsController extends AppController
         $result = $debtorsProcessor->block($id);
 
         $this->Flash->success(
-            '<strong>' . __d('bookkeeping_pohoda', 'Routers updated.') . '</strong><br>'
+            '<strong>' . __d('bookkeeping_pohoda', 'Systems updated.') . '</strong><br>'
                 . ($result ? nl2br($result) : __d('bookkeeping_pohoda', 'Nothing has changed.')),
             ['escape' => false],
         );
@@ -119,7 +119,7 @@ class DebtorsController extends AppController
         $result = $debtorsProcessor->unblock($id);
 
         $this->Flash->success(
-            '<strong>' . __d('bookkeeping_pohoda', 'Routers updated.') . '</strong><br>'
+            '<strong>' . __d('bookkeeping_pohoda', 'Systems updated.') . '</strong><br>'
                 . ($result ? nl2br($result) : __d('bookkeeping_pohoda', 'Nothing has changed.')),
             ['escape' => false],
         );

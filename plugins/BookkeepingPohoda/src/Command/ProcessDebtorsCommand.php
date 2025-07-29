@@ -50,10 +50,10 @@ class ProcessDebtorsCommand extends Command
             'boolean' => true,
         ]);
 
-        $parser->addOption('update_routers', [
+        $parser->addOption('update_blockages', [
             'help' => __d(
                 'bookkeeping_pohoda',
-                'Automatically update the blocking of debtors in routers.',
+                'Automatically update the blocking of debtors in systems (routers, firewalls, IPTV, ...).',
             ),
             'boolean' => true,
         ]);
@@ -86,12 +86,12 @@ class ProcessDebtorsCommand extends Command
             allowed_total_overdue_debt: (float)env('DEBTORS_ALLOWED_TOTAL_OVERDUE_DEBT', '0'),
         );
 
-        // automatically update the blocking of debtors in routers, if requested
-        if ($args->getOption('update_routers')) {
+        // automatically update the blocking of debtors in systems, if requested
+        if ($args->getOption('update_blockages')) {
             $result = $debtorsProcessor->blockingUpdate();
 
             $io->info(
-                __d('bookkeeping_pohoda', 'Routers updated.') . PHP_EOL
+                __d('bookkeeping_pohoda', 'Systems updated.') . PHP_EOL
                     . ($result ?: __d('bookkeeping_pohoda', 'Nothing has changed.')),
             );
         }

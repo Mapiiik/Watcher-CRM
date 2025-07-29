@@ -5,6 +5,7 @@ namespace BookkeepingPohoda\Debtors;
 
 use App\Model\Entity\CustomerLabel;
 use App\Strings;
+use BookkeepingPohoda\SledovaniTV\ApiClient;
 use Cake\Collection\CollectionInterface;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
@@ -154,11 +155,21 @@ class DebtorsProcessor
 
         $this->addLabel($id);
 
-        return $this->updateRouters(
+        $result = '';
+
+        $result .= $this->updateSledovaniTV(
+            ids: [$id],
+            block: true,
+            clear: false,
+        );
+
+        $result .= $this->updateRouters(
             ips: $customer_ips,
             block: true,
             clear: false,
         );
+
+        return $result;
     }
 
     /**
@@ -174,11 +185,21 @@ class DebtorsProcessor
 
         $this->removeLabel($id);
 
-        return $this->updateRouters(
+        $result = '';
+
+        $result .= $this->updateSledovaniTV(
+            ids: [$id],
+            block: false,
+            clear: false,
+        );
+
+        $result .= $this->updateRouters(
             ips: $customer_ips,
             block: false,
             clear: false,
         );
+
+        return $result;
     }
 
     /**
@@ -200,11 +221,21 @@ class DebtorsProcessor
             $this->addLabel($id);
         }
 
-        return $this->updateRouters(
+        $result = '';
+
+        $result .= $this->updateSledovaniTV(
+            ids: $ids,
+            block: true,
+            clear: false,
+        );
+
+        $result .= $this->updateRouters(
             ips: $customer_ips,
             block: true,
             clear: false,
         );
+
+        return $result;
     }
 
     /**
@@ -226,11 +257,21 @@ class DebtorsProcessor
             $this->removeLabel($id);
         }
 
-        return $this->updateRouters(
+        $result = '';
+
+        $result .= $this->updateSledovaniTV(
+            ids: $ids,
+            block: false,
+            clear: false,
+        );
+
+        $result .= $this->updateRouters(
             ips: $customer_ips,
             block: false,
             clear: false,
         );
+
+        return $result;
     }
 
     /**
@@ -244,7 +285,11 @@ class DebtorsProcessor
         $start_time = DateTime::now();
 
         $customer_ips = [];
+        $customer_ids = [];
+
         foreach ($this->getFilteredOverdueDebtors() as $debtor) {
+            $customer_ids[] = $debtor->getCustomer()->id;
+
             $customer_ips = array_merge_recursive(
                 $customer_ips,
                 $this->getCustomerIps($debtor->getCustomer()->id),
@@ -255,11 +300,21 @@ class DebtorsProcessor
 
         $this->clearLabel($start_time);
 
-        return $this->updateRouters(
+        $result = '';
+
+        $result .= $this->updateSledovaniTV(
+            ids: $customer_ids,
+            block: true,
+            clear: true,
+        );
+
+        $result .= $this->updateRouters(
             ips: $customer_ips,
             block: true,
             clear: true,
         );
+
+        return $result;
     }
 
     /**
@@ -599,6 +654,74 @@ class DebtorsProcessor
                             $ipv6,
                             Strings::removeAccents($comment),
                             $router,
+                        ) . PHP_EOL;
+                    }
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Update SledovaniTV method
+     *
+     * Input example: ['ipv4' => ['0.0.0.0' => 'comment'], 'ipv6' => ['0::1/128' => 'comment']]
+     *
+     * @param array<string> $ids List of customer IDs.
+     * @param bool $block Defaults to unblock (false) / block (true)
+     * @param bool $clear Before the operation, clear the blocks. Default (false).
+     * @return string List of performed changes
+     */
+    private function updateSledovaniTV(array $ids, bool $block = false, bool $clear = false): string
+    {
+        $tvUsers = ApiClient::getUsers();
+
+        $customers = $this->fetchTable('Customers')
+            ->find(
+                'list',
+                keyField: 'id',
+                valueField: 'number',
+            )
+            ->whereInList('id', $ids)
+            ->toArray();
+
+        $result = '';
+
+        foreach ($tvUsers as $tvUser) {
+            if (in_array($tvUser['partnerid'], $customers)) {
+                // block = true and not suspended => block
+                if ($block && $tvUser['suspended'] == 0) {
+                    if (ApiClient::suspendUser($tvUser['id'])) {
+                        $result .= __d(
+                            'bookkeeping_pohoda',
+                            'SledovaniTV - Suspended user with ID: {0} (partner ID: {1}).',
+                            $tvUser['id'],
+                            $tvUser['partnerid'],
+                        ) . PHP_EOL;
+                    }
+                }
+
+                // block = false and suspended => unblock
+                if (!$block && $tvUser['suspended'] == 1) {
+                    if (ApiClient::unsuspendUser($tvUser['id'])) {
+                        $result .= __d(
+                            'bookkeeping_pohoda',
+                            'SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1}).',
+                            $tvUser['id'],
+                            $tvUser['partnerid'],
+                        ) . PHP_EOL;
+                    }
+                }
+            } elseif ($clear) {
+                // suspended and not on the list + clear called => unblock
+                if ($tvUser['suspended'] == 1) {
+                    if (ApiClient::unsuspendUser($tvUser['id'])) {
+                        $result .= __d(
+                            'bookkeeping_pohoda',
+                            'SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1}).',
+                            $tvUser['id'],
+                            $tvUser['partnerid'],
                         ) . PHP_EOL;
                     }
                 }
