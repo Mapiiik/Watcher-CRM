@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-07-28 12:37+0200\n"
+"POT-Creation-Date: 2025-07-29 16:02+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -118,7 +118,7 @@ msgid "Send only a notification of blocking (or continuing debt for services no 
 msgstr ""
 
 #: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:54
-msgid "Automatically update the blocking of debtors in routers."
+msgid "Automatically update the blocking of debtors in systems (routers, firewalls, IPTV, ...)."
 msgstr ""
 
 #: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:62
@@ -133,7 +133,7 @@ msgstr ""
 #: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:67
 #: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:94
 #: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:122
-msgid "Routers updated."
+msgid "Systems updated."
 msgstr ""
 
 #: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:95
@@ -245,30 +245,39 @@ msgid_plural "Invoices to send in the queue, {0} emails left."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:97
+#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:98
 msgid "Debtors data is not available."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:286
+#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:341
 msgid "debtor"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:470
-#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:498
+#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:525
+#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:553
 msgid "Removed IPv4 record {0} from router {1}."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:519
+#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:574
 msgid "Added IPv4 record {0} ({1}) to router {2}."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:547
-#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:575
+#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:602
+#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:630
 msgid "Removed IPv6 record {0} from router {1}."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:596
+#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:651
 msgid "Added IPv6 record {0} ({1}) to router {2}."
+msgstr ""
+
+#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:696
+msgid "SledovaniTV - Suspended user with ID: {0} (partner ID: {1})."
+msgstr ""
+
+#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:708
+#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:720
+msgid "SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1})."
 msgstr ""
 
 #: ./plugins/BookkeepingPohoda/templates/Debtors/index.php:14

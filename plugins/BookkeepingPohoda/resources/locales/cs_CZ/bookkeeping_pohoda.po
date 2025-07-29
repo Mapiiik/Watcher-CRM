@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-07-28 12:37+0200\n"
-"PO-Revision-Date: 2025-07-28 12:39+0200\n"
+"POT-Creation-Date: 2025-07-29 16:02+0200\n"
+"PO-Revision-Date: 2025-07-29 16:06+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -144,8 +144,12 @@ msgstr ""
 "platby)."
 
 #: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:54
-msgid "Automatically update the blocking of debtors in routers."
-msgstr "Automatická aktualizace blokování dlužníků ve směrovačích."
+msgid ""
+"Automatically update the blocking of debtors in systems (routers, firewalls, "
+"IPTV, ...)."
+msgstr ""
+"Automatická aktualizace blokování dlužníků v systémech (routery, firewally, "
+"IPTV, ...)."
 
 #: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:62
 msgid "Do not send emails, the operation will be skipped."
@@ -159,8 +163,8 @@ msgstr "Neodesílat SMS, operace bude přeskočena."
 #: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:67
 #: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:94
 #: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:122
-msgid "Routers updated."
-msgstr "Směrovače byly aktualizovány."
+msgid "Systems updated."
+msgstr "Systémy byly aktualizovány."
 
 #: plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:95
 #: plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:68
@@ -297,31 +301,40 @@ msgstr[0] "Faktura k odeslání ve frontě, zbývá {0} e-mail."
 msgstr[1] "Faktury k odeslání ve frontě, zbývají {0} e-maily."
 msgstr[2] "Faktury k odeslání ve frontě, zbývá {0} e-mailů."
 
-#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:97
+#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:98
 msgid "Debtors data is not available."
 msgstr "Údaje o dlužnících nejsou k dispozici."
 
-#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:286
+#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:341
 msgid "debtor"
 msgstr "dlužník"
 
-#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:470
-#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:498
+#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:525
+#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:553
 msgid "Removed IPv4 record {0} from router {1}."
 msgstr "Odstraněn záznam IPv4 {0} ze směrovače {1}."
 
-#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:519
+#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:574
 msgid "Added IPv4 record {0} ({1}) to router {2}."
 msgstr "Přidán záznam IPv4 {0} ({1}) do směrovače {2}."
 
-#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:547
-#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:575
+#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:602
+#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:630
 msgid "Removed IPv6 record {0} from router {1}."
 msgstr "Odstraněn záznam IPv6 {0} ze směrovače {1}."
 
-#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:596
+#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:651
 msgid "Added IPv6 record {0} ({1}) to router {2}."
 msgstr "Přidán záznam IPv6 {0} ({1}) do směrovače {2}."
+
+#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:696
+msgid "SledovaniTV - Suspended user with ID: {0} (partner ID: {1})."
+msgstr "SledovaniTV - Pozastavený uživatel s ID: {0} (ID partnera: {1})."
+
+#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:708
+#: plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:720
+msgid "SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1})."
+msgstr "SledovaniTV - Aktivovaný uživatel s ID: {0} (ID partnera: {1})."
 
 #: plugins/BookkeepingPohoda/templates/Debtors/index.php:14
 msgid "Allowed Payment Delay"

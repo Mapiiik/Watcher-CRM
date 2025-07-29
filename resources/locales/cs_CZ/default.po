@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-07-28 12:37+0200\n"
-"PO-Revision-Date: 2025-07-28 12:40+0200\n"
+"POT-Creation-Date: 2025-07-29 16:03+0200\n"
+"PO-Revision-Date: 2025-07-29 16:07+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -2522,12 +2522,12 @@ msgid "Edit Borrowed Equipment"
 msgstr "Upravit zapůjčené zařízení"
 
 #: templates/BorrowedEquipments/index.php:21
-#: templates/BorrowedEquipments/view.php:30 templates/Contracts/view.php:381
-#: templates/Customers/view.php:612
+#: templates/BorrowedEquipments/view.php:30 templates/Contracts/view.php:366
+#: templates/Customers/view.php:600
 msgid "New Borrowed Equipment"
 msgstr "Nové zapůjčené zařízení"
 
-#: templates/BorrowedEquipments/index.php:25 templates/Contracts/view.php:403
+#: templates/BorrowedEquipments/index.php:25 templates/Contracts/view.php:388
 msgid "Borrowed Equipments"
 msgstr "Zapůjčená zařízení"
 
@@ -2884,21 +2884,21 @@ msgstr "Nový štítek zákazníka"
 msgid "Sections"
 msgstr "Sekce"
 
-#: templates/Contracts/view.php:84 templates/Contracts/view.php:368
-#: templates/Customers/view.php:94
-msgid "RADIUS Accounts"
-msgstr "Účty RADIUS"
-
-#: templates/Contracts/view.php:89 templates/Customers/view.php:99
+#: templates/Contracts/view.php:84 templates/Customers/view.php:94
 msgid "Equipments"
 msgstr "Zařízení"
 
-#: templates/Contracts/view.php:94 templates/Contracts/view.php:438
-#: templates/Customers/index.php:49 templates/Customers/view.php:104
+#: templates/Contracts/view.php:89 templates/Contracts/view.php:423
+#: templates/Customers/index.php:49 templates/Customers/view.php:99
 #: templates/IpAddresses/bulk_reassignment.php:65
 #: templates/IpAddresses/index.php:21 templates/TaxRates/view.php:109
 msgid "IP Addresses"
 msgstr "IP adresy"
+
+#: templates/Contracts/view.php:94 templates/Contracts/view.php:479
+#: templates/Customers/view.php:104
+msgid "RADIUS Accounts"
+msgstr "Účty RADIUS"
 
 #: templates/Contracts/view.php:99 templates/Contracts/view.php:515
 #: templates/Customers/view.php:109 templates/Customers/view.php:731
@@ -2923,15 +2923,11 @@ msgstr "Ukončit související fakturace"
 msgid "Are you sure you want to terminate related billings for contract # {0}?"
 msgstr "Opravdu chcete ukončit související fakturace pro smlouvu č. {0}?"
 
-#: templates/Contracts/view.php:364 templates/Customers/view.php:598
-msgid "New RADIUS Account"
-msgstr "Nový účet RADIUS"
-
-#: templates/Contracts/view.php:391
+#: templates/Contracts/view.php:376
 msgid "Set Dates Automatically"
 msgstr "Automaticky nastavit datumy"
 
-#: templates/Contracts/view.php:394
+#: templates/Contracts/view.php:379
 msgid ""
 "Are you sure you want to set dates for related borrowed equipments for "
 "contract # {0}?"
@@ -2939,52 +2935,56 @@ msgstr ""
 "Opravdu chcete nastavit datumy pro související zapůjčená zařízení pro "
 "smlouvu č. {0}?"
 
-#: templates/Contracts/view.php:412 templates/Customers/view.php:626
+#: templates/Contracts/view.php:397 templates/Customers/view.php:614
 #: templates/SoldEquipments/index.php:21 templates/SoldEquipments/view.php:30
 msgid "New Sold Equipment"
 msgstr "Nové prodané zařízení"
 
-#: templates/Contracts/view.php:416 templates/SoldEquipments/index.php:25
+#: templates/Contracts/view.php:401 templates/SoldEquipments/index.php:25
 msgid "Sold Equipments"
 msgstr "Prodaná zařízení"
 
-#: templates/Contracts/view.php:429 templates/Customers/view.php:642
+#: templates/Contracts/view.php:414 templates/Customers/view.php:630
 #: templates/IpAddresses/index.php:20 templates/IpAddresses/view.php:22
 msgid "New IP Address"
 msgstr "Nová IP adresa"
 
-#: templates/Contracts/view.php:434 templates/Customers/view.php:647
+#: templates/Contracts/view.php:419 templates/Customers/view.php:635
 msgid "New IP Address From Range"
 msgstr "Nová IP adresa z rozsahu"
 
-#: templates/Contracts/view.php:447 templates/Customers/view.php:661
+#: templates/Contracts/view.php:432 templates/Customers/view.php:649
 #: templates/IpNetworks/index.php:21 templates/IpNetworks/view.php:27
 msgid "New IP Network"
 msgstr "Nová IP síť"
 
-#: templates/Contracts/view.php:451 templates/IpNetworks/index.php:25
+#: templates/Contracts/view.php:436 templates/IpNetworks/index.php:25
 msgid "IP Networks"
 msgstr "IP sítě"
 
-#: templates/Contracts/view.php:462 templates/Customers/view.php:677
+#: templates/Contracts/view.php:447 templates/Customers/view.php:665
 #: templates/RemovedIpAddresses/index.php:21
 #: templates/RemovedIpAddresses/view.php:30
 msgid "New Removed IP Address"
 msgstr "Nová odstraněná IP adresa"
 
-#: templates/Contracts/view.php:466 templates/RemovedIpAddresses/index.php:25
+#: templates/Contracts/view.php:451 templates/RemovedIpAddresses/index.php:25
 msgid "Removed IP Addresses"
 msgstr "Odebrané IP adresy"
 
-#: templates/Contracts/view.php:475 templates/Customers/view.php:691
+#: templates/Contracts/view.php:460 templates/Customers/view.php:679
 #: templates/RemovedIpNetworks/index.php:21
 #: templates/RemovedIpNetworks/view.php:30
 msgid "New Removed IP Network"
 msgstr "Nová odebraná IP síť"
 
-#: templates/Contracts/view.php:479 templates/RemovedIpNetworks/index.php:25
+#: templates/Contracts/view.php:464 templates/RemovedIpNetworks/index.php:25
 msgid "Removed IP Networks"
 msgstr "Odebrané IP sítě"
+
+#: templates/Contracts/view.php:475 templates/Customers/view.php:693
+msgid "New RADIUS Account"
+msgstr "Nový účet RADIUS"
 
 #: templates/Contracts/view.php:490 templates/Customers/view.php:706
 msgid "Unblock Debtor"
@@ -3341,33 +3341,33 @@ msgstr "Poslední odepřená IP adresa"
 msgid "Related Billings"
 msgstr "Související fakturace"
 
-#: templates/Customers/view.php:602
-msgid "Related RADIUS Accounts"
-msgstr "Související účty RADIUS"
-
-#: templates/Customers/view.php:616 templates/EquipmentTypes/view.php:98
+#: templates/Customers/view.php:604 templates/EquipmentTypes/view.php:98
 msgid "Related Borrowed Equipments"
 msgstr "Související zapůjčená zařízení"
 
-#: templates/Customers/view.php:630 templates/EquipmentTypes/view.php:161
+#: templates/Customers/view.php:618 templates/EquipmentTypes/view.php:161
 msgid "Related Sold Equipments"
 msgstr "Související prodaná zařízení"
 
-#: templates/Customers/view.php:651
+#: templates/Customers/view.php:639
 msgid "Related IP Addresses"
 msgstr "Související IP adresy"
 
-#: templates/Customers/view.php:665
+#: templates/Customers/view.php:653
 msgid "Related IP Networks"
 msgstr "Související IP sítě"
 
-#: templates/Customers/view.php:681
+#: templates/Customers/view.php:669
 msgid "Related Removed IP Addresses"
 msgstr "Související odebrané IP adresy"
 
-#: templates/Customers/view.php:695
+#: templates/Customers/view.php:683
 msgid "Related Removed IP Networks"
 msgstr "Související odebrané IP sítě"
+
+#: templates/Customers/view.php:697
+msgid "Related RADIUS Accounts"
+msgstr "Související účty RADIUS"
 
 #: templates/DealerCommissions/add.php:14
 #: templates/DealerCommissions/edit.php:22
