@@ -50,7 +50,7 @@ class ProcessDebtorsCommand extends Command
             'boolean' => true,
         ]);
 
-        $parser->addOption('update_blockages', [
+        $parser->addOption('blocking_update', [
             'help' => __d(
                 'bookkeeping_pohoda',
                 'Automatically update the blocking of debtors in systems (routers, firewalls, IPTV, ...).',
@@ -87,7 +87,7 @@ class ProcessDebtorsCommand extends Command
         );
 
         // automatically update the blocking of debtors in systems, if requested
-        if ($args->getOption('update_blockages')) {
+        if ($args->getOption('blocking_update')) {
             $result = $debtorsProcessor->blockingUpdate();
 
             $io->info(
