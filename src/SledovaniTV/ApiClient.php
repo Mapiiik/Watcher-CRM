@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace BookkeepingPohoda\SledovaniTV;
+namespace App\SledovaniTV;
 
 use Cake\Http\Client;
 use Cake\Http\Client\Response;

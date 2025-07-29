@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace BookkeepingPohoda\Debtors;
 
 use App\Model\Entity\CustomerLabel;
+use App\SledovaniTV\ApiClient;
 use App\Strings;
-use BookkeepingPohoda\SledovaniTV\ApiClient;
 use Cake\Collection\CollectionInterface;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
