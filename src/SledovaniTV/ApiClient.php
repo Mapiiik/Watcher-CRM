@@ -16,7 +16,8 @@ class ApiClient
      * @return \Cake\Http\Client\Response
      * @throws \Exception When data cannot be retrieved from the SledovaniTV API.
      */
-    private static function postRequest(string $function, array $data = []): Response {
+    private static function postRequest(string $function, array $data = []): Response
+    {
         $http = new Client();
 
         $response = $http->post(
@@ -42,7 +43,8 @@ class ApiClient
      *
      * @return array<int, mixed> List of SledovaniTV users
      */
-    public static function getUsers(): array {
+    public static function getUsers(): array
+    {
         $response = self::postRequest('get-users');
         $data = $response->getJson();
 
@@ -59,7 +61,8 @@ class ApiClient
      * @param int $id User ID
      * @return bool True if succesfully suspended
      */
-    public static function suspendUser(int $id): bool {
+    public static function suspendUser(int $id): bool
+    {
         $response = self::postRequest('suspend-user', ['userId' => $id]);
         $data = $response->getJson();
 
@@ -72,7 +75,8 @@ class ApiClient
      * @param int $id User ID
      * @return bool True if succesfully activated
      */
-    public static function unsuspendUser(int $id): bool {
+    public static function unsuspendUser(int $id): bool
+    {
         $response = self::postRequest('unsuspend-user', ['userId' => $id]);
         $data = $response->getJson();
 
