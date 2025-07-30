@@ -214,11 +214,37 @@ class AddressesController extends AppController
      */
     private function findRuianData(Address $address): array
     {
+        // get number type
         $typ_so = $address->number_type == AddressNumberType::Registration ? 'č.ev.' : 'č.p.';
-        $cislo = explode('/', $address->number ?? '');
-        $cislo_domovni = isset($cislo[0]) ? (int)$cislo[0] : null;
-        $cislo_orientacni = isset($cislo[1]) ? (int)$cislo[1] : null;
-        unset($cislo);
+
+        // parse number (house_number/orientation_number with optional letter)
+        $cislo_domovni = null;
+        $cislo_orientacni = null;
+        $cislo_orientacni_znak = '';
+
+        $rawNumber = trim($address->number ?? '');
+
+        if (str_contains($rawNumber, '/')) {
+            // Format: house_number/orientation_number with optional letter (e.g. "2186/1b")
+            if (
+                preg_match(
+                    '/^(?P<cislo_domovni>\d+)\/(?P<cislo_orientacni>\d+)(?P<cislo_orientacni_znak>[a-zA-Z]*)/',
+                    $rawNumber,
+                    $matches,
+                )
+            ) {
+                $cislo_domovni = (int)$matches['cislo_domovni'];
+                $cislo_orientacni = (int)$matches['cislo_orientacni'];
+                $cislo_orientacni_znak = $matches['cislo_orientacni_znak'];
+            }
+        } else {
+            // Format without slash: only house number present (e.g. "76" or "76 next to the mill")
+            if (preg_match('/^(?P<cislo_domovni>\d+)/', $rawNumber, $matches)) {
+                $cislo_domovni = (int)$matches['cislo_domovni'];
+            }
+        }
+
+        unset($rawNumber);
 
         $conditionsForSearches = [
             // search in RUIAN
@@ -227,6 +253,7 @@ class AddressesController extends AppController
                 'typ_so' => $typ_so,
                 'cislo_domovni IS' => $cislo_domovni,
                 'cislo_orientacni IS' => $cislo_orientacni,
+                'cislo_orientacni_znak IS' => $cislo_orientacni_znak,
                 'obec_nazev IS' => $address->city,
                 'psc IS' => $address->zip,
             ],
@@ -236,6 +263,7 @@ class AddressesController extends AppController
                 'typ_so' => $typ_so,
                 'cislo_domovni IS' => $cislo_domovni,
                 'cislo_orientacni IS' => $cislo_orientacni,
+                'cislo_orientacni_znak IS' => $cislo_orientacni_znak,
                 'mop_nazev IS' => $address->city,
                 'psc IS' => $address->zip,
             ],
@@ -245,6 +273,7 @@ class AddressesController extends AppController
                 'typ_so' => $typ_so,
                 'cislo_domovni IS' => $cislo_domovni,
                 'cislo_orientacni IS' => $cislo_orientacni,
+                'cislo_orientacni_znak IS' => $cislo_orientacni_znak,
                 'momc_nazev IS' => $address->city,
                 'psc IS' => $address->zip,
             ],
@@ -254,6 +283,7 @@ class AddressesController extends AppController
                 'typ_so' => $typ_so,
                 'cislo_domovni IS' => $cislo_domovni,
                 'cislo_orientacni IS' => $cislo_orientacni,
+                'cislo_orientacni_znak IS' => $cislo_orientacni_znak,
                 'cast_obce_nazev IS' => $address->city,
                 'psc IS' => $address->zip,
             ],
@@ -264,6 +294,7 @@ class AddressesController extends AppController
                 'typ_so' => $typ_so,
                 'cislo_domovni IS' => $cislo_domovni,
                 'cislo_orientacni IS' => $cislo_orientacni,
+                'cislo_orientacni_znak IS' => $cislo_orientacni_znak,
                 'obec_nazev IS' => $address->city,
                 'psc IS' => $address->zip,
             ],
