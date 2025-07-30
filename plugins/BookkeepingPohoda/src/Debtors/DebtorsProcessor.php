@@ -691,7 +691,7 @@ class DebtorsProcessor
         foreach ($tvUsers as $tvUser) {
             if (in_array($tvUser['partnerid'], $customers)) {
                 // block = true and not suspended => block
-                if ($block && $tvUser['suspended'] == 0) {
+                if ($block && $tvUser['active'] == 1 && $tvUser['suspended'] == 0) {
                     if (ApiClient::suspendUser($tvUser['id'])) {
                         $result .= __d(
                             'bookkeeping_pohoda',
