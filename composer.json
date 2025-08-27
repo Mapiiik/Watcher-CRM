@@ -18,7 +18,7 @@
         "php": ">=8.1",
         "cakedc/users": "^15.0.0",
         "cakephp/cakephp": "^5.0.6",
-        "cakephp/migrations": "^4.0.0",
+        "cakephp/migrations": "~4.6.0",
         "cakephp/plugin-installer": "^2.0",
         "cakephp/queue": "^2.0.1",
         "capcom6/android-sms-gateway": "^2.0",
