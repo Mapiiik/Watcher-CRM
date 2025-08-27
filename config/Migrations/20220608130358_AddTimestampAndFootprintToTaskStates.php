@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddTimestampAndFootprintToTaskStates extends AbstractMigration
+class AddTimestampAndFootprintToTaskStates extends BaseMigration
 {
     /**
      * Change Method.

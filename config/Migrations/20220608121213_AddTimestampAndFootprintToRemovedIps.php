@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddTimestampAndFootprintToRemovedIps extends AbstractMigration
+class AddTimestampAndFootprintToRemovedIps extends BaseMigration
 {
     /**
      * Change Method.

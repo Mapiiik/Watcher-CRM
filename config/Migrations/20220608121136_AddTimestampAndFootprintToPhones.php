@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddTimestampAndFootprintToPhones extends AbstractMigration
+class AddTimestampAndFootprintToPhones extends BaseMigration
 {
     /**
      * Change Method.

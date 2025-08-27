@@ -6,7 +6,7 @@ namespace Migrations;
 /**
  * Users seed.
  */
-class UsersSeed extends AbstractSeed
+class UsersSeed extends BaseSeed
 {
     /**
      * Run Method.

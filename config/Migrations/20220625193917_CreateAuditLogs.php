@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
-use Phinx\Util\Literal;
+use Migrations\BaseMigration;
+use Migrations\Db\Literal;
 
-class CreateAuditLogs extends AbstractMigration
+class CreateAuditLogs extends BaseMigration
 {
     /**
      * Up Method.

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
-use Phinx\Util\Literal;
+use Migrations\BaseMigration;
+use Migrations\Db\Literal;
 
-class CreateContractStates extends AbstractMigration
+class CreateContractStates extends BaseMigration
 {
     /**
      * Change Method.

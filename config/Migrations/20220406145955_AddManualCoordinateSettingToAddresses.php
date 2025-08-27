@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddManualCoordinateSettingToAddresses extends AbstractMigration
+class AddManualCoordinateSettingToAddresses extends BaseMigration
 {
     /**
      * Change Method.

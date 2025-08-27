@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AlterPriceOnBillings extends AbstractMigration
+class AlterPriceOnBillings extends BaseMigration
 {
     /**
      * Change Method.

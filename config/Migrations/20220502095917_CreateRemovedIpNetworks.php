@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class CreateRemovedIpNetworks extends AbstractMigration
+class CreateRemovedIpNetworks extends BaseMigration
 {
     /**
      * Change Method.

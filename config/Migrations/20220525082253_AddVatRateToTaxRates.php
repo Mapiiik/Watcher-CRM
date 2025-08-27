@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddVatRateToTaxRates extends AbstractMigration
+class AddVatRateToTaxRates extends BaseMigration
 {
     /**
      * Change Method.

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddTimestampAndFootprintToBrokerageDealers extends AbstractMigration
+class AddTimestampAndFootprintToBrokerageDealers extends BaseMigration
 {
     /**
      * Change Method.

@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../Seeds/UsersSeed.php';
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 use Migrations\UsersSeed;
 
-class InitialCRM extends AbstractMigration
+class InitialCRM extends BaseMigration
 {
     /**
      * Up Method.
@@ -1302,8 +1302,6 @@ class InitialCRM extends AbstractMigration
 
         (new UsersSeed())
             ->setAdapter($this->getAdapter())
-            ->setInput($this->getInput())
-            ->setOutput($this->getOutput())
             ->run();
     }
 

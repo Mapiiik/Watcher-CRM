@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddNoteToEmails extends AbstractMigration
+class AddNoteToEmails extends BaseMigration
 {
     /**
      * Change Method.

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddNotForNewCustomersToServices extends AbstractMigration
+class AddNotForNewCustomersToServices extends BaseMigration
 {
     /**
      * Change Method.

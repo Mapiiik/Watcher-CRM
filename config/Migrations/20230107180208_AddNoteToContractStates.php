@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddNoteToContractStates extends AbstractMigration
+class AddNoteToContractStates extends BaseMigration
 {
     /**
      * Change Method.
