@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use Migrations\BaseMigration;
+use Migrations\Db\Literal;
 
 class CreateRemovedIpNetworks extends BaseMigration
 {
@@ -26,7 +27,7 @@ class CreateRemovedIpNetworks extends BaseMigration
             'limit' => 11,
             'null' => false,
         ]);
-        $table->addColumn('ip_network', 'cidr', [
+        $table->addColumn('ip_network', Literal::from('cidr'), [
             'default' => null,
             'null' => false,
         ]);
