@@ -450,6 +450,9 @@ class BillingsController extends AppController
      */
     private function processServiceChange(Billing $original_billing): Billing|false
     {
+        // load send_customer_notification parameter
+        $send_customer_notification = ($this->getRequest()->getData('send_customer_notification') == '1');
+
         // create new billing entity
         $original_billing_data = $original_billing->toArray();
         unset(
@@ -490,7 +493,7 @@ class BillingsController extends AppController
             );
 
             return false;
-        } else {
+        } elseif ($send_customer_notification) {
             $mailer = new QueueMailer();
             $mailer->push(
                 'serviceChange',
@@ -499,7 +502,7 @@ class BillingsController extends AppController
                     [
                         'customer_name' => $original_billing->customer->name,
                         'contract_number' => $original_billing->contract->number,
-                        'installation_address' => $original_billing->contract->installation_address->address,
+                        'installation_address' => $original_billing->contract->installation_address->address ?? null,
                         'original_billing_name' => $original_billing->name,
                         'original_billing_sum' => $original_billing->sum->toFloat(),
                         'original_billing_percentage_discount' => $original_billing->percentage_discount,

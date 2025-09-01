@@ -120,6 +120,13 @@ use App\Model\Entity\Billing;
                     'type' => 'number',
                 ]) ?>
             </fieldset>
+            <fieldset>
+                <?= $this->Form->control('send_customer_notification', [
+                    'label' => __('Send a customer notification about the change'),
+                    'type' => 'checkbox',
+                    'checked' => true,
+                ]) ?>
+            </fieldset>
             <?= $this->Form->button(
                 __('Submit'),
                 [
