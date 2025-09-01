@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-07-29 16:03+0200\n"
+"POT-Creation-Date: 2025-09-01 12:00+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -250,15 +250,15 @@ msgstr ""
 msgid "The address could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:283
+#: ./src/Controller/AddressesController.php:314
 msgid "Multiple ({0}) RUIAN addresses found."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:287
+#: ./src/Controller/AddressesController.php:318
 msgid "Address found in RUIAN."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:295
+#: ./src/Controller/AddressesController.php:326
 msgid "Address could not be found in RUIAN."
 msgstr ""
 
@@ -286,7 +286,7 @@ msgstr ""
 
 #: ./src/Controller/BillingsController.php:128
 #: ./src/Controller/BillingsController.php:208
-#: ./src/Controller/BillingsController.php:488
+#: ./src/Controller/BillingsController.php:491
 #: ./src/Controller/ContractsController.php:722
 msgid "The billing could not be saved. Please, try again."
 msgstr ""
@@ -312,7 +312,7 @@ msgstr ""
 msgid "The access points list could not be loaded. Please, try again."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:489
+#: ./src/Controller/BillingsController.php:492
 msgid "Contract Number"
 msgstr ""
 
@@ -1686,9 +1686,9 @@ msgstr ""
 #: ./templates/Addresses/add.php:68
 #: ./templates/Addresses/edit.php:73
 #: ./templates/Billings/add.php:63
-#: ./templates/Billings/bulk_service_change.php:124
+#: ./templates/Billings/bulk_service_change.php:131
 #: ./templates/Billings/edit.php:68
-#: ./templates/Billings/service_change.php:191
+#: ./templates/Billings/service_change.php:198
 #: ./templates/BorrowedEquipments/add.php:39
 #: ./templates/BorrowedEquipments/edit.php:47
 #: ./templates/Commissions/add.php:23
@@ -3003,11 +3003,16 @@ msgstr ""
 msgid "New Service"
 msgstr ""
 
-#: ./templates/Billings/bulk_service_change.php:126
+#: ./templates/Billings/bulk_service_change.php:125
+#: ./templates/Billings/service_change.php:192
+msgid "Send a customer notification about the change"
+msgstr ""
+
+#: ./templates/Billings/bulk_service_change.php:133
 msgid "Do you really want to change the original service to the new service for all the billings listed below from the date set?"
 msgstr ""
 
-#: ./templates/Billings/bulk_service_change.php:136
+#: ./templates/Billings/bulk_service_change.php:143
 #: ./templates/Billings/index.php:21
 #: ./templates/Contracts/view.php:79
 #: ./templates/Contracts/view.php:356
@@ -3016,7 +3021,7 @@ msgstr ""
 msgid "Billings"
 msgstr ""
 
-#: ./templates/Billings/bulk_service_change.php:136
+#: ./templates/Billings/bulk_service_change.php:143
 #: ./templates/Settings/index.php:29
 msgid "Bulk Service Change"
 msgstr ""
@@ -3102,7 +3107,7 @@ msgstr ""
 msgid "Total Price"
 msgstr ""
 
-#: ./templates/Billings/service_change.php:193
+#: ./templates/Billings/service_change.php:200
 msgid "Do you really want to change the original service to the new service for the billing listed above from the date set?"
 msgstr ""
 

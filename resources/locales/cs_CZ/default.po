@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-07-29 16:03+0200\n"
-"PO-Revision-Date: 2025-07-29 16:07+0200\n"
+"POT-Creation-Date: 2025-09-01 12:00+0200\n"
+"PO-Revision-Date: 2025-09-01 12:02+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.7\n"
 
 #: src/Command/ProcessEmailsCommand.php:38
 msgid "Number of emails to process."
@@ -236,15 +236,15 @@ msgstr "Adresa byla odstraněna."
 msgid "The address could not be deleted. Please, try again."
 msgstr "Adresu nelze odstranit. Opakujte akci."
 
-#: src/Controller/AddressesController.php:283
+#: src/Controller/AddressesController.php:314
 msgid "Multiple ({0}) RUIAN addresses found."
 msgstr "Bylo nalezeno více ({0}) adres RUIAN."
 
-#: src/Controller/AddressesController.php:287
+#: src/Controller/AddressesController.php:318
 msgid "Address found in RUIAN."
 msgstr "Adresa nalezena v RUIAN."
 
-#: src/Controller/AddressesController.php:295
+#: src/Controller/AddressesController.php:326
 msgid "Address could not be found in RUIAN."
 msgstr "Adresa nebyla v RUIAN nalezena."
 
@@ -272,7 +272,7 @@ msgstr "Fakturace byla uložena."
 
 #: src/Controller/BillingsController.php:128
 #: src/Controller/BillingsController.php:208
-#: src/Controller/BillingsController.php:488
+#: src/Controller/BillingsController.php:491
 #: src/Controller/ContractsController.php:722
 msgid "The billing could not be saved. Please, try again."
 msgstr "Fakturace nelze uložit. Opakujte akci."
@@ -298,7 +298,7 @@ msgstr "Fakturace nelze odstranit. Opakujte akci."
 msgid "The access points list could not be loaded. Please, try again."
 msgstr "Seznam přístupových bodů nelze načíst. Zkuste to prosím znovu."
 
-#: src/Controller/BillingsController.php:489
+#: src/Controller/BillingsController.php:492
 msgid "Contract Number"
 msgstr "Číslo smlouvy"
 
@@ -1530,8 +1530,8 @@ msgstr "Přidat přístupové oprávnění"
 #: templates/AccessCredentials/add.php:64
 #: templates/AccessCredentials/edit.php:72 templates/Addresses/add.php:68
 #: templates/Addresses/edit.php:73 templates/Billings/add.php:63
-#: templates/Billings/bulk_service_change.php:124
-#: templates/Billings/edit.php:68 templates/Billings/service_change.php:191
+#: templates/Billings/bulk_service_change.php:131
+#: templates/Billings/edit.php:68 templates/Billings/service_change.php:198
 #: templates/BorrowedEquipments/add.php:39
 #: templates/BorrowedEquipments/edit.php:47 templates/Commissions/add.php:23
 #: templates/Commissions/edit.php:31 templates/ContractStates/add.php:32
@@ -2394,7 +2394,12 @@ msgstr "Prázdné pole znamená pouze nenastavené hodnoty"
 msgid "New Service"
 msgstr "Nová služba"
 
-#: templates/Billings/bulk_service_change.php:126
+#: templates/Billings/bulk_service_change.php:125
+#: templates/Billings/service_change.php:192
+msgid "Send a customer notification about the change"
+msgstr "Odeslat zákazníkovi oznámení o změně"
+
+#: templates/Billings/bulk_service_change.php:133
 msgid ""
 "Do you really want to change the original service to the new service for all "
 "the billings listed below from the date set?"
@@ -2402,14 +2407,14 @@ msgstr ""
 "Opravdu chcete změnit původní službu na novou službu u všech níže uvedených "
 "fakturací od nastaveného data?"
 
-#: templates/Billings/bulk_service_change.php:136
+#: templates/Billings/bulk_service_change.php:143
 #: templates/Billings/index.php:21 templates/Contracts/view.php:79
 #: templates/Contracts/view.php:356 templates/Customers/view.php:89
 #: templates/Overviews/overview_of_active_services.php:67
 msgid "Billings"
 msgstr "Fakturace"
 
-#: templates/Billings/bulk_service_change.php:136
+#: templates/Billings/bulk_service_change.php:143
 #: templates/Settings/index.php:29
 msgid "Bulk Service Change"
 msgstr "Hromadná změna služeb"
@@ -2474,7 +2479,7 @@ msgstr "Počet"
 msgid "Total Price"
 msgstr "Celková cena"
 
-#: templates/Billings/service_change.php:193
+#: templates/Billings/service_change.php:200
 msgid ""
 "Do you really want to change the original service to the new service for the "
 "billing listed above from the date set?"

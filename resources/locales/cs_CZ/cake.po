@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CakePHP 4.2.4\n"
-"POT-Creation-Date: 2025-05-26 11:49+0200\n"
-"PO-Revision-Date: 2025-05-26 11:51+0200\n"
+"POT-Creation-Date: 2025-09-01 12:00+0200\n"
+"PO-Revision-Date: 2025-09-01 12:01+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.7\n"
 
 #: templates/Error/error400.php:25 templates/Error/error500.php:39
 msgid "Error"
@@ -525,15 +525,15 @@ msgstr "Toto pole je povinné"
 msgid "The provided value is invalid"
 msgstr "Zadaná hodnota je neplatná"
 
-#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1025
+#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1024
 msgid "Edit {0}"
 msgstr "Upravit {0}"
 
-#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1027
+#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1026
 msgid "New {0}"
 msgstr "Nový {0}"
 
-#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:2050
+#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:2049
 msgid "Submit"
 msgstr "Potvrdit"
 
