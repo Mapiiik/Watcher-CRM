@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7e6b2761a27af9f716f538a2504b8fa1",
+    "content-hash": "a25d60dc331228d02e7d4239ae18e173",
     "packages": [
         {
             "name": "brick/math",
@@ -534,27 +534,27 @@
         },
         {
             "name": "cakephp/migrations",
-            "version": "4.7.2",
+            "version": "4.6.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/migrations.git",
-                "reference": "69732d98d84b99f9b0a8af94de7dd9ac242aeaff"
+                "reference": "c7312f25c1ebaf334090d53a29c872233d1258be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/migrations/zipball/69732d98d84b99f9b0a8af94de7dd9ac242aeaff",
-                "reference": "69732d98d84b99f9b0a8af94de7dd9ac242aeaff",
+                "url": "https://api.github.com/repos/cakephp/migrations/zipball/c7312f25c1ebaf334090d53a29c872233d1258be",
+                "reference": "c7312f25c1ebaf334090d53a29c872233d1258be",
                 "shasum": ""
             },
             "require": {
-                "cakephp/cache": "^5.2",
-                "cakephp/orm": "^5.2",
+                "cakephp/cache": "^5.0",
+                "cakephp/orm": "^5.0",
                 "php": ">=8.1",
                 "robmorgan/phinx": "^0.16.10"
             },
             "require-dev": {
-                "cakephp/bake": "^3.3",
-                "cakephp/cakephp": "^5.2.5",
+                "cakephp/bake": "^3.0",
+                "cakephp/cakephp": "^5.0.11",
                 "cakephp/cakephp-codesniffer": "^5.0",
                 "phpunit/phpunit": "^10.5.5 || ^11.1.3 || ^12.2.4"
             },
@@ -591,7 +591,7 @@
                 "issues": "https://github.com/cakephp/migrations/issues",
                 "source": "https://github.com/cakephp/migrations"
             },
-            "time": "2025-09-01T04:46:50+00:00"
+            "time": "2025-07-22T17:47:52+00:00"
         },
         {
             "name": "cakephp/plugin-installer",
