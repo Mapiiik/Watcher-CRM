@@ -530,7 +530,9 @@ class InvoicesController extends AppController
                             $invoice->customer = $customer;
                             $invoice->variable_symbol = (int)$customer->number;
                             $invoice->creation_date = $invoicedMonth->lastOfMonth();
-                            $invoice->due_date = $invoicedMonth->lastOfMonth()->addDays(10);
+                            $invoice->due_date = $invoicedMonth
+                                ->lastOfMonth()
+                                ->addDays($customer->individual_maturity_period ?? 10);
                             $invoice->text = $billing->name
                                 . ' za období ' . $invoicedMonth->i18nFormat('MM/yyyy');
                             $invoice->internal_note = 'separate';
@@ -552,7 +554,9 @@ class InvoicesController extends AppController
                         $invoice->customer = $customer;
                         $invoice->variable_symbol = (int)$customer->number;
                         $invoice->creation_date = $invoicedMonth->lastOfMonth();
-                        $invoice->due_date = $invoicedMonth->lastOfMonth()->addDays(10);
+                        $invoice->due_date = $invoicedMonth
+                            ->lastOfMonth()
+                            ->addDays($customer->individual_maturity_period ?? 10);
                         if ($contract->getInvoiceText()) {
                             $invoice->text = strtr($contract->getInvoiceText(), [
                                 '{number}' => $contract->number,
@@ -587,7 +591,9 @@ class InvoicesController extends AppController
                     $invoice->customer = $customer;
                     $invoice->variable_symbol = (int)$customer->number;
                     $invoice->creation_date = $invoicedMonth->lastOfMonth();
-                    $invoice->due_date = $invoicedMonth->lastOfMonth()->addDays(10);
+                    $invoice->due_date = $invoicedMonth
+                        ->lastOfMonth()
+                        ->addDays($customer->individual_maturity_period ?? 10);
                     $invoice->text = 'Faktura za poskytované služby dle smlouvy'
                         . ' za období ' . $invoicedMonth->i18nFormat('MM/yyyy');
                     $invoice->total = $billingCustomer['total'];

@@ -105,6 +105,15 @@
                             <th><?= __('Invoice Delivery Type') ?></th>
                             <td><?= h($customer->invoice_delivery_type->label()) ?></td>
                         </tr>
+                        <tr>
+                            <th><?= __('Individual Maturity Period') ?></th>
+                            <td><?= $customer->individual_maturity_period ? __n(
+                                '{0} day',
+                                '{0} days',
+                                $customer->individual_maturity_period,
+                                $customer->individual_maturity_period,
+                            ) : ''; ?></td>
+                        </tr>
                     </table>
                     <table>
                         <tr>

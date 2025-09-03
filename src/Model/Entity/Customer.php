@@ -36,6 +36,7 @@ use Exception;
  * @property string|null $note
  * @property string|null $identity_card_number
  * @property \Cake\I18n\Date|null $date_of_birth
+ * @property int $individual_maturity_period
  * @property bool|null $agree_gdpr
  * @property bool|null $agree_mailing_outages
  * @property bool|null $agree_mailing_commercial
@@ -108,6 +109,7 @@ class Customer extends Entity
         'note' => true,
         'identity_card_number' => true,
         'date_of_birth' => true,
+        'individual_maturity_period' => true,
         'agree_gdpr' => true,
         'agree_mailing_outages' => true,
         'agree_mailing_commercial' => true,

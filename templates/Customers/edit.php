@@ -47,6 +47,9 @@
                         ]);
                         echo $this->Form->control('dealer');
                         echo $this->Form->control('invoice_delivery_type');
+                        echo $this->Form->control('individual_maturity_period', [
+                            'label' => __('Individual Maturity Period') . ' (' . __('days') . ')',
+                        ]);
                         echo $this->Form->control('agree_gdpr', [
                             'label' => __('Agrees to Processing of Personal Data'),
                         ]);

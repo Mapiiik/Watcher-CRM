@@ -272,6 +272,10 @@ class CustomersTable extends AppTable
             ->allowEmptyDate('date_of_birth');
 
         $validator
+            ->integer('individual_maturity_period')
+            ->allowEmptyString('individual_maturity_period');
+
+        $validator
             ->boolean('agree_gdpr')
             ->allowEmptyString('agree_gdpr');
 
