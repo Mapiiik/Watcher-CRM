@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2024-12-15 23:29+0100\n"
-"PO-Revision-Date: 2024-12-15 23:31+0100\n"
+"POT-Creation-Date: 2025-09-03 15:22+0200\n"
+"PO-Revision-Date: 2025-09-03 15:25+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.7\n"
 
 #: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:32
 msgid "Required state of accounts."
@@ -39,7 +39,7 @@ msgstr "Opětovné připojení upravených účtů RADIUS."
 msgid "Send the change log by email."
 msgstr "Odeslání protokolu změn e-mailem."
 
-#: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:90
+#: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:89
 #: plugins/Radius/templates/Accounts/add.php:30
 #: plugins/Radius/templates/Accounts/edit.php:36
 #: plugins/Radius/templates/Accounts/index.php:35
@@ -49,7 +49,7 @@ msgstr "Odeslání protokolu změn e-mailem."
 msgid "Customer"
 msgstr "Zákazník"
 
-#: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:91
+#: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:90
 #: plugins/Radius/templates/Accounts/add.php:45
 #: plugins/Radius/templates/Accounts/edit.php:50
 #: plugins/Radius/templates/Accounts/index.php:37
@@ -60,19 +60,19 @@ msgstr "Zákazník"
 msgid "Contract"
 msgstr "Smlouva"
 
-#: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:92
+#: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:91
 #: plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:14
 msgid "RADIUS Username"
 msgstr "Uživatelské jméno RADIUS"
 
-#: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:93
+#: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:92
 #: plugins/Radius/templates/Radcheck/index.php:13
 #: plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:15
 #: plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:16
 msgid "RADIUS Checks"
 msgstr "Kontroly protokolu RADIUS"
 
-#: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:94
+#: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:93
 #: plugins/Radius/templates/Radreply/index.php:13
 #: plugins/Radius/templates/cell/Accounts/display.php:22
 #: plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:17
@@ -80,7 +80,7 @@ msgstr "Kontroly protokolu RADIUS"
 msgid "RADIUS Replies"
 msgstr "Odpovědi RADIUS"
 
-#: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:95
+#: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:94
 #: plugins/Radius/templates/Radusergroup/index.php:13
 #: plugins/Radius/templates/cell/Accounts/display.php:21
 #: plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:19
@@ -88,9 +88,9 @@ msgstr "Odpovědi RADIUS"
 msgid "RADIUS User Groups"
 msgstr "Skupiny uživatelů RADIUS"
 
+#: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:101
 #: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:102
 #: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:103
-#: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:104
 #: plugins/Radius/templates/Accounts/index.php:43
 #: plugins/Radius/templates/Accounts/monitoring.php:144
 #: plugins/Radius/templates/Accounts/view.php:125

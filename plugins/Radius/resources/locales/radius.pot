@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2024-12-15 23:29+0100\n"
+"POT-Creation-Date: 2025-09-03 15:22+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -38,7 +38,7 @@ msgstr ""
 msgid "Send the change log by email."
 msgstr ""
 
-#: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:90
+#: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:89
 #: ./plugins/Radius/templates/Accounts/add.php:30
 #: ./plugins/Radius/templates/Accounts/edit.php:36
 #: ./plugins/Radius/templates/Accounts/index.php:35
@@ -48,7 +48,7 @@ msgstr ""
 msgid "Customer"
 msgstr ""
 
-#: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:91
+#: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:90
 #: ./plugins/Radius/templates/Accounts/add.php:45
 #: ./plugins/Radius/templates/Accounts/edit.php:50
 #: ./plugins/Radius/templates/Accounts/index.php:37
@@ -59,19 +59,19 @@ msgstr ""
 msgid "Contract"
 msgstr ""
 
-#: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:92
+#: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:91
 #: ./plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:14
 msgid "RADIUS Username"
 msgstr ""
 
-#: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:93
+#: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:92
 #: ./plugins/Radius/templates/Radcheck/index.php:13
 #: ./plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:15
 #: ./plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:16
 msgid "RADIUS Checks"
 msgstr ""
 
-#: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:94
+#: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:93
 #: ./plugins/Radius/templates/Radreply/index.php:13
 #: ./plugins/Radius/templates/cell/Accounts/display.php:22
 #: ./plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:17
@@ -79,7 +79,7 @@ msgstr ""
 msgid "RADIUS Replies"
 msgstr ""
 
-#: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:95
+#: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:94
 #: ./plugins/Radius/templates/Radusergroup/index.php:13
 #: ./plugins/Radius/templates/cell/Accounts/display.php:21
 #: ./plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:19
@@ -87,9 +87,9 @@ msgstr ""
 msgid "RADIUS User Groups"
 msgstr ""
 
+#: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:101
 #: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:102
 #: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:103
-#: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:104
 #: ./plugins/Radius/templates/Accounts/index.php:43
 #: ./plugins/Radius/templates/Accounts/monitoring.php:144
 #: ./plugins/Radius/templates/Accounts/view.php:125
