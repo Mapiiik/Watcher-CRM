@@ -48,7 +48,7 @@ class CreateAccessCredentials extends BaseMigration
             'limit' => null,
             'null' => true,
         ]);
-        $table->addColumn('ip', Literal::from('inet'), [
+        $table->addColumn('ip', 'inet', [
             'default' => null,
             'limit' => null,
             'null' => true,

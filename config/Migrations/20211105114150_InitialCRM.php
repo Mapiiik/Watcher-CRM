@@ -4,7 +4,6 @@ declare(strict_types=1);
 require_once __DIR__ . '/../Seeds/UsersSeed.php';
 
 use Migrations\BaseMigration;
-use Migrations\Db\Literal;
 use Migrations\UsersSeed;
 
 class InitialCRM extends BaseMigration
@@ -628,7 +627,7 @@ class InitialCRM extends BaseMigration
             ->create();
 
         $this->table('ips')
-            ->addColumn('ip', Literal::from('inet'), [
+            ->addColumn('ip', 'inet', [
                 'default' => null,
                 'limit' => null,
                 'null' => false,
@@ -912,7 +911,7 @@ class InitialCRM extends BaseMigration
                 'precision' => 6,
                 'scale' => 6,
             ])
-            ->addColumn('ip', Literal::from('inet'), [
+            ->addColumn('ip', 'inet', [
                 'default' => null,
                 'limit' => null,
                 'null' => false,
@@ -940,7 +939,7 @@ class InitialCRM extends BaseMigration
                 'limit' => null,
                 'null' => false,
             ])
-            ->addColumn('ip', Literal::from('inet'), [
+            ->addColumn('ip', 'inet', [
                 'default' => null,
                 'limit' => null,
                 'null' => false,
