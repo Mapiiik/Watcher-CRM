@@ -405,7 +405,7 @@ class InvoicesController extends AppController
                 $verificationData = [];
 
                 try {
-                    while (($parsedLine = fgetcsv($csvResource, 1000, ',')) !== false) {
+                    while (($parsedLine = fgetcsv($csvResource, 1000, ',', '"', '\\')) !== false) {
                         // skip empty lines
                         if (empty(array_filter($parsedLine))) {
                             continue;
