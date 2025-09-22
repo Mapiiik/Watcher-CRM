@@ -44,6 +44,12 @@ class ProcessSmsCommand extends Command
             'required' => false,
         ]);
 
+        $parser->addOption('maximum_message_age', [
+            'help' => __('Maximum age of a message that will still be processed (days).'),
+            'default' => '7',
+            'required' => false,
+        ]);
+
         $parser->addOption('wait_min', [
             'help' => __('Minimum waiting time after request to send (seconds).'),
             'default' => '60',
@@ -104,6 +110,8 @@ class ProcessSmsCommand extends Command
                     CustomerMessageDeliveryStatus::Processed,
                     CustomerMessageDeliveryStatus::Sent,
                 ],
+                'CustomerMessages.created <=' =>
+                    DateTime::now()->addDays((int)$args->getOption('maximum_message_age')),
             ])
             ->orderBy([
                 'CustomerMessages.created',
