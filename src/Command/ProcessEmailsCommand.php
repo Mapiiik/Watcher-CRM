@@ -121,7 +121,7 @@ class ProcessEmailsCommand extends Command
                 'CustomerMessages.delivery_status IN' => [
                     CustomerMessageDeliveryStatus::Pending,
                 ],
-                'CustomerMessages.created <=' =>
+                'CustomerMessages.created >=' =>
                     DateTime::now()->addDays((int)$args->getOption('maximum_message_age')),
             ])
             ->orderBy([

@@ -110,7 +110,7 @@ class ProcessSmsCommand extends Command
                     CustomerMessageDeliveryStatus::Processed,
                     CustomerMessageDeliveryStatus::Sent,
                 ],
-                'CustomerMessages.created <=' =>
+                'CustomerMessages.created >=' =>
                     DateTime::now()->addDays((int)$args->getOption('maximum_message_age')),
             ])
             ->orderBy([
