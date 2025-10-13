@@ -33,7 +33,7 @@ class RadreplyTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Radius.Radreply') ? [] : ['className' => RadreplyTable::class];
@@ -45,8 +45,9 @@ class RadreplyTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
+        /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->Radreply);
 
         parent::tearDown();

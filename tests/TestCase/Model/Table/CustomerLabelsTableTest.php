@@ -50,6 +50,7 @@ class CustomerLabelsTableTest extends TestCase
      */
     protected function tearDown(): void
     {
+        /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->CustomerLabels);
 
         parent::tearDown();

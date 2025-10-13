@@ -35,7 +35,7 @@ class InvoicesTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('BookkeepingPohoda.Invoices') ? [] : ['className' => InvoicesTable::class];
@@ -47,8 +47,9 @@ class InvoicesTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
+        /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->Invoices);
 
         parent::tearDown();

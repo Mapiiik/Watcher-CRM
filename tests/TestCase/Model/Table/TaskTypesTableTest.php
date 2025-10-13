@@ -57,6 +57,7 @@ class TaskTypesTableTest extends TestCase
      */
     protected function tearDown(): void
     {
+        /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->TaskTypes);
 
         parent::tearDown();

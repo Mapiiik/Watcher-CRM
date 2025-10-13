@@ -55,6 +55,7 @@ class RemovedIpAddressesTableTest extends TestCase
      */
     protected function tearDown(): void
     {
+        /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->RemovedIpAddresses);
 
         parent::tearDown();

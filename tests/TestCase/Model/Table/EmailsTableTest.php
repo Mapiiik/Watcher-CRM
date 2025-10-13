@@ -49,6 +49,7 @@ class EmailsTableTest extends TestCase
      */
     protected function tearDown(): void
     {
+        /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->Emails);
 
         parent::tearDown();

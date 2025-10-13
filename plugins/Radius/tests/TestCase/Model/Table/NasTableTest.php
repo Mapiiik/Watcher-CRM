@@ -32,7 +32,7 @@ class NasTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Radius.Nas') ? [] : ['className' => NasTable::class];
@@ -44,8 +44,9 @@ class NasTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
+        /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->Nas);
 
         parent::tearDown();

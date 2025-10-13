@@ -49,6 +49,7 @@ class LoginsTableTest extends TestCase
      */
     protected function tearDown(): void
     {
+        /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->Logins);
 
         parent::tearDown();

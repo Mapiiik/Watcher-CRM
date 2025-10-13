@@ -49,6 +49,7 @@ class PhonesTableTest extends TestCase
      */
     protected function tearDown(): void
     {
+        /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->Phones);
 
         parent::tearDown();

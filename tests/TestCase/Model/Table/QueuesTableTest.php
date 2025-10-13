@@ -49,6 +49,7 @@ class QueuesTableTest extends TestCase
      */
     protected function tearDown(): void
     {
+        /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->Queues);
 
         parent::tearDown();

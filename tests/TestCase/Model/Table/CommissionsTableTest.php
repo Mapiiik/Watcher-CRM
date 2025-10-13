@@ -55,6 +55,7 @@ class CommissionsTableTest extends TestCase
      */
     protected function tearDown(): void
     {
+        /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->Commissions);
 
         parent::tearDown();

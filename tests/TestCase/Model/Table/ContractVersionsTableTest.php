@@ -55,6 +55,7 @@ class ContractVersionsTableTest extends TestCase
      */
     protected function tearDown(): void
     {
+        /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->ContractVersions);
 
         parent::tearDown();

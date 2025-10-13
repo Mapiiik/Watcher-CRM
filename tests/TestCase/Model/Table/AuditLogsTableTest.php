@@ -46,6 +46,7 @@ class AuditLogsTableTest extends TestCase
      */
     protected function tearDown(): void
     {
+        /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->AuditLogs);
 
         parent::tearDown();

@@ -49,6 +49,7 @@ class CustomerMessagesTableTest extends TestCase
      */
     protected function tearDown(): void
     {
+        /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->CustomerMessages);
 
         parent::tearDown();
