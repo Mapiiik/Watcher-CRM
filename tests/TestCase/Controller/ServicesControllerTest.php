@@ -18,7 +18,7 @@ class ServicesControllerTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -39,7 +39,7 @@ class ServicesControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\ServicesController::index()
+     * @link \App\Controller\ServicesController::index()
      */
     public function testIndex(): void
     {
@@ -50,7 +50,7 @@ class ServicesControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\ServicesController::view()
+     * @link \App\Controller\ServicesController::view()
      */
     public function testView(): void
     {
@@ -61,7 +61,7 @@ class ServicesControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\ServicesController::add()
+     * @link \App\Controller\ServicesController::add()
      */
     public function testAdd(): void
     {
@@ -72,7 +72,7 @@ class ServicesControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\ServicesController::edit()
+     * @link \App\Controller\ServicesController::edit()
      */
     public function testEdit(): void
     {
@@ -83,7 +83,7 @@ class ServicesControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\ServicesController::delete()
+     * @link \App\Controller\ServicesController::delete()
      */
     public function testDelete(): void
     {

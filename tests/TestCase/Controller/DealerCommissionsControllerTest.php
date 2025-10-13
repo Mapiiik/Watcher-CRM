@@ -18,7 +18,7 @@ class DealerCommissionsControllerTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -32,7 +32,7 @@ class DealerCommissionsControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\DealerCommissionsController::index()
+     * @link \App\Controller\DealerCommissionsController::index()
      */
     public function testIndex(): void
     {
@@ -43,7 +43,7 @@ class DealerCommissionsControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\DealerCommissionsController::view()
+     * @link \App\Controller\DealerCommissionsController::view()
      */
     public function testView(): void
     {
@@ -54,7 +54,7 @@ class DealerCommissionsControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\DealerCommissionsController::add()
+     * @link \App\Controller\DealerCommissionsController::add()
      */
     public function testAdd(): void
     {
@@ -65,7 +65,7 @@ class DealerCommissionsControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\DealerCommissionsController::edit()
+     * @link \App\Controller\DealerCommissionsController::edit()
      */
     public function testEdit(): void
     {
@@ -76,7 +76,7 @@ class DealerCommissionsControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\DealerCommissionsController::delete()
+     * @link \App\Controller\DealerCommissionsController::delete()
      */
     public function testDelete(): void
     {

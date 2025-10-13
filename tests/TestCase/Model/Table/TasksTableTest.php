@@ -21,7 +21,7 @@ class TasksTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -66,7 +66,7 @@ class TasksTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\TasksTable::validationDefault()
+     * @link \App\Model\Table\TasksTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -77,7 +77,7 @@ class TasksTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\TasksTable::buildRules()
+     * @link \App\Model\Table\TasksTable::buildRules()
      */
     public function testBuildRules(): void
     {

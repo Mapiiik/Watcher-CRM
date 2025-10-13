@@ -21,7 +21,7 @@ class RadacctTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'plugin.Radius.Radacct',

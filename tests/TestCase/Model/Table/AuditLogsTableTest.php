@@ -21,7 +21,7 @@ class AuditLogsTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AuditLogs',
@@ -55,7 +55,7 @@ class AuditLogsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\AuditLogsTable::validationDefault()
+     * @link \App\Model\Table\AuditLogsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -66,7 +66,7 @@ class AuditLogsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\AuditLogsTable::buildRules()
+     * @link \App\Model\Table\AuditLogsTable::buildRules()
      */
     public function testBuildRules(): void
     {

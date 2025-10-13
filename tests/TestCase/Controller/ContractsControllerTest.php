@@ -18,7 +18,7 @@ class ContractsControllerTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -50,7 +50,7 @@ class ContractsControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\ContractsController::index()
+     * @link \App\Controller\ContractsController::index()
      */
     public function testIndex(): void
     {
@@ -61,7 +61,7 @@ class ContractsControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\ContractsController::view()
+     * @link \App\Controller\ContractsController::view()
      */
     public function testView(): void
     {
@@ -72,7 +72,7 @@ class ContractsControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\ContractsController::add()
+     * @link \App\Controller\ContractsController::add()
      */
     public function testAdd(): void
     {
@@ -83,7 +83,7 @@ class ContractsControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\ContractsController::edit()
+     * @link \App\Controller\ContractsController::edit()
      */
     public function testEdit(): void
     {
@@ -94,7 +94,7 @@ class ContractsControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\ContractsController::delete()
+     * @link \App\Controller\ContractsController::delete()
      */
     public function testDelete(): void
     {
@@ -105,7 +105,7 @@ class ContractsControllerTest extends TestCase
      * Test print method
      *
      * @return void
-     * @uses \App\Controller\ContractsController::print()
+     * @link \App\Controller\ContractsController::print()
      */
     public function testPrint(): void
     {

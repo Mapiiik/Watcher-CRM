@@ -21,7 +21,7 @@ class BorrowedEquipmentsTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -65,7 +65,7 @@ class BorrowedEquipmentsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\BorrowedEquipmentsTable::validationDefault()
+     * @link \App\Model\Table\BorrowedEquipmentsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -76,7 +76,7 @@ class BorrowedEquipmentsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\BorrowedEquipmentsTable::buildRules()
+     * @link \App\Model\Table\BorrowedEquipmentsTable::buildRules()
      */
     public function testBuildRules(): void
     {

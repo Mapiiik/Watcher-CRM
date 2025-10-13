@@ -21,7 +21,7 @@ class RemovedIpAddressesTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -64,7 +64,7 @@ class RemovedIpAddressesTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\RemovedIpAddressesTable::validationDefault()
+     * @link \App\Model\Table\RemovedIpAddressesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -75,7 +75,7 @@ class RemovedIpAddressesTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\RemovedIpAddressesTable::buildRules()
+     * @link \App\Model\Table\RemovedIpAddressesTable::buildRules()
      */
     public function testBuildRules(): void
     {

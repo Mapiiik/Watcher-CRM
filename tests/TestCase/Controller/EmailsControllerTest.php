@@ -18,7 +18,7 @@ class EmailsControllerTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -31,7 +31,7 @@ class EmailsControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\EmailsController::index()
+     * @link \App\Controller\EmailsController::index()
      */
     public function testIndex(): void
     {
@@ -42,7 +42,7 @@ class EmailsControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\EmailsController::view()
+     * @link \App\Controller\EmailsController::view()
      */
     public function testView(): void
     {
@@ -53,7 +53,7 @@ class EmailsControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\EmailsController::add()
+     * @link \App\Controller\EmailsController::add()
      */
     public function testAdd(): void
     {
@@ -64,7 +64,7 @@ class EmailsControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\EmailsController::edit()
+     * @link \App\Controller\EmailsController::edit()
      */
     public function testEdit(): void
     {
@@ -75,7 +75,7 @@ class EmailsControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\EmailsController::delete()
+     * @link \App\Controller\EmailsController::delete()
      */
     public function testDelete(): void
     {

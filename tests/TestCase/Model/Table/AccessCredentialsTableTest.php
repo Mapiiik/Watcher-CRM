@@ -21,7 +21,7 @@ class AccessCredentialsTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -64,7 +64,7 @@ class AccessCredentialsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\AccessCredentialsTable::validationDefault()
+     * @link \App\Model\Table\AccessCredentialsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -75,7 +75,7 @@ class AccessCredentialsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\AccessCredentialsTable::buildRules()
+     * @link \App\Model\Table\AccessCredentialsTable::buildRules()
      */
     public function testBuildRules(): void
     {

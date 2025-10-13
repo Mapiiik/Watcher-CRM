@@ -21,7 +21,7 @@ class IpNetworksTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -64,7 +64,7 @@ class IpNetworksTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\IpNetworksTable::validationDefault()
+     * @link \App\Model\Table\IpNetworksTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -75,7 +75,7 @@ class IpNetworksTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\IpNetworksTable::buildRules()
+     * @link \App\Model\Table\IpNetworksTable::buildRules()
      */
     public function testBuildRules(): void
     {

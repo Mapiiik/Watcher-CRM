@@ -18,7 +18,7 @@ class QueuesControllerTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -31,7 +31,7 @@ class QueuesControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\QueuesController::index()
+     * @link \App\Controller\QueuesController::index()
      */
     public function testIndex(): void
     {
@@ -42,7 +42,7 @@ class QueuesControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\QueuesController::view()
+     * @link \App\Controller\QueuesController::view()
      */
     public function testView(): void
     {
@@ -53,7 +53,7 @@ class QueuesControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\QueuesController::add()
+     * @link \App\Controller\QueuesController::add()
      */
     public function testAdd(): void
     {
@@ -64,7 +64,7 @@ class QueuesControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\QueuesController::edit()
+     * @link \App\Controller\QueuesController::edit()
      */
     public function testEdit(): void
     {
@@ -75,7 +75,7 @@ class QueuesControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\QueuesController::delete()
+     * @link \App\Controller\QueuesController::delete()
      */
     public function testDelete(): void
     {

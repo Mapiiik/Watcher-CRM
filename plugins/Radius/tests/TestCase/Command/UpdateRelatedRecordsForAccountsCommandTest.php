@@ -19,7 +19,7 @@ class UpdateRelatedRecordsForAccountsCommandTest extends TestCase
      * Test buildOptionParser method
      *
      * @return void
-     * @uses \Radius\Command\UpdateRelatedRecordsForAllAccountsCommand::buildOptionParser()
+     * @link \Radius\Command\UpdateRelatedRecordsForAllAccountsCommand::buildOptionParser()
      */
     public function testBuildOptionParser(): void
     {
@@ -30,7 +30,7 @@ class UpdateRelatedRecordsForAccountsCommandTest extends TestCase
      * Test execute method
      *
      * @return void
-     * @uses \Radius\Command\UpdateRelatedRecordsForAllAccountsCommand::execute()
+     * @link \Radius\Command\UpdateRelatedRecordsForAllAccountsCommand::execute()
      */
     public function testExecute(): void
     {

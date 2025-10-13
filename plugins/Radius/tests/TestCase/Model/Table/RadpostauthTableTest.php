@@ -21,7 +21,7 @@ class RadpostauthTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'plugin.Radius.Radpostauth',

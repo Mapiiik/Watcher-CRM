@@ -18,7 +18,7 @@ class AccessCredentialsControllerTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -37,7 +37,7 @@ class AccessCredentialsControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\AccessCredentialsController::index()
+     * @link \App\Controller\AccessCredentialsController::index()
      */
     public function testIndex(): void
     {
@@ -48,7 +48,7 @@ class AccessCredentialsControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\AccessCredentialsController::view()
+     * @link \App\Controller\AccessCredentialsController::view()
      */
     public function testView(): void
     {
@@ -59,7 +59,7 @@ class AccessCredentialsControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\AccessCredentialsController::add()
+     * @link \App\Controller\AccessCredentialsController::add()
      */
     public function testAdd(): void
     {
@@ -70,7 +70,7 @@ class AccessCredentialsControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\AccessCredentialsController::edit()
+     * @link \App\Controller\AccessCredentialsController::edit()
      */
     public function testEdit(): void
     {
@@ -81,7 +81,7 @@ class AccessCredentialsControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\AccessCredentialsController::delete()
+     * @link \App\Controller\AccessCredentialsController::delete()
      */
     public function testDelete(): void
     {

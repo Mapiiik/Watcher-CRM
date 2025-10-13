@@ -21,7 +21,7 @@ class LabelsTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -59,7 +59,7 @@ class LabelsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\LabelsTable::validationDefault()
+     * @link \App\Model\Table\LabelsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -70,7 +70,7 @@ class LabelsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\LabelsTable::buildRules()
+     * @link \App\Model\Table\LabelsTable::buildRules()
      */
     public function testBuildRules(): void
     {

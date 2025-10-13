@@ -18,7 +18,7 @@ class BillingsControllerTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -39,7 +39,7 @@ class BillingsControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\BillingsController::index()
+     * @link \App\Controller\BillingsController::index()
      */
     public function testIndex(): void
     {
@@ -50,7 +50,7 @@ class BillingsControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\BillingsController::view()
+     * @link \App\Controller\BillingsController::view()
      */
     public function testView(): void
     {
@@ -61,7 +61,7 @@ class BillingsControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\BillingsController::add()
+     * @link \App\Controller\BillingsController::add()
      */
     public function testAdd(): void
     {
@@ -72,7 +72,7 @@ class BillingsControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\BillingsController::edit()
+     * @link \App\Controller\BillingsController::edit()
      */
     public function testEdit(): void
     {
@@ -83,7 +83,7 @@ class BillingsControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\BillingsController::delete()
+     * @link \App\Controller\BillingsController::delete()
      */
     public function testDelete(): void
     {

@@ -37,7 +37,7 @@ class QueueMailerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\TaxRatesController::index()
+     * @link \App\Controller\TaxRatesController::index()
      */
     public function testServiceChange(): void
     {

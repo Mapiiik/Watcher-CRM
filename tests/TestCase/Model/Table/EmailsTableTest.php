@@ -21,7 +21,7 @@ class EmailsTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -58,7 +58,7 @@ class EmailsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\EmailsTable::validationDefault()
+     * @link \App\Model\Table\EmailsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -69,7 +69,7 @@ class EmailsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\EmailsTable::buildRules()
+     * @link \App\Model\Table\EmailsTable::buildRules()
      */
     public function testBuildRules(): void
     {

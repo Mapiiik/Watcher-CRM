@@ -18,7 +18,7 @@ class ContractVersionsControllerTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -37,7 +37,7 @@ class ContractVersionsControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\ContractVersionsController::index()
+     * @link \App\Controller\ContractVersionsController::index()
      */
     public function testIndex(): void
     {
@@ -48,7 +48,7 @@ class ContractVersionsControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\ContractVersionsController::view()
+     * @link \App\Controller\ContractVersionsController::view()
      */
     public function testView(): void
     {
@@ -59,7 +59,7 @@ class ContractVersionsControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\ContractVersionsController::add()
+     * @link \App\Controller\ContractVersionsController::add()
      */
     public function testAdd(): void
     {
@@ -70,7 +70,7 @@ class ContractVersionsControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\ContractVersionsController::edit()
+     * @link \App\Controller\ContractVersionsController::edit()
      */
     public function testEdit(): void
     {
@@ -81,7 +81,7 @@ class ContractVersionsControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\ContractVersionsController::delete()
+     * @link \App\Controller\ContractVersionsController::delete()
      */
     public function testDelete(): void
     {

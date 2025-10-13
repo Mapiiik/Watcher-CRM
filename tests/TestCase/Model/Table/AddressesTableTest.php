@@ -21,7 +21,7 @@ class AddressesTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -63,7 +63,7 @@ class AddressesTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\AddressesTable::validationDefault()
+     * @link \App\Model\Table\AddressesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -74,7 +74,7 @@ class AddressesTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\AddressesTable::buildRules()
+     * @link \App\Model\Table\AddressesTable::buildRules()
      */
     public function testBuildRules(): void
     {

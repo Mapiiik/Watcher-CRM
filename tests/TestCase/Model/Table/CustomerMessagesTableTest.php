@@ -21,7 +21,7 @@ class CustomerMessagesTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -58,7 +58,7 @@ class CustomerMessagesTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\CustomerMessagesTable::validationDefault()
+     * @link \App\Model\Table\CustomerMessagesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -69,7 +69,7 @@ class CustomerMessagesTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\CustomerMessagesTable::buildRules()
+     * @link \App\Model\Table\CustomerMessagesTable::buildRules()
      */
     public function testBuildRules(): void
     {

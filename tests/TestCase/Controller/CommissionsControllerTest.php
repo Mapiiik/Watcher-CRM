@@ -18,7 +18,7 @@ class CommissionsControllerTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -37,7 +37,7 @@ class CommissionsControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\CommissionsController::index()
+     * @link \App\Controller\CommissionsController::index()
      */
     public function testIndex(): void
     {
@@ -48,7 +48,7 @@ class CommissionsControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\CommissionsController::view()
+     * @link \App\Controller\CommissionsController::view()
      */
     public function testView(): void
     {
@@ -59,7 +59,7 @@ class CommissionsControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\CommissionsController::add()
+     * @link \App\Controller\CommissionsController::add()
      */
     public function testAdd(): void
     {
@@ -70,7 +70,7 @@ class CommissionsControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\CommissionsController::edit()
+     * @link \App\Controller\CommissionsController::edit()
      */
     public function testEdit(): void
     {
@@ -81,7 +81,7 @@ class CommissionsControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\CommissionsController::delete()
+     * @link \App\Controller\CommissionsController::delete()
      */
     public function testDelete(): void
     {

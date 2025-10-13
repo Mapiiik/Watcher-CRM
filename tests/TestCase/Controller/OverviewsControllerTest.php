@@ -18,7 +18,7 @@ class OverviewsControllerTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [];
 
@@ -26,7 +26,7 @@ class OverviewsControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\OverviewsController::index()
+     * @link \App\Controller\OverviewsController::index()
      */
     public function testIndex(): void
     {
@@ -37,7 +37,7 @@ class OverviewsControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\OverviewsController::view()
+     * @link \App\Controller\OverviewsController::view()
      */
     public function testView(): void
     {
@@ -48,7 +48,7 @@ class OverviewsControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\OverviewsController::add()
+     * @link \App\Controller\OverviewsController::add()
      */
     public function testAdd(): void
     {
@@ -59,7 +59,7 @@ class OverviewsControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\OverviewsController::edit()
+     * @link \App\Controller\OverviewsController::edit()
      */
     public function testEdit(): void
     {
@@ -70,7 +70,7 @@ class OverviewsControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\OverviewsController::delete()
+     * @link \App\Controller\OverviewsController::delete()
      */
     public function testDelete(): void
     {

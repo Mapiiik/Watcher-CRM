@@ -21,7 +21,7 @@ class SoldEquipmentsTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -65,7 +65,7 @@ class SoldEquipmentsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\SoldEquipmentsTable::validationDefault()
+     * @link \App\Model\Table\SoldEquipmentsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -76,7 +76,7 @@ class SoldEquipmentsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\SoldEquipmentsTable::buildRules()
+     * @link \App\Model\Table\SoldEquipmentsTable::buildRules()
      */
     public function testBuildRules(): void
     {

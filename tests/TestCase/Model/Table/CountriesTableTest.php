@@ -21,7 +21,7 @@ class CountriesTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -59,7 +59,7 @@ class CountriesTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\CountriesTable::validationDefault()
+     * @link \App\Model\Table\CountriesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -70,7 +70,7 @@ class CountriesTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\CountriesTable::buildRules()
+     * @link \App\Model\Table\CountriesTable::buildRules()
      */
     public function testBuildRules(): void
     {

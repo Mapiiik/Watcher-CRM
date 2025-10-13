@@ -21,7 +21,7 @@ class ServiceTypesTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -65,7 +65,7 @@ class ServiceTypesTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\ServiceTypesTable::validationDefault()
+     * @link \App\Model\Table\ServiceTypesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -76,7 +76,7 @@ class ServiceTypesTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\ServiceTypesTable::buildRules()
+     * @link \App\Model\Table\ServiceTypesTable::buildRules()
      */
     public function testBuildRules(): void
     {

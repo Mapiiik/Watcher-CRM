@@ -61,7 +61,7 @@ class AccountsCellTest extends TestCase
      * Test display method
      *
      * @return void
-     * @uses \Radius\View\Cell\AccountsCell::display()
+     * @link \Radius\View\Cell\AccountsCell::display()
      */
     public function testDisplay(): void
     {

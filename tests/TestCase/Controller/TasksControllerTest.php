@@ -18,7 +18,7 @@ class TasksControllerTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -39,7 +39,7 @@ class TasksControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\TasksController::index()
+     * @link \App\Controller\TasksController::index()
      */
     public function testIndex(): void
     {
@@ -50,7 +50,7 @@ class TasksControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\TasksController::view()
+     * @link \App\Controller\TasksController::view()
      */
     public function testView(): void
     {
@@ -61,7 +61,7 @@ class TasksControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\TasksController::add()
+     * @link \App\Controller\TasksController::add()
      */
     public function testAdd(): void
     {
@@ -72,7 +72,7 @@ class TasksControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\TasksController::edit()
+     * @link \App\Controller\TasksController::edit()
      */
     public function testEdit(): void
     {
@@ -83,7 +83,7 @@ class TasksControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\TasksController::delete()
+     * @link \App\Controller\TasksController::delete()
      */
     public function testDelete(): void
     {

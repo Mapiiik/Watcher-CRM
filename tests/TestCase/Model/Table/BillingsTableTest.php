@@ -21,7 +21,7 @@ class BillingsTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -66,7 +66,7 @@ class BillingsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\BillingsTable::validationDefault()
+     * @link \App\Model\Table\BillingsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -77,7 +77,7 @@ class BillingsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\BillingsTable::buildRules()
+     * @link \App\Model\Table\BillingsTable::buildRules()
      */
     public function testBuildRules(): void
     {

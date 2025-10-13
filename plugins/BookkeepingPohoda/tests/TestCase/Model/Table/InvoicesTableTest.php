@@ -21,7 +21,7 @@ class InvoicesTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -58,7 +58,7 @@ class InvoicesTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \BookkeepingPohoda\Model\Table\InvoicesTable::validationDefault()
+     * @link \BookkeepingPohoda\Model\Table\InvoicesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -69,7 +69,7 @@ class InvoicesTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \BookkeepingPohoda\Model\Table\InvoicesTable::buildRules()
+     * @link \BookkeepingPohoda\Model\Table\InvoicesTable::buildRules()
      */
     public function testBuildRules(): void
     {

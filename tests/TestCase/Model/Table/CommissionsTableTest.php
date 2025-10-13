@@ -21,7 +21,7 @@ class CommissionsTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -64,7 +64,7 @@ class CommissionsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\CommissionsTable::validationDefault()
+     * @link \App\Model\Table\CommissionsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -75,7 +75,7 @@ class CommissionsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\CommissionsTable::buildRules()
+     * @link \App\Model\Table\CommissionsTable::buildRules()
      */
     public function testBuildRules(): void
     {

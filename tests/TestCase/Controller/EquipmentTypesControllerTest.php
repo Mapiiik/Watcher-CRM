@@ -18,7 +18,7 @@ class EquipmentTypesControllerTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -39,7 +39,7 @@ class EquipmentTypesControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\EquipmentTypesController::index()
+     * @link \App\Controller\EquipmentTypesController::index()
      */
     public function testIndex(): void
     {
@@ -50,7 +50,7 @@ class EquipmentTypesControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\EquipmentTypesController::view()
+     * @link \App\Controller\EquipmentTypesController::view()
      */
     public function testView(): void
     {
@@ -61,7 +61,7 @@ class EquipmentTypesControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\EquipmentTypesController::add()
+     * @link \App\Controller\EquipmentTypesController::add()
      */
     public function testAdd(): void
     {
@@ -72,7 +72,7 @@ class EquipmentTypesControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\EquipmentTypesController::edit()
+     * @link \App\Controller\EquipmentTypesController::edit()
      */
     public function testEdit(): void
     {
@@ -83,7 +83,7 @@ class EquipmentTypesControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\EquipmentTypesController::delete()
+     * @link \App\Controller\EquipmentTypesController::delete()
      */
     public function testDelete(): void
     {

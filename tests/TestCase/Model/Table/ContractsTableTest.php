@@ -21,7 +21,7 @@ class ContractsTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -77,7 +77,7 @@ class ContractsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\ContractsTable::validationDefault()
+     * @link \App\Model\Table\ContractsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -88,7 +88,7 @@ class ContractsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\ContractsTable::buildRules()
+     * @link \App\Model\Table\ContractsTable::buildRules()
      */
     public function testBuildRules(): void
     {

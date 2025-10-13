@@ -21,7 +21,7 @@ class QueuesTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -58,7 +58,7 @@ class QueuesTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\QueuesTable::validationDefault()
+     * @link \App\Model\Table\QueuesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -69,7 +69,7 @@ class QueuesTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\QueuesTable::buildRules()
+     * @link \App\Model\Table\QueuesTable::buildRules()
      */
     public function testBuildRules(): void
     {

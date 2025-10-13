@@ -18,7 +18,7 @@ class RemovedIpNetworksControllerTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -37,7 +37,7 @@ class RemovedIpNetworksControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\RemovedIpNetworksController::index()
+     * @link \App\Controller\RemovedIpNetworksController::index()
      */
     public function testIndex(): void
     {
@@ -48,7 +48,7 @@ class RemovedIpNetworksControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\RemovedIpNetworksController::view()
+     * @link \App\Controller\RemovedIpNetworksController::view()
      */
     public function testView(): void
     {
@@ -59,7 +59,7 @@ class RemovedIpNetworksControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\RemovedIpNetworksController::add()
+     * @link \App\Controller\RemovedIpNetworksController::add()
      */
     public function testAdd(): void
     {
@@ -70,7 +70,7 @@ class RemovedIpNetworksControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\RemovedIpNetworksController::edit()
+     * @link \App\Controller\RemovedIpNetworksController::edit()
      */
     public function testEdit(): void
     {
@@ -81,7 +81,7 @@ class RemovedIpNetworksControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\RemovedIpNetworksController::delete()
+     * @link \App\Controller\RemovedIpNetworksController::delete()
      */
     public function testDelete(): void
     {

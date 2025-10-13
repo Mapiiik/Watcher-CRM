@@ -18,7 +18,7 @@ class ServiceTypesControllerTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -38,7 +38,7 @@ class ServiceTypesControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\ServiceTypesController::index()
+     * @link \App\Controller\ServiceTypesController::index()
      */
     public function testIndex(): void
     {
@@ -49,7 +49,7 @@ class ServiceTypesControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\ServiceTypesController::view()
+     * @link \App\Controller\ServiceTypesController::view()
      */
     public function testView(): void
     {
@@ -60,7 +60,7 @@ class ServiceTypesControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\ServiceTypesController::add()
+     * @link \App\Controller\ServiceTypesController::add()
      */
     public function testAdd(): void
     {
@@ -71,7 +71,7 @@ class ServiceTypesControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\ServiceTypesController::edit()
+     * @link \App\Controller\ServiceTypesController::edit()
      */
     public function testEdit(): void
     {
@@ -82,7 +82,7 @@ class ServiceTypesControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\ServiceTypesController::delete()
+     * @link \App\Controller\ServiceTypesController::delete()
      */
     public function testDelete(): void
     {

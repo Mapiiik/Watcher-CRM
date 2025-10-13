@@ -21,7 +21,7 @@ class LoginsTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -58,7 +58,7 @@ class LoginsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\LoginsTable::validationDefault()
+     * @link \App\Model\Table\LoginsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -69,7 +69,7 @@ class LoginsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\LoginsTable::buildRules()
+     * @link \App\Model\Table\LoginsTable::buildRules()
      */
     public function testBuildRules(): void
     {

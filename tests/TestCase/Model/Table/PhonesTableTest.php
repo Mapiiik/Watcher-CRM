@@ -21,7 +21,7 @@ class PhonesTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -58,7 +58,7 @@ class PhonesTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\PhonesTable::validationDefault()
+     * @link \App\Model\Table\PhonesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -69,7 +69,7 @@ class PhonesTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\PhonesTable::buildRules()
+     * @link \App\Model\Table\PhonesTable::buildRules()
      */
     public function testBuildRules(): void
     {
@@ -80,7 +80,7 @@ class PhonesTableTest extends TestCase
      * Test beforeMarshal method
      *
      * @return void
-     * @uses \App\Model\Table\PhonesTable::beforeMarshal()
+     * @link \App\Model\Table\PhonesTable::beforeMarshal()
      */
     public function testBeforeMarshal(): void
     {

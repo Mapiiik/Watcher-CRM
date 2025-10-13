@@ -18,7 +18,7 @@ class InvoicesControllerTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -31,7 +31,7 @@ class InvoicesControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \BookkeepingPohoda\Controller\InvoicesController::index()
+     * @link \BookkeepingPohoda\Controller\InvoicesController::index()
      */
     public function testIndex(): void
     {
@@ -42,7 +42,7 @@ class InvoicesControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \BookkeepingPohoda\Controller\InvoicesController::view()
+     * @link \BookkeepingPohoda\Controller\InvoicesController::view()
      */
     public function testView(): void
     {
@@ -53,7 +53,7 @@ class InvoicesControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \BookkeepingPohoda\Controller\InvoicesController::add()
+     * @link \BookkeepingPohoda\Controller\InvoicesController::add()
      */
     public function testAdd(): void
     {
@@ -64,7 +64,7 @@ class InvoicesControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \BookkeepingPohoda\Controller\InvoicesController::edit()
+     * @link \BookkeepingPohoda\Controller\InvoicesController::edit()
      */
     public function testEdit(): void
     {
@@ -75,7 +75,7 @@ class InvoicesControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \BookkeepingPohoda\Controller\InvoicesController::delete()
+     * @link \BookkeepingPohoda\Controller\InvoicesController::delete()
      */
     public function testDelete(): void
     {

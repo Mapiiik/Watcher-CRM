@@ -18,7 +18,7 @@ class CountriesControllerTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -32,7 +32,7 @@ class CountriesControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\CountriesController::index()
+     * @link \App\Controller\CountriesController::index()
      */
     public function testIndex(): void
     {
@@ -43,7 +43,7 @@ class CountriesControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\CountriesController::view()
+     * @link \App\Controller\CountriesController::view()
      */
     public function testView(): void
     {
@@ -54,7 +54,7 @@ class CountriesControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\CountriesController::add()
+     * @link \App\Controller\CountriesController::add()
      */
     public function testAdd(): void
     {
@@ -65,7 +65,7 @@ class CountriesControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\CountriesController::edit()
+     * @link \App\Controller\CountriesController::edit()
      */
     public function testEdit(): void
     {
@@ -76,7 +76,7 @@ class CountriesControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\CountriesController::delete()
+     * @link \App\Controller\CountriesController::delete()
      */
     public function testDelete(): void
     {

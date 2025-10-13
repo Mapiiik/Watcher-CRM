@@ -47,7 +47,7 @@ class StringModificationsBehaviorTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\BillingsTable::validationDefault()
+     * @link \App\Model\Table\BillingsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -58,7 +58,7 @@ class StringModificationsBehaviorTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\BillingsTable::buildRules()
+     * @link \App\Model\Table\BillingsTable::buildRules()
      */
     public function testBuildRules(): void
     {

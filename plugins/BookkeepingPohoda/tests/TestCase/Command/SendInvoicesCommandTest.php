@@ -29,7 +29,7 @@ class SendInvoicesCommandTest extends TestCase
      * Test buildOptionParser method
      *
      * @return void
-     * @uses \BookkeepingPohoda\Command\SendIssuedInvoicesCommand::buildOptionParser()
+     * @link \BookkeepingPohoda\Command\SendIssuedInvoicesCommand::buildOptionParser()
      */
     public function testBuildOptionParser(): void
     {
@@ -40,7 +40,7 @@ class SendInvoicesCommandTest extends TestCase
      * Test execute method
      *
      * @return void
-     * @uses \BookkeepingPohoda\Command\SendIssuedInvoicesCommand::execute()
+     * @link \BookkeepingPohoda\Command\SendIssuedInvoicesCommand::execute()
      */
     public function testExecute(): void
     {

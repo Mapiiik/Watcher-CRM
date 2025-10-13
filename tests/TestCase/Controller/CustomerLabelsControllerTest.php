@@ -18,7 +18,7 @@ class CustomerLabelsControllerTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -32,7 +32,7 @@ class CustomerLabelsControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\CustomerLabelsController::index()
+     * @link \App\Controller\CustomerLabelsController::index()
      */
     public function testIndex(): void
     {
@@ -43,7 +43,7 @@ class CustomerLabelsControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\CustomerLabelsController::view()
+     * @link \App\Controller\CustomerLabelsController::view()
      */
     public function testView(): void
     {
@@ -54,7 +54,7 @@ class CustomerLabelsControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\CustomerLabelsController::add()
+     * @link \App\Controller\CustomerLabelsController::add()
      */
     public function testAdd(): void
     {
@@ -65,7 +65,7 @@ class CustomerLabelsControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\CustomerLabelsController::edit()
+     * @link \App\Controller\CustomerLabelsController::edit()
      */
     public function testEdit(): void
     {
@@ -76,7 +76,7 @@ class CustomerLabelsControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\CustomerLabelsController::delete()
+     * @link \App\Controller\CustomerLabelsController::delete()
      */
     public function testDelete(): void
     {

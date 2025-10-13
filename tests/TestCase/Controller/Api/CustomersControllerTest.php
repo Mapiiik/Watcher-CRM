@@ -18,7 +18,7 @@ class CustomersControllerTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -55,7 +55,7 @@ class CustomersControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\Api\CustomersController::index()
+     * @link \App\Controller\Api\CustomersController::index()
      */
     public function testIndex(): void
     {
@@ -66,7 +66,7 @@ class CustomersControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\Api\CustomersController::view()
+     * @link \App\Controller\Api\CustomersController::view()
      */
     public function testView(): void
     {
@@ -77,7 +77,7 @@ class CustomersControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\Api\CustomersController::add()
+     * @link \App\Controller\Api\CustomersController::add()
      */
     public function testAdd(): void
     {
@@ -88,7 +88,7 @@ class CustomersControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\Api\CustomersController::edit()
+     * @link \App\Controller\Api\CustomersController::edit()
      */
     public function testEdit(): void
     {
@@ -99,7 +99,7 @@ class CustomersControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\Api\CustomersController::delete()
+     * @link \App\Controller\Api\CustomersController::delete()
      */
     public function testDelete(): void
     {

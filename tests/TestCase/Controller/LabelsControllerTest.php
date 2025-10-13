@@ -18,7 +18,7 @@ class LabelsControllerTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -32,7 +32,7 @@ class LabelsControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\LabelsController::index()
+     * @link \App\Controller\LabelsController::index()
      */
     public function testIndex(): void
     {
@@ -43,7 +43,7 @@ class LabelsControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\LabelsController::view()
+     * @link \App\Controller\LabelsController::view()
      */
     public function testView(): void
     {
@@ -54,7 +54,7 @@ class LabelsControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\LabelsController::add()
+     * @link \App\Controller\LabelsController::add()
      */
     public function testAdd(): void
     {
@@ -65,7 +65,7 @@ class LabelsControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\LabelsController::edit()
+     * @link \App\Controller\LabelsController::edit()
      */
     public function testEdit(): void
     {
@@ -76,7 +76,7 @@ class LabelsControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\LabelsController::delete()
+     * @link \App\Controller\LabelsController::delete()
      */
     public function testDelete(): void
     {

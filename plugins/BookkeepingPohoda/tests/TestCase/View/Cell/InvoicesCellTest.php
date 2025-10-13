@@ -61,7 +61,7 @@ class InvoicesCellTest extends TestCase
      * Test display method
      *
      * @return void
-     * @uses \BookkeepingPohoda\View\Cell\InvoicesCell::display()
+     * @link \BookkeepingPohoda\View\Cell\InvoicesCell::display()
      */
     public function testDisplay(): void
     {

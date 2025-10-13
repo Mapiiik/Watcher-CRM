@@ -18,7 +18,7 @@ class CustomerMessagesControllerTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -31,7 +31,7 @@ class CustomerMessagesControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\CustomerMessagesController::index()
+     * @link \App\Controller\CustomerMessagesController::index()
      */
     public function testIndex(): void
     {
@@ -42,7 +42,7 @@ class CustomerMessagesControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\CustomerMessagesController::view()
+     * @link \App\Controller\CustomerMessagesController::view()
      */
     public function testView(): void
     {
@@ -53,7 +53,7 @@ class CustomerMessagesControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\CustomerMessagesController::add()
+     * @link \App\Controller\CustomerMessagesController::add()
      */
     public function testAdd(): void
     {
@@ -64,7 +64,7 @@ class CustomerMessagesControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\CustomerMessagesController::edit()
+     * @link \App\Controller\CustomerMessagesController::edit()
      */
     public function testEdit(): void
     {
@@ -75,7 +75,7 @@ class CustomerMessagesControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\CustomerMessagesController::delete()
+     * @link \App\Controller\CustomerMessagesController::delete()
      */
     public function testDelete(): void
     {

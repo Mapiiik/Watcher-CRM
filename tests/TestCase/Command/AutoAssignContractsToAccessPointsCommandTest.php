@@ -29,7 +29,7 @@ class AutoAssignContractsToAccessPointsCommandTest extends TestCase
      * Test buildOptionParser method
      *
      * @return void
-     * @uses \App\Command\AutoAssignContractsToAccessPointsCommand::buildOptionParser()
+     * @link \App\Command\AutoAssignContractsToAccessPointsCommand::buildOptionParser()
      */
     public function testBuildOptionParser(): void
     {
@@ -40,7 +40,7 @@ class AutoAssignContractsToAccessPointsCommandTest extends TestCase
      * Test execute method
      *
      * @return void
-     * @uses \App\Command\AutoAssignContractsToAccessPointsCommand::execute()
+     * @link \App\Command\AutoAssignContractsToAccessPointsCommand::execute()
      */
     public function testExecute(): void
     {

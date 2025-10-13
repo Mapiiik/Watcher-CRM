@@ -21,7 +21,7 @@ class DealerCommissionsTableTest extends TestCase
     /**
      * Fixtures
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
@@ -59,7 +59,7 @@ class DealerCommissionsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\DealerCommissionsTable::validationDefault()
+     * @link \App\Model\Table\DealerCommissionsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -70,7 +70,7 @@ class DealerCommissionsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\DealerCommissionsTable::buildRules()
+     * @link \App\Model\Table\DealerCommissionsTable::buildRules()
      */
     public function testBuildRules(): void
     {

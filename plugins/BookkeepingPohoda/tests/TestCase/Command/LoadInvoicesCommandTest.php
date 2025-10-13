@@ -19,7 +19,7 @@ class LoadInvoicesCommandTest extends TestCase
      * Test getDescription method
      *
      * @return void
-     * @uses \BookkeepingPohoda\Command\LoadInvoicesCommand::getDescription()
+     * @link \BookkeepingPohoda\Command\LoadInvoicesCommand::getDescription()
      */
     public function testGetDescription(): void
     {
@@ -30,7 +30,7 @@ class LoadInvoicesCommandTest extends TestCase
      * Test buildOptionParser method
      *
      * @return void
-     * @uses \BookkeepingPohoda\Command\LoadInvoicesCommand::buildOptionParser()
+     * @link \BookkeepingPohoda\Command\LoadInvoicesCommand::buildOptionParser()
      */
     public function testBuildOptionParser(): void
     {
@@ -41,7 +41,7 @@ class LoadInvoicesCommandTest extends TestCase
      * Test execute method
      *
      * @return void
-     * @uses \BookkeepingPohoda\Command\LoadInvoicesCommand::execute()
+     * @link \BookkeepingPohoda\Command\LoadInvoicesCommand::execute()
      */
     public function testExecute(): void
     {
