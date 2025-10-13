@@ -5,6 +5,7 @@ namespace App\Model\Table;
 
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Override;
 
 /**
  * AuditLogs Model
@@ -33,6 +34,7 @@ class AuditLogsTable extends Table
      * @param array<string, mixed> $config The configuration for the Table.
      * @return void
      */
+    #[Override]
     public function initialize(array $config): void
     {
         parent::initialize($config);
@@ -50,6 +52,7 @@ class AuditLogsTable extends Table
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
+    #[Override]
     public function validationDefault(Validator $validator): Validator
     {
         $validator

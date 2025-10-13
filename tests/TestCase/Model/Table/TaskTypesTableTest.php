@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\TaskTypesTable;
 use Cake\TestSuite\TestCase;
+use Override;
 
 /**
  * App\Model\Table\TaskTypesTable Test Case
@@ -43,6 +44,7 @@ class TaskTypesTableTest extends TestCase
      *
      * @return void
      */
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -55,6 +57,7 @@ class TaskTypesTableTest extends TestCase
      *
      * @return void
      */
+    #[Override]
     protected function tearDown(): void
     {
         /** @phpstan-ignore unset.possiblyHookedProperty */

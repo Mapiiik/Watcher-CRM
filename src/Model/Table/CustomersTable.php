@@ -8,6 +8,7 @@ use App\Model\Enum\CustomerInvoiceDeliveryType;
 use Cake\Database\Type\EnumType;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
+use Override;
 
 /**
  * Customers Model
@@ -50,6 +51,7 @@ class CustomersTable extends AppTable
      * @param array<string, mixed> $config The configuration for the Table.
      * @return void
      */
+    #[Override]
     public function initialize(array $config): void
     {
         parent::initialize($config);
@@ -195,6 +197,7 @@ class CustomersTable extends AppTable
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
+    #[Override]
     public function validationDefault(Validator $validator): Validator
     {
         $validator
@@ -301,6 +304,7 @@ class CustomersTable extends AppTable
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
+    #[Override]
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['tax_rate_id'], 'TaxRates'), ['errorField' => 'tax_rate_id']);

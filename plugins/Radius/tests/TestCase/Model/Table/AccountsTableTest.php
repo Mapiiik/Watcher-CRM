@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Radius\Test\TestCase\Model\Table;
 
 use Cake\TestSuite\TestCase;
+use Override;
 use Radius\Model\Table\AccountsTable;
 
 /**
@@ -37,6 +38,7 @@ class AccountsTableTest extends TestCase
      *
      * @return void
      */
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -49,6 +51,7 @@ class AccountsTableTest extends TestCase
      *
      * @return void
      */
+    #[Override]
     protected function tearDown(): void
     {
         /** @phpstan-ignore unset.possiblyHookedProperty */

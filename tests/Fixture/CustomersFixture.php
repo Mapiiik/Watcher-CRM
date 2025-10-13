@@ -6,6 +6,7 @@ namespace App\Test\Fixture;
 use App\Model\Enum\CustomerDealer;
 use App\Model\Enum\CustomerInvoiceDeliveryType;
 use Cake\TestSuite\Fixture\TestFixture;
+use Override;
 
 /**
  * CustomersFixture
@@ -17,6 +18,7 @@ class CustomersFixture extends TestFixture
      *
      * @return void
      */
+    #[Override]
     public function init(): void
     {
         $this->records = [

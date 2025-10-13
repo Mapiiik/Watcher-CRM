@@ -5,6 +5,7 @@ namespace BookkeepingPohoda\Controller;
 
 use App\Controller\AppController as BaseController;
 use Cake\Event\EventInterface;
+use Override;
 
 class AppController extends BaseController
 {
@@ -14,6 +15,7 @@ class AppController extends BaseController
      * @param \Cake\Event\EventInterface<\Cake\Controller\Controller> $event An Event instance
      * @return void
      */
+    #[Override]
     public function beforeFilter(EventInterface $event)
     {
         // add support for dBase extension

@@ -16,6 +16,8 @@ declare(strict_types=1);
  */
 namespace App\View;
 
+use Override;
+
 /**
  * A view class that is used for AJAX responses.
  * Currently, only switches the default layout and sets the response type - which just maps to
@@ -33,6 +35,7 @@ class AjaxView extends AppView
      *
      * @return string
      */
+    #[Override]
     public static function contentType(): string
     {
         return 'text/html';

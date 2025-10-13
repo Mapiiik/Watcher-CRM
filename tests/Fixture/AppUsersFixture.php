@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
+use Override;
 
 /**
  * AppUsersFixture
@@ -21,6 +22,7 @@ class AppUsersFixture extends TestFixture
      *
      * @return void
      */
+    #[Override]
     public function init(): void
     {
         $this->records = [

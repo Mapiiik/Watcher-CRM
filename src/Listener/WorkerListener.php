@@ -7,6 +7,7 @@ use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Log\LogTrait;
 use Cake\Queue\Job\Message;
+use Override;
 use Psr\Log\LogLevel;
 
 class WorkerListener implements EventListenerInterface
@@ -16,6 +17,7 @@ class WorkerListener implements EventListenerInterface
     /**
      * Returns Implemented Events
      */
+    #[Override]
     public function implementedEvents(): array
     {
         return [

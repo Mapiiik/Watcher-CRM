@@ -45,7 +45,7 @@
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^2.0",
         "phpunit/phpunit": "^10.1.0",
-        "psalm/phar": "^5.12"
+        "psalm/phar": "^6.0"
     },
     "suggest": {
         "cakephp/repl": "Console tools for a REPL interface for CakePHP applications.",

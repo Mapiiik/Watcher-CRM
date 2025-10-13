@@ -5,6 +5,7 @@ namespace Radius\Model\Table;
 
 use App\Model\Table\AppTable;
 use Cake\Validation\Validator;
+use Override;
 
 /**
  * Nas Model
@@ -31,6 +32,7 @@ class NasTable extends AppTable
      * @param array<string, mixed> $config The configuration for the Table.
      * @return void
      */
+    #[Override]
     public function initialize(array $config): void
     {
         parent::initialize($config);
@@ -50,6 +52,7 @@ class NasTable extends AppTable
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
+    #[Override]
     public function validationDefault(Validator $validator): Validator
     {
         $validator
@@ -99,6 +102,7 @@ class NasTable extends AppTable
      *
      * @return string
      */
+    #[Override]
     public static function defaultConnectionName(): string
     {
         return 'radius';

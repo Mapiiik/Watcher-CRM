@@ -6,6 +6,7 @@ namespace App\Test\TestCase\Model\Behavior;
 use App\Model\Behavior\FootprintBehavior;
 use Cake\ORM\Table;
 use Cake\TestSuite\TestCase;
+use Override;
 
 /**
  * App\Model\Behavior\FootprintBehavior Test Case
@@ -24,6 +25,7 @@ class FootprintBehaviorTest extends TestCase
      *
      * @return void
      */
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -36,6 +38,7 @@ class FootprintBehaviorTest extends TestCase
      *
      * @return void
      */
+    #[Override]
     protected function tearDown(): void
     {
         /** @phpstan-ignore unset.possiblyHookedProperty */

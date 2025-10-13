@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\View\Cell;
 
 use Cake\View\Cell;
+use Override;
 
 /**
  * Customer cell
@@ -30,6 +31,7 @@ class CustomerCell extends Cell
      *
      * @return void
      */
+    #[Override]
     public function initialize(): void
     {
     }

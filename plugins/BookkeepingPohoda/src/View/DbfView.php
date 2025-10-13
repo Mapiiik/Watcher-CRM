@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace BookkeepingPohoda\View;
 
 use App\View\AppView;
+use Override;
 
 class DbfView extends AppView
 {
@@ -26,6 +27,7 @@ class DbfView extends AppView
      *
      * @return string The JSON content type.
      */
+    #[Override]
     public static function contentType(): string
     {
         return 'application/dbase';

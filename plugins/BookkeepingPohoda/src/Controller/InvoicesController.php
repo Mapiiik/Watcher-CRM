@@ -10,6 +10,7 @@ use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
 use Cake\Validation\Validation;
 use Exception;
+use Override;
 use PhpCollective\DecimalObject\Decimal;
 
 /**
@@ -22,6 +23,7 @@ class InvoicesController extends AppController
     /**
      * Returns supported output types
      */
+    #[Override]
     public function viewClasses(): array
     {
         if ($this->getRequest()->getParam('_ext') === 'dbf' || $this->getRequest()->getParam('_ext') === 'xml') {

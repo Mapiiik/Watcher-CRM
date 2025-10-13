@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App;
 
 use App\Model\Entity\Customer;
+use Override;
 use TCPDF;
 
 //set image path for TCPDF
@@ -14,6 +15,7 @@ class CustomerPDF extends TCPDF
     /**
      * @inheritDoc
      */
+    #[Override]
     public function cell(
         mixed $w,
         mixed $h = 0,

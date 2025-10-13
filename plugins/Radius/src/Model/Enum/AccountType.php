@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Radius\Model\Enum;
 
 use Cake\Database\Type\EnumLabelInterface;
+use Override;
 
 /**
  * AccountType Enum
@@ -15,6 +16,7 @@ enum AccountType: int implements EnumLabelInterface
     /**
      * @return string
      */
+    #[Override]
     public function label(): string
     {
         return match ($this) {

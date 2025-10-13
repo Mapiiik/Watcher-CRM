@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Ruian\Test\TestCase\Model\Table;
 
 use Cake\TestSuite\TestCase;
+use Override;
 use Ruian\Model\Table\AddressesTable;
 
 /**
@@ -32,6 +33,7 @@ class AddressesTableTest extends TestCase
      *
      * @return void
      */
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -44,6 +46,7 @@ class AddressesTableTest extends TestCase
      *
      * @return void
      */
+    #[Override]
     protected function tearDown(): void
     {
         /** @phpstan-ignore unset.possiblyHookedProperty */

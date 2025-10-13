@@ -11,6 +11,7 @@ use Cake\Database\Exception\MissingConnectionException;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
 use Cake\ORM\Query\SelectQuery;
+use Override;
 use stdClass;
 
 /**
@@ -23,6 +24,7 @@ class ContractsController extends AppController
     /**
      * Returns supported output types
      */
+    #[Override]
     public function viewClasses(): array
     {
         return [

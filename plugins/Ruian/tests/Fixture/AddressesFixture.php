@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Ruian\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
+use Override;
 
 /**
  * AddressesFixture
@@ -15,6 +16,7 @@ class AddressesFixture extends TestFixture
      *
      * @return void
      */
+    #[Override]
     public function init(): void
     {
         $this->records = [

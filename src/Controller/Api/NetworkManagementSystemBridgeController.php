@@ -7,6 +7,7 @@ use App\ApiClient;
 use App\Controller\AppController;
 use App\View\AjaxView;
 use Cake\View\JsonView;
+use Override;
 
 /**
  * Network Management System Bridge Controller
@@ -16,6 +17,7 @@ class NetworkManagementSystemBridgeController extends AppController
     /**
      * Returns supported output types
      */
+    #[Override]
     public function viewClasses(): array
     {
         return [JsonView::class, AjaxView::class];

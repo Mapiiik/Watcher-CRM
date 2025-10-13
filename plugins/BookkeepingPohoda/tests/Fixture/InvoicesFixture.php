@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace BookkeepingPohoda\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
+use Override;
 
 /**
  * InvoicesFixture
@@ -15,6 +16,7 @@ class InvoicesFixture extends TestFixture
      *
      * @return void
      */
+    #[Override]
     public function init(): void
     {
         $this->records = [

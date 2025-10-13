@@ -14,6 +14,7 @@ use CakeDC\Users\Controller\Traits\RegisterTrait;
 use CakeDC\Users\Controller\Traits\SimpleCrudTrait;
 use CakeDC\Users\Controller\Traits\SocialTrait;
 use CakeDC\Users\Controller\Traits\Webauthn2faTrait;
+use Override;
 
 /**
  * Users Controller
@@ -40,6 +41,7 @@ class AppUsersController extends AppController
      *
      * @return void
      */
+    #[Override]
     public function initialize(): void
     {
         parent::initialize();

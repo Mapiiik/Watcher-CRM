@@ -7,6 +7,7 @@ use Cake\Core\BasePlugin;
 use Cake\Core\PluginApplicationInterface;
 use Cake\Http\MiddlewareQueue;
 use Cake\Routing\RouteBuilder;
+use Override;
 
 /**
  * Plugin for RADIUS
@@ -22,6 +23,7 @@ class RadiusPlugin extends BasePlugin
      * @param \Cake\Core\PluginApplicationInterface<mixed> $app The host application
      * @return void
      */
+    #[Override]
     public function bootstrap(PluginApplicationInterface $app): void
     {
     }
@@ -35,6 +37,7 @@ class RadiusPlugin extends BasePlugin
      * @param \Cake\Routing\RouteBuilder $routes The route builder to update.
      * @return void
      */
+    #[Override]
     public function routes(RouteBuilder $routes): void
     {
         $routes->plugin(
@@ -89,6 +92,7 @@ class RadiusPlugin extends BasePlugin
      * @param \Cake\Http\MiddlewareQueue $middlewareQueue The middleware queue to update.
      * @return \Cake\Http\MiddlewareQueue
      */
+    #[Override]
     public function middleware(MiddlewareQueue $middlewareQueue): MiddlewareQueue
     {
         // Add your middlewares here

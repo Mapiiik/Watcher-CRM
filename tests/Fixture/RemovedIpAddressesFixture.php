@@ -5,6 +5,7 @@ namespace App\Test\Fixture;
 
 use App\Model\Enum\IpAddressTypeOfUse;
 use Cake\TestSuite\Fixture\TestFixture;
+use Override;
 
 /**
  * RemovedIpAddressesFixture
@@ -16,6 +17,7 @@ class RemovedIpAddressesFixture extends TestFixture
      *
      * @return void
      */
+    #[Override]
     public function init(): void
     {
         $this->records = [

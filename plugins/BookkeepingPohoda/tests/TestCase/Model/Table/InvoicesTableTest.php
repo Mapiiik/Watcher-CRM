@@ -5,6 +5,7 @@ namespace BookkeepingPohoda\Test\TestCase\Model\Table;
 
 use BookkeepingPohoda\Model\Table\InvoicesTable;
 use Cake\TestSuite\TestCase;
+use Override;
 
 /**
  * BookkeepingPohoda\Model\Table\InvoicesTable Test Case
@@ -35,6 +36,7 @@ class InvoicesTableTest extends TestCase
      *
      * @return void
      */
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -47,6 +49,7 @@ class InvoicesTableTest extends TestCase
      *
      * @return void
      */
+    #[Override]
     protected function tearDown(): void
     {
         /** @phpstan-ignore unset.possiblyHookedProperty */

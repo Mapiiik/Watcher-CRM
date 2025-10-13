@@ -6,6 +6,7 @@ namespace Radius\View\Cell;
 use Cake\Database\Exception\MissingConnectionException;
 use Cake\Database\Query\SelectQuery;
 use Cake\View\Cell;
+use Override;
 
 /**
  * Accounts cell
@@ -32,6 +33,7 @@ class AccountsCell extends Cell
      *
      * @return void
      */
+    #[Override]
     public function initialize(): void
     {
     }

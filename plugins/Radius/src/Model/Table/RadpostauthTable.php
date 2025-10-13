@@ -6,6 +6,7 @@ namespace Radius\Model\Table;
 use App\Model\Table\AppTable;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
+use Override;
 
 /**
  * Radpostauth Model
@@ -33,6 +34,7 @@ class RadpostauthTable extends AppTable
      * @param array<string, mixed> $config The configuration for the Table.
      * @return void
      */
+    #[Override]
     public function initialize(array $config): void
     {
         parent::initialize($config);
@@ -57,6 +59,7 @@ class RadpostauthTable extends AppTable
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
+    #[Override]
     public function validationDefault(Validator $validator): Validator
     {
         $validator
@@ -97,6 +100,7 @@ class RadpostauthTable extends AppTable
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
+    #[Override]
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         //$rules->add($rules->isUnique(['username']), ['errorField' => 'username']);
@@ -109,6 +113,7 @@ class RadpostauthTable extends AppTable
      *
      * @return string
      */
+    #[Override]
     public static function defaultConnectionName(): string
     {
         return 'radius';

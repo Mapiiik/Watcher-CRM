@@ -5,6 +5,7 @@ namespace BookkeepingPohoda\Test\TestCase\Command;
 
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Override;
 
 /**
  * BookkeepingPohoda\Command\SendInvoicesCommand Test Case
@@ -20,6 +21,7 @@ class SendInvoicesCommandTest extends TestCase
      *
      * @return void
      */
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();

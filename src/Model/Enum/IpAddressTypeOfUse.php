@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Enum;
 
 use Cake\Database\Type\EnumLabelInterface;
+use Override;
 
 /**
  * IpAddressTypeOfUse Enum
@@ -17,6 +18,7 @@ enum IpAddressTypeOfUse: int implements EnumLabelInterface
     /**
      * @return string
      */
+    #[Override]
     public function label(): string
     {
         return match ($this) {

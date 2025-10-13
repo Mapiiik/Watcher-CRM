@@ -5,6 +5,7 @@ namespace App\Model\Table;
 
 use AuditLog\Persister\TablePersister;
 use CakeDC\Users\Model\Table\UsersTable;
+use Override;
 
 /**
  * Users database table
@@ -32,6 +33,7 @@ class AppUsersTable extends UsersTable
      * @param array<array-key, mixed> $config The configuration for the Table.
      * @return void
      */
+    #[Override]
     public function initialize(array $config): void
     {
         parent::initialize($config);

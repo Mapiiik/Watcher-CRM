@@ -16,6 +16,7 @@ use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
+use Override;
 
 /**
  * Process Debtors command.
@@ -29,6 +30,7 @@ class ProcessDebtorsCommand extends Command
      * @param \Cake\Console\ConsoleOptionParser $parser The parser to be defined
      * @return \Cake\Console\ConsoleOptionParser The built parser.
      */
+    #[Override]
     public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
         $parser = parent::buildOptionParser($parser);
@@ -78,6 +80,7 @@ class ProcessDebtorsCommand extends Command
      * @param \Cake\Console\ConsoleIo $io The console io
      * @return int|null|void The exit code or null for success
      */
+    #[Override]
     public function execute(Arguments $args, ConsoleIo $io)
     {
         $debtorsProcessor = new DebtorsProcessor(

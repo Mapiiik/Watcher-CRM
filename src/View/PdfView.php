@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\View;
 
+use Override;
+
 class PdfView extends AppView
 {
     /**
@@ -24,6 +26,7 @@ class PdfView extends AppView
      *
      * @return string The JSON content type.
      */
+    #[Override]
     public static function contentType(): string
     {
         return 'application/pdf';

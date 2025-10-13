@@ -5,6 +5,7 @@ namespace App\Test\Fixture;
 
 use App\Model\Enum\AddressType;
 use Cake\TestSuite\Fixture\TestFixture;
+use Override;
 
 /**
  * AddressesFixture
@@ -16,6 +17,7 @@ class AddressesFixture extends TestFixture
      *
      * @return void
      */
+    #[Override]
     public function init(): void
     {
         $this->records = [

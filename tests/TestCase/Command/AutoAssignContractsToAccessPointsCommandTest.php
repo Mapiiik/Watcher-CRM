@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Command;
 
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Override;
 
 /**
  * App\Command\AutoAssignContractsToAccessPointsCommand Test Case
@@ -20,6 +21,7 @@ class AutoAssignContractsToAccessPointsCommandTest extends TestCase
      *
      * @return void
      */
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Radius\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
+use Override;
 
 /**
  * RadgroupcheckFixture
@@ -22,6 +23,7 @@ class RadgroupcheckFixture extends TestFixture
      *
      * @return void
      */
+    #[Override]
     public function init(): void
     {
         $this->records = [

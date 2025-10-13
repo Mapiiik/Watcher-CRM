@@ -5,6 +5,7 @@ namespace App\Test\Fixture;
 
 use App\Model\Enum\LoginRights;
 use Cake\TestSuite\Fixture\TestFixture;
+use Override;
 
 /**
  * LoginsFixture
@@ -16,6 +17,7 @@ class LoginsFixture extends TestFixture
      *
      * @return void
      */
+    #[Override]
     public function init(): void
     {
         $this->records = [

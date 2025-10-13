@@ -7,6 +7,7 @@ use App\View\PdfView;
 use Cake\Form\Form;
 use Cake\Utility\Hash;
 use Cake\Validation\Validation;
+use Override;
 
 // filter for fulltext search
 const CUSTOMERS_FULLTEXT_SEARCH_FILTER = "SELECT
@@ -122,6 +123,7 @@ class CustomersController extends AppController
     /**
      * Returns supported output types
      */
+    #[Override]
     public function viewClasses(): array
     {
         return [

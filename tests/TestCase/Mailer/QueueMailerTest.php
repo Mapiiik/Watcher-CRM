@@ -7,6 +7,7 @@ use App\Mailer\QueueMailer;
 use Cake\I18n\Date;
 use Cake\TestSuite\EmailTrait;
 use Cake\TestSuite\TestCase;
+use Override;
 
 /**
  * App\Mailer\QueueMailer Test Case
@@ -27,6 +28,7 @@ class QueueMailerTest extends TestCase
      *
      * @return void
      */
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();

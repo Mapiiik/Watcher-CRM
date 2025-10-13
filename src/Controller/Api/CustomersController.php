@@ -11,6 +11,7 @@ use Cake\Collection\CollectionInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Routing\Router;
 use Cake\View\JsonView;
+use Override;
 use Ruian\Model\Entity\Address;
 
 /**
@@ -23,6 +24,7 @@ class CustomersController extends AppController
     /**
      * Returns supported output types
      */
+    #[Override]
     public function viewClasses(): array
     {
         return [JsonView::class];

@@ -9,6 +9,7 @@ use App\Model\Entity\ContractVersion;
 use App\Model\Enum\IpAddressTypeOfUse;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
+use Override;
 use PhpCollective\DecimalObject\Decimal;
 use stdClass;
 use TCPDF;
@@ -21,6 +22,7 @@ class ContractPDF extends TCPDF
     /**
      * @inheritDoc
      */
+    #[Override]
     public function cell(
         mixed $w,
         mixed $h = 0,

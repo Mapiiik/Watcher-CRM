@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace BookkeepingPohoda\View\Cell;
 
 use Cake\View\Cell;
+use Override;
 
 /**
  * Invoices cell
@@ -30,6 +31,7 @@ class InvoicesCell extends Cell
      *
      * @return void
      */
+    #[Override]
     public function initialize(): void
     {
     }

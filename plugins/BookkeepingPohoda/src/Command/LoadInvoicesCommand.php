@@ -13,6 +13,7 @@ use Cake\I18n\DateTime;
 use Cake\Log\Log;
 use Exception;
 use InvalidArgumentException;
+use Override;
 use Riesenia\Pohoda;
 use RuntimeException;
 use SimpleXMLElement;
@@ -27,6 +28,7 @@ class LoadInvoicesCommand extends Command
      *
      * @return string
      */
+    #[Override]
     public static function getDescription(): string
     {
         return 'Loading of invoices via POHODA mSERVER.';
@@ -39,6 +41,7 @@ class LoadInvoicesCommand extends Command
      * @param \Cake\Console\ConsoleOptionParser $parser The parser to be defined
      * @return \Cake\Console\ConsoleOptionParser The built parser.
      */
+    #[Override]
     public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
         return parent::buildOptionParser($parser)
@@ -62,6 +65,7 @@ class LoadInvoicesCommand extends Command
      * @param \Cake\Console\ConsoleIo $io The console io
      * @return int|null|void The exit code or null for success
      */
+    #[Override]
     public function execute(Arguments $args, ConsoleIo $io)
     {
         $username = env('POHODA_USERNAME', '');

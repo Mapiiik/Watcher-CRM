@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Migrations;
 
+use Override;
+
 /**
  * Users seed.
  */
@@ -18,6 +20,7 @@ class UsersSeed extends BaseSeed
      *
      * @return void
      */
+    #[Override]
     public function run(): void
     {
         $data = [

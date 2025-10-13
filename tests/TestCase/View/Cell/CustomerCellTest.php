@@ -5,6 +5,7 @@ namespace App\Test\TestCase\View\Cell;
 
 use App\View\Cell\CustomerCell;
 use Cake\TestSuite\TestCase;
+use Override;
 
 /**
  * App\View\Cell\CustomerCell Test Case
@@ -37,6 +38,7 @@ class CustomerCellTest extends TestCase
      *
      * @return void
      */
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -50,6 +52,7 @@ class CustomerCellTest extends TestCase
      *
      * @return void
      */
+    #[Override]
     protected function tearDown(): void
     {
         /** @phpstan-ignore unset.possiblyHookedProperty */
