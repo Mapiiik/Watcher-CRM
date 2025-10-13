@@ -77,7 +77,7 @@ class AppController extends Controller
     /**
      * @inheritDoc
      */
-    public function paginate(
+    public function paginate( // @phpstan-ignore missingType.generics
         RepositoryInterface|QueryInterface|string|null $object = null,
         array $settings = [],
     ): PaginatedInterface {

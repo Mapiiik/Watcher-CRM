@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface $cto_categories
+ * @var \Cake\Collection\CollectionInterface<string, mixed> $cto_categories
  * @var \Cake\I18n\Date $month_to_display
  */
 ?>

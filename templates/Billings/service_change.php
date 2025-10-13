@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Billing $billing
- * @var \Cake\Collection\CollectionInterface|array<string> $services
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $services
  */
 ?>
 <div class="row">

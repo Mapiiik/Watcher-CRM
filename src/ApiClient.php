@@ -30,7 +30,7 @@ class ApiClient
     /**
      * Fetch access points method
      *
-     * @return \Cake\Collection\CollectionInterface|null Return result from API
+     * @return \Cake\Collection\CollectionInterface<int, mixed>|null Return result from API
      */
     public static function fetchAccessPoints(): ?CollectionInterface
     {
@@ -54,7 +54,7 @@ class ApiClient
     /**
      * Get access points method
      *
-     * @return \Cake\Collection\CollectionInterface|null Return result from API or from cache if valid
+     * @return \Cake\Collection\CollectionInterface<int, mixed>|null Return result from API or from cache if valid
      */
     public static function getAccessPoints(): ?CollectionInterface
     {
@@ -134,7 +134,7 @@ class ApiClient
      * Search access point method
      *
      * @param array<string> $search access point condidions.
-     * @return \Cake\Collection\CollectionInterface|null Return result from API
+     * @return \Cake\Collection\CollectionInterface<int, mixed>|null Return result from API
      */
     public static function searchAccessPoints(array $search): ?CollectionInterface
     {
@@ -159,7 +159,7 @@ class ApiClient
      * Get access points for IP method
      *
      * @param string $ipAddress IP address.
-     * @return \Cake\Collection\CollectionInterface|null Return result from API or from cache if valid
+     * @return \Cake\Collection\CollectionInterface<int, mixed>|null Return result from API or from cache if valid
      */
     public static function getAccessPointsForIp(string $ipAddress): ?CollectionInterface
     {
@@ -175,7 +175,7 @@ class ApiClient
     /**
      * Fetch IP address ranges method
      *
-     * @return \Cake\Collection\CollectionInterface|null Return result from API
+     * @return \Cake\Collection\CollectionInterface<int, mixed>|null Return result from API
      */
     public static function fetchIpAddressRanges(): ?CollectionInterface
     {
@@ -199,7 +199,7 @@ class ApiClient
     /**
      * Get IP address ranges method
      *
-     * @return \Cake\Collection\CollectionInterface|null Return result from API or from cache if valid
+     * @return \Cake\Collection\CollectionInterface<int, mixed>|null Return result from API or from cache if valid
      */
     public static function getIpAddressRanges(): ?CollectionInterface
     {
@@ -258,7 +258,7 @@ class ApiClient
      * Search IP address ranges method
      *
      * @param array<string> $search IP address ranges condidions.
-     * @return \Cake\Collection\CollectionInterface|null Return result from API
+     * @return \Cake\Collection\CollectionInterface<int, mixed>|null Return result from API
      */
     public static function searchIpAddressRanges(array $search): ?CollectionInterface
     {
@@ -283,7 +283,7 @@ class ApiClient
      * Get IP address ranges for IP method
      *
      * @param string $ipAddress IP address.
-     * @return \Cake\Collection\CollectionInterface|null Return result from API or from cache if valid
+     * @return \Cake\Collection\CollectionInterface<int, mixed>|null Return result from API or from cache if valid
      */
     public static function getIpAddressRangesForIp(string $ipAddress): ?CollectionInterface
     {
@@ -300,7 +300,7 @@ class ApiClient
      * Search RouterOS Devices method
      *
      * @param array<string> $search IP address ranges condidions.
-     * @return \Cake\Collection\CollectionInterface|null Return result from API
+     * @return \Cake\Collection\CollectionInterface<int, mixed>|null Return result from API
      */
     public static function searchRouterosDevices(array $search): ?CollectionInterface
     {
@@ -325,7 +325,7 @@ class ApiClient
      * Get RouterOS Device for IP method
      *
      * @param string $ipAddress IP address.
-     * @return \Cake\Collection\CollectionInterface|null Return result from API or from cache if valid
+     * @return \Cake\Collection\CollectionInterface<mixed, mixed>|null Return result from API or from cache if valid
      */
     public static function getRouterosDevicesForIp(string $ipAddress): ?CollectionInterface
     {

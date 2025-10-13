@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Datasource\Paging\PaginatedResultSet<\App\Model\Entity\Service> $services
+ * @var \Cake\Datasource\Paging\PaginatedResultSet<int, mixed> $services
  * @var \Cake\I18n\Date $month_to_display
  * @var bool $show_billings
  */
@@ -135,7 +135,7 @@
             </div>
             <div>
                 <?php
-                /** @var \Cake\ORM\ResultSet<\App\Model\Entity\Service> $serviceItems */
+                /** @var \Cake\ORM\ResultSet<int, \App\Model\Entity\Service> $serviceItems */
                 $serviceItems = $services->items();
                 ?>
                 <?= __('Total Number of Uses') . ': '

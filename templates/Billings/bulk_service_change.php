@@ -5,8 +5,8 @@ use App\Model\Entity\Billing;
 /**
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Billing> $billings
- * @var \Cake\Collection\CollectionInterface|array<string> $services
- * @var \Cake\Collection\CollectionInterface|array<string> $accessPoints
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $services
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $accessPoints
  */
 ?>
 <div class="row">

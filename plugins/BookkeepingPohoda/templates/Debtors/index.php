@@ -3,7 +3,7 @@ use BookkeepingPohoda\Debtors\Debtor;
 
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface|iterable<\BookkeepingPohoda\Debtors\Debtor> $debtors
+ * @var \Cake\Collection\CollectionInterface<int, \BookkeepingPohoda\Debtors\Debtor> $debtors
  * @var \Cake\Form\Form $filterForm
  */
 ?>

@@ -2,8 +2,8 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Contract $contract
- * @var \Cake\Collection\CollectionInterface|array<string> $contractVersions
- * @var \Cake\Collection\CollectionInterface|array<string> $documentTypes
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $contractVersions
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $documentTypes
  */
 ?>
 <div class="row">

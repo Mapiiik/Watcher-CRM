@@ -2,9 +2,9 @@
 /**
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Contract> $contracts
- * @var \Cake\Collection\CollectionInterface|array<string> $labels
- * @var \Cake\Collection\CollectionInterface|array<string> $accessPoints
- * @var \Cake\Collection\CollectionInterface|array<string> $ruianAddresses
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $labels
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $accessPoints
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $ruianAddresses
  */
 ?>
 <div class="row">

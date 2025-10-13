@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Customer $customer
- * @var \Cake\Collection\CollectionInterface|array<string> $documentTypes
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $documentTypes
  */
 ?>
 <div class="row">

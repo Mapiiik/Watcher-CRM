@@ -5,7 +5,7 @@ use Cake\I18n\Date;
 
 /**
  * @var \App\View\AppView $this
- * @var \Cake\ORM\ResultSet<\BookkeepingPohoda\Model\Entity\Invoice> $invoices
+ * @var \Cake\ORM\ResultSet<int, \BookkeepingPohoda\Model\Entity\Invoice> $invoices
  * @var bool $show_customers
  */
 ?>

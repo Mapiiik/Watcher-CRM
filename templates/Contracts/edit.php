@@ -2,14 +2,14 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Contract $contract
- * @var \Cake\Collection\CollectionInterface|array<string> $contractStates
- * @var \Cake\Collection\CollectionInterface|array<string> $customers
- * @var \Cake\Collection\CollectionInterface|array<string> $serviceTypes
- * @var \Cake\Collection\CollectionInterface|array<string> $installationAddresses
- * @var \Cake\Collection\CollectionInterface|array<string> $accessPoints
- * @var \Cake\Collection\CollectionInterface|array<string> $installationTechnicians
- * @var \Cake\Collection\CollectionInterface|array<string> $uninstallationTechnicians
- * @var \Cake\Collection\CollectionInterface|array<string> $commissions
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $contractStates
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $customers
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $serviceTypes
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $installationAddresses
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $accessPoints
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $installationTechnicians
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $uninstallationTechnicians
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $commissions
  */
 ?>
 <div class="row">

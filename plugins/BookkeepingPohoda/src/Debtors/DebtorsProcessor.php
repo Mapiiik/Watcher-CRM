@@ -19,6 +19,9 @@ class DebtorsProcessor
 {
     use LocatorAwareTrait;
 
+    /**
+     * @var \Cake\Collection\CollectionInterface<string, \BookkeepingPohoda\Debtors\Debtor>|null
+     */
     private static ?CollectionInterface $debtors = null;
 
     private int $allowed_payment_delay;
@@ -82,9 +85,9 @@ class DebtorsProcessor
      *
      * All debtors, even those who are not overdue.
      *
-     * @return \Cake\Collection\CollectionInterface|iterable<\BookkeepingPohoda\Debtors\Debtor>
+     * @return \Cake\Collection\CollectionInterface<string, \BookkeepingPohoda\Debtors\Debtor>
      */
-    public function getDebtors(): CollectionInterface|iterable
+    public function getDebtors(): CollectionInterface
     {
         // Load debtors if not already loaded
         if (!isset(self::$debtors)) {
@@ -104,9 +107,9 @@ class DebtorsProcessor
      *
      * Debtors who are overdue (ignoring exceptions).
      *
-     * @return \Cake\Collection\CollectionInterface|iterable<\BookkeepingPohoda\Debtors\Debtor>
+     * @return \Cake\Collection\CollectionInterface<string, \BookkeepingPohoda\Debtors\Debtor>
      */
-    public function getOverdueDebtors(): CollectionInterface|iterable
+    public function getOverdueDebtors(): CollectionInterface
     {
         // Return filtered debtors
         return $this
@@ -124,9 +127,9 @@ class DebtorsProcessor
      *
      * Debtors who are overdue and do not even meet the set exceptions.
      *
-     * @return \Cake\Collection\CollectionInterface|iterable<\BookkeepingPohoda\Debtors\Debtor>
+     * @return \Cake\Collection\CollectionInterface<string, \BookkeepingPohoda\Debtors\Debtor>
      */
-    public function getFilteredOverdueDebtors(): CollectionInterface|iterable
+    public function getFilteredOverdueDebtors(): CollectionInterface
     {
         // Return filtered debtors
         return $this

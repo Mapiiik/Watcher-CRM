@@ -3,7 +3,7 @@ use Cake\Routing\Router;
 
 /**
  * @var \App\View\AppView $this
- * @var \Cake\ORM\ResultSet<\Radius\Model\Entity\Account> $accounts
+ * @var \Cake\ORM\ResultSet<int, \Radius\Model\Entity\Account> $accounts
  * @var bool $show_contracts
  */
 ?>

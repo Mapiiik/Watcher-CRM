@@ -2,8 +2,8 @@
 /**
  * @var \App\View\AppView $this
  * @var \Radius\Model\Entity\Radusergroup $radusergroup
- * @var \Cake\Collection\CollectionInterface|array<string> $accounts
- * @var \Cake\Collection\CollectionInterface|array<string> $groupnames
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $accounts
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $groupnames
  */
 ?>
 <div class="row">

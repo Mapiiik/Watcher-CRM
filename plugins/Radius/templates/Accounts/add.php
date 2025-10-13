@@ -2,8 +2,8 @@
 /**
  * @var \App\View\AppView $this
  * @var \Radius\Model\Entity\Account $account
- * @var \Cake\Collection\CollectionInterface|array<string> $customers
- * @var \Cake\Collection\CollectionInterface|array<string> $contracts
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $customers
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $contracts
  * @var string $new_username
  * @var string $new_password
  */

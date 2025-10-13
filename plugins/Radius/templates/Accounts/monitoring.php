@@ -5,8 +5,8 @@ use Cake\Routing\Router;
 /**
  * @var \App\View\AppView $this
  * @var \Radius\Model\Entity\Account $account
- * @var \Cake\Datasource\Paging\PaginatedResultSet<\Radius\Model\Entity\Radacct> $radaccts
- * @var \Cake\Datasource\Paging\PaginatedResultSet<\Radius\Model\Entity\Radpostauth> $radpostauths
+ * @var \Cake\Datasource\Paging\PaginatedResultSet<int, \Radius\Model\Entity\Radacct> $radaccts
+ * @var \Cake\Datasource\Paging\PaginatedResultSet<int, \Radius\Model\Entity\Radpostauth> $radpostauths
  * @var bool $details
  */
 ?>

@@ -8,7 +8,7 @@ use Riesenia\Pohoda;
  * @psalm-scope-this \App\View\AppView
  * @var iterable<\BookkeepingPohoda\Model\Entity\Invoice> $invoices
  * @var \Cake\I18n\Date $invoicedMonth
- * @var \Cake\Collection\CollectionInterface|array<string> $taxRates
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $taxRates
  * @var \App\Model\Entity\TaxRate $taxRate
  */
 

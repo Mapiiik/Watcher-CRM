@@ -2,8 +2,8 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Address $address
- * @var \Cake\Collection\CollectionInterface|array<string> $customers
- * @var \Cake\Collection\CollectionInterface|array<string> $countries
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $customers
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $countries
  */
 ?>
 <div class="row">

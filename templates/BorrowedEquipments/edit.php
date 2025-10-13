@@ -2,9 +2,9 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\BorrowedEquipment $borrowedEquipment
- * @var \Cake\Collection\CollectionInterface|array<string> $customers
- * @var \Cake\Collection\CollectionInterface|array<string> $contracts
- * @var \Cake\Collection\CollectionInterface|array<string> $equipmentTypes
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $customers
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $contracts
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $equipmentTypes
  */
 ?>
 <div class="row">

@@ -27,8 +27,8 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Contract $contract
- * @property \Cake\Collection\CollectionInterface|null $routeros_devices
- * @property \Cake\Collection\CollectionInterface|null $ip_address_ranges
+ * @property \Cake\Collection\CollectionInterface<int, mixed>|null $routeros_devices
+ * @property \Cake\Collection\CollectionInterface<int, mixed>|null $ip_address_ranges
  */
 class IpAddress extends Entity
 {
@@ -74,7 +74,7 @@ class IpAddress extends Entity
     /**
      * getter for RouterOS devices (try to load via ApiClient)
      *
-     * @return \Cake\Collection\CollectionInterface|null
+     * @return \Cake\Collection\CollectionInterface<int, mixed>|null
      */
     protected function _getRouterosDevices(): ?CollectionInterface
     {
@@ -90,7 +90,7 @@ class IpAddress extends Entity
     /**
      * getter for IP address ranges (try to load via ApiClient)
      *
-     * @return \Cake\Collection\CollectionInterface|null
+     * @return \Cake\Collection\CollectionInterface<int, mixed>|null
      */
     protected function _getIpAddressRanges(): ?CollectionInterface
     {

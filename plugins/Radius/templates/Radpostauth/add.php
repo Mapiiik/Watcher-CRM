@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \Radius\Model\Entity\Radpostauth $radpostauth
- * @var \Cake\Collection\CollectionInterface|array<string> $accounts
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $accounts
  */
 ?>
 <div class="row">

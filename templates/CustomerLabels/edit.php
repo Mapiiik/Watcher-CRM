@@ -2,9 +2,9 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\CustomerLabel $customerLabel
- * @var \Cake\Collection\CollectionInterface|array<string> $labels
- * @var \Cake\Collection\CollectionInterface|array<string> $customers
- * @var \Cake\Collection\CollectionInterface|array<string> $contracts
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $labels
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $customers
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $contracts
  */
 ?>
 <div class="row">

@@ -2,8 +2,8 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\DealerCommission $dealerCommission
- * @var \Cake\Collection\CollectionInterface|array<string> $commissions
- * @var \Cake\Collection\CollectionInterface|array<string> $dealers
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $commissions
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $dealers
  */
 ?>
 <div class="row">

@@ -993,7 +993,10 @@ class MigratePrimaryKeysToUuidAndAddForeignKeys extends BaseMigration
                     }
 
                     // add foreign key if required
-                    /** @psalm-suppress RedundantCondition */
+                    /**
+                     * @psalm-suppress RedundantCondition
+                     * @phpstan-ignore identical.alwaysTrue
+                     */
                     if ($related_table['add_fk'] === true) {
                         $rtable->addForeignKey(
                             $related_table['original'],
