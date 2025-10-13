@@ -36,9 +36,8 @@ trait UserSettingsTrait
             $this->Flash->error(
                 __d('app_users', "You are not allowed to edit another user's settings."),
             );
-            $this->redirect(Configure::read('Users.Profile.route'));
 
-            return;
+            return $this->redirect(Configure::read('Users.Profile.route'));
         }
 
         /** @var \App\Model\Table\AppUsersTable $usersTable */
