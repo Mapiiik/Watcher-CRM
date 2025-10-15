@@ -126,6 +126,11 @@ use App\Model\Entity\Billing;
                     'type' => 'checkbox',
                     'checked' => true,
                 ]) ?>
+                <?= $this->Form->control('version_without_legislative_information', [
+                    'label' => __('Version without legislative information'),
+                    'type' => 'checkbox',
+                    'checked' => false,
+                ]) ?>
             </fieldset>
             <?= $this->Form->button(
                 __('Submit'),

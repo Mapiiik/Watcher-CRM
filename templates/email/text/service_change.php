@@ -35,12 +35,18 @@ Vaše přípojka měla historicky nastavenou zvýhodněnou sazbu. Proto i nový 
 
 <?php endif; ?>
 
+<?php if ($data['original_billing_total_price'] == $data['new_billing_total_price']) : ?>
+Z hlediska fakturace se pro Vás tímto nic nemění.
+<?php else : ?>
 Jelikož se fakturuje zpětně, první platba za nový tarif by měla proběhnout v období od <?= $billing_date ?> do <?= $billing_date->addDays(10) ?>.
+<?php endif; ?>
 
+<?php if (!$data['version_without_legislative_information']) : ?>
 Aktuálně platný ceník je uveřejněný na našich internetových stránkách zde: https://netair.cz/cenik-pripojeni/
 
 V souladu s ust. § 63 odst. 6 zákona č. 127/2005 Sb. o elektronických komunikacích Vás také informujeme, že jestliže tuto změnu neakceptujete, jste oprávněn smlouvu s naší společností bez sankce vypovědět k datu nabytí účinnosti této změny.
 
+<?php endif; ?>
 Pokud budete mít jakékoliv dotazy nebo máte zájem o jiný tarif, než který navrhujeme, neváhejte nás kontaktovat.
 
 NETAIR, s.r.o.

@@ -452,6 +452,9 @@ class BillingsController extends AppController
     {
         // load send_customer_notification parameter
         $send_customer_notification = ($this->getRequest()->getData('send_customer_notification') == '1');
+        // load version_without_legislative_information parameter
+        $version_without_legislative_information =
+            ($this->getRequest()->getData('version_without_legislative_information') == '1');
 
         // create new billing entity
         $original_billing_data = $original_billing->toArray();
@@ -517,6 +520,7 @@ class BillingsController extends AppController
                         'new_billing_fixed_discount_sum' => $new_billing->fixed_discount_sum->toFloat(),
                         'new_billing_total_price' => $new_billing->total_price->toFloat(),
                         'new_billing_from' => h($new_billing->billing_from),
+                        'version_without_legislative_information' => $version_without_legislative_information,
                     ],
                 ],
                 options: [
