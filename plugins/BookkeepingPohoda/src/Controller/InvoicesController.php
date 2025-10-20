@@ -724,6 +724,7 @@ class InvoicesController extends AppController
                     }
                 }
                 // close database
+                /** @psalm-suppress UnusedFunctionCall */
                 dbase_close($dbase);
                 //remove file
                 unlink($_FILES['dbf_for_import']['tmp_name']);

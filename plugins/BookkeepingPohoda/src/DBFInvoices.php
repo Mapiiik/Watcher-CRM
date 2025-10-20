@@ -97,6 +97,7 @@ class DBFInvoices
      */
     public function closeDBF(): void
     {
+        /** @psalm-suppress UnusedFunctionCall */
         dbase_close($this->dbf);
     }
 
@@ -167,6 +168,7 @@ class DBFInvoices
                 $xdata[] = $value;
             }
         }
+        /** @psalm-suppress UnusedFunctionCall */
         dbase_add_record($this->dbf, $xdata);
         unset($data);
         unset($xdata);
