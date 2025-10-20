@@ -272,7 +272,8 @@ use Cake\Routing\Router;
                             <?php endif ?>
                             <td>
                                 <div
-                                    hx-get="<?= Router::url([
+                                    class="lazy-load"
+                                    data-url="<?= Router::url([
                                         'prefix' => 'Api',
                                         'plugin' => null,
                                         'controller' => 'NetworkManagementSystemBridge',
@@ -280,7 +281,7 @@ use Cake\Routing\Router;
                                         'ip_address' => $radacct->nasipaddress,
                                         '_ext' => 'ajax',
                                     ]) ?>"
-                                    hx-trigger="load"><?= __d('radius', 'Loading...') ?></div>
+                                    data-trigger="load"><?= __d('radius', 'Loading...') ?></div>
                             </td>
                             <td><?= h($radacct->acctstarttime) ?></td>
                             <?php if ($details) : ?>

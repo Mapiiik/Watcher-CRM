@@ -46,25 +46,27 @@ use Cake\Routing\Router;
                 ]) ?></td>
             <td>
                 <div
-                    hx-get="<?= Router::url([
+                    class="lazy-load"
+                    data-url="<?= Router::url([
                         'prefix' => 'Api',
                         'controller' => 'NetworkManagementSystemBridge',
                         'action' => 'routerosDevices',
                         'ip_address' => $ipAddress->ip_address,
                         '_ext' => 'ajax',
                     ]) ?>"
-                    hx-trigger="load"><?= __('Loading...') ?></div>
+                    data-trigger="load"><?= __('Loading...') ?></div>
             </td>
             <td>
                 <div
-                    hx-get="<?= Router::url([
+                    class="lazy-load"
+                    data-url="<?= Router::url([
                         'prefix' => 'Api',
                         'controller' => 'NetworkManagementSystemBridge',
                         'action' => 'ipAddressRanges',
                         'ip_network' => $ipAddress->ip_address,
                         '_ext' => 'ajax',
                     ]) ?>"
-                    hx-trigger="load"><?= __('Loading...') ?></div>
+                    data-trigger="load"><?= __('Loading...') ?></div>
             </td>
             <td class="actions">
                 <?= $this->AuthLink->link(

@@ -39,14 +39,15 @@ use Cake\Routing\Router;
             <td><?= h($ipNetwork->note) ?></td>
             <td>
                 <div
-                    hx-get="<?= Router::url([
+                    class="lazy-load"
+                    data-url="<?= Router::url([
                         'prefix' => 'Api',
                         'controller' => 'NetworkManagementSystemBridge',
                         'action' => 'ipAddressRanges',
                         'ip_network' => strtr($ipNetwork->ip_network, ['/' => '-mask-']),
                         '_ext' => 'ajax',
                     ]) ?>"
-                    hx-trigger="load"><?= __('Loading...') ?></div>
+                    data-trigger="load"><?= __('Loading...') ?></div>
             </td>
             <td class="actions">
                 <?= $this->AuthLink->link(
