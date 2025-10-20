@@ -354,16 +354,16 @@
         },
         {
             "name": "cakephp/cakephp",
-            "version": "5.2.8",
+            "version": "5.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "b51b13ff8df7f9160a261b978eb93efe1210ad2c"
+                "reference": "12d41e43f945c1cb38ef3d983a9d87f9b13c041f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/b51b13ff8df7f9160a261b978eb93efe1210ad2c",
-                "reference": "b51b13ff8df7f9160a261b978eb93efe1210ad2c",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/12d41e43f945c1cb38ef3d983a9d87f9b13c041f",
+                "reference": "12d41e43f945c1cb38ef3d983a9d87f9b13c041f",
                 "shasum": ""
             },
             "require": {
@@ -471,7 +471,7 @@
                 "issues": "https://github.com/cakephp/cakephp/issues",
                 "source": "https://github.com/cakephp/cakephp"
             },
-            "time": "2025-09-24T02:35:28+00:00"
+            "time": "2025-10-17T03:14:02+00:00"
         },
         {
             "name": "cakephp/chronos",
@@ -2570,16 +2570,16 @@
         },
         {
             "name": "mlocati/ip-lib",
-            "version": "1.21.0",
+            "version": "1.22.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mlocati/ip-lib.git",
-                "reference": "b5d38cdcbfc1516604d821a1f3f4a1638f327267"
+                "reference": "4e40ffd3bf9989db19403d89c4d8be44b87b8a91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mlocati/ip-lib/zipball/b5d38cdcbfc1516604d821a1f3f4a1638f327267",
-                "reference": "b5d38cdcbfc1516604d821a1f3f4a1638f327267",
+                "url": "https://api.github.com/repos/mlocati/ip-lib/zipball/4e40ffd3bf9989db19403d89c4d8be44b87b8a91",
+                "reference": "4e40ffd3bf9989db19403d89c4d8be44b87b8a91",
                 "shasum": ""
             },
             "require": {
@@ -2625,7 +2625,7 @@
             ],
             "support": {
                 "issues": "https://github.com/mlocati/ip-lib/issues",
-                "source": "https://github.com/mlocati/ip-lib/tree/1.21.0"
+                "source": "https://github.com/mlocati/ip-lib/tree/1.22.0"
             },
             "funding": [
                 {
@@ -2637,7 +2637,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2025-09-24T13:58:50+00:00"
+            "time": "2025-10-15T12:35:09+00:00"
         },
         {
             "name": "mobiledetect/mobiledetectlib",
