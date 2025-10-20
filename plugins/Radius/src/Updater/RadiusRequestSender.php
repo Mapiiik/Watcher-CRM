@@ -33,6 +33,7 @@ class RadiusRequestSender
      *
      * @param \Radius\Model\Entity\Radacct $session RADIUS Accounting Record.
      * @return bool Returns true if the disconnection was successful.
+     * @psalm-suppress PossiblyUnusedReturnValue
      */
     public function sendDisconnectRequest(Radacct $session): bool
     {

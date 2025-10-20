@@ -9,13 +9,13 @@ if (isset($routerosDevices)) {
     echo isset($device['access_point']['id']) ?
         __('Access Point') . ': ' . $this->Html->link(
             $device['access_point']['name'],
-            env('WATCHER_NMS_URL') . '/access-points/view/' . $device['access_point']['id'],
+            (string)env('WATCHER_NMS_URL') . '/access-points/view/' . $device['access_point']['id'],
             ['target' => '_blank'],
         ) . '<br>' : '';
     echo isset($device['id']) ?
         $this->Html->link(
             $device['name'],
-            env('WATCHER_NMS_URL') . '/routeros-devices/view/' . $device['id'],
+            (string)env('WATCHER_NMS_URL') . '/routeros-devices/view/' . $device['id'],
             ['target' => '_blank'],
         ) . '<br>' : '';
     unset($device);

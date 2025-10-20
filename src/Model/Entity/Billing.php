@@ -186,7 +186,7 @@ class Billing extends Entity
     public static function calcVatFromTotal(Decimal $total, float $vat_rate): Decimal
     {
         return $total->subtract(
-            $total->divide(1 + $vat_rate, 4)->round(2),
+            $total->divide(1.0 + $vat_rate, 4)->round(2),
         );
     }
 

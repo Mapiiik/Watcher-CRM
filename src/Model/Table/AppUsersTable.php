@@ -24,6 +24,7 @@ use Override;
  * @method iterable<\App\Model\Entity\AppUser> saveManyOrFail(iterable $entities, $options = [])
  * @method iterable<\App\Model\Entity\AppUser>|false deleteMany(iterable $entities, $options = [])
  * @method iterable<\App\Model\Entity\AppUser> deleteManyOrFail(iterable $entities, $options = [])
+ * @psalm-suppress MethodSignatureMismatch
  */
 class AppUsersTable extends UsersTable
 {

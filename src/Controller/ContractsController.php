@@ -1021,7 +1021,7 @@ class ContractsController extends AppController
             $billings_collection = new Collection($contract->billings);
 
             $active_billings_collection = $billings_collection->reject(
-                function ($billing, $key) use ($contract_version) {
+                function ($billing, $_key) use ($contract_version) {
                     return (
                             $billing->__isset('billing_from')
                             && $billing->billing_from > $contract_version->valid_from
@@ -1032,16 +1032,16 @@ class ContractsController extends AppController
                 },
             );
 
-            $contract['individual_billings'] = $active_billings_collection->filter(function ($billing, $key) {
+            $contract['individual_billings'] = $active_billings_collection->filter(function ($billing, $_key) {
                 return $billing->__isset('price');
             })->toArray();
 
-            $contract['standard_billings'] = $active_billings_collection->filter(function ($billing, $key) {
+            $contract['standard_billings'] = $active_billings_collection->filter(function ($billing, $_key) {
                 return !$billing->__isset('price');
             })->toArray();
 
             $future_billings_collection = $billings_collection->reject(
-                function ($billing, $key) use ($contract_version) {
+                function ($billing, $_key) use ($contract_version) {
                     return (
                             $billing->__isset('billing_from')
                             && $billing->billing_from <= $contract_version->valid_from
@@ -1052,11 +1052,11 @@ class ContractsController extends AppController
                 },
             );
 
-            $contract['future_individual_billings'] = $future_billings_collection->filter(function ($billing, $key) {
+            $contract['future_individual_billings'] = $future_billings_collection->filter(function ($billing, $_key) {
                 return $billing->__isset('price');
             })->toArray();
 
-            $contract['future_standard_billings'] = $future_billings_collection->filter(function ($billing, $key) {
+            $contract['future_standard_billings'] = $future_billings_collection->filter(function ($billing, $_key) {
                 return !$billing->__isset('price');
             })->toArray();
         }

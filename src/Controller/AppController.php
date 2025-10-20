@@ -207,6 +207,7 @@ class AppController extends Controller
      *
      * @param array <string, mixed> $query Query parameters to be added to the URL
      * @return string
+     * @psalm-suppress PossiblyUnusedMethod
      */
     public function urlWithQuery(array $query = []): string
     {

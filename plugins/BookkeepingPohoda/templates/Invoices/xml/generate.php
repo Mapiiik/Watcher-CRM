@@ -4,6 +4,7 @@ use App\Model\Entity\Billing;
 use Riesenia\Pohoda;
 
 /**
+ * @psalm-suppress UnnecessaryVarAnnotation
  * @var \App\View\AppView $this
  * @psalm-scope-this \App\View\AppView
  * @var iterable<\BookkeepingPohoda\Model\Entity\Invoice> $invoices
@@ -24,7 +25,6 @@ $xmlFilename = TMP . uniqid('invoices-', true) . '.xml';
 $pohoda->open($xmlFilename, (string)$invoicedMonth->i18nFormat('yyyy-MM'), 'Import invoices');
 
 foreach ($invoices as $invoice) {
-    /** @var \BookkeepingPohoda\Model\Entity\Invoice $invoice */
     $invoiceRecord = $pohoda->createInvoice([
         'invoiceType' => 'issuedInvoice',
         'number' => [

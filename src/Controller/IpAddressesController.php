@@ -554,7 +554,7 @@ class IpAddressesController extends AppController
             ->toArray();
 
         // test all IP addresses in range for availability
-        for ($i = (int)env('OFFSET_OF_FIRST_AVAILABLE_IP_ADDRESS', '1'); $i < $rangeSize - 1; $i++) {
+        for ($i = (int)env('OFFSET_OF_FIRST_AVAILABLE_IP_ADDRESS', '1'); $i < (int)$rangeSize - 1; $i++) {
             $ipFromRange = $range->getAddressAtOffset($i);
 
             // skip IP gateway

@@ -14,7 +14,7 @@
     </aside>
     <div class="column column-90">
         <div class="overviews index content">
-            <?php foreach ($cto_categories as $cto_category => $connection_points) : ?>
+            <?php foreach ($cto_categories as $cto_category => $_connection_points) : ?>
                 <?= $this->AuthLink->link(
                     __('Export') . ' ' . $cto_category,
                     [

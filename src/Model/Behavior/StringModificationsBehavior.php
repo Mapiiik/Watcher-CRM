@@ -29,6 +29,7 @@ class StringModificationsBehavior extends Behavior
      * @param \Cake\Event\EventInterface<\Cake\ORM\Table> $event Event
      * @param \ArrayObject<string, mixed> $data Data
      * @param \ArrayObject<string, mixed> $options Options
+     * @psalm-suppress PossiblyUnusedParam
      * @return void
      */
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void

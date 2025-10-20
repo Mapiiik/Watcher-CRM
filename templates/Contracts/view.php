@@ -47,9 +47,9 @@
                     ['controller' => 'CustomerLabels', 'action' => 'view', $customer_label->id],
                     [
                         'class' => 'app-label win-link',
-                        'title' => $customer_label->label->caption . PHP_EOL
-                            . $customer_label->created . PHP_EOL
-                            . $customer_label->note,
+                        'title' => h($customer_label->label->caption) . PHP_EOL
+                            . h($customer_label->created) . PHP_EOL
+                            . h($customer_label->note),
                         'style' => 'background-color: ' . $customer_label->label->color . ';',
                     ],
                 ) ?>

@@ -68,9 +68,9 @@ class LoadInvoicesCommand extends Command
     #[Override]
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        $username = env('POHODA_USERNAME', '');
-        $password = env('POHODA_PASSWORD', '');
-        $url = env('POHODA_MSERVER_URL', 'http://localhost:44444');
+        $username = (string)env('POHODA_USERNAME', '');
+        $password = (string)env('POHODA_PASSWORD', '');
+        $url = (string)env('POHODA_MSERVER_URL', 'http://localhost:44444');
 
         $timestamp = new DateTime(); // now()
         $timeout = 3600; // Timeout for the HTTP request
@@ -304,9 +304,9 @@ class LoadInvoicesCommand extends Command
             $priceLowSumNodes = $invoice->xpath('./inv:invoiceSummary/inv:homeCurrency/typ:priceLowSum');
             $priceHighSumNodes = $invoice->xpath('./inv:invoiceSummary/inv:homeCurrency/typ:priceHighSum');
 
-            $priceNone = $priceNoneNodes ? (float)$priceNoneNodes[0] : 0;
-            $priceLowSum = $priceLowSumNodes ? (float)$priceLowSumNodes[0] : 0;
-            $priceHighSum = $priceHighSumNodes ? (float)$priceHighSumNodes[0] : 0;
+            $priceNone = $priceNoneNodes ? (float)$priceNoneNodes[0] : 0.0;
+            $priceLowSum = $priceLowSumNodes ? (float)$priceLowSumNodes[0] : 0.0;
+            $priceHighSum = $priceHighSumNodes ? (float)$priceHighSumNodes[0] : 0.0;
 
             $invoiceInfo['totalAmount'] = $priceNone + $priceLowSum + $priceHighSum; // Correct calculation
 
@@ -469,7 +469,7 @@ class LoadInvoicesCommand extends Command
      */
     private function loadLastSynchronizationTime(): ?DateTime
     {
-        $filename = env('DATA_ROOT', ROOT . DS . 'data') . DS . 'invoices' . DS . 'last_sync.txt';
+        $filename = (string)env('DATA_ROOT', ROOT . DS . 'data') . DS . 'invoices' . DS . 'last_sync.txt';
 
         if (!file_exists($filename)) {
             return null; // Early return if file does not exist
@@ -510,7 +510,7 @@ class LoadInvoicesCommand extends Command
      */
     private function saveLastSynchronizationTime(DateTime $dateTime): void
     {
-        $filename = env('DATA_ROOT', ROOT . DS . 'data') . DS . 'invoices' . DS . 'last_sync.txt';
+        $filename = (string)env('DATA_ROOT', ROOT . DS . 'data') . DS . 'invoices' . DS . 'last_sync.txt';
 
         $result = file_put_contents($filename, $dateTime->format('Y-m-d H:i:s'));
         if ($result === false) {

@@ -90,9 +90,9 @@ class Address extends Entity
         $street_and_number = '';
 
         if (!empty($this->ulice_nazev)) {
-                $street_and_number .= $this->ulice_nazev . ' ' . $this->cislo_domovni;
+                $street_and_number .= $this->ulice_nazev . ' ' . (string)$this->cislo_domovni;
         } else {
-                $street_and_number .= $this->typ_so . ' ' . $this->cislo_domovni;
+                $street_and_number .= $this->typ_so . ' ' . (string)$this->cislo_domovni;
         }
 
         return $street_and_number;

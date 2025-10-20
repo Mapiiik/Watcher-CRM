@@ -591,7 +591,7 @@ class TasksController extends AppController
         $identity = $this->getRequest()->getAttribute('identity');
         $text .= '------------------------------------------------------------' . PHP_EOL;
         $text .= ' ' . ($identity['first_name'] ?? '') . ' ' . ($identity['last_name'] ?? '');
-        $text .= ' (' . DateTime::now() . ')' . PHP_EOL;
+        $text .= ' (' . DateTime::now()->__toString() . ')' . PHP_EOL;
         $text .= '------------------------------------------------------------' . PHP_EOL;
         unset($identity);
 

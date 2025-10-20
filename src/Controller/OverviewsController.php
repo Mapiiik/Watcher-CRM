@@ -646,11 +646,10 @@ class OverviewsController extends AppController
     /**
      * Overview of connection speeds method
      *
-     * @param string|null $category Optional parameter, CTO category.
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function overviewOfCustomerConnectionSpeeds(?string $category = null)
+    public function overviewOfCustomerConnectionSpeeds()
     {
         $month_to_display = new Date($this->getRequest()->getQuery('month_to_display', 'now'));
 

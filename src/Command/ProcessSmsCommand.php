@@ -84,7 +84,7 @@ class ProcessSmsCommand extends Command
             case ProcessState::FAILED():
                 return CustomerMessageDeliveryStatus::Failed;
             default:
-                throw new InvalidArgumentException('Invalid messsage state: ' . $messageState->State());
+                throw new InvalidArgumentException('Invalid messsage state: ' . $messageState->State()->__toString());
         }
     }
 

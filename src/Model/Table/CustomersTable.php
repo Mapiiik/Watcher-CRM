@@ -310,7 +310,7 @@ class CustomersTable extends AppTable
         $rules->add($rules->existsIn(['tax_rate_id'], 'TaxRates'), ['errorField' => 'tax_rate_id']);
 
         $rules->add(
-            function ($entity, $options) {
+            function ($entity, $_options) {
                 // allow empty IC
                 if (is_null($entity->ic)) {
                     return true;

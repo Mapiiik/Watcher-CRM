@@ -93,7 +93,7 @@ class SendIssuedInvoicesCommand extends Command
                 $mailer->setSubject(
                     'NETAIR - ' . $invoice->text
                         . ' - ' . $invoice->number
-                        . ' - VS: ' . $invoice->variable_symbol,
+                        . ' - VS: ' . (string)$invoice->variable_symbol,
                 );
 
                 // define date format
@@ -102,11 +102,11 @@ class SendIssuedInvoicesCommand extends Command
                 $message =
                     'Vážený zákazníku,' . PHP_EOL
                     . PHP_EOL
-                    . 'dne ' . $invoice->creation_date
+                    . 'dne ' . $invoice->creation_date->__toString()
                     . ' Vám byla vystavena faktura - daňový doklad č. ' . $invoice->number
-                    . ' splatná ' . $invoice->due_date . '.' . PHP_EOL
+                    . ' splatná ' . $invoice->due_date->__toString() . '.' . PHP_EOL
                     . PHP_EOL
-                    . 'Variabilní symbol pro platbu: ' . $invoice->variable_symbol . PHP_EOL
+                    . 'Variabilní symbol pro platbu: ' . (string)$invoice->variable_symbol . PHP_EOL
                     . 'Číslo našeho účtu: 207385091/0100' . PHP_EOL
                     . 'Celková částka (včetně DPH): ' . Number::currency($invoice->total->toFloat()) . PHP_EOL
                     . PHP_EOL
@@ -130,7 +130,7 @@ class SendIssuedInvoicesCommand extends Command
                     $mailer->setAttachments([
                         'Faktura_' . $invoice->number . '.pdf' => [
                             'file' =>
-                                env('DATA_ROOT', DS . 'data' . DS)
+                                (string)env('DATA_ROOT', DS . 'data' . DS)
                                 . 'invoices' . DS . 'Faktura_' . $invoice->number . '.pdf',
                             'mimetype' => 'application/pdf',
                             'contentId' => 'invoice-' . $invoice->number,
@@ -183,7 +183,7 @@ class SendIssuedInvoicesCommand extends Command
                 unset($mailer);
             } else {
                 Log::warning('Skipping invoice because no valid contact found.'
-                    . ' (' . $invoice->number . ' - ' . $invoice->variable_symbol . ')');
+                    . ' (' . $invoice->number . ' - ' . (string)$invoice->variable_symbol . ')');
 
                 // do not attempt to re-deliver this invoice by email
                 $invoice->send_by_email = false;

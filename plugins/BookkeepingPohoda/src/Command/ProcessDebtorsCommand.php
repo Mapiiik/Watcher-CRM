@@ -276,7 +276,7 @@ class ProcessDebtorsCommand extends Command
         foreach ($debtor->getInvoices() as $invoice) {
             $attachments['Faktura_' . $invoice->number . '.pdf'] = [
                 'file' =>
-                    env('DATA_ROOT', DS . 'data' . DS)
+                    (string)env('DATA_ROOT', DS . 'data' . DS)
                     . 'invoices' . DS . 'Faktura_' . $invoice->number . '.pdf',
                 'mimetype' => 'application/pdf',
                 'contentId' => 'invoice-' . $invoice->number,

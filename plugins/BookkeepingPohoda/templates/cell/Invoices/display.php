@@ -84,7 +84,7 @@ use Cake\I18n\Date;
         <?= __d('bookkeeping_pohoda', 'Total Overdue Debt') . ': '
             . $this->Number->currency(
                 $invoices
-                    ->filter(function ($value, $key) {
+                    ->filter(function ($value, $_key) {
                         return $value->due_date < Date::now();
                     })
                     ->sumOf(

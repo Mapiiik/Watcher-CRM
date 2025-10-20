@@ -155,7 +155,7 @@ class TasksTable extends AppTable
         $rules->add($rules->existsIn(['task_state_id'], 'TaskStates'), ['errorField' => 'task_state_id']);
 
         $rules->add(
-            function ($entity, $options) {
+            function ($entity, $_options) {
                 // load task type
                 $task_type = $this->TaskTypes->get($entity->task_type_id);
                 // check if customer required for this task type
@@ -173,7 +173,7 @@ class TasksTable extends AppTable
         );
 
         $rules->add(
-            function ($entity, $options) {
+            function ($entity, $_options) {
                 // load task type
                 $task_type = $this->TaskTypes->get($entity->task_type_id);
                 // check if contract required for this task type

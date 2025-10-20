@@ -20,6 +20,7 @@ use Cake\Error\Debugger;
 use Cake\Http\Exception\NotFoundException;
 
 /**
+ * @psalm-suppress UnnecessaryVarAnnotation
  * @var \App\View\AppView $this
  * @psalm-scope-this \App\View\AppView
  */

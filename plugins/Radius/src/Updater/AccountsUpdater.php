@@ -70,6 +70,7 @@ class AccountsUpdater
      *
      * @param string|null $id Account id.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @psalm-suppress PossiblyUnusedReturnValue
      */
     public function updateRelatedRecords(?string $id = null): bool
     {

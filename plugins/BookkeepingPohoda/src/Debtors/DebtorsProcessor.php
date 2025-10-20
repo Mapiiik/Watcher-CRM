@@ -69,7 +69,7 @@ class DebtorsProcessor
             ->all()
             ->groupBy('customer.id')
             ->map(
-                function ($invoices, $customer_id) {
+                function ($invoices, $_customer_id) {
                     return new Debtor($invoices);
                 },
             )
@@ -211,6 +211,7 @@ class DebtorsProcessor
      * @param array<string> $ids Customer IDs.
      * @return string List of performed changes.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @psalm-suppress PossiblyUnusedMethod
      */
     public function blockMany(array $ids): string
     {
@@ -247,6 +248,7 @@ class DebtorsProcessor
      * @param array<string> $ids Customer IDs.
      * @return string List of performed changes.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @psalm-suppress PossiblyUnusedMethod
      */
     public function unblockMany(array $ids): string
     {
@@ -324,6 +326,7 @@ class DebtorsProcessor
      * Adds a label for the customer
      *
      * @param string $id Customer ID.
+     * @psalm-suppress UnusedReturnValue
      */
     private function addLabel(string $id): CustomerLabel|false
     {
@@ -356,6 +359,7 @@ class DebtorsProcessor
      * @param string $id Customer ID.
      * @return iterable<\App\Model\Entity\CustomerLabel>|false Entities list
      *   on success, false on failure.
+     * @psalm-suppress UnusedReturnValue
      */
     private function removeLabel(string $id): iterable|false
     {
@@ -386,6 +390,7 @@ class DebtorsProcessor
      * @param \Cake\I18n\DateTime $older_than Only labels with last modification older than this parameter.
      * @return iterable<\App\Model\Entity\CustomerLabel>|false Entities list
      *   on success, false on failure.
+     * @psalm-suppress UnusedReturnValue
      */
     private function clearLabel(DateTime $older_than): iterable|false
     {

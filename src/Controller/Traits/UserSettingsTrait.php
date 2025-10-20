@@ -54,6 +54,7 @@ trait UserSettingsTrait
         );
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            /** @var \App\Model\Entity\AppUser $user */
             $user = $usersTable->patchEntity($user, [
                 'user_settings' => $this->getRequest()->getData('user_settings'),
             ]);

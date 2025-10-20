@@ -11,6 +11,8 @@ use Override;
 
 /**
  * Plugin for RUIAN
+ *
+ * @psalm-suppress UnusedClass
  */
 class RuianPlugin extends BasePlugin
 {

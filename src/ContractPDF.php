@@ -85,8 +85,8 @@ class ContractPDF extends TCPDF
                 140,
                 4,
                 $billing->name
-                . ($billing->billing_from > $contract_version->valid_from ? ' od ' . $billing->billing_from : '')
-                . ($billing->billing_until ? ' do ' . $billing->billing_until : ''),
+                . ($billing->billing_from > $contract_version->valid_from ? ' od ' . $billing->billing_from->__toString() : '')
+                . ($billing->billing_until ? ' do ' . $billing->billing_until->__toString() : ''),
                 align: 'L',
                 stretch: 1,
             );
@@ -96,7 +96,7 @@ class ContractPDF extends TCPDF
             if ($billing->percentage_discount_sum->isPositive()) {
                 $this->SetFont('DejaVuSerif', '' . $format, 8);
                 $this->Cell(4, 4);
-                $this->Cell(140, 4, ' - sleva ve výši ' . $billing->percentage_discount . ' % z ceny této služby');
+                $this->Cell(140, 4, ' - sleva ve výši ' . (string)$billing->percentage_discount . ' % z ceny této služby');
                 $this->Cell(35, 4, Number::currency($billing->percentage_discount_sum->negate()->toFloat()), align: 'R');
                 $this->Ln();
             }
@@ -177,7 +177,7 @@ class ContractPDF extends TCPDF
         }
 
         $this->Ln(4);
-        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
         $this->Ln(0.5);
 
         switch ($type) {
@@ -191,7 +191,7 @@ class ContractPDF extends TCPDF
                 $this->Cell(90, 4, (string)$contract_version->valid_from, align: 'C');
                 $this->Ln();
 
-                $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
+                $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
                 $this->Ln(3);
 
                 $this->SetFont('DejaVuSerif', 'B', 9);
@@ -208,7 +208,7 @@ class ContractPDF extends TCPDF
                 $this->Cell(90, 4, (string)$contract_version->valid_until, align: 'C');
                 $this->Ln();
 
-                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
                 $this->Ln(3);
 
                 $this->SetFont('DejaVuSerif', 'B', 9);
@@ -221,7 +221,7 @@ class ContractPDF extends TCPDF
         $this->Cell(45, 4, 'Poskytovatelem:');
         $this->Ln();
 
-        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
 
         $this->Ln(1);
         $this->SetFont('DejaVuSerif', 'B', 8);
@@ -259,7 +259,7 @@ class ContractPDF extends TCPDF
         $this->Cell(30, 4);
         $this->MultiCell(157, 4, 'zapsaným v obchodním rejstříku vedeném u Krajského soudu v Hradci Králové, oddíl C, vložka 22450.', align: 'L');
 
-        $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
+        $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
         $this->Ln(3);
 
         $this->SetFont('DejaVuSerif', 'B', 9);
@@ -278,7 +278,7 @@ class ContractPDF extends TCPDF
 
         $this->Ln();
 
-        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
         $this->Ln(0.5);
 
         $addressStartY = $this->GetY();
@@ -382,7 +382,7 @@ class ContractPDF extends TCPDF
             $this->MultiCell(160, 4, $contract->permanent_address->full_address, align: 'L');
         }
 
-        $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
+        $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
 
         $this->Ln(4);
 
@@ -394,7 +394,7 @@ class ContractPDF extends TCPDF
             $this->Ln();
 
             $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', '', 8);
@@ -519,7 +519,7 @@ class ContractPDF extends TCPDF
                 $this->Ln();
 
                 $this->Ln(0.4);
-                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
                 $this->Ln(1);
 
                 $this->SetFont('DejaVuSerif', '', 8);
@@ -552,12 +552,12 @@ class ContractPDF extends TCPDF
 
             // CROSS
             $this->Ln(5);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY()); // --
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, 285); // \
-            $this->Line($this->GetX(), 285, $this->GetX() + 187, $this->GetY()); // /
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), 285); // |
-            $this->Line($this->GetX() + 187, $this->GetY(), $this->GetX() + 187, 285); // |
-            $this->Line($this->GetX(), 285, $this->GetX() + 187, 285); // --
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY()); // --
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, 285.0); // \
+            $this->Line($this->GetX(), 285.0, $this->GetX() + 187.0, $this->GetY()); // /
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), 285.0); // |
+            $this->Line($this->GetX() + 187.0, $this->GetY(), $this->GetX() + 187.0, 285.0); // |
+            $this->Line($this->GetX(), 285.0, $this->GetX() + 187.0, 285.0); // --
 
             // add a page
             $this->AddPage();
@@ -568,7 +568,7 @@ class ContractPDF extends TCPDF
             $this->Ln();
 
             $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', '', 8);
@@ -663,7 +663,7 @@ class ContractPDF extends TCPDF
             $this->Ln();
 
             $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', '', 8);
@@ -678,7 +678,7 @@ class ContractPDF extends TCPDF
             $this->Ln();
 
             $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', '', 8);
@@ -694,7 +694,7 @@ class ContractPDF extends TCPDF
             $this->Ln();
 
             $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', '', 8);
@@ -709,7 +709,7 @@ class ContractPDF extends TCPDF
                 $this->Ln();
 
                 $this->Ln(0.4);
-                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
                 $this->Ln(1);
 
                 $this->SetFont('DejaVuSerif', 'B', 8);
@@ -733,7 +733,7 @@ class ContractPDF extends TCPDF
             $this->Ln();
 
             $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', '', 8);
@@ -758,7 +758,7 @@ class ContractPDF extends TCPDF
             $this->Ln();
 
             $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', '', 8);
@@ -828,12 +828,12 @@ class ContractPDF extends TCPDF
 
             // CROSS
             $this->Ln(5);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY()); // --
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, 285); // \
-            $this->Line($this->GetX(), 285, $this->GetX() + 187, $this->GetY()); // /
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), 285); // |
-            $this->Line($this->GetX() + 187, $this->GetY(), $this->GetX() + 187, 285); // |
-            $this->Line($this->GetX(), 285, $this->GetX() + 187, 285); // --
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY()); // --
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, 285.0); // \
+            $this->Line($this->GetX(), 285.0, $this->GetX() + 187.0, $this->GetY()); // /
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), 285.0); // |
+            $this->Line($this->GetX() + 187.0, $this->GetY(), $this->GetX() + 187.0, 285.0); // |
+            $this->Line($this->GetX(), 285.0, $this->GetX() + 187.0, 285.0); // --
 
             // add a page
             $this->AddPage();
@@ -844,7 +844,7 @@ class ContractPDF extends TCPDF
             $this->Ln();
 
             $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', '', 8);
@@ -858,7 +858,7 @@ class ContractPDF extends TCPDF
             $this->Ln();
 
             $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', '', 8);
@@ -872,7 +872,7 @@ class ContractPDF extends TCPDF
             $this->Ln();
 
             $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', '', 8);
@@ -897,7 +897,7 @@ class ContractPDF extends TCPDF
         $this->Ln();
         $this->Ln();
         if ($signed) {
-            $this->Cell(90, 4, 'Datum podpisu: ' . Date::now(), align: 'C');
+            $this->Cell(90, 4, 'Datum podpisu: ' . Date::now()->__toString(), align: 'C');
         } else {
             $this->Cell(90, 4, 'Datum podpisu: ____________________', align: 'C');
         }
@@ -914,7 +914,7 @@ class ContractPDF extends TCPDF
         $this->Ln();
 
         if ($signed) {
-            $this->Image(K_PATH_IMAGES . 'signature.png', 38, $this->GetY() - 19, 35);
+            $this->Image(K_PATH_IMAGES . 'signature.png', 38.0, $this->GetY() - 19.0, 35.0);
         }
 
         $this->Close();
@@ -972,7 +972,7 @@ class ContractPDF extends TCPDF
         }
 
         $this->Ln(4);
-        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
         $this->Ln(0.5);
 
         switch ($type) {
@@ -987,7 +987,7 @@ class ContractPDF extends TCPDF
                 $this->Cell(90, 4, (string)$contract_version->valid_from, align: 'C');
                 $this->Ln();
 
-                $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
+                $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
                 $this->Ln(3);
 
                 $this->SetFont('DejaVuSerif', 'B', 9);
@@ -1009,7 +1009,7 @@ class ContractPDF extends TCPDF
                 $this->Cell(45, 4, (string)$contract_version->valid_from, align: 'C');
                 $this->Ln();
 
-                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
                 $this->Ln(3);
 
                 $this->SetFont('DejaVuSerif', 'B', 9);
@@ -1029,7 +1029,7 @@ class ContractPDF extends TCPDF
                 $this->Cell(60, 4, (string)$contract_version->valid_until, align: 'C');
                 $this->Ln();
 
-                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
                 $this->Ln(3);
 
                 $this->SetFont('DejaVuSerif', 'B', 9);
@@ -1042,7 +1042,7 @@ class ContractPDF extends TCPDF
         $this->Cell(45, 4, 'Poskytovatelem:');
         $this->Ln();
 
-        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
 
         $this->Ln(1);
         $this->SetFont('DejaVuSerif', 'B', 8);
@@ -1080,7 +1080,7 @@ class ContractPDF extends TCPDF
         $this->Cell(30, 4);
         $this->MultiCell(157, 4, 'zapsaným v obchodním rejstříku vedeném u Krajského soudu v Hradci Králové, oddíl C, vložka 22450.', align: 'L');
 
-        $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
+        $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
         $this->Ln(3);
 
         $this->SetFont('DejaVuSerif', 'B', 9);
@@ -1106,7 +1106,7 @@ class ContractPDF extends TCPDF
 
         $this->Ln();
 
-        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
         $this->Ln(0.5);
 
         $addressStartY = $this->GetY();
@@ -1211,13 +1211,13 @@ class ContractPDF extends TCPDF
             $this->MultiCell(160, 4, $contract->permanent_address->full_address, align: 'L');
         }
 
-        $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
+        $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
 
         $this->Ln(3);
 
         if ($type === 'contract-termination') {
             $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Write(4, 'Smluvní strany ujednávají ukončení smlouvy o poskytování služeb č. ' . $contract_version['number_of_the_contract_to_be_terminated'] . ' ze dne ' . $contract_version->conclusion_date . ' (ve znění případných pozdějších dodatků) ke dni ' . $contract_version->valid_until . '.');
+            $this->Write(4, 'Smluvní strany ujednávají ukončení smlouvy o poskytování služeb č. ' . $contract_version['number_of_the_contract_to_be_terminated'] . ' ze dne ' . $contract_version->conclusion_date->__toString() . ' (ve znění případných pozdějších dodatků) ke dni ' . $contract_version->valid_until->__toString() . '.');
             $this->Ln();
             $this->Ln();
             $this->SetFont('DejaVuSerif', '', 8);
@@ -1229,19 +1229,19 @@ class ContractPDF extends TCPDF
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Write(4, 'Smlouva je uzavřena ' . $this->contractDuration($contract_version->minimum_duration) . '.');
             $this->Ln();
-            $this->Write(4, 'Datum zahájení poskytování služeb: ' . $contract_version->valid_from);
+            $this->Write(4, 'Datum zahájení poskytování služeb: ' . $contract_version->valid_from->__toString());
             $this->Ln();
             $this->Ln();
 
             if ($type === 'contract-new-x') {
-                $this->Write(4, 'Smluvní strany zároveň ujednávají, že předchozí smlouva o poskytování služeb č. ' . $contract_version['number_of_the_contract_to_be_terminated'] . ' ze dne ' . $contract_version['old']->conclusion_date . ' (ve znění případných pozdějších dodatků) zaniká ke dni ' . $contract_version->valid_from->subDays(1) . '.');
+                $this->Write(4, 'Smluvní strany zároveň ujednávají, že předchozí smlouva o poskytování služeb č. ' . $contract_version['number_of_the_contract_to_be_terminated'] . ' ze dne ' . $contract_version['old']->conclusion_date . ' (ve znění případných pozdějších dodatků) zaniká ke dni ' . $contract_version->valid_from->subDays(1)->__toString() . '.');
                 $this->Ln();
                 $this->Ln();
             }
         }
         if ($type === 'contract-amendment') {
             $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Write(4, 'Tento dodatek mění Seznam poskytovaných služeb a Platební údaje původní smlouvy ve znění případných předchozích dodatků s účinností od ' . $contract_version->valid_from . ' takto:');
+            $this->Write(4, 'Tento dodatek mění Seznam poskytovaných služeb a Platební údaje původní smlouvy ve znění případných předchozích dodatků s účinností od ' . $contract_version->valid_from->__toString() . ' takto:');
             $this->Ln();
             $this->Ln();
         }
@@ -1263,7 +1263,7 @@ class ContractPDF extends TCPDF
                 $this->Ln();
 
                 $this->Ln(0.4);
-                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
                 $this->Ln(1);
 
                 /** @psalm-suppress ImplicitToStringCast */
@@ -1279,7 +1279,7 @@ class ContractPDF extends TCPDF
                 $this->Ln();
 
                 $this->Ln(0.4);
-                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
                 $this->Ln(1);
 
                 /** @psalm-suppress ImplicitToStringCast */
@@ -1299,7 +1299,7 @@ class ContractPDF extends TCPDF
                 $this->Ln();
 
                 $this->Ln(0.4);
-                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
                 $this->Ln(1);
 
                 $this->billingTable($contract['future_standard_billings'], $contract_version, $format);
@@ -1314,7 +1314,7 @@ class ContractPDF extends TCPDF
                 $this->Ln();
 
                 $this->Ln(0.4);
-                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
                 $this->Ln(1);
 
                 $this->billingTable($contract['future_individual_billings'], $contract_version, $format);
@@ -1331,7 +1331,7 @@ class ContractPDF extends TCPDF
             $this->Ln();
 
             $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', $format, 8);
@@ -1344,7 +1344,7 @@ class ContractPDF extends TCPDF
             $this->SetFont('DejaVuSerif', 'B' . $format, 8);
             $this->Cell(45, 4, 'měsíčně', align: 'C');
             $this->Cell(45, 4, 'převodem z účtu', align: 'C');
-            $this->Cell(45, 4, 'do ' . $contract_version->valid_from->day(1)->addMonths(1)->addDays(9), align: 'C');
+            $this->Cell(45, 4, 'do ' . $contract_version->valid_from->day(1)->addMonths(1)->addDays(9)->__toString(), align: 'C');
 
             // reverse charge
             if ($contract->customer->tax_rate->reverse_charge) {
@@ -1358,7 +1358,7 @@ class ContractPDF extends TCPDF
                 );
                 $this->Ln();
 
-                $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
+                $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
                 $this->Ln(1);
 
                 $this->SetFont('DejaVuSerif', $format, 7);
@@ -1369,7 +1369,7 @@ class ContractPDF extends TCPDF
                 $this->Ln();
             }
 
-            $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
+            $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', $format, 8);
@@ -1384,7 +1384,7 @@ class ContractPDF extends TCPDF
             $this->Cell(45, 4, $contract->customer->number . ' *', align: 'C');
             $this->Ln();
 
-            $this->Line($this->GetX() + 4, $this->GetY(), $this->GetX() + 187, $this->GetY());
+            $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', $format, 7);
@@ -1408,12 +1408,12 @@ class ContractPDF extends TCPDF
         if ($type === 'contract-new' || $type === 'contract-new-x') {
             // cross
             $this->Ln(5);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY()); // --
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, 285); // \
-            $this->Line($this->GetX(), 285, $this->GetX() + 187, $this->GetY()); // /
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), 285); // |
-            $this->Line($this->GetX() + 187, $this->GetY(), $this->GetX() + 187, 285); // |
-            $this->Line($this->GetX(), 285, $this->GetX() + 187, 285); // --
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY()); // --
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, 285.0); // \
+            $this->Line($this->GetX(), 285.0, $this->GetX() + 187.0, $this->GetY()); // /
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), 285.0); // |
+            $this->Line($this->GetX() + 187.0, $this->GetY(), $this->GetX() + 187.0, 285.0); // |
+            $this->Line($this->GetX(), 285.0, $this->GetX() + 187.0, 285.0); // --
 
             // add a page
             $this->AddPage();
@@ -1425,7 +1425,7 @@ class ContractPDF extends TCPDF
             $this->Ln();
 
             $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
             $this->Ln(1);
 
             if (count($contract->borrowed_equipments) > 0) {
@@ -1520,7 +1520,7 @@ class ContractPDF extends TCPDF
             $this->Ln();
 
             $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187, $this->GetY());
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', '', 8);
@@ -1567,7 +1567,7 @@ class ContractPDF extends TCPDF
         $this->Ln();
         $this->Ln();
         if ($signed) {
-            $this->Cell(90, 4, 'Datum podpisu: ' . Date::now(), align: 'C');
+            $this->Cell(90, 4, 'Datum podpisu: ' . Date::now()->__toString(), align: 'C');
         } else {
             $this->Cell(90, 4, 'Datum podpisu: ____________________', align: 'C');
         }
@@ -1584,7 +1584,7 @@ class ContractPDF extends TCPDF
         $this->Ln();
 
         if ($signed) {
-            $this->Image(K_PATH_IMAGES . 'signature.png', 38, $this->GetY() - 19, 35);
+            $this->Image(K_PATH_IMAGES . 'signature.png', 38.0, $this->GetY() - 19.0, 35.0);
         }
 
         $this->Close();

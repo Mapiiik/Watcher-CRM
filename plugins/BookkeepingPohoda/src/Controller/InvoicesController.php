@@ -145,7 +145,7 @@ class InvoicesController extends AppController
         ]);
 
         $filename =
-            env('DATA_ROOT', DS . 'data' . DS)
+            (string)env('DATA_ROOT', DS . 'data' . DS)
             . 'invoices' . DS . 'Faktura_' . $invoice->number . '.pdf';
 
         $response = $this->response->withFile($filename, [

@@ -46,6 +46,7 @@ class FootprintBehavior extends Behavior
      * @param \Cake\Event\EventInterface<\Cake\ORM\Table> $event Event
      * @param \Cake\Datasource\EntityInterface $entity Entity
      * @param \ArrayObject<string, mixed> $options Options
+     * @psalm-suppress PossiblyUnusedParam
      * @return void
      */
     public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void

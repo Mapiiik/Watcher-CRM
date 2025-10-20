@@ -12,18 +12,12 @@ use Cake\I18n\Date;
 // define date format
 Date::setToStringFormat('dd.MM.yyyy');
 
-if (isset($query['signed']) && $query['signed'] == 1) {
-    $signed = true;
-} else {
-    $signed = false;
-}
-
 switch ($type) {
     case 'gdpr-new':
     case 'gdpr-change':
         //Generate PDF
         $pdf = new CustomerPDF('P', 'mm', 'A4');
-        $pdf->generateGDPRAgreement($customer, $type, $signed);
+        $pdf->generateGDPRAgreement($customer, $type);
         $pdf->Output($customer->number . '_' . $type . '_' . date('Y-m-d') . '.pdf', 'I');
         break;
     default:

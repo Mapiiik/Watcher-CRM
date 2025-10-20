@@ -107,7 +107,7 @@ class PhonesTable extends AppTable
         $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
 
         $rules->add(
-            function ($entity, $options) {
+            function ($entity, $_options) {
                 $phoneUtil = PhoneNumberUtil::getInstance();
                 try {
                     $phoneNumber = $phoneUtil->parse($entity->phone, env('APP_DEFAULT_PHONE_REGION'));
@@ -133,6 +133,7 @@ class PhonesTable extends AppTable
      * @param \Cake\Event\EventInterface<\Cake\ORM\Table> $event Event
      * @param \ArrayObject<string, mixed> $data Data
      * @param \ArrayObject<string, mixed> $options Options
+     * @psalm-suppress PossiblyUnusedParam
      * @return void
      */
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void

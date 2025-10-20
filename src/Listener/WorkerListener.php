@@ -49,6 +49,7 @@ class WorkerListener implements EventListenerInterface
      * Log Message Invalid
      *
      * @param \Cake\Event\Event<\Cake\Queue\Queue\Processor> $event
+     * @psalm-suppress PossiblyUnusedParam
      */
     public function processorMessageInvalid(Event $event): void
     {
@@ -59,6 +60,7 @@ class WorkerListener implements EventListenerInterface
      * Log Message Rejected
      *
      * @param \Cake\Event\Event<\Cake\Queue\Queue\Processor> $event
+     * @psalm-suppress PossiblyUnusedParam
      */
     public function processorMessageReject(Event $event): void
     {
@@ -69,6 +71,7 @@ class WorkerListener implements EventListenerInterface
      * Log Message Success
      *
      * @param \Cake\Event\Event<\Cake\Queue\Queue\Processor> $event
+     * @psalm-suppress PossiblyUnusedParam
      */
     public function processorMessageSuccess(Event $event): void
     {
@@ -95,6 +98,7 @@ class WorkerListener implements EventListenerInterface
      * Log Message Failure
      *
      * @param \Cake\Event\Event<\Cake\Queue\Queue\Processor> $event
+     * @psalm-suppress PossiblyUnusedParam
      */
     public function processorMessageFailure(Event $event): void
     {
@@ -105,6 +109,7 @@ class WorkerListener implements EventListenerInterface
      * Log Message Seen
      *
      * @param \Cake\Event\Event<\Cake\Queue\Queue\Processor> $event
+     * @psalm-suppress PossiblyUnusedParam
      */
     public function processorMessageSeen(Event $event): void
     {
@@ -115,6 +120,7 @@ class WorkerListener implements EventListenerInterface
      * Log Message Start
      *
      * @param \Cake\Event\Event<\Cake\Queue\Queue\Processor> $event
+     * @psalm-suppress PossiblyUnusedParam
      */
     public function processorMessageStart(Event $event): void
     {

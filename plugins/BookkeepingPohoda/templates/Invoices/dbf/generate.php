@@ -2,6 +2,7 @@
 use BookkeepingPohoda\DBFInvoices;
 
 /**
+ * @psalm-suppress UnnecessaryVarAnnotation
  * @var \App\View\AppView $this
  * @psalm-scope-this \App\View\AppView
  * @var iterable<\BookkeepingPohoda\Model\Entity\Invoice> $invoices

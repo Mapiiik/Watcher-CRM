@@ -11,6 +11,8 @@ use Override;
 
 /**
  * Plugin for RADIUS
+ *
+ * @psalm-suppress UnusedClass
  */
 class RadiusPlugin extends BasePlugin
 {

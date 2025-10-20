@@ -11,6 +11,8 @@ use Override;
 
 /**
  * Plugin for BookkeepingPohoda
+ *
+ * @psalm-suppress UnusedClass
  */
 class BookkeepingPohodaPlugin extends BasePlugin
 {
