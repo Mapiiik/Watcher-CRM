@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 use Cake\Datasource\ConnectionManager;
 use Migrations\BaseMigration;
-use Phinx\Util\Literal;
+use Migrations\Db\Literal;
 
 class MigratePrimaryKeyToUuidAndAddForeignKeysOnInvoices extends BaseMigration
 {
