@@ -2,9 +2,9 @@
 declare(strict_types=1);
 
 use Cake\Datasource\ConnectionManager;
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class MigrateRelatedKeysToUuidOnAccounts extends AbstractMigration
+class MigrateRelatedKeysToUuidOnAccounts extends BaseMigration
 {
     /**
      * Change Method.

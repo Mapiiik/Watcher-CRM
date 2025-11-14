@@ -2,10 +2,10 @@
 declare(strict_types=1);
 
 use Cake\Datasource\ConnectionManager;
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 use Phinx\Util\Literal;
 
-class MigratePrimaryKeyToUuidAndAddForeignKeysOnInvoices extends AbstractMigration
+class MigratePrimaryKeyToUuidAndAddForeignKeysOnInvoices extends BaseMigration
 {
     /**
      * Change Method.
