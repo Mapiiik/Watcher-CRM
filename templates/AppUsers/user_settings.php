@@ -32,6 +32,7 @@
                     'options' => [
                         'cs_CZ' => 'Čeština',
                         'en_US' => 'English',
+                        'hr_HR' => 'Hrvatski',
                     ],
                 ]);
                 echo $this->Form->control('user_settings.number_of_rows_per_page', [

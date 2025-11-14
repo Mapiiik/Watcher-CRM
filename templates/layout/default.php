@@ -230,6 +230,7 @@ $urlWithQuery = function ($query = []) use ($request) {
                 [
                     $urlWithQuery(['language' => 'cs_CZ']) => 'Čeština',
                     $urlWithQuery(['language' => 'en_US']) => 'English',
+                    $urlWithQuery(['language' => 'hr_HR']) => 'Hrvatski',
                 ],
                 [
                     'value' => $urlWithQuery(['language' => Configure::read('UI.language')]),
