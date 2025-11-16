@@ -9,7 +9,7 @@ use Cake\TestSuite\TestCase;
 /**
  * App\Controller\SettingsController Test Case
  *
- * @uses \App\Controller\SettingsController
+ * @link \App\Controller\SettingsController
  */
 class SettingsControllerTest extends TestCase
 {
@@ -20,7 +20,10 @@ class SettingsControllerTest extends TestCase
      *
      * @var array<string>
      */
-    protected array $fixtures = [];
+    protected array $fixtures = [
+        'app.AppUsers',
+        'app.Settings',
+    ];
 
     /**
      * Test index method

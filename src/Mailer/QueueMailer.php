@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Mailer;
 
+use App\Utility\Settings;
 use Cake\Mailer\Mailer;
 use Cake\Queue\Mailer\QueueTrait;
 
@@ -31,10 +32,12 @@ class QueueMailer extends Mailer
         $this
             ->setTo($emails)
             ->setSubject(
-                sprintf(
-                    'NETAIR - změna služeb od %s na Vaší přípojce č. %s',
-                    $data['new_billing_from'],
-                    $data['contract_number'],
+                strtr(
+                    Settings::getString('core.emails.service_change.subject'),
+                    [
+                        '{new_billing_from}' => $data['new_billing_from'],
+                        '{contract_number}' => $data['contract_number'],
+                    ]
                 ),
             )
             ->setViewVars(['data' => $data]);

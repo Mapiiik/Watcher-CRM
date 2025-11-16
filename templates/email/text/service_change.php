@@ -1,4 +1,6 @@
 <?php
+
+use App\Utility\Settings;
 use Cake\I18n\Date;
 
 /**
@@ -8,48 +10,88 @@ use Cake\I18n\Date;
 
 $billing_date = (new Date((string)$data['new_billing_from']))->lastOfMonth();
 ?>
-Vážený zákazníku,
 
-od <?= $data['new_billing_from'] ?> bude na Vaší přípojce č. <?= $data['contract_number'] ?><?= $data['installation_address'] ? ', na adrese ' . $data['installation_address'] : '' ?>
+<?= Settings::getString('core.emails.service_change.greeting') ?>
 
 
-změněn stávající tarif:
+<?= strtr(Settings::getString('core.emails.service_change.intro'), [
+    '{new_billing_from}' => $data['new_billing_from'],
+    '{contract_number}' => $data['contract_number'],
+    '{installation_address_info}' => $data['installation_address']
+        ? strtr(Settings::getString('core.emails.service_change.installation_address_info'), [
+            '{installation_address}' => $data['installation_address'],
+        ])
+        : '',
+]) ?>
+
+
+<?= Settings::getString('core.emails.service_change.current_tariff_label') ?>
+
 <?php if ($data['original_billing_sum'] > $data['original_billing_total_price']) : ?>
-    <?= $data['original_billing_name'] ?> za zvýhodněnou cenu <?= $this->Number->currency($data['original_billing_total_price']) ?> měsíčně
+    <?= strtr(Settings::getString('core.emails.service_change.current_tariff_discounted'), [
+        '{original_billing_name}' => $data['original_billing_name'],
+        '{original_billing_total_price}' => $this->Number->currency($data['original_billing_total_price']),
+    ]) ?>
 <?php else : ?>
-    <?= $data['original_billing_name'] ?> za cenu <?= $this->Number->currency($data['original_billing_total_price']) ?> měsíčně
+    <?= strtr(Settings::getString('core.emails.service_change.current_tariff'), [
+        '{original_billing_name}' => $data['original_billing_name'],
+        '{original_billing_total_price}' => $this->Number->currency($data['original_billing_total_price']),
+    ]) ?>
 <?php endif; ?>
 
-na nový tarif:
+
+<?= Settings::getString('core.emails.service_change.new_tariff_label') ?>
+
 <?php if ($data['new_billing_sum'] > $data['new_billing_total_price']) : ?>
-    <?= $data['new_billing_name'] ?> za zvýhodněnou cenu <?= $this->Number->currency($data['new_billing_total_price']) ?> měsíčně (standardní cena tarifu je <?= $this->Number->currency($data['new_billing_sum']) ?>)
+    <?= strtr(Settings::getString('core.emails.service_change.new_tariff_discounted'), [
+        '{new_billing_name}' => $data['new_billing_name'],
+        '{new_billing_total_price}' => $this->Number->currency($data['new_billing_total_price']),
+        '{new_billing_sum}' => $this->Number->currency($data['new_billing_sum']),
+    ]) ?>
 <?php else : ?>
-    <?= $data['new_billing_name'] ?> za cenu <?= $this->Number->currency($data['new_billing_total_price']) ?> měsíčně
+    <?= strtr(Settings::getString('core.emails.service_change.new_tariff'), [
+        '{new_billing_name}' => $data['new_billing_name'],
+        '{new_billing_total_price}' => $this->Number->currency($data['new_billing_total_price']),
+    ]) ?>
 <?php endif; ?>
+
 
 <?php if (
     ($data['original_billing_sum'] > $data['original_billing_total_price'])
     && ($data['new_billing_sum'] > $data['new_billing_total_price'])
 ) : ?>
-Vaše přípojka měla historicky nastavenou zvýhodněnou sazbu. Proto i nový tarif, bude pro Vás zvýhodněn, oproti standardní ceně.
+<?= Settings::getString('core.emails.service_change.historical_discount') ?>
+
 
 <?php endif; ?>
 
 <?php if ($data['original_billing_total_price'] == $data['new_billing_total_price']) : ?>
-Z hlediska fakturace se pro Vás tímto nic nemění.
+<?= Settings::getString('core.emails.service_change.no_change') ?>
 <?php else : ?>
-Jelikož se fakturuje zpětně, první platba za nový tarif by měla proběhnout v období od <?= $billing_date ?> do <?= $billing_date->addDays(10) ?>.
+<?= strtr(Settings::getString('core.emails.service_change.first_payment'), [
+    '{billing_date}' => $billing_date,
+    '{billing_date_plus_10}' => $billing_date->addDays(10),
+]) ?>
 <?php endif; ?>
 
 <?php if (!$data['version_without_legislative_information']) : ?>
-Aktuálně platný ceník je uveřejněný na našich internetových stránkách zde: https://netair.cz/cenik-pripojeni/
 
-V souladu s ust. § 63 odst. 6 zákona č. 127/2005 Sb. o elektronických komunikacích Vás také informujeme, že jestliže tuto změnu neakceptujete, jste oprávněn smlouvu s naší společností bez sankce vypovědět k datu nabytí účinnosti této změny.
+<?= strtr(Settings::getString('core.emails.service_change.price_list'), [
+    '{price_list_url}' => Settings::getString('core.company.price_list_url'),
+]) ?>
+
+
+<?= Settings::getString('core.emails.service_change.legislative_information') ?>
 
 <?php endif; ?>
-Pokud budete mít jakékoliv dotazy nebo máte zájem o jiný tarif, než který navrhujeme, neváhejte nás kontaktovat.
 
-NETAIR, s.r.o.
-512 43 Jablonec nad Jizerou, č.p. 299
-Mail: smlouvy@netair.cz
-Telefon: +420 488 572 512
+<?= Settings::getString('core.emails.service_change.closing') ?>
+
+
+<?= Settings::getString('core.company.name') ?>
+
+<?= Settings::getString('core.company.address') ?>
+
+<?= __('Email') ?>: <?= Settings::getString('core.company.contracts_email') ?>
+
+<?= __('Phone') ?>: <?= Settings::getString('core.company.contracts_phone') ?>

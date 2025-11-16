@@ -65,6 +65,7 @@ class QueueMailerTest extends TestCase
                     'new_billing_fixed_discount_sum' => 22.02,
                     'new_billing_total_price' => 200.20,
                     'new_billing_from' => h(new Date()),
+                    'version_without_legislative_information' => false,
                 ],
             ],
         );
