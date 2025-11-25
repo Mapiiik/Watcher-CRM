@@ -243,8 +243,7 @@ class CustomerPDF extends TCPDF
         if ($this->GetY() > 240) {
             $this->AddPage();
         }
-        $this->Ln();
-        $this->Ln();
+        $this->Ln(10);
         $this->Cell(90, 4);
         $this->Cell(90, 4, Settings::getString('core.documents.gdpr.signature.date'), align: 'C');
         $this->Ln(20);

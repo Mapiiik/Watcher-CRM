@@ -7,6 +7,7 @@ use App\Model\Entity\Billing;
 use App\Model\Entity\Contract;
 use App\Model\Entity\ContractVersion;
 use App\Model\Enum\IpAddressTypeOfUse;
+use App\Utility\Settings;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
 use Override;
@@ -144,8 +145,13 @@ class ContractPDF extends TCPDF
      * @param \stdClass|null $technical_details Technical details about service
      * @return void
      */
-    public function generateHandoverProtocol(Contract $contract, ContractVersion $contract_version, string $type = 'handover-protocol-installation', bool $signed = false, ?stdClass $technical_details = null): void
-    {
+    public function generateHandoverProtocol(
+        Contract $contract,
+        ContractVersion $contract_version,
+        string $type = 'handover-protocol-installation',
+        bool $signed = false,
+        ?stdClass $technical_details = null
+    ): void {
         $this->setPrintHeader(false);
         $this->setPrintFooter(false);
 
@@ -153,219 +159,198 @@ class ContractPDF extends TCPDF
 
         $this->Image(K_PATH_IMAGES . 'logo-contract.png', 10, 5, 28);
 
-        $this->SetFont('DejaVuSerif', 'BI', 8);
+        // Title + subtitle
+        $this->SetFont('DejaVuSerif', 'B', 18);
+        $this->Cell(187, 6, Settings::getString('core.documents.contracts.handover.title'), align: 'C');
+        $this->Ln();
 
-        switch ($type) {
-            case 'handover-protocol-installation':
-                $this->SetFont('DejaVuSerif', 'B', 18);
-                $this->Cell(187, 6, 'PŘEDÁVACÍ PROTOKOL', align: 'C');
-                $this->Ln();
-
-                $this->SetFont('DejaVuSerif', 'B', 12);
-                $this->Cell(187, 2, 'ke Smlouvě o poskytování služeb', align: 'C');
-                $this->Ln(3);
-                break;
-            case 'handover-protocol-uninstallation':
-                $this->SetFont('DejaVuSerif', 'B', 18);
-                $this->Cell(187, 6, 'PŘEDÁVACÍ PROTOKOL', align: 'C');
-                $this->Ln();
-
-                $this->SetFont('DejaVuSerif', 'B', 12);
-                $this->Cell(187, 2, 'k ukončení Smlouvy o poskytování služeb', align: 'C');
-                $this->Ln(3);
-                break;
+        $this->SetFont('DejaVuSerif', 'B', 12);
+        if ($type === 'handover-protocol-installation') {
+            $this->Cell(187, 2, Settings::getString('core.documents.contracts.handover.subtitle_installation'), align: 'C');
+        } else {
+            $this->Cell(187, 2, Settings::getString('core.documents.contracts.handover.subtitle_uninstallation'), align: 'C');
         }
+        $this->Ln(3);
 
+        // Separator line
         $this->Ln(4);
         $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
         $this->Ln(0.5);
 
-        switch ($type) {
-            case 'handover-protocol-installation':
-                $this->SetFont('DejaVuSerif', '', 8);
-                $this->Cell(90, 4, 'číslo smlouvy:', align: 'C');
-                $this->Cell(90, 4, 'datum zahájení poskytování služeb:', align: 'C');
-                $this->Ln();
-                $this->SetFont('DejaVuSerif', 'B', 8);
-                $this->Cell(90, 4, $contract->number, align: 'C');
-                $this->Cell(90, 4, (string)$contract_version->valid_from, align: 'C');
-                $this->Ln();
-
-                $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-                $this->Ln(3);
-
-                $this->SetFont('DejaVuSerif', 'B', 9);
-                $this->Cell(187, 2, 'mezi', align: 'C');
-                $this->Ln();
-                break;
-            case 'handover-protocol-uninstallation':
-                $this->SetFont('DejaVuSerif', '', 8);
-                $this->Cell(90, 4, 'číslo smlouvy:', align: 'C');
-                $this->Cell(90, 4, 'datum ukončení poskytování služeb:', align: 'C');
-                $this->Ln();
-                $this->SetFont('DejaVuSerif', 'B', 8);
-                $this->Cell(90, 4, $contract_version['number_of_the_contract_to_be_terminated'], align: 'C');
-                $this->Cell(90, 4, (string)$contract_version->valid_until, align: 'C');
-                $this->Ln();
-
-                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-                $this->Ln(3);
-
-                $this->SetFont('DejaVuSerif', 'B', 9);
-                $this->Cell(187, 2, 'mezi', align: 'C');
-                $this->Ln();
-                break;
+        // Contract number + date
+        $this->SetFont('DejaVuSerif', '', 8);
+        if ($type === 'handover-protocol-installation') {
+            $this->Cell(90, 4, Settings::getString('core.documents.contracts.handover.labels.contract_number'), align: 'C');
+            $this->Cell(90, 4, Settings::getString('core.documents.contracts.handover.labels.start_date'), align: 'C');
+            $this->Ln();
+            $this->SetFont('DejaVuSerif', 'B', 8);
+            $this->Cell(90, 4, $contract->number, align: 'C');
+            $this->Cell(90, 4, (string)$contract_version->valid_from, align: 'C');
+        } else {
+            $this->Cell(90, 4, Settings::getString('core.documents.contracts.handover.labels.contract_number'), align: 'C');
+            $this->Cell(90, 4, Settings::getString('core.documents.contracts.handover.labels.end_date'), align: 'C');
+            $this->Ln();
+            $this->SetFont('DejaVuSerif', 'B', 8);
+            $this->Cell(90, 4, $contract_version['number_of_the_contract_to_be_terminated'], align: 'C');
+            $this->Cell(90, 4, (string)$contract_version->valid_until, align: 'C');
         }
-
-        $this->SetFont('DejaVuSerif', 'B', 9);
-        $this->Cell(45, 4, 'Poskytovatelem:');
         $this->Ln();
-
-        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-
-        $this->Ln(1);
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(30, 4);
-        $this->Cell(40, 4, 'NETAIR, s.r.o.');
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4);
-        $this->Cell(40, 4);
-        $this->Cell(15, 4, 'tel:');
-        $this->Cell(40, 4, '+420 488 572 050');
-        $this->Ln();
-
-        $this->Cell(30, 4);
-        $this->Cell(40, 4, 'Jablonec nad Jizerou 299');
-        $this->Cell(20, 4);
-        $this->Cell(10, 4, 'IČ:');
-        $this->Cell(40, 4, '27496139');
-        $this->Cell(15, 4, 'mobil:');
-        $this->Cell(40, 4, '+420 604 553 444');
-        $this->Ln();
-
-        $this->Cell(30, 4);
-        $this->Cell(40, 4, '512 43 Jablonec nad Jizerou');
-        $this->Cell(20, 4);
-        $this->Cell(10, 4, 'DIČ:');
-        $this->Cell(40, 4, 'CZ27496139');
-        $this->Cell(15, 4, 'e-mail:');
-        $this->Cell(40, 4, 'mail@netair.cz');
-        $this->Ln();
-
-        $this->Ln(3);
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4);
-        $this->MultiCell(157, 4, 'zastoupeným Marko Jujnovićem, jednatelem', align: 'L');
-        $this->Cell(30, 4);
-        $this->MultiCell(157, 4, 'zapsaným v obchodním rejstříku vedeném u Krajského soudu v Hradci Králové, oddíl C, vložka 22450.', align: 'L');
 
         $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
         $this->Ln(3);
 
+        // BETWEEN
         $this->SetFont('DejaVuSerif', 'B', 9);
-        $this->Cell(187, 4, 'a', align: 'C');
+        $this->Cell(187, 2, Settings::getString('core.documents.contracts.handover.labels.between'), align: 'C');
         $this->Ln();
-        $this->Cell(30, 4, 'Uživatelem:');
+
+        // Provider section
+        $this->SetFont('DejaVuSerif', 'B', 9);
+        $this->Cell(45, 4, Settings::getString('core.documents.contracts.handover.labels.provider'));
+        $this->Ln();
+
+        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
+
+        // Company details (from settings)
+        $this->Ln(1);
+        $this->SetFont('DejaVuSerif', 'B', 8);
+        $this->Cell(30, 4);
+        $this->Cell(40, 4, Settings::getString('core.company.name'));
+        $this->SetFont('DejaVuSerif', '', 8);
+        $this->Cell(30, 4);
+        $this->Cell(40, 4);
+        $this->Cell(15, 4, Settings::getString('core.documents.contracts.handover.labels.phone'));
+        $this->Cell(40, 4, Settings::getString('core.company.phone'));
+        $this->Ln();
+
+        $this->Cell(30, 4);
+        $this->Cell(40, 4, Settings::getString('core.documents.contracts.provider_address_line1'));
+        $this->Cell(20, 4);
+        $this->Cell(10, 4, Settings::getString('core.documents.contracts.handover.labels.ic'));
+        $this->Cell(40, 4, Settings::getString('core.company.ic'));
+        $this->Cell(15, 4, Settings::getString('core.documents.contracts.handover.labels.mobile'));
+        $this->Cell(40, 4, Settings::getString('core.company.mobile'));
+        $this->Ln();
+
+        $this->Cell(30, 4);
+        $this->Cell(40, 4, Settings::getString('core.documents.contracts.provider_address_line2'));
+        $this->Cell(20, 4);
+        $this->Cell(10, 4, Settings::getString('core.documents.contracts.handover.labels.dic'));
+        $this->Cell(40, 4, Settings::getString('core.company.dic'));
+        $this->Cell(15, 4, Settings::getString('core.documents.contracts.handover.labels.email'));
+        $this->Cell(40, 4, Settings::getString('core.company.email'));
+        $this->Ln();
+
+        $this->Ln(3);
+        $this->SetFont('DejaVuSerif', '', 8);
+        $this->Cell(30, 4);
+        $this->MultiCell(157, 4, Settings::getString('core.documents.contracts.provider_executive'), align: 'L');
+        $this->Cell(30, 4);
+        $this->MultiCell(157, 4, Settings::getString('core.documents.contracts.provider_registry'), align: 'L');
+
+        $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
+        $this->Ln(3);
+
+        // User section
+        $this->SetFont('DejaVuSerif', 'B', 9);
+        $this->Cell(187, 4, Settings::getString('core.documents.contracts.handover.labels.and'), align: 'C');
+        $this->Ln();
+        $this->Cell(30, 4, Settings::getString('core.documents.contracts.handover.labels.user'));
 
         $this->SetFont('DejaVuSerif', '', 8);
         if (is_null($contract->customer->ic)) {
-            $this->Cell(60, 4, 'fyzická osoba nepodnikající');
+            $this->Cell(60, 4, Settings::getString('core.documents.gdpr.user_types.non_business'));
         } elseif (is_null($contract->billing_address->company)) {
-            $this->Cell(60, 4, 'fyzická osoba podnikající');
+            $this->Cell(60, 4, Settings::getString('core.documents.gdpr.user_types.business'));
         } else {
-            $this->Cell(60, 4, 'právnická osoba');
+            $this->Cell(60, 4, Settings::getString('core.documents.gdpr.user_types.legal'));
         }
-
         $this->Ln();
 
         $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
         $this->Ln(0.5);
 
+        // Billing address section
         $addressStartY = $this->GetY();
 
-        // BILLING
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->Cell(60, 4, __('Billing Address') . ':');
         $this->Ln();
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, 'firma:', align: 'R');
+        $this->Cell(30, 4, Settings::getString('core.documents.contracts.handover.labels.company'), align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->MultiCell(60, 4, $contract->billing_address->company ?? '', align: 'L');
 
         $this->SetFont('DejaVuSerif', '', 8);
-        if (is_null($contract->billing_address->company)) {
-            $this->Cell(30, 4, 'jméno:', align: 'R');
-        } else {
-            $this->Cell(30, 4, 'zastoupená:', align: 'R');
-        }
+        $this->Cell(30, 4, is_null($contract->billing_address->company)
+            ? Settings::getString('core.documents.contracts.handover.labels.name')
+            : Settings::getString('core.documents.contracts.handover.labels.represented'), align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->MultiCell(60, 4, $contract->billing_address->full_name, align: 'L');
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, 'ulice / č.p.:', align: 'R');
+        $this->Cell(30, 4, Settings::getString('core.documents.contracts.handover.labels.street'), align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->MultiCell(60, 4, $contract->billing_address->street_and_number, align: 'L');
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, 'PSČ / město:', align: 'R');
+        $this->Cell(30, 4, Settings::getString('core.documents.contracts.handover.labels.zip_city'), align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->MultiCell(60, 4, $contract->billing_address->zip_and_city, align: 'L');
 
-        // NEXT COLLUMN
+        // NEXT COLUMN
         $addressStopY = $this->GetY();
         $this->SetY($addressStartY);
         $this->Ln();
 
-        // SPECIFIERS
+        // Specifiers (birth date, IC, ID card, DIC)
         $this->Cell(105);
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(15, 4, 'dat. nar.:');
+        $this->Cell(15, 4, Settings::getString('core.documents.contracts.handover.labels.birth_date'));
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->Cell(30, 4, (string)$contract->customer->date_of_birth);
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(10, 4, 'IČ:');
+        $this->Cell(10, 4, Settings::getString('core.documents.contracts.handover.labels.ic'));
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->Cell(60, 4, $contract->customer->ic ?? 'X');
         $this->Ln();
 
         $this->Cell(105);
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(15, 4, 'č. OP:');
+        $this->Cell(15, 4, Settings::getString('core.documents.contracts.handover.labels.identity_card'));
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->Cell(30, 4, $contract->customer->identity_card_number);
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(10, 4, 'DIČ:');
+        $this->Cell(10, 4, Settings::getString('core.documents.contracts.handover.labels.dic'));
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->Cell(60, 4, $contract->customer->dic ?? 'X');
         $this->Ln();
 
-        // CONTACT
+        // Contact info
         $this->Cell(105);
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(15, 4, 'tel:');
+        $this->Cell(15, 4, Settings::getString('core.documents.contracts.handover.labels.phone'));
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->MultiCell(70, 4, $contract->customer->phone, align: 'L');
 
         $this->Cell(105);
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(15, 4, 'e-mail:');
+        $this->Cell(15, 4, Settings::getString('core.documents.contracts.handover.labels.email'));
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->MultiCell(70, 4, $contract->customer->email, align: 'L');
 
         // GO BACK TO END
         $this->SetY(max($this->GetY(), $addressStopY));
 
-        // INSTALLATION ADDRESS
+        // Installation / Delivery / Permanent addresses
         if ($contract->__isset('installation_address')) {
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(30, 4, __('Installation Address') . ': ');
             $this->Ln();
-            $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(30, 4);
             $this->MultiCell(160, 4, $contract->installation_address->full_address, align: 'L');
         }
-        // DELIVERY ADDRESS
         if ($contract->__isset('delivery_address')) {
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(30, 4, __('Delivery Address') . ': ');
@@ -373,7 +358,6 @@ class ContractPDF extends TCPDF
             $this->Cell(30, 4);
             $this->MultiCell(160, 4, $contract->delivery_address->full_address, align: 'L');
         }
-        // PERMANENT ADDRESS
         if ($contract->__isset('permanent_address')) {
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(30, 4, __('Permanent Address') . ': ');
@@ -383,14 +367,13 @@ class ContractPDF extends TCPDF
         }
 
         $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-
         $this->Ln(4);
 
         // BEGIN INSTALLATION
         if ($type == 'handover-protocol-installation') :
             // ACCESS INFORMATION
             $this->SetFont('DejaVuSerif', 'B', 9);
-            $this->Write(4, 'Přístupové údaje a technické informace');
+            $this->Write(4, Settings::getString('core.documents.contracts.handover.sections.access_info'));
             $this->Ln();
 
             $this->Ln(0.4);
@@ -398,7 +381,7 @@ class ContractPDF extends TCPDF
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', '', 8);
-            $this->Write(4, 'Nastavení koncového bodu pro autorizaci přístupu do Poskytovatelovy sítě elektronických komunikací:');
+            $this->Write(4, Settings::getString('core.documents.contracts.handover.texts.endpoint_auth'));
             $this->Ln(5);
 
             $this->SetFont('DejaVuSerif', 'B', 8);
@@ -466,8 +449,9 @@ class ContractPDF extends TCPDF
                 $this->Ln(1);
             }
 
+            // Default IP settings
             $this->SetFont('DejaVuSerif', '', 8);
-            $this->Write(4, 'Výchozí nastavení pro zařízení ve vnitřní síti Uživatele:');
+            $this->Write(4, Settings::getString('core.documents.contracts.handover.texts.default_network_intro'));
             $this->Ln(5);
 
             $this->SetFont('DejaVuSerif', 'B', 8);
@@ -479,9 +463,9 @@ class ContractPDF extends TCPDF
 
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Cell(4, 5);
-            $this->Cell(60, 5, '192.168.1.0/24', border: 1, align: 'C');
-            $this->Cell(60, 5, '192.168.1.1', border: 1, align: 'C');
-            $this->Cell(60, 5, '79.98.156.2, 79.98.152.2', border: 1, align: 'C');
+            $this->Cell(60, 5, Settings::getString('core.documents.contracts.handover.defaults.ip_network'), border: 1, align: 'C');
+            $this->Cell(60, 5, Settings::getString('core.documents.contracts.handover.defaults.ip_gateway'), border: 1, align: 'C');
+            $this->Cell(60, 5, Settings::getString('core.documents.contracts.handover.defaults.dns_servers'), border: 1, align: 'C');
             $this->Ln();
 
             $this->Ln(1);
@@ -515,7 +499,7 @@ class ContractPDF extends TCPDF
             // BORROWED EQUIPMENTS
             if (count($contract->borrowed_equipments) > 0) {
                 $this->SetFont('DejaVuSerif', 'B', 9);
-                $this->Write(4, 'Poskytnutá zařízení');
+                $this->Write(4, Settings::getString('core.documents.contracts.handover.sections.borrowed_equipment'));
                 $this->Ln();
 
                 $this->Ln(0.4);
@@ -523,15 +507,14 @@ class ContractPDF extends TCPDF
                 $this->Ln(1);
 
                 $this->SetFont('DejaVuSerif', '', 8);
-                $this->Write(4, 'Poskytovatel poskytne Uživateli pro dobu trvání Smlouvy bezúplatně tato zařízení:');
-
+                $this->Write(4, Settings::getString('core.documents.contracts.handover.texts.borrowed_equipment_intro'));
                 $this->Ln(5);
 
                 $this->SetFont('DejaVuSerif', 'B', 8);
                 $this->Cell(4, 5);
-                $this->Cell(130, 5, 'Zařízení', 1);
-                $this->Cell(25, 5, 'Sériové číslo', border: 1, align: 'C');
-                $this->Cell(25, 5, 'Hodnota', border: 1, align: 'R');
+                $this->Cell(130, 5, Settings::getString('core.documents.contracts.handover.tables.borrowed_equipments.device'), 1);
+                $this->Cell(25, 5, Settings::getString('core.documents.contracts.handover.tables.borrowed_equipments.serial'), border: 1, align: 'C');
+                $this->Cell(25, 5, Settings::getString('core.documents.contracts.handover.tables.borrowed_equipments.value'), border: 1, align: 'R');
                 $this->Ln();
 
                 $this->SetFont('DejaVuSerif', '', 8);
@@ -544,9 +527,8 @@ class ContractPDF extends TCPDF
                 }
 
                 $this->Ln(2);
-
                 $this->SetFont('DejaVuSerif', '', 8);
-                $this->MultiCell(180, 4, 'Uživatel je povinen tato zařízení Poskytovateli vrátit bez zbytečných odkladů nejpozději po zániku Smlouvy.' . PHP_EOL, align: 'J');
+                $this->MultiCell(180, 4, Settings::getString('core.documents.contracts.handover.texts.borrowed_equipment_return') . PHP_EOL, align: 'J');
                 $this->Ln(2);
             }
 
@@ -564,7 +546,7 @@ class ContractPDF extends TCPDF
 
             // SOLD EQUIPMENTS
             $this->SetFont('DejaVuSerif', 'B', 9);
-            $this->Write(4, 'Aktivační poplatek, prodaná zařízení a příslušenství a práce nad rámec aktivačního poplatku');
+            $this->Write(4, Settings::getString('core.documents.contracts.handover.sections.activation_fee'));
             $this->Ln();
 
             $this->Ln(0.4);
@@ -573,31 +555,70 @@ class ContractPDF extends TCPDF
 
             $this->SetFont('DejaVuSerif', '', 8);
             if (count($contract->borrowed_equipments) > 0) {
-                $this->MultiCell(180, 4, 'Aktivační poplatek zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci poskytnutých zařízení:' . PHP_EOL, align: 'J');
+                $this->MultiCell(
+                    180,
+                    4,
+                    Settings::getString('core.documents.contracts.handover.texts.activation_fee_intro_with_equipment') . PHP_EOL,
+                    align: 'J',
+                );
             } else {
-                $this->MultiCell(180, 4, 'Aktivační poplatek zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací:' . PHP_EOL, align: 'J');
+                $this->MultiCell(
+                    180,
+                    4,
+                    Settings::getString('core.documents.contracts.handover.texts.activation_fee_intro') . PHP_EOL,
+                    align: 'J',
+                );
             }
             $this->Ln(1);
 
-            $subtotal = $contract_version->minimum_duration <= 0 ? $contract->activation_fee_sum : $contract->activation_fee_with_obligation_sum;
+            $subtotal = $contract_version->minimum_duration <= 0
+                ? $contract->activation_fee_sum
+                : $contract->activation_fee_with_obligation_sum;
 
             $this->Cell(4, 5);
-            $this->Cell(155, 5, 'Aktivační poplatek', 1);
-            $this->Cell(25, 5, Number::currency($contract_version->minimum_duration <= 0 ? $contract->activation_fee_sum->toFloat() : $contract->activation_fee_with_obligation_sum->toFloat()), border: 1, align: 'R');
+            $this->Cell(
+                155,
+                5,
+                Settings::getString('core.documents.contracts.handover.tables.sold_equipments.activation_fee'),
+                1,
+            );
+            $this->Cell(
+                25,
+                5,
+                Number::currency($subtotal->toFloat()),
+                border: 1,
+                align: 'R',
+            );
             $this->Ln();
 
             $this->Ln(2);
 
             $this->SetFont('DejaVuSerif', '', 8);
-            $this->Write(4, 'Poskytovatel dodal Uživateli tato zařízení a příslušenství a provedl práce nad rámec aktivačního poplatku:');
-
+            $this->Write(4, Settings::getString('core.documents.contracts.handover.texts.activation_fee_items_intro'));
             $this->Ln(5);
 
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(4, 5);
-            $this->Cell(130, 5, 'Zařízení / příslušenství / práce', 1);
-            $this->Cell(25, 5, 'Sériové číslo', border: 1, align: 'C');
-            $this->Cell(25, 5, 'Cena', border: 1, align: 'R');
+            $this->Cell(
+                130,
+                5,
+                Settings::getString('core.documents.contracts.handover.tables.sold_equipments.item'),
+                1,
+            );
+            $this->Cell(
+                25,
+                5,
+                Settings::getString('core.documents.contracts.handover.tables.sold_equipments.serial'),
+                border: 1,
+                align: 'C',
+            );
+            $this->Cell(
+                25,
+                5,
+                Settings::getString('core.documents.contracts.handover.tables.sold_equipments.price'),
+                border: 1,
+                align: 'R',
+            );
             $this->Ln();
 
             $this->SetFont('DejaVuSerif', '', 8);
@@ -647,11 +668,27 @@ class ContractPDF extends TCPDF
             $this->Ln(2);
 
             $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek a cenu prodaných zařízení, příslušenství a prací.' . PHP_EOL, align: 'J');
+            $this->MultiCell(
+                180,
+                4,
+                Settings::getString('core.documents.contracts.handover.texts.activation_fee_obligation') . PHP_EOL,
+                align: 'J',
+            );
 
             $this->Cell(4, 5);
-            $this->Cell(155, 5, 'Celkem k úhradě', 1);
-            $this->Cell(25, 5, Number::currency($subtotal->toFloat()), border: 1, align: 'R');
+            $this->Cell(
+                155,
+                5,
+                Settings::getString('core.documents.contracts.handover.tables.sold_equipments.total'),
+                1,
+            );
+            $this->Cell(
+                25,
+                5,
+                Number::currency($subtotal->toFloat()),
+                border: 1,
+                align: 'R',
+            );
             $this->Ln();
 
             $this->Ln(6);
@@ -674,7 +711,7 @@ class ContractPDF extends TCPDF
 
             // CONNECTION POINT STATE
             $this->SetFont('DejaVuSerif', 'B', 9);
-            $this->Write(4, 'Stav přípojného bodu po instalaci');
+            $this->Write(4, Settings::getString('core.documents.contracts.handover.sections.connection_point_state'));
             $this->Ln();
 
             $this->Ln(0.4);
@@ -683,14 +720,17 @@ class ContractPDF extends TCPDF
 
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Ln(3);
-            $this->MultiCell(180, 4, 'Síla signálu na straně Uživatele v případě bezdrátového připojení do sítě Poskytovatele (Tx / Rx): ____________________ dBm' . PHP_EOL, align: 'J');
-            $this->Ln(3);
-            $this->MultiCell(180, 4, 'Pro případný servis je zapotřebí žebřík v minimální délce: ______ m' . PHP_EOL, align: 'J');
+            $this->MultiCell(
+                180,
+                4,
+                Settings::getString('core.documents.contracts.handover.texts.connection_point_state_text') . PHP_EOL,
+                align: 'J',
+            );
             $this->Ln(6);
 
             // GENERAL STATEMENTS
             $this->SetFont('DejaVuSerif', 'B', 9);
-            $this->Write(4, 'Obecná ustanovení');
+            $this->Write(4, Settings::getString('core.documents.contracts.handover.sections.general_statements'));
             $this->Ln();
 
             $this->Ln(0.4);
@@ -699,13 +739,18 @@ class ContractPDF extends TCPDF
 
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Ln(4);
-            $this->MultiCell(180, 4, 'Uživatel a Poskytovatel tímto stvrzují, že: ___________________________________________________________________________________' . PHP_EOL, align: 'J');
+            $this->MultiCell(
+                180,
+                4,
+                Settings::getString('core.documents.contracts.handover.texts.general_statements_text') . PHP_EOL,
+                align: 'J',
+            );
             $this->Ln(6);
 
             // EARLY TERMINATION TERMS
             if ($sold_equipments_discount->isPositive()) {
                 $this->SetFont('DejaVuSerif', 'B', 9);
-                $this->Write(4, 'Podmínky předčasného ukončení smlouvy');
+                $this->Write(4, Settings::getString('core.documents.contracts.handover.sections.early_termination'));
                 $this->Ln();
 
                 $this->Ln(0.4);
@@ -717,11 +762,15 @@ class ContractPDF extends TCPDF
                 $this->MultiCell(
                     180,
                     4,
-                    'Smluvní strany konstatují, že běžná prodejní cena dodaných zařízení je ' . Number::currency($sold_equipments_value->toFloat())
-                        . ', avšak s ohledem na uzavření smlouvy s minimální dobou plnění v trvání ' . $this->contractDurationBefore($contract_version->minimum_duration)
-                        . ' byla tato zařízení Uživateli prodána pouze za ' . Number::currency($sold_equipments_value->subtract($sold_equipments_discount)->toFloat())
-                        . ', proto v případě předčasného ukončení smlouvy z důvodu na straně Uživatele se tento zavazuje Poskytovateli doplatit zbývajících ' . Number::currency($sold_equipments_discount->toFloat())
-                        . '.' . PHP_EOL,
+                    strtr(
+                        Settings::getString('core.documents.contracts.handover.texts.early_termination_clause'),
+                        [
+                            '{full_price}' => Number::currency($sold_equipments_value->toFloat()),
+                            '{duration}' => $this->contractDurationBefore($contract_version->minimum_duration),
+                            '{discounted_price}' => Number::currency($sold_equipments_value->subtract($sold_equipments_discount)->toFloat()),
+                            '{remaining_payment}' => Number::currency($sold_equipments_discount->toFloat()),
+                        ],
+                    ) . PHP_EOL,
                     align: 'J',
                 );
                 $this->Ln(3);
@@ -729,7 +778,7 @@ class ContractPDF extends TCPDF
 
             // FINAL STATEMENTS
             $this->SetFont('DejaVuSerif', 'B', 9);
-            $this->Write(4, 'Závěrečná ustanovení');
+            $this->Write(4, Settings::getString('core.documents.contracts.handover.sections.final_statements'));
             $this->Ln();
 
             $this->Ln(0.4);
@@ -737,15 +786,15 @@ class ContractPDF extends TCPDF
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', '', 8);
-            $this->MultiCell(180, 4, 'Uživatel svým podpisem stvrzuje, že výše uvedená zařízení převzal nainstalovaná a plně funkční, a zároveň se zavazuje uhradit částku aktivačního poplatku i cenu dodaných zařízení a příslušenství a prací nad rámec aktivačního poplatku nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené příjmovým pokladním dokladem).' . PHP_EOL, align: 'J');
-            $this->Ln(3);
-            $this->MultiCell(180, 4, 'Uživatel dále potvrzuje, že souhlasí s provedenou instalací a nemá vůči ní žádné námitky a zároveň prohlašuje, že objednané služby jsou plně funkční.' . PHP_EOL, align: 'J');
-            $this->Ln(3);
-            $this->MultiCell(180, 4, 'Uživatel dále potvrzuje, že bere na vědomí a plně souhlasí s podmínkami uvedenými v tomto předávacím protokolu.' . PHP_EOL, align: 'J');
-            $this->Ln(3);
-            $this->MultiCell(180, 4, 'Všechny ceny uvedené v tomto předávacím protokolu jsou vyjádřeny včetně daně z přidané hodnoty, pokud není výslovně stanoveno jinak.' . PHP_EOL, align: 'J');
-            $this->Ln(3);
-            $this->MultiCell(180, 4, 'Tento předávací protokol (ke smlouvě č. ' . $contract->number . ') je vyhotoven ve dvou stejnopisech.' . PHP_EOL, align: 'J');
+            $this->MultiCell(
+                180,
+                4,
+                strtr(
+                    Settings::getString('core.documents.contracts.handover.texts.final_statements_text'),
+                    ['{contract_number}' => $contract->number],
+                ) . PHP_EOL,
+                align: 'J',
+            );
             $this->Ln(3);
         endif;
         // END INSTALLATION
@@ -754,7 +803,7 @@ class ContractPDF extends TCPDF
         if ($type == 'handover-protocol-uninstallation') :
             // BORROWED EQUIPMENTS
             $this->SetFont('DejaVuSerif', 'B', 9);
-            $this->Write(4, 'Poskytnutá zařízení, jejich stav a náhrada nákladů');
+            $this->Write(4, Settings::getString('core.documents.contracts.handover.sections.uninstallation_borrowed_equipment'));
             $this->Ln();
 
             $this->Ln(0.4);
@@ -762,19 +811,17 @@ class ContractPDF extends TCPDF
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', '', 8);
-            $this->Write(4, 'Poskytovatel poskytl Uživateli pro dobu trvání Smlouvy bezúplatně tato zařízení:');
-
+            $this->Write(4, Settings::getString('core.documents.contracts.handover.texts.uninstallation_borrowed_equipment_intro'));
             $this->Ln(5);
 
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(4, 5);
-            $this->Cell(130, 5, 'Zařízení', 1);
-            $this->Cell(25, 5, 'Sériové číslo', border: 1, align: 'C');
-            $this->Cell(25, 5, 'Hodnota', border: 1, align: 'R');
+            $this->Cell(130, 5, Settings::getString('core.documents.contracts.handover.tables.borrowed_equipments.device'), 1);
+            $this->Cell(25, 5, Settings::getString('core.documents.contracts.handover.tables.borrowed_equipments.serial'), border: 1, align: 'C');
+            $this->Cell(25, 5, Settings::getString('core.documents.contracts.handover.tables.borrowed_equipments.value'), border: 1, align: 'R');
             $this->Ln();
 
             $this->SetFont('DejaVuSerif', '', 8);
-
             foreach ($contract->borrowed_equipments as $borrowed_equipment) {
                 $this->Cell(4, 5);
                 $this->Cell(130, 5, $borrowed_equipment->equipment_type->name, 1);
@@ -792,55 +839,33 @@ class ContractPDF extends TCPDF
             }
 
             $this->Ln(2);
-
             $this->SetFont('DejaVuSerif', 'U', 8);
-            $this->Write(4, 'Stav zařízení v době deinstalace:');
+            $this->Write(4, Settings::getString('core.documents.contracts.handover.texts.uninstallation_equipment_state'));
             $this->Ln(5);
 
             $this->SetFont('DejaVuSerif', '', 8);
-            $this->Cell(22, 0, '▢ ano / ▢ ne - ');
-            $this->MultiCell(170, 0, 'Poskytovateli byla umožněna zkouška funkčnosti zařízení na místě, jejich zapnutím, připojením se do jejich konfiguračního rozhraní pokud to umožňují a provedením diagnostiky' . PHP_EOL, align: 'L');
-            $this->Ln(1);
-
-            $this->Cell(22, 0, '▢ ano / ▢ ne - ');
-            $this->MultiCell(170, 0, 'provedením zkoušky funkčnosti zařízení na místě, byla zjištěna jeho nefunkčnost' . PHP_EOL, align: 'L');
-            $this->Ln(1);
-
-            $this->Cell(22, 0, '▢ ano / ▢ ne - ');
-            $this->MultiCell(170, 4, 'zařízení má viditelnou vadu nebo poškození způsobené neodborným zacházením ze strany Uživatele' . PHP_EOL, align: 'L');
-            $this->Ln(3);
-
-            $this->Cell(30, 0, 'zjištěné nedostatky:');
-            $this->MultiCell(150, 0, '_______________________________________________________________________________________________________', align: 'L');
-            $this->Ln(2);
-            $this->Cell(30, 0);
-            $this->MultiCell(150, 0, '_______________________________________________________________________________________________________', align: 'L');
-            $this->Ln(2);
-            $this->Cell(30, 0);
-            $this->MultiCell(150, 0, '_______________________________________________________________________________________________________', align: 'L');
-            $this->Ln(2);
-
-            $this->MultiCell(180, 4, 'V případě že provedení zkoušky funkčnosti těchto zařízení na místě nebylo umožněno, bude provedeno následně v provozovně Poskytovatele.' . PHP_EOL, align: 'J');
-            $this->Ln(1);
-
-            $this->MultiCell(180, 4, 'V případě viditelné vady, poškození nebo zjištění nefunkčnosti těchto zařízení se Uživatel zavazuje uhradit hodnotu těchto zařízení.' . PHP_EOL, align: 'J');
-            $this->Ln(1);
+            $this->MultiCell(
+                180,
+                4,
+                Settings::getString('core.documents.contracts.handover.texts.uninstallation_equipment_checks') . PHP_EOL,
+                align: 'J',
+            );
 
             // CROSS
             $this->Ln(5);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY()); // --
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, 285.0); // \
-            $this->Line($this->GetX(), 285.0, $this->GetX() + 187.0, $this->GetY()); // /
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), 285.0); // |
-            $this->Line($this->GetX() + 187.0, $this->GetY(), $this->GetX() + 187.0, 285.0); // |
-            $this->Line($this->GetX(), 285.0, $this->GetX() + 187.0, 285.0); // --
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, 285.0);
+            $this->Line($this->GetX(), 285.0, $this->GetX() + 187.0, $this->GetY());
+            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), 285.0);
+            $this->Line($this->GetX() + 187.0, $this->GetY(), $this->GetX() + 187.0, 285.0);
+            $this->Line($this->GetX(), 285.0, $this->GetX() + 187.0, 285.0);
 
             // add a page
             $this->AddPage();
 
             // CASH PAYMENT
             $this->SetFont('DejaVuSerif', 'B', 9);
-            $this->Write(4, 'Úhrada v hotovosti');
+            $this->Write(4, Settings::getString('core.documents.contracts.handover.sections.uninstallation_cash_payment'));
             $this->Ln();
 
             $this->Ln(0.4);
@@ -849,12 +874,17 @@ class ContractPDF extends TCPDF
 
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Ln(4);
-            $this->MultiCell(180, 4, 'Placeno hotově: ____________________,- Kč, podpis příjemce: ____________________' . PHP_EOL, align: 'J');
+            $this->MultiCell(
+                180,
+                4,
+                Settings::getString('core.documents.contracts.handover.texts.uninstallation_cash_payment_text') . PHP_EOL,
+                align: 'J',
+            );
             $this->Ln(6);
 
-            // GENERAL STATEMENTS
+            // GENERAL STATEMENTS (shared section name, unique text)
             $this->SetFont('DejaVuSerif', 'B', 9);
-            $this->Write(4, 'Obecná ustanovení');
+            $this->Write(4, Settings::getString('core.documents.contracts.handover.sections.general_statements'));
             $this->Ln();
 
             $this->Ln(0.4);
@@ -863,12 +893,17 @@ class ContractPDF extends TCPDF
 
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Ln(4);
-            $this->MultiCell(180, 4, 'Uživatel a Poskytovatel tímto stvrzují, že: ___________________________________________________________________________________' . PHP_EOL, align: 'J');
+            $this->MultiCell(
+                180,
+                4,
+                Settings::getString('core.documents.contracts.handover.texts.uninstallation_general_statements_text') . PHP_EOL,
+                align: 'J',
+            );
             $this->Ln(6);
 
-            // FINAL STATEMENTS
+            // FINAL STATEMENTS (shared section name, unique text)
             $this->SetFont('DejaVuSerif', 'B', 9);
-            $this->Write(4, 'Závěrečná ustanovení');
+            $this->Write(4, Settings::getString('core.documents.contracts.handover.sections.final_statements'));
             $this->Ln();
 
             $this->Ln(0.4);
@@ -876,15 +911,15 @@ class ContractPDF extends TCPDF
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', '', 8);
-            $this->MultiCell(180, 4, 'Poskytovatel svým podpisem stvrzuje, že uvedená zařízení převzal ve stavu popsaném výše.' . PHP_EOL, align: 'J');
-            $this->Ln(3);
-            $this->MultiCell(180, 4, 'Uživatel se zavazuje uhradit hodnotu zařízení v případě jejich viditelné vady, poškození nebo zjištěné nefunkčnosti nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené výše).' . PHP_EOL, align: 'J');
-            $this->Ln(3);
-            $this->MultiCell(180, 4, 'Uživatel dále potvrzuje, že souhlasí s provedenou deinstalací a nemá vůči ní žádné námitky.' . PHP_EOL, align: 'J');
-            $this->Ln(3);
-            $this->MultiCell(180, 4, 'Všechny ceny uvedené v tomto předávacím protokolu jsou vyjádřeny včetně daně z přidané hodnoty, pokud není výslovně stanoveno jinak.' . PHP_EOL, align: 'J');
-            $this->Ln(3);
-            $this->MultiCell(180, 4, 'Tento předávací protokol (ke smlouvě č. ' . $contract_version['number_of_the_contract_to_be_terminated'] . ') je vyhotoven ve dvou stejnopisech.' . PHP_EOL, align: 'J');
+            $this->MultiCell(
+                180,
+                4,
+                strtr(
+                    Settings::getString('core.documents.contracts.handover.texts.uninstallation_final_statements_text'),
+                    ['{contract_number}' => $contract_version['number_of_the_contract_to_be_terminated']],
+                ) . PHP_EOL,
+                align: 'J',
+            );
             $this->Ln(3);
         endif;
         // END UNINSTALLATION
@@ -894,23 +929,39 @@ class ContractPDF extends TCPDF
         if ($this->GetY() > 240) {
             $this->AddPage();
         }
-        $this->Ln();
-        $this->Ln();
+        $this->Ln(10);
+
         if ($signed) {
-            $this->Cell(90, 4, 'Datum podpisu: ' . Date::now()->__toString(), align: 'C');
+            $this->Cell(
+                90,
+                4,
+                Settings::getString('core.documents.contracts.signatures.date') . ' ' . Date::now()->__toString(),
+                align: 'C',
+            );
         } else {
-            $this->Cell(90, 4, 'Datum podpisu: ____________________', align: 'C');
+            $this->Cell(
+                90,
+                4,
+                Settings::getString('core.documents.contracts.signatures.date') . ' ' . Settings::getString('core.documents.contracts.signatures.date_line'),
+                align: 'C',
+            );
         }
 
-        $this->Cell(90, 4, 'Datum podpisu: ____________________', align: 'C');
+        $this->Cell(
+            90,
+            4,
+            Settings::getString('core.documents.contracts.signatures.date') . ' ' . Settings::getString('core.documents.contracts.signatures.date_line'),
+            align: 'C',
+        );
 
         $this->Ln(20);
 
-        $this->Cell(90, 4, '......................................................', align: 'C');
-        $this->Cell(90, 4, '......................................................', align: 'C');
+        $this->Cell(90, 4, Settings::getString('core.documents.contracts.signatures.sign_line'), align: 'C');
+        $this->Cell(90, 4, Settings::getString('core.documents.contracts.signatures.sign_line'), align: 'C');
         $this->Ln();
-        $this->Cell(90, 4, 'Poskytovatel', align: 'C');
-        $this->Cell(90, 4, 'Uživatel', align: 'C');
+
+        $this->Cell(90, 4, Settings::getString('core.documents.contracts.signatures.provider'), align: 'C');
+        $this->Cell(90, 4, Settings::getString('core.documents.contracts.signatures.user'), align: 'C');
         $this->Ln();
 
         if ($signed) {

@@ -69,6 +69,138 @@ return [
         */
         'documents' => [
             'locale' => 'cs_CZ',
+            'contracts' => [
+
+                'provider_address_line1' => 'Jablonec nad Jizerou 299',
+                'provider_address_line2' => '512 43 Jablonec nad Jizerou',
+                'provider_executive' => 'zastoupeným Marko Jujnovićem, jednatelem',
+                'provider_registry' => 'zapsaným v obchodním rejstříku vedeném u Krajského soudu v Hradci Králové, oddíl C, vložka 22450.',
+
+                'signatures' => [
+                    'date' => 'Datum podpisu:',
+                    'date_line' => '____________________',
+                    'sign_line' => '......................................................',
+                    'provider' => 'Poskytovatel',
+                    'user' => 'Uživatel',
+                ],
+
+                'handover' => [
+                    'title' => 'PŘEDÁVACÍ PROTOKOL',
+                    'subtitle_installation' => 'ke Smlouvě o poskytování služeb',
+                    'subtitle_uninstallation' => 'k ukončení Smlouvy o poskytování služeb',
+
+                    'labels' => [
+                        'contract_number' => 'číslo smlouvy:',
+                        'start_date' => 'datum zahájení poskytování služeb:',
+                        'end_date' => 'datum ukončení poskytování služeb:',
+                        'provider' => 'Poskytovatelem:',
+                        'user' => 'Uživatelem:',
+                        'company' => 'firma:',
+                        'name' => 'jméno:',
+                        'represented' => 'zastoupená:',
+                        'street' => 'ulice / č.p.:',
+                        'zip_city' => 'PSČ / město:',
+                        'birth_date' => 'dat. nar.:',
+                        'ic' => 'IČ:',
+                        'identity_card' => 'č. OP:',
+                        'dic' => 'DIČ:',
+                        'phone' => 'tel:',
+                        'mobile' => 'mobil:',
+                        'email' => 'e-mail:',
+                        'between' => 'mezi',
+                        'and' => 'a',
+                    ],
+
+                    'sections' => [
+                        'access_info' => 'Přístupové údaje a technické informace',
+                        'borrowed_equipment' => 'Poskytnutá zařízení',
+                        'activation_fee' => 'Aktivační poplatek, prodaná zařízení a příslušenství a práce nad rámec aktivačního poplatku',
+                        'connection_point_state' => 'Stav přípojného bodu po instalaci',
+                        'general_statements' => 'Obecná ustanovení',
+                        'early_termination' => 'Podmínky předčasného ukončení smlouvy',
+                        'final_statements' => 'Závěrečná ustanovení',
+                        'uninstallation_borrowed_equipment' => 'Poskytnutá zařízení, jejich stav a náhrada nákladů',
+                        'uninstallation_cash_payment' => 'Úhrada v hotovosti',
+                    ],
+
+                    'texts' => [
+                        'endpoint_auth' => 'Nastavení koncového bodu pro autorizaci přístupu do Poskytovatelovy sítě elektronických komunikací:',
+                        'borrowed_equipment_intro' => 'Poskytovatel poskytne Uživateli pro dobu trvání Smlouvy bezúplatně tato zařízení:',
+                        'borrowed_equipment_return' => 'Uživatel je povinen tato zařízení Poskytovateli vrátit bez zbytečných odkladů nejpozději po zániku Smlouvy.',
+                        'default_network_intro' => 'Výchozí nastavení pro zařízení ve vnitřní síti Uživatele:',
+                        'activation_fee_intro_with_equipment' => 'Aktivační poplatek zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci poskytnutých zařízení:',
+                        'activation_fee_intro' => 'Aktivační poplatek zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací:',
+                        'activation_fee_items_intro' => 'Poskytovatel dodal Uživateli tato zařízení a příslušenství a provedl práce nad rámec aktivačního poplatku:',
+                        'activation_fee_obligation' => 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek a cenu prodaných zařízení, příslušenství a prací.',
+                        'early_termination_clause' => 'Smluvní strany konstatují, že běžná prodejní cena dodaných zařízení je {full_price}, avšak s ohledem na uzavření smlouvy s minimální dobou plnění v trvání {duration} byla tato zařízení Uživateli prodána pouze za {discounted_price}, proto v případě předčasného ukončení smlouvy z důvodu na straně Uživatele se tento zavazuje Poskytovateli doplatit zbývajících {remaining_payment}.',
+                        'connection_point_state_text' => 'Síla signálu na straně Uživatele v případě bezdrátového připojení do sítě Poskytovatele (Tx / Rx): ____________________ dBm
+
+Pro případný servis je zapotřebí žebřík v minimální délce: ______ m',
+                        'general_statements_text' => 'Uživatel a Poskytovatel tímto stvrzují, že: ___________________________________________________________________________________',
+                        'final_statements_text' => 'Uživatel svým podpisem stvrzuje, že výše uvedená zařízení převzal nainstalovaná a plně funkční, a zároveň se zavazuje uhradit částku aktivačního poplatku i cenu dodaných zařízení a příslušenství a prací nad rámec aktivačního poplatku nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené příjmovým pokladním dokladem).
+
+Uživatel dále potvrzuje, že souhlasí s provedenou instalací a nemá vůči ní žádné námitky a zároveň prohlašuje, že objednané služby jsou plně funkční.
+
+Uživatel dále potvrzuje, že bere na vědomí a plně souhlasí s podmínkami uvedenými v tomto předávacím protokolu.
+
+Všechny ceny uvedené v tomto předávacím protokolu jsou vyjádřeny včetně daně z přidané hodnoty, pokud není výslovně stanoveno jinak.
+
+Tento předávací protokol (ke smlouvě č. {contract_number}) je vyhotoven ve dvou stejnopisech.',
+
+                        'uninstallation_borrowed_equipment_intro' => 'Poskytovatel poskytl Uživateli pro dobu trvání Smlouvy bezúplatně tato zařízení:',
+                        'uninstallation_equipment_state' => 'Stav zařízení v době deinstalace:',
+                        'uninstallation_equipment_checks' => '▢ ano / ▢ ne - Poskytovateli byla umožněna zkouška funkčnosti zařízení na místě, jejich zapnutím, připojením se do jejich konfiguračního rozhraní pokud to umožňují a provedením diagnostiky
+
+▢ ano / ▢ ne - provedením zkoušky funkčnosti zařízení na místě, byla zjištěna jeho nefunkčnost
+
+▢ ano / ▢ ne - zařízení má viditelnou vadu nebo poškození způsobené neodborným zacházením ze strany Uživatele
+
+zjištěné nedostatky:
+
+_______________________________________________________________________________________________________
+
+_______________________________________________________________________________________________________
+
+_______________________________________________________________________________________________________
+
+V případě že provedení zkoušky funkčnosti těchto zařízení na místě nebylo umožněno, bude provedeno následně v provozovně Poskytovatele.
+
+V případě viditelné vady, poškození nebo zjištění nefunkčnosti těchto zařízení se Uživatel zavazuje uhradit hodnotu těchto zařízení.',
+                        'uninstallation_cash_payment_text' => 'Placeno hotově: ____________________,- Kč, podpis příjemce: ____________________',
+                        'uninstallation_general_statements_text' => 'Uživatel a Poskytovatel tímto stvrzují, že: ___________________________________________________________________________________',
+                        'uninstallation_final_statements_text' => 'Poskytovatel svým podpisem stvrzuje, že uvedená zařízení převzal ve stavu popsaném výše.
+
+Uživatel se zavazuje uhradit hodnotu zařízení v případě jejich viditelné vady, poškození nebo zjištěné nefunkčnosti nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené výše).
+
+Uživatel dále potvrzuje, že souhlasí s provedenou deinstalací a nemá vůči ní žádné námitky.
+
+Všechny ceny uvedené v tomto předávacím protokolu jsou vyjádřeny včetně daně z přidané hodnoty, pokud není výslovně stanoveno jinak.
+
+Tento předávací protokol (ke smlouvě č. {contract_number}) je vyhotoven ve dvou stejnopisech.',
+                    ],
+
+                    'tables' => [
+                        'borrowed_equipments' => [
+                            'device' => 'Zařízení',
+                            'serial' => 'Sériové číslo',
+                            'value' => 'Hodnota',
+                        ],
+                        'sold_equipments' => [
+                            'activation_fee' => 'Aktivační poplatek',
+                            'item' => 'Zařízení / příslušenství / práce',
+                            'serial' => 'Sériové číslo',
+                            'price' => 'Cena',
+                            'total' => 'Celkem k úhradě',
+                        ],
+                    ],
+
+                    'defaults' => [
+                        'ip_network' => '192.168.1.0/24',
+                        'ip_gateway' => '192.168.1.1',
+                        'dns_servers' => '79.98.156.2, 79.98.152.2',
+                    ],
+                ],
+            ],
             'gdpr' => [
                 'title' => 'SOUHLAS',
                 'subtitle' => 'se zpracováním osobních údajů',
