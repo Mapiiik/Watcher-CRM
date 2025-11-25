@@ -92,6 +92,6 @@ $billing_date = (new Date((string)$data['new_billing_from']))->lastOfMonth();
 
 <?= Settings::getString('core.company.address') ?>
 
-<?= __('Email') ?>: <?= Settings::getString('core.company.contracts_email') ?>
+<?= __('Email') ?>: <?= Settings::getString('core.company.contracts.email') ?>
 
-<?= __('Phone') ?>: <?= Settings::getString('core.company.contracts_phone') ?>
+<?= __('Phone') ?>: <?= Settings::getString('core.company.contracts.phone') ?>

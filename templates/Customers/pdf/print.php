@@ -1,6 +1,8 @@
 <?php
 use App\CustomerPDF;
+use App\Utility\Settings;
 use Cake\I18n\Date;
+use Cake\I18n\I18n;
 
 /**
  * @var \App\View\AppView $this
@@ -8,6 +10,9 @@ use Cake\I18n\Date;
  * @var string|null $type
  * @var \stdClass|null $technical_details
  */
+
+// switch to documents locale
+I18n::setLocale(Settings::getString('core.documents.locale', 'en_US'));
 
 // define date format
 Date::setToStringFormat('dd.MM.yyyy');

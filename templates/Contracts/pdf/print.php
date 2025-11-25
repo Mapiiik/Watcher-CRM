@@ -1,6 +1,8 @@
 <?php
 use App\ContractPDF;
+use App\Utility\Settings;
 use Cake\I18n\Date;
+use Cake\I18n\I18n;
 
 /**
  * @var \App\View\AppView $this
@@ -10,14 +12,13 @@ use Cake\I18n\Date;
  * @var \stdClass|null $technical_details
  */
 
+// switch to documents locale
+I18n::setLocale(Settings::getString('core.documents.locale', 'en_US'));
+
 // define date format
 Date::setToStringFormat('dd.MM.yyyy');
 
-if (isset($query['signed']) && $query['signed'] == 1) {
-    $signed = true;
-} else {
-    $signed = false;
-}
+$signed = !empty($query['signed']);
 
 switch ($type) {
     case 'contract-new':

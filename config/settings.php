@@ -37,9 +37,18 @@ return [
         'company' => [
             'name' => 'NETAIR, s.r.o.',
             'address' => '512 43 Jablonec nad Jizerou, č.p. 299',
-            'contracts_email' => 'smlouvy@netair.cz',
-            'contracts_phone' => '+420 488 572 512',
+            'ic' => '27496139',
+            'dic' => 'CZ27496139',
+            'phone' => '+420 488 572 050',
+            'mobile' => '+420 604 553 444',
+            'email' => 'mail@netair.cz',
+            'executive' => 'Marko Jujnović, jednatel',
             'price_list_url' => 'https://netair.cz/cenik-pripojeni/',
+            'contracts' => [
+                'phone' => '+420 488 572 512',
+                'mobile' => '+420 604 553 444',
+                'email' => 'smlouvy@netair.cz',
+            ],
         ],
         /*
         'options' => [
@@ -58,6 +67,93 @@ return [
             'strip_phone_prefix_for_summary_text' => env('STRIP_PHONE_PREFIX_FOR_SUMMARY_TEXT', false),
         ],
         */
+        'documents' => [
+            'locale' => 'cs_CZ',
+            'gdpr' => [
+                'title' => 'SOUHLAS',
+                'subtitle' => 'se zpracováním osobních údajů',
+
+                'labels' => [
+                    'new_or_change' => 'nový / změna:',
+                    'agreement_number' => 'číslo souhlasu:',
+                    'agreement_duration' => 'doba trvání souhlasu:',
+                    'new' => 'nový',
+                    'change' => 'změna',
+                    'duration_indefinite' => 'na dobu neurčitou',
+                ],
+
+                'between' => 'mezi',
+                'and' => 'a',
+
+                'controller_label' => 'Správcem:',
+                'controller_company' => 'NETAIR, s.r.o.',
+                'controller_address_line1' => 'Jablonec nad Jizerou 299',
+                'controller_address_line2' => '512 43 Jablonec nad Jizerou',
+                'controller_ic' => '27496139',
+                'controller_dic' => 'CZ27496139',
+                'controller_phone' => '+420 488 572 050',
+                'controller_mobile' => '+420 604 553 444',
+                'controller_email' => 'mail@netair.cz',
+                'controller_executive' => 'zastoupeným Marko Jujnovićem, jednatelem',
+                'controller_registry' => 'zapsaným v obchodním rejstříku vedeném u Krajského soudu v Hradci Králové, oddíl C, vložka 22450.',
+
+                'user_label' => 'Uživatelem:',
+                'user_types' => [
+                    'non_business' => 'fyzická osoba nepodnikající',
+                    'business' => 'fyzická osoba podnikající',
+                    'legal' => 'právnická osoba',
+                ],
+
+                'personal_data_label' => 'Osobní údaje:',
+                'business_data_label' => 'Obchodní údaje:',
+
+                'fields' => [
+                    'name' => 'jméno:',
+                    'company' => 'firma:',
+                    'birth_date' => 'datum narození:',
+                    'ic' => 'IČ:',
+                    'identity_card' => 'číslo OP:',
+                    'dic' => 'DIČ:',
+                    'phone' => 'tel:',
+                    'mobile' => 'mobil:',
+                    'email' => 'e-mail:',
+                ],
+
+                'declaration' => 'Prohlášení Správce:
+
+Správce prohlašuje, že bude zpracovávat osobní údaje v rozsahu nezbytném pro naplnění níže stanovených účelů, plnění smlouvy, plnění zákonných povinností a ochrany oprávněných zájmů. Zaměstnanci Správce nebo jiné fyzické osoby, které zpracovávají osobní údaje na základě smlouvy se Správcem a další osoby jsou povinni zachovávat mlčenlivost o osobních údajích, a to i po skončení pracovního poměru nebo prací.
+
+Já, níže podepsaný:
+
+1. Uděluji tímto souhlas se zpracováním osobních údajů Správcem, pro účely stanovené níže. Tento souhlas uděluji pro následující údaje:
+Jméno, příjmení, emailová adresa, telefonní číslo, adresa trvalého pobytu, adresa místa připojení, fakturační adresa, korespondenční adresa, datum narození, IP adresa, typ a objem poskytnutých služeb, daňové a účetní doklady
+
+2. Tento souhlas uděluji na dobu neurčitou a můžu ho kdykoli vzít zpět, a to stejným způsobem, jakým jsem jej udělil nebo pomocí Uživatelského portálu Správce.
+
+3. Zpracování osobních údajů je prováděno Správcem.
+
+4. Beru na vědomí, že podle zákona o ochraně osobních údajů mám právo:
+    a) vzít souhlas kdykoliv zpět
+    b) požadovat po Správci informaci, jaké moje osobní údaje zpracovává
+    c) požadovat po Správci vysvětlení ohledně zpracování osobních údajů
+    d) vyžádat si u Správce přístup k těmto údajům a tyto nechat aktualizovat nebo opravit
+    e) požadovat po Správci výmaz těchto osobních údajů, pokud Správce neprokáže oprávněné důvody pro zpracování těchto osobních údajů
+    f) v případě pochybností o dodržování povinností souvisejících se zpracováním osobních údajů obrátit se na Správce nebo na Úřad pro ochranu osobních údajů',
+
+                'checkboxes' => [
+                    'billing' => '▢ souhlasím se zasíláním veškeré korespondence spojené s měsíčním vyúčtováním *',
+                    'outages' => '▢ souhlasím se zasíláním informací o odstávkách a poruchách *',
+                    'marketing' => '▢ souhlasím se zasíláním obchodních sdělení *',
+                    'note' => '* zaškrtněte prosím jaké typy zpráv chcete dostávat',
+                ],
+
+                'signature' => [
+                    'date' => 'Datum podpisu: ____________________',
+                    'line' => '......................................................',
+                    'user' => 'Uživatel',
+                ],
+            ],
+        ],
         'emails' => [
             /*
             'service_change' => [
