@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-09-03 15:23+0200\n"
+"POT-Creation-Date: 2025-11-29 16:50+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,269 +14,269 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:47
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:50
 msgid "Override the saved date and time of the last synchronisation. Only invoices changed after this date and time of change will be retrieved. Format: YYYY-MM-DD HH:MM:SS (e.g., 2024-10-28 15:45:00). If not provided, the date from the last successful synchronization will be used."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:82
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:86
 msgid "Using last changes time: {0}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:104
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:108
 msgid "Error connecting to server: {0}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:115
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:119
 msgid "Invalid response from the server ({0})"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:129
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:133
 msgid "Invalid XML response"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:143
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:147
 msgid "The server returned an XML error response (ID: {0}, STATE: {1}, NOTE: {2})"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:152
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:156
 msgid "The server returned a valid XML response (ID: {0}, STATE: {1}, NOTE: {2})"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:164
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:168
 msgid "Invoice Number: {0}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:169
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:173
 msgid "Variable Symbol: {0}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:174
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:178
 msgid "Issue Date: {0}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:179
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:183
 msgid "Due Date: {0}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:184
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:188
 msgid "Text: {0}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:189
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:193
 msgid "Total Amount: {0}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:194
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:198
 msgid "Liquidation Date: {0}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:199
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:203
 msgid "Remaining Debt: {0}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:357
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:667
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:361
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:669
 msgid "The import file is missing some required columns."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:395
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:705
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:399
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:707
 msgid "Invoice {0} could not be loaded."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:404
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:714
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:408
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:716
 msgid "Successfully imported {0} invoices. Created {1}, modified {2} and skipped {3} records."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:436
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:440
 msgid "Invalid date and time format. Use YYYY-MM-DD HH:MM:SS, Error: {0}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:448
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:452
 msgid "No previous synchronization time found. Using default/initial time."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:476
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:480
 msgid "Error reading last sync time from file: {0}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:489
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:493
 msgid "Error parsing last sync time from file: {0}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:513
+#: ./plugins/BookkeepingPohoda/src/Command/LoadInvoicesCommand.php:517
 msgid "Error saving last sync time to file: {0}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:37
+#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:39
 msgid "Send only a notification of an overdue claims (within the allowed payment delay)."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:45
+#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:47
 msgid "Send only a notification of blocking (or continuing debt for services no longer active) for overdue claims (after an allowed delay in payment)."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:54
+#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:56
 msgid "Automatically update the blocking of debtors in systems (routers, firewalls, IPTV, ...)."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:62
+#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:64
 msgid "Do not send emails, the operation will be skipped."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:67
+#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:69
 msgid "Do not send SMS, the operation will be skipped."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:93
+#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:96
 #: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:67
 #: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:94
 #: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:122
 msgid "Systems updated."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:94
+#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:97
 #: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:68
 #: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:95
 #: ./plugins/BookkeepingPohoda/src/Controller/DebtorsController.php:123
 msgid "Nothing has changed."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:126
+#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:129
 msgid "Notification email has been generated for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:141
+#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:144
 msgid "Notification SMS has been generated for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:163
+#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:166
 msgid "Blocking email has been generated for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:174
+#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:177
 msgid "Notification email has been generated for inactive services for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:191
+#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:194
 msgid "Blocking SMS has been generated for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:202
+#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:205
 msgid "Notification SMS has been generated for inactive services for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:215
-#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:190
+#: ./plugins/BookkeepingPohoda/src/Command/ProcessDebtorsCommand.php:218
+#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:193
 msgid "Done"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:34
+#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:36
 msgid "Number of emails to process."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:67
+#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:70
 msgid "Sending invoices:"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:77
+#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:80
 msgid "Invoice - {0} - {1}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:141
+#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:144
 msgid "Email was successfully sent."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:149
-#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:169
+#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:152
+#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:172
 msgid "Error sending email message with issued invoice ID {0}: {1}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:163
+#: ./plugins/BookkeepingPohoda/src/Command/SendIssuedInvoicesCommand.php:166
 msgid "Error sending email message with issued invoice ID {0}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:168
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:195
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:170
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:197
 msgid "The invoice has been saved."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:172
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:199
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:174
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:201
 msgid "The invoice could not be saved. Please, try again."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:221
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:223
 msgid "The invoice has been deleted."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:224
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:226
 msgid "The invoice could not be deleted. Please, try again."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:249
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:251
 msgid "The invoices has been marked to be sent by email ({0})."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:257
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:259
 msgid "No invoices could be marked to be sent by email. Please, try again."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:348
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:350
 msgid "Invalid customer number in CSV file: {0}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:356
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:358
 msgid "Invalid price in CSV file: {0}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:401
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:403
 msgid "Unable to process CSV file."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:433
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:435
 msgid "Error processing CSV file: {0}"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:87
+#: ./plugins/BookkeepingPohoda/src/Controller/InvoicesController.php:89
 msgid "Invoice to send in the queue, {0} email left."
 msgid_plural "Invoices to send in the queue, {0} emails left."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:98
+#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:101
 msgid "Debtors data is not available."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:341
+#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:347
 msgid "debtor"
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:525
-#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:553
+#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:533
+#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:561
 msgid "Removed IPv4 record {0} from router {1}."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:574
+#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:582
 msgid "Added IPv4 record {0} ({1}) to router {2}."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:602
-#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:630
+#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:610
+#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:638
 msgid "Removed IPv6 record {0} from router {1}."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:651
+#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:659
 msgid "Added IPv6 record {0} ({1}) to router {2}."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:696
+#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:704
 msgid "SledovaniTV - Suspended user with ID: {0} (partner ID: {1})."
 msgstr ""
 
-#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:708
-#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:720
+#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:716
+#: ./plugins/BookkeepingPohoda/src/Debtors/DebtorsProcessor.php:728
 msgid "SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1})."
 msgstr ""
 

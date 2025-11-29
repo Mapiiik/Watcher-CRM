@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2024-07-24 16:22+0200\n"
+"POT-Creation-Date: 2025-11-29 16:45+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -57,7 +57,7 @@ msgstr ""
 #: ./templates/AppUsers/request_reset_password.php:15
 #: ./templates/AppUsers/resend_token_validation.php:16
 #: ./templates/AppUsers/social_email.php:14
-#: ./templates/AppUsers/user_settings.php:72
+#: ./templates/AppUsers/user_settings.php:73
 msgid "Submit"
 msgstr ""
 
@@ -318,27 +318,27 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: ./templates/AppUsers/user_settings.php:38
+#: ./templates/AppUsers/user_settings.php:39
 msgid "Number of Rows per Page"
 msgstr ""
 
-#: ./templates/AppUsers/user_settings.php:50
+#: ./templates/AppUsers/user_settings.php:51
 msgid "Theme"
 msgstr ""
 
-#: ./templates/AppUsers/user_settings.php:59
+#: ./templates/AppUsers/user_settings.php:60
 msgid "Customers"
 msgstr ""
 
-#: ./templates/AppUsers/user_settings.php:59
+#: ./templates/AppUsers/user_settings.php:60
 msgid "Advanced Search by Default"
 msgstr ""
 
-#: ./templates/AppUsers/user_settings.php:64
+#: ./templates/AppUsers/user_settings.php:65
 msgid "Tasks"
 msgstr ""
 
-#: ./templates/AppUsers/user_settings.php:66
+#: ./templates/AppUsers/user_settings.php:67
 msgid "Show Tasks for All Users by Default"
 msgstr ""
 

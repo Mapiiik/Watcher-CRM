@@ -274,7 +274,7 @@ class ContractPDF extends TCPDF
         $addressStartY = $this->GetY();
 
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(60, 4, __('Billing Address') . ':');
+        $this->Cell(60, 4, __d('documents', 'Billing Address') . ':');
         $this->Ln();
 
         $this->SetFont('DejaVuSerif', '', 8);
@@ -346,21 +346,21 @@ class ContractPDF extends TCPDF
         // Installation / Delivery / Permanent addresses
         if ($contract->__isset('installation_address')) {
             $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Cell(30, 4, __('Installation Address') . ': ');
+            $this->Cell(30, 4, __d('documents', 'Installation Address') . ': ');
             $this->Ln();
             $this->Cell(30, 4);
             $this->MultiCell(160, 4, $contract->installation_address->full_address, align: 'L');
         }
         if ($contract->__isset('delivery_address')) {
             $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Cell(30, 4, __('Delivery Address') . ': ');
+            $this->Cell(30, 4, __d('documents', 'Delivery Address') . ': ');
             $this->Ln();
             $this->Cell(30, 4);
             $this->MultiCell(160, 4, $contract->delivery_address->full_address, align: 'L');
         }
         if ($contract->__isset('permanent_address')) {
             $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Cell(30, 4, __('Permanent Address') . ': ');
+            $this->Cell(30, 4, __d('documents', 'Permanent Address') . ': ');
             $this->Ln();
             $this->Cell(30, 4);
             $this->MultiCell(160, 4, $contract->permanent_address->full_address, align: 'L');
@@ -386,9 +386,9 @@ class ContractPDF extends TCPDF
 
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(4, 5);
-            //$this->Cell(60, 5, __('Access Point') . ' / ' . __('SSID'), border: 1, align: 'C');
-            $this->Cell(90, 5, __('Username'), border: 1, align: 'C');
-            $this->Cell(90, 5, __('Password'), border: 1, align: 'C');
+            //$this->Cell(60, 5, __d('documents', 'Access Point') . ' / ' . __d('documents', 'SSID'), border: 1, align: 'C');
+            $this->Cell(90, 5, __d('documents', 'Username'), border: 1, align: 'C');
+            $this->Cell(90, 5, __d('documents', 'Password'), border: 1, align: 'C');
             $this->Ln();
 
             $this->SetFont('DejaVuSerif', '', 8);
@@ -402,14 +402,14 @@ class ContractPDF extends TCPDF
 
             if (!empty($contract->ip_addresses)) {
                 $this->SetFont('DejaVuSerif', '', 8);
-                $this->Write(4, __('Assigned IP Addresses') . ':');
+                $this->Write(4, __d('documents', 'Assigned IP Addresses') . ':');
                 $this->Ln(5);
 
                 $this->SetFont('DejaVuSerif', 'B', 8);
                 $this->Cell(4, 5);
-                $this->Cell(60, 5, __('IP Address'), border: 1, align: 'C');
-                $this->Cell(60, 5, __('IP Network'), border: 1, align: 'C');
-                $this->Cell(60, 5, __('IP Gateway'), border: 1, align: 'C');
+                $this->Cell(60, 5, __d('documents', 'IP Address'), border: 1, align: 'C');
+                $this->Cell(60, 5, __d('documents', 'IP Network'), border: 1, align: 'C');
+                $this->Cell(60, 5, __d('documents', 'IP Gateway'), border: 1, align: 'C');
                 $this->Ln();
 
                 $this->SetFont('DejaVuSerif', '', 8);
@@ -439,7 +439,7 @@ class ContractPDF extends TCPDF
 
             if (!empty($contract->ip_networks)) {
                 $this->SetFont('DejaVuSerif', '', 8);
-                $this->Write(4, __('Assigned IP Networks') . ':');
+                $this->Write(4, __d('documents', 'Assigned IP Networks') . ':');
                 $this->Ln(5);
 
                 $this->SetFont('DejaVuSerif', '', 8);
@@ -456,9 +456,9 @@ class ContractPDF extends TCPDF
 
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(4, 5);
-            $this->Cell(60, 5, __('IP Network'), border: 1, align: 'C');
-            $this->Cell(60, 5, __('IP Gateway'), border: 1, align: 'C');
-            $this->Cell(60, 5, __('DNS Servers'), border: 1, align: 'C');
+            $this->Cell(60, 5, __d('documents', 'IP Network'), border: 1, align: 'C');
+            $this->Cell(60, 5, __d('documents', 'IP Gateway'), border: 1, align: 'C');
+            $this->Cell(60, 5, __d('documents', 'DNS Servers'), border: 1, align: 'C');
             $this->Ln();
 
             $this->SetFont('DejaVuSerif', '', 8);
@@ -472,8 +472,8 @@ class ContractPDF extends TCPDF
 
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(4, 5);
-            $this->Cell(90, 5, __('WiFi - SSID'), border: 1, align: 'C');
-            $this->Cell(90, 5, __('WiFi - Password'), border: 1, align: 'C');
+            $this->Cell(90, 5, __d('documents', 'WiFi - SSID'), border: 1, align: 'C');
+            $this->Cell(90, 5, __d('documents', 'WiFi - Password'), border: 1, align: 'C');
             $this->Ln();
 
             $this->SetFont('DejaVuSerif', '', 8);
@@ -1166,7 +1166,7 @@ class ContractPDF extends TCPDF
 
         // BILLING
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(60, 4, __('Billing Address') . ':');
+        $this->Cell(60, 4, __d('documents', 'Billing Address') . ':');
         $this->Ln();
 
         $this->SetFont('DejaVuSerif', '', 8);
@@ -1240,7 +1240,7 @@ class ContractPDF extends TCPDF
         // INSTALLATION ADDRESS
         if ($contract->__isset('installation_address')) {
             $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Cell(30, 4, __('Installation Address') . ': ');
+            $this->Cell(30, 4, __d('documents', 'Installation Address') . ': ');
             $this->Ln();
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(30, 4);
@@ -1249,7 +1249,7 @@ class ContractPDF extends TCPDF
         // DELIVERY ADDRESS
         if ($contract->__isset('delivery_address')) {
             $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Cell(30, 4, __('Delivery Address') . ': ');
+            $this->Cell(30, 4, __d('documents', 'Delivery Address') . ': ');
             $this->Ln();
             $this->Cell(30, 4);
             $this->MultiCell(160, 4, $contract->delivery_address->full_address, align: 'L');
@@ -1257,7 +1257,7 @@ class ContractPDF extends TCPDF
         // PERMANENT ADDRESS
         if ($contract->__isset('permanent_address')) {
             $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Cell(30, 4, __('Permanent Address') . ': ');
+            $this->Cell(30, 4, __d('documents', 'Permanent Address') . ': ');
             $this->Ln();
             $this->Cell(30, 4);
             $this->MultiCell(160, 4, $contract->permanent_address->full_address, align: 'L');

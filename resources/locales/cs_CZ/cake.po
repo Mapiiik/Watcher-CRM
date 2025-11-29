@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CakePHP 4.2.4\n"
-"POT-Creation-Date: 2025-09-01 12:00+0200\n"
-"PO-Revision-Date: 2025-09-01 12:01+0200\n"
+"POT-Creation-Date: 2025-11-29 16:46+0100\n"
+"PO-Revision-Date: 2025-11-29 16:53+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.7\n"
+"X-Generator: Poedit 3.8\n"
 
 #: templates/Error/error400.php:25 templates/Error/error500.php:39
 msgid "Error"
@@ -24,7 +24,7 @@ msgid "The requested address {0} was not found on this server."
 msgstr "Požadovaná adresa {0} nebyla na tomto serveru nalezena."
 
 #: templates/Error/error500.php:37
-#: vendor/cakephp/cakephp/src/Error/Renderer/WebExceptionRenderer.php:354
+#: vendor/cakephp/cakephp/src/Error/Renderer/WebExceptionRenderer.php:355
 msgid "An Internal Error Has Occurred."
 msgstr "Došlo k vnitřní chybě."
 
@@ -32,7 +32,7 @@ msgstr "Došlo k vnitřní chybě."
 msgid "No plugins have been found."
 msgstr "Nebyly nalezeny žádné pluginy."
 
-#: vendor/cakephp/cakephp/src/Error/Renderer/WebExceptionRenderer.php:352
+#: vendor/cakephp/cakephp/src/Error/Renderer/WebExceptionRenderer.php:353
 msgid "Not Found"
 msgstr "Nenalezeno"
 
@@ -56,11 +56,11 @@ msgstr ""
 msgid "Missing or incorrect CSRF session key"
 msgstr "Chybějící nebo nesprávný klíč relace CSRF"
 
-#: vendor/cakephp/cakephp/src/Http/Response.php:1174
+#: vendor/cakephp/cakephp/src/Http/Response.php:1188
 msgid "The requested file contains `..` and will not be read."
 msgstr "Požadovaný soubor obsahuje '.. ' a nebude načten."
 
-#: vendor/cakephp/cakephp/src/Http/Response.php:1182
+#: vendor/cakephp/cakephp/src/Http/Response.php:1196
 msgid "The requested file was not found"
 msgstr "Požadovaný soubor nebyl nalezen"
 
@@ -243,141 +243,142 @@ msgstr[0] "{0} vteřina"
 msgstr[1] "{0} vteřiny"
 msgstr[2] "{0} vteřin"
 
-#: vendor/cakephp/cakephp/src/ORM/RulesChecker.php:64
+#: vendor/cakephp/cakephp/src/ORM/RulesChecker.php:65
 msgid "This value is already in use"
 msgstr "Tato hodnota se již používá"
 
-#: vendor/cakephp/cakephp/src/ORM/RulesChecker.php:114
+#: vendor/cakephp/cakephp/src/ORM/RulesChecker.php:116
+#: vendor/cakephp/cakephp/src/ORM/RulesChecker.php:168
 msgid "This value does not exist"
 msgstr "Tato hodnota neexistuje"
 
-#: vendor/cakephp/cakephp/src/ORM/RulesChecker.php:234
+#: vendor/cakephp/cakephp/src/ORM/RulesChecker.php:292
 msgid "Cannot modify row: a constraint for the `{0}` association fails."
 msgstr "Nelze upravit řádek: omezení pro asociaci `{0}` selhalo."
 
-#: vendor/cakephp/cakephp/src/ORM/RulesChecker.php:272
+#: vendor/cakephp/cakephp/src/ORM/RulesChecker.php:330
 msgid "The count does not match {0}{1}"
 msgstr "Součet nesedí {0}{1}"
 
-#: vendor/cakephp/cakephp/src/Utility/Text.php:902
+#: vendor/cakephp/cakephp/src/Utility/Text.php:920
 msgid "and"
 msgstr "a"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1071
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:3058
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1083
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:3070
 #: vendor/cakephp/cakephp/src/View/Form/ArrayContext.php:232
 msgid "This field cannot be left empty"
 msgstr "Toto pole nelze ponechat prázdné"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1098
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1110
 msgid "The provided value must be alphanumeric"
 msgstr "Zadaná hodnota musí být alfanumerická"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1125
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1137
 msgid "The provided value must not be alphanumeric"
 msgstr "Zadaná hodnota nesmí být alfanumerická"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1152
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1164
 msgid "The provided value must be ASCII-alphanumeric"
 msgstr "Zadaná hodnota musí být ASCII-alfanumerická"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1179
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1191
 msgid "The provided value must not be ASCII-alphanumeric"
 msgstr "Zadaná hodnota nesmí být ASCII-alfanumerická"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1222
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1234
 msgid ""
 "The length of the provided value must be between `{0}` and `{1}`, inclusively"
 msgstr "Délka zadané hodnoty musí být mezi `{0}` a `{1}` včetně"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1273
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1285
 msgid "The provided value must be a valid credit card number of any type"
 msgstr "Zadaná hodnota musí být platné číslo kreditní karty libovolného typu"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1278
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1290
 msgid ""
 "The provided value must be a valid credit card number of these types: `{0}`"
 msgstr "Zadaná hodnota musí být platné číslo kreditní karty těchto typů: `{0}`"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1314
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1326
 msgid "The provided value must be greater than `{0}`"
 msgstr "Zadaná hodnota musí být větší než `{0}`"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1346
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1358
 msgid "The provided value must be greater than or equal to `{0}`"
 msgstr "Zadaná hodnota musí být větší nebo rovna `{0}`"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1378
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1390
 msgid "The provided value must be less than `{0}`"
 msgstr "Zadaná hodnota musí být menší než `{0}`"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1410
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1422
 msgid "The provided value must be less than or equal to `{0}`"
 msgstr "Zadaná hodnota musí být menší nebo rovna `{0}`"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1442
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1454
 msgid "The provided value must be equal to `{0}`"
 msgstr "Zadaná hodnota se musí rovnat `{0}`"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1474
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1486
 msgid "The provided value must not be equal to `{0}`"
 msgstr "Zadaná hodnota se nesmí rovnat `{0}`"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1508
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1520
 msgid "The provided value must be same as `{0}`"
 msgstr "Zadaná hodnota musí být stejná jako `{0}`"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1541
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1553
 msgid "The provided value must not be same as `{0}`"
 msgstr "Zadaná hodnota nesmí být stejná jako `{0}`"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1574
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1586
 msgid "The provided value must be equal to the one of field `{0}`"
 msgstr "Zadaná hodnota se musí rovnat hodnotě pole `{0}`"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1611
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1623
 msgid "The provided value must not be equal to the one of field `{0}`"
 msgstr "Zadaná hodnota se nesmí rovnat hodnotě pole `{0}`"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1648
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1660
 msgid "The provided value must be greater than the one of field `{0}`"
 msgstr "Zadaná hodnota musí být větší než hodnota pole `{0}`"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1688
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1700
 msgid ""
 "The provided value must be greater than or equal to the one of field `{0}`"
 msgstr "Zadaná hodnota musí být větší nebo rovna hodnotě pole `{0}`"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1725
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1737
 msgid "The provided value must be less than the one of field `{0}`"
 msgstr "Zadaná hodnota musí být menší než hodnota pole `{0}`"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1765
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1777
 msgid "The provided value must be less than or equal to the one of field `{0}`"
 msgstr "Zadaná hodnota musí být menší nebo rovna hodnotě pole `{0}`"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1820
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1832
 msgid "The provided value must be a date of one of these formats: `{0}`"
 msgstr "Zadaná hodnota musí být datum v jednom z těchto formátů: `{0}`"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1882
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1894
 msgid ""
 "The provided value must be a date and time of one of these formats: `{0}`"
 msgstr "Zadaná hodnota musí být datum a čas v jednom z těchto formátů: `{0}`"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1913
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1925
 msgid "The provided value must be a time"
 msgstr "Zadaná hodnota musí být čas"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1945
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1957
 msgid "The provided value must be a localized time, date or date and time"
 msgstr "Zadaná hodnota musí být lokalizovaný čas, datum nebo datum a čas"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:1972
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:1984
 msgid "The provided value must be a boolean"
 msgstr "Zadaná hodnota musí být logická"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2008
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2020
 msgid ""
 "The provided value must be decimal with any number of decimal places, "
 "including none"
@@ -385,155 +386,155 @@ msgstr ""
 "Zadaná hodnota musí být desetinná s libovolným počtem desetinných míst, "
 "včetně žádného"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2013
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2025
 msgid "The provided value must be decimal with `{0}` decimal places"
 msgstr "Zadaná hodnota musí být desetinná s `{0}` desetinnými místy"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2049
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2061
 msgid "The provided value must be an e-mail address"
 msgstr "Zadanou hodnotou musí být e-mailová adresa"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2090
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2102
 msgid "The provided value must be one of `{0}`"
 msgstr "Zadaná hodnota musí být jedna z `{0}`"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2119
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2131
 msgid "The provided value must be an IP address"
 msgstr "Zadaná hodnota musí být IP adresa"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2146
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2158
 msgid "The provided value must be an IPv4 address"
 msgstr "Zadaná hodnota musí být adresa IPv4"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2173
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2185
 msgid "The provided value must be an IPv6 address"
 msgstr "Zadaná hodnota musí být adresa IPv6"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2201
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2213
 msgid "The provided value must be at least `{0}` characters long"
 msgstr "Zadaná hodnota musí být dlouhá alespoň `{0}` znaků"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2229
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2241
 msgid "The provided value must be at least `{0}` bytes long"
 msgstr "Zadaná hodnota musí být dlouhá alespoň `{0}` bajtů"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2257
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2269
 msgid "The provided value must be at most `{0}` characters long"
 msgstr "Zadaná hodnota musí být dlouhá maximálně `{0}` znaků"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2285
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2297
 msgid "The provided value must be at most `{0}` bytes long"
 msgstr "Zadaná hodnota musí být dlouhá maximálně `{0}` bajtů"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2312
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2324
 msgid "The provided value must be numeric"
 msgstr "Zadaná hodnota musí být číselná"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2339
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2351
 msgid "The provided value must be a natural number"
 msgstr "Zadaná hodnota musí být přirozené číslo"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2366
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2378
 msgid "The provided value must be a non-negative integer"
 msgstr "Zadaná hodnota musí být nezáporné celé číslo"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2405
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2417
 msgid "The provided value must be between `{0}` and `{1}`, inclusively"
 msgstr "Zadaná hodnota musí být mezi `{0}` a `{1}` včetně"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2439
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2451
 msgid "The provided value must be a URL"
 msgstr "Zadanou hodnotou musí být adresa URL"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2468
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2480
 msgid "The provided value must be a URL with protocol"
 msgstr "Zadaná hodnota musí být URL s protokolem"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2498
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2510
 msgid "The provided value must be one of: `{0}`"
 msgstr "Zadaná hodnota musí být jedna z následujících: `{0}`"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2529
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2541
 msgid "The provided value must be a UUID"
 msgstr "Zadaná hodnota musí být UUID"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2561
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2573
 msgid "The provided value must be an uploaded file"
 msgstr "Zadaná hodnota musí být nahraný soubor"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2590
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2602
 msgid "The provided value must be a latitude/longitude coordinate"
 msgstr "Zadaná hodnota musí být souřadnice zeměpisné šířky a délky"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2617
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2629
 msgid "The provided value must be a latitude"
 msgstr "Zadaná hodnota musí být zeměpisná šířka"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2644
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2656
 msgid "The provided value must be a longitude"
 msgstr "Zadaná hodnota musí být zeměpisná délka"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2671
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2683
 msgid "The provided value must be ASCII bytes only"
 msgstr "Zadaná hodnota musí být pouze bajty ASCII"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2698
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2710
 msgid "The provided value must be UTF-8 bytes only"
 msgstr "Zadaná hodnota musí být pouze bajty UTF-8"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2727
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2739
 msgid "The provided value must be 3 and 4 byte UTF-8 sequences only"
 msgstr "Zadaná hodnota musí být pouze 3 a 4 bajtové sekvence UTF-8"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2754
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2766
 msgid "The provided value must be an integer"
 msgstr "Zadaná hodnota musí být celé číslo"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2781
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2793
 msgid "The provided value must be an array"
 msgstr "Zadaná hodnota musí být pole"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2807
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2819
 msgid "The provided value must be scalar"
 msgstr "Zadaná hodnota musí být skalární"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2833
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2845
 msgid "The provided value must be a hex color"
 msgstr "Zadaná hodnota musí být hexadecimální barva"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2865
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2877
 msgid "The provided value must be a set of multiple options"
 msgstr "Zadaná hodnota musí být souborem více voleb"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2896
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2908
 msgid "The provided value must have at least `{0}` elements"
 msgstr "Zadaná hodnota musí mít alespoň `{0}` prvků"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2931
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:2943
 msgid "The provided value must have at most `{0}` elements"
 msgstr "Zadaná hodnota musí mít nejvýše `{0}` prvků"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:2998
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:3010
 msgid "The provided value must match against the pattern `{0}`"
 msgstr "Zadaná hodnota musí odpovídat vzoru `{0}`"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:3029
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:3041
 msgid "This field is required"
 msgstr "Toto pole je povinné"
 
-#: vendor/cakephp/cakephp/src/Validation/Validator.php:3180
+#: vendor/cakephp/cakephp/src/Validation/Validator.php:3199
 msgid "The provided value is invalid"
 msgstr "Zadaná hodnota je neplatná"
 
-#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1024
+#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1026
 msgid "Edit {0}"
 msgstr "Upravit {0}"
 
-#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1026
+#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1028
 msgid "New {0}"
 msgstr "Nový {0}"
 
-#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:2049
+#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:2052
 msgid "Submit"
 msgstr "Potvrdit"
 
