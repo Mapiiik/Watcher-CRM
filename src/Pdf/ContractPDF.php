@@ -180,52 +180,8 @@ class ContractPDF extends AppPDF
         $this->Cell(187, 2, Settings::getString('core.documents.common.labels.between'), align: 'C');
         $this->Ln();
 
-        // Provider section
-        $this->SetFont('DejaVuSerif', 'B', 9);
-        $this->Cell(45, 4, Settings::getString('core.documents.common.labels.provider'));
-        $this->Ln();
-
-        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-
-        // Company details (from settings)
-        $this->Ln(1);
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(30, 4);
-        $this->Cell(40, 4, Settings::getString('core.company.name'));
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4);
-        $this->Cell(40, 4);
-        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.phone'));
-        $this->Cell(40, 4, Settings::getString('core.company.phone'));
-        $this->Ln();
-
-        $this->Cell(30, 4);
-        $this->Cell(40, 4, Settings::getString('core.company.address_line_1'));
-        $this->Cell(20, 4);
-        $this->Cell(10, 4, Settings::getString('core.documents.common.labels.identity_number'));
-        $this->Cell(40, 4, Settings::getString('core.company.identity_number'));
-        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.mobile'));
-        $this->Cell(40, 4, Settings::getString('core.company.mobile'));
-        $this->Ln();
-
-        $this->Cell(30, 4);
-        $this->Cell(40, 4, Settings::getString('core.company.address_line_2'));
-        $this->Cell(20, 4);
-        $this->Cell(10, 4, Settings::getString('core.documents.common.labels.vat_number'));
-        $this->Cell(40, 4, Settings::getString('core.company.vat_number'));
-        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.email'));
-        $this->Cell(40, 4, Settings::getString('core.company.email'));
-        $this->Ln();
-
-        $this->Ln(3);
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4);
-        $this->MultiCell(157, 4, Settings::getString('core.company.executive_clause'), align: 'L');
-        $this->Cell(30, 4);
-        $this->MultiCell(157, 4, Settings::getString('core.company.registry_clause'), align: 'L');
-
-        $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-        $this->Ln(3);
+        // Provider section - company details block
+        $this->printCompanyDetails(Settings::getString('core.documents.common.labels.provider'));
 
         // User section
         $this->SetFont('DejaVuSerif', 'B', 9);
@@ -1067,50 +1023,8 @@ class ContractPDF extends AppPDF
                 break;
         }
 
-        $this->SetFont('DejaVuSerif', 'B', 9);
-        $this->Cell(45, 4, Settings::getString('core.documents.common.labels.provider'));
-        $this->Ln();
-
-        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-
-        $this->Ln(1);
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(30, 4);
-        $this->Cell(40, 4, Settings::getString('core.company.name'));
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4);
-        $this->Cell(40, 4);
-        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.phone'));
-        $this->Cell(40, 4, Settings::getString('core.company.phone'));
-        $this->Ln();
-
-        $this->Cell(30, 4);
-        $this->Cell(40, 4, Settings::getString('core.company.address_line_1'));
-        $this->Cell(20, 4);
-        $this->Cell(10, 4, Settings::getString('core.documents.common.labels.identity_number'));
-        $this->Cell(40, 4, Settings::getString('core.company.identity_number'));
-        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.mobile'));
-        $this->Cell(40, 4, Settings::getString('core.company.mobile'));
-        $this->Ln();
-
-        $this->Cell(30, 4);
-        $this->Cell(40, 4, Settings::getString('core.company.address_line_2'));
-        $this->Cell(20, 4);
-        $this->Cell(10, 4, Settings::getString('core.documents.common.labels.vat_number'));
-        $this->Cell(40, 4, Settings::getString('core.company.vat_number'));
-        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.email'));
-        $this->Cell(40, 4, Settings::getString('core.company.email'));
-        $this->Ln();
-
-        $this->Ln(3);
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4);
-        $this->MultiCell(157, 4, Settings::getString('core.company.executive_clause'), align: 'L');
-        $this->Cell(30, 4);
-        $this->MultiCell(157, 4, Settings::getString('core.company.registry_clause'), align: 'L');
-
-        $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-        $this->Ln(3);
+        // Provider section - company details block
+        $this->printCompanyDetails(Settings::getString('core.documents.common.labels.provider'));
 
         $this->SetFont('DejaVuSerif', 'B', 9);
         $this->Cell(187, 4, Settings::getString('core.documents.common.labels.and'), align: 'C');

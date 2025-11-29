@@ -9,6 +9,8 @@ use TCPDF;
 
 class AppPDF extends TCPDF
 {
+    public const SEPARATOR_OFFSET_X = 4.0;
+
     /**
      * @inheritDoc
      */
@@ -31,12 +33,52 @@ class AppPDF extends TCPDF
         parent::Cell($w, $h, $txt, $border, $ln, $align, $fill, $link, $stretch, $ignore_min_height, $calign, $valign);
     }
 
-    protected function drawSeparator(float $offsetX = 4.0, float $width = 187.0, float $ln = 3.0): void
-    {
+    /**
+     * Draws a horizontal separator line followed by a line break.
+     *
+     * This helper is used to visually separate logical blocks in the PDF
+     * (e.g. company details, user information, signatures). It draws a line
+     * across the page starting from the current X/Y position with the given
+     * offset and width, then moves the cursor down by the specified amount.
+     *
+     * @param float $offsetX Horizontal offset from the current X position (default 0.0)
+     * @param float $width   Total line width (default 187.0)
+     * @param float|null $lnBefore      Line break height before drawing (default null = disabled)
+     * @param float|null $lnAfter      Line break height after drawing (default null = disabled)
+     * @return void
+     */
+    protected function drawSeparator(
+        float $offsetX = 0.0,
+        float $width = 187.0,
+        ?float $lnBefore = null,
+        ?float $lnAfter = null,
+    ): void {
+        if (is_float($lnBefore)) {
+            $this->Ln($lnBefore);
+        }
+
         $this->Line($this->GetX() + $offsetX, $this->GetY(), $this->GetX() + $width, $this->GetY());
-        $this->Ln($ln);
+
+        if (is_float($lnAfter)) {
+            $this->Ln($lnAfter);
+        }
     }
 
+    /**
+     * Prints a standardized block with company details into the PDF.
+     *
+     * The block includes company name, address lines, identity number,
+     * VAT number, phone, mobile, email, executive clause, and registry clause.
+     * A horizontal line is drawn before and after the block to visually
+     * delimit the section, with a small spacing added for readability.
+     *
+     * All values and labels are retrieved from the Settings configuration
+     * to ensure consistency across different documents.
+     *
+     * @param string $roleLabel Label describing the company role
+     *                          (e.g. "Provider", "Controller").
+     * @return void
+     */
     protected function printCompanyDetails(string $roleLabel): void
     {
         $this->SetFont('DejaVuSerif', 'B', 9);
@@ -79,5 +121,8 @@ class AppPDF extends TCPDF
         $this->MultiCell(157, 4, Settings::getString('core.company.executive_clause'), align: 'L');
         $this->Cell(30, 4);
         $this->MultiCell(157, 4, Settings::getString('core.company.registry_clause'), align: 'L');
+
+        $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
+        $this->Ln(3);
     }
 }
