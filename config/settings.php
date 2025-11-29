@@ -84,6 +84,135 @@ return [
                     'user' => 'Uživatel',
                 ],
 
+                'contract' => [
+                    'title_new' => 'SMLOUVA',
+                    'subtitle_new' => 'o poskytování služeb',
+                    'title_amendment' => 'DODATEK',
+                    'subtitle_amendment' => 'ke Smlouvě o poskytování služeb',
+                    'title_termination' => 'DOHODA',
+                    'subtitle_termination' => 'o ukončení Smlouvy o poskytování služeb',
+
+                    'labels' => [
+                        'contract_number' => 'číslo smlouvy:',
+                        'start_date' => 'datum zahájení poskytování služeb:',
+                        'conclusion_date' => 'datum uzavření smlouvy:',
+                        'amendment_number' => 'číslo dodatku:',
+                        'amendment_effective' => 'datum účinnosti dodatku:',
+                        'end_date' => 'datum ukončení poskytování služeb:',
+                        'between_new' => 'uzavřená mezi',
+                        'between_amendment' => 'uzavřený mezi',
+                        'between_termination' => 'uzavřená mezi',
+                        'provider' => 'Poskytovatelem:',
+                        'user' => 'Uživatelem:',
+                        'and' => 'a',
+                        'tel' => 'tel:',
+                        'mobile' => 'mobil:',
+                        'email' => 'e-mail:',
+                        'ic' => 'IČ:',
+                        'dic' => 'DIČ:',
+                        'executive' => 'zastoupeným Marko Jujnovićem, jednatelem',
+                        'company_registry' => 'zapsaným v obchodním rejstříku vedeném u Krajského soudu v Hradci Králové, oddíl C, vložka 22450.',
+                        'subscriber_verification_code' => 'Ověřovací kód účastníka',
+                        'customer_natural_nonbusiness' => 'fyzická osoba nepodnikající',
+                        'customer_natural_business' => 'fyzická osoba podnikající',
+                        'customer_legal' => 'právnická osoba',
+                        'company' => 'firma:',
+                        'name' => 'jméno:',
+                        'represented' => 'zastoupená:',
+                        'street' => 'ulice / č.p.:',
+                        'zip_city' => 'PSČ / město:',
+                        'birth_date' => 'dat. nar.:',
+                        'identity_card' => 'č. OP:',
+                        'payment_period' => 'perioda platby:',
+                        'payment_method' => 'způsob úhrady:',
+                        'first_payment_date' => 'datum první úhrady:',
+                        'first_payment_total' => 'první platba za služby celkem:',
+                        'monthly' => 'měsíčně',
+                        'bank_transfer' => 'převodem z účtu',
+                        'provider_bank' => 'peněžní ústav poskytovatele:',
+                        'provider_account' => 'číslo účtu poskytovatele:',
+                        'variable_symbol' => 'variabilní symbol:',
+                        'bank_name' => 'Komerční banka, a.s.',
+                        'bank_account_number' => '207385091/0100',
+                    ],
+                    'provider_info' => [
+                        'company' => 'NETAIR, s.r.o.',
+                        'street' => 'Jablonec nad Jizerou 299',
+                        'zip_city' => '512 43 Jablonec nad Jizerou',
+                        'ic' => '27496139',
+                        'dic' => 'CZ27496139',
+                        'tel' => '+420 488 572 050',
+                        'mobile' => '+420 604 553 444',
+                        'email' => 'mail@netair.cz',
+                    ],
+                    'sections' => [
+                            'billing_pricelist' => 'Seznam poskytovaných služeb a údaje o jejich aktuálních cenách dle Ceníku včetně DPH',
+                            'billing_individual' => 'Seznam poskytovaných služeb a údaje o jejich individuálních cenách včetně DPH',
+                            'billing_future_pricelist' => 'Seznam budoucích poskytovaných služeb a údaje o jejich aktuálních cenách dle Ceníku včetně DPH',
+                            'billing_future_individual' => 'Seznam budoucích poskytovaných služeb a údaje o jejich individuálních cenách včetně DPH',
+                            'payment_info' => 'Platební údaje',
+                            'final_provisions' => 'Závěrečná ustanovení',
+                    ],
+                    'texts' => [
+                        'termination_intro' => 'Smluvní strany ujednávají ukončení smlouvy o poskytování služeb č. {contract_number} ze dne {conclusion_date} (ve znění případných pozdějších dodatků) ke dni {valid_until}.',
+                        'termination_final' => 'Tato dohoda je vyhotovena ve dvou stejnopisech.',
+
+                        'new_intro' => 'Smlouva je uzavřena {minimum_duration}.',
+                        'new_start_date' => 'Datum zahájení poskytování služeb: {valid_from}.',
+
+                        'new_x_intro' => 'Smluvní strany zároveň ujednávají, že předchozí smlouva o poskytování služeb č. {contract_number} ze dne {old_conclusion_date} (ve znění případných pozdějších dodatků) zaniká ke dni {termination_date}.',
+
+                        'amendment_intro' => 'Tento dodatek mění Seznam poskytovaných služeb a Platební údaje původní smlouvy ve znění případných předchozích dodatků s účinností od {valid_from} takto:',
+                        'individual_clause' => 'Smluvní strany ujednávají, že výše cen za Poskytovatelovy služby je touto smlouvou ujednána oproti Ceníku v individuální výši. Včetně všech svých složek má proto povahu Poskytovatelova obchodního tajemství dle § 504 zákona č. 89/2012 Sb., občanského zákoníku.',
+                        'reverse_charge_clause' => '*faktury budou vystaveny v režimu přenesené daňové povinnosti dle § 92a zákona o dani z přidané hodnoty, kdy výši daně je povinen doplnit a přiznat plátce, pro kterého je plnění uskutečněno',
+                        'standing_order_note' => '*doporučujeme nastavit si trvalý příkaz dle předepsaných platebních údajů, údaje lze použít i pro jednotlivé platby',
+                        'amendment_final_clause' => 'Ustanovení smlouvy (ve znění případných předchozích dodatků) nedotčená tímto dodatkem zůstávají beze změn.',
+                        'amendment_final_statement' => 'Tento dodatek je vyhotoven ve dvou stejnopisech.',
+                        'new_equipment_intro' => 'Poskytnutá zařízení, aktivační poplatek a náhrada nákladů spojených s telekomunikačními zařízeními poskytnutými Uživateli za zvýhodněných podmínek',
+                        'borrowed_equipment_intro_new' => 'Poskytovatel poskytne Uživateli pro dobu trvání této smlouvy bezúplatně tato zařízení:',
+                        'borrowed_equipment_intro_old' => 'Na základě uvedené předchozí smlouvy ze dne {old_conclusion_date} poskytl Poskytovatel Uživateli bezúplatně tato zařízení:',
+                        'borrowed_equipment_continue' => 'Smluvní strany ujednávají, že Poskytovatel Uživateli touto smlouvou uvedená zařízení nadále poskytuje k bezúplatnému užívání až do zániku této nové smlouvy.',
+                        'borrowed_equipment_return' => 'Uživatel je povinen tato zařízení Poskytovateli vrátit bez zbytečných odkladů nejpozději po zániku této Smlouvy.',
+                        'borrowed_equipment_installation_costs' => 'Náklady spojené s instalací dalších zařízení nebo další kabeláže se řídí aktuálně účinným Ceníkem Poskytovatele.',
+                        'user_equipment_installation_costs' => 'Cena za případnou instalaci Uživatelových zařízení včetně případných souvisejících nákladů (např. kabeláž) se řídí aktuálním Ceníkem Poskytovatele.',
+
+                        'activation_fee_no_commitment' => 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši {activation_fee} zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací{with_installation}.',
+                        'activation_fee_with_commitment' => 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši {activation_fee_obligation} zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací{with_installation}.',
+                        'activation_fee_clause_equipment' => 'Poskytnutá zařízení jsou Uživateli poskytnuta Poskytovatelem za zvýhodněných podmínek (bezúplatně). V případě zániku této smlouvy před uplynutím {duration} od jejího uzavření je proto Uživatel povinen nahradit Poskytovateli náklady spojené s výše uvedenými Poskytnutými zařízeními, a to v paušální částce {difference} ({full_fee} je aktivační poplatek při smlouvě bez úvazku).',
+                        'activation_fee_clause_installation' => 'Aktivační poplatek je Uživateli poskytnut Poskytovatelem za zvýhodněných podmínek. V případě zániku této smlouvy před uplynutím {duration} od jejího uzavření je proto Uživatel povinen nahradit Poskytovateli náklady spojené se zřízením koncového bodu Poskytovatelovy sítě elektronických komunikací, a to v paušální částce {difference} ({full_fee} je aktivační poplatek při smlouvě bez úvazku).',
+                        'final_documents_intro' => 'Uživatel prohlašuje, že se podrobně seznámil s obsahem těchto aktuálně účinných dokumentů (dále jako „Dokumenty“):',
+                        'final_documents_list' => '
+                            <ol>
+                            <li><b><i>Všeobecné podmínky služeb elektronických komunikací</i></b> (dále jako „Podmínky“)<ul>
+                                <li>Uživatel si je vědom skutečnosti, že Podmínky jsou nedílnou součástí této Smlouvy a zavazuje se je dodržovat.</li>
+                                <li>Uživateli je též známo, že Poskytovatel je oprávněn Podmínky v souladu s příslušnými právními předpisy jednostranně měnit.</li>
+                                <li>Podmínky obsahují mimo jiné i podrobné informace vyžadované § 63 odst. 1 zákona č. 127/2005 Sb. o elektronických komunikacích,
+                                jako jsou informace o veškerých podmínkách omezujících přístup k poskytovaným službám a možnostem jejich využívání,
+                                o minimální nabízené a minimální zaručené úrovni kvality poskytovaných služeb, o omezeních týkajících se omezení užívání koncových zařízení nebo o možnostech ukončení smlouvy.</li>
+                            </ul></li>
+                            <li><b><i>Přehled parametrů a rychlostí poskytovaných tarifů pro služby připojení k internetu v pevném místě</i></b></li>
+                            <li><b><i>Oznámení o typech rozhraní pro připojení k veřejné komunikační síti</i></b></li>
+                            <li><b><i>Zásady zpracování osobních údajů</i></b></li>
+                            <li><b><i>Ceník</i></b></li>
+                            </ol>',
+                        'final_documents_confirm' => 'Uživatel potvrzuje, že Dokumenty od Poskytovatele obdržel k prostudování a s jejich obsahem plně souhlasí.',
+                        'final_documents_web' => 'Uživatel je srozuměn se skutečností, že aktuální znění těchto Dokumentů, kterými se tato Smlouva řídí, je vždy dostupné na:',
+                        'final_documents_web_list' => '
+                            <ul>
+                            <li>poskytovatelových webových stránkách: <u>https://netair.cz</u></li>
+                            <li>ke dni uzavření této smlouvy konkrétně v této sekci: <u>https://netair.cz/internet/vseobecne-informace</u></li>
+                            </ul>',
+                        'final_prices' => 'Všechny ceny uvedené v této smlouvě jsou vyjádřeny včetně daně z přidané hodnoty, pokud není výslovně stanoveno jinak.',
+                        'final_copies' => 'Tato smlouva (č. {contract_number}) je vyhotovena ve dvou stejnopisech.',
+                    ],
+                    'tables' => [
+                        'borrowed_equipments' => [
+                            'device' => 'Zařízení',
+                            'value' => 'Hodnota',
+                        ],
+                    ],
+                ],
+
                 'handover' => [
                     'title' => 'PŘEDÁVACÍ PROTOKOL',
                     'subtitle_installation' => 'ke Smlouvě o poskytování služeb',
