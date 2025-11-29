@@ -65,6 +65,44 @@ class AppPDF extends TCPDF
     }
 
     /**
+     * Draws a cross (frame with diagonals) inside the PDF.
+     *
+     * This helper is used to visually mark a section with a rectangular
+     * border and two diagonal lines. It starts with an optional line break
+     * before drawing, then renders:
+     *  - top horizontal line
+     *  - bottom horizontal line
+     *  - left and right vertical lines
+     *  - two diagonals (\ and /)
+     *
+     * @param float $lnBefore Line break height before drawing (default 5.0)
+     * @param float $width    Total width of the frame (default 187.0)
+     * @param float $bottomY  Y‑coordinate of the bottom line (default 285.0)
+     * @return void
+     */
+    protected function drawCross(float $lnBefore = 5.0, float $width = 187.0, float $bottomY = 285.0): void
+    {
+        $this->Ln($lnBefore);
+
+        $x = $this->GetX();
+        $y = $this->GetY();
+
+        // Top horizontal line
+        $this->Line($x, $y, $x + $width, $y);
+
+        // Diagonals
+        $this->Line($x, $y, $x + $width, $bottomY); // \
+        $this->Line($x, $bottomY, $x + $width, $y); // /
+
+        // Vertical lines
+        $this->Line($x, $y, $x, $bottomY);          // |
+        $this->Line($x + $width, $y, $x + $width, $bottomY); // |
+
+        // Bottom horizontal line
+        $this->Line($x, $bottomY, $x + $width, $bottomY);
+    }
+
+    /**
      * Prints a standardized block with company details into the PDF.
      *
      * The block includes company name, address lines, identity number,
@@ -84,9 +122,9 @@ class AppPDF extends TCPDF
         $this->SetFont('DejaVuSerif', 'B', 9);
         $this->Cell(45, 4, $roleLabel);
         $this->Ln();
-        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
 
-        $this->Ln(1);
+        $this->drawSeparator(lnAfter: 1.0);
+
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->Cell(30, 4);
         $this->Cell(40, 4, Settings::getString('core.company.name'));
@@ -122,7 +160,6 @@ class AppPDF extends TCPDF
         $this->Cell(30, 4);
         $this->MultiCell(157, 4, Settings::getString('core.company.registry_clause'), align: 'L');
 
-        $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-        $this->Ln(3);
+        $this->drawSeparator(self::SEPARATOR_OFFSET_X, lnAfter: 3.0);
     }
 }

@@ -43,9 +43,7 @@ class CustomerPDF extends AppPDF
         $this->Ln(3);
 
         // Separator line
-        $this->Ln(4);
-        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-        $this->Ln(0.5);
+        $this->drawSeparator(lnBefore: 4, lnAfter: 0.5);
 
         // Agreement header labels
         $this->SetFont('DejaVuSerif', '', 8);
@@ -69,8 +67,7 @@ class CustomerPDF extends AppPDF
         $this->Ln();
 
         // Separator line
-        $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-        $this->Ln(3);
+        $this->drawSeparator(AppPDF::SEPARATOR_OFFSET_X, lnAfter: 3.0);
 
         // Controller section
         $this->SetFont('DejaVuSerif', 'B', 9);
@@ -98,8 +95,7 @@ class CustomerPDF extends AppPDF
         $this->Ln();
 
         // Separator line
-        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-        $this->Ln(0.5);
+        $this->drawSeparator(lnAfter: 0.5);
 
         // Labels for personal vs business data
         $this->SetFont('DejaVuSerif', 'B', 8);
@@ -159,7 +155,7 @@ class CustomerPDF extends AppPDF
             $this->Cell(30, 4);
             $this->MultiCell(160, 4, $address->full_address, align: 'L');
         }
-        $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
+        $this->drawSeparator(AppPDF::SEPARATOR_OFFSET_X);
         $this->Ln();
 
         // Declaration text

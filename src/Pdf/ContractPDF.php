@@ -149,9 +149,7 @@ class ContractPDF extends AppPDF
         $this->Ln(3);
 
         // Separator line
-        $this->Ln(4);
-        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-        $this->Ln(0.5);
+        $this->drawSeparator(lnBefore: 4, lnAfter: 0.5);
 
         // Contract number + date
         $this->SetFont('DejaVuSerif', '', 8);
@@ -172,8 +170,7 @@ class ContractPDF extends AppPDF
         }
         $this->Ln();
 
-        $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-        $this->Ln(3);
+        $this->drawSeparator(AppPDF::SEPARATOR_OFFSET_X, lnAfter: 3.0);
 
         // BETWEEN
         $this->SetFont('DejaVuSerif', 'B', 9);
@@ -199,8 +196,7 @@ class ContractPDF extends AppPDF
         }
         $this->Ln();
 
-        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-        $this->Ln(0.5);
+        $this->drawSeparator(lnAfter: 0.5);
 
         // Billing address section
         $addressStartY = $this->GetY();
@@ -298,8 +294,7 @@ class ContractPDF extends AppPDF
             $this->MultiCell(160, 4, $contract->permanent_address->full_address, align: 'L');
         }
 
-        $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-        $this->Ln(4);
+        $this->drawSeparator(AppPDF::SEPARATOR_OFFSET_X, lnAfter: 4.0);
 
         // BEGIN INSTALLATION
         if ($type == 'handover-protocol-installation') :
@@ -308,9 +303,7 @@ class ContractPDF extends AppPDF
             $this->Write(4, Settings::getString('core.documents.contracts.handover.sections.access_info'));
             $this->Ln();
 
-            $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-            $this->Ln(1);
+            $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
 
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Write(4, Settings::getString('core.documents.contracts.handover.texts.endpoint_auth'));
@@ -434,9 +427,7 @@ class ContractPDF extends AppPDF
                 $this->Write(4, Settings::getString('core.documents.contracts.handover.sections.borrowed_equipment'));
                 $this->Ln();
 
-                $this->Ln(0.4);
-                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-                $this->Ln(1);
+                $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
 
                 $this->SetFont('DejaVuSerif', '', 8);
                 $this->Write(4, Settings::getString('core.documents.contracts.handover.texts.borrowed_equipment_intro'));
@@ -465,13 +456,7 @@ class ContractPDF extends AppPDF
             }
 
             // CROSS
-            $this->Ln(5);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY()); // --
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, 285.0); // \
-            $this->Line($this->GetX(), 285.0, $this->GetX() + 187.0, $this->GetY()); // /
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), 285.0); // |
-            $this->Line($this->GetX() + 187.0, $this->GetY(), $this->GetX() + 187.0, 285.0); // |
-            $this->Line($this->GetX(), 285.0, $this->GetX() + 187.0, 285.0); // --
+            $this->drawCross();
 
             // add a page
             $this->AddPage();
@@ -481,10 +466,7 @@ class ContractPDF extends AppPDF
             $this->Write(4, Settings::getString('core.documents.contracts.handover.sections.activation_fee'));
             $this->Ln();
 
-            $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-            $this->Ln(1);
-
+            $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
             $this->SetFont('DejaVuSerif', '', 8);
             if (count($contract->borrowed_equipments) > 0) {
                 $this->MultiCell(
@@ -631,10 +613,7 @@ class ContractPDF extends AppPDF
             $this->Write(4, 'Úhrada v hotovosti');
             $this->Ln();
 
-            $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-            $this->Ln(1);
-
+            $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Ln(4);
             $this->MultiCell(180, 4, 'Placeno hotově: ____________________,- Kč, podpis příjemce: ____________________' . PHP_EOL, align: 'J');
@@ -646,10 +625,7 @@ class ContractPDF extends AppPDF
             $this->Write(4, Settings::getString('core.documents.contracts.handover.sections.connection_point_state'));
             $this->Ln();
 
-            $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-            $this->Ln(1);
-
+            $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Ln(3);
             $this->MultiCell(
@@ -665,10 +641,7 @@ class ContractPDF extends AppPDF
             $this->Write(4, Settings::getString('core.documents.contracts.handover.sections.general_statements'));
             $this->Ln();
 
-            $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-            $this->Ln(1);
-
+            $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Ln(4);
             $this->MultiCell(
@@ -685,9 +658,7 @@ class ContractPDF extends AppPDF
                 $this->Write(4, Settings::getString('core.documents.contracts.handover.sections.early_termination'));
                 $this->Ln();
 
-                $this->Ln(0.4);
-                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-                $this->Ln(1);
+                $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
 
                 $this->SetFont('DejaVuSerif', 'B', 8);
                 /** @psalm-suppress ImplicitToStringCast */
@@ -713,10 +684,7 @@ class ContractPDF extends AppPDF
             $this->Write(4, Settings::getString('core.documents.contracts.handover.sections.final_statements'));
             $this->Ln();
 
-            $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-            $this->Ln(1);
-
+            $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
             $this->SetFont('DejaVuSerif', '', 8);
             $this->MultiCell(
                 180,
@@ -738,10 +706,7 @@ class ContractPDF extends AppPDF
             $this->Write(4, Settings::getString('core.documents.contracts.handover.sections.uninstallation_borrowed_equipment'));
             $this->Ln();
 
-            $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-            $this->Ln(1);
-
+            $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Write(4, Settings::getString('core.documents.contracts.handover.texts.uninstallation_borrowed_equipment_intro'));
             $this->Ln(5);
@@ -784,13 +749,7 @@ class ContractPDF extends AppPDF
             );
 
             // CROSS
-            $this->Ln(5);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, 285.0);
-            $this->Line($this->GetX(), 285.0, $this->GetX() + 187.0, $this->GetY());
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), 285.0);
-            $this->Line($this->GetX() + 187.0, $this->GetY(), $this->GetX() + 187.0, 285.0);
-            $this->Line($this->GetX(), 285.0, $this->GetX() + 187.0, 285.0);
+            $this->drawCross();
 
             // add a page
             $this->AddPage();
@@ -800,10 +759,7 @@ class ContractPDF extends AppPDF
             $this->Write(4, Settings::getString('core.documents.contracts.handover.sections.uninstallation_cash_payment'));
             $this->Ln();
 
-            $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-            $this->Ln(1);
-
+            $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Ln(4);
             $this->MultiCell(
@@ -819,10 +775,7 @@ class ContractPDF extends AppPDF
             $this->Write(4, Settings::getString('core.documents.contracts.handover.sections.general_statements'));
             $this->Ln();
 
-            $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-            $this->Ln(1);
-
+            $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Ln(4);
             $this->MultiCell(
@@ -838,10 +791,7 @@ class ContractPDF extends AppPDF
             $this->Write(4, Settings::getString('core.documents.contracts.handover.sections.final_statements'));
             $this->Ln();
 
-            $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-            $this->Ln(1);
-
+            $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
             $this->SetFont('DejaVuSerif', '', 8);
             $this->MultiCell(
                 180,
@@ -956,9 +906,7 @@ class ContractPDF extends AppPDF
                 break;
         }
 
-        $this->Ln(4);
-        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-        $this->Ln(0.5);
+            $this->drawSeparator(lnBefore: 4, lnAfter: 0.5);
 
         switch ($type) {
             case 'contract-new':
@@ -972,8 +920,7 @@ class ContractPDF extends AppPDF
                 $this->Cell(90, 4, (string)$contract_version->valid_from, align: 'C');
                 $this->Ln();
 
-                $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-                $this->Ln(3);
+                $this->drawSeparator(AppPDF::SEPARATOR_OFFSET_X, lnAfter: 3.0);
 
                 $this->SetFont('DejaVuSerif', 'B', 9);
                 $this->Cell(187, 2, Settings::getString('core.documents.common.labels.between_new'), align: 'C');
@@ -994,8 +941,7 @@ class ContractPDF extends AppPDF
                 $this->Cell(45, 4, (string)$contract_version->valid_from, align: 'C');
                 $this->Ln();
 
-                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-                $this->Ln(3);
+                $this->drawSeparator(lnAfter: 3.0);
 
                 $this->SetFont('DejaVuSerif', 'B', 9);
                 $this->Cell(187, 2, Settings::getString('core.documents.common.labels.between_amendment'), align: 'C');
@@ -1014,8 +960,7 @@ class ContractPDF extends AppPDF
                 $this->Cell(60, 4, (string)$contract_version->valid_until, align: 'C');
                 $this->Ln();
 
-                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-                $this->Ln(3);
+                $this->drawSeparator(lnAfter: 3.0);
 
                 $this->SetFont('DejaVuSerif', 'B', 9);
                 $this->Cell(187, 2, Settings::getString('core.documents.common.labels.between_termination'), align: 'C');
@@ -1049,9 +994,8 @@ class ContractPDF extends AppPDF
 
         $this->Ln();
 
-        $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-        $this->Ln(0.5);
-
+        $this->drawSeparator(lnAfter: 0.5);
+        
         $addressStartY = $this->GetY();
 
         // BILLING
@@ -1153,9 +1097,7 @@ class ContractPDF extends AppPDF
             $this->MultiCell(160, 4, $contract->permanent_address->full_address, align: 'L');
         }
 
-        $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-
-        $this->Ln(3);
+        $this->drawSeparator(AppPDF::SEPARATOR_OFFSET_X, lnAfter: 3.0);
 
         if ($type === 'contract-termination') {
             $this->SetFont('DejaVuSerif', 'B', 8);
@@ -1234,9 +1176,7 @@ class ContractPDF extends AppPDF
                 $this->Cell(187, 3, Settings::getString('core.documents.contracts.contract.sections.billing_pricelist'));
                 $this->Ln();
 
-                $this->Ln(0.4);
-                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-                $this->Ln(1);
+                $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
 
                 $totalCost = $totalCost->add($this->billingTable($contract['standard_billings'], $contract_version, $format));
                 $this->Ln();
@@ -1248,9 +1188,7 @@ class ContractPDF extends AppPDF
                 $this->Cell(187, 3, Settings::getString('core.documents.contracts.contract.sections.billing_individual'));
                 $this->Ln();
 
-                $this->Ln(0.4);
-                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-                $this->Ln(1);
+                $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
 
                 $totalCost = $totalCost->add($this->billingTable($contract['individual_billings'], $contract_version, $format));
 
@@ -1266,9 +1204,7 @@ class ContractPDF extends AppPDF
                 $this->Cell(187, 3, Settings::getString('core.documents.contracts.contract.sections.billing_future_pricelist'));
                 $this->Ln();
 
-                $this->Ln(0.4);
-                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-                $this->Ln(1);
+                $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
 
                 $this->billingTable($contract['future_standard_billings'], $contract_version, $format);
                 $this->Ln();
@@ -1280,9 +1216,7 @@ class ContractPDF extends AppPDF
                 $this->Cell(187, 3, Settings::getString('core.documents.contracts.contract.sections.billing_future_individual'));
                 $this->Ln();
 
-                $this->Ln(0.4);
-                $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-                $this->Ln(1);
+                $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
 
                 $this->billingTable($contract['future_individual_billings'], $contract_version, $format);
 
@@ -1296,10 +1230,7 @@ class ContractPDF extends AppPDF
             $this->Cell(187, 3, Settings::getString('core.documents.contracts.contract.sections.payment_info'));
             $this->Ln();
 
-            $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-            $this->Ln(1);
-
+            $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
             $this->SetFont('DejaVuSerif', $format, 8);
             $this->Cell(45, 4, Settings::getString('core.documents.common.labels.payment_period'), align: 'C');
             $this->Cell(45, 4, Settings::getString('core.documents.common.labels.payment_method'), align: 'C');
@@ -1324,8 +1255,7 @@ class ContractPDF extends AppPDF
                 );
                 $this->Ln();
 
-                $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-                $this->Ln(1);
+                $this->drawSeparator(AppPDF::SEPARATOR_OFFSET_X, lnAfter: 1.0);
 
                 $this->SetFont('DejaVuSerif', $format, 7);
                 $this->Cell(4, 4);
@@ -1340,8 +1270,7 @@ class ContractPDF extends AppPDF
                 $this->Ln();
             }
 
-            $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-            $this->Ln(1);
+            $this->drawSeparator(AppPDF::SEPARATOR_OFFSET_X, lnAfter: 1.0);
 
             $this->SetFont('DejaVuSerif', $format, 8);
             $this->Cell(90, 4, Settings::getString('core.documents.common.labels.provider_bank'), align: 'C');
@@ -1355,8 +1284,7 @@ class ContractPDF extends AppPDF
             $this->Cell(45, 4, $contract->customer->number . ' *', align: 'C');
             $this->Ln();
 
-            $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-            $this->Ln(1);
+            $this->drawSeparator(AppPDF::SEPARATOR_OFFSET_X, lnAfter: 1.0);
 
             $this->SetFont('DejaVuSerif', $format, 7);
             $this->Cell(4, 4);
@@ -1377,14 +1305,8 @@ class ContractPDF extends AppPDF
         }
 
         if ($type === 'contract-new' || $type === 'contract-new-x') {
-            // cross
-            $this->Ln(5);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY()); // --
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, 285.0); // \
-            $this->Line($this->GetX(), 285.0, $this->GetX() + 187.0, $this->GetY()); // /
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX(), 285.0); // |
-            $this->Line($this->GetX() + 187.0, $this->GetY(), $this->GetX() + 187.0, 285.0); // |
-            $this->Line($this->GetX(), 285.0, $this->GetX() + 187.0, 285.0); // --
+            // CROSS
+            $this->drawCross();
 
             // add a page
             $this->AddPage();
@@ -1395,10 +1317,7 @@ class ContractPDF extends AppPDF
             $this->Write(4, Settings::getString('core.documents.contracts.contract.texts.new_equipment_intro'));
             $this->Ln();
 
-            $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-            $this->Ln(1);
-
+            $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
             if (count($contract->borrowed_equipments) > 0) {
                 $this->SetFont('DejaVuSerif', '', 8);
                 if ($type === 'contract-new') {
@@ -1537,10 +1456,7 @@ class ContractPDF extends AppPDF
             $this->Write(4, Settings::getString('core.documents.contracts.contract.sections.final_provisions'));
             $this->Ln();
 
-            $this->Ln(0.4);
-            $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
-            $this->Ln(1);
-
+            $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
             $this->SetFont('DejaVuSerif', '', 8);
             $this->setListIndentWidth(4);
             $this->writeHTML(
