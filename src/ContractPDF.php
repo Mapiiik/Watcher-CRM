@@ -224,7 +224,7 @@ class ContractPDF extends TCPDF
         $this->Ln();
 
         $this->Cell(30, 4);
-        $this->Cell(40, 4, Settings::getString('core.documents.contracts.provider_address_line1'));
+        $this->Cell(40, 4, Settings::getString('core.company.address_line_1'));
         $this->Cell(20, 4);
         $this->Cell(10, 4, Settings::getString('core.documents.common.labels.identity_number'));
         $this->Cell(40, 4, Settings::getString('core.company.identity_number'));
@@ -233,7 +233,7 @@ class ContractPDF extends TCPDF
         $this->Ln();
 
         $this->Cell(30, 4);
-        $this->Cell(40, 4, Settings::getString('core.documents.contracts.provider_address_line2'));
+        $this->Cell(40, 4, Settings::getString('core.company.address_line_2'));
         $this->Cell(20, 4);
         $this->Cell(10, 4, Settings::getString('core.documents.common.labels.vat_number'));
         $this->Cell(40, 4, Settings::getString('core.company.vat_number'));
@@ -244,9 +244,9 @@ class ContractPDF extends TCPDF
         $this->Ln(3);
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Cell(30, 4);
-        $this->MultiCell(157, 4, Settings::getString('core.documents.contracts.provider_executive'), align: 'L');
+        $this->MultiCell(157, 4, Settings::getString('core.company.executive_clause'), align: 'L');
         $this->Cell(30, 4);
-        $this->MultiCell(157, 4, Settings::getString('core.documents.contracts.provider_registry'), align: 'L');
+        $this->MultiCell(157, 4, Settings::getString('core.company.registry_clause'), align: 'L');
 
         $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
         $this->Ln(3);
@@ -259,11 +259,11 @@ class ContractPDF extends TCPDF
 
         $this->SetFont('DejaVuSerif', '', 8);
         if (is_null($contract->customer->ic)) {
-            $this->Cell(60, 4, Settings::getString('core.documents.gdpr.user_types.non_business'));
+            $this->Cell(60, 4, Settings::getString('core.documents.common.user_types.non_business'));
         } elseif (is_null($contract->billing_address->company)) {
-            $this->Cell(60, 4, Settings::getString('core.documents.gdpr.user_types.business'));
+            $this->Cell(60, 4, Settings::getString('core.documents.common.user_types.business'));
         } else {
-            $this->Cell(60, 4, Settings::getString('core.documents.gdpr.user_types.legal'));
+            $this->Cell(60, 4, Settings::getString('core.documents.common.user_types.legal'));
         }
         $this->Ln();
 
@@ -1109,7 +1109,7 @@ class ContractPDF extends TCPDF
         $this->Ln();
 
         $this->Cell(30, 4);
-        $this->Cell(40, 4, Settings::getString('core.documents.contracts.provider_address_line1'));
+        $this->Cell(40, 4, Settings::getString('core.company.address_line_1'));
         $this->Cell(20, 4);
         $this->Cell(10, 4, Settings::getString('core.documents.common.labels.identity_number'));
         $this->Cell(40, 4, Settings::getString('core.company.identity_number'));
@@ -1118,7 +1118,7 @@ class ContractPDF extends TCPDF
         $this->Ln();
 
         $this->Cell(30, 4);
-        $this->Cell(40, 4, Settings::getString('core.documents.contracts.provider_address_line2'));
+        $this->Cell(40, 4, Settings::getString('core.company.address_line_2'));
         $this->Cell(20, 4);
         $this->Cell(10, 4, Settings::getString('core.documents.common.labels.vat_number'));
         $this->Cell(40, 4, Settings::getString('core.company.vat_number'));
@@ -1129,9 +1129,9 @@ class ContractPDF extends TCPDF
         $this->Ln(3);
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Cell(30, 4);
-        $this->MultiCell(157, 4, Settings::getString('core.documents.common.labels.executive'), align: 'L');
+        $this->MultiCell(157, 4, Settings::getString('core.company.executive_clause'), align: 'L');
         $this->Cell(30, 4);
-        $this->MultiCell(157, 4, Settings::getString('core.documents.common.labels.company_registry'), align: 'L');
+        $this->MultiCell(157, 4, Settings::getString('core.company.registry_clause'), align: 'L');
 
         $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
         $this->Ln(3);
@@ -1143,11 +1143,11 @@ class ContractPDF extends TCPDF
 
         $this->SetFont('DejaVuSerif', '', 8);
         if (is_null($contract->customer->ic)) {
-            $this->Cell(60, 4, Settings::getString('core.documents.common.labels.customer_natural_nonbusiness'));
+            $this->Cell(60, 4, Settings::getString('core.documents.common.user_types.non_business'));
         } elseif (is_null($contract->billing_address->company)) {
-            $this->Cell(60, 4, Settings::getString('core.documents.common.labels.customer_natural_business'));
+            $this->Cell(60, 4, Settings::getString('core.documents.common.user_types.business'));
         } else {
-            $this->Cell(60, 4, Settings::getString('core.documents.common.labels.customer_legal'));
+            $this->Cell(60, 4, Settings::getString('core.documents.common.user_types.legal'));
         }
 
         // Subscriber Verification Code
@@ -1460,8 +1460,8 @@ class ContractPDF extends TCPDF
             $this->Ln();
 
             $this->SetFont('DejaVuSerif', 'B' . $format, 8);
-            $this->Cell(90, 4, Settings::getString('core.documents.common.labels.bank_name'), align: 'C');
-            $this->Cell(45, 4, Settings::getString('core.documents.common.labels.bank_account_number'), align: 'C');
+            $this->Cell(90, 4, Settings::getString('core.company.bank_name'), align: 'C');
+            $this->Cell(45, 4, Settings::getString('core.company.bank_account_number'), align: 'C');
             $this->Cell(45, 4, $contract->customer->number . ' *', align: 'C');
             $this->Ln();
 

@@ -36,14 +36,26 @@ return [
     'core' => [
         'company' => [
             'name' => 'NETAIR, s.r.o.',
-            'address' => '512 43 Jablonec nad Jizerou, č.p. 299',
+
             'identity_number' => '27496139',
             'vat_number' => 'CZ27496139',
+
+            'address' => '512 43 Jablonec nad Jizerou, č.p. 299',
+            'address_line_1' => 'Jablonec nad Jizerou 299',
+            'address_line_2' => '512 43 Jablonec nad Jizerou',
+
+            'executive' => 'Marko Jujnović, jednatel',
+            'executive_clause' => 'zastoupeným Marko Jujnovićem, jednatelem',
+            'registry_clause' => 'zapsaným v obchodním rejstříku vedeném u Krajského soudu v Hradci Králové, oddíl C, vložka 22450.',
+
+            'price_list_url' => 'https://netair.cz/cenik-pripojeni/',
+            'bank_name' => 'Komerční banka, a.s.',
+            'bank_account_number' => '207385091/0100',
+
             'phone' => '+420 488 572 050',
             'mobile' => '+420 604 553 444',
             'email' => 'mail@netair.cz',
-            'executive' => 'Marko Jujnović, jednatel',
-            'price_list_url' => 'https://netair.cz/cenik-pripojeni/',
+
             'contracts' => [
                 'phone' => '+420 488 572 512',
                 'mobile' => '+420 604 553 444',
@@ -89,12 +101,7 @@ return [
                     'email' => 'e-mail:',
                     'identity_number' => 'IČ:',
                     'vat_number' => 'DIČ:',
-                    'executive' => 'zastoupeným Marko Jujnovićem, jednatelem',
-                    'company_registry' => 'zapsaným v obchodním rejstříku vedeném u Krajského soudu v Hradci Králové, oddíl C, vložka 22450.',
                     'subscriber_verification_code' => 'Ověřovací kód účastníka',
-                    'customer_natural_nonbusiness' => 'fyzická osoba nepodnikající',
-                    'customer_natural_business' => 'fyzická osoba podnikající',
-                    'customer_legal' => 'právnická osoba',
                     'company' => 'firma:',
                     'name' => 'jméno:',
                     'represented' => 'zastoupená:',
@@ -111,8 +118,6 @@ return [
                     'provider_bank' => 'peněžní ústav poskytovatele:',
                     'provider_account' => 'číslo účtu poskytovatele:',
                     'variable_symbol' => 'variabilní symbol:',
-                    'bank_name' => 'Komerční banka, a.s.',
-                    'bank_account_number' => '207385091/0100',
                     'between' => 'mezi',
                     'new_or_change' => 'nový / změna:',
                     'agreement_number' => 'číslo souhlasu:',
@@ -120,6 +125,16 @@ return [
                     'new' => 'nový',
                     'change' => 'změna',
                     'duration_indefinite' => 'na dobu neurčitou',
+                    // GDPR
+                    'controller' => 'Správcem:',
+                    'personal_data' => 'Osobní údaje:',
+                    'business_data' => 'Obchodní údaje:',
+                ],
+
+                'user_types' => [
+                    'non_business' => 'fyzická osoba nepodnikající',
+                    'business' => 'fyzická osoba podnikající',
+                    'legal' => 'právnická osoba',
                 ],
 
                 'signatures' => [
@@ -132,11 +147,6 @@ return [
             ],
 
             'contracts' => [
-
-                'provider_address_line1' => 'Jablonec nad Jizerou 299',
-                'provider_address_line2' => '512 43 Jablonec nad Jizerou',
-                'provider_executive' => 'zastoupeným Marko Jujnovićem, jednatelem',
-                'provider_registry' => 'zapsaným v obchodním rejstříku vedeném u Krajského soudu v Hradci Králové, oddíl C, vložka 22450.',
 
                 'contract' => [
                     'title_new' => 'SMLOUVA',
@@ -154,6 +164,7 @@ return [
                             'payment_info' => 'Platební údaje',
                             'final_provisions' => 'Závěrečná ustanovení',
                     ],
+
                     'texts' => [
                         'termination_intro' => 'Smluvní strany ujednávají ukončení smlouvy o poskytování služeb č. {contract_number} ze dne {conclusion_date} (ve znění případných pozdějších dodatků) ke dni {valid_until}.',
                         'termination_final' => 'Tato dohoda je vyhotovena ve dvou stejnopisech.',
@@ -206,6 +217,7 @@ return [
                         'final_prices' => 'Všechny ceny uvedené v této smlouvě jsou vyjádřeny včetně daně z přidané hodnoty, pokud není výslovně stanoveno jinak.',
                         'final_copies' => 'Tato smlouva (č. {contract_number}) je vyhotovena ve dvou stejnopisech.',
                     ],
+
                     'tables' => [
                         'borrowed_equipments' => [
                             'device' => 'Zařízení',
@@ -309,34 +321,10 @@ Tento předávací protokol (ke smlouvě č. {contract_number}) je vyhotoven ve 
                     ],
                 ],
             ],
+
             'gdpr' => [
                 'title' => 'SOUHLAS',
                 'subtitle' => 'se zpracováním osobních údajů',
-
-                'between' => 'mezi',
-                'and' => 'a',
-
-                'controller_label' => 'Správcem:',
-                'controller_company' => 'NETAIR, s.r.o.',
-                'controller_address_line1' => 'Jablonec nad Jizerou 299',
-                'controller_address_line2' => '512 43 Jablonec nad Jizerou',
-                'controller_ic' => '27496139',
-                'controller_dic' => 'CZ27496139',
-                'controller_phone' => '+420 488 572 050',
-                'controller_mobile' => '+420 604 553 444',
-                'controller_email' => 'mail@netair.cz',
-                'controller_executive' => 'zastoupeným Marko Jujnovićem, jednatelem',
-                'controller_registry' => 'zapsaným v obchodním rejstříku vedeném u Krajského soudu v Hradci Králové, oddíl C, vložka 22450.',
-
-                'user_label' => 'Uživatelem:',
-                'user_types' => [
-                    'non_business' => 'fyzická osoba nepodnikající',
-                    'business' => 'fyzická osoba podnikající',
-                    'legal' => 'právnická osoba',
-                ],
-
-                'personal_data_label' => 'Osobní údaje:',
-                'business_data_label' => 'Obchodní údaje:',
 
                 'declaration' => 'Prohlášení Správce:
 

@@ -96,10 +96,10 @@ class CustomerPDF extends TCPDF
 
         // Controller section
         $this->SetFont('DejaVuSerif', 'B', 9);
-        $this->Cell(187, 2, Settings::getString('core.documents.gdpr.between'), align: 'C');
+        $this->Cell(187, 2, Settings::getString('core.documents.common.labels.between'), align: 'C');
         $this->Ln();
 
-        $this->Cell(45, 4, Settings::getString('core.documents.gdpr.controller_label'));
+        $this->Cell(45, 4, Settings::getString('core.documents.common.labels.controller'));
         $this->Ln();
 
         $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
@@ -108,56 +108,56 @@ class CustomerPDF extends TCPDF
         $this->Ln(1);
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->Cell(30, 4);
-        $this->Cell(40, 4, Settings::getString('core.documents.gdpr.controller_company'));
+        $this->Cell(40, 4, Settings::getString('core.company.name'));
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Cell(30, 4);
         $this->Cell(40, 4);
         $this->Cell(15, 4, Settings::getString('core.documents.common.labels.phone'));
-        $this->Cell(40, 4, Settings::getString('core.documents.gdpr.controller_phone'));
+        $this->Cell(40, 4, Settings::getString('core.company.phone'));
         $this->Ln();
 
         $this->Cell(30, 4);
-        $this->Cell(40, 4, Settings::getString('core.documents.gdpr.controller_address_line1'));
+        $this->Cell(40, 4, Settings::getString('core.company.address_line_1'));
         $this->Cell(20, 4);
         $this->Cell(10, 4, Settings::getString('core.documents.common.labels.identity_number'));
-        $this->Cell(40, 4, Settings::getString('core.documents.gdpr.controller_ic'));
+        $this->Cell(40, 4, Settings::getString('core.company.identity_number'));
         $this->Cell(15, 4, Settings::getString('core.documents.common.labels.mobile'));
-        $this->Cell(40, 4, Settings::getString('core.documents.gdpr.controller_mobile'));
+        $this->Cell(40, 4, Settings::getString('core.company.mobile'));
         $this->Ln();
 
         $this->Cell(30, 4);
-        $this->Cell(40, 4, Settings::getString('core.documents.gdpr.controller_address_line2'));
+        $this->Cell(40, 4, Settings::getString('core.company.address_line_2'));
         $this->Cell(20, 4);
         $this->Cell(10, 4, Settings::getString('core.documents.common.labels.vat_number'));
-        $this->Cell(40, 4, Settings::getString('core.documents.gdpr.controller_dic'));
+        $this->Cell(40, 4, Settings::getString('core.company.vat_number'));
         $this->Cell(15, 4, 'e-mail:');
-        $this->Cell(40, 4, Settings::getString('core.documents.gdpr.controller_email'));
+        $this->Cell(40, 4, Settings::getString('core.company.email'));
         $this->Ln();
 
         $this->Ln(3);
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Cell(30, 4);
-        $this->MultiCell(157, 4, Settings::getString('core.documents.gdpr.controller_executive'), align: 'L');
+        $this->MultiCell(157, 4, Settings::getString('core.company.executive_clause'), align: 'L');
         $this->Cell(30, 4);
-        $this->MultiCell(157, 4, Settings::getString('core.documents.gdpr.controller_registry'), align: 'L');
+        $this->MultiCell(157, 4, Settings::getString('core.company.registry_clause'), align: 'L');
 
         $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
         $this->Ln(3);
 
         // User section
         $this->SetFont('DejaVuSerif', 'B', 9);
-        $this->Cell(187, 4, Settings::getString('core.documents.gdpr.and'), align: 'C');
+        $this->Cell(187, 4, Settings::getString('core.documents.common.labels.and'), align: 'C');
         $this->Ln();
-        $this->Cell(30, 4, Settings::getString('core.documents.gdpr.user_label'));
+        $this->Cell(30, 4, Settings::getString('core.documents.common.labels.user'));
 
         // Determine user type (non-business, business, legal entity)
         $this->SetFont('DejaVuSerif', '', 8);
         if (is_null($customer->ic)) {
-            $this->Cell(60, 4, Settings::getString('core.documents.gdpr.user_types.non_business'));
+            $this->Cell(60, 4, Settings::getString('core.documents.common.user_types.non_business'));
         } elseif (is_null($customer->billing_address->company)) {
-            $this->Cell(60, 4, Settings::getString('core.documents.gdpr.user_types.business'));
+            $this->Cell(60, 4, Settings::getString('core.documents.common.user_types.business'));
         } else {
-            $this->Cell(60, 4, Settings::getString('core.documents.gdpr.user_types.legal'));
+            $this->Cell(60, 4, Settings::getString('core.documents.common.user_types.legal'));
         }
         $this->Ln();
 
@@ -167,8 +167,8 @@ class CustomerPDF extends TCPDF
 
         // Labels for personal vs business data
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(90, 4, Settings::getString('core.documents.gdpr.personal_data_label'));
-        $this->Cell(90, 4, Settings::getString('core.documents.gdpr.business_data_label'));
+        $this->Cell(90, 4, Settings::getString('core.documents.common.labels.personal_data'));
+        $this->Cell(90, 4, Settings::getString('core.documents.common.labels.business_data'));
         $this->Ln();
 
         // Customer personal and business data fields
