@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App;
+namespace App\Pdf;
 
 use App\Model\Entity\Customer;
 use App\Utility\Settings;
@@ -11,30 +11,8 @@ use TCPDF;
 //set image path for TCPDF
 define('K_PATH_IMAGES', dirname(__DIR__) . DS . 'webroot' . DS . 'legacy' . DS . 'images' . DS);
 
-class CustomerPDF extends TCPDF
+class CustomerPDF extends AppPDF
 {
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function cell(
-        mixed $w,
-        mixed $h = 0,
-        mixed $txt = '',
-        mixed $border = 0,
-        mixed $ln = 0,
-        mixed $align = '',
-        mixed $fill = false,
-        mixed $link = '',
-        mixed $stretch = 0,
-        mixed $ignore_min_height = false,
-        mixed $calign = 'T',
-        mixed $valign = '',
-    ): void {
-        $valign = $valign == '' ? ($border == 0 ? 'T' : 'M') : $valign;
-        parent::Cell($w, $h, $txt, $border, $ln, $align, $fill, $link, $stretch, $ignore_min_height, $calign, $valign);
-    }
-
     /**
      * generate PDF document - GDPR agreement
      *

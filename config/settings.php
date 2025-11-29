@@ -44,7 +44,7 @@ return [
             'address_line_1' => 'Jablonec nad Jizerou 299',
             'address_line_2' => '512 43 Jablonec nad Jizerou',
 
-            'executive' => 'Marko Jujnović, jednatel',
+            'executive' => 'Marko Jujnović, jednatel', // not used yet :-)
             'executive_clause' => 'zastoupeným Marko Jujnovićem, jednatelem',
             'registry_clause' => 'zapsaným v obchodním rejstříku vedeném u Krajského soudu v Hradci Králové, oddíl C, vložka 22450.',
 
