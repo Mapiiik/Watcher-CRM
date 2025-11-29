@@ -180,15 +180,15 @@ class ContractPDF extends TCPDF
         // Contract number + date
         $this->SetFont('DejaVuSerif', '', 8);
         if ($type === 'handover-protocol-installation') {
-            $this->Cell(90, 4, Settings::getString('core.documents.contracts.handover.labels.contract_number'), align: 'C');
-            $this->Cell(90, 4, Settings::getString('core.documents.contracts.handover.labels.start_date'), align: 'C');
+            $this->Cell(90, 4, Settings::getString('core.documents.common.labels.contract_number'), align: 'C');
+            $this->Cell(90, 4, Settings::getString('core.documents.common.labels.start_date'), align: 'C');
             $this->Ln();
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(90, 4, $contract->number, align: 'C');
             $this->Cell(90, 4, (string)$contract_version->valid_from, align: 'C');
         } else {
-            $this->Cell(90, 4, Settings::getString('core.documents.contracts.handover.labels.contract_number'), align: 'C');
-            $this->Cell(90, 4, Settings::getString('core.documents.contracts.handover.labels.end_date'), align: 'C');
+            $this->Cell(90, 4, Settings::getString('core.documents.common.labels.contract_number'), align: 'C');
+            $this->Cell(90, 4, Settings::getString('core.documents.common.labels.end_date'), align: 'C');
             $this->Ln();
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(90, 4, $contract_version['number_of_the_contract_to_be_terminated'], align: 'C');
@@ -201,12 +201,12 @@ class ContractPDF extends TCPDF
 
         // BETWEEN
         $this->SetFont('DejaVuSerif', 'B', 9);
-        $this->Cell(187, 2, Settings::getString('core.documents.contracts.handover.labels.between'), align: 'C');
+        $this->Cell(187, 2, Settings::getString('core.documents.common.labels.between'), align: 'C');
         $this->Ln();
 
         // Provider section
         $this->SetFont('DejaVuSerif', 'B', 9);
-        $this->Cell(45, 4, Settings::getString('core.documents.contracts.handover.labels.provider'));
+        $this->Cell(45, 4, Settings::getString('core.documents.common.labels.provider'));
         $this->Ln();
 
         $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
@@ -219,25 +219,25 @@ class ContractPDF extends TCPDF
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Cell(30, 4);
         $this->Cell(40, 4);
-        $this->Cell(15, 4, Settings::getString('core.documents.contracts.handover.labels.phone'));
+        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.phone'));
         $this->Cell(40, 4, Settings::getString('core.company.phone'));
         $this->Ln();
 
         $this->Cell(30, 4);
         $this->Cell(40, 4, Settings::getString('core.documents.contracts.provider_address_line1'));
         $this->Cell(20, 4);
-        $this->Cell(10, 4, Settings::getString('core.documents.contracts.handover.labels.ic'));
-        $this->Cell(40, 4, Settings::getString('core.company.ic'));
-        $this->Cell(15, 4, Settings::getString('core.documents.contracts.handover.labels.mobile'));
+        $this->Cell(10, 4, Settings::getString('core.documents.common.labels.identity_number'));
+        $this->Cell(40, 4, Settings::getString('core.company.identity_number'));
+        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.mobile'));
         $this->Cell(40, 4, Settings::getString('core.company.mobile'));
         $this->Ln();
 
         $this->Cell(30, 4);
         $this->Cell(40, 4, Settings::getString('core.documents.contracts.provider_address_line2'));
         $this->Cell(20, 4);
-        $this->Cell(10, 4, Settings::getString('core.documents.contracts.handover.labels.dic'));
-        $this->Cell(40, 4, Settings::getString('core.company.dic'));
-        $this->Cell(15, 4, Settings::getString('core.documents.contracts.handover.labels.email'));
+        $this->Cell(10, 4, Settings::getString('core.documents.common.labels.vat_number'));
+        $this->Cell(40, 4, Settings::getString('core.company.vat_number'));
+        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.email'));
         $this->Cell(40, 4, Settings::getString('core.company.email'));
         $this->Ln();
 
@@ -253,9 +253,9 @@ class ContractPDF extends TCPDF
 
         // User section
         $this->SetFont('DejaVuSerif', 'B', 9);
-        $this->Cell(187, 4, Settings::getString('core.documents.contracts.handover.labels.and'), align: 'C');
+        $this->Cell(187, 4, Settings::getString('core.documents.common.labels.and'), align: 'C');
         $this->Ln();
-        $this->Cell(30, 4, Settings::getString('core.documents.contracts.handover.labels.user'));
+        $this->Cell(30, 4, Settings::getString('core.documents.common.labels.user'));
 
         $this->SetFont('DejaVuSerif', '', 8);
         if (is_null($contract->customer->ic)) {
@@ -278,24 +278,24 @@ class ContractPDF extends TCPDF
         $this->Ln();
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, Settings::getString('core.documents.contracts.handover.labels.company'), align: 'R');
+        $this->Cell(30, 4, Settings::getString('core.documents.common.labels.company'), align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->MultiCell(60, 4, $contract->billing_address->company ?? '', align: 'L');
 
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Cell(30, 4, is_null($contract->billing_address->company)
-            ? Settings::getString('core.documents.contracts.handover.labels.name')
-            : Settings::getString('core.documents.contracts.handover.labels.represented'), align: 'R');
+            ? Settings::getString('core.documents.common.labels.name')
+            : Settings::getString('core.documents.common.labels.represented'), align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->MultiCell(60, 4, $contract->billing_address->full_name, align: 'L');
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, Settings::getString('core.documents.contracts.handover.labels.street'), align: 'R');
+        $this->Cell(30, 4, Settings::getString('core.documents.common.labels.street'), align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->MultiCell(60, 4, $contract->billing_address->street_and_number, align: 'L');
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, Settings::getString('core.documents.contracts.handover.labels.zip_city'), align: 'R');
+        $this->Cell(30, 4, Settings::getString('core.documents.common.labels.zip_city'), align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->MultiCell(60, 4, $contract->billing_address->zip_and_city, align: 'L');
 
@@ -307,22 +307,22 @@ class ContractPDF extends TCPDF
         // Specifiers (birth date, IC, ID card, DIC)
         $this->Cell(105);
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(15, 4, Settings::getString('core.documents.contracts.handover.labels.birth_date'));
+        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.birth_date'), align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->Cell(30, 4, (string)$contract->customer->date_of_birth);
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(10, 4, Settings::getString('core.documents.contracts.handover.labels.ic'));
+        $this->Cell(10, 4, Settings::getString('core.documents.common.labels.identity_number'), align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->Cell(60, 4, $contract->customer->ic ?? 'X');
         $this->Ln();
 
         $this->Cell(105);
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(15, 4, Settings::getString('core.documents.contracts.handover.labels.identity_card'));
+        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.identity_card_number'), align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->Cell(30, 4, $contract->customer->identity_card_number);
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(10, 4, Settings::getString('core.documents.contracts.handover.labels.dic'));
+        $this->Cell(10, 4, Settings::getString('core.documents.common.labels.vat_number'), align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->Cell(60, 4, $contract->customer->dic ?? 'X');
         $this->Ln();
@@ -330,13 +330,13 @@ class ContractPDF extends TCPDF
         // Contact info
         $this->Cell(105);
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(15, 4, Settings::getString('core.documents.contracts.handover.labels.phone'));
+        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.phone'), align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->MultiCell(70, 4, $contract->customer->phone, align: 'L');
 
         $this->Cell(105);
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(15, 4, Settings::getString('core.documents.contracts.handover.labels.email'));
+        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.email'), align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->MultiCell(70, 4, $contract->customer->email, align: 'L');
 
@@ -935,14 +935,14 @@ class ContractPDF extends TCPDF
             $this->Cell(
                 90,
                 4,
-                Settings::getString('core.documents.contracts.signatures.date') . ' ' . Date::now()->__toString(),
+                Settings::getString('core.documents.common.signatures.date') . ' ' . Date::now()->__toString(),
                 align: 'C',
             );
         } else {
             $this->Cell(
                 90,
                 4,
-                Settings::getString('core.documents.contracts.signatures.date') . ' ' . Settings::getString('core.documents.contracts.signatures.date_line'),
+                Settings::getString('core.documents.common.signatures.date') . ' ' . Settings::getString('core.documents.common.signatures.date_line'),
                 align: 'C',
             );
         }
@@ -950,18 +950,18 @@ class ContractPDF extends TCPDF
         $this->Cell(
             90,
             4,
-            Settings::getString('core.documents.contracts.signatures.date') . ' ' . Settings::getString('core.documents.contracts.signatures.date_line'),
+            Settings::getString('core.documents.common.signatures.date') . ' ' . Settings::getString('core.documents.common.signatures.date_line'),
             align: 'C',
         );
 
         $this->Ln(20);
 
-        $this->Cell(90, 4, Settings::getString('core.documents.contracts.signatures.sign_line'), align: 'C');
-        $this->Cell(90, 4, Settings::getString('core.documents.contracts.signatures.sign_line'), align: 'C');
+        $this->Cell(90, 4, Settings::getString('core.documents.common.signatures.sign_line'), align: 'C');
+        $this->Cell(90, 4, Settings::getString('core.documents.common.signatures.sign_line'), align: 'C');
         $this->Ln();
 
-        $this->Cell(90, 4, Settings::getString('core.documents.contracts.signatures.provider'), align: 'C');
-        $this->Cell(90, 4, Settings::getString('core.documents.contracts.signatures.user'), align: 'C');
+        $this->Cell(90, 4, Settings::getString('core.documents.common.signatures.provider'), align: 'C');
+        $this->Cell(90, 4, Settings::getString('core.documents.common.signatures.user'), align: 'C');
         $this->Ln();
 
         if ($signed) {
@@ -1032,8 +1032,8 @@ class ContractPDF extends TCPDF
             case 'contract-new':
             case 'contract-new-x':
                 $this->SetFont('DejaVuSerif', '', 8);
-                $this->Cell(90, 4, Settings::getString('core.documents.contracts.contract.labels.contract_number'), align: 'C');
-                $this->Cell(90, 4, Settings::getString('core.documents.contracts.contract.labels.start_date'), align: 'C');
+                $this->Cell(90, 4, Settings::getString('core.documents.common.labels.contract_number'), align: 'C');
+                $this->Cell(90, 4, Settings::getString('core.documents.common.labels.start_date'), align: 'C');
                 $this->Ln();
                 $this->SetFont('DejaVuSerif', 'B', 8);
                 $this->Cell(90, 4, $contract->number, align: 'C');
@@ -1044,16 +1044,16 @@ class ContractPDF extends TCPDF
                 $this->Ln(3);
 
                 $this->SetFont('DejaVuSerif', 'B', 9);
-                $this->Cell(187, 2, Settings::getString('core.documents.contracts.contract.labels.between_new'), align: 'C');
+                $this->Cell(187, 2, Settings::getString('core.documents.common.labels.between_new'), align: 'C');
                 $this->Ln();
                 break;
 
             case 'contract-amendment':
                 $this->SetFont('DejaVuSerif', '', 8);
-                $this->Cell(45, 4, Settings::getString('core.documents.contracts.contract.labels.contract_number'), align: 'C');
-                $this->Cell(45, 4, Settings::getString('core.documents.contracts.contract.labels.conclusion_date'), align: 'C');
-                $this->Cell(45, 4, Settings::getString('core.documents.contracts.contract.labels.amendment_number'), align: 'C');
-                $this->Cell(45, 4, Settings::getString('core.documents.contracts.contract.labels.amendment_effective'), align: 'C');
+                $this->Cell(45, 4, Settings::getString('core.documents.common.labels.contract_number'), align: 'C');
+                $this->Cell(45, 4, Settings::getString('core.documents.common.labels.conclusion_date'), align: 'C');
+                $this->Cell(45, 4, Settings::getString('core.documents.common.labels.amendment_number'), align: 'C');
+                $this->Cell(45, 4, Settings::getString('core.documents.common.labels.amendment_effective'), align: 'C');
                 $this->Ln();
                 $this->SetFont('DejaVuSerif', 'B', 8);
                 $this->Cell(45, 4, $contract->number, align: 'C');
@@ -1066,15 +1066,15 @@ class ContractPDF extends TCPDF
                 $this->Ln(3);
 
                 $this->SetFont('DejaVuSerif', 'B', 9);
-                $this->Cell(187, 2, Settings::getString('core.documents.contracts.contract.labels.between_amendment'), align: 'C');
+                $this->Cell(187, 2, Settings::getString('core.documents.common.labels.between_amendment'), align: 'C');
                 $this->Ln();
                 break;
 
             case 'contract-termination':
                 $this->SetFont('DejaVuSerif', '', 8);
-                $this->Cell(60, 4, Settings::getString('core.documents.contracts.contract.labels.contract_number'), align: 'C');
-                $this->Cell(60, 4, Settings::getString('core.documents.contracts.contract.labels.conclusion_date'), align: 'C');
-                $this->Cell(60, 4, Settings::getString('core.documents.contracts.contract.labels.end_date'), align: 'C');
+                $this->Cell(60, 4, Settings::getString('core.documents.common.labels.contract_number'), align: 'C');
+                $this->Cell(60, 4, Settings::getString('core.documents.common.labels.conclusion_date'), align: 'C');
+                $this->Cell(60, 4, Settings::getString('core.documents.common.labels.end_date'), align: 'C');
                 $this->Ln();
                 $this->SetFont('DejaVuSerif', 'B', 8);
                 $this->Cell(60, 4, $contract_version['number_of_the_contract_to_be_terminated'], align: 'C');
@@ -1086,13 +1086,13 @@ class ContractPDF extends TCPDF
                 $this->Ln(3);
 
                 $this->SetFont('DejaVuSerif', 'B', 9);
-                $this->Cell(187, 2, Settings::getString('core.documents.contracts.contract.labels.between_termination'), align: 'C');
+                $this->Cell(187, 2, Settings::getString('core.documents.common.labels.between_termination'), align: 'C');
                 $this->Ln();
                 break;
         }
 
         $this->SetFont('DejaVuSerif', 'B', 9);
-        $this->Cell(45, 4, Settings::getString('core.documents.contracts.contract.labels.provider'));
+        $this->Cell(45, 4, Settings::getString('core.documents.common.labels.provider'));
         $this->Ln();
 
         $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
@@ -1100,59 +1100,59 @@ class ContractPDF extends TCPDF
         $this->Ln(1);
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->Cell(30, 4);
-        $this->Cell(40, 4, Settings::getString('core.documents.contracts.contract.provider_info.company'));
+        $this->Cell(40, 4, Settings::getString('core.company.name'));
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Cell(30, 4);
         $this->Cell(40, 4);
-        $this->Cell(15, 4, Settings::getString('core.documents.contracts.contract.labels.tel'));
-        $this->Cell(40, 4, Settings::getString('core.documents.contracts.contract.provider_info.tel'));
+        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.phone'));
+        $this->Cell(40, 4, Settings::getString('core.company.phone'));
         $this->Ln();
 
         $this->Cell(30, 4);
-        $this->Cell(40, 4, Settings::getString('core.documents.contracts.contract.provider_info.street'));
+        $this->Cell(40, 4, Settings::getString('core.documents.contracts.provider_address_line1'));
         $this->Cell(20, 4);
-        $this->Cell(10, 4, Settings::getString('core.documents.contracts.contract.labels.ic'));
-        $this->Cell(40, 4, Settings::getString('core.documents.contracts.contract.provider_info.ic'));
-        $this->Cell(15, 4, Settings::getString('core.documents.contracts.contract.labels.mobile'));
-        $this->Cell(40, 4, Settings::getString('core.documents.contracts.contract.provider_info.mobile'));
+        $this->Cell(10, 4, Settings::getString('core.documents.common.labels.identity_number'));
+        $this->Cell(40, 4, Settings::getString('core.company.identity_number'));
+        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.mobile'));
+        $this->Cell(40, 4, Settings::getString('core.company.mobile'));
         $this->Ln();
 
         $this->Cell(30, 4);
-        $this->Cell(40, 4, Settings::getString('core.documents.contracts.contract.provider_info.zip_city'));
+        $this->Cell(40, 4, Settings::getString('core.documents.contracts.provider_address_line2'));
         $this->Cell(20, 4);
-        $this->Cell(10, 4, Settings::getString('core.documents.contracts.contract.labels.dic'));
-        $this->Cell(40, 4, Settings::getString('core.documents.contracts.contract.provider_info.dic'));
-        $this->Cell(15, 4, Settings::getString('core.documents.contracts.contract.labels.email'));
-        $this->Cell(40, 4, Settings::getString('core.documents.contracts.contract.provider_info.email'));
+        $this->Cell(10, 4, Settings::getString('core.documents.common.labels.vat_number'));
+        $this->Cell(40, 4, Settings::getString('core.company.vat_number'));
+        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.email'));
+        $this->Cell(40, 4, Settings::getString('core.company.email'));
         $this->Ln();
 
         $this->Ln(3);
         $this->SetFont('DejaVuSerif', '', 8);
         $this->Cell(30, 4);
-        $this->MultiCell(157, 4, Settings::getString('core.documents.contracts.contract.labels.executive'), align: 'L');
+        $this->MultiCell(157, 4, Settings::getString('core.documents.common.labels.executive'), align: 'L');
         $this->Cell(30, 4);
-        $this->MultiCell(157, 4, Settings::getString('core.documents.contracts.contract.labels.company_registry'), align: 'L');
+        $this->MultiCell(157, 4, Settings::getString('core.documents.common.labels.company_registry'), align: 'L');
 
         $this->Line($this->GetX() + 4.0, $this->GetY(), $this->GetX() + 187.0, $this->GetY());
         $this->Ln(3);
 
         $this->SetFont('DejaVuSerif', 'B', 9);
-        $this->Cell(187, 4, Settings::getString('core.documents.contracts.contract.labels.and'), align: 'C');
+        $this->Cell(187, 4, Settings::getString('core.documents.common.labels.and'), align: 'C');
         $this->Ln();
-        $this->Cell(30, 4, Settings::getString('core.documents.contracts.contract.labels.user'));
+        $this->Cell(30, 4, Settings::getString('core.documents.common.labels.user'));
 
         $this->SetFont('DejaVuSerif', '', 8);
         if (is_null($contract->customer->ic)) {
-            $this->Cell(60, 4, Settings::getString('core.documents.contracts.contract.labels.customer_natural_nonbusiness'));
+            $this->Cell(60, 4, Settings::getString('core.documents.common.labels.customer_natural_nonbusiness'));
         } elseif (is_null($contract->billing_address->company)) {
-            $this->Cell(60, 4, Settings::getString('core.documents.contracts.contract.labels.customer_natural_business'));
+            $this->Cell(60, 4, Settings::getString('core.documents.common.labels.customer_natural_business'));
         } else {
-            $this->Cell(60, 4, Settings::getString('core.documents.contracts.contract.labels.customer_legal'));
+            $this->Cell(60, 4, Settings::getString('core.documents.common.labels.customer_legal'));
         }
 
         // Subscriber Verification Code
         if (!empty($contract->subscriber_verification_code)) {
-            $this->Cell(60, 4, Settings::getString('core.documents.contracts.contract.labels.subscriber_verification_code') . ':', align: 'R');
+            $this->Cell(60, 4, Settings::getString('core.documents.common.labels.subscriber_verification_code') . ':', align: 'R');
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(60, 4, $contract->subscriber_verification_code);
         }
@@ -1170,26 +1170,26 @@ class ContractPDF extends TCPDF
         $this->Ln();
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, Settings::getString('core.documents.contracts.contract.labels.company'), align: 'R');
+        $this->Cell(30, 4, Settings::getString('core.documents.common.labels.company'), align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->MultiCell(60, 4, $contract->billing_address->company ?? '', align: 'L');
 
         $this->SetFont('DejaVuSerif', '', 8);
         if (is_null($contract->billing_address->company)) {
-            $this->Cell(30, 4, Settings::getString('core.documents.contracts.contract.labels.name'), align: 'R');
+            $this->Cell(30, 4, Settings::getString('core.documents.common.labels.name'), align: 'R');
         } else {
-            $this->Cell(30, 4, Settings::getString('core.documents.contracts.contract.labels.represented'), align: 'R');
+            $this->Cell(30, 4, Settings::getString('core.documents.common.labels.represented'), align: 'R');
         }
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->MultiCell(60, 4, $contract->billing_address->full_name, align: 'L');
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, Settings::getString('core.documents.contracts.contract.labels.street'), align: 'R');
+        $this->Cell(30, 4, Settings::getString('core.documents.common.labels.street'), align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->MultiCell(60, 4, $contract->billing_address->street_and_number, align: 'L');
 
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, Settings::getString('core.documents.contracts.contract.labels.zip_city'), align: 'R');
+        $this->Cell(30, 4, Settings::getString('core.documents.common.labels.zip_city'), align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->MultiCell(60, 4, $contract->billing_address->zip_and_city, align: 'L');
 
@@ -1201,22 +1201,22 @@ class ContractPDF extends TCPDF
         // SPECIFIERS
         $this->Cell(105);
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(15, 4, Settings::getString('core.documents.contracts.contract.labels.birth_date'));
+        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.birth_date'), align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->Cell(30, 4, (string)$contract->customer->date_of_birth);
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(10, 4, Settings::getString('core.documents.contracts.contract.labels.ic'));
+        $this->Cell(10, 4, Settings::getString('core.documents.common.labels.identity_number'), align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->Cell(60, 4, $contract->customer->ic ?? 'X');
         $this->Ln();
 
         $this->Cell(105);
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(15, 4, Settings::getString('core.documents.contracts.contract.labels.identity_card'));
+        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.identity_card_number'), align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->Cell(30, 4, $contract->customer->identity_card_number);
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(10, 4, Settings::getString('core.documents.contracts.contract.labels.dic'));
+        $this->Cell(10, 4, Settings::getString('core.documents.common.labels.vat_number'), align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->Cell(60, 4, $contract->customer->dic ?? 'X');
         $this->Ln();
@@ -1224,13 +1224,13 @@ class ContractPDF extends TCPDF
         // CONTACT
         $this->Cell(105);
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(15, 4, Settings::getString('core.documents.contracts.contract.labels.tel'));
+        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.phone'), align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->MultiCell(70, 4, $contract->customer->phone, align: 'L');
 
         $this->Cell(105);
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(15, 4, Settings::getString('core.documents.contracts.contract.labels.email'));
+        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.email'), align: 'R');
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->MultiCell(70, 4, $contract->customer->email, align: 'L');
 
@@ -1411,15 +1411,15 @@ class ContractPDF extends TCPDF
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', $format, 8);
-            $this->Cell(45, 4, Settings::getString('core.documents.contracts.contract.labels.payment_period'), align: 'C');
-            $this->Cell(45, 4, Settings::getString('core.documents.contracts.contract.labels.payment_method'), align: 'C');
-            $this->Cell(45, 4, Settings::getString('core.documents.contracts.contract.labels.first_payment_date'), align: 'C');
-            $this->Cell(45, 4, Settings::getString('core.documents.contracts.contract.labels.first_payment_total'), align: 'C');
+            $this->Cell(45, 4, Settings::getString('core.documents.common.labels.payment_period'), align: 'C');
+            $this->Cell(45, 4, Settings::getString('core.documents.common.labels.payment_method'), align: 'C');
+            $this->Cell(45, 4, Settings::getString('core.documents.common.labels.first_payment_date'), align: 'C');
+            $this->Cell(45, 4, Settings::getString('core.documents.common.labels.first_payment_total'), align: 'C');
             $this->Ln();
 
             $this->SetFont('DejaVuSerif', 'B' . $format, 8);
-            $this->Cell(45, 4, Settings::getString('core.documents.contracts.contract.labels.monthly'), align: 'C');
-            $this->Cell(45, 4, Settings::getString('core.documents.contracts.contract.labels.bank_transfer'), align: 'C');
+            $this->Cell(45, 4, Settings::getString('core.documents.common.labels.monthly'), align: 'C');
+            $this->Cell(45, 4, Settings::getString('core.documents.common.labels.bank_transfer'), align: 'C');
             $this->Cell(45, 4, 'do ' . $contract_version->valid_from->day(1)->addMonths(1)->addDays(9)->__toString(), align: 'C');
 
             // reverse charge
@@ -1454,14 +1454,14 @@ class ContractPDF extends TCPDF
             $this->Ln(1);
 
             $this->SetFont('DejaVuSerif', $format, 8);
-            $this->Cell(90, 4, Settings::getString('core.documents.contracts.contract.labels.provider_bank'), align: 'C');
-            $this->Cell(45, 4, Settings::getString('core.documents.contracts.contract.labels.provider_account'), align: 'C');
-            $this->Cell(45, 4, Settings::getString('core.documents.contracts.contract.labels.variable_symbol'), align: 'C');
+            $this->Cell(90, 4, Settings::getString('core.documents.common.labels.provider_bank'), align: 'C');
+            $this->Cell(45, 4, Settings::getString('core.documents.common.labels.provider_account'), align: 'C');
+            $this->Cell(45, 4, Settings::getString('core.documents.common.labels.variable_symbol'), align: 'C');
             $this->Ln();
 
             $this->SetFont('DejaVuSerif', 'B' . $format, 8);
-            $this->Cell(90, 4, Settings::getString('core.documents.contracts.contract.labels.bank_name'), align: 'C');
-            $this->Cell(45, 4, Settings::getString('core.documents.contracts.contract.labels.bank_account_number'), align: 'C');
+            $this->Cell(90, 4, Settings::getString('core.documents.common.labels.bank_name'), align: 'C');
+            $this->Cell(45, 4, Settings::getString('core.documents.common.labels.bank_account_number'), align: 'C');
             $this->Cell(45, 4, $contract->customer->number . ' *', align: 'C');
             $this->Ln();
 
@@ -1690,14 +1690,14 @@ class ContractPDF extends TCPDF
             $this->Cell(
                 90,
                 4,
-                Settings::getString('core.documents.contracts.signatures.date') . ' ' . Date::now()->__toString(),
+                Settings::getString('core.documents.common.signatures.date') . ' ' . Date::now()->__toString(),
                 align: 'C',
             );
         } else {
             $this->Cell(
                 90,
                 4,
-                Settings::getString('core.documents.contracts.signatures.date') . ' ' . Settings::getString('core.documents.contracts.signatures.date_line'),
+                Settings::getString('core.documents.common.signatures.date') . ' ' . Settings::getString('core.documents.common.signatures.date_line'),
                 align: 'C',
             );
         }
@@ -1705,17 +1705,17 @@ class ContractPDF extends TCPDF
         $this->Cell(
             90,
             4,
-            Settings::getString('core.documents.contracts.signatures.date') . ' ' . Settings::getString('core.documents.contracts.signatures.date_line'),
+            Settings::getString('core.documents.common.signatures.date') . ' ' . Settings::getString('core.documents.common.signatures.date_line'),
             align: 'C',
         );
 
         $this->Ln(20);
 
-        $this->Cell(90, 4, Settings::getString('core.documents.contracts.signatures.sign_line'), align: 'C');
-        $this->Cell(90, 4, Settings::getString('core.documents.contracts.signatures.sign_line'), align: 'C');
+        $this->Cell(90, 4, Settings::getString('core.documents.common.signatures.sign_line'), align: 'C');
+        $this->Cell(90, 4, Settings::getString('core.documents.common.signatures.sign_line'), align: 'C');
         $this->Ln();
-        $this->Cell(90, 4, Settings::getString('core.documents.contracts.signatures.provider'), align: 'C');
-        $this->Cell(90, 4, Settings::getString('core.documents.contracts.signatures.user'), align: 'C');
+        $this->Cell(90, 4, Settings::getString('core.documents.common.signatures.provider'), align: 'C');
+        $this->Cell(90, 4, Settings::getString('core.documents.common.signatures.user'), align: 'C');
         $this->Ln();
 
         if ($signed) {
