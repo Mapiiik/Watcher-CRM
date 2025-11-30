@@ -279,6 +279,11 @@ HTML,
                         'activation_fee_obligation' => 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek a cenu prodaných zařízení, příslušenství a prací.',
                         'early_termination_clause' => 'Smluvní strany konstatují, že běžná prodejní cena dodaných zařízení je {full_price}, avšak s ohledem na uzavření smlouvy s minimální dobou plnění v trvání {duration} byla tato zařízení Uživateli prodána pouze za {discounted_price}, proto v případě předčasného ukončení smlouvy z důvodu na straně Uživatele se tento zavazuje Poskytovateli doplatit zbývajících {remaining_payment}.',
 
+                        'portal_access_html' => <<<HTML
+<strong>Přístup do Uživatelského portálu je možné zřídit na Webu Poskytovatele:</strong><br>
+<u>https://netair.cz/internet/uzivatelsky-portal</u>
+HTML,
+
                         'connection_point_state_text' => <<<TEXT
 Síla signálu na straně Uživatele v případě bezdrátového připojení do sítě Poskytovatele (Tx / Rx): ____________________ dBm
 

@@ -503,8 +503,7 @@ class ContractPDF extends AppPDF
             $this->Ln(1);
 
             $this->writeHTML(
-                '<strong>Přístup do Uživatelského portálu je možné zřídit na Webu Poskytovatele:</strong><br>' . PHP_EOL
-                . '<u>https://netair.cz/internet/uzivatelsky-portal</u>' . PHP_EOL,
+                Settings::getString('core.documents.contracts.handover.texts.portal_access_html'),
                 true,
                 false,
                 false,
