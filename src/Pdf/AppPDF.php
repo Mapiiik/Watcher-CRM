@@ -273,7 +273,8 @@ class AppPDF extends TCPDF
         if (!empty($headers)) {
             $html .= '<tr>';
             foreach ($headers as $header) {
-                $html .= '<td width="' . (string)(180 / count($headers)) . 'mm" align="left"><b>' . h($header) . '</b></td>';
+                $html .= '<td width="' . (string)(180 / count($headers)) . 'mm" align="left">'
+                    . '<b>' . htmlspecialchars($header) . '</b></td>';
             }
             $html .= '</tr>';
         }
@@ -283,13 +284,14 @@ class AppPDF extends TCPDF
             $html .= '<tr>';
             if (count($row) === 1) {
                 // Single cell row (e.g. phone/email)
-                $html .= '<td width="30mm" align="right">' . h($row[0]['label']) . '</td>';
-                $html .= '<td width="160mm" colspan="' . (string)(count($headers) * 2 - 1) . '"><b>' . h($row[0]['value']) . '</b></td>';
+                $html .= '<td width="30mm" align="right">' . htmlspecialchars($row[0]['label']) . '</td>';
+                $html .= '<td width="160mm" colspan="' . (string)(count($headers) * 2 - 1) . '">'
+                    . '<b>' . htmlspecialchars($row[0]['value']) . '</b></td>';
             } else {
                 // Multi-column row
                 foreach ($row as $cell) {
-                    $html .= '<td width="30mm" align="right">' . h($cell['label']) . '</td>';
-                    $html .= '<td width="60mm"><b>' . h($cell['value']) . '</b></td>';
+                    $html .= '<td width="30mm" align="right">' . htmlspecialchars($cell['label']) . '</td>';
+                    $html .= '<td width="60mm"><b>' . htmlspecialchars($cell['value']) . '</b></td>';
                 }
             }
             $html .= '</tr>';
@@ -330,5 +332,25 @@ class AppPDF extends TCPDF
         }
 
         $this->Cell($width, $height, $text);
+    }
+
+    /**
+     * Normalize a nullable string into a safe string for PDF output.
+     *
+     * This helper ensures that values which may be null are always converted
+     * into a valid string. It is primarily used when rendering customer or
+     * contract data where some fields (e.g. company, VAT number) can be null.
+     *
+     * Example:
+     *   $this->strOrX($customer->ic);          // returns "12345678" or "X"
+     *   $this->strOrX($customer->dic, '-');    // returns "CZ12345678" or "-"
+     *
+     * @param string|null $value   The original value which may be null
+     * @param string      $fallback Fallback string to use if $value is null (default "X")
+     * @return string               Always returns a string suitable for PDF output
+     */
+    protected function strOrX(?string $value, string $fallback = 'X'): string
+    {
+        return $value ?? $fallback;
     }
 }
