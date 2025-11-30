@@ -95,7 +95,7 @@ class AppPDF extends TCPDF
         $this->Line($x, $bottomY, $x + $width, $y); // /
 
         // Vertical lines
-        $this->Line($x, $y, $x, $bottomY);          // |
+        $this->Line($x, $y, $x, $bottomY); // |
         $this->Line($x + $width, $y, $x + $width, $bottomY); // |
 
         // Bottom horizontal line

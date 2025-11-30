@@ -5,8 +5,6 @@ namespace App\Pdf;
 
 use App\Model\Entity\Customer;
 use App\Utility\Settings;
-use Override;
-use TCPDF;
 
 //set image path for TCPDF
 define('K_PATH_IMAGES', dirname(__DIR__) . DS . 'webroot' . DS . 'legacy' . DS . 'images' . DS);
@@ -14,7 +12,7 @@ define('K_PATH_IMAGES', dirname(__DIR__) . DS . 'webroot' . DS . 'legacy' . DS .
 class CustomerPDF extends AppPDF
 {
     /**
-     * generate PDF document - GDPR agreement
+     * Generate PDF document - GDPR agreement
      *
      * @param \App\Model\Entity\Customer $customer Customer with all related data
      * @param string $type Type of requested document
@@ -180,7 +178,8 @@ class CustomerPDF extends AppPDF
         $this->Cell(
             90,
             4,
-            Settings::getString('core.documents.common.signatures.date') . ' ' . Settings::getString('core.documents.common.signatures.date_line'),
+            Settings::getString('core.documents.common.signatures.date')
+                . ' ' . Settings::getString('core.documents.common.signatures.date_line'),
             align: 'C',
         );
         $this->Ln(20);

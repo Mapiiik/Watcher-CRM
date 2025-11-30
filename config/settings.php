@@ -147,6 +147,22 @@ return [
             ],
 
             'contracts' => [
+                'duration' => [
+                    'short_month' => '{duration} měsíce',
+                    'short_months' => '{duration} měsíců',
+                    'indefinite' => 'na dobu neurčitou',
+                    'indefinite_with_min_month' => 'na dobu neurčitou s minimální dobou plnění v trvání {duration} měsíce',
+                    'indefinite_with_min_months' => 'na dobu neurčitou s minimální dobou plnění v trvání {duration} měsíců',
+                ],
+
+                'billing' => [
+                    'service' => 'služba:',
+                    'price_per_month' => 'cena / měsíc:',
+                    'from' => 'od {date}',
+                    'until' => 'do {date}',
+                    'percentage_discount' => ' - sleva ve výši {percentage} % z ceny této služby',
+                    'fixed_discount' => ' - sleva v pevné výši z ceny této služby',
+                ],
 
                 'contract' => [
                     'title_new' => 'SMLOUVA',

@@ -10,6 +10,7 @@ use App\Model\Enum\IpAddressTypeOfUse;
 use App\Utility\Settings;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
+use InvalidArgumentException;
 use PhpCollective\DecimalObject\Decimal;
 use stdClass;
 
@@ -19,26 +20,54 @@ define('K_PATH_IMAGES', dirname(__DIR__) . DS . 'webroot' . DS . 'legacy' . DS .
 class ContractPDF extends AppPDF
 {
     /**
-     * getter for contract duration text - short
+     * Getter for contract duration text - short.
+     *
+     * @param int|null $duration Duration in months
+     * @return string
+     * @throws \InvalidArgumentException If duration is null or <= 0
+     */
+    private function contractDurationBefore(?int $duration): string
+    {
+        if (is_null($duration) || $duration <= 0) {
+            throw new InvalidArgumentException('Invalid contract duration');
+        }
+
+        if ($duration < 2) {
+            return strtr(Settings::getString('core.documents.contracts.duration.short_month'), [
+                '{duration}' => $duration,
+            ]);
+        }
+
+        return strtr(Settings::getString('core.documents.contracts.duration.short_months'), [
+            '{duration}' => $duration,
+        ]);
+    }
+
+    /**
+     * Getter for contract duration text - long.
      *
      * @param int|null $duration Duration in months
      * @return string
      */
-    private function contractDurationBefore(?int $duration): string
+    private function contractDuration(?int $duration): string
     {
         if ($duration <= 0) {
-            die('Wrong duration');
-        } else {
-            if ($duration < 2) {
-                return $duration . ' měsíce';
-            }
-
-            return $duration . ' měsíců';
+            return Settings::getString('core.documents.contracts.duration.indefinite');
         }
+
+        if ($duration < 2) {
+            return strtr(Settings::getString('core.documents.contracts.duration.indefinite_with_min_month'), [
+                '{duration}' => $duration,
+            ]);
+        }
+
+        return strtr(Settings::getString('core.documents.contracts.duration.indefinite_with_min_months'), [
+            '{duration}' => $duration,
+        ]);
     }
 
     /**
-     * prints billing table
+     * Prints billing table.
      *
      * @param iterable<\App\Model\Entity\Billing> $billings Billings
      * @param \App\Model\Entity\ContractVersion $contract_version Contract version
@@ -49,8 +78,8 @@ class ContractPDF extends AppPDF
     {
         $this->SetFont('DejaVuSerif', '' . $format, 8);
         $this->Cell(4, 4);
-        $this->Cell(140, 4, 'služba:');
-        $this->Cell(35, 4, 'cena / měsíc:', align: 'R');
+        $this->Cell(140, 4, Settings::getString('core.documents.contracts.billing.service'));
+        $this->Cell(35, 4, Settings::getString('core.documents.contracts.billing.price_per_month'), align: 'R');
         $this->Ln();
 
         $totalCost = Decimal::create(0, 2);
@@ -62,8 +91,16 @@ class ContractPDF extends AppPDF
                 140,
                 4,
                 $billing->name
-                . ($billing->billing_from > $contract_version->valid_from ? ' od ' . $billing->billing_from->__toString() : '')
-                . ($billing->billing_until ? ' do ' . $billing->billing_until->__toString() : ''),
+                . ($billing->billing_from > $contract_version->valid_from
+                    ? ' ' . strtr(Settings::getString('core.documents.contracts.billing.from'), [
+                        '{date}' => $billing->billing_from->__toString(),
+                    ])
+                    : '')
+                . ($billing->billing_until
+                    ? ' ' . strtr(Settings::getString('core.documents.contracts.billing.until'), [
+                        '{date}' => $billing->billing_until->__toString(),
+                    ])
+                    : ''),
                 align: 'L',
                 stretch: 1,
             );
@@ -73,14 +110,20 @@ class ContractPDF extends AppPDF
             if ($billing->percentage_discount_sum->isPositive()) {
                 $this->SetFont('DejaVuSerif', '' . $format, 8);
                 $this->Cell(4, 4);
-                $this->Cell(140, 4, ' - sleva ve výši ' . (string)$billing->percentage_discount . ' % z ceny této služby');
+                $this->Cell(
+                    140,
+                    4,
+                    strtr(Settings::getString('core.documents.contracts.billing.percentage_discount'), [
+                        '{percentage}' => (string)$billing->percentage_discount,
+                    ]),
+                );
                 $this->Cell(35, 4, Number::currency($billing->percentage_discount_sum->negate()->toFloat()), align: 'R');
                 $this->Ln();
             }
             if ($billing->fixed_discount_sum->isPositive()) {
                 $this->SetFont('DejaVuSerif', '' . $format, 8);
                 $this->Cell(4, 4);
-                $this->Cell(140, 4, ' - sleva v pevné výši z ceny této služby');
+                $this->Cell(140, 4, Settings::getString('core.documents.contracts.billing.fixed_discount'));
                 $this->Cell(35, 4, Number::currency($billing->fixed_discount_sum->negate()->toFloat()), align: 'R');
                 $this->Ln();
             }
@@ -93,26 +136,7 @@ class ContractPDF extends AppPDF
     }
 
     /**
-     * getter for contract duration text - long
-     *
-     * @param int|null $duration Duration in months
-     * @return string
-     */
-    private function contractDuration(?int $duration): string
-    {
-        if ($duration <= 0) {
-            return 'na dobu neurčitou';
-        } else {
-            if ($duration < 2) {
-                return 'na dobu neurčitou s minimální dobou plnění v trvání ' . $duration . ' měsíce';
-            }
-
-            return 'na dobu neurčitou s minimální dobou plnění v trvání ' . $duration . ' měsíců';
-        }
-    }
-
-    /**
-     * generate PDF document - handover protocol
+     * Generate PDF document - handover protocol
      *
      * @param \App\Model\Entity\Contract $contract Contract with all related data
      * @param \App\Model\Entity\ContractVersion $contract_version Contract version for dates
@@ -854,7 +878,7 @@ class ContractPDF extends AppPDF
     }
 
     /**
-     * generate PDF document - contract
+     * Generate PDF document - contract
      *
      * @param \App\Model\Entity\Contract $contract Contract with all related data
      * @param \App\Model\Entity\ContractVersion $contract_version Contract version for dates

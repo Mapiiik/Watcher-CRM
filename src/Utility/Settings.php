@@ -41,7 +41,8 @@ class Settings
     public static function getString(string $path, ?string $default = null): string
     {
         $value = self::get($path, $default);
-        return (string) $value;
+
+        return (string)$value;
     }
 
     /**

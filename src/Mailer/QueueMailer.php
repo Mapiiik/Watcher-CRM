@@ -37,7 +37,7 @@ class QueueMailer extends Mailer
                     [
                         '{new_billing_from}' => $data['new_billing_from'],
                         '{contract_number}' => $data['contract_number'],
-                    ]
+                    ],
                 ),
             )
             ->setViewVars(['data' => $data]);
