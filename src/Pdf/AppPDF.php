@@ -3,10 +3,15 @@ declare(strict_types=1);
 
 namespace App\Pdf;
 
+use App\Model\Entity\Contract;
+use App\Model\Entity\Customer;
 use App\Utility\Settings;
 use Cake\I18n\Date;
 use Override;
 use TCPDF;
+
+//set image path for TCPDF
+define('K_PATH_IMAGES', dirname(__DIR__, 2) . DS . 'webroot' . DS . 'legacy' . DS . 'images' . DS);
 
 class AppPDF extends TCPDF
 {
@@ -219,5 +224,111 @@ class AppPDF extends TCPDF
         if ($double && $signed) {
             $this->Image(K_PATH_IMAGES . 'signature.png', 38.0, $this->GetY() - 19.0, 35.0);
         }
+    }
+
+    /**
+     * Render a flexible two-column table using TCPDF's writeHTML.
+     *
+     * This helper builds a table layout similar to the original Cell/MultiCell approach,
+     * but leverages HTML so that each cell automatically expands to fit multi-line content.
+     *
+     * Usage:
+     * - Pass an array of headers (optional) to display column titles.
+     * - Pass an array of rows, where each row is an array of cells:
+     *   [
+     *     ['label' => 'Name', 'value' => 'John Doe'],
+     *     ['label' => 'Company', 'value' => 'Acme Inc.']
+     *   ]
+     *   If a row contains only one cell, it will span across the full width (e.g. phone/email).
+     *
+     * @param array<array-key, string> $headers Array of header titles (e.g. ["Personal data", "Business data"])
+     * @param array<array-key,array<array-key,array{label:string,value:string}>> $rows Array of rows, each row
+     * is an array of associative arrays:
+     *                       [
+     *                         ['label' => string, 'value' => string],
+     *                         ...
+     *                       ]
+     *
+     * Example:
+     * $this->printTable(
+     *     ["Personal data", "Business data"],
+     *     [
+     *         [
+     *             ['label' => 'Name', 'value' => 'John Doe'],
+     *             ['label' => 'Company', 'value' => 'Acme Inc.']
+     *         ],
+     *         [
+     *             ['label' => 'Phone', 'value' => '+420 123 456 789']
+     *         ]
+     *     ]
+     * );
+     *
+     * This will render a two-column table with automatic line wrapping and proper alignment.
+     */
+    protected function printTable(array $headers, array $rows): void
+    {
+        $html = '<table border="0" cellpadding="0" cellspacing="2">';
+
+        // Header row
+        if (!empty($headers)) {
+            $html .= '<tr>';
+            foreach ($headers as $header) {
+                $html .= '<td width="' . (string)(180 / count($headers)) . 'mm" align="left"><b>' . h($header) . '</b></td>';
+            }
+            $html .= '</tr>';
+        }
+
+        // Data rows
+        foreach ($rows as $row) {
+            $html .= '<tr>';
+            if (count($row) === 1) {
+                // Single cell row (e.g. phone/email)
+                $html .= '<td width="30mm" align="right">' . h($row[0]['label']) . '</td>';
+                $html .= '<td width="160mm" colspan="' . (string)(count($headers) * 2 - 1) . '"><b>' . h($row[0]['value']) . '</b></td>';
+            } else {
+                // Multi-column row
+                foreach ($row as $cell) {
+                    $html .= '<td width="30mm" align="right">' . h($cell['label']) . '</td>';
+                    $html .= '<td width="60mm"><b>' . h($cell['value']) . '</b></td>';
+                }
+            }
+            $html .= '</tr>';
+        }
+
+        $html .= '</table>';
+
+        $this->writeHTML($html, true, false, false, true, '');
+        $this->Ln();
+    }
+
+    /**
+     * Print the user type (non-business, business, legal) into a cell.
+     *
+     * Works for both \App\Model\Entity\Customer and \App\Model\Entity\Contract entities.
+     *
+     * Logic:
+     * - If IC is null → non-business
+     * - If company is null → business
+     * - Otherwise → legal entity
+     *
+     * @param \App\Model\Entity\Customer|\App\Model\Entity\Contract $entity Customer or Contract entity
+     * @param int                                                  $width  Cell width in mm (default 60)
+     * @param int                                                  $height Cell height in mm (default 4)
+     */
+    protected function printUserType(Customer|Contract $entity, int $width = 60, int $height = 4): void
+    {
+        // Normalize: get IC and company regardless of entity type
+        $ic = $entity instanceof Contract ? $entity->customer->ic : $entity->ic;
+        $company = $entity->billing_address->company ?? null;
+
+        if (is_null($ic)) {
+            $text = Settings::getString('core.documents.common.user_types.non_business');
+        } elseif (is_null($company)) {
+            $text = Settings::getString('core.documents.common.user_types.business');
+        } else {
+            $text = Settings::getString('core.documents.common.user_types.legal');
+        }
+
+        $this->Cell($width, $height, $text);
     }
 }

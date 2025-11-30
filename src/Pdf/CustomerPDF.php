@@ -6,9 +6,6 @@ namespace App\Pdf;
 use App\Model\Entity\Customer;
 use App\Utility\Settings;
 
-//set image path for TCPDF
-define('K_PATH_IMAGES', dirname(__DIR__) . DS . 'webroot' . DS . 'legacy' . DS . 'images' . DS);
-
 class CustomerPDF extends AppPDF
 {
     /**
@@ -83,66 +80,41 @@ class CustomerPDF extends AppPDF
 
         // Determine user type (non-business, business, legal entity)
         $this->SetFont('DejaVuSerif', '', 8);
-        if (is_null($customer->ic)) {
-            $this->Cell(60, 4, Settings::getString('core.documents.common.user_types.non_business'));
-        } elseif (is_null($customer->billing_address->company)) {
-            $this->Cell(60, 4, Settings::getString('core.documents.common.user_types.business'));
-        } else {
-            $this->Cell(60, 4, Settings::getString('core.documents.common.user_types.legal'));
-        }
+        $this->printUserType($customer);
+
         $this->Ln();
 
         // Separator line
         $this->drawSeparator(lnAfter: 0.5);
 
-        // Labels for personal vs business data
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(90, 4, Settings::getString('core.documents.common.labels.personal_data'));
-        $this->Cell(90, 4, Settings::getString('core.documents.common.labels.business_data'));
-        $this->Ln();
-
-        // Customer personal and business data fields
+        // Customer personal and business data
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, Settings::getString('core.documents.common.labels.name'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(60, 4, $customer->billing_address->full_name);
-
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, Settings::getString('core.documents.common.labels.company'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(60, 4, $customer->billing_address->company ?? 'X', align: 'L');
-
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, Settings::getString('core.documents.common.labels.birth_date'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(60, 4, h($customer->date_of_birth));
-
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, Settings::getString('core.documents.common.labels.identity_number'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(60, 4, $customer->ic ?? 'X');
-        $this->Ln();
-
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, Settings::getString('core.documents.common.labels.identity_card_number'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(60, 4, $customer->identity_card_number);
-
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, Settings::getString('core.documents.common.labels.vat_number'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(60, 4, $customer->dic ?? 'X');
-        $this->Ln();
-
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, Settings::getString('core.documents.common.labels.phone'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(160, 4, $customer->phone, align: 'L');
-
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, Settings::getString('core.documents.common.labels.email'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(160, 4, $customer->email, align: 'L');
+        $this->printTable(
+            [
+                Settings::getString('core.documents.common.labels.personal_data'),
+                Settings::getString('core.documents.common.labels.business_data')
+            ],
+            [
+                [
+                    ['label' => Settings::getString('core.documents.common.labels.name'), 'value' => $customer->billing_address->full_name],
+                    ['label' => Settings::getString('core.documents.common.labels.company'), 'value' => $customer->billing_address->company ?? 'X'],
+                ],
+                [
+                    ['label' => Settings::getString('core.documents.common.labels.birth_date'), 'value' => (string)$customer->date_of_birth],
+                    ['label' => Settings::getString('core.documents.common.labels.identity_number'), 'value' => $customer->ic ?? 'X'],
+                ],
+                [
+                    ['label' => Settings::getString('core.documents.common.labels.identity_card_number'), 'value' => $customer->identity_card_number],
+                    ['label' => Settings::getString('core.documents.common.labels.vat_number'), 'value' => $customer->dic ?? 'X'],
+                ],
+                [
+                    ['label' => Settings::getString('core.documents.common.labels.phone'), 'value' => $customer->phone],
+                ],
+                [
+                    ['label' => Settings::getString('core.documents.common.labels.email'), 'value' => $customer->email],
+                ],
+            ],
+        );
 
         // Addresses loop
         foreach ($customer->addresses as $address) {

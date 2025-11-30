@@ -8,14 +8,10 @@ use App\Model\Entity\Contract;
 use App\Model\Entity\ContractVersion;
 use App\Model\Enum\IpAddressTypeOfUse;
 use App\Utility\Settings;
-use Cake\I18n\Date;
 use Cake\I18n\Number;
 use InvalidArgumentException;
 use PhpCollective\DecimalObject\Decimal;
 use stdClass;
-
-//set image path for TCPDF
-define('K_PATH_IMAGES', dirname(__DIR__) . DS . 'webroot' . DS . 'legacy' . DS . 'images' . DS);
 
 class ContractPDF extends AppPDF
 {
@@ -294,13 +290,7 @@ class ContractPDF extends AppPDF
         $this->Cell(30, 4, Settings::getString('core.documents.common.labels.user'));
 
         $this->SetFont('DejaVuSerif', '', 8);
-        if (is_null($contract->customer->ic)) {
-            $this->Cell(60, 4, Settings::getString('core.documents.common.user_types.non_business'));
-        } elseif (is_null($contract->billing_address->company)) {
-            $this->Cell(60, 4, Settings::getString('core.documents.common.user_types.business'));
-        } else {
-            $this->Cell(60, 4, Settings::getString('core.documents.common.user_types.legal'));
-        }
+        $this->printUserType($contract);
         $this->Ln();
 
         $this->drawSeparator(lnAfter: 0.5);
@@ -1030,13 +1020,7 @@ class ContractPDF extends AppPDF
         $this->Cell(30, 4, Settings::getString('core.documents.common.labels.user'));
 
         $this->SetFont('DejaVuSerif', '', 8);
-        if (is_null($contract->customer->ic)) {
-            $this->Cell(60, 4, Settings::getString('core.documents.common.user_types.non_business'));
-        } elseif (is_null($contract->billing_address->company)) {
-            $this->Cell(60, 4, Settings::getString('core.documents.common.user_types.business'));
-        } else {
-            $this->Cell(60, 4, Settings::getString('core.documents.common.user_types.legal'));
-        }
+        $this->printUserType($contract);
 
         // Subscriber Verification Code
         if (!empty($contract->subscriber_verification_code)) {
@@ -1048,7 +1032,7 @@ class ContractPDF extends AppPDF
         $this->Ln();
 
         $this->drawSeparator(lnAfter: 0.5);
-        
+
         $addressStartY = $this->GetY();
 
         // BILLING
