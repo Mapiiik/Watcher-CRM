@@ -1477,18 +1477,14 @@ class ContractPDF extends AppPDF
             }
 
             $this->SetFont('DejaVuSerif', 'B', 9);
-            $this->Write(4, Settings::getString('core.documents.contracts.contract.sections.final_provisions'));
+            $this->Write(4, Settings::getString('core.documents.contracts.contract.sections.final_statements'));
             $this->Ln();
 
             $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
             $this->SetFont('DejaVuSerif', '', 8);
             $this->setListIndentWidth(4);
             $this->writeHTML(
-                Settings::getString('core.documents.contracts.contract.texts.final_documents_intro') . PHP_EOL
-                . Settings::getString('core.documents.contracts.contract.texts.final_documents_list') . PHP_EOL
-                . Settings::getString('core.documents.contracts.contract.texts.final_documents_confirm') . '<br>' . PHP_EOL
-                . Settings::getString('core.documents.contracts.contract.texts.final_documents_web') . PHP_EOL
-                . Settings::getString('core.documents.contracts.contract.texts.final_documents_web_list'),
+                Settings::getString('core.documents.contracts.contract.texts.final_statements_html'),
                 true,
                 false,
                 false,

@@ -178,7 +178,7 @@ return [
                             'billing_future_pricelist' => 'Seznam budoucích poskytovaných služeb a údaje o jejich aktuálních cenách dle Ceníku včetně DPH',
                             'billing_future_individual' => 'Seznam budoucích poskytovaných služeb a údaje o jejich individuálních cenách včetně DPH',
                             'payment_info' => 'Platební údaje',
-                            'final_provisions' => 'Závěrečná ustanovení',
+                            'final_statements' => 'Závěrečná ustanovení',
                     ],
 
                     'texts' => [
@@ -208,28 +208,34 @@ return [
                         'activation_fee_with_commitment' => 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši {activation_fee_obligation} zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací{with_installation}.',
                         'activation_fee_clause_equipment' => 'Poskytnutá zařízení jsou Uživateli poskytnuta Poskytovatelem za zvýhodněných podmínek (bezúplatně). V případě zániku této smlouvy před uplynutím {duration} od jejího uzavření je proto Uživatel povinen nahradit Poskytovateli náklady spojené s výše uvedenými Poskytnutými zařízeními, a to v paušální částce {difference} ({full_fee} je aktivační poplatek při smlouvě bez úvazku).',
                         'activation_fee_clause_installation' => 'Aktivační poplatek je Uživateli poskytnut Poskytovatelem za zvýhodněných podmínek. V případě zániku této smlouvy před uplynutím {duration} od jejího uzavření je proto Uživatel povinen nahradit Poskytovateli náklady spojené se zřízením koncového bodu Poskytovatelovy sítě elektronických komunikací, a to v paušální částce {difference} ({full_fee} je aktivační poplatek při smlouvě bez úvazku).',
-                        'final_documents_intro' => 'Uživatel prohlašuje, že se podrobně seznámil s obsahem těchto aktuálně účinných dokumentů (dále jako „Dokumenty“):',
-                        'final_documents_list' => '
-                            <ol>
-                            <li><b><i>Všeobecné podmínky služeb elektronických komunikací</i></b> (dále jako „Podmínky“)<ul>
-                                <li>Uživatel si je vědom skutečnosti, že Podmínky jsou nedílnou součástí této Smlouvy a zavazuje se je dodržovat.</li>
-                                <li>Uživateli je též známo, že Poskytovatel je oprávněn Podmínky v souladu s příslušnými právními předpisy jednostranně měnit.</li>
-                                <li>Podmínky obsahují mimo jiné i podrobné informace vyžadované § 63 odst. 1 zákona č. 127/2005 Sb. o elektronických komunikacích,
-                                jako jsou informace o veškerých podmínkách omezujících přístup k poskytovaným službám a možnostem jejich využívání,
-                                o minimální nabízené a minimální zaručené úrovni kvality poskytovaných služeb, o omezeních týkajících se omezení užívání koncových zařízení nebo o možnostech ukončení smlouvy.</li>
-                            </ul></li>
-                            <li><b><i>Přehled parametrů a rychlostí poskytovaných tarifů pro služby připojení k internetu v pevném místě</i></b></li>
-                            <li><b><i>Oznámení o typech rozhraní pro připojení k veřejné komunikační síti</i></b></li>
-                            <li><b><i>Zásady zpracování osobních údajů</i></b></li>
-                            <li><b><i>Ceník</i></b></li>
-                            </ol>',
-                        'final_documents_confirm' => 'Uživatel potvrzuje, že Dokumenty od Poskytovatele obdržel k prostudování a s jejich obsahem plně souhlasí.',
-                        'final_documents_web' => 'Uživatel je srozuměn se skutečností, že aktuální znění těchto Dokumentů, kterými se tato Smlouva řídí, je vždy dostupné na:',
-                        'final_documents_web_list' => '
-                            <ul>
-                            <li>poskytovatelových webových stránkách: <u>https://netair.cz</u></li>
-                            <li>ke dni uzavření této smlouvy konkrétně v této sekci: <u>https://netair.cz/internet/vseobecne-informace</u></li>
-                            </ul>',
+                        'final_statements_html' => <<<HTML
+Uživatel prohlašuje, že se podrobně seznámil s obsahem těchto aktuálně účinných dokumentů (dále jako „Dokumenty“):
+
+<ol>
+    <li><b><i>Všeobecné podmínky služeb elektronických komunikací</i></b> (dále jako „Podmínky“)
+        <ul>
+            <li>Uživatel si je vědom skutečnosti, že Podmínky jsou nedílnou součástí této Smlouvy a zavazuje se je dodržovat.</li>
+            <li>Uživateli je též známo, že Poskytovatel je oprávněn Podmínky v souladu s příslušnými právními předpisy jednostranně měnit.</li>
+            <li>Podmínky obsahují mimo jiné i podrobné informace vyžadované § 63 odst. 1 zákona č. 127/2005 Sb. o elektronických komunikacích,
+                jako jsou informace o veškerých podmínkách omezujících přístup k poskytovaným službám a možnostem jejich využívání,
+                o minimální nabízené a minimální zaručené úrovni kvality poskytovaných služeb, o omezeních týkajících se omezení užívání koncových zařízení nebo o možnostech ukončení smlouvy.
+            </li>
+        </ul>
+    </li>
+    <li><b><i>Přehled parametrů a rychlostí poskytovaných tarifů pro služby připojení k internetu v pevném místě</i></b></li>
+    <li><b><i>Oznámení o typech rozhraní pro připojení k veřejné komunikační síti</i></b></li>
+    <li><b><i>Zásady zpracování osobních údajů</i></b></li>
+    <li><b><i>Ceník</i></b></li>
+</ol>
+
+Uživatel potvrzuje, že Dokumenty od Poskytovatele obdržel k prostudování a s jejich obsahem plně souhlasí.<br>
+Uživatel je srozuměn se skutečností, že aktuální znění těchto Dokumentů, kterými se tato Smlouva řídí, je vždy dostupné na:<br>
+
+<ul>
+    <li>poskytovatelových webových stránkách: <u>https://netair.cz</u></li>
+    <li>ke dni uzavření této smlouvy konkrétně v této sekci: <u>https://netair.cz/internet/vseobecne-informace</u></li>
+</ul>
+HTML,
                         'final_prices' => 'Všechny ceny uvedené v této smlouvě jsou vyjádřeny včetně daně z přidané hodnoty, pokud není výslovně stanoveno jinak.',
                         'final_copies' => 'Tato smlouva (č. {contract_number}) je vyhotovena ve dvou stejnopisech.',
                     ],
@@ -269,11 +275,17 @@ return [
                         'activation_fee_items_intro' => 'Poskytovatel dodal Uživateli tato zařízení a příslušenství a provedl práce nad rámec aktivačního poplatku:',
                         'activation_fee_obligation' => 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek a cenu prodaných zařízení, příslušenství a prací.',
                         'early_termination_clause' => 'Smluvní strany konstatují, že běžná prodejní cena dodaných zařízení je {full_price}, avšak s ohledem na uzavření smlouvy s minimální dobou plnění v trvání {duration} byla tato zařízení Uživateli prodána pouze za {discounted_price}, proto v případě předčasného ukončení smlouvy z důvodu na straně Uživatele se tento zavazuje Poskytovateli doplatit zbývajících {remaining_payment}.',
-                        'connection_point_state_text' => 'Síla signálu na straně Uživatele v případě bezdrátového připojení do sítě Poskytovatele (Tx / Rx): ____________________ dBm
 
-Pro případný servis je zapotřebí žebřík v minimální délce: ______ m',
+                        'connection_point_state_text' => <<<TEXT
+Síla signálu na straně Uživatele v případě bezdrátového připojení do sítě Poskytovatele (Tx / Rx): ____________________ dBm
+
+Pro případný servis je zapotřebí žebřík v minimální délce: ______ m
+TEXT,
+
                         'general_statements_text' => 'Uživatel a Poskytovatel tímto stvrzují, že: ___________________________________________________________________________________',
-                        'final_statements_text' => 'Uživatel svým podpisem stvrzuje, že výše uvedená zařízení převzal nainstalovaná a plně funkční, a zároveň se zavazuje uhradit částku aktivačního poplatku i cenu dodaných zařízení a příslušenství a prací nad rámec aktivačního poplatku nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené příjmovým pokladním dokladem).
+
+                        'final_statements_text' => <<<TEXT
+Uživatel svým podpisem stvrzuje, že výše uvedená zařízení převzal nainstalovaná a plně funkční, a zároveň se zavazuje uhradit částku aktivačního poplatku i cenu dodaných zařízení a příslušenství a prací nad rámec aktivačního poplatku nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené příjmovým pokladním dokladem).
 
 Uživatel dále potvrzuje, že souhlasí s provedenou instalací a nemá vůči ní žádné námitky a zároveň prohlašuje, že objednané služby jsou plně funkční.
 
@@ -281,11 +293,14 @@ Uživatel dále potvrzuje, že bere na vědomí a plně souhlasí s podmínkami 
 
 Všechny ceny uvedené v tomto předávacím protokolu jsou vyjádřeny včetně daně z přidané hodnoty, pokud není výslovně stanoveno jinak.
 
-Tento předávací protokol (ke smlouvě č. {contract_number}) je vyhotoven ve dvou stejnopisech.',
+Tento předávací protokol (ke smlouvě č. {contract_number}) je vyhotoven ve dvou stejnopisech.
+TEXT,
 
                         'uninstallation_borrowed_equipment_intro' => 'Poskytovatel poskytl Uživateli pro dobu trvání Smlouvy bezúplatně tato zařízení:',
                         'uninstallation_equipment_state' => 'Stav zařízení v době deinstalace:',
-                        'uninstallation_equipment_checks' => '▢ ano / ▢ ne - Poskytovateli byla umožněna zkouška funkčnosti zařízení na místě, jejich zapnutím, připojením se do jejich konfiguračního rozhraní pokud to umožňují a provedením diagnostiky
+
+                        'uninstallation_equipment_checks' => <<<TEXT
+▢ ano / ▢ ne - Poskytovateli byla umožněna zkouška funkčnosti zařízení na místě, jejich zapnutím, připojením se do jejich konfiguračního rozhraní pokud to umožňují a provedením diagnostiky
 
 ▢ ano / ▢ ne - provedením zkoušky funkčnosti zařízení na místě, byla zjištěna jeho nefunkčnost
 
@@ -301,10 +316,14 @@ ________________________________________________________________________________
 
 V případě že provedení zkoušky funkčnosti těchto zařízení na místě nebylo umožněno, bude provedeno následně v provozovně Poskytovatele.
 
-V případě viditelné vady, poškození nebo zjištění nefunkčnosti těchto zařízení se Uživatel zavazuje uhradit hodnotu těchto zařízení.',
+V případě viditelné vady, poškození nebo zjištění nefunkčnosti těchto zařízení se Uživatel zavazuje uhradit hodnotu těchto zařízení.
+TEXT,
+
                         'uninstallation_cash_payment_text' => 'Placeno hotově: ____________________,- Kč, podpis příjemce: ____________________',
                         'uninstallation_general_statements_text' => 'Uživatel a Poskytovatel tímto stvrzují, že: ___________________________________________________________________________________',
-                        'uninstallation_final_statements_text' => 'Poskytovatel svým podpisem stvrzuje, že uvedená zařízení převzal ve stavu popsaném výše.
+
+                        'uninstallation_final_statements_text' => <<<TEXT
+Poskytovatel svým podpisem stvrzuje, že uvedená zařízení převzal ve stavu popsaném výše.
 
 Uživatel se zavazuje uhradit hodnotu zařízení v případě jejich viditelné vady, poškození nebo zjištěné nefunkčnosti nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené výše).
 
@@ -312,7 +331,8 @@ Uživatel dále potvrzuje, že souhlasí s provedenou deinstalací a nemá vůč
 
 Všechny ceny uvedené v tomto předávacím protokolu jsou vyjádřeny včetně daně z přidané hodnoty, pokud není výslovně stanoveno jinak.
 
-Tento předávací protokol (ke smlouvě č. {contract_number}) je vyhotoven ve dvou stejnopisech.',
+Tento předávací protokol (ke smlouvě č. {contract_number}) je vyhotoven ve dvou stejnopisech.
+TEXT,
                     ],
 
                     'tables' => [
@@ -342,7 +362,8 @@ Tento předávací protokol (ke smlouvě č. {contract_number}) je vyhotoven ve 
                 'title' => 'SOUHLAS',
                 'subtitle' => 'se zpracováním osobních údajů',
 
-                'declaration' => 'Prohlášení Správce:
+                'declaration' => <<<TEXT
+Prohlášení Správce:
 
 Správce prohlašuje, že bude zpracovávat osobní údaje v rozsahu nezbytném pro naplnění níže stanovených účelů, plnění smlouvy, plnění zákonných povinností a ochrany oprávněných zájmů. Zaměstnanci Správce nebo jiné fyzické osoby, které zpracovávají osobní údaje na základě smlouvy se Správcem a další osoby jsou povinni zachovávat mlčenlivost o osobních údajích, a to i po skončení pracovního poměru nebo prací.
 
@@ -361,7 +382,8 @@ Jméno, příjmení, emailová adresa, telefonní číslo, adresa trvalého poby
     c) požadovat po Správci vysvětlení ohledně zpracování osobních údajů
     d) vyžádat si u Správce přístup k těmto údajům a tyto nechat aktualizovat nebo opravit
     e) požadovat po Správci výmaz těchto osobních údajů, pokud Správce neprokáže oprávněné důvody pro zpracování těchto osobních údajů
-    f) v případě pochybností o dodržování povinností souvisejících se zpracováním osobních údajů obrátit se na Správce nebo na Úřad pro ochranu osobních údajů',
+    f) v případě pochybností o dodržování povinností souvisejících se zpracováním osobních údajů obrátit se na Správce nebo na Úřad pro ochranu osobních údajů'
+TEXT,
 
                 'checkboxes' => [
                     'billing' => '▢ souhlasím se zasíláním veškeré korespondence spojené s měsíčním vyúčtováním *',
