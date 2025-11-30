@@ -204,8 +204,12 @@ return [
                         'borrowed_equipment_installation_costs' => 'Náklady spojené s instalací dalších zařízení nebo další kabeláže se řídí aktuálně účinným Ceníkem Poskytovatele.',
                         'user_equipment_installation_costs' => 'Cena za případnou instalaci Uživatelových zařízení včetně případných souvisejících nákladů (např. kabeláž) se řídí aktuálním Ceníkem Poskytovatele.',
 
-                        'activation_fee_no_commitment' => 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši {activation_fee} zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací{with_installation}.',
-                        'activation_fee_with_commitment' => 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši {activation_fee_obligation} zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací{with_installation}.',
+                        'activation_fee_no_commitment' => 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši {activation_fee} zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací.',
+                        'activation_fee_no_commitment_with_installation' => 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši {activation_fee} zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci Poskytnutých zařízení.',
+
+                        'activation_fee_with_commitment' => 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši {activation_fee_obligation} zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací.',
+                        'activation_fee_with_commitment_with_installation' => 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek ve výši {activation_fee_obligation} zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací a instalaci Poskytnutých zařízení.',
+
                         'activation_fee_clause_equipment' => 'Poskytnutá zařízení jsou Uživateli poskytnuta Poskytovatelem za zvýhodněných podmínek (bezúplatně). V případě zániku této smlouvy před uplynutím {duration} od jejího uzavření je proto Uživatel povinen nahradit Poskytovateli náklady spojené s výše uvedenými Poskytnutými zařízeními, a to v paušální částce {difference} ({full_fee} je aktivační poplatek při smlouvě bez úvazku).',
                         'activation_fee_clause_installation' => 'Aktivační poplatek je Uživateli poskytnut Poskytovatelem za zvýhodněných podmínek. V případě zániku této smlouvy před uplynutím {duration} od jejího uzavření je proto Uživatel povinen nahradit Poskytovateli náklady spojené se zřízením koncového bodu Poskytovatelovy sítě elektronických komunikací, a to v paušální částce {difference} ({full_fee} je aktivační poplatek při smlouvě bez úvazku).',
                         'final_statements_html' => <<<HTML
@@ -229,8 +233,7 @@ Uživatel prohlašuje, že se podrobně seznámil s obsahem těchto aktuálně �
 </ol>
 
 Uživatel potvrzuje, že Dokumenty od Poskytovatele obdržel k prostudování a s jejich obsahem plně souhlasí.<br>
-Uživatel je srozuměn se skutečností, že aktuální znění těchto Dokumentů, kterými se tato Smlouva řídí, je vždy dostupné na:<br>
-
+Uživatel je srozuměn se skutečností, že aktuální znění těchto Dokumentů, kterými se tato Smlouva řídí, je vždy dostupné na:
 <ul>
     <li>poskytovatelových webových stránkách: <u>https://netair.cz</u></li>
     <li>ke dni uzavření této smlouvy konkrétně v této sekci: <u>https://netair.cz/internet/vseobecne-informace</u></li>

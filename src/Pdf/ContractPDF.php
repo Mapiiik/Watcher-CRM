@@ -136,6 +136,89 @@ class ContractPDF extends AppPDF
     }
 
     /**
+     * Prints the activation fee section of the contract PDF.
+     *
+     * This method centralizes the logic for rendering activation fee text blocks
+     * depending on contract duration, contract type, and whether installation
+     * of borrowed equipment is included.
+     *
+     * - If the contract has no minimum duration, prints the "no commitment" text.
+     * - If the contract has a minimum duration, prints the "with commitment" text
+     *   and the clause explaining the difference in activation fee.
+     * - The parameter $withInstallation determines whether the installation
+     *   wording is included (borrowed equipment) or excluded (user equipment).
+     *
+     * @param \App\Model\Entity\Contract        $contract         Current contract instance containing fee sums.
+     * @param \App\Model\Entity\ContractVersion $contract_version Current contract version with duration info.
+     * @param string                            $type             Contract type identifier (e.g. 'contract-new').
+     * @param bool                              $withInstallation Whether installation of borrowed equipment
+     *                                                            should be mentioned in the activation fee text.
+     * @return void
+     */
+    private function printActivationFee(
+        Contract $contract,
+        ContractVersion $contract_version,
+        string $type,
+        bool $withInstallation,
+    ): void {
+        if (!$contract->activation_fee_sum->isPositive()) {
+            return;
+        }
+
+        $this->SetFont('DejaVuSerif', 'B', 8);
+
+        if ($contract_version->minimum_duration <= 0) {
+            if ($type === 'contract-new') {
+                $key = $withInstallation
+                    ? 'activation_fee_no_commitment_with_installation'
+                    : 'activation_fee_no_commitment';
+
+                $this->MultiCell(
+                    180,
+                    4,
+                    strtr(Settings::getString("core.documents.contracts.contract.texts.$key"), [
+                        '{activation_fee}' => Number::currency($contract->activation_fee_sum->toFloat()),
+                    ]) . PHP_EOL,
+                    align: 'J',
+                );
+                $this->Ln(3);
+            }
+        } else {
+            if ($type === 'contract-new') {
+                $key = $withInstallation
+                    ? 'activation_fee_with_commitment_with_installation'
+                    : 'activation_fee_with_commitment';
+
+                $this->MultiCell(
+                    180,
+                    4,
+                    strtr(Settings::getString("core.documents.contracts.contract.texts.$key"), [
+                        '{activation_fee_obligation}' => Number::currency($contract->activation_fee_with_obligation_sum->toFloat()),
+                    ]) . PHP_EOL,
+                    align: 'J',
+                );
+                $this->Ln(3);
+            }
+
+            $clauseKey = $withInstallation
+                ? 'activation_fee_clause_installation'
+                : 'activation_fee_clause_equipment';
+
+            $this->MultiCell(
+                180,
+                4,
+                strtr(Settings::getString("core.documents.contracts.contract.texts.$clauseKey"), [
+                    '{duration}' => $this->contractDurationBefore($contract_version->minimum_duration),
+                    '{difference}' => Number::currency($contract->activation_fee_sum->subtract($contract->activation_fee_with_obligation_sum)->toFloat()),
+                    '{full_fee}' => Number::currency($contract->activation_fee_sum->toFloat()),
+                ]) . PHP_EOL,
+                align: 'J',
+            );
+            $this->Ln(3);
+        }
+    }
+
+    /**
      * Generate PDF document - handover protocol
      *
      * @param \App\Model\Entity\Contract $contract Contract with all related data
@@ -630,19 +713,6 @@ class ContractPDF extends AppPDF
             $this->Ln();
 
             $this->Ln(6);
-
-            // CASH PAYMENT
-            /*
-            $this->SetFont('DejaVuSerif', 'B', 9);
-            $this->Write(4, 'Úhrada v hotovosti');
-            $this->Ln();
-
-            $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
-            $this->SetFont('DejaVuSerif', '', 8);
-            $this->Ln(4);
-            $this->MultiCell(180, 4, 'Placeno hotově: ____________________,- Kč, podpis příjemce: ____________________' . PHP_EOL, align: 'J');
-            $this->Ln(6);
-            */
 
             // CONNECTION POINT STATE
             $this->SetFont('DejaVuSerif', 'B', 9);
@@ -1342,7 +1412,9 @@ class ContractPDF extends AppPDF
             $this->Ln();
 
             $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
+
             if (count($contract->borrowed_equipments) > 0) {
+                // intro text
                 $this->SetFont('DejaVuSerif', '', 8);
                 if ($type === 'contract-new') {
                     $this->Write(4, Settings::getString('core.documents.contracts.contract.texts.borrowed_equipment_intro_new'));
@@ -1354,15 +1426,16 @@ class ContractPDF extends AppPDF
                         ]),
                     );
                 }
-
                 $this->Ln(5);
 
+                // table header
                 $this->SetFont('DejaVuSerif', 'B', 8);
                 $this->Cell(4, 5);
                 $this->Cell(130, 5, Settings::getString('core.documents.contracts.contract.tables.borrowed_equipments.device'), 1);
                 $this->Cell(30, 5, Settings::getString('core.documents.contracts.contract.tables.borrowed_equipments.value'), border: 1, align: 'R');
                 $this->Ln();
 
+                // table rows
                 $this->SetFont('DejaVuSerif', '', 8);
                 foreach ($contract->borrowed_equipments as $borrowed_equipment) {
                     $this->Cell(4, 5);
@@ -1370,7 +1443,6 @@ class ContractPDF extends AppPDF
                     $this->Cell(30, 5, Number::currency($borrowed_equipment->equipment_type->price->toFloat()), border: 1, align: 'R');
                     $this->Ln();
                 }
-
                 $this->Ln();
 
                 if ($type === 'contract-new-x') {
@@ -1378,102 +1450,22 @@ class ContractPDF extends AppPDF
                     $this->Ln(3);
                 }
 
-                $this->SetFont('DejaVuSerif', '', 8);
                 $this->MultiCell(180, 4, Settings::getString('core.documents.contracts.contract.texts.borrowed_equipment_return') . PHP_EOL, align: 'J');
                 $this->Ln(3);
 
                 $this->MultiCell(180, 4, Settings::getString('core.documents.contracts.contract.texts.borrowed_equipment_installation_costs') . PHP_EOL, align: 'J');
                 $this->Ln(3);
 
-                if ($contract->activation_fee_sum->isPositive()) {
-                    $this->SetFont('DejaVuSerif', 'B', 8);
+                // activation fee with installation
+                $this->printActivationFee($contract, $contract_version, $type, true);
 
-                    if ($contract_version->minimum_duration <= 0) {
-                        if ($type === 'contract-new') {
-                            $this->MultiCell(
-                                180,
-                                4,
-                                strtr(Settings::getString('core.documents.contracts.contract.texts.activation_fee_no_commitment'), [
-                                    '{activation_fee}' => Number::currency($contract->activation_fee_sum->toFloat()),
-                                    '{with_installation}' => ' a instalaci Poskytnutých zařízení',
-                                ]) . PHP_EOL,
-                                align: 'J',
-                            );
-                            $this->Ln(3);
-                        }
-                    } else {
-                        if ($type === 'contract-new') {
-                            $this->MultiCell(
-                                180,
-                                4,
-                                strtr(Settings::getString('core.documents.contracts.contract.texts.activation_fee_with_commitment'), [
-                                    '{activation_fee_obligation}' => Number::currency($contract->activation_fee_with_obligation_sum->toFloat()),
-                                    '{with_installation}' => ' a instalaci Poskytnutých zařízení',
-                                ]) . PHP_EOL,
-                                align: 'J',
-                            );
-                            $this->Ln(3);
-                        }
-                        $this->MultiCell(
-                            180,
-                            4,
-                            strtr(Settings::getString('core.documents.contracts.contract.texts.activation_fee_clause_equipment'), [
-                                '{duration}' => $this->contractDurationBefore($contract_version->minimum_duration),
-                                '{difference}' => Number::currency($contract->activation_fee_sum->subtract($contract->activation_fee_with_obligation_sum)->toFloat()),
-                                '{full_fee}' => Number::currency($contract->activation_fee_sum->toFloat()),
-                            ]) . PHP_EOL,
-                            align: 'J',
-                        );
-                        $this->Ln(3);
-                    }
-                }
             } else {
                 $this->SetFont('DejaVuSerif', '', 8);
                 $this->MultiCell(180, 4, Settings::getString('core.documents.contracts.contract.texts.user_equipment_installation_costs') . PHP_EOL, align: 'J');
                 $this->Ln(3);
 
-                if ($contract->activation_fee_sum->isPositive()) {
-                    $this->SetFont('DejaVuSerif', 'B', 8);
-
-                    if ($contract_version->minimum_duration <= 0) {
-                        if ($type === 'contract-new') {
-                            $this->MultiCell(
-                                180,
-                                4,
-                                strtr(Settings::getString('core.documents.contracts.contract.texts.activation_fee_no_commitment'), [
-                                    '{activation_fee}' => Number::currency($contract->activation_fee_sum->toFloat()),
-                                    '{with_installation}' => '',
-                                ]) . PHP_EOL,
-                                align: 'J',
-                            );
-                            $this->Ln(3);
-                        }
-                    } else {
-                        if ($type === 'contract-new') {
-                            $this->MultiCell(
-                                180,
-                                4,
-                                strtr(Settings::getString('core.documents.contracts.contract.texts.activation_fee_with_commitment'), [
-                                    '{activation_fee_obligation}' => Number::currency($contract->activation_fee_with_obligation_sum->toFloat()),
-                                    '{with_installation}' => '',
-                                ]) . PHP_EOL,
-                                align: 'J',
-                            );
-                            $this->Ln(3);
-                        }
-                        $this->MultiCell(
-                            180,
-                            4,
-                            strtr(Settings::getString('core.documents.contracts.contract.texts.activation_fee_clause_installation'), [
-                                '{duration}' => $this->contractDurationBefore($contract_version->minimum_duration),
-                                '{difference}' => Number::currency($contract->activation_fee_sum->subtract($contract->activation_fee_with_obligation_sum)->toFloat()),
-                                '{full_fee}' => Number::currency($contract->activation_fee_sum->toFloat()),
-                            ]) . PHP_EOL,
-                            align: 'J',
-                        );
-                        $this->Ln(3);
-                    }
-                }
+                // activation fee without installation
+                $this->printActivationFee($contract, $contract_version, $type, false);
             }
 
             $this->SetFont('DejaVuSerif', 'B', 9);
