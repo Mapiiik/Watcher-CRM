@@ -231,18 +231,22 @@ class ContractPDF extends AppPDF
         bool $signed = false,
         ?stdClass $technical_details = null,
     ): void {
+        // Disable default header and footer
         $this->setPrintHeader(false);
         $this->setPrintFooter(false);
 
+        // Add first page
         $this->AddPage();
 
+        // Company logo
         $this->Image(K_PATH_IMAGES . 'logo-contract.png', 10, 5, 28);
 
-        // Title + subtitle
+        // Document title
         $this->SetFont('DejaVuSerif', 'B', 18);
         $this->Cell(187, 6, Settings::getString('core.documents.contracts.handover.title'), align: 'C');
         $this->Ln();
 
+        // Document subtitle
         $this->SetFont('DejaVuSerif', 'B', 12);
         if ($type === 'handover-protocol-installation') {
             $this->Cell(187, 2, Settings::getString('core.documents.contracts.handover.subtitle_installation'), align: 'C');
@@ -293,80 +297,81 @@ class ContractPDF extends AppPDF
         $this->printUserType($contract);
         $this->Ln();
 
+        // Separator line
         $this->drawSeparator(lnAfter: 0.5);
 
-        // Billing address section
-        $addressStartY = $this->GetY();
-
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(60, 4, __d('documents', 'Billing Address') . ':');
-        $this->Ln();
-
+        // Customer personal and business data
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, Settings::getString('core.documents.common.labels.company'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(60, 4, $contract->billing_address->company ?? '', align: 'L');
-
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, is_null($contract->billing_address->company)
-            ? Settings::getString('core.documents.common.labels.name')
-            : Settings::getString('core.documents.common.labels.represented'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(60, 4, $contract->billing_address->full_name, align: 'L');
-
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, Settings::getString('core.documents.common.labels.street'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(60, 4, $contract->billing_address->street_and_number, align: 'L');
-
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, Settings::getString('core.documents.common.labels.zip_city'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(60, 4, $contract->billing_address->zip_and_city, align: 'L');
-
-        // NEXT COLUMN
-        $addressStopY = $this->GetY();
-        $this->SetY($addressStartY);
-        $this->Ln();
-
-        // Specifiers (birth date, IC, ID card, DIC)
-        $this->Cell(105);
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.birth_date'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(30, 4, (string)$contract->customer->date_of_birth);
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(10, 4, Settings::getString('core.documents.common.labels.identity_number'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(60, 4, $contract->customer->ic ?? 'X');
-        $this->Ln();
-
-        $this->Cell(105);
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.identity_card_number'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(30, 4, $contract->customer->identity_card_number);
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(10, 4, Settings::getString('core.documents.common.labels.vat_number'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(60, 4, $contract->customer->dic ?? 'X');
-        $this->Ln();
-
-        // Contact info
-        $this->Cell(105);
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.phone'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(70, 4, $contract->customer->phone, align: 'L');
-
-        $this->Cell(105);
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.email'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(70, 4, $contract->customer->email, align: 'L');
-
-        // GO BACK TO END
-        $this->SetY(max($this->GetY(), $addressStopY));
+        $this->printTable(
+            [
+                __d('documents', 'Billing Address') . ':',
+                '',
+            ],
+            [
+                [
+                    [
+                        'label' => Settings::getString('core.documents.common.labels.company'),
+                        'value' => $this->strOrX($contract->billing_address->company, ''),
+                    ],
+                    [
+                        'label' => Settings::getString('core.documents.common.labels.birth_date'),
+                        'value' => (string)$contract->customer->date_of_birth,
+                        'label_width' => 25,
+                        'value_width' => 25,
+                    ],
+                    [
+                        'label' => Settings::getString('core.documents.common.labels.identity_number'),
+                        'value' => $this->strOrX($contract->customer->ic),
+                        'label_width' => 10,
+                        'value_width' => 30,
+                    ],
+                ],
+                [
+                    [
+                        'label' => is_null($contract->billing_address->company)
+                            ? Settings::getString('core.documents.common.labels.name')
+                            : Settings::getString('core.documents.common.labels.represented'),
+                        'value' => $contract->billing_address->full_name,
+                    ],
+                    [
+                        'label' => Settings::getString('core.documents.common.labels.identity_card_number'),
+                        'value' => (string)$contract->customer->identity_card_number,
+                        'label_width' => 25,
+                        'value_width' => 25,
+                    ],
+                    [
+                        'label' => Settings::getString('core.documents.common.labels.vat_number'),
+                        'value' => $this->strOrX($contract->customer->dic),
+                        'label_width' => 10,
+                        'value_width' => 30,
+                    ],
+                ],
+                [
+                    [
+                        'label' => Settings::getString('core.documents.common.labels.street'),
+                        'value' => $contract->billing_address->street_and_number,
+                    ],
+                    [
+                        'label' => Settings::getString('core.documents.common.labels.phone'),
+                        'value' => $contract->customer->phone,
+                        'label_width' => 25,
+                        'value_width' => 65,
+                    ],
+                ],
+                [
+                    [
+                        'label' => Settings::getString('core.documents.common.labels.zip_city'),
+                        'value' => $contract->billing_address->zip_and_city,
+                    ],
+                    [
+                        'label' => Settings::getString('core.documents.common.labels.email'),
+                        'value' => $contract->customer->email,
+                        'label_width' => 25,
+                        'value_width' => 65,
+                    ],
+                ],
+            ],
+        );
 
         // Installation / Delivery / Permanent addresses
         if ($contract->__isset('installation_address')) {
@@ -907,15 +912,19 @@ class ContractPDF extends AppPDF
      */
     public function generateContract(Contract $contract, ContractVersion $contract_version, string $type = 'contract-new', bool $signed = false): void
     {
+        // Disable default header and footer
         $this->setPrintHeader(false);
         $this->setPrintFooter(false);
 
+        // Add first page
         $this->AddPage();
 
+        // Company logo
         $this->Image(K_PATH_IMAGES . 'logo-contract.png', 10, 5, 28);
 
         $this->SetFont('DejaVuSerif', 'BI', 8);
 
+        // Document title and subtitle
         switch ($type) {
             case 'contract-new':
             case 'contract-new-x':
@@ -949,8 +958,10 @@ class ContractPDF extends AppPDF
                 break;
         }
 
-            $this->drawSeparator(lnBefore: 4, lnAfter: 0.5);
+        // Separator line
+        $this->drawSeparator(lnBefore: 4, lnAfter: 0.5);
 
+        // Contract number + date
         switch ($type) {
             case 'contract-new':
             case 'contract-new-x':
@@ -1031,82 +1042,81 @@ class ContractPDF extends AppPDF
 
         $this->Ln();
 
+        // Separator line
         $this->drawSeparator(lnAfter: 0.5);
 
-        $addressStartY = $this->GetY();
-
-        // BILLING
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(60, 4, __d('documents', 'Billing Address') . ':');
-        $this->Ln();
-
+        // Customer personal and business data
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, Settings::getString('core.documents.common.labels.company'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(60, 4, $contract->billing_address->company ?? '', align: 'L');
-
-        $this->SetFont('DejaVuSerif', '', 8);
-        if (is_null($contract->billing_address->company)) {
-            $this->Cell(30, 4, Settings::getString('core.documents.common.labels.name'), align: 'R');
-        } else {
-            $this->Cell(30, 4, Settings::getString('core.documents.common.labels.represented'), align: 'R');
-        }
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(60, 4, $contract->billing_address->full_name, align: 'L');
-
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, Settings::getString('core.documents.common.labels.street'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(60, 4, $contract->billing_address->street_and_number, align: 'L');
-
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4, Settings::getString('core.documents.common.labels.zip_city'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(60, 4, $contract->billing_address->zip_and_city, align: 'L');
-
-        // NEXT COLUMN
-        $addressStopY = $this->GetY();
-        $this->SetY($addressStartY);
-        $this->Ln();
-
-        // SPECIFIERS
-        $this->Cell(105);
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.birth_date'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(30, 4, (string)$contract->customer->date_of_birth);
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(10, 4, Settings::getString('core.documents.common.labels.identity_number'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(60, 4, $contract->customer->ic ?? 'X');
-        $this->Ln();
-
-        $this->Cell(105);
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.identity_card_number'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(30, 4, $contract->customer->identity_card_number);
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(10, 4, Settings::getString('core.documents.common.labels.vat_number'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell(60, 4, $contract->customer->dic ?? 'X');
-        $this->Ln();
-
-        // CONTACT
-        $this->Cell(105);
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.phone'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(70, 4, $contract->customer->phone, align: 'L');
-
-        $this->Cell(105);
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(15, 4, Settings::getString('core.documents.common.labels.email'), align: 'R');
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->MultiCell(70, 4, $contract->customer->email, align: 'L');
-
-        // GO BACK TO END
-        $this->SetY(max($this->GetY(), $addressStopY));
+        $this->printTable(
+            [
+                __d('documents', 'Billing Address') . ':',
+                '',
+            ],
+            [
+                [
+                    [
+                        'label' => Settings::getString('core.documents.common.labels.company'),
+                        'value' => $this->strOrX($contract->billing_address->company, ''),
+                    ],
+                    [
+                        'label' => Settings::getString('core.documents.common.labels.birth_date'),
+                        'value' => (string)$contract->customer->date_of_birth,
+                        'label_width' => 25,
+                        'value_width' => 25,
+                    ],
+                    [
+                        'label' => Settings::getString('core.documents.common.labels.identity_number'),
+                        'value' => $this->strOrX($contract->customer->ic),
+                        'label_width' => 10,
+                        'value_width' => 30,
+                    ],
+                ],
+                [
+                    [
+                        'label' => is_null($contract->billing_address->company)
+                            ? Settings::getString('core.documents.common.labels.name')
+                            : Settings::getString('core.documents.common.labels.represented'),
+                        'value' => $contract->billing_address->full_name,
+                    ],
+                    [
+                        'label' => Settings::getString('core.documents.common.labels.identity_card_number'),
+                        'value' => (string)$contract->customer->identity_card_number,
+                        'label_width' => 25,
+                        'value_width' => 25,
+                    ],
+                    [
+                        'label' => Settings::getString('core.documents.common.labels.vat_number'),
+                        'value' => $this->strOrX($contract->customer->dic),
+                        'label_width' => 10,
+                        'value_width' => 30,
+                    ],
+                ],
+                [
+                    [
+                        'label' => Settings::getString('core.documents.common.labels.street'),
+                        'value' => $contract->billing_address->street_and_number,
+                    ],
+                    [
+                        'label' => Settings::getString('core.documents.common.labels.phone'),
+                        'value' => $contract->customer->phone,
+                        'label_width' => 25,
+                        'value_width' => 65,
+                    ],
+                ],
+                [
+                    [
+                        'label' => Settings::getString('core.documents.common.labels.zip_city'),
+                        'value' => $contract->billing_address->zip_and_city,
+                    ],
+                    [
+                        'label' => Settings::getString('core.documents.common.labels.email'),
+                        'value' => $contract->customer->email,
+                        'label_width' => 25,
+                        'value_width' => 65,
+                    ],
+                ],
+            ],
+        );
 
         // INSTALLATION ADDRESS
         if ($contract->__isset('installation_address')) {

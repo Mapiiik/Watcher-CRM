@@ -229,41 +229,16 @@ class AppPDF extends TCPDF
     /**
      * Render a flexible two-column table using TCPDF's writeHTML.
      *
-     * This helper builds a table layout similar to the original Cell/MultiCell approach,
-     * but leverages HTML so that each cell automatically expands to fit multi-line content.
+     * Each cell may optionally define custom widths:
+     *   ['label' => 'Name', 'value' => 'John Doe', 'label_width' => 25, 'value_width' => 80]
      *
-     * Usage:
-     * - Pass an array of headers (optional) to display column titles.
-     * - Pass an array of rows, where each row is an array of cells:
-     *   [
-     *     ['label' => 'Name', 'value' => 'John Doe'],
-     *     ['label' => 'Company', 'value' => 'Acme Inc.']
-     *   ]
-     *   If a row contains only one cell, it will span across the full width (e.g. phone/email).
-     *
-     * @param array<array-key, string> $headers Array of header titles (e.g. ["Personal data", "Business data"])
-     * @param array<array-key,array<array-key,array{label:string,value:string}>> $rows Array of rows, each row
-     * is an array of associative arrays:
-     *                       [
-     *                         ['label' => string, 'value' => string],
-     *                         ...
-     *                       ]
-     *
-     * Example:
-     * $this->printTable(
-     *     ["Personal data", "Business data"],
-     *     [
-     *         [
-     *             ['label' => 'Name', 'value' => 'John Doe'],
-     *             ['label' => 'Company', 'value' => 'Acme Inc.']
-     *         ],
-     *         [
-     *             ['label' => 'Phone', 'value' => '+420 123 456 789']
-     *         ]
-     *     ]
-     * );
-     *
-     * This will render a two-column table with automatic line wrapping and proper alignment.
+     * @param array<int,string> $headers Array of header titles (e.g. ["Personal data", "Business data"])
+     * @param array<int,array<int,array{
+     *     label:string,
+     *     value:string,
+     *     label_width?:int,
+     *     value_width?:int
+     * }>> $rows Array of rows, each row is an array of associative arrays
      */
     protected function printTable(array $headers, array $rows): void
     {
@@ -284,14 +259,23 @@ class AppPDF extends TCPDF
             $html .= '<tr>';
             if (count($row) === 1) {
                 // Single cell row (e.g. phone/email)
-                $html .= '<td width="30mm" align="right">' . htmlspecialchars($row[0]['label']) . '</td>';
-                $html .= '<td width="160mm" colspan="' . (string)(count($headers) * 2 - 1) . '">'
+                $labelWidth = $row[0]['label_width'] ?? 30;
+                $valueWidth = $row[0]['value_width'] ?? 150;
+
+                $html .= '<td width="' . $labelWidth . 'mm" align="right">'
+                    . htmlspecialchars($row[0]['label']) . '</td>';
+                $html .= '<td width="' . $valueWidth . 'mm" colspan="' . (string)(count($headers) * 2 - 1) . '">'
                     . '<b>' . htmlspecialchars($row[0]['value']) . '</b></td>';
             } else {
                 // Multi-column row
                 foreach ($row as $cell) {
-                    $html .= '<td width="30mm" align="right">' . htmlspecialchars($cell['label']) . '</td>';
-                    $html .= '<td width="60mm"><b>' . htmlspecialchars($cell['value']) . '</b></td>';
+                    $labelWidth = (string)($cell['label_width'] ?? 30);
+                    $valueWidth = (string)($cell['value_width'] ?? 60);
+
+                    $html .= '<td width="' . $labelWidth . 'mm" align="right">'
+                        . htmlspecialchars($cell['label']) . '</td>';
+                    $html .= '<td width="' . $valueWidth . 'mm">'
+                        . '<b>' . htmlspecialchars($cell['value']) . '</b></td>';
                 }
             }
             $html .= '</tr>';
@@ -300,7 +284,7 @@ class AppPDF extends TCPDF
         $html .= '</table>';
 
         $this->writeHTML($html, true, false, false, true, '');
-        $this->Ln();
+        $this->Ln(0);
     }
 
     /**
