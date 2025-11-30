@@ -92,20 +92,38 @@ class CustomerPDF extends AppPDF
         $this->printTable(
             [
                 Settings::getString('core.documents.common.labels.personal_data'),
-                Settings::getString('core.documents.common.labels.business_data')
+                Settings::getString('core.documents.common.labels.business_data'),
             ],
             [
                 [
-                    ['label' => Settings::getString('core.documents.common.labels.name'), 'value' => $customer->billing_address->full_name],
-                    ['label' => Settings::getString('core.documents.common.labels.company'), 'value' => $customer->billing_address->company ?? 'X'],
+                    [
+                        'label' => Settings::getString('core.documents.common.labels.name'),
+                        'value' => $customer->billing_address->full_name,
+                    ],
+                    [
+                        'label' => Settings::getString('core.documents.common.labels.company'),
+                        'value' => $this->strOrX($customer->billing_address->company),
+                    ],
                 ],
                 [
-                    ['label' => Settings::getString('core.documents.common.labels.birth_date'), 'value' => (string)$customer->date_of_birth],
-                    ['label' => Settings::getString('core.documents.common.labels.identity_number'), 'value' => $customer->ic ?? 'X'],
+                    [
+                        'label' => Settings::getString('core.documents.common.labels.birth_date'),
+                        'value' => (string)$customer->date_of_birth,
+                    ],
+                    [
+                        'label' => Settings::getString('core.documents.common.labels.identity_number'),
+                        'value' => $this->strOrX($customer->ic),
+                    ],
                 ],
                 [
-                    ['label' => Settings::getString('core.documents.common.labels.identity_card_number'), 'value' => $customer->identity_card_number],
-                    ['label' => Settings::getString('core.documents.common.labels.vat_number'), 'value' => $customer->dic ?? 'X'],
+                    [
+                        'label' => Settings::getString('core.documents.common.labels.identity_card_number'),
+                        'value' => (string)$customer->identity_card_number,
+                    ],
+                    [
+                        'label' => Settings::getString('core.documents.common.labels.vat_number'),
+                        'value' => $this->strOrX($customer->dic),
+                    ],
                 ],
                 [
                     ['label' => Settings::getString('core.documents.common.labels.phone'), 'value' => $customer->phone],
