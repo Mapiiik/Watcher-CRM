@@ -10,108 +10,109 @@ use Cake\Validation\Validation;
 use Override;
 
 // filter for fulltext search
-const CUSTOMERS_FULLTEXT_SEARCH_FILTER = "SELECT
-    Customers.id
-FROM
-    Customers
-    LEFT JOIN (
-        SELECT
-            Contracts.customer_id,
-            STRING_AGG(
-                CONCAT_WS(
-                    ' ',
-                    Contracts.number,
-                    Contracts.subscriber_verification_code
-                ),
-                ' '
-            ) AS txt
-        FROM
-            Contracts
-        GROUP BY
-            1
-    ) Contracts ON (
-        Contracts.customer_id = Customers.id
-    ) 
-    LEFT JOIN (
-        SELECT 
-            Addresses.customer_id, 
-            STRING_AGG(
-                CONCAT_WS(
-                    ' ',
-                    Addresses.first_name,
-                    Addresses.last_name,
-                    Addresses.company,
-                    Addresses.street, 
-                    Addresses.number,
-                    Addresses.city,
-                    Addresses.zip
-                ), 
-                ' '
-            ) AS txt 
-        FROM 
-            Addresses 
-        GROUP BY 
-            1
-    ) Addresses ON (
-        Addresses.customer_id = Customers.id
-    ) 
-    LEFT JOIN (
-        SELECT 
-            Emails.customer_id, 
-            STRING_AGG(Emails.email, ' ') AS txt 
-        FROM 
-            Emails 
-        GROUP BY 
-            1
-    ) Emails ON (
-        Emails.customer_id = Customers.id
-    ) 
-    LEFT JOIN (
-        SELECT 
-            Phones.customer_id, 
-            STRING_AGG(Phones.phone, ' ') AS txt_1,
-            STRING_AGG(REPLACE(Phones.phone, ' ', ''), ' ') AS txt_2,
-            STRING_AGG(REGEXP_REPLACE(REGEXP_REPLACE(Phones.phone, '\+\d+', ''), '\s', '', 'g'), ' ') AS txt_3
-        FROM 
-            Phones 
-        GROUP BY 
-            1
-    ) Phones ON (
-        Phones.customer_id = Customers.id
-    ) 
-    LEFT JOIN (
-        SELECT 
-        Ip_Addresses.customer_id, 
-            STRING_AGG(Ip_Addresses.ip_address :: character varying, ' ') AS txt 
-        FROM 
-            Ip_Addresses
-        GROUP BY 
-            1
-    ) Ip_Addresses ON (
-        Ip_Addresses.customer_id = Customers.id
-    ) 
-WHERE 
-    to_tsvector (
-        CONCAT_WS(
-            ' ',
-            Customers.nid + :customer_series,
-            Customers.ic,
-            Customers.dic,
-            Customers.first_name, 
-            Customers.last_name,
-            Customers.company, 
-            Contracts.txt,
-            Addresses.txt,
-            Emails.txt,
-            Phones.txt_1,
-            Phones.txt_2,
-            Phones.txt_3,
-            Ip_Addresses.txt
-        )
-    ) @@ websearch_to_tsquery(:search) 
-GROUP BY 
-    Customers.id
-";
+const CUSTOMERS_FULLTEXT_SEARCH_FILTER = <<<SQL
+    SELECT
+        Customers.id
+    FROM
+        Customers
+        LEFT JOIN (
+            SELECT
+                Contracts.customer_id,
+                STRING_AGG(
+                    CONCAT_WS(
+                        ' ',
+                        Contracts.number,
+                        Contracts.subscriber_verification_code
+                    ),
+                    ' '
+                ) AS txt
+            FROM
+                Contracts
+            GROUP BY
+                1
+        ) Contracts ON (
+            Contracts.customer_id = Customers.id
+        ) 
+        LEFT JOIN (
+            SELECT 
+                Addresses.customer_id, 
+                STRING_AGG(
+                    CONCAT_WS(
+                        ' ',
+                        Addresses.first_name,
+                        Addresses.last_name,
+                        Addresses.company,
+                        Addresses.street, 
+                        Addresses.number,
+                        Addresses.city,
+                        Addresses.zip
+                    ), 
+                    ' '
+                ) AS txt 
+            FROM 
+                Addresses 
+            GROUP BY 
+                1
+        ) Addresses ON (
+            Addresses.customer_id = Customers.id
+        ) 
+        LEFT JOIN (
+            SELECT 
+                Emails.customer_id, 
+                STRING_AGG(Emails.email, ' ') AS txt 
+            FROM 
+                Emails 
+            GROUP BY 
+                1
+        ) Emails ON (
+            Emails.customer_id = Customers.id
+        ) 
+        LEFT JOIN (
+            SELECT 
+                Phones.customer_id, 
+                STRING_AGG(Phones.phone, ' ') AS txt_1,
+                STRING_AGG(REPLACE(Phones.phone, ' ', ''), ' ') AS txt_2,
+                STRING_AGG(REGEXP_REPLACE(REGEXP_REPLACE(Phones.phone, '\+\d+', ''), '\s', '', 'g'), ' ') AS txt_3
+            FROM 
+                Phones 
+            GROUP BY 
+                1
+        ) Phones ON (
+            Phones.customer_id = Customers.id
+        ) 
+        LEFT JOIN (
+            SELECT 
+            Ip_Addresses.customer_id, 
+                STRING_AGG(Ip_Addresses.ip_address :: character varying, ' ') AS txt 
+            FROM 
+                Ip_Addresses
+            GROUP BY 
+                1
+        ) Ip_Addresses ON (
+            Ip_Addresses.customer_id = Customers.id
+        ) 
+    WHERE 
+        to_tsvector (
+            CONCAT_WS(
+                ' ',
+                Customers.nid + :customer_series,
+                Customers.ic,
+                Customers.dic,
+                Customers.first_name, 
+                Customers.last_name,
+                Customers.company, 
+                Contracts.txt,
+                Addresses.txt,
+                Emails.txt,
+                Phones.txt_1,
+                Phones.txt_2,
+                Phones.txt_3,
+                Ip_Addresses.txt
+            )
+        ) @@ websearch_to_tsquery(:search) 
+    GROUP BY 
+        Customers.id
+    SQL;
 
 /**
  * Customers Controller
