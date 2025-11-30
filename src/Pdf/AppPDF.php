@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Pdf;
 
 use App\Utility\Settings;
+use Cake\I18n\Date;
 use Override;
 use TCPDF;
 
@@ -161,5 +162,62 @@ class AppPDF extends TCPDF
         $this->MultiCell(157, 4, Settings::getString('core.company.registry_clause'), align: 'L');
 
         $this->drawSeparator(self::SEPARATOR_OFFSET_X, lnAfter: 3.0);
+    }
+
+    /**
+     * Prints the signature section with an exact layout match to existing PDFs.
+     *
+     * Supported layouts:
+     * - "single-right": matches CustomerPDF (one signature column on the right, 90 mm offset)
+     * - "double": matches ContractPDF and HandoverProtocol (two columns side by side)
+     *
+     * Behavior:
+     * - Adds a page when near bottom (Y > 240), then inserts consistent spacing.
+     * - Prints date line(s), then a fixed vertical gap, then dotted sign line(s),
+     *   then party labels ("Poskytovatel"/"Uživatel").
+     * - For "double" layout with $signed=true: left date shows current date; also draws a signature image
+     *   at the same coordinates as before (x=38.0, width=35.0, y=currentY-19.0).
+     *
+     * @param string $layout Layout identifier: 'single-right' or 'double'.
+     * @param bool   $signed Whether the document is signed (affects left date and signature image in 'double').
+     * @return void
+     */
+    protected function printSignatureSection(string $layout = 'double', bool $signed = false): void
+    {
+        $this->SetFont('DejaVuSerif', '', 8);
+
+        if ($this->GetY() > 240) {
+            $this->AddPage();
+        }
+
+        $dateLabel = Settings::getString('core.documents.common.signatures.date');
+        $dateLine = Settings::getString('core.documents.common.signatures.date_line');
+        $signLine = Settings::getString('core.documents.common.signatures.sign_line');
+        $provider = Settings::getString('core.documents.common.signatures.provider');
+        $user = Settings::getString('core.documents.common.signatures.user');
+
+        $double = ($layout === 'double');
+        $this->Ln(10);
+
+        // Date row
+        $leftDateText = $signed && $double ? Date::now()->__toString() : $dateLine;
+        $this->Cell(90, 4, $double ? $dateLabel . ' ' . $leftDateText : '', align: 'C');
+        $this->Cell(90, 4, $dateLabel . ' ' . $dateLine, align: 'C');
+        $this->Ln(20);
+
+        // Sign line row
+        $this->Cell(90, 4, $double ? $signLine : '', align: 'C');
+        $this->Cell(90, 4, $signLine, align: 'C');
+        $this->Ln();
+
+        // Role labels row
+        $this->Cell(90, 4, $double ? $provider : '', align: 'C');
+        $this->Cell(90, 4, $user, align: 'C');
+        $this->Ln();
+
+        // Signature image (only for double + signed)
+        if ($double && $signed) {
+            $this->Image(K_PATH_IMAGES . 'signature.png', 38.0, $this->GetY() - 19.0, 35.0);
+        }
     }
 }

@@ -900,49 +900,8 @@ class ContractPDF extends AppPDF
         endif;
         // END UNINSTALLATION
 
-        // SIGNS
-        $this->SetFont('DejaVuSerif', '', 8);
-        if ($this->GetY() > 240) {
-            $this->AddPage();
-        }
-        $this->Ln(10);
-
-        if ($signed) {
-            $this->Cell(
-                90,
-                4,
-                Settings::getString('core.documents.common.signatures.date') . ' ' . Date::now()->__toString(),
-                align: 'C',
-            );
-        } else {
-            $this->Cell(
-                90,
-                4,
-                Settings::getString('core.documents.common.signatures.date') . ' ' . Settings::getString('core.documents.common.signatures.date_line'),
-                align: 'C',
-            );
-        }
-
-        $this->Cell(
-            90,
-            4,
-            Settings::getString('core.documents.common.signatures.date') . ' ' . Settings::getString('core.documents.common.signatures.date_line'),
-            align: 'C',
-        );
-
-        $this->Ln(20);
-
-        $this->Cell(90, 4, Settings::getString('core.documents.common.signatures.sign_line'), align: 'C');
-        $this->Cell(90, 4, Settings::getString('core.documents.common.signatures.sign_line'), align: 'C');
-        $this->Ln();
-
-        $this->Cell(90, 4, Settings::getString('core.documents.common.signatures.provider'), align: 'C');
-        $this->Cell(90, 4, Settings::getString('core.documents.common.signatures.user'), align: 'C');
-        $this->Ln();
-
-        if ($signed) {
-            $this->Image(K_PATH_IMAGES . 'signature.png', 38.0, $this->GetY() - 19.0, 35.0);
-        }
+        // Signature section
+        $this->printSignatureSection('double', $signed);
 
         $this->Close();
     }
@@ -1497,48 +1456,8 @@ class ContractPDF extends AppPDF
             $this->Ln(3);
         }
 
-        $this->SetFont('DejaVuSerif', '', 8);
-        if ($this->GetY() > 240) {
-            $this->AddPage();
-        }
-        $this->Ln();
-        $this->Ln();
-
-        if ($signed) {
-            $this->Cell(
-                90,
-                4,
-                Settings::getString('core.documents.common.signatures.date') . ' ' . Date::now()->__toString(),
-                align: 'C',
-            );
-        } else {
-            $this->Cell(
-                90,
-                4,
-                Settings::getString('core.documents.common.signatures.date') . ' ' . Settings::getString('core.documents.common.signatures.date_line'),
-                align: 'C',
-            );
-        }
-
-        $this->Cell(
-            90,
-            4,
-            Settings::getString('core.documents.common.signatures.date') . ' ' . Settings::getString('core.documents.common.signatures.date_line'),
-            align: 'C',
-        );
-
-        $this->Ln(20);
-
-        $this->Cell(90, 4, Settings::getString('core.documents.common.signatures.sign_line'), align: 'C');
-        $this->Cell(90, 4, Settings::getString('core.documents.common.signatures.sign_line'), align: 'C');
-        $this->Ln();
-        $this->Cell(90, 4, Settings::getString('core.documents.common.signatures.provider'), align: 'C');
-        $this->Cell(90, 4, Settings::getString('core.documents.common.signatures.user'), align: 'C');
-        $this->Ln();
-
-        if ($signed) {
-            $this->Image(K_PATH_IMAGES . 'signature.png', 38.0, $this->GetY() - 19.0, 35.0);
-        }
+        // Signature section
+        $this->printSignatureSection('double', $signed);
 
         $this->Close();
     }

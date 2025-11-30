@@ -169,26 +169,6 @@ class CustomerPDF extends AppPDF
         $this->Write(3, Settings::getString('core.documents.gdpr.checkboxes.note'), ln: true);
 
         // Signature section
-        $this->SetFont('DejaVuSerif', '', 8);
-        if ($this->GetY() > 240) {
-            $this->AddPage();
-        }
-        $this->Ln(10);
-        $this->Cell(90, 4);
-        $this->Cell(
-            90,
-            4,
-            Settings::getString('core.documents.common.signatures.date')
-                . ' ' . Settings::getString('core.documents.common.signatures.date_line'),
-            align: 'C',
-        );
-        $this->Ln(20);
-        $this->Cell(90, 4);
-        $this->Cell(90, 4, Settings::getString('core.documents.common.signatures.sign_line'), align: 'C');
-        $this->Ln();
-        $this->Cell(90, 4);
-        $this->Cell(90, 4, Settings::getString('core.documents.common.signatures.user'), align: 'C');
-
-        $this->Close();
+        $this->printSignatureSection('single-right', false);
     }
 }
