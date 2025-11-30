@@ -319,6 +319,27 @@ class AppPDF extends TCPDF
     }
 
     /**
+     * Render a labeled single-column address block.
+     *
+     * @param string $title Section title (e.g. "Installation Address")
+     * @param string|null $fullAddress Address text; if null/empty, the block is skipped
+     * @param float $indent Label cell width before the address value (default 30mm)
+     * @param float $lineHeight Line height for the value (default 4mm)
+     */
+    protected function printAddressBlock(string $title, ?string $fullAddress, float $indent = 30.0, float $lineHeight = 4.0): void
+    {
+        if ($fullAddress === null || $fullAddress === '') {
+            return;
+        }
+
+        $this->SetFont('DejaVuSerif', 'B', 8);
+        $this->Cell($indent, $lineHeight, $title . ': ');
+        $this->Ln();
+        $this->Cell($indent, $lineHeight);
+        $this->MultiCell(180 - $indent, $lineHeight, $fullAddress, align: 'L');
+    }
+
+    /**
      * Normalize a nullable string into a safe string for PDF output.
      *
      * This helper ensures that values which may be null are always converted

@@ -136,12 +136,10 @@ class CustomerPDF extends AppPDF
 
         // Addresses loop
         foreach ($customer->addresses as $address) {
-            $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Cell(30, 4, $address->type->label() . ': ');
-            $this->Ln();
-            $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Cell(30, 4);
-            $this->MultiCell(160, 4, $address->full_address, align: 'L');
+            $this->printAddressBlock(
+                $address->type->label(),
+                $address->full_address ?? null,
+            );
         }
         $this->drawSeparator(AppPDF::SEPARATOR_OFFSET_X);
         $this->Ln();

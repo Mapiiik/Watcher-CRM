@@ -374,27 +374,18 @@ class ContractPDF extends AppPDF
         );
 
         // Installation / Delivery / Permanent addresses
-        if ($contract->__isset('installation_address')) {
-            $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Cell(30, 4, __d('documents', 'Installation Address') . ': ');
-            $this->Ln();
-            $this->Cell(30, 4);
-            $this->MultiCell(160, 4, $contract->installation_address->full_address, align: 'L');
-        }
-        if ($contract->__isset('delivery_address')) {
-            $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Cell(30, 4, __d('documents', 'Delivery Address') . ': ');
-            $this->Ln();
-            $this->Cell(30, 4);
-            $this->MultiCell(160, 4, $contract->delivery_address->full_address, align: 'L');
-        }
-        if ($contract->__isset('permanent_address')) {
-            $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Cell(30, 4, __d('documents', 'Permanent Address') . ': ');
-            $this->Ln();
-            $this->Cell(30, 4);
-            $this->MultiCell(160, 4, $contract->permanent_address->full_address, align: 'L');
-        }
+        $this->printAddressBlock(
+            __d('documents', 'Installation Address'),
+            $contract->installation_address->full_address ?? null,
+        );
+        $this->printAddressBlock(
+            __d('documents', 'Delivery Address'),
+            $contract->delivery_address->full_address ?? null,
+        );
+        $this->printAddressBlock(
+            __d('documents', 'Permanent Address'),
+            $contract->permanent_address->full_address ?? null,
+        );
 
         $this->drawSeparator(AppPDF::SEPARATOR_OFFSET_X, lnAfter: 4.0);
 
@@ -1118,32 +1109,21 @@ class ContractPDF extends AppPDF
             ],
         );
 
-        // INSTALLATION ADDRESS
-        if ($contract->__isset('installation_address')) {
-            $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Cell(30, 4, __d('documents', 'Installation Address') . ': ');
-            $this->Ln();
-            $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Cell(30, 4);
-            $this->MultiCell(160, 4, $contract->installation_address->full_address, align: 'L');
-        }
-        // DELIVERY ADDRESS
-        if ($contract->__isset('delivery_address')) {
-            $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Cell(30, 4, __d('documents', 'Delivery Address') . ': ');
-            $this->Ln();
-            $this->Cell(30, 4);
-            $this->MultiCell(160, 4, $contract->delivery_address->full_address, align: 'L');
-        }
-        // PERMANENT ADDRESS
-        if ($contract->__isset('permanent_address')) {
-            $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Cell(30, 4, __d('documents', 'Permanent Address') . ': ');
-            $this->Ln();
-            $this->Cell(30, 4);
-            $this->MultiCell(160, 4, $contract->permanent_address->full_address, align: 'L');
-        }
+        // Installation / Delivery / Permanent addresses
+        $this->printAddressBlock(
+            __d('documents', 'Installation Address'),
+            $contract->installation_address->full_address ?? null,
+        );
+        $this->printAddressBlock(
+            __d('documents', 'Delivery Address'),
+            $contract->delivery_address->full_address ?? null,
+        );
+        $this->printAddressBlock(
+            __d('documents', 'Permanent Address'),
+            $contract->permanent_address->full_address ?? null,
+        );
 
+        // Separator line
         $this->drawSeparator(AppPDF::SEPARATOR_OFFSET_X, lnAfter: 3.0);
 
         if ($type === 'contract-termination') {
