@@ -81,6 +81,9 @@ $urlWithQuery = function ($query = []) use ($request) {
         case 'contrast':
             echo $this->Html->css(['normalize.min', 'milligram.min', 'cake', 'high_contrast']);
             break;
+        case 'tailwind':
+            echo $this->Html->css(['app', 'cake']);
+            break;
         default:
             echo $this->Html->css(['normalize.min', 'milligram.min', 'cake']);
     }
@@ -216,6 +219,7 @@ $urlWithQuery = function ($query = []) use ($request) {
                     $urlWithQuery(['theme' => 'contrast']) => __('Contrast'),
                     $urlWithQuery(['theme' => 'legacy']) => __('Legacy'),
                     $urlWithQuery(['theme' => 'dark']) => __('Dark') . ' (dev)',
+                    $urlWithQuery(['theme' => 'tailwind']) => __('Tailwind') . ' (dev)',
                 ],
                 [
                     'value' => $urlWithQuery(['theme' => Configure::read('UI.theme')]),
