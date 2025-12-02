@@ -82,7 +82,7 @@ $urlWithQuery = function ($query = []) use ($request) {
             echo $this->Html->css(['normalize.min', 'milligram.min', 'cake', 'high_contrast']);
             break;
         case 'tailwind':
-            echo $this->Html->css(['app', 'cake']);
+            echo $this->Html->css(['app']);
             break;
         default:
             echo $this->Html->css(['normalize.min', 'milligram.min', 'cake']);
