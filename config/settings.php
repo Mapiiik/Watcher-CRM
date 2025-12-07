@@ -232,16 +232,16 @@ return [
             ],
             'sms' => [
                 'notify' => [
-                    'subject' => 'NETAIR - neuhrazené pohledávky - VS: {customer_number}',
-                    'body' => 'Vážený zákazníku, k dnešnímu dni evidujeme neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}. Pokud máte vše uhrazeno, kontaktujte nás prosím (8:00-16:00). {company_name}, tel: {company_invoices_phone}, č.ú.: {bank_account_number}',
+                    'subject' => 'NETAIR - neuhrazené pohledávky ke dni {date} - VS: {customer_number}',
+                    'body' => 'Vážený zákazníku, rádi bychom Vás upozornili, že k dnešnímu dni evidujeme neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}. Pokud máte vše uhrazeno, kontaktujte nás prosím (8:00-16:00). {company_name}, tel: {company_invoices_phone}, č.ú.: {bank_account_number}',
                 ],
                 'block' => [
-                    'subject' => 'NETAIR - pozastavení služeb - VS: {customer_number}',
+                    'subject' => 'NETAIR - pozastavení služeb - neuhrazené pohledávky ke dni {date} - VS: {customer_number}',
                     'body' => 'Vážený zákazníku, naše služby byly pozastaveny z důvodu neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}. Pokud máte vše uhrazeno, kontaktujte nás prosím (8:00-16:00). {company_name}, tel: {company_invoices_phone}, č.ú.: {bank_account_number}',
                 ],
                 'inactive' => [
-                    'subject' => 'NETAIR - neaktivní služby - VS: {customer_number}',
-                    'body' => 'Vážený zákazníku, stále evidujeme neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}. Pokud máte vše uhrazeno, kontaktujte nás prosím (8:00-16:00). {company_name}, tel: {company_invoices_phone}, č.ú.: {bank_account_number}',
+                    'subject' => 'NETAIR - neaktivní služby - neuhrazené pohledávky ke dni {date} - VS: {customer_number}',
+                    'body' => 'Vážený zákazníku, rádi bychom Vás upozornili, že k dnešnímu dni stále evidujeme neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}. Pokud máte vše uhrazeno, kontaktujte nás prosím (8:00-16:00). {company_name}, tel: {company_invoices_phone}, č.ú.: {bank_account_number}',
                 ],
             ],
         ],
