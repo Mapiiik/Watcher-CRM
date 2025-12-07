@@ -405,12 +405,12 @@ class Customer extends Entity
         // be liberal in what you receive
         $ic = preg_replace('#\s+#', '', $ic);
 
-        // má požadovaný tvar?
+        // check format
         if (!preg_match('#^\d{8}$#', $ic)) {
             return false;
         }
 
-        // kontrolní součet
+        // checksum
         $a = 0;
         for ($i = 0; $i < 7; $i++) {
             $a += (int)$ic[$i] * (8 - $i);

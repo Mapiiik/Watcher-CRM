@@ -179,7 +179,7 @@ class AppPDF extends TCPDF
      * Behavior:
      * - Adds a page when near bottom (Y > 240), then inserts consistent spacing.
      * - Prints date line(s), then a fixed vertical gap, then dotted sign line(s),
-     *   then party labels ("Poskytovatel"/"Uživatel").
+     *   then party labels ("Privider"/"User").
      * - For "double" layout with $signed=true: left date shows current date; also draws a signature image
      *   at the same coordinates as before (x=38.0, width=35.0, y=currentY-19.0).
      *

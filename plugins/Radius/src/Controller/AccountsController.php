@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Radius\Controller;
 
 use App\Controller\Traits\MessageHandlerTrait;
-use App\Strings;
+use App\Utility\Strings;
 use Radius\Model\Entity\Radacct;
 use Radius\Updater\AccountsUpdater;
 use Radius\Updater\RadiusRequestSender;
