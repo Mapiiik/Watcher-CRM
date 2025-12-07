@@ -173,7 +173,8 @@ return [
                         Volat můžete od pondělí do pátku mezi 08:00-12:00 a 13:00-16:00.
 
                         Pokud Vám nepřichází faktury do emailu, zkontrolujte si prosím, zda jste odsouhlasili, že je chcete dostávat.
-                        Souhlasy je možné udělit v Uživatelském portálu: {user_portal_url}
+                        Potřebné souhlasy je možné udělit v sekci Uživatelské údaje, po přihlášení do Uživatelského portálu: {user_portal_url}
+                        Pokud nemáte přihlašovací údaje, můžete si je vyžádat zde: https://netair.cz/podpora/zrizeni-pristupu-do-uzivatelskeho-portalu/
 
                         {company_name}
                         {company_address_line_1}
@@ -199,6 +200,10 @@ return [
 
                         Volat můžete od pondělí do pátku mezi 08:00-12:00 a 13:00-16:00.
 
+                        Pokud Vám nepřichází faktury do emailu, zkontrolujte si prosím, zda jste odsouhlasili, že je chcete dostávat.
+                        Potřebné souhlasy je možné udělit v sekci Uživatelské údaje, po přihlášení do Uživatelského portálu: {user_portal_url}
+                        Pokud nemáte přihlašovací údaje, můžete si je vyžádat zde: https://netair.cz/podpora/zrizeni-pristupu-do-uzivatelskeho-portalu/
+
                         {company_name}
                         {company_address_line_1}
                         {company_address_line_2}
@@ -222,6 +227,10 @@ return [
                         Číslo účtu: {bank_account_number}
 
                         Volat můžete od pondělí do pátku mezi 08:00-12:00 a 13:00-16:00.
+
+                        Pokud Vám nepřichází faktury do emailu, zkontrolujte si prosím, zda jste odsouhlasili, že je chcete dostávat.
+                        Potřebné souhlasy je možné udělit v sekci Uživatelské údaje, po přihlášení do Uživatelského portálu: {user_portal_url}
+                        Pokud nemáte přihlašovací údaje, můžete si je vyžádat zde: https://netair.cz/podpora/zrizeni-pristupu-do-uzivatelskeho-portalu/
 
                         {company_name}
                         {company_address_line_1}
