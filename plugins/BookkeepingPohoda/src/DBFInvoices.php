@@ -39,41 +39,41 @@ class DBFInvoices
      */
     public function __construct()
     {
-    //Set charset
+        //Set charset
         $this->charset = 'CP852';
-    //DB structure
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'Cislo'), 'C', 10]; //cislo faktury
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'VarSym'), 'C', 20]; //variabilni symbol
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'SText'), 'C', 240]; //obecny text
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'Datum'), 'D']; //datum vystaveni
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'DatUcP'), 'D']; //posledni den v mesici
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'DatSplat'), 'D']; //datum splatnosti
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'DatZdPln'), 'D']; //posledni den v mesici
+        //DB structure
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'Cislo'), 'C', 10]; //invoice number
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'VarSym'), 'C', 20]; //variable symbol
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'SText'), 'C', 240]; //general text
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'Datum'), 'D']; //issue date
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'DatUcP'), 'D']; //last day of the month
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'DatSplat'), 'D']; //due date
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'DatZdPln'), 'D']; //last day of the month
 
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'Kc0'), 'N', 8, 2]; //vždy 0
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'Kc1'), 'N', 8, 2]; //vždy 0
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'KcDPH1'), 'N', 8, 2]; //vždy 0
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'Kc2'), 'N', 8, 2]; //cena bez DPH = cena - cena * 0,1597 (na 2 des mista)
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'KcDPH2'), 'N', 8, 2]; //DPH = cena * 0,1597 (na 2 des mista)
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'KcZaloha'), 'N', 8, 2]; //vždy 0
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'KcCelkem'), 'N', 8, 2]; //cena celkem
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'KcLikv'), 'N', 8, 2]; //cena celkem
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'KcU'), 'N', 8, 2]; //vždy 0
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'KcZaokr'), 'N', 8, 2]; //vždy 0
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'Kc0'), 'N', 8, 2]; //always 0
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'Kc1'), 'N', 8, 2]; //always 0
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'KcDPH1'), 'N', 8, 2]; //always 0
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'Kc2'), 'N', 8, 2]; //price without VAT = price - price * 0.1597 (2 decimals)
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'KcDPH2'), 'N', 8, 2]; //VAT = price * 0.1597 (2 decimals)
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'KcZaloha'), 'N', 8, 2]; //always 0
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'KcCelkem'), 'N', 8, 2]; //total price
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'KcLikv'), 'N', 8, 2]; //total price
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'KcU'), 'N', 8, 2]; //always 0
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'KcZaokr'), 'N', 8, 2]; //always 0
 
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'Firma'), 'C', 96]; //název firmy
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'Utvar'), 'C', 32]; //provozovna
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'Jmeno'), 'C', 32]; //jméno + příjmení
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'Ulice'), 'C', 32]; //ulice
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'PSC'), 'C', 7]; //PSČ
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'Obec'), 'C', 35]; //Obec
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'ICO'), 'C', 12]; //IČ
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'DIC'), 'C', 15]; //DIČ
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'Firma'), 'C', 96]; //company name
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'Utvar'), 'C', 32]; //branch/department
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'Jmeno'), 'C', 32]; //first name + surname
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'Ulice'), 'C', 32]; //street
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'PSC'), 'C', 7]; //postal code
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'Obec'), 'C', 35]; //city/town
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'ICO'), 'C', 12]; //company ID
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'DIC'), 'C', 15]; //VAT ID
 
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'KonstSym'), 'C', 4]; //konstantní symbol 0308
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'KonstSym'), 'C', 4]; //constant symbol 0308
 
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'Pozn'), 'C', 240]; //poznámka
-        $this->structure[] = [iconv('UTF-8', $this->charset, 'Pozn2'), 'C', 240]; //interní poznámka
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'Pozn'), 'C', 240]; //note
+        $this->structure[] = [iconv('UTF-8', $this->charset, 'Pozn2'), 'C', 240]; //internal note
     }
 
     /**
@@ -112,54 +112,54 @@ class DBFInvoices
     {
         $totalcost = $invoice->total->toFloat();
 
-    //START add record to dBase file
+        //START add record to dBase file
         $dph = Billing::calcVatFromTotal($invoice->total, $tax_rate->vat_rate)->toFloat();
 
-        $data[] = $invoice->number; //cislo faktury
-        $data[] = $invoice->variable_symbol; //variabilni symbol
-        $data[] = $invoice->text; //obecny text
-        $data[] = $invoice->creation_date->i18nFormat('yyyyMMdd'); //datum vystaveni
-        $data[] = $invoice->creation_date->i18nFormat('yyyyMMdd'); //posledni den v mesici
-        $data[] = $invoice->due_date->i18nFormat('yyyyMMdd'); //datum splatnosti
-        $data[] = $invoice->creation_date->i18nFormat('yyyyMMdd'); //posledni den v mesici
+        $data[] = $invoice->number; //invoice number
+        $data[] = $invoice->variable_symbol; //variable symbol
+        $data[] = $invoice->text; //general text
+        $data[] = $invoice->creation_date->i18nFormat('yyyyMMdd'); //issue date
+        $data[] = $invoice->creation_date->i18nFormat('yyyyMMdd'); //last day of the month
+        $data[] = $invoice->due_date->i18nFormat('yyyyMMdd'); //due date
+        $data[] = $invoice->creation_date->i18nFormat('yyyyMMdd'); //last day of the month
 
         if ($tax_rate->reverse_charge) {
-            $data[] = 0; //vždy 0
-            $data[] = 0; //vždy 0
-            $data[] = 0; //vždy 0
-            $data[] = $totalcost - $dph; //cena bez DPH = cena - cena * 0,1597 (na 2 des mista)
-            $data[] = 0; //vždy 0
-            $data[] = 0; //vždy 0
-            $data[] = $totalcost - $dph; //cena bez DPH = cena - cena * 0,1597 (na 2 des mista)
-            $data[] = $totalcost - $dph; //cena bez DPH = cena - cena * 0,1597 (na 2 des mista)
-            $data[] = 0; //vždy 0
-            $data[] = 0; //vždy 0
+            $data[] = 0; //always 0
+            $data[] = 0; //always 0
+            $data[] = 0; //always 0
+            $data[] = $totalcost - $dph; //price without VAT = price - price * 0.1597 (2 decimals)
+            $data[] = 0; //always 0
+            $data[] = 0; //always 0
+            $data[] = $totalcost - $dph; //price without VAT = price - price * 0.1597 (2 decimals)
+            $data[] = $totalcost - $dph; //price without VAT = price - price * 0.1597 (2 decimals)
+            $data[] = 0; //always 0
+            $data[] = 0; //always 0
         } else {
-            $data[] = 0; //vždy 0
-            $data[] = 0; //vždy 0
-            $data[] = 0; //vždy 0
-            $data[] = $totalcost - $dph; //cena bez DPH = cena - cena * 0,1597 (na 2 des mista)
-            $data[] = $dph; //DPH = cena * 0,1597 (na 2 des mista)
-            $data[] = 0; //vždy 0
-            $data[] = $totalcost; //cena celkem
-            $data[] = $totalcost; //cena celkem
-            $data[] = 0; //vždy 0
-            $data[] = 0; //vždy 0
+            $data[] = 0; //always 0
+            $data[] = 0; //always 0
+            $data[] = 0; //always 0
+            $data[] = $totalcost - $dph; //price without VAT = price - price * 0.1597 (2 decimals)
+            $data[] = $dph; //VAT = price * 0.1597 (2 decimals)
+            $data[] = 0; //always 0
+            $data[] = $totalcost; //total price
+            $data[] = $totalcost; //total price
+            $data[] = 0; //always 0
+            $data[] = 0; //always 0
         }
 
-        $data[] = $invoice->customer->billing_address->company; //název firmy
-        $data[] = null; //provozovna
-        $data[] = $invoice->customer->billing_address->full_name; //jméno + příjmení
-        $data[] = $invoice->customer->billing_address->street_and_number; //ulice
-        $data[] = $invoice->customer->billing_address->zip; //PSČ
-        $data[] = $invoice->customer->billing_address->city; //Obec
-        $data[] = $invoice->customer->ic; //IČ
-        $data[] = $invoice->customer->dic; //DIČ
+        $data[] = $invoice->customer->billing_address->company; //company name
+        $data[] = null; //branch/department
+        $data[] = $invoice->customer->billing_address->full_name; //first name + surname
+        $data[] = $invoice->customer->billing_address->street_and_number; //street
+        $data[] = $invoice->customer->billing_address->zip; //postal code
+        $data[] = $invoice->customer->billing_address->city; //city/town
+        $data[] = $invoice->customer->ic; //company ID
+        $data[] = $invoice->customer->dic; //VAT ID
 
-        $data[] = '0308'; //konstantní symbol 0308
+        $data[] = '0308'; //constant symbol 0308
 
-        $data[] = $invoice->note; //poznámka
-        $data[] = $invoice->internal_note; //interní poznámka
+        $data[] = $invoice->note; //note
+        $data[] = $invoice->internal_note; //internal note
 
         foreach ($data as $value) {
             if (is_string($value)) {
@@ -172,6 +172,6 @@ class DBFInvoices
         dbase_add_record($this->dbf, $xdata);
         unset($data);
         unset($xdata);
- //STOP add record to dBase file
+        //STOP add record to dBase file
     }
 }
