@@ -58,10 +58,20 @@ return [
             'mobile' => '+420 604 553 444',
             'email' => 'mail@netair.cz',
 
+            'invoices' => [
+                'phone' => '+420 488 572 511',
+                'mobile' => '+420 604 553 444',
+                'email' => 'fakturace@netair.cz',
+            ],
             'contracts' => [
                 'phone' => '+420 488 572 512',
                 'mobile' => '+420 604 553 444',
                 'email' => 'smlouvy@netair.cz',
+            ],
+            'support' => [
+                'phone' => '+420 488 572 513',
+                'mobile' => '+420 604 553 444',
+                'email' => 'podpora@netair.cz',
             ],
         ],
         /*
@@ -122,6 +132,118 @@ return [
                     {company_address_line_2}
                     IČ: {identity_number}, DIČ: {vat_number}
                     TEXT,
+            ],
+        ],
+
+        'debtors' => [
+            'tables' => [
+                'invoices' => [
+                    'headers' => [
+                        'number' => 'Číslo faktury',
+                        'variable_symbol' => 'Var. symbol',
+                        'creation_date' => 'Datum',
+                        'due_date' => 'Splatnost',
+                        'total' => 'Cena',
+                        'debt' => 'Dluh',
+                    ],
+                    'total_label' => 'Dluh celkem:',
+                    'separator' => '-------------------------------------------------------------------------------------------',
+                    'footer' => '===========================================================================================',
+                ],
+            ],
+            'emails' => [
+                'notify' => [
+                    'subject' => 'NETAIR - neuhrazené pohledávky ke dni {date} - VS: {customer_number}',
+                    'body' => <<<TEXT
+                        Vážený zákazníku,
+
+                        rádi bychom Vás upozornili, že k dnešnímu dni evidujeme neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}.
+
+                        {invoices_table}
+
+                        Pokud máte vše uhrazeno, kontaktujte nás prosím a sdělte nám datum, variabilní symbol a číslo účtu, ze kterého byly platby provedeny.
+
+                        Pokud se jedná o nedoplatek, je to pravděpodobně způsobeno tím, že jste nedávno byli převedeni na nové tarify, o čemž jsme vás informovali e-mailem.
+
+                        Kontakty na naše účetní oddělení
+                        Mail: {company_invoices_email}
+                        Telefon: {company_invoices_phone}
+                        Číslo účtu: {bank_account_number}
+
+                        Volat můžete od pondělí do pátku mezi 08:00-12:00 a 13:00-16:00.
+
+                        Pokud Vám nepřichází faktury do emailu, zkontrolujte si prosím, zda jste odsouhlasili, že je chcete dostávat.
+                        Souhlasy je možné udělit v Uživatelském portálu: {user_portal_url}
+
+                        {company_name}
+                        {company_address_line_1}
+                        {company_address_line_2}
+                        IČ: {identity_number}, DIČ: {vat_number}
+                        TEXT,
+                ],
+                'block' => [
+                    'subject' => 'NETAIR - pozastavení služeb - neuhrazené pohledávky ke dni {date} - VS: {customer_number}',
+                    'body' => <<<TEXT
+                        Vážený zákazníku,
+
+                        rádi bychom Vás upozornili, že naše služby byly pozastaveny z důvodu neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}.
+
+                        {invoices_table}
+
+                        Pokud máte vše uhrazeno, kontaktujte nás prosím a sdělte nám datum, variabilní symbol a číslo účtu, ze kterého byly platby provedeny.
+
+                        Kontakty na naše účetní oddělení
+                        Mail: {company_invoices_email}
+                        Telefon: {company_invoices_phone}
+                        Číslo účtu: {bank_account_number}
+
+                        Volat můžete od pondělí do pátku mezi 08:00-12:00 a 13:00-16:00.
+
+                        {company_name}
+                        {company_address_line_1}
+                        {company_address_line_2}
+                        IČ: {identity_number}, DIČ: {vat_number}
+                        TEXT,
+                ],
+                'inactive' => [
+                    'subject' => 'NETAIR - neaktivní služby - neuhrazené pohledávky ke dni {date} - VS: {customer_number}',
+                    'body' => <<<TEXT
+                        Vážený zákazníku,
+
+                        rádi bychom Vás upozornili, že k dnešnímu dni stále evidujeme neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}.
+
+                        {invoices_table}
+
+                        Pokud máte vše uhrazeno, kontaktujte nás prosím a sdělte nám datum, variabilní symbol a číslo účtu, ze kterého byly platby provedeny.
+
+                        Kontakty na naše účetní oddělení
+                        Mail: {company_invoices_email}
+                        Telefon: {company_invoices_phone}
+                        Číslo účtu: {bank_account_number}
+
+                        Volat můžete od pondělí do pátku mezi 08:00-12:00 a 13:00-16:00.
+
+                        {company_name}
+                        {company_address_line_1}
+                        {company_address_line_2}
+                        IČ: {identity_number}, DIČ: {vat_number}
+                        TEXT,
+                ],
+            ],
+            'sms' => [
+                'notify' => [
+                    'subject' => 'NETAIR - neuhrazené pohledávky - VS: {customer_number}',
+                    'body' => 'Vážený zákazníku, k dnešnímu dni evidujeme neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}. Pokud máte vše uhrazeno, kontaktujte nás prosím (8:00-16:00). {company_name}, tel: {company_invoices_phone}, č.ú.: {bank_account_number}',
+                ],
+                'block' => [
+                    'subject' => 'NETAIR - pozastavení služeb - VS: {customer_number}',
+                    'body' => 'Vážený zákazníku, naše služby byly pozastaveny z důvodu neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}. Pokud máte vše uhrazeno, kontaktujte nás prosím (8:00-16:00). {company_name}, tel: {company_invoices_phone}, č.ú.: {bank_account_number}',
+                ],
+                'inactive' => [
+                    'subject' => 'NETAIR - neaktivní služby - VS: {customer_number}',
+                    'body' => 'Vážený zákazníku, stále evidujeme neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}. Pokud máte vše uhrazeno, kontaktujte nás prosím (8:00-16:00). {company_name}, tel: {company_invoices_phone}, č.ú.: {bank_account_number}',
+                ],
+            ],
         ],
 
         'documents' => [
