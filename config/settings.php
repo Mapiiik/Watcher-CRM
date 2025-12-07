@@ -89,6 +89,13 @@ return [
             ],
         ],
 
+        'invoices' => [
+            'texts' => [
+                'default' => 'Faktura za poskytované služby dle smlouvy {contract_number} za období {invoiced_month}',
+                'separate' => 'Faktura za službu {service_name} za období {invoiced_month}',
+            ],
+        ],
+
         'documents' => [
             'locale' => 'cs_CZ',
 
