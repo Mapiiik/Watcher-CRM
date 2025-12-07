@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace BookkeepingPohoda\Controller;
 
+use App\Utility\Settings;
 use BookkeepingPohoda\View\DbfView;
 use BookkeepingPohoda\View\XmlView;
 use Cake\Collection\CollectionInterface;
@@ -535,9 +536,11 @@ class InvoicesController extends AppController
                             $invoice->due_date = $invoicedMonth
                                 ->lastOfMonth()
                                 ->addDays($customer->individual_maturity_period ?? 10);
-                            $invoice->text = $billing->name
-                                . ' za období ' . $invoicedMonth->i18nFormat('MM/yyyy');
-                            $invoice->internal_note = 'separate';
+                            $invoice->text = strtr(Settings::getString('core.invoices.texts.separate'), [
+                                '{service_name}' => $billing->name,
+                                '{invoiced_month}' => $invoicedMonth->i18nFormat('MM/yyyy'),
+                            ]);
+                            $invoice->internal_note = 'separate'; // TODO: constants?
                             $invoice->total = $billing->period_total;
                             //$invoice->items = [$billing];
                             $invoice->items = [];
@@ -561,15 +564,18 @@ class InvoicesController extends AppController
                             ->addDays($customer->individual_maturity_period ?? 10);
                         if ($contract->getInvoiceText()) {
                             $invoice->text = strtr($contract->getInvoiceText(), [
-                                '{number}' => $contract->number,
-                                '{month}' => $invoicedMonth->i18nFormat('MM/yyyy'),
+                                '{number}' => $contract->number, // TODO: legacy
+                                '{month}' => $invoicedMonth->i18nFormat('MM/yyyy'), // TODO: legacy
+                                '{contract_number}' => $contract->number,
+                                '{invoiced_month}' => $invoicedMonth->i18nFormat('MM/yyyy'),
                             ]);
                         } else {
-                            $invoice->text = 'Faktura za poskytované služby dle smlouvy '
-                                . $contract->number
-                                . ' za období ' . $invoicedMonth->i18nFormat('MM/yyyy');
+                            $invoice->text = strtr(Settings::getString('core.invoices.texts.default'), [
+                                '{contract_number}' => $contract->number,
+                                '{invoiced_month}'  => $invoicedMonth->i18nFormat('MM/yyyy'),
+                            ]);
                         }
-                        $invoice->internal_note = 'separate';
+                        $invoice->internal_note = 'separate'; // TODO: constants?
                         $invoice->total = $billingContract['total'];
                         $invoice->items = $contract->isInvoiceWithItems() ? $billingContract['items'] : [];
                         $invoices[] = $invoice;
@@ -596,8 +602,10 @@ class InvoicesController extends AppController
                     $invoice->due_date = $invoicedMonth
                         ->lastOfMonth()
                         ->addDays($customer->individual_maturity_period ?? 10);
-                    $invoice->text = 'Faktura za poskytované služby dle smlouvy'
-                        . ' za období ' . $invoicedMonth->i18nFormat('MM/yyyy');
+                    $invoice->text = strtr(Settings::getString('core.invoices.texts.default'), [
+                        '{contract_number}' => $customer->number,
+                        '{invoiced_month}'  => $invoicedMonth->i18nFormat('MM/yyyy'),
+                    ]);
                     $invoice->total = $billingCustomer['total'];
                     $invoice->items = $customer->isInvoiceWithItems() ? $billingCustomer['items'] : [];
                     $invoices[] = $invoice;
