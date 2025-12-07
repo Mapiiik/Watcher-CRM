@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace BookkeepingPohoda\Command;
 
+use App\Utility\Settings;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -91,39 +92,30 @@ class SendIssuedInvoicesCommand extends Command
                     $mailer->addTo($email->email);
                 }
                 $mailer->setSubject(
-                    'NETAIR - ' . $invoice->text
-                        . ' - ' . $invoice->number
-                        . ' - VS: ' . (string)$invoice->variable_symbol,
+                    strtr(Settings::getString('core.invoices.emails.subject'), [
+                        '{invoice_text}' => $invoice->text,
+                        '{invoice_number}' => (string)$invoice->number,
+                        '{variable_symbol}' => (string)$invoice->variable_symbol,
+                    ]),
                 );
 
                 // define date format
                 Date::setToStringFormat('dd.MM.yyyy');
 
-                $message =
-                    'Vážený zákazníku,' . PHP_EOL
-                    . PHP_EOL
-                    . 'dne ' . $invoice->creation_date->__toString()
-                    . ' Vám byla vystavena faktura - daňový doklad č. ' . $invoice->number
-                    . ' splatná ' . $invoice->due_date->__toString() . '.' . PHP_EOL
-                    . PHP_EOL
-                    . 'Variabilní symbol pro platbu: ' . (string)$invoice->variable_symbol . PHP_EOL
-                    . 'Číslo našeho účtu: 207385091/0100' . PHP_EOL
-                    . 'Celková částka (včetně DPH): ' . Number::currency($invoice->total->toFloat()) . PHP_EOL
-                    . PHP_EOL
-                    . 'V příloze Vám zasíláme doklad ve formátu PDF.' . PHP_EOL
-                    . PHP_EOL
-                    . 'Tuto i další námi vystavené faktury je možné stahovat i v našem Uživatelském portálu'
-                    . ', kde si zároveň můžete zkontrolovat, zda jsou uhrazeny.' . PHP_EOL
-                    . 'Pokud si nepřejete dostávat faktury e-mailem, můžete si zde změnit i formu zasílání.' . PHP_EOL
-                    . PHP_EOL
-                    . 'Uživatelský portál: https://nms.netair.cz/netair/' . PHP_EOL
-                    . PHP_EOL
-                    . 'Tento email byl vygenerován automaticky.' . PHP_EOL
-                    . PHP_EOL
-                    . 'NETAIR, s.r.o.' . PHP_EOL
-                    . 'Jablonec nad Jizerou 299' . PHP_EOL
-                    . '512 43 Jablonec nad Jizerou' . PHP_EOL
-                    . 'IČ: 27496139, DIČ: CZ27496139';
+                $message = strtr(Settings::getString('core.invoices.emails.body'), [
+                    '{creation_date}' => $invoice->creation_date->__toString(),
+                    '{due_date}' => $invoice->due_date->__toString(),
+                    '{invoice_number}' => (string)$invoice->number,
+                    '{variable_symbol}' => (string)$invoice->variable_symbol,
+                    '{bank_account_number}' => Settings::getString('core.company.bank_account_number'),
+                    '{total_amount}' => Number::currency($invoice->total->toFloat()),
+                    '{user_portal_url}' => Settings::getString('core.company.user_portal_url'),
+                    '{company_name}' => Settings::getString('core.company.name'),
+                    '{company_address_line_1}' => Settings::getString('core.company.address_line_1'),
+                    '{company_address_line_2}' => Settings::getString('core.company.address_line_2'),
+                    '{identity_number}' => Settings::getString('core.company.identity_number'),
+                    '{vat_number}' => Settings::getString('core.company.vat_number'),
+                ]);
 
                 try {
                     // add attachment

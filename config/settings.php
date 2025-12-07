@@ -49,6 +49,8 @@ return [
             'registry_clause' => 'zapsaným v obchodním rejstříku vedeném u Krajského soudu v Hradci Králové, oddíl C, vložka 22450.',
 
             'price_list_url' => 'https://netair.cz/cenik-pripojeni/',
+            'user_portal_url' => 'https://nms.netair.cz/netair/',
+
             'bank_name' => 'Komerční banka, a.s.',
             'bank_account_number' => '207385091/0100',
 
@@ -94,6 +96,32 @@ return [
                 'default' => 'Faktura za poskytované služby dle smlouvy {contract_number} za období {invoiced_month}',
                 'separate' => 'Faktura za službu {service_name} za období {invoiced_month}',
             ],
+            'emails' => [
+                'subject' => 'NETAIR - {invoice_text} - {invoice_number} - VS: {variable_symbol}',
+                'body' => <<<TEXT
+                    Vážený zákazníku,
+
+                    dne {creation_date} Vám byla vystavena faktura - daňový doklad č. {invoice_number} splatná {due_date}.
+
+                    Variabilní symbol pro platbu: {variable_symbol}
+                    Číslo našeho účtu: {bank_account_number}
+                    Celková částka (včetně DPH): {total_amount}
+
+                    V příloze Vám zasíláme doklad ve formátu PDF.
+
+                    Tuto i další námi vystavené faktury je možné stahovat i v našem Uživatelském portálu,
+                    kde si zároveň můžete zkontrolovat, zda jsou uhrazeny.
+                    Pokud si nepřejete dostávat faktury e-mailem, můžete si zde změnit i formu zasílání.
+
+                    Uživatelský portál: {user_portal_url}
+
+                    Tento email byl vygenerován automaticky.
+
+                    {company_name}
+                    {company_address_line_1}
+                    {company_address_line_2}
+                    IČ: {identity_number}, DIČ: {vat_number}
+                    TEXT,
         ],
 
         'documents' => [
