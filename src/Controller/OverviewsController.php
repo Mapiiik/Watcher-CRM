@@ -600,36 +600,48 @@ class OverviewsController extends AppController
 
         // DOWNLOAD CSV FOR CATEGORY
         if ($this->getRequest()->getParam('_ext') === 'csv' && isset($category)) {
-            $csv_data = ''
-            . 'Adresní místo (kód RÚIAN);'
-            . 'Technologická kategorie (identifikátor přílohy);'
-            . 'Přístupy (aktivní přípojky) (počet);'
-            . 'Přístupy (aktivní přípojky) nepodnikajících osob (počet);'
-            . 'Pokryté adresní místo (disponibilní přípojkou) (ANO/NE);'
-            . 'Efektivní rychlost download (interval);'
-            . 'Efektivní rychlost upload (interval);'
-            . 'Maximální dosažitelná rychlost download (interval);'
-            . 'Maximální dosažitelná rychlost upload (interval);'
-            . 'VHCN síť (třída);'
-            . (in_array($category, ['s2_catv']) ? 'Standard DOCSIS 3.1 a vyšší (ANO/NE);' : '')
-            . 'Adresa'
-            . PHP_EOL;
+            $headers = [
+                'Adresní místo (kód RÚIAN)',
+                'Technologická kategorie (identifikátor přílohy)',
+                'Přístupy (aktivní přípojky) (počet)',
+                'Přístupy (aktivní přípojky) nepodnikajících osob (počet)',
+                'Pokryté adresní místo (disponibilní přípojkou) (ANO/NE)',
+                'Efektivní rychlost download (interval)',
+                'Efektivní rychlost upload (interval)',
+                'Maximální dosažitelná rychlost download (interval)',
+                'Maximální dosažitelná rychlost upload (interval)',
+                'VHCN síť (třída)',
+            ];
+
+            if (in_array($category, ['s2_catv'])) {
+                $headers[] = 'Standard DOCSIS 3.1 a vyšší (ANO/NE)';
+            }
+
+            $headers[] = 'Adresa';
+            $csv_data = implode(';', $headers) . PHP_EOL;
+            unset($headers);
 
             foreach ($cto_categories->toArray()[$category] as $connection_point) {
-                $csv_data .= ''
-                . h($connection_point->ruian_gid) . ';'
-                . h($connection_point->cto_category) . ';'
-                . (int)$connection_point->active_connections . ';'
-                . (int)$connection_point->active_connections_nonbusiness . ';'
-                . ((int)$connection_point->available_connections > 0 ? 'ANO' : 'NE') . ';'
-                . h($connection_point->available_speeds->effective_download_category) . ';'
-                . h($connection_point->available_speeds->effective_upload_category) . ';'
-                . h($connection_point->available_speeds->maximal_download_category) . ';'
-                . h($connection_point->available_speeds->maximal_upload_category) . ';'
-                . (int)$connection_point->vhcn_category . ';'
-                . (in_array($category, ['s2_catv']) ? 'NE;' : '')
-                . h($connection_point->ruian_address)
-                . PHP_EOL;
+                $row = [
+                    h($connection_point->ruian_gid),
+                    h($connection_point->cto_category),
+                    (int)$connection_point->active_connections,
+                    (int)$connection_point->active_connections_nonbusiness,
+                    (int)$connection_point->available_connections > 0 ? 'ANO' : 'NE',
+                    h($connection_point->available_speeds->effective_download_category),
+                    h($connection_point->available_speeds->effective_upload_category),
+                    h($connection_point->available_speeds->maximal_download_category),
+                    h($connection_point->available_speeds->maximal_upload_category),
+                    (int)$connection_point->vhcn_category,
+                ];
+
+                if (in_array($category, ['s2_catv'])) {
+                    $row[] = 'NE';
+                }
+
+                $row[] = h($connection_point->ruian_address);
+
+                $csv_data .= implode(';', $row) . PHP_EOL;
             }
 
             return $this->response
