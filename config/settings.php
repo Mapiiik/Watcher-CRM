@@ -79,6 +79,16 @@ return [
             'strip_phone_prefix_for_summary_text' => env('STRIP_PHONE_PREFIX_FOR_SUMMARY_TEXT', false),
         ],
         */
+        'contracts' => [
+            'access_descriptions_list' => [
+                'žebřík není potřeba',
+                'skládačka 3,6m',
+                'žebřík 6m',
+                'žebřík 8m',
+                'žebřík 11m',
+            ],
+        ],
+
         'documents' => [
             'locale' => 'cs_CZ',
 

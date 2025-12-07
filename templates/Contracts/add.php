@@ -10,6 +10,8 @@
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $commissions
  */
 
+use App\Utility\Settings;
+
 ?>
 <div class="row">
     <aside class="column">
@@ -26,12 +28,10 @@
                 <div class="row">
                     <div class="column">
                         <datalist id="access-descriptions">
-                            <option value="žebřík není potřeba">
-                            <option value="skládačka 3,6m">
-                            <option value="žebřík 6m">
-                            <option value="žebřík 8m">
-                            <option value="žebřík 11m">
-                        </datalist>                        
+                            <?php foreach (Settings::get('core.contracts.access_descriptions_list', []) as $item): ?>
+                                <option value="<?= h($item) ?>">
+                            <?php endforeach; ?>
+                        </datalist>
                         <?php
                         if (!isset($customer_id)) {
                             echo $this->Form->control('customer_id', ['options' => $customers]);
