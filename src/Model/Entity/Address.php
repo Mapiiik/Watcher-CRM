@@ -165,10 +165,12 @@ class Address extends Entity
         $street_and_number = '';
 
         if (isset($this->street)) {
-                $street_and_number .= $this->street . ' ' . $this->number;
+            $street_and_number .= $this->street . ' ' . $this->number;
         } elseif (isset($this->number)) {
-                $street_and_number .=
-                    $this->number_type == AddressNumberType::Registration ? 'č.ev. ' : 'č.p. ' . $this->number;
+            $street_and_number .=
+                $this->number_type == AddressNumberType::Registration
+                    ? __('Reg. No.') . ' ' . $this->number
+                    : __('No.') . ' ' . $this->number;
         }
 
         return $street_and_number;
