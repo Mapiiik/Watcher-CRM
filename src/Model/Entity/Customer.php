@@ -45,7 +45,6 @@ use Exception;
  * @property string $billing_email
  * @property string $phone
  * @property string $number
- * @property bool $ic_verified
  * @property bool $active_services
  * @property bool $billed
  *
@@ -394,38 +393,88 @@ class Customer extends Entity
     }
 
     /**
-     * get verification of identification number (citizen/company ID)
+     * Verify Identification Number (Citizen/Company ID)
      *
+     * will verify Czech ID and Croatian OIB
+     *
+     * @return bool Returns true when the number is valid, false otherwise
+     */
+    public function verifyIdentityNumber(): bool
+    {
+        $identityNumber = (string)$this->identity_number;
+
+        return $this->verifyIdentityNumberCzech($identityNumber)
+            || $this->verifyIdentityNumberCroatian($identityNumber);
+    }
+
+    /**
+     * Verify Czech Identification Number (Citizen/Company ID)
+     *
+     * @param string $ic Czech Identification Number
      * @return bool
      */
-    protected function _getIcVerified(): bool
+    public function verifyIdentityNumberCzech(string $ic): bool
     {
-        $identity_number = $this->identity_number;
+        // normalize input – remove any whitespace
+        $ic = preg_replace('/\s+/', '', $ic);
 
-        // be liberal in what you receive
-        $identity_number = preg_replace('#\s+#', '', $identity_number);
-
-        // check format
-        if (!preg_match('#^\d{8}$#', $identity_number)) {
+        // must be exactly 8 digits
+        if (!preg_match('/^\d{8}$/', $ic)) {
             return false;
         }
 
-        // checksum
-        $a = 0;
+        // calculate checksum using weights 8–2 for the first 7 digits
+        $sum = 0;
         for ($i = 0; $i < 7; $i++) {
-            $a += (int)$identity_number[$i] * (8 - $i);
+            $sum += (int)$ic[$i] * (8 - $i);
         }
 
-        $a = $a % 11;
-        if ($a === 0) {
-            $c = 1;
-        } elseif ($a === 1) {
-            $c = 0;
-        } else {
-            $c = 11 - $a;
+        // determine check digit based on modulo 11
+        $mod = $sum % 11;
+        $checkDigit = match ($mod) {
+            0 => 1,
+            1 => 0,
+            default => 11 - $mod,
+        };
+
+        // last digit must equal the calculated check digit
+        return (int)$ic[7] === $checkDigit;
+    }
+
+    /**
+     * Verify Croatian OIB (Personal Identification Number)
+     *
+     * @param string $oib Croatian OIB (11 digits)
+     * @return bool
+     */
+    public function verifyIdentityNumberCroatian(string $oib): bool
+    {
+        // normalize input – remove whitespace
+        $oib = preg_replace('/\s+/', '', $oib);
+
+        // must be exactly 11 digits
+        if (!preg_match('/^\d{11}$/', $oib)) {
+            return false;
         }
 
-        return (int)$identity_number[7] === $c;
+        // ISO 7064 Mod 11,10 algorithm
+        $control = 10;
+        for ($i = 0; $i < 10; $i++) {
+            $digit = (int)$oib[$i];
+            $control = ($control + $digit) % 10;
+            if ($control === 0) {
+                $control = 10;
+            }
+            $control = ($control * 2) % 11;
+        }
+
+        $checkDigit = 11 - $control;
+        if ($checkDigit === 10) {
+            $checkDigit = 0;
+        }
+
+        // last digit must equal the calculated check digit
+        return (int)$oib[10] === $checkDigit;
     }
 
     /**

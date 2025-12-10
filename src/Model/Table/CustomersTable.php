@@ -311,15 +311,15 @@ class CustomersTable extends AppTable
 
         $rules->add(
             function ($entity, $_options) {
-                // allow empty IC
+                // allow empty identity number
                 if (is_null($entity->identity_number)) {
                     return true;
                 }
 
-                // verify entered IC
-                return $entity->ic_verified;
+                // verify entered identity number
+                return $entity->verifyIdentityNumber();
             },
-            'isIcVerified',
+            'isIdentityNumberVerified',
             [
                 'errorField' => 'identity_number',
                 'message' => __('The specified identification number is not valid.'),

@@ -293,7 +293,7 @@ class AppPDF extends TCPDF
      * Works for both \App\Model\Entity\Customer and \App\Model\Entity\Contract entities.
      *
      * Logic:
-     * - If IC is null → non-business
+     * - If identity_number is null → non-business
      * - If company is null → business
      * - Otherwise → legal entity
      *
@@ -303,7 +303,7 @@ class AppPDF extends TCPDF
      */
     protected function printUserType(Customer|Contract $entity, int $width = 60, int $height = 4): void
     {
-        // Normalize: get IC and company regardless of entity type
+        // Normalize: get identity_number and company regardless of entity type
         $identity_number = $entity instanceof Contract ? $entity->customer->identity_number : $entity->identity_number;
         $company = $entity->billing_address->company ?? null;
 
