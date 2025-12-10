@@ -96,8 +96,8 @@ const CUSTOMERS_FULLTEXT_SEARCH_FILTER = <<<SQL
             CONCAT_WS(
                 ' ',
                 Customers.nid + :customer_series,
-                Customers.ic,
-                Customers.dic,
+                Customers.identity_number,
+                Customers.vat_number,
                 Customers.first_name, 
                 Customers.last_name,
                 Customers.company, 
@@ -201,7 +201,7 @@ class CustomersController extends AppController
             $customersQuery->where([
                 'OR' => [
                     '(Customers.nid::bigint + ' . (int)env('CUSTOMER_SERIES', '0') . ') =' => (int)trim($search),
-                    'Customers.ic' => trim($search),
+                    'Customers.identity_number' => trim($search),
                 ],
             ]);
         } elseif (!empty($search) || !$allow_advanced_search) {

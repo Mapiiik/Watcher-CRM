@@ -318,7 +318,7 @@ class OverviewsController extends AppController
                             ->sumOf('quantity');
 
                         $service['number_of_uses_nonbusiness'] = $billings
-                            ->match(['customer.ic' => null])
+                            ->match(['customer.identity_number' => null])
                             ->sumOf('quantity');
 
                         $service['sum'] = $billings
@@ -350,7 +350,7 @@ class OverviewsController extends AppController
                             );
 
                         $service['total_sum_nonbusiness'] = $billings
-                            ->match(['customer.ic' => null])
+                            ->match(['customer.identity_number' => null])
                             ->sumOf(
                                 function (Billing $billing) {
                                     return $billing->total_price->toFloat();
@@ -519,7 +519,7 @@ class OverviewsController extends AppController
 
                                     $address['active_connections'] = $billings_collection->count();
                                     $address['active_connections_nonbusiness'] = $billings_collection
-                                        ->match(['customer.ic' => null])
+                                        ->match(['customer.identity_number' => null])
                                         ->count();
 
                                     $address['active_speeds'] = new Entity(
@@ -719,7 +719,7 @@ class OverviewsController extends AppController
 
                                     $address['active_connections'] = $billings_collection->count();
                                     $address['active_connections_nonbusiness'] = $billings_collection
-                                        ->match(['customer.ic' => null])
+                                        ->match(['customer.identity_number' => null])
                                         ->count();
 
                                     $address['advertised_speeds'] = new Entity(
@@ -749,7 +749,7 @@ class OverviewsController extends AppController
                                         $billings_collection
                                         ->countBy(function ($billing) {
                                             // skip business customers
-                                            if ($billing->customer->ic !== null) {
+                                            if ($billing->customer->identity_number !== null) {
                                                 return 'business';
                                             }
 

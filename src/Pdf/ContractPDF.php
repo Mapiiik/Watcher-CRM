@@ -321,7 +321,7 @@ class ContractPDF extends AppPDF
                     ],
                     [
                         'label' => Settings::getString('core.documents.common.labels.identity_number'),
-                        'value' => $this->strOrX($contract->customer->ic),
+                        'value' => $this->strOrX($contract->customer->identity_number),
                         'label_width' => 10,
                         'value_width' => 30,
                     ],
@@ -341,7 +341,7 @@ class ContractPDF extends AppPDF
                     ],
                     [
                         'label' => Settings::getString('core.documents.common.labels.vat_number'),
-                        'value' => $this->strOrX($contract->customer->dic),
+                        'value' => $this->strOrX($contract->customer->vat_number),
                         'label_width' => 10,
                         'value_width' => 30,
                     ],
@@ -1056,7 +1056,7 @@ class ContractPDF extends AppPDF
                     ],
                     [
                         'label' => Settings::getString('core.documents.common.labels.identity_number'),
-                        'value' => $this->strOrX($contract->customer->ic),
+                        'value' => $this->strOrX($contract->customer->identity_number),
                         'label_width' => 10,
                         'value_width' => 30,
                     ],
@@ -1076,7 +1076,7 @@ class ContractPDF extends AppPDF
                     ],
                     [
                         'label' => Settings::getString('core.documents.common.labels.vat_number'),
-                        'value' => $this->strOrX($contract->customer->dic),
+                        'value' => $this->strOrX($contract->customer->vat_number),
                         'label_width' => 10,
                         'value_width' => 30,
                     ],

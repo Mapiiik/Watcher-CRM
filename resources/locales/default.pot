@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-12-07 14:37+0100\n"
+"POT-Creation-Date: 2025-12-10 19:46+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -742,7 +742,7 @@ msgstr ""
 msgid "Invalid RUIAN GID: {0}"
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:829
+#: ./src/Controller/OverviewsController.php:841
 msgid "unknown dealer"
 msgstr ""
 
@@ -3927,6 +3927,13 @@ msgstr ""
 msgid "Add Customer"
 msgstr ""
 
+#: ./templates/Customers/add.php:31
+#: ./templates/Customers/edit.php:36
+#: ./templates/Customers/print.php:68
+#: ./templates/Customers/view.php:171
+msgid "VAT Number"
+msgstr ""
+
 #: ./templates/Customers/add.php:46
 #: ./templates/Customers/edit.php:51
 #: ./templates/Customers/print.php:109
@@ -4008,7 +4015,7 @@ msgstr ""
 
 #: ./templates/Customers/print.php:62
 #: ./templates/Customers/view.php:165
-msgid "Ic"
+msgid "Identity Number"
 msgstr ""
 
 #: ./templates/Customers/print.php:64
@@ -4019,11 +4026,6 @@ msgstr ""
 #: ./templates/Customers/print.php:64
 #: ./templates/Customers/view.php:167
 msgid "Invalid"
-msgstr ""
-
-#: ./templates/Customers/print.php:68
-#: ./templates/Customers/view.php:171
-msgid "Dic"
 msgstr ""
 
 #: ./templates/Customers/print.php:74

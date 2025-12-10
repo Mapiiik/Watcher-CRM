@@ -304,10 +304,10 @@ class AppPDF extends TCPDF
     protected function printUserType(Customer|Contract $entity, int $width = 60, int $height = 4): void
     {
         // Normalize: get IC and company regardless of entity type
-        $ic = $entity instanceof Contract ? $entity->customer->ic : $entity->ic;
+        $identity_number = $entity instanceof Contract ? $entity->customer->identity_number : $entity->identity_number;
         $company = $entity->billing_address->company ?? null;
 
-        if (is_null($ic)) {
+        if (is_null($identity_number)) {
             $text = Settings::getString('core.documents.common.user_types.non_business');
         } elseif (is_null($company)) {
             $text = Settings::getString('core.documents.common.user_types.business');
@@ -347,8 +347,8 @@ class AppPDF extends TCPDF
      * contract data where some fields (e.g. company, VAT number) can be null.
      *
      * Example:
-     *   $this->strOrX($customer->ic);          // returns "12345678" or "X"
-     *   $this->strOrX($customer->dic, '-');    // returns "CZ12345678" or "-"
+     *   $this->strOrX($customer->identity_number);          // returns "12345678" or "X"
+     *   $this->strOrX($customer->vat_number, '-');    // returns "CZ12345678" or "-"
      *
      * @param string|null $value   The original value which may be null
      * @param string      $fallback Fallback string to use if $value is null (default "X")

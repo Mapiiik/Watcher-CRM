@@ -28,8 +28,8 @@ use Exception;
  * @property string|null $bank_name
  * @property string|null $bank_account
  * @property string|null $bank_code
- * @property string|null $ic
- * @property string|null $dic
+ * @property string|null $identity_number
+ * @property string|null $vat_number
  * @property string|null $www
  * @property string|null $internal_note
  * @property \App\Model\Enum\CustomerInvoiceDeliveryType $invoice_delivery_type
@@ -101,8 +101,8 @@ class Customer extends Entity
         'bank_name' => true,
         'bank_account' => true,
         'bank_code' => true,
-        'ic' => true,
-        'dic' => true,
+        'identity_number' => true,
+        'vat_number' => true,
         'www' => true,
         'internal_note' => true,
         'invoice_delivery_type' => true,
@@ -400,20 +400,20 @@ class Customer extends Entity
      */
     protected function _getIcVerified(): bool
     {
-        $ic = $this->ic;
+        $identity_number = $this->identity_number;
 
         // be liberal in what you receive
-        $ic = preg_replace('#\s+#', '', $ic);
+        $identity_number = preg_replace('#\s+#', '', $identity_number);
 
         // check format
-        if (!preg_match('#^\d{8}$#', $ic)) {
+        if (!preg_match('#^\d{8}$#', $identity_number)) {
             return false;
         }
 
         // checksum
         $a = 0;
         for ($i = 0; $i < 7; $i++) {
-            $a += (int)$ic[$i] * (8 - $i);
+            $a += (int)$identity_number[$i] * (8 - $i);
         }
 
         $a = $a % 11;
@@ -425,7 +425,7 @@ class Customer extends Entity
             $c = 11 - $a;
         }
 
-        return (int)$ic[7] === $c;
+        return (int)$identity_number[7] === $c;
     }
 
     /**

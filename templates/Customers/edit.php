@@ -32,8 +32,8 @@
                         echo $this->Form->control('suffix');
                         echo $this->Form->control('date_of_birth', ['empty' => true]);
                         echo $this->Form->control('identity_card_number');
-                        echo $this->Form->control('ic');
-                        echo $this->Form->control('dic');
+                        echo $this->Form->control('identity_number');
+                        echo $this->Form->control('vat_number', ['label' => __('VAT Number')]);
                         echo $this->Form->control('www');
                         ?>
                     </div>

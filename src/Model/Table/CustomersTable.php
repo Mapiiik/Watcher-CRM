@@ -241,14 +241,14 @@ class CustomersTable extends AppTable
             ->allowEmptyString('bank_code');
 
         $validator
-            ->scalar('ic')
-            ->maxLength('ic', 12)
-            ->allowEmptyString('ic');
+            ->scalar('identity_number')
+            ->maxLength('identity_number', 12)
+            ->allowEmptyString('identity_number');
 
         $validator
-            ->scalar('dic')
-            ->maxLength('dic', 15)
-            ->allowEmptyString('dic');
+            ->scalar('vat_number')
+            ->maxLength('vat_number', 15)
+            ->allowEmptyString('vat_number');
 
         $validator
             ->scalar('www')
@@ -312,7 +312,7 @@ class CustomersTable extends AppTable
         $rules->add(
             function ($entity, $_options) {
                 // allow empty IC
-                if (is_null($entity->ic)) {
+                if (is_null($entity->identity_number)) {
                     return true;
                 }
 
@@ -321,7 +321,7 @@ class CustomersTable extends AppTable
             },
             'isIcVerified',
             [
-                'errorField' => 'ic',
+                'errorField' => 'identity_number',
                 'message' => __('The specified identification number is not valid.'),
             ],
         );

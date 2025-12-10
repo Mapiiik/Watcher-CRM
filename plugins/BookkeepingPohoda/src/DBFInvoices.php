@@ -153,8 +153,8 @@ class DBFInvoices
         $data[] = $invoice->customer->billing_address->street_and_number; //street
         $data[] = $invoice->customer->billing_address->zip; //postal code
         $data[] = $invoice->customer->billing_address->city; //city/town
-        $data[] = $invoice->customer->ic; //company ID
-        $data[] = $invoice->customer->dic; //VAT ID
+        $data[] = $invoice->customer->identity_number; //company ID
+        $data[] = $invoice->customer->vat_number; //VAT ID
 
         $data[] = '0308'; //constant symbol 0308
 

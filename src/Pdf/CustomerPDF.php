@@ -112,7 +112,7 @@ class CustomerPDF extends AppPDF
                     ],
                     [
                         'label' => Settings::getString('core.documents.common.labels.identity_number'),
-                        'value' => $this->strOrX($customer->ic),
+                        'value' => $this->strOrX($customer->identity_number),
                     ],
                 ],
                 [
@@ -122,7 +122,7 @@ class CustomerPDF extends AppPDF
                     ],
                     [
                         'label' => Settings::getString('core.documents.common.labels.vat_number'),
-                        'value' => $this->strOrX($customer->dic),
+                        'value' => $this->strOrX($customer->vat_number),
                     ],
                 ],
                 [

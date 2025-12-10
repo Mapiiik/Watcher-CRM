@@ -162,14 +162,14 @@
                             <td><?= h($customer->identity_card_number) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Ic') ?></th>
-                            <td><?= $customer->__isset('ic') ? (
-                                h($customer->ic) . ' (' . ($customer->ic_verified ? __('OK') : __('Invalid')) . ')'
+                            <th><?= __('Identity Number') ?></th>
+                            <td><?= $customer->__isset('identity_number') ? (
+                                h($customer->identity_number) . ' (' . ($customer->ic_verified ? __('OK') : __('Invalid')) . ')'
                             ) : '' ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Dic') ?></th>
-                            <td><?= h($customer->dic) ?></td>
+                            <th><?= __('VAT Number') ?></th>
+                            <td><?= h($customer->vat_number) ?></td>
                         </tr>
                     </table>
                     <table>

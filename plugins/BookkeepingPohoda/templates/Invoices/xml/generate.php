@@ -49,8 +49,8 @@ foreach ($invoices as $invoice) {
                 'city' => $invoice->customer->billing_address->city ?? '',
                 'street' => $invoice->customer->billing_address->street_and_number ?? '',
                 'zip' => $invoice->customer->billing_address->zip ?? '',
-                'ico' => $invoice->customer->ic ?? '',
-                'dic' => $invoice->customer->dic ?? '',
+                'ico' => $invoice->customer->identity_number ?? '',
+                'dic' => $invoice->customer->vat_number ?? '',
             ],
         ],
         'paymentType' => [

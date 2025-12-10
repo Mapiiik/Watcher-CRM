@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-12-07 14:37+0100\n"
-"PO-Revision-Date: 2025-12-07 14:46+0100\n"
+"POT-Creation-Date: 2025-12-10 19:46+0100\n"
+"PO-Revision-Date: 2025-12-10 19:49+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -764,7 +764,7 @@ msgstr "Přihlášení nelze odstranit. Prosím, zkuste to znovu."
 msgid "Invalid RUIAN GID: {0}"
 msgstr "Neplatné RÚIAN GID: {0}"
 
-#: src/Controller/OverviewsController.php:829
+#: src/Controller/OverviewsController.php:841
 msgid "unknown dealer"
 msgstr "neznámý dealer"
 
@@ -3189,6 +3189,11 @@ msgstr "Seznam zákazníků"
 msgid "Add Customer"
 msgstr "Přidat zákazníka"
 
+#: templates/Customers/add.php:31 templates/Customers/edit.php:36
+#: templates/Customers/print.php:68 templates/Customers/view.php:171
+msgid "VAT Number"
+msgstr "DIČ"
+
 #: templates/Customers/add.php:46 templates/Customers/edit.php:51
 #: templates/Customers/print.php:109 templates/Customers/view.php:212
 msgid "Individual Maturity Period"
@@ -3252,7 +3257,7 @@ msgid "Identity Card Number"
 msgstr "Číslo občanského průkazu"
 
 #: templates/Customers/print.php:62 templates/Customers/view.php:165
-msgid "Ic"
+msgid "Identity Number"
 msgstr "IČ"
 
 #: templates/Customers/print.php:64 templates/Customers/view.php:167
@@ -3262,10 +3267,6 @@ msgstr "OK"
 #: templates/Customers/print.php:64 templates/Customers/view.php:167
 msgid "Invalid"
 msgstr "Neplatné"
-
-#: templates/Customers/print.php:68 templates/Customers/view.php:171
-msgid "Dic"
-msgstr "DIČ"
 
 #: templates/Customers/print.php:74 templates/Customers/view.php:177
 msgid "Www"
