@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2025-12-07 14:37+0100\n"
-"PO-Revision-Date: 2025-12-10 19:56+0100\n"
+"PO-Revision-Date: 2025-12-11 11:11+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: hr_HR\n"
@@ -17,7 +17,7 @@ msgstr ""
 
 #: src/Pdf/ContractPDF.php:307 src/Pdf/ContractPDF.php:1042
 msgid "Billing Address"
-msgstr "Adresa naplate"
+msgstr "Adresa za naplatu"
 
 #: src/Pdf/ContractPDF.php:378 src/Pdf/ContractPDF.php:1113
 msgid "Installation Address"
@@ -29,7 +29,7 @@ msgstr "Adresa za dostavu"
 
 #: src/Pdf/ContractPDF.php:386 src/Pdf/ContractPDF.php:1121
 msgid "Permanent Address"
-msgstr "Stalna adresa"
+msgstr "Adresa prebivališta"
 
 #: src/Pdf/ContractPDF.php:408
 msgid "Username"
