@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use App\ApiClient;
+use ArrayObject;
 use Cake\ORM\Entity;
 
 /**
@@ -98,9 +99,9 @@ class Task extends Entity
     /**
      * getter for acess point (try to load via ApiClient)
      *
-     * @return \Cake\ORM\Entity|null
+     * @return \ArrayObject|null
      */
-    protected function _getAccessPoint(): ?Entity
+    protected function _getAccessPoint(): ?ArrayObject
     {
         if ($this->access_point_id) {
             return ApiClient::getAccessPoint($this->access_point_id);

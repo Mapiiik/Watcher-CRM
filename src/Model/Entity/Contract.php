@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use App\ApiClient;
+use ArrayObject;
 use Cake\ORM\Entity;
 use Exception;
 use PhpCollective\DecimalObject\Decimal;
@@ -65,7 +66,7 @@ use PhpCollective\DecimalObject\Decimal;
  * @property \App\Model\Entity\RemovedIpNetwork[] $removed_ip_networks
  * @property \App\Model\Entity\SoldEquipment[] $sold_equipments
  * @property \App\Model\Entity\Task[] $tasks
- * @property \Cake\ORM\Entity|null $access_point
+ * @property \ArrayObject|null $access_point
  * @property string|null $access_point_name
  */
 class Contract extends Entity
@@ -203,9 +204,9 @@ class Contract extends Entity
     /**
      * getter for acess point (try to load via ApiClient)
      *
-     * @return \Cake\ORM\Entity|null
+     * @return \ArrayObject|null
      */
-    protected function _getAccessPoint(): ?Entity
+    protected function _getAccessPoint(): ?ArrayObject
     {
         if ($this->access_point_id) {
             return ApiClient::getAccessPoint($this->access_point_id);

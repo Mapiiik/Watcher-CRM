@@ -16,11 +16,11 @@ declare(strict_types=1);
  */
 namespace App;
 
+use ArrayObject;
 use Cake\Cache\Cache;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 use Cake\Http\Client;
-use Cake\ORM\Entity;
 
 /**
  * API Client
@@ -92,9 +92,9 @@ class ApiClient
      * Fetch access point method
      *
      * @param string $id Access Point id.
-     * @return \Cake\ORM\Entity|null Return result from API
+     * @return \ArrayObject|null Return result from API
      */
-    public static function fetchAccessPoint(string $id): ?Entity
+    public static function fetchAccessPoint(string $id): ?ArrayObject
     {
         if (env('WATCHER_NMS_URL') && env('WATCHER_NMS_KEY')) {
             $http = Client::createFromUrl((string)env('WATCHER_NMS_URL'));
@@ -104,9 +104,9 @@ class ApiClient
 
             $json = $response->getJson();
             if (isset($json['accessPoint'])) {
-                $entity = new Entity($json['accessPoint']);
+                $accessPoint = new ArrayObject($json['accessPoint'], ArrayObject::ARRAY_AS_PROPS);
 
-                return $entity;
+                return $accessPoint;
             }
         }
 
@@ -117,9 +117,9 @@ class ApiClient
      * Get access point method
      *
      * @param string $id Access Point id.
-     * @return \Cake\ORM\Entity|null Return result from API or from cache if valid
+     * @return \ArrayObject|null Return result from API or from cache if valid
      */
-    public static function getAccessPoint(string $id): ?Entity
+    public static function getAccessPoint(string $id): ?ArrayObject
     {
         return Cache::remember(
             'access_point_' . $id,
@@ -218,9 +218,9 @@ class ApiClient
      * Fetch IP address range method
      *
      * @param string $id IP address range id.
-     * @return \Cake\ORM\Entity|null Return result from API
+     * @return \ArrayObject|null Return result from API
      */
-    public static function fetchIpAddressRange(string $id): ?Entity
+    public static function fetchIpAddressRange(string $id): ?ArrayObject
     {
         if (env('WATCHER_NMS_URL') && env('WATCHER_NMS_KEY')) {
             $http = Client::createFromUrl((string)env('WATCHER_NMS_URL'));
@@ -230,9 +230,9 @@ class ApiClient
 
             $json = $response->getJson();
             if (isset($json['ipAddressRange'])) {
-                $entity = new Entity($json['ipAddressRange']);
+                $ipAddressRange = new ArrayObject($json['ipAddressRange'], ArrayObject::ARRAY_AS_PROPS);
 
-                return $entity;
+                return $ipAddressRange;
             }
         }
 
@@ -243,10 +243,10 @@ class ApiClient
      * Get IP address range method
      *
      * @param string $id IP address range id.
-     * @return \Cake\ORM\Entity|null Return result from API or from cache if valid
+     * @return \ArrayObject|null Return result from API or from cache if valid
      * @psalm-suppress PossiblyUnusedMethod
      */
-    public static function getIpAddressRange(string $id): ?Entity
+    public static function getIpAddressRange(string $id): ?ArrayObject
     {
         return Cache::remember(
             'ip_address_range_' . $id,
