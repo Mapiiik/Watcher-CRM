@@ -6,6 +6,8 @@ use Cake\I18n\Date;
 /**
  * @var \Cake\View\View $this
  * @var array<string|int|float> $data
+ *
+ * phpcs:disable Generic.WhiteSpace.ScopeIndent, Squiz.WhiteSpace.ControlStructureSpacing
  */
 
 $billing_date = (new Date((string)$data['new_billing_from']))->lastOfMonth();
