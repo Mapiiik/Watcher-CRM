@@ -92,7 +92,7 @@ class ApiClient
      * Fetch access point method
      *
      * @param string $id Access Point id.
-     * @return \ArrayObject|null Return result from API
+     * @return \ArrayObject<string, mixed>|null Return result from API
      */
     public static function fetchAccessPoint(string $id): ?ArrayObject
     {
@@ -117,7 +117,7 @@ class ApiClient
      * Get access point method
      *
      * @param string $id Access Point id.
-     * @return \ArrayObject|null Return result from API or from cache if valid
+     * @return \ArrayObject<string, mixed>|null Return result from API or from cache if valid
      */
     public static function getAccessPoint(string $id): ?ArrayObject
     {
@@ -218,7 +218,7 @@ class ApiClient
      * Fetch IP address range method
      *
      * @param string $id IP address range id.
-     * @return \ArrayObject|null Return result from API
+     * @return \ArrayObject<string, mixed>|null Return result from API
      */
     public static function fetchIpAddressRange(string $id): ?ArrayObject
     {
@@ -243,7 +243,7 @@ class ApiClient
      * Get IP address range method
      *
      * @param string $id IP address range id.
-     * @return \ArrayObject|null Return result from API or from cache if valid
+     * @return \ArrayObject<string, mixed>|null Return result from API or from cache if valid
      * @psalm-suppress PossiblyUnusedMethod
      */
     public static function getIpAddressRange(string $id): ?ArrayObject

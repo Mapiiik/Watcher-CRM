@@ -42,7 +42,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Contract $contract
  * @property \App\Model\Entity\Customer $dealer
  * @property \App\Model\Entity\TaskState $task_state
- * @property \Cake\ORM\Entity|null $access_point
+ * @property \ArrayObject<string, mixed>|null $access_point
  * @property string|null $access_point_name
  */
 class Task extends Entity
@@ -99,7 +99,7 @@ class Task extends Entity
     /**
      * getter for acess point (try to load via ApiClient)
      *
-     * @return \ArrayObject|null
+     * @return \ArrayObject<string, mixed>|null
      */
     protected function _getAccessPoint(): ?ArrayObject
     {

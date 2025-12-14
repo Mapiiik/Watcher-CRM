@@ -66,7 +66,7 @@ use PhpCollective\DecimalObject\Decimal;
  * @property \App\Model\Entity\RemovedIpNetwork[] $removed_ip_networks
  * @property \App\Model\Entity\SoldEquipment[] $sold_equipments
  * @property \App\Model\Entity\Task[] $tasks
- * @property \ArrayObject|null $access_point
+ * @property \ArrayObject<string, mixed>|null $access_point
  * @property string|null $access_point_name
  */
 class Contract extends Entity
@@ -204,7 +204,7 @@ class Contract extends Entity
     /**
      * getter for acess point (try to load via ApiClient)
      *
-     * @return \ArrayObject|null
+     * @return \ArrayObject<string, mixed>|null
      */
     protected function _getAccessPoint(): ?ArrayObject
     {
