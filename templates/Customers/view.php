@@ -164,7 +164,8 @@
                         <tr>
                             <th><?= __('Identity Number') ?></th>
                             <td><?= $customer->__isset('identity_number') ? (
-                                h($customer->identity_number) . ' (' . ($customer->verifyIdentityNumber() ? __('OK') : __('Invalid')) . ')'
+                                h($customer->identity_number)
+                                    . ' (' . ($customer->verifyIdentityNumber() ? __('OK') : __('Invalid')) . ')'
                             ) : '' ?></td>
                         </tr>
                         <tr>

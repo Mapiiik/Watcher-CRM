@@ -68,18 +68,18 @@
                         <?php foreach ($connection_points as $connection_point) : ?>
                         <tr>
                             <td><?= $this->Number->format($connection_point->ruian_gid) ?></td>
-                            <td><?= $connection_point->active_connections === null ?
-                                '' : $this->Number->format($connection_point->active_connections) ?></td>
-                            <td><?= $connection_point->active_connections_nonbusiness === null ?
-                                '' : $this->Number->format($connection_point->active_connections_nonbusiness) ?></td>
-                            <td><?= $connection_point->active_speeds->speed_0_30 === null ?
-                                '' : $this->Number->format($connection_point->active_speeds->speed_0_30) ?></td>
-                            <td><?= $connection_point->active_speeds->speed_30_100 === null ?
-                                '' : $this->Number->format($connection_point->active_speeds->speed_30_100) ?></td>
-                            <td><?= $connection_point->active_speeds->speed_100_plus === null ?
-                                '' : $this->Number->format($connection_point->active_speeds->speed_100_plus) ?></td>
-                            <td><?= $connection_point->available_connections === null ?
-                                '' : $this->Number->format($connection_point->available_connections) ?></td>
+                            <td><?= isset($connection_point->active_connections) ?
+                                $this->Number->format($connection_point->active_connections) : '' ?></td>
+                            <td><?= isset($connection_point->active_connections_nonbusiness) ?
+                                $this->Number->format($connection_point->active_connections_nonbusiness) : '' ?></td>
+                            <td><?= isset($connection_point->active_speeds->speed_0_30) ?
+                                $this->Number->format($connection_point->active_speeds->speed_0_30) : '' ?></td>
+                            <td><?= isset($connection_point->active_speeds->speed_30_100) ?
+                                $this->Number->format($connection_point->active_speeds->speed_30_100) : '' ?></td>
+                            <td><?= isset($connection_point->active_speeds->speed_100_plus) ?
+                                $this->Number->format($connection_point->active_speeds->speed_100_plus) : '' ?></td>
+                            <td><?= isset($connection_point->available_connections) ?
+                                $this->Number->format($connection_point->available_connections) : '' ?></td>
                             <td><?= h($connection_point->available_speeds->effective_download_category) ?></td>
                             <td><?= h($connection_point->available_speeds->effective_upload_category) ?></td>
                             <td><?= h($connection_point->available_speeds->maximal_download_category) ?></td>

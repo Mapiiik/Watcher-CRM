@@ -346,8 +346,8 @@ class IpAddressesController extends AppController
         $removedIpAddress = $removedIpAddressesTable->newEntity($ipAddress->toArray());
 
         // remove associated data
-        unset($removedIpAddress['contract']);
-        unset($removedIpAddress['customer']);
+        $removedIpAddress->unset('contract');
+        $removedIpAddress->unset('customer');
 
         // add who and when deleted this
         $removedIpAddress->removed = DateTime::now();
@@ -486,12 +486,12 @@ class IpAddressesController extends AppController
                                         $newIpAddress = $this->IpAddresses->newEntity($ipAddressToProcess->toArray());
 
                                         // remove associated data
-                                        unset($newIpAddress['contract']);
-                                        unset($newIpAddress['customer']);
+                                        $newIpAddress->unset('contract');
+                                        $newIpAddress->unset('customer');
 
                                         // assign new IP address
                                         $newIpAddress->ip_address = $availableIpAddress;
-                                        $ipAddressToProcess['reassigned_ip_address'] = $availableIpAddress;
+                                        $ipAddressToProcess->set('reassigned_ip_address', $availableIpAddress);
 
                                         // save new IP address entity
                                         if ($this->IpAddresses->save($newIpAddress)) {

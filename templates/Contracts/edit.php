@@ -35,7 +35,7 @@ use App\Utility\Settings;
                 <div class="row">
                     <div class="column">
                         <datalist id="access-descriptions">
-                            <?php foreach (Settings::get('core.contracts.access_descriptions_list', []) as $item): ?>
+                            <?php foreach (Settings::get('core.contracts.access_descriptions_list', []) as $item) : ?>
                                 <option value="<?= h($item) ?>">
                             <?php endforeach; ?>
                         </datalist>

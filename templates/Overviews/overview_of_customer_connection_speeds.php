@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface<string, mixed> $cto_categories
+ * @var \Cake\Collection\CollectionInterface<string, \Cake\Collection\CollectionInterface<string, \stdClass>> $cto_categories
  * @var \Cake\I18n\Date $month_to_display
  */
 ?>
@@ -58,53 +58,61 @@
                         <?php foreach ($connection_points as $connection_point) : ?>
                         <tr>
                             <td><?= h($connection_point->city) ?></td>
-                            <td><?= $connection_point->active_connections === null ?
-                                '' : $this->Number->format($connection_point->active_connections)
+                            <td><?= isset($connection_point->active_connections) ?
+                                $this->Number->format($connection_point->active_connections)
+                                : ''
                             ?></td>
-                            <td><?= $connection_point->advertised_speeds->speed_0_2 === null ?
-                                '' : $this->Number->format($connection_point->advertised_speeds->speed_0_2)
+                            <td><?= isset($connection_point->advertised_speeds->speed_0_2) ?
+                                $this->Number->format($connection_point->advertised_speeds->speed_0_2)
+                                : ''
                             ?></td>
-                            <td><?= $connection_point->advertised_speeds->speed_2_10 === null ?
-                                '' : $this->Number->format($connection_point->advertised_speeds->speed_2_10)
+                            <td><?= isset($connection_point->advertised_speeds->speed_2_10) ?
+                                $this->Number->format($connection_point->advertised_speeds->speed_2_10)
+                                : ''
                             ?></td>
-                            <td><?= $connection_point->advertised_speeds->speed_10_30 === null ?
-                                '' : $this->Number->format($connection_point->advertised_speeds->speed_10_30)
+                            <td><?= isset($connection_point->advertised_speeds->speed_10_30) ?
+                                $this->Number->format($connection_point->advertised_speeds->speed_10_30)
+                                : ''
                             ?></td>
-                            <td><?= $connection_point->advertised_speeds->speed_30_100 === null ?
-                                '' : $this->Number->format($connection_point->advertised_speeds->speed_30_100)
+                            <td><?= isset($connection_point->advertised_speeds->speed_30_100) ?
+                                $this->Number->format($connection_point->advertised_speeds->speed_30_100)
+                                : ''
                             ?></td>
-                            <td><?= $connection_point->advertised_speeds->speed_100_1000 === null ?
-                                '' : $this->Number->format($connection_point->advertised_speeds->speed_100_1000)
+                            <td><?= isset($connection_point->advertised_speeds->speed_100_1000) ?
+                                $this->Number->format($connection_point->advertised_speeds->speed_100_1000)
+                                : ''
                             ?></td>
-                            <td><?= $connection_point->advertised_speeds->speed_1000_plus === null ?
-                                '' : $this->Number->format($connection_point->advertised_speeds->speed_1000_plus)
+                            <td><?= isset($connection_point->advertised_speeds->speed_1000_plus) ?
+                                $this->Number->format($connection_point->advertised_speeds->speed_1000_plus)
+                                : ''
                             ?></td>
-                            <td><?= $connection_point->active_connections_nonbusiness === null ?
-                                '' : $this->Number->format($connection_point->active_connections_nonbusiness) ?>
-                            </td>
-                            <td><?= $connection_point->advertised_speeds_nonbusiness->speed_0_2 === null ?
-                                '' :
+                            <td><?= isset($connection_point->active_connections_nonbusiness) ?
+                                $this->Number->format($connection_point->active_connections_nonbusiness)
+                                : ''
+                            ?></td>
+                            <td><?= isset($connection_point->advertised_speeds_nonbusiness->speed_0_2) ?
                                 $this->Number->format($connection_point->advertised_speeds_nonbusiness->speed_0_2)
+                                : ''
                             ?></td>
-                            <td><?= $connection_point->advertised_speeds_nonbusiness->speed_2_10 === null ?
-                                '' :
+                            <td><?= isset($connection_point->advertised_speeds_nonbusiness->speed_2_10) ?
                                 $this->Number->format($connection_point->advertised_speeds_nonbusiness->speed_2_10)
+                                : ''
                             ?></td>
-                            <td><?= $connection_point->advertised_speeds_nonbusiness->speed_10_30 === null ?
-                                '' :
+                            <td><?= isset($connection_point->advertised_speeds_nonbusiness->speed_10_30) ?
                                 $this->Number->format($connection_point->advertised_speeds_nonbusiness->speed_10_30)
+                                : ''
                             ?></td>
-                            <td><?= $connection_point->advertised_speeds_nonbusiness->speed_30_100 === null ?
-                                '' :
+                            <td><?= isset($connection_point->advertised_speeds_nonbusiness->speed_30_100) ?
                                 $this->Number->format($connection_point->advertised_speeds_nonbusiness->speed_30_100)
+                                : ''
                             ?></td>
-                            <td><?= $connection_point->advertised_speeds_nonbusiness->speed_100_1000 === null ?
-                                '' :
+                            <td><?= isset($connection_point->advertised_speeds_nonbusiness->speed_100_1000) ?
                                 $this->Number->format($connection_point->advertised_speeds_nonbusiness->speed_100_1000)
+                                : ''
                             ?></td>
-                            <td><?= $connection_point->advertised_speeds_nonbusiness->speed_1000_plus === null ?
-                                '' :
+                            <td><?= isset($connection_point->advertised_speeds_nonbusiness->speed_1000_plus) ?
                                 $this->Number->format($connection_point->advertised_speeds_nonbusiness->speed_1000_plus)
+                                : ''
                             ?></td>
                         </tr>
                         <?php endforeach; ?>

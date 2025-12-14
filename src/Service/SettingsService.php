@@ -76,6 +76,7 @@ class SettingsService
         // Load app defaults
         $appDefaultsFile = CONFIG . 'settings.php';
         if (file_exists($appDefaultsFile)) {
+            /** @phpstan-ignore-next-line include.fileNotFound */
             $defaults = include $appDefaultsFile;
             if (is_array($defaults)) {
                 $this->defaults = $defaults;

@@ -98,7 +98,7 @@
                                     ) : '' ?>
                                 </td>
                                 <td><?= h($ipAddress->ip_address) ?></td>
-                                <td><?= h($ipAddress['reassigned_ip_address']) ?></td>
+                                <td><?= h($ipAddress->get('reassigned_ip_address')) ?></td>
                                 <td><?= h($ipAddress->type_of_use->label()) ?></td>
                                 <td class="actions">
                                     <?= $this->Form->control('reassing_ip_address.' . $ipAddress->id, [

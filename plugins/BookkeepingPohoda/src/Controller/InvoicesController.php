@@ -572,7 +572,7 @@ class InvoicesController extends AppController
                         } else {
                             $invoice->text = strtr(Settings::getString('core.invoices.texts.default'), [
                                 '{contract_number}' => $contract->number,
-                                '{invoiced_month}'  => $invoicedMonth->i18nFormat('MM/yyyy'),
+                                '{invoiced_month}' => $invoicedMonth->i18nFormat('MM/yyyy'),
                             ]);
                         }
                         $invoice->internal_note = 'separate'; // TODO: constants?
@@ -604,7 +604,7 @@ class InvoicesController extends AppController
                         ->addDays($customer->individual_maturity_period ?? 10);
                     $invoice->text = strtr(Settings::getString('core.invoices.texts.default'), [
                         '{contract_number}' => $customer->number,
-                        '{invoiced_month}'  => $invoicedMonth->i18nFormat('MM/yyyy'),
+                        '{invoiced_month}' => $invoicedMonth->i18nFormat('MM/yyyy'),
                     ]);
                     $invoice->total = $billingCustomer['total'];
                     $invoice->items = $customer->isInvoiceWithItems() ? $billingCustomer['items'] : [];

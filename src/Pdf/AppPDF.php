@@ -326,8 +326,12 @@ class AppPDF extends TCPDF
      * @param float $indent Label cell width before the address value (default 30mm)
      * @param float $lineHeight Line height for the value (default 4mm)
      */
-    protected function printAddressBlock(string $title, ?string $fullAddress, float $indent = 30.0, float $lineHeight = 4.0): void
-    {
+    protected function printAddressBlock(
+        string $title,
+        ?string $fullAddress,
+        float $indent = 30.0,
+        float $lineHeight = 4.0,
+    ): void {
         if ($fullAddress === null || $fullAddress === '') {
             return;
         }
