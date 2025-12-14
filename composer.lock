@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9215e191d36cde92c3d4748f43cb7631",
+    "content-hash": "a0531a34791f50dd686999487ee4d5ce",
     "packages": [
         {
             "name": "brick/math",
@@ -2335,30 +2335,30 @@
         },
         {
             "name": "mapik/audit-log",
-            "version": "5.1.0",
+            "version": "6.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Mapiiik/audit-log.git",
-                "reference": "03c51216584b85e195f2f989e777c1bedbe8b71d"
+                "reference": "65a362c7ba536c37104de67802fed27f4482b46e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Mapiiik/audit-log/zipball/03c51216584b85e195f2f989e777c1bedbe8b71d",
-                "reference": "03c51216584b85e195f2f989e777c1bedbe8b71d",
+                "url": "https://api.github.com/repos/Mapiiik/audit-log/zipball/65a362c7ba536c37104de67802fed27f4482b46e",
+                "reference": "65a362c7ba536c37104de67802fed27f4482b46e",
                 "shasum": ""
             },
             "require": {
                 "cakephp/orm": "^5.0",
-                "php": ">=8.1"
+                "php": ">=8.2"
             },
             "require-dev": {
-                "cakephp/cakephp": "^5.0",
-                "cakephp/cakephp-codesniffer": "^5.0",
-                "cakephp/migrations": "^4.0",
+                "cakephp/cakephp": "^5.3.0@RC",
+                "cakephp/cakephp-codesniffer": "^5.3",
+                "cakephp/migrations": "^4.8.0",
                 "friendsofcake/process-mq": "dev-master",
-                "phpstan/phpstan": "^1.8",
-                "phpunit/phpunit": "^10.1.0",
-                "psalm/phar": "^5.12"
+                "phpstan/phpstan": "^2.0",
+                "phpunit/phpunit": "^11.5.3 || ^12.1.3",
+                "psalm/phar": "^6.0"
             },
             "suggest": {
                 "friendsofcake/process-mq": "Use this package if you prefer sending the audit events to RabbitMQ"
@@ -2379,7 +2379,7 @@
                 "issues": "https://github.com/Mapiiik/audit-log/issues",
                 "source": "https://github.com/Mapiiik/audit-log"
             },
-            "time": "2025-11-13T17:52:08+00:00"
+            "time": "2025-12-14T21:51:44+00:00"
         },
         {
             "name": "mapik/pohoda-xml",
@@ -8938,7 +8938,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "cakephp/cakephp": 5
+        "cakephp/cakephp": 5,
+        "mapik/audit-log": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
