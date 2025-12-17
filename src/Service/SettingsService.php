@@ -100,6 +100,31 @@ class SettingsService
     }
 
     /**
+     * Get a default setting value by path.
+     *
+     * Path format: "plugin.key" or "plugin.key.subkey".
+     * Example: "core.company.name"
+     *
+     * @param string $path    The path to the setting (plugin.key[.subkey...]).
+     * @param mixed  $default Default value if not found.
+     * @return mixed          The setting value or default.
+     */
+    public function getDefault(string $path, mixed $default = null): mixed
+    {
+        // Split path into plugin, key, subKey
+        $parts = explode('.', $path);
+        $plugin = $parts[0] ?? null;
+        $key = $parts[1] ?? null;
+        $subKey = isset($parts[2]) ? implode('.', array_slice($parts, 2)) : null;
+
+        if ($plugin === null || $key === null) {
+            return $default;
+        }
+
+        return $this->resolveSubKey($this->defaults[$plugin][$key] ?? null, $subKey, $default);
+    }
+
+    /**
      * Get a setting value by path.
      *
      * Priority: DB > defaults > $default param.
