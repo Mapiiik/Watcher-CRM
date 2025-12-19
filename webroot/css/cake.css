@@ -290,6 +290,11 @@ fieldset, input, select, textarea {
     margin-bottom: 1.0rem;
 }
 
+fieldset.settings-group {
+    padding-left: 1.0rem;
+    border: #d1d1d1 solid 0.1rem;
+}
+
 /* Full width */
 .container {
     max-width: none;

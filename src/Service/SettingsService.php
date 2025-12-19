@@ -233,79 +233,146 @@ class SettingsService
     }
 
     /**
-     * Persist a setting value into the database.
+     * Persist a settings overlay value into the database.
      *
-     * Path format: "plugin.key" or "plugin.key.subkey".
-     * Example: "bookkeeping_pohoda.invoices" or "bookkeeping_pohoda.invoices.vat_rate"
+     * The method supports both whole-block updates and nested updates using
+     * dot-notation paths (plugin.key.subKey...).
      *
-     * If a record with the given plugin/key combination already exists,
-     * its value will be updated (merged if subKey is provided).
-     * Otherwise, a new record will be created.
+     * Workflow:
+     * - The provided value is always inserted into the current overlay structure.
+     * - The resulting structure is then normalized by removing:
+     *   - empty strings
+     *   - null values
+     *   - empty arrays (recursively)
+     * - If the cleaned overlay is empty, the database record is removed,
+     *   effectively reverting the setting to its default value.
      *
-     * The value is stored as JSONB, so arrays and scalars are both supported.
+     * This allows empty form fields to naturally fall back to defaults while
+     * keeping the database free of redundant or empty overlay data.
      *
-     * @param string $path   The path in the form "plugin.key[.subkey...]".
-     *                       The plugin part identifies the namespace,
-     *                       the key identifies the logical block of settings,
-     *                       and optional subKey points to a nested value.
-     * @param mixed  $value  The value to store (array, string, number, etc.).
-     * @return bool          True on successful save, false on failure.
+     * Cache for the affected setting block is invalidated on any change.
+     *
+     * @param string $path  Setting path in the form "plugin.key[.subKey...]".
+     * @param mixed  $value Value to store (scalar or array).
+     * @return bool         True on success, false on failure.
      */
     public function set(string $path, mixed $value): bool
     {
-        // Split path into plugin, key, subKey
         $parts = explode('.', $path);
         $plugin = $parts[0] ?? null;
         $key = $parts[1] ?? null;
         $subKey = isset($parts[2]) ? implode('.', array_slice($parts, 2)) : null;
 
-        if ($plugin === null || $key === null) {
+        if (!$plugin || !$key) {
             return false;
         }
 
         /** @var \App\Model\Table\SettingsTable $settingsTable */
         $settingsTable = $this->fetchTable('Settings');
+
         $entity = $settingsTable->findOrNewEntity([
             'plugin' => $plugin,
             'key' => $key,
         ]);
 
-        // If subKey is provided, merge into existing array
+        $current = (array)$entity->value;
+
+        // Always insert first
         if ($subKey !== null) {
-            $current = (array)$entity->value;
-            // Use Cake\Utility\Hash to insert nested value
-            $updated = Hash::insert($current, $subKey, $value);
-            $entity->value = $updated;
+            $current = Hash::insert($current, $subKey, $value);
         } else {
-            // Replace whole value
-            $entity->value = $value;
+            $current = (array)$value;
         }
 
-        $result = (bool)$settingsTable->save($entity);
+        // Cleanup empty values
+        $current = $this->cleanupOverlay($current);
 
-        if ($result) {
-            Cache::delete("settings.$plugin.$key");
-            unset($this->localCache[$plugin][$key]);
+        // Nothing left → delete overlay
+        if ($current === []) {
+            if (!$entity->isNew()) {
+                $settingsTable->delete($entity);
+            }
+            $this->clearCache($plugin, $key);
+
+            return true;
         }
 
-        return $result;
+        $entity->value = $current;
+
+        if ($settingsTable->save($entity)) {
+            $this->clearCache($plugin, $key);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Recursively remove empty values from a settings overlay structure.
+     *
+     * The following values are considered empty and will be removed:
+     * - empty strings
+     * - null values
+     * - empty arrays
+     *
+     * This method is used to normalize overlay data before persistence,
+     * ensuring that only meaningful overrides are stored in the database.
+     *
+     * @param array $data Overlay data to clean.
+     * @return array      Cleaned overlay data.
+     */
+    protected function cleanupOverlay(array $data): array
+    {
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $value = $this->cleanupOverlay($value);
+                if ($value === []) {
+                    unset($data[$key]);
+                    continue;
+                }
+                $data[$key] = $value;
+            } elseif ($value === '' || $value === null) {
+                unset($data[$key]);
+            }
+        }
+
+        return $data;
     }
 
     /**
      * Clear cached settings.
      *
      * @param string|null $plugin If provided, clear only this plugin.
-     *                            If null, clear all cached plugin.
+     *                            If null, clear all cached plugins.
+     * @param string|null $key    If provided together with plugin, clear only this key.
      * @return void
      */
-    public function clearCache(?string $plugin = null): void
+    public function clearCache(?string $plugin = null, ?string $key = null): void
     {
-        if ($plugin) {
+        // Clear specific key
+        if ($plugin !== null && $key !== null) {
+            unset($this->localCache[$plugin][$key]);
+
+            if (empty($this->localCache[$plugin])) {
+                unset($this->localCache[$plugin]);
+            }
+
+            Cache::delete("settings.$plugin.$key", 'default');
+
+            return;
+        }
+
+        // Clear whole plugin
+        if ($plugin !== null) {
             unset($this->localCache[$plugin]);
             Cache::delete("settings.$plugin", 'default');
-        } else {
-            $this->localCache = [];
-            Cache::delete('settings', 'default');
+
+            return;
         }
+
+        // Clear everything
+        $this->localCache = [];
+        Cache::delete('settings', 'default');
     }
 }

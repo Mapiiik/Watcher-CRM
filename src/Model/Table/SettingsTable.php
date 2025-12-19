@@ -64,10 +64,6 @@ class SettingsTable extends AppTable
             ->requirePresence('key', 'create')
             ->notEmptyString('key');
 
-        $validator
-            ->requirePresence('value', 'create')
-            ->notEmptyString('value');
-
         return $validator;
     }
 
