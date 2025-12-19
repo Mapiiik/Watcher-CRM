@@ -2,12 +2,14 @@
 /**
  * Recursive form field generator for settings.
  *
+ * @var \App\View\AppView $this
  * @var array  $data     Default values (nested array)
  * @var array  $overlay  Overlay values from DB (nested array)
  * @var string $path     Current dot-path (e.g. "invoices.phone")
  * @var string $fullPath Current full-path (e.g. "core.company.invoices.phone")
  */
-
+?>
+<?php
 foreach ($data as $key => $value) {
     $actualFullPath = ltrim($fullPath . '.' . $key, '.');
     $actualPath = ltrim($path . '.' . $key, '.');

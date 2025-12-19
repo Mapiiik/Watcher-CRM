@@ -1,9 +1,10 @@
 <?php
 /**
  * @var \App\View\AppView $this
+ * @var string $plugin
+ * @var string $key
+ * @var array<mixed> $default
  * @var \App\Model\Entity\Setting $setting
- * @var \Cake\Collection\CollectionInterface<array-key, string>|array<string> $creators
- * @var \Cake\Collection\CollectionInterface<array-key, string>|array<string> $modifiers
  */
 ?>
 <div class="row">
