@@ -23,6 +23,42 @@
         </div>
 
         <div class="related">
+            <h4><?= __('Application Settings') ?></h4>
+            <div>
+                <?= $this->AuthLink->link(
+                    __('Company Information'),
+                    ['controller' => 'Settings', 'action' => 'edit', 'core', 'company'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('Contract & Document Texts'),
+                    ['controller' => 'Settings', 'action' => 'edit', 'core', 'documents'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('Invoice & Billing Texts'),
+                    ['controller' => 'Settings', 'action' => 'edit', 'core', 'invoices'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('Debtor Notifications'),
+                    ['controller' => 'Settings', 'action' => 'edit', 'core', 'debtors'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('Contract Presets'),
+                    ['controller' => 'Settings', 'action' => 'edit', 'core', 'contracts'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('Email Templates'),
+                    ['controller' => 'Settings', 'action' => 'edit', 'core', 'emails'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+            </div>
+        </div>
+
+        <div class="related">
             <h4><?= __('Billing Functions') ?></h4>
             <div>
                 <?= $this->AuthLink->link(
