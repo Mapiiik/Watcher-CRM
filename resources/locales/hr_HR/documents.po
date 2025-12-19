@@ -4,70 +4,71 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-12-07 14:37+0100\n"
-"PO-Revision-Date: 2025-12-11 11:11+0100\n"
+"POT-Creation-Date: 2025-12-19 22:04+0100\n"
+"PO-Revision-Date: 2025-12-19 22:11+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: hr_HR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 "X-Generator: Poedit 3.8\n"
 
-#: src/Pdf/ContractPDF.php:307 src/Pdf/ContractPDF.php:1042
+#: src/Pdf/ContractPDF.php:328 src/Pdf/ContractPDF.php:1195
 msgid "Billing Address"
 msgstr "Adresa za naplatu"
 
-#: src/Pdf/ContractPDF.php:378 src/Pdf/ContractPDF.php:1113
+#: src/Pdf/ContractPDF.php:399 src/Pdf/ContractPDF.php:1266
 msgid "Installation Address"
 msgstr "Adresa instalacije"
 
-#: src/Pdf/ContractPDF.php:382 src/Pdf/ContractPDF.php:1117
+#: src/Pdf/ContractPDF.php:403 src/Pdf/ContractPDF.php:1270
 msgid "Delivery Address"
 msgstr "Adresa za dostavu"
 
-#: src/Pdf/ContractPDF.php:386 src/Pdf/ContractPDF.php:1121
+#: src/Pdf/ContractPDF.php:407 src/Pdf/ContractPDF.php:1274
 msgid "Permanent Address"
 msgstr "Adresa prebivališta"
 
-#: src/Pdf/ContractPDF.php:408
+#: src/Pdf/ContractPDF.php:429
 msgid "Username"
 msgstr "Korisničko ime"
 
-#: src/Pdf/ContractPDF.php:409
+#: src/Pdf/ContractPDF.php:430
 msgid "Password"
 msgstr "Lozinka"
 
-#: src/Pdf/ContractPDF.php:423
+#: src/Pdf/ContractPDF.php:444
 msgid "Assigned IP Addresses"
 msgstr "Dodijeljene IP adrese"
 
-#: src/Pdf/ContractPDF.php:428
+#: src/Pdf/ContractPDF.php:449
 msgid "IP Address"
 msgstr "IP adresa"
 
-#: src/Pdf/ContractPDF.php:429 src/Pdf/ContractPDF.php:477
+#: src/Pdf/ContractPDF.php:450 src/Pdf/ContractPDF.php:504
 msgid "IP Network"
 msgstr "IP mreža"
 
-#: src/Pdf/ContractPDF.php:430 src/Pdf/ContractPDF.php:478
+#: src/Pdf/ContractPDF.php:451 src/Pdf/ContractPDF.php:505
 msgid "IP Gateway"
 msgstr "IP pristupnik"
 
-#: src/Pdf/ContractPDF.php:460
+#: src/Pdf/ContractPDF.php:481
 msgid "Assigned IP Networks"
 msgstr "Dodijeljene IP mreže"
 
-#: src/Pdf/ContractPDF.php:479
+#: src/Pdf/ContractPDF.php:506
 msgid "DNS Servers"
 msgstr "DNS poslužitelji"
 
-#: src/Pdf/ContractPDF.php:493
+#: src/Pdf/ContractPDF.php:538
 msgid "WiFi - SSID"
 msgstr "WiFi - SSID"
 
-#: src/Pdf/ContractPDF.php:494
+#: src/Pdf/ContractPDF.php:539
 msgid "WiFi - Password"
 msgstr "WiFi - Lozinka"
 
@@ -125,14 +126,25 @@ msgstr "WiFi - Lozinka"
 #~ msgid "dynamic"
 #~ msgstr "dynamický"
 
-#~ msgid "The related dynamic customer labels could not be saved. Please, try again."
-#~ msgstr "Související dynamické štítky zákazníků nebylo možné uložit. Zkuste to prosím znovu."
+#~ msgid ""
+#~ "The related dynamic customer labels could not be saved. Please, try again."
+#~ msgstr ""
+#~ "Související dynamické štítky zákazníků nebylo možné uložit. Zkuste to "
+#~ "prosím znovu."
 
-#~ msgid "The related dynamic customer labels could not be deleted. Please, try again."
-#~ msgstr "Související dynamické štítky zákazníků nebylo možné odstranit. Zkuste to prosím znovu."
+#~ msgid ""
+#~ "The related dynamic customer labels could not be deleted. Please, try "
+#~ "again."
+#~ msgstr ""
+#~ "Související dynamické štítky zákazníků nebylo možné odstranit. Zkuste to "
+#~ "prosím znovu."
 
-#~ msgid "The related static customer labels could not be deleted. Please, try again."
-#~ msgstr "Související statické štítky zákazníků nebylo možné odstranit. Zkuste to prosím znovu."
+#~ msgid ""
+#~ "The related static customer labels could not be deleted. Please, try "
+#~ "again."
+#~ msgstr ""
+#~ "Související statické štítky zákazníků nebylo možné odstranit. Zkuste to "
+#~ "prosím znovu."
 
 #~ msgid "Subscriber Verification Code"
 #~ msgstr "Ověřovací kód účastníka"
@@ -147,7 +159,8 @@ msgstr "WiFi - Lozinka"
 #~ msgstr "Přístupové pověření bylo odstraněno."
 
 #~ msgid "The access credential could not be deleted. Please, try again."
-#~ msgstr "Přístupové oprávnění se nepodařilo odstranit. Zkuste to prosím znovu."
+#~ msgstr ""
+#~ "Přístupové oprávnění se nepodařilo odstranit. Zkuste to prosím znovu."
 
 #~ msgid "The address has been saved."
 #~ msgstr "Adresa byla uložena."
@@ -272,11 +285,17 @@ msgstr "WiFi - Lozinka"
 #~ msgid "The subscriber verification code has been updated."
 #~ msgstr "Ověřovací kód účastníka byl aktualizován."
 
-#~ msgid "The subscriber verification code could not be updated. Please, try again."
-#~ msgstr "Ověřovací kód účastníka se nepodařilo aktualizovat. Zkuste to prosím znovu."
+#~ msgid ""
+#~ "The subscriber verification code could not be updated. Please, try again."
+#~ msgstr ""
+#~ "Ověřovací kód účastníka se nepodařilo aktualizovat. Zkuste to prosím "
+#~ "znovu."
 
-#~ msgid "The subscriber verification codes could not be updated. Please, try again."
-#~ msgstr "Ověřovací kódy účastníků nebylo možné aktualizovat. Zkuste to prosím znovu."
+#~ msgid ""
+#~ "The subscriber verification codes could not be updated. Please, try again."
+#~ msgstr ""
+#~ "Ověřovací kódy účastníků nebylo možné aktualizovat. Zkuste to prosím "
+#~ "znovu."
 
 #~ msgid "The subscriber verification codes have been updated."
 #~ msgstr "Ověřovací kódy účastníků byly aktualizovány."
@@ -305,7 +324,9 @@ msgstr "WiFi - Lozinka"
 #~ msgid "Contract for the provision of services"
 #~ msgstr "Smlouva o poskytování služeb"
 
-#~ msgid "Contract for the provision of services (with termination of the original contract)"
+#~ msgid ""
+#~ "Contract for the provision of services (with termination of the original "
+#~ "contract)"
 #~ msgstr "Smlouva o poskytování služeb (s ukončením původní smlouvy)"
 
 #~ msgid "Amendment to the contract for the provision of services"
@@ -326,8 +347,14 @@ msgstr "WiFi - Lozinka"
 #~ msgid "indefinitely"
 #~ msgstr "na dobu neurčitou"
 
-#~ msgid "A borrowed equipment is not assigned, although it should normally be for this type of service. Please confirm that the customer has their own equipment or add it."
-#~ msgstr "Zapůjčené zařízení není přiděleno, ačkoli by normálně mělo být pro tento typ služby. Potvrďte prosím, že zákazník má vlastní zařízení, nebo jej přidejte."
+#~ msgid ""
+#~ "A borrowed equipment is not assigned, although it should normally be for "
+#~ "this type of service. Please confirm that the customer has their own "
+#~ "equipment or add it."
+#~ msgstr ""
+#~ "Zapůjčené zařízení není přiděleno, ačkoli by normálně mělo být pro tento "
+#~ "typ služby. Potvrďte prosím, že zákazník má vlastní zařízení, nebo jej "
+#~ "přidejte."
 
 #~ msgid "Invalid contract version requested."
 #~ msgstr "Požadována neplatná verze smlouvy."
@@ -396,16 +423,23 @@ msgstr "WiFi - Lozinka"
 #~ msgstr "Hromadná zpráva pro zákazníka byla uložena."
 
 #~ msgid "The bulk customer message could not be saved. Please, try again."
-#~ msgstr "Hromadnou zprávu pro zákazníka se nepodařilo uložit. Zkuste to prosím znovu."
+#~ msgstr ""
+#~ "Hromadnou zprávu pro zákazníka se nepodařilo uložit. Zkuste to prosím "
+#~ "znovu."
 
 #~ msgid "The customer message has been deleted."
 #~ msgstr "Zpráva pro zákazníka byla smazána."
 
 #~ msgid "The customer message could not be deleted. Please, try again."
-#~ msgstr "Zprávu pro zákazníka nebylo možné odstranit. Zkuste to prosím znovu."
+#~ msgstr ""
+#~ "Zprávu pro zákazníka nebylo možné odstranit. Zkuste to prosím znovu."
 
-#~ msgid "Please use the customer number or company identification number in the search."
-#~ msgstr "Při vyhledávání prosím použijte zákaznické číslo nebo identifikační číslo společnosti."
+#~ msgid ""
+#~ "Please use the customer number or company identification number in the "
+#~ "search."
+#~ msgstr ""
+#~ "Při vyhledávání prosím použijte zákaznické číslo nebo identifikační číslo "
+#~ "společnosti."
 
 #~ msgid "The customer has been saved."
 #~ msgstr "Zákazník byl uložen."
@@ -468,7 +502,8 @@ msgstr "WiFi - Lozinka"
 #~ msgstr "IP adresu se nepodařilo uložit. Zkuste to prosím znovu."
 
 #~ msgid "The IP address ranges list could not be loaded. Please, try again."
-#~ msgstr "Seznam rozsahů IP adres se nepodařilo načíst. Zkuste to prosím znovu."
+#~ msgstr ""
+#~ "Seznam rozsahů IP adres se nepodařilo načíst. Zkuste to prosím znovu."
 
 #~ msgid "The IP address has been deleted."
 #~ msgstr "IP adresa byla odstraněna."
@@ -509,7 +544,9 @@ msgstr "WiFi - Lozinka"
 #~ msgid "The removed IP network could not be saved. Please, try again."
 #~ msgstr "Odebranou IP síť nelze uložit. Zkuste to prosím znovu."
 
-#~ msgid "An expression for data modification was detected in the SQL query, which is forbidden."
+#~ msgid ""
+#~ "An expression for data modification was detected in the SQL query, which "
+#~ "is forbidden."
 #~ msgstr "V dotazu SQL byl zjištěn výraz pro modifikaci dat, což je zakázáno."
 
 #~ msgid "The label has been saved."
@@ -528,7 +565,9 @@ msgstr "WiFi - Lozinka"
 #~ msgstr "Související štítky zákazníků byly aktualizovány."
 
 #~ msgid "The related customer labels could not be updated. Please, try again."
-#~ msgstr "Související štítky zákazníků nebylo možné aktualizovat. Zkuste to prosím znovu."
+#~ msgstr ""
+#~ "Související štítky zákazníků nebylo možné aktualizovat. Zkuste to prosím "
+#~ "znovu."
 
 #~ msgid "The login has been saved."
 #~ msgstr "Přihlášení bylo uloženo."
@@ -686,11 +725,16 @@ msgstr "WiFi - Lozinka"
 #~ msgid "The notification email could not be sent."
 #~ msgstr "E-mail s oznámením se nepodařilo odeslat."
 
-#~ msgid "There was {0} unfinished task found that does not have a dealer assigned."
-#~ msgid_plural "There were {0} unfinished tasks found that do not have a dealer assigned."
-#~ msgstr[0] "Byl nalezen {0} nedokončený úkol, který nemá přiřazeného dealera."
-#~ msgstr[1] "Byly nalezeny {0} nedokončené úkoly, které nemají přiřazeného dealera."
-#~ msgstr[2] "Bylo nalezeno {0} nedokončených úkolů, které nemají přiřazeného dealera."
+#~ msgid ""
+#~ "There was {0} unfinished task found that does not have a dealer assigned."
+#~ msgid_plural ""
+#~ "There were {0} unfinished tasks found that do not have a dealer assigned."
+#~ msgstr[0] ""
+#~ "Byl nalezen {0} nedokončený úkol, který nemá přiřazeného dealera."
+#~ msgstr[1] ""
+#~ "Byly nalezeny {0} nedokončené úkoly, které nemají přiřazeného dealera."
+#~ msgstr[2] ""
+#~ "Bylo nalezeno {0} nedokončených úkolů, které nemají přiřazeného dealera."
 
 #~ msgid "The tax rate has been saved."
 #~ msgstr "Sazba daňe byla uložena."
@@ -848,10 +892,13 @@ msgstr "WiFi - Lozinka"
 #~ msgid "Specialist"
 #~ msgstr "Specialista"
 
-#~ msgid "The specified service type requires the assignment of an installation address."
+#~ msgid ""
+#~ "The specified service type requires the assignment of an installation "
+#~ "address."
 #~ msgstr "Zadaný typ služby vyžaduje přiřazení instalační adresy."
 
-#~ msgid "The specified service type requires the assignment of an access point."
+#~ msgid ""
+#~ "The specified service type requires the assignment of an access point."
 #~ msgstr "Zadaný typ služby vyžaduje přiřazení přístupového bodu."
 
 #~ msgid "The specified identification number is not valid."
@@ -926,8 +973,12 @@ msgstr "WiFi - Lozinka"
 #~ msgid "last"
 #~ msgstr "poslední"
 
-#~ msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
-#~ msgstr "Stránka {{page}} z {{pages}}, zobrazující {{current}} záznamů z celkového počtu {{count}}"
+#~ msgid ""
+#~ "Page {{page}} of {{pages}}, showing {{current}} record(s) out of "
+#~ "{{count}} total"
+#~ msgstr ""
+#~ "Stránka {{page}} z {{pages}}, zobrazující {{current}} záznamů z celkového "
+#~ "počtu {{count}}"
 
 #~ msgid "Delete Access Credential"
 #~ msgstr "Odstranit přístupové oprávnění"
@@ -1100,8 +1151,12 @@ msgstr "WiFi - Lozinka"
 #~ msgid "Send a customer notification about the change"
 #~ msgstr "Odeslat zákazníkovi oznámení o změně"
 
-#~ msgid "Do you really want to change the original service to the new service for all the billings listed below from the date set?"
-#~ msgstr "Opravdu chcete změnit původní službu na novou službu u všech níže uvedených fakturací od nastaveného data?"
+#~ msgid ""
+#~ "Do you really want to change the original service to the new service for "
+#~ "all the billings listed below from the date set?"
+#~ msgstr ""
+#~ "Opravdu chcete změnit původní službu na novou službu u všech níže "
+#~ "uvedených fakturací od nastaveného data?"
 
 #~ msgid "Billings"
 #~ msgstr "Fakturace"
@@ -1139,8 +1194,12 @@ msgstr "WiFi - Lozinka"
 #~ msgid "Total Price"
 #~ msgstr "Celková cena"
 
-#~ msgid "Do you really want to change the original service to the new service for the billing listed above from the date set?"
-#~ msgstr "Opravdu chcete změnit původní službu na novou službu pro výše uvedenou fakturaci od nastaveného data?"
+#~ msgid ""
+#~ "Do you really want to change the original service to the new service for "
+#~ "the billing listed above from the date set?"
+#~ msgstr ""
+#~ "Opravdu chcete změnit původní službu na novou službu pro výše uvedenou "
+#~ "fakturaci od nastaveného data?"
 
 #~ msgid "Service Change"
 #~ msgstr "Změna služby"
@@ -1403,14 +1462,19 @@ msgstr "WiFi - Lozinka"
 #~ msgid "Terminate Related Billings"
 #~ msgstr "Ukončit související fakturace"
 
-#~ msgid "Are you sure you want to terminate related billings for contract # {0}?"
+#~ msgid ""
+#~ "Are you sure you want to terminate related billings for contract # {0}?"
 #~ msgstr "Opravdu chcete ukončit související fakturace pro smlouvu č. {0}?"
 
 #~ msgid "Set Dates Automatically"
 #~ msgstr "Automaticky nastavit datumy"
 
-#~ msgid "Are you sure you want to set dates for related borrowed equipments for contract # {0}?"
-#~ msgstr "Opravdu chcete nastavit datumy pro související zapůjčená zařízení pro smlouvu č. {0}?"
+#~ msgid ""
+#~ "Are you sure you want to set dates for related borrowed equipments for "
+#~ "contract # {0}?"
+#~ msgstr ""
+#~ "Opravdu chcete nastavit datumy pro související zapůjčená zařízení pro "
+#~ "smlouvu č. {0}?"
 
 #~ msgid "New Sold Equipment"
 #~ msgstr "Nové prodané zařízení"
@@ -1581,7 +1645,8 @@ msgstr "WiFi - Lozinka"
 #~ msgstr "Souhlasí se zpracováním osobních údajů"
 
 #~ msgid "Agrees to Receive All Correspondence Related to Billing"
-#~ msgstr "Souhlasí se zasíláním veškeré korespondence související s vyúčtováním"
+#~ msgstr ""
+#~ "Souhlasí se zasíláním veškeré korespondence související s vyúčtováním"
 
 #~ msgid "Agrees to Receive Information About Outages And Malfunctions"
 #~ msgstr "Souhlasí se zasíláním informací o výpadcích a poruchách"
@@ -1836,7 +1901,8 @@ msgstr "WiFi - Lozinka"
 #~ msgstr "Aktualizace souvisejících štítků zákazníků"
 
 #~ msgid "Are you sure you want to update related customer labels # {0}?"
-#~ msgstr "Jste si jisti, že chcete aktualizovat související štítky zákazníků # {0}?"
+#~ msgstr ""
+#~ "Jste si jisti, že chcete aktualizovat související štítky zákazníků # {0}?"
 
 #~ msgid "All"
 #~ msgstr "Všechny"
@@ -2219,11 +2285,16 @@ msgstr "WiFi - Lozinka"
 #~ msgid "Addition of Subscriber Verification Codes"
 #~ msgstr "Přidání kódů pro ověřování účastníků"
 
-#~ msgid "Do you really want to add a subscriber verification code for all contracts?"
+#~ msgid ""
+#~ "Do you really want to add a subscriber verification code for all "
+#~ "contracts?"
 #~ msgstr "Opravdu chcete přidat ověřovací kód účastníka pro všechny smlouvy?"
 
-#~ msgid "Do you really want to re-set a subscriber verification code for all contracts?"
-#~ msgstr "Opravdu chcete znovu nastavit ověřovací kód účastníka pro všechny smlouvy?"
+#~ msgid ""
+#~ "Do you really want to re-set a subscriber verification code for all "
+#~ "contracts?"
+#~ msgstr ""
+#~ "Opravdu chcete znovu nastavit ověřovací kód účastníka pro všechny smlouvy?"
 
 #~ msgid "System Related"
 #~ msgstr "Související se systémem"
@@ -2517,7 +2588,8 @@ msgstr "WiFi - Lozinka"
 #~ msgstr "Souhlasí se zpracováním osobních údajů"
 
 #~ msgid "Agree Mailing Billing"
-#~ msgstr "Souhlasí se zasíláním veškeré korespondence spojené s měsíčním vyúčtováním"
+#~ msgstr ""
+#~ "Souhlasí se zasíláním veškeré korespondence spojené s měsíčním vyúčtováním"
 
 #~ msgid "Agree Mailing Outages"
 #~ msgstr "Souhlasí se zasíláním informací o odstávkách a poruchách"
