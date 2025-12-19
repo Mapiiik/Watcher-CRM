@@ -344,7 +344,7 @@ class ProcessDebtorsCommand extends Command
     private function generateNotifyEmail(Debtor $debtor): CustomerMessage
     {
         $subjectTemplate = Settings::getString('core.debtors.emails.notify.subject');
-        $contentTemplate = Settings::getString('core.debtors.emails.notify.body');
+        $contentTemplate = Settings::getString('core.debtors.emails.notify.body_text');
 
         return $this->generateEmail(
             $debtor,
@@ -360,7 +360,7 @@ class ProcessDebtorsCommand extends Command
     private function generateNotifyEmailForInactiveServices(Debtor $debtor): CustomerMessage
     {
         $subjectTemplate = Settings::getString('core.debtors.emails.inactive.subject');
-        $contentTemplate = Settings::getString('core.debtors.emails.inactive.body');
+        $contentTemplate = Settings::getString('core.debtors.emails.inactive.body_text');
 
         return $this->generateEmail(
             $debtor,
@@ -376,7 +376,7 @@ class ProcessDebtorsCommand extends Command
     private function generateBlockEmail(Debtor $debtor): CustomerMessage
     {
         $subjectTemplate = Settings::getString('core.debtors.emails.block.subject');
-        $contentTemplate = Settings::getString('core.debtors.emails.block.body');
+        $contentTemplate = Settings::getString('core.debtors.emails.block.body_text');
 
         return $this->generateEmail(
             $debtor,

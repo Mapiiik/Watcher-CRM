@@ -108,7 +108,7 @@ return [
             ],
             'emails' => [
                 'subject' => 'NETAIR - {invoice_text} - {invoice_number} - VS: {variable_symbol}',
-                'body' => <<<TEXT
+                'body_text' => <<<TEXT
                     Vážený zákazníku,
 
                     dne {creation_date} Vám byla vystavena faktura - daňový doklad č. {invoice_number} splatná {due_date}.
@@ -154,7 +154,7 @@ return [
             'emails' => [
                 'notify' => [
                     'subject' => 'NETAIR - neuhrazené pohledávky ke dni {date} - VS: {customer_number}',
-                    'body' => <<<TEXT
+                    'body_text' => <<<TEXT
                         Vážený zákazníku,
 
                         rádi bychom Vás upozornili, že k dnešnímu dni evidujeme neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}.
@@ -184,7 +184,7 @@ return [
                 ],
                 'block' => [
                     'subject' => 'NETAIR - pozastavení služeb - neuhrazené pohledávky ke dni {date} - VS: {customer_number}',
-                    'body' => <<<TEXT
+                    'body_text' => <<<TEXT
                         Vážený zákazníku,
 
                         rádi bychom Vás upozornili, že naše služby byly pozastaveny z důvodu neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}.
@@ -212,7 +212,7 @@ return [
                 ],
                 'inactive' => [
                     'subject' => 'NETAIR - neaktivní služby - neuhrazené pohledávky ke dni {date} - VS: {customer_number}',
-                    'body' => <<<TEXT
+                    'body_text' => <<<TEXT
                         Vážený zákazníku,
 
                         rádi bychom Vás upozornili, že k dnešnímu dni stále evidujeme neuhrazené pohledávky po splatnosti ve výši {total_overdue_debt}, VS: {customer_number}.
@@ -460,11 +460,11 @@ return [
                             <u>https://netair.cz/internet/uzivatelsky-portal</u>
                             HTML,
 
-                        'connection_point_state_text' => <<<STRING
+                        'connection_point_state_text' => <<<TEXT
                             Síla signálu na straně Uživatele v případě bezdrátového připojení do sítě Poskytovatele (Tx / Rx): ____________________ dBm
 
                             Pro případný servis je zapotřebí žebřík v minimální délce: ______ m
-                            STRING,
+                            TEXT,
 
                         'general_statements_text' => 'Uživatel a Poskytovatel tímto stvrzují, že: ___________________________________________________________________________________',
 
@@ -483,7 +483,7 @@ return [
                         'uninstallation_borrowed_equipment_intro' => 'Poskytovatel poskytl Uživateli pro dobu trvání Smlouvy bezúplatně tato zařízení:',
                         'uninstallation_equipment_state' => 'Stav zařízení v době deinstalace:',
 
-                        'uninstallation_equipment_checks' => <<<TEXT
+                        'uninstallation_equipment_checks_text' => <<<TEXT
                             ▢ ano / ▢ ne - Poskytovateli byla umožněna zkouška funkčnosti zařízení na místě, jejich zapnutím, připojením se do jejich konfiguračního rozhraní pokud to umožňují a provedením diagnostiky
 
                             ▢ ano / ▢ ne - provedením zkoušky funkčnosti zařízení na místě, byla zjištěna jeho nefunkčnost
@@ -546,7 +546,7 @@ return [
                 'title' => 'SOUHLAS',
                 'subtitle' => 'se zpracováním osobních údajů',
 
-                'declaration' => <<<TEXT
+                'declaration_text' => <<<TEXT
                     Prohlášení Správce:
 
                     Správce prohlašuje, že bude zpracovávat osobní údaje v rozsahu nezbytném pro naplnění níže stanovených účelů, plnění smlouvy, plnění zákonných povinností a ochrany oprávněných zájmů. Zaměstnanci Správce nebo jiné fyzické osoby, které zpracovávají osobní údaje na základě smlouvy se Správcem a další osoby jsou povinni zachovávat mlčenlivost o osobních údajích, a to i po skončení pracovního poměru nebo prací.

@@ -102,7 +102,7 @@ class SendIssuedInvoicesCommand extends Command
                 // define date format
                 Date::setToStringFormat('dd.MM.yyyy');
 
-                $message = strtr(Settings::getString('core.invoices.emails.body'), [
+                $message = strtr(Settings::getString('core.invoices.emails.body_text'), [
                     '{creation_date}' => $invoice->creation_date->__toString(),
                     '{due_date}' => $invoice->due_date->__toString(),
                     '{invoice_number}' => (string)$invoice->number,

@@ -936,7 +936,7 @@ class ContractPDF extends AppPDF
             $this->MultiCell(
                 180,
                 4,
-                Settings::getString('core.documents.contracts.handover.texts.uninstallation_equipment_checks')
+                Settings::getString('core.documents.contracts.handover.texts.uninstallation_equipment_checks_text')
                     . PHP_EOL,
                 align: 'J',
             );

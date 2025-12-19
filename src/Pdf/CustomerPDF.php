@@ -146,7 +146,7 @@ class CustomerPDF extends AppPDF
 
         // Declaration text
         $this->SetFont('DejaVuSerif', '', 7);
-        $this->Write(3, Settings::getString('core.documents.gdpr.declaration'), ln: true);
+        $this->Write(3, Settings::getString('core.documents.gdpr.declaration_text'), ln: true);
 
         // Checkboxes
         $this->SetFont('DejaVuSerif', 'B', 8);
