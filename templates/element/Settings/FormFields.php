@@ -49,5 +49,5 @@ foreach ($data as $key => $value) {
             </small>
         </div>
         <?php
-    };
+    }
 }

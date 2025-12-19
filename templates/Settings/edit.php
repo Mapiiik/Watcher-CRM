@@ -23,7 +23,9 @@
             <?= $this->Form->create($setting) ?>
             <fieldset>
                 <legend><?= __('Edit Setting') ?></legend>
-                <?= __('If you leave the field blank, it will not be saved in the DB and the default value will be used.') ?>
+                <?= __(
+                    'If you leave the field blank, it will not be saved in the DB and the default value will be used.',
+                ) ?>
             </fieldset>
 
             <fieldset class="settings-group">
