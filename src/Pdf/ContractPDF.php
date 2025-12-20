@@ -731,7 +731,7 @@ class ContractPDF extends AppPDF
                 );
 
                 /** @psalm-suppress ImplicitToStringCast */
-                $subtotal = $subtotal->add($sold_equipment_price);
+                $subtotal = $subtotal->add($sold_equipment_price ?? Decimal::create(0, 2));
                 $this->Cell(4, 5);
                 $this->Cell(130, 5, $sold_equipment->equipment_type->name, 1);
                 $this->Cell(25, 5, $sold_equipment->serial_number, border: 1, align: 'C');
