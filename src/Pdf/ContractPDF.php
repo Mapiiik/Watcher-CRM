@@ -605,7 +605,7 @@ class ContractPDF extends AppPDF
                     $this->Cell(
                         25,
                         5,
-                        Number::currency($borrowed_equipment->equipment_type->price->toFloat()),
+                        Number::currency($borrowed_equipment->equipment_type->price?->toFloat() ?? ''),
                         border: 1,
                         align: 'R',
                     );
@@ -727,7 +727,7 @@ class ContractPDF extends AppPDF
 
                 /** @psalm-suppress ImplicitToStringCast */
                 $sold_equipments_value = $sold_equipments_value->add(
-                    $sold_equipment->equipment_type->price,
+                    $sold_equipment->equipment_type->price ?? Decimal::create(0, 2),
                 );
 
                 /** @psalm-suppress ImplicitToStringCast */
@@ -735,7 +735,7 @@ class ContractPDF extends AppPDF
                 $this->Cell(4, 5);
                 $this->Cell(130, 5, $sold_equipment->equipment_type->name, 1);
                 $this->Cell(25, 5, $sold_equipment->serial_number, border: 1, align: 'C');
-                $this->Cell(25, 5, Number::currency($sold_equipment_price->toFloat()), border: 1, align: 'R');
+                $this->Cell(25, 5, Number::currency($sold_equipment_price?->toFloat() ?? ''), border: 1, align: 'R');
                 $this->Ln();
 
                 unset($sold_equipment_price);
@@ -909,7 +909,7 @@ class ContractPDF extends AppPDF
                 $this->Cell(
                     25,
                     5,
-                    Number::currency($borrowed_equipment->equipment_type->price->toFloat()),
+                    Number::currency($borrowed_equipment->equipment_type->price?->toFloat() ?? ''),
                     border: 1,
                     align: 'R',
                 );
@@ -1580,7 +1580,7 @@ class ContractPDF extends AppPDF
                     $this->Cell(
                         30,
                         5,
-                        Number::currency($borrowed_equipment->equipment_type->price->toFloat()),
+                        Number::currency($borrowed_equipment->equipment_type->price?->toFloat() ?? ''),
                         border: 1,
                         align: 'R',
                     );
