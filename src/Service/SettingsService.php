@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Domain\Settings\SettingsPath;
+use App\Model\Entity\Setting;
 use Cake\Cache\Cache;
 use Cake\Core\Plugin;
 use Cake\ORM\Locator\LocatorAwareTrait;
@@ -111,17 +113,60 @@ class SettingsService
      */
     public function getDefault(string $path, mixed $default = null): mixed
     {
-        // Split path into plugin, key, subKey
-        $parts = explode('.', $path);
-        $plugin = $parts[0] ?? null;
-        $key = $parts[1] ?? null;
-        $subKey = isset($parts[2]) ? implode('.', array_slice($parts, 2)) : null;
+        $settingsPath = SettingsPath::fromString($path);
 
-        if ($plugin === null || $key === null) {
+        if (!$settingsPath->isValid()) {
             return $default;
         }
 
-        return $this->resolveSubKey($this->defaults[$plugin][$key] ?? null, $subKey, $default);
+        return $this->resolveSubKey(
+            $this->defaults[$settingsPath->plugin][$settingsPath->key] ?? null,
+            $settingsPath->subKey,
+            $default,
+        );
+    }
+
+    /**
+     * Load settings overlay entity for given plugin and key.
+     *
+     * @param string $plugin
+     * @param string $key
+     * @return \App\Model\Entity\Setting
+     */
+    protected function loadOverlayEntity(string $plugin, string $key): Setting
+    {
+        /** @var \App\Model\Table\SettingsTable $settingsTable */
+        $settingsTable = $this->fetchTable('Settings');
+
+        return $settingsTable->findOrNewEntity([
+            'plugin' => $plugin,
+            'key' => $key,
+        ]);
+    }
+
+    /**
+     * Get overlay value from database by path.
+     *
+     * Returns only the persisted overlay (without defaults).
+     *
+     * @param string $path Settings path (plugin.key[.subKey...]).
+     * @return mixed|null  Overlay value or null if not present.
+     */
+    public function getOverlay(string $path): mixed
+    {
+        $settingsPath = SettingsPath::fromString($path);
+
+        if (!$settingsPath->isValid()) {
+            return null;
+        }
+
+        $setting = $this->loadOverlayEntity($settingsPath->plugin, $settingsPath->key);
+
+        return $this->resolveSubKey(
+            (array)$setting->value,
+            $settingsPath->subKey,
+            null,
+        );
     }
 
     /**
@@ -138,25 +183,27 @@ class SettingsService
      */
     public function get(string $path, mixed $default = null): mixed
     {
-        // Split path into plugin, key, subKey
-        $parts = explode('.', $path);
-        $plugin = $parts[0] ?? null;
-        $key = $parts[1] ?? null;
-        $subKey = isset($parts[2]) ? implode('.', array_slice($parts, 2)) : null;
+        $settingsPath = SettingsPath::fromString($path);
 
-        if ($plugin === null || $key === null) {
+        if (!$settingsPath->isValid()) {
             return $default;
         }
 
+        $plugin = $settingsPath->plugin;
+        $key = $settingsPath->key;
+
         // 1) Check local in-memory cache first
         if (isset($this->localCache[$plugin][$key])) {
-            return $this->resolveSubKey($this->localCache[$plugin][$key], $subKey, $default);
+            return $this->resolveSubKey(
+                $this->localCache[$plugin][$key],
+                $settingsPath->subKey,
+                $default,
+            );
         }
 
         // 2) Load from cache/DB and merge with defaults
-        $cacheKey = "settings.$plugin.$key";
         $merged = Cache::remember(
-            $cacheKey,
+            $settingsPath->cacheKey(),
             function () use ($plugin, $key) {
                 // Load defaults for this plugin/key
                 $defaults = $this->defaults[$plugin][$key] ?? null;
@@ -173,11 +220,9 @@ class SettingsService
                 // Merge: defaults < DB
                 if (is_array($defaults) && is_array($dbValue)) {
                     return array_replace_recursive($defaults, $dbValue);
-                } elseif ($dbValue !== null) {
-                    return $dbValue;
-                } else {
-                    return $defaults;
                 }
+
+                return $dbValue ?? $defaults;
             },
             'default',
         );
@@ -186,11 +231,9 @@ class SettingsService
         $this->localCache[$plugin][$key] = $merged;
 
         // 4) Return subKey or the whole value
-        if ($merged !== null) {
-            return $this->resolveSubKey($merged, $subKey, $default);
-        }
-
-        return $default;
+        return $merged !== null
+            ? $this->resolveSubKey($merged, $settingsPath->subKey, $default)
+            : $default;
     }
 
     /**
@@ -258,12 +301,9 @@ class SettingsService
      */
     public function set(string $path, mixed $value): bool
     {
-        $parts = explode('.', $path);
-        $plugin = $parts[0] ?? null;
-        $key = $parts[1] ?? null;
-        $subKey = isset($parts[2]) ? implode('.', array_slice($parts, 2)) : null;
+        $settingsPath = SettingsPath::fromString($path);
 
-        if (!$plugin || !$key) {
+        if (!$settingsPath->isValid()) {
             return false;
         }
 
@@ -271,15 +311,15 @@ class SettingsService
         $settingsTable = $this->fetchTable('Settings');
 
         $entity = $settingsTable->findOrNewEntity([
-            'plugin' => $plugin,
-            'key' => $key,
+            'plugin' => $settingsPath->plugin,
+            'key' => $settingsPath->key,
         ]);
 
         $current = (array)$entity->value;
 
         // Always insert first
-        if ($subKey !== null) {
-            $current = Hash::insert($current, $subKey, $value);
+        if ($settingsPath->subKey !== null) {
+            $current = Hash::insert($current, $settingsPath->subKey, $value);
         } else {
             $current = (array)$value;
         }
@@ -292,7 +332,8 @@ class SettingsService
             if (!$entity->isNew()) {
                 $settingsTable->delete($entity);
             }
-            $this->clearCache($plugin, $key);
+
+            $this->clearCache($settingsPath->plugin, $settingsPath->key);
 
             return true;
         }
@@ -300,7 +341,7 @@ class SettingsService
         $entity->value = $current;
 
         if ($settingsTable->save($entity)) {
-            $this->clearCache($plugin, $key);
+            $this->clearCache($settingsPath->plugin, $settingsPath->key);
 
             return true;
         }

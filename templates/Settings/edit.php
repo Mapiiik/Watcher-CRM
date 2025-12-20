@@ -1,27 +1,22 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var string $plugin
- * @var string $key
+ * @var string $path
+ * @var \App\Domain\Settings\SettingsPath $settingsPath
  * @var array<mixed> $default
- * @var \App\Model\Entity\Setting $setting
+ * @var array<mixed> $overlay
  */
 ?>
 <div class="row">
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->AuthLink->postLink(
-                __('Delete'),
-                ['action' => 'delete', $setting->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $setting->id), 'class' => 'side-nav-item'],
-            ) ?>
             <?= $this->AuthLink->link(__('List Settings'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column column-90">
         <div class="settings form content">
-            <?= $this->Form->create($setting) ?>
+            <?= $this->Form->create() ?>
             <fieldset>
                 <legend><?= __('Edit Setting') ?></legend>
                 <?= __(
@@ -30,13 +25,13 @@
             </fieldset>
 
             <fieldset class="settings-group">
-                <legend><?= __('Setting: {path}', ['path' => $plugin . '.' . $key]) ?></legend>
+                <legend><?= __('Setting: {path}', ['path' => $path]) ?></legend>
 
                 <?= $this->element('Settings/FormFields', [
-                    'data' => $default,
-                    'overlay' => $setting->value ?? [],
+                    'default' => $default,
+                    'overlay' => $overlay ?? [],
                     'path' => '',
-                    'fullPath' => $plugin . '.' . $key,
+                    'fullPath' => $path,
                 ]) ?>
             </fieldset>
 

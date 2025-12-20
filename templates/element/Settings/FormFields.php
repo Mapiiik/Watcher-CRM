@@ -3,27 +3,27 @@
  * Recursive form field generator for settings.
  *
  * @var \App\View\AppView $this
- * @var array  $data     Default values (nested array)
+ * @var array  $default  Default values (nested array)
  * @var array  $overlay  Overlay values from DB (nested array)
  * @var string $path     Current dot-path (e.g. "invoices.phone")
  * @var string $fullPath Current full-path (e.g. "core.company.invoices.phone")
  */
 ?>
 <?php
-foreach ($data as $key => $value) {
+foreach ($default as $key => $defaultValue) {
     $actualFullPath = ltrim($fullPath . '.' . $key, '.');
     $actualPath = ltrim($path . '.' . $key, '.');
-    $overlayValue = $overlay[$key] ?? null;
+    $actualOverlay = $overlay[$key] ?? null;
 
-    if (is_array($value)) {
+    if (is_array($defaultValue)) {
         // Nested group
         ?>
         <fieldset class="settings-group">
             <legend><?= __('Setting: {path}', ['path' => $actualFullPath]) ?></legend>
 
             <?= $this->element('Settings/FormFields', [
-                'data' => $value,
-                'overlay' => is_array($overlayValue) ? $overlayValue : [],
+                'default' => $defaultValue,
+                'overlay' => is_array($actualOverlay) ? $actualOverlay : [],
                 'path' => $actualPath,
                 'fullPath' => $actualFullPath,
             ]) ?>
@@ -38,15 +38,15 @@ foreach ($data as $key => $value) {
         }
         ?>
         <div class="input text settings-field">
-            <?= $this->Form->control("value.$actualPath", [
+            <?= $this->Form->control("overlay.$actualPath", [
                 'type' => $type,
-                'value' => $overlayValue ?? '',
-                'placeholder' => $value,
+                'value' => $actualOverlay ?? '',
+                'placeholder' => $defaultValue,
             ]) ?>
 
             <small class="default-value">
                 <?= __('Default value:') ?>
-                <pre><?= h($value) ?></pre>
+                <pre><?= h($defaultValue) ?></pre>
                 <br>
             </small>
         </div>
