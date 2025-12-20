@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace BookkeepingPohoda\Command;
 
 use App\Utility\Settings;
+use BookkeepingPohoda\Model\Table\InvoicesTable;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -52,9 +53,9 @@ class SendIssuedInvoicesCommand extends Command
     #[Override]
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        $invoices_table = $this->fetchTable('BookkeepingPohoda.Invoices');
+        $invoicesTable = $this->fetchTable(InvoicesTable::class);
         /** @var iterable<\BookkeepingPohoda\Model\Entity\Invoice> $invoices */
-        $invoices = $invoices_table
+        $invoices = $invoicesTable
             ->find()
             ->contain([
                 'Customers' => [
@@ -137,7 +138,7 @@ class SendIssuedInvoicesCommand extends Command
 
                     // save the date of submission to the database
                     $invoice->email_sent = DateTime::now();
-                    $invoices_table->save($invoice);
+                    $invoicesTable->save($invoice);
                 } catch (Exception $e) {
                     Log::error('Error sending email message with issued invoice ID '
                         . $invoice->id . ': ' . $e->getMessage());
@@ -179,7 +180,7 @@ class SendIssuedInvoicesCommand extends Command
 
                 // do not attempt to re-deliver this invoice by email
                 $invoice->send_by_email = false;
-                $invoices_table->save($invoice);
+                $invoicesTable->save($invoice);
             }
         }
         $io->info(__d('bookkeeping_pohoda', 'Done'));

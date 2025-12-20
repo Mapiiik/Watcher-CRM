@@ -6,6 +6,7 @@ namespace Radius\Updater;
 use App\Messages\Messages;
 use App\Model\Enum\IpAddressTypeOfUse;
 use App\Model\Enum\IpNetworkTypeOfUse;
+use App\Model\Table\ContractsTable;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
 use Cake\Log\Log;
@@ -59,10 +60,10 @@ class AccountsUpdater
     {
         $this->Messages = new Messages();
 
-        $this->Accounts = $this->fetchTable('Radius.Accounts');
-        $this->Radcheck = $this->fetchTable('Radius.Radcheck');
-        $this->Radreply = $this->fetchTable('Radius.Radreply');
-        $this->Radusergroup = $this->fetchTable('Radius.Radusergroup');
+        $this->Accounts = $this->fetchTable(AccountsTable::class);
+        $this->Radcheck = $this->fetchTable(RadcheckTable::class);
+        $this->Radreply = $this->fetchTable(RadreplyTable::class);
+        $this->Radusergroup = $this->fetchTable(RadusergroupTable::class);
     }
 
     /**
@@ -336,8 +337,7 @@ class AccountsUpdater
      */
     public function autoRadreplyData(Account $account): array
     {
-        /** @var \App\Model\Entity\Contract $contract */
-        $contract = $this->fetchTable('Contracts')->get($account->contract_id, contain: [
+        $contract = $this->fetchTable(ContractsTable::class)->get($account->contract_id, contain: [
             'IpAddresses',
             'IpNetworks',
         ]);
@@ -441,8 +441,7 @@ class AccountsUpdater
      */
     public function autoRadusergroupData(Account $account): array
     {
-        /** @var \App\Model\Entity\Contract $contract */
-        $contract = $this->fetchTable('Contracts')->get($account->contract_id, contain: [
+        $contract = $this->fetchTable(ContractsTable::class)->get($account->contract_id, contain: [
             'Billings' => [
                 'queryBuilder' => function (SelectQuery $q) {
                     return $q->where([

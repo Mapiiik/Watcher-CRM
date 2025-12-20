@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\ApiClient;
 use App\Model\Entity\IpAddress;
 use App\Model\Enum\IpAddressTypeOfUse;
+use App\Model\Table\RemovedIpAddressesTable;
 use Cake\I18n\DateTime;
 use Cake\Validation\Validation;
 use IPLib\Range\Subnet;
@@ -340,8 +341,7 @@ class IpAddressesController extends AppController
      */
     private function addToRemovedIpAddresses(IpAddress $ipAddress)
     {
-        /** @var \App\Model\Table\RemovedIpAddressesTable $removedIpAddressesTable */
-        $removedIpAddressesTable = $this->fetchTable('RemovedIpAddresses');
+        $removedIpAddressesTable = $this->fetchTable(RemovedIpAddressesTable::class);
 
         $removedIpAddress = $removedIpAddressesTable->newEntity($ipAddress->toArray());
 
@@ -569,7 +569,7 @@ class IpAddressesController extends AppController
 
             // retrieve previous IP address usage
             /** @var \App\Model\Entity\RemovedIpAddress|null $previousIpAddressUsage */
-            $previousIpAddressUsage = $this->fetchTable('RemovedIpAddresses')
+            $previousIpAddressUsage = $this->fetchTable(RemovedIpAddressesTable::class)
                 ->find()
                 ->contain([
                     'Contracts',

@@ -13,6 +13,7 @@ use Cake\I18n\Date;
 use Cake\I18n\Number;
 use Cake\ORM\Query\SelectQuery;
 use Override;
+use Radius\Model\Table\AccountsTable;
 use stdClass;
 
 /**
@@ -980,7 +981,7 @@ class ContractsController extends AppController
                     try {
                         //Try to load lastly added RADIUS account
                         /** @var \Radius\Model\Entity\Account $radius_account */
-                        $radius_account = $this->fetchTable('Radius.Accounts')
+                        $radius_account = $this->fetchTable(AccountsTable::class)
                             ->find()
                             ->where([
                                 'contract_id' => $contract->id,

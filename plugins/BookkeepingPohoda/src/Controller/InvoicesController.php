@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace BookkeepingPohoda\Controller;
 
+use App\Model\Table\CustomersTable;
+use App\Model\Table\TaxRatesTable;
 use App\Utility\Settings;
 use BookkeepingPohoda\View\DbfView;
 use BookkeepingPohoda\View\XmlView;
@@ -273,8 +275,7 @@ class InvoicesController extends AppController
      */
     private function getQueryForBillingDataForMonth(Date $invoicedMonth, string $taxRateId): SelectQuery
     {
-        /** @var \App\Model\Table\CustomersTable $customersTable */
-        $customersTable = $this->fetchTable('Customers');
+        $customersTable = $this->fetchTable(CustomersTable::class);
 
         return $customersTable
             ->find()
@@ -379,7 +380,7 @@ class InvoicesController extends AppController
      */
     public function generate()
     {
-        $taxRates = $this->fetchTable('TaxRates')
+        $taxRates = $this->fetchTable(TaxRatesTable::class)
             ->find('list', order: [
                 'name',
             ])
@@ -387,8 +388,7 @@ class InvoicesController extends AppController
 
         if ($this->getRequest()->is(['post'])) {
             $invoicedMonth = new Date($this->getRequest()->getData('invoiced_month', 'now'));
-            /** @var \App\Model\Entity\TaxRate $taxRate */
-            $taxRate = $this->fetchTable('TaxRates')->get($this->getRequest()->getData('tax_rate_id'));
+            $taxRate = $this->fetchTable(TaxRatesTable::class)->get($this->getRequest()->getData('tax_rate_id'));
             /** @var \Laminas\Diactoros\UploadedFile $csvForVerification */
             $csvForVerification = $this->getRequest()->getData('csv_for_verification');
 
@@ -497,7 +497,7 @@ class InvoicesController extends AppController
             $invoicedMonth = new Date($this->getRequest()->getQuery('invoiced_month', 'now'));
 
             /** @var \App\Model\Entity\TaxRate $taxRate */
-            $taxRate = $this->fetchTable('TaxRates')->get($this->getRequest()->getQuery('tax_rate_id'));
+            $taxRate = $this->fetchTable(TaxRatesTable::class)->get($this->getRequest()->getQuery('tax_rate_id'));
 
             if ($taxRate->reverse_charge) {
                 $prefix = 10000000 * ($invoicedMonth->year - 1980)

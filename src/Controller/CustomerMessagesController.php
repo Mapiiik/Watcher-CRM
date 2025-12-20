@@ -7,8 +7,10 @@ use App\ApiClient;
 use App\Model\Enum\CustomerMessageDeliveryStatus;
 use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessageType;
+use App\Model\Table\LabelsTable;
 use Cake\Utility\Text;
 use Cake\Validation\Validation;
+use Ruian\Model\Table\AddressesTable;
 use SplObjectStorage;
 
 /**
@@ -107,15 +109,13 @@ class CustomerMessagesController extends AppController
     public function addBulk()
     {
         // load labels
-        /** @var \App\Model\Table\LabelsTable $labelsTable */
-        $labelsTable = $this->fetchTable('Labels');
+        $labelsTable = $this->fetchTable(LabelsTable::class);
         $labels = $labelsTable->find('list', order: [
             'name',
         ])->all();
 
         // load RUIAN addresses
-        /** @var \Ruian\Model\Table\AddressesTable $ruianAddressesTable */
-        $ruianAddressesTable = $this->fetchTable('Ruian.Addresses');
+        $ruianAddressesTable = $this->fetchTable(AddressesTable::class);
         $ruianAddresses = $ruianAddressesTable->find(
             'list',
             valueField: 'address',

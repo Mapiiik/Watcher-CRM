@@ -7,6 +7,8 @@ use Cake\Database\Exception\MissingConnectionException;
 use Cake\Database\Query\SelectQuery;
 use Cake\View\Cell;
 use Override;
+use Radius\Model\Table\AccountsTable;
+use Radius\Model\Table\RadacctTable;
 
 /**
  * Accounts cell
@@ -48,7 +50,7 @@ class AccountsCell extends Cell
     {
         $contain = [
             'Radacct' => function (SelectQuery $q) {
-                $subquery = $this->fetchTable('Radius.Radacct')->subquery()
+                $subquery = $this->fetchTable(RadacctTable::class)->subquery()
                     ->select([
                         'username',
                         'max_acctstarttime' => $q->func()->max('acctstarttime'),
@@ -80,7 +82,7 @@ class AccountsCell extends Cell
 
         try {
             //Try to load RADIUS accounts
-            $accounts = $this->fetchTable('Radius.Accounts')
+            $accounts = $this->fetchTable(AccountsTable::class)
                 ->find(
                     'all',
                     conditions: $conditions,

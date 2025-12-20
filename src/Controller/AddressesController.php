@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Model\Entity\Address;
 use App\Model\Enum\AddressNumberType;
+use Ruian\Model\Table\AddressesTable;
 
 /**
  * Addresses Controller
@@ -302,7 +303,7 @@ class AddressesController extends AppController
 
         // search for all options
         foreach ($conditionsForSearches as $conditions) {
-            $ruianAddresses = $this->fetchTable('Ruian.Addresses')->find('all', conditions: $conditions);
+            $ruianAddresses = $this->fetchTable(AddressesTable::class)->find('all', conditions: $conditions);
 
             $ruianAddresses->select([
                 'ruian_gid' => 'kod_adm',

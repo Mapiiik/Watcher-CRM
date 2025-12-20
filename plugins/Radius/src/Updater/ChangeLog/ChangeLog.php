@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Radius\Updater\ChangeLog;
 
+use App\Model\Table\ContractsTable;
+use App\Model\Table\CustomersTable;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use InvalidArgumentException;
 use Radius\Model\Entity\Account;
@@ -67,10 +69,8 @@ class ChangeLog
         array $changed,
     ): void {
         if (!$this->hasChange($account->username)) {
-            /** @var \App\Model\Entity\Customer $customer */
-            $customer = $this->fetchTable('Customers')->get($account->customer_id);
-            /** @var \App\Model\Entity\Contract $contract */
-            $contract = $this->fetchTable('Contracts')->get($account->contract_id);
+            $customer = $this->fetchTable(CustomersTable::class)->get($account->customer_id);
+            $contract = $this->fetchTable(ContractsTable::class)->get($account->contract_id);
 
             $change = new Change($account, $customer, $contract);
             $this->addChange($change);

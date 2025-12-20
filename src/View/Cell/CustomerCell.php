@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\View\Cell;
 
+use App\Model\Table\CustomersTable;
 use Cake\View\Cell;
 use Override;
 
@@ -45,7 +46,7 @@ class CustomerCell extends Cell
     public function display(?string $customer_id): void
     {
         if ($customer_id) {
-            $customer = $this->fetchTable('Customers')->get($customer_id, contain: [
+            $customer = $this->fetchTable(CustomersTable::class)->get($customer_id, contain: [
                 'Contracts' => [
                     'ContractStates',
                     'InstallationAddresses',

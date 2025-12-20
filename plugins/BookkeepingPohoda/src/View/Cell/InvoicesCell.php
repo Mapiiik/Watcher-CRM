@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace BookkeepingPohoda\View\Cell;
 
+use BookkeepingPohoda\Model\Table\InvoicesTable;
 use Cake\View\Cell;
 use Override;
 
@@ -44,7 +45,7 @@ class InvoicesCell extends Cell
      */
     public function display(array $conditions = []): void
     {
-        $invoices = $this->fetchTable('BookkeepingPohoda.Invoices')
+        $invoices = $this->fetchTable(InvoicesTable::class)
             ->find(
                 'all',
                 conditions: $conditions + (

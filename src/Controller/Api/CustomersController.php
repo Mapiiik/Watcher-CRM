@@ -6,6 +6,7 @@ namespace App\Controller\Api;
 use App\Controller\AppController;
 use App\Model\Entity\Contract;
 use App\Model\Entity\IpAddress;
+use App\Model\Table\ContractsTable;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
@@ -13,6 +14,7 @@ use Cake\Routing\Router;
 use Cake\View\JsonView;
 use Override;
 use Ruian\Model\Entity\Address;
+use Ruian\Model\Table\AddressesTable;
 
 /**
  * Customers Controller
@@ -178,7 +180,7 @@ class CustomersController extends AppController
      */
     public function customerPoints()
     {
-        $customerPoints = $this->fetchTable('Contracts')->find()
+        $customerPoints = $this->fetchTable(ContractsTable::class)->find()
             ->contain('InstallationAddresses')
             ->contain('Customers')
             ->contain('IpAddresses')
@@ -209,8 +211,7 @@ class CustomersController extends AppController
                                 if (is_numeric($key)) {
                                     // Try to load RUIAN record if RUIAN GID is set
                                     try {
-                                        /** @var \Ruian\Model\Entity\Address $address */
-                                        $address = $this->fetchTable('Ruian.Addresses')->get(
+                                        $address = $this->fetchTable(AddressesTable::class)->get(
                                             $key,
                                             fields: [
                                                 'ulice_nazev',

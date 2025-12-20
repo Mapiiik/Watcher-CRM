@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Table\RemovedIpNetworksTable;
 use Cake\I18n\DateTime;
 
 /**
@@ -214,7 +215,7 @@ class IpNetworksController extends AppController
         $ipNetwork = $this->IpNetworks->get($id);
 
         /** @var \App\Model\Table\RemovedIpNetworksTable $removedIpNetworksTable */
-        $removedIpNetworksTable = $this->fetchTable('RemovedIpNetworks');
+        $removedIpNetworksTable = $this->fetchTable(RemovedIpNetworksTable::class);
 
         $removedIpNetwork = $removedIpNetworksTable->newEmptyEntity();
         $removedIpNetwork = $removedIpNetworksTable->patchEntity($removedIpNetwork, $ipNetwork->toArray());

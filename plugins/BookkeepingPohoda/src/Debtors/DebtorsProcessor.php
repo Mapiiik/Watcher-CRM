@@ -4,8 +4,11 @@ declare(strict_types=1);
 namespace BookkeepingPohoda\Debtors;
 
 use App\Model\Entity\CustomerLabel;
+use App\Model\Table\CustomerLabelsTable;
+use App\Model\Table\CustomersTable;
 use App\SledovaniTV\ApiClient;
 use App\Utility\Strings;
+use BookkeepingPohoda\Model\Table\InvoicesTable;
 use Cake\Collection\CollectionInterface;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
@@ -45,7 +48,7 @@ class DebtorsProcessor
      */
     private function loadDebtorsFromDatabase(): void
     {
-        self::$debtors = $this->fetchTable('BookkeepingPohoda.Invoices')
+        self::$debtors = $this->fetchTable(InvoicesTable::class)
             ->find()
             ->contain([
                 'Customers' => [
@@ -154,7 +157,7 @@ class DebtorsProcessor
      */
     public function block(?string $id): string
     {
-        $customer_ips = $this->getCustomerIps($id, 'MANUAL ENTRY - ', false);
+        $customerIps = $this->getCustomerIps($id, 'MANUAL ENTRY - ', false);
 
         $this->addLabel($id);
 
@@ -167,7 +170,7 @@ class DebtorsProcessor
         );
 
         $result .= $this->updateRouters(
-            ips: $customer_ips,
+            ips: $customerIps,
             block: true,
             clear: false,
         );
@@ -184,7 +187,7 @@ class DebtorsProcessor
      */
     public function unblock(?string $id): string
     {
-        $customer_ips = $this->getCustomerIps($id, 'MANUAL ENTRY - ', false);
+        $customerIps = $this->getCustomerIps($id, 'MANUAL ENTRY - ', false);
 
         $this->removeLabel($id);
 
@@ -197,7 +200,7 @@ class DebtorsProcessor
         );
 
         $result .= $this->updateRouters(
-            ips: $customer_ips,
+            ips: $customerIps,
             block: false,
             clear: false,
         );
@@ -215,10 +218,10 @@ class DebtorsProcessor
      */
     public function blockMany(array $ids): string
     {
-        $customer_ips = [];
+        $customerIps = [];
         foreach ($ids as $id) {
-            $customer_ips = array_merge_recursive(
-                $customer_ips,
+            $customerIps = array_merge_recursive(
+                $customerIps,
                 $this->getCustomerIps($id, 'MANUAL ENTRY - ', false),
             );
 
@@ -234,7 +237,7 @@ class DebtorsProcessor
         );
 
         $result .= $this->updateRouters(
-            ips: $customer_ips,
+            ips: $customerIps,
             block: true,
             clear: false,
         );
@@ -252,10 +255,10 @@ class DebtorsProcessor
      */
     public function unblockMany(array $ids): string
     {
-        $customer_ips = [];
+        $customerIps = [];
         foreach ($ids as $id) {
-            $customer_ips = array_merge_recursive(
-                $customer_ips,
+            $customerIps = array_merge_recursive(
+                $customerIps,
                 $this->getCustomerIps($id, 'MANUAL ENTRY - ', false),
             );
 
@@ -271,7 +274,7 @@ class DebtorsProcessor
         );
 
         $result .= $this->updateRouters(
-            ips: $customer_ips,
+            ips: $customerIps,
             block: false,
             clear: false,
         );
@@ -289,14 +292,14 @@ class DebtorsProcessor
     {
         $start_time = DateTime::now();
 
-        $customer_ips = [];
-        $customer_ids = [];
+        $customerIps = [];
+        $customerIds = [];
 
         foreach ($this->getFilteredOverdueDebtors() as $debtor) {
-            $customer_ids[] = $debtor->getCustomer()->id;
+            $customerIds[] = $debtor->getCustomer()->id;
 
-            $customer_ips = array_merge_recursive(
-                $customer_ips,
+            $customerIps = array_merge_recursive(
+                $customerIps,
                 $this->getCustomerIps($debtor->getCustomer()->id),
             );
 
@@ -308,13 +311,13 @@ class DebtorsProcessor
         $result = '';
 
         $result .= $this->updateSledovaniTV(
-            ids: $customer_ids,
+            ids: $customerIds,
             block: true,
             clear: true,
         );
 
         $result .= $this->updateRouters(
-            ips: $customer_ips,
+            ips: $customerIps,
             block: true,
             clear: true,
         );
@@ -331,26 +334,26 @@ class DebtorsProcessor
     private function addLabel(string $id): CustomerLabel|false
     {
         // check if label is configured
-        $label_id = env('DEBTORS_BLOCKED_LABEL_ID');
+        $labelId = env('DEBTORS_BLOCKED_LABEL_ID');
 
         // check that the label is configured
-        if (empty($label_id)) {
+        if (empty($labelId)) {
             return false;
         }
-        /** @var \App\Model\Table\CustomerLabelsTable $customer_labels_table */
-        $customer_labels_table = $this->fetchTable('CustomerLabels');
-        /** @var \App\Model\Entity\CustomerLabel $customer_label */
-        $customer_label = $customer_labels_table->findOrNewEntity([
-            'label_id' => $label_id,
+        /** @var \App\Model\Table\CustomerLabelsTable $customerLabelsTable */
+        $customerLabelsTable = $this->fetchTable(CustomerLabelsTable::class);
+        /** @var \App\Model\Entity\CustomerLabel $customerLabel */
+        $customerLabel = $customerLabelsTable->findOrNewEntity([
+            'label_id' => $labelId,
             'customer_id' => $id,
             'contract_id IS' => null,
             'note' => __d('bookkeeping_pohoda', 'debtor'),
         ]);
 
         // update modification time
-        $customer_label->modified = DateTime::now();
+        $customerLabel->modified = DateTime::now();
 
-        return $customer_labels_table->saveOrFail($customer_label);
+        return $customerLabelsTable->saveOrFail($customerLabel);
     }
 
     /**
@@ -364,20 +367,20 @@ class DebtorsProcessor
     private function removeLabel(string $id): iterable|false
     {
         // check if label is configured
-        $label_id = env('DEBTORS_BLOCKED_LABEL_ID');
+        $labelId = env('DEBTORS_BLOCKED_LABEL_ID');
 
         // check that the label is configured
-        if (empty($label_id)) {
+        if (empty($labelId)) {
             return false;
         }
-        /** @var \App\Model\Table\CustomerLabelsTable $customer_labels_table */
-        $customer_labels_table = $this->fetchTable('CustomerLabels');
+        /** @var \App\Model\Table\CustomerLabelsTable $customerLabelsTable */
+        $customerLabelsTable = $this->fetchTable(CustomerLabelsTable::class);
 
-        return $customer_labels_table->deleteMany(
-            $customer_labels_table
+        return $customerLabelsTable->deleteMany(
+            $customerLabelsTable
                 ->find()
                 ->where([
-                    'label_id' => $label_id,
+                    'label_id' => $labelId,
                     'customer_id' => $id,
                 ])
                 ->all(),
@@ -395,20 +398,20 @@ class DebtorsProcessor
     private function clearLabel(DateTime $older_than): iterable|false
     {
         // check if label is configured
-        $label_id = env('DEBTORS_BLOCKED_LABEL_ID');
+        $labelId = env('DEBTORS_BLOCKED_LABEL_ID');
 
         // check that the label is configured
-        if (empty($label_id)) {
+        if (empty($labelId)) {
             return false;
         }
-        /** @var \App\Model\Table\CustomerLabelsTable $customer_labels_table */
-        $customer_labels_table = $this->fetchTable('CustomerLabels');
+        /** @var \App\Model\Table\CustomerLabelsTable $customerLabelsTable */
+        $customerLabelsTable = $this->fetchTable(CustomerLabelsTable::class);
 
-        return $customer_labels_table->deleteMany(
-            $customer_labels_table
+        return $customerLabelsTable->deleteMany(
+            $customerLabelsTable
                 ->find()
                 ->where([
-                    'label_id' => $label_id,
+                    'label_id' => $labelId,
                     'modified <' => $older_than,
                 ])
                 ->all(),
@@ -428,8 +431,7 @@ class DebtorsProcessor
      */
     private function getCustomerIps(?string $id, string $comment_prefix = '', bool $skip_vip = true): array
     {
-        /** @var \App\Model\Entity\Customer $customer */
-        $customer = $this->fetchTable('Customers')->get($id, contain: [
+        $customer = $this->fetchTable(CustomersTable::class)->get($id, contain: [
             'IpAddresses' => [
                 'Contracts',
             ],
@@ -685,7 +687,7 @@ class DebtorsProcessor
     {
         $tvUsers = ApiClient::getUsers();
 
-        $customers = $this->fetchTable('Customers')
+        $customers = $this->fetchTable(CustomersTable::class)
             ->find(
                 'list',
                 keyField: 'id',

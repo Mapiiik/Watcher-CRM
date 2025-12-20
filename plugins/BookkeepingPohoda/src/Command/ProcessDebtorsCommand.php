@@ -8,6 +8,7 @@ use App\Model\Enum\CustomerMessageBodyFormat;
 use App\Model\Enum\CustomerMessageDeliveryStatus;
 use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessageType;
+use App\Model\Table\CustomerMessagesTable;
 use App\Utility\Settings;
 use BookkeepingPohoda\Debtors\Debtor;
 use BookkeepingPohoda\Debtors\DebtorsProcessor;
@@ -318,8 +319,7 @@ class ProcessDebtorsCommand extends Command
             '{user_portal_url}' => Settings::getString('core.company.user_portal_url'),
         ];
 
-        /** @var \App\Model\Table\CustomerMessagesTable $customerMessagesTable */
-        $customerMessagesTable = $this->fetchTable('CustomerMessages');
+        $customerMessagesTable = $this->fetchTable(CustomerMessagesTable::class);
 
         $customerMessage = $customerMessagesTable->newEmptyEntity();
 
@@ -406,8 +406,7 @@ class ProcessDebtorsCommand extends Command
             '{bank_account_number}' => Settings::getString('core.company.bank_account_number'),
         ];
 
-        /** @var \App\Model\Table\CustomerMessagesTable $customerMessagesTable */
-        $customerMessagesTable = $this->fetchTable('CustomerMessages');
+        $customerMessagesTable = $this->fetchTable(CustomerMessagesTable::class);
 
         $customerMessage = $customerMessagesTable->newEmptyEntity();
 

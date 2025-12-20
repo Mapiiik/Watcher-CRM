@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Model\Table\LabelsTable;
 use Cake\Collection\Collection;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
@@ -50,19 +51,18 @@ class UpdateCustomerLabelsCommand extends Command
     #[Override]
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        /** @var \App\Model\Table\LabelsTable $labels_table */
-        $labels_table = $this->fetchTable('Labels');
-        $start_time = DateTime::now();
+        $labelsTable = $this->fetchTable(LabelsTable::class);
+        $startTime = DateTime::now();
 
-        $labels = $labels_table
+        $labels = $labelsTable
             ->find()
             ->contain([
                 'CustomerLabels',
             ]);
 
-        $label_id = $args->getArgument('label_id');
-        if (!empty($label_id)) {
-            $labels->where(['id' => $label_id]);
+        $labelId = $args->getArgument('label_id');
+        if (!empty($labelId)) {
+            $labels->where(['id' => $labelId]);
         }
 
         foreach ($labels as $label) {
@@ -79,7 +79,7 @@ class UpdateCustomerLabelsCommand extends Command
                         /** @var \Cake\Database\Connection $connection */
                         $connection = ConnectionManager::get('default');
 
-                        $dynamic_sql_results = $connection
+                        $dynamicSqlResults = $connection
                             ->execute($label->dynamic_sql)
                             ->fetchAll(PDO::FETCH_ASSOC);
                     } catch (PDOException $e) {
@@ -96,11 +96,11 @@ class UpdateCustomerLabelsCommand extends Command
                     }
 
                     // convert customer lables to collection
-                    $customer_labels = new Collection($label->customer_labels);
+                    $customerLabels = new Collection($label->customer_labels);
 
-                    foreach ($dynamic_sql_results as $dynamic_sql_result) {
+                    foreach ($dynamicSqlResults as $dynamicSqlResult) {
                         // check required value
-                        if (!isset($dynamic_sql_result['customer_id'])) {
+                        if (!isset($dynamicSqlResult['customer_id'])) {
                             Log::error(
                                 'The dynamic SQL query did not return a customer_id value for label.' . PHP_EOL
                                 . '- ID: ' . $label->id,
@@ -112,45 +112,45 @@ class UpdateCustomerLabelsCommand extends Command
                         }
 
                         // find an existing customer label (creates a reference) or create new
-                        /** @var \App\Model\Entity\CustomerLabel $customer_label */
-                        $customer_label =
-                            $customer_labels->firstMatch([
-                                'customer_id' => $dynamic_sql_result['customer_id'],
-                                'contract_id' => $dynamic_sql_result['contract_id'] ?? null,
+                        /** @var \App\Model\Entity\CustomerLabel $customerLabel */
+                        $customerLabel =
+                            $customerLabels->firstMatch([
+                                'customer_id' => $dynamicSqlResult['customer_id'],
+                                'contract_id' => $dynamicSqlResult['contract_id'] ?? null,
                             ])
                             ??
-                            $labels_table->CustomerLabels->newEmptyEntity();
+                            $labelsTable->CustomerLabels->newEmptyEntity();
 
                         // if it is a new record, add the entity to the array
-                        if ($customer_label->isNew()) {
-                            $label->customer_labels[] = $customer_label;
+                        if ($customerLabel->isNew()) {
+                            $label->customer_labels[] = $customerLabel;
                         }
 
                         // patch customer label entity
-                        $customer_label = $labels_table->CustomerLabels->patchEntity(
-                            $customer_label,
+                        $customerLabel = $labelsTable->CustomerLabels->patchEntity(
+                            $customerLabel,
                             [
                                 'label_id' => $label->id,
-                                'customer_id' => $dynamic_sql_result['customer_id'],
-                                'contract_id' => $dynamic_sql_result['contract_id'] ?? null,
+                                'customer_id' => $dynamicSqlResult['customer_id'],
+                                'contract_id' => $dynamicSqlResult['contract_id'] ?? null,
                                 'note' =>
                                     __('dynamic')
-                                    . (!empty($dynamic_sql_result['note']) ? ' - ' . $dynamic_sql_result['note'] : '')
+                                    . (!empty($dynamicSqlResult['note']) ? ' - ' . $dynamicSqlResult['note'] : '')
                                 ,
                             ],
                         );
 
                         // update modification time
-                        $customer_label->modified = DateTime::now();
+                        $customerLabel->modified = DateTime::now();
 
                         // unlink the reference to the CustomerLabel entity
-                        unset($customer_label);
+                        unset($customerLabel);
                     }
                 }
 
                 // save changes for customer labels
                 if (
-                    $labels_table->CustomerLabels->saveMany(
+                    $labelsTable->CustomerLabels->saveMany(
                         $label->customer_labels,
                         [
                             '_auditQueue' => new SplObjectStorage(),
@@ -165,10 +165,10 @@ class UpdateCustomerLabelsCommand extends Command
                 // removal of expired customer labels (for dynamic labels - based on modification date)
                 if (is_numeric($label->validity)) {
                     if (
-                        $labels_table->CustomerLabels->deleteMany(
-                            $labels_table->CustomerLabels->find()->where([
+                        $labelsTable->CustomerLabels->deleteMany(
+                            $labelsTable->CustomerLabels->find()->where([
                                 'label_id' => $label->id,
-                                'modified <' => $start_time->subDays($label->validity),
+                                'modified <' => $startTime->subDays($label->validity),
                             ])->all(),
                         ) === false
                     ) {
@@ -181,10 +181,10 @@ class UpdateCustomerLabelsCommand extends Command
                 // removal of expired customer labels (for static labels - based on creation date)
                 if (is_numeric($label->validity)) {
                     if (
-                        $labels_table->CustomerLabels->deleteMany(
-                            $labels_table->CustomerLabels->find()->where([
+                        $labelsTable->CustomerLabels->deleteMany(
+                            $labelsTable->CustomerLabels->find()->where([
                                 'label_id' => $label->id,
-                                'created <' => $start_time->subDays($label->validity),
+                                'created <' => $startTime->subDays($label->validity),
                             ])->all(),
                         ) === false
                     ) {

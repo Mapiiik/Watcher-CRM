@@ -293,7 +293,7 @@ class SettingsService
         }
 
         $entity = $this->loadOverlayEntity($settingsPath->plugin, $settingsPath->key);
-        
+
         $current = (array)$entity->value;
 
         // Always insert first

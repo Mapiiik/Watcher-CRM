@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace BookkeepingPohoda\Command;
 
+use BookkeepingPohoda\Model\Table\InvoicesTable;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -327,8 +328,7 @@ class LoadInvoicesCommand extends Command
      */
     private function updateInvoices(iterable $invoicesData, ConsoleIo $io): bool
     {
-        /** @var \BookkeepingPohoda\Model\Table\InvoicesTable $invoicesTable */
-        $invoicesTable = $this->fetchTable('BookkeepingPohoda.Invoices');
+        $invoicesTable = $this->fetchTable(InvoicesTable::class);
 
         // counters
         $imported = 0;

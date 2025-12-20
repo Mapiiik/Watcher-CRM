@@ -7,6 +7,14 @@ use App\ApiClient;
 use App\Model\Entity\Billing;
 use App\Model\Entity\Commission;
 use App\Model\Entity\Contract;
+use App\Model\Table\BillingsTable;
+use App\Model\Table\ContractsTable;
+use App\Model\Table\ContractStatesTable;
+use App\Model\Table\DealerCommissionsTable;
+use App\Model\Table\LabelsTable;
+use App\Model\Table\QueuesTable;
+use App\Model\Table\ServicesTable;
+use App\Model\Table\ServiceTypesTable;
 use ArrayObject;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
@@ -16,6 +24,7 @@ use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
 use Cake\Validation\Validation;
 use Exception;
+use Ruian\Model\Table\AddressesTable;
 use stdClass;
 
 /**
@@ -41,19 +50,17 @@ class OverviewsController extends AppController
     public function overviewOfContracts()
     {
         // get contracts table
-        /** @var \App\Model\Table\ContractsTable $contractsTable */
-        $contractsTable = $this->fetchTable('Contracts');
+        $contractsTable = $this->fetchTable(ContractsTable::class);
 
         // load labels
-        /** @var \App\Model\Table\LabelsTable $labelsTable */
-        $labelsTable = $this->fetchTable('Labels');
+        $labelsTable = $this->fetchTable(LabelsTable::class);
+
         $labels = $labelsTable->find('list', order: [
             'name',
         ])->all();
 
         // load RUIAN addresses
-        /** @var \Ruian\Model\Table\AddressesTable $ruianAddressesTable */
-        $ruianAddressesTable = $this->fetchTable('Ruian.Addresses');
+        $ruianAddressesTable = $this->fetchTable(AddressesTable::class);
         $ruianAddresses = [];
 
         try {
@@ -233,7 +240,7 @@ class OverviewsController extends AppController
         // load contract states
         $this->set(
             'contractStates',
-            $this->fetchTable('ContractStates')->find('list', order: [
+            $this->fetchTable(ContractStatesTable::class)->find('list', order: [
                 'name',
             ]),
         );
@@ -241,7 +248,7 @@ class OverviewsController extends AppController
         // load service types
         $this->set(
             'serviceTypes',
-            $this->fetchTable('ServiceTypes')->find('list', order: [
+            $this->fetchTable(ServiceTypesTable::class)->find('list', order: [
                 'name',
             ]),
         );
@@ -249,7 +256,7 @@ class OverviewsController extends AppController
         // load CTO categories
         $this->set(
             'ctoCategories',
-            $this->fetchTable('Queues')
+            $this->fetchTable(QueuesTable::class)
                 ->find(
                     'list',
                     order: 'cto_category',
@@ -285,7 +292,7 @@ class OverviewsController extends AppController
 
         $this->set('show_billings', $this->getRequest()->getQuery('show_billings') == '1');
 
-        $servicesQuery = $this->fetchTable('Services')
+        $servicesQuery = $this->fetchTable(ServicesTable::class)
             ->find()
             ->contain('Billings', function (SelectQuery $q) use ($month_to_display, $access_point_id) {
                 return $q
@@ -412,7 +419,7 @@ class OverviewsController extends AppController
         // load service types
         $this->set(
             'serviceTypes',
-            $this->fetchTable('ServiceTypes')->find('list', order: [
+            $this->fetchTable(ServiceTypesTable::class)->find('list', order: [
                 'name',
             ]),
         );
@@ -420,7 +427,7 @@ class OverviewsController extends AppController
         // load CTO categories
         $this->set(
             'ctoCategories',
-            $this->fetchTable('Queues')
+            $this->fetchTable(QueuesTable::class)
                 ->find(
                     'list',
                     order: 'cto_category',
@@ -452,7 +459,7 @@ class OverviewsController extends AppController
     {
         $month_to_display = new Date($this->getRequest()->getQuery('month_to_display', 'now'));
 
-        $cto_categories = $this->fetchTable('Billings')->find()
+        $cto_categories = $this->fetchTable(BillingsTable::class)->find()
             ->contain('Customers')
             ->contain([
                 'Contracts' => [
@@ -504,8 +511,7 @@ class OverviewsController extends AppController
 
                                     // retrieve full address if RUIAN is connected
                                     try {
-                                        /** @var \Ruian\Model\Table\AddressesTable $ruianAddressesTable */
-                                        $ruianAddressesTable = $this->fetchTable('Ruian.Addresses');
+                                        $ruianAddressesTable = $this->fetchTable(AddressesTable::class);
                                         $address->ruian_address = $ruianAddressesTable
                                             ->get($ruian_gid)
                                             ->address;
@@ -668,7 +674,7 @@ class OverviewsController extends AppController
     {
         $month_to_display = new Date($this->getRequest()->getQuery('month_to_display', 'now'));
 
-        $cto_categories = $this->fetchTable('Billings')->find()
+        $cto_categories = $this->fetchTable(BillingsTable::class)->find()
             ->contain('Customers')
             ->contain([
                 'Contracts' => [
@@ -796,7 +802,7 @@ class OverviewsController extends AppController
     {
         $month_to_display = new Date($this->getRequest()->getQuery('month_to_display', 'now'));
 
-        $dealerCommissionsQuery = $this->fetchTable('DealerCommissions')->find()
+        $dealerCommissionsQuery = $this->fetchTable(DealerCommissionsTable::class)->find()
             ->contain('Dealers')
             ->contain('Commissions', function (SelectQuery $q) use ($month_to_display) {
                 return $q->contain('Contracts', function (SelectQuery $q) use ($month_to_display) {

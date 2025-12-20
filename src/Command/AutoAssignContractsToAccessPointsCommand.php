@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\ApiClient;
+use App\Model\Table\ContractsTable;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -11,6 +12,7 @@ use Cake\Console\ConsoleOptionParser;
 use Cake\Log\Log;
 use Cake\ORM\Query\SelectQuery;
 use Override;
+use Radius\Model\Table\AccountsTable;
 
 /**
  * AutoAssignContractsToAccessPoints command.
@@ -42,13 +44,13 @@ class AutoAssignContractsToAccessPointsCommand extends Command
     #[Override]
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        $contracts_table = $this->fetchTable('Contracts');
-        $radius_accounts_table = $this->fetchTable('Radius.Accounts');
+        $contractsTable = $this->fetchTable(ContractsTable::class);
+        $radiusAccountsTable = $this->fetchTable(AccountsTable::class);
 
         $api = new ApiClient();
 
         // load contracts without assigned access point
-        $unassigned_contracts = $contracts_table
+        $unassignedContracts = $contractsTable
             ->find()
             ->contain([
                 'IpAddresses',
@@ -58,9 +60,9 @@ class AutoAssignContractsToAccessPointsCommand extends Command
             ])
             ->all();
 
-        foreach ($unassigned_contracts as $contract) {
+        foreach ($unassignedContracts as $contract) {
             // load RADIUS accounts for contract
-            $radius_accounts = $radius_accounts_table
+            $radiusAccounts = $radiusAccountsTable
                 ->find()
                 ->where([
                     'Accounts.contract_id' => $contract->id,
@@ -79,27 +81,27 @@ class AutoAssignContractsToAccessPointsCommand extends Command
                 }])
                 ->all();
 
-            foreach ($radius_accounts as $radius_account) {
+            foreach ($radiusAccounts as $radiusAccount) {
                 // try to find RouterOS devices via API from NMS with RADIUS NAS IP address
-                if (isset($radius_account->radacct[0]->nasipaddress)) {
-                    $routeros_devices = $api->getRouterosDevicesForIp($radius_account->radacct[0]->nasipaddress);
+                if (isset($radiusAccount->radacct[0]->nasipaddress)) {
+                    $routerosDevices = $api->getRouterosDevicesForIp($radiusAccount->radacct[0]->nasipaddress);
 
                     // if some RouterOS device has assigned access point assign same to contract
-                    foreach ($routeros_devices as $routeros_device) {
-                        if (isset($routeros_device['access_point_id'])) {
+                    foreach ($routerosDevices as $routerosDevice) {
+                        if (isset($routerosDevice['access_point_id'])) {
                             Log::write(
                                 'debug',
-                                'Assigning access point ID: ' . $routeros_device['access_point_id']
+                                'Assigning access point ID: ' . $routerosDevice['access_point_id']
                                 . ' to contract ' . $contract->number,
                             );
                             $io->info(
-                                'Assigning access point ID: ' . $routeros_device['access_point_id']
+                                'Assigning access point ID: ' . $routerosDevice['access_point_id']
                                 . ' to contract ' . $contract->number,
                             );
 
-                            $query = $contracts_table->updateQuery()
+                            $query = $contractsTable->updateQuery()
                                 ->set([
-                                    'access_point_id' => $routeros_device['access_point_id'],
+                                    'access_point_id' => $routerosDevice['access_point_id'],
                                 ])
                                 ->where([
                                     'id' => $contract->id,
@@ -111,11 +113,11 @@ class AutoAssignContractsToAccessPointsCommand extends Command
                             } else {
                                 Log::write(
                                     'error',
-                                    'Error when assigning access point ID: ' . $routeros_device['access_point_id']
+                                    'Error when assigning access point ID: ' . $routerosDevice['access_point_id']
                                     . ' to contract ' . $contract->number,
                                 );
                                 $io->error(
-                                    'Error when assigning access point ID: ' . $routeros_device['access_point_id']
+                                    'Error when assigning access point ID: ' . $routerosDevice['access_point_id']
                                     . ' to contract ' . $contract->number,
                                 );
                             }

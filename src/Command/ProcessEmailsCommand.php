@@ -7,6 +7,7 @@ use App\Model\Enum\CustomerMessageBodyFormat;
 use App\Model\Enum\CustomerMessageDeliveryStatus;
 use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessageType;
+use App\Model\Table\CustomerMessagesTable;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -107,8 +108,7 @@ class ProcessEmailsCommand extends Command
     #[Override]
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        /** @var \App\Model\Table\CustomerMessagesTable $customerMessagesTable */
-        $customerMessagesTable = $this->fetchTable('CustomerMessages');
+        $customerMessagesTable = $this->fetchTable(CustomerMessagesTable::class);
 
         /** @var iterable<\App\Model\Entity\CustomerMessage> $emailMessages */
         $emailMessages = $customerMessagesTable
