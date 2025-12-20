@@ -5,6 +5,7 @@ namespace App\Service;
 
 use App\Domain\Settings\SettingsPath;
 use App\Model\Entity\Setting;
+use App\Model\Table\SettingsTable;
 use Cake\Cache\Cache;
 use Cake\Core\Plugin;
 use Cake\ORM\Locator\LocatorAwareTrait;
@@ -127,6 +128,16 @@ class SettingsService
     }
 
     /**
+     * Get settings table for overlay operations.
+     */
+    protected function getOverlayTable(): SettingsTable
+    {
+        $settingsTable = $this->fetchTable(SettingsTable::class);
+
+        return $settingsTable;
+    }
+
+    /**
      * Load settings overlay entity for given plugin and key.
      *
      * @param string $plugin
@@ -135,8 +146,7 @@ class SettingsService
      */
     protected function loadOverlayEntity(string $plugin, string $key): Setting
     {
-        /** @var \App\Model\Table\SettingsTable $settingsTable */
-        $settingsTable = $this->fetchTable('Settings');
+        $settingsTable = $this->getOverlayTable();
 
         return $settingsTable->findOrNewEntity([
             'plugin' => $plugin,
@@ -160,10 +170,10 @@ class SettingsService
             return null;
         }
 
-        $setting = $this->loadOverlayEntity($settingsPath->plugin, $settingsPath->key);
+        $entity = $this->loadOverlayEntity($settingsPath->plugin, $settingsPath->key);
 
         return $this->resolveSubKey(
-            (array)$setting->value,
+            (array)$entity->value,
             $settingsPath->subKey,
             null,
         );
@@ -189,13 +199,10 @@ class SettingsService
             return $default;
         }
 
-        $plugin = $settingsPath->plugin;
-        $key = $settingsPath->key;
-
         // 1) Check local in-memory cache first
-        if (isset($this->localCache[$plugin][$key])) {
+        if (isset($this->localCache[$settingsPath->plugin][$settingsPath->key])) {
             return $this->resolveSubKey(
-                $this->localCache[$plugin][$key],
+                $this->localCache[$settingsPath->plugin][$settingsPath->key],
                 $settingsPath->subKey,
                 $default,
             );
@@ -204,54 +211,32 @@ class SettingsService
         // 2) Load from cache/DB and merge with defaults
         $merged = Cache::remember(
             $settingsPath->cacheKey(),
-            function () use ($plugin, $key) {
+            function () use ($settingsPath) {
                 // Load defaults for this plugin/key
-                $defaults = $this->defaults[$plugin][$key] ?? null;
+                $defaults = $this->defaults[$settingsPath->plugin][$settingsPath->key] ?? null;
 
                 // Load DB value for this plugin/key
-                /** @var \App\Model\Table\SettingsTable $settingsTable */
-                $settingsTable = $this->fetchTable('Settings');
-                $row = $settingsTable->find()
-                    ->where(['plugin' => $plugin, 'key' => $key])
-                    ->first();
+                $entity = $this->loadOverlayEntity($settingsPath->plugin, $settingsPath->key);
 
-                $dbValue = $row?->value;
+                $overlay = $entity->value;
 
                 // Merge: defaults < DB
-                if (is_array($defaults) && is_array($dbValue)) {
-                    return array_replace_recursive($defaults, $dbValue);
+                if (is_array($defaults) && is_array($overlay)) {
+                    return array_replace_recursive($defaults, $overlay);
                 }
 
-                return $dbValue ?? $defaults;
+                return $overlay ?? $defaults;
             },
             'default',
         );
 
         // 3) Store merged value in local cache
-        $this->localCache[$plugin][$key] = $merged;
+        $this->localCache[$settingsPath->plugin][$settingsPath->key] = $merged;
 
         // 4) Return subKey or the whole value
         return $merged !== null
             ? $this->resolveSubKey($merged, $settingsPath->subKey, $default)
             : $default;
-    }
-
-    /**
-     * Resolve a value from cached plugin data.
-     *
-     * @param array<string, mixed> $data    The cached plugin data.
-     * @param string               $key     The key inside the plugin.
-     * @param string|null          $subKey  The subKey path (may contain dots).
-     * @param mixed                $default Default value if not found.
-     * @return mixed
-     */
-    protected function resolveValue(array $data, string $key, ?string $subKey, mixed $default): mixed
-    {
-        if (!array_key_exists($key, $data)) {
-            return $default;
-        }
-
-        return $this->resolveSubKey($data[$key], $subKey, $default);
     }
 
     /**
@@ -307,14 +292,8 @@ class SettingsService
             return false;
         }
 
-        /** @var \App\Model\Table\SettingsTable $settingsTable */
-        $settingsTable = $this->fetchTable('Settings');
-
-        $entity = $settingsTable->findOrNewEntity([
-            'plugin' => $settingsPath->plugin,
-            'key' => $settingsPath->key,
-        ]);
-
+        $entity = $this->loadOverlayEntity($settingsPath->plugin, $settingsPath->key);
+        
         $current = (array)$entity->value;
 
         // Always insert first
@@ -330,7 +309,7 @@ class SettingsService
         // Nothing left → delete overlay
         if ($current === []) {
             if (!$entity->isNew()) {
-                $settingsTable->delete($entity);
+                $this->getOverlayTable()->delete($entity);
             }
 
             $this->clearCache($settingsPath->plugin, $settingsPath->key);
@@ -340,7 +319,7 @@ class SettingsService
 
         $entity->value = $current;
 
-        if ($settingsTable->save($entity)) {
+        if ($this->getOverlayTable()->save($entity)) {
             $this->clearCache($settingsPath->plugin, $settingsPath->key);
 
             return true;
