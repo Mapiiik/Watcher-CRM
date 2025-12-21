@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Bookkeeping\Command;
 
 use Bookkeeping\Model\Table\InvoicesTable;
+use Bookkeeping\Service\BookkeepingService;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -22,6 +23,16 @@ use Settings\Utility\Settings;
  */
 class SendIssuedInvoicesCommand extends Command
 {
+    private BookkeepingService $bookkeeping;
+
+    /**
+     * Initializes bookkeeping service used for invoice-related operations.
+     */
+    public function __construct()
+    {
+        $this->bookkeeping = new BookkeepingService();
+    }
+
     /**
      * Hook method for defining this command's option parser.
      *
@@ -120,11 +131,11 @@ class SendIssuedInvoicesCommand extends Command
 
                 try {
                     // add attachment
+                    $path = $this->bookkeeping->getInvoicePdfPath($invoice);
+
                     $mailer->setAttachments([
-                        'Faktura_' . $invoice->number . '.pdf' => [
-                            'file' =>
-                                (string)env('DATA_ROOT', DS . 'data' . DS)
-                                . 'invoices' . DS . 'Faktura_' . $invoice->number . '.pdf',
+                        basename($path) => [
+                            'file' => $path,
                             'mimetype' => 'application/pdf',
                             'contentId' => 'invoice-' . $invoice->number,
                         ],

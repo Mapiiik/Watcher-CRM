@@ -1,0 +1,95 @@
+<?php
+declare(strict_types=1);
+
+namespace Bookkeeping\Service;
+
+use Bookkeeping\Model\Entity\Invoice;
+use Bookkeeping\Provider\Pohoda\PohodaProvider;
+use Cake\I18n\DateTime;
+
+/**
+ * BookkeepingService
+ *
+ * This service acts as a stable API layer between the CRM
+ * and the underlying accounting system provider.
+ *
+ * Controllers and CLI commands should call this service,
+ * not the provider directly.
+ *
+ * The provider can be replaced (Pohoda, Eracuni, Flexibee, ...)
+ * without changing the rest of the application.
+ */
+class BookkeepingService
+{
+    /**
+     * @var \Bookkeeping\Provider\Pohoda\PohodaProvider
+     */
+    private PohodaProvider $provider;
+
+    /**
+     * Constructor
+     *
+     * @param \Bookkeeping\Provider\Pohoda\PohodaProvider|null $provider
+     *   Allows injecting a different provider in the future.
+     */
+    public function __construct(?PohodaProvider $provider = null)
+    {
+        $this->provider = $provider ?? new PohodaProvider();
+    }
+
+    /**
+     * Synchronize invoices from the accounting system.
+     *
+     * @param \Cake\I18n\DateTime $lastChanges
+     * @return array
+     */
+    public function syncInvoices(DateTime $lastChanges): array
+    {
+        return $this->provider->syncInvoices($lastChanges);
+    }
+
+    /**
+     * Export invoices (DBF/XML) for the accounting system.
+     *
+     * @param array $invoices
+     * @param array $options
+     * @return array|string
+     */
+    public function exportInvoices(array $invoices, array $options = []): array|string
+    {
+        return $this->provider->exportInvoices($invoices, $options);
+    }
+
+    /**
+     * Import invoices from the accounting system (DBF).
+     *
+     * @param string $filePath
+     * @return array
+     */
+    public function importInvoices(string $filePath): array
+    {
+        return $this->provider->importInvoices($filePath);
+    }
+
+    /**
+     * Generate invoice number according to provider rules.
+     *
+     * @param \Cake\I18n\DateTime $date
+     * @param bool $reverseCharge
+     * @return string
+     */
+    public function generateInvoiceNumber(DateTime $date, bool $reverseCharge): string
+    {
+        return $this->provider->generateInvoiceNumber($date, $reverseCharge);
+    }
+
+    /**
+     * Get the file path to the invoice PDF.
+     *
+     * @return string Absolute path to the PDF file.
+     */
+    public function getInvoicePdfPath(Invoice $invoice): string
+    {
+        return $this->provider->getInvoicePdfPath($invoice);
+    }
+}

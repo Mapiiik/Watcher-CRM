@@ -11,6 +11,7 @@ use App\Model\Enum\CustomerMessageType;
 use App\Model\Table\CustomerMessagesTable;
 use Bookkeeping\Debtors\Debtor;
 use Bookkeeping\Debtors\DebtorsProcessor;
+use Bookkeeping\Service\BookkeepingService;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -25,6 +26,16 @@ use Settings\Utility\Settings;
  */
 class ProcessDebtorsCommand extends Command
 {
+    private BookkeepingService $bookkeeping;
+
+    /**
+     * Initializes bookkeeping service used for invoice-related operations.
+     */
+    public function __construct()
+    {
+        $this->bookkeeping = new BookkeepingService();
+    }
+
     /**
      * Hook method for defining this command's option parser.
      *
@@ -230,7 +241,10 @@ class ProcessDebtorsCommand extends Command
 
         $text =
             sprintf('%-15s', Settings::getString('bookkeeping.debtors.tables.invoices.headers.number')) . "\t"
-            . sprintf('%-12s', Settings::getString('bookkeeping.debtors.tables.invoices.headers.variable_symbol')) . "\t"
+            . sprintf(
+                '%-12s',
+                Settings::getString('bookkeeping.debtors.tables.invoices.headers.variable_symbol'),
+            ) . "\t"
             . sprintf('%-10s', Settings::getString('bookkeeping.debtors.tables.invoices.headers.creation_date')) . "\t"
             . sprintf('%-10s', Settings::getString('bookkeeping.debtors.tables.invoices.headers.due_date')) . "\t"
             . sprintf('%-12s', Settings::getString('bookkeeping.debtors.tables.invoices.headers.total')) . "\t"
@@ -267,19 +281,25 @@ class ProcessDebtorsCommand extends Command
     }
 
     /**
-     * Get Attachments
+     * Returns invoice PDF attachments for debtor messages.
      *
-     * @return array<string, mixed>
+     * File existence is not validated here.
+     *
+     * @return array<string, array{
+     *     file: string,
+     *     mimetype: string,
+     *     contentId: string,
+     * }>
      */
     private function getAttachments(Debtor $debtor): array
     {
         $attachments = [];
 
         foreach ($debtor->getInvoices() as $invoice) {
-            $attachments['Faktura_' . $invoice->number . '.pdf'] = [
-                'file' =>
-                    (string)env('DATA_ROOT', DS . 'data' . DS)
-                    . 'invoices' . DS . 'Faktura_' . $invoice->number . '.pdf',
+            $path = $this->bookkeeping->getInvoicePdfPath($invoice);
+
+            $attachments[basename($path)] = [
+                'file' => $path,
                 'mimetype' => 'application/pdf',
                 'contentId' => 'invoice-' . $invoice->number,
             ];
