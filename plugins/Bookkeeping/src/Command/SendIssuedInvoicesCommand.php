@@ -9,7 +9,6 @@ use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
-use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\I18n\Number;
 use Cake\Log\Log;
@@ -110,9 +109,6 @@ class SendIssuedInvoicesCommand extends Command
                         '{variable_symbol}' => (string)$invoice->variable_symbol,
                     ]),
                 );
-
-                // define date format
-                Date::setToStringFormat('dd.MM.yyyy');
 
                 $message = strtr(Settings::getString('bookkeeping.invoices.emails.body_text'), [
                     '{creation_date}' => $invoice->creation_date->__toString(),

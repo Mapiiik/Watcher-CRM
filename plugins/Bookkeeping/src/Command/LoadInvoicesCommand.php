@@ -21,6 +21,16 @@ use Throwable;
  */
 class LoadInvoicesCommand extends Command
 {
+    private BookkeepingService $bookkeeping;
+
+    /**
+     * Initializes bookkeeping service used for invoice-related operations.
+     */
+    public function __construct()
+    {
+        $this->bookkeeping = new BookkeepingService();
+    }
+
     /**
      * Get the command description.
      *
@@ -77,10 +87,8 @@ class LoadInvoicesCommand extends Command
             [$lastChanges->format('Y-m-d H:i:s')],
         ));
 
-        $bookkeeping = new BookkeepingService();
-
         try {
-            $result = $bookkeeping->syncInvoices($lastChanges);
+            $result = $this->bookkeeping->syncInvoices($lastChanges);
         } catch (Throwable $e) {
             $io->error(__d(
                 'bookkeeping',
