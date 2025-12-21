@@ -7,10 +7,10 @@ use App\Model\Entity\Billing;
 use App\Model\Entity\Contract;
 use App\Model\Entity\ContractVersion;
 use App\Model\Enum\IpAddressTypeOfUse;
-use App\Utility\Settings;
 use Cake\I18n\Number;
 use InvalidArgumentException;
 use PhpCollective\DecimalObject\Decimal;
+use Settings\Utility\Settings;
 use stdClass;
 
 class ContractPDF extends AppPDF

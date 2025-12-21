@@ -10,7 +10,7 @@
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $commissions
  */
 
-use App\Utility\Settings;
+use Settings\Utility\Settings;
 
 ?>
 <div class="row">

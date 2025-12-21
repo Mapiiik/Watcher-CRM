@@ -5,9 +5,9 @@ namespace App\Pdf;
 
 use App\Model\Entity\Contract;
 use App\Model\Entity\Customer;
-use App\Utility\Settings;
 use Cake\I18n\Date;
 use Override;
+use Settings\Utility\Settings;
 use TCPDF;
 
 //set image path for TCPDF

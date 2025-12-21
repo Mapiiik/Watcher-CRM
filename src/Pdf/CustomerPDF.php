@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Pdf;
 
 use App\Model\Entity\Customer;
-use App\Utility\Settings;
+use Settings\Utility\Settings;
 
 class CustomerPDF extends AppPDF
 {

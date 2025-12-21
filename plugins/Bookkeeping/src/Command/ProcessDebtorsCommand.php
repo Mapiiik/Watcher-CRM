@@ -9,7 +9,6 @@ use App\Model\Enum\CustomerMessageDeliveryStatus;
 use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessageType;
 use App\Model\Table\CustomerMessagesTable;
-use App\Utility\Settings;
 use Bookkeeping\Debtors\Debtor;
 use Bookkeeping\Debtors\DebtorsProcessor;
 use Cake\Command\Command;
@@ -19,6 +18,7 @@ use Cake\Console\ConsoleOptionParser;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
 use Override;
+use Settings\Utility\Settings;
 
 /**
  * Process Debtors command.

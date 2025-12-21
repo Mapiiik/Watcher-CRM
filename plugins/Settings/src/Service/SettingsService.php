@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Service;
+namespace Settings\Service;
 
-use App\Domain\Settings\SettingsPath;
-use App\Model\Entity\Setting;
-use App\Model\Table\SettingsTable;
 use Cake\Cache\Cache;
 use Cake\Core\Plugin;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\Utility\Hash;
+use Settings\Model\Entity\Setting;
+use Settings\Model\Table\SettingsTable;
+use Settings\ValueObject\SettingsPath;
 
 /**
  * SettingsService
@@ -142,7 +142,7 @@ class SettingsService
      *
      * @param string $plugin
      * @param string $key
-     * @return \App\Model\Entity\Setting
+     * @return \Settings\Model\Entity\Setting
      */
     protected function loadOverlayEntity(string $plugin, string $key): Setting
     {

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Utility;
+namespace Settings\Utility;
 
-use App\Service\SettingsService;
+use Settings\Service\SettingsService;
 
 class Settings
 {

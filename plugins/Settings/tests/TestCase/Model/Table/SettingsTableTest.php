@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Test\TestCase\Model\Table;
+namespace Settings\Test\TestCase\Model\Table;
 
-use App\Model\Table\SettingsTable;
 use Cake\TestSuite\TestCase;
 use Override;
+use Settings\Model\Table\SettingsTable;
 
 /**
- * App\Model\Table\SettingsTable Test Case
+ * Settings\Model\Table\SettingsTable Test Case
  */
 class SettingsTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \App\Model\Table\SettingsTable
+     * @var \Settings\Model\Table\SettingsTable
      */
     protected $Settings;
 
@@ -26,7 +26,7 @@ class SettingsTableTest extends TestCase
      */
     protected array $fixtures = [
         'app.AppUsers',
-        'app.Settings',
+        'plugin.Settings.Settings',
     ];
 
     /**
@@ -38,8 +38,8 @@ class SettingsTableTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Settings') ? [] : ['className' => SettingsTable::class];
-        $this->Settings = $this->getTableLocator()->get('Settings', $config);
+        $config = $this->getTableLocator()->exists('Settings.Settings') ? [] : ['className' => SettingsTable::class];
+        $this->Settings = $this->getTableLocator()->get('Settings.Settings', $config);
     }
 
     /**
@@ -60,7 +60,7 @@ class SettingsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @link \App\Model\Table\SettingsTable::validationDefault()
+     * @link \Settings\Model\Table\SettingsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -71,7 +71,7 @@ class SettingsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @link \App\Model\Table\SettingsTable::buildRules()
+     * @link \Settings\Model\Table\SettingsTable::buildRules()
      */
     public function testBuildRules(): void
     {

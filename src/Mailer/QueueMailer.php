@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Mailer;
 
-use App\Utility\Settings;
 use Cake\Mailer\Mailer;
 use Cake\Queue\Mailer\QueueTrait;
+use Settings\Utility\Settings;
 
 /**
  * Queue mailer.

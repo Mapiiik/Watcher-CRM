@@ -35,6 +35,9 @@ return [
     // Persisting audit log
     'AuditLog' => [],
 
+    // Settings
+    'Settings' => [],
+
     // Cake/Queue
     'Cake/Queue' => [],
 

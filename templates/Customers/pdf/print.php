@@ -1,8 +1,8 @@
 <?php
 use App\Pdf\CustomerPDF;
-use App\Utility\Settings;
 use Cake\I18n\Date;
 use Cake\I18n\I18n;
+use Settings\Utility\Settings;
 
 /**
  * @var \App\View\AppView $this

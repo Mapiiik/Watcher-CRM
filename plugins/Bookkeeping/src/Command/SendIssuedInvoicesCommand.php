@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Command;
 
-use App\Utility\Settings;
 use Bookkeeping\Model\Table\InvoicesTable;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
@@ -16,6 +15,7 @@ use Cake\Log\Log;
 use Cake\Mailer\Mailer;
 use Exception;
 use Override;
+use Settings\Utility\Settings;
 
 /**
  * SendIssuedInvoices command.

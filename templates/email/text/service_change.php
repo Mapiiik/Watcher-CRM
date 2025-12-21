@@ -1,7 +1,7 @@
 <?php
 
-use App\Utility\Settings;
 use Cake\I18n\Date;
+use Settings\Utility\Settings;
 
 /**
  * @var \Cake\View\View $this

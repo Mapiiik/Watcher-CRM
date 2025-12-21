@@ -5,7 +5,6 @@ namespace Bookkeeping\Controller;
 
 use App\Model\Table\CustomersTable;
 use App\Model\Table\TaxRatesTable;
-use App\Utility\Settings;
 use Bookkeeping\View\DbfView;
 use Bookkeeping\View\XmlView;
 use Cake\Collection\CollectionInterface;
@@ -15,6 +14,7 @@ use Cake\Validation\Validation;
 use Exception;
 use Override;
 use PhpCollective\DecimalObject\Decimal;
+use Settings\Utility\Settings;
 
 /**
  * Invoices Controller
