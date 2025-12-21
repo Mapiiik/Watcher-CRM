@@ -93,7 +93,7 @@ class SendIssuedInvoicesCommand extends Command
                     $mailer->addTo($email->email);
                 }
                 $mailer->setSubject(
-                    strtr(Settings::getString('core.invoices.emails.subject'), [
+                    strtr(Settings::getString('bookkeeping.invoices.emails.subject'), [
                         '{invoice_text}' => $invoice->text,
                         '{invoice_number}' => (string)$invoice->number,
                         '{variable_symbol}' => (string)$invoice->variable_symbol,
@@ -103,7 +103,7 @@ class SendIssuedInvoicesCommand extends Command
                 // define date format
                 Date::setToStringFormat('dd.MM.yyyy');
 
-                $message = strtr(Settings::getString('core.invoices.emails.body_text'), [
+                $message = strtr(Settings::getString('bookkeeping.invoices.emails.body_text'), [
                     '{creation_date}' => $invoice->creation_date->__toString(),
                     '{due_date}' => $invoice->due_date->__toString(),
                     '{invoice_number}' => (string)$invoice->number,

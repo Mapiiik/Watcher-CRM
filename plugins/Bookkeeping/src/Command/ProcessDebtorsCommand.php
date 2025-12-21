@@ -225,16 +225,16 @@ class ProcessDebtorsCommand extends Command
      */
     private function getInvoicesTable(Debtor $debtor): string
     {
-        $separator = Settings::getString('core.debtors.tables.invoices.separator');
-        $footer = Settings::getString('core.debtors.tables.invoices.footer');
+        $separator = Settings::getString('bookkeeping.debtors.tables.invoices.separator');
+        $footer = Settings::getString('bookkeeping.debtors.tables.invoices.footer');
 
         $text =
-            sprintf('%-15s', Settings::getString('core.debtors.tables.invoices.headers.number')) . "\t"
-            . sprintf('%-12s', Settings::getString('core.debtors.tables.invoices.headers.variable_symbol')) . "\t"
-            . sprintf('%-10s', Settings::getString('core.debtors.tables.invoices.headers.creation_date')) . "\t"
-            . sprintf('%-10s', Settings::getString('core.debtors.tables.invoices.headers.due_date')) . "\t"
-            . sprintf('%-12s', Settings::getString('core.debtors.tables.invoices.headers.total')) . "\t"
-            . sprintf('%-12s', Settings::getString('core.debtors.tables.invoices.headers.debt'))
+            sprintf('%-15s', Settings::getString('bookkeeping.debtors.tables.invoices.headers.number')) . "\t"
+            . sprintf('%-12s', Settings::getString('bookkeeping.debtors.tables.invoices.headers.variable_symbol')) . "\t"
+            . sprintf('%-10s', Settings::getString('bookkeeping.debtors.tables.invoices.headers.creation_date')) . "\t"
+            . sprintf('%-10s', Settings::getString('bookkeeping.debtors.tables.invoices.headers.due_date')) . "\t"
+            . sprintf('%-12s', Settings::getString('bookkeeping.debtors.tables.invoices.headers.total')) . "\t"
+            . sprintf('%-12s', Settings::getString('bookkeeping.debtors.tables.invoices.headers.debt'))
             . PHP_EOL;
 
         $text .= $separator . PHP_EOL;
@@ -253,7 +253,7 @@ class ProcessDebtorsCommand extends Command
         $text .= $separator . PHP_EOL;
 
         $text .=
-            sprintf('%-15s', Settings::getString('core.debtors.tables.invoices.total_label')) . "\t"
+            sprintf('%-15s', Settings::getString('bookkeeping.debtors.tables.invoices.total_label')) . "\t"
             . sprintf('%-12s', '') . "\t"
             . sprintf('%-10s', '') . "\t"
             . sprintf('%-10s', '') . "\t"
@@ -343,8 +343,8 @@ class ProcessDebtorsCommand extends Command
      */
     private function generateNotifyEmail(Debtor $debtor): CustomerMessage
     {
-        $subjectTemplate = Settings::getString('core.debtors.emails.notify.subject');
-        $contentTemplate = Settings::getString('core.debtors.emails.notify.body_text');
+        $subjectTemplate = Settings::getString('bookkeeping.debtors.emails.notify.subject');
+        $contentTemplate = Settings::getString('bookkeeping.debtors.emails.notify.body_text');
 
         return $this->generateEmail(
             $debtor,
@@ -359,8 +359,8 @@ class ProcessDebtorsCommand extends Command
      */
     private function generateNotifyEmailForInactiveServices(Debtor $debtor): CustomerMessage
     {
-        $subjectTemplate = Settings::getString('core.debtors.emails.inactive.subject');
-        $contentTemplate = Settings::getString('core.debtors.emails.inactive.body_text');
+        $subjectTemplate = Settings::getString('bookkeeping.debtors.emails.inactive.subject');
+        $contentTemplate = Settings::getString('bookkeeping.debtors.emails.inactive.body_text');
 
         return $this->generateEmail(
             $debtor,
@@ -375,8 +375,8 @@ class ProcessDebtorsCommand extends Command
      */
     private function generateBlockEmail(Debtor $debtor): CustomerMessage
     {
-        $subjectTemplate = Settings::getString('core.debtors.emails.block.subject');
-        $contentTemplate = Settings::getString('core.debtors.emails.block.body_text');
+        $subjectTemplate = Settings::getString('bookkeeping.debtors.emails.block.subject');
+        $contentTemplate = Settings::getString('bookkeeping.debtors.emails.block.body_text');
 
         return $this->generateEmail(
             $debtor,
@@ -428,8 +428,8 @@ class ProcessDebtorsCommand extends Command
      */
     private function generateNotifySms(Debtor $debtor): CustomerMessage
     {
-        $subjectTemplate = Settings::getString('core.debtors.sms.notify.subject');
-        $contentTemplate = Settings::getString('core.debtors.sms.notify.body');
+        $subjectTemplate = Settings::getString('bookkeeping.debtors.sms.notify.subject');
+        $contentTemplate = Settings::getString('bookkeeping.debtors.sms.notify.body');
 
         return $this->generateSms(
             $debtor,
@@ -444,8 +444,8 @@ class ProcessDebtorsCommand extends Command
      */
     private function generateNotifySmsForInactiveServices(Debtor $debtor): CustomerMessage
     {
-        $subjectTemplate = Settings::getString('core.debtors.sms.inactive.subject');
-        $contentTemplate = Settings::getString('core.debtors.sms.inactive.body');
+        $subjectTemplate = Settings::getString('bookkeeping.debtors.sms.inactive.subject');
+        $contentTemplate = Settings::getString('bookkeeping.debtors.sms.inactive.body');
 
         return $this->generateSms(
             $debtor,
@@ -460,8 +460,8 @@ class ProcessDebtorsCommand extends Command
      */
     private function generateBlockSms(Debtor $debtor): CustomerMessage
     {
-        $subjectTemplate = Settings::getString('core.debtors.sms.block.subject');
-        $contentTemplate = Settings::getString('core.debtors.sms.block.body');
+        $subjectTemplate = Settings::getString('bookkeeping.debtors.sms.block.subject');
+        $contentTemplate = Settings::getString('bookkeeping.debtors.sms.block.body');
 
         return $this->generateSms(
             $debtor,

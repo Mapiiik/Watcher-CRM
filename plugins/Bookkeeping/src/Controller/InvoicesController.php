@@ -536,7 +536,7 @@ class InvoicesController extends AppController
                             $invoice->due_date = $invoicedMonth
                                 ->lastOfMonth()
                                 ->addDays($customer->individual_maturity_period ?? 10);
-                            $invoice->text = strtr(Settings::getString('core.invoices.texts.separate'), [
+                            $invoice->text = strtr(Settings::getString('bookkeeping.invoices.texts.separate'), [
                                 '{service_name}' => $billing->name,
                                 '{invoiced_month}' => $invoicedMonth->i18nFormat('MM/yyyy'),
                             ]);
@@ -570,7 +570,7 @@ class InvoicesController extends AppController
                                 '{invoiced_month}' => $invoicedMonth->i18nFormat('MM/yyyy'),
                             ]);
                         } else {
-                            $invoice->text = strtr(Settings::getString('core.invoices.texts.default'), [
+                            $invoice->text = strtr(Settings::getString('bookkeeping.invoices.texts.default'), [
                                 '{contract_number}' => $contract->number,
                                 '{invoiced_month}' => $invoicedMonth->i18nFormat('MM/yyyy'),
                             ]);
@@ -602,7 +602,7 @@ class InvoicesController extends AppController
                     $invoice->due_date = $invoicedMonth
                         ->lastOfMonth()
                         ->addDays($customer->individual_maturity_period ?? 10);
-                    $invoice->text = strtr(Settings::getString('core.invoices.texts.default'), [
+                    $invoice->text = strtr(Settings::getString('bookkeeping.invoices.texts.default'), [
                         '{contract_number}' => $customer->number,
                         '{invoiced_month}' => $invoicedMonth->i18nFormat('MM/yyyy'),
                     ]);

@@ -36,16 +36,6 @@
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __('Invoice & Billing Texts'),
-                    ['controller' => 'Settings', 'action' => 'edit', 'core.invoices'],
-                    ['class' => 'side-nav-item'],
-                ) ?>
-                <?= $this->AuthLink->link(
-                    __('Debtor Notifications'),
-                    ['controller' => 'Settings', 'action' => 'edit', 'core.debtors'],
-                    ['class' => 'side-nav-item'],
-                ) ?>
-                <?= $this->AuthLink->link(
                     __('Contract Presets'),
                     ['controller' => 'Settings', 'action' => 'edit', 'core.contracts'],
                     ['class' => 'side-nav-item'],
@@ -53,6 +43,22 @@
                 <?= $this->AuthLink->link(
                     __('Email Templates'),
                     ['controller' => 'Settings', 'action' => 'edit', 'core.emails'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+            </div>
+        </div>
+
+        <div class="related">
+            <h4><?= __('Bookkeeping Settings') ?></h4>
+            <div>
+                <?= $this->AuthLink->link(
+                    __('Invoice & Billing Texts'),
+                    ['controller' => 'Settings', 'action' => 'edit', 'bookkeeping.invoices'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('Debtor Notifications'),
+                    ['controller' => 'Settings', 'action' => 'edit', 'bookkeeping.debtors'],
                     ['class' => 'side-nav-item'],
                 ) ?>
             </div>
