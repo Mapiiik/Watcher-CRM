@@ -38,8 +38,8 @@ return [
     // Cake/Queue
     'Cake/Queue' => [],
 
-    // Bookkeeping POHODA
-    'BookkeepingPohoda' => [],
+    // Bookkeeping
+    'Bookkeeping' => [],
 
     // RADIUS
     'Radius' => [],

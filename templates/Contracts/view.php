@@ -489,7 +489,7 @@
                 <?= $this->AuthLink->postLink(
                     __('Unblock Debtor'),
                     [
-                        'plugin' => 'BookkeepingPohoda',
+                        'plugin' => 'Bookkeeping',
                         'controller' => 'Debtors',
                         'action' => 'unblock',
                         $contract->customer->id,
@@ -502,7 +502,7 @@
                 <?= $this->AuthLink->postLink(
                     __('Block Debtor'),
                     [
-                        'plugin' => 'BookkeepingPohoda',
+                        'plugin' => 'Bookkeeping',
                         'controller' => 'Debtors',
                         'action' => 'block',
                         $contract->customer->id,
@@ -514,7 +514,7 @@
                 ) ?>
                 <h4 id="invoices"><?= __('Invoices') ?></h4>
                 <?= $this->cell(
-                    'BookkeepingPohoda.Invoices',
+                    'Bookkeeping.Invoices',
                     [['Invoices.customer_id' => $contract->customer->id]],
                     ['show_customers' => false],
                 ) ?>

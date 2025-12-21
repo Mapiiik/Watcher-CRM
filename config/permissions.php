@@ -165,7 +165,7 @@ $permissions = [
             'role' => [
                 'api',
             ],
-            'plugin' => 'BookkeepingPohoda',
+            'plugin' => 'Bookkeeping',
             'controller' => [
                 'Invoices',
             ],
@@ -398,7 +398,7 @@ $permissions = [
             'role' => [
                 'sales-representative',
             ],
-            'plugin' => 'BookkeepingPohoda',
+            'plugin' => 'Bookkeeping',
             'controller' => [
                 'Invoices',
             ],
@@ -413,7 +413,7 @@ $permissions = [
                 'network-manager',
                 'sales-representative',
             ],
-            'plugin' => 'BookkeepingPohoda',
+            'plugin' => 'Bookkeeping',
             'controller' => [
                 'Debtors',
             ],
@@ -428,7 +428,7 @@ $permissions = [
                 'sales-manager',
                 'bookkeeper',
             ],
-            'plugin' => 'BookkeepingPohoda',
+            'plugin' => 'Bookkeeping',
             'controller' => '*',
             'action' => '*',
         ],

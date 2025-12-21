@@ -49,7 +49,7 @@ class Settings
      * Persist a setting value into the database.
      *
      * Path format: "plugin.key" or "plugin.key.subkey".
-     * Example: "bookkeeping_pohoda.invoices" or "bookkeeping_pohoda.invoices.vat_rate"
+     * Example: "bookkeeping.invoices" or "bookkeeping.invoices.vat_rate"
      *
      * If a record with the given plugin/key combination already exists,
      * its value will be updated (merged if subKey is provided).

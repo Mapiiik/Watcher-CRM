@@ -7,7 +7,7 @@
  * value is stored in the database.
  *
  * Structure:
- * - Top-level keys represent plugin namespaces (e.g. 'core', 'radius', 'bookkeeping_pohoda').
+ * - Top-level keys represent plugin namespaces (e.g. 'core', 'radius', 'bookkeeping').
  * - Each plugin contains one or more logical blocks (keys), which may contain nested values.
  * - Values can be scalars or arrays, and may use env() to allow environment-specific overrides.
  *
@@ -686,7 +686,7 @@ return [
     */
 
     /*
-    'bookkeeping_pohoda' => [
+    'bookkeeping' => [
         'connection' => [
             'username' => env('POHODA_USERNAME', ''),
             'password' => env('POHODA_PASSWORD', ''),

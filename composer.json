@@ -57,7 +57,7 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/",
-            "BookkeepingPohoda\\": "plugins/BookkeepingPohoda/src/",
+            "Bookkeeping\\": "plugins/Bookkeeping/src/",
             "Radius\\": "plugins/Radius/src/",
             "Ruian\\": "plugins/Ruian/src/"
         }
@@ -65,7 +65,7 @@
     "autoload-dev": {
         "psr-4": {
             "App\\Test\\": "tests/",
-            "BookkeepingPohoda\\Test\\": "plugins/BookkeepingPohoda/tests/",
+            "Bookkeeping\\Test\\": "plugins/Bookkeeping/tests/",
             "Cake\\Test\\": "vendor/cakephp/cakephp/tests/",
             "Radius\\Test\\": "plugins/Radius/tests/",
             "Ruian\\Test\\": "plugins/Ruian/tests/"
@@ -100,7 +100,7 @@
             "bin/cake migrations migrate --plugin CakeDC/Users",
             "bin/cake migrations migrate --plugin Cake/Queue",
             "bin/cake migrations migrate",
-            "bin/cake migrations migrate --plugin BookkeepingPohoda"
+            "bin/cake migrations migrate --plugin Bookkeeping"
         ],
         "schema-cache": [
             "bin/cake schema_cache build"

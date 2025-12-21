@@ -131,7 +131,7 @@ $urlWithQuery = function ($query = []) use ($request) {
             ) ?>
             <?= $this->AuthLink->link(
                 __('Bookkeeping'),
-                ['controller' => 'Invoices', 'action' => 'index', 'plugin' => 'BookkeepingPohoda'],
+                ['controller' => 'Invoices', 'action' => 'index', 'plugin' => 'Bookkeeping'],
                 ['class' => 'button button-small' . $buttonSelected(['Invoices'])],
             ) ?>
             <?= $this->AuthLink->link(

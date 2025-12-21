@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-12-19 22:04+0100\n"
+"POT-Creation-Date: 2025-12-21 10:39+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,22 +14,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ./src/Command/ProcessEmailsCommand.php:40
+#: ./src/Command/ProcessEmailsCommand.php:41
 msgid "Number of emails to process."
 msgstr ""
 
-#: ./src/Command/ProcessEmailsCommand.php:46
-#: ./src/Command/ProcessSmsCommand.php:50
+#: ./src/Command/ProcessEmailsCommand.php:47
+#: ./src/Command/ProcessSmsCommand.php:51
 msgid "Maximum age of a message that will still be processed (days)."
 msgstr ""
 
-#: ./src/Command/ProcessEmailsCommand.php:52
-#: ./src/Command/ProcessSmsCommand.php:56
+#: ./src/Command/ProcessEmailsCommand.php:53
+#: ./src/Command/ProcessSmsCommand.php:57
 msgid "Minimum waiting time after request to send (seconds)."
 msgstr ""
 
-#: ./src/Command/ProcessEmailsCommand.php:58
-#: ./src/Command/ProcessSmsCommand.php:62
+#: ./src/Command/ProcessEmailsCommand.php:59
+#: ./src/Command/ProcessSmsCommand.php:63
 msgid "Maximum waiting time after request to send (seconds)."
 msgstr ""
 
@@ -58,7 +58,7 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: ./src/Command/ProcessSmsCommand.php:44
+#: ./src/Command/ProcessSmsCommand.php:45
 msgid "Number of SMS to process."
 msgstr ""
 
@@ -129,33 +129,33 @@ msgstr ""
 msgid "The access credential could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:116
-#: ./src/Controller/AddressesController.php:165
+#: ./src/Controller/AddressesController.php:117
+#: ./src/Controller/AddressesController.php:166
 msgid "The address has been saved."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:120
-#: ./src/Controller/AddressesController.php:169
+#: ./src/Controller/AddressesController.php:121
+#: ./src/Controller/AddressesController.php:170
 msgid "The address could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:200
+#: ./src/Controller/AddressesController.php:201
 msgid "The address has been deleted."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:203
+#: ./src/Controller/AddressesController.php:204
 msgid "The address could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:314
+#: ./src/Controller/AddressesController.php:315
 msgid "Multiple ({0}) RUIAN addresses found."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:318
+#: ./src/Controller/AddressesController.php:319
 msgid "Address found in RUIAN."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:326
+#: ./src/Controller/AddressesController.php:327
 msgid "Address could not be found in RUIAN."
 msgstr ""
 
@@ -177,14 +177,14 @@ msgstr ""
 #: ./src/Controller/BillingsController.php:204
 #: ./src/Controller/BillingsController.php:301
 #: ./src/Controller/BillingsController.php:436
-#: ./src/Controller/ContractsController.php:721
+#: ./src/Controller/ContractsController.php:722
 msgid "The billing has been saved."
 msgstr ""
 
 #: ./src/Controller/BillingsController.php:128
 #: ./src/Controller/BillingsController.php:208
 #: ./src/Controller/BillingsController.php:494
-#: ./src/Controller/ContractsController.php:725
+#: ./src/Controller/ContractsController.php:726
 msgid "The billing could not be saved. Please, try again."
 msgstr ""
 
@@ -197,12 +197,12 @@ msgid "The billing could not be deleted. Please, try again."
 msgstr ""
 
 #: ./src/Controller/BillingsController.php:423
-#: ./src/Controller/ContractsController.php:287
-#: ./src/Controller/ContractsController.php:421
+#: ./src/Controller/ContractsController.php:288
+#: ./src/Controller/ContractsController.php:422
 #: ./src/Controller/CustomerMessagesController.php:281
 #: ./src/Controller/IpAddressesController.php:528
-#: ./src/Controller/OverviewsController.php:268
-#: ./src/Controller/OverviewsController.php:439
+#: ./src/Controller/OverviewsController.php:275
+#: ./src/Controller/OverviewsController.php:446
 #: ./src/Controller/TasksController.php:264
 #: ./src/Controller/TasksController.php:457
 #: ./src/Controller/TasksController.php:556
@@ -215,15 +215,15 @@ msgstr ""
 
 #: ./src/Controller/BorrowedEquipmentsController.php:100
 #: ./src/Controller/BorrowedEquipmentsController.php:155
-#: ./src/Controller/ContractsController.php:647
-#: ./src/Controller/ContractsController.php:673
+#: ./src/Controller/ContractsController.php:648
+#: ./src/Controller/ContractsController.php:674
 msgid "The borrowed equipment has been saved."
 msgstr ""
 
 #: ./src/Controller/BorrowedEquipmentsController.php:104
 #: ./src/Controller/BorrowedEquipmentsController.php:159
-#: ./src/Controller/ContractsController.php:653
-#: ./src/Controller/ContractsController.php:679
+#: ./src/Controller/ContractsController.php:654
+#: ./src/Controller/ContractsController.php:680
 msgid "The borrowed equipment could not be saved. Please, try again."
 msgstr ""
 
@@ -289,83 +289,83 @@ msgstr ""
 msgid "The contract version could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:169
-#: ./src/Controller/ContractsController.php:306
+#: ./src/Controller/ContractsController.php:170
+#: ./src/Controller/ContractsController.php:307
 msgid "The contract has been saved."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:180
-#: ./src/Controller/ContractsController.php:317
+#: ./src/Controller/ContractsController.php:181
+#: ./src/Controller/ContractsController.php:318
 msgid "The contract could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:438
+#: ./src/Controller/ContractsController.php:439
 msgid "The contract has been deleted."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:441
+#: ./src/Controller/ContractsController.php:442
 msgid "The contract could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:483
+#: ./src/Controller/ContractsController.php:484
 msgid "The contract number has been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:491
+#: ./src/Controller/ContractsController.php:492
 msgid "The contract number could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:518
+#: ./src/Controller/ContractsController.php:519
 msgid "The contract numbers could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:526
+#: ./src/Controller/ContractsController.php:527
 msgid "The contract numbers have been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:563
+#: ./src/Controller/ContractsController.php:564
 msgid "The subscriber verification code has been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:571
+#: ./src/Controller/ContractsController.php:572
 msgid "The subscriber verification code could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:598
+#: ./src/Controller/ContractsController.php:599
 msgid "The subscriber verification codes could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:606
+#: ./src/Controller/ContractsController.php:607
 msgid "The subscriber verification codes have been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:636
+#: ./src/Controller/ContractsController.php:637
 msgid "No related borrowed equipments to install."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:645
-#: ./src/Controller/ContractsController.php:651
+#: ./src/Controller/ContractsController.php:646
+#: ./src/Controller/ContractsController.php:652
 msgid "Installation"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:662
+#: ./src/Controller/ContractsController.php:663
 msgid "No related borrowed equipments to uninstall."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:671
-#: ./src/Controller/ContractsController.php:677
+#: ./src/Controller/ContractsController.php:672
+#: ./src/Controller/ContractsController.php:678
 msgid "Uninstallation"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:712
+#: ./src/Controller/ContractsController.php:713
 msgid "No related billings to terminate."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:731
+#: ./src/Controller/ContractsController.php:732
 msgid "Please set a date until which the contract is valid."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:748
+#: ./src/Controller/ContractsController.php:749
 #: ./templates/Contracts/index.php:21
 #: ./templates/Customers/index.php:48
 #: ./templates/Customers/view.php:84
@@ -374,80 +374,80 @@ msgstr ""
 msgid "Contracts"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:749
+#: ./src/Controller/ContractsController.php:750
 msgid "Contract for the provision of services"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:750
+#: ./src/Controller/ContractsController.php:751
 msgid "Contract for the provision of services (with termination of the original contract)"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:752
+#: ./src/Controller/ContractsController.php:753
 msgid "Amendment to the contract for the provision of services"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:753
+#: ./src/Controller/ContractsController.php:754
 msgid "Agreement to terminate contract for the provision of services"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:755
+#: ./src/Controller/ContractsController.php:756
 msgid "Handover Protocols"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:756
+#: ./src/Controller/ContractsController.php:757
 msgid "Handover protocol - Installation of internet connection"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:757
+#: ./src/Controller/ContractsController.php:758
 msgid "Handover protocol - Internet connection uninstallation"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:798
+#: ./src/Controller/ContractsController.php:799
 #: ./templates/ContractVersions/view.php:40
 msgid "indefinitely"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:826
+#: ./src/Controller/ContractsController.php:827
 msgid "A borrowed equipment is not assigned, although it should normally be for this type of service. Please confirm that the customer has their own equipment or add it."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:835
+#: ./src/Controller/ContractsController.php:836
 msgid "Invalid contract version requested."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:841
+#: ./src/Controller/ContractsController.php:842
 msgid "Invalid contract version to be replaced requested."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:854
-#: ./src/Controller/ContractsController.php:950
+#: ./src/Controller/ContractsController.php:855
+#: ./src/Controller/ContractsController.php:951
 msgid "Please set the date until which the contract version is valid."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:864
-#: ./src/Controller/ContractsController.php:896
+#: ./src/Controller/ContractsController.php:865
+#: ./src/Controller/ContractsController.php:897
 msgid "Please set the date of conclusion of the contract version."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:874
-#: ./src/Controller/ContractsController.php:925
-#: ./src/Controller/ContractsController.php:960
+#: ./src/Controller/ContractsController.php:875
+#: ./src/Controller/ContractsController.php:926
+#: ./src/Controller/ContractsController.php:961
 msgid "Please enter the number of the contract to be terminated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:888
+#: ./src/Controller/ContractsController.php:889
 msgid "Please enter the effective date of the amendment."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:909
+#: ./src/Controller/ContractsController.php:910
 msgid "Please select the contract version to be replaced."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:915
+#: ./src/Controller/ContractsController.php:916
 msgid "Please set the date of conclusion of the original contract version."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:1025
+#: ./src/Controller/ContractsController.php:1026
 #: ./src/Controller/CustomersController.php:467
 msgid "Invalid type of document requested."
 msgstr ""
@@ -488,12 +488,12 @@ msgstr ""
 msgid "The customer label could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomerMessagesController.php:88
+#: ./src/Controller/CustomerMessagesController.php:90
 #: ./src/Controller/CustomerMessagesController.php:299
 msgid "The customer message has been saved."
 msgstr ""
 
-#: ./src/Controller/CustomerMessagesController.php:92
+#: ./src/Controller/CustomerMessagesController.php:94
 #: ./src/Controller/CustomerMessagesController.php:303
 msgid "The customer message could not be saved. Please, try again."
 msgstr ""
@@ -606,31 +606,31 @@ msgstr ""
 msgid "The equipment type could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:102
-#: ./src/Controller/IpAddressesController.php:161
-#: ./src/Controller/IpAddressesController.php:278
+#: ./src/Controller/IpAddressesController.php:103
+#: ./src/Controller/IpAddressesController.php:162
+#: ./src/Controller/IpAddressesController.php:279
 #: ./src/Controller/IpAddressesController.php:498
 msgid "The IP address has been saved."
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:106
-#: ./src/Controller/IpAddressesController.php:165
-#: ./src/Controller/IpAddressesController.php:282
+#: ./src/Controller/IpAddressesController.php:107
+#: ./src/Controller/IpAddressesController.php:166
+#: ./src/Controller/IpAddressesController.php:283
 #: ./src/Controller/IpAddressesController.php:502
 msgid "The IP address could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:238
+#: ./src/Controller/IpAddressesController.php:239
 #: ./src/Controller/IpAddressesController.php:439
 msgid "The IP address ranges list could not be loaded. Please, try again."
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:325
+#: ./src/Controller/IpAddressesController.php:326
 #: ./src/Controller/IpAddressesController.php:469
 msgid "The IP address has been deleted."
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:328
+#: ./src/Controller/IpAddressesController.php:329
 #: ./src/Controller/IpAddressesController.php:508
 msgid "The IP address could not be deleted. Please, try again."
 msgstr ""
@@ -659,31 +659,31 @@ msgstr ""
 msgid "unknown customer"
 msgstr ""
 
-#: ./src/Controller/IpNetworksController.php:97
-#: ./src/Controller/IpNetworksController.php:146
+#: ./src/Controller/IpNetworksController.php:98
+#: ./src/Controller/IpNetworksController.php:147
 msgid "The IP network has been saved."
 msgstr ""
 
-#: ./src/Controller/IpNetworksController.php:101
-#: ./src/Controller/IpNetworksController.php:150
+#: ./src/Controller/IpNetworksController.php:102
+#: ./src/Controller/IpNetworksController.php:151
 msgid "The IP network could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/IpNetworksController.php:196
+#: ./src/Controller/IpNetworksController.php:197
 msgid "The IP network has been deleted."
 msgstr ""
 
-#: ./src/Controller/IpNetworksController.php:199
+#: ./src/Controller/IpNetworksController.php:200
 msgid "The IP network could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/IpNetworksController.php:227
+#: ./src/Controller/IpNetworksController.php:228
 #: ./src/Controller/RemovedIpNetworksController.php:104
 #: ./src/Controller/RemovedIpNetworksController.php:155
 msgid "The removed IP network has been saved."
 msgstr ""
 
-#: ./src/Controller/IpNetworksController.php:232
+#: ./src/Controller/IpNetworksController.php:233
 #: ./src/Controller/RemovedIpNetworksController.php:108
 #: ./src/Controller/RemovedIpNetworksController.php:159
 msgid "The removed IP network could not be saved. Please, try again."
@@ -738,11 +738,11 @@ msgstr ""
 msgid "The login could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:516
+#: ./src/Controller/OverviewsController.php:522
 msgid "Invalid RUIAN GID: {0}"
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:851
+#: ./src/Controller/OverviewsController.php:857
 msgid "unknown dealer"
 msgstr ""
 
@@ -847,7 +847,11 @@ msgstr ""
 msgid "The service could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/SettingsController.php:41
+#: ./src/Controller/SettingsController.php:38
+msgid "Invalid settings path: {path}"
+msgstr ""
+
+#: ./src/Controller/SettingsController.php:47
 msgid "Unknown settings block: {path}"
 msgstr ""
 
@@ -1576,7 +1580,7 @@ msgstr ""
 #: ./templates/Services/index.php:31
 #: ./templates/Services/view.php:14
 #: ./templates/Services/view.php:123
-#: ./templates/Settings/edit.php:12
+#: ./templates/Settings/edit.php:13
 #: ./templates/SoldEquipments/add.php:13
 #: ./templates/SoldEquipments/edit.php:13
 #: ./templates/SoldEquipments/index.php:36
@@ -1700,7 +1704,7 @@ msgstr ""
 #: ./templates/ServiceTypes/edit.php:48
 #: ./templates/Services/add.php:29
 #: ./templates/Services/edit.php:34
-#: ./templates/Settings/edit.php:40
+#: ./templates/Settings/edit.php:38
 #: ./templates/SoldEquipments/add.php:38
 #: ./templates/SoldEquipments/edit.php:46
 #: ./templates/TaskStates/add.php:26
@@ -1782,7 +1786,6 @@ msgstr ""
 #: ./templates/Services/edit.php:14
 #: ./templates/Services/index.php:60
 #: ./templates/Services/view.php:166
-#: ./templates/Settings/edit.php:14
 #: ./templates/SoldEquipments/edit.php:15
 #: ./templates/SoldEquipments/index.php:76
 #: ./templates/TaskStates/edit.php:12
@@ -1900,7 +1903,6 @@ msgstr ""
 #: ./templates/Services/index.php:62
 #: ./templates/Services/view.php:23
 #: ./templates/Services/view.php:168
-#: ./templates/Settings/edit.php:16
 #: ./templates/SoldEquipments/edit.php:18
 #: ./templates/SoldEquipments/index.php:78
 #: ./templates/SoldEquipments/view.php:20
@@ -4926,20 +4928,20 @@ msgstr ""
 msgid "Total sum of active"
 msgstr ""
 
-#: ./templates/Settings/edit.php:18
+#: ./templates/Settings/edit.php:14
 msgid "List Settings"
 msgstr ""
 
-#: ./templates/Settings/edit.php:25
+#: ./templates/Settings/edit.php:21
 msgid "Edit Setting"
 msgstr ""
 
-#: ./templates/Settings/edit.php:26
+#: ./templates/Settings/edit.php:22
 msgid "If you leave the field blank, it will not be saved in the DB and the default value will be used."
 msgstr ""
 
-#: ./templates/Settings/edit.php:30
-#: ./templates/element/Settings/FormFields.php:20
+#: ./templates/Settings/edit.php:28
+#: ./templates/element/Settings/FormFields.php:22
 msgid "Setting: {path}"
 msgstr ""
 
@@ -5266,7 +5268,7 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-#: ./templates/element/Settings/FormFields.php:46
+#: ./templates/element/Settings/FormFields.php:48
 msgid "Default value:"
 msgstr ""
 
