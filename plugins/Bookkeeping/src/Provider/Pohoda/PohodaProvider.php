@@ -43,7 +43,7 @@ class PohodaProvider
      * Synchronize invoices from Pohoda (mServer).
      *
      * @param \Cake\I18n\DateTime $lastChanges Timestamp of last successful sync.
-     * @return array Parsed and mapped invoice data.
+     * @return array{imported:int, created:int, modified:int, skipped:int}
      */
     public function syncInvoices(DateTime $lastChanges): array
     {

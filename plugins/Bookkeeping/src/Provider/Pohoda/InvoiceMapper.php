@@ -9,22 +9,21 @@ use Cake\ORM\Locator\LocatorAwareTrait;
 /**
  * Class InvoiceMapper
  *
- * Maps parsed Pohoda invoice data into CRM invoice entities.
- * Handles customer lookup, VS mapping, totals, dates and persistence.
+ * Maps InvoiceDraft objects into CRM invoice entities.
+ * Handles customer lookup, VS mapping and persistence.
  */
 class InvoiceMapper
 {
     use LocatorAwareTrait;
 
     /**
-     * Map parsed invoice data into CRM entities and save them.
+     * Map invoice drafts into CRM entities and save them.
      *
-     * @param array $parsedInvoices Parsed invoice data from XmlParser.
-     * @return array Mapping results: ['imported' => X, 'created' => Y, 'modified' => Z, 'skipped' => W]
+     * @param list<\Bookkeeping\ValueObject\InvoiceDraft> $drafts Parsed invoice drafts.
+     * @return array{imported:int, created:int, modified:int, skipped:int}
      */
-    public function mapAndSave(array $parsedInvoices): array
+    public function mapAndSave(array $drafts): array
     {
-        /** @var \Bookkeeping\Model\Table\InvoicesTable $invoicesTable */
         $invoicesTable = $this->fetchTable(InvoicesTable::class);
 
         // Load customer IDs indexed by VS offset
@@ -36,48 +35,38 @@ class InvoiceMapper
         $created = 0;
         $modified = 0;
 
-        foreach ($parsedInvoices as $data) {
+        foreach ($drafts as $draft) {
             $imported++;
 
-            // Validate required fields
-            if (
-                !isset(
-                    $data['numberRequested'],
-                    $data['symVar'],
-                    $data['date'],
-                    $data['dateDue'],
-                    $data['text'],
-                    $data['totalAmount'],
-                    $data['remainingDebt'],
-                )
-            ) {
+            // Structural validation (handled by draft itself)
+            if (!$draft->isValid()) {
                 // Skip invalid rows
                 continue;
             }
 
-            // Validate VS range
-            $vs = (int)$data['symVar'];
+            // Validate variable symbol range
+            $vs = $draft->variableSymbol;
             $series = (int)env('CUSTOMER_SERIES', '0');
 
             if (!($series < $vs && $vs < $series + 50000)) {
-                // Skip invoices outside customer VS range
+                // Skip invoices outside customer variable symbol range
                 continue;
             }
 
             // Find or create invoice
             $invoice =
-                $invoicesTable->find()->where(['number' => $data['numberRequested']])->first()
-                ?? $invoicesTable->newEntity(['number' => $data['numberRequested']]);
+                $invoicesTable->find()->where(['number' => $draft->number])->first()
+                ?? $invoicesTable->newEntity(['number' => $draft->number]);
 
             // Map fields
             $invoice->customer_id = $customerIds[$vs - $series] ?? null;
             $invoice->variable_symbol = $vs;
-            $invoice->creation_date = $data['date'];
-            $invoice->due_date = $data['dateDue'];
-            $invoice->text = $data['text'];
-            $invoice->total = $data['totalAmount'];
-            $invoice->debt = $data['remainingDebt'];
-            $invoice->payment_date = $data['liquidationDate'] ?: null;
+            $invoice->creation_date = $draft->creationDate;
+            $invoice->due_date = $draft->dueDate;
+            $invoice->text = $draft->text;
+            $invoice->total = $draft->total;
+            $invoice->debt = $draft->debt;
+            $invoice->payment_date = $draft->paymentDate;
 
             // Count stats
             if ($invoice->isNew()) {

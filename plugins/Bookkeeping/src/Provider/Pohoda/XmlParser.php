@@ -3,13 +3,19 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Provider\Pohoda;
 
+use Bookkeeping\ValueObject\InvoiceDraft;
+use Cake\I18n\Date;
+use PhpCollective\DecimalObject\Decimal;
 use SimpleXMLElement;
 
 /**
  * Class XmlParser
  *
  * Responsible for parsing XML responses returned by Pohoda mServer.
- * Extracts invoice data and converts it into structured arrays.
+ * Extracts invoice data and converts it into InvoiceDraft objects.
+ *
+ * This class performs no validation or persistence logic.
+ * It only reads, normalizes and maps XML data into a domain-neutral structure.
  */
 class XmlParser
 {
@@ -17,7 +23,7 @@ class XmlParser
      * Parse invoices from XML response.
      *
      * @param \SimpleXMLElement $xml XML response from Pohoda.
-     * @return array Parsed invoice data.
+     * @return list<\Bookkeeping\ValueObject\InvoiceDraft>
      */
     public function parseInvoices(SimpleXMLElement $xml): array
     {
@@ -28,48 +34,100 @@ class XmlParser
         $xml->registerXPathNamespace('typ', 'http://www.stormware.cz/schema/version_2/type.xsd');
 
         $invoices = $xml->xpath('//lst:invoice');
-        $invoicesData = [];
+        $drafts = [];
 
         foreach ($invoices as $invoice) {
-            $invoiceInfo = [];
+            $draft = new InvoiceDraft();
 
-            $invoiceInfo['numberRequested'] =
-                $this->extract($invoice, './inv:invoiceHeader/inv:number/typ:numberRequested');
+            // Invoice number
+            $draft->number = $this->extract(
+                $invoice,
+                './inv:invoiceHeader/inv:number/typ:numberRequested',
+            );
 
-            $invoiceInfo['symVar'] =
-                $this->extract($invoice, './inv:invoiceHeader/inv:symVar');
+            // Variable symbol
+            $value = $this->extract(
+                $invoice,
+                './inv:invoiceHeader/inv:symVar',
+            );
+            $draft->variableSymbol = $value !== null ? (int)$value : null;
 
-            $invoiceInfo['date'] =
-                $this->extract($invoice, './inv:invoiceHeader/inv:date');
+            // Dates
+            $draft->creationDate = $this->parseDate(
+                $this->extract($invoice, './inv:invoiceHeader/inv:date'),
+            );
 
-            $invoiceInfo['dateDue'] =
-                $this->extract($invoice, './inv:invoiceHeader/inv:dateDue');
+            $draft->dueDate = $this->parseDate(
+                $this->extract($invoice, './inv:invoiceHeader/inv:dateDue'),
+            );
 
-            $invoiceInfo['text'] =
-                $this->extract($invoice, './inv:invoiceHeader/inv:text');
+            $draft->paymentDate = $this->parseDate(
+                $this->extract(
+                    $invoice,
+                    './inv:invoiceHeader/inv:liquidation/typ:date',
+                ),
+            );
+
+            // Text
+            $draft->text = $this->extract(
+                $invoice,
+                './inv:invoiceHeader/inv:text',
+            );
 
             // Calculate total amount
-            $priceNone =
-                (float)$this->extract($invoice, './inv:invoiceSummary/inv:homeCurrency/typ:priceNone', 0);
-            $priceLowSum =
-                (float)$this->extract($invoice, './inv:invoiceSummary/inv:homeCurrency/typ:priceLowSum', 0);
-            $priceHighSum =
-                (float)$this->extract($invoice, './inv:invoiceSummary/inv:homeCurrency/typ:priceHighSum', 0);
+            $priceNone = (float)$this->extract(
+                $invoice,
+                './inv:invoiceSummary/inv:homeCurrency/typ:priceNone',
+                0,
+            );
+            $priceLowSum = (float)$this->extract(
+                $invoice,
+                './inv:invoiceSummary/inv:homeCurrency/typ:priceLowSum',
+                0,
+            );
+            $priceHighSum = (float)$this->extract(
+                $invoice,
+                './inv:invoiceSummary/inv:homeCurrency/typ:priceHighSum',
+                0,
+            );
 
-            $invoiceInfo['totalAmount'] = $priceNone + $priceLowSum + $priceHighSum;
+            $draft->total = Decimal::create(
+                (string)($priceNone + $priceLowSum + $priceHighSum),
+                2,
+            );
 
             // Remaining debt
-            $invoiceInfo['remainingDebt'] =
-                (float)$this->extract($invoice, './inv:invoiceHeader/inv:liquidation/typ:amountHome', 0);
+            $draft->debt = Decimal::create(
+                (string)$this->extract(
+                    $invoice,
+                    './inv:invoiceHeader/inv:liquidation/typ:amountHome',
+                    0,
+                ),
+                2,
+            );
 
-            // Liquidation date
-            $invoiceInfo['liquidationDate'] =
-                $this->extract($invoice, './inv:invoiceHeader/inv:liquidation/typ:date');
+            // Optional metadata
+            $draft->metadata['source'] = 'pohoda-xml';
 
-            $invoicesData[] = $invoiceInfo;
+            $drafts[] = $draft;
         }
 
-        return $invoicesData;
+        return $drafts;
+    }
+
+    /**
+     * Parse date string into Cake Date object.
+     *
+     * @param string|null $value
+     * @return \Cake\I18n\Date|null
+     */
+    private function parseDate(?string $value): ?Date
+    {
+        if ($value === null || $value === '') {
+            return null;
+        }
+
+        return new Date($value);
     }
 
     /**
@@ -78,12 +136,16 @@ class XmlParser
      * @param \SimpleXMLElement $xml
      * @param string $path
      * @param mixed $default
-     * @return mixed
+     * @return string|null
      */
-    private function extract(SimpleXMLElement $xml, string $path, mixed $default = null): mixed
+    private function extract(SimpleXMLElement $xml, string $path, mixed $default = null): ?string
     {
         $nodes = $xml->xpath($path);
 
-        return $nodes && isset($nodes[0]) ? (string)$nodes[0] : $default;
+        if ($nodes && isset($nodes[0])) {
+            return (string)$nodes[0];
+        }
+
+        return $default !== null ? (string)$default : null;
     }
 }
