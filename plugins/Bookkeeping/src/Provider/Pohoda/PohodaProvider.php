@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Bookkeeping\Provider\Pohoda;
 
 use Bookkeeping\Model\Entity\Invoice;
+use Bookkeeping\Model\Enum\InvoiceExportFormat;
+use Bookkeeping\Model\Enum\InvoiceImportFormat;
 use Cake\I18n\DateTime;
 use RuntimeException;
 
@@ -25,6 +27,7 @@ class PohodaProvider
 {
     private XmlRequestBuilder $xmlRequestBuilder;
     private HttpClient $httpClient;
+    private DbfParser $dbfParser;
     private XmlParser $xmlParser;
     private InvoiceMapper $invoiceMapper;
 
@@ -35,6 +38,7 @@ class PohodaProvider
     {
         $this->xmlRequestBuilder = new XmlRequestBuilder();
         $this->httpClient = new HttpClient();
+        $this->dbfParser = new DbfParser();
         $this->xmlParser = new XmlParser();
         $this->invoiceMapper = new InvoiceMapper();
     }
@@ -43,7 +47,7 @@ class PohodaProvider
      * Synchronize invoices from Pohoda (mServer).
      *
      * @param \Cake\I18n\DateTime $lastChanges Timestamp of last successful sync.
-     * @return array{imported:int, created:int, modified:int, skipped:int}
+     * @return array{imported:int, created:int, modified:int, skipped:int} Import results.
      */
     public function syncInvoices(DateTime $lastChanges): array
     {
@@ -87,10 +91,10 @@ class PohodaProvider
         }
 
         // 6) Parse invoices
-        $parsedInvoices = $this->xmlParser->parseInvoices($xml);
+        $drafts = $this->xmlParser->parseSimpleXML($xml);
 
         // Map and save into CRM
-        $results = $this->invoiceMapper->mapAndSave($parsedInvoices);
+        $results = $this->invoiceMapper->mapAndSave($drafts);
 
         return $results;
     }
@@ -99,10 +103,11 @@ class PohodaProvider
      * Export invoices to Pohoda (DBF/XML).
      *
      * @param array $invoices List of invoice entities.
+     * @param \Bookkeeping\Model\Enum\InvoiceExportFormat $format Export format.
      * @param array $options Additional export options.
      * @return array|string File path or export data.
      */
-    public function exportInvoices(array $invoices, array $options = []): array|string
+    public function exportInvoices(array $invoices, InvoiceExportFormat $format, array $options = []): array|string
     {
         return '';
     }
@@ -111,11 +116,24 @@ class PohodaProvider
      * Import invoices from Pohoda (DBF).
      *
      * @param string $filePath Path to DBF file.
-     * @return array Import results.
+     * @param \Bookkeeping\Model\Enum\InvoiceImportFormat $format Import format.
+     * @return array{imported:int, created:int, modified:int, skipped:int} Import results.
      */
-    public function importInvoices(string $filePath): array
+    public function importInvoices(string $filePath, InvoiceImportFormat $format): array
     {
-        return [];
+        // Parse invoices
+        $drafts = match ($format) {
+            InvoiceImportFormat::DBF =>
+                $this->dbfParser->parseFile($filePath),
+
+            InvoiceImportFormat::XML =>
+                $this->xmlParser->parseFile($filePath),
+        };
+
+        // Map and save into CRM
+        $results = $this->invoiceMapper->mapAndSave($drafts);
+
+        return $results;
     }
 
     /**

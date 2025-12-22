@@ -6,6 +6,7 @@ namespace Bookkeeping\Provider\Pohoda;
 use Bookkeeping\ValueObject\InvoiceDraft;
 use Cake\I18n\Date;
 use PhpCollective\DecimalObject\Decimal;
+use RuntimeException;
 use SimpleXMLElement;
 
 /**
@@ -20,12 +21,38 @@ use SimpleXMLElement;
 class XmlParser
 {
     /**
+     * Parse invoices from XML file.
+     *
+     * @param string $filePath Path to uploaded DBF file.
+     * @return list<\Bookkeeping\ValueObject\InvoiceDraft>
+     */
+    public function parseFile(string $filePath): array
+    {
+        libxml_use_internal_errors(true);
+
+        $xml = simplexml_load_file($filePath);
+
+        if ($xml === false) {
+            $errors = libxml_get_errors();
+            libxml_clear_errors();
+
+            throw new RuntimeException(__d(
+                'bookkeeping',
+                'Invalid XML file: {0}',
+                [($errors[0]->message ?? __d('bookkeeping', 'Unknown XML error'))],
+            ));
+        }
+
+        return $this->parseSimpleXML($xml);
+    }
+
+    /**
      * Parse invoices from XML response.
      *
      * @param \SimpleXMLElement $xml XML response from Pohoda.
      * @return list<\Bookkeeping\ValueObject\InvoiceDraft>
      */
-    public function parseInvoices(SimpleXMLElement $xml): array
+    public function parseSimpleXML(SimpleXMLElement $xml): array
     {
         // Register namespaces
         $xml->registerXPathNamespace('rsp', 'http://www.stormware.cz/schema/version_2/response.xsd');

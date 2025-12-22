@@ -5,6 +5,8 @@ namespace Bookkeeping\Controller;
 
 use App\Model\Table\CustomersTable;
 use App\Model\Table\TaxRatesTable;
+use Bookkeeping\Model\Enum\InvoiceImportFormat;
+use Bookkeeping\Service\BookkeepingService;
 use Bookkeeping\View\DbfView;
 use Bookkeeping\View\XmlView;
 use Cake\Collection\CollectionInterface;
@@ -15,6 +17,7 @@ use Exception;
 use Override;
 use PhpCollective\DecimalObject\Decimal;
 use Settings\Utility\Settings;
+use Throwable;
 
 /**
  * Invoices Controller
@@ -623,120 +626,54 @@ class InvoicesController extends AppController
     }
 
     /**
-     * Import from DBF method
+     * Import invoices from DBF file.
      *
-     * @return \Cake\Http\Response|null|void Renders generateInvoices
+     * @return \Cake\Http\Response|null|void
      */
     public function importFromDBF()
     {
-        if ($this->getRequest()->is(['post'])) {
-            /** @var \Laminas\Diactoros\UploadedFile $dbf_for_import */
-            $dbf_for_import = $this->getRequest()->getData('dbf_for_import');
+        if (!$this->getRequest()->is(['post'])) {
+            return null;
+        }
 
-            $created = 0;
-            $modified = 0;
+        /** @var \Laminas\Diactoros\UploadedFile $file */
+        $file = $this->getRequest()->getData('dbf_for_import');
 
-            // load customer IDs
-            $customerIds = $this->Invoices->Customers
-            ->find(
-                'list',
-                keyField: 'nid',
-                valueField: 'id',
-            )
-            ->toArray();
+        if ($file === null || $file->getSize() === 0) {
+            $this->Flash->error(__d(
+                'bookkeeping',
+                'No DBF file was uploaded.',
+            ));
 
-            // VERIFICATION DATA CHECK
-            if ($dbf_for_import->getSize() > 0) {
-                $dbase = dbase_open($_FILES['dbf_for_import']['tmp_name'], 0);
+            return null;
+        }
 
-                $record_count = dbase_numrecords($dbase);
-                for ($record_number = 1; $record_number <= $record_count; $record_number++) {
-                    // right! record #s begin with 1, don't forget <=
-                    $record = dbase_get_record_with_names($dbase, $record_number);
-                    foreach ($record as $key => $value) {
-                        if (is_string($value)) {
-                            $record[$key] = trim(iconv('CP852', 'UTF-8', $value));
-                        } else {
-                            $record[$key] = $value;
-                        }
-                    }
+        $tmpPath = $file->getStream()->getMetadata('uri');
 
-                    // check that all columns are present
-                    if (
-                        !(
-                            isset($record['CISLO'])
-                            && isset($record['VARSYM'])
-                            && isset($record['DATUM'])
-                            && isset($record['DATSPLAT'])
-                            && isset($record['STEXT'])
-                            && isset($record['KCCELKEM'])
-                            && isset($record['KCLIKV'])
-                            && isset($record['DATLIKV'])
-                        )
-                    ) {
-                        $this->Flash->error(__d(
-                            'bookkeeping',
-                            'The import file is missing some required columns.',
-                        ));
+        try {
+            $result = (new BookkeepingService())->importInvoices($tmpPath, InvoiceImportFormat::DBF);
 
-                        return null;
-                    }
+            $this->Flash->success(__d(
+                'bookkeeping',
+                'Successfully imported {0} invoices. Created {1}, modified {2} and skipped {3} records.',
+                $result['imported'],
+                $result['created'],
+                $result['modified'],
+                $result['skipped'],
+            ));
+        } catch (Throwable $e) {
+            $this->log($e->getMessage(), 'error');
 
-                    if (
-                        ((int)env('CUSTOMER_SERIES', '0') < (int)$record['VARSYM']) &&
-                        ((int)$record['VARSYM'] < (int)env('CUSTOMER_SERIES', '0') + 50000)
-                    ) {
-                        /** @var \Bookkeeping\Model\Entity\Invoice $invoice */
-                        $invoice =
-                            $this->Invoices->find()->where(['number' => $record['CISLO']])->first()
-                            ??
-                            $this->Invoices->newEntity(['number' => $record['CISLO']]);
-
-                        $invoice->customer_id =
-                            $customerIds[(int)$record['VARSYM'] - (int)env('CUSTOMER_SERIES', '0')] ?? null;
-
-                        $invoice->variable_symbol = (int)$record['VARSYM'];
-                        $invoice->creation_date = $record['DATUM'];
-                        $invoice->due_date = $record['DATSPLAT'];
-                        $invoice->text = $record['STEXT'];
-                        $invoice->total = $record['KCCELKEM'];
-                        $invoice->debt = $record['KCLIKV'];
-                        $invoice->payment_date = $record['DATLIKV'] <> '' ? $record['DATLIKV'] : null;
-
-                        if ($invoice->isNew()) {
-                            $created++;
-                        } else {
-                            $modified++;
-                        }
-
-                        $this->Invoices->saveOrFail($invoice);
-
-                        if ($invoice->hasErrors()) {
-                            $this->Flash->error(__d(
-                                'bookkeeping',
-                                'Invoice {0} could not be loaded.',
-                                $invoice->number,
-                            ));
-                        }
-                    }
-
-                    if ($record_number == $record_count) {
-                        $this->Flash->success(__d(
-                            'bookkeeping',
-                            'Successfully imported {0} invoices. Created {1}, modified {2} and skipped {3} records.',
-                            $record_count,
-                            $created,
-                            $modified,
-                            $record_count - $created - $modified,
-                        ));
-                    }
-                }
-                // close database
-                /** @psalm-suppress UnusedFunctionCall */
-                dbase_close($dbase);
-                //remove file
-                unlink($_FILES['dbf_for_import']['tmp_name']);
+            $this->Flash->error(__d(
+                'bookkeeping',
+                'An error occurred while importing the DBF file.',
+            ));
+        } finally {
+            if (is_string($tmpPath) && file_exists($tmpPath)) {
+                unlink($tmpPath);
             }
         }
+
+        return null;
     }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Bookkeeping\Service;
 
 use Bookkeeping\Model\Entity\Invoice;
+use Bookkeeping\Model\Enum\InvoiceExportFormat;
+use Bookkeeping\Model\Enum\InvoiceImportFormat;
 use Bookkeeping\Provider\Pohoda\PohodaProvider;
 use Cake\I18n\DateTime;
 
@@ -52,23 +54,25 @@ class BookkeepingService
      * Export invoices (DBF/XML) for the accounting system.
      *
      * @param array $invoices
+     * @param \Bookkeeping\Model\Enum\InvoiceExportFormat $format Export format.
      * @param array $options
      * @return array|string
      */
-    public function exportInvoices(array $invoices, array $options = []): array|string
+    public function exportInvoices(array $invoices, InvoiceExportFormat $format, array $options = []): array|string
     {
-        return $this->provider->exportInvoices($invoices, $options);
+        return $this->provider->exportInvoices($invoices, $format, $options);
     }
 
     /**
      * Import invoices from the accounting system (DBF).
      *
      * @param string $filePath
+     * @param \Bookkeeping\Model\Enum\InvoiceImportFormat $format Import format.
      * @return array
      */
-    public function importInvoices(string $filePath): array
+    public function importInvoices(string $filePath, InvoiceImportFormat $format): array
     {
-        return $this->provider->importInvoices($filePath);
+        return $this->provider->importInvoices($filePath, $format);
     }
 
     /**
