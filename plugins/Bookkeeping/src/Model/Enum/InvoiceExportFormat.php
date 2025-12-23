@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Model\Enum;
 
+use Bookkeeping\Model\Enum\Trait\EnumOptionsTrait;
 use Cake\Database\Type\EnumLabelInterface;
 use Override;
 
@@ -11,6 +12,8 @@ use Override;
  */
 enum InvoiceExportFormat: string implements EnumLabelInterface
 {
+    use EnumOptionsTrait;
+
     case XML = 'xml';
     case DBF = 'dbf';
 

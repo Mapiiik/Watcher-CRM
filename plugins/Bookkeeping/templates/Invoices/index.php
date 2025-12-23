@@ -35,8 +35,8 @@
         ['class' => 'button float-right'],
     ) ?>
     <?= $this->AuthLink->link(
-        __d('bookkeeping', 'Import Invoices from DBF'),
-        ['action' => 'importFromDBF'],
+        __d('bookkeeping', 'Import from File'),
+        ['action' => 'importFromFile'],
         ['class' => 'button float-right'],
     ) ?>
     <?= $this->AuthLink->link(

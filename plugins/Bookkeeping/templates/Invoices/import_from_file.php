@@ -2,6 +2,9 @@
 /**
  * @var \App\View\AppView $this
  */
+
+use Bookkeeping\Model\Enum\InvoiceImportFormat;
+
 ?>
 <div class="row">
     <aside class="column">
@@ -20,17 +23,24 @@
                 'type' => 'file',
                 'valueSources' => ['data', 'query'],
                 'url' => [
-                    'action' => 'importFromDBF',
+                    'action' => 'importFromFile',
                 ],
             ]) ?>
             <fieldset>
-                <legend><?= __d('bookkeeping', 'Import Invoices from DBF') ?></legend>
+                <legend><?= __d('bookkeeping', 'Import Invoices from File') ?></legend>
                 <div class="row">
                     <div class="column">
                     <?php
-                        echo $this->Form->control('dbf_for_import', [
-                            'label' => __d('bookkeeping', 'DBF for import'),
+                        echo $this->Form->control('file', [
+                            'label' => __d('bookkeeping', 'File for import'),
                             'type' => 'file',
+                            'required' => true,
+                        ]);
+                        echo $this->Form->control('format', [
+                            'empty' => true,
+                            'type' => 'select',
+                            'options' => InvoiceImportFormat::options(),
+                            'label' => __d('bookkeeping', 'Import format'),
                             'required' => true,
                         ]);
                         ?>

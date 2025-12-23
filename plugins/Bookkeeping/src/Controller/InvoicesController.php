@@ -626,23 +626,27 @@ class InvoicesController extends AppController
     }
 
     /**
-     * Import invoices from DBF file.
+     * Import invoices from file.
      *
      * @return \Cake\Http\Response|null|void
      */
-    public function importFromDBF()
+    public function importFromFile()
     {
         if (!$this->getRequest()->is(['post'])) {
             return null;
         }
 
-        /** @var \Laminas\Diactoros\UploadedFile $file */
-        $file = $this->getRequest()->getData('dbf_for_import');
+        $format = InvoiceImportFormat::from(
+            $this->getRequest()->getData('format'),
+        );
+
+        /** @var \Laminas\Diactoros\UploadedFile|null $file */
+        $file = $this->getRequest()->getData('file');
 
         if ($file === null || $file->getSize() === 0) {
             $this->Flash->error(__d(
                 'bookkeeping',
-                'No DBF file was uploaded.',
+                'No file was uploaded.',
             ));
 
             return null;
@@ -651,7 +655,7 @@ class InvoicesController extends AppController
         $tmpPath = $file->getStream()->getMetadata('uri');
 
         try {
-            $result = (new BookkeepingService())->importInvoices($tmpPath, InvoiceImportFormat::DBF);
+            $result = (new BookkeepingService())->importInvoices($tmpPath, $format);
 
             $this->Flash->success(__d(
                 'bookkeeping',
@@ -666,7 +670,8 @@ class InvoicesController extends AppController
 
             $this->Flash->error(__d(
                 'bookkeeping',
-                'An error occurred while importing the DBF file.',
+                'An error occurred while importing the file: {0}',
+                [$e->getMessage()],
             ));
         } finally {
             if (is_string($tmpPath) && file_exists($tmpPath)) {
