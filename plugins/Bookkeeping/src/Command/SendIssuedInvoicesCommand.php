@@ -127,11 +127,11 @@ class SendIssuedInvoicesCommand extends Command
 
                 try {
                     // add attachment
-                    $path = $this->bookkeeping->getInvoicePdfPath($invoice);
+                    $filePath = $this->bookkeeping->getInvoicePdfPath($invoice);
 
                     $mailer->setAttachments([
-                        basename($path) => [
-                            'file' => $path,
+                        basename($filePath) => [
+                            'file' => $filePath,
                             'mimetype' => 'application/pdf',
                             'contentId' => 'invoice-' . $invoice->number,
                         ],

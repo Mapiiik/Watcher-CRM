@@ -296,10 +296,10 @@ class ProcessDebtorsCommand extends Command
         $attachments = [];
 
         foreach ($debtor->getInvoices() as $invoice) {
-            $path = $this->bookkeeping->getInvoicePdfPath($invoice);
+            $filePath = $this->bookkeeping->getInvoicePdfPath($invoice);
 
-            $attachments[basename($path)] = [
-                'file' => $path,
+            $attachments[basename($filePath)] = [
+                'file' => $filePath,
                 'mimetype' => 'application/pdf',
                 'contentId' => 'invoice-' . $invoice->number,
             ];

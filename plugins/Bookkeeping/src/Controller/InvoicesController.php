@@ -150,13 +150,11 @@ class InvoicesController extends AppController
             'Customers',
         ]);
 
-        $filename =
-            (string)env('DATA_ROOT', DS . 'data' . DS)
-            . 'invoices' . DS . 'Faktura_' . $invoice->number . '.pdf';
+        $filePath = (new BookkeepingService())->getInvoicePdfPath($invoice);
 
-        $response = $this->response->withFile($filename, [
+        $response = $this->response->withFile($filePath, [
             'download' => true,
-            'name' => 'Faktura_' . $invoice->number . '.pdf',
+            'name' => basename($filePath),
         ]);
 
         return $response;
