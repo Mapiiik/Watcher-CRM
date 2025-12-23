@@ -32,7 +32,7 @@ use Bookkeeping\Model\Enum\InvoiceImportFormat;
                     <div class="column">
                     <?php
                         echo $this->Form->control('file', [
-                            'label' => __d('bookkeeping', 'File for import'),
+                            'label' => __d('bookkeeping', 'File for Import'),
                             'type' => 'file',
                             'required' => true,
                         ]);
@@ -40,7 +40,7 @@ use Bookkeeping\Model\Enum\InvoiceImportFormat;
                             'empty' => true,
                             'type' => 'select',
                             'options' => InvoiceImportFormat::options(),
-                            'label' => __d('bookkeeping', 'Import format'),
+                            'label' => __d('bookkeeping', 'Import Format'),
                             'required' => true,
                         ]);
                         ?>
