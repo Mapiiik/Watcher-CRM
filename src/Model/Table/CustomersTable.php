@@ -5,7 +5,9 @@ namespace App\Model\Table;
 
 use App\Model\Enum\CustomerDealer;
 use App\Model\Enum\CustomerInvoiceDeliveryType;
+use Cake\Collection\CollectionInterface;
 use Cake\Database\Type\EnumType;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 use Override;
@@ -344,5 +346,93 @@ class CustomersTable extends AppTable
         $rules->addDelete($rules->isNotLinkedTo('DealerCommissions')); // as Dealers
 
         return $rules;
+    }
+
+    /**
+     * Finder for customers with billing data for a given month and tax rate.
+     *
+     * Returns customers including their addresses, contracts and billings
+     * that are active and billable within the given invoiced month.
+     *
+     * Billings are filtered to those overlapping the invoiced month and
+     * enriched with a computed `period_total` value representing the
+     * billable amount for the given period.
+     *
+     * This finder is intended to be used by invoice generation and
+     * bookkeeping workflows and does not perform any persistence or
+     * side effects.
+     *
+     * ### Options
+     * - `invoicedMonth` (Cake\I18n\Date) Required. Month for which billing data is calculated.
+     * - `taxRateId` (string) Required. Tax rate identifier used to filter customers.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Customer> $query Base query.
+     * @param array{
+     *     invoicedMonth: \Cake\I18n\Date,
+     *     taxRateId: string
+     * } $options Finder options.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Customer>
+     */
+    public function findBillingDataForMonth(
+        SelectQuery $query,
+        array $options,
+    ): SelectQuery {
+        $invoicedMonth = $options['invoicedMonth'];
+        $taxRateId = $options['taxRateId'];
+
+        return $query
+            ->contain('Addresses')
+            ->contain('Contracts', function (SelectQuery $q) use ($invoicedMonth) {
+                return $q
+                    ->contain('ContractStates')
+                    ->contain('ServiceTypes')
+                    ->contain('Billings', function (SelectQuery $q) use ($invoicedMonth) {
+                        return $q
+                            ->contain('Services')
+                            // filter billings active in selected month
+                            ->where([
+                                'Billings.billing_from <=' => $invoicedMonth->lastOfMonth(),
+                            ])
+                            ->andWhere([
+                                'OR' => [
+                                    'Billings.billing_until IS NULL',
+                                    'Billings.billing_until >=' => $invoicedMonth->firstOfMonth(),
+                                ],
+                            ])
+                            // order by billing ID
+                            ->orderBy([
+                                'Billings.id',
+                            ])
+                            // enrich billings with computed period totals
+                            ->formatResults(
+                                function (CollectionInterface $billings) use ($invoicedMonth) {
+                                    return $billings->map(function ($billing) use ($invoicedMonth) {
+                                        $billing['period_total'] = $billing->periodTotal(
+                                            $invoicedMonth->firstOfMonth(),
+                                            $invoicedMonth->lastOfMonth(),
+                                        );
+
+                                        return $billing;
+                                    });
+                                },
+                            );
+                    })
+                    // only contracts with billed states
+                    ->where([
+                        'ContractStates.billed' => true,
+                    ])
+                    // order by contract ID
+                    ->orderBy([
+                        'Contracts.nid',
+                    ]);
+            })
+            // only customers with the selected tax rate
+            ->where([
+                'Customers.tax_rate_id' => $taxRateId,
+            ])
+            // order by customer ID
+            ->orderBy([
+                'Customers.nid',
+            ]);
     }
 }

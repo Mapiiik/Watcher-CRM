@@ -9,9 +9,7 @@ use Bookkeeping\Model\Enum\InvoiceImportFormat;
 use Bookkeeping\Service\BookkeepingService;
 use Bookkeeping\View\DbfView;
 use Bookkeeping\View\XmlView;
-use Cake\Collection\CollectionInterface;
 use Cake\I18n\Date;
-use Cake\ORM\Query\SelectQuery;
 use Cake\Validation\Validation;
 use Exception;
 use Override;
@@ -268,75 +266,6 @@ class InvoicesController extends AppController
     }
 
     /**
-     * get SelectQuery with billing data for selected month
-     *
-     * @param \Cake\I18n\Date $invoicedMonth Month for billing
-     * @param string $taxRateId month Id of tax rate for billing
-     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Customer|array<array-key, mixed>>
-     */
-    private function getQueryForBillingDataForMonth(Date $invoicedMonth, string $taxRateId): SelectQuery
-    {
-        $customersTable = $this->fetchTable(CustomersTable::class);
-
-        return $customersTable
-            ->find()
-            ->contain('Addresses')
-            ->contain('Contracts', function (SelectQuery $q) use ($invoicedMonth) {
-                return $q
-                    ->contain('ContractStates')
-                    ->contain('ServiceTypes')
-                    ->contain('Billings', function (SelectQuery $q) use ($invoicedMonth) {
-                        return $q
-                            ->contain([
-                                'Services',
-                            ])
-                            ->where([
-                                'Billings.billing_from <=' => $invoicedMonth->lastOfMonth(), //last day of month
-                            ])
-                            ->andWhere([
-                                'OR' => [
-                                    'Billings.billing_until IS NULL',
-                                    'Billings.billing_until >=' => $invoicedMonth->firstOfMonth(), //first day of month
-                                ],
-                            ])
-                            // order by billing ID
-                            ->orderBy([
-                                'Billings.id',
-                            ])
-                            // format results
-                            ->formatResults(
-                                function (CollectionInterface $billings) use ($invoicedMonth) {
-                                    return $billings->map(function ($billing) use ($invoicedMonth) {
-                                        $billing['period_total'] = $billing->periodTotal(
-                                            $invoicedMonth->firstOfMonth(),
-                                            $invoicedMonth->lastOfMonth(),
-                                        );
-
-                                        return $billing;
-                                    });
-                                },
-                            );
-                    })
-                    // only contracts with billed states
-                    ->where([
-                        'ContractStates.billed' => true,
-                    ])
-                    // order by contract ID
-                    ->orderBy([
-                        'Contracts.nid',
-                    ]);
-            })
-            // only customers with the selected tax rate
-            ->where([
-                'Customers.tax_rate_id' => $taxRateId,
-            ])
-            // order by customer ID
-            ->orderBy([
-                'Customers.nid',
-            ]);
-    }
-
-    /**
      * Validate and process CSV line
      */
     private function validateAndProcessCsvLine(array $parsedLine): ?array
@@ -442,7 +371,13 @@ class InvoicesController extends AppController
                 unset($csvResource);
 
                 // compare verification data with CRM billings
-                foreach ($this->getQueryForBillingDataForMonth($invoicedMonth, $taxRate->id) as $customer) {
+                $customers = $this->fetchTable(CustomersTable::class)
+                    ->find('billingDataForMonth', [
+                        'invoicedMonth' => $invoicedMonth,
+                        'taxRateId' => $taxRate->id,
+                    ]);
+
+                foreach ($customers as $customer) {
                     /** @var \App\Model\Entity\Customer $customer */
 
                     // declare billing data
@@ -515,7 +450,13 @@ class InvoicesController extends AppController
 
             $invoices = [];
 
-            foreach ($this->getQueryForBillingDataForMonth($invoicedMonth, $taxRate->id) as $customer) {
+            $customers = $this->fetchTable(CustomersTable::class)
+                ->find('billingDataForMonth', [
+                    'invoicedMonth' => $invoicedMonth,
+                    'taxRateId' => $taxRate->id,
+                ]);
+
+            foreach ($customers as $customer) {
                 /** @var \App\Model\Entity\Customer $customer */
 
                 // declare customer billing data
