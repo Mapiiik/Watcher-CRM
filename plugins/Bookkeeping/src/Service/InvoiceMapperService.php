@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Bookkeeping\Provider\Pohoda;
+namespace Bookkeeping\Service;
 
 use Bookkeeping\Model\Table\InvoicesTable;
 use Cake\ORM\Locator\LocatorAwareTrait;
@@ -12,7 +12,7 @@ use Cake\ORM\Locator\LocatorAwareTrait;
  * Maps InvoiceDraft objects into CRM invoice entities.
  * Handles customer lookup, VS mapping and persistence.
  */
-class InvoiceMapper
+class InvoiceMapperService
 {
     use LocatorAwareTrait;
 

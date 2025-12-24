@@ -16,7 +16,6 @@ use RuntimeException;
  * This class delegates actual work to helper classes such as:
  * - XmlRequestBuilder
  * - XmlParser
- * - InvoiceMapper
  * - DbfExporter
  * - DbfImporter
  * - PdfLocator
@@ -29,7 +28,6 @@ class PohodaProvider
     private HttpClient $httpClient;
     private DbfParser $dbfParser;
     private XmlParser $xmlParser;
-    private InvoiceMapper $invoiceMapper;
 
     /**
      * Contructor
@@ -40,14 +38,13 @@ class PohodaProvider
         $this->httpClient = new HttpClient();
         $this->dbfParser = new DbfParser();
         $this->xmlParser = new XmlParser();
-        $this->invoiceMapper = new InvoiceMapper();
     }
 
     /**
      * Synchronize invoices from Pohoda (mServer).
      *
      * @param \Cake\I18n\DateTime $lastChanges Timestamp of last successful sync.
-     * @return array{imported:int, created:int, modified:int, skipped:int} Import results.
+     * @return list<\Bookkeeping\Model\ValueObject\InvoiceDraft>
      */
     public function syncInvoices(DateTime $lastChanges): array
     {
@@ -93,10 +90,7 @@ class PohodaProvider
         // 6) Parse invoices
         $drafts = $this->xmlParser->parseSimpleXML($xml);
 
-        // Map and save into CRM
-        $results = $this->invoiceMapper->mapAndSave($drafts);
-
-        return $results;
+        return $drafts;
     }
 
     /**
@@ -113,11 +107,11 @@ class PohodaProvider
     }
 
     /**
-     * Import invoices from Pohoda (DBF).
+     * Import invoices from Pohoda (DBF/XML).
      *
      * @param string $filePath Path to DBF file.
      * @param \Bookkeeping\Model\Enum\InvoiceImportFormat $format Import format.
-     * @return array{imported:int, created:int, modified:int, skipped:int} Import results.
+     * @return list<\Bookkeeping\Model\ValueObject\InvoiceDraft>
      */
     public function importInvoices(string $filePath, InvoiceImportFormat $format): array
     {
@@ -130,10 +124,7 @@ class PohodaProvider
                 $this->xmlParser->parseFile($filePath),
         };
 
-        // Map and save into CRM
-        $results = $this->invoiceMapper->mapAndSave($drafts);
-
-        return $results;
+        return $drafts;
     }
 
     /**

@@ -23,10 +23,8 @@ use Cake\I18n\DateTime;
  */
 class BookkeepingService
 {
-    /**
-     * @var \Bookkeeping\Provider\Pohoda\PohodaProvider
-     */
     private PohodaProvider $provider;
+    private InvoiceMapperService $invoiceMapper;
 
     /**
      * Constructor
@@ -37,17 +35,22 @@ class BookkeepingService
     public function __construct(?PohodaProvider $provider = null)
     {
         $this->provider = $provider ?? new PohodaProvider();
+        $this->invoiceMapper = new InvoiceMapperService();
     }
 
     /**
      * Synchronize invoices from the accounting system.
      *
      * @param \Cake\I18n\DateTime $lastChanges
-     * @return array
+     * @return array{imported:int, created:int, modified:int, skipped:int} Import results.
      */
     public function syncInvoices(DateTime $lastChanges): array
     {
-        return $this->provider->syncInvoices($lastChanges);
+        // Load and parse invoices
+        $drafts = $this->provider->syncInvoices($lastChanges);
+
+        // Map and save into CRM
+        return $this->invoiceMapper->mapAndSave($drafts);
     }
 
     /**
@@ -68,11 +71,15 @@ class BookkeepingService
      *
      * @param string $filePath
      * @param \Bookkeeping\Model\Enum\InvoiceImportFormat $format Import format.
-     * @return array
+     * @return array{imported:int, created:int, modified:int, skipped:int} Import results.
      */
     public function importInvoices(string $filePath, InvoiceImportFormat $format): array
     {
-        return $this->provider->importInvoices($filePath, $format);
+        // Parse invoices
+        $drafts = $this->provider->importInvoices($filePath, $format);
+
+        // Map and save into CRM
+        return $this->invoiceMapper->mapAndSave($drafts);
     }
 
     /**
