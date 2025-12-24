@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-12-21 10:40+0100\n"
+"POT-Creation-Date: 2025-12-24 19:54+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,232 +14,173 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:51
+#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:58
 msgid "Override the saved date and time of the last synchronisation. Only invoices changed after this date and time of change will be retrieved. Format: YYYY-MM-DD HH:MM:SS (e.g., 2024-10-28 15:45:00). If not provided, the date from the last successful synchronization will be used."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:87
+#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:84
 msgid "Using last changes time: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:109
-msgid "Error connecting to server: {0}"
+#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:93
+msgid "Error during invoice synchronization: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:120
-msgid "Invalid response from the server ({0})"
+#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:102
+msgid "Successfully imported {0} invoices. Created {1}, modified {2}, skipped {3}."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:134
-msgid "Invalid XML response"
+#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:133
+msgid "Invalid date format. Use YYYY-MM-DD HH:MM:SS."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:148
-msgid "The server returned an XML error response (ID: {0}, STATE: {1}, NOTE: {2})"
-msgstr ""
-
-#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:157
-msgid "The server returned a valid XML response (ID: {0}, STATE: {1}, NOTE: {2})"
+#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:144
+msgid "No previous synchronization found. Using default value."
 msgstr ""
 
 #: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:169
-msgid "Invoice Number: {0}"
+msgid "Error reading last synchronization time from file: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:174
-msgid "Variable Symbol: {0}"
+#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:181
+msgid "Error parsing last synchronization time from file: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:179
-msgid "Issue Date: {0}"
+#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:201
+msgid "Error saving last synchronization time to file: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:184
-msgid "Due Date: {0}"
-msgstr ""
-
-#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:189
-msgid "Text: {0}"
-msgstr ""
-
-#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:194
-msgid "Total Amount: {0}"
-msgstr ""
-
-#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:199
-msgid "Liquidation Date: {0}"
-msgstr ""
-
-#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:204
-msgid "Remaining Debt: {0}"
-msgstr ""
-
-#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:361
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:677
-msgid "The import file is missing some required columns."
-msgstr ""
-
-#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:399
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:715
-msgid "Invoice {0} could not be loaded."
-msgstr ""
-
-#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:408
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:724
-msgid "Successfully imported {0} invoices. Created {1}, modified {2} and skipped {3} records."
-msgstr ""
-
-#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:440
-msgid "Invalid date and time format. Use YYYY-MM-DD HH:MM:SS, Error: {0}"
-msgstr ""
-
-#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:452
-msgid "No previous synchronization time found. Using default/initial time."
-msgstr ""
-
-#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:480
-msgid "Error reading last sync time from file: {0}"
-msgstr ""
-
-#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:493
-msgid "Error parsing last sync time from file: {0}"
-msgstr ""
-
-#: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:517
-msgid "Error saving last sync time to file: {0}"
-msgstr ""
-
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:41
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:52
 msgid "Send only a notification of an overdue claims (within the allowed payment delay)."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:49
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:60
 msgid "Send only a notification of blocking (or continuing debt for services no longer active) for overdue claims (after an allowed delay in payment)."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:58
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:69
 msgid "Automatically update the blocking of debtors in systems (routers, firewalls, IPTV, ...)."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:66
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:77
 msgid "Do not send emails, the operation will be skipped."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:71
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:82
 msgid "Do not send SMS, the operation will be skipped."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:98
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:109
 #: ./plugins/Bookkeeping/src/Controller/DebtorsController.php:67
 #: ./plugins/Bookkeeping/src/Controller/DebtorsController.php:94
 #: ./plugins/Bookkeeping/src/Controller/DebtorsController.php:122
 msgid "Systems updated."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:99
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:110
 #: ./plugins/Bookkeeping/src/Controller/DebtorsController.php:68
 #: ./plugins/Bookkeeping/src/Controller/DebtorsController.php:95
 #: ./plugins/Bookkeeping/src/Controller/DebtorsController.php:123
 msgid "Nothing has changed."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:131
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:142
 msgid "Notification email has been generated for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:146
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:157
 msgid "Notification SMS has been generated for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:168
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:179
 msgid "Blocking email has been generated for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:179
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:190
 msgid "Notification email has been generated for inactive services for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:196
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:207
 msgid "Blocking SMS has been generated for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:207
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:218
 msgid "Notification SMS has been generated for inactive services for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:220
-#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:186
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:231
+#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:193
 msgid "Done"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:38
+#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:48
 msgid "Number of emails to process."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:72
+#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:82
 msgid "Sending invoices:"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:82
+#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:92
 msgid "Invoice - {0} - {1}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:137
+#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:144
 msgid "Email was successfully sent."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:145
-#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:165
+#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:152
+#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:172
 msgid "Error sending email message with issued invoice ID {0}: {1}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:159
+#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:166
 msgid "Error sending email message with issued invoice ID {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:173
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:200
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:172
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:199
 msgid "The invoice has been saved."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:177
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:204
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:176
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:203
 msgid "The invoice could not be saved. Please, try again."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:226
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:225
 msgid "The invoice has been deleted."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:229
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:228
 msgid "The invoice could not be deleted. Please, try again."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:254
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:253
 msgid "The invoices has been marked to be sent by email ({0})."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:262
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:261
 msgid "No invoices could be marked to be sent by email. Please, try again."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:352
-msgid "Invalid customer number in CSV file: {0}"
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:303
+msgid "CSV line {0}: {1} ({2})"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:360
-msgid "Invalid price in CSV file: {0}"
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:365
+msgid "No file was uploaded."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:404
-msgid "Unable to process CSV file."
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:378
+msgid "Successfully imported {0} invoices. Created {1}, modified {2} and skipped {3} records."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:436
-msgid "Error processing CSV file: {0}"
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:389
+msgid "An error occurred while importing the file: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:92
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:93
 msgid "Invoice to send in the queue, {0} email left."
 msgid_plural "Invoices to send in the queue, {0} emails left."
 msgstr[0] ""
@@ -280,6 +221,52 @@ msgstr ""
 msgid "SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1})."
 msgstr ""
 
+#: ./plugins/Bookkeeping/src/Model/Enum/InvoiceExportFormat.php:27
+#: ./plugins/Bookkeeping/src/Model/Enum/InvoiceImportFormat.php:27
+msgid "XML Format"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Model/Enum/InvoiceExportFormat.php:28
+#: ./plugins/Bookkeeping/src/Model/Enum/InvoiceImportFormat.php:28
+msgid "dBase Format"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/DbfParser.php:34
+msgid "Unable to open DBF file."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/HttpClient.php:46
+msgid "Error connecting to server: {0}"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:59
+msgid "Invalid response from the server ({0})"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:69
+msgid "Invalid XML response"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:83
+msgid "The server returned an XML error response (ID: {0}, STATE: {1}, NOTE: {2})"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/XmlParser.php:39
+msgid "Invalid XML file: {0}"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/XmlParser.php:42
+msgid "Unknown XML error"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Service/CsvVerificationService.php:142
+msgid "Invalid customer number"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Service/CsvVerificationService.php:152
+msgid "Invalid price"
+msgstr ""
+
 #: ./plugins/Bookkeeping/templates/Debtors/index.php:14
 msgid "Allowed Payment Delay"
 msgstr ""
@@ -291,8 +278,8 @@ msgstr ""
 #: ./plugins/Bookkeeping/templates/Debtors/index.php:31
 #: ./plugins/Bookkeeping/templates/Invoices/add.php:13
 #: ./plugins/Bookkeeping/templates/Invoices/edit.php:21
-#: ./plugins/Bookkeeping/templates/Invoices/generate.php:12
-#: ./plugins/Bookkeeping/templates/Invoices/import_from_d_b_f.php:11
+#: ./plugins/Bookkeeping/templates/Invoices/generate.php:20
+#: ./plugins/Bookkeeping/templates/Invoices/import_from_file.php:14
 #: ./plugins/Bookkeeping/templates/Invoices/send_by_email.php:11
 #: ./plugins/Bookkeeping/templates/Invoices/view.php:25
 msgid "List Invoices"
@@ -313,7 +300,7 @@ msgstr ""
 #: ./plugins/Bookkeeping/templates/Debtors/index.php:55
 #: ./plugins/Bookkeeping/templates/Invoices/add.php:26
 #: ./plugins/Bookkeeping/templates/Invoices/edit.php:34
-#: ./plugins/Bookkeeping/templates/Invoices/generate.php:72
+#: ./plugins/Bookkeeping/templates/Invoices/generate.php:80
 #: ./plugins/Bookkeeping/templates/Invoices/index.php:52
 #: ./plugins/Bookkeeping/templates/Invoices/view.php:49
 #: ./plugins/Bookkeeping/templates/cell/Invoices/display.php:17
@@ -412,8 +399,8 @@ msgstr ""
 #: ./plugins/Bookkeeping/templates/Debtors/index.php:92
 #: ./plugins/Bookkeeping/templates/Invoices/add.php:48
 #: ./plugins/Bookkeeping/templates/Invoices/edit.php:56
-#: ./plugins/Bookkeeping/templates/Invoices/generate.php:129
-#: ./plugins/Bookkeeping/templates/Invoices/generate.php:151
+#: ./plugins/Bookkeeping/templates/Invoices/generate.php:137
+#: ./plugins/Bookkeeping/templates/Invoices/generate.php:159
 #: ./plugins/Bookkeeping/templates/Invoices/index.php:61
 #: ./plugins/Bookkeeping/templates/Invoices/view.php:81
 #: ./plugins/Bookkeeping/templates/cell/Invoices/display.php:26
@@ -451,8 +438,8 @@ msgstr ""
 #: ./plugins/Bookkeeping/templates/Debtors/index.php:96
 #: ./plugins/Bookkeeping/templates/Invoices/add.php:11
 #: ./plugins/Bookkeeping/templates/Invoices/edit.php:11
-#: ./plugins/Bookkeeping/templates/Invoices/generate.php:10
-#: ./plugins/Bookkeeping/templates/Invoices/import_from_d_b_f.php:9
+#: ./plugins/Bookkeeping/templates/Invoices/generate.php:18
+#: ./plugins/Bookkeeping/templates/Invoices/import_from_file.php:12
 #: ./plugins/Bookkeeping/templates/Invoices/index.php:68
 #: ./plugins/Bookkeeping/templates/Invoices/send_by_email.php:9
 #: ./plugins/Bookkeeping/templates/Invoices/view.php:10
@@ -486,8 +473,8 @@ msgstr ""
 
 #: ./plugins/Bookkeeping/templates/Invoices/add.php:65
 #: ./plugins/Bookkeeping/templates/Invoices/edit.php:73
-#: ./plugins/Bookkeeping/templates/Invoices/generate.php:62
-#: ./plugins/Bookkeeping/templates/Invoices/import_from_d_b_f.php:42
+#: ./plugins/Bookkeeping/templates/Invoices/generate.php:70
+#: ./plugins/Bookkeeping/templates/Invoices/import_from_file.php:52
 #: ./plugins/Bookkeeping/templates/Invoices/send_by_email.php:37
 msgid "Submit"
 msgstr ""
@@ -508,52 +495,55 @@ msgstr ""
 msgid "Edit Invoice"
 msgstr ""
 
-#: ./plugins/Bookkeeping/templates/Invoices/generate.php:28
+#: ./plugins/Bookkeeping/templates/Invoices/generate.php:36
 #: ./plugins/Bookkeeping/templates/Invoices/index.php:33
 msgid "Generate Invoices"
 msgstr ""
 
-#: ./plugins/Bookkeeping/templates/Invoices/generate.php:33
+#: ./plugins/Bookkeeping/templates/Invoices/generate.php:41
 msgid "Tax Rate"
 msgstr ""
 
-#: ./plugins/Bookkeeping/templates/Invoices/generate.php:39
+#: ./plugins/Bookkeeping/templates/Invoices/generate.php:47
 msgid "Invoiced Month"
 msgstr ""
 
-#: ./plugins/Bookkeeping/templates/Invoices/generate.php:40
+#: ./plugins/Bookkeeping/templates/Invoices/generate.php:48
 msgid "YYYY-MM"
 msgstr ""
 
-#: ./plugins/Bookkeeping/templates/Invoices/generate.php:46
+#: ./plugins/Bookkeeping/templates/Invoices/generate.php:54
 msgid "Output Format"
 msgstr ""
 
-#: ./plugins/Bookkeeping/templates/Invoices/generate.php:52
+#: ./plugins/Bookkeeping/templates/Invoices/generate.php:60
 msgid "CSV for verification"
 msgstr ""
 
-#: ./plugins/Bookkeeping/templates/Invoices/generate.php:76
+#: ./plugins/Bookkeeping/templates/Invoices/generate.php:84
 msgid "A price in red indicates a non-standard price."
 msgstr ""
 
-#: ./plugins/Bookkeeping/templates/Invoices/generate.php:103
-#: ./plugins/Bookkeeping/templates/Invoices/generate.php:138
+#: ./plugins/Bookkeeping/templates/Invoices/generate.php:111
+#: ./plugins/Bookkeeping/templates/Invoices/generate.php:146
 msgid "Name"
 msgstr ""
 
-#: ./plugins/Bookkeeping/templates/Invoices/generate.php:104
-#: ./plugins/Bookkeeping/templates/Invoices/generate.php:139
+#: ./plugins/Bookkeeping/templates/Invoices/generate.php:112
+#: ./plugins/Bookkeeping/templates/Invoices/generate.php:147
 msgid "Price"
 msgstr ""
 
-#: ./plugins/Bookkeeping/templates/Invoices/import_from_d_b_f.php:27
-#: ./plugins/Bookkeeping/templates/Invoices/index.php:38
-msgid "Import Invoices from DBF"
+#: ./plugins/Bookkeeping/templates/Invoices/import_from_file.php:30
+msgid "Import Invoices from File"
 msgstr ""
 
-#: ./plugins/Bookkeeping/templates/Invoices/import_from_d_b_f.php:32
-msgid "DBF for import"
+#: ./plugins/Bookkeeping/templates/Invoices/import_from_file.php:35
+msgid "File for Import"
+msgstr ""
+
+#: ./plugins/Bookkeeping/templates/Invoices/import_from_file.php:43
+msgid "Import Format"
 msgstr ""
 
 #: ./plugins/Bookkeeping/templates/Invoices/index.php:13
@@ -563,6 +553,10 @@ msgstr ""
 #: ./plugins/Bookkeeping/templates/Invoices/index.php:23
 #: ./plugins/Bookkeeping/templates/Invoices/view.php:30
 msgid "New Invoice"
+msgstr ""
+
+#: ./plugins/Bookkeeping/templates/Invoices/index.php:38
+msgid "Import from File"
 msgstr ""
 
 #: ./plugins/Bookkeeping/templates/Invoices/index.php:43

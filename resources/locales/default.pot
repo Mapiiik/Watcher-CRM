@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-12-21 10:39+0100\n"
+"POT-Creation-Date: 2025-12-24 19:46+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -847,22 +847,6 @@ msgstr ""
 msgid "The service could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/SettingsController.php:38
-msgid "Invalid settings path: {path}"
-msgstr ""
-
-#: ./src/Controller/SettingsController.php:47
-msgid "Unknown settings block: {path}"
-msgstr ""
-
-#: ./src/Controller/SettingsController.php:57
-msgid "The setting has been saved."
-msgstr ""
-
-#: ./src/Controller/SettingsController.php:65
-msgid "The setting could not be saved. Please, try again."
-msgstr ""
-
 #: ./src/Controller/SoldEquipmentsController.php:100
 #: ./src/Controller/SoldEquipmentsController.php:155
 msgid "The sold equipment has been saved."
@@ -1415,7 +1399,7 @@ msgstr ""
 msgid "The specified service type requires the assignment of an access point."
 msgstr ""
 
-#: ./src/Model/Table/CustomersTable.php:325
+#: ./src/Model/Table/CustomersTable.php:327
 msgid "The specified identification number is not valid."
 msgstr ""
 
@@ -3002,7 +2986,7 @@ msgid "Billings"
 msgstr ""
 
 #: ./templates/Billings/bulk_service_change.php:148
-#: ./templates/Settings/index.php:65
+#: ./templates/Settings/index.php:71
 msgid "Bulk Service Change"
 msgstr ""
 
@@ -3181,7 +3165,7 @@ msgstr ""
 #: ./templates/Commissions/add.php:11
 #: ./templates/Commissions/edit.php:19
 #: ./templates/Commissions/view.php:24
-#: ./templates/Settings/index.php:242
+#: ./templates/Settings/index.php:248
 msgid "List Commissions"
 msgstr ""
 
@@ -3327,7 +3311,7 @@ msgstr ""
 #: ./templates/ContractStates/add.php:12
 #: ./templates/ContractStates/edit.php:20
 #: ./templates/ContractStates/view.php:25
-#: ./templates/Settings/index.php:189
+#: ./templates/Settings/index.php:195
 msgid "List Contract States"
 msgstr ""
 
@@ -3755,7 +3739,7 @@ msgstr ""
 #: ./templates/Countries/add.php:11
 #: ./templates/Countries/edit.php:16
 #: ./templates/Countries/view.php:21
-#: ./templates/Settings/index.php:173
+#: ./templates/Settings/index.php:179
 msgid "List Countries"
 msgstr ""
 
@@ -4169,7 +4153,7 @@ msgstr ""
 #: ./templates/DealerCommissions/add.php:14
 #: ./templates/DealerCommissions/edit.php:22
 #: ./templates/DealerCommissions/view.php:25
-#: ./templates/Settings/index.php:247
+#: ./templates/Settings/index.php:253
 msgid "List Dealer Commissions"
 msgstr ""
 
@@ -4218,7 +4202,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/add.php:12
 #: ./templates/EquipmentTypes/edit.php:20
 #: ./templates/EquipmentTypes/view.php:25
-#: ./templates/Settings/index.php:215
+#: ./templates/Settings/index.php:221
 msgid "List Equipment Types"
 msgstr ""
 
@@ -4283,7 +4267,7 @@ msgid "IP Address Range"
 msgstr ""
 
 #: ./templates/IpAddresses/bulk_reassignment.php:23
-#: ./templates/Settings/index.php:157
+#: ./templates/Settings/index.php:163
 msgid "Bulk IP Address Reassignment"
 msgstr ""
 
@@ -4357,7 +4341,7 @@ msgstr ""
 #: ./templates/Labels/add.php:14
 #: ./templates/Labels/edit.php:19
 #: ./templates/Labels/view.php:24
-#: ./templates/Settings/index.php:168
+#: ./templates/Settings/index.php:174
 msgid "List Labels"
 msgstr ""
 
@@ -4449,7 +4433,7 @@ msgid "Overviews"
 msgstr ""
 
 #: ./templates/Overviews/index.php:10
-#: ./templates/Settings/index.php:197
+#: ./templates/Settings/index.php:203
 msgid "Service Related"
 msgstr ""
 
@@ -4490,7 +4474,7 @@ msgid "List Phones"
 msgstr ""
 
 #: ./templates/Overviews/index.php:82
-#: ./templates/Settings/index.php:186
+#: ./templates/Settings/index.php:192
 msgid "Contract Related"
 msgstr ""
 
@@ -4711,7 +4695,7 @@ msgstr ""
 #: ./templates/Queues/add.php:11
 #: ./templates/Queues/edit.php:16
 #: ./templates/Queues/view.php:21
-#: ./templates/Settings/index.php:210
+#: ./templates/Settings/index.php:216
 msgid "List Queues"
 msgstr ""
 
@@ -4817,7 +4801,7 @@ msgstr ""
 #: ./templates/ServiceTypes/add.php:11
 #: ./templates/ServiceTypes/edit.php:19
 #: ./templates/ServiceTypes/view.php:24
-#: ./templates/Settings/index.php:205
+#: ./templates/Settings/index.php:211
 msgid "List Service Types"
 msgstr ""
 
@@ -4903,7 +4887,7 @@ msgstr ""
 #: ./templates/Services/add.php:13
 #: ./templates/Services/edit.php:18
 #: ./templates/Services/view.php:25
-#: ./templates/Settings/index.php:200
+#: ./templates/Settings/index.php:206
 msgid "List Services"
 msgstr ""
 
@@ -4970,102 +4954,106 @@ msgid "Contract & Document Texts"
 msgstr ""
 
 #: ./templates/Settings/index.php:39
-msgid "Invoice & Billing Texts"
-msgstr ""
-
-#: ./templates/Settings/index.php:44
-msgid "Debtor Notifications"
-msgstr ""
-
-#: ./templates/Settings/index.php:49
 msgid "Contract Presets"
 msgstr ""
 
-#: ./templates/Settings/index.php:54
+#: ./templates/Settings/index.php:44
 msgid "Email Templates"
 msgstr ""
 
-#: ./templates/Settings/index.php:62
+#: ./templates/Settings/index.php:52
+msgid "Bookkeeping Settings"
+msgstr ""
+
+#: ./templates/Settings/index.php:55
+msgid "Invoice & Billing Texts"
+msgstr ""
+
+#: ./templates/Settings/index.php:60
+msgid "Debtor Notifications"
+msgstr ""
+
+#: ./templates/Settings/index.php:68
 msgid "Billing Functions"
 msgstr ""
 
-#: ./templates/Settings/index.php:73
+#: ./templates/Settings/index.php:79
 msgid "Customer Functions"
 msgstr ""
 
-#: ./templates/Settings/index.php:76
+#: ./templates/Settings/index.php:82
 msgid "Update Phone Number Format"
 msgstr ""
 
-#: ./templates/Settings/index.php:84
+#: ./templates/Settings/index.php:90
 msgid "Do you really want to update all phones for all customers?"
 msgstr ""
 
-#: ./templates/Settings/index.php:94
+#: ./templates/Settings/index.php:100
 msgid "Contract Functions"
 msgstr ""
 
-#: ./templates/Settings/index.php:97
-#: ./templates/Settings/index.php:112
+#: ./templates/Settings/index.php:103
+#: ./templates/Settings/index.php:118
 msgid "Addition of Contract Numbers"
 msgstr ""
 
-#: ./templates/Settings/index.php:105
+#: ./templates/Settings/index.php:111
 msgid "Do you really want to add a contract number for all contracts?"
 msgstr ""
 
-#: ./templates/Settings/index.php:112
-#: ./templates/Settings/index.php:142
+#: ./templates/Settings/index.php:118
+#: ./templates/Settings/index.php:148
 msgid "Force Overwrite"
 msgstr ""
 
-#: ./templates/Settings/index.php:120
+#: ./templates/Settings/index.php:126
 msgid "Do you really want to re-set a contract number for all contracts?"
 msgstr ""
 
-#: ./templates/Settings/index.php:127
-#: ./templates/Settings/index.php:142
+#: ./templates/Settings/index.php:133
+#: ./templates/Settings/index.php:148
 msgid "Addition of Subscriber Verification Codes"
 msgstr ""
 
-#: ./templates/Settings/index.php:135
+#: ./templates/Settings/index.php:141
 msgid "Do you really want to add a subscriber verification code for all contracts?"
 msgstr ""
 
-#: ./templates/Settings/index.php:150
+#: ./templates/Settings/index.php:156
 msgid "Do you really want to re-set a subscriber verification code for all contracts?"
 msgstr ""
 
-#: ./templates/Settings/index.php:165
+#: ./templates/Settings/index.php:171
 msgid "System Related"
 msgstr ""
 
-#: ./templates/Settings/index.php:178
+#: ./templates/Settings/index.php:184
 #: ./templates/TaxRates/add.php:11
 #: ./templates/TaxRates/edit.php:16
 #: ./templates/TaxRates/view.php:21
 msgid "List Tax Rates"
 msgstr ""
 
-#: ./templates/Settings/index.php:223
+#: ./templates/Settings/index.php:229
 msgid "Task Related"
 msgstr ""
 
-#: ./templates/Settings/index.php:226
+#: ./templates/Settings/index.php:232
 #: ./templates/TaskStates/add.php:11
 #: ./templates/TaskStates/edit.php:16
 #: ./templates/TaskStates/view.php:21
 msgid "List Task States"
 msgstr ""
 
-#: ./templates/Settings/index.php:231
+#: ./templates/Settings/index.php:237
 #: ./templates/TaskTypes/add.php:11
 #: ./templates/TaskTypes/edit.php:16
 #: ./templates/TaskTypes/view.php:21
 msgid "List Task Types"
 msgstr ""
 
-#: ./templates/Settings/index.php:239
+#: ./templates/Settings/index.php:245
 msgid "Commission Related"
 msgstr ""
 

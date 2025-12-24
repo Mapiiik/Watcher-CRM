@@ -24,8 +24,8 @@ enum InvoiceImportFormat: string implements EnumLabelInterface
     public function label(): string
     {
         return match ($this) {
-            self::XML => __('XML Format'),
-            self::DBF => __('dBase Format'),
+            self::XML => __d('bookkeeping', 'XML Format'),
+            self::DBF => __d('bookkeeping', 'dBase Format'),
         };
     }
 }

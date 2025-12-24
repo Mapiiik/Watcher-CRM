@@ -26,7 +26,7 @@ trait SettingsControllerTrait
         $settingsPath = SettingsPath::fromString($path);
 
         if (!$settingsPath->isValid()) {
-            throw new RecordNotFoundException(__('Invalid settings path: {path}', ['path' => $path]));
+            throw new RecordNotFoundException(__d('settings', 'Invalid settings path: {path}', ['path' => $path]));
         }
 
         $settingsService = new SettingsService();
@@ -35,7 +35,7 @@ trait SettingsControllerTrait
         $default = $settingsService->getDefault($path);
 
         if ($default === null) {
-            throw new RecordNotFoundException(__('Unknown settings block: {path}', ['path' => $path]));
+            throw new RecordNotFoundException(__d('settings', 'Unknown settings block: {path}', ['path' => $path]));
         }
 
         // Overlay from DB
@@ -45,7 +45,7 @@ trait SettingsControllerTrait
             $overlay = $this->request->getData('overlay');
 
             if ($settingsService->set($path, $overlay)) {
-                $this->Flash->success(__('The setting has been saved.'));
+                $this->Flash->success(__d('settings', 'The setting has been saved.'));
 
                 return $this->redirect([
                     'action' => 'edit',
@@ -53,7 +53,7 @@ trait SettingsControllerTrait
                 ]);
             }
 
-            $this->Flash->error(__('The setting could not be saved. Please, try again.'));
+            $this->Flash->error(__d('settings', 'The setting could not be saved. Please, try again.'));
         }
 
         $this->set([
