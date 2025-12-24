@@ -10,7 +10,7 @@ namespace Bookkeeping;
 
 use App\Model\Entity\Billing;
 use App\Model\Entity\TaxRate;
-use Bookkeeping\Model\Entity\Invoice;
+use Bookkeeping\Model\ValueObject\InvoiceDraft;
 
 /**
  * Description of DBFInvoices
@@ -104,63 +104,75 @@ class DBFInvoices
     /**
      * Add record to opened DBF file
      *
-     * @param \Bookkeeping\Model\Entity\Invoice $invoice Invoice
-     * @param \App\Model\Entity\TaxRate $tax_rate Tax Rate
-     * @return void No return value
+     * @param \Bookkeeping\Model\ValueObject\InvoiceDraft $invoice Invoice draft
+     * @param \App\Model\Entity\TaxRate $taxRate Tax Rate
+     * @return void
      */
-    public function addRecord(Invoice $invoice, TaxRate $tax_rate): void
+    public function addRecord(InvoiceDraft $invoice, TaxRate $taxRate): void
     {
-        $totalcost = $invoice->total->toFloat();
+        $totalCost = $invoice->total->toFloat();
 
-        //START add record to dBase file
-        $dph = Billing::calcVatFromTotal($invoice->total, $tax_rate->vat_rate)->toFloat();
+        // VAT amount
+        $vat = Billing::calcVatFromTotal(
+            $invoice->total,
+            $taxRate->vat_rate,
+        )->toFloat();
 
-        $data[] = $invoice->number; //invoice number
-        $data[] = $invoice->variable_symbol; //variable symbol
-        $data[] = $invoice->text; //general text
-        $data[] = $invoice->creation_date->i18nFormat('yyyyMMdd'); //issue date
-        $data[] = $invoice->creation_date->i18nFormat('yyyyMMdd'); //last day of the month
-        $data[] = $invoice->due_date->i18nFormat('yyyyMMdd'); //due date
-        $data[] = $invoice->creation_date->i18nFormat('yyyyMMdd'); //last day of the month
+        $data = [];
 
-        if ($tax_rate->reverse_charge) {
-            $data[] = 0; //always 0
-            $data[] = 0; //always 0
-            $data[] = 0; //always 0
-            $data[] = $totalcost - $dph; //price without VAT = price - price * 0.1597 (2 decimals)
-            $data[] = 0; //always 0
-            $data[] = 0; //always 0
-            $data[] = $totalcost - $dph; //price without VAT = price - price * 0.1597 (2 decimals)
-            $data[] = $totalcost - $dph; //price without VAT = price - price * 0.1597 (2 decimals)
-            $data[] = 0; //always 0
-            $data[] = 0; //always 0
+        // Basic invoice data
+        $data[] = $invoice->number; // invoice number
+        $data[] = $invoice->variableSymbol; // variable symbol
+        $data[] = $invoice->text; // general text
+        $data[] = $invoice->creationDate->i18nFormat('yyyyMMdd'); // issue date
+        $data[] = $invoice->creationDate->i18nFormat('yyyyMMdd'); // last day of month
+        $data[] = $invoice->dueDate->i18nFormat('yyyyMMdd'); // due date
+        $data[] = $invoice->creationDate->i18nFormat('yyyyMMdd'); // accounting date
+
+        // VAT / pricing section
+        if ($taxRate->reverse_charge) {
+            $data[] = 0;
+            $data[] = 0;
+            $data[] = 0;
+            $data[] = $totalCost - $vat;
+            $data[] = 0;
+            $data[] = 0;
+            $data[] = $totalCost - $vat;
+            $data[] = $totalCost - $vat;
+            $data[] = 0;
+            $data[] = 0;
         } else {
-            $data[] = 0; //always 0
-            $data[] = 0; //always 0
-            $data[] = 0; //always 0
-            $data[] = $totalcost - $dph; //price without VAT = price - price * 0.1597 (2 decimals)
-            $data[] = $dph; //VAT = price * 0.1597 (2 decimals)
-            $data[] = 0; //always 0
-            $data[] = $totalcost; //total price
-            $data[] = $totalcost; //total price
-            $data[] = 0; //always 0
-            $data[] = 0; //always 0
+            $data[] = 0;
+            $data[] = 0;
+            $data[] = 0;
+            $data[] = $totalCost - $vat;
+            $data[] = $vat;
+            $data[] = 0;
+            $data[] = $totalCost;
+            $data[] = $totalCost;
+            $data[] = 0;
+            $data[] = 0;
         }
 
-        $data[] = $invoice->customer->billing_address->company; //company name
-        $data[] = null; //branch/department
-        $data[] = $invoice->customer->billing_address->full_name; //first name + surname
-        $data[] = $invoice->customer->billing_address->street_and_number; //street
-        $data[] = $invoice->customer->billing_address->zip; //postal code
-        $data[] = $invoice->customer->billing_address->city; //city/town
-        $data[] = $invoice->customer->identity_number; //company ID
-        $data[] = $invoice->customer->vat_number; //VAT ID
+        // Customer identification
+        $data[] = $invoice->customer->billing_address->company; // company name
+        $data[] = null; // branch / department
+        $data[] = $invoice->customer->billing_address->full_name; // full name
+        $data[] = $invoice->customer->billing_address->street_and_number; // street
+        $data[] = $invoice->customer->billing_address->zip; // postal code
+        $data[] = $invoice->customer->billing_address->city; // city
+        $data[] = $invoice->customer->identity_number; // company ID
+        $data[] = $invoice->customer->vat_number; // VAT ID
 
-        $data[] = '0308'; //constant symbol 0308
+        // Constant symbol
+        $data[] = '0308';
 
-        $data[] = $invoice->note; //note
-        $data[] = $invoice->internal_note; //internal note
+        // Notes
+        $data[] = $invoice->note; // external note
+        $data[] = $invoice->internalNote; // internal note
 
+        // Charset conversion
+        $xdata = [];
         foreach ($data as $value) {
             if (is_string($value)) {
                 $xdata[] = iconv('UTF-8', $this->charset, $value);
@@ -168,10 +180,8 @@ class DBFInvoices
                 $xdata[] = $value;
             }
         }
+
         /** @psalm-suppress UnusedFunctionCall */
         dbase_add_record($this->dbf, $xdata);
-        unset($data);
-        unset($xdata);
-        //STOP add record to dBase file
     }
 }

@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Bookkeeping\ValueObject;
+namespace Bookkeeping\Model\ValueObject;
 
+use App\Model\Entity\Customer;
 use Cake\I18n\Date;
 use PhpCollective\DecimalObject\Decimal;
 
@@ -50,6 +51,16 @@ final class InvoiceDraft
     public ?string $text = null;
 
     /**
+     * Invoice note
+     */
+    public ?string $note = null;
+
+    /**
+     * Invoice internal note
+     */
+    public ?string $internalNote = null;
+
+    /**
      * Total invoice amount
      */
     public ?Decimal $total = null;
@@ -63,6 +74,18 @@ final class InvoiceDraft
      * Payment (liquidation) date, if available
      */
     public ?Date $paymentDate = null;
+
+    /**
+     * Customer Entity
+     */
+    public ?Customer $customer = null;
+
+    /**
+     * Invoice items
+     *
+     * @var list<\App\Model\Entity\Billing>
+     */
+    public array $items = [];
 
     /**
      * Optional metadata collected during parsing or validation.

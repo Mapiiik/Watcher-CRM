@@ -19,7 +19,7 @@ class InvoiceMapper
     /**
      * Map invoice drafts into CRM entities and save them.
      *
-     * @param list<\Bookkeeping\ValueObject\InvoiceDraft> $drafts Parsed invoice drafts.
+     * @param list<\Bookkeeping\Model\ValueObject\InvoiceDraft> $drafts Parsed invoice drafts.
      * @return array{imported:int, created:int, modified:int, skipped:int} Import results.
      */
     public function mapAndSave(array $drafts): array

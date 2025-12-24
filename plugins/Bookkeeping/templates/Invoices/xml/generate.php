@@ -7,9 +7,8 @@ use Riesenia\Pohoda;
  * @psalm-suppress UnnecessaryVarAnnotation
  * @var \App\View\AppView $this
  * @psalm-scope-this \App\View\AppView
- * @var iterable<\Bookkeeping\Model\Entity\Invoice> $invoices
+ * @var iterable<\Bookkeeping\Model\ValueObject\InvoiceDraft> $invoices
  * @var \Cake\I18n\Date $invoicedMonth
- * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $taxRates
  * @var \App\Model\Entity\TaxRate $taxRate
  */
 
@@ -22,7 +21,11 @@ $pohoda->setApplicationName('Watcher CRM');
 $xmlFilename = TMP . uniqid('invoices-', true) . '.xml';
 
 // create file
-$pohoda->open($xmlFilename, (string)$invoicedMonth->i18nFormat('yyyy-MM'), 'Import invoices');
+$pohoda->open(
+    $xmlFilename,
+    (string)$invoicedMonth->i18nFormat('yyyy-MM'),
+    'Import invoices',
+);
 
 foreach ($invoices as $invoice) {
     $invoiceRecord = $pohoda->createInvoice([
@@ -30,11 +33,11 @@ foreach ($invoices as $invoice) {
         'number' => [
             'numberRequested' => $invoice->number,
         ],
-        'symVar' => (string)$invoice->variable_symbol,
-        'date' => $invoice->creation_date->i18nFormat('yyyy-MM-dd'),
-        'dateTax' => $invoice->creation_date->i18nFormat('yyyy-MM-dd'),
-        'dateAccounting' => $invoice->creation_date->i18nFormat('yyyy-MM-dd'),
-        'dateDue' => $invoice->due_date->i18nFormat('yyyy-MM-dd'),
+        'symVar' => (string)$invoice->variableSymbol,
+        'date' => $invoice->creationDate->i18nFormat('yyyy-MM-dd'),
+        'dateTax' => $invoice->creationDate->i18nFormat('yyyy-MM-dd'),
+        'dateAccounting' => $invoice->creationDate->i18nFormat('yyyy-MM-dd'),
+        'dateDue' => $invoice->dueDate->i18nFormat('yyyy-MM-dd'),
         'accounting' => [
             'ids' => $taxRate->accounting_assignment_code ?? '2Fv',
         ],
@@ -64,7 +67,7 @@ foreach ($invoices as $invoice) {
             'ids' => $taxRate->activity_code ?? 'internet',
         ],
         'note' => $invoice->note ?? '',
-        'intNote' => $invoice->internal_note ?? '',
+        'intNote' => $invoice->internalNote ?? '',
     ]);
 
     // add items
@@ -77,9 +80,16 @@ foreach ($invoices as $invoice) {
             'rateVAT' => 'high',
             'homeCurrency' => [
                 'unitPrice' => $item->period_total,
-                'price' => Billing::calcVatBaseFromTotal($item->period_total, $taxRate->vat_rate)->toFloat(),
-                'priceVAT' => $taxRate->reverse_charge ?
-                    0 : Billing::calcVatFromTotal($item->period_total, $taxRate->vat_rate)->toFloat(),
+                'price' => Billing::calcVatBaseFromTotal(
+                    $item->period_total,
+                    $taxRate->vat_rate,
+                )->toFloat(),
+                'priceVAT' => $taxRate->reverse_charge
+                    ? 0
+                    : Billing::calcVatFromTotal(
+                        $item->period_total,
+                        $taxRate->vat_rate,
+                    )->toFloat(),
             ],
             'PDP' => $taxRate->reverse_charge,
         ]);
@@ -92,9 +102,16 @@ foreach ($invoices as $invoice) {
         'homeCurrency' => [
             'priceNone' => 0,
             'priceLow' => 0,
-            'priceHigh' => Billing::calcVatBaseFromTotal($invoice->total, $taxRate->vat_rate)->toFloat(),
-            'priceHighVAT' => $taxRate->reverse_charge ?
-                0 : Billing::calcVatFromTotal($invoice->total, $taxRate->vat_rate)->toFloat(),
+            'priceHigh' => Billing::calcVatBaseFromTotal(
+                $invoice->total,
+                $taxRate->vat_rate,
+            )->toFloat(),
+            'priceHighVAT' => $taxRate->reverse_charge
+                ? 0
+                : Billing::calcVatFromTotal(
+                    $invoice->total,
+                    $taxRate->vat_rate,
+                )->toFloat(),
             'round' => [
                 'priceRound' => 0,
             ],
@@ -116,7 +133,7 @@ $this->setResponse(
     ),
 );
 
-//read file to output
+// output file
 readfile($xmlFilename);
 
 //remove file

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Provider\Pohoda;
 
-use Bookkeeping\ValueObject\InvoiceDraft;
+use Bookkeeping\Model\ValueObject\InvoiceDraft;
 use Cake\I18n\Date;
 use PhpCollective\DecimalObject\Decimal;
 use RuntimeException;
@@ -24,7 +24,7 @@ class XmlParser
      * Parse invoices from XML file.
      *
      * @param string $filePath Path to uploaded DBF file.
-     * @return list<\Bookkeeping\ValueObject\InvoiceDraft>
+     * @return list<\Bookkeeping\Model\ValueObject\InvoiceDraft>
      */
     public function parseFile(string $filePath): array
     {
@@ -50,7 +50,7 @@ class XmlParser
      * Parse invoices from XML response.
      *
      * @param \SimpleXMLElement $xml XML response from Pohoda.
-     * @return list<\Bookkeeping\ValueObject\InvoiceDraft>
+     * @return list<\Bookkeeping\Model\ValueObject\InvoiceDraft>
      */
     public function parseSimpleXML(SimpleXMLElement $xml): array
     {

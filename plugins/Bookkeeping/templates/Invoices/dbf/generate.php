@@ -5,7 +5,7 @@ use Bookkeeping\DBFInvoices;
  * @psalm-suppress UnnecessaryVarAnnotation
  * @var \App\View\AppView $this
  * @psalm-scope-this \App\View\AppView
- * @var iterable<\Bookkeeping\Model\Entity\Invoice> $invoices
+ * @var iterable<\Bookkeeping\Model\ValueObject\InvoiceDraft> $invoices
  * @var \Cake\I18n\Date $invoicedMonth
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $taxRates
  * @var \App\Model\Entity\TaxRate $taxRate

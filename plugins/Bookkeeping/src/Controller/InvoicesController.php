@@ -9,13 +9,12 @@ use Bookkeeping\Model\Enum\InvoiceExportFormat;
 use Bookkeeping\Model\Enum\InvoiceImportFormat;
 use Bookkeeping\Service\BookkeepingService;
 use Bookkeeping\Service\CsvVerificationService;
+use Bookkeeping\Service\InvoiceGenerationService;
 use Bookkeeping\View\DbfView;
 use Bookkeeping\View\XmlView;
 use Cake\I18n\Date;
 use Cake\Validation\Validation;
 use Override;
-use PhpCollective\DecimalObject\Decimal;
-use Settings\Utility\Settings;
 use Throwable;
 
 /**
@@ -291,8 +290,8 @@ class InvoicesController extends AppController
             $csvFile = $this->getRequest()->getData('csv_for_verification');
 
             if ($csvFile && $csvFile->getSize() > 0) {
-                $csvVerification = new CsvVerificationService($this->fetchTable(CustomersTable::class));
-                $result = $csvVerification->verify(
+                $csvVerificator = new CsvVerificationService($this->fetchTable(CustomersTable::class));
+                $result = $csvVerificator->verify(
                     $invoicedMonth,
                     $taxRate,
                     $csvFile,
@@ -328,134 +327,17 @@ class InvoicesController extends AppController
         }
 
         // DOWNLOAD INVOICES
-        if ($this->getRequest()->getParam('_ext') === 'dbf' || $this->getRequest()->getParam('_ext') === 'xml') {
+        if (in_array($this->getRequest()->getParam('_ext'), ['dbf', 'xml'], true)) {
             $invoicedMonth = new Date($this->getRequest()->getQuery('invoiced_month', 'now'));
 
             /** @var \App\Model\Entity\TaxRate $taxRate */
             $taxRate = $this->fetchTable(TaxRatesTable::class)->get($this->getRequest()->getQuery('tax_rate_id'));
 
-            if ($taxRate->reverse_charge) {
-                $prefix = 10000000 * ($invoicedMonth->year - 1980)
-                        + 1000000 * 8
-                        + 10000 * $invoicedMonth->month;
-            } else {
-                $prefix = 10000000 * ($invoicedMonth->year - 1980)
-                        + 1000000 * 9
-                        + 10000 * $invoicedMonth->month;
-            }
-
-            // invoice number index
-            $index = 1;
-
-            $invoices = [];
-
-            $customers = $this->fetchTable(CustomersTable::class)
-                ->find('billingDataForMonth', [
-                    'invoicedMonth' => $invoicedMonth,
-                    'taxRateId' => $taxRate->id,
-                ]);
-
-            foreach ($customers as $customer) {
-                /** @var \App\Model\Entity\Customer $customer */
-
-                // declare customer billing data
-                $billingCustomer['total'] = Decimal::create(0, 2);
-                $billingCustomer['items'] = [];
-
-                foreach ($customer->contracts as $contract) {
-                    // declare contract billing data
-                    $billingContract['total'] = Decimal::create(0, 2);
-                    $billingContract['items'] = [];
-
-                    foreach ($contract->billings as $billing) {
-                        if ($billing->isSeparateInvoice() && !$billing->period_total->isZero()) {
-                            $invoice = $this->Invoices->newEmptyEntity();
-                            $invoice->number = $prefix + $index;
-                            $invoice->customer = $customer;
-                            $invoice->variable_symbol = (int)$customer->number;
-                            $invoice->creation_date = $invoicedMonth->lastOfMonth();
-                            $invoice->due_date = $invoicedMonth
-                                ->lastOfMonth()
-                                ->addDays($customer->individual_maturity_period ?? 10);
-                            $invoice->text = strtr(Settings::getString('bookkeeping.invoices.texts.separate'), [
-                                '{service_name}' => $billing->name,
-                                '{invoiced_month}' => $invoicedMonth->i18nFormat('MM/yyyy'),
-                            ]);
-                            $invoice->internal_note = 'separate'; // TODO: constants?
-                            $invoice->total = $billing->period_total;
-                            //$invoice->items = [$billing];
-                            $invoice->items = [];
-                            $invoices[] = $invoice;
-                            unset($invoice);
-                            $index++;
-                        } else {
-                            $billingContract['total'] = $billingContract['total']->add($billing->period_total);
-                            $billingContract['items'][] = $billing;
-                        }
-                    }
-
-                    if ($contract->isSeparateInvoice() && !$billingContract['total']->isZero()) {
-                        $invoice = $this->Invoices->newEmptyEntity();
-                        $invoice->number = $prefix + $index;
-                        $invoice->customer = $customer;
-                        $invoice->variable_symbol = (int)$customer->number;
-                        $invoice->creation_date = $invoicedMonth->lastOfMonth();
-                        $invoice->due_date = $invoicedMonth
-                            ->lastOfMonth()
-                            ->addDays($customer->individual_maturity_period ?? 10);
-                        if ($contract->getInvoiceText()) {
-                            $invoice->text = strtr($contract->getInvoiceText(), [
-                                '{number}' => $contract->number, // TODO: legacy
-                                '{month}' => $invoicedMonth->i18nFormat('MM/yyyy'), // TODO: legacy
-                                '{contract_number}' => $contract->number,
-                                '{invoiced_month}' => $invoicedMonth->i18nFormat('MM/yyyy'),
-                            ]);
-                        } else {
-                            $invoice->text = strtr(Settings::getString('bookkeeping.invoices.texts.default'), [
-                                '{contract_number}' => $contract->number,
-                                '{invoiced_month}' => $invoicedMonth->i18nFormat('MM/yyyy'),
-                            ]);
-                        }
-                        $invoice->internal_note = 'separate'; // TODO: constants?
-                        $invoice->total = $billingContract['total'];
-                        $invoice->items = $contract->isInvoiceWithItems() ? $billingContract['items'] : [];
-                        $invoices[] = $invoice;
-                        unset($invoice);
-                        $index++;
-                    } else {
-                        $billingCustomer['total'] = $billingCustomer['total']->add($billingContract['total']);
-                        /** @psalm-suppress RedundantFunctionCall */
-                        $billingCustomer['items'] = array_merge(
-                            array_values($billingCustomer['items']),
-                            array_values($billingContract['items']), // @phpstan-ignore arrayValues.list
-                        );
-                    }
-
-                    unset($billingContract);
-                }
-
-                if (!$billingCustomer['total']->isZero()) {
-                    $invoice = $this->Invoices->newEmptyEntity();
-                    $invoice->number = $prefix + $index;
-                    $invoice->customer = $customer;
-                    $invoice->variable_symbol = (int)$customer->number;
-                    $invoice->creation_date = $invoicedMonth->lastOfMonth();
-                    $invoice->due_date = $invoicedMonth
-                        ->lastOfMonth()
-                        ->addDays($customer->individual_maturity_period ?? 10);
-                    $invoice->text = strtr(Settings::getString('bookkeeping.invoices.texts.default'), [
-                        '{contract_number}' => $customer->number,
-                        '{invoiced_month}' => $invoicedMonth->i18nFormat('MM/yyyy'),
-                    ]);
-                    $invoice->total = $billingCustomer['total'];
-                    $invoice->items = $customer->isInvoiceWithItems() ? $billingCustomer['items'] : [];
-                    $invoices[] = $invoice;
-                    unset($invoice);
-                    $index++;
-                }
-
-                unset($billingCustomer);
-            }
+            $invoiceGenerator = new InvoiceGenerationService($this->fetchTable(CustomersTable::class));
+            $invoices = $invoiceGenerator->generate(
+                $invoicedMonth,
+                $taxRate,
+            );
 
             $this->set(compact('invoices', 'taxRate', 'invoicedMonth'));
         }
