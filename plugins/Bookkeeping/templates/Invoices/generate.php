@@ -2,7 +2,15 @@
 /**
  * @var \App\View\AppView $this
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $taxRates
+ * @var array<string, array{
+ *   csv?: array{total: \PhpCollective\DecimalObject\Decimal, items: array},
+ *   crm?: array{total: \PhpCollective\DecimalObject\Decimal, items: array},
+ *   customer?: \App\Model\Entity\Customer
+ * }> $verificationData
  */
+
+use Bookkeeping\Model\Enum\InvoiceExportFormat;
+
 ?>
 <div class="row">
     <aside class="column">
@@ -44,7 +52,7 @@
                         ]);
                         echo $this->Form->control('output_format', [
                             'label' => __d('bookkeeping', 'Output Format'),
-                            'options' => ['xml' => 'Pohoda XML', 'dbf' => 'dBase DBF'],
+                            'options' => InvoiceExportFormat::options(),
                             'empty' => true,
                             'required' => true,
                         ]);

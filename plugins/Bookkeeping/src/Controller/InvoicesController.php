@@ -5,13 +5,14 @@ namespace Bookkeeping\Controller;
 
 use App\Model\Table\CustomersTable;
 use App\Model\Table\TaxRatesTable;
+use Bookkeeping\Model\Enum\InvoiceExportFormat;
 use Bookkeeping\Model\Enum\InvoiceImportFormat;
 use Bookkeeping\Service\BookkeepingService;
+use Bookkeeping\Service\CsvVerificationService;
 use Bookkeeping\View\DbfView;
 use Bookkeeping\View\XmlView;
 use Cake\I18n\Date;
 use Cake\Validation\Validation;
-use Exception;
 use Override;
 use PhpCollective\DecimalObject\Decimal;
 use Settings\Utility\Settings;
@@ -266,43 +267,6 @@ class InvoicesController extends AppController
     }
 
     /**
-     * Validate and process CSV line
-     */
-    private function validateAndProcessCsvLine(array $parsedLine): ?array
-    {
-        $customerNumber = isset($parsedLine[0]) ? trim((string)$parsedLine[0]) : null;
-        $periodTotalRaw = isset($parsedLine[1]) ? trim((string)$parsedLine[1]) : null;
-        $name = isset($parsedLine[2]) ? trim((string)$parsedLine[2]) : '';
-
-        // Normalize decimal separator
-        $periodTotalNormalized = $periodTotalRaw !== null ? str_replace(',', '.', $periodTotalRaw) : null;
-
-        if (!is_numeric($customerNumber)) {
-            $this->Flash->error(
-                __d('bookkeeping', 'Invalid customer number in CSV file: {0}', [$parsedLine[0] ?? '']),
-            );
-
-            return null;
-        }
-
-        if (!is_numeric($periodTotalNormalized)) {
-            $this->Flash->error(
-                __d('bookkeeping', 'Invalid price in CSV file: {0}', [$parsedLine[1] ?? '']),
-            );
-
-            return null;
-        }
-
-        return [
-            'customerNumber' => $customerNumber,
-            'item' => (object)[
-                'period_total' => Decimal::create($periodTotalNormalized, 2),
-                'name' => $name,
-            ],
-        ];
-    }
-
-    /**
      * Generate method
      *
      * @return \Cake\Http\Response|null|void Renders generateInvoices
@@ -316,116 +280,51 @@ class InvoicesController extends AppController
             ])
             ->toArray();
 
+        $this->set(compact('taxRates'));
+
         if ($this->getRequest()->is(['post'])) {
             $invoicedMonth = new Date($this->getRequest()->getData('invoiced_month', 'now'));
             $taxRate = $this->fetchTable(TaxRatesTable::class)->get($this->getRequest()->getData('tax_rate_id'));
-            /** @var \Laminas\Diactoros\UploadedFile $csvForVerification */
-            $csvForVerification = $this->getRequest()->getData('csv_for_verification');
 
             // VERIFICATION DATA CHECK
-            if ($csvForVerification->getSize() > 0) {
-                // load verification data from CSV
-                $csvStream = $csvForVerification->getStream();
-                $csvStream->rewind();
-                $csvResource = $csvStream->detach();
-                unset($csvStream);
+            /** @var \Laminas\Diactoros\UploadedFile $csvFile */
+            $csvFile = $this->getRequest()->getData('csv_for_verification');
 
-                if ($csvResource === null) {
-                    throw new Exception(__d('bookkeeping', 'Unable to process CSV file.'));
+            if ($csvFile && $csvFile->getSize() > 0) {
+                $csvVerification = new CsvVerificationService($this->fetchTable(CustomersTable::class));
+                $result = $csvVerification->verify(
+                    $invoicedMonth,
+                    $taxRate,
+                    $csvFile,
+                );
+
+                if ($result->hasErrors()) {
+                    foreach ($result->getErrors() as $error) {
+                        $this->Flash->error(
+                            __d(
+                                'bookkeeping',
+                                'CSV line {0}: {1} ({2})',
+                                [$error['line'], $error['message'], $error['value']],
+                            ),
+                        );
+                    }
                 }
 
-                // create verification data array
-                $verificationData = [];
+                if (!$result->isOk()) {
+                    $this->set('verificationData', $result->getDifferences());
 
-                try {
-                    while (($parsedLine = fgetcsv($csvResource, 1000, ',', '"', '\\')) !== false) {
-                        // skip empty lines
-                        if (empty(array_filter($parsedLine))) {
-                            continue;
-                        }
-
-                        $result = $this->validateAndProcessCsvLine($parsedLine);
-                        if ($result === null) {
-                            continue;
-                        }
-
-                        $customerNumber = $result['customerNumber'];
-                        $item = $result['item'];
-
-                        if (!isset($verificationData[$customerNumber])) {
-                            $verificationData[$customerNumber]['csv']['total'] = Decimal::create(0, 2);
-                            $verificationData[$customerNumber]['csv']['items'] = [];
-                        }
-
-                        $verificationData[$customerNumber]['csv']['total'] =
-                            $verificationData[$customerNumber]['csv']['total']->add($item->period_total);
-                        $verificationData[$customerNumber]['csv']['items'][] = $item;
-                    }
-                } catch (Exception $e) {
-                    fclose($csvResource);
-                    throw new Exception(__d('bookkeeping', 'Error processing CSV file: {0}', $e->getMessage()));
-                } finally {
-                    fclose($csvResource);
-                }
-
-                unset($csvResource);
-
-                // compare verification data with CRM billings
-                $customers = $this->fetchTable(CustomersTable::class)
-                    ->find('billingDataForMonth', [
-                        'invoicedMonth' => $invoicedMonth,
-                        'taxRateId' => $taxRate->id,
-                    ]);
-
-                foreach ($customers as $customer) {
-                    /** @var \App\Model\Entity\Customer $customer */
-
-                    // declare billing data
-                    $billingData['total'] = Decimal::create(0, 2);
-                    $billingData['items'] = [];
-
-                    foreach ($customer->contracts as $contract) {
-                        foreach ($contract->billings as $billing) {
-                            $billingData['total'] = $billingData['total']->add($billing->period_total);
-                            $billingData['items'][] = $billing;
-                        }
-                    }
-
-                    // compare billing data with verification data
-                    if (isset($verificationData[$customer->number])) {
-                        if ($verificationData[$customer->number]['csv']['total'] == $billingData['total']) {
-                            // remove from verification if OK
-                            unset($verificationData[$customer->number]);
-                        } else {
-                            // add billing data to verification if not OK
-                            $verificationData[$customer->number]['customer'] = $customer;
-                            $verificationData[$customer->number]['crm'] = $billingData;
-                        }
-                    } else {
-                        if (!$billingData['total']->isZero()) {
-                            // create missing verification data if there are non zero billing items
-                            $verificationData[$customer->number]['customer'] = $customer;
-                            $verificationData[$customer->number]['crm'] = $billingData;
-                        }
-                    }
-
-                    // clear billing_data for this customer
-                    unset($billingData);
+                    return;
                 }
             }
 
-            if (isset($verificationData) && !empty($verificationData)) {
-                $this->set('verificationData', $verificationData);
-            } else {
-                return $this->redirect([
-                    'action' => 'generate',
-                    '_ext' => $this->getRequest()->getData('output_format'),
-                    '?' => [
-                        'invoiced_month' => $invoicedMonth->i18nFormat('yyyy-MM'),
-                        'tax_rate_id' => $taxRate->id,
-                    ],
-                ]);
-            }
+            return $this->redirect([
+                'action' => 'generate',
+                '_ext' => InvoiceExportFormat::from($this->request->getData('output_format'))->value,
+                '?' => [
+                    'invoiced_month' => $invoicedMonth->i18nFormat('yyyy-MM'),
+                    'tax_rate_id' => $taxRate->id,
+                ],
+            ]);
         }
 
         // DOWNLOAD INVOICES
@@ -560,8 +459,6 @@ class InvoicesController extends AppController
 
             $this->set(compact('invoices', 'taxRate', 'invoicedMonth'));
         }
-
-        $this->set(compact('taxRates'));
     }
 
     /**
