@@ -15,10 +15,11 @@ use RuntimeException;
  * Main orchestration layer for the Pohoda accounting system.
  * This class delegates actual work to helper classes such as:
  * - XmlRequestBuilder
+ * - HttpClient
+ * - DbfParser
  * - XmlParser
  * - DbfExporter
- * - DbfImporter
- * - PdfLocator
+ * - XmlExporter
  *
  * The provider exposes a stable API used by BookkeepingService.
  */
@@ -28,9 +29,11 @@ class PohodaProvider
     private HttpClient $httpClient;
     private DbfParser $dbfParser;
     private XmlParser $xmlParser;
+    private DbfExporter $dbfExporter;
+    private XmlExporter $xmlExporter;
 
     /**
-     * Contructor
+     * Constructor
      */
     public function __construct()
     {
@@ -38,6 +41,8 @@ class PohodaProvider
         $this->httpClient = new HttpClient();
         $this->dbfParser = new DbfParser();
         $this->xmlParser = new XmlParser();
+        $this->dbfExporter = new DbfExporter();
+        $this->xmlExporter = new XmlExporter();
     }
 
     /**
@@ -96,14 +101,36 @@ class PohodaProvider
     /**
      * Export invoices to Pohoda (DBF/XML).
      *
-     * @param array $invoices List of invoice entities.
+     * @param list<\Bookkeeping\Model\ValueObject\InvoiceDraft> $invoices List of invoice drafts.
      * @param \Bookkeeping\Model\Enum\InvoiceExportFormat $format Export format.
-     * @param array $options Additional export options.
-     * @return array|string File path or export data.
+     * @param array{
+     *   invoicedMonth:\Cake\I18n\Date,
+     *   taxRate:\App\Model\Entity\TaxRate
+     * } $options
+     * @return string File path.
      */
-    public function exportInvoices(array $invoices, InvoiceExportFormat $format, array $options = []): array|string
+    public function exportInvoices(array $invoices, InvoiceExportFormat $format, array $options): string
     {
-        return '';
+        // Export invoices
+        $filePath = match ($format) {
+            InvoiceExportFormat::DBF =>
+                $this->dbfExporter->export(
+                    $invoices,
+                    $options['invoicedMonth'],
+                    $options['taxRate'],
+                    TMP . uniqid('invoices-', true) . '.dbf',
+                ),
+
+            InvoiceExportFormat::XML =>
+                $this->xmlExporter->export(
+                    $invoices,
+                    $options['invoicedMonth'],
+                    $options['taxRate'],
+                    TMP . uniqid('invoices-', true) . '.xml',
+                ),
+        };
+
+        return $filePath;
     }
 
     /**

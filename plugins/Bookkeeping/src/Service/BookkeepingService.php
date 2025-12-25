@@ -56,12 +56,15 @@ class BookkeepingService
     /**
      * Export invoices (DBF/XML) for the accounting system.
      *
-     * @param array $invoices
+     * @param list<\Bookkeeping\Model\ValueObject\InvoiceDraft> $invoices List of invoice drafts.
      * @param \Bookkeeping\Model\Enum\InvoiceExportFormat $format Export format.
-     * @param array $options
-     * @return array|string
+     * @param array{
+     *   invoicedMonth:\Cake\I18n\Date,
+     *   taxRate:\App\Model\Entity\TaxRate
+     * } $options
+     * @return string File path.
      */
-    public function exportInvoices(array $invoices, InvoiceExportFormat $format, array $options = []): array|string
+    public function exportInvoices(array $invoices, InvoiceExportFormat $format, array $options): string
     {
         return $this->provider->exportInvoices($invoices, $format, $options);
     }

@@ -318,7 +318,7 @@ class InvoicesController extends AppController
 
             return $this->redirect([
                 'action' => 'generate',
-                '_ext' => InvoiceExportFormat::from($this->request->getData('output_format'))->value,
+                '_ext' => InvoiceExportFormat::from($this->getRequest()->getData('output_format'))->value,
                 '?' => [
                     'invoiced_month' => $invoicedMonth->i18nFormat('yyyy-MM'),
                     'tax_rate_id' => $taxRate->id,
@@ -333,13 +333,51 @@ class InvoicesController extends AppController
             /** @var \App\Model\Entity\TaxRate $taxRate */
             $taxRate = $this->fetchTable(TaxRatesTable::class)->get($this->getRequest()->getQuery('tax_rate_id'));
 
+            $exportFormat = InvoiceExportFormat::from($this->getRequest()->getParam('_ext'));
+            $exportType = match ($exportFormat) {
+                InvoiceExportFormat::DBF =>
+                    'application/dbase',
+                InvoiceExportFormat::XML =>
+                    'application/xml',
+            };
+
             $invoiceGenerator = new InvoiceGenerationService($this->fetchTable(CustomersTable::class));
-            $invoices = $invoiceGenerator->generate(
+            $drafts = $invoiceGenerator->generate(
                 $invoicedMonth,
                 $taxRate,
             );
 
-            $this->set(compact('invoices', 'taxRate', 'invoicedMonth'));
+            $bookkeeping = new BookkeepingService();
+            $filePath = $bookkeeping->exportInvoices(
+                $drafts,
+                $exportFormat,
+                [
+                    'invoicedMonth' => $invoicedMonth,
+                    'taxRate' => $taxRate,
+                ],
+            );
+
+            // set for download with specified filename
+            $response = $this->getResponse()
+                ->withType($exportType)
+                ->withDownload(
+                    sprintf(
+                        'Invoices-%s-%s.' . $exportFormat->value,
+                        strtolower($taxRate->name),
+                        $invoicedMonth->i18nFormat('yyyy-MM'),
+                    ),
+                )
+                ->withFile($filePath);
+
+            register_shutdown_function(
+                static function () use ($filePath): void {
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+                },
+            );
+
+            return $response;
         }
     }
 
