@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Provider\Pohoda;
 
+use App\Model\Entity\TaxRate;
 use Bookkeeping\Model\Entity\Invoice;
 use Bookkeeping\Model\Enum\InvoiceExportFormat;
 use Bookkeeping\Model\Enum\InvoiceImportFormat;
+use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use RuntimeException;
 
@@ -63,7 +65,7 @@ class PohodaProvider
         if (!$response->isOk()) {
             throw new RuntimeException(__d(
                 'bookkeeping',
-                'Invalid response from the server ({0})',
+                'Invalid response from Pohoda mServer ({0})',
                 [$response->getReasonPhrase()],
             ));
         }
@@ -71,24 +73,22 @@ class PohodaProvider
         // 4) Parse XML
         $xml = $response->getXml();
         if ($xml === null) {
-            throw new RuntimeException(__d(
-                'bookkeeping',
-                'Invalid XML response',
-            ));
+            throw new RuntimeException(
+                __d('bookkeeping', 'Invalid XML response from Pohoda mServer.'),
+            );
         }
 
         // 5) Validate Pohoda XML response state
         $attributes = $xml->attributes();
 
-        $id = isset($attributes->id) ? (string)$attributes->id : 'N/A';
         $state = isset($attributes->state) ? (string)$attributes->state : 'N/A';
         $note = isset($attributes->note) ? (string)$attributes->note : 'N/A';
 
         if ($state !== 'ok') {
             throw new RuntimeException(__d(
                 'bookkeeping',
-                'The server returned an XML error response (ID: {0}, STATE: {1}, NOTE: {2})',
-                [$id, $state, $note],
+                'Pohoda mServer returned an error response (STATE: {0}, NOTE: {1})',
+                [$state, $note],
             ));
         }
 
@@ -99,33 +99,122 @@ class PohodaProvider
     }
 
     /**
+     * Send invoices directly to Pohoda via mServer using XML import.
+     *
+     * This method generates a Pohoda-compatible XML import file
+     * using XmlExporter and immediately sends it to the Pohoda mServer
+     * via HttpClient.
+     *
+     * The XML file is treated as a temporary transport artifact and
+     * is removed after successful transmission.
+     *
+     * Responsibilities:
+     * - Orchestrates XML generation and delivery
+     * - Does NOT perform XML generation logic
+     * - Does NOT handle HTTP response parsing beyond basic validation
+     *
+     * @param list<\Bookkeeping\Model\ValueObject\InvoiceDraft> $invoices Invoice drafts to send.
+     * @param \Cake\I18n\Date $invoicedMonth Invoiced month used in XML header.
+     * @param \App\Model\Entity\TaxRate $taxRate Tax rate and accounting context.
+     * @return void
+     * @throws \RuntimeException When XML generation or mServer communication fails.
+     */
+    public function sendInvoices(
+        array $invoices,
+        Date $invoicedMonth,
+        TaxRate $taxRate,
+    ): void {
+        // Generate temporary XML file path
+        $filePath = TMP . uniqid('pohoda-import-', true) . '.xml';
+
+        try {
+            // 1) Generate Pohoda-compatible XML import file
+            $this->xmlExporter->export(
+                $invoices,
+                $invoicedMonth,
+                $taxRate,
+                $filePath,
+            );
+
+            // 2) Load XML content from generated file
+            $xml = file_get_contents($filePath);
+            if ($xml === false) {
+                throw new RuntimeException(
+                    __d('bookkeeping', 'Failed to read generated XML file.'),
+                );
+            }
+
+            // 3) Send XML to Pohoda mServer
+            $response = $this->httpClient->send($xml);
+
+            // 4) Validate HTTP response
+            if (!$response->isOk()) {
+                throw new RuntimeException(__d(
+                    'bookkeeping',
+                    'Invalid response from Pohoda mServer ({0})',
+                    [$response->getReasonPhrase()],
+                ));
+            }
+
+            // 5) Validate XML response body
+            $responseXml = $response->getXml();
+            if ($responseXml === null) {
+                throw new RuntimeException(
+                    __d('bookkeeping', 'Invalid XML response from Pohoda mServer.'),
+                );
+            }
+
+            // 6) Validate Pohoda response state
+            $attributes = $responseXml->attributes();
+
+            $state = isset($attributes->state) ? (string)$attributes->state : 'N/A';
+            $note = isset($attributes->note) ? (string)$attributes->note : '';
+
+            if ($state !== 'ok') {
+                throw new RuntimeException(__d(
+                    'bookkeeping',
+                    'Pohoda mServer returned an error response (STATE: {0}, NOTE: {1})',
+                    [$state, $note],
+                ));
+            }
+        } finally {
+            // Always remove temporary XML file
+            if (is_file($filePath)) {
+                unlink($filePath);
+            }
+        }
+    }
+
+    /**
      * Export invoices to Pohoda (DBF/XML).
      *
      * @param list<\Bookkeeping\Model\ValueObject\InvoiceDraft> $invoices List of invoice drafts.
      * @param \Bookkeeping\Model\Enum\InvoiceExportFormat $format Export format.
-     * @param array{
-     *   invoicedMonth:\Cake\I18n\Date,
-     *   taxRate:\App\Model\Entity\TaxRate
-     * } $options
+     * @param \Cake\I18n\Date $invoicedMonth Invoiced month used in XML header.
+     * @param \App\Model\Entity\TaxRate $taxRate Tax rate and accounting context.
      * @return string File path.
      */
-    public function exportInvoices(array $invoices, InvoiceExportFormat $format, array $options): string
-    {
+    public function exportInvoices(
+        array $invoices,
+        Date $invoicedMonth,
+        TaxRate $taxRate,
+        InvoiceExportFormat $format,
+    ): string {
         // Export invoices
         $filePath = match ($format) {
             InvoiceExportFormat::DBF =>
                 $this->dbfExporter->export(
                     $invoices,
-                    $options['invoicedMonth'],
-                    $options['taxRate'],
+                    $invoicedMonth,
+                    $taxRate,
                     TMP . uniqid('invoices-', true) . '.dbf',
                 ),
 
             InvoiceExportFormat::XML =>
                 $this->xmlExporter->export(
                     $invoices,
-                    $options['invoicedMonth'],
-                    $options['taxRate'],
+                    $invoicedMonth,
+                    $taxRate,
                     TMP . uniqid('invoices-', true) . '.xml',
                 ),
         };

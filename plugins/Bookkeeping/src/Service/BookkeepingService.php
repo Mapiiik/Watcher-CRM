@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Service;
 
+use App\Model\Entity\TaxRate;
 use Bookkeeping\Model\Entity\Invoice;
 use Bookkeeping\Model\Enum\InvoiceExportFormat;
 use Bookkeeping\Model\Enum\InvoiceImportFormat;
 use Bookkeeping\Provider\Pohoda\PohodaProvider;
+use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 
 /**
@@ -54,19 +56,37 @@ class BookkeepingService
     }
 
     /**
+     * Send invoices to the accounting system.
+     *
+     * @param list<\Bookkeeping\Model\ValueObject\InvoiceDraft> $invoices List of invoice drafts.
+     * @param \Cake\I18n\Date $invoicedMonth Invoiced month used in XML header.
+     * @param \App\Model\Entity\TaxRate $taxRate Tax rate and accounting context.
+     * @return void
+     */
+    public function sendInvoices(
+        array $invoices,
+        Date $invoicedMonth,
+        TaxRate $taxRate,
+    ): void {
+        return $this->provider->sendInvoices($invoices, $invoicedMonth, $taxRate);
+    }
+
+    /**
      * Export invoices (DBF/XML) for the accounting system.
      *
      * @param list<\Bookkeeping\Model\ValueObject\InvoiceDraft> $invoices List of invoice drafts.
      * @param \Bookkeeping\Model\Enum\InvoiceExportFormat $format Export format.
-     * @param array{
-     *   invoicedMonth:\Cake\I18n\Date,
-     *   taxRate:\App\Model\Entity\TaxRate
-     * } $options
+     * @param \Cake\I18n\Date $invoicedMonth Invoiced month used in XML header.
+     * @param \App\Model\Entity\TaxRate $taxRate Tax rate and accounting context.
      * @return string File path.
      */
-    public function exportInvoices(array $invoices, InvoiceExportFormat $format, array $options): string
-    {
-        return $this->provider->exportInvoices($invoices, $format, $options);
+    public function exportInvoices(
+        array $invoices,
+        Date $invoicedMonth,
+        TaxRate $taxRate,
+        InvoiceExportFormat $format,
+    ): string {
+        return $this->provider->exportInvoices($invoices, $invoicedMonth, $taxRate, $format);
     }
 
     /**

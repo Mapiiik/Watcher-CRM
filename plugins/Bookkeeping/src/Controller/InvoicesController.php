@@ -349,12 +349,10 @@ class InvoicesController extends AppController
 
             $bookkeeping = new BookkeepingService();
             $filePath = $bookkeeping->exportInvoices(
-                $drafts,
-                $exportFormat,
-                [
-                    'invoicedMonth' => $invoicedMonth,
-                    'taxRate' => $taxRate,
-                ],
+                invoices: $drafts,
+                format: $exportFormat,
+                invoicedMonth: $invoicedMonth,
+                taxRate: $taxRate,
             );
 
             // set for download with specified filename

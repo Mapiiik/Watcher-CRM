@@ -45,7 +45,7 @@ class HttpClient
             throw new RuntimeException(
                 __d(
                     'bookkeeping',
-                    'Error connecting to server: {0}',
+                    'Error connecting to Pohoda mServer: {0}',
                     [$e->getMessage()],
                 ),
                 previous: $e,
