@@ -22,6 +22,7 @@ RUN install-php-extensions \
     bcmath \
 	dbase \
     intl \
+    gd \
     pdo_pgsql \
     redis \
     sockets
