@@ -1,0 +1,63 @@
+# syntax=docker/dockerfile:1
+
+FROM dunglas/frankenphp:php8.4-alpine
+
+ARG buildno
+ARG gitcommithash
+
+RUN echo "Build number: $buildno"
+RUN echo "Based on commit: $gitcommithash"
+
+ENV DEBUG "true"
+ENV SERVER_ROOT "/app/webroot"
+
+# Install ping command
+RUN set -x \
+ && apk add -U --no-cache \
+    git \
+    iputils
+
+# add additional extensions here:
+RUN install-php-extensions \
+    bcmath \
+	dbase \
+    intl \
+    pdo_pgsql \
+    redis \
+    sockets
+
+# Install Composer globally
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Run as worker (comment out for normal mode)
+#ENV FRANKENPHP_CONFIG="worker /app/webroot/index.php"
+#ENV MAX_REQUESTS "100"
+
+# Add on-start commands
+RUN cat <<'EOF' > /usr/local/bin/docker-entrypoint-custom
+#!/bin/sh
+set -e
+
+# Composer operations
+composer install -d /app
+composer run-script migrations -d /app -- --no-lock
+composer run-script schema-cache -d /app
+
+exec docker-php-entrypoint "$@"
+EOF
+
+RUN chmod +x /usr/local/bin/docker-entrypoint-custom
+
+ENTRYPOINT ["docker-entrypoint-custom"]
+CMD ["--config", "/etc/frankenphp/Caddyfile", "--adapter", "caddyfile"]
+
+# Run as non-root user
+ARG APPLICATION_USER=application
+RUN \
+	adduser -D ${APPLICATION_USER}; \
+	# Add additional capability to bind to port 80 and 443
+	setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/frankenphp; \
+	# Give write access to /config/caddy and /data/caddy
+	chown -R ${APPLICATION_USER}:${APPLICATION_USER} /config/caddy /data/caddy
+
+USER ${APPLICATION_USER}

@@ -1,0 +1,47 @@
+services:
+  webserver-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev-frankenphp
+      args:
+        - buildno
+        - gitcommithash
+    depends_on:
+      - database-dev
+      - cache-dev
+    tmpfs:
+      - /app/logs:uid=1000,gid=1000
+      - /app/tmp:uid=1000,gid=1000
+      - /app/vendor:uid=1000,gid=1000,exec
+      - /app/node_modules:uid=1000,gid=1000,exec
+    volumes:
+      - ./:/app
+    working_dir: /app/
+    environment:
+      DATABASE_URL: postgres://postgres@database-dev/watcher_crm
+      DATABASE_RADIUS_URL: postgres://postgres@database-dev/watcher_crm_radius
+      DATABASE_RUIAN_URL: postgres://postgres@database-dev/watcher_crm_ruian
+    ports:
+      - 80:80/tcp # HTTP
+      - 443:443/tcp # HTTPS
+      - 443:443/udp # HTTP/3
+    tty: true
+
+  database-dev:
+    image: postgres:16
+    tmpfs:
+      - /var/lib/postgresql/data:exec
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: watcher_crm
+    ports:
+      - 5432:5432/tcp
+
+  cache-dev:
+    image: redis:alpine
+    tmpfs: 
+      - /data:exec
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass redis
