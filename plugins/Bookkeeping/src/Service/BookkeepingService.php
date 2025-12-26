@@ -68,7 +68,7 @@ class BookkeepingService
         Date $invoicedMonth,
         TaxRate $taxRate,
     ): void {
-        return $this->provider->sendInvoices($invoices, $invoicedMonth, $taxRate);
+        $this->provider->sendInvoices($invoices, $invoicedMonth, $taxRate);
     }
 
     /**
