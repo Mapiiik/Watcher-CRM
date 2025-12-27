@@ -82,6 +82,10 @@ class ServicesTable extends AppTable
             ->allowEmptyString('price');
 
         $validator
+            ->scalar('accounting_product_code')
+            ->allowEmptyString('accounting_product_code');
+
+        $validator
             ->boolean('not_for_new_customers')
             ->notEmptyString('not_for_new_customers');
 

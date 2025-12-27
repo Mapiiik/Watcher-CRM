@@ -56,6 +56,10 @@ use Cake\Collection\Collection;
                                 '' : $this->Number->currency($service->price->toString()) ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Accounting Product Code') ?></th>
+                            <td><?= h($service->accounting_product_code) ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Not For New Customers') ?></th>
                             <td><?= $service->not_for_new_customers ? __('Yes') : __('No'); ?></td>
                         </tr>

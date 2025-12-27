@@ -20,6 +20,7 @@ use Cake\ORM\Entity;
  * @property \PhpCollective\DecimalObject\Decimal|null $price
  * @property int|null $service_type_id
  * @property int|null $queue_id
+ * @property string|null $accounting_product_code
  * @property bool $not_for_new_customers
  *
  * @property \App\Model\Entity\ServiceType $service_type
