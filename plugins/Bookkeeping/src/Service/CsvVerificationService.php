@@ -54,10 +54,11 @@ final class CsvVerificationService
         $csvData = $this->parseCsv($csvFile);
 
         /** @var iterable<\App\Model\Entity\Customer> $customers */
-        $customers = $this->customers->find('billingDataForMonth', [
-            'invoicedMonth' => $invoicedMonth,
-            'taxRateId' => $taxRate->id,
-        ]);
+        $customers = $this->customers->find(
+            'billingDataForMonth',
+            invoicedMonth: $invoicedMonth,
+            taxRateId: $taxRate->id,
+        );
 
         $differences = $this->compareWithCrm($customers, $csvData);
 

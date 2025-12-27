@@ -54,10 +54,11 @@ final class InvoiceGenerationService
         $drafts = [];
 
         /** @var iterable<\App\Model\Entity\Customer> $customers */
-        $customers = $this->customers->find('billingDataForMonth', [
-            'invoicedMonth' => $invoicedMonth,
-            'taxRateId' => $taxRate->id,
-        ]);
+        $customers = $this->customers->find(
+            'billingDataForMonth',
+            invoicedMonth: $invoicedMonth,
+            taxRateId: $taxRate->id,
+        );
 
         foreach ($customers as $customer) {
             // Customer-level aggregation

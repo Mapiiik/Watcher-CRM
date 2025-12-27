@@ -7,6 +7,7 @@ use App\Model\Enum\CustomerDealer;
 use App\Model\Enum\CustomerInvoiceDeliveryType;
 use Cake\Collection\CollectionInterface;
 use Cake\Database\Type\EnumType;
+use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
@@ -367,19 +368,15 @@ class CustomersTable extends AppTable
      * - `taxRateId` (string) Required. Tax rate identifier used to filter customers.
      *
      * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Customer> $query Base query.
-     * @param array{
-     *     invoicedMonth: \Cake\I18n\Date,
-     *     taxRateId: string
-     * } $options Finder options.
+     * @param \Cake\I18n\Date $invoicedMonth
+     * @param string $taxRateId
      * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Customer>
      */
     public function findBillingDataForMonth(
         SelectQuery $query,
-        array $options,
+        Date $invoicedMonth,
+        string $taxRateId,
     ): SelectQuery {
-        $invoicedMonth = $options['invoicedMonth'];
-        $taxRateId = $options['taxRateId'];
-
         return $query
             ->contain('Addresses')
             ->contain('Contracts', function (SelectQuery $q) use ($invoicedMonth) {
