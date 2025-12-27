@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-12-24 19:54+0100\n"
+"POT-Creation-Date: 2025-12-27 18:27+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -168,15 +168,15 @@ msgstr ""
 msgid "CSV line {0}: {1} ({2})"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:365
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:401
 msgid "No file was uploaded."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:378
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:414
 msgid "Successfully imported {0} invoices. Created {1}, modified {2} and skipped {3} records."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:389
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:425
 msgid "An error occurred while importing the file: {0}"
 msgstr ""
 
@@ -231,24 +231,47 @@ msgstr ""
 msgid "dBase Format"
 msgstr ""
 
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:47
+msgid "Error while creating DBF file."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:60
+msgid "Failed to generate Pohoda DBF export."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:197
+msgid "Failed to write DBF record for invoice {0}."
+msgstr ""
+
 #: ./plugins/Bookkeeping/src/Provider/Pohoda/DbfParser.php:34
 msgid "Unable to open DBF file."
 msgstr ""
 
 #: ./plugins/Bookkeeping/src/Provider/Pohoda/HttpClient.php:46
-msgid "Error connecting to server: {0}"
+msgid "Error connecting to Pohoda mServer: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:59
-msgid "Invalid response from the server ({0})"
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:66
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:152
+msgid "Invalid response from Pohoda mServer ({0})"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:69
-msgid "Invalid XML response"
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:77
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:163
+msgid "Invalid XML response from Pohoda mServer."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:83
-msgid "The server returned an XML error response (ID: {0}, STATE: {1}, NOTE: {2})"
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:88
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:174
+msgid "Pohoda mServer returned an error response (STATE: {0}, NOTE: {1})"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:143
+msgid "Failed to read generated XML file."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:149
+msgid "Failed to generate Pohoda XML export."
 msgstr ""
 
 #: ./plugins/Bookkeeping/src/Provider/Pohoda/XmlParser.php:39

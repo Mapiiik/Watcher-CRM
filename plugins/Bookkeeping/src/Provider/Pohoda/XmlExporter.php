@@ -146,7 +146,7 @@ class XmlExporter
 
         // check file
         if (!is_file($filePath)) {
-            throw new RuntimeException(__('bookkeeping', 'Failed to generate Pohoda XML export.'));
+            throw new RuntimeException(__d('bookkeeping', 'Failed to generate Pohoda XML export.'));
         }
 
         return $filePath;

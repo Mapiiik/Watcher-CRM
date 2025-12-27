@@ -44,7 +44,7 @@ class DbfExporter
 
         $dbf = dbase_create($filePath, $structure);
         if ($dbf === false) {
-            throw new RuntimeException(__('bookkeeping', 'Error while creating DBF file.'));
+            throw new RuntimeException(__d('bookkeeping', 'Error while creating DBF file.'));
         }
 
         try {
@@ -57,7 +57,7 @@ class DbfExporter
         }
 
         if (!is_file($filePath)) {
-            throw new RuntimeException(__('bookkeeping', 'Failed to generate Pohoda DBF export.'));
+            throw new RuntimeException(__d('bookkeeping', 'Failed to generate Pohoda DBF export.'));
         }
 
         return $filePath;
@@ -194,7 +194,7 @@ class DbfExporter
 
         if ($ok === false) {
             throw new RuntimeException(
-                __('bookkeeping', 'Failed to write DBF record for invoice {0}.', (string)$invoice->number),
+                __d('bookkeeping', 'Failed to write DBF record for invoice {0}.', (string)$invoice->number),
             );
         }
     }

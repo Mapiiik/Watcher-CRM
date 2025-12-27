@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-12-24 19:54+0100\n"
-"PO-Revision-Date: 2025-12-24 20:04+0100\n"
+"POT-Creation-Date: 2025-12-27 18:27+0100\n"
+"PO-Revision-Date: 2025-12-27 18:32+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -218,11 +218,11 @@ msgstr ""
 msgid "CSV line {0}: {1} ({2})"
 msgstr "Řádek CSV {0}: {1} ({2})"
 
-#: plugins/Bookkeeping/src/Controller/InvoicesController.php:365
+#: plugins/Bookkeeping/src/Controller/InvoicesController.php:401
 msgid "No file was uploaded."
 msgstr "Nebyl nahrán žádný soubor."
 
-#: plugins/Bookkeeping/src/Controller/InvoicesController.php:378
+#: plugins/Bookkeeping/src/Controller/InvoicesController.php:414
 msgid ""
 "Successfully imported {0} invoices. Created {1}, modified {2} and skipped "
 "{3} records."
@@ -230,7 +230,7 @@ msgstr ""
 "Počet úspěšně importovaných faktur: {0}. Vytvořeno {1}, upraveno {2} a "
 "přeskočeno {3} záznamů."
 
-#: plugins/Bookkeeping/src/Controller/InvoicesController.php:389
+#: plugins/Bookkeeping/src/Controller/InvoicesController.php:425
 msgid "An error occurred while importing the file: {0}"
 msgstr "Při importu souboru došlo k chybě: {0}"
 
@@ -286,26 +286,48 @@ msgstr "Formát XML"
 msgid "dBase Format"
 msgstr "Formát dBase"
 
+#: plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:47
+msgid "Error while creating DBF file."
+msgstr "Chyba při vytváření souboru DBF."
+
+#: plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:60
+msgid "Failed to generate Pohoda DBF export."
+msgstr "Nepodařilo se vygenerovat export Pohoda DBF."
+
+#: plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:197
+msgid "Failed to write DBF record for invoice {0}."
+msgstr "Nepodařilo se zapsat záznam DBF pro fakturu {0}."
+
 #: plugins/Bookkeeping/src/Provider/Pohoda/DbfParser.php:34
 msgid "Unable to open DBF file."
 msgstr "Nelze otevřít soubor DBF."
 
 #: plugins/Bookkeeping/src/Provider/Pohoda/HttpClient.php:46
-msgid "Error connecting to server: {0}"
-msgstr "Chyba při připojování k serveru: {0}"
+msgid "Error connecting to Pohoda mServer: {0}"
+msgstr "Chyba při připojení k Pohoda mServer: {0}"
 
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:59
-msgid "Invalid response from the server ({0})"
-msgstr "Neplatná odpověď serveru ({0})"
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:66
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:152
+msgid "Invalid response from Pohoda mServer ({0})"
+msgstr "Neplatná odpověď od Pohoda mServer ({0})"
 
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:69
-msgid "Invalid XML response"
-msgstr "Neplatná odpověď XML"
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:77
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:163
+msgid "Invalid XML response from Pohoda mServer."
+msgstr "Neplatná odpověď XML od Pohoda mServer."
 
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:83
-msgid ""
-"The server returned an XML error response (ID: {0}, STATE: {1}, NOTE: {2})"
-msgstr "Server vrátil chybovou odpověď XML (ID: {0}, STATE: {1}, NOTE: {2})"
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:88
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:174
+msgid "Pohoda mServer returned an error response (STATE: {0}, NOTE: {1})"
+msgstr "Pohoda mServer vrátil chybovou odpověď (STATE: {0}, NOTE: {1})"
+
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:143
+msgid "Failed to read generated XML file."
+msgstr "Nepodařilo se načíst vygenerovaný soubor XML."
+
+#: plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:149
+msgid "Failed to generate Pohoda XML export."
+msgstr "Nepodařilo se vygenerovat export Pohoda XML."
 
 #: plugins/Bookkeeping/src/Provider/Pohoda/XmlParser.php:39
 msgid "Invalid XML file: {0}"
@@ -688,6 +710,9 @@ msgstr "Upravil"
 #: plugins/Bookkeeping/templates/cell/Invoices/display.php:71
 msgid "Show also paid invoices"
 msgstr "Zobrazit také zaplacené faktury"
+
+#~ msgid "Invalid XML response"
+#~ msgstr "Neplatná odpověď XML"
 
 #~ msgid ""
 #~ "The server returned a valid XML response (ID: {0}, STATE: {1}, NOTE: {2})"
