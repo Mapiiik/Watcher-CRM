@@ -50,6 +50,7 @@ class Service extends Entity
         'service_type' => true,
         'queue' => true,
         'billings' => true,
+        'accounting_product_code' => true,
         'not_for_new_customers' => true,
     ];
 }
