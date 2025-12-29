@@ -25,9 +25,9 @@ services:
       - 80:80/tcp
 
   database-dev:
-    image: postgres:16
+    image: postgres:18
     tmpfs:
-      - /var/lib/postgresql/data:exec
+      - /var/lib/postgresql:exec
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
