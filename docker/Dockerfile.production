@@ -37,6 +37,8 @@ RUN set -x \
 RUN gosu "${APPLICATION_USER}" composer install -d /app --no-interaction --no-dev
 
 # Add on-start commands
-RUN echo '# Composer oprations' >> /opt/docker/provision/entrypoint.d/99-composer.sh \
- && echo 'gosu "${APPLICATION_USER}" composer run-script migrations -d /app' >> /opt/docker/provision/entrypoint.d/99-composer.sh \
- && echo 'gosu "${APPLICATION_USER}" composer run-script schema-cache -d /app' >> /opt/docker/provision/entrypoint.d/99-composer.sh
+RUN cat <<'EOF' >> /opt/docker/provision/entrypoint.d/99-composer.sh
+# Composer operations
+gosu "${APPLICATION_USER}" composer run-script migrations -d /app
+gosu "${APPLICATION_USER}" composer run-script schema-cache -d /app
+EOF

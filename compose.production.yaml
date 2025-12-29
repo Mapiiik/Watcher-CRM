@@ -2,7 +2,7 @@ services:
   webserver:
     build:
       context: .
-      dockerfile: Dockerfile.production
+      dockerfile: docker/Dockerfile.production
       args:
         - buildno
         - gitcommithash
