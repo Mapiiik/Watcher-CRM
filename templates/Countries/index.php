@@ -24,6 +24,7 @@
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('name') ?></th>
+                    <th><?= $this->Paginator->sort('code') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -31,6 +32,7 @@
                 <?php foreach ($countries as $country) : ?>
                 <tr>
                     <td><?= h($country->name) ?></td>
+                    <td><?= h($country->code) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $country->id]) ?>
                         <?= $this->AuthLink->link(

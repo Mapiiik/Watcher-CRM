@@ -22,6 +22,7 @@ class CountriesFixture extends TestFixture
         $this->records = [
             [
                 'name' => 'Lorem ipsum dolor sit amet',
+                'code' => 'XX',
                 'created' => 1698517303,
                 'modified' => 1698517303,
                 'id' => 'b490f1c9-ff7e-430a-bfb0-f400878e1617',

@@ -23,6 +23,7 @@
                 <legend><?= __('Edit Country') ?></legend>
                 <?php
                     echo $this->Form->control('name');
+                    echo $this->Form->control('code');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

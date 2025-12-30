@@ -70,6 +70,12 @@ class CountriesTable extends AppTable
             ->requirePresence('name', 'create')
             ->notEmptyString('name');
 
+        $validator
+            ->scalar('code')
+            ->maxLength('code', 2)
+            ->requirePresence('code', 'create')
+            ->notEmptyString('code');
+
         return $validator;
     }
 

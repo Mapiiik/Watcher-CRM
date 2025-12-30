@@ -17,6 +17,7 @@ use Cake\ORM\Entity;
  * @property string $id
  * @property int $nid
  * @property string $name
+ * @property string|null $code
  *
  * @property \App\Model\Entity\Address[] $addresses
  */
@@ -37,6 +38,19 @@ class Country extends Entity
         'modified' => true,
         'modified_by' => true,
         'name' => true,
+        'code' => true,
         'addresses' => true,
     ];
+
+    /**
+     * Country code in upper-case
+     */
+    protected function _setCode(?string $code): ?string
+    {
+        if ($code === null) {
+            return null;
+        }
+
+        return strtoupper($code);
+    }
 }

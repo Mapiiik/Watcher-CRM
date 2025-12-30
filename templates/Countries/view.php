@@ -32,6 +32,10 @@
                             <th><?= __('Name') ?></th>
                             <td><?= h($country->name) ?></td>
                         </tr>
+                        <tr>
+                            <th><?= __('Code') ?></th>
+                            <td><?= h($country->code) ?></td>
+                        </tr>
                     </table>
                 </div>
                 <div class="column">
