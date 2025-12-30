@@ -61,6 +61,11 @@
                     ['controller' => 'Settings', 'action' => 'edit', 'bookkeeping.debtors'],
                     ['class' => 'side-nav-item'],
                 ) ?>
+                <?= $this->AuthLink->link(
+                    __('Accounting Integration'),
+                    ['controller' => 'Settings', 'action' => 'edit', 'bookkeeping.accounting'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
             </div>
         </div>
 
