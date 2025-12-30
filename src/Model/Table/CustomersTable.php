@@ -379,6 +379,9 @@ class CustomersTable extends AppTable
     ): SelectQuery {
         return $query
             ->contain('Addresses')
+            ->contain('Addresses.Countries')
+            ->contain('Emails')
+            ->contain('Phones')
             ->contain('Contracts', function (SelectQuery $q) use ($invoicedMonth) {
                 return $q
                     ->contain('ContractStates')

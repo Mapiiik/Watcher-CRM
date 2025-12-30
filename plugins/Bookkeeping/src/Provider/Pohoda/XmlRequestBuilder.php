@@ -6,6 +6,7 @@ namespace Bookkeeping\Provider\Pohoda;
 use Cake\I18n\DateTime;
 use Riesenia\Pohoda;
 use RuntimeException;
+use Settings\Utility\Settings;
 
 /**
  * Class XmlRequestBuilder
@@ -25,7 +26,12 @@ class XmlRequestBuilder
     {
         Pohoda::$encoding = 'UTF-8'; // Set encoding for Pohoda library
 
-        $pohoda = new Pohoda(env('POHODA_COMPANY_ID', '00000000'));
+        $pohoda = new Pohoda(
+            Settings::getString(
+                PohodaProvider::SETTINGS_ROOT . '.issuer.identity_number',
+                '00000000',
+            ),
+        );
         $pohoda->setApplicationName('Watcher CRM');
 
         // Open Pohoda request (null for in memory, '001' for ID, description)

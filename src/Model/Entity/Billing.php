@@ -44,7 +44,7 @@ use PhpCollective\DecimalObject\Decimal;
  * @property \PhpCollective\DecimalObject\Decimal $period_total
  *
  * @property \App\Model\Entity\Customer $customer
- * @property \App\Model\Entity\Service $service
+ * @property \App\Model\Entity\Service|null $service
  * @property \App\Model\Entity\Contract $contract
  */
 class Billing extends Entity

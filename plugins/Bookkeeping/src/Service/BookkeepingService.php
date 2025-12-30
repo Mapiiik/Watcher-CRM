@@ -7,9 +7,11 @@ use App\Model\Entity\TaxRate;
 use Bookkeeping\Model\Entity\Invoice;
 use Bookkeeping\Model\Enum\InvoiceExportFormat;
 use Bookkeeping\Model\Enum\InvoiceImportFormat;
-use Bookkeeping\Provider\Pohoda\PohodaProvider;
+use Bookkeeping\Provider\AccountingProviderInterface;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
+use RuntimeException;
+use Settings\Utility\Settings;
 
 /**
  * BookkeepingService
@@ -25,18 +27,56 @@ use Cake\I18n\DateTime;
  */
 class BookkeepingService
 {
-    private PohodaProvider $provider;
+    private AccountingProviderInterface $provider;
     private InvoiceMapperService $invoiceMapper;
 
     /**
      * Constructor
      *
-     * @param \Bookkeeping\Provider\Pohoda\PohodaProvider|null $provider
+     * @param \Bookkeeping\Provider\AccountingProviderInterface|null $provider
      *   Allows injecting a different provider in the future.
      */
-    public function __construct(?PohodaProvider $provider = null)
+    public function __construct(?AccountingProviderInterface $provider = null)
     {
-        $this->provider = $provider ?? new PohodaProvider();
+        if ($provider !== null) {
+            $this->provider = $provider;
+        } else {
+            // Load default provider key (e.g. "pohoda" or "eurofaktura")
+            $defaultKey = Settings::getString(
+                'bookkeeping.accounting.default_provider',
+                'pohoda',
+            );
+
+            // Load provider class from config
+            $providerClass = Settings::get(
+                'bookkeeping.accounting.providers.' . $defaultKey . '.class',
+            );
+
+            if ($providerClass === null) {
+                throw new RuntimeException(
+                    __d(
+                        'bookkeeping',
+                        'Provider class not defined for provider "{0}".',
+                        $defaultKey,
+                    ),
+                );
+            }
+
+            // Validate provider class
+            if (!is_subclass_of($providerClass, AccountingProviderInterface::class)) {
+                throw new RuntimeException(
+                    __d(
+                        'bookkeeping',
+                        'Provider class "{0}" is not subclass of "{1}".',
+                        [$providerClass, AccountingProviderInterface::class],
+                    ),
+                );
+            }
+
+            // Instantiate provider (constructor may or may not accept config)
+            $this->provider = new $providerClass();
+        }
+
         $this->invoiceMapper = new InvoiceMapperService();
     }
 

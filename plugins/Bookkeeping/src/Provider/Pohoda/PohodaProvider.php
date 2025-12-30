@@ -7,6 +7,7 @@ use App\Model\Entity\TaxRate;
 use Bookkeeping\Model\Entity\Invoice;
 use Bookkeeping\Model\Enum\InvoiceExportFormat;
 use Bookkeeping\Model\Enum\InvoiceImportFormat;
+use Bookkeeping\Provider\AccountingProviderInterface;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use RuntimeException;
@@ -25,8 +26,10 @@ use RuntimeException;
  *
  * The provider exposes a stable API used by BookkeepingService.
  */
-class PohodaProvider
+class PohodaProvider implements AccountingProviderInterface
 {
+    public const SETTINGS_ROOT = 'bookkeeping.accounting.providers.pohoda';
+
     private XmlRequestBuilder $xmlRequestBuilder;
     private HttpClient $httpClient;
     private DbfParser $dbfParser;

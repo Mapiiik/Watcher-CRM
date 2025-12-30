@@ -8,6 +8,7 @@ use App\Model\Entity\TaxRate;
 use Cake\I18n\Date;
 use Riesenia\Pohoda;
 use RuntimeException;
+use Settings\Utility\Settings;
 
 /**
  * Class XmlExporter
@@ -37,7 +38,12 @@ class XmlExporter
     ): string {
         Pohoda::$encoding = 'UTF-8';
 
-        $pohoda = new Pohoda(env('POHODA_COMPANY_ID', '00000000'));
+        $pohoda = new Pohoda(
+            Settings::getString(
+                PohodaProvider::SETTINGS_ROOT . '.issuer.identity_number',
+                '00000000',
+            ),
+        );
         $pohoda->setApplicationName('Watcher CRM');
 
         $pohoda->open(

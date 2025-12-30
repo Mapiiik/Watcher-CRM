@@ -6,6 +6,7 @@ namespace Bookkeeping\Provider\Pohoda;
 use Cake\Http\Client;
 use Cake\Http\Client\Response;
 use RuntimeException;
+use Settings\Utility\Settings;
 use Throwable;
 
 /**
@@ -27,8 +28,14 @@ class HttpClient
         try {
             $username = (string)env('POHODA_USERNAME', '');
             $password = (string)env('POHODA_PASSWORD', '');
-            $url = (string)env('POHODA_MSERVER_URL', 'http://localhost:44444');
-            $timeout = 3600;
+            $url = Settings::getString(
+                PohodaProvider::SETTINGS_ROOT . '.api.url',
+                'http://localhost:44444',
+            );
+            $timeout = (int)Settings::get(
+                PohodaProvider::SETTINGS_ROOT . '.api.timeout',
+                3600,
+            );
 
             $http = new Client([
                 'headers' => [
