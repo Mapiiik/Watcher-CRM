@@ -78,6 +78,7 @@ class JsonRequestBuilder
         // Build payload
         $payload = [
             'status' => $status,
+            'costPosition' => $taxRate->activity_code,
 
             // Issuer context
             'city' => $city,
