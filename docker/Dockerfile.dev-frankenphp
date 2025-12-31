@@ -27,6 +27,15 @@ RUN install-php-extensions \
     redis \
     sockets
 
+# Production:
+#RUN cp $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
+
+# Or development:
+RUN cp $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
+
+# Memory limit 2 GB
+RUN echo "memory_limit = 2048M" > $PHP_INI_DIR/conf.d/memory_limit.ini
+
 # Install Composer globally
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
