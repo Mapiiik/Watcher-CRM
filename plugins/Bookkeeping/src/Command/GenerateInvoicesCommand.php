@@ -77,7 +77,7 @@ class GenerateInvoicesCommand extends Command
                 'short' => 'm',
                 'help' => __d(
                     'bookkeeping',
-                    'Invoiced month (YYYY-MM). Defaults to current month.',
+                    'Invoiced month (YYYY-MM). Defaults to previous month.',
                 ),
             ])
             ->addOption('accounting-profile-id', [

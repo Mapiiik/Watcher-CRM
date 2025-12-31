@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-12-27 18:27+0100\n"
+"POT-Creation-Date: 2025-12-31 15:49+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -13,6 +13,34 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: ./plugins/Bookkeeping/src/Command/GenerateInvoicesCommand.php:78
+msgid "Invoiced month (YYYY-MM). Defaults to previous month."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Command/GenerateInvoicesCommand.php:85
+msgid "Accounting profile identifier (ID)."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Command/GenerateInvoicesCommand.php:118
+msgid "Sending invoices for invoiced month: {0}"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Command/GenerateInvoicesCommand.php:125
+msgid "Using accounting profile ID: {0}"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Command/GenerateInvoicesCommand.php:131
+msgid "No accounting profile ID provided. Use --accounting-profile-id option to specify it."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Command/GenerateInvoicesCommand.php:151
+msgid "No invoices to send."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Command/GenerateInvoicesCommand.php:168
+msgid "Invoices successfully sent to Eurofaktura."
+msgstr ""
 
 #: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:58
 msgid "Override the saved date and time of the last synchronisation. Only invoices changed after this date and time of change will be retrieved. Format: YYYY-MM-DD HH:MM:SS (e.g., 2024-10-28 15:45:00). If not provided, the date from the last successful synchronization will be used."
@@ -164,19 +192,19 @@ msgstr ""
 msgid "No invoices could be marked to be sent by email. Please, try again."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:303
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:304
 msgid "CSV line {0}: {1} ({2})"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:401
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:403
 msgid "No file was uploaded."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:414
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:416
 msgid "Successfully imported {0} invoices. Created {1}, modified {2} and skipped {3} records."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:425
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:427
 msgid "An error occurred while importing the file: {0}"
 msgstr ""
 
@@ -231,15 +259,35 @@ msgstr ""
 msgid "dBase Format"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:47
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:61
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:163
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:185
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:207
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:228
+msgid "Not implemented in Eurofaktura Provider."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:110
+msgid "Eurofaktura API error ({0}, {1})"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:126
+msgid "Eurofaktura API error: {0}"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/HttpClient.php:60
+msgid "Error connecting to Eurofaktura / E-racuni API: {0}"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:51
 msgid "Error while creating DBF file."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:60
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:64
 msgid "Failed to generate Pohoda DBF export."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:197
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:201
 msgid "Failed to write DBF record for invoice {0}."
 msgstr ""
 
@@ -247,30 +295,30 @@ msgstr ""
 msgid "Unable to open DBF file."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/HttpClient.php:46
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/HttpClient.php:53
 msgid "Error connecting to Pohoda mServer: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:66
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:152
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:69
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:155
 msgid "Invalid response from Pohoda mServer ({0})"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:77
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:163
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:80
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:166
 msgid "Invalid XML response from Pohoda mServer."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:88
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:174
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:91
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:177
 msgid "Pohoda mServer returned an error response (STATE: {0}, NOTE: {1})"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:143
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:146
 msgid "Failed to read generated XML file."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:149
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:155
 msgid "Failed to generate Pohoda XML export."
 msgstr ""
 
@@ -282,11 +330,19 @@ msgstr ""
 msgid "Unknown XML error"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Service/CsvVerificationService.php:142
+#: ./plugins/Bookkeeping/src/Service/BookkeepingService.php:57
+msgid "Provider class not defined for provider \"{0}\"."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Service/BookkeepingService.php:68
+msgid "Provider class \"{0}\" is not subclass of \"{1}\"."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Service/CsvVerificationService.php:143
 msgid "Invalid customer number"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Service/CsvVerificationService.php:152
+#: ./plugins/Bookkeeping/src/Service/CsvVerificationService.php:153
 msgid "Invalid price"
 msgstr ""
 
@@ -524,7 +580,7 @@ msgid "Generate Invoices"
 msgstr ""
 
 #: ./plugins/Bookkeeping/templates/Invoices/generate.php:41
-msgid "Tax Rate"
+msgid "Accounting Profile"
 msgstr ""
 
 #: ./plugins/Bookkeeping/templates/Invoices/generate.php:47

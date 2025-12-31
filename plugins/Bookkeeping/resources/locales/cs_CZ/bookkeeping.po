@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-12-27 18:27+0100\n"
-"PO-Revision-Date: 2025-12-27 18:32+0100\n"
+"POT-Creation-Date: 2025-12-31 15:49+0100\n"
+"PO-Revision-Date: 2025-12-31 15:51+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -14,6 +14,38 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 "X-Generator: Poedit 3.8\n"
+
+#: plugins/Bookkeeping/src/Command/GenerateInvoicesCommand.php:78
+msgid "Invoiced month (YYYY-MM). Defaults to previous month."
+msgstr "Fakturovaný měsíc (RRRR-MM). Výchozí nastavení je předchozí měsíc."
+
+#: plugins/Bookkeeping/src/Command/GenerateInvoicesCommand.php:85
+msgid "Accounting profile identifier (ID)."
+msgstr "Identifikátor účetního profilu (ID)."
+
+#: plugins/Bookkeeping/src/Command/GenerateInvoicesCommand.php:118
+msgid "Sending invoices for invoiced month: {0}"
+msgstr "Odesílání faktur za fakturovaný měsíc: {0}"
+
+#: plugins/Bookkeeping/src/Command/GenerateInvoicesCommand.php:125
+msgid "Using accounting profile ID: {0}"
+msgstr "Použití ID účetního profilu: {0}"
+
+#: plugins/Bookkeeping/src/Command/GenerateInvoicesCommand.php:131
+msgid ""
+"No accounting profile ID provided. Use --accounting-profile-id option to "
+"specify it."
+msgstr ""
+"Nebylo zadáno ID účetního profilu. K jeho zadání použijte volbu --accounting-"
+"profile-id."
+
+#: plugins/Bookkeeping/src/Command/GenerateInvoicesCommand.php:151
+msgid "No invoices to send."
+msgstr "Žádné faktury k odeslání."
+
+#: plugins/Bookkeeping/src/Command/GenerateInvoicesCommand.php:168
+msgid "Invoices successfully sent to Eurofaktura."
+msgstr "Faktury úspěšně odeslány do Eurofaktury."
 
 #: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:58
 msgid ""
@@ -214,15 +246,15 @@ msgid "No invoices could be marked to be sent by email. Please, try again."
 msgstr ""
 "Žádné faktury nelze označit k odeslání e-mailem. Zkuste to prosím znovu."
 
-#: plugins/Bookkeeping/src/Controller/InvoicesController.php:303
+#: plugins/Bookkeeping/src/Controller/InvoicesController.php:304
 msgid "CSV line {0}: {1} ({2})"
 msgstr "Řádek CSV {0}: {1} ({2})"
 
-#: plugins/Bookkeeping/src/Controller/InvoicesController.php:401
+#: plugins/Bookkeeping/src/Controller/InvoicesController.php:403
 msgid "No file was uploaded."
 msgstr "Nebyl nahrán žádný soubor."
 
-#: plugins/Bookkeeping/src/Controller/InvoicesController.php:414
+#: plugins/Bookkeeping/src/Controller/InvoicesController.php:416
 msgid ""
 "Successfully imported {0} invoices. Created {1}, modified {2} and skipped "
 "{3} records."
@@ -230,7 +262,7 @@ msgstr ""
 "Počet úspěšně importovaných faktur: {0}. Vytvořeno {1}, upraveno {2} a "
 "přeskočeno {3} záznamů."
 
-#: plugins/Bookkeeping/src/Controller/InvoicesController.php:425
+#: plugins/Bookkeeping/src/Controller/InvoicesController.php:427
 msgid "An error occurred while importing the file: {0}"
 msgstr "Při importu souboru došlo k chybě: {0}"
 
@@ -286,15 +318,35 @@ msgstr "Formát XML"
 msgid "dBase Format"
 msgstr "Formát dBase"
 
-#: plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:47
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:61
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:163
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:185
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:207
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:228
+msgid "Not implemented in Eurofaktura Provider."
+msgstr "Není implementováno v Eurofaktura Provider."
+
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:110
+msgid "Eurofaktura API error ({0}, {1})"
+msgstr "Chyba API Eurofaktura ({0}, {1})"
+
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:126
+msgid "Eurofaktura API error: {0}"
+msgstr "Chyba API Eurofaktura: {0}"
+
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/HttpClient.php:60
+msgid "Error connecting to Eurofaktura / E-racuni API: {0}"
+msgstr "Chyba při připojení k Eurofaktura / E-racuni API: {0}"
+
+#: plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:51
 msgid "Error while creating DBF file."
 msgstr "Chyba při vytváření souboru DBF."
 
-#: plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:60
+#: plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:64
 msgid "Failed to generate Pohoda DBF export."
 msgstr "Nepodařilo se vygenerovat export Pohoda DBF."
 
-#: plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:197
+#: plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:201
 msgid "Failed to write DBF record for invoice {0}."
 msgstr "Nepodařilo se zapsat záznam DBF pro fakturu {0}."
 
@@ -302,30 +354,30 @@ msgstr "Nepodařilo se zapsat záznam DBF pro fakturu {0}."
 msgid "Unable to open DBF file."
 msgstr "Nelze otevřít soubor DBF."
 
-#: plugins/Bookkeeping/src/Provider/Pohoda/HttpClient.php:46
+#: plugins/Bookkeeping/src/Provider/Pohoda/HttpClient.php:53
 msgid "Error connecting to Pohoda mServer: {0}"
 msgstr "Chyba při připojení k Pohoda mServer: {0}"
 
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:66
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:152
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:69
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:155
 msgid "Invalid response from Pohoda mServer ({0})"
 msgstr "Neplatná odpověď od Pohoda mServer ({0})"
 
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:77
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:163
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:80
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:166
 msgid "Invalid XML response from Pohoda mServer."
 msgstr "Neplatná odpověď XML od Pohoda mServer."
 
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:88
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:174
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:91
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:177
 msgid "Pohoda mServer returned an error response (STATE: {0}, NOTE: {1})"
 msgstr "Pohoda mServer vrátil chybovou odpověď (STATE: {0}, NOTE: {1})"
 
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:143
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:146
 msgid "Failed to read generated XML file."
 msgstr "Nepodařilo se načíst vygenerovaný soubor XML."
 
-#: plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:149
+#: plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:155
 msgid "Failed to generate Pohoda XML export."
 msgstr "Nepodařilo se vygenerovat export Pohoda XML."
 
@@ -337,11 +389,19 @@ msgstr "Neplatný soubor XML: {0}"
 msgid "Unknown XML error"
 msgstr "Neznámá chyba XML"
 
-#: plugins/Bookkeeping/src/Service/CsvVerificationService.php:142
+#: plugins/Bookkeeping/src/Service/BookkeepingService.php:57
+msgid "Provider class not defined for provider \"{0}\"."
+msgstr "Třída poskytovatele není definována pro poskytovatele „{0}“."
+
+#: plugins/Bookkeeping/src/Service/BookkeepingService.php:68
+msgid "Provider class \"{0}\" is not subclass of \"{1}\"."
+msgstr "Třída poskytovatele „{0}“ není podtřídou „{1}“."
+
+#: plugins/Bookkeeping/src/Service/CsvVerificationService.php:143
 msgid "Invalid customer number"
 msgstr "Neplatné číslo zákazníka"
 
-#: plugins/Bookkeeping/src/Service/CsvVerificationService.php:152
+#: plugins/Bookkeeping/src/Service/CsvVerificationService.php:153
 msgid "Invalid price"
 msgstr "Neplatná cena"
 
@@ -579,8 +639,8 @@ msgid "Generate Invoices"
 msgstr "Generovat faktury"
 
 #: plugins/Bookkeeping/templates/Invoices/generate.php:41
-msgid "Tax Rate"
-msgstr "Sazba daně"
+msgid "Accounting Profile"
+msgstr "Účetní profil"
 
 #: plugins/Bookkeeping/templates/Invoices/generate.php:47
 msgid "Invoiced Month"
@@ -710,6 +770,9 @@ msgstr "Upravil"
 #: plugins/Bookkeeping/templates/cell/Invoices/display.php:71
 msgid "Show also paid invoices"
 msgstr "Zobrazit také zaplacené faktury"
+
+#~ msgid "Tax Rate"
+#~ msgstr "Sazba daně"
 
 #~ msgid "Invalid XML response"
 #~ msgstr "Neplatná odpověď XML"
