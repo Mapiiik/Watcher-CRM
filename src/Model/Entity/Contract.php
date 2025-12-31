@@ -6,8 +6,8 @@ namespace App\Model\Entity;
 use App\ApiClient;
 use ArrayObject;
 use Cake\ORM\Entity;
-use Exception;
 use PhpCollective\DecimalObject\Decimal;
+use RuntimeException;
 
 /**
  * Contract Entity
@@ -252,7 +252,7 @@ class Contract extends Entity
      * getter for active_services
      *
      * @return bool
-     * @throws \Exception When contract state data not available.
+     * @throws \RuntimeException When contract state data not available.
      */
     protected function _getActiveServices(): bool
     {
@@ -260,14 +260,14 @@ class Contract extends Entity
             return $this->contract_state->active_services;
         }
 
-        throw new Exception(__('Contract state data not available.'));
+        throw new RuntimeException(__('Contract state data not available.'));
     }
 
     /**
      * getter for billed
      *
      * @return bool
-     * @throws \Exception When contract state data not available.
+     * @throws \RuntimeException When contract state data not available.
      */
     protected function _getBilled(): bool
     {
@@ -275,14 +275,14 @@ class Contract extends Entity
             return $this->contract_state->billed;
         }
 
-        throw new Exception(__('Contract state data not available.'));
+        throw new RuntimeException(__('Contract state data not available.'));
     }
 
     /**
      * getter for blocked
      *
      * @return bool
-     * @throws \Exception When contract state data not available.
+     * @throws \RuntimeException When contract state data not available.
      */
     protected function _getBlocked(): bool
     {
@@ -290,48 +290,51 @@ class Contract extends Entity
             return $this->contract_state->blocked;
         }
 
-        throw new Exception(__('Contract state data not available.'));
+        throw new RuntimeException(__('Contract state data not available.'));
     }
 
     /**
      * getter for option separate_invoice (use option from service type)
      *
      * @return bool
+     * @throws \RuntimeException When service type data not available.
      */
     public function isSeparateInvoice(): bool
     {
-        if (isset($this->service_type->separate_invoice)) {
+        if ($this->has('service_type')) {
             return $this->service_type->separate_invoice;
         }
 
-        return false;
+        throw new RuntimeException(__('Service type data not available.'));
     }
 
     /**
      * getter for option invoice_with_items (use option from service type)
      *
      * @return bool
+     * @throws \RuntimeException When service type data not available.
      */
     public function isInvoiceWithItems(): bool
     {
-        if (isset($this->service_type->invoice_with_items)) {
+        if ($this->has('service_type')) {
             return $this->service_type->invoice_with_items;
         }
 
-        return false;
+        throw new RuntimeException(__('Service type data not available.'));
     }
 
     /**
      * getter for option invoice_text (use option from service type)
      *
      * @return string|null
+     * @throws \RuntimeException When service type data not available.
      */
     public function getInvoiceText(): ?string
     {
-        if (isset($this->service_type->invoice_text)) {
+        if ($this->has('service_type')) {
             return $this->service_type->invoice_text;
         }
 
-        return null;
+        throw new RuntimeException(__('Service type data not available.'));
     }
 }

@@ -5,7 +5,7 @@ namespace App\Model\Entity;
 
 use App\Model\Enum\AddressType;
 use Cake\ORM\Entity;
-use Exception;
+use RuntimeException;
 
 /**
  * Customer Entity
@@ -481,7 +481,7 @@ class Customer extends Entity
      * getter for active_services
      *
      * @return bool
-     * @throws \Exception When contracts data not available.
+     * @throws \RuntimeException When contracts data not available.
      */
     protected function _getActiveServices(): bool
     {
@@ -496,14 +496,14 @@ class Customer extends Entity
             return false;
         }
 
-        throw new Exception(__('Contracts data not available.'));
+        throw new RuntimeException(__('Contracts data not available.'));
     }
 
     /**
      * getter for billed
      *
      * @return bool
-     * @throws \Exception When contracts data not available.
+     * @throws \RuntimeException When contracts data not available.
      */
     protected function _getBilled(): bool
     {
@@ -518,16 +518,21 @@ class Customer extends Entity
             return false;
         }
 
-        throw new Exception(__('Contracts data not available.'));
+        throw new RuntimeException(__('Contracts data not available.'));
     }
 
     /**
-     * getter for option invoice_with_items
+     * Returns whether this customer's accounting profile uses invoices with items.
      *
      * @return bool
+     * @throws \RuntimeException When accounting profile data not available.
      */
     public function isInvoiceWithItems(): bool
     {
-        return false;
+        if ($this->has('accounting_profile')) {
+            return $this->accounting_profile->invoice_with_items;
+        }
+
+        throw new RuntimeException(__('Accounting profile data not available.'));
     }
 }

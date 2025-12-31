@@ -52,6 +52,10 @@
                             <td><?= $accountingProfile->reverse_charge ? __('Yes') : __('No'); ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Invoice With Items') ?></th>
+                            <td><?= $accountingProfile->invoice_with_items ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Accounting Assignment Code') ?></th>
                             <td><?= h($accountingProfile->accounting_assignment_code) ?></td>
                         </tr>

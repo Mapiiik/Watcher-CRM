@@ -30,6 +30,7 @@
                     <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('vat_rate') ?></th>
                     <th><?= $this->Paginator->sort('reverse_charge') ?></th>
+                    <th><?= $this->Paginator->sort('invoice_with_items') ?></th>
                     <th><?= $this->Paginator->sort('accounting_assignment_code') ?></th>
                     <th><?= $this->Paginator->sort('bank_account_code') ?></th>
                     <th><?= $this->Paginator->sort('activity_code') ?></th>
@@ -42,6 +43,7 @@
                     <td><?= h($accountingProfile->name) ?></td>
                     <td><?= $this->Number->format($accountingProfile->vat_rate) ?></td>
                     <td><?= $accountingProfile->reverse_charge ? __('Yes') : __('No'); ?></td>
+                    <td><?= $accountingProfile->invoice_with_items ? __('Yes') : __('No'); ?></td>
                     <td><?= h($accountingProfile->accounting_assignment_code) ?></td>
                     <td><?= h($accountingProfile->bank_account_code) ?></td>
                     <td><?= h($accountingProfile->activity_code) ?></td>

@@ -19,6 +19,7 @@ use Cake\ORM\Entity;
  * @property string $name
  * @property float $vat_rate
  * @property bool $reverse_charge
+ * @property bool $invoice_with_items
  * @property string|null $accounting_assignment_code
  * @property string|null $bank_account_code
  * @property string|null $activity_code
@@ -40,6 +41,7 @@ class AccountingProfile extends Entity
         'name' => true,
         'vat_rate' => true,
         'reverse_charge' => true,
+        'invoice_with_items' => true,
         'created' => true,
         'created_by' => true,
         'modified' => true,

@@ -75,6 +75,10 @@ class AccountingProfilesTable extends AppTable
             ->notEmptyString('reverse_charge');
 
         $validator
+            ->boolean('invoice_with_items')
+            ->notEmptyString('invoice_with_items');
+
+        $validator
             ->scalar('accounting_assignment_code')
             ->maxLength('accounting_assignment_code', 255)
             ->allowEmptyString('accounting_assignment_code');

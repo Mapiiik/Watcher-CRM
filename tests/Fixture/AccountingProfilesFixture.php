@@ -24,6 +24,7 @@ class AccountingProfilesFixture extends TestFixture
                 'name' => 'Lorem ipsum dolor sit amet',
                 'vat_rate' => 1,
                 'reverse_charge' => 1,
+                'invoice_with_items' => 1,
                 'created' => 1698516590,
                 'modified' => 1698516590,
                 'accounting_assignment_code' => 'Lorem ipsum dolor sit amet',
