@@ -77,7 +77,7 @@ final class InvoiceGenerationService
                             number: (string)($prefix + $index++),
                             customer: $customer,
                             total: $billing->period_total,
-                            items: [],
+                            items: $contract->isInvoiceWithItems() || $customer->isInvoiceWithItems() ? [$billing] : [],
                             text: $this->buildSeparateBillingText($billing, $invoicedMonth),
                             invoicedMonth: $invoicedMonth,
                             internalNote: 'separate',
