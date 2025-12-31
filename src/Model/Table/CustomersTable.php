@@ -381,6 +381,7 @@ class CustomersTable extends AppTable
         string $accountingProfileId,
     ): SelectQuery {
         return $query
+            ->contain('AccountingProfiles')
             ->contain('Addresses')
             ->contain('Addresses.Countries')
             ->contain('Emails')
