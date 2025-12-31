@@ -22,7 +22,7 @@ class CountriesControllerTest extends TestCase
      */
     protected array $fixtures = [
         'app.AppUsers',
-        'app.TaxRates',
+        'app.AccountingProfiles',
         'app.Customers',
         'app.Countries',
         'app.Addresses',

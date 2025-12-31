@@ -6,7 +6,7 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * TaxRate Entity
+ * AccountingProfile Entity
  *
  * @property \Cake\I18n\DateTime|null $created
  * @property string|null $created_by
@@ -25,7 +25,7 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\Customer[] $customers
  */
-class TaxRate extends Entity
+class AccountingProfile extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

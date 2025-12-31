@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\TaxRate $taxRate
+ * @var \App\Model\Entity\AccountingProfile $accountingProfile
  */
 ?>
 <div class="row">
@@ -9,48 +9,59 @@
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->AuthLink->link(
-                __('Edit Tax Rate'),
-                ['action' => 'edit', $taxRate->id],
+                __('Edit Accounting Profile'),
+                ['action' => 'edit', $accountingProfile->id],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
-                __('Delete Tax Rate'),
-                ['action' => 'delete', $taxRate->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $taxRate->id), 'class' => 'side-nav-item'],
+                __('Delete Accounting Profile'),
+                ['action' => 'delete', $accountingProfile->id],
+                [
+                    'confirm' => __('Are you sure you want to delete # {0}?', $accountingProfile->id),
+                    'class' => 'side-nav-item',
+                ],
             ) ?>
-            <?= $this->AuthLink->link(__('List Tax Rates'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->link(__('New Tax Rate'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __('List Accounting Profiles'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item'],
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('New Accounting Profile'),
+                ['action' => 'add'],
+                ['class' => 'side-nav-item'],
+            ) ?>
         </div>
     </aside>
     <div class="column column-90">
-        <div class="taxRates view content">
-            <h3><?= h($taxRate->name) ?></h3>
+        <div class="accountingProfiles view content">
+            <h3><?= h($accountingProfile->name) ?></h3>
             <div class="row">
                 <div class="column">
                     <table>
                         <tr>
                             <th><?= __('Name') ?></th>
-                            <td><?= h($taxRate->name) ?></td>
+                            <td><?= h($accountingProfile->name) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Vat Rate') ?></th>
-                            <td><?= $this->Number->format($taxRate->vat_rate) ?></td>
+                            <td><?= $this->Number->format($accountingProfile->vat_rate) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Reverse Charge') ?></th>
-                            <td><?= $taxRate->reverse_charge ? __('Yes') : __('No'); ?></td>
+                            <td><?= $accountingProfile->reverse_charge ? __('Yes') : __('No'); ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Accounting Assignment Code') ?></th>
-                            <td><?= h($taxRate->accounting_assignment_code) ?></td>
+                            <td><?= h($accountingProfile->accounting_assignment_code) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Bank Account Code') ?></th>
-                            <td><?= h($taxRate->bank_account_code) ?></td>
+                            <td><?= h($accountingProfile->bank_account_code) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Activity Code') ?></th>
-                            <td><?= h($taxRate->activity_code) ?></td>
+                            <td><?= h($accountingProfile->activity_code) ?></td>
                         </tr>
                     </table>
                 </div>
@@ -58,44 +69,44 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <td><?= h($taxRate->id) ?></td>
+                            <td><?= h($accountingProfile->id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>
-                            <td><?= h($taxRate->created) ?></td>
+                            <td><?= h($accountingProfile->created) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Created By') ?></th>
-                            <td><?= $taxRate->__isset('creator') ? $this->Html->link(
-                                $taxRate->creator->username,
+                            <td><?= $accountingProfile->__isset('creator') ? $this->Html->link(
+                                $accountingProfile->creator->username,
                                 [
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
-                                    $taxRate->creator->id,
+                                    $accountingProfile->creator->id,
                                 ],
-                            ) : h($taxRate->created_by) ?></td>
+                            ) : h($accountingProfile->created_by) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Modified') ?></th>
-                            <td><?= h($taxRate->modified) ?></td>
+                            <td><?= h($accountingProfile->modified) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Modified By') ?></th>
-                            <td><?= $taxRate->__isset('modifier') ? $this->Html->link(
-                                $taxRate->modifier->username,
+                            <td><?= $accountingProfile->__isset('modifier') ? $this->Html->link(
+                                $accountingProfile->modifier->username,
                                 [
                                     'controller' => 'AppUsers',
                                     'action' => 'view',
-                                    $taxRate->modifier->id,
+                                    $accountingProfile->modifier->id,
                                 ],
-                            ) : h($taxRate->modified_by) ?></td>
+                            ) : h($accountingProfile->modified_by) ?></td>
                         </tr>
                     </table>
                 </div>
             </div>
             <div class="related">
                 <h4><?= __('Related Customers') ?></h4>
-                <?php if (!empty($taxRate->customers)) : ?>
+                <?php if (!empty($accountingProfile->customers)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
@@ -109,7 +120,7 @@
                             <th><?= __('IP Addresses') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($taxRate->customers as $customer) : ?>
+                        <?php foreach ($accountingProfile->customers as $customer) : ?>
                         <tr>
                             <td><?= h($customer->number) ?></td>
                             <td><?= h($customer->company) ?></td>

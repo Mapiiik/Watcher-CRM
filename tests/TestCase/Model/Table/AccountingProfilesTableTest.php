@@ -3,21 +3,21 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\TaxRatesTable;
+use App\Model\Table\AccountingProfilesTable;
 use Cake\TestSuite\TestCase;
 use Override;
 
 /**
- * App\Model\Table\TaxRatesTable Test Case
+ * App\Model\Table\AccountingProfilesTable Test Case
  */
-class TaxRatesTableTest extends TestCase
+class AccountingProfilesTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \App\Model\Table\TaxRatesTable
+     * @var \App\Model\Table\AccountingProfilesTable
      */
-    protected $TaxRates;
+    protected $AccountingProfiles;
 
     /**
      * Fixtures
@@ -26,7 +26,7 @@ class TaxRatesTableTest extends TestCase
      */
     protected array $fixtures = [
         'app.AppUsers',
-        'app.TaxRates',
+        'app.AccountingProfiles',
         'app.Customers',
     ];
 
@@ -39,8 +39,8 @@ class TaxRatesTableTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('TaxRates') ? [] : ['className' => TaxRatesTable::class];
-        $this->TaxRates = $this->getTableLocator()->get('TaxRates', $config);
+        $config = $this->getTableLocator()->exists('AccountingProfiles') ? [] : ['className' => AccountingProfilesTable::class];
+        $this->AccountingProfiles = $this->getTableLocator()->get('AccountingProfiles', $config);
     }
 
     /**
@@ -52,7 +52,7 @@ class TaxRatesTableTest extends TestCase
     protected function tearDown(): void
     {
         /** @phpstan-ignore unset.possiblyHookedProperty */
-        unset($this->TaxRates);
+        unset($this->AccountingProfiles);
 
         parent::tearDown();
     }
@@ -61,7 +61,7 @@ class TaxRatesTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @link \App\Model\Table\TaxRatesTable::validationDefault()
+     * @link \App\Model\Table\AccountingProfilesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -72,7 +72,7 @@ class TaxRatesTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @link \App\Model\Table\TaxRatesTable::buildRules()
+     * @link \App\Model\Table\AccountingProfilesTable::buildRules()
      */
     public function testBuildRules(): void
     {

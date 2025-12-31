@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Provider;
 
-use App\Model\Entity\TaxRate;
+use App\Model\Entity\AccountingProfile;
 use Bookkeeping\Model\Entity\Invoice;
 use Bookkeeping\Model\Enum\InvoiceExportFormat;
 use Bookkeeping\Model\Enum\InvoiceImportFormat;
@@ -57,13 +57,13 @@ interface AccountingProviderInterface
      *
      * @param list<\Bookkeeping\Model\ValueObject\InvoiceDraft> $invoices Invoice drafts to send.
      * @param \Cake\I18n\Date $invoicedMonth Invoiced month context.
-     * @param \App\Model\Entity\TaxRate $taxRate Tax rate and accounting context.
+     * @param \App\Model\Entity\AccountingProfile $accountingProfile Accounting profile and accounting context.
      * @return void
      */
     public function sendInvoices(
         array $invoices,
         Date $invoicedMonth,
-        TaxRate $taxRate,
+        AccountingProfile $accountingProfile,
     ): void;
 
     /**
@@ -76,14 +76,14 @@ interface AccountingProviderInterface
      *
      * @param list<\Bookkeeping\Model\ValueObject\InvoiceDraft> $invoices Invoice drafts.
      * @param \Cake\I18n\Date $invoicedMonth Invoiced month context.
-     * @param \App\Model\Entity\TaxRate $taxRate Tax rate and accounting context.
+     * @param \App\Model\Entity\AccountingProfile $accountingProfile Accounting profile and accounting context.
      * @param \Bookkeeping\Model\Enum\InvoiceExportFormat $format Export format.
      * @return string Absolute file path.
      */
     public function exportInvoices(
         array $invoices,
         Date $invoicedMonth,
-        TaxRate $taxRate,
+        AccountingProfile $accountingProfile,
         InvoiceExportFormat $format,
     ): string;
 

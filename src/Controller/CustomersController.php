@@ -260,7 +260,7 @@ class CustomersController extends AppController
             'IpNetworks' => [
                 'Contracts',
             ],
-            'TaxRates',
+            'AccountingProfiles',
         ]);
 
         $customers = $this->paginate($customersQuery);
@@ -326,7 +326,7 @@ class CustomersController extends AppController
                 'TaskStates',
                 'Dealers',
             ],
-            'TaxRates',
+            'AccountingProfiles',
             'IpAddresses' => [
                 'Contracts' => [
                     'ContractStates',
@@ -373,11 +373,11 @@ class CustomersController extends AppController
             }
             $this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
-        $taxRates = $this->Customers->TaxRates->find('list', order: [
+        $accountingProfiles = $this->Customers->AccountingProfiles->find('list', order: [
             'name',
         ]);
 
-        $this->set(compact('customer', 'taxRates'));
+        $this->set(compact('customer', 'accountingProfiles'));
     }
 
     /**
@@ -399,11 +399,11 @@ class CustomersController extends AppController
             }
             $this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
-        $taxRates = $this->Customers->TaxRates->find('list', order: [
+        $accountingProfiles = $this->Customers->AccountingProfiles->find('list', order: [
             'name',
         ]);
 
-        $this->set(compact('customer', 'taxRates'));
+        $this->set(compact('customer', 'accountingProfiles'));
     }
 
     /**
@@ -444,7 +444,7 @@ class CustomersController extends AppController
         $this->set('documentTypes', $documentTypes);
 
         $customer = $this->Customers->get($id, contain: [
-            'TaxRates',
+            'AccountingProfiles',
             'Addresses' => ['Countries'],
             'Emails',
             'Phones',

@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var iterable<\App\Model\Entity\TaxRate> $taxRates
+ * @var iterable<\App\Model\Entity\AccountingProfile> $accountingProfiles
  */
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
@@ -16,9 +16,13 @@
 </div>
 <?= $this->Form->end() ?>
 
-<div class="taxRates index content">
-    <?= $this->AuthLink->link(__('New Tax Rate'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
-    <h3><?= __('Tax Rates') ?></h3>
+<div class="accountingProfiles index content">
+    <?= $this->AuthLink->link(
+        __('New Accounting Profile'),
+        ['action' => 'add'],
+        ['class' => 'button float-right win-link'],
+    ) ?>
+    <h3><?= __('Accounting Profiles') ?></h3>
     <div class="table-responsive">
         <table>
             <thead>
@@ -33,25 +37,25 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($taxRates as $taxRate) : ?>
+                <?php foreach ($accountingProfiles as $accountingProfile) : ?>
                 <tr>
-                    <td><?= h($taxRate->name) ?></td>
-                    <td><?= $this->Number->format($taxRate->vat_rate) ?></td>
-                    <td><?= $taxRate->reverse_charge ? __('Yes') : __('No'); ?></td>
-                    <td><?= h($taxRate->accounting_assignment_code) ?></td>
-                    <td><?= h($taxRate->bank_account_code) ?></td>
-                    <td><?= h($taxRate->activity_code) ?></td>
+                    <td><?= h($accountingProfile->name) ?></td>
+                    <td><?= $this->Number->format($accountingProfile->vat_rate) ?></td>
+                    <td><?= $accountingProfile->reverse_charge ? __('Yes') : __('No'); ?></td>
+                    <td><?= h($accountingProfile->accounting_assignment_code) ?></td>
+                    <td><?= h($accountingProfile->bank_account_code) ?></td>
+                    <td><?= h($accountingProfile->activity_code) ?></td>
                     <td class="actions">
-                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $taxRate->id]) ?>
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $accountingProfile->id]) ?>
                         <?= $this->AuthLink->link(
                             __('Edit'),
-                            ['action' => 'edit', $taxRate->id],
+                            ['action' => 'edit', $accountingProfile->id],
                             ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
-                            ['action' => 'delete', $taxRate->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $taxRate->id)],
+                            ['action' => 'delete', $accountingProfile->id],
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $accountingProfile->id)],
                         ) ?>
                     </td>
                 </tr>

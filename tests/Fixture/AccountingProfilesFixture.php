@@ -7,9 +7,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 use Override;
 
 /**
- * TaxRatesFixture
+ * AccountingProfilesFixture
  */
-class TaxRatesFixture extends TestFixture
+class AccountingProfilesFixture extends TestFixture
 {
     /**
      * Init method

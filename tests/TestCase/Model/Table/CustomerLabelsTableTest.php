@@ -26,7 +26,7 @@ class CustomerLabelsTableTest extends TestCase
      */
     protected array $fixtures = [
         'app.AppUsers',
-        'app.TaxRates',
+        'app.AccountingProfiles',
         'app.Customers',
         'app.Labels',
         'app.CustomerLabels',

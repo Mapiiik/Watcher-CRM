@@ -1,21 +1,33 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\TaxRate $taxRate
+ * @var \App\Model\Entity\AccountingProfile $accountingProfile
  */
 ?>
 <div class="row">
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->AuthLink->link(__('List Tax Rates'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->postLink(
+                __('Delete'),
+                ['action' => 'delete', $accountingProfile->id],
+                [
+                    'confirm' => __('Are you sure you want to delete # {0}?', $accountingProfile->id),
+                    'class' => 'side-nav-item',
+                ],
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('List Accounting Profiles'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item'],
+            ) ?>
         </div>
     </aside>
     <div class="column column-90">
-        <div class="taxRates form content">
-            <?= $this->Form->create($taxRate) ?>
+        <div class="accountingProfiles form content">
+            <?= $this->Form->create($accountingProfile) ?>
             <fieldset>
-                <legend><?= __('Add Tax Rate') ?></legend>
+                <legend><?= __('Edit Accounting Profile') ?></legend>
                 <?php
                     echo $this->Form->control('name');
                     echo $this->Form->control('vat_rate');

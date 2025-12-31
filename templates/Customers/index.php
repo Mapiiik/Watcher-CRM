@@ -48,7 +48,7 @@
                     <th><?= __('Contracts') ?></th>
                     <th><?= __('IP Addresses') ?></th>
                     <th><?= __('Customer Labels') ?></th>
-                    <th><?= $this->Paginator->sort('tax_rate_id') ?></th>
+                    <th><?= $this->Paginator->sort('accounting_profile_id') ?></th>
                     <th><?= $this->Paginator->sort('dealer') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
@@ -104,7 +104,8 @@
                         </span><br>
                         <?php endforeach; ?>
                     </td>
-                    <td><?= $customer->__isset('tax_rate') ? h($customer->tax_rate->name) : '' ?></td>
+                    <td><?= $customer->__isset('accounting_profile') ?
+                        h($customer->accounting_profile->name) : '' ?></td>
                     <td><?= h($customer->dealer->label()) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(

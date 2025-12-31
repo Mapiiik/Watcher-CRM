@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $taxRates
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $accountingProfiles
  * @var array<string, array{
  *   csv?: array{total: \PhpCollective\DecimalObject\Decimal, items: array},
  *   crm?: array{total: \PhpCollective\DecimalObject\Decimal, items: array},
@@ -37,9 +37,9 @@ use Bookkeeping\Model\Enum\InvoiceExportFormat;
                 <div class="row">
                     <div class="column">
                     <?php
-                        echo $this->Form->control('tax_rate_id', [
-                            'label' => __d('bookkeeping', 'Tax Rate'),
-                            'options' => $taxRates,
+                        echo $this->Form->control('accounting_profile_id', [
+                            'label' => __d('bookkeeping', 'Accounting Profile'),
+                            'options' => $accountingProfiles,
                             'empty' => true,
                             'required' => true,
                         ]);

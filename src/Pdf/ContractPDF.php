@@ -1458,12 +1458,15 @@ class ContractPDF extends AppPDF
             );
 
             // reverse charge
-            if ($contract->customer->tax_rate->reverse_charge) {
+            if ($contract->customer->accounting_profile->reverse_charge) {
                 $this->Cell(
                     45,
                     4,
                     Number::currency(
-                        Billing::calcVatBaseFromTotal($totalCost, $contract->customer->tax_rate->vat_rate)->toFloat(),
+                        Billing::calcVatBaseFromTotal(
+                            $totalCost,
+                            $contract->customer->accounting_profile->vat_rate,
+                        )->toFloat(),
                     ) . ' *',
                     align: 'C',
                 );

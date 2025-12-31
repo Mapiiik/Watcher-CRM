@@ -774,7 +774,7 @@ class ContractsController extends AppController
                 'Addresses',
                 'Emails',
                 'Phones',
-                'TaxRates',
+                'AccountingProfiles',
             ],
             'InstallationAddresses',
             'InstallationTechnicians',

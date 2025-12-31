@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Provider\Pohoda;
 
+use App\Model\Entity\AccountingProfile;
 use App\Model\Entity\Billing;
-use App\Model\Entity\TaxRate;
 use Bookkeeping\Model\ValueObject\InvoiceDraft;
 use Cake\I18n\Date;
 use RuntimeException;
@@ -34,12 +34,16 @@ class DbfExporter
      *
      * @param list<\Bookkeeping\Model\ValueObject\InvoiceDraft> $invoices Invoice drafts to export.
      * @param \Cake\I18n\Date $invoicedMonth Invoiced month (kept for API symmetry; not required for DBF content).
-     * @param \App\Model\Entity\TaxRate $taxRate Tax rate context (VAT and reverse charge rules).
+     * @param \App\Model\Entity\AccountingProfile $accountingProfile Accounting profile context (VAT and reverse charge rules).
      * @param string $filePath Target DBF file path.
      * @return string Final DBF file path.
      */
-    public function export(array $invoices, Date $invoicedMonth, TaxRate $taxRate, string $filePath): string
-    {
+    public function export(
+        array $invoices,
+        Date $invoicedMonth,
+        AccountingProfile $accountingProfile,
+        string $filePath,
+    ): string {
         $structure = $this->buildDbfStructure();
 
         $dbf = dbase_create($filePath, $structure);
@@ -49,7 +53,7 @@ class DbfExporter
 
         try {
             foreach ($invoices as $invoice) {
-                $this->addRecord($dbf, $invoice, $taxRate);
+                $this->addRecord($dbf, $invoice, $accountingProfile);
             }
         } finally {
             /** @psalm-suppress UnusedFunctionCall */
@@ -117,16 +121,16 @@ class DbfExporter
      *
      * @param resource $dbf Open DBF resource.
      * @param \Bookkeeping\Model\ValueObject\InvoiceDraft $invoice Invoice draft.
-     * @param \App\Model\Entity\TaxRate $taxRate Tax rate context.
+     * @param \App\Model\Entity\AccountingProfile $accountingProfile Accounting profile context.
      * @return void
      */
-    private function addRecord($dbf, InvoiceDraft $invoice, TaxRate $taxRate): void
+    private function addRecord($dbf, InvoiceDraft $invoice, AccountingProfile $accountingProfile): void
     {
         $totalCost = $invoice->total->toFloat();
 
         $vat = Billing::calcVatFromTotal(
             $invoice->total,
-            $taxRate->vat_rate,
+            $accountingProfile->vat_rate,
         )->toFloat();
 
         $data = [];
@@ -141,7 +145,7 @@ class DbfExporter
         $data[] = $invoice->creationDate->i18nFormat('yyyyMMdd'); // DatZdPln (legacy behavior)
 
         // VAT / pricing section
-        if ($taxRate->reverse_charge) {
+        if ($accountingProfile->reverse_charge) {
             $data[] = 0; // Kc0
             $data[] = 0; // Kc1
             $data[] = 0; // KcDPH1

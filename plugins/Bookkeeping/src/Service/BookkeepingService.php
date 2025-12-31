@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Service;
 
-use App\Model\Entity\TaxRate;
+use App\Model\Entity\AccountingProfile;
 use Bookkeeping\Model\Entity\Invoice;
 use Bookkeeping\Model\Enum\InvoiceExportFormat;
 use Bookkeeping\Model\Enum\InvoiceImportFormat;
@@ -100,15 +100,15 @@ class BookkeepingService
      *
      * @param list<\Bookkeeping\Model\ValueObject\InvoiceDraft> $invoices List of invoice drafts.
      * @param \Cake\I18n\Date $invoicedMonth Invoiced month used in XML header.
-     * @param \App\Model\Entity\TaxRate $taxRate Tax rate and accounting context.
+     * @param \App\Model\Entity\AccountingProfile $accountingProfile Accounting profile and accounting context.
      * @return void
      */
     public function sendInvoices(
         array $invoices,
         Date $invoicedMonth,
-        TaxRate $taxRate,
+        AccountingProfile $accountingProfile,
     ): void {
-        $this->provider->sendInvoices($invoices, $invoicedMonth, $taxRate);
+        $this->provider->sendInvoices($invoices, $invoicedMonth, $accountingProfile);
     }
 
     /**
@@ -117,16 +117,16 @@ class BookkeepingService
      * @param list<\Bookkeeping\Model\ValueObject\InvoiceDraft> $invoices List of invoice drafts.
      * @param \Bookkeeping\Model\Enum\InvoiceExportFormat $format Export format.
      * @param \Cake\I18n\Date $invoicedMonth Invoiced month used in XML header.
-     * @param \App\Model\Entity\TaxRate $taxRate Tax rate and accounting context.
+     * @param \App\Model\Entity\AccountingProfile $accountingProfile Accounting profile and accounting context.
      * @return string File path.
      */
     public function exportInvoices(
         array $invoices,
         Date $invoicedMonth,
-        TaxRate $taxRate,
+        AccountingProfile $accountingProfile,
         InvoiceExportFormat $format,
     ): string {
-        return $this->provider->exportInvoices($invoices, $invoicedMonth, $taxRate, $format);
+        return $this->provider->exportInvoices($invoices, $invoicedMonth, $accountingProfile, $format);
     }
 
     /**

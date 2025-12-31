@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Provider\Eurofaktura;
 
+use App\Model\Entity\AccountingProfile;
 use App\Model\Entity\Billing;
-use App\Model\Entity\TaxRate;
 use Bookkeeping\Model\ValueObject\InvoiceDraft;
 use Cake\I18n\Date;
 use PhpCollective\DecimalObject\Decimal;
@@ -23,13 +23,13 @@ class JsonRequestBuilder
      *
      * @param \Bookkeeping\Model\ValueObject\InvoiceDraft $invoice
      * @param \Cake\I18n\Date $invoicedMonth
-     * @param \App\Model\Entity\TaxRate $taxRate
+     * @param \App\Model\Entity\AccountingProfile $accountingProfile
      * @return array
      */
     public function buildSalesInvoice(
         InvoiceDraft $invoice,
         Date $invoicedMonth,
-        TaxRate $taxRate,
+        AccountingProfile $accountingProfile,
     ): array {
         // Load provider config
         $city = Settings::getString(EurofakturaProvider::SETTINGS_ROOT . '.issuer.city', 'Makarska');
@@ -78,7 +78,7 @@ class JsonRequestBuilder
         // Build payload
         $payload = [
             'status' => $status,
-            'costPosition' => $taxRate->activity_code,
+            'costPosition' => $accountingProfile->activity_code,
 
             // Issuer context
             'city' => $city,
@@ -97,7 +97,7 @@ class JsonRequestBuilder
 
             // VAT
             'vatOutgoingDocumentVatClause' => $vatClause,
-            'vatTransactionType' => $taxRate->reverse_charge ? $vatTypeReverseCharge : $vatTypeStandard,
+            'vatTransactionType' => $accountingProfile->reverse_charge ? $vatTypeReverseCharge : $vatTypeStandard,
 
             // Buyer
             'buyerName' => $invoice->customer->billing_address->company
@@ -115,16 +115,16 @@ class JsonRequestBuilder
 
             // Payment
             'methodOfPayment' => $paymentMethod,
-            'bankAccountNumber' => $taxRate->bank_account_code,
+            'bankAccountNumber' => $accountingProfile->bank_account_code,
             'reference' => $referencePrefix . (string)$invoice->variableSymbol,
 
             // Contract / subscription context
-            'type' => $taxRate->reverse_charge ? $invoiceTypeRC : $invoiceTypeStandard,
+            'type' => $accountingProfile->reverse_charge ? $invoiceTypeRC : $invoiceTypeStandard,
             'contractNumber' => (string)$invoice->variableSymbol,
             'ourContractNumber' => (string)$invoice->variableSymbol,
 
             // Items
-            'Items' => $this->buildSalesInvoiceItems($invoice, $invoicedMonth, $taxRate),
+            'Items' => $this->buildSalesInvoiceItems($invoice, $invoicedMonth, $accountingProfile),
         ];
 
         // Buyer code
@@ -138,7 +138,7 @@ class JsonRequestBuilder
         }
 
         // Reverse charge country
-        if ($taxRate->reverse_charge) {
+        if ($accountingProfile->reverse_charge) {
             $payload['vatCountryIsoCode'] = $invoice->customer->billing_address->country->code ?? '';
         }
 
@@ -154,7 +154,7 @@ class JsonRequestBuilder
     private function buildSalesInvoiceItems(
         InvoiceDraft $invoice,
         Date $invoicedMonth,
-        TaxRate $taxRate,
+        AccountingProfile $accountingProfile,
     ): array {
         $items = [];
 
@@ -166,7 +166,7 @@ class JsonRequestBuilder
                 'price' => $invoice->total?->toFloat() ?? 0.0,
                 'netPrice' => Billing::calcVatBaseFromTotal(
                     $invoice->total ?? new Decimal(0, 2),
-                    $taxRate->vat_rate,
+                    $accountingProfile->vat_rate,
                 )->toFloat(),
             ];
 
@@ -180,7 +180,7 @@ class JsonRequestBuilder
                 'price' => $item->period_total->toFloat(),
                 'netPrice' => Billing::calcVatBaseFromTotal(
                     $item->period_total,
-                    $taxRate->vat_rate,
+                    $accountingProfile->vat_rate,
                 )->toFloat(),
             ];
 

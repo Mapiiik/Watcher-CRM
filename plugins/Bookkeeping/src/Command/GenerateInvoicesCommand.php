@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Command;
 
+use App\Model\Table\AccountingProfilesTable;
 use App\Model\Table\CustomersTable;
-use App\Model\Table\TaxRatesTable;
 use Bookkeeping\Service\BookkeepingService;
 use Bookkeeping\Service\InvoiceGenerationService;
 use Cake\Command\Command;
@@ -21,7 +21,7 @@ use RuntimeException;
  *
  * This command acts only as an orchestration layer:
  * - resolves invoiced month
- * - resolves tax rate context
+ * - resolves accounting profile context
  * - loads invoice drafts
  * - delegates sending to the provider
  *
@@ -64,7 +64,7 @@ class GenerateInvoicesCommand extends Command
      *
      * Supported options:
      * - --month (-m): Invoiced month in YYYY-MM format
-     * - --tax-rate (-t): Tax rate identifier (ID or code)
+     * - --accounting-profile-id (-t): Accounting profile identifier (ID or code)
      *
      * @param \Cake\Console\ConsoleOptionParser $parser The parser to be defined
      * @return \Cake\Console\ConsoleOptionParser The built parser.
@@ -80,11 +80,11 @@ class GenerateInvoicesCommand extends Command
                     'Invoiced month (YYYY-MM). Defaults to current month.',
                 ),
             ])
-            ->addOption('tax-rate-id', [
+            ->addOption('accounting-profile-id', [
                 'short' => 't',
                 'help' => __d(
                     'bookkeeping',
-                    'Tax rate identifier (ID).',
+                    'Accounting profile identifier (ID).',
                 ),
             ]);
     }
@@ -94,7 +94,7 @@ class GenerateInvoicesCommand extends Command
      *
      * Workflow:
      * 1. Resolve invoiced month
-     * 2. Resolve tax rate context
+     * 2. Resolve accounting profile context
      * 3. Load invoice drafts
      * 4. Delegate sending to EurofakturaProvider
      *
@@ -112,8 +112,8 @@ class GenerateInvoicesCommand extends Command
                 ? new Date($monthOption . '-01')
                 : Date::now()->subMonths(1)->firstOfMonth();
 
-            // Resolve tax rate option
-            $taxRateOption = $args->getOption('tax-rate-id');
+            // Resolve accounting profile option
+            $accountingProfileOption = $args->getOption('accounting-profile-id');
 
             $io->out(__d(
                 'bookkeeping',
@@ -121,21 +121,21 @@ class GenerateInvoicesCommand extends Command
                 $invoicedMonth->i18nFormat('yyyy-MM'),
             ));
 
-            if ($taxRateOption !== null) {
+            if ($accountingProfileOption !== null) {
                 $io->out(__d(
                     'bookkeeping',
-                    'Using tax rate ID: {0}',
-                    $taxRateOption,
+                    'Using accounting profile ID: {0}',
+                    $accountingProfileOption,
                 ));
             } else {
                 $io->abort(__d(
                     'bookkeeping',
-                    'No tax rate ID provided. Use --tax-rate-id option to specify it.',
+                    'No accounting profile ID provided. Use --accounting-profile-id option to specify it.',
                 ));
             }
 
-            // Load tax rate entity
-            $taxRate = $this->fetchTable(TaxRatesTable::class)->get($taxRateOption);
+            // Load accounting profile entity
+            $accountingProfile = $this->fetchTable(AccountingProfilesTable::class)->get($accountingProfileOption);
 
             // Generate invoice drafts
             $invoiceGenerator = new InvoiceGenerationService(
@@ -144,7 +144,7 @@ class GenerateInvoicesCommand extends Command
 
             $drafts = $invoiceGenerator->generate(
                 $invoicedMonth,
-                $taxRate,
+                $accountingProfile,
             );
 
             if ($drafts === []) {
@@ -162,7 +162,7 @@ class GenerateInvoicesCommand extends Command
             $bookkeeping->sendInvoices(
                 invoices: $drafts,
                 invoicedMonth: $invoicedMonth,
-                taxRate: $taxRate,
+                accountingProfile: $accountingProfile,
             );
 
             $io->success(__d(

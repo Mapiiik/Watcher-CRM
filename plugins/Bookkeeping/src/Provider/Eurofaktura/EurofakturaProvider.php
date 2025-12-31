@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Provider\Eurofaktura;
 
-use App\Model\Entity\TaxRate;
+use App\Model\Entity\AccountingProfile;
 use Bookkeeping\Model\Entity\Invoice;
 use Bookkeeping\Model\Enum\InvoiceExportFormat;
 use Bookkeeping\Model\Enum\InvoiceImportFormat;
@@ -80,20 +80,20 @@ class EurofakturaProvider implements AccountingProviderInterface
      *
      * @param list<\Bookkeeping\Model\ValueObject\InvoiceDraft> $invoices Invoice drafts to send.
      * @param \Cake\I18n\Date $invoicedMonth Invoiced month context.
-     * @param \App\Model\Entity\TaxRate $taxRate Tax rate and accounting context.
+     * @param \App\Model\Entity\AccountingProfile $accountingProfile Accounting profile and accounting context.
      * @return void
      */
     public function sendInvoices(
         array $invoices,
         Date $invoicedMonth,
-        TaxRate $taxRate,
+        AccountingProfile $accountingProfile,
     ): void {
         foreach ($invoices as $invoice) {
             // 1) Build SalesInvoice payload
             $salesInvoice = $this->jsonRequestBuilder->buildSalesInvoice(
                 $invoice,
                 $invoicedMonth,
-                $taxRate,
+                $accountingProfile,
             );
 
             // 2) Send to API
@@ -149,14 +149,14 @@ class EurofakturaProvider implements AccountingProviderInterface
      *
      * @param list<\Bookkeeping\Model\ValueObject\InvoiceDraft> $invoices Invoice drafts.
      * @param \Cake\I18n\Date $invoicedMonth Invoiced month context.
-     * @param \App\Model\Entity\TaxRate $taxRate Tax rate and accounting context.
+     * @param \App\Model\Entity\AccountingProfile $accountingProfile Accounting profile and accounting context.
      * @param \Bookkeeping\Model\Enum\InvoiceExportFormat $format Export format.
      * @return string Absolute file path.
      */
     public function exportInvoices(
         array $invoices,
         Date $invoicedMonth,
-        TaxRate $taxRate,
+        AccountingProfile $accountingProfile,
         InvoiceExportFormat $format,
     ): string {
         throw new RuntimeException(

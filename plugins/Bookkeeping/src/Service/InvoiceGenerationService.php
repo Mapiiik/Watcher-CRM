@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Service;
 
+use App\Model\Entity\AccountingProfile;
 use App\Model\Entity\Billing;
 use App\Model\Entity\Contract;
 use App\Model\Entity\Customer;
-use App\Model\Entity\TaxRate;
 use App\Model\Table\CustomersTable;
 use Bookkeeping\Model\ValueObject\InvoiceDraft;
 use Cake\I18n\Date;
@@ -16,7 +16,7 @@ use Settings\Utility\Settings;
 /**
  * InvoiceGenerationService
  *
- * Generates invoice drafts for a given invoiced month and tax rate
+ * Generates invoice drafts for a given invoiced month and accounting profile
  * based on CRM billing data.
  *
  * This service:
@@ -47,9 +47,9 @@ final class InvoiceGenerationService
      */
     public function generate(
         Date $invoicedMonth,
-        TaxRate $taxRate,
+        AccountingProfile $accountingProfile,
     ): array {
-        $prefix = $this->calculateInvoicePrefix($invoicedMonth, $taxRate);
+        $prefix = $this->calculateInvoicePrefix($invoicedMonth, $accountingProfile);
         $index = 1;
         $drafts = [];
 
@@ -57,7 +57,7 @@ final class InvoiceGenerationService
         $customers = $this->customers->find(
             'billingDataForMonth',
             invoicedMonth: $invoicedMonth,
-            taxRateId: $taxRate->id,
+            accountingProfileId: $accountingProfile->id,
         );
 
         foreach ($customers as $customer) {
@@ -158,10 +158,10 @@ final class InvoiceGenerationService
     /**
      * Calculate invoice number prefix.
      */
-    private function calculateInvoicePrefix(Date $month, TaxRate $taxRate): int
+    private function calculateInvoicePrefix(Date $month, AccountingProfile $accountingProfile): int
     {
         return 10000000 * ($month->year - 1980)
-            + 1000000 * ($taxRate->reverse_charge ? 8 : 9)
+            + 1000000 * ($accountingProfile->reverse_charge ? 8 : 9)
             + 10000 * $month->month;
     }
 

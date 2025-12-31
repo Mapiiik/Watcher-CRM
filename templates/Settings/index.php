@@ -186,8 +186,8 @@
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __('List Tax Rates'),
-                    ['controller' => 'TaxRates', 'action' => 'index', 'plugin' => null],
+                    __('List Accounting Profiles'),
+                    ['controller' => 'AccountingProfiles', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item'],
                 ) ?>
             </div>

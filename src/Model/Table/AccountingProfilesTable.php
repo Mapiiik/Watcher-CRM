@@ -8,24 +8,24 @@ use Cake\Validation\Validator;
 use Override;
 
 /**
- * TaxRates Model
+ * AccountingProfiles Model
  *
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\HasMany $Customers
- * @method \App\Model\Entity\TaxRate newEmptyEntity()
- * @method \App\Model\Entity\TaxRate newEntity(array $data, array $options = [])
- * @method \App\Model\Entity\TaxRate[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\TaxRate get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
- * @method \App\Model\Entity\TaxRate findOrCreate($search, callable|array|null $callback = null, $options = [])
- * @method \App\Model\Entity\TaxRate patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\TaxRate[] patchEntities(iterable $entities, array $data, array $options = [])
- * @method \App\Model\Entity\TaxRate|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\TaxRate saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method iterable<\App\Model\Entity\TaxRate>|false saveMany(iterable $entities, $options = [])
- * @method iterable<\App\Model\Entity\TaxRate> saveManyOrFail(iterable $entities, $options = [])
- * @method iterable<\App\Model\Entity\TaxRate>|false deleteMany(iterable $entities, $options = [])
- * @method iterable<\App\Model\Entity\TaxRate> deleteManyOrFail(iterable $entities, $options = [])
+ * @method \App\Model\Entity\AccountingProfile newEmptyEntity()
+ * @method \App\Model\Entity\AccountingProfile newEntity(array $data, array $options = [])
+ * @method \App\Model\Entity\AccountingProfile[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\AccountingProfile get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
+ * @method \App\Model\Entity\AccountingProfile findOrCreate($search, callable|array|null $callback = null, $options = [])
+ * @method \App\Model\Entity\AccountingProfile patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\AccountingProfile[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \App\Model\Entity\AccountingProfile|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\AccountingProfile saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method iterable<\App\Model\Entity\AccountingProfile>|false saveMany(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\AccountingProfile> saveManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\AccountingProfile>|false deleteMany(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\AccountingProfile> deleteManyOrFail(iterable $entities, $options = [])
  */
-class TaxRatesTable extends AppTable
+class AccountingProfilesTable extends AppTable
 {
     /**
      * Initialize method
@@ -38,7 +38,7 @@ class TaxRatesTable extends AppTable
     {
         parent::initialize($config);
 
-        $this->setTable('tax_rates');
+        $this->setTable('accounting_profiles');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
@@ -47,7 +47,7 @@ class TaxRatesTable extends AppTable
         $this->addBehavior('StringModifications');
 
         $this->hasMany('Customers', [
-            'foreignKey' => 'tax_rate_id',
+            'foreignKey' => 'accounting_profile_id',
         ]);
     }
 

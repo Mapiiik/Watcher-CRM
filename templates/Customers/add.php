@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Customer $customer
- * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $taxRates
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $accountingProfiles
  */
 ?>
 <div class="row">
@@ -37,8 +37,8 @@
                         echo $this->Form->control('bank_account');
                         echo $this->Form->control('bank_code');
                         echo $this->Form->control('bank_name');
-                        echo $this->Form->control('tax_rate_id', [
-                            'options' => $taxRates,
+                        echo $this->Form->control('accounting_profile_id', [
+                            'options' => $accountingProfiles,
                         ]);
                         echo $this->Form->control('dealer');
                         echo $this->Form->control('invoice_delivery_type');

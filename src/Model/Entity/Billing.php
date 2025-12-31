@@ -294,7 +294,7 @@ class Billing extends Entity
      */
     protected function _getVat(): Decimal
     {
-        return self::calcVatFromTotal($this->total_price, $this->customer->tax_rate->vat_rate);
+        return self::calcVatFromTotal($this->total_price, $this->customer->accounting_profile->vat_rate);
     }
 
     /**
@@ -304,7 +304,7 @@ class Billing extends Entity
      */
     protected function _getVatBase(): Decimal
     {
-        return self::calcVatBaseFromTotal($this->total_price, $this->customer->tax_rate->vat_rate);
+        return self::calcVatBaseFromTotal($this->total_price, $this->customer->accounting_profile->vat_rate);
     }
 
     /**

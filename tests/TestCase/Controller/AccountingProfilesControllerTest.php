@@ -7,11 +7,11 @@ use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Controller\TaxRatesController Test Case
+ * App\Controller\AccountingProfilesController Test Case
  *
- * @uses \App\Controller\TaxRatesController
+ * @uses \App\Controller\AccountingProfilesController
  */
-class TaxRatesControllerTest extends TestCase
+class AccountingProfilesControllerTest extends TestCase
 {
     use IntegrationTestTrait;
 
@@ -22,7 +22,7 @@ class TaxRatesControllerTest extends TestCase
      */
     protected array $fixtures = [
         'app.AppUsers',
-        'app.TaxRates',
+        'app.AccountingProfiles',
         'app.Customers',
     ];
 
@@ -30,7 +30,7 @@ class TaxRatesControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @link \App\Controller\TaxRatesController::index()
+     * @link \App\Controller\AccountingProfilesController::index()
      */
     public function testIndex(): void
     {
@@ -41,7 +41,7 @@ class TaxRatesControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @link \App\Controller\TaxRatesController::view()
+     * @link \App\Controller\AccountingProfilesController::view()
      */
     public function testView(): void
     {
@@ -52,7 +52,7 @@ class TaxRatesControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @link \App\Controller\TaxRatesController::add()
+     * @link \App\Controller\AccountingProfilesController::add()
      */
     public function testAdd(): void
     {
@@ -63,7 +63,7 @@ class TaxRatesControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @link \App\Controller\TaxRatesController::edit()
+     * @link \App\Controller\AccountingProfilesController::edit()
      */
     public function testEdit(): void
     {
@@ -74,7 +74,7 @@ class TaxRatesControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @link \App\Controller\TaxRatesController::delete()
+     * @link \App\Controller\AccountingProfilesController::delete()
      */
     public function testDelete(): void
     {

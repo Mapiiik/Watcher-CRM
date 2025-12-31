@@ -195,10 +195,14 @@
                 <div class="column">
                     <table>
                         <tr>
-                            <th><?= __('Tax Rate') ?></th>
-                            <td><?= $customer->__isset('tax_rate') ? $this->Html->link(
-                                $customer->tax_rate->name,
-                                ['controller' => 'TaxRates', 'action' => 'view', $customer->tax_rate->id],
+                            <th><?= __('Accounting Profile') ?></th>
+                            <td><?= $customer->__isset('accounting_profile') ? $this->Html->link(
+                                $customer->accounting_profile->name,
+                                [
+                                    'controller' => 'AccountingProfiles',
+                                    'action' => 'view',
+                                    $customer->accounting_profile->id,
+                                ],
                             ) : '' ?></td>
                         </tr>
                         <tr>

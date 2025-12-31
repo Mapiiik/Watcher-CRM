@@ -16,7 +16,7 @@ use Override;
 /**
  * Customers Model
  *
- * @property \App\Model\Table\TaxRatesTable&\Cake\ORM\Association\BelongsTo $TaxRates
+ * @property \App\Model\Table\AccountingProfilesTable&\Cake\ORM\Association\BelongsTo $AccountingProfiles
  * @property \App\Model\Table\AddressesTable&\Cake\ORM\Association\HasMany $Addresses
  * @property \App\Model\Table\BillingsTable&\Cake\ORM\Association\HasMany $Billings
  * @property \App\Model\Table\BorrowedEquipmentsTable&\Cake\ORM\Association\HasMany $BorrowedEquipments
@@ -77,8 +77,8 @@ class CustomersTable extends AppTable
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
 
-        $this->belongsTo('TaxRates', [
-            'foreignKey' => 'tax_rate_id',
+        $this->belongsTo('AccountingProfiles', [
+            'foreignKey' => 'accounting_profile_id',
             'joinType' => 'INNER',
         ]);
         $this->hasMany('AccessCredentials', [
@@ -310,7 +310,10 @@ class CustomersTable extends AppTable
     #[Override]
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['tax_rate_id'], 'TaxRates'), ['errorField' => 'tax_rate_id']);
+        $rules->add(
+            $rules->existsIn(['accounting_profile_id'], 'AccountingProfiles'),
+            ['errorField' => 'accounting_profile_id'],
+        );
 
         $rules->add(
             function ($entity, $_options) {
@@ -350,7 +353,7 @@ class CustomersTable extends AppTable
     }
 
     /**
-     * Finder for customers with billing data for a given month and tax rate.
+     * Finder for customers with billing data for a given month and accounting profile.
      *
      * Returns customers including their addresses, contracts and billings
      * that are active and billable within the given invoiced month.
@@ -365,17 +368,17 @@ class CustomersTable extends AppTable
      *
      * ### Options
      * - `invoicedMonth` (Cake\I18n\Date) Required. Month for which billing data is calculated.
-     * - `taxRateId` (string) Required. Tax rate identifier used to filter customers.
+     * - `accountingProfileId` (string) Required. Accounting profile identifier used to filter customers.
      *
      * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Customer> $query Base query.
      * @param \Cake\I18n\Date $invoicedMonth
-     * @param string $taxRateId
+     * @param string $accountingProfileId
      * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Customer>
      */
     public function findBillingDataForMonth(
         SelectQuery $query,
         Date $invoicedMonth,
-        string $taxRateId,
+        string $accountingProfileId,
     ): SelectQuery {
         return $query
             ->contain('Addresses')
@@ -426,9 +429,9 @@ class CustomersTable extends AppTable
                         'Contracts.nid',
                     ]);
             })
-            // only customers with the selected tax rate
+            // only customers with the selected accounting profile
             ->where([
-                'Customers.tax_rate_id' => $taxRateId,
+                'Customers.accounting_profile_id' => $accountingProfileId,
             ])
             // order by customer ID
             ->orderBy([

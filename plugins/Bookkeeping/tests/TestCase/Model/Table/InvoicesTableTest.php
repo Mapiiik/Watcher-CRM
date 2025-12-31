@@ -26,7 +26,7 @@ class InvoicesTableTest extends TestCase
      */
     protected array $fixtures = [
         'app.AppUsers',
-        'app.TaxRates',
+        'app.AccountingProfiles',
         'app.Customers',
         'plugin.Bookkeeping.Invoices',
     ];

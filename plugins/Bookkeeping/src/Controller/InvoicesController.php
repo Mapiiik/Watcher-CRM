@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Controller;
 
+use App\Model\Table\AccountingProfilesTable;
 use App\Model\Table\CustomersTable;
-use App\Model\Table\TaxRatesTable;
 use Bookkeeping\Model\Enum\InvoiceExportFormat;
 use Bookkeeping\Model\Enum\InvoiceImportFormat;
 use Bookkeeping\Service\BookkeepingService;
@@ -273,17 +273,18 @@ class InvoicesController extends AppController
      */
     public function generate()
     {
-        $taxRates = $this->fetchTable(TaxRatesTable::class)
+        $accountingProfiles = $this->fetchTable(AccountingProfilesTable::class)
             ->find('list', order: [
                 'name',
             ])
             ->toArray();
 
-        $this->set(compact('taxRates'));
+        $this->set(compact('accountingProfiles'));
 
         if ($this->getRequest()->is(['post'])) {
             $invoicedMonth = new Date($this->getRequest()->getData('invoiced_month', 'now'));
-            $taxRate = $this->fetchTable(TaxRatesTable::class)->get($this->getRequest()->getData('tax_rate_id'));
+            $accountingProfile = $this->fetchTable(AccountingProfilesTable::class)
+                ->get($this->getRequest()->getData('accounting_profile_id'));
 
             // VERIFICATION DATA CHECK
             /** @var \Laminas\Diactoros\UploadedFile $csvFile */
@@ -293,7 +294,7 @@ class InvoicesController extends AppController
                 $csvVerificator = new CsvVerificationService($this->fetchTable(CustomersTable::class));
                 $result = $csvVerificator->verify(
                     $invoicedMonth,
-                    $taxRate,
+                    $accountingProfile,
                     $csvFile,
                 );
 
@@ -321,7 +322,7 @@ class InvoicesController extends AppController
                 '_ext' => InvoiceExportFormat::from($this->getRequest()->getData('output_format'))->value,
                 '?' => [
                     'invoiced_month' => $invoicedMonth->i18nFormat('yyyy-MM'),
-                    'tax_rate_id' => $taxRate->id,
+                    'accounting_profile_id' => $accountingProfile->id,
                 ],
             ]);
         }
@@ -330,8 +331,9 @@ class InvoicesController extends AppController
         if (in_array($this->getRequest()->getParam('_ext'), ['dbf', 'xml'], true)) {
             $invoicedMonth = new Date($this->getRequest()->getQuery('invoiced_month', 'now'));
 
-            /** @var \App\Model\Entity\TaxRate $taxRate */
-            $taxRate = $this->fetchTable(TaxRatesTable::class)->get($this->getRequest()->getQuery('tax_rate_id'));
+            /** @var \App\Model\Entity\AccountingProfile $accountingProfile */
+            $accountingProfile = $this->fetchTable(AccountingProfilesTable::class)
+                ->get($this->getRequest()->getQuery('accounting_profile_id'));
 
             $exportFormat = InvoiceExportFormat::from($this->getRequest()->getParam('_ext'));
             $exportType = match ($exportFormat) {
@@ -344,7 +346,7 @@ class InvoicesController extends AppController
             $invoiceGenerator = new InvoiceGenerationService($this->fetchTable(CustomersTable::class));
             $drafts = $invoiceGenerator->generate(
                 $invoicedMonth,
-                $taxRate,
+                $accountingProfile,
             );
 
             $bookkeeping = new BookkeepingService();
@@ -352,7 +354,7 @@ class InvoicesController extends AppController
                 invoices: $drafts,
                 format: $exportFormat,
                 invoicedMonth: $invoicedMonth,
-                taxRate: $taxRate,
+                accountingProfile: $accountingProfile,
             );
 
             // set for download with specified filename
@@ -361,7 +363,7 @@ class InvoicesController extends AppController
                 ->withDownload(
                     sprintf(
                         'Invoices-%s-%s.' . $exportFormat->value,
-                        strtolower($taxRate->name),
+                        strtolower($accountingProfile->name),
                         $invoicedMonth->i18nFormat('yyyy-MM'),
                     ),
                 )

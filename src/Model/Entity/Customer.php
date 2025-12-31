@@ -24,7 +24,7 @@ use Exception;
  * @property string|null $last_name
  * @property string|null $suffix
  * @property string|null $company
- * @property int $tax_rate_id
+ * @property int $accounting_profile_id
  * @property string|null $bank_name
  * @property string|null $bank_account
  * @property string|null $bank_code
@@ -48,7 +48,7 @@ use Exception;
  * @property bool $active_services
  * @property bool $billed
  *
- * @property \App\Model\Entity\TaxRate $tax_rate
+ * @property \App\Model\Entity\AccountingProfile $accounting_profile
  * @property \App\Model\Entity\Address[] $addresses
  * @property \App\Model\Entity\Billing[] $billings
  * @property \App\Model\Entity\Address $installation_address
@@ -96,7 +96,7 @@ class Customer extends Entity
         'last_name' => true,
         'suffix' => true,
         'company' => true,
-        'tax_rate_id' => true,
+        'accounting_profile_id' => true,
         'bank_name' => true,
         'bank_account' => true,
         'bank_code' => true,
@@ -113,7 +113,7 @@ class Customer extends Entity
         'agree_mailing_outages' => true,
         'agree_mailing_commercial' => true,
         'agree_mailing_billing' => true,
-        'tax_rate' => true,
+        'accounting_profile' => true,
         'addresses' => true,
         'billings' => true,
         'borrowed_equipments' => true,

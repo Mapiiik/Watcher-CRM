@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Service;
 
-use App\Model\Entity\TaxRate;
+use App\Model\Entity\AccountingProfile;
 use App\Model\Table\CustomersTable;
 use Cake\I18n\Date;
 use Laminas\Diactoros\UploadedFile;
@@ -42,13 +42,13 @@ final class CsvVerificationService
      * Verify CRM billing data against CSV verification file.
      *
      * @param \Cake\I18n\Date $invoicedMonth Month being invoiced.
-     * @param \App\Model\Entity\TaxRate $taxRate Selected tax rate.
+     * @param \App\Model\Entity\AccountingProfile $accountingProfile Selected accounting profile.
      * @param \Laminas\Diactoros\UploadedFile $csvFile Uploaded CSV file.
      * @return \Bookkeeping\Service\VerificationResult
      */
     public function verify(
         Date $invoicedMonth,
-        TaxRate $taxRate,
+        AccountingProfile $accountingProfile,
         UploadedFile $csvFile,
     ): VerificationResult {
         $csvData = $this->parseCsv($csvFile);
@@ -57,7 +57,7 @@ final class CsvVerificationService
         $customers = $this->customers->find(
             'billingDataForMonth',
             invoicedMonth: $invoicedMonth,
-            taxRateId: $taxRate->id,
+            accountingProfileId: $accountingProfile->id,
         );
 
         $differences = $this->compareWithCrm($customers, $csvData);

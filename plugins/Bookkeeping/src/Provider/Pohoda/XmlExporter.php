@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Provider\Pohoda;
 
+use App\Model\Entity\AccountingProfile;
 use App\Model\Entity\Billing;
-use App\Model\Entity\TaxRate;
 use Cake\I18n\Date;
 use Riesenia\Pohoda;
 use RuntimeException;
@@ -26,14 +26,14 @@ class XmlExporter
      *
      * @param list<\Bookkeeping\Model\ValueObject\InvoiceDraft> $invoices Invoice drafts to export.
      * @param \Cake\I18n\Date $invoicedMonth Invoiced month (used for XML header).
-     * @param \App\Model\Entity\TaxRate $taxRate Tax rate and accounting context.
+     * @param \App\Model\Entity\AccountingProfile $accountingProfile Accounting profile and accounting context.
      * @param string $filePath Target XML file path.
      * @return string Final XML file path.
      */
     public function export(
         array $invoices,
         Date $invoicedMonth,
-        TaxRate $taxRate,
+        AccountingProfile $accountingProfile,
         string $filePath,
     ): string {
         Pohoda::$encoding = 'UTF-8';
@@ -64,10 +64,10 @@ class XmlExporter
                 'dateAccounting' => $invoice->creationDate->i18nFormat('yyyy-MM-dd'),
                 'dateDue' => $invoice->dueDate->i18nFormat('yyyy-MM-dd'),
                 'accounting' => [
-                    'ids' => $taxRate->accounting_assignment_code ?? '2Fv',
+                    'ids' => $accountingProfile->accounting_assignment_code ?? '2Fv',
                 ],
                 'classificationVAT' => [
-                    'ids' => $taxRate->reverse_charge ? 'UDpdp' : 'UD',
+                    'ids' => $accountingProfile->reverse_charge ? 'UDpdp' : 'UD',
                 ],
                 'text' => $invoice->text ?? '',
                 'partnerIdentity' => [
@@ -85,11 +85,11 @@ class XmlExporter
                     'paymentType' => 'draft',
                 ],
                 'account' => [
-                    'ids' => $taxRate->bank_account_code ?? 'KB',
+                    'ids' => $accountingProfile->bank_account_code ?? 'KB',
                 ],
                 'symConst' => '0308',
                 'activity' => [
-                    'ids' => $taxRate->activity_code ?? 'internet',
+                    'ids' => $accountingProfile->activity_code ?? 'internet',
                 ],
                 'note' => $invoice->note ?? '',
                 'intNote' => $invoice->internalNote ?? '',
@@ -107,16 +107,16 @@ class XmlExporter
                         'unitPrice' => $item->period_total,
                         'price' => Billing::calcVatBaseFromTotal(
                             $item->period_total,
-                            $taxRate->vat_rate,
+                            $accountingProfile->vat_rate,
                         )->toFloat(),
-                        'priceVAT' => $taxRate->reverse_charge
+                        'priceVAT' => $accountingProfile->reverse_charge
                             ? 0
                             : Billing::calcVatFromTotal(
                                 $item->period_total,
-                                $taxRate->vat_rate,
+                                $accountingProfile->vat_rate,
                             )->toFloat(),
                     ],
-                    'PDP' => $taxRate->reverse_charge,
+                    'PDP' => $accountingProfile->reverse_charge,
                 ]);
             }
 
@@ -129,13 +129,13 @@ class XmlExporter
                     'priceLow' => 0,
                     'priceHigh' => Billing::calcVatBaseFromTotal(
                         $invoice->total,
-                        $taxRate->vat_rate,
+                        $accountingProfile->vat_rate,
                     )->toFloat(),
-                    'priceHighVAT' => $taxRate->reverse_charge
+                    'priceHighVAT' => $accountingProfile->reverse_charge
                         ? 0
                         : Billing::calcVatFromTotal(
                             $invoice->total,
-                            $taxRate->vat_rate,
+                            $accountingProfile->vat_rate,
                         )->toFloat(),
                     'round' => [
                         'priceRound' => 0,

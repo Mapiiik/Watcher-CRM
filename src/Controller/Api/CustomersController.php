@@ -41,7 +41,7 @@ class CustomersController extends AppController
     {
         $customers = $this->Customers
             ->find('all', contain: [
-                'TaxRates',
+                'AccountingProfiles',
             ])
             ->all();
 
@@ -101,7 +101,7 @@ class CustomersController extends AppController
                 'TaskStates',
                 'Dealers',
             ],
-            'TaxRates',
+            'AccountingProfiles',
         ]);
 
         $this->set('customer', $customer);
