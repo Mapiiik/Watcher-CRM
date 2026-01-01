@@ -90,7 +90,7 @@ class JsonRequestBuilder
             'documentLanguage' => $language,
 
             // Invoice dates
-            'date' => $invoice->creationDate->i18nFormat('yyyy-MM-dd'),
+            #'date' => $invoice->creationDate->i18nFormat('yyyy-MM-dd'), // Backdating is not allowed
             'paymentDueDate' => $invoice->dueDate->i18nFormat('yyyy-MM-dd'),
             'dateOfSupplyFrom' => $invoicedMonth->firstOfMonth()->i18nFormat('yyyy-MM-dd'),
             'dateOfSupplyUntil' => $invoicedMonth->lastOfMonth()->i18nFormat('yyyy-MM-dd'),
