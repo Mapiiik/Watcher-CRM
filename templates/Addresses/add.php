@@ -41,7 +41,10 @@
                         echo $this->Form->control('number_type');
                         echo $this->Form->control('city');
                         echo $this->Form->control('zip', ['pattern' => '[0-9]*']);
-                        echo $this->Form->control('country_id', ['options' => $countries]);
+                        echo $this->Form->control('country_id', [
+                            'options' => $countries,
+                            'empty' => true,
+                        ]);
                         ?>
                     </div>
                 </div>

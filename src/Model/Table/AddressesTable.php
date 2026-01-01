@@ -99,6 +99,11 @@ class AddressesTable extends AppTable
             ->notEmptyString('number_type');
 
         $validator
+            ->uuid('country_id')
+            ->requirePresence('country_id', 'create')
+            ->notEmptyString('country_id');
+
+        $validator
             ->scalar('title')
             ->allowEmptyString('title');
 
