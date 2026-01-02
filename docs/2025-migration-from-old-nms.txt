@@ -1,0 +1,805 @@
+Example of possible migration from old NMS to Watcher CRM
+
+------------------------
+-- OLD DB
+------------------------
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- NOTE:
+-- UUID + accounting_profile_uuid are generated in OLD DB
+-- to simplify migration and avoid mapping tables.
+
+-- USERS - UUID
+ALTER TABLE users
+ADD COLUMN uuid UUID NOT NULL DEFAULT uuid_generate_v4();
+
+CREATE UNIQUE INDEX users_uuid_idx ON users(uuid);
+
+ALTER TABLE users
+ALTER COLUMN uuid DROP DEFAULT;
+
+-- USERS - ACCOUNTING PROFILE
+ALTER TABLE users
+ADD COLUMN accounting_profile_uuid UUID;
+
+UPDATE users
+SET accounting_profile_uuid = '2fdbfd7d-ab19-4d0d-ade9-cf32a38fa518'
+WHERE "taxeId" IN (0, 2, 3, 5);
+
+UPDATE users
+SET accounting_profile_uuid = '72af556a-d342-47a8-b16f-0d67f3fbb29c'
+WHERE "taxeId" IN (4);
+
+ALTER TABLE users
+ALTER COLUMN accounting_profile_uuid SET NOT NULL;
+
+-- USERS - CONTRACT STATE
+ALTER TABLE users
+ADD COLUMN contract_state_uuid UUID;
+
+UPDATE users
+SET contract_state_uuid = '84e6a68b-6cb9-4c49-8e49-4be610070bfd'
+WHERE "taxeId" IN (0, 4);
+
+UPDATE users
+SET contract_state_uuid = 'ddd425b5-4198-448a-ab29-ae9f8cbd54da'
+WHERE "taxeId" IN (2);
+
+UPDATE users
+SET contract_state_uuid = 'b9e57431-4c2f-4a63-95dc-3d8082cb4fc8'
+WHERE "taxeId" IN (3);
+
+UPDATE users
+SET contract_state_uuid = '11d333f4-1c52-4dc8-831c-89110c3b4a64'
+WHERE "taxeId" IN (5);
+
+ALTER TABLE users
+ALTER COLUMN contract_state_uuid SET NOT NULL;
+
+-- USERS - COUNTRY
+ALTER TABLE users
+ADD COLUMN country_uuid UUID;
+
+ALTER TABLE users
+ADD COLUMN billing_country_uuid UUID;
+
+UPDATE users
+SET country_uuid = '8396ff93-aaae-4991-834a-ca53a5f9d326'
+WHERE "countryId" IN (0, 2);
+
+UPDATE users
+SET billing_country_uuid = '8396ff93-aaae-4991-834a-ca53a5f9d326'
+WHERE "fCountryId" IN (0, 2);
+
+UPDATE users
+SET country_uuid = '7285c819-da50-4422-a1bb-bd8f74a4b8ed'
+WHERE "countryId" IN (1);
+
+UPDATE users
+SET billing_country_uuid = '7285c819-da50-4422-a1bb-bd8f74a4b8ed'
+WHERE "fCountryId" IN (1);
+
+ALTER TABLE users
+ALTER COLUMN country_uuid SET NOT NULL;
+
+-- IP - CONTRACT UUID
+ALTER TABLE ip
+ADD COLUMN contract_uuid UUID NOT NULL DEFAULT uuid_generate_v4();
+
+CREATE UNIQUE INDEX ip_contract_uuid_idx ON ip(contract_uuid);
+
+ALTER TABLE ip
+ALTER COLUMN contract_uuid DROP DEFAULT;
+
+-- IP - SERVICE UUID
+ALTER TABLE ip
+ADD COLUMN service_uuid UUID;
+
+UPDATE ip
+SET service_uuid = CASE "queueId"
+    -- V1
+    WHEN 45 THEN 'dab3897a-ac94-405f-9967-e80f43716073'::uuid
+
+    -- START
+    WHEN 37 THEN '7b6df2f5-6cc8-4b3e-b510-63dfb734ce8c'::uuid
+    WHEN 39 THEN 'f5e21dc0-42cd-4f3e-9733-660eafac9c1f'::uuid
+    WHEN 48 THEN '57802135-0240-46a7-9f0c-f1402eca3430'::uuid
+
+    -- CONT
+    WHEN 41 THEN '5cfacfcb-6128-4a97-88f1-57f41d6298ff'::uuid
+    WHEN 43 THEN '45070df3-8c3c-4889-a7fe-121d1aafe7ab'::uuid
+    WHEN 46 THEN 'dd118f83-1388-4204-b8c0-b1c1f303cdf5'::uuid
+
+    -- AC
+    WHEN 32 THEN '5405249d-d7c6-4e4c-b3f9-8603023300df'::uuid
+    WHEN 33 THEN '4b9b5587-11ea-4cff-9e51-fabfc60fa12d'::uuid
+    WHEN 58 THEN 'd477b7f8-972a-49ac-b45f-b073436effc9'::uuid
+    WHEN 65 THEN '195a8b75-61a8-48cb-8b64-69b2d54ff1ad'::uuid
+    WHEN 66 THEN 'd27dc52c-635b-4245-b1ba-b9f9aae438db'::uuid
+    WHEN 67 THEN '32f7ae93-c35f-42e1-8acb-1995ecd2d59e'::uuid
+
+    -- LAN
+    WHEN 59 THEN 'b2173f36-1f69-4761-b9a5-695796df1d49'::uuid
+    WHEN 60 THEN 'e66ae201-f49e-48ec-be69-b94d181104a3'::uuid
+    WHEN 61 THEN '6d3a3ddc-4441-42b9-8e79-c5145286066f'::uuid
+    WHEN 62 THEN '14f0ef03-6b18-4545-8f5a-c10c1b3e19e4'::uuid
+    WHEN 68 THEN '66ed7b15-236f-470d-9c42-a521e17fb580'::uuid
+    WHEN 69 THEN '6d4cd1af-f9f9-4755-a2de-1800988302ea'::uuid
+
+    -- GM
+    WHEN 18 THEN '72abd57d-3b1e-4950-b551-a99bf4931c6f'::uuid
+    WHEN 23 THEN 'b5acec14-e51f-420b-9b10-cb689e4ccaea'::uuid
+    WHEN 25 THEN '10f51d14-6f66-4338-aeb8-ea283fefa5d5'::uuid
+    WHEN 17 THEN 'a7dcd39d-06da-4524-b145-b6bb96f2031d'::uuid
+    WHEN 26 THEN '1edfe2e3-f09a-4203-aa2e-1dffabe06894'::uuid
+    WHEN 29 THEN 'ab20cfef-c0a0-4e6a-a15a-803263de2dfe'::uuid
+    WHEN 64 THEN '7751e1d9-af91-4a51-91d6-e77c5510c3b3'::uuid
+    WHEN 63 THEN '952e639a-1e60-4398-9bc8-8aca254bfe71'::uuid
+END;
+
+ALTER TABLE ip
+ALTER COLUMN service_uuid SET NOT NULL;
+
+-- NOTE
+-- check from new DB:
+-- SELECT "queueName", public.queues.name
+-- FROM old.ip
+-- JOIN old.queues USING ("queueId")
+-- JOIN public.services ON (old.ip.service_uuid = services.id)
+-- JOIN public.queues ON (services.queue_id = public.queues.id)
+-- WHERE "queueName" <> public.queues.name
+
+-- IP - EQUIPMENT TYPE UUID
+ALTER TABLE ip
+ADD COLUMN equipment_type_uuid UUID;
+
+UPDATE ip
+SET equipment_type_uuid = CASE "deviceId"
+
+    WHEN 1 THEN '65a431f0-5bef-4307-a725-9e2e145701d8'::uuid -- 5GHz - 1CH
+    WHEN 2 THEN 'a7f23eb6-c9e7-42fa-aae3-8b981571aedd'::uuid -- 5GHZ - 2CH
+    WHEN 3 THEN 'f440a32b-a100-48e9-bafc-9e51077f8296'::uuid -- SXT
+    WHEN 4 THEN 'ea01c8f3-d5de-4088-aa54-5ad80a423d99'::uuid -- Parabola
+    WHEN 5 THEN '144e6f38-2342-4619-b364-a0e368691b72'::uuid -- LAN
+    WHEN 6 THEN 'dede065c-654f-4398-9209-d992cdc0b8d6'::uuid -- UBNT AC
+
+END;
+
+-- BILLING - SERVICE UUID
+ALTER TABLE billing
+ADD COLUMN service_uuid UUID;
+
+UPDATE billing
+SET service_uuid = 'dab3897a-ac94-405f-9967-e80f43716073'
+WHERE text = 'Internet -Tarifa V-1'
+  AND active = 1;
+
+UPDATE billing
+SET service_uuid = '16d5030f-b0f7-49d6-930a-b22ed745befc'
+WHERE text = 'GONET.TV-TOP'
+  AND active = 1;
+
+UPDATE billing
+SET service_uuid = 'fb7a085d-42b7-4e0c-a05c-cdb4597e73ce'
+WHERE text = 'GONET.TV Nadoplata za dodatna 2 uređaja'
+  AND active = 1;
+
+UPDATE billing
+SET service_uuid = '5b148de4-ee17-4618-b1f3-8a3e46a6bc02'
+WHERE text = 'Javna IP adresa'
+  AND active = 1;
+
+------------------------
+-- NEW DB - LINK TO OLD
+------------------------
+CREATE EXTENSION IF NOT EXISTS postgres_fdw;
+
+CREATE SERVER nms_old
+FOREIGN DATA WRAPPER postgres_fdw
+OPTIONS (
+    host 'localhost',
+    dbname 'nms_multikomunikacije_config',
+    port '5432'
+);
+
+CREATE USER MAPPING FOR CURRENT_USER
+SERVER nms_old
+OPTIONS (
+    user 'postgres',
+    password 'postgres'
+);
+
+-- DROP SCHEMA old CASCADE;
+CREATE SCHEMA old;
+
+IMPORT FOREIGN SCHEMA public
+FROM SERVER nms_old
+INTO old;
+
+--------------------------
+-- NEW DB - FROM old.users
+--------------------------
+-- CUSTOMERS
+INSERT INTO customers (
+    id,
+    nid,
+    dealer,
+    title,
+    first_name,
+    last_name,
+    suffix,
+    company,
+    bank_name,
+    bank_account,
+    bank_code,
+    created,
+    modified,
+    identity_number,
+    vat_number,
+    www,
+    internal_note,
+    invoice_delivery_type,
+    note,
+    accounting_profile_id,
+
+    -- for this case NULL (no data)
+    identity_card_number,
+    date_of_birth,
+    agree_gdpr,
+    agree_mailing_outages,
+    agree_mailing_commercial,
+    agree_mailing_billing,
+    created_by,
+    modified_by,
+    individual_maturity_period
+)
+SELECT
+    u."uuid"                            AS id,
+    u."userId"                          AS nid,
+    u.dealer                            AS dealer,
+    u.title                             AS title,
+    u."firstName"                       AS first_name,
+    u."lastName"                        AS last_name,
+    u.suffix                            AS suffix,
+    u.company                           AS company,
+    u."bankName"                        AS bank_name,
+    u."bankAccount"                     AS bank_account,
+    u."bankCode"                        AS bank_code,
+    u."insertDate"                      AS created,
+    u."changeDate"                      AS modified,
+    u.ic                                AS identity_number,
+    u.dic                               AS vat_number,
+    u.www                               AS www,
+    u."interNote"                       AS internal_note,
+    u."invoiceDelivery"                 AS invoice_delivery_type,
+    u.note                              AS note,
+    u.accounting_profile_uuid           AS accounting_profile_id,
+
+    -- explicitně NULL
+    NULL                                AS identity_card_number,
+    NULL                                AS date_of_birth,
+    NULL                                AS agree_gdpr,
+    NULL                                AS agree_mailing_outages,
+    NULL                                AS agree_mailing_commercial,
+    NULL                                AS agree_mailing_billing,
+    NULL                                AS created_by,
+    NULL                                AS modified_by,
+    NULL                                AS individual_maturity_period
+FROM old.users u;
+
+-- check if count is same
+
+-- INSTALLATION ADRESSES
+INSERT INTO addresses (
+    type,
+    title,
+    first_name,
+    last_name,
+    suffix,
+    company,
+    street,
+    number,
+    city,
+    zip,
+    created,
+    modified,
+    country_id,
+    customer_id,
+
+    -- explicitně NULL
+    note,
+    ruian_gid,
+    gps_x,
+    gps_y,
+    created_by,
+    modified_by
+)
+SELECT
+    0                                   AS type,
+    u.title                             AS title,
+    u."firstName"                       AS first_name,
+    u."lastName"                        AS last_name,
+    u.suffix                            AS suffix,
+    u.company                           AS company,
+    u.street                            AS street,
+    u.number                            AS number,
+    u.city                              AS city,
+    u.zip                               AS zip,
+    u."insertDate"                      AS created,
+    u."changeDate"                      AS modified,
+    u.country_uuid                      AS country_id,
+    u.uuid                              AS customer_id,
+
+    NULL                                AS note,
+    NULL                                AS ruian_gid,
+    NULL                                AS gps_x,
+    NULL                                AS gps_y,
+    NULL                                AS created_by,
+    NULL                                AS modified_by
+FROM old.users u
+WHERE u.street IS NOT NULL
+   OR u.city IS NOT NULL;
+
+-- BILLING ADRESSES
+INSERT INTO addresses (
+    type,
+    title,
+    first_name,
+    last_name,
+    suffix,
+    company,
+    street,
+    number,
+    city,
+    zip,
+    created,
+    modified,
+    country_id,
+    customer_id,
+
+    -- explicitně NULL
+    note,
+    ruian_gid,
+    gps_x,
+    gps_y,
+    created_by,
+    modified_by
+)
+SELECT
+    1                                   AS type,
+    u."fTitle"                          AS title,
+    u."fFirstName"                      AS first_name,
+    u."fLastName"                       AS last_name,
+    u."fSuffix"                         AS suffix,
+    u."fCompany"                        AS company,
+    u."fStreet"                         AS street,
+    u."fNumber"                         AS number,
+    u."fCity"                           AS city,
+    u."fZip"                            AS zip,
+    u."insertDate"                      AS created,
+    u."changeDate"                      AS modified,
+    u.billing_country_uuid              AS country_id,
+    u.uuid                              AS customer_id,
+
+    NULL                                AS note,
+    NULL                                AS ruian_gid,
+    NULL                                AS gps_x,
+    NULL                                AS gps_y,
+    NULL                                AS created_by,
+    NULL                                AS modified_by
+FROM old.users u
+WHERE u."fStreet" IS NOT NULL
+   OR u."fCity" IS NOT NULL;
+
+-- PHONES
+INSERT INTO phones (
+    phone,
+    created,
+    modified,
+    customer_id,
+
+    -- explicitně NULL
+    note,
+    created_by,
+    modified_by
+)
+SELECT
+    trim(p.phone)        AS phone,
+    u."insertDate"       AS created,
+    u."changeDate"       AS modified,
+    u.uuid               AS customer_id,
+
+    NULL                 AS note,
+    NULL                 AS created_by,
+    NULL                 AS modified_by
+FROM old.users u
+CROSS JOIN LATERAL
+    regexp_split_to_table(u.phone, '[,;]') AS p(phone)
+WHERE u.phone IS NOT NULL
+  AND trim(p.phone) <> '';
+
+-- EMAILS
+INSERT INTO emails (
+    email,
+    created,
+    modified,
+    customer_id,
+
+    -- explicitně NULL
+    note,
+    created_by,
+    modified_by
+)
+SELECT
+    lower(trim(e.email)) AS email,
+    u."insertDate"       AS created,
+    u."changeDate"       AS modified,
+    u.uuid               AS customer_id,
+
+    NULL                 AS note,
+    NULL                 AS created_by,
+    NULL                 AS modified_by
+FROM old.users u
+CROSS JOIN LATERAL
+    regexp_split_to_table(u.email, '[,;]') AS e(email)
+WHERE u.email IS NOT NULL
+  AND trim(e.email) <> '';
+
+-- NOTE:
+-- - users.taxeId will be reused during contracts migration
+--   to derive contract_state_id
+-- - users.terminationDate will be mapped to contract termination
+--   (end of contractual relationship), not customer
+
+--------------------------
+-- NEW DB - FROM old.ip
+--------------------------
+-- CONTRACTS
+INSERT INTO contracts (
+    id,
+    customer_id,
+    service_type_id,
+    contract_state_id,
+    installation_address_id,
+
+    created,
+    installation_date,
+    vip,
+    note,
+
+    -- explicitně NULL
+    number,
+    modified,
+    access_description,
+    activation_fee,
+    activation_fee_with_obligation,
+    access_point_id,
+    uninstallation_date,
+    termination_date,
+    subscriber_verification_code,
+    commission_id,
+    installation_technician_id,
+    uninstallation_technician_id,
+    created_by,
+    modified_by
+)
+SELECT
+    ip.contract_uuid                    AS id,
+    u.uuid                              AS customer_id,
+    s.service_type_id                   AS service_type_id,
+    u.contract_state_uuid               AS contract_state_id,
+    addr.id                             AS installation_address_id,
+
+    u."insertDate"                      AS created,
+    ip."installationDate"               AS installation_date,
+    ip.vip                              AS vip,
+    ip.note                             AS note,
+
+    -- explicitně NULL
+    NULL                                AS number,
+    NULL                                AS modified,
+    NULL                                AS access_description,
+    NULL                                AS activation_fee,
+    NULL                                AS activation_fee_with_obligation,
+    NULL                                AS access_point_id,
+    NULL                                AS uninstallation_date,
+    u."terminationDate"                 AS termination_date,
+    NULL                                AS subscriber_verification_code,
+    NULL                                AS commission_id,
+    NULL                                AS installation_technician_id,
+    NULL                                AS uninstallation_technician_id,
+    NULL                                AS created_by,
+    NULL                                AS modified_by
+FROM old.ip ip
+JOIN old.users u
+    ON u."userId" = ip."userId"
+JOIN services s
+    ON s.id = ip.service_uuid
+LEFT JOIN addresses addr
+    ON addr.customer_id = u.uuid
+   AND addr.type = 0;
+
+-- NOTE
+-- check from new DB:
+-- 1:1 number of contracts
+-- SELECT
+--     (SELECT COUNT(*) FROM contracts) AS contracts,
+--     (SELECT COUNT(*) FROM old.ip) AS ips;
+
+
+-- CONTRACT VERSIONS
+INSERT INTO contract_versions (
+    id,
+    contract_id,
+
+    valid_from,
+    valid_until,
+    obligation_until,
+    conclusion_date,
+
+    number_of_amendments,
+    note,
+
+    created,
+    modified,
+
+    created_by,
+    modified_by
+)
+SELECT
+    uuid_generate_v4()          AS id,
+    c.id                        AS contract_id,
+
+    CASE
+        WHEN ip."billingFrom" IS NOT NULL
+            THEN ip."billingFrom"
+        WHEN EXTRACT(DAY FROM ip."installationDate") <= 10
+            THEN date_trunc('month', ip."installationDate")::date
+        ELSE
+            (date_trunc('month', ip."installationDate") + INTERVAL '1 month')::date
+    END                         AS valid_from,
+
+    c.termination_date          AS valid_until,
+    ip.bond                     AS obligation_until,
+    NULL                        AS conclusion_date,
+
+    0                           AS number_of_amendments,
+    NULL                        AS note,
+
+    NULL                        AS created,
+    NULL                        AS modified,
+
+    NULL                        AS created_by,
+    NULL                        AS modified_by
+FROM contracts c
+JOIN old.ip ip
+    ON ip.contract_uuid = c.id
+WHERE ip."installationDate" IS NOT NULL
+   OR ip."billingFrom" IS NOT NULL;
+
+
+-- IP ADDRESSES
+INSERT INTO ip_addresses (
+    id,
+    ip_address,
+    note,
+    created,
+    modified,
+    type_of_use,
+    contract_id,
+    customer_id,
+    created_by,
+    modified_by
+)
+SELECT
+    uuid_generate_v4()     AS id,
+    ip.ip                  AS ip_address,
+    ip.comment             AS note,
+    NULL                   AS created,
+    NULL                   AS modified,
+    0                      AS type_of_use, -- Customer RADIUS
+    ip.contract_uuid       AS contract_id,
+    u.uuid                 AS customer_id,
+    NULL                   AS created_by,
+    NULL                   AS modified_by
+FROM old.ip ip
+JOIN old.users u
+    ON u."userId" = ip."userId"
+WHERE ip.ip IS NOT NULL;
+
+
+-- BORROWED EQUIPMENTS
+INSERT INTO borrowed_equipments (
+    id,
+    serial_number,
+    created,
+    borrowed_from,
+    borrowed_until,
+    contract_id,
+    customer_id,
+    equipment_type_id,
+    created_by,
+    modified_by
+)
+SELECT
+    uuid_generate_v4()          AS id,
+    NULL                        AS serial_number,
+    now()                       AS created,
+    ip."installationDate"::date AS borrowed_from,
+    NULL                        AS borrowed_until,
+    ip.contract_uuid            AS contract_id,
+    u.uuid                      AS customer_id,
+    ip.equipment_type_uuid      AS equipment_type_id,
+    NULL                        AS created_by,
+    NULL                        AS modified_by
+FROM old.ip ip
+JOIN old.users u
+    ON u."userId" = ip."userId"
+WHERE ip.equipment_type_uuid IS NOT NULL;
+
+
+-- BILLINGS
+INSERT INTO billings (
+    id,
+    text,
+    price,
+    billing_from,
+    billing_until,
+    note,
+    separate_invoice,
+    quantity,
+    fixed_discount,
+    percentage_discount,
+    created,
+    modified,
+    contract_id,
+    customer_id,
+    service_id,
+    created_by,
+    modified_by
+)
+SELECT
+    uuid_generate_v4() AS id,
+
+    NULL               AS text,
+    ip.cost            AS price,
+
+    CASE
+        WHEN ip."billingFrom" IS NOT NULL
+            THEN ip."billingFrom"
+        WHEN EXTRACT(DAY FROM ip."installationDate") <= 10
+            THEN date_trunc('month', ip."installationDate")::date
+        ELSE
+            (date_trunc('month', ip."installationDate") + INTERVAL '1 month')::date
+    END                AS billing_from,
+
+    ip."activeUntil"   AS billing_until,
+    NULL               AS note,
+    false              AS separate_invoice,
+    1                  AS quantity,
+    NULL               AS fixed_discount,
+    NULL               AS percentage_discount,
+    NULL               AS created,
+    NULL               AS modified,
+
+    ip.contract_uuid   AS contract_id,
+    u.uuid             AS customer_id,
+    ip.service_uuid    AS service_id,
+
+    NULL               AS created_by,
+    NULL               AS modified_by
+FROM old.ip ip
+JOIN old.users u
+    ON u."userId" = ip."userId"
+WHERE ip.service_uuid IS NOT NULL
+  AND (
+        ip."billingFrom" IS NOT NULL
+     OR ip."installationDate" IS NOT NULL
+  );
+
+
+---------------------------
+-- NEW DB - FROM old.login
+---------------------------
+INSERT INTO logins (
+    id,
+    login,
+    password,
+    rights,
+    locked,
+    last_granted,
+    last_granted_ip,
+    last_denied,
+    last_denied_ip,
+    created,
+    modified,
+    customer_id,
+    created_by,
+    modified_by
+)
+SELECT
+    uuid_generate_v4() AS id,
+    l.login            AS login,
+    l.password         AS password,
+    1                  AS rights,    -- user rights
+    (l.locked <> 0)    AS locked,
+    l."lastGranted"    AS last_granted,
+    l."grantedIp"      AS last_granted_ip,
+    l."lastDenied"     AS last_denied,
+    l."deniedIp"       AS last_denied_ip,
+    l."insertDate"     AS created,
+    NULL               AS modified,
+    ou.uuid            AS customer_id,
+    NULL               AS created_by,
+    NULL               AS modified_by
+FROM old.login l
+JOIN old.users ou
+    ON ou."userId" = l."userId";
+
+
+----------------------------
+-- NEW DB - FROM old.billing
+----------------------------
+INSERT INTO public.billings (
+    service_id,
+    text,
+    price,
+    billing_from,
+    billing_until,
+    note,
+    customer_id,
+    contract_id,
+    quantity,
+    separate_invoice,
+    created,
+    modified
+)
+SELECT
+    -- service_id (if exists)
+    b.service_uuid,
+
+    -- text (only overrides)
+    CASE
+        WHEN b.service_uuid IS NOT NULL THEN NULL
+        ELSE b.text
+    END,
+
+    -- price (NULL = take from pricelist)
+    CASE
+        WHEN b.service_uuid IS NOT NULL
+             AND s.price IS NOT NULL
+             AND b.cost = s.price
+        THEN NULL
+        ELSE b.cost
+    END,
+
+    -- billing period
+    b."billingFrom",
+    b."billingTill",
+
+    -- note
+    b.note,
+
+    -- customer_id from old.users
+    u.uuid AS customer_id,
+
+    -- contract_id (temporary null)
+    NULL AS contract_id,
+
+    -- defaults
+    1     AS quantity,
+    false AS separate_invoice,
+
+    -- timestamps
+    b.insertDate AS created,
+    b.changeDate AS modified
+
+FROM old.billing b
+JOIN old.users u
+    ON u."userId" = b."userId"
+LEFT JOIN services s
+    ON s.id = b.service_uuid
+WHERE b.active = 1;
+
+-- NOTE
+-- contract_id MUST BE TEMPORARILY SWITHCED TO ALLOW NULL, after assignment IT MUST BE SWITCHED BACK TO NOT NULL
