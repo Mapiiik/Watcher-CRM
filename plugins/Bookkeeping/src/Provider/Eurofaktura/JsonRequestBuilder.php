@@ -156,6 +156,11 @@ class JsonRequestBuilder
         Date $invoicedMonth,
         AccountingProfile $accountingProfile,
     ): array {
+        $defaultClassificationCode = Settings::getString(
+            EurofakturaProvider::SETTINGS_ROOT . '.items.default_classification_code',
+            'K61.10.0',
+        );
+
         $items = [];
 
         // No itemized breakdown → single-line invoice
@@ -168,6 +173,7 @@ class JsonRequestBuilder
                     $invoice->total ?? new Decimal(0, 2),
                     $accountingProfile->vat_rate,
                 )->toFloat(),
+                'classificationCode' => $defaultClassificationCode,
             ];
 
             return $items;
@@ -189,6 +195,7 @@ class JsonRequestBuilder
                 $line['productName'] = $item->name; // mame contains quantity if >1
             } else {
                 $line['description'] = $item->name; // mame contains quantity if >1
+                $line['classificationCode'] = $defaultClassificationCode;
             }
 
             $items[] = $line;

@@ -82,6 +82,11 @@ return [
                         'status' => 'Draft', // or 'IssuedInvoice'
                     ],
 
+                    // Invoice items
+                    'items' => [
+                        'default_classification_code' => 'K61.10.0',
+                    ],
+
                     // Documents
                     'document' => [
                         'currency' => 'EUR',
