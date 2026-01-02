@@ -158,7 +158,7 @@ class JsonRequestBuilder
     ): array {
         $defaultClassificationCode = Settings::getString(
             EurofakturaProvider::SETTINGS_ROOT . '.items.default_classification_code',
-            'K61.10.0',
+            'K61.10.00',
         );
 
         $items = [];

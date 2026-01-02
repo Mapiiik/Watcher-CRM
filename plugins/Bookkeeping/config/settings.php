@@ -84,7 +84,7 @@ return [
 
                     // Invoice items
                     'items' => [
-                        'default_classification_code' => 'K61.10.0',
+                        'default_classification_code' => 'K61.10.00',
                     ],
 
                     // Documents
