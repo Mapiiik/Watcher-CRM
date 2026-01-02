@@ -132,9 +132,9 @@ class JsonRequestBuilder
             $payload['buyerCode'] = $buyerCodePrefix . $invoice->customer->number;
         }
 
-        // VAT registration
-        if ($invoice->customer->vat_number !== null) {
-            $payload['buyerTaxNumber'] = $invoice->customer->vat_number;
+        // ID / VAT registration number
+        if ($invoice->customer->vat_number !== null || $invoice->customer->identity_number !== null) {
+            $payload['buyerTaxNumber'] = $invoice->customer->vat_number ?? $invoice->customer->identity_number;
         }
 
         // Reverse charge country
