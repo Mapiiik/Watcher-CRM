@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-12-31 15:45+0100\n"
+"POT-Creation-Date: 2026-01-05 22:20+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -466,7 +466,7 @@ msgid "Please set the date of conclusion of the original contract version."
 msgstr ""
 
 #: ./src/Controller/ContractsController.php:1026
-#: ./src/Controller/CustomersController.php:467
+#: ./src/Controller/CustomersController.php:468
 msgid "Invalid type of document requested."
 msgstr ""
 
@@ -540,33 +540,33 @@ msgstr ""
 msgid "The customer message could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:209
+#: ./src/Controller/CustomersController.php:210
 msgid "Please use the customer number or company identification number in the search."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:370
-#: ./src/Controller/CustomersController.php:396
+#: ./src/Controller/CustomersController.php:371
+#: ./src/Controller/CustomersController.php:397
 msgid "The customer has been saved."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:374
-#: ./src/Controller/CustomersController.php:400
+#: ./src/Controller/CustomersController.php:375
+#: ./src/Controller/CustomersController.php:401
 msgid "The customer could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:421
+#: ./src/Controller/CustomersController.php:422
 msgid "The customer has been deleted."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:424
+#: ./src/Controller/CustomersController.php:425
 msgid "The customer could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:441
+#: ./src/Controller/CustomersController.php:442
 msgid "Consent to the processing of personal data"
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:442
+#: ./src/Controller/CustomersController.php:443
 msgid "Consent to the processing of personal data (change)"
 msgstr ""
 
@@ -1503,6 +1503,7 @@ msgstr ""
 #: ./templates/CustomerMessages/view.php:10
 #: ./templates/Customers/add.php:11
 #: ./templates/Customers/edit.php:11
+#: ./templates/Customers/identity_number_check.php:20
 #: ./templates/Customers/index.php:53
 #: ./templates/Customers/print.php:11
 #: ./templates/Customers/view.php:10
@@ -1649,8 +1650,8 @@ msgstr ""
 #: ./templates/AccessCredentials/edit.php:72
 #: ./templates/AccountingProfiles/add.php:33
 #: ./templates/AccountingProfiles/edit.php:41
-#: ./templates/Addresses/add.php:68
-#: ./templates/Addresses/edit.php:73
+#: ./templates/Addresses/add.php:71
+#: ./templates/Addresses/edit.php:76
 #: ./templates/Billings/add.php:63
 #: ./templates/Billings/bulk_service_change.php:136
 #: ./templates/Billings/edit.php:68
@@ -2044,6 +2045,7 @@ msgstr ""
 #: ./templates/Countries/view.php:143
 #: ./templates/CustomerLabels/index.php:66
 #: ./templates/CustomerMessages/index.php:71
+#: ./templates/Customers/identity_number_check.php:35
 #: ./templates/Customers/index.php:112
 #: ./templates/Customers/view.php:330
 #: ./templates/Customers/view.php:379
@@ -2112,6 +2114,7 @@ msgstr ""
 #: ./templates/Countries/view.php:147
 #: ./templates/CustomerLabels/index.php:68
 #: ./templates/CustomerMessages/index.php:75
+#: ./templates/Customers/identity_number_check.php:39
 #: ./templates/Customers/index.php:116
 #: ./templates/Customers/view.php:334
 #: ./templates/Customers/view.php:383
@@ -2649,7 +2652,7 @@ msgstr ""
 #: ./templates/AccountingProfiles/add.php:12
 #: ./templates/AccountingProfiles/edit.php:20
 #: ./templates/AccountingProfiles/view.php:25
-#: ./templates/Settings/index.php:189
+#: ./templates/Settings/index.php:194
 msgid "List Accounting Profiles"
 msgstr ""
 
@@ -2713,6 +2716,7 @@ msgstr ""
 #: ./templates/Contracts/view.php:533
 #: ./templates/Contracts/view.php:579
 #: ./templates/Countries/view.php:95
+#: ./templates/Customers/identity_number_check.php:13
 #: ./templates/Customers/index.php:42
 #: ./templates/Customers/view.php:470
 #: ./templates/Customers/view.php:546
@@ -2727,6 +2731,7 @@ msgstr ""
 #: ./templates/AccountingProfiles/view.php:118
 #: ./templates/Addresses/view.php:47
 #: ./templates/Countries/view.php:89
+#: ./templates/Customers/identity_number_check.php:14
 #: ./templates/Customers/print.php:32
 #: ./templates/Customers/view.php:135
 #: ./templates/Customers/view.php:464
@@ -2736,6 +2741,7 @@ msgstr ""
 #: ./templates/AccountingProfiles/view.php:119
 #: ./templates/Addresses/view.php:51
 #: ./templates/Countries/view.php:90
+#: ./templates/Customers/identity_number_check.php:15
 #: ./templates/Customers/print.php:36
 #: ./templates/Customers/view.php:139
 #: ./templates/Customers/view.php:465
@@ -2745,6 +2751,7 @@ msgstr ""
 #: ./templates/AccountingProfiles/view.php:120
 #: ./templates/Addresses/view.php:55
 #: ./templates/Countries/view.php:91
+#: ./templates/Customers/identity_number_check.php:16
 #: ./templates/Customers/print.php:40
 #: ./templates/Customers/view.php:143
 #: ./templates/Customers/view.php:466
@@ -2754,6 +2761,7 @@ msgstr ""
 #: ./templates/AccountingProfiles/view.php:121
 #: ./templates/Addresses/view.php:59
 #: ./templates/Countries/view.php:92
+#: ./templates/Customers/identity_number_check.php:17
 #: ./templates/Customers/print.php:44
 #: ./templates/Customers/view.php:147
 #: ./templates/Customers/view.php:467
@@ -2763,6 +2771,7 @@ msgstr ""
 #: ./templates/AccountingProfiles/view.php:122
 #: ./templates/Addresses/view.php:63
 #: ./templates/Countries/view.php:93
+#: ./templates/Customers/identity_number_check.php:18
 #: ./templates/Customers/print.php:48
 #: ./templates/Customers/view.php:151
 #: ./templates/Customers/view.php:468
@@ -3247,7 +3256,7 @@ msgstr ""
 #: ./templates/Commissions/add.php:11
 #: ./templates/Commissions/edit.php:19
 #: ./templates/Commissions/view.php:24
-#: ./templates/Settings/index.php:253
+#: ./templates/Settings/index.php:258
 msgid "List Commissions"
 msgstr ""
 
@@ -3393,7 +3402,7 @@ msgstr ""
 #: ./templates/ContractStates/add.php:12
 #: ./templates/ContractStates/edit.php:20
 #: ./templates/ContractStates/view.php:25
-#: ./templates/Settings/index.php:200
+#: ./templates/Settings/index.php:205
 msgid "List Contract States"
 msgstr ""
 
@@ -3811,7 +3820,7 @@ msgstr ""
 #: ./templates/Countries/add.php:11
 #: ./templates/Countries/edit.php:16
 #: ./templates/Countries/view.php:21
-#: ./templates/Settings/index.php:184
+#: ./templates/Settings/index.php:189
 msgid "List Countries"
 msgstr ""
 
@@ -4018,6 +4027,22 @@ msgstr ""
 msgid "Edit Customer"
 msgstr ""
 
+#: ./templates/Customers/identity_number_check.php:8
+#: ./templates/Customers/index.php:37
+#: ./templates/layout/default.php:123
+msgid "Customers"
+msgstr ""
+
+#: ./templates/Customers/identity_number_check.php:8
+msgid "Invalid Identity Numbers"
+msgstr ""
+
+#: ./templates/Customers/identity_number_check.php:19
+#: ./templates/Customers/print.php:62
+#: ./templates/Customers/view.php:165
+msgid "Identity Number"
+msgstr ""
+
 #: ./templates/Customers/index.php:18
 msgid "Advanced Search"
 msgstr ""
@@ -4025,11 +4050,6 @@ msgstr ""
 #: ./templates/Customers/index.php:36
 #: ./templates/Customers/view.php:22
 msgid "New Customer"
-msgstr ""
-
-#: ./templates/Customers/index.php:37
-#: ./templates/layout/default.php:123
-msgid "Customers"
 msgstr ""
 
 #: ./templates/Customers/print.php:13
@@ -4049,11 +4069,6 @@ msgstr ""
 #: ./templates/Customers/print.php:58
 #: ./templates/Customers/view.php:161
 msgid "Identity Card Number"
-msgstr ""
-
-#: ./templates/Customers/print.php:62
-#: ./templates/Customers/view.php:165
-msgid "Identity Number"
 msgstr ""
 
 #: ./templates/Customers/print.php:65
@@ -4229,7 +4244,7 @@ msgstr ""
 #: ./templates/DealerCommissions/add.php:14
 #: ./templates/DealerCommissions/edit.php:22
 #: ./templates/DealerCommissions/view.php:25
-#: ./templates/Settings/index.php:258
+#: ./templates/Settings/index.php:263
 msgid "List Dealer Commissions"
 msgstr ""
 
@@ -4278,7 +4293,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/add.php:12
 #: ./templates/EquipmentTypes/edit.php:20
 #: ./templates/EquipmentTypes/view.php:25
-#: ./templates/Settings/index.php:226
+#: ./templates/Settings/index.php:231
 msgid "List Equipment Types"
 msgstr ""
 
@@ -4343,7 +4358,7 @@ msgid "IP Address Range"
 msgstr ""
 
 #: ./templates/IpAddresses/bulk_reassignment.php:23
-#: ./templates/Settings/index.php:168
+#: ./templates/Settings/index.php:173
 msgid "Bulk IP Address Reassignment"
 msgstr ""
 
@@ -4417,7 +4432,7 @@ msgstr ""
 #: ./templates/Labels/add.php:14
 #: ./templates/Labels/edit.php:19
 #: ./templates/Labels/view.php:24
-#: ./templates/Settings/index.php:179
+#: ./templates/Settings/index.php:184
 msgid "List Labels"
 msgstr ""
 
@@ -4509,7 +4524,7 @@ msgid "Overviews"
 msgstr ""
 
 #: ./templates/Overviews/index.php:10
-#: ./templates/Settings/index.php:208
+#: ./templates/Settings/index.php:213
 msgid "Service Related"
 msgstr ""
 
@@ -4550,7 +4565,7 @@ msgid "List Phones"
 msgstr ""
 
 #: ./templates/Overviews/index.php:82
-#: ./templates/Settings/index.php:197
+#: ./templates/Settings/index.php:202
 msgid "Contract Related"
 msgstr ""
 
@@ -4771,7 +4786,7 @@ msgstr ""
 #: ./templates/Queues/add.php:11
 #: ./templates/Queues/edit.php:16
 #: ./templates/Queues/view.php:21
-#: ./templates/Settings/index.php:221
+#: ./templates/Settings/index.php:226
 msgid "List Queues"
 msgstr ""
 
@@ -4877,7 +4892,7 @@ msgstr ""
 #: ./templates/ServiceTypes/add.php:11
 #: ./templates/ServiceTypes/edit.php:19
 #: ./templates/ServiceTypes/view.php:24
-#: ./templates/Settings/index.php:216
+#: ./templates/Settings/index.php:221
 msgid "List Service Types"
 msgstr ""
 
@@ -4959,7 +4974,7 @@ msgstr ""
 #: ./templates/Services/add.php:13
 #: ./templates/Services/edit.php:18
 #: ./templates/Services/view.php:25
-#: ./templates/Settings/index.php:211
+#: ./templates/Settings/index.php:216
 msgid "List Services"
 msgstr ""
 
@@ -5062,71 +5077,75 @@ msgid "Customer Functions"
 msgstr ""
 
 #: ./templates/Settings/index.php:87
+msgid "Identity Number Check"
+msgstr ""
+
+#: ./templates/Settings/index.php:92
 msgid "Update Phone Number Format"
 msgstr ""
 
-#: ./templates/Settings/index.php:95
+#: ./templates/Settings/index.php:100
 msgid "Do you really want to update all phones for all customers?"
 msgstr ""
 
-#: ./templates/Settings/index.php:105
+#: ./templates/Settings/index.php:110
 msgid "Contract Functions"
 msgstr ""
 
-#: ./templates/Settings/index.php:108
-#: ./templates/Settings/index.php:123
+#: ./templates/Settings/index.php:113
+#: ./templates/Settings/index.php:128
 msgid "Addition of Contract Numbers"
 msgstr ""
 
-#: ./templates/Settings/index.php:116
+#: ./templates/Settings/index.php:121
 msgid "Do you really want to add a contract number for all contracts?"
 msgstr ""
 
-#: ./templates/Settings/index.php:123
-#: ./templates/Settings/index.php:153
+#: ./templates/Settings/index.php:128
+#: ./templates/Settings/index.php:158
 msgid "Force Overwrite"
 msgstr ""
 
-#: ./templates/Settings/index.php:131
+#: ./templates/Settings/index.php:136
 msgid "Do you really want to re-set a contract number for all contracts?"
 msgstr ""
 
-#: ./templates/Settings/index.php:138
-#: ./templates/Settings/index.php:153
+#: ./templates/Settings/index.php:143
+#: ./templates/Settings/index.php:158
 msgid "Addition of Subscriber Verification Codes"
 msgstr ""
 
-#: ./templates/Settings/index.php:146
+#: ./templates/Settings/index.php:151
 msgid "Do you really want to add a subscriber verification code for all contracts?"
 msgstr ""
 
-#: ./templates/Settings/index.php:161
+#: ./templates/Settings/index.php:166
 msgid "Do you really want to re-set a subscriber verification code for all contracts?"
 msgstr ""
 
-#: ./templates/Settings/index.php:176
+#: ./templates/Settings/index.php:181
 msgid "System Related"
 msgstr ""
 
-#: ./templates/Settings/index.php:234
+#: ./templates/Settings/index.php:239
 msgid "Task Related"
 msgstr ""
 
-#: ./templates/Settings/index.php:237
+#: ./templates/Settings/index.php:242
 #: ./templates/TaskStates/add.php:11
 #: ./templates/TaskStates/edit.php:16
 #: ./templates/TaskStates/view.php:21
 msgid "List Task States"
 msgstr ""
 
-#: ./templates/Settings/index.php:242
+#: ./templates/Settings/index.php:247
 #: ./templates/TaskTypes/add.php:11
 #: ./templates/TaskTypes/edit.php:16
 #: ./templates/TaskTypes/view.php:21
 msgid "List Task Types"
 msgstr ""
 
-#: ./templates/Settings/index.php:250
+#: ./templates/Settings/index.php:255
 msgid "Commission Related"
 msgstr ""
 

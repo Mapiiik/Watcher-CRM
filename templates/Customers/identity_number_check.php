@@ -5,7 +5,7 @@
  */
 ?>
 <div class="customers index content">
-    <h3><?= __('Customers') . ' - ' . __('Invalid Identification Numbers') ?></h3>
+    <h3><?= __('Customers') . ' - ' . __('Invalid Identity Numbers') ?></h3>
     <div class="table-responsive">
         <table>
             <thead>
