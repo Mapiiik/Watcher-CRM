@@ -83,6 +83,11 @@
         <div class="related">
             <h4><?= __('Customer Functions') ?></h4>
             <div>
+                <?= $this->AuthLink->link(
+                    __('Identity Number Check'),
+                    ['controller' => 'Customers', 'action' => 'identityNumberCheck', 'plugin' => null],
+                    ['class' => 'side-nav-item'],
+                ) ?>
                 <?= $this->AuthLink->postLink(
                     __('Update Phone Number Format'),
                     [

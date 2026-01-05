@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Entity\Customer;
 use App\View\PdfView;
 use Cake\Form\Form;
 use Cake\Utility\Hash;
@@ -470,5 +471,28 @@ class CustomersController extends AppController
             }
         }
         $this->set(compact('customer', 'type', 'query'));
+    }
+
+    /**
+     * Identity Number Check
+     *
+     * @return \Cake\Http\Response|null|void Renders view
+     */
+    public function identityNumberCheck()
+    {
+        $customers = $this->Customers
+            ->find()
+            ->where('identity_number IS NOT NULL')
+            ->orderBy([
+                'Customers.nid' => 'DESC',
+            ])
+            ->all()
+            ->filter(
+                function (Customer $customer): bool {
+                    return !$customer->verifyIdentityNumber();
+                },
+            );
+
+        $this->set(compact('customers'));
     }
 }
