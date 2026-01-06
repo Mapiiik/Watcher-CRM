@@ -239,6 +239,7 @@ class JsonRequestBuilder
         // Legal entity vs natural person
         if (!empty($customer->company)) {
             $partner['companyName'] = $customer->company;
+            $partner['companyType'] = 'Organization';
         }
 
         if (!empty($customer->first_name)) {
