@@ -44,6 +44,7 @@ use RuntimeException;
  * @property string $email
  * @property string $billing_email
  * @property string $phone
+ * @property string $billing_phone
  * @property string $number
  * @property bool $active_services
  * @property bool $billed
@@ -304,6 +305,18 @@ class Customer extends Entity
         }
 
         return $billing_phones;
+    }
+
+    /**
+     * all customer phones for billing separated by commas
+     *
+     * @return string
+     */
+    protected function _getBillingPhone(): string
+    {
+        $phone = implode(', ', array_column($this->billing_phones, 'phone'));
+
+        return $phone;
     }
 
     /**

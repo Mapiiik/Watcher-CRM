@@ -167,7 +167,7 @@ class GenerateInvoicesCommand extends Command
 
             $io->success(__d(
                 'bookkeeping',
-                'Invoices successfully sent to Eurofaktura.',
+                'Invoices successfully sent to Eurofaktura / E-racuni.',
             ));
 
             return Command::CODE_SUCCESS;

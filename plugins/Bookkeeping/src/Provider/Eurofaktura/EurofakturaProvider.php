@@ -140,6 +140,71 @@ class EurofakturaProvider implements AccountingProviderInterface
     }
 
     /**
+     * Send partners (customers) to Eurofaktura / E-racuni via API.
+     *
+     * This method:
+     * - Builds API payloads for partner creation/update
+     * - Sends them using HttpClient
+     * - Performs only basic transport-level validation
+     *
+     * It does NOT:
+     * - Interpret customer data
+     * - Perform domain validation
+     * - Resolve duplicates or conflicts
+     *
+     * @param list<\App\Model\Entity\Customer> $customers Customers to send.
+     * @return void
+     */
+    public function sendPartners(array $customers): void
+    {
+        foreach ($customers as $customer) {
+            // 1) Build Partner payload
+            $partner = $this->jsonRequestBuilder->buildPartner($customer);
+
+            // 2) Send to API
+            $response = $this->httpClient->send(
+                'PartnerImport',
+                [
+                    'partner' => $partner,
+                ],
+            );
+
+            // 3) Basic transport-level validation
+            if (!$response->isOk()) {
+                throw new RuntimeException(
+                    __d(
+                        'bookkeeping',
+                        'Eurofaktura API error ({0}, {1})',
+                        [
+                            $response->getStatusCode(),
+                            $response->getJson()['response']['description'] ?? 'Unknown error',
+                        ],
+                    ),
+                );
+            }
+
+            $data = $response->getJson();
+
+            // 4) API-level error handling
+            if (!empty($data['error'])) {
+                throw new RuntimeException(
+                    __d(
+                        'bookkeeping',
+                        'Eurofaktura API error: {0}',
+                        [$data['error']['message'] ?? 'Unknown error'],
+                    ),
+                );
+            }
+
+            // 5) (Optional) store documentId / external reference
+            // $partnerId = $data['result']['id'] ?? null;
+
+            // sleep one second because of rate limit
+            sleep(1);
+        }
+    }
+
+    /**
      * Export invoices into a file-based format.
      *
      * This method exists primarily for:

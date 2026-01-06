@@ -189,6 +189,25 @@ class PohodaProvider implements AccountingProviderInterface
     }
 
     /**
+     * Send partners (customers) to Pohoda.
+     *
+     * NOTE:
+     * Pohoda provider currently does not support partner synchronization.
+     *
+     * @param list<\App\Model\Entity\Customer> $customers Customers to send.
+     * @return void
+     */
+    public function sendPartners(array $customers): void
+    {
+        throw new RuntimeException(
+            __d(
+                'bookkeeping',
+                'Partner synchronization is not implemented in Pohoda Provider.',
+            ),
+        );
+    }
+
+    /**
      * Export invoices to Pohoda (DBF/XML).
      *
      * @param list<\Bookkeeping\Model\ValueObject\InvoiceDraft> $invoices List of invoice drafts.

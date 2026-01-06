@@ -112,6 +112,17 @@ class BookkeepingService
     }
 
     /**
+     * Send partners (customers) to the accounting system.
+     *
+     * @param list<\App\Model\Entity\Customer> $customers List of customers.
+     * @return void
+     */
+    public function sendPartners(array $customers): void
+    {
+        $this->provider->sendPartners($customers);
+    }
+
+    /**
      * Export invoices (DBF/XML) for the accounting system.
      *
      * @param list<\Bookkeeping\Model\ValueObject\InvoiceDraft> $invoices List of invoice drafts.

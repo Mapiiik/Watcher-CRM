@@ -5,6 +5,7 @@ namespace Bookkeeping\Provider\Eurofaktura;
 
 use App\Model\Entity\AccountingProfile;
 use App\Model\Entity\Billing;
+use App\Model\Entity\Customer;
 use Bookkeeping\Model\ValueObject\InvoiceDraft;
 use Cake\I18n\Date;
 use PhpCollective\DecimalObject\Decimal;
@@ -202,5 +203,95 @@ class JsonRequestBuilder
         }
 
         return $items;
+    }
+
+    /**
+     * Build Partner object.
+     *
+     * @param \App\Model\Entity\Customer $customer
+     * @return array
+     */
+    public function buildPartner(Customer $customer): array
+    {
+        $buyerCodePrefix = Settings::getString(EurofakturaProvider::SETTINGS_ROOT . '.customers.code_prefix', 'CRM-');
+
+        // Stable partner / buyer code
+        $buyerCode = $buyerCodePrefix . $customer->number;
+
+        // Base partner payload
+        $partner = [
+            'partnerCode' => $buyerCode,
+            'eMail' => $customer->email,
+            'mobilePhone' => $customer->phone,
+
+            'BuyerData' => [
+                'buyerCode' => $buyerCode,
+                'contractNumber' => $customer->number,
+                'status' => 'defaultBuyer',
+                'sendDocumentsViaPost' => false,
+                'sendDocumentsViaEmail' => true,
+            ],
+        ];
+
+        // Legal entity vs natural person
+        if (!empty($customer->company)) {
+            $partner['companyName'] = $customer->company;
+        }
+
+        if (!empty($customer->first_name)) {
+            $partner['firstName'] = $customer->first_name;
+        }
+
+        if (!empty($customer->last_name)) {
+            $partner['lastName'] = $customer->last_name;
+        }
+
+        // Identification numbers
+        if (!empty($customer->identity_number)) {
+            $partner['taxID'] = $customer->identity_number;
+        }
+
+        if (!empty($customer->vat_number)) {
+            $partner['vatID'] = $customer->vat_number;
+        }
+
+        // Date of Birth
+        if (!empty($customer->date_of_birth)) {
+            $partner['dateOfBirth'] = $customer->date_of_birth->i18nFormat('yyyy-MM-dd');
+        }
+
+        // Billing address (single invoicing address)
+        $address = $customer->billing_address;
+        if ($address !== null) {
+            $partner['Addresses'] = [[
+                'type' => 'Invoicing',
+                'street' => trim($address->street_and_number),
+                'postalCode' => $address->zip,
+                'city' => $address->city,
+                'country' => $address->country->code ?? '',
+                'eMail' => $customer->billing_email,
+                'telephone' => $customer->billing_phone,
+            ]];
+        }
+
+        // Bank Accounts
+        if ($customer->bank_account) {
+            $bankAccount = [
+                'accountNumber' => $customer->bank_account,
+            ];
+
+            if ($customer->bank_code) {
+                $bankAccount['accountNumber'] .= '/' . $customer->bank_code;
+            }
+
+            if ($customer->bank_name) {
+                $bankAccount['bank'] = $customer->bank_name;
+            }
+
+            $partner['BankAccounts'] = [$bankAccount];
+        }
+
+        // Final Partner payload
+        return $partner;
     }
 }

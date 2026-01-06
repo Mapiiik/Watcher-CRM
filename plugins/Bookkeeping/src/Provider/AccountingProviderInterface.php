@@ -67,6 +67,24 @@ interface AccountingProviderInterface
     ): void;
 
     /**
+     * Send partners (customers) to the accounting system.
+     *
+     * This method:
+     * - builds provider-specific partner payloads
+     * - sends them via the provider transport layer
+     * - performs only basic transport-level validation
+     *
+     * It does NOT:
+     * - interpret customer data
+     * - perform domain validation
+     * - resolve duplicates or conflicts
+     *
+     * @param list<\App\Model\Entity\Customer> $customers Customers to send.
+     * @return void
+     */
+    public function sendPartners(array $customers): void;
+
+    /**
      * Export invoices into a file-based format.
      *
      * Intended mainly for:
