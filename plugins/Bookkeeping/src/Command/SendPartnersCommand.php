@@ -142,33 +142,35 @@ class SendPartnersCommand extends Command
                     ])
                     ->orderBy(['Customers.nid' => 'ASC'])
                     ->all();
+
+                if (is_numeric($customerMinNumber)) {
+                    $io->out(__d(
+                        'bookkeeping',
+                        'Filtering customers with customer number greater than or equal to: {0}',
+                        $customerMinNumber,
+                    ));
+
+                    $customers = $customers->filter(function (Customer $customer) use ($customerMinNumber) {
+                        return (int)$customer->number >= (int)$customerMinNumber;
+                    });
+                }
+
+                if (is_numeric($customerMaxNumber)) {
+                    $io->out(__d(
+                        'bookkeeping',
+                        'Filtering customers with customer number less than or equal to: {0}',
+                        $customerMaxNumber,
+                    ));
+
+                    $customers = $customers->filter(function (Customer $customer) use ($customerMaxNumber) {
+                        return (int)$customer->number <= (int)$customerMaxNumber;
+                    });
+                }
+
+                $customers = $customers->toList();
             }
 
-            if (is_numeric($customerMinNumber)) {
-                $io->out(__d(
-                    'bookkeeping',
-                    'Filtering customers with customer number greater than or equal to: {0}',
-                    $customerMinNumber,
-                ));
-
-                $customers = $customers->filter(function (Customer $customer) use ($customerMinNumber) {
-                    return (int)$customer->number >= (int)$customerMinNumber;
-                });
-            }
-
-            if (is_numeric($customerMaxNumber)) {
-                $io->out(__d(
-                    'bookkeeping',
-                    'Filtering customers with customer number less than or equal to: {0}',
-                    $customerMaxNumber,
-                ));
-
-                $customers = $customers->filter(function (Customer $customer) use ($customerMaxNumber) {
-                    return (int)$customer->number <= (int)$customerMaxNumber;
-                });
-            }
-
-            if ($customers->isEmpty()) {
+            if ($customers === []) {
                 $io->warning(__d(
                     'bookkeeping',
                     'No customers to send.',
@@ -179,7 +181,7 @@ class SendPartnersCommand extends Command
 
             // Delegate sending to provider
             $bookkeeping = new BookkeepingService();
-            $bookkeeping->sendPartners($customers->toList());
+            $bookkeeping->sendPartners($customers);
 
             $io->success(__d(
                 'bookkeeping',
