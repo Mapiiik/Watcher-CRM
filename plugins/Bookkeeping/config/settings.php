@@ -117,7 +117,7 @@ return [
                     // Customers (sync)
                     'customers' => [
                         'use_buyer_code' => false,
-                        'code_prefix' => 'CRM-',
+                        'code_prefix' => '',
                     ],
 
                     // API

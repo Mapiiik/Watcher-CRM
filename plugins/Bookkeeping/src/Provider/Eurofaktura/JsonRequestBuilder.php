@@ -104,6 +104,9 @@ class JsonRequestBuilder
             'buyerName' => $invoice->customer->billing_address->company
                 ?? $invoice->customer->billing_address->full_name
                 ?? '',
+            'buyerName1' => $invoice->customer->billing_address->company ?
+                ($invoice->customer->billing_address->full_name ?? '')
+                : '',
             'buyerStreet' => $invoice->customer->billing_address->street_and_number ?? '',
             'buyerPostalCode' => $invoice->customer->billing_address->zip ?? '',
             'buyerCity' => $invoice->customer->billing_address->city ?? '',
@@ -265,6 +268,12 @@ class JsonRequestBuilder
         if ($address !== null) {
             $partner['Addresses'] = [[
                 'type' => 'Invoicing',
+                'firstAddressLine' => $address->company
+                    ?? $address->full_name
+                    ?? '',
+                'additionalLine' => $address->company ?
+                    ($address->full_name ?? '')
+                    : '',
                 'street' => trim($address->street_and_number),
                 'postalCode' => $address->zip,
                 'city' => $address->city,
