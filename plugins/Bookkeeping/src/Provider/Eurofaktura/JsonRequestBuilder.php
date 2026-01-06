@@ -111,8 +111,8 @@ class JsonRequestBuilder
             'buyerPostalCode' => $invoice->customer->billing_address->zip ?? '',
             'buyerCity' => $invoice->customer->billing_address->city ?? '',
             'buyerCountry' => $invoice->customer->billing_address->country->code ?? '',
-            'buyerEMail' => $invoice->customer->email ?? '',
-            'buyerPhone' => $invoice->customer->phone ?? '',
+            'buyerEMail' => $invoice->customer->billing_emails[0]->email ?? '',
+            'buyerPhone' => $invoice->customer->billing_phones[0]->phone ?? '',
 
             // Intro text
             'introductionText' => $invoice->text,
@@ -211,6 +211,9 @@ class JsonRequestBuilder
     /**
      * Build Partner object.
      *
+     * Eurofaktura supports only a single phone/email per partner/address.
+     * We intentionally select the first valid phone/email and ignore the rest
+     *
      * @param \App\Model\Entity\Customer $customer
      * @return array
      */
@@ -224,7 +227,7 @@ class JsonRequestBuilder
         // Base partner payload
         $partner = [
             'partnerCode' => $buyerCode,
-            'eMail' => $customer->email,
+            'eMail' => $customer->emails[0]->email ?? '',
 
             'BuyerData' => [
                 'buyerCode' => $buyerCode,
@@ -280,8 +283,8 @@ class JsonRequestBuilder
                 'postalCode' => $primaryAddress->zip,
                 'city' => $primaryAddress->city,
                 'country' => $primaryAddress->country->code ?? '',
-                'eMail' => $customer->email,
-                'telephone' => $customer->phone,
+                'eMail' => $customer->emails[0]->email ?? '',
+                'telephone' => $customer->phones[0]->phone ?? '',
             ];
         }
         if ($invoicingAddress !== null) {
@@ -297,8 +300,8 @@ class JsonRequestBuilder
                 'postalCode' => $invoicingAddress->zip,
                 'city' => $invoicingAddress->city,
                 'country' => $invoicingAddress->country->code ?? '',
-                'eMail' => $customer->billing_email,
-                'telephone' => $customer->billing_phone,
+                'eMail' => $customer->billing_emails[0]->email ?? '',
+                'telephone' => $customer->billing_phones[0]->phone ?? '',
             ];
         }
 
