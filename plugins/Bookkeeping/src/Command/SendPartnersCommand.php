@@ -106,12 +106,10 @@ class SendPartnersCommand extends Command
                 $customers = [
                     $customersTable->get(
                         $customerId,
-                        [
-                            'contain' => [
-                                'Addresses.Countries',
-                                'Emails',
-                                'Phones',
-                            ],
+                        contain: [
+                            'Addresses.Countries',
+                            'Emails',
+                            'Phones',
                         ],
                     ),
                 ];
