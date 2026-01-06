@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-12-31 15:49+0100\n"
-"PO-Revision-Date: 2025-12-31 15:51+0100\n"
+"POT-Creation-Date: 2026-01-06 16:57+0100\n"
+"PO-Revision-Date: 2026-01-06 17:00+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -44,8 +44,8 @@ msgid "No invoices to send."
 msgstr "Žádné faktury k odeslání."
 
 #: plugins/Bookkeeping/src/Command/GenerateInvoicesCommand.php:168
-msgid "Invoices successfully sent to Eurofaktura."
-msgstr "Faktury úspěšně odeslány do Eurofaktury."
+msgid "Invoices successfully sent to Eurofaktura / E-racuni."
+msgstr "Faktury úspěšně odeslány do Eurofaktura / E-racuni."
 
 #: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:58
 msgid ""
@@ -219,6 +219,26 @@ msgstr "Chyba při odesílání e-mailové zprávy s ID vydané faktury {0}: {1}
 msgid "Error sending email message with issued invoice ID {0}"
 msgstr "Chyba při odesílání e-mailové zprávy s ID vydané faktury {0}"
 
+#: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:73
+msgid "Send only a single customer by ID."
+msgstr "Odesílejte pouze jednoho zákazníka podle ID."
+
+#: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:100
+msgid "Sending customer ID: {0}"
+msgstr "Odesílání ID zákazníka: {0}"
+
+#: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:119
+msgid "Sending all customers."
+msgstr "Odesílání všech zákazníků."
+
+#: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:136
+msgid "No customers to send."
+msgstr "Žádní zákazníci k odeslání."
+
+#: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:148
+msgid "Customers successfully sent to Eurofaktura / E-racuni."
+msgstr "Zákazníci úspěšně odesláni do Eurofaktura / E-racuni."
+
 #: plugins/Bookkeeping/src/Controller/InvoicesController.php:172
 #: plugins/Bookkeeping/src/Controller/InvoicesController.php:199
 msgid "The invoice has been saved."
@@ -319,18 +339,20 @@ msgid "dBase Format"
 msgstr "Formát dBase"
 
 #: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:61
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:163
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:185
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:207
 #: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:228
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:250
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:272
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:293
 msgid "Not implemented in Eurofaktura Provider."
 msgstr "Není implementováno v Eurofaktura Provider."
 
 #: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:110
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:175
 msgid "Eurofaktura API error ({0}, {1})"
 msgstr "Chyba API Eurofaktura ({0}, {1})"
 
 #: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:126
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:191
 msgid "Eurofaktura API error: {0}"
 msgstr "Chyba API Eurofaktura: {0}"
 
@@ -376,6 +398,10 @@ msgstr "Pohoda mServer vrátil chybovou odpověď (STATE: {0}, NOTE: {1})"
 #: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:146
 msgid "Failed to read generated XML file."
 msgstr "Nepodařilo se načíst vygenerovaný soubor XML."
+
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:203
+msgid "Partner synchronization is not implemented in Pohoda Provider."
+msgstr "Synchronizace partnerů není v Pohoda Provider implementována."
 
 #: plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:155
 msgid "Failed to generate Pohoda XML export."

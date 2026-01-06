@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-01-05 22:20+0100\n"
+"POT-Creation-Date: 2026-01-06 16:57+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1062,12 +1062,12 @@ msgstr ""
 msgid "Service type data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Customer.php:499
-#: ./src/Model/Entity/Customer.php:521
+#: ./src/Model/Entity/Customer.php:512
+#: ./src/Model/Entity/Customer.php:534
 msgid "Contracts data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Customer.php:536
+#: ./src/Model/Entity/Customer.php:549
 msgid "Accounting profile data not available."
 msgstr ""
 

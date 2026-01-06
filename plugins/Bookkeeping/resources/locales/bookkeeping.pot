@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-12-31 15:49+0100\n"
+"POT-Creation-Date: 2026-01-06 16:57+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -39,7 +39,7 @@ msgid "No invoices to send."
 msgstr ""
 
 #: ./plugins/Bookkeeping/src/Command/GenerateInvoicesCommand.php:168
-msgid "Invoices successfully sent to Eurofaktura."
+msgid "Invoices successfully sent to Eurofaktura / E-racuni."
 msgstr ""
 
 #: ./plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:58
@@ -166,6 +166,26 @@ msgstr ""
 msgid "Error sending email message with issued invoice ID {0}"
 msgstr ""
 
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:73
+msgid "Send only a single customer by ID."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:100
+msgid "Sending customer ID: {0}"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:119
+msgid "Sending all customers."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:136
+msgid "No customers to send."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:148
+msgid "Customers successfully sent to Eurofaktura / E-racuni."
+msgstr ""
+
 #: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:172
 #: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:199
 msgid "The invoice has been saved."
@@ -260,18 +280,20 @@ msgid "dBase Format"
 msgstr ""
 
 #: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:61
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:163
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:185
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:207
 #: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:228
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:250
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:272
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:293
 msgid "Not implemented in Eurofaktura Provider."
 msgstr ""
 
 #: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:110
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:175
 msgid "Eurofaktura API error ({0}, {1})"
 msgstr ""
 
 #: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:126
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:191
 msgid "Eurofaktura API error: {0}"
 msgstr ""
 
@@ -316,6 +338,10 @@ msgstr ""
 
 #: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:146
 msgid "Failed to read generated XML file."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:203
+msgid "Partner synchronization is not implemented in Pohoda Provider."
 msgstr ""
 
 #: ./plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:155
