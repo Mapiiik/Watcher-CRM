@@ -225,7 +225,6 @@ class JsonRequestBuilder
         $partner = [
             'partnerCode' => $buyerCode,
             'eMail' => $customer->email,
-            'mobilePhone' => $customer->phone,
 
             'BuyerData' => [
                 'buyerCode' => $buyerCode,
