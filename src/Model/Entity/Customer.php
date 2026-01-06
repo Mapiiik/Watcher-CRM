@@ -52,10 +52,10 @@ use RuntimeException;
  * @property \App\Model\Entity\AccountingProfile $accounting_profile
  * @property \App\Model\Entity\Address[] $addresses
  * @property \App\Model\Entity\Billing[] $billings
- * @property \App\Model\Entity\Address $installation_address
- * @property \App\Model\Entity\Address $billing_address
- * @property \App\Model\Entity\Address $delivery_address
- * @property \App\Model\Entity\Address $permanent_address
+ * @property \App\Model\Entity\Address|null $installation_address
+ * @property \App\Model\Entity\Address|null $billing_address
+ * @property \App\Model\Entity\Address|null $delivery_address
+ * @property \App\Model\Entity\Address|null $permanent_address
  * @property \App\Model\Entity\BorrowedEquipment[] $borrowed_equipments
  * @property \App\Model\Entity\Contract[] $contracts
  * @property \App\Model\Entity\Email[] $emails

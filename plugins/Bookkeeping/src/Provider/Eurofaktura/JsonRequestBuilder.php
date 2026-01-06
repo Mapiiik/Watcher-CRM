@@ -263,24 +263,43 @@ class JsonRequestBuilder
             $partner['dateOfBirth'] = $customer->date_of_birth->i18nFormat('yyyy-MM-dd');
         }
 
-        // Billing address (single invoicing address)
-        $address = $customer->billing_address;
-        if ($address !== null) {
-            $partner['Addresses'] = [[
-                'type' => 'Invoicing',
-                'firstAddressLine' => $address->company
-                    ?? $address->full_name
+        // Addresses
+        $primaryAddress = $customer->permanent_address ?? $customer->billing_address;
+        $invoicingAddress = $customer->billing_address;
+        $partner['Addresses'] = [];
+        if ($primaryAddress !== null) {
+            $partner['Addresses'][] = [
+                'type' => 'Primary',
+                'firstAddressLine' => $primaryAddress->company
+                    ?? $primaryAddress->full_name
                     ?? '',
-                'additionalLine' => $address->company ?
-                    ($address->full_name ?? '')
+                'additionalLine' => $primaryAddress->company ?
+                    ($primaryAddress->full_name ?? '')
                     : '',
-                'street' => trim($address->street_and_number),
-                'postalCode' => $address->zip,
-                'city' => $address->city,
-                'country' => $address->country->code ?? '',
+                'street' => trim($primaryAddress->street_and_number),
+                'postalCode' => $primaryAddress->zip,
+                'city' => $primaryAddress->city,
+                'country' => $primaryAddress->country->code ?? '',
+                'eMail' => $customer->email,
+                'telephone' => $customer->phone,
+            ];
+        }
+        if ($invoicingAddress !== null) {
+            $partner['Addresses'][] = [
+                'type' => 'Invoicing',
+                'firstAddressLine' => $invoicingAddress->company
+                    ?? $invoicingAddress->full_name
+                    ?? '',
+                'additionalLine' => $invoicingAddress->company ?
+                    ($invoicingAddress->full_name ?? '')
+                    : '',
+                'street' => trim($invoicingAddress->street_and_number),
+                'postalCode' => $invoicingAddress->zip,
+                'city' => $invoicingAddress->city,
+                'country' => $invoicingAddress->country->code ?? '',
                 'eMail' => $customer->billing_email,
                 'telephone' => $customer->billing_phone,
-            ]];
+            ];
         }
 
         // Bank Accounts
