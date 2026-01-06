@@ -252,7 +252,7 @@ class JsonRequestBuilder
 
         // Identification numbers
         if (!empty($customer->identity_number)) {
-            $partner['taxID'] = $customer->identity_number;
+            $partner['personalID'] = $customer->identity_number; // taxID - not working for OIB
         }
 
         if (!empty($customer->vat_number)) {
