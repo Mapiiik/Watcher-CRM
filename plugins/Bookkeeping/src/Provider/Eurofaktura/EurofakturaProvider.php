@@ -11,6 +11,7 @@ use Bookkeeping\Provider\AccountingProviderInterface;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use RuntimeException;
+use Settings\Utility\Settings;
 
 /**
  * Class EurofakturaProvider
@@ -89,14 +90,24 @@ class EurofakturaProvider implements AccountingProviderInterface
         AccountingProfile $accountingProfile,
     ): void {
         foreach ($invoices as $invoice) {
-            // 1) Build SalesInvoice payload
+            $useBuyerCode = (bool)Settings::get(
+                EurofakturaProvider::SETTINGS_ROOT . '.customers.use_buyer_code',
+                false,
+            );
+
+            // 1) Send partner to API (if use_buyer_code is set)
+            if ($useBuyerCode && isset($invoice->customer)) {
+                $this->sendPartners([$invoice->customer]);
+            }
+
+            // 2) Build SalesInvoice payload
             $salesInvoice = $this->jsonRequestBuilder->buildSalesInvoice(
                 $invoice,
                 $invoicedMonth,
                 $accountingProfile,
             );
 
-            // 2) Send to API
+            // 3) Send to API
             $response = $this->httpClient->send(
                 'SalesInvoiceCreate',
                 [
@@ -104,7 +115,7 @@ class EurofakturaProvider implements AccountingProviderInterface
                 ],
             );
 
-            // 3) Basic transport-level validation
+            // 4) Basic transport-level validation
             if (!$response->isOk()) {
                 throw new RuntimeException(
                     __d(
@@ -120,7 +131,7 @@ class EurofakturaProvider implements AccountingProviderInterface
 
             $data = $response->getJson();
 
-            // 4) API-level error handling
+            // 5) API-level error handling
             if (!empty($data['error'])) {
                 throw new RuntimeException(
                     __d(
@@ -131,7 +142,7 @@ class EurofakturaProvider implements AccountingProviderInterface
                 );
             }
 
-            // 5) (Optional) store documentId / external reference
+            // 6) (Optional) store documentId / external reference
             // $documentId = $data['result']['id'] ?? null;
 
             // sleep one second because of rate limit
