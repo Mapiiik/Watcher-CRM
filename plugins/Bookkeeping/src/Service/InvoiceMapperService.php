@@ -44,29 +44,31 @@ class InvoiceMapperService
                 continue;
             }
 
-            // Validate variable symbol range
-            $vs = $draft->variableSymbol;
+            // Validate customer number range
+            $customerNumber = (int)$draft->customerNumber;
             $series = (int)env('CUSTOMER_SERIES', '0');
 
-            if (!($series < $vs && $vs < $series + 50000)) {
+            if (!($series < $customerNumber && $customerNumber < $series + 50000)) {
                 // Skip invoices outside customer variable symbol range
                 continue;
             }
 
             // Find or create invoice
+            /** @var \Bookkeeping\Model\Entity\Invoice $invoice */
             $invoice =
                 $invoicesTable->find()->where(['number' => $draft->number])->first()
                 ?? $invoicesTable->newEntity(['number' => $draft->number]);
 
             // Map fields
-            $invoice->customer_id = $customerIds[$vs - $series] ?? null;
-            $invoice->variable_symbol = $vs;
+            $invoice->customer_id = $customerIds[$customerNumber - $series] ?? null;
+            $invoice->variable_symbol = $draft->variableSymbol;
             $invoice->creation_date = $draft->creationDate;
             $invoice->due_date = $draft->dueDate;
             $invoice->text = $draft->text;
             $invoice->total = $draft->total;
             $invoice->debt = $draft->debt;
             $invoice->payment_date = $draft->paymentDate;
+            $invoice->accounting_identifier = $draft->accountingIdentifier;
 
             // Count stats
             if ($invoice->isNew()) {

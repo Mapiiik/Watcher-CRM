@@ -124,8 +124,8 @@ class JsonRequestBuilder
 
             // Contract / subscription context
             'type' => $accountingProfile->reverse_charge ? $invoiceTypeRC : $invoiceTypeStandard,
-            'contractNumber' => (string)$invoice->variableSymbol,
-            'ourContractNumber' => (string)$invoice->variableSymbol,
+            'contractNumber' => (string)$invoice->customerNumber,
+            'ourContractNumber' => (string)$invoice->customerNumber,
 
             // Items
             'Items' => $this->buildSalesInvoiceItems($invoice, $invoicedMonth, $accountingProfile),

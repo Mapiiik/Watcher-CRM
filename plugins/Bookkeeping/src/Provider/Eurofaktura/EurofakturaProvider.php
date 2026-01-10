@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Bookkeeping\Provider\Eurofaktura;
 
 use App\Model\Entity\AccountingProfile;
+use App\Model\Table\CustomersTable;
 use Bookkeeping\Model\Entity\Invoice;
 use Bookkeeping\Model\Enum\InvoiceExportFormat;
 use Bookkeeping\Model\Enum\InvoiceImportFormat;
@@ -11,6 +12,7 @@ use Bookkeeping\Model\Enum\InvoiceSyncMode;
 use Bookkeeping\Provider\AccountingProviderInterface;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use RuntimeException;
 use Settings\Utility\Settings;
 
@@ -34,9 +36,12 @@ use Settings\Utility\Settings;
  */
 class EurofakturaProvider implements AccountingProviderInterface
 {
+    use LocatorAwareTrait;
+
     public const SETTINGS_ROOT = 'bookkeeping.accounting.providers.eurofaktura';
 
     private HttpClient $httpClient;
+    private JsonParser $jsonParser;
     private JsonRequestBuilder $jsonRequestBuilder;
 
     /**
@@ -45,6 +50,7 @@ class EurofakturaProvider implements AccountingProviderInterface
     public function __construct()
     {
         $this->httpClient = new HttpClient();
+        $this->jsonParser = new JsonParser();
         $this->jsonRequestBuilder = new JsonRequestBuilder();
     }
 
@@ -60,12 +66,72 @@ class EurofakturaProvider implements AccountingProviderInterface
      */
     public function syncInvoices(InvoiceSyncMode $mode, DateTime $lastChanges): array
     {
-        throw new RuntimeException(
-            __d(
-                'bookkeeping',
-                'Not implemented in Eurofaktura Provider.',
-            ),
+        return match ($mode) {
+            InvoiceSyncMode::DELTA => $this->syncInvoicesDelta($lastChanges),
+            InvoiceSyncMode::FULL => $this->syncInvoicesFull(),
+        };
+    }
+
+    /**
+     * DELTA sync – invoices paid since last synchronization.
+     *
+     * @return list<\Bookkeeping\Model\ValueObject\InvoiceDraft>
+     */
+    private function syncInvoicesDelta(DateTime $lastChanges): array
+    {
+        $response = $this->httpClient->send(
+            'SalesInvoiceList',
+            [
+                'dateOfFullPaymentFrom' => $lastChanges->i18nFormat('yyyy-MM-dd'),
+            ],
         );
+
+        return $this->jsonParser->parseSalesInvoiceList($response->getJson());
+    }
+
+    /**
+     * FULL sync – iterate over all CRM customers and fetch invoices per buyer.
+     *
+     * @return list<\Bookkeeping\Model\ValueObject\InvoiceDraft>
+     */
+    private function syncInvoicesFull(): array
+    {
+        $customersTable = $this->fetchTable(CustomersTable::class);
+        $customers = $customersTable
+            ->find()
+            ->select(['nid'])
+            ->orderBy([
+                'Customers.nid' => 'ASC',
+            ])
+            ->all();
+
+        $buyerCodePrefix = Settings::getString(
+            self::SETTINGS_ROOT . '.customers.code_prefix',
+            'CRM-',
+        );
+
+        $drafts = [];
+
+        foreach ($customers as $customer) {
+            $buyerCode = $buyerCodePrefix . $customer->number;
+
+            $response = $this->httpClient->send(
+                'SalesInvoiceList',
+                [
+                    'buyer' => $buyerCode,
+                ],
+            );
+
+            $drafts = array_merge(
+                $drafts,
+                $this->jsonParser->parseSalesInvoiceList($response->getJson()),
+            );
+
+            // Eurofaktura rate limit
+            sleep(1);
+        }
+
+        return $drafts;
     }
 
     /**

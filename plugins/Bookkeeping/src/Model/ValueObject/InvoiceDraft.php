@@ -33,7 +33,7 @@ final class InvoiceDraft
     /**
      * Variable symbol (VS)
      */
-    public ?int $variableSymbol = null;
+    public ?string $variableSymbol = null;
 
     /**
      * Invoice creation date
@@ -74,6 +74,16 @@ final class InvoiceDraft
      * Payment (liquidation) date, if available
      */
     public ?Date $paymentDate = null;
+
+    /**
+     * Accounting Identifier
+     */
+    public ?string $accountingIdentifier = null;
+
+    /**
+     * Customer number (CRM)
+     */
+    public ?string $customerNumber = null;
 
     /**
      * Customer Entity
@@ -135,6 +145,11 @@ final class InvoiceDraft
 
         if ($this->variableSymbol === null) {
             $this->addWarning('Missing variable symbol');
+            $valid = false;
+        }
+
+        if ($this->customerNumber === null) {
+            $this->addWarning('Missing customer number');
             $valid = false;
         }
 

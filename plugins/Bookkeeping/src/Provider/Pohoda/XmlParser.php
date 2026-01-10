@@ -73,11 +73,17 @@ class XmlParser
             );
 
             // Variable symbol
-            $value = $this->extract(
+            $symVar = $this->extract(
                 $invoice,
                 './inv:invoiceHeader/inv:symVar',
             );
-            $draft->variableSymbol = $value !== null ? (int)$value : null;
+            $draft->variableSymbol = $symVar;
+
+            // Customer number
+            $draft->customerNumber = $symVar;
+
+            // Accounting ID
+            $draft->accountingIdentifier = $this->extract($invoice, './inv:invoiceHeader/inv:id');
 
             // Dates
             $draft->creationDate = $this->parseDate(

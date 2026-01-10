@@ -143,7 +143,8 @@ final class InvoiceGenerationService
 
         $draft->number = $number;
         $draft->customer = $customer;
-        $draft->variableSymbol = (int)$customer->number;
+        $draft->customerNumber = $customer->number;
+        $draft->variableSymbol = $customer->number;
         $draft->creationDate = $invoicedMonth->lastOfMonth();
         $draft->dueDate = $this->calculateDueDate($customer, $invoicedMonth);
         $draft->text = $text;

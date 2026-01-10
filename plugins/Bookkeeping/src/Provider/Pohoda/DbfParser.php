@@ -47,9 +47,10 @@ final class DbfParser
             $draft->number = $record['CISLO'] ?? null;
 
             // Variable symbol
-            $draft->variableSymbol = isset($record['VARSYM'])
-                ? (int)$record['VARSYM']
-                : null;
+            $draft->variableSymbol = $record['VARSYM'] ?? null;
+
+            // Customer number
+            $draft->customerNumber = $record['VARSYM'] ?? null;
 
             // Dates
             $draft->creationDate = $this->parseDate($record['DATUM'] ?? null);
