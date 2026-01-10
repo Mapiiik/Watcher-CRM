@@ -18,7 +18,7 @@ use Cake\ORM\Entity;
  * @property string $id
  * @property string|null $customer_id
  * @property string $number
- * @property int|null $variable_symbol
+ * @property string|null $variable_symbol
  * @property \Cake\I18n\Date|null $creation_date
  * @property \Cake\I18n\Date|null $due_date
  * @property string|null $text

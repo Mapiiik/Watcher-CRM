@@ -23,8 +23,8 @@ class InvoicesFixture extends TestFixture
             [
                 'id' => 'dbcc7efa-8ae3-4bf9-afc5-273bd3a843f7',
                 'customer_id' => '403bab0e-52cd-4a8e-83f8-43c2457d0481',
-                'number' => 1,
-                'variable_symbol' => 1,
+                'number' => '123/TEST/2026',
+                'variable_symbol' => '123456',
                 'creation_date' => '2021-12-09',
                 'due_date' => '2021-12-09',
                 'text' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
@@ -37,6 +37,7 @@ class InvoicesFixture extends TestFixture
                 'created_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
                 'modified' => 1639064191,
                 'modified_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
+                'accounting_identifier' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
             ],
         ];
         parent::init();

@@ -82,7 +82,7 @@ class InvoicesTable extends Table
             ->notEmptyString('number');
 
         $validator
-            ->integer('variable_symbol')
+            ->scalar('variable_symbol')
             ->allowEmptyString('variable_symbol');
 
         $validator
