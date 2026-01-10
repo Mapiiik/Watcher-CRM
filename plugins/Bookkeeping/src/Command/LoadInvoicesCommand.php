@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Command;
 
+use Bookkeeping\Model\Enum\InvoiceSyncMode;
 use Bookkeeping\Service\BookkeepingService;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
@@ -63,6 +64,14 @@ class LoadInvoicesCommand extends Command
                         . ' If not provided, the date from the last successful synchronization will be used.',
                 ),
                 'default' => null,
+            ])
+            ->addOption('mode', [
+                'help' => __d(
+                    'bookkeeping',
+                    'Synchronization mode',
+                ),
+                'default' => InvoiceSyncMode::DELTA->value,
+                'choices' => array_keys(InvoiceSyncMode::options()),
             ]);
     }
 
@@ -76,6 +85,15 @@ class LoadInvoicesCommand extends Command
     #[Override]
     public function execute(Arguments $args, ConsoleIo $io)
     {
+        $mode = InvoiceSyncMode::from((string)$args->getOption('mode'));
+        $now = new DateTime();
+
+        $io->info(__d(
+            'bookkeeping',
+            'Running invoice sync in mode: {0}',
+            $mode->label(),
+        ));
+
         $lastChanges = $this->resolveLastChanges($args, $io);
         if ($lastChanges === null) {
             return static::CODE_ERROR;
@@ -88,7 +106,10 @@ class LoadInvoicesCommand extends Command
         ));
 
         try {
-            $result = $this->bookkeeping->syncInvoices($lastChanges);
+            $result = $this->bookkeeping->syncInvoices(
+                mode: $mode,
+                lastChanges: $lastChanges,
+            );
         } catch (Throwable $e) {
             $io->error(__d(
                 'bookkeeping',
@@ -110,7 +131,7 @@ class LoadInvoicesCommand extends Command
             ],
         ));
 
-        $this->saveLastSynchronizationTime(new DateTime());
+        $this->saveLastSynchronizationTime($now);
 
         return static::CODE_SUCCESS;
     }

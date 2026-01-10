@@ -7,6 +7,7 @@ use App\Model\Entity\AccountingProfile;
 use Bookkeeping\Model\Entity\Invoice;
 use Bookkeeping\Model\Enum\InvoiceExportFormat;
 use Bookkeeping\Model\Enum\InvoiceImportFormat;
+use Bookkeeping\Model\Enum\InvoiceSyncMode;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 
@@ -37,10 +38,11 @@ interface AccountingProviderInterface
      * Fetches invoices changed since the given timestamp and maps them
      * into internal InvoiceDraft value objects.
      *
+     * @param \Bookkeeping\Model\Enum\InvoiceSyncMode $mode Synchronization mode
      * @param \Cake\I18n\DateTime $lastChanges Timestamp of last successful sync.
      * @return list<\Bookkeeping\Model\ValueObject\InvoiceDraft>
      */
-    public function syncInvoices(DateTime $lastChanges): array;
+    public function syncInvoices(InvoiceSyncMode $mode, DateTime $lastChanges): array;
 
     /**
      * Send invoices to the accounting system.

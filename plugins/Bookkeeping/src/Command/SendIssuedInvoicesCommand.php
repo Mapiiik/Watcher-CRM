@@ -19,10 +19,62 @@ use Settings\Utility\Settings;
 
 /**
  * SendIssuedInvoices command.
+ *
+ * Sends issued invoices to customers by email.
+ *
+ * This command processes invoices that:
+ * - are marked as sendable by email (`send_by_email = true`)
+ * - have not yet been sent (`email_sent IS NULL`)
+ *
+ * For each eligible invoice, it:
+ * - resolves customer billing email addresses
+ * - generates an email message using configured templates
+ * - attaches the invoice PDF
+ * - sends the email to all billing contacts
+ * - marks the invoice as sent by setting `email_sent`
+ *
+ * In case of delivery failure:
+ * - the error is logged
+ * - a notification email is sent to configured report recipients
+ *
+ * This command acts only as an orchestration layer and does NOT:
+ * - generate invoices
+ * - modify invoice amounts or accounting data
+ * - communicate with the accounting system
+ *
+ * It is intended to be run periodically (e.g. via cron)
+ * to deliver already issued invoices to customers.
  */
 class SendIssuedInvoicesCommand extends Command
 {
     private BookkeepingService $bookkeeping;
+
+    /**
+     * The name of this command.
+     *
+     * @var string
+     */
+    protected string $name = 'send_issued_invoices';
+
+    /**
+     * Get the default command name.
+     *
+     * @return string
+     */
+    public static function defaultName(): string
+    {
+        return 'send_issued_invoices';
+    }
+
+    /**
+     * Get the command description.
+     *
+     * @return string
+     */
+    public static function getDescription(): string
+    {
+        return 'Send issued invoices to customers by email.';
+    }
 
     /**
      * Initializes bookkeeping service used for invoice-related operations.

@@ -22,11 +22,58 @@ use Override;
 use Settings\Utility\Settings;
 
 /**
- * Process Debtors command.
+ * ProcessDebtors command.
+ *
+ * Processes customers with overdue invoices.
+ *
+ * This command evaluates overdue debtors and performs the following actions
+ * based on configured rules and provided options:
+ * - generates notification messages (email or SMS) for overdue invoices
+ * - generates blocking notifications for customers exceeding allowed limits
+ * - optionally updates service blocking in external systems
+ *
+ * The command creates customer message records (emails / SMS) in the database
+ * but does NOT directly send them. Message delivery is handled asynchronously
+ * by dedicated workers or background processes.
+ *
+ * This command acts as an orchestration layer and does NOT:
+ * - modify invoice amounts or accounting data
+ * - perform payment processing
+ * - directly block or unblock services without explicit request
+ *
+ * It is intended to be run periodically (e.g. via cron)
+ * to enforce payment discipline and inform customers about overdue debts.
  */
 class ProcessDebtorsCommand extends Command
 {
     private BookkeepingService $bookkeeping;
+
+    /**
+     * The name of this command.
+     *
+     * @var string
+     */
+    protected string $name = 'process_debtors';
+
+    /**
+     * Get the default command name.
+     *
+     * @return string
+     */
+    public static function defaultName(): string
+    {
+        return 'process_debtors';
+    }
+
+    /**
+     * Get the command description.
+     *
+     * @return string
+     */
+    public static function getDescription(): string
+    {
+        return 'Process overdue debtors and generate notifications or blocking actions.';
+    }
 
     /**
      * Initializes bookkeeping service used for invoice-related operations.

@@ -15,9 +15,9 @@ use Cake\I18n\Date;
 use RuntimeException;
 
 /**
- * GenerateInvoices command.
+ * IssueInvoices command.
  *
- * Generates invoice drafts and sends them to Eurofaktura / E-racuni.
+ * Generates invoice drafts and sends them to accounting system.
  *
  * This command acts only as an orchestration layer:
  * - resolves invoiced month
@@ -30,14 +30,14 @@ use RuntimeException;
  * - calculate prices or VAT
  * - interpret accounting rules
  */
-class GenerateInvoicesCommand extends Command
+class IssueInvoicesCommand extends Command
 {
     /**
      * The name of this command.
      *
      * @var string
      */
-    protected string $name = 'generate_invoices';
+    protected string $name = 'issue_invoices';
 
     /**
      * Get the default command name.
@@ -46,7 +46,7 @@ class GenerateInvoicesCommand extends Command
      */
     public static function defaultName(): string
     {
-        return 'generate_invoices';
+        return 'issue_invoices';
     }
 
     /**
@@ -56,7 +56,7 @@ class GenerateInvoicesCommand extends Command
      */
     public static function getDescription(): string
     {
-        return 'Generate and send invoices to Eurofaktura / E-racuni.';
+        return 'Issue invoices and send them to the accounting system.';
     }
 
     /**
@@ -96,7 +96,7 @@ class GenerateInvoicesCommand extends Command
      * 1. Resolve invoiced month
      * 2. Resolve accounting profile context
      * 3. Load invoice drafts
-     * 4. Delegate sending to EurofakturaProvider
+     * 4. Delegate sending to AccountingProviderInterface
      *
      * @param \Cake\Console\Arguments $args The command arguments.
      * @param \Cake\Console\ConsoleIo $io The console io.
@@ -167,7 +167,7 @@ class GenerateInvoicesCommand extends Command
 
             $io->success(__d(
                 'bookkeeping',
-                'Invoices successfully sent to Eurofaktura / E-racuni.',
+                'Invoices successfully sent to accounting system.',
             ));
 
             return Command::CODE_SUCCESS;

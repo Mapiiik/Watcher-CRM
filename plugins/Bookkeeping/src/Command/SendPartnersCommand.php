@@ -16,7 +16,6 @@ use RuntimeException;
  * SendPartners command.
  *
  * Sends customers (partners) to the accounting system
- * (Eurofaktura / E-racuni).
  *
  * This command acts only as an orchestration layer:
  * - loads customers
@@ -53,7 +52,7 @@ class SendPartnersCommand extends Command
      */
     public static function getDescription(): string
     {
-        return 'Send customers (partners) to Eurofaktura / E-racuni.';
+        return 'Send customers (partners) to accounting system.';
     }
 
     /**
@@ -185,7 +184,7 @@ class SendPartnersCommand extends Command
 
             $io->success(__d(
                 'bookkeeping',
-                'Customers successfully sent to Eurofaktura / E-racuni.',
+                'Customers successfully sent to accounting system.',
             ));
 
             return Command::CODE_SUCCESS;

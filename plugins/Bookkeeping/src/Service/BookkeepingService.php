@@ -7,6 +7,7 @@ use App\Model\Entity\AccountingProfile;
 use Bookkeeping\Model\Entity\Invoice;
 use Bookkeeping\Model\Enum\InvoiceExportFormat;
 use Bookkeeping\Model\Enum\InvoiceImportFormat;
+use Bookkeeping\Model\Enum\InvoiceSyncMode;
 use Bookkeeping\Provider\AccountingProviderInterface;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
@@ -83,13 +84,14 @@ class BookkeepingService
     /**
      * Synchronize invoices from the accounting system.
      *
-     * @param \Cake\I18n\DateTime $lastChanges
+     * @param \Bookkeeping\Model\Enum\InvoiceSyncMode $mode Synchronization mode
+     * @param \Cake\I18n\DateTime $lastChanges Timestamp of last successful sync.
      * @return array{imported:int, created:int, modified:int, skipped:int} Import results.
      */
-    public function syncInvoices(DateTime $lastChanges): array
+    public function syncInvoices(InvoiceSyncMode $mode, DateTime $lastChanges): array
     {
         // Load and parse invoices
-        $drafts = $this->provider->syncInvoices($lastChanges);
+        $drafts = $this->provider->syncInvoices($mode, $lastChanges);
 
         // Map and save into CRM
         return $this->invoiceMapper->mapAndSave($drafts);
