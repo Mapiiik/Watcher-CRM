@@ -98,7 +98,7 @@ use Bookkeeping\Debtors\Debtor;
                         <tbody>
                             <?php foreach ($debtor->getInvoices() as $invoice) : ?>
                             <tr>
-                                <td><?= $this->Number->format($invoice->number) ?></td>
+                                <td><?= h($invoice->number) ?></td>
                                 <td><?= h($invoice->variable_symbol) ?></td>
                                 <td><?= h($invoice->creation_date) ?></td>
                                 <td><?= h($invoice->due_date) ?></td>

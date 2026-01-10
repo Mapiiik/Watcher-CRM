@@ -43,7 +43,7 @@ use Cake\I18n\Date;
             </td>
             <td><?= $invoice->__isset('customer') ? h($invoice->customer->number) : '' ?></td>
             <?php endif; ?>
-            <td><?= $this->Number->format($invoice->number) ?></td>
+            <td><?= h($invoice->number) ?></td>
             <td><?= h($invoice->variable_symbol) ?></td>
             <td><?= h($invoice->creation_date) ?></td>
             <td><?= h($invoice->due_date) ?></td>

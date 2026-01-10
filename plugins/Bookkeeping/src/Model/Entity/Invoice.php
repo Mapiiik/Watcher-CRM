@@ -16,9 +16,8 @@ use Cake\ORM\Entity;
  * @property string|null $modified_by
  * @property \App\Model\Entity\AppUser|null $modifier
  * @property string $id
- * @property int $nid
  * @property string|null $customer_id
- * @property int $number
+ * @property string $number
  * @property int|null $variable_symbol
  * @property \Cake\I18n\Date|null $creation_date
  * @property \Cake\I18n\Date|null $due_date
@@ -28,9 +27,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\Date|null $payment_date
  * @property bool $send_by_email
  * @property \Cake\I18n\DateTime|null $email_sent
- * @property \App\Model\Entity\Billing[] $items
- * @property string|null $note
- * @property string|null $internal_note
+ * @property string|null $accounting_identifier
  * @property string $style
  *
  * @property \App\Model\Entity\Customer $customer
@@ -62,6 +59,7 @@ class Invoice extends Entity
         'payment_date' => true,
         'send_by_email' => true,
         'email_sent' => true,
+        'accounting_identifier' => true,
         'customer' => true,
     ];
 
@@ -75,11 +73,11 @@ class Invoice extends Entity
         $style = '';
         $now = Date::now();
 
-        if ($this->debt->isPositive()) {
+        if (isset($this->debt) && $this->debt->isPositive()) {
             $style = 'color: red;';
         }
 
-        if ($this->debt->isPositive() && $this->due_date < $now) {
+        if (isset($this->debt) && $this->debt->isPositive() && $this->due_date < $now) {
             $style = 'background-color: #ffc0c0; color: red;';
         }
 

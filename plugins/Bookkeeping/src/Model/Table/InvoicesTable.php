@@ -117,6 +117,10 @@ class InvoicesTable extends Table
             ->dateTime('email_sent')
             ->allowEmptyDateTime('email_sent');
 
+        $validator
+            ->scalar('accounting_identifier')
+            ->allowEmptyString('accounting_identifier');
+
         return $validator;
     }
 
@@ -131,6 +135,10 @@ class InvoicesTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn('customer_id', 'Customers'), ['errorField' => 'customer_id']);
+        $rules->add($rules->isUnique(
+            ['accounting_identifier'],
+            'Accounting identifier must be unique',
+        ));
 
         return $rules;
     }

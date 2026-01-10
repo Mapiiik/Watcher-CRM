@@ -63,7 +63,7 @@
                         </tr>
                         <tr>
                             <th><?= __d('bookkeeping', 'Number') ?></th>
-                            <td><?= $this->Number->format($invoice->number) ?></td>
+                            <td><?= h($invoice->number) ?></td>
                         </tr>
                         <tr>
                             <th><?= __d('bookkeeping', 'Variable Symbol') ?></th>
