@@ -10,6 +10,7 @@ use Bookkeeping\Model\Enum\InvoiceExportFormat;
 use Bookkeeping\Model\Enum\InvoiceImportFormat;
 use Bookkeeping\Model\Enum\InvoiceSyncMode;
 use Bookkeeping\Provider\AccountingProviderInterface;
+use Cake\Http\Client\Response;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\ORM\Locator\LocatorAwareTrait;
@@ -52,6 +53,57 @@ class EurofakturaProvider implements AccountingProviderInterface
         $this->httpClient = new HttpClient();
         $this->jsonParser = new JsonParser();
         $this->jsonRequestBuilder = new JsonRequestBuilder();
+    }
+
+    /**
+     * Assert that an API response from Eurofaktura is valid.
+     *
+     * This method performs a unified validation of the API response by checking:
+     * - transport-level success (HTTP status, connectivity)
+     * - API-level errors returned in the response payload
+     *
+     * It does NOT:
+     * - return parsed data
+     * - perform any domain-level interpretation
+     *
+     * On failure, a RuntimeException is thrown with a descriptive, localized message.
+     * On success, the method returns silently.
+     *
+     * This helper centralizes error handling logic for all Eurofaktura API calls
+     * and ensures consistent behavior across provider methods.
+     *
+     * @param \Cake\Http\Client\Response $response HTTP API response to validate.
+     * @return void
+     * @throws \RuntimeException When the response indicates a transport or API-level error.
+     */
+    private function assertValidApiResponse(Response $response): void
+    {
+        // Transport-level validation
+        if (!$response->isOk()) {
+            throw new RuntimeException(
+                __d(
+                    'bookkeeping',
+                    'Eurofaktura API error ({0}, {1})',
+                    [
+                        $response->getStatusCode(),
+                        $response->getJson()['response']['description'] ?? 'Unknown error',
+                    ],
+                ),
+            );
+        }
+
+        $data = $response->getJson();
+
+        // API-level error handling
+        if (!empty($data['error'])) {
+            throw new RuntimeException(
+                __d(
+                    'bookkeeping',
+                    'Eurofaktura API error: {0}',
+                    [$data['error']['message'] ?? 'Unknown error'],
+                ),
+            );
+        }
     }
 
     /**
@@ -183,34 +235,12 @@ class EurofakturaProvider implements AccountingProviderInterface
                 ],
             );
 
-            // 4) Basic transport-level validation
-            if (!$response->isOk()) {
-                throw new RuntimeException(
-                    __d(
-                        'bookkeeping',
-                        'Eurofaktura API error ({0}, {1})',
-                        [
-                            $response->getStatusCode(),
-                            $response->getJson()['response']['description'] ?? 'Unknown error',
-                        ],
-                    ),
-                );
-            }
+            // 4) Validate response
+            $this->assertValidApiResponse($response);
 
-            $data = $response->getJson();
 
-            // 5) API-level error handling
-            if (!empty($data['error'])) {
-                throw new RuntimeException(
-                    __d(
-                        'bookkeeping',
-                        'Eurofaktura API error: {0}',
-                        [$data['error']['message'] ?? 'Unknown error'],
-                    ),
-                );
-            }
-
-            // 6) (Optional) store documentId / external reference
+            // 5) (Optional) store documentId / external reference
+            // $data = $response->getJson();
             // $documentId = $data['result']['id'] ?? null;
 
             // sleep one second because of rate limit
@@ -248,34 +278,11 @@ class EurofakturaProvider implements AccountingProviderInterface
                 ],
             );
 
-            // 3) Basic transport-level validation
-            if (!$response->isOk()) {
-                throw new RuntimeException(
-                    __d(
-                        'bookkeeping',
-                        'Eurofaktura API error ({0}, {1})',
-                        [
-                            $response->getStatusCode(),
-                            $response->getJson()['response']['description'] ?? 'Unknown error',
-                        ],
-                    ),
-                );
-            }
+            // 3) Validate response
+            $this->assertValidApiResponse($response);
 
-            $data = $response->getJson();
-
-            // 4) API-level error handling
-            if (!empty($data['error'])) {
-                throw new RuntimeException(
-                    __d(
-                        'bookkeeping',
-                        'Eurofaktura API error: {0}',
-                        [$data['error']['message'] ?? 'Unknown error'],
-                    ),
-                );
-            }
-
-            // 5) (Optional) store documentId / external reference
+            // 4) (Optional) store documentId / external reference
+            // $data = $response->getJson();
             // $partnerId = $data['result']['id'] ?? null;
 
             // sleep one second because of rate limit
@@ -389,34 +396,12 @@ class EurofakturaProvider implements AccountingProviderInterface
                 ],
             );
 
-            // Basic transport-level validation
-            if (!$response->isOk()) {
-                throw new RuntimeException(
-                    __d(
-                        'bookkeeping',
-                        'Eurofaktura API error ({0}, {1})',
-                        [
-                            $response->getStatusCode(),
-                            $response->getJson()['response']['description'] ?? 'Unknown error',
-                        ],
-                    ),
-                );
-            }
-
-            $data = $response->getJson();
-
-            // API-level error handling
-            if (!empty($data['error'])) {
-                throw new RuntimeException(
-                    __d(
-                        'bookkeeping',
-                        'Eurofaktura API error: {0}',
-                        [$data['error']['message'] ?? 'Unknown error'],
-                    ),
-                );
-            }
+            // Validate response
+            $this->assertValidApiResponse($response);
 
             // Check for PDF data
+            $data = $response->getJson();
+
             if (isset($data['response']['result']['pdfFile'])) {
                 // Decode base64 PDF content
                 $pdfContent = base64_decode($data['response']['result']['pdfFile'], true);
