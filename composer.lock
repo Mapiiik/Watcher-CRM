@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1ce44aab7d48e3ca10c9770a825c49e8",
+    "content-hash": "5974bba0480487cfe3486f80ba961bdb",
     "packages": [
         {
             "name": "brick/math",
@@ -2335,7 +2335,7 @@
         },
         {
             "name": "mapik/audit-log",
-            "version": "6.x-dev",
+            "version": "6.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Mapiiik/audit-log.git",
@@ -8888,9 +8888,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "mapik/audit-log": 20
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
