@@ -356,22 +356,92 @@ class EurofakturaProvider implements AccountingProviderInterface
     }
 
     /**
-     * Get absolute path to the invoice PDF.
+     * Get the file path to the invoice PDF.
      *
-     * Depending on provider capabilities, this may:
+     * Depending on state:
      * - return a locally cached file
      * - trigger a remote PDF download
-     * - or throw if unsupported
      *
      * @param \Bookkeeping\Model\Entity\Invoice $invoice Invoice entity.
      * @return string Absolute path to the PDF file.
      */
     public function getInvoicePdfPath(Invoice $invoice): string
     {
+        $filepath = (string)env('DATA_ROOT', ROOT . DS . 'data')
+            . DS . 'invoices'
+            . DS . 'Invoice_' . strtr($invoice->number, '/', '-') . '_' . $invoice->creation_date->format('Y-m-d') . '.pdf';
+
+        // 1) Check local cache
+        if (file_exists($filepath)) {
+            return $filepath;
+        }
+
+        // 2) Attempt to download from Eurofaktura API
+        if (!empty($invoice->accounting_identifier)) {
+            // Sleep one second because of rate limit
+            sleep(1);
+
+            // Attempt to download from Eurofaktura API
+            $response = $this->httpClient->send(
+                'SalesInvoiceGetPDF',
+                [
+                    'documentID' => $invoice->accounting_identifier,
+                ],
+            );
+
+            // Basic transport-level validation
+            if (!$response->isOk()) {
+                throw new RuntimeException(
+                    __d(
+                        'bookkeeping',
+                        'Eurofaktura API error ({0}, {1})',
+                        [
+                            $response->getStatusCode(),
+                            $response->getJson()['response']['description'] ?? 'Unknown error',
+                        ],
+                    ),
+                );
+            }
+
+            $data = $response->getJson();
+
+            // API-level error handling
+            if (!empty($data['error'])) {
+                throw new RuntimeException(
+                    __d(
+                        'bookkeeping',
+                        'Eurofaktura API error: {0}',
+                        [$data['error']['message'] ?? 'Unknown error'],
+                    ),
+                );
+            }
+
+            // Check for PDF data
+            if (isset($data['response']['result']['pdfFile'])) {
+                // Decode base64 PDF content
+                $pdfContent = base64_decode($data['response']['result']['pdfFile'], true);
+
+                if ($pdfContent === false) {
+                    throw new RuntimeException(
+                        __d(
+                            'bookkeeping',
+                            'Invalid PDF data received from Eurofaktura API.',
+                        ),
+                    );
+                }
+
+                // Save to file
+                file_put_contents($filepath, $pdfContent);
+
+                return $filepath;
+            }
+        }
+
         throw new RuntimeException(
             __d(
                 'bookkeeping',
-                'Not implemented in Eurofaktura Provider.',
+                'Invoice PDF not found or could not be downloaded: {0}',
+                [$filepath],
             ),
         );
     }
