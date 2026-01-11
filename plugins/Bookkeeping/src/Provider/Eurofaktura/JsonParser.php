@@ -171,6 +171,8 @@ final class JsonParser
             }
         }
 
-        return implode(', ', $texts);
+        $text = implode(', ', $texts);
+
+        return $text == '' ? null : $text;
     }
 }
