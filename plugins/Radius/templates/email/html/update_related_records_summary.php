@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \Cake\View\View $this
+ * @var \App\View\AppView $this
  * @var string $title
  * @var \Radius\Updater\ChangeLog\ChangeLog|null $changelog
  */

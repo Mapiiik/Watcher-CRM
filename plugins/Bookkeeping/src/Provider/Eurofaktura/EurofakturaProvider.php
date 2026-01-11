@@ -238,7 +238,6 @@ class EurofakturaProvider implements AccountingProviderInterface
             // 4) Validate response
             $this->assertValidApiResponse($response);
 
-
             // 5) (Optional) store documentId / external reference
             // $data = $response->getJson();
             // $documentId = $data['result']['id'] ?? null;
@@ -376,7 +375,8 @@ class EurofakturaProvider implements AccountingProviderInterface
     {
         $filepath = (string)env('DATA_ROOT', ROOT . DS . 'data')
             . DS . 'invoices'
-            . DS . 'Invoice_' . strtr($invoice->number, '/', '-') . '_' . $invoice->creation_date->format('Y-m-d') . '.pdf';
+            . DS . 'Invoice_' . strtr($invoice->number, '/', '-')
+            . '_' . $invoice->creation_date->format('Y-m-d') . '.pdf';
 
         // 1) Check local cache
         if (file_exists($filepath)) {

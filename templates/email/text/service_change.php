@@ -4,7 +4,7 @@ use Cake\I18n\Date;
 use Settings\Utility\Settings;
 
 /**
- * @var \Cake\View\View $this
+ * @var \App\View\AppView $this
  * @var array<string|int|float> $data
  *
  * phpcs:disable Generic.WhiteSpace.ScopeIndent, Squiz.WhiteSpace.ControlStructureSpacing
