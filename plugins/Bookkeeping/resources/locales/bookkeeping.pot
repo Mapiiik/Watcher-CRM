@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-01-11 17:12+0100\n"
+"POT-Creation-Date: 2026-01-11 20:24+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -311,22 +311,27 @@ msgstr ""
 msgid "Full Synchronization"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:189
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:254
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:84
 msgid "Eurofaktura API error ({0}, {1})"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:205
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:270
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:100
 #: ./plugins/Bookkeeping/src/Provider/Eurofaktura/JsonParser.php:46
 msgid "Eurofaktura API error: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:307
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:329
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:351
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:372
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:313
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:335
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:357
 msgid "Not implemented in Eurofaktura Provider."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:411
+msgid "Invalid PDF data received from Eurofaktura API."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:426
+msgid "Invoice PDF not found or could not be downloaded: {0}"
 msgstr ""
 
 #: ./plugins/Bookkeeping/src/Provider/Eurofaktura/HttpClient.php:60

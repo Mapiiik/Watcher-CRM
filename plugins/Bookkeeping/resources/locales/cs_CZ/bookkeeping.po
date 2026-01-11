@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-01-11 17:12+0100\n"
-"PO-Revision-Date: 2026-01-11 17:17+0100\n"
+"POT-Creation-Date: 2026-01-11 20:24+0100\n"
+"PO-Revision-Date: 2026-01-11 20:25+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -374,23 +374,28 @@ msgstr "Synchronizace delta"
 msgid "Full Synchronization"
 msgstr "Plná synchronizace"
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:189
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:254
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:84
 msgid "Eurofaktura API error ({0}, {1})"
 msgstr "Chyba API Eurofaktura ({0}, {1})"
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:205
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:270
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:100
 #: plugins/Bookkeeping/src/Provider/Eurofaktura/JsonParser.php:46
 msgid "Eurofaktura API error: {0}"
 msgstr "Chyba API Eurofaktura: {0}"
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:307
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:329
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:351
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:372
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:313
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:335
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:357
 msgid "Not implemented in Eurofaktura Provider."
 msgstr "Není implementováno v Eurofaktura Provider."
+
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:411
+msgid "Invalid PDF data received from Eurofaktura API."
+msgstr "Neplatná data PDF přijatá z rozhraní API Eurofaktura."
+
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:426
+msgid "Invoice PDF not found or could not be downloaded: {0}"
+msgstr "Faktura ve formátu PDF nebyla nalezena nebo ji nelze stáhnout: {0}"
 
 #: plugins/Bookkeeping/src/Provider/Eurofaktura/HttpClient.php:60
 msgid "Error connecting to Eurofaktura / E-racuni API: {0}"
@@ -881,9 +886,6 @@ msgstr "Zobrazit také zaplacené faktury"
 
 #~ msgid "The import file is missing some required columns."
 #~ msgstr "V souboru importu chybí některé povinné sloupce."
-
-#~ msgid "Invoice {0} could not be loaded."
-#~ msgstr "Fakturu {0} nelze načíst."
 
 #~ msgid "Error processing CSV file: {0}"
 #~ msgstr "Chyba při zpracování souboru CSV: {0}"
