@@ -269,6 +269,7 @@ $urlWithQuery = function ($query = []) use ($request) {
         <br>
         <div class="container">
             <div class="float-right" title="<?= __('Changelog') . ': ' . PHP_EOL . h(Versioning::getChangelog()) ?>">
+                <?= __('Source Code') ?>: <a href="https://github.com/Mapiiik/Watcher-CRM" target="_blank" rel="noopener">GitHub</a>,
                 <?= __('Version') . ': ' . h(Versioning::getVersion()) ?>
             </div>
             <br><br>
