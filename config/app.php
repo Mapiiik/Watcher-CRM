@@ -224,7 +224,10 @@ return [
         'skipLog' => [],
         'log' => true,
         'trace' => true,
-        'ignoredDeprecationPaths' => [],
+        'ignoredDeprecationPaths' => [
+            'vendor/cakephp/authentication/src/AuthenticationService.php', // TODO
+            'vendor/cakephp/cakephp/src/Core/PluginCollection.php', // TODO
+        ],
     ],
 
     /*

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\ApiClient;
+use App\Model\Entity\Billing;
 use App\Model\Enum\CustomerDealer;
 use App\View\PdfView;
 use Cake\Collection\Collection;
@@ -803,11 +804,13 @@ class ContractsController extends AppController
             $type = $query['document_type'];
         }
         if (isset($query['contract_version_id'])) {
+            /** @var \App\Model\Entity\ContractVersion|null $contract_version */
             $contract_version = (new Collection($contract->contract_versions))->firstMatch([
                 'id' => $query['contract_version_id'],
             ]);
         }
         if (isset($query['contract_version_to_be_replaced_id'])) {
+            /** @var \App\Model\Entity\ContractVersion|null $contract_version_to_be_replaced */
             $contract_version_to_be_replaced = (new Collection($contract->contract_versions))->firstMatch([
                 'id' => $query['contract_version_to_be_replaced_id'],
             ]);
@@ -840,7 +843,7 @@ class ContractsController extends AppController
                         return $this->redirect(['action' => 'print', $id, '?' => $query]);
                     }
 
-                    $contract_version['old'] = $contract_version_to_be_replaced;
+                    $contract_version->set('old', $contract_version_to_be_replaced);
                 }
                 $this->set('contract_version', $contract_version);
             }
@@ -872,8 +875,10 @@ class ContractsController extends AppController
 
                         return $this->redirect(['action' => 'print', $id, '?' => $query]);
                     } else {
-                        $contract_version['number_of_the_contract_to_be_terminated']
-                            = $query['number_of_the_contract_to_be_terminated'];
+                        $contract_version->set(
+                            'number_of_the_contract_to_be_terminated',
+                            $query['number_of_the_contract_to_be_terminated'],
+                        );
                     }
 
                     break;
@@ -900,19 +905,19 @@ class ContractsController extends AppController
                     break;
 
                 case 'contract-new-x':
-                    if (empty($contract_version['old'])) {
+                    if (empty($contract_version->get('old'))) {
                         $this->Flash->error(__('Please select the contract version to be replaced.'));
 
                         return $this->redirect(['action' => 'print', $id, '?' => $query]);
                     }
 
-                    if (!$contract_version['old']->__isset('conclusion_date')) {
+                    if (!$contract_version->get('old')->__isset('conclusion_date')) {
                         $this->Flash->error(__('Please set the date of conclusion of the original contract version.'));
 
                         return $this->redirect([
                             'controller' => 'ContractVersions',
                             'action' => 'edit',
-                            $contract_version['old']->id,
+                            $contract_version->get('old')->id,
                         ]);
                     }
 
@@ -921,8 +926,10 @@ class ContractsController extends AppController
 
                         return $this->redirect(['action' => 'print', $id, '?' => $query]);
                     } else {
-                        $contract_version['number_of_the_contract_to_be_terminated']
-                            = $query['number_of_the_contract_to_be_terminated'];
+                        $contract_version->set(
+                            'number_of_the_contract_to_be_terminated',
+                            $query['number_of_the_contract_to_be_terminated'],
+                        );
                     }
 
                     break;
@@ -954,8 +961,10 @@ class ContractsController extends AppController
 
                         return $this->redirect(['action' => 'print', $id, '?' => $query]);
                     } else {
-                        $contract_version['number_of_the_contract_to_be_terminated']
-                            = $query['number_of_the_contract_to_be_terminated'];
+                        $contract_version->set(
+                            'number_of_the_contract_to_be_terminated',
+                            $query['number_of_the_contract_to_be_terminated'],
+                        );
                     }
 
                     // no break - checks will continue
@@ -1021,7 +1030,7 @@ class ContractsController extends AppController
             $billings_collection = new Collection($contract->billings);
 
             $active_billings_collection = $billings_collection->reject(
-                function ($billing, $_key) use ($contract_version) {
+                function (Billing $billing, $_key) use ($contract_version) {
                     return (
                             $billing->__isset('billing_from')
                             && $billing->billing_from > $contract_version->valid_from
@@ -1032,16 +1041,26 @@ class ContractsController extends AppController
                 },
             );
 
-            $contract['individual_billings'] = $active_billings_collection->filter(function ($billing, $_key) {
-                return $billing->__isset('price');
-            })->toArray();
+            $contract->set(
+                'individual_billings',
+                $active_billings_collection->filter(
+                    function (Billing $billing, $_key) {
+                        return $billing->__isset('price');
+                    },
+                )->toArray(),
+            );
 
-            $contract['standard_billings'] = $active_billings_collection->filter(function ($billing, $_key) {
-                return !$billing->__isset('price');
-            })->toArray();
+            $contract->set(
+                'standard_billings',
+                $active_billings_collection->filter(
+                    function (Billing $billing, $_key) {
+                        return !$billing->__isset('price');
+                    },
+                )->toArray(),
+            );
 
             $future_billings_collection = $billings_collection->reject(
-                function ($billing, $_key) use ($contract_version) {
+                function (Billing $billing, $_key) use ($contract_version) {
                     return (
                             $billing->__isset('billing_from')
                             && $billing->billing_from <= $contract_version->valid_from
@@ -1052,13 +1071,23 @@ class ContractsController extends AppController
                 },
             );
 
-            $contract['future_individual_billings'] = $future_billings_collection->filter(function ($billing, $_key) {
-                return $billing->__isset('price');
-            })->toArray();
+            $contract->set(
+                'future_individual_billings',
+                $future_billings_collection->filter(
+                    function (Billing $billing, $_key) {
+                        return $billing->__isset('price');
+                    },
+                )->toArray(),
+            );
 
-            $contract['future_standard_billings'] = $future_billings_collection->filter(function ($billing, $_key) {
-                return !$billing->__isset('price');
-            })->toArray();
+            $contract->set(
+                'future_standard_billings',
+                $future_billings_collection->filter(
+                    function (Billing $billing, $_key) {
+                        return !$billing->__isset('price');
+                    },
+                )->toArray(),
+            );
         }
         $this->set(compact(
             'contract',

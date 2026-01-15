@@ -42,7 +42,7 @@ class AppUsersTable extends UsersTable
         // Persisting audit log
         $this->addBehavior('AuditLog.AuditLog');
         /** @var \AuditLog\Model\Behavior\AuditLogBehavior $auditLog */
-        $auditLog = $this->getBehavior('AuditLog'); // @phpstan-ignore method.unresolvableReturnType
+        $auditLog = $this->getBehavior('AuditLog');
         /** @var \AuditLog\Persister\TablePersister $auditLogPersister */
         $auditLogPersister = $auditLog->persister();
         $auditLogPersister->setConfig([

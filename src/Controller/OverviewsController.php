@@ -7,15 +7,16 @@ use App\ApiClient;
 use App\Model\Entity\Billing;
 use App\Model\Entity\Commission;
 use App\Model\Entity\Contract;
+use ArrayObject;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 use Cake\Database\Exception\MissingConnectionException;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\I18n\Date;
-use Cake\ORM\Entity;
 use Cake\ORM\Query\SelectQuery;
 use Cake\Validation\Validation;
 use Exception;
+use stdClass;
 
 /**
  * Overviews Controller
@@ -318,7 +319,7 @@ class OverviewsController extends AppController
                             ->sumOf('quantity');
 
                         $service['number_of_uses_nonbusiness'] = $billings
-                            ->match(['customer.ic' => null])
+                            ->match(['customer.identity_number' => null])
                             ->sumOf('quantity');
 
                         $service['sum'] = $billings
@@ -350,7 +351,7 @@ class OverviewsController extends AppController
                             );
 
                         $service['total_sum_nonbusiness'] = $billings
-                            ->match(['customer.ic' => null])
+                            ->match(['customer.identity_number' => null])
                             ->sumOf(
                                 function (Billing $billing) {
                                     return $billing->total_price->toFloat();
@@ -495,48 +496,49 @@ class OverviewsController extends AppController
                                 ->map(function ($billings, $ruian_gid) use ($cto_category) {
                                     $billings_collection = new Collection($billings);
 
-                                    $address = new Entity();
+                                    $address = new stdClass();
 
-                                    $address['billings'] = $billings_collection;
+                                    $address->billings = $billings_collection;
 
-                                    $address['ruian_gid'] = $ruian_gid;
+                                    $address->ruian_gid = $ruian_gid;
 
                                     // retrieve full address if RUIAN is connected
                                     try {
                                         /** @var \Ruian\Model\Table\AddressesTable $ruianAddressesTable */
                                         $ruianAddressesTable = $this->fetchTable('Ruian.Addresses');
-                                        $address['ruian_address'] = $ruianAddressesTable
+                                        $address->ruian_address = $ruianAddressesTable
                                             ->get($ruian_gid)
                                             ->address;
                                     } catch (MissingConnectionException $missingConnectionError) {
-                                        $address['ruian_address'] = null;
+                                        $address->ruian_address = null;
                                     } catch (RecordNotFoundException $recordNotFoundError) {
-                                        $address['ruian_address'] = null;
+                                        $address->ruian_address = null;
                                         $this->Flash->warning(__('Invalid RUIAN GID: {0}', $ruian_gid));
                                     }
 
-                                    $address['cto_category'] = $cto_category;
+                                    $address->cto_category = $cto_category;
 
-                                    $address['active_connections'] = $billings_collection->count();
-                                    $address['active_connections_nonbusiness'] = $billings_collection
-                                        ->match(['customer.ic' => null])
+                                    $address->active_connections = $billings_collection->count();
+                                    $address->active_connections_nonbusiness = $billings_collection
+                                        ->match(['customer.identity_number' => null])
                                         ->count();
 
-                                    $address['active_speeds'] = new Entity(
+                                    $address->active_speeds = new ArrayObject(
                                         $billings_collection
-                                        ->countBy(function ($billing) {
-                                            $commonly_available_download_speed
-                                                = $billing->service->queue->speed_down * 0.6;
+                                            ->countBy(function (Billing $billing) {
+                                                $commonly_available_download_speed =
+                                                    $billing->service->queue->speed_down * 0.6;
 
-                                            if ($commonly_available_download_speed < 30720) {
-                                                return 'speed_0_30';
-                                            } elseif ($commonly_available_download_speed < 102400) {
-                                                return 'speed_30_100';
-                                            } else {
-                                                return 'speed_100_plus';
-                                            }
-                                        })
-                                        ->toArray(),
+                                                if ($commonly_available_download_speed < 30720) {
+                                                    return 'speed_0_30';
+                                                } elseif ($commonly_available_download_speed < 102400) {
+                                                    return 'speed_30_100';
+                                                } else {
+                                                    return 'speed_100_plus';
+                                                }
+                                            })
+                                            ->toArray(),
+                                        ArrayObject::ARRAY_AS_PROPS,
                                     );
 
                                     $categoryFinder = function ($speed, $cto_category) {
@@ -557,7 +559,7 @@ class OverviewsController extends AppController
                                         }
                                     };
 
-                                    $address['available_connections'] = $billings_collection->count();
+                                    $address->available_connections = $billings_collection->count();
 
                                     $maximal_download = $billings_collection
                                         ->max('billing.service.queue.speed_down')
@@ -569,7 +571,7 @@ class OverviewsController extends AppController
                                         ->service->queue->speed_up;
                                     $effective_upload = $maximal_upload * 0.6;
 
-                                    $address['available_speeds'] = new Entity(
+                                    $address->available_speeds = new ArrayObject(
                                         [
                                             'maximal_download_category' => $categoryFinder(
                                                 $maximal_download,
@@ -588,9 +590,10 @@ class OverviewsController extends AppController
                                                 $cto_category,
                                             ),
                                         ],
+                                        ArrayObject::ARRAY_AS_PROPS,
                                     );
 
-                                    $address['vhcn_category'] = in_array($cto_category, ['s2_fttb', 's2_ftth']) ? 1 : 0;
+                                    $address->vhcn_category = in_array($cto_category, ['s2_fttb', 's2_ftth']) ? 1 : 0;
 
                                     return $address;
                                 });
@@ -600,36 +603,48 @@ class OverviewsController extends AppController
 
         // DOWNLOAD CSV FOR CATEGORY
         if ($this->getRequest()->getParam('_ext') === 'csv' && isset($category)) {
-            $csv_data = ''
-            . 'Adresní místo (kód RÚIAN);'
-            . 'Technologická kategorie (identifikátor přílohy);'
-            . 'Přístupy (aktivní přípojky) (počet);'
-            . 'Přístupy (aktivní přípojky) nepodnikajících osob (počet);'
-            . 'Pokryté adresní místo (disponibilní přípojkou) (ANO/NE);'
-            . 'Efektivní rychlost download (interval);'
-            . 'Efektivní rychlost upload (interval);'
-            . 'Maximální dosažitelná rychlost download (interval);'
-            . 'Maximální dosažitelná rychlost upload (interval);'
-            . 'VHCN síť (třída);'
-            . (in_array($category, ['s2_catv']) ? 'Standard DOCSIS 3.1 a vyšší (ANO/NE);' : '')
-            . 'Adresa'
-            . PHP_EOL;
+            $headers = [
+                'Adresní místo (kód RÚIAN)',
+                'Technologická kategorie (identifikátor přílohy)',
+                'Přístupy (aktivní přípojky) (počet)',
+                'Přístupy (aktivní přípojky) nepodnikajících osob (počet)',
+                'Pokryté adresní místo (disponibilní přípojkou) (ANO/NE)',
+                'Efektivní rychlost download (interval)',
+                'Efektivní rychlost upload (interval)',
+                'Maximální dosažitelná rychlost download (interval)',
+                'Maximální dosažitelná rychlost upload (interval)',
+                'VHCN síť (třída)',
+            ];
+
+            if (in_array($category, ['s2_catv'])) {
+                $headers[] = 'Standard DOCSIS 3.1 a vyšší (ANO/NE)';
+            }
+
+            $headers[] = 'Adresa';
+            $csv_data = implode(';', $headers) . PHP_EOL;
+            unset($headers);
 
             foreach ($cto_categories->toArray()[$category] as $connection_point) {
-                $csv_data .= ''
-                . h($connection_point->ruian_gid) . ';'
-                . h($connection_point->cto_category) . ';'
-                . (int)$connection_point->active_connections . ';'
-                . (int)$connection_point->active_connections_nonbusiness . ';'
-                . ((int)$connection_point->available_connections > 0 ? 'ANO' : 'NE') . ';'
-                . h($connection_point->available_speeds->effective_download_category) . ';'
-                . h($connection_point->available_speeds->effective_upload_category) . ';'
-                . h($connection_point->available_speeds->maximal_download_category) . ';'
-                . h($connection_point->available_speeds->maximal_upload_category) . ';'
-                . (int)$connection_point->vhcn_category . ';'
-                . (in_array($category, ['s2_catv']) ? 'NE;' : '')
-                . h($connection_point->ruian_address)
-                . PHP_EOL;
+                $row = [
+                    h($connection_point->ruian_gid),
+                    h($connection_point->cto_category),
+                    (int)$connection_point->active_connections,
+                    (int)$connection_point->active_connections_nonbusiness,
+                    (int)$connection_point->available_connections > 0 ? 'ANO' : 'NE',
+                    h($connection_point->available_speeds->effective_download_category),
+                    h($connection_point->available_speeds->effective_upload_category),
+                    h($connection_point->available_speeds->maximal_download_category),
+                    h($connection_point->available_speeds->maximal_upload_category),
+                    (int)$connection_point->vhcn_category,
+                ];
+
+                if (in_array($category, ['s2_catv'])) {
+                    $row[] = 'NE';
+                }
+
+                $row[] = h($connection_point->ruian_address);
+
+                $csv_data .= implode(';', $row) . PHP_EOL;
             }
 
             return $this->response
@@ -697,47 +712,48 @@ class OverviewsController extends AppController
                                 ->map(function ($billings, $city) use ($cto_category) {
                                     $billings_collection = new Collection($billings);
 
-                                    $address = new Entity();
+                                    $address = new stdClass();
 
-                                    $address['billings'] = $billings_collection;
+                                    $address->billings = $billings_collection;
 
-                                    $address['city'] = $city;
+                                    $address->city = $city;
 
-                                    $address['cto_category'] = $cto_category;
+                                    $address->cto_category = $cto_category;
 
-                                    $address['active_connections'] = $billings_collection->count();
-                                    $address['active_connections_nonbusiness'] = $billings_collection
-                                        ->match(['customer.ic' => null])
+                                    $address->active_connections = $billings_collection->count();
+                                    $address->active_connections_nonbusiness = $billings_collection
+                                        ->match(['customer.identity_number' => null])
                                         ->count();
 
-                                    $address['advertised_speeds'] = new Entity(
+                                    $address->advertised_speeds = new ArrayObject(
                                         $billings_collection
-                                        ->countBy(function ($billing) {
-                                            $advertised_download_speed
-                                                = $billing->service->queue->speed_down;
+                                            ->countBy(function ($billing) {
+                                                $advertised_download_speed
+                                                    = $billing->service->queue->speed_down;
 
-                                            if ($advertised_download_speed < 2048) {
-                                                return 'speed_0_2';
-                                            } elseif ($advertised_download_speed < 10240) {
-                                                return 'speed_2_10';
-                                            } elseif ($advertised_download_speed < 30720) {
-                                                return 'speed_10_30';
-                                            } elseif ($advertised_download_speed < 102400) {
-                                                return 'speed_30_100';
-                                            } elseif ($advertised_download_speed < 1024000) {
-                                                return 'speed_100_1000';
-                                            } else {
-                                                return 'speed_1000_plus';
-                                            }
-                                        })
-                                        ->toArray(),
+                                                if ($advertised_download_speed < 2048) {
+                                                    return 'speed_0_2';
+                                                } elseif ($advertised_download_speed < 10240) {
+                                                    return 'speed_2_10';
+                                                } elseif ($advertised_download_speed < 30720) {
+                                                    return 'speed_10_30';
+                                                } elseif ($advertised_download_speed < 102400) {
+                                                    return 'speed_30_100';
+                                                } elseif ($advertised_download_speed < 1024000) {
+                                                    return 'speed_100_1000';
+                                                } else {
+                                                    return 'speed_1000_plus';
+                                                }
+                                            })
+                                            ->toArray(),
+                                        ArrayObject::ARRAY_AS_PROPS,
                                     );
 
-                                    $address['advertised_speeds_nonbusiness'] = new Entity(
+                                    $address->advertised_speeds_nonbusiness = new ArrayObject(
                                         $billings_collection
                                         ->countBy(function ($billing) {
                                             // skip business customers
-                                            if ($billing->customer->ic !== null) {
+                                            if ($billing->customer->identity_number !== null) {
                                                 return 'business';
                                             }
 
@@ -803,10 +819,13 @@ class OverviewsController extends AppController
                         // format results
                         ->formatResults(function (CollectionInterface $contracts) {
                             return $contracts->map(function (Contract $contract) {
-                                $contract['total_price'] = (new Collection($contract->billings))->sumOf(
-                                    function (Billing $billing) {
-                                        return $billing->total_price->toFloat();
-                                    },
+                                $contract->set(
+                                    'total_price',
+                                    (new Collection($contract->billings))->sumOf(
+                                        function (Billing $billing) {
+                                            return $billing->total_price->toFloat();
+                                        },
+                                    ),
                                 );
 
                                 return $contract;
@@ -816,7 +835,10 @@ class OverviewsController extends AppController
                 // format results
                 ->formatResults(function (CollectionInterface $commissions) {
                     return $commissions->map(function (Commission $commission) {
-                        $commission['total_price'] = (new Collection($commission->contracts))->sumOf('total_price');
+                        $commission->set(
+                            'total_price',
+                            (new Collection($commission->contracts))->sumOf('total_price'),
+                        );
 
                         return $commission;
                     });

@@ -204,7 +204,7 @@ class ContractPDF extends TCPDF
                 $this->Cell(90, 4, 'datum ukončení poskytování služeb:', align: 'C');
                 $this->Ln();
                 $this->SetFont('DejaVuSerif', 'B', 8);
-                $this->Cell(90, 4, $contract_version['number_of_the_contract_to_be_terminated'], align: 'C');
+                $this->Cell(90, 4, $contract_version->get('number_of_the_contract_to_be_terminated'), align: 'C');
                 $this->Cell(90, 4, (string)$contract_version->valid_until, align: 'C');
                 $this->Ln();
 
@@ -884,7 +884,7 @@ class ContractPDF extends TCPDF
             $this->Ln(3);
             $this->MultiCell(180, 4, 'Všechny ceny uvedené v tomto předávacím protokolu jsou vyjádřeny včetně daně z přidané hodnoty, pokud není výslovně stanoveno jinak.' . PHP_EOL, align: 'J');
             $this->Ln(3);
-            $this->MultiCell(180, 4, 'Tento předávací protokol (ke smlouvě č. ' . $contract_version['number_of_the_contract_to_be_terminated'] . ') je vyhotoven ve dvou stejnopisech.' . PHP_EOL, align: 'J');
+            $this->MultiCell(180, 4, 'Tento předávací protokol (ke smlouvě č. ' . $contract_version->get('number_of_the_contract_to_be_terminated') . ') je vyhotoven ve dvou stejnopisech.' . PHP_EOL, align: 'J');
             $this->Ln(3);
         endif;
         // END UNINSTALLATION
@@ -1024,7 +1024,7 @@ class ContractPDF extends TCPDF
                 $this->Cell(60, 4, 'datum ukončení poskytování služeb:', align: 'C');
                 $this->Ln();
                 $this->SetFont('DejaVuSerif', 'B', 8);
-                $this->Cell(60, 4, $contract_version['number_of_the_contract_to_be_terminated'], align: 'C');
+                $this->Cell(60, 4, $contract_version->get('number_of_the_contract_to_be_terminated'), align: 'C');
                 $this->Cell(60, 4, (string)$contract_version->conclusion_date, align: 'C');
                 $this->Cell(60, 4, (string)$contract_version->valid_until, align: 'C');
                 $this->Ln();
@@ -1217,7 +1217,7 @@ class ContractPDF extends TCPDF
 
         if ($type === 'contract-termination') {
             $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Write(4, 'Smluvní strany ujednávají ukončení smlouvy o poskytování služeb č. ' . $contract_version['number_of_the_contract_to_be_terminated'] . ' ze dne ' . $contract_version->conclusion_date->__toString() . ' (ve znění případných pozdějších dodatků) ke dni ' . $contract_version->valid_until->__toString() . '.');
+            $this->Write(4, 'Smluvní strany ujednávají ukončení smlouvy o poskytování služeb č. ' . $contract_version->get('number_of_the_contract_to_be_terminated') . ' ze dne ' . $contract_version->conclusion_date->__toString() . ' (ve znění případných pozdějších dodatků) ke dni ' . $contract_version->valid_until->__toString() . '.');
             $this->Ln();
             $this->Ln();
             $this->SetFont('DejaVuSerif', '', 8);
@@ -1234,7 +1234,7 @@ class ContractPDF extends TCPDF
             $this->Ln();
 
             if ($type === 'contract-new-x') {
-                $this->Write(4, 'Smluvní strany zároveň ujednávají, že předchozí smlouva o poskytování služeb č. ' . $contract_version['number_of_the_contract_to_be_terminated'] . ' ze dne ' . $contract_version['old']->conclusion_date . ' (ve znění případných pozdějších dodatků) zaniká ke dni ' . $contract_version->valid_from->subDays(1)->__toString() . '.');
+                $this->Write(4, 'Smluvní strany zároveň ujednávají, že předchozí smlouva o poskytování služeb č. ' . $contract_version->get('number_of_the_contract_to_be_terminated') . ' ze dne ' . $contract_version->get('old')->conclusion_date . ' (ve znění případných pozdějších dodatků) zaniká ke dni ' . $contract_version->valid_from->subDays(1)->__toString() . '.');
                 $this->Ln();
                 $this->Ln();
             }
@@ -1257,7 +1257,7 @@ class ContractPDF extends TCPDF
             $totalCost = Decimal::create(0, 2);
 
             // billing of pricelist items
-            if (count($contract['standard_billings']) > 0) {
+            if (count($contract->get('standard_billings')) > 0) {
                 $this->SetFont('DejaVuSerif', 'B' . $format, 9);
                 $this->Cell(187, 3, 'Seznam poskytovaných služeb a údaje o jejich aktuálních cenách dle Ceníku včetně DPH');
                 $this->Ln();
@@ -1267,13 +1267,13 @@ class ContractPDF extends TCPDF
                 $this->Ln(1);
 
                 /** @psalm-suppress ImplicitToStringCast */
-                $totalCost = $totalCost->add($this->billingTable($contract['standard_billings'], $contract_version, $format));
+                $totalCost = $totalCost->add($this->billingTable($contract->get('standard_billings'), $contract_version, $format));
 
                 $this->Ln();
             }
 
             // billing of non-pricelist items
-            if (count($contract['individual_billings']) > 0) {
+            if (count($contract->get('individual_billings')) > 0) {
                 $this->SetFont('DejaVuSerif', 'B' . $format, 9);
                 $this->Cell(187, 3, 'Seznam poskytovaných služeb a údaje o jejich individuálních cenách včetně DPH');
                 $this->Ln();
@@ -1283,7 +1283,7 @@ class ContractPDF extends TCPDF
                 $this->Ln(1);
 
                 /** @psalm-suppress ImplicitToStringCast */
-                $totalCost = $totalCost->add($this->billingTable($contract['individual_billings'], $contract_version, $format));
+                $totalCost = $totalCost->add($this->billingTable($contract->get('individual_billings'), $contract_version, $format));
 
                 $this->SetFont('DejaVuSerif', $format, 7);
                 $this->Cell(4, 4);
@@ -1293,7 +1293,7 @@ class ContractPDF extends TCPDF
             }
 
             // future billing of pricelist items
-            if (count($contract['future_standard_billings']) > 0) {
+            if (count($contract->get('future_standard_billings')) > 0) {
                 $this->SetFont('DejaVuSerif', 'B' . $format, 9);
                 $this->Cell(187, 3, 'Seznam budoucích poskytovaných služeb a údaje o jejich aktuálních cenách dle Ceníku včetně DPH');
                 $this->Ln();
@@ -1302,13 +1302,13 @@ class ContractPDF extends TCPDF
                 $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
                 $this->Ln(1);
 
-                $this->billingTable($contract['future_standard_billings'], $contract_version, $format);
+                $this->billingTable($contract->get('future_standard_billings'), $contract_version, $format);
 
                 $this->Ln();
             }
 
             // future billing of non-pricelist items
-            if (count($contract['future_individual_billings']) > 0) {
+            if (count($contract->get('future_individual_billings')) > 0) {
                 $this->SetFont('DejaVuSerif', 'B' . $format, 9);
                 $this->Cell(187, 3, 'Seznam budoucích poskytovaných služeb a údaje o jejich individuálních cenách včetně DPH');
                 $this->Ln();
@@ -1317,7 +1317,7 @@ class ContractPDF extends TCPDF
                 $this->Line($this->GetX(), $this->GetY(), $this->GetX() + 187.0, $this->GetY());
                 $this->Ln(1);
 
-                $this->billingTable($contract['future_individual_billings'], $contract_version, $format);
+                $this->billingTable($contract->get('future_individual_billings'), $contract_version, $format);
 
                 $this->SetFont('DejaVuSerif', $format, 7);
                 $this->Cell(4, 4);
@@ -1433,7 +1433,7 @@ class ContractPDF extends TCPDF
                 if ($type === 'contract-new') {
                     $this->Write(4, 'Poskytovatel poskytne Uživateli pro dobu trvání této smlouvy bezúplatně tato zařízení:');
                 } else {
-                    $this->Write(4, 'Na základě uvedené předchozí smlouvy ze dne ' . $contract_version['old']->conclusion_date . ' poskytl Poskytovatel Uživateli bezúplatně tato zařízení:');
+                    $this->Write(4, 'Na základě uvedené předchozí smlouvy ze dne ' . $contract_version->get('old')->conclusion_date . ' poskytl Poskytovatel Uživateli bezúplatně tato zařízení:');
                 }
 
                 $this->Ln(5);
