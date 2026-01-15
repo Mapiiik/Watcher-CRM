@@ -18,11 +18,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.2', '8.3', '8.4']
+        php-version: ['8.4', '8.5']
         db-type: [pgsql]
         dependencies: ['locked', 'highest']
         include:
           - php-version: '8.1'
+            dependencies: 'highest'
+          - php-version: '8.2'
+            dependencies: 'highest'
+          - php-version: '8.3'
             dependencies: 'highest'
 
     name: PHP ${{ matrix.php-version }} (${{ matrix.dependencies }})
