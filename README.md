@@ -43,3 +43,13 @@ Create and edit the `config/.env` or set system environment variables (eg. for D
 
 The app uses [Milligram](https://milligram.io/) (v1.3) minimalist CSS
 framework.
+
+## License
+
+Watcher CRM is licensed under the GNU Affero General Public License v3.0. Copyright (c) 2026 Martin Patočka
+
+### What this means
+
+You are free to use, modify and run this software.
+If you modify it and make it available to others (including as a network service),
+you must also make your modifications available under the same license.
