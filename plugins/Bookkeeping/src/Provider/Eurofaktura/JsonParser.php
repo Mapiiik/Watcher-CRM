@@ -98,8 +98,8 @@ final class JsonParser
         // Dates
         $draft->creationDate = $this->parseDate($data['date'] ?? null);
         $draft->dueDate = $this->parseDate($data['paymentDueDate'] ?? null);
-        $draft->paymentDate = $this->parseDate(
-            $data['PaymentRecords'][0]['paymentDate'] ?? null,
+        $draft->paymentDate = $this->getLatestPaymentDate(
+            $data['PaymentRecords'] ?? [],
         );
 
         // Text
@@ -174,5 +174,43 @@ final class JsonParser
         $text = implode(', ', $texts);
 
         return $text == '' ? null : $text;
+    }
+
+    /**
+     * Returns the latest (maximum) payment date from payment records.
+     *
+     * The method iterates over all payment records and determines
+     * the most recent payment date. Records without a paymentDate
+     * are ignored.
+     *
+     * This represents the date of the last payment made for the document,
+     * not the document issue date or due date.
+     *
+     * @param array<int, array<string, mixed>> $paymentRecords
+     *     List of payment records as returned by the API.
+     * @return \Cake\I18n\Date|null
+     *     Date of the latest payment, or null if no valid payment date exists.
+     */
+    private function getLatestPaymentDate(array $paymentRecords): ?Date
+    {
+        $latest = null;
+
+        foreach ($paymentRecords as $record) {
+            if (empty($record['paymentDate'])) {
+                continue;
+            }
+
+            $date = $this->parseDate($record['paymentDate']);
+
+            if ($date === null) {
+                continue;
+            }
+
+            if ($latest === null || $date > $latest) {
+                $latest = $date;
+            }
+        }
+
+        return $latest;
     }
 }
