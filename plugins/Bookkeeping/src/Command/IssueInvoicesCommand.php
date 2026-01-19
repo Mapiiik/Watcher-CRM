@@ -32,6 +32,9 @@ use RuntimeException;
  */
 class IssueInvoicesCommand extends Command
 {
+    public const SCHEDULE_PREV_MONTH_ON_FIRST = 'prev-month-on-first';
+    public const SCHEDULE_CURRENT_MONTH_ON_LAST = 'current-month-on-last';
+
     /**
      * The name of this command.
      *
@@ -73,13 +76,36 @@ class IssueInvoicesCommand extends Command
     {
         return parent::buildOptionParser($parser)
             ->setDescription(static::getDescription())
+
             ->addOption('month', [
                 'short' => 'm',
                 'help' => __d(
                     'bookkeeping',
-                    'Invoiced month (YYYY-MM). Defaults to previous month.',
+                    'Invoiced month (YYYY-MM). Overrides schedule and runs immediately.',
                 ),
             ])
+
+            ->addOption('schedule', [
+                'help' => __d(
+                    'bookkeeping',
+                    'Run schedule when --month is not provided.',
+                ),
+                'choices' => [
+                    self::SCHEDULE_PREV_MONTH_ON_FIRST,
+                    self::SCHEDULE_CURRENT_MONTH_ON_LAST,
+                ],
+                'default' => self::SCHEDULE_PREV_MONTH_ON_FIRST,
+            ])
+
+            ->addOption('force', [
+                'help' => __d(
+                    'bookkeeping',
+                    'Run even if today does not match the selected schedule (ignored when --month is provided).',
+                ),
+                'boolean' => true,
+                'default' => false,
+            ])
+
             ->addOption('accounting-profile-id', [
                 'short' => 't',
                 'help' => __d(
@@ -107,10 +133,56 @@ class IssueInvoicesCommand extends Command
         try {
             // Resolve invoiced month
             $monthOption = $args->getOption('month');
+            $schedule = (string)$args->getOption('schedule');
+            $force = (bool)$args->getOption('force');
 
-            $invoicedMonth = $monthOption !== null
-                ? new Date($monthOption . '-01')
-                : Date::now()->subMonths(1)->firstOfMonth();
+            $today = Date::now();
+
+            if ($monthOption !== null) {
+                // Manual override: always run
+                $invoicedMonth = new Date($monthOption . '-01');
+            } else {
+                // Scheduled mode
+                if (!$force) {
+                    if (
+                        $schedule === self::SCHEDULE_PREV_MONTH_ON_FIRST
+                        && !$today->equals($today->firstOfMonth())
+                    ) {
+                        $io->out(__d(
+                            'bookkeeping',
+                            'Not the first day of month, skipping.',
+                        ));
+
+                        return Command::CODE_SUCCESS;
+                    }
+
+                    if (
+                        $schedule === self::SCHEDULE_CURRENT_MONTH_ON_LAST
+                        && !$today->equals($today->lastOfMonth())
+                    ) {
+                        $io->out(__d(
+                            'bookkeeping',
+                            'Not the last day of month, skipping.',
+                        ));
+
+                        return Command::CODE_SUCCESS;
+                    }
+                }
+
+                $invoicedMonth = match ($schedule) {
+                    self::SCHEDULE_PREV_MONTH_ON_FIRST =>
+                        $today->subMonths(1)->firstOfMonth(),
+
+                    self::SCHEDULE_CURRENT_MONTH_ON_LAST =>
+                        $today->firstOfMonth(),
+
+                    default => throw new RuntimeException(__d(
+                        'bookkeeping',
+                        'Invalid schedule value: {0}',
+                        $schedule,
+                    )),
+                };
+            }
 
             // Resolve accounting profile option
             $accountingProfileOption = $args->getOption('accounting-profile-id');
@@ -119,6 +191,12 @@ class IssueInvoicesCommand extends Command
                 'bookkeeping',
                 'Sending invoices for invoiced month: {0}',
                 $invoicedMonth->i18nFormat('yyyy-MM'),
+            ));
+
+            $io->out(__d(
+                'bookkeeping',
+                'Run mode: {0}',
+                $monthOption !== null ? 'manual' : $schedule,
             ));
 
             if ($accountingProfileOption !== null) {
