@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-01-11 20:24+0100\n"
-"PO-Revision-Date: 2026-01-11 20:25+0100\n"
+"POT-Creation-Date: 2026-01-19 10:11+0100\n"
+"PO-Revision-Date: 2026-01-19 10:15+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -15,23 +15,51 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 "X-Generator: Poedit 3.8\n"
 
-#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:78
-msgid "Invoiced month (YYYY-MM). Defaults to previous month."
-msgstr "Fakturovaný měsíc (RRRR-MM). Výchozí nastavení je předchozí měsíc."
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:82
+msgid "Invoiced month (YYYY-MM). Overrides schedule and runs immediately."
+msgstr "Fakturovaný měsíc (RRRR-MM). Přepíše plán a spustí se okamžitě."
 
-#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:85
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:89
+msgid "Run schedule when --month is not provided."
+msgstr "Spustit plán, pokud není zadán parametr --month."
+
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:101
+msgid ""
+"Run even if today does not match the selected schedule (ignored when --month "
+"is provided)."
+msgstr ""
+"Spustit, i když dnešní den neodpovídá vybranému plánu (ignorováno, pokud je "
+"zadán parametr --month)."
+
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:111
 msgid "Accounting profile identifier (ID)."
 msgstr "Identifikátor účetního profilu (ID)."
 
-#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:118
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:151
+msgid "Not the first day of month, skipping."
+msgstr "Není první den v měsíci, přeskočit."
+
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:163
+msgid "Not the last day of month, skipping."
+msgstr "Není poslední den v měsíci, přeskočit."
+
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:179
+msgid "Invalid schedule value: {0}"
+msgstr "Neplatná hodnota plánu: {0}"
+
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:190
 msgid "Sending invoices for invoiced month: {0}"
 msgstr "Odesílání faktur za fakturovaný měsíc: {0}"
 
-#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:125
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:196
+msgid "Run mode: {0}"
+msgstr "Režim provozu: {0}"
+
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:203
 msgid "Using accounting profile ID: {0}"
 msgstr "Použití ID účetního profilu: {0}"
 
-#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:131
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:209
 msgid ""
 "No accounting profile ID provided. Use --accounting-profile-id option to "
 "specify it."
@@ -39,11 +67,11 @@ msgstr ""
 "Nebylo zadáno ID účetního profilu. K jeho zadání použijte volbu --accounting-"
 "profile-id."
 
-#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:151
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:229
 msgid "No invoices to send."
 msgstr "Žádné faktury k odeslání."
 
-#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:168
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:246
 msgid "Invoices successfully sent to accounting system."
 msgstr "Faktury byly úspěšně odeslány do účetního systému."
 
@@ -868,9 +896,6 @@ msgstr "Zobrazit také zaplacené faktury"
 
 #~ msgid "Issue Date: {0}"
 #~ msgstr "Datum vystavení: {0}"
-
-#~ msgid "Due Date: {0}"
-#~ msgstr "Datum splatnosti: {0}"
 
 #~ msgid "Text: {0}"
 #~ msgstr "Text: {0}"

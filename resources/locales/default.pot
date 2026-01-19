@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-01-06 16:57+0100\n"
+"POT-Creation-Date: 2026-01-19 10:11+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -2091,7 +2091,7 @@ msgstr ""
 #: ./templates/element/Contracts/RemovedIpAddresses.php:41
 #: ./templates/element/Contracts/RemovedIpNetworks.php:41
 #: ./templates/element/Contracts/SoldEquipments.php:47
-#: ./vendor/cakephp/cakephp/src/View/Helper/PaginatorHelper.php:1223
+#: ./vendor/cakephp/cakephp/src/View/Helper/PaginatorHelper.php:1225
 msgid "View"
 msgstr ""
 
@@ -5341,6 +5341,10 @@ msgid "Changelog"
 msgstr ""
 
 #: ./templates/layout/default.php:272
+msgid "Source Code"
+msgstr ""
+
+#: ./templates/layout/default.php:274
 msgid "Version"
 msgstr ""
 

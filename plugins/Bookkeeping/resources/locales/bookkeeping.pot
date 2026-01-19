@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-01-11 20:24+0100\n"
+"POT-Creation-Date: 2026-01-19 10:11+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,31 +14,55 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:78
-msgid "Invoiced month (YYYY-MM). Defaults to previous month."
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:82
+msgid "Invoiced month (YYYY-MM). Overrides schedule and runs immediately."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:85
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:89
+msgid "Run schedule when --month is not provided."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:101
+msgid "Run even if today does not match the selected schedule (ignored when --month is provided)."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:111
 msgid "Accounting profile identifier (ID)."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:118
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:151
+msgid "Not the first day of month, skipping."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:163
+msgid "Not the last day of month, skipping."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:179
+msgid "Invalid schedule value: {0}"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:190
 msgid "Sending invoices for invoiced month: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:125
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:196
+msgid "Run mode: {0}"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:203
 msgid "Using accounting profile ID: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:131
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:209
 msgid "No accounting profile ID provided. Use --accounting-profile-id option to specify it."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:151
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:229
 msgid "No invoices to send."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:168
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:246
 msgid "Invoices successfully sent to accounting system."
 msgstr ""
 
