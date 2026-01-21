@@ -143,6 +143,15 @@ class ProcessDebtorsCommand extends Command
     #[Override]
     public function execute(Arguments $args, ConsoleIo $io)
     {
+        $today = Date::now();
+
+        $notifyDays = array_map(
+            'intval',
+            array_filter(
+                explode(',', (string)env('DEBTORS_NOTIFY_DAYS', '5,10')),
+            ),
+        );
+
         $debtorsProcessor = new DebtorsProcessor(
             allowed_payment_delay: (int)env('DEBTORS_ALLOWED_PAYMENT_DELAY', '0'),
             allowed_total_overdue_debt: (float)env('DEBTORS_ALLOWED_TOTAL_OVERDUE_DEBT', '0'),
@@ -163,11 +172,11 @@ class ProcessDebtorsCommand extends Command
             $debtorsProcessor
                 ->getOverdueDebtors()
                 ->filter(
-                    function (Debtor $debtor) {
-
-                        return $debtor->getDueDate() == Date::now()->subDays(5)
-                            || $debtor->getDueDate() == Date::now()->subDays(10);
-                    },
+                    fn(Debtor $debtor) => $this->shouldNotifyDebtor(
+                        debtor: $debtor,
+                        notifyDays: $notifyDays,
+                        today: $today,
+                    ),
                 )
             :
             [];
@@ -353,6 +362,27 @@ class ProcessDebtorsCommand extends Command
         }
 
         return $attachments;
+    }
+
+    /**
+     * Determine if debtor should be notified today
+     *
+     * @param \Bookkeeping\Debtors\Debtor $debtor
+     * @param array<int> $notifyDays
+     * @param \Cake\I18n\Date $today
+     */
+    private function shouldNotifyDebtor(
+        Debtor $debtor,
+        array $notifyDays,
+        Date $today,
+    ): bool {
+        foreach ($notifyDays as $days) {
+            if ($debtor->getDueDate()->equals($today->subDays($days))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
