@@ -55,7 +55,7 @@ final class InvoiceGenerationService
         $index = 1;
         $drafts = [];
 
-        /** @var iterable<\App\Model\Entity\Customer> $customers */
+        /** @var \Cake\Collection\CollectionInterface<array-key, \App\Model\Entity\Customer> $customers */
         $customers = $this->customers->find(
             'billingDataForMonth',
             invoicedMonth: $invoicedMonth,

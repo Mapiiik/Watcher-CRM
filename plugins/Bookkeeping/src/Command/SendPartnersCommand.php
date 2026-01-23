@@ -133,6 +133,7 @@ class SendPartnersCommand extends Command
                     'Sending all customers.',
                 ));
 
+                /** @var \Cake\Collection\CollectionInterface<array-key, \App\Model\Entity\Customer> $customers */
                 $customers = $customersTable->find()
                     ->contain([
                         'Addresses.Countries',
