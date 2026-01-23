@@ -112,6 +112,20 @@ class IssueInvoicesCommand extends Command
                     'bookkeeping',
                     'Accounting profile identifier (ID).',
                 ),
+            ])
+
+            ->addOption('min-customer-number', [
+                'help' => __d(
+                    'bookkeeping',
+                    'Send only customers with customer number greater than or equal to this value.',
+                ),
+            ])
+
+            ->addOption('max-customer-number', [
+                'help' => __d(
+                    'bookkeeping',
+                    'Send only customers with customer number less than or equal to this value.',
+                ),
             ]);
     }
 
@@ -184,9 +198,6 @@ class IssueInvoicesCommand extends Command
                 };
             }
 
-            // Resolve accounting profile option
-            $accountingProfileOption = $args->getOption('accounting-profile-id');
-
             $io->out(__d(
                 'bookkeeping',
                 'Sending invoices for invoiced month: {0}',
@@ -198,6 +209,9 @@ class IssueInvoicesCommand extends Command
                 'Run mode: {0}',
                 $monthOption !== null ? 'manual' : $schedule,
             ));
+
+            // Resolve accounting profile option
+            $accountingProfileOption = $args->getOption('accounting-profile-id');
 
             if ($accountingProfileOption !== null) {
                 $io->out(__d(
@@ -212,6 +226,29 @@ class IssueInvoicesCommand extends Command
                 ));
             }
 
+            // Resolve customer number filters
+            $customerMinNumber = $args->getOption('min-customer-number');
+            $customerMaxNumber = $args->getOption('max-customer-number');
+
+            $customerMinNumber = is_numeric($customerMinNumber) ? (int)$customerMinNumber : null;
+            $customerMaxNumber = is_numeric($customerMaxNumber) ? (int)$customerMaxNumber : null;
+
+            if ($customerMinNumber !== null) {
+                $io->out(__d(
+                    'bookkeeping',
+                    'Filtering customers with customer number greater than or equal to: {0}',
+                    $customerMinNumber,
+                ));
+            }
+
+            if ($customerMaxNumber !== null) {
+                $io->out(__d(
+                    'bookkeeping',
+                    'Filtering customers with customer number less than or equal to: {0}',
+                    $customerMaxNumber,
+                ));
+            }
+
             // Load accounting profile entity
             $accountingProfile = $this->fetchTable(AccountingProfilesTable::class)->get($accountingProfileOption);
 
@@ -223,6 +260,8 @@ class IssueInvoicesCommand extends Command
             $drafts = $invoiceGenerator->generate(
                 $invoicedMonth,
                 $accountingProfile,
+                $customerMinNumber,
+                $customerMaxNumber,
             );
 
             if ($drafts === []) {

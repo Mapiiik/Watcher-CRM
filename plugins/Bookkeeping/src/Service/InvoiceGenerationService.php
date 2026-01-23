@@ -48,6 +48,8 @@ final class InvoiceGenerationService
     public function generate(
         Date $invoicedMonth,
         AccountingProfile $accountingProfile,
+        ?int $customerMinNumber = null,
+        ?int $customerMaxNumber = null,
     ): array {
         $prefix = $this->calculateInvoicePrefix($invoicedMonth, $accountingProfile);
         $index = 1;
@@ -58,7 +60,19 @@ final class InvoiceGenerationService
             'billingDataForMonth',
             invoicedMonth: $invoicedMonth,
             accountingProfileId: $accountingProfile->id,
-        );
+        )->all();
+
+        if ($customerMinNumber !== null) {
+            $customers = $customers->filter(function (Customer $customer) use ($customerMinNumber) {
+                return (int)$customer->number >= (int)$customerMinNumber;
+            });
+        }
+
+        if ($customerMaxNumber !== null) {
+            $customers = $customers->filter(function (Customer $customer) use ($customerMaxNumber) {
+                return (int)$customer->number <= (int)$customerMaxNumber;
+            });
+        }
 
         foreach ($customers as $customer) {
             // Customer-level aggregation
