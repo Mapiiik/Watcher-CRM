@@ -19,16 +19,17 @@ class HttpClient
     /**
      * Send request to Eurofaktura / E-racuni API.
      *
+     * @param \Bookkeeping\Provider\Eurofaktura\EurofakturaCredentials $credentials Authentication credentials.
      * @param string $method API method name (e.g. SalesInvoiceCreate)
      * @param array $parameters Method parameters
      * @return \Cake\Http\Client\Response
      */
-    public function send(string $method, array $parameters = []): Response
-    {
+    public function send(
+        EurofakturaCredentials $credentials,
+        string $method,
+        array $parameters = [],
+    ): Response {
         try {
-            $username = (string)env('EUROFAKTURA_USERNAME', '');
-            $secretKey = (string)env('EUROFAKTURA_SECRET_KEY', '');
-            $token = (string)env('EUROFAKTURA_TOKEN', '');
             $url = Settings::getString(
                 EurofakturaProvider::SETTINGS_ROOT . '.api.url',
                 'https://e-racuni.com/H7i/API',
@@ -39,9 +40,9 @@ class HttpClient
             );
 
             $payload = [
-                'username' => $username,
-                'secretKey' => $secretKey,
-                'token' => $token,
+                'username' => $credentials->username,
+                'secretKey' => $credentials->secretKey,
+                'token' => $credentials->token,
                 'method' => $method,
                 'parameters' => $parameters,
             ];

@@ -41,6 +41,7 @@ class EurofakturaProvider implements AccountingProviderInterface
 
     public const SETTINGS_ROOT = 'bookkeeping.accounting.providers.eurofaktura';
 
+    private EurofakturaCredentialsProvider $credentialsProvider;
     private HttpClient $httpClient;
     private JsonParser $jsonParser;
     private JsonRequestBuilder $jsonRequestBuilder;
@@ -50,6 +51,7 @@ class EurofakturaProvider implements AccountingProviderInterface
      */
     public function __construct()
     {
+        $this->credentialsProvider = new EurofakturaCredentialsProvider();
         $this->httpClient = new HttpClient();
         $this->jsonParser = new JsonParser();
         $this->jsonRequestBuilder = new JsonRequestBuilder();
@@ -132,6 +134,7 @@ class EurofakturaProvider implements AccountingProviderInterface
     private function syncInvoicesDelta(DateTime $lastChanges): array
     {
         $response = $this->httpClient->send(
+            $this->credentialsProvider->getDefault(),
             'SalesInvoiceList',
             [
                 'dateOfFullPaymentFrom' => $lastChanges->i18nFormat('yyyy-MM-dd'),
@@ -168,6 +171,7 @@ class EurofakturaProvider implements AccountingProviderInterface
             $buyerCode = $buyerCodePrefix . $customer->number;
 
             $response = $this->httpClient->send(
+                $this->credentialsProvider->getDefault(),
                 'SalesInvoiceList',
                 [
                     'buyer' => $buyerCode,
@@ -229,6 +233,7 @@ class EurofakturaProvider implements AccountingProviderInterface
 
             // 3) Send to API
             $response = $this->httpClient->send(
+                $this->credentialsProvider->getForInvoiceIssuing(),
                 'SalesInvoiceCreate',
                 [
                     'SalesInvoice' => $salesInvoice,
@@ -271,6 +276,7 @@ class EurofakturaProvider implements AccountingProviderInterface
 
             // 2) Send to API
             $response = $this->httpClient->send(
+                $this->credentialsProvider->getForInvoiceIssuing(),
                 'PartnerImport',
                 [
                     'partner' => $partner,
@@ -390,6 +396,7 @@ class EurofakturaProvider implements AccountingProviderInterface
 
             // Attempt to download from Eurofaktura API
             $response = $this->httpClient->send(
+                $this->credentialsProvider->getDefault(),
                 'SalesInvoiceGetPDF',
                 [
                     'documentID' => $invoice->accounting_identifier,
