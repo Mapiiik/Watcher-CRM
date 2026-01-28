@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-01-19 10:11+0100\n"
-"PO-Revision-Date: 2026-01-19 10:13+0100\n"
+"POT-Creation-Date: 2026-01-28 11:57+0100\n"
+"PO-Revision-Date: 2026-01-28 11:59+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -4225,36 +4225,36 @@ msgid "Application Settings"
 msgstr "Nastavení aplikace"
 
 #: templates/Settings/index.php:29
-msgid "Company Information"
-msgstr "Informace o společnosti"
+msgid "Company Configuration"
+msgstr "Konfigurace společnosti"
 
 #: templates/Settings/index.php:34
-msgid "Contract & Document Texts"
-msgstr "Texty smluv a dokumentů"
+msgid "Documents Configuration"
+msgstr "Konfigurace dokumentů"
 
 #: templates/Settings/index.php:39
-msgid "Contract Presets"
-msgstr "Předvolby smlouvy"
+msgid "Contracts Configuration"
+msgstr "Konfigurace smluv"
 
 #: templates/Settings/index.php:44
-msgid "Email Templates"
-msgstr "Šablony emailů"
+msgid "Emails Configuration"
+msgstr "Konfigurace e-mailů"
 
 #: templates/Settings/index.php:52
 msgid "Bookkeeping Settings"
 msgstr "Nastavení účetnictví"
 
 #: templates/Settings/index.php:55
-msgid "Invoice & Billing Texts"
-msgstr "Faktury a fakturační texty"
+msgid "Invoices Configuration"
+msgstr "Konfigurace faktur"
 
 #: templates/Settings/index.php:60
-msgid "Debtor Notifications"
-msgstr "Oznámení dlužníkům"
+msgid "Debtors Configuration"
+msgstr "Konfigurace dlužníků"
 
 #: templates/Settings/index.php:65
-msgid "Accounting Integration"
-msgstr "Integrace účetnictví"
+msgid "Accounting Configuration"
+msgstr "Konfigurace účetnictví"
 
 #: templates/Settings/index.php:73
 msgid "Billing Functions"
@@ -4516,6 +4516,18 @@ msgstr "Verze"
 #: templates/layout/error.php:36
 msgid "Back"
 msgstr "Zpět"
+
+#~ msgid "Contract & Document Texts"
+#~ msgstr "Texty smluv a dokumentů"
+
+#~ msgid "Contract Presets"
+#~ msgstr "Předvolby smlouvy"
+
+#~ msgid "Email Templates"
+#~ msgstr "Šablony emailů"
+
+#~ msgid "Invoice & Billing Texts"
+#~ msgstr "Faktury a fakturační texty"
 
 #~ msgid "The tax rate has been saved."
 #~ msgstr "Sazba daňe byla uložena."

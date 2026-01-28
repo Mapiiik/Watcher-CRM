@@ -26,22 +26,22 @@
             <h4><?= __('Application Settings') ?></h4>
             <div>
                 <?= $this->AuthLink->link(
-                    __('Company Information'),
+                    __('Company Configuration'),
                     ['controller' => 'Settings', 'action' => 'edit', 'core.company'],
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __('Contract & Document Texts'),
+                    __('Documents Configuration'),
                     ['controller' => 'Settings', 'action' => 'edit', 'core.documents'],
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __('Contract Presets'),
+                    __('Contracts Configuration'),
                     ['controller' => 'Settings', 'action' => 'edit', 'core.contracts'],
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __('Email Templates'),
+                    __('Emails Configuration'),
                     ['controller' => 'Settings', 'action' => 'edit', 'core.emails'],
                     ['class' => 'side-nav-item'],
                 ) ?>
@@ -52,17 +52,17 @@
             <h4><?= __('Bookkeeping Settings') ?></h4>
             <div>
                 <?= $this->AuthLink->link(
-                    __('Invoice & Billing Texts'),
+                    __('Invoices Configuration'),
                     ['controller' => 'Settings', 'action' => 'edit', 'bookkeeping.invoices'],
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __('Debtor Notifications'),
+                    __('Debtors Configuration'),
                     ['controller' => 'Settings', 'action' => 'edit', 'bookkeeping.debtors'],
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __('Accounting Integration'),
+                    __('Accounting Configuration'),
                     ['controller' => 'Settings', 'action' => 'edit', 'bookkeeping.accounting'],
                     ['class' => 'side-nav-item'],
                 ) ?>

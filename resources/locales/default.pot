@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-01-19 10:11+0100\n"
+"POT-Creation-Date: 2026-01-28 11:57+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -5037,19 +5037,19 @@ msgid "Application Settings"
 msgstr ""
 
 #: ./templates/Settings/index.php:29
-msgid "Company Information"
+msgid "Company Configuration"
 msgstr ""
 
 #: ./templates/Settings/index.php:34
-msgid "Contract & Document Texts"
+msgid "Documents Configuration"
 msgstr ""
 
 #: ./templates/Settings/index.php:39
-msgid "Contract Presets"
+msgid "Contracts Configuration"
 msgstr ""
 
 #: ./templates/Settings/index.php:44
-msgid "Email Templates"
+msgid "Emails Configuration"
 msgstr ""
 
 #: ./templates/Settings/index.php:52
@@ -5057,15 +5057,15 @@ msgid "Bookkeeping Settings"
 msgstr ""
 
 #: ./templates/Settings/index.php:55
-msgid "Invoice & Billing Texts"
+msgid "Invoices Configuration"
 msgstr ""
 
 #: ./templates/Settings/index.php:60
-msgid "Debtor Notifications"
+msgid "Debtors Configuration"
 msgstr ""
 
 #: ./templates/Settings/index.php:65
-msgid "Accounting Integration"
+msgid "Accounting Configuration"
 msgstr ""
 
 #: ./templates/Settings/index.php:73
