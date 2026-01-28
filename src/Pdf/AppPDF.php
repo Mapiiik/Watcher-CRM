@@ -11,7 +11,7 @@ use Settings\Utility\Settings;
 use TCPDF;
 
 //set image path for TCPDF
-define('K_PATH_IMAGES', dirname(__DIR__, 2) . DS . 'webroot' . DS . 'legacy' . DS . 'images' . DS);
+define('K_PATH_IMAGES', (string)env('DATA_ROOT', ROOT . DS . 'data') . DS . 'images' . DS);
 
 class AppPDF extends TCPDF
 {
