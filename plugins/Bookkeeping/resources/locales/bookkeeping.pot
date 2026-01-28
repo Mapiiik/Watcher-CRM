@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-01-19 10:11+0100\n"
+"POT-Creation-Date: 2026-01-28 10:50+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -30,39 +30,59 @@ msgstr ""
 msgid "Accounting profile identifier (ID)."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:151
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:118
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:79
+msgid "Send only customers with customer number greater than or equal to this value."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:125
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:85
+msgid "Send only customers with customer number less than or equal to this value."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:165
 msgid "Not the first day of month, skipping."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:163
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:177
 msgid "Not the last day of month, skipping."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:179
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:193
 msgid "Invalid schedule value: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:190
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:201
 msgid "Sending invoices for invoiced month: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:196
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:207
 msgid "Run mode: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:203
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:217
 msgid "Using accounting profile ID: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:209
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:223
 msgid "No accounting profile ID provided. Use --accounting-profile-id option to specify it."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:229
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:237
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:147
+msgid "Filtering customers with customer number greater than or equal to: {0}"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:245
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:159
+msgid "Filtering customers with customer number less than or equal to: {0}"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:268
 msgid "No invoices to send."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:246
+#: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:285
 msgid "Invoices successfully sent to accounting system."
 msgstr ""
 
@@ -130,45 +150,49 @@ msgstr ""
 msgid "Do not send SMS, the operation will be skipped."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:156
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:148
+msgid "Debtor notifications are globally disabled by settings."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:174
 #: ./plugins/Bookkeeping/src/Controller/DebtorsController.php:67
 #: ./plugins/Bookkeeping/src/Controller/DebtorsController.php:94
 #: ./plugins/Bookkeeping/src/Controller/DebtorsController.php:122
 msgid "Systems updated."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:157
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:175
 #: ./plugins/Bookkeeping/src/Controller/DebtorsController.php:68
 #: ./plugins/Bookkeeping/src/Controller/DebtorsController.php:95
 #: ./plugins/Bookkeeping/src/Controller/DebtorsController.php:123
 msgid "Nothing has changed."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:189
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:211
 msgid "Notification email has been generated for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:204
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:231
 msgid "Notification SMS has been generated for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:226
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:258
 msgid "Blocking email has been generated for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:237
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:269
 msgid "Notification email has been generated for inactive services for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:254
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:290
 msgid "Blocking SMS has been generated for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:265
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:301
 msgid "Notification SMS has been generated for inactive services for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:278
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:314
 #: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:245
 msgid "Done"
 msgstr ""
@@ -202,14 +226,6 @@ msgstr ""
 msgid "Send only a single customer by ID."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:79
-msgid "Send only customers with customer number greater than or equal to this value."
-msgstr ""
-
-#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:85
-msgid "Send only customers with customer number less than or equal to this value."
-msgstr ""
-
 #: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:114
 msgid "Sending customer ID: {0}"
 msgstr ""
@@ -218,19 +234,11 @@ msgstr ""
 msgid "Sending all customers."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:146
-msgid "Filtering customers with customer number greater than or equal to: {0}"
-msgstr ""
-
-#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:158
-msgid "Filtering customers with customer number less than or equal to: {0}"
-msgstr ""
-
-#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:173
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:174
 msgid "No customers to send."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:185
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:186
 msgid "Customers successfully sent to accounting system."
 msgstr ""
 
@@ -282,38 +290,46 @@ msgid_plural "Invoices to send in the queue, {0} emails left."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:104
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:105
 msgid "Debtors data is not available."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:350
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:195
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:236
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:278
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:326
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:372
+msgid "Debtor blocking is globally disabled by settings. No external systems were modified."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:439
 msgid "debtor"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:535
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:563
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:624
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:652
 msgid "Removed IPv4 record {0} from router {1}."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:584
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:673
 msgid "Added IPv4 record {0} ({1}) to router {2}."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:612
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:640
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:701
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:729
 msgid "Removed IPv6 record {0} from router {1}."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:661
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:750
 msgid "Added IPv6 record {0} ({1}) to router {2}."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:706
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:795
 msgid "SledovaniTV - Suspended user with ID: {0} (partner ID: {1})."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:718
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:730
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:807
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:819
 msgid "SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1})."
 msgstr ""
 
@@ -335,30 +351,30 @@ msgstr ""
 msgid "Full Synchronization"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:84
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:86
 msgid "Eurofaktura API error ({0}, {1})"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:100
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:102
 #: ./plugins/Bookkeeping/src/Provider/Eurofaktura/JsonParser.php:46
 msgid "Eurofaktura API error: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:313
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:335
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:357
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:319
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:341
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:363
 msgid "Not implemented in Eurofaktura Provider."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:411
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:418
 msgid "Invalid PDF data received from Eurofaktura API."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:426
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:433
 msgid "Invoice PDF not found or could not be downloaded: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/HttpClient.php:60
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/HttpClient.php:61
 msgid "Error connecting to Eurofaktura / E-racuni API: {0}"
 msgstr ""
 

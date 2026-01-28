@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-01-19 10:11+0100\n"
-"PO-Revision-Date: 2026-01-19 10:15+0100\n"
+"POT-Creation-Date: 2026-01-28 10:50+0100\n"
+"PO-Revision-Date: 2026-01-28 10:57+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -35,31 +35,45 @@ msgstr ""
 msgid "Accounting profile identifier (ID)."
 msgstr "Identifikátor účetního profilu (ID)."
 
-#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:151
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:118
+#: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:79
+msgid ""
+"Send only customers with customer number greater than or equal to this value."
+msgstr ""
+"Odesílat pouze zákazníky s číslem zákazníka větším nebo rovným této hodnotě."
+
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:125
+#: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:85
+msgid ""
+"Send only customers with customer number less than or equal to this value."
+msgstr ""
+"Odesílat pouze zákazníky s číslem zákazníka menším nebo rovným této hodnotě."
+
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:165
 msgid "Not the first day of month, skipping."
 msgstr "Není první den v měsíci, přeskočit."
 
-#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:163
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:177
 msgid "Not the last day of month, skipping."
 msgstr "Není poslední den v měsíci, přeskočit."
 
-#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:179
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:193
 msgid "Invalid schedule value: {0}"
 msgstr "Neplatná hodnota plánu: {0}"
 
-#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:190
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:201
 msgid "Sending invoices for invoiced month: {0}"
 msgstr "Odesílání faktur za fakturovaný měsíc: {0}"
 
-#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:196
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:207
 msgid "Run mode: {0}"
 msgstr "Režim provozu: {0}"
 
-#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:203
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:217
 msgid "Using accounting profile ID: {0}"
 msgstr "Použití ID účetního profilu: {0}"
 
-#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:209
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:223
 msgid ""
 "No accounting profile ID provided. Use --accounting-profile-id option to "
 "specify it."
@@ -67,11 +81,21 @@ msgstr ""
 "Nebylo zadáno ID účetního profilu. K jeho zadání použijte volbu --accounting-"
 "profile-id."
 
-#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:229
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:237
+#: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:147
+msgid "Filtering customers with customer number greater than or equal to: {0}"
+msgstr "Filtrování zákazníků s číslem zákazníka větším nebo rovným: {0}"
+
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:245
+#: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:159
+msgid "Filtering customers with customer number less than or equal to: {0}"
+msgstr "Filtrování zákazníků s číslem zákazníka menším nebo rovným: {0}"
+
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:268
 msgid "No invoices to send."
 msgstr "Žádné faktury k odeslání."
 
-#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:246
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:285
 msgid "Invoices successfully sent to accounting system."
 msgstr "Faktury byly úspěšně odeslány do účetního systému."
 
@@ -163,21 +187,25 @@ msgstr "Neodesílat e-maily, operace bude přeskočena."
 msgid "Do not send SMS, the operation will be skipped."
 msgstr "Neodesílat SMS, operace bude přeskočena."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:156
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:148
+msgid "Debtor notifications are globally disabled by settings."
+msgstr "Oznámení dlužníkům jsou globálně deaktivována v nastavení."
+
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:174
 #: plugins/Bookkeeping/src/Controller/DebtorsController.php:67
 #: plugins/Bookkeeping/src/Controller/DebtorsController.php:94
 #: plugins/Bookkeeping/src/Controller/DebtorsController.php:122
 msgid "Systems updated."
 msgstr "Systémy byly aktualizovány."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:157
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:175
 #: plugins/Bookkeeping/src/Controller/DebtorsController.php:68
 #: plugins/Bookkeeping/src/Controller/DebtorsController.php:95
 #: plugins/Bookkeeping/src/Controller/DebtorsController.php:123
 msgid "Nothing has changed."
 msgstr "Nic se nezměnilo."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:189
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:211
 msgid ""
 "Notification email has been generated for customer {customer_number}, "
 "recipients: {recipients}"
@@ -185,7 +213,7 @@ msgstr ""
 "Byl vygenerován oznamovací e-mail pro zákazníka {customer_number}, příjemci: "
 "{recipients}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:204
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:231
 msgid ""
 "Notification SMS has been generated for customer {customer_number}, "
 "recipients: {recipients}"
@@ -193,7 +221,7 @@ msgstr ""
 "Byla vygenerována notifikační SMS pro zákazníka {customer_number}, příjemci: "
 "{recipients}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:226
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:258
 msgid ""
 "Blocking email has been generated for customer {customer_number}, "
 "recipients: {recipients}"
@@ -201,7 +229,7 @@ msgstr ""
 "Byl vygenerován blokovací e-mail pro zákazníka {customer_number}, příjemci: "
 "{recipients}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:237
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:269
 msgid ""
 "Notification email has been generated for inactive services for customer "
 "{customer_number}, recipients: {recipients}"
@@ -209,7 +237,7 @@ msgstr ""
 "Byl vygenerován oznamovací e-mail pro neaktivní služby pro zákazníka "
 "{customer_number}, příjemci: {recipients}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:254
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:290
 msgid ""
 "Blocking SMS has been generated for customer {customer_number}, recipients: "
 "{recipients}"
@@ -217,7 +245,7 @@ msgstr ""
 "Byla vygenerována blokovací SMS pro zákazníka {customer_number}, příjemci: "
 "{recipients}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:265
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:301
 msgid ""
 "Notification SMS has been generated for inactive services for customer "
 "{customer_number}, recipients: {recipients}"
@@ -225,7 +253,7 @@ msgstr ""
 "Byla vygenerována notifikační SMS pro neaktivní služby pro zákazníka "
 "{customer_number}, příjemci: {recipients}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:278
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:314
 #: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:245
 msgid "Done"
 msgstr "Hotovo"
@@ -259,18 +287,6 @@ msgstr "Chyba při odesílání e-mailové zprávy s ID vydané faktury {0}"
 msgid "Send only a single customer by ID."
 msgstr "Odesílejte pouze jednoho zákazníka podle ID."
 
-#: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:79
-msgid ""
-"Send only customers with customer number greater than or equal to this value."
-msgstr ""
-"Odesílat pouze zákazníky s číslem zákazníka větším nebo rovným této hodnotě."
-
-#: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:85
-msgid ""
-"Send only customers with customer number less than or equal to this value."
-msgstr ""
-"Odesílat pouze zákazníky s číslem zákazníka menším nebo rovným této hodnotě."
-
 #: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:114
 msgid "Sending customer ID: {0}"
 msgstr "Odesílání ID zákazníka: {0}"
@@ -279,19 +295,11 @@ msgstr "Odesílání ID zákazníka: {0}"
 msgid "Sending all customers."
 msgstr "Odesílání všech zákazníků."
 
-#: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:146
-msgid "Filtering customers with customer number greater than or equal to: {0}"
-msgstr "Filtrování zákazníků s číslem zákazníka větším nebo rovným: {0}"
-
-#: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:158
-msgid "Filtering customers with customer number less than or equal to: {0}"
-msgstr "Filtrování zákazníků s číslem zákazníka menším nebo rovným: {0}"
-
-#: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:173
+#: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:174
 msgid "No customers to send."
 msgstr "Žádní zákazníci k odeslání."
 
-#: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:185
+#: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:186
 msgid "Customers successfully sent to accounting system."
 msgstr "Zákazníci byli úspěšně odesláni do účetního systému."
 
@@ -349,38 +357,50 @@ msgstr[0] "Faktura k odeslání ve frontě, zbývá {0} e-mail."
 msgstr[1] "Faktury k odeslání ve frontě, zbývají {0} e-maily."
 msgstr[2] "Faktury k odeslání ve frontě, zbývá {0} e-mailů."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:104
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:105
 msgid "Debtors data is not available."
 msgstr "Údaje o dlužnících nejsou k dispozici."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:350
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:195
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:236
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:278
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:326
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:372
+msgid ""
+"Debtor blocking is globally disabled by settings. No external systems were "
+"modified."
+msgstr ""
+"Blokování dlužníků je globálně deaktivováno v nastavení. Žádné externí "
+"systémy nebyly upraveny."
+
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:439
 msgid "debtor"
 msgstr "dlužník"
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:535
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:563
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:624
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:652
 msgid "Removed IPv4 record {0} from router {1}."
 msgstr "Odstraněn záznam IPv4 {0} ze směrovače {1}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:584
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:673
 msgid "Added IPv4 record {0} ({1}) to router {2}."
 msgstr "Přidán záznam IPv4 {0} ({1}) do směrovače {2}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:612
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:640
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:701
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:729
 msgid "Removed IPv6 record {0} from router {1}."
 msgstr "Odstraněn záznam IPv6 {0} ze směrovače {1}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:661
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:750
 msgid "Added IPv6 record {0} ({1}) to router {2}."
 msgstr "Přidán záznam IPv6 {0} ({1}) do směrovače {2}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:706
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:795
 msgid "SledovaniTV - Suspended user with ID: {0} (partner ID: {1})."
 msgstr "SledovaniTV - Pozastavený uživatel s ID: {0} (ID partnera: {1})."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:718
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:730
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:807
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:819
 msgid "SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1})."
 msgstr "SledovaniTV - Aktivovaný uživatel s ID: {0} (ID partnera: {1})."
 
@@ -402,30 +422,30 @@ msgstr "Synchronizace delta"
 msgid "Full Synchronization"
 msgstr "Plná synchronizace"
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:84
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:86
 msgid "Eurofaktura API error ({0}, {1})"
 msgstr "Chyba API Eurofaktura ({0}, {1})"
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:100
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:102
 #: plugins/Bookkeeping/src/Provider/Eurofaktura/JsonParser.php:46
 msgid "Eurofaktura API error: {0}"
 msgstr "Chyba API Eurofaktura: {0}"
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:313
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:335
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:357
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:319
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:341
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:363
 msgid "Not implemented in Eurofaktura Provider."
 msgstr "Není implementováno v Eurofaktura Provider."
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:411
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:418
 msgid "Invalid PDF data received from Eurofaktura API."
 msgstr "Neplatná data PDF přijatá z rozhraní API Eurofaktura."
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:426
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:433
 msgid "Invoice PDF not found or could not be downloaded: {0}"
 msgstr "Faktura ve formátu PDF nebyla nalezena nebo ji nelze stáhnout: {0}"
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/HttpClient.php:60
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/HttpClient.php:61
 msgid "Error connecting to Eurofaktura / E-racuni API: {0}"
 msgstr "Chyba při připojení k Eurofaktura / E-racuni API: {0}"
 
