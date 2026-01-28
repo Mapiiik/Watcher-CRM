@@ -189,6 +189,39 @@ return [
         ],
 
         'debtors' => [
+            'notifications' => [
+                'enabled' => true, // global kill‑switch
+                'channels' => [
+                    'email' => [
+                        'enabled' => true,
+                    ],
+                    'sms' => [
+                        'enabled' => true,
+                    ],
+                ],
+                'types' => [
+                    'notify' => [
+                        'enabled' => true,
+                    ],
+                    'block' => [
+                        'enabled' => true,
+                    ],
+                    'inactive' => [
+                        'enabled' => true,
+                    ],
+                ],
+            ],
+            'blocking' => [
+                'enabled' => true, // global kill‑switch
+                'services' => [
+                    'sledovani_tv' => [
+                        'enabled' => true,
+                    ],
+                    'routers' => [
+                        'enabled' => true,
+                    ],
+                ],
+            ],
             'tables' => [
                 'invoices' => [
                     'headers' => [

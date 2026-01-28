@@ -17,6 +17,7 @@ use Exception;
 use InvalidArgumentException;
 use RouterOS\Client;
 use RouterOS\Query;
+use Settings\Utility\Settings;
 
 class DebtorsProcessor
 {
@@ -149,6 +150,39 @@ class DebtorsProcessor
     }
 
     /**
+     * Determine whether automatic debtor blocking is enabled.
+     *
+     * This method checks the global debtor blocking configuration and,
+     * optionally, the configuration for a specific blocking service.
+     *
+     * Behaviour:
+     * - If global blocking is disabled, returns false regardless of service.
+     * - If no service is specified and global blocking is enabled, returns true.
+     * - If a service is specified, returns true only if that service is enabled.
+     *
+     * Configuration keys:
+     * - bookkeeping.debtors.blocking.enabled
+     * - bookkeeping.debtors.blocking.services.<service>.enabled
+     *
+     * @param string|null $service Optional blocking service identifier
+     *                             (e.g. "sledovani_tv", "routers").
+     *                             If null, only the global blocking flag is evaluated.
+     * @return bool True if debtor blocking is enabled for the given context.
+     */
+    public function isDebtorBlockingEnabled(?string $service = null): bool
+    {
+        if (!(bool)Settings::get('bookkeeping.debtors.blocking.enabled', false)) {
+            return false;
+        }
+
+        if ($service === null) {
+            return true;
+        }
+
+        return (bool)Settings::get("bookkeeping.debtors.blocking.services.$service.enabled", false);
+    }
+
+    /**
      * Block Debtor
      *
      * @param string|null $id Customer ID.
@@ -157,23 +191,34 @@ class DebtorsProcessor
      */
     public function block(?string $id): string
     {
+        if (!$this->isDebtorBlockingEnabled()) {
+            return __d(
+                'bookkeeping',
+                'Debtor blocking is globally disabled by settings. No external systems were modified.',
+            );
+        }
+
         $customerIps = $this->getCustomerIps($id, 'MANUAL ENTRY - ', false);
 
         $this->addLabel($id);
 
         $result = '';
 
-        $result .= $this->updateSledovaniTV(
-            ids: [$id],
-            block: true,
-            clear: false,
-        );
+        if ($this->isDebtorBlockingEnabled('sledovani_tv')) {
+            $result .= $this->updateSledovaniTV(
+                ids: [$id],
+                block: true,
+                clear: false,
+            );
+        }
 
-        $result .= $this->updateRouters(
-            ips: $customerIps,
-            block: true,
-            clear: false,
-        );
+        if ($this->isDebtorBlockingEnabled('routers')) {
+            $result .= $this->updateRouters(
+                ips: $customerIps,
+                block: true,
+                clear: false,
+            );
+        }
 
         return $result;
     }
@@ -187,23 +232,34 @@ class DebtorsProcessor
      */
     public function unblock(?string $id): string
     {
+        if (!$this->isDebtorBlockingEnabled()) {
+            return __d(
+                'bookkeeping',
+                'Debtor blocking is globally disabled by settings. No external systems were modified.',
+            );
+        }
+
         $customerIps = $this->getCustomerIps($id, 'MANUAL ENTRY - ', false);
 
         $this->removeLabel($id);
 
         $result = '';
 
-        $result .= $this->updateSledovaniTV(
-            ids: [$id],
-            block: false,
-            clear: false,
-        );
+        if ($this->isDebtorBlockingEnabled('sledovani_tv')) {
+            $result .= $this->updateSledovaniTV(
+                ids: [$id],
+                block: false,
+                clear: false,
+            );
+        }
 
-        $result .= $this->updateRouters(
-            ips: $customerIps,
-            block: false,
-            clear: false,
-        );
+        if ($this->isDebtorBlockingEnabled('routers')) {
+            $result .= $this->updateRouters(
+                ips: $customerIps,
+                block: false,
+                clear: false,
+            );
+        }
 
         return $result;
     }
@@ -218,6 +274,13 @@ class DebtorsProcessor
      */
     public function blockMany(array $ids): string
     {
+        if (!$this->isDebtorBlockingEnabled()) {
+            return __d(
+                'bookkeeping',
+                'Debtor blocking is globally disabled by settings. No external systems were modified.',
+            );
+        }
+
         $customerIps = [];
         foreach ($ids as $id) {
             $customerIps = array_merge_recursive(
@@ -230,17 +293,21 @@ class DebtorsProcessor
 
         $result = '';
 
-        $result .= $this->updateSledovaniTV(
-            ids: $ids,
-            block: true,
-            clear: false,
-        );
+        if ($this->isDebtorBlockingEnabled('sledovani_tv')) {
+            $result .= $this->updateSledovaniTV(
+                ids: $ids,
+                block: true,
+                clear: false,
+            );
+        }
 
-        $result .= $this->updateRouters(
-            ips: $customerIps,
-            block: true,
-            clear: false,
-        );
+        if ($this->isDebtorBlockingEnabled('routers')) {
+            $result .= $this->updateRouters(
+                ips: $customerIps,
+                block: true,
+                clear: false,
+            );
+        }
 
         return $result;
     }
@@ -255,6 +322,13 @@ class DebtorsProcessor
      */
     public function unblockMany(array $ids): string
     {
+        if (!$this->isDebtorBlockingEnabled()) {
+            return __d(
+                'bookkeeping',
+                'Debtor blocking is globally disabled by settings. No external systems were modified.',
+            );
+        }
+
         $customerIps = [];
         foreach ($ids as $id) {
             $customerIps = array_merge_recursive(
@@ -267,17 +341,21 @@ class DebtorsProcessor
 
         $result = '';
 
-        $result .= $this->updateSledovaniTV(
-            ids: $ids,
-            block: false,
-            clear: false,
-        );
+        if ($this->isDebtorBlockingEnabled('sledovani_tv')) {
+            $result .= $this->updateSledovaniTV(
+                ids: $ids,
+                block: false,
+                clear: false,
+            );
+        }
 
-        $result .= $this->updateRouters(
-            ips: $customerIps,
-            block: false,
-            clear: false,
-        );
+        if ($this->isDebtorBlockingEnabled('routers')) {
+            $result .= $this->updateRouters(
+                ips: $customerIps,
+                block: false,
+                clear: false,
+            );
+        }
 
         return $result;
     }
@@ -290,6 +368,13 @@ class DebtorsProcessor
      */
     public function blockingUpdate(): string
     {
+        if (!$this->isDebtorBlockingEnabled()) {
+            return __d(
+                'bookkeeping',
+                'Debtor blocking is globally disabled by settings. No external systems were modified.',
+            );
+        }
+
         $start_time = DateTime::now();
 
         $customerIps = [];
@@ -310,17 +395,21 @@ class DebtorsProcessor
 
         $result = '';
 
-        $result .= $this->updateSledovaniTV(
-            ids: $customerIds,
-            block: true,
-            clear: true,
-        );
+        if ($this->isDebtorBlockingEnabled('sledovani_tv')) {
+            $result .= $this->updateSledovaniTV(
+                ids: $customerIds,
+                block: true,
+                clear: true,
+            );
+        }
 
-        $result .= $this->updateRouters(
-            ips: $customerIps,
-            block: true,
-            clear: true,
-        );
+        if ($this->isDebtorBlockingEnabled('routers')) {
+            $result .= $this->updateRouters(
+                ips: $customerIps,
+                block: true,
+                clear: true,
+            );
+        }
 
         return $result;
     }

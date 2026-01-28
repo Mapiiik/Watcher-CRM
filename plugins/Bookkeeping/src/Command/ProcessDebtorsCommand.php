@@ -143,6 +143,15 @@ class ProcessDebtorsCommand extends Command
     #[Override]
     public function execute(Arguments $args, ConsoleIo $io)
     {
+        if (!(bool)Settings::get('bookkeeping.debtors.notifications.enabled', false)) {
+            $io->warning(
+                __d(
+                    'bookkeeping',
+                    'Debtor notifications are globally disabled by settings.',
+                ),
+            );
+        }
+
         $today = Date::now();
 
         $notifyDays = array_map(
@@ -193,7 +202,11 @@ class ProcessDebtorsCommand extends Command
             $phones_available = (count($debtor->getCustomer()->billing_phones) > 0);
 
             // notify emails
-            if ($emails_available && !$args->getOption('skip_emails')) {
+            if (
+                $emails_available
+                && !$args->getOption('skip_emails')
+                && $this->isDebtorNotificationEnabled('notify', 'email')
+            ) {
                 $customerMessage = $this->generateNotifyEmail($debtor);
                 $io->info(__d(
                     'bookkeeping',
@@ -208,7 +221,12 @@ class ProcessDebtorsCommand extends Command
             }
 
             // notify SMS
-            if (!$emails_available && $phones_available && !$args->getOption('skip_sms')) {
+            if (
+                !$emails_available
+                && $phones_available
+                && !$args->getOption('skip_sms')
+                && $this->isDebtorNotificationEnabled('notify', 'sms')
+            ) {
                 $customerMessage = $this->generateNotifySms($debtor);
                 $io->info(__d(
                     'bookkeeping',
@@ -227,10 +245,15 @@ class ProcessDebtorsCommand extends Command
         foreach ($debtorsToBlock as $debtor) {
             $emails_available = (count($debtor->getCustomer()->emails) > 0);
             $phones_available = (count($debtor->getCustomer()->phones) > 0);
+            $messageType = $debtor->getCustomer()->active_services ? 'block' : 'inactive';
 
             // block emails
-            if ($emails_available && !$args->getOption('skip_emails')) {
-                if ($debtor->getCustomer()->active_services) {
+            if (
+                $emails_available
+                && !$args->getOption('skip_emails')
+                && $this->isDebtorNotificationEnabled($messageType, 'email')
+            ) {
+                if ($messageType == 'block') {
                     $customerMessage = $this->generateBlockEmail($debtor);
                     $io->info(__d(
                         'bookkeeping',
@@ -257,8 +280,12 @@ class ProcessDebtorsCommand extends Command
             }
 
             // block SMS
-            if ($phones_available && !$args->getOption('skip_sms')) {
-                if ($debtor->getCustomer()->active_services) {
+            if (
+                $phones_available
+                && !$args->getOption('skip_sms')
+                && $this->isDebtorNotificationEnabled($messageType, 'sms')
+            ) {
+                if ($messageType == 'block') {
                     $customerMessage = $this->generateBlockSms($debtor);
                     $io->info(__d(
                         'bookkeeping',
@@ -285,6 +312,45 @@ class ProcessDebtorsCommand extends Command
             }
         }
         $io->info(__d('bookkeeping', 'Done'));
+    }
+
+    /**
+     * Determine whether debtor notification delivery is enabled.
+     *
+     * This method evaluates notification policy settings for debtors,
+     * including the global notifications switch, the delivery channel,
+     * and the specific notification type.
+     *
+     * Behaviour:
+     * - If notifications are globally disabled, returns false.
+     * - If the specified delivery channel is disabled, returns false.
+     * - Otherwise, returns true only if the given notification type is enabled.
+     *
+     * Configuration keys:
+     * - bookkeeping.debtors.notifications.enabled
+     * - bookkeeping.debtors.notifications.channels.<channel>.enabled
+     * - bookkeeping.debtors.notifications.types.<type>.enabled
+     *
+     * @param string $type Notification type identifier
+     *                     (e.g. "notify", "block", "inactive").
+     * @param string $channel Delivery channel identifier
+     *                        (e.g. "email", "sms").
+     * @return bool True if the notification is allowed to be generated
+     *              for the given type and channel.
+     */
+    public static function isDebtorNotificationEnabled(
+        string $type,
+        string $channel,
+    ): bool {
+        if (!(bool)Settings::get('bookkeeping.debtors.notifications.enabled', false)) {
+            return false;
+        }
+
+        if (!(bool)Settings::get("bookkeeping.debtors.notifications.channels.$channel.enabled", false)) {
+            return false;
+        }
+
+        return (bool)Settings::get("bookkeeping.debtors.notifications.types.$type.enabled", false);
     }
 
     /**
