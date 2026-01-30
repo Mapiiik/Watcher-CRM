@@ -218,6 +218,10 @@ class EurofakturaProvider implements AccountingProviderInterface
                 EurofakturaProvider::SETTINGS_ROOT . '.customers.use_buyer_code',
                 false,
             );
+            $sendIssuedInvoiceByEmail = (bool)Settings::get(
+                EurofakturaProvider::SETTINGS_ROOT . '.invoice.send_issued_invoice_by_email',
+                false,
+            );
 
             // 1) Send partner to API (if use_buyer_code is set)
             if ($useBuyerCode && isset($invoice->customer)) {
@@ -237,6 +241,7 @@ class EurofakturaProvider implements AccountingProviderInterface
                 'SalesInvoiceCreate',
                 [
                     'SalesInvoice' => $salesInvoice,
+                    'sendIssuedInvoiceByEmail' => $sendIssuedInvoiceByEmail,
                 ],
             );
 

@@ -80,6 +80,7 @@ return [
                     // Invoices
                     'invoice' => [
                         'status' => 'Draft', // or 'IssuedInvoice'
+                        'send_issued_invoice_by_email' => false,
                     ],
 
                     // Invoice items
