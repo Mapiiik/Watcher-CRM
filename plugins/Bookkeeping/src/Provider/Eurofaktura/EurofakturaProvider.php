@@ -137,11 +137,28 @@ class EurofakturaProvider implements AccountingProviderInterface
             $this->credentialsProvider->getDefault(),
             'SalesInvoiceList',
             [
-                'dateOfFullPaymentFrom' => $lastChanges->i18nFormat('yyyy-MM-dd'),
+                'issuedTimestampFrom' => $lastChanges
+                    ->subSeconds(1)
+                    ->format('Y-m-d\TH:i:s'),
             ],
         );
 
-        return $this->jsonParser->parseSalesInvoiceList($response->getJson());
+        $drafts = $this->jsonParser->parseSalesInvoiceList($response->getJson());
+
+        $response = $this->httpClient->send(
+            $this->credentialsProvider->getDefault(),
+            'SalesInvoiceList',
+            [
+                'dateOfFullPaymentFrom' => $lastChanges->format('Y-m-d'),
+            ],
+        );
+
+        $drafts = array_merge(
+            $drafts,
+            $this->jsonParser->parseSalesInvoiceList($response->getJson()),
+        );
+
+        return $drafts;
     }
 
     /**
