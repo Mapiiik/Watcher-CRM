@@ -171,16 +171,10 @@ final class InvoiceDraft
         if ($this->total === null) {
             $this->addWarning('Missing total amount');
             $valid = false;
-        } elseif ($this->total->isNegative()) {
-            $this->addWarning('Total amount cannot be negative');
-            $valid = false;
         }
 
         if ($this->debt === null) {
             $this->addWarning('Missing remaining debt');
-            $valid = false;
-        } elseif ($this->debt->isNegative()) {
-            $this->addWarning('Remaining debt cannot be negative');
             $valid = false;
         }
 
