@@ -252,8 +252,8 @@ class EurofakturaProvider implements AccountingProviderInterface
             // $data = $response->getJson();
             // $documentId = $data['result']['id'] ?? null;
 
-            // sleep one second because of rate limit
-            sleep(1);
+            // sleep two seconds because of rate limit
+            sleep(2);
         }
     }
 
