@@ -16,9 +16,9 @@ use Cake\I18n\DateTime;
 use Cake\Log\Log;
 use Cake\Mailer\Mailer;
 use Cake\Mailer\Message;
-use Exception;
 use InvalidArgumentException;
 use Override;
+use Throwable;
 
 /**
  * Process Emails command.
@@ -164,7 +164,7 @@ class ProcessEmailsCommand extends Command
                     $emailMessage->identifier = $mailer->getMessageId();
                     $emailMessage->delivery_status = CustomerMessageDeliveryStatus::Sent;
                     $customerMessagesTable->saveOrFail($emailMessage);
-                } catch (Exception $e) {
+                } catch (Throwable $e) {
                     // log error and continue processing
                     Log::error('Error sending email message with ID ' . $emailMessage->id . ': ' . $e->getMessage());
                     $io->error(__('Error sending message with ID {0}: {1}', $emailMessage->id, $e->getMessage()));

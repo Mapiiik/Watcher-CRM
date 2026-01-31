@@ -18,8 +18,11 @@ use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
+use Cake\Log\Log;
+use Cake\Mailer\Mailer;
 use Override;
 use Settings\Utility\Settings;
+use Throwable;
 
 /**
  * ProcessDebtors command.
@@ -143,175 +146,210 @@ class ProcessDebtorsCommand extends Command
     #[Override]
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        if (!(bool)Settings::get('bookkeeping.debtors.notifications.enabled', false)) {
-            $io->warning(
-                __d(
-                    'bookkeeping',
-                    'Debtor notifications are globally disabled by settings.',
+        try {
+            if (!(bool)Settings::get('bookkeeping.debtors.notifications.enabled', false)) {
+                $io->warning(
+                    __d(
+                        'bookkeeping',
+                        'Debtor notifications are globally disabled by settings.',
+                    ),
+                );
+            }
+
+            $today = Date::now();
+
+            $notifyDays = array_map(
+                'intval',
+                array_filter(
+                    explode(',', (string)env('DEBTORS_NOTIFY_DAYS', '5,10')),
                 ),
             );
-        }
 
-        $today = Date::now();
-
-        $notifyDays = array_map(
-            'intval',
-            array_filter(
-                explode(',', (string)env('DEBTORS_NOTIFY_DAYS', '5,10')),
-            ),
-        );
-
-        $debtorsProcessor = new DebtorsProcessor(
-            allowed_payment_delay: (int)env('DEBTORS_ALLOWED_PAYMENT_DELAY', '0'),
-            allowed_total_overdue_debt: (float)env('DEBTORS_ALLOWED_TOTAL_OVERDUE_DEBT', '0'),
-        );
-
-        // automatically update the blocking of debtors in systems, if requested
-        if ($args->getOption('blocking_update')) {
-            $result = $debtorsProcessor->blockingUpdate();
-
-            $io->info(
-                __d('bookkeeping', 'Systems updated.') . PHP_EOL
-                    . ($result ?: __d('bookkeeping', 'Nothing has changed.')),
+            $debtorsProcessor = new DebtorsProcessor(
+                allowed_payment_delay: (int)env('DEBTORS_ALLOWED_PAYMENT_DELAY', '0'),
+                allowed_total_overdue_debt: (float)env('DEBTORS_ALLOWED_TOTAL_OVERDUE_DEBT', '0'),
             );
-        }
 
-        // get debtors to notify
-        $debtorsToNotify = !$args->getOption('only_block') ?
-            $debtorsProcessor
-                ->getOverdueDebtors()
-                ->filter(
-                    fn(Debtor $debtor) => $this->shouldNotifyDebtor(
-                        debtor: $debtor,
-                        notifyDays: $notifyDays,
-                        today: $today,
-                    ),
-                )
-            :
-            [];
+            // automatically update the blocking of debtors in systems, if requested
+            if ($args->getOption('blocking_update')) {
+                $result = $debtorsProcessor->blockingUpdate();
 
-        // get debtors to block (or continuing debt for services no longer active)
-        $debtorsToBlock = !$args->getOption('only_notify') ?
-            $debtorsProcessor->getFilteredOverdueDebtors()
-            :
-            [];
-
-        /** @var \Bookkeeping\Debtors\Debtor $debtor */
-        foreach ($debtorsToNotify as $debtor) {
-            $emails_available = (count($debtor->getCustomer()->billing_emails) > 0);
-            $phones_available = (count($debtor->getCustomer()->billing_phones) > 0);
-
-            // notify emails
-            if (
-                $emails_available
-                && !$args->getOption('skip_emails')
-                && $this->isDebtorNotificationEnabled('notify', 'email')
-            ) {
-                $customerMessage = $this->generateNotifyEmail($debtor);
-                $io->info(__d(
-                    'bookkeeping',
-                    'Notification email has been generated'
-                        . ' for customer {customer_number}, recipients: {recipients}',
-                    [
-                        'customer_number' => $debtor->getCustomer()->number,
-                        'recipients' => implode(', ', $customerMessage->recipients),
-                    ],
-                ));
-                unset($customerMessage);
+                $io->info(
+                    __d('bookkeeping', 'Systems updated.') . PHP_EOL
+                        . ($result ?: __d('bookkeeping', 'Nothing has changed.')),
+                );
             }
 
-            // notify SMS
-            if (
-                !$emails_available
-                && $phones_available
-                && !$args->getOption('skip_sms')
-                && $this->isDebtorNotificationEnabled('notify', 'sms')
-            ) {
-                $customerMessage = $this->generateNotifySms($debtor);
-                $io->info(__d(
-                    'bookkeeping',
-                    'Notification SMS has been generated'
-                        . ' for customer {customer_number}, recipients: {recipients}',
-                    [
-                        'customer_number' => $debtor->getCustomer()->number,
-                        'recipients' => implode(', ', $customerMessage->recipients),
-                    ],
-                ));
-                unset($customerMessage);
-            }
-        }
+            // get debtors to notify
+            $debtorsToNotify = !$args->getOption('only_block') ?
+                $debtorsProcessor
+                    ->getOverdueDebtors()
+                    ->filter(
+                        fn(Debtor $debtor) => $this->shouldNotifyDebtor(
+                            debtor: $debtor,
+                            notifyDays: $notifyDays,
+                            today: $today,
+                        ),
+                    )
+                :
+                [];
 
-        /** @var \Bookkeeping\Debtors\Debtor $debtor */
-        foreach ($debtorsToBlock as $debtor) {
-            $emails_available = (count($debtor->getCustomer()->emails) > 0);
-            $phones_available = (count($debtor->getCustomer()->phones) > 0);
-            $messageType = $debtor->getCustomer()->active_services ? 'block' : 'inactive';
+            // get debtors to block (or continuing debt for services no longer active)
+            $debtorsToBlock = !$args->getOption('only_notify') ?
+                $debtorsProcessor->getFilteredOverdueDebtors()
+                :
+                [];
 
-            // block emails
-            if (
-                $emails_available
-                && !$args->getOption('skip_emails')
-                && $this->isDebtorNotificationEnabled($messageType, 'email')
-            ) {
-                if ($messageType == 'block') {
-                    $customerMessage = $this->generateBlockEmail($debtor);
+            /** @var \Bookkeeping\Debtors\Debtor $debtor */
+            foreach ($debtorsToNotify as $debtor) {
+                $emails_available = (count($debtor->getCustomer()->billing_emails) > 0);
+                $phones_available = (count($debtor->getCustomer()->billing_phones) > 0);
+
+                // notify emails
+                if (
+                    $emails_available
+                    && !$args->getOption('skip_emails')
+                    && $this->isDebtorNotificationEnabled('notify', 'email')
+                ) {
+                    $customerMessage = $this->generateNotifyEmail($debtor);
                     $io->info(__d(
                         'bookkeeping',
-                        'Blocking email has been generated'
+                        'Notification email has been generated'
                             . ' for customer {customer_number}, recipients: {recipients}',
                         [
                             'customer_number' => $debtor->getCustomer()->number,
                             'recipients' => implode(', ', $customerMessage->recipients),
                         ],
                     ));
-                } else {
-                    $customerMessage = $this->generateNotifyEmailForInactiveServices($debtor);
-                    $io->info(__d(
-                        'bookkeeping',
-                        'Notification email has been generated for inactive services'
-                            . ' for customer {customer_number}, recipients: {recipients}',
-                        [
-                            'customer_number' => $debtor->getCustomer()->number,
-                            'recipients' => implode(', ', $customerMessage->recipients),
-                        ],
-                    ));
+                    unset($customerMessage);
                 }
-                unset($customerMessage);
+
+                // notify SMS
+                if (
+                    !$emails_available
+                    && $phones_available
+                    && !$args->getOption('skip_sms')
+                    && $this->isDebtorNotificationEnabled('notify', 'sms')
+                ) {
+                    $customerMessage = $this->generateNotifySms($debtor);
+                    $io->info(__d(
+                        'bookkeeping',
+                        'Notification SMS has been generated'
+                            . ' for customer {customer_number}, recipients: {recipients}',
+                        [
+                            'customer_number' => $debtor->getCustomer()->number,
+                            'recipients' => implode(', ', $customerMessage->recipients),
+                        ],
+                    ));
+                    unset($customerMessage);
+                }
             }
 
-            // block SMS
-            if (
-                $phones_available
-                && !$args->getOption('skip_sms')
-                && $this->isDebtorNotificationEnabled($messageType, 'sms')
-            ) {
-                if ($messageType == 'block') {
-                    $customerMessage = $this->generateBlockSms($debtor);
-                    $io->info(__d(
-                        'bookkeeping',
-                        'Blocking SMS has been generated'
-                            . ' for customer {customer_number}, recipients: {recipients}',
-                        [
-                            'customer_number' => $debtor->getCustomer()->number,
-                            'recipients' => implode(', ', $customerMessage->recipients),
-                        ],
-                    ));
-                } else {
-                    $customerMessage = $this->generateNotifySmsForInactiveServices($debtor);
-                    $io->info(__d(
-                        'bookkeeping',
-                        'Notification SMS has been generated for inactive services'
-                            . ' for customer {customer_number}, recipients: {recipients}',
-                        [
-                            'customer_number' => $debtor->getCustomer()->number,
-                            'recipients' => implode(', ', $customerMessage->recipients),
-                        ],
-                    ));
+            /** @var \Bookkeeping\Debtors\Debtor $debtor */
+            foreach ($debtorsToBlock as $debtor) {
+                $emails_available = (count($debtor->getCustomer()->emails) > 0);
+                $phones_available = (count($debtor->getCustomer()->phones) > 0);
+                $messageType = $debtor->getCustomer()->active_services ? 'block' : 'inactive';
+
+                // block emails
+                if (
+                    $emails_available
+                    && !$args->getOption('skip_emails')
+                    && $this->isDebtorNotificationEnabled($messageType, 'email')
+                ) {
+                    if ($messageType == 'block') {
+                        $customerMessage = $this->generateBlockEmail($debtor);
+                        $io->info(__d(
+                            'bookkeeping',
+                            'Blocking email has been generated'
+                                . ' for customer {customer_number}, recipients: {recipients}',
+                            [
+                                'customer_number' => $debtor->getCustomer()->number,
+                                'recipients' => implode(', ', $customerMessage->recipients),
+                            ],
+                        ));
+                    } else {
+                        $customerMessage = $this->generateNotifyEmailForInactiveServices($debtor);
+                        $io->info(__d(
+                            'bookkeeping',
+                            'Notification email has been generated for inactive services'
+                                . ' for customer {customer_number}, recipients: {recipients}',
+                            [
+                                'customer_number' => $debtor->getCustomer()->number,
+                                'recipients' => implode(', ', $customerMessage->recipients),
+                            ],
+                        ));
+                    }
+                    unset($customerMessage);
                 }
-                unset($customerMessage);
+
+                // block SMS
+                if (
+                    $phones_available
+                    && !$args->getOption('skip_sms')
+                    && $this->isDebtorNotificationEnabled($messageType, 'sms')
+                ) {
+                    if ($messageType == 'block') {
+                        $customerMessage = $this->generateBlockSms($debtor);
+                        $io->info(__d(
+                            'bookkeeping',
+                            'Blocking SMS has been generated'
+                                . ' for customer {customer_number}, recipients: {recipients}',
+                            [
+                                'customer_number' => $debtor->getCustomer()->number,
+                                'recipients' => implode(', ', $customerMessage->recipients),
+                            ],
+                        ));
+                    } else {
+                        $customerMessage = $this->generateNotifySmsForInactiveServices($debtor);
+                        $io->info(__d(
+                            'bookkeeping',
+                            'Notification SMS has been generated for inactive services'
+                                . ' for customer {customer_number}, recipients: {recipients}',
+                            [
+                                'customer_number' => $debtor->getCustomer()->number,
+                                'recipients' => implode(', ', $customerMessage->recipients),
+                            ],
+                        ));
+                    }
+                    unset($customerMessage);
+                }
             }
+            $io->info(__d('bookkeeping', 'Done'));
+
+            return static::CODE_SUCCESS;
+        } catch (Throwable $e) {
+            Log::error('Error during debtor processing: ' . $e->getMessage());
+
+            $io->error(__d(
+                'bookkeeping',
+                'Error during debtor processing: {0}',
+                $e->getMessage(),
+            ));
+
+            // notify by email (if it fails, let it crash)
+            $errorMailer = new Mailer('default');
+
+            foreach (explode(' ', (string)env('REPORT_EMAILS')) as $email) {
+                $errorMailer->addTo($email);
+            }
+
+            $errorMailer->setSubject(__d(
+                'bookkeeping',
+                'Debtor processing failed',
+            ));
+
+            $errorMailer->deliver(__d(
+                'bookkeeping',
+                'Debtor processing failed.' . PHP_EOL . PHP_EOL
+                . 'Error: {0}',
+                [$e->getMessage()],
+            ));
+
+            unset($errorMailer);
+
+            return static::CODE_ERROR;
         }
-        $io->info(__d('bookkeeping', 'Done'));
     }
 
     /**

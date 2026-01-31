@@ -12,7 +12,10 @@ use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\I18n\Date;
+use Cake\Log\Log;
+use Cake\Mailer\Mailer;
 use RuntimeException;
+use Throwable;
 
 /**
  * IssueInvoices command.
@@ -288,8 +291,34 @@ class IssueInvoicesCommand extends Command
             ));
 
             return Command::CODE_SUCCESS;
-        } catch (RuntimeException $e) {
-            $io->error($e->getMessage());
+        } catch (Throwable $e) {
+            Log::error('Error when issuing invoices: ' . $e->getMessage());
+
+            $io->error(__d(
+                'bookkeeping',
+                'Error when issuing invoices: {0}',
+                $e->getMessage(),
+            ));
+
+            // try to send a notification of the problem to mail (if it fails it will crash)
+            $errorMailer = new Mailer('default');
+
+            foreach (explode(' ', (string)env('REPORT_EMAILS')) as $email) {
+                $errorMailer->addTo($email);
+            }
+
+            $errorMailer->setSubject(__d(
+                'bookkeeping',
+                'Error when issuing invoices',
+            ));
+
+            $errorMailer->deliver(__d(
+                'bookkeeping',
+                'Error when issuing invoices: {0}',
+                $e->getMessage(),
+            ));
+
+            unset($errorMailer);
 
             return Command::CODE_ERROR;
         }

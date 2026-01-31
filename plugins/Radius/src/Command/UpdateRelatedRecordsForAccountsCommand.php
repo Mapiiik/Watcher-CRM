@@ -8,8 +8,11 @@ use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
+use Cake\Log\Log;
+use Cake\Mailer\Mailer;
 use Override;
 use Radius\Updater\AccountsUpdater;
+use Throwable;
 
 /**
  * Update related records for accounts command.
@@ -77,36 +80,71 @@ class UpdateRelatedRecordsForAccountsCommand extends Command
     #[Override]
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        // load accounts updater
-        $accountsUpdater = new AccountsUpdater();
+        try {
+            // load accounts updater
+            $accountsUpdater = new AccountsUpdater();
 
-        // update related records for all accounts
-        $changelog = $accountsUpdater->updateRelatedRecordsForAllAccounts($args->getOptions());
+            // update related records for all accounts
+            $changelog = $accountsUpdater->updateRelatedRecordsForAllAccounts($args->getOptions());
 
-        // load messages from accounts updater and generate flash messages
-        $this->handleMessages($accountsUpdater->Messages->getMessages(), $io);
+            // load messages from accounts updater and generate flash messages
+            $this->handleMessages($accountsUpdater->Messages->getMessages(), $io);
 
-        // generate summary table
-        $tableData = [];
-        $tableData[] = [
-            __d('radius', 'Customer'),
-            __d('radius', 'Contract'),
-            __d('radius', 'RADIUS Username'),
-            __d('radius', 'RADIUS Checks'),
-            __d('radius', 'RADIUS Replies'),
-            __d('radius', 'RADIUS User Groups'),
-        ];
-        foreach ($changelog->getChanges() as $change) {
+            // generate summary table
+            $tableData = [];
             $tableData[] = [
-                $change->getCustomer()->name,
-                $change->getContract()->number,
-                $change->getAccount()->username,
-                $change->getRadcheckChange() ? __d('radius', 'Modified') : '',
-                $change->getRadreplyChange() ? __d('radius', 'Modified') : '',
-                $change->getRadusergroupChange() ? __d('radius', 'Modified') : '',
+                __d('radius', 'Customer'),
+                __d('radius', 'Contract'),
+                __d('radius', 'RADIUS Username'),
+                __d('radius', 'RADIUS Checks'),
+                __d('radius', 'RADIUS Replies'),
+                __d('radius', 'RADIUS User Groups'),
             ];
+            foreach ($changelog->getChanges() as $change) {
+                $tableData[] = [
+                    $change->getCustomer()->name,
+                    $change->getContract()->number,
+                    $change->getAccount()->username,
+                    $change->getRadcheckChange() ? __d('radius', 'Modified') : '',
+                    $change->getRadreplyChange() ? __d('radius', 'Modified') : '',
+                    $change->getRadusergroupChange() ? __d('radius', 'Modified') : '',
+                ];
+            }
+            $io->helper('Table')->output($tableData);
+
+            return static::CODE_SUCCESS;
+        } catch (Throwable $e) {
+            Log::error('Error during RADIUS accounts update: ' . $e->getMessage());
+
+            $io->error(__d(
+                'radius',
+                'Error during RADIUS accounts update: {0}',
+                $e->getMessage(),
+            ));
+
+            // notify by email (if it fails, let it crash)
+            $errorMailer = new Mailer('default');
+
+            foreach (explode(' ', (string)env('REPORT_EMAILS')) as $email) {
+                $errorMailer->addTo($email);
+            }
+
+            $errorMailer->setSubject(__d(
+                'radius',
+                'RADIUS accounts update failed',
+            ));
+
+            $errorMailer->deliver(__d(
+                'radius',
+                'RADIUS accounts update failed.' . PHP_EOL . PHP_EOL
+                . 'Error: {0}',
+                [$e->getMessage()],
+            ));
+
+            unset($errorMailer);
+
+            return static::CODE_ERROR;
         }
-        $io->helper('Table')->output($tableData);
     }
 
     /**

@@ -11,7 +11,9 @@ use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\I18n\DateTime;
 use Cake\Log\Log;
+use Cake\Mailer\Mailer;
 use Override;
+use RuntimeException;
 use Throwable;
 
 /**
@@ -87,6 +89,7 @@ class LoadInvoicesCommand extends Command
     {
         $mode = InvoiceSyncMode::from((string)$args->getOption('mode'));
         $now = new DateTime();
+        $lastChanges = null;
 
         $io->info(__d(
             'bookkeeping',
@@ -94,46 +97,79 @@ class LoadInvoicesCommand extends Command
             $mode->label(),
         ));
 
-        $lastChanges = $this->resolveLastChanges($args, $io);
-        if ($lastChanges === null) {
-            return static::CODE_ERROR;
-        }
-
-        $io->info(__d(
-            'bookkeeping',
-            'Using last changes time: {0}',
-            [$lastChanges->format('Y-m-d H:i:s')],
-        ));
-
         try {
+            $lastChanges = $this->resolveLastChanges($args, $io);
+            if ($lastChanges === null) {
+                throw new RuntimeException(__d(
+                    'bookkeeping',
+                    'Unable to resolve last synchronization timestamp.',
+                ));
+            }
+
+            $io->info(__d(
+                'bookkeeping',
+                'Using last changes time: {0}',
+                [$lastChanges->format('Y-m-d H:i:s')],
+            ));
+
             $result = $this->bookkeeping->syncInvoices(
                 mode: $mode,
                 lastChanges: $lastChanges,
             );
+
+            $io->success(__d(
+                'bookkeeping',
+                'Successfully imported {0} invoices. Created {1}, modified {2}, skipped {3}.',
+                [
+                    $result['imported'] ?? 0,
+                    $result['created'] ?? 0,
+                    $result['modified'] ?? 0,
+                    $result['skipped'] ?? 0,
+                ],
+            ));
+
+            $this->saveLastSynchronizationTime($now);
+
+            return static::CODE_SUCCESS;
         } catch (Throwable $e) {
+            Log::error('Error during invoice synchronization: ' . $e->getMessage());
+
             $io->error(__d(
                 'bookkeeping',
                 'Error during invoice synchronization: {0}',
                 [$e->getMessage()],
             ));
 
+            // notify by email (if it fails, let it crash)
+            $errorMailer = new Mailer('default');
+
+            foreach (explode(' ', (string)env('REPORT_EMAILS')) as $email) {
+                $errorMailer->addTo($email);
+            }
+
+            $errorMailer->setSubject(__d(
+                'bookkeeping',
+                'Invoice synchronization failed',
+            ));
+
+            $errorMailer->deliver(__d(
+                'bookkeeping',
+                'Invoice synchronization failed.' . PHP_EOL
+                . PHP_EOL
+                . 'Mode: {0}' . PHP_EOL
+                . 'Last changes: {1}' . PHP_EOL
+                . 'Error: {2}',
+                [
+                    $mode->value,
+                    $lastChanges?->format('Y-m-d H:i:s') ?? 'N/A',
+                    $e->getMessage(),
+                ],
+            ));
+
+            unset($errorMailer);
+
             return static::CODE_ERROR;
         }
-
-        $io->success(__d(
-            'bookkeeping',
-            'Successfully imported {0} invoices. Created {1}, modified {2}, skipped {3}.',
-            [
-                $result['imported'] ?? 0,
-                $result['created'] ?? 0,
-                $result['modified'] ?? 0,
-                $result['skipped'] ?? 0,
-            ],
-        ));
-
-        $this->saveLastSynchronizationTime($now);
-
-        return static::CODE_SUCCESS;
     }
 
     /**

@@ -13,9 +13,9 @@ use Cake\I18n\DateTime;
 use Cake\I18n\Number;
 use Cake\Log\Log;
 use Cake\Mailer\Mailer;
-use Exception;
 use Override;
 use Settings\Utility\Settings;
+use Throwable;
 
 /**
  * SendIssuedInvoices command.
@@ -198,7 +198,7 @@ class SendIssuedInvoicesCommand extends Command
                     // save the date of submission to the database
                     $invoice->email_sent = DateTime::now();
                     $invoicesTable->save($invoice);
-                } catch (Exception $e) {
+                } catch (Throwable $e) {
                     Log::error('Error sending email message with issued invoice ID '
                         . $invoice->id . ': ' . $e->getMessage());
                     $io->error(__d(

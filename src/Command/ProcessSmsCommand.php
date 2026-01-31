@@ -20,9 +20,9 @@ use Cake\Console\ConsoleOptionParser;
 use Cake\I18n\DateTime;
 use Cake\Log\Log;
 use Cake\Mailer\Mailer;
-use Exception;
 use InvalidArgumentException;
 use Override;
+use Throwable;
 
 /**
  * Process SMS command.
@@ -182,7 +182,7 @@ class ProcessSmsCommand extends Command
 
                     // increase the send counter
                     $send_count++;
-                } catch (Exception $e) {
+                } catch (Throwable $e) {
                     // log error
                     Log::error('Error sending SMS message with ID ' . $smsMessage->id . ': ' . $e->getMessage());
 
@@ -220,7 +220,7 @@ class ProcessSmsCommand extends Command
                 // patch entity data
                 $smsMessage->delivery_status = $this->getMessageState($messageState);
                 $customerMessagesTable->saveOrFail($smsMessage);
-            } catch (Exception $e) {
+            } catch (Throwable $e) {
                 // log error
                 Log::error('Error getting SMS message status with ID ' . $smsMessage->id . ': ' . $e->getMessage());
 
