@@ -145,6 +145,9 @@ class EurofakturaProvider implements AccountingProviderInterface
 
         $drafts = $this->jsonParser->parseSalesInvoiceList($response->getJson());
 
+        // Eurofaktura rate limit
+        sleep(1);
+
         $response = $this->httpClient->send(
             $this->credentialsProvider->getDefault(),
             'SalesInvoiceList',
