@@ -203,8 +203,8 @@ class ContractPDF extends AppPDF
             }
 
             $clauseKey = $withInstallation
-                ? 'activation_fee_clause_installation'
-                : 'activation_fee_clause_equipment';
+                ? 'activation_fee_clause_with_installation'
+                : 'activation_fee_clause';
 
             $this->MultiCell(
                 180,
