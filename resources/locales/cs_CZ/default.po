@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-01-28 11:57+0100\n"
-"PO-Revision-Date: 2026-01-28 11:59+0100\n"
+"POT-Creation-Date: 2026-02-01 09:17+0100\n"
+"PO-Revision-Date: 2026-02-01 09:20+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -79,42 +79,54 @@ msgstr "Chyba při získávání stavu SMS zprávy s ID {0}"
 msgid "Error getting message status with ID {0}: {1}"
 msgstr "Chyba při získávání stavu zprávy s ID {0}: {1}"
 
-#: src/Command/UpdateCustomerLabelsCommand.php:71
+#: src/Command/UpdateCustomerLabelsCommand.php:74
 msgid "Processing"
 msgstr "Zpracování"
 
-#: src/Command/UpdateCustomerLabelsCommand.php:92
+#: src/Command/UpdateCustomerLabelsCommand.php:95
 msgid "The dynamic SQL query could not be processed for label."
 msgstr "Dynamický dotaz SQL nebylo možné zpracovat pro štítek."
 
-#: src/Command/UpdateCustomerLabelsCommand.php:109
+#: src/Command/UpdateCustomerLabelsCommand.php:112
 msgid "The dynamic SQL query did not return a customer_id value for label."
 msgstr "Dynamický dotaz SQL nevrátil hodnotu customer_id pro štítek."
 
-#: src/Command/UpdateCustomerLabelsCommand.php:137
+#: src/Command/UpdateCustomerLabelsCommand.php:140
 msgid "dynamic"
 msgstr "dynamický"
 
-#: src/Command/UpdateCustomerLabelsCommand.php:162
+#: src/Command/UpdateCustomerLabelsCommand.php:166
 msgid ""
 "The related dynamic customer labels could not be saved. Please, try again."
 msgstr ""
 "Související dynamické štítky zákazníků nebylo možné uložit. Zkuste to prosím "
 "znovu."
 
-#: src/Command/UpdateCustomerLabelsCommand.php:176
+#: src/Command/UpdateCustomerLabelsCommand.php:182
 msgid ""
 "The related dynamic customer labels could not be deleted. Please, try again."
 msgstr ""
 "Související dynamické štítky zákazníků nebylo možné odstranit. Zkuste to "
 "prosím znovu."
 
-#: src/Command/UpdateCustomerLabelsCommand.php:192
+#: src/Command/UpdateCustomerLabelsCommand.php:200
 msgid ""
 "The related static customer labels could not be deleted. Please, try again."
 msgstr ""
 "Související statické štítky zákazníků nebylo možné odstranit. Zkuste to "
 "prosím znovu."
+
+#: src/Command/UpdateCustomerLabelsCommand.php:213
+msgid "Error during customer labels update: {0}"
+msgstr "Chyba při aktualizaci štítků zákazníků: {0}"
+
+#: src/Command/UpdateCustomerLabelsCommand.php:225
+msgid "Customer labels update failed"
+msgstr "Aktualizace štítků zákazníků se nezdařila"
+
+#: src/Command/UpdateCustomerLabelsCommand.php:227
+msgid "Customer labels update failed."
+msgstr "Aktualizace štítků zákazníků se nezdařila."
 
 #: src/Controller/AccessCredentialsController.php:99
 #: src/Controller/AccessCredentialsController.php:157

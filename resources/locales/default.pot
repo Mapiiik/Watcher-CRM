@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-01-28 11:57+0100\n"
+"POT-Creation-Date: 2026-02-01 09:17+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -83,32 +83,44 @@ msgstr ""
 msgid "Error getting message status with ID {0}: {1}"
 msgstr ""
 
-#: ./src/Command/UpdateCustomerLabelsCommand.php:71
+#: ./src/Command/UpdateCustomerLabelsCommand.php:74
 msgid "Processing"
 msgstr ""
 
-#: ./src/Command/UpdateCustomerLabelsCommand.php:92
+#: ./src/Command/UpdateCustomerLabelsCommand.php:95
 msgid "The dynamic SQL query could not be processed for label."
 msgstr ""
 
-#: ./src/Command/UpdateCustomerLabelsCommand.php:109
+#: ./src/Command/UpdateCustomerLabelsCommand.php:112
 msgid "The dynamic SQL query did not return a customer_id value for label."
 msgstr ""
 
-#: ./src/Command/UpdateCustomerLabelsCommand.php:137
+#: ./src/Command/UpdateCustomerLabelsCommand.php:140
 msgid "dynamic"
 msgstr ""
 
-#: ./src/Command/UpdateCustomerLabelsCommand.php:162
+#: ./src/Command/UpdateCustomerLabelsCommand.php:166
 msgid "The related dynamic customer labels could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Command/UpdateCustomerLabelsCommand.php:176
+#: ./src/Command/UpdateCustomerLabelsCommand.php:182
 msgid "The related dynamic customer labels could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Command/UpdateCustomerLabelsCommand.php:192
+#: ./src/Command/UpdateCustomerLabelsCommand.php:200
 msgid "The related static customer labels could not be deleted. Please, try again."
+msgstr ""
+
+#: ./src/Command/UpdateCustomerLabelsCommand.php:213
+msgid "Error during customer labels update: {0}"
+msgstr ""
+
+#: ./src/Command/UpdateCustomerLabelsCommand.php:225
+msgid "Customer labels update failed"
+msgstr ""
+
+#: ./src/Command/UpdateCustomerLabelsCommand.php:227
+msgid "Customer labels update failed."
 msgstr ""
 
 #: ./src/Controller/AccessCredentialsController.php:99
