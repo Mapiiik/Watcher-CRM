@@ -5,10 +5,10 @@ namespace Radius\Updater;
 
 use App\Messages\Messages;
 use Mapik\RadiusClient\Client;
-use Mapik\RadiusClient\Exceptions\ClientException;
 use Mapik\RadiusClient\Packet;
 use Mapik\RadiusClient\PacketType;
 use Radius\Model\Entity\Radacct;
+use Throwable;
 
 /**
  * Message
@@ -49,7 +49,7 @@ class RadiusRequestSender
                     'NAS-IP-Address' => $session->nasipaddress,
                 ]),
             );
-        } catch (ClientException $e) {
+        } catch (Throwable $e) {
             $this->Messages->error(__d(
                 'radius',
                 'The RADIUS session for {0} started on {1} could not be disconnected ({2}).',
