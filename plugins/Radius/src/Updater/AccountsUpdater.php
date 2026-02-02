@@ -11,6 +11,7 @@ use Cake\I18n\Date;
 use Cake\I18n\Number;
 use Cake\Log\Log;
 use Cake\Mailer\Mailer;
+use Cake\ORM\Entity;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\ORM\Query\SelectQuery;
 use Exception;
@@ -283,19 +284,31 @@ class AccountsUpdater
         Account &$account,
         ChangeLog &$changelog,
     ): void {
-        $data = $this->$autoDataMethod($account);
-        sort($data);
-        sort($account->$relatedData);
-        if ($account->$relatedData != $data) {
+        $originalData = $account->$relatedData;
+        $newData = $this->$autoDataMethod($account);
+
+        $originalDataArray = array_map(
+            fn(Entity $e) => $e->toArray(),
+            $originalData,
+        );
+        $newDataArray = array_map(
+            fn(Entity $e) => $e->toArray(),
+            $newData,
+        );
+
+        sort($originalDataArray);
+        sort($newDataArray);
+
+        if ($originalDataArray !== $newDataArray) {
             // write changes to the change log
             $changelog->addChangeForRelatedData(
                 $account,
                 $relatedData,
-                original: $account->$relatedData,
-                changed: $data,
+                original: $originalData,
+                changed: $newData,
             );
 
-            $account->$relatedData = $data;
+            $account->$relatedData = $newData;
         }
     }
 
