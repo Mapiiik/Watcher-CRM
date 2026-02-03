@@ -353,9 +353,12 @@ class ContractsTable extends AppTable
      * @psalm-suppress PossiblyUnusedParam
      * @return void
      */
-    public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
-    {
-        if ($entity instanceof Contract && $entity->isDirty('contract_state_id')) {
+    public function beforeSave(
+        EventInterface $event,
+        EntityInterface $entity,
+        ArrayObject $options,
+    ): void {
+        if ($entity instanceof Contract) {
             $errors = (new ContractStateValidator())->validate($entity);
 
             if ($errors) {
@@ -363,8 +366,6 @@ class ContractsTable extends AppTable
 
                 $event->stopPropagation();
                 $event->setResult(false);
-
-                return;
             }
         }
     }

@@ -185,9 +185,13 @@ class ContractsController extends AppController
             'last_name',
             'first_name',
         ]);
-        $contractStates = $this->Contracts->ContractStates->find('list', order: [
-            'name',
-        ]);
+        $contractStates = $this->Contracts->ContractStates
+            ->find('list', order: [
+                'name',
+            ])
+            ->where([
+                'ContractStates.usable_for_new_contract' => true,
+            ]);
         $installationAddresses = $this->Contracts->InstallationAddresses->find(
             'list',
             order: [

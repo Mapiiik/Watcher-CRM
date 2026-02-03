@@ -98,6 +98,35 @@ class ContractStateValidator
             return [];
         }
 
+        if ($contract->isNew()) {
+            if (!$contractState->usable_for_new_contract) {
+                $this->setError(
+                    'contract_state_id',
+                    __('The selected contract state cannot be used for new contracts.'),
+                );
+            }
+            // Skip further validations when creating a new contract for now
+            return $this->getErrors();
+        }
+
+        // Dates
+        if ($contractState->requires_installation_date) {
+            $this->validateRequiresInstallationDate($contract);
+        }
+
+        if ($contractState->requires_uninstallation_date) {
+            $this->validateRequiresUninstallationDate($contract);
+        }
+
+        if ($contractState->requires_termination_date) {
+            $this->validateRequiresTerminationDate($contract);
+        }
+
+        if (!$contract->isDirty('contract_state_id')) {
+            // No contract state change, nothing more to validate for now
+            return $this->getErrors();
+        }
+
         // Tasks
         if ($contractState->requires_open_task_type_id) {
             $this->validateRequiresOpenTaskType(
@@ -133,19 +162,6 @@ class ContractStateValidator
             $this->validateRequiresNoBorrowedEquipments($contract);
         }
 
-        // Dates
-        if ($contractState->requires_installation_date) {
-            $this->validateRequiresInstallationDate($contract);
-        }
-
-        if ($contractState->requires_uninstallation_date) {
-            $this->validateRequiresUninstallationDate($contract);
-        }
-
-        if ($contractState->requires_termination_date) {
-            $this->validateRequiresTerminationDate($contract);
-        }
-
         // Contract versions
         if ($contractState->requires_contract_version) {
             $this->validateRequiresContractVersion($contract);
@@ -168,6 +184,63 @@ class ContractStateValidator
         }
 
         return $this->getErrors();
+    }
+
+    /**
+     * Validates presence of installation date.
+     *
+     * Ensures that the contract has an installation date set when required
+     * by the target contract state.
+     *
+     * @param \App\Model\Entity\Contract $contract
+     * @return void
+     */
+    private function validateRequiresInstallationDate(Contract $contract): void
+    {
+        if ($contract->installation_date === null) {
+            $this->setError(
+                'installation_date',
+                __('Installation date must be set for this contract state.'),
+            );
+        }
+    }
+
+    /**
+     * Validates presence of uninstallation date.
+     *
+     * Ensures that the contract has an uninstallation date set when required
+     * by the target contract state.
+     *
+     * @param \App\Model\Entity\Contract $contract
+     * @return void
+     */
+    private function validateRequiresUninstallationDate(Contract $contract): void
+    {
+        if ($contract->uninstallation_date === null) {
+            $this->setError(
+                'uninstallation_date',
+                __('Uninstallation date must be set for this contract state.'),
+            );
+        }
+    }
+
+    /**
+     * Validates presence of termination date.
+     *
+     * Ensures that the contract has a termination date set when required
+     * by the target contract state.
+     *
+     * @param \App\Model\Entity\Contract $contract
+     * @return void
+     */
+    private function validateRequiresTerminationDate(Contract $contract): void
+    {
+        if ($contract->termination_date === null) {
+            $this->setError(
+                'termination_date',
+                __('Termination date must be set for this contract state.'),
+            );
+        }
     }
 
     /**
@@ -397,63 +470,6 @@ class ContractStateValidator
             $this->setError(
                 'contract_state_id',
                 __('All borrowed equipments must be returned before changing contract state.'),
-            );
-        }
-    }
-
-    /**
-     * Validates presence of installation date.
-     *
-     * Ensures that the contract has an installation date set when required
-     * by the target contract state.
-     *
-     * @param \App\Model\Entity\Contract $contract
-     * @return void
-     */
-    private function validateRequiresInstallationDate(Contract $contract): void
-    {
-        if ($contract->installation_date === null) {
-            $this->setError(
-                'installation_date',
-                __('Installation date must be set for this contract state.'),
-            );
-        }
-    }
-
-    /**
-     * Validates presence of uninstallation date.
-     *
-     * Ensures that the contract has an uninstallation date set when required
-     * by the target contract state.
-     *
-     * @param \App\Model\Entity\Contract $contract
-     * @return void
-     */
-    private function validateRequiresUninstallationDate(Contract $contract): void
-    {
-        if ($contract->uninstallation_date === null) {
-            $this->setError(
-                'uninstallation_date',
-                __('Uninstallation date must be set for this contract state.'),
-            );
-        }
-    }
-
-    /**
-     * Validates presence of termination date.
-     *
-     * Ensures that the contract has a termination date set when required
-     * by the target contract state.
-     *
-     * @param \App\Model\Entity\Contract $contract
-     * @return void
-     */
-    private function validateRequiresTerminationDate(Contract $contract): void
-    {
-        if ($contract->termination_date === null) {
-            $this->setError(
-                'termination_date',
-                __('Termination date must be set for this contract state.'),
             );
         }
     }
