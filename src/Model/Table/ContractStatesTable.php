@@ -11,6 +11,7 @@ use Override;
  * ContractStates Model
  *
  * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\HasMany $Contracts
+ * @property \App\Model\Table\TaskTypesTable&\Cake\ORM\Association\BelongsTo $RequiresOpenTaskTypes
  * @method \App\Model\Entity\ContractState newEmptyEntity()
  * @method \App\Model\Entity\ContractState newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\ContractState[] newEntities(array $data, array $options = [])
@@ -49,6 +50,12 @@ class ContractStatesTable extends AppTable
 
         $this->hasMany('Contracts', [
             'foreignKey' => 'contract_state_id',
+        ]);
+
+        $this->belongsTo('RequiresOpenTaskTypes', [
+            'className' => 'TaskTypes',
+            'foreignKey' => 'requires_open_task_type_id',
+//            'propertyName' => 'requires_open_task_type',
         ]);
     }
 
@@ -91,6 +98,70 @@ class ContractStatesTable extends AppTable
             ->scalar('note')
             ->allowEmptyString('note');
 
+        $validator
+            ->boolean('usable_for_new_contract')
+            ->notEmptyString('usable_for_new_contract');
+
+        $validator
+            ->uuid('requires_open_task_type_id')
+            ->allowEmptyString('requires_open_task_type_id');
+
+        $validator
+            ->boolean('requires_no_open_tasks')
+            ->notEmptyString('requires_no_open_tasks');
+
+        $validator
+            ->boolean('requires_no_active_billings')
+            ->notEmptyString('requires_no_active_billings');
+
+        $validator
+            ->boolean('requires_no_future_billings')
+            ->notEmptyString('requires_no_future_billings');
+
+        $validator
+            ->boolean('requires_no_assigned_ip_addresses_or_networks')
+            ->notEmptyString('requires_no_assigned_ip_addresses_or_networks');
+
+        $validator
+            ->boolean('requires_no_active_radius_accounts')
+            ->notEmptyString('requires_no_active_radius_accounts');
+
+        $validator
+            ->boolean('requires_no_borrowed_equipments')
+            ->notEmptyString('requires_no_borrowed_equipments');
+
+        $validator
+            ->boolean('requires_installation_date')
+            ->notEmptyString('requires_installation_date');
+
+        $validator
+            ->boolean('requires_uninstallation_date')
+            ->notEmptyString('requires_uninstallation_date');
+
+        $validator
+            ->boolean('requires_termination_date')
+            ->notEmptyString('requires_termination_date');
+
+        $validator
+            ->boolean('requires_contract_version')
+            ->notEmptyString('requires_contract_version');
+
+        $validator
+            ->boolean('requires_active_contract_version')
+            ->notEmptyString('requires_active_contract_version');
+
+        $validator
+            ->boolean('requires_active_or_future_contract_version')
+            ->notEmptyString('requires_active_or_future_contract_version');
+
+        $validator
+            ->boolean('requires_no_active_or_future_contract_versions')
+            ->notEmptyString('requires_no_active_or_future_contract_versions');
+
+        $validator
+            ->boolean('requires_no_active_obligations')
+            ->notEmptyString('requires_no_active_obligations');
+
         return $validator;
     }
 
@@ -104,6 +175,11 @@ class ContractStatesTable extends AppTable
     #[Override]
     public function buildRules(RulesChecker $rules): RulesChecker
     {
+        $rules->add(
+            $rules->existsIn(['requires_open_task_type_id'], 'RequiresOpenTaskTypes'),
+            ['errorField' => 'requires_open_task_type_id']
+        );
+
         $rules->addDelete($rules->isNotLinkedTo('Contracts'));
 
         return $rules;

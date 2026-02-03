@@ -11,6 +11,7 @@ use Override;
  * TaskTypes Model
  *
  * @property \App\Model\Table\TasksTable&\Cake\ORM\Association\HasMany $Tasks
+ * @property \App\Model\Table\ContractStatesTable&\Cake\ORM\Association\HasMany $ContractStates
  * @method \App\Model\Entity\TaskType newEmptyEntity()
  * @method \App\Model\Entity\TaskType newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\TaskType[] newEntities(array $data, array $options = [])
@@ -54,6 +55,10 @@ class TaskTypesTable extends AppTable
                 'Tasks.nid' => 'DESC',
             ],
         ]);
+
+        $this->hasMany('ContractStates', [
+            'foreignKey' => 'requires_open_task_type_id',
+        ]);
     }
 
     /**
@@ -95,6 +100,7 @@ class TaskTypesTable extends AppTable
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->addDelete($rules->isNotLinkedTo('Tasks'));
+        $rules->addDelete($rules->isNotLinkedTo('ContractStates'));
 
         return $rules;
     }

@@ -55,6 +55,7 @@ class TaskTypesController extends AppController
     {
         $taskType = $this->TaskTypes->get($id, contain: [
             'Tasks' => ['Customers', 'Dealers', 'TaskStates'],
+            'ContractStates',
             'Creators',
             'Modifiers',
         ]);

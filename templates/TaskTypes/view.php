@@ -160,6 +160,45 @@
                 </div>
                 <?php endif; ?>
             </div>
+            <div class="related">
+                <h4><?= __('Related Contract States') ?></h4>
+
+                <?php if (!empty($taskType->contract_states)) : ?>
+                    <div class="table-responsive">
+                        <table>
+                            <tr>
+                                <th><?= __('Name') ?></th>
+                                <th><?= __('Usable for New Contracts') ?></th>
+                                <th><?= __('Active Services') ?></th>
+                                <th><?= __('Billed') ?></th>
+                                <th><?= __('Blocked') ?></th>
+                                <th class="actions"><?= __('Actions') ?></th>
+                            </tr>
+
+                            <?php foreach ($taskType->contract_states as $contractState) : ?>
+                            <tr>
+                                <td><?= h($contractState->name) ?></td>
+                                <td><?= $contractState->usable_for_new_contract ? __('Yes') : __('No') ?></td>
+                                <td><?= $contractState->active_services ? __('Yes') : __('No') ?></td>
+                                <td><?= $contractState->billed ? __('Yes') : __('No') ?></td>
+                                <td><?= $contractState->blocked ? __('Yes') : __('No') ?></td>
+                                <td class="actions">
+                                    <?= $this->AuthLink->link(
+                                        __('View'),
+                                        ['controller' => 'ContractStates', 'action' => 'view', $contractState->id],
+                                    ) ?>
+                                    <?= $this->AuthLink->link(
+                                        __('Edit'),
+                                        ['controller' => 'ContractStates', 'action' => 'edit', $contractState->id],
+                                        ['class' => 'win-link'],
+                                    ) ?>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </table>
+                    </div>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 </div>

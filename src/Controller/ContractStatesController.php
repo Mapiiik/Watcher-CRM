@@ -64,6 +64,7 @@ class ContractStatesController extends AppController
             ],
             'Creators',
             'Modifiers',
+            'RequiresOpenTaskTypes',
         ]);
 
         $this->set(compact('contractState'));
@@ -86,7 +87,12 @@ class ContractStatesController extends AppController
             }
             $this->Flash->error(__('The contract state could not be saved. Please, try again.'));
         }
-        $this->set(compact('contractState'));
+
+        $requiresOpenTaskTypes = $this->ContractStates->RequiresOpenTaskTypes->find('list', order: [
+            'name',
+        ]);
+
+        $this->set(compact('contractState', 'requiresOpenTaskTypes'));
     }
 
     /**
@@ -108,7 +114,12 @@ class ContractStatesController extends AppController
             }
             $this->Flash->error(__('The contract state could not be saved. Please, try again.'));
         }
-        $this->set(compact('contractState'));
+
+        $requiresOpenTaskTypes = $this->ContractStates->RequiresOpenTaskTypes->find('list', order: [
+            'name',
+        ]);
+
+        $this->set(compact('contractState', 'requiresOpenTaskTypes'));
     }
 
     /**

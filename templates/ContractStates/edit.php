@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\ContractState $contractState
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $requiresOpenTaskTypes
  */
 ?>
 <div class="row">
@@ -28,14 +29,74 @@
             <?= $this->Form->create($contractState) ?>
             <fieldset>
                 <legend><?= __('Edit Contract State') ?></legend>
-                <?php
-                    echo $this->Form->control('name');
-                    echo $this->Form->control('color', ['type' => 'color']);
-                    echo $this->Form->control('active_services');
-                    echo $this->Form->control('billed');
-                    echo $this->Form->control('blocked');
-                    echo $this->Form->control('note');
-                ?>
+
+                <div class="row">
+                    <div class="column">
+                        <?php
+                        echo $this->Form->control('name');
+                        echo $this->Form->control('color', ['type' => 'color']);
+                        echo $this->Form->control('usable_for_new_contract', [
+                            'label' => __('Usable for New Contracts'),
+                        ]);
+                        echo $this->Form->control('active_services');
+                        echo $this->Form->control('billed');
+                        echo $this->Form->control('blocked');
+                        ?>
+                    </div>
+
+                    <div class="column">
+                        <?php
+                        echo $this->Form->control('requires_open_task_type_id', [
+                            'empty' => true,
+                        ]);
+                        echo $this->Form->control('requires_no_open_tasks');
+                        echo $this->Form->control('requires_no_active_billings');
+                        echo $this->Form->control('requires_no_future_billings');
+                        echo $this->Form->control('requires_no_borrowed_equipments');
+                        ?>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="column">
+                        <?php
+                        echo $this->Form->control('note');
+                        ?>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="column">
+                        <?php
+                        echo $this->Form->control('requires_installation_date');
+                        echo $this->Form->control('requires_uninstallation_date');
+                        echo $this->Form->control('requires_termination_date');
+                        ?>
+                        <br>
+                        <?php
+                        echo $this->Form->control('requires_no_assigned_ip_addresses_or_networks', [
+                            'label' => __('Requires No Assigned IP Addresses or Networks'),
+                        ]);
+                        echo $this->Form->control('requires_no_active_radius_accounts', [
+                            'label' => __('Requires No Active RADIUS Accounts'),
+                        ]);
+                        ?>
+                    </div>
+
+                    <div class="column">
+                        <?php
+                        echo $this->Form->control('requires_contract_version');
+                        echo $this->Form->control('requires_active_contract_version');
+                        echo $this->Form->control('requires_active_or_future_contract_version', [
+                            'label' => __('Requires Active or Future Contract Version'),
+                        ]);
+                        echo $this->Form->control('requires_no_active_or_future_contract_versions', [
+                            'label' => __('Requires No Active or Future Contract Versions'),
+                        ]);
+                        echo $this->Form->control('requires_no_active_obligations');
+                        ?>
+                    </div>
+                </div>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>
