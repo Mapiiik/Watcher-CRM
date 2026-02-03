@@ -14,6 +14,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\DateTime|null $modified
  * @property string|null $modified_by
  * @property \App\Model\Entity\AppUser|null $modifier
+ *
  * @property string $id
  * @property string $name
  * @property string $color
@@ -22,9 +23,41 @@ use Cake\ORM\Entity;
  * @property bool $blocked
  * @property string|null $note
  *
- * @property \App\Model\Entity\Contract[] $contracts
+ * // New contract availability
+ * @property bool $usable_for_new_contract
+ *
+ * // Tasks
+ * @property string|null $requires_open_task_type_id
+ * @property bool $requires_no_open_tasks
  * @property \App\Model\Entity\TaskType|null $requires_open_task_type
  *
+ * // Billings
+ * @property bool $requires_no_active_billings
+ * @property bool $requires_no_future_billings
+ *
+ * // Network
+ * @property bool $requires_no_assigned_ip_addresses_or_networks
+ * @property bool $requires_no_active_radius_accounts
+ *
+ * // Hardware
+ * @property bool $requires_no_borrowed_equipments
+ *
+ * // Dates
+ * @property bool $requires_installation_date
+ * @property bool $requires_uninstallation_date
+ * @property bool $requires_termination_date
+ *
+ * // Contract versions
+ * @property bool $requires_contract_version
+ * @property bool $requires_active_contract_version
+ * @property bool $requires_active_or_future_contract_version
+ * @property bool $requires_no_active_or_future_contract_versions
+ * @property bool $requires_no_active_obligations
+ *
+ * // Associations
+ * @property \App\Model\Entity\Contract[] $contracts
+ *
+ * // Virtual fields
  * @property string $name_for_lists
  */
 class ContractState extends Entity

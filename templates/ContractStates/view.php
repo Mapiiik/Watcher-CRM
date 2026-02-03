@@ -73,11 +73,14 @@
                     <table>
                         <tr>
                             <th><?= __('Requires Open Task Type') ?></th>
-                            <td>
-                                <?= $contractState->__isset('requires_open_task_type')
-                                    ? h($contractState->requires_open_task_type->name)
-                                    : __('None') ?>
-                            </td>
+                            <td><?= $contractState->__isset('requires_open_task_type') ? $this->Html->link(
+                                $contractState->requires_open_task_type->name,
+                                [
+                                    'controller' => 'TaskTypes',
+                                    'action' => 'view',
+                                    $contractState->requires_open_task_type->id,
+                                ],
+                            ) : __('None') ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Requires No Open Tasks') ?></th>
@@ -116,7 +119,8 @@
                         </tr>
                         <tr>
                             <th><?= __('Requires No Assigned IP Addresses or Networks') ?></th>
-                            <td><?= $contractState->requires_no_assigned_ip_addresses_or_networks ? __('Yes') : __('No') ?></td>
+                            <td><?= $contractState->requires_no_assigned_ip_addresses_or_networks ?
+                                __('Yes') : __('No') ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Requires No Active RADIUS Accounts') ?></th>
@@ -137,11 +141,13 @@
                         </tr>
                         <tr>
                             <th><?= __('Requires Active or Future Contract Version') ?></th>
-                            <td><?= $contractState->requires_active_or_future_contract_version ? __('Yes') : __('No') ?></td>
+                            <td><?= $contractState->requires_active_or_future_contract_version ?
+                                __('Yes') : __('No') ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Requires No Active or Future Contract Versions') ?></th>
-                            <td><?= $contractState->requires_no_active_or_future_contract_versions ? __('Yes') : __('No') ?></td>
+                            <td><?= $contractState->requires_no_active_or_future_contract_versions ?
+                                __('Yes') : __('No') ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Requires No Active Obligations') ?></th>

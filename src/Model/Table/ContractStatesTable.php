@@ -177,7 +177,7 @@ class ContractStatesTable extends AppTable
     {
         $rules->add(
             $rules->existsIn(['requires_open_task_type_id'], 'RequiresOpenTaskTypes'),
-            ['errorField' => 'requires_open_task_type_id']
+            ['errorField' => 'requires_open_task_type_id'],
         );
 
         $rules->addDelete($rules->isNotLinkedTo('Contracts'));

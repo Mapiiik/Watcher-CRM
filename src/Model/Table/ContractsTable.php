@@ -3,6 +3,11 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\Contract;
+use App\Model\Validation\ContractStateValidator;
+use ArrayObject;
+use Cake\Datasource\EntityInterface;
+use Cake\Event\EventInterface;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 use Override;
@@ -337,5 +342,30 @@ class ContractsTable extends AppTable
         $rules->addDelete($rules->isNotLinkedTo('CustomerLabels'));
 
         return $rules;
+    }
+
+    /**
+     * Validate contract state flags before saving
+     *
+     * @param \Cake\Event\EventInterface<\Cake\ORM\Table> $event Event
+     * @param \Cake\Datasource\EntityInterface $entity Entity
+     * @param \ArrayObject<string, mixed> $options Options
+     * @psalm-suppress PossiblyUnusedParam
+     * @return void
+     */
+    public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
+    {
+        if ($entity instanceof Contract && $entity->isDirty('contract_state_id')) {
+            $errors = (new ContractStateValidator())->validate($entity);
+
+            if ($errors) {
+                $entity->setErrors($errors);
+
+                $event->stopPropagation();
+                $event->setResult(false);
+
+                return;
+            }
+        }
     }
 }
