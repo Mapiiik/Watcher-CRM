@@ -277,7 +277,7 @@ class ContractStateValidator
             $this->setError(
                 'contract_state_id',
                 __(
-                    'Required open task of the specified type ({0}) is missing.',
+                    'An open task of the required type ({0}) must exist before changing to this contract state.',
                     $taskType->name ?? $taskType->id,
                 ),
             );
@@ -311,7 +311,7 @@ class ContractStateValidator
         if ($exists) {
             $this->setError(
                 'contract_state_id',
-                __('All tasks must be completed for this contract state.'),
+                __('All tasks must be completed before changing to this contract state.'),
             );
         }
     }
@@ -345,7 +345,7 @@ class ContractStateValidator
         if ($exists) {
             $this->setError(
                 'contract_state_id',
-                __('Active billings must be finished before changing contract state.'),
+                __('Active billings must be finished before changing to this contract state.'),
             );
         }
     }
@@ -375,7 +375,7 @@ class ContractStateValidator
         if ($exists) {
             $this->setError(
                 'contract_state_id',
-                __('Future billings must be removed before changing contract state.'),
+                __('Future billings must be removed before changing to this contract state.'),
             );
         }
     }
@@ -411,7 +411,7 @@ class ContractStateValidator
         if ($hasIpAddresses || $hasIpNetworks) {
             $this->setError(
                 'contract_state_id',
-                __('All assigned IP addresses and networks must be removed before changing contract state.'),
+                __('All assigned IP addresses and networks must be removed before changing to this contract state.'),
             );
         }
     }
@@ -440,7 +440,7 @@ class ContractStateValidator
         if ($exists) {
             $this->setError(
                 'contract_state_id',
-                __('Active RADIUS accounts must be disabled before changing contract state.'),
+                __('Active RADIUS accounts must be disabled before changing to this contract state.'),
             );
         }
     }
@@ -469,7 +469,7 @@ class ContractStateValidator
         if ($exists) {
             $this->setError(
                 'contract_state_id',
-                __('All borrowed equipments must be returned before changing contract state.'),
+                __('All borrowed equipment must be returned before changing to this contract state.'),
             );
         }
     }
@@ -609,7 +609,7 @@ class ContractStateValidator
         if ($exists) {
             $this->setError(
                 'contract_state_id',
-                __('Active or future contract versions must be removed before changing contract state.'),
+                __('Active or future contract versions must be terminated or removed before changing to this contract state.'),
             );
         }
     }
@@ -639,7 +639,7 @@ class ContractStateValidator
         if ($exists) {
             $this->setError(
                 'contract_state_id',
-                __('Active contractual obligations must be finished before changing contract state.'),
+                __('Active contractual obligations must be finished before changing to this contract state.'),
             );
         }
     }
