@@ -609,7 +609,8 @@ class ContractStateValidator
         if ($exists) {
             $this->setError(
                 'contract_state_id',
-                __('Active or future contract versions must be terminated or removed before changing to this contract state.'),
+                __('Active or future contract versions must be terminated or removed before changing to this'
+                    . ' contract state.'),
             );
         }
     }
