@@ -19,6 +19,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\Date $valid_from
  * @property \Cake\I18n\Date|null $valid_until
  * @property \Cake\I18n\Date|null $obligation_until
+ * @property bool $obligations_settled
  * @property \Cake\I18n\Date|null $conclusion_date
  * @property int $number_of_amendments
  * @property string|null $note
@@ -42,6 +43,7 @@ class ContractVersion extends Entity
         'valid_from' => true,
         'valid_until' => true,
         'obligation_until' => true,
+        'obligations_settled' => true,
         'conclusion_date' => true,
         'number_of_amendments' => true,
         'note' => true,

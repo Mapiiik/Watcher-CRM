@@ -80,6 +80,12 @@
                             <td><?= h($contractVersion->obligation_until) ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Obligations Settled') ?></th>
+                            <td><?= isset($contractVersion->obligation_until) ?
+                                ($contractVersion->obligations_settled ? __('Yes') : __('No')) : '' ?></td>
+
+                        </tr>
+                        <tr>
                             <th><?= __('Conclusion Date') ?></th>
                             <td><?= h($contractVersion->conclusion_date) ?></td>
                         </tr>

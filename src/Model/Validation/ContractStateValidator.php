@@ -653,6 +653,7 @@ class ContractStateValidator
                 'contract_id' => $contract->id,
                 'obligation_until IS NOT' => null,
                 'obligation_until >=' => $today,
+                'obligations_settled' => false,
             ])
             ->limit(1)
             ->count() > 0;

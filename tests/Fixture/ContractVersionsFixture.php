@@ -26,6 +26,7 @@ class ContractVersionsFixture extends TestFixture
                 'valid_from' => '2022-11-30',
                 'valid_until' => '2022-11-30',
                 'obligation_until' => '2022-11-30',
+                'obligations_settled' => true,
                 'conclusion_date' => '2022-11-30',
                 'number_of_amendments' => 1,
                 'note' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',

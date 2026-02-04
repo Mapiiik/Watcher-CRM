@@ -80,6 +80,10 @@ class ContractVersionsTable extends AppTable
             ->allowEmptyDate('obligation_until');
 
         $validator
+            ->boolean('obligations_settled')
+            ->notEmptyString('obligations_settled');
+
+        $validator
             ->date('conclusion_date')
             ->allowEmptyDate('conclusion_date');
 

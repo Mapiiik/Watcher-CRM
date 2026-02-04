@@ -50,8 +50,12 @@ use Cake\I18n\Date;
                     'templates' => [
                         'inputContainer' => '<div class="float-left">{{content}}&nbsp;</div>',
                     ],
-                    'onclick' => 'document.getElementById("obligation-until").disabled = !this.checked;',
+                    'onclick' => <<<TEXT
+                        document.getElementById("obligation-until").disabled = !this.checked;
+                        document.getElementById("obligations-settled").disabled = !this.checked;
+                        TEXT,
                 ]);
+
                 echo $this->Form->hidden('obligation_until', ['value' => '']); //return null if not enabled
                 echo $this->Form->control('obligation_until', [
                     'empty' => true,
@@ -59,6 +63,11 @@ use Cake\I18n\Date;
                     'default' => Date::now()->addMonths(24)->lastOfMonth(),
                 ]);
                 $this->Form->unlockField('obligation_until'); //disable form security check
+
+                echo $this->Form->control('obligations_settled', [
+                    'disabled' => !$contractVersion->__isset('obligation_until'),
+                ]);
+                $this->Form->unlockField('obligations_settled'); //disable form security check
 
                 echo $this->Form->control('conclusion_date', ['empty' => true]);
                 echo $this->Form->control('number_of_amendments');
