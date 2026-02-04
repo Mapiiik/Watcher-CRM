@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5974bba0480487cfe3486f80ba961bdb",
+    "content-hash": "e24c4e1b6e0c40850d01d0eef6265894",
     "packages": [
         {
             "name": "brick/math",
@@ -137,23 +137,23 @@
         },
         {
             "name": "cakedc/users",
-            "version": "15.1.3",
+            "version": "16.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CakeDC/users.git",
-                "reference": "37747a80bccb2d359825623372c3ef8134497863"
+                "reference": "92e6dbce674d90b7cd0573c4c8991a7576eb9364"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CakeDC/users/zipball/37747a80bccb2d359825623372c3ef8134497863",
-                "reference": "37747a80bccb2d359825623372c3ef8134497863",
+                "url": "https://api.github.com/repos/CakeDC/users/zipball/92e6dbce674d90b7cd0573c4c8991a7576eb9364",
+                "reference": "92e6dbce674d90b7cd0573c4c8991a7576eb9364",
                 "shasum": ""
             },
             "require": {
                 "cakedc/auth": "^10.1",
                 "cakephp/authentication": "^3.0",
                 "cakephp/authorization": "^3.0",
-                "cakephp/cakephp": "^5.0",
+                "cakephp/cakephp": "^5.3",
                 "php": ">=8.1"
             },
             "require-dev": {
@@ -217,7 +217,7 @@
                 "issues": "https://github.com/CakeDC/users/issues",
                 "source": "https://github.com/CakeDC/users"
             },
-            "time": "2025-12-17T17:12:23+00:00"
+            "time": "2026-02-02T08:58:14+00:00"
         },
         {
             "name": "cakephp/authentication",

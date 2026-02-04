@@ -225,8 +225,7 @@ return [
         'log' => true,
         'trace' => true,
         'ignoredDeprecationPaths' => [
-            'vendor/cakephp/authentication/src/AuthenticationService.php', // TODO
-            'vendor/cakephp/cakephp/src/Core/PluginCollection.php', // TODO
+            'vendor/cakephp/cakephp/src/Core/PluginCollection.php', // TODO - waiting for CakePHP/Queue 2.2.1 release
         ],
     ],
 
