@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-02-03 21:27+0100\n"
+"POT-Creation-Date: 2026-02-04 20:03+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1155,6 +1155,8 @@ msgstr ""
 #: ./templates/ContractStates/view.php:150
 #: ./templates/ContractStates/view.php:154
 #: ./templates/ContractStates/view.php:255
+#: ./templates/ContractVersions/index.php:57
+#: ./templates/ContractVersions/view.php:85
 #: ./templates/Contracts/index.php:72
 #: ./templates/Contracts/print.php:100
 #: ./templates/Contracts/view.php:209
@@ -1230,6 +1232,7 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:184
 #: ./templates/element/Contracts/Billings.php:70
 #: ./templates/element/Contracts/Billings.php:71
+#: ./templates/element/Contracts/ContractVersions.php:33
 msgid "No"
 msgstr ""
 
@@ -1270,6 +1273,8 @@ msgstr ""
 #: ./templates/ContractStates/view.php:150
 #: ./templates/ContractStates/view.php:154
 #: ./templates/ContractStates/view.php:255
+#: ./templates/ContractVersions/index.php:57
+#: ./templates/ContractVersions/view.php:85
 #: ./templates/Contracts/index.php:72
 #: ./templates/Contracts/print.php:100
 #: ./templates/Contracts/view.php:209
@@ -1345,6 +1350,7 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:184
 #: ./templates/element/Contracts/Billings.php:70
 #: ./templates/element/Contracts/Billings.php:71
+#: ./templates/element/Contracts/ContractVersions.php:33
 msgid "Yes"
 msgstr ""
 
@@ -1489,67 +1495,67 @@ msgstr ""
 msgid "The specified task type requires the assignment of an contract."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:105
+#: ./src/Model/Validation/ContractStateValidator.php:114
 msgid "The selected contract state cannot be used for new contracts."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:203
+#: ./src/Model/Validation/ContractStateValidator.php:223
 msgid "Installation date must be set for this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:222
+#: ./src/Model/Validation/ContractStateValidator.php:242
 msgid "Uninstallation date must be set for this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:241
+#: ./src/Model/Validation/ContractStateValidator.php:261
 msgid "Termination date must be set for this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:279
+#: ./src/Model/Validation/ContractStateValidator.php:299
 msgid "An open task of the required type ({0}) must exist before changing to this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:314
+#: ./src/Model/Validation/ContractStateValidator.php:334
 msgid "All tasks must be completed before changing to this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:348
+#: ./src/Model/Validation/ContractStateValidator.php:368
 msgid "Active billings must be finished before changing to this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:378
+#: ./src/Model/Validation/ContractStateValidator.php:398
 msgid "Future billings must be removed before changing to this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:414
+#: ./src/Model/Validation/ContractStateValidator.php:434
 msgid "All assigned IP addresses and networks must be removed before changing to this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:443
+#: ./src/Model/Validation/ContractStateValidator.php:463
 msgid "Active RADIUS accounts must be disabled before changing to this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:472
+#: ./src/Model/Validation/ContractStateValidator.php:492
 msgid "All borrowed equipment must be returned before changing to this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:499
+#: ./src/Model/Validation/ContractStateValidator.php:519
 msgid "At least one contract version must exist for this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:532
+#: ./src/Model/Validation/ContractStateValidator.php:552
 msgid "An active contract version is required for this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:572
+#: ./src/Model/Validation/ContractStateValidator.php:592
 msgid "An active or future contract version is required for this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:612
+#: ./src/Model/Validation/ContractStateValidator.php:632
 msgid "Active or future contract versions must be terminated or removed before changing to this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:642
+#: ./src/Model/Validation/ContractStateValidator.php:664
 msgid "Active contractual obligations must be finished before changing to this contract state."
 msgstr ""
 
@@ -1594,7 +1600,7 @@ msgstr ""
 #: ./templates/ContractStates/view.php:226
 #: ./templates/ContractVersions/add.php:13
 #: ./templates/ContractVersions/edit.php:11
-#: ./templates/ContractVersions/index.php:36
+#: ./templates/ContractVersions/index.php:37
 #: ./templates/ContractVersions/view.php:10
 #: ./templates/Contracts/add.php:19
 #: ./templates/Contracts/edit.php:21
@@ -1722,7 +1728,7 @@ msgstr ""
 #: ./templates/Tasks/view.php:10
 #: ./templates/element/Contracts/Billings.php:34
 #: ./templates/element/Contracts/BorrowedEquipments.php:19
-#: ./templates/element/Contracts/ContractVersions.php:18
+#: ./templates/element/Contracts/ContractVersions.php:19
 #: ./templates/element/Contracts/IpAddresses.php:23
 #: ./templates/element/Contracts/IpNetworks.php:21
 #: ./templates/element/Contracts/RemovedIpAddresses.php:19
@@ -1779,8 +1785,8 @@ msgstr ""
 #: ./templates/Commissions/edit.php:31
 #: ./templates/ContractStates/add.php:92
 #: ./templates/ContractStates/edit.php:101
-#: ./templates/ContractVersions/add.php:68
-#: ./templates/ContractVersions/edit.php:76
+#: ./templates/ContractVersions/add.php:77
+#: ./templates/ContractVersions/edit.php:85
 #: ./templates/Contracts/add.php:64
 #: ./templates/Contracts/edit.php:135
 #: ./templates/Contracts/print.php:269
@@ -1853,7 +1859,7 @@ msgstr ""
 #: ./templates/ContractStates/index.php:59
 #: ./templates/ContractStates/view.php:300
 #: ./templates/ContractVersions/edit.php:13
-#: ./templates/ContractVersions/index.php:68
+#: ./templates/ContractVersions/index.php:71
 #: ./templates/Contracts/edit.php:23
 #: ./templates/Contracts/index.php:105
 #: ./templates/Contracts/view.php:562
@@ -1916,7 +1922,7 @@ msgstr ""
 #: ./templates/Tasks/edit.php:18
 #: ./templates/element/Contracts/Billings.php:85
 #: ./templates/element/Contracts/BorrowedEquipments.php:60
-#: ./templates/element/Contracts/ContractVersions.php:45
+#: ./templates/element/Contracts/ContractVersions.php:48
 #: ./templates/element/Contracts/IpAddresses.php:82
 #: ./templates/element/Contracts/IpNetworks.php:63
 #: ./templates/element/Contracts/RemovedIpAddresses.php:50
@@ -1952,7 +1958,7 @@ msgstr ""
 #: ./templates/ContractStates/view.php:20
 #: ./templates/ContractStates/view.php:302
 #: ./templates/ContractVersions/edit.php:16
-#: ./templates/ContractVersions/index.php:70
+#: ./templates/ContractVersions/index.php:73
 #: ./templates/ContractVersions/view.php:20
 #: ./templates/Contracts/edit.php:25
 #: ./templates/Contracts/index.php:107
@@ -2038,7 +2044,7 @@ msgstr ""
 #: ./templates/Tasks/view.php:15
 #: ./templates/element/Contracts/Billings.php:87
 #: ./templates/element/Contracts/BorrowedEquipments.php:67
-#: ./templates/element/Contracts/ContractVersions.php:47
+#: ./templates/element/Contracts/ContractVersions.php:50
 #: ./templates/element/Contracts/IpAddresses.php:84
 #: ./templates/element/Contracts/IpNetworks.php:66
 #: ./templates/element/Contracts/RemovedIpAddresses.php:52
@@ -2154,7 +2160,7 @@ msgstr ""
 #: ./templates/Commissions/view.php:207
 #: ./templates/ContractStates/index.php:50
 #: ./templates/ContractStates/view.php:286
-#: ./templates/ContractVersions/index.php:59
+#: ./templates/ContractVersions/index.php:62
 #: ./templates/Contracts/index.php:98
 #: ./templates/Contracts/view.php:553
 #: ./templates/Contracts/view.php:611
@@ -2203,7 +2209,7 @@ msgstr ""
 #: ./templates/Tasks/index.php:127
 #: ./templates/element/Contracts/Billings.php:76
 #: ./templates/element/Contracts/BorrowedEquipments.php:43
-#: ./templates/element/Contracts/ContractVersions.php:36
+#: ./templates/element/Contracts/ContractVersions.php:39
 #: ./templates/element/Contracts/IpAddresses.php:73
 #: ./templates/element/Contracts/IpNetworks.php:54
 #: ./templates/element/Contracts/RemovedIpAddresses.php:41
@@ -2224,7 +2230,7 @@ msgstr ""
 #: ./templates/Commissions/view.php:216
 #: ./templates/ContractStates/index.php:54
 #: ./templates/ContractStates/view.php:295
-#: ./templates/ContractVersions/index.php:63
+#: ./templates/ContractVersions/index.php:66
 #: ./templates/Contracts/index.php:100
 #: ./templates/Contracts/view.php:557
 #: ./templates/Contracts/view.php:615
@@ -2269,7 +2275,7 @@ msgstr ""
 #: ./templates/Tasks/index.php:131
 #: ./templates/element/Contracts/Billings.php:80
 #: ./templates/element/Contracts/BorrowedEquipments.php:51
-#: ./templates/element/Contracts/ContractVersions.php:40
+#: ./templates/element/Contracts/ContractVersions.php:43
 #: ./templates/element/Contracts/IpAddresses.php:77
 #: ./templates/element/Contracts/IpNetworks.php:58
 #: ./templates/element/Contracts/RemovedIpAddresses.php:45
@@ -2285,7 +2291,7 @@ msgstr ""
 #: ./templates/BorrowedEquipments/index.php:95
 #: ./templates/Commissions/index.php:54
 #: ./templates/ContractStates/index.php:71
-#: ./templates/ContractVersions/index.php:80
+#: ./templates/ContractVersions/index.php:83
 #: ./templates/Contracts/index.php:117
 #: ./templates/Countries/index.php:56
 #: ./templates/CustomerLabels/index.php:85
@@ -2319,7 +2325,7 @@ msgstr ""
 #: ./templates/BorrowedEquipments/index.php:96
 #: ./templates/Commissions/index.php:55
 #: ./templates/ContractStates/index.php:72
-#: ./templates/ContractVersions/index.php:81
+#: ./templates/ContractVersions/index.php:84
 #: ./templates/Contracts/index.php:118
 #: ./templates/Countries/index.php:57
 #: ./templates/CustomerLabels/index.php:86
@@ -2353,7 +2359,7 @@ msgstr ""
 #: ./templates/BorrowedEquipments/index.php:98
 #: ./templates/Commissions/index.php:57
 #: ./templates/ContractStates/index.php:74
-#: ./templates/ContractVersions/index.php:83
+#: ./templates/ContractVersions/index.php:86
 #: ./templates/Contracts/index.php:120
 #: ./templates/Countries/index.php:59
 #: ./templates/CustomerLabels/index.php:88
@@ -2387,7 +2393,7 @@ msgstr ""
 #: ./templates/BorrowedEquipments/index.php:99
 #: ./templates/Commissions/index.php:58
 #: ./templates/ContractStates/index.php:75
-#: ./templates/ContractVersions/index.php:84
+#: ./templates/ContractVersions/index.php:87
 #: ./templates/Contracts/index.php:121
 #: ./templates/Countries/index.php:60
 #: ./templates/CustomerLabels/index.php:89
@@ -2421,7 +2427,7 @@ msgstr ""
 #: ./templates/BorrowedEquipments/index.php:102
 #: ./templates/Commissions/index.php:61
 #: ./templates/ContractStates/index.php:78
-#: ./templates/ContractVersions/index.php:87
+#: ./templates/ContractVersions/index.php:90
 #: ./templates/Contracts/index.php:124
 #: ./templates/Countries/index.php:63
 #: ./templates/CustomerLabels/index.php:92
@@ -2561,7 +2567,7 @@ msgstr ""
 #: ./templates/BorrowedEquipments/view.php:95
 #: ./templates/Commissions/view.php:43
 #: ./templates/ContractStates/view.php:164
-#: ./templates/ContractVersions/view.php:95
+#: ./templates/ContractVersions/view.php:101
 #: ./templates/Contracts/print.php:161
 #: ./templates/Contracts/view.php:270
 #: ./templates/Countries/view.php:44
@@ -2598,7 +2604,7 @@ msgstr ""
 #: ./templates/BorrowedEquipments/view.php:99
 #: ./templates/Commissions/view.php:47
 #: ./templates/ContractStates/view.php:168
-#: ./templates/ContractVersions/view.php:99
+#: ./templates/ContractVersions/view.php:105
 #: ./templates/Contracts/print.php:165
 #: ./templates/Contracts/view.php:274
 #: ./templates/Countries/view.php:48
@@ -2636,7 +2642,7 @@ msgstr ""
 #: ./templates/BorrowedEquipments/view.php:103
 #: ./templates/Commissions/view.php:51
 #: ./templates/ContractStates/view.php:172
-#: ./templates/ContractVersions/view.php:103
+#: ./templates/ContractVersions/view.php:109
 #: ./templates/Contracts/print.php:169
 #: ./templates/Contracts/view.php:278
 #: ./templates/Countries/view.php:52
@@ -2673,7 +2679,7 @@ msgstr ""
 #: ./templates/BorrowedEquipments/view.php:114
 #: ./templates/Commissions/view.php:62
 #: ./templates/ContractStates/view.php:183
-#: ./templates/ContractVersions/view.php:114
+#: ./templates/ContractVersions/view.php:120
 #: ./templates/Contracts/print.php:180
 #: ./templates/Contracts/view.php:289
 #: ./templates/Countries/view.php:63
@@ -2710,7 +2716,7 @@ msgstr ""
 #: ./templates/BorrowedEquipments/view.php:118
 #: ./templates/Commissions/view.php:66
 #: ./templates/ContractStates/view.php:187
-#: ./templates/ContractVersions/view.php:118
+#: ./templates/ContractVersions/view.php:124
 #: ./templates/Contracts/print.php:184
 #: ./templates/Contracts/view.php:293
 #: ./templates/Countries/view.php:67
@@ -2744,7 +2750,7 @@ msgstr ""
 #: ./templates/Billings/service_change.php:151
 #: ./templates/Billings/view.php:157
 #: ./templates/ContractStates/view.php:202
-#: ./templates/ContractVersions/view.php:132
+#: ./templates/ContractVersions/view.php:138
 #: ./templates/Contracts/view.php:317
 #: ./templates/CustomerLabels/view.php:115
 #: ./templates/Customers/view.php:286
@@ -2761,7 +2767,7 @@ msgstr ""
 #: ./templates/RemovedIpNetworks/view.php:156
 #: ./templates/Services/view.php:126
 #: ./templates/element/Contracts/Billings.php:32
-#: ./templates/element/Contracts/ContractVersions.php:17
+#: ./templates/element/Contracts/ContractVersions.php:18
 #: ./templates/element/Contracts/IpAddresses.php:19
 #: ./templates/element/Contracts/IpNetworks.php:19
 #: ./templates/element/Contracts/RemovedIpAddresses.php:17
@@ -3719,11 +3725,16 @@ msgstr ""
 
 #: ./templates/ContractVersions/view.php:83
 #: ./templates/element/Contracts/ContractVersions.php:15
+msgid "Obligations Settled"
+msgstr ""
+
+#: ./templates/ContractVersions/view.php:89
+#: ./templates/element/Contracts/ContractVersions.php:16
 msgid "Conclusion Date"
 msgstr ""
 
-#: ./templates/ContractVersions/view.php:87
-#: ./templates/element/Contracts/ContractVersions.php:16
+#: ./templates/ContractVersions/view.php:93
+#: ./templates/element/Contracts/ContractVersions.php:17
 msgid "Number Of Amendments"
 msgstr ""
 
