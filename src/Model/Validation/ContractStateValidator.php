@@ -10,6 +10,7 @@ use App\Model\Table\ContractStatesTable;
 use App\Model\Table\ContractVersionsTable;
 use App\Model\Table\IpAddressesTable;
 use App\Model\Table\IpNetworksTable;
+use App\Model\Table\ServiceTypesTable;
 use App\Model\Table\TasksTable;
 use App\Model\Table\TaskTypesTable;
 use Cake\I18n\Date;
@@ -79,15 +80,22 @@ class ContractStateValidator
      * Ensures that all validation flags defined on the target contract state
      * are satisfied before allowing the contract state change.
      *
+     * Validation is context-aware and respects service type capabilities.
+     * For service types that do not support contract versions (e.g. reseller
+     * services), all contract version–related validations are intentionally
+     * skipped to avoid enforcing impossible or irrelevant requirements.
+     *
      * This method is intended to be executed during contract persistence
      * (e.g. in ContractsTable::beforeSave) and blocks saving when any
-     * required condition is not met.
+     * required condition is not met by attaching validation errors
+     * to the contract entity.
      *
      * @param \App\Model\Entity\Contract $contract
      * @return array<string, array<string>>
      */
     public function validate(Contract $contract): array
     {
+        // Load contract state if not already present
         $contractState = $contract->contract_state
             ?? $this->fetchTable(ContractStatesTable::class)->get($contract->contract_state_id);
 
@@ -98,6 +106,7 @@ class ContractStateValidator
             return [];
         }
 
+        // Validations for new contracts
         if ($contract->isNew()) {
             if (!$contractState->usable_for_new_contract) {
                 $this->setError(
@@ -122,6 +131,7 @@ class ContractStateValidator
             $this->validateRequiresTerminationDate($contract);
         }
 
+        // Skip further validations if contract state is not being changed
         if (!$contract->isDirty('contract_state_id')) {
             // No contract state change, nothing more to validate for now
             return $this->getErrors();
@@ -162,25 +172,35 @@ class ContractStateValidator
             $this->validateRequiresNoBorrowedEquipments($contract);
         }
 
+        // Load service type if not already present
+        $serviceType = $contract->service_type
+            ?? $this->fetchTable(ServiceTypesTable::class)->get($contract->service_type_id);
+
         // Contract versions
-        if ($contractState->requires_contract_version) {
-            $this->validateRequiresContractVersion($contract);
-        }
+        if ($serviceType->have_contract_versions) {
+            // Contract version validations are skipped for service types
+            // that do not support contract versions (e.g. reseller services),
+            // to avoid enforcing impossible or irrelevant requirements.
 
-        if ($contractState->requires_active_contract_version) {
-            $this->validateRequiresActiveContractVersion($contract);
-        }
+            if ($contractState->requires_contract_version) {
+                $this->validateRequiresContractVersion($contract);
+            }
 
-        if ($contractState->requires_active_or_future_contract_version) {
-            $this->validateRequiresActiveOrFutureContractVersion($contract);
-        }
+            if ($contractState->requires_active_contract_version) {
+                $this->validateRequiresActiveContractVersion($contract);
+            }
 
-        if ($contractState->requires_no_active_or_future_contract_versions) {
-            $this->validateRequiresNoActiveOrFutureContractVersions($contract);
-        }
+            if ($contractState->requires_active_or_future_contract_version) {
+                $this->validateRequiresActiveOrFutureContractVersion($contract);
+            }
 
-        if ($contractState->requires_no_active_obligations) {
-            $this->validateRequiresNoActiveObligations($contract);
+            if ($contractState->requires_no_active_or_future_contract_versions) {
+                $this->validateRequiresNoActiveOrFutureContractVersions($contract);
+            }
+
+            if ($contractState->requires_no_active_obligations) {
+                $this->validateRequiresNoActiveObligations($contract);
+            }
         }
 
         return $this->getErrors();
