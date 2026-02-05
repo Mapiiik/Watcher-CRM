@@ -75,10 +75,12 @@ class QueuesTable extends AppTable
             ->allowEmptyString('caption');
 
         $validator
-            ->allowEmptyString('fup');
+            ->integer('fup_limit')
+            ->allowEmptyString('fup_limit');
 
         $validator
-            ->allowEmptyString('limit');
+            ->integer('data_limit')
+            ->allowEmptyString('data_limit');
 
         $validator
             ->integer('overlimit_fragment')

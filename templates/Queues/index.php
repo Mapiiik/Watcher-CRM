@@ -25,8 +25,8 @@
                 <tr>
                     <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('caption') ?></th>
-                    <th><?= $this->Paginator->sort('fup') ?></th>
-                    <th><?= $this->Paginator->sort('limit') ?></th>
+                    <th><?= $this->Paginator->sort('fup_limit', __('FUP Limit')) ?></th>
+                    <th><?= $this->Paginator->sort('data_limit') ?></th>
                     <th><?= $this->Paginator->sort('overlimit_fragment') ?></th>
                     <th><?= $this->Paginator->sort('overlimit_cost') ?></th>
                     <th><?= $this->Paginator->sort('speed_up') ?></th>
@@ -40,8 +40,8 @@
                 <tr>
                     <td><?= h($queue->name) ?></td>
                     <td><?= h($queue->caption) ?></td>
-                    <td><?= $queue->fup === null ? '' : $this->Number->format($queue->fup) ?></td>
-                    <td><?= $queue->limit === null ? '' : $this->Number->format($queue->limit) ?></td>
+                    <td><?= $queue->fup_limit === null ? '' : $this->Number->format($queue->fup_limit) ?></td>
+                    <td><?= $queue->data_limit === null ? '' : $this->Number->format($queue->data_limit) ?></td>
                     <td><?= $queue->overlimit_fragment === null ?
                         '' : $this->Number->format($queue->overlimit_fragment) ?></td>
                     <td><?= $queue->overlimit_cost === null ?

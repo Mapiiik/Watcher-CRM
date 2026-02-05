@@ -24,8 +24,8 @@
                 <?php
                     echo $this->Form->control('name');
                     echo $this->Form->control('caption');
-                    echo $this->Form->control('fup');
-                    echo $this->Form->control('limit');
+                    echo $this->Form->control('fup_limit', ['label' => __('FUP Limit')]);
+                    echo $this->Form->control('data_limit');
                     echo $this->Form->control('overlimit_fragment');
                     echo $this->Form->control('overlimit_cost');
                     echo $this->Form->control('speed_up');

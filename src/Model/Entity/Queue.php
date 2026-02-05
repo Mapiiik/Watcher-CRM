@@ -18,8 +18,8 @@ use Cake\ORM\Entity;
  * @property int $nid
  * @property string $name
  * @property string|null $caption
- * @property int|null $fup
- * @property int|null $limit
+ * @property int|null $fup_limit
+ * @property int|null $data_limit
  * @property int|null $overlimit_fragment
  * @property int|null $overlimit_cost
  * @property int|null $service_type_id
@@ -48,8 +48,8 @@ class Queue extends Entity
         'modified_by' => true,
         'name' => true,
         'caption' => true,
-        'fup' => true,
-        'limit' => true,
+        'fup_limit' => true,
+        'data_limit' => true,
         'overlimit_fragment' => true,
         'overlimit_cost' => true,
         'service_type_id' => true,

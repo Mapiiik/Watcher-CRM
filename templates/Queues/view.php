@@ -37,12 +37,12 @@
                             <td><?= h($queue->caption) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Fup') ?></th>
-                            <td><?= $queue->fup === null ? '' : $this->Number->format($queue->fup) ?></td>
+                            <th><?= __('FUP Limit') ?></th>
+                            <td><?= $queue->fup_limit === null ? '' : $this->Number->format($queue->fup_limit) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Limit') ?></th>
-                            <td><?= $queue->limit === null ? '' : $this->Number->format($queue->limit) ?></td>
+                            <th><?= __('Data Limit') ?></th>
+                            <td><?= $queue->data_limit === null ? '' : $this->Number->format($queue->data_limit) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Overlimit Fragment') ?></th>
