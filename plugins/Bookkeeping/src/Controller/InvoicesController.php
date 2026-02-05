@@ -60,8 +60,8 @@ class InvoicesController extends AppController
                     'Customers.first_name ILIKE' => '%' . trim($search) . '%',
                     'Customers.last_name ILIKE' => '%' . trim($search) . '%',
                     'Customers.suffix ILIKE' => '%' . trim($search) . '%',
-                    'Invoices.number::text ILIKE' => '%' . trim($search) . '%',
-                    'Invoices.variable_symbol::text ILIKE' => '%' . trim($search) . '%',
+                    'Invoices.number ILIKE' => '%' . trim($search) . '%',
+                    'Invoices.variable_symbol ILIKE' => '%' . trim($search) . '%',
                 ],
             ];
         }
