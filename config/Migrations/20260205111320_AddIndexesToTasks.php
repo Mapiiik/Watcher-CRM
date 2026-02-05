@@ -17,6 +17,10 @@ class AddIndexesToTasks extends BaseMigration
     {
         $table = $this->table('tasks');
 
+        $table->addIndex(['task_type_id']);
+        $table->addIndex(['task_state_id']);
+        $table->addIndex(['access_point_id']);
+
         $table->addIndex(['customer_id']);
         $table->addIndex(['contract_id']);
 
