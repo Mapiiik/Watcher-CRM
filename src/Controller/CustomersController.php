@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Model\Entity\Customer;
 use App\View\PdfView;
+use Cake\Database\Expression\QueryExpression;
 use Cake\Form\Form;
 use Cake\Utility\Hash;
 use Cake\Validation\Validation;
@@ -153,6 +154,18 @@ class CustomersController extends AppController
                 trim($this->getRequest()->getQuery('search')),
             );
         }
+        if (!is_null($this->getRequest()->getQuery('contract_state_id'))) {
+            $this->getRequest()->getSession()->write(
+                'Config.Customers.filter.contract_state_id',
+                $this->getRequest()->getQuery('contract_state_id'),
+            );
+        }
+        if (!is_null($this->getRequest()->getQuery('service_type_id'))) {
+            $this->getRequest()->getSession()->write(
+                'Config.Customers.filter.service_type_id',
+                $this->getRequest()->getQuery('service_type_id'),
+            );
+        }
         if (!is_null($this->getRequest()->getQuery('labels'))) {
             $labels = [];
             if (is_array($this->getRequest()->getQuery('labels'))) {
@@ -174,6 +187,8 @@ class CustomersController extends AppController
         $advanced_search = $filter['advanced_search']
             ?? Hash::get($this->user_settings, 'customers.advanced_search', false);
         $search = (string)($filter['search'] ?? '');
+        $contract_state_id = $filter['contract_state_id'] ?? null;
+        $service_type_id = $filter['service_type_id'] ?? null;
         $labels = $filter['labels'] ?? [];
         $allow_advanced_search = in_array($this->getRequest()->getAttribute('identity')['role'] ?? null, [
             'network-manager',
@@ -185,6 +200,7 @@ class CustomersController extends AppController
 
         $customersQuery = $this->Customers->find();
 
+        // search
         if ($allow_advanced_search && $advanced_search && !empty($search)) {
             // advanced search
             $customersQuery->where([
@@ -213,8 +229,46 @@ class CustomersController extends AppController
             ]);
         }
 
+        // filter by contract state
+        if ($allow_advanced_search && Validation::uuid($contract_state_id)) {
+            $subquery = $this->Customers->Contracts->find()
+                ->select(['id'])
+                ->where(function (QueryExpression $exp) {
+                    return $exp->equalFields(
+                        'Contracts.customer_id',
+                        'Customers.id',
+                    );
+                })
+                ->andWhere([
+                    'Contracts.contract_state_id' => $contract_state_id,
+                ]);
+
+            $customersQuery->where(function (QueryExpression $exp) use ($subquery) {
+                return $exp->exists($subquery);
+            });
+        }
+
+        // filter by service type
+        if ($allow_advanced_search && Validation::uuid($service_type_id)) {
+            $subquery = $this->Customers->Contracts->find()
+                ->select(['id'])
+                ->where(function (QueryExpression $exp) {
+                    return $exp->equalFields(
+                        'Contracts.customer_id',
+                        'Customers.id',
+                    );
+                })
+                ->andWhere([
+                    'Contracts.service_type_id' => $service_type_id,
+                ]);
+
+            $customersQuery->where(function (QueryExpression $exp) use ($subquery) {
+                return $exp->exists($subquery);
+            });
+        }
+
         // filter labels
-        if ($labels) {
+        if ($allow_advanced_search && !empty($labels)) {
             $uuidLabels = array_map(function ($label) {
                 return "'{$label}'::uuid";
             }, $labels);
@@ -232,16 +286,13 @@ class CustomersController extends AppController
         $filterForm->setData([
             'advanced_search' => $advanced_search,
             'search' => $search,
+            'contract_state_id' => $contract_state_id,
+            'service_type_id' => $service_type_id,
             'labels' => $labels,
         ]);
         $this->set('filterForm', $filterForm);
 
-        $this->paginate = [
-            'order' => [
-                'Customers.nid' => 'DESC',
-            ],
-        ];
-
+        // contain related data
         $customersQuery->contain([
             'Contracts' => [
                 'ContractStates',
@@ -264,13 +315,28 @@ class CustomersController extends AppController
             'AccountingProfiles',
         ]);
 
+        // pagination settings
+        $this->paginate = [
+            'order' => [
+                'Customers.nid' => 'DESC',
+            ],
+        ];
+
+        // paginate results
         $customers = $this->paginate($customersQuery);
+
+        $contractStates = $this->Customers->Contracts->ContractStates->find('list', order: [
+            'name',
+        ]);
+        $serviceTypes = $this->Customers->Contracts->ServiceTypes->find('list', order: [
+            'name',
+        ]);
 
         $labels = $this->Customers->CustomerLabels->Labels->find('list', order: [
             'name',
         ]);
 
-        $this->set(compact('customers', 'labels', 'allow_advanced_search'));
+        $this->set(compact('customers', 'labels', 'allow_advanced_search', 'contractStates', 'serviceTypes'));
     }
 
     /**

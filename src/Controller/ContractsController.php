@@ -12,6 +12,7 @@ use Cake\Database\Exception\MissingConnectionException;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
 use Cake\ORM\Query\SelectQuery;
+use Cake\Validation\Validation;
 use Override;
 use Radius\Model\Table\AccountsTable;
 use stdClass;
@@ -58,11 +59,30 @@ class ContractsController extends AppController
             ];
         }
 
+        // filter by contract state
+        $contract_state_id = $this->getRequest()->getQuery('contract_state_id');
+        if (Validation::uuid($contract_state_id)) {
+            $conditions[] = [
+                'Contracts.contract_state_id' => $contract_state_id,
+            ];
+        }
+
+        // filter by service type
+        $service_type_id = $this->getRequest()->getQuery('service_type_id');
+        if (Validation::uuid($service_type_id)) {
+            $conditions[] = [
+                'Contracts.service_type_id' => $service_type_id,
+            ];
+        }
+
+        // pagination settings
         $this->paginate = [
             'order' => [
                 'id' => 'DESC',
             ],
         ];
+
+        // paginate results
         $contracts = $this->paginate($this->Contracts->find(
             'all',
             contain: [
@@ -77,7 +97,14 @@ class ContractsController extends AppController
             conditions: $conditions,
         ));
 
-        $this->set(compact('contracts'));
+        $contractStates = $this->Contracts->ContractStates->find('list', order: [
+            'name',
+        ]);
+        $serviceTypes = $this->Contracts->ServiceTypes->find('list', order: [
+            'name',
+        ]);
+
+        $this->set(compact('contracts', 'contractStates', 'serviceTypes'));
     }
 
     /**

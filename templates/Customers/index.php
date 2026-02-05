@@ -22,6 +22,18 @@
     </div>
     <?php if ($allow_advanced_search) : ?>
     <div class="column">
+        <?= $this->Form->control('contract_state_id', [
+            'empty' => true,
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+    </div>
+    <div class="column">
+        <?= $this->Form->control('service_type_id', [
+            'empty' => true,
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+    </div>
+    <div class="column">
         <?= $this->Form->control('labels', [
             'multiple' => 'multiple',
             'style' => 'height: 100px;',

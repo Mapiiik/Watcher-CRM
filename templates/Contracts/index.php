@@ -13,6 +13,18 @@
             'onchange' => 'this.form.submit();',
         ]) ?>
     </div>
+    <div class="column">
+        <?= $this->Form->control('contract_state_id', [
+            'empty' => true,
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+    </div>
+    <div class="column">
+        <?= $this->Form->control('service_type_id', [
+            'empty' => true,
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+    </div>
 </div>
 <?= $this->Form->end() ?>
 
