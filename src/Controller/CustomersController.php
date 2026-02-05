@@ -213,11 +213,11 @@ class CustomersController extends AppController
             ]);
             $customersQuery->bind(':customer_series', (int)env('CUSTOMER_SERIES', '0'), 'integer');
             $customersQuery->bind(':search', trim($search), 'string');
-        } elseif (is_numeric($search)) {
+        } elseif (ctype_digit($search) && strlen($search) <= 10) { // strlen($search) <= 19 for BIGINT
             // search by customer number
             $customersQuery->where([
                 'OR' => [
-                    '(Customers.nid::bigint + ' . (int)env('CUSTOMER_SERIES', '0') . ') =' => (int)trim($search),
+                    '(Customers.nid + ' . (int)env('CUSTOMER_SERIES', '0') . ') =' => (int)trim($search),
                     'Customers.identity_number' => trim($search),
                 ],
             ]);
