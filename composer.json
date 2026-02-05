@@ -106,7 +106,14 @@
             "bin/cake schema_cache build"
         ],
         "stan": "phpstan analyse",
-        "test": "phpunit --colors=always"
+        "test": "phpunit --colors=always",
+        "translations-update": [
+            "bin/cake i18n extract --extract-core no --overwrite -p Bookkeeping",
+            "bin/cake i18n extract --extract-core no --overwrite -p Radius",
+            "bin/cake i18n extract --extract-core no --overwrite -p Ruian",
+            "bin/cake i18n extract --extract-core no --overwrite -p Settings",
+            "bin/cake i18n extract --extract-core yes --overwrite --paths src/,templates/ --output resources/locales/"
+        ]
     },
     "extra": {
         "discovery": {
