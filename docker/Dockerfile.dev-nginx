@@ -8,8 +8,8 @@ ARG gitcommithash
 RUN echo "Build number: $buildno"
 RUN echo "Based on commit: $gitcommithash"
 
-ENV DEBUG "true"
-ENV WEB_DOCUMENT_ROOT "/app/webroot"
+ENV DEBUG="true"
+ENV WEB_DOCUMENT_ROOT="/app/webroot"
 
 # Install ping command
 RUN set -x \

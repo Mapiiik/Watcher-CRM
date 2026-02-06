@@ -8,8 +8,8 @@ ARG gitcommithash
 RUN echo "Build number: $buildno"
 RUN echo "Based on commit: $gitcommithash"
 
-ENV DEBUG "true"
-ENV SERVER_ROOT "/app/webroot"
+ENV DEBUG="true"
+ENV SERVER_ROOT="/app/webroot"
 
 # add basic PHP extensions here:
 RUN install-php-extensions \
@@ -48,7 +48,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 # Run as worker (comment out for normal mode)
 #ENV FRANKENPHP_CONFIG="worker /app/webroot/index.php"
-#ENV MAX_REQUESTS "100"
+#ENV MAX_REQUESTS="100"
 
 # Add on-start commands
 RUN cat <<'EOF' > /usr/local/bin/docker-entrypoint-custom
