@@ -9,6 +9,7 @@ use App\Model\Entity\ContractVersion;
 use App\Model\Enum\ContractPrintType;
 use App\Model\Enum\IpAddressTypeOfUse;
 use App\Service\ContractPrint\ContractPrintData;
+use Cake\I18n\Date;
 use Cake\I18n\Number;
 use InvalidArgumentException;
 use PhpCollective\DecimalObject\Decimal;
@@ -67,11 +68,11 @@ class ContractPDF extends AppPDF
      * Prints billing table.
      *
      * @param iterable<\App\Model\Entity\Billing> $billings Billings
-     * @param \App\Model\Entity\ContractVersion $contract_version Contract version
+     * @param \Cake\I18n\Date $billingReferenceDate Reference date for billing relevance
      * @param string $format Additional font format
      * @return \PhpCollective\DecimalObject\Decimal Total cost
      */
-    private function billingTable(iterable $billings, ContractVersion $contract_version, string $format): Decimal
+    private function billingTable(iterable $billings, Date $billingReferenceDate, string $format): Decimal
     {
         $this->SetFont('DejaVuSerif', '' . $format, 8);
         $this->Cell(4, 4);
@@ -88,7 +89,7 @@ class ContractPDF extends AppPDF
                 140,
                 4,
                 $billing->name
-                . ($billing->billing_from > $contract_version->valid_from
+                . ($billing->billing_from > $billingReferenceDate
                     ? ' ' . strtr(Settings::getString('core.documents.contracts.billing.from'), [
                         '{date}' => $billing->billing_from->__toString(),
                     ])
@@ -1338,9 +1339,16 @@ class ContractPDF extends AppPDF
         }
 
         if ($type === ContractPrintType::ContractNew || $type === ContractPrintType::ContractNewX || $type === ContractPrintType::ContractAmendment) {
+
             if ($type === ContractPrintType::ContractAmendment) {
+                // For amendments use the effective date of amendment as reference date for billing relevance
+                $billingReferenceDate = $data->effectiveDateOfAmendment;
+                // For amendments use italic font for billing positions to emphasize changes compared to the original contract version
                 $format = 'I';
             } else {
+                // For new contracts use the contract start date as reference date for billing relevance
+                $billingReferenceDate = $contract_version->valid_from;
+                // For new contracts use normal font for billing positions
                 $format = '';
             }
 
@@ -1360,7 +1368,7 @@ class ContractPDF extends AppPDF
                 $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
 
                 $totalCost = $totalCost->add(
-                    $this->billingTable($data->getActiveStandardBillings(), $contract_version, $format),
+                    $this->billingTable($data->getActiveStandardBillings(), $billingReferenceDate, $format),
                 );
                 $this->Ln();
             }
@@ -1378,7 +1386,7 @@ class ContractPDF extends AppPDF
                 $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
 
                 $totalCost = $totalCost->add(
-                    $this->billingTable($data->getActiveIndividualBillings(), $contract_version, $format),
+                    $this->billingTable($data->getActiveIndividualBillings(), $billingReferenceDate, $format),
                 );
 
                 $this->SetFont('DejaVuSerif', $format, 7);
@@ -1404,7 +1412,7 @@ class ContractPDF extends AppPDF
 
                 $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
 
-                $this->billingTable($data->getFutureStandardBillings(), $contract_version, $format);
+                $this->billingTable($data->getFutureStandardBillings(), $billingReferenceDate, $format);
                 $this->Ln();
             }
 
@@ -1420,7 +1428,7 @@ class ContractPDF extends AppPDF
 
                 $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
 
-                $this->billingTable($data->getFutureIndividualBillings(), $contract_version, $format);
+                $this->billingTable($data->getFutureIndividualBillings(), $billingReferenceDate, $format);
 
                 $this->SetFont('DejaVuSerif', $format, 7);
                 $this->Cell(4, 4);
@@ -1451,7 +1459,7 @@ class ContractPDF extends AppPDF
             $this->Cell(
                 45,
                 4,
-                'do ' . $contract_version->valid_from->day(1)->addMonths(1)->addDays(9)->__toString(),
+                'do ' . $billingReferenceDate->day(1)->addMonths(1)->addDays(9)->__toString(),
                 align: 'C',
             );
 

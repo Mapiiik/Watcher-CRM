@@ -126,8 +126,12 @@ final class ContractPrintDataEnricher
      * Enriches billing collections relevant for the printed document.
      *
      * Billings are split only by time relevance:
-     *  - active billings applicable at the contract version start
-     *  - future billings starting after the contract version start
+     *  - active billings applicable at the document reference date
+     *  - future billings starting after the document reference date
+     *
+     * The reference date is determined as follows:
+     *  - contract version start date for standard contract documents
+     *  - amendment effective date for contract amendment documents
      *
      * Further semantic splitting (e.g. individual vs standard billings)
      * is intentionally deferred to DTO getters.
@@ -140,32 +144,45 @@ final class ContractPrintDataEnricher
     private function enrichBillings(
         ContractPrintData $data,
     ): void {
+        // Billing enrichment only makes sense if we have a specific contract version context
         if ($data->contractVersion === null) {
             return;
         }
 
+        // Determine the reference date for billing relevance based on document type
+        $referenceDate = $data->contractVersion->valid_from;
+        if (
+            $data->type === ContractPrintType::ContractAmendment
+            && $data->effectiveDateOfAmendment !== null
+        ) {
+            $referenceDate = $data->effectiveDateOfAmendment;
+        }
+
+        // Use CakePHP's Collection to filter billings based on their relevance to the reference date
         $billings = new Collection($data->contract->billings);
 
+        // Active billings are those that are applicable at the reference date
         $data->activeBillings = $billings->reject(
-            function (Billing $billing) use ($data) {
+            function (Billing $billing) use ($referenceDate) {
                 return (
                         $billing->__isset('billing_from')
-                        && $billing->billing_from > $data->contractVersion->valid_from
+                        && $billing->billing_from > $referenceDate
                     ) || (
                         $billing->__isset('billing_until')
-                        && $billing->billing_until < $data->contractVersion->valid_from
+                        && $billing->billing_until < $referenceDate
                     );
             },
         );
 
+        // Future billings are those that start after the reference date
         $data->futureBillings = $billings->reject(
-            function (Billing $billing) use ($data) {
+            function (Billing $billing) use ($referenceDate) {
                 return (
                         $billing->__isset('billing_from')
-                        && $billing->billing_from <= $data->contractVersion->valid_from
+                        && $billing->billing_from <= $referenceDate
                     ) || (
                         $billing->__isset('billing_until')
-                        && $billing->billing_until < $data->contractVersion->valid_from
+                        && $billing->billing_until < $referenceDate
                     );
             },
         );
