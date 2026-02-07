@@ -170,5 +170,5 @@ final class ContractPrintData
         return $this->futureBillings->filter(
             fn(Billing $billing) => $billing->__isset('price'),
         );
-    }    
+    }
 }

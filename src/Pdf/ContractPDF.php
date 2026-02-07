@@ -1016,7 +1016,8 @@ class ContractPDF extends AppPDF
      * @param \App\Service\ContractPrint\ContractPrintData $data
      * @return void
      */
-    public function generateContract(ContractPrintData $data): void {
+    public function generateContract(ContractPrintData $data): void
+    {
         // Load data from print data object
         $type = $data->type;
         $contract = $data->contract;
@@ -1338,8 +1339,11 @@ class ContractPDF extends AppPDF
             $this->Ln();
         }
 
-        if ($type === ContractPrintType::ContractNew || $type === ContractPrintType::ContractNewX || $type === ContractPrintType::ContractAmendment) {
-
+        if (
+            $type === ContractPrintType::ContractNew
+            || $type === ContractPrintType::ContractNewX
+            || $type === ContractPrintType::ContractAmendment
+        ) {
             if ($type === ContractPrintType::ContractAmendment) {
                 // For amendments use the effective date of amendment as reference date for billing relevance
                 $billingReferenceDate = $data->effectiveDateOfAmendment;

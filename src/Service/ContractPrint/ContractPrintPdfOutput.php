@@ -5,7 +5,6 @@ namespace App\Service\ContractPrint;
 
 use App\Model\Enum\ContractPrintType;
 use App\Pdf\ContractPDF;
-use App\Service\ContractPrint\ContractPrintData;
 use Cake\Http\Response;
 use Cake\I18n\Date;
 use Cake\I18n\I18n;

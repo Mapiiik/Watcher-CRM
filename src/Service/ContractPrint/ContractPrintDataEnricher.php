@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Service\ContractPrint;
 
-use App\Model\Enum\ContractPrintType;
 use App\Model\Entity\Billing;
+use App\Model\Enum\ContractPrintType;
 use Cake\Collection\Collection;
 use Cake\Database\Exception\MissingConnectionException;
 use Cake\ORM\Locator\LocatorAwareTrait;
@@ -70,14 +70,17 @@ final class ContractPrintDataEnricher
         ContractPrintData $data,
         array $query,
     ): void {
-        if (!in_array(
-            $data->type,
-            [
-                ContractPrintType::HandoverInstallation,
-                ContractPrintType::HandoverUninstallation,
-            ],
-            true,
-        )) {
+        // Technical details are only relevant for handover protocol documents
+        if (
+            !in_array(
+                $data->type,
+                [
+                    ContractPrintType::HandoverInstallation,
+                    ContractPrintType::HandoverUninstallation,
+                ],
+                true,
+            )
+        ) {
             return;
         }
 

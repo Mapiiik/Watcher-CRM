@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\ApiClient;
-use App\Model\Entity\Billing;
 use App\Model\Enum\ContractPrintType;
 use App\Model\Enum\CustomerDealer;
 use App\Service\ContractPrint\ContractPrintData;
@@ -13,13 +12,10 @@ use App\Service\ContractPrint\ContractPrintPdfOutput;
 use App\Service\ContractPrint\ContractPrintValidator;
 use App\View\PdfView;
 use Cake\Collection\Collection;
-use Cake\Database\Exception\MissingConnectionException;
 use Cake\I18n\Number;
 use Cake\ORM\Query\SelectQuery;
 use Cake\Validation\Validation;
 use Override;
-use Radius\Model\Table\AccountsTable;
-use stdClass;
 use ValueError;
 
 /**
