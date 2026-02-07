@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
+ * @var \App\Model\Enum\ContractPrintType|null $printType
  * @var \App\Model\Entity\Contract $contract
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $contractVersions
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $documentTypes
@@ -211,11 +212,9 @@
             <?= $this->Form->create(null, [
                 'type' => 'get',
                 'valueSources' => ['query'],
-                'target' => 'print',
                 'url' => [
                     'action' => 'print',
                     $contract->id,
-                    '_ext' => 'pdf',
                 ],
             ]) ?>
             <fieldset>
@@ -228,13 +227,24 @@
                             'options' => $documentTypes,
                             'empty' => true,
                             'required' => true,
+                            'onchange' => <<<JS
+                                var refresh = document.createElement("input");
+                                refresh.type = "hidden";
+                                refresh.name = "refresh";
+                                refresh.value = "refresh";
+                                this.form.appendChild(refresh);
+                                this.form.submit();
+                                JS,
                         ]);
+                        $this->Form->unlockField('refresh'); //disable form security check
+
                         echo $this->Form->control('contract_version_id', [
                             'label' => __('Contract Version'),
                             'options' => $contractVersions,
                             'empty' => true,
-                            'required' => true,
+                            'required' => $printType?->requiresContractVersion() ?? false,
                         ]);
+
                         echo $this->Form->control('own_equipment', [
                             'label' => __('The customer has his own equipment'),
                             'type' => 'checkbox',
@@ -244,29 +254,45 @@
                     </div>
                     <div class="column">
                         <?php
-                        echo $this->Form->control('effective_date_of_the_amendment', [
-                            'label' => __('Effective date of the amendment'),
-                            'empty' => true,
-                            'type' => 'date',
-                        ]);
-                        echo $this->Form->control('contract_version_to_be_replaced_id', [
-                            'label' => __('Contract Version To Be Replaced'),
-                            'options' => $contractVersions,
-                            'empty' => true,
-                            'required' => false,
-                        ]);
-                        echo $this->Form->control('number_of_the_contract_to_be_terminated', [
-                            'label' => __('The number of the contract to be terminated'),
-                            'empty' => true,
-                        ]);
-                        echo $this->Form->control('access_point', ['empty' => true]);
-                        echo $this->Form->control('radius_username', ['empty' => true]);
-                        echo $this->Form->control('radius_password', ['empty' => true]);
+                        if ($printType?->requiresEffectiveDateOfTheAmendment()) {
+                            echo $this->Form->control('effective_date_of_the_amendment', [
+                                'label' => __('Effective date of the amendment'),
+                                'type' => 'date',
+                                'empty' => true,
+                                'required' => true,
+                            ]);
+                        }
+
+                        if ($printType?->requiresContractVersionToBeReplaced()) {
+                            echo $this->Form->control('contract_version_to_be_replaced_id', [
+                                'label' => __('Contract Version To Be Replaced'),
+                                'options' => $contractVersions,
+                                'empty' => true,
+                                'required' => true,
+                            ]);
+                        }
+
+                        if ($printType?->requiresNumberOfTheContractToBeTerminated()) {
+                            echo $this->Form->control('number_of_the_contract_to_be_terminated', [
+                                'label' => __('The number of the contract to be terminated'),
+                                'empty' => true,
+                                'required' => true,
+                            ]);
+                        }
+
+                        if ($printType?->isHandoverProtocol()) {
+                            echo $this->Form->control('access_point', ['empty' => true]);
+                            echo $this->Form->control('radius_username', ['empty' => true]);
+                            echo $this->Form->control('radius_password', ['empty' => true]);
+                        }
                         ?>
                     </div>
                 </div>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__('Print to PDF'), [
+                'name' => 'submit_action',
+                'value' => 'pdf',
+            ]) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

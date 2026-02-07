@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
+ * @var \App\Model\Enum\CustomerPrintType|null $printType
  * @var \App\Model\Entity\Customer $customer
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $documentTypes
  */
@@ -181,11 +182,9 @@
             <?= $this->Form->create(null, [
                 'type' => 'get',
                 'valueSources' => ['query'],
-                'target' => 'print',
                 'url' => [
                     'action' => 'print',
                     $customer->id,
-                    '_ext' => 'pdf',
                 ],
             ]) ?>
             <fieldset>
@@ -198,6 +197,14 @@
                             'options' => $documentTypes,
                             'empty' => true,
                             'required' => true,
+                            'onchange' => <<<JS
+                                var refresh = document.createElement("input");
+                                refresh.type = "hidden";
+                                refresh.name = "refresh";
+                                refresh.value = "refresh";
+                                this.form.appendChild(refresh);
+                                this.form.submit();
+                                JS,
                         ]);
                         ?>
                     </div>
@@ -205,7 +212,10 @@
                     </div>
                 </div>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__('Print to PDF'), [
+                'name' => 'submit_action',
+                'value' => 'pdf',
+            ]) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

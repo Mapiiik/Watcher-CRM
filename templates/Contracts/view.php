@@ -24,7 +24,7 @@
             <?= $this->AuthLink->link(
                 __('Print to PDF'),
                 ['action' => 'print', $contract->id],
-                ['class' => 'side-nav-item'],
+                ['class' => 'side-nav-item', 'target' => 'print'],
             ) ?>
             <br>
             <?= $this->AuthLink->link(
@@ -113,7 +113,7 @@
             <?= $this->AuthLink->link(
                 __('Print to PDF'),
                 ['action' => 'print', $contract->id],
-                ['class' => 'button float-right'],
+                ['class' => 'button float-right', 'target' => 'print'],
             ) ?>
             <a id="contract"></a>
             <?= __('Contract No.') ?><h3><?= h($contract->number) ?></h3>

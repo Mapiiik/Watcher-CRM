@@ -833,12 +833,25 @@ class ContractsController extends AppController
 
         $query = $this->getRequest()->getQuery();
 
+        // keep only relevant query parameters for PDF generation in the query string
+        unset($query['refresh']);
+        unset($query['submit_action']);
+
+        // load the print type from the query string or use the one from the URL parameter
+        try {
+            $printType = ContractPrintType::from($query['document_type'] ?? $type ?? '');
+        } catch (ValueError) {
+            // tolerate invalid or missing document type for UI rendering
+            $printType = null;
+        }
+
         // PDF request: validate input, enrich data and render PDF output
-        if ($this->getRequest()->getParam('_ext') === 'pdf') {
-            // load the print type from the query string or use the one from the URL parameter
-            try {
-                $printType = ContractPrintType::from($query['document_type'] ?? $type ?? '');
-            } catch (ValueError) {
+        if (
+            $this->getRequest()->getParam('_ext') === 'pdf'
+            || $this->getRequest()->getQuery('submit_action') === 'pdf'
+        ) {
+            // if the print type is invalid or missing, show an error and redirect back to the print view
+            if ($printType === null) {
                 $this->Flash->error(__('Invalid type of document requested.'));
 
                 return $this->redirect(['action' => 'print', $id, '?' => $query]);
@@ -894,6 +907,11 @@ class ContractsController extends AppController
                 return $this->redirect(['action' => 'print', $id, '?' => $query]);
             }
 
+            // if the request is not already a PDF request, redirect to the same URL with the PDF extension to trigger PDF rendering
+            if ($this->getRequest()->getParam('_ext') !== 'pdf') {
+                return $this->redirect(['action' => 'print', $id, '_ext' => 'pdf', '?' => $query]);
+            }
+
             // enrich the data for the requested document type (e.g. add technical details for handover protocols)
             (new ContractPrintDataEnricher())->enrich($data, $query);
 
@@ -901,11 +919,11 @@ class ContractsController extends AppController
             return (new ContractPrintPdfOutput())->render($data);
         }
 
+        // render the print view for HTML requests
         $this->set(compact(
+            'printType',
             'contract',
             'contractVersions',
-            'type',
-            'query',
         ));
     }
 }

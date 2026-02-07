@@ -47,4 +47,86 @@ enum ContractPrintType: string implements EnumLabelInterface
                 __('Handover protocol - Internet connection uninstallation'),
         };
     }
+
+    /**
+     * Indicates whether this document type requires a contract version
+     * to be explicitly selected by the user.
+     *
+     * This corresponds to the common validation that checks
+     * for the presence of ContractPrintData::$contractVersion.
+     *
+     * @return bool
+     */
+    public function requiresContractVersion(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Indicates whether this document type requires selecting
+     * an existing contract version to be replaced.
+     *
+     * This corresponds to validation of:
+     *  - ContractPrintData::$contractVersionToBeReplaced
+     *  - number_of_the_contract_to_be_terminated
+     *
+     * @return bool
+     */
+    public function requiresContractVersionToBeReplaced(): bool
+    {
+        return $this === self::ContractNewX;
+    }
+
+    /**
+     * Indicates whether this document type requires
+     * an effective date of amendment.
+     *
+     * This corresponds to validation of:
+     *  - effective_date_of_the_amendment
+     *  - conclusion_date of the selected contract version
+     *
+     * @return bool
+     */
+    public function requiresEffectiveDateOfTheAmendment(): bool
+    {
+        return $this === self::ContractAmendment;
+    }
+
+    /**
+     * Indicates whether this document type requires
+     * the number of the contract to be terminated.
+     *
+     * This corresponds to validation of:
+     *  - number_of_the_contract_to_be_terminated
+     *
+     * @return bool
+     */
+    public function requiresNumberOfTheContractToBeTerminated(): bool
+    {
+        return in_array($this, [
+            self::ContractNewX,
+            self::ContractTermination,
+            self::HandoverUninstallation,
+        ], true);
+    }
+
+    /**
+     * Indicates whether this document type represents
+     * a handover protocol and therefore requires
+     * technical connection details enrichment.
+     *
+     * This controls enrichment of:
+     *  - access point
+     *  - RADIUS username
+     *  - RADIUS password
+     *
+     * @return bool
+     */
+    public function isHandoverProtocol(): bool
+    {
+        return in_array($this, [
+            self::HandoverInstallation,
+            self::HandoverUninstallation,
+        ], true);
+    }
 }
