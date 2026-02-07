@@ -3,8 +3,14 @@ declare(strict_types=1);
 
 namespace App\Service\ContractPrint;
 
+use App\Model\Entity\IpAddress;
 use App\Model\Enum\ContractPrintType;
+use App\Model\Enum\IpAddressTypeOfUse;
+use Cake\Collection\Collection;
+use Cake\Database\Exception\MissingConnectionException;
 use Cake\I18n\Date;
+use Cake\ORM\Locator\LocatorAwareTrait;
+use Radius\Model\Table\AccountsTable;
 
 /**
  * Validator for contract print requests.
@@ -21,6 +27,8 @@ use Cake\I18n\Date;
  */
 final class ContractPrintValidator
 {
+    use LocatorAwareTrait;
+
     /**
      * Collected validation errors.
      *
@@ -120,8 +128,10 @@ final class ContractPrintValidator
         ContractPrintData $data,
         array $query,
     ): void {
+        // For service types that normally require borrowed equipment, check that either own or borrowed equipment is assigned.
         if (
             empty($query['own_equipment'])
+            && $data->contract->service_type->have_equipments
             && $data->contract->service_type->normally_with_borrowed_equipment
             && empty($data->contract->borrowed_equipments)
         ) {
@@ -132,6 +142,64 @@ final class ContractPrintValidator
                     . ' Please confirm that the customer has their own equipment or add it.',
                 ),
             );
+        }
+
+        // If service type has IP addresses, load them and partition into RADIUS and static IPs for further checks.
+        if ($data->contract->service_type->have_ip_addresses) {
+            $ipAddresses = new Collection($data->contract->ip_addresses);
+
+            $radiusIpAddresses = $ipAddresses
+                ->filter(fn(IpAddress $ip) => $ip->type_of_use === IpAddressTypeOfUse::CustomerRADIUS);
+
+            $staticIpAddresses = $ipAddresses
+                ->filter(fn(IpAddress $ip) => $ip->type_of_use === IpAddressTypeOfUse::CustomerManually);
+        }
+
+        // For service types that normally require IP addresses, check that either the customer does not use IP addresses or that they are assigned.
+        if (
+            empty($query['does_not_use_ip_addresses'])
+            && $data->contract->service_type->have_ip_addresses
+            && $radiusIpAddresses->isEmpty()
+            && $staticIpAddresses->isEmpty()
+        ) {
+            $this->setError(
+                'does_not_use_ip_addresses',
+                __(
+                    'IP addresses are not assigned, although they usually should be for this type of service.'
+                    . ' Please confirm that the customer does not use IP addresses or add them.',
+                ),
+            );
+        }
+
+        // For service types that normally require RADIUS accounts, check that either the customer does not use RADIUS accounts or that they are assigned.
+        if (
+            empty($query['does_not_use_radius'])
+            && $data->contract->service_type->have_ip_addresses
+            && $data->contract->service_type->have_radius_accounts
+            && !$radiusIpAddresses->isEmpty()
+        ) {
+            try {
+                $radiusAccountExists = $this->fetchTable(AccountsTable::class)
+                    ->find()
+                    ->where([
+                        'contract_id' => $data->contract->id,
+                        'active' => true,
+                    ])
+                    ->limit(1)
+                    ->count() > 0;
+            } catch (MissingConnectionException) {
+                $radiusAccountExists = false;
+            }
+
+            if ($radiusAccountExists === false) {
+                $this->setError(
+                    'does_not_use_radius',
+                    __(
+                        'RADIUS accounts are not assigned, although they usually should be for this type of service.'
+                        . ' Please confirm that the customer does not use RADIUS accounts or add them.',
+                    ),
+                );
+            }
         }
 
         $data->signed = !empty($query['signed']);
@@ -219,7 +287,7 @@ final class ContractPrintValidator
 
         if (!$data->contractVersion->__isset('conclusion_date')) {
             $this->setError(
-                'conclusion_date',
+                'Flash',
                 __('Please set the date of conclusion of the contract version.'),
             );
         }

@@ -246,11 +246,22 @@
                             'required' => $printType?->requiresContractVersion() ?? false,
                         ]);
 
+                        echo $this->Form->control('signed', ['label' => __('Signed'), 'type' => 'checkbox']);
+                        ?>
+                        <br>
+                        <?php
                         echo $this->Form->control('own_equipment', [
                             'label' => __('The customer has his own equipment'),
                             'type' => 'checkbox',
                         ]);
-                        echo $this->Form->control('signed', ['label' => __('Signed'), 'type' => 'checkbox']);
+                        echo $this->Form->control('does_not_use_ip_addresses', [
+                            'label' => __('The customer does not use IP addresses'),
+                            'type' => 'checkbox',
+                        ]);
+                        echo $this->Form->control('does_not_use_radius', [
+                            'label' => __('The customer does not use RADIUS accounts'),
+                            'type' => 'checkbox',
+                        ]);
                         ?>
                     </div>
                     <div class="column">
