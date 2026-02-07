@@ -509,12 +509,17 @@ class CustomersController extends AppController
      */
     public function print(?string $id = null, ?string $type = null)
     {
+        // prepare supported document types for selection in the print view
         $documentTypes = [
             CustomerPrintType::GdprNew->value => CustomerPrintType::GdprNew->label(),
             CustomerPrintType::GdprChange->value => CustomerPrintType::GdprChange->label(),
         ];
         $this->set('documentTypes', $documentTypes);
 
+        // initialize an empty form to be used for PDF generation (validation errors will be added to this form)
+        $printForm = new Form();
+
+        // load the customer with all related data needed for rendering the print views and generating the PDF documents
         $customer = $this->Customers->get($id, contain: [
             'AccountingProfiles',
             'Addresses' => ['Countries'],
@@ -524,6 +529,7 @@ class CustomersController extends AppController
             'Modifiers',
         ]);
 
+        // load query parameters from the request
         $query = $this->getRequest()->getQuery();
 
         // keep only relevant query parameters for PDF generation in the query string
@@ -559,28 +565,35 @@ class CustomersController extends AppController
             // validate the data for the requested document type
             $errors = (new CustomerPrintValidator())->validate($data, $query);
 
-            // if there are validation errors, show them and redirect back to the print view with the same query parameters
+            // if there are validation errors, process them
             if (!empty($errors)) {
-                foreach ($errors as $fieldErrors) {
-                    foreach ($fieldErrors as $error) {
-                        $this->Flash->error($error);
-                    }
+                // flash error messages for the user
+                foreach ($errors['Flash'] ?? [] as $error) {
+                    $this->Flash->error($error);
+                }
+                unset($errors['Flash']);
+
+                if ($this->getRequest()->getParam('_ext') !== 'pdf') {
+                    // Set validation errors on the form to be displayed in the print view
+                    $printForm->setErrors($errors);
+                } else {
+                    // if the request is already a PDF request, redirect to the same URL without the PDF extension
+                    return $this->redirect(['action' => 'print', $id, '?' => $query]);
+                }
+            } else {
+                // if the request is not already a PDF request, redirect to the same URL with the PDF extension to trigger PDF rendering
+                if ($this->getRequest()->getParam('_ext') !== 'pdf') {
+                    return $this->redirect(['action' => 'print', $id, '_ext' => 'pdf', '?' => $query]);
                 }
 
-                return $this->redirect(['action' => 'print', $id, '?' => $query]);
+                // render the PDF document based on the enriched data
+                return (new CustomerPrintPdfOutput())->render($data);
             }
-
-            // if the request is not already a PDF request, redirect to the same URL with the PDF extension to trigger PDF rendering
-            if ($this->getRequest()->getParam('_ext') !== 'pdf') {
-                return $this->redirect(['action' => 'print', $id, '_ext' => 'pdf', '?' => $query]);
-            }
-
-            // render the PDF document based on the enriched data
-            return (new CustomerPrintPdfOutput())->render($data);
         }
 
         // render the print view for HTML requests
         $this->set(compact(
+            'printForm',
             'printType',
             'customer',
         ));

@@ -12,6 +12,7 @@ use App\Service\ContractPrint\ContractPrintPdfOutput;
 use App\Service\ContractPrint\ContractPrintValidator;
 use App\View\PdfView;
 use Cake\Collection\Collection;
+use Cake\Form\Form;
 use Cake\I18n\Number;
 use Cake\ORM\Query\SelectQuery;
 use Cake\Validation\Validation;
@@ -777,6 +778,7 @@ class ContractsController extends AppController
      */
     public function print(?string $id = null, ?string $type = null)
     {
+        // prepare supported document types for selection in the print view
         $documentTypes = [
             __('Contracts') => [
                 ContractPrintType::ContractNew->value => ContractPrintType::ContractNew->label(),
@@ -791,6 +793,10 @@ class ContractsController extends AppController
         ];
         $this->set('documentTypes', $documentTypes);
 
+        // initialize an empty form to be used for PDF generation (validation errors will be added to this form)
+        $printForm = new Form();
+
+        // load the contract with all related data needed for rendering the print views and generating the PDF documents
         $contract = $this->Contracts->get($id, contain: [
             'Billings' => ['Services'],
             'BorrowedEquipments.EquipmentTypes' => function (SelectQuery $query) {
@@ -822,6 +828,7 @@ class ContractsController extends AppController
             'Modifiers',
         ]);
 
+        // prepare contract versions for selection in the print view
         $contractVersions = (new Collection($contract->contract_versions))->map(function ($contract_version) {
             return [
                 'value' => $contract_version->id,
@@ -831,6 +838,7 @@ class ContractsController extends AppController
             ];
         })->toArray();
 
+        // load query parameters from the request
         $query = $this->getRequest()->getQuery();
 
         // keep only relevant query parameters for PDF generation in the query string
@@ -896,31 +904,38 @@ class ContractsController extends AppController
             // validate the data for the requested document type
             $errors = (new ContractPrintValidator())->validate($data, $query);
 
-            // if there are validation errors, show them and redirect back to the print view with the same query parameters
-            if ($errors) {
-                foreach ($errors as $fieldErrors) {
-                    foreach ($fieldErrors as $error) {
-                        $this->Flash->error($error);
-                    }
+            // if there are validation errors, process them
+            if (!empty($errors)) {
+                // flash error messages for the user
+                foreach ($errors['Flash'] ?? [] as $error) {
+                    $this->Flash->error($error);
+                }
+                unset($errors['Flash']);
+
+                if ($this->getRequest()->getParam('_ext') !== 'pdf') {
+                    // Set validation errors on the form to be displayed in the print view
+                    $printForm->setErrors($errors);
+                } else {
+                    // if the request is already a PDF request, redirect to the same URL without the PDF extension
+                    return $this->redirect(['action' => 'print', $id, '?' => $query]);
+                }
+            } else {
+                // if the request is not already a PDF request, redirect to the same URL with the PDF extension to trigger PDF rendering
+                if ($this->getRequest()->getParam('_ext') !== 'pdf') {
+                    return $this->redirect(['action' => 'print', $id, '_ext' => 'pdf', '?' => $query]);
                 }
 
-                return $this->redirect(['action' => 'print', $id, '?' => $query]);
+                // enrich the data for the requested document type (e.g. add technical details for handover protocols)
+                (new ContractPrintDataEnricher())->enrich($data, $query);
+
+                // render the PDF document based on the enriched data
+                return (new ContractPrintPdfOutput())->render($data);
             }
-
-            // if the request is not already a PDF request, redirect to the same URL with the PDF extension to trigger PDF rendering
-            if ($this->getRequest()->getParam('_ext') !== 'pdf') {
-                return $this->redirect(['action' => 'print', $id, '_ext' => 'pdf', '?' => $query]);
-            }
-
-            // enrich the data for the requested document type (e.g. add technical details for handover protocols)
-            (new ContractPrintDataEnricher())->enrich($data, $query);
-
-            // render the PDF document based on the enriched data
-            return (new ContractPrintPdfOutput())->render($data);
         }
 
         // render the print view for HTML requests
         $this->set(compact(
+            'printForm',
             'printType',
             'contract',
             'contractVersions',

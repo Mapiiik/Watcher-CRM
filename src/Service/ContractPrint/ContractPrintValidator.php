@@ -126,7 +126,7 @@ final class ContractPrintValidator
             && empty($data->contract->borrowed_equipments)
         ) {
             $this->setError(
-                'borrowed_equipments',
+                'own_equipment',
                 __(
                     'A borrowed equipment is not assigned, although it should normally be for this type of service.'
                     . ' Please confirm that the customer has their own equipment or add it.',
@@ -180,7 +180,7 @@ final class ContractPrintValidator
 
         if (!$data->contractVersionToBeReplaced->__isset('conclusion_date')) {
             $this->setError(
-                'contract_version_to_be_replaced_id',
+                'Flash',
                 __('Please set the date of conclusion of the original contract version.'),
             );
         }
@@ -238,14 +238,14 @@ final class ContractPrintValidator
 
         if (!$data->contractVersion->__isset('valid_until')) {
             $this->setError(
-                'valid_until',
+                'Flash',
                 __('Please set the date until which the contract version is valid.'),
             );
         }
 
         if (!$data->contractVersion->__isset('conclusion_date')) {
             $this->setError(
-                'conclusion_date',
+                'Flash',
                 __('Please set the date of conclusion of the contract version.'),
             );
         }
@@ -286,7 +286,7 @@ final class ContractPrintValidator
 
         if (!$data->contractVersion->__isset('valid_until')) {
             $this->setError(
-                'valid_until',
+                'Flash',
                 __('Please set the date until which the contract version is valid.'),
             );
         }

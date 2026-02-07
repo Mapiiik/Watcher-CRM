@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
+ * @var \Cake\Form\Form $printForm
  * @var \App\Model\Enum\CustomerPrintType|null $printType
  * @var \App\Model\Entity\Customer $customer
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $documentTypes
@@ -179,7 +180,7 @@
                 </div>
             </div>
             <br>
-            <?= $this->Form->create(null, [
+            <?= $this->Form->create($printForm, [
                 'type' => 'get',
                 'valueSources' => ['query'],
                 'url' => [

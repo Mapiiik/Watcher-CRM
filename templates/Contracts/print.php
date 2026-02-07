@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
+ * @var \Cake\Form\Form $printForm
  * @var \App\Model\Enum\ContractPrintType|null $printType
  * @var \App\Model\Entity\Contract $contract
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $contractVersions
@@ -209,7 +210,7 @@
             </div>
             <br>
             <?php endif; ?>
-            <?= $this->Form->create(null, [
+            <?= $this->Form->create($printForm, [
                 'type' => 'get',
                 'valueSources' => ['query'],
                 'url' => [
