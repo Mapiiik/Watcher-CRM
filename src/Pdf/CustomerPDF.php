@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Pdf;
 
-use App\Model\Entity\Customer;
+use App\Model\Enum\CustomerPrintType;
+use App\Service\CustomerPrint\CustomerPrintData;
+use InvalidArgumentException;
 use Settings\Utility\Settings;
 
 class CustomerPDF extends AppPDF
@@ -11,12 +13,15 @@ class CustomerPDF extends AppPDF
     /**
      * Generate PDF document - GDPR agreement
      *
-     * @param \App\Model\Entity\Customer $customer Customer with all related data
-     * @param string $type Type of requested document
+     * @param \App\Service\CustomerPrint\CustomerPrintData $data Customer print data object
      * @return void
      */
-    public function generateGDPRAgreement(Customer $customer, string $type = 'gdpr-new'): void
+    public function generateGDPRAgreement(CustomerPrintData $data): void
     {
+        // Load data from print data object
+        $type = $data->type;
+        $customer = $data->customer;
+
         // Disable default header and footer
         $this->setPrintHeader(false);
         $this->setPrintFooter(false);
@@ -50,12 +55,14 @@ class CustomerPDF extends AppPDF
         // Agreement header values
         $this->SetFont('DejaVuSerif', 'B', 8);
         switch ($type) {
-            case 'gdpr-new':
+            case CustomerPrintType::GdprNew:
                 $this->Cell(62, 4, Settings::getString('core.documents.common.labels.new'), align: 'C');
                 break;
-            case 'gdpr-change':
+            case CustomerPrintType::GdprChange:
                 $this->Cell(62, 4, Settings::getString('core.documents.common.labels.change'), align: 'C');
                 break;
+            default:
+                throw new InvalidArgumentException('Unsupported customer print type: ' . $type->value);
         }
         $this->Cell(62, 4, $customer->number, align: 'C');
         $this->Cell(62, 4, Settings::getString('core.documents.common.labels.duration_indefinite'), align: 'C');

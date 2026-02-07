@@ -21,8 +21,8 @@ use Cake\I18n\Date;
  *
  * Lifecycle:
  *  - Created by Controller
- *  - Filled by ContractValidator / ContractPrintValidator
- *  - Enriched by ContractPrintService
+ *  - Filled by ContractPrintValidator
+ *  - Enriched by ContractPrintDataEnricher
  *  - Consumed by PDF generator
  */
 final class ContractPrintData

@@ -4,12 +4,17 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Model\Entity\Customer;
+use App\Model\Enum\CustomerPrintType;
+use App\Service\CustomerPrint\CustomerPrintData;
+use App\Service\CustomerPrint\CustomerPrintPdfOutput;
+use App\Service\CustomerPrint\CustomerPrintValidator;
 use App\View\PdfView;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Form\Form;
 use Cake\Utility\Hash;
 use Cake\Validation\Validation;
 use Override;
+use ValueError;
 
 // filter for fulltext search
 const CUSTOMERS_FULLTEXT_SEARCH_FILTER = <<<SQL
@@ -497,7 +502,7 @@ class CustomersController extends AppController
     /**
      * Print method
      *
-     * @param string|null $id Contract id.
+     * @param string|null $id Customer id.
      * @param string|null $type Document type.
      * @return \Cake\Http\Response|null|void Renders print.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
@@ -505,8 +510,8 @@ class CustomersController extends AppController
     public function print(?string $id = null, ?string $type = null)
     {
         $documentTypes = [
-            'gdpr-new' => __('Consent to the processing of personal data'),
-            'gdpr-change' => __('Consent to the processing of personal data (change)'),
+            CustomerPrintType::GdprNew->value => CustomerPrintType::GdprNew->label(),
+            CustomerPrintType::GdprChange->value => CustomerPrintType::GdprChange->label(),
         ];
         $this->set('documentTypes', $documentTypes);
 
@@ -524,17 +529,39 @@ class CustomersController extends AppController
             $type = $query['document_type'];
         }
 
+        // PDF request: validate input, enrich data and render PDF output
         if ($this->getRequest()->getParam('_ext') === 'pdf') {
-            switch ($type) {
-                case 'gdpr-new':
-                case 'gdpr-change':
-                    break;
+            // load the print type from the query string or use the one from the URL parameter
+            try {
+                $printType = CustomerPrintType::from($query['document_type'] ?? $type ?? '');
+            } catch (ValueError) {
+                $this->Flash->error(__('Invalid type of document requested.'));
 
-                default:
-                    $this->Flash->error(__('Invalid type of document requested.'));
-
-                    return $this->redirect(['action' => 'print', $id, '?' => $query]);
+                return $this->redirect(['action' => 'print', $id, '?' => $query]);
             }
+
+            // prepare data for validation
+            $data = new CustomerPrintData(
+                type: $printType,
+                customer: $customer,
+            );
+
+            // validate the data for the requested document type
+            $errors = (new CustomerPrintValidator())->validate($data, $query);
+
+            // if there are validation errors, show them and redirect back to the print view with the same query parameters
+            if (!empty($errors)) {
+                foreach ($errors as $fieldErrors) {
+                    foreach ($fieldErrors as $error) {
+                        $this->Flash->error($error);
+                    }
+                }
+
+                return $this->redirect(['action' => 'print', $id, '?' => $query]);
+            }
+
+            // render the PDF document based on the enriched data
+            return (new CustomerPrintPdfOutput())->render($data);
         }
         $this->set(compact('customer', 'type', 'query'));
     }

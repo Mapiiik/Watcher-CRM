@@ -1089,6 +1089,9 @@ class ContractPDF extends AppPDF
                 );
                 $this->Ln(3);
                 break;
+
+            default:
+                throw new InvalidArgumentException('Unsupported contract print type: ' . $type->value);
         }
 
         // Separator line
@@ -1158,6 +1161,9 @@ class ContractPDF extends AppPDF
                 );
                 $this->Ln();
                 break;
+
+            default:
+                throw new InvalidArgumentException('Unsupported contract print type: ' . $type->value);
         }
 
         // Provider section - company details block

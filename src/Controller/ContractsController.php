@@ -874,10 +874,10 @@ class ContractsController extends AppController
 
             // prepare data for validation
             $data = new ContractPrintData(
-                $printType,
-                $contract,
-                $contractVersion,
-                $contractVersionToBeReplaced,
+                type: $printType,
+                contract: $contract,
+                contractVersion: $contractVersion,
+                contractVersionToBeReplaced: $contractVersionToBeReplaced,
             );
 
             // validate the data for the requested document type
