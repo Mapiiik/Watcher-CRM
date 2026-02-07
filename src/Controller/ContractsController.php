@@ -5,17 +5,22 @@ namespace App\Controller;
 
 use App\ApiClient;
 use App\Model\Entity\Billing;
+use App\Model\Enum\ContractPrintType;
 use App\Model\Enum\CustomerDealer;
+use App\Service\ContractPrint\ContractPrintData;
+use App\Service\ContractPrint\ContractPrintDataEnricher;
+use App\Service\ContractPrint\ContractPrintPdfOutput;
+use App\Service\ContractPrint\ContractPrintValidator;
 use App\View\PdfView;
 use Cake\Collection\Collection;
 use Cake\Database\Exception\MissingConnectionException;
-use Cake\I18n\Date;
 use Cake\I18n\Number;
 use Cake\ORM\Query\SelectQuery;
 use Cake\Validation\Validation;
 use Override;
 use Radius\Model\Table\AccountsTable;
 use stdClass;
+use ValueError;
 
 /**
  * Contracts Controller
@@ -778,15 +783,14 @@ class ContractsController extends AppController
     {
         $documentTypes = [
             __('Contracts') => [
-                'contract-new' => __('Contract for the provision of services'),
-                'contract-new-x' => __('Contract for the provision of services '
-                    . '(with termination of the original contract)'),
-                'contract-amendment' => __('Amendment to the contract for the provision of services'),
-                'contract-termination' => __('Agreement to terminate contract for the provision of services'),
+                ContractPrintType::ContractNew->value => ContractPrintType::ContractNew->label(),
+                ContractPrintType::ContractNewX->value => ContractPrintType::ContractNewX->label(),
+                ContractPrintType::ContractAmendment->value => ContractPrintType::ContractAmendment->label(),
+                ContractPrintType::ContractTermination->value => ContractPrintType::ContractTermination->label(),
             ],
             __('Handover Protocols') => [
-                'handover-protocol-installation' => __('Handover protocol - Installation of internet connection'),
-                'handover-protocol-uninstallation' => __('Handover protocol - Internet connection uninstallation'),
+                ContractPrintType::HandoverInstallation->value => ContractPrintType::HandoverInstallation->label(),
+                ContractPrintType::HandoverUninstallation->value => ContractPrintType::HandoverUninstallation->label(),
             ],
         ];
         $this->set('documentTypes', $documentTypes);
@@ -832,295 +836,75 @@ class ContractsController extends AppController
         })->toArray();
 
         $query = $this->getRequest()->getQuery();
-        if (isset($query['document_type'])) {
-            $type = $query['document_type'];
-        }
-        if (isset($query['contract_version_id'])) {
-            /** @var \App\Model\Entity\ContractVersion|null $contract_version */
-            $contract_version = (new Collection($contract->contract_versions))->firstMatch([
-                'id' => $query['contract_version_id'],
-            ]);
-        }
-        if (isset($query['contract_version_to_be_replaced_id'])) {
-            /** @var \App\Model\Entity\ContractVersion|null $contract_version_to_be_replaced */
-            $contract_version_to_be_replaced = (new Collection($contract->contract_versions))->firstMatch([
-                'id' => $query['contract_version_to_be_replaced_id'],
-            ]);
-        }
 
+        // PDF request: validate input, enrich data and render PDF output
         if ($this->getRequest()->getParam('_ext') === 'pdf') {
-            // check if borrowed equipment is added where it should be
-            if (
-                !$query['own_equipment']
-                && $contract->service_type->normally_with_borrowed_equipment
-                && empty($contract->borrowed_equipments)
-            ) {
-                $this->Flash->error(__(
-                    'A borrowed equipment is not assigned, although it should normally be for this type of service.'
-                    . ' Please confirm that the customer has their own equipment or add it.',
-                ));
+            // load the print type from the query string or use the one from the URL parameter
+            try {
+                $printType = ContractPrintType::from($query['document_type'] ?? $type ?? '');
+            } catch (ValueError) {
+                $this->Flash->error(__('Invalid type of document requested.'));
 
                 return $this->redirect(['action' => 'print', $id, '?' => $query]);
             }
 
-            if (empty($contract_version)) {
-                $this->Flash->error(__('Invalid contract version requested.'));
+            // load the contract version to be printed from the query string
+            $contractVersion = null;
+            if (!empty($query['contract_version_id'])) {
+                $contractVersion = (new Collection($contract->contract_versions))->firstMatch([
+                    'id' => $query['contract_version_id'],
+                ]);
 
-                return $this->redirect(['action' => 'print', $id, '?' => $query]);
-            } else {
-                if (!empty($contract_version_to_be_replaced)) {
-                    if ($contract_version->id == $contract_version_to_be_replaced->id) {
-                        $this->Flash->error(__('Invalid contract version to be replaced requested.'));
-
-                        return $this->redirect(['action' => 'print', $id, '?' => $query]);
-                    }
-
-                    $contract_version->set('old', $contract_version_to_be_replaced);
-                }
-                $this->set('contract_version', $contract_version);
-            }
-
-            switch ($type) {
-                case 'contract-termination':
-                    if (!$contract_version->__isset('valid_until')) {
-                        $this->Flash->error(__('Please set the date until which the contract version is valid.'));
-
-                        return $this->redirect([
-                            'controller' => 'ContractVersions',
-                            'action' => 'edit',
-                            $contract_version->id,
-                        ]);
-                    }
-
-                    if (!$contract_version->__isset('conclusion_date')) {
-                        $this->Flash->error(__('Please set the date of conclusion of the contract version.'));
-
-                        return $this->redirect([
-                            'controller' => 'ContractVersions',
-                            'action' => 'edit',
-                            $contract_version->id,
-                        ]);
-                    }
-
-                    if (empty($query['number_of_the_contract_to_be_terminated'])) {
-                        $this->Flash->error(__('Please enter the number of the contract to be terminated.'));
-
-                        return $this->redirect(['action' => 'print', $id, '?' => $query]);
-                    } else {
-                        $contract_version->set(
-                            'number_of_the_contract_to_be_terminated',
-                            $query['number_of_the_contract_to_be_terminated'],
-                        );
-                    }
-
-                    break;
-
-                case 'contract-amendment':
-                    if (empty($query['effective_date_of_the_amendment'])) {
-                        $this->Flash->error(__('Please enter the effective date of the amendment.'));
-
-                        return $this->redirect(['action' => 'print', $id, '?' => $query]);
-                    } else {
-                        $contract_version->valid_from = new Date($query['effective_date_of_the_amendment']);
-                    }
-
-                    if (!$contract_version->__isset('conclusion_date')) {
-                        $this->Flash->error(__('Please set the date of conclusion of the contract version.'));
-
-                        return $this->redirect([
-                            'controller' => 'ContractVersions',
-                            'action' => 'edit',
-                            $contract_version->id,
-                        ]);
-                    }
-
-                    break;
-
-                case 'contract-new-x':
-                    if (empty($contract_version->get('old'))) {
-                        $this->Flash->error(__('Please select the contract version to be replaced.'));
-
-                        return $this->redirect(['action' => 'print', $id, '?' => $query]);
-                    }
-
-                    if (!$contract_version->get('old')->__isset('conclusion_date')) {
-                        $this->Flash->error(__('Please set the date of conclusion of the original contract version.'));
-
-                        return $this->redirect([
-                            'controller' => 'ContractVersions',
-                            'action' => 'edit',
-                            $contract_version->get('old')->id,
-                        ]);
-                    }
-
-                    if (empty($query['number_of_the_contract_to_be_terminated'])) {
-                        $this->Flash->error(__('Please enter the number of the contract to be terminated.'));
-
-                        return $this->redirect(['action' => 'print', $id, '?' => $query]);
-                    } else {
-                        $contract_version->set(
-                            'number_of_the_contract_to_be_terminated',
-                            $query['number_of_the_contract_to_be_terminated'],
-                        );
-                    }
-
-                    break;
-
-                case 'contract-new':
-                    /*
-                    if (!$contract_version->__isset('valid_from')) {
-                        $this->Flash->error(__('Please set the date from which the contract version is valid.'));
-
-                        return $this->redirect(['action' => 'view', $id]);
-                    }
-                    */
-
-                    break;
-
-                case 'handover-protocol-uninstallation':
-                    if (!$contract_version->__isset('valid_until')) {
-                        $this->Flash->error(__('Please set the date until which the contract version is valid.'));
-
-                        return $this->redirect([
-                            'controller' => 'ContractVersions',
-                            'action' => 'edit',
-                            $contract_version->id,
-                        ]);
-                    }
-
-                    if (empty($query['number_of_the_contract_to_be_terminated'])) {
-                        $this->Flash->error(__('Please enter the number of the contract to be terminated.'));
-
-                        return $this->redirect(['action' => 'print', $id, '?' => $query]);
-                    } else {
-                        $contract_version->set(
-                            'number_of_the_contract_to_be_terminated',
-                            $query['number_of_the_contract_to_be_terminated'],
-                        );
-                    }
-
-                    // no break - checks will continue
-                case 'handover-protocol-installation':
-                    /*
-                    if (!$contract_version->__isset('valid_from')) {
-                        $this->Flash->error(__('Please set the date from which the contract version is valid.'));
-
-                        return $this->redirect(['action' => 'view', $id]);
-                    }
-                    */
-
-                    try {
-                        //Try to load lastly added RADIUS account
-                        /** @var \Radius\Model\Entity\Account $radius_account */
-                        $radius_account = $this->fetchTable(AccountsTable::class)
-                            ->find()
-                            ->where([
-                                'contract_id' => $contract->id,
-                                'active' => true,
-                            ])
-                            ->orderBy([
-                                'id' => 'DESC',
-                            ])
-                            ->limit(1)
-                            ->first();
-                        $radius_connected = true;
-                    } catch (MissingConnectionException $connectionError) {
-                        //Couldn't connect
-                        $radius_account = null;
-                        $radius_connected = false;
-                    }
-
-                    $technical_details = new stdClass();
-
-                    if (!empty($query['access_point'])) {
-                        $technical_details->access_point = $query['access_point'];
-                    } elseif ($contract->__isset('access_point')) {
-                        $technical_details->access_point = $contract->access_point['name'];
-                    }
-
-                    if (!empty($query['radius_username'])) {
-                        $technical_details->radius_username = $query['radius_username'];
-                    } elseif ($radius_connected && isset($radius_account->username)) {
-                        $technical_details->radius_username = $radius_account->username;
-                    }
-
-                    if (!empty($query['radius_password'])) {
-                        $technical_details->radius_password = $query['radius_password'];
-                    } elseif ($radius_connected && isset($radius_account->password)) {
-                        $technical_details->radius_password = $radius_account->password;
-                    }
-
-                    $this->set('technical_details', $technical_details);
-                    break;
-
-                default:
-                    $this->Flash->error(__('Invalid type of document requested.'));
+                if ($contractVersion === null) {
+                    $this->Flash->error(__('Invalid contract version requested.'));
 
                     return $this->redirect(['action' => 'print', $id, '?' => $query]);
+                }
             }
 
-            $billings_collection = new Collection($contract->billings);
+            // load the contract version to be replaced from the query string
+            $contractVersionToBeReplaced = null;
+            if (!empty($query['contract_version_to_be_replaced_id'])) {
+                $contractVersionToBeReplaced = (new Collection($contract->contract_versions))->firstMatch([
+                    'id' => $query['contract_version_to_be_replaced_id'],
+                ]);
 
-            $active_billings_collection = $billings_collection->reject(
-                function (Billing $billing, $_key) use ($contract_version) {
-                    return (
-                            $billing->__isset('billing_from')
-                            && $billing->billing_from > $contract_version->valid_from
-                        ) || (
-                            $billing->__isset('billing_until')
-                            && $billing->billing_until < $contract_version->valid_from
-                        );
-                },
+                if ($contractVersionToBeReplaced === null) {
+                    $this->Flash->error(__('Invalid contract version to be replaced requested.'));
+
+                    return $this->redirect(['action' => 'print', $id, '?' => $query]);
+                }
+            }
+
+            // prepare data for validation
+            $data = new ContractPrintData(
+                $printType,
+                $contract,
+                $contractVersion,
+                $contractVersionToBeReplaced,
             );
 
-            $contract->set(
-                'individual_billings',
-                $active_billings_collection->filter(
-                    function (Billing $billing, $_key) {
-                        return $billing->__isset('price');
-                    },
-                )->toArray(),
-            );
+            // validate the data for the requested document type
+            $errors = (new ContractPrintValidator())->validate($data, $query);
 
-            $contract->set(
-                'standard_billings',
-                $active_billings_collection->filter(
-                    function (Billing $billing, $_key) {
-                        return !$billing->__isset('price');
-                    },
-                )->toArray(),
-            );
+            // if there are validation errors, show them and redirect back to the print view with the same query parameters
+            if ($errors) {
+                foreach ($errors as $fieldErrors) {
+                    foreach ($fieldErrors as $error) {
+                        $this->Flash->error($error);
+                    }
+                }
 
-            $future_billings_collection = $billings_collection->reject(
-                function (Billing $billing, $_key) use ($contract_version) {
-                    return (
-                            $billing->__isset('billing_from')
-                            && $billing->billing_from <= $contract_version->valid_from
-                        ) || (
-                            $billing->__isset('billing_until')
-                            && $billing->billing_until < $contract_version->valid_from
-                        );
-                },
-            );
+                return $this->redirect(['action' => 'print', $id, '?' => $query]);
+            }
 
-            $contract->set(
-                'future_individual_billings',
-                $future_billings_collection->filter(
-                    function (Billing $billing, $_key) {
-                        return $billing->__isset('price');
-                    },
-                )->toArray(),
-            );
+            // enrich the data for the requested document type (e.g. add technical details for handover protocols)
+            (new ContractPrintDataEnricher())->enrich($data, $query);
 
-            $contract->set(
-                'future_standard_billings',
-                $future_billings_collection->filter(
-                    function (Billing $billing, $_key) {
-                        return !$billing->__isset('price');
-                    },
-                )->toArray(),
-            );
+            // render the PDF document based on the enriched data
+            return (new ContractPrintPdfOutput())->render($data);
         }
+
         $this->set(compact(
             'contract',
             'contractVersions',

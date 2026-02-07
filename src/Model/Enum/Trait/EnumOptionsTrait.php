@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Bookkeeping\Model\Enum\Trait;
+namespace App\Model\Enum\Trait;
 
 use Cake\Database\Type\EnumLabelInterface;
 use LogicException;

@@ -6,12 +6,13 @@ namespace App\Pdf;
 use App\Model\Entity\Billing;
 use App\Model\Entity\Contract;
 use App\Model\Entity\ContractVersion;
+use App\Model\Enum\ContractPrintType;
 use App\Model\Enum\IpAddressTypeOfUse;
+use App\Service\ContractPrint\ContractPrintData;
 use Cake\I18n\Number;
 use InvalidArgumentException;
 use PhpCollective\DecimalObject\Decimal;
 use Settings\Utility\Settings;
-use stdClass;
 
 class ContractPDF extends AppPDF
 {
@@ -151,7 +152,7 @@ class ContractPDF extends AppPDF
      *
      * @param \App\Model\Entity\Contract        $contract         Current contract instance containing fee sums.
      * @param \App\Model\Entity\ContractVersion $contract_version Current contract version with duration info.
-     * @param string                            $type             Contract type identifier (e.g. 'contract-new').
+     * @param \App\Model\Enum\ContractPrintType $type             Contract print type.
      * @param bool                              $withInstallation Whether installation of borrowed equipment
      *                                                            should be mentioned in the activation fee text.
      * @return void
@@ -159,7 +160,7 @@ class ContractPDF extends AppPDF
     private function printActivationFee(
         Contract $contract,
         ContractVersion $contract_version,
-        string $type,
+        ContractPrintType $type,
         bool $withInstallation,
     ): void {
         if (!$contract->activation_fee_sum->isPositive()) {
@@ -169,7 +170,7 @@ class ContractPDF extends AppPDF
         $this->SetFont('DejaVuSerif', 'B', 8);
 
         if ($contract_version->minimum_duration <= 0) {
-            if ($type === 'contract-new') {
+            if ($type === ContractPrintType::ContractNew) {
                 $key = $withInstallation
                     ? 'activation_fee_no_commitment_with_installation'
                     : 'activation_fee_no_commitment';
@@ -185,7 +186,7 @@ class ContractPDF extends AppPDF
                 $this->Ln(3);
             }
         } else {
-            if ($type === 'contract-new') {
+            if ($type === ContractPrintType::ContractNew) {
                 $key = $withInstallation
                     ? 'activation_fee_with_commitment_with_installation'
                     : 'activation_fee_with_commitment';
@@ -228,20 +229,18 @@ class ContractPDF extends AppPDF
     /**
      * Generate PDF document - handover protocol
      *
-     * @param \App\Model\Entity\Contract $contract Contract with all related data
-     * @param \App\Model\Entity\ContractVersion $contract_version Contract version for dates
-     * @param string $type Type of requested document
-     * @param bool $signed Create signed document?
-     * @param \stdClass|null $technical_details Technical details about service
+     * @param \App\Service\ContractPrint\ContractPrintData $data
      * @return void
      */
-    public function generateHandoverProtocol(
-        Contract $contract,
-        ContractVersion $contract_version,
-        string $type = 'handover-protocol-installation',
-        bool $signed = false,
-        ?stdClass $technical_details = null,
-    ): void {
+    public function generateHandoverProtocol(ContractPrintData $data): void
+    {
+        // Load data from print data object
+        $type = $data->type;
+        $contract = $data->contract;
+        $contract_version = $data->contractVersion;
+        $technical_details = $data->technicalDetails;
+        $signed = $data->signed;
+
         // Disable default header and footer
         $this->setPrintHeader(false);
         $this->setPrintFooter(false);
@@ -259,7 +258,7 @@ class ContractPDF extends AppPDF
 
         // Document subtitle
         $this->SetFont('DejaVuSerif', 'B', 12);
-        if ($type === 'handover-protocol-installation') {
+        if ($type === ContractPrintType::HandoverInstallation) {
             $this->Cell(
                 187,
                 2,
@@ -281,7 +280,7 @@ class ContractPDF extends AppPDF
 
         // Contract number + date
         $this->SetFont('DejaVuSerif', '', 8);
-        if ($type === 'handover-protocol-installation') {
+        if ($type === ContractPrintType::HandoverInstallation) {
             $this->Cell(90, 4, Settings::getString('core.documents.common.labels.contract_number'), align: 'C');
             $this->Cell(90, 4, Settings::getString('core.documents.common.labels.start_date'), align: 'C');
             $this->Ln();
@@ -293,7 +292,7 @@ class ContractPDF extends AppPDF
             $this->Cell(90, 4, Settings::getString('core.documents.common.labels.end_date'), align: 'C');
             $this->Ln();
             $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Cell(90, 4, $contract_version->get('number_of_the_contract_to_be_terminated'), align: 'C');
+            $this->Cell(90, 4, $data->numberOfContractToBeTerminated, align: 'C');
             $this->Cell(90, 4, (string)$contract_version->valid_until, align: 'C');
         }
         $this->Ln();
@@ -411,7 +410,7 @@ class ContractPDF extends AppPDF
         $this->drawSeparator(AppPDF::SEPARATOR_OFFSET_X, lnAfter: 4.0);
 
         // BEGIN INSTALLATION
-        if ($type == 'handover-protocol-installation') :
+        if ($type == ContractPrintType::HandoverInstallation) :
             // ACCESS INFORMATION
             $this->SetFont('DejaVuSerif', 'B', 9);
             $this->Write(4, Settings::getString('core.documents.contracts.handover.sections.access_info'));
@@ -432,9 +431,9 @@ class ContractPDF extends AppPDF
 
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Cell(4, 5);
-            //$this->Cell(60, 5, $technical_details->access_point ?? '-', border: 1, align: 'C');
-            $this->Cell(90, 5, $technical_details->radius_username ?? '-', border: 1, align: 'C');
-            $this->Cell(90, 5, $technical_details->radius_password ?? '-', border: 1, align: 'C');
+            //$this->Cell(60, 5, $technical_details->accessPoint ?? '-', border: 1, align: 'C');
+            $this->Cell(90, 5, $technical_details->radiusUsername ?? '-', border: 1, align: 'C');
+            $this->Cell(90, 5, $technical_details->radiusPassword ?? '-', border: 1, align: 'C');
             $this->Ln();
 
             $this->Ln(1);
@@ -860,7 +859,7 @@ class ContractPDF extends AppPDF
         // END INSTALLATION
 
         // BEGIN UNINSTALLATION
-        if ($type == 'handover-protocol-uninstallation') :
+        if ($type == ContractPrintType::HandoverUninstallation) :
             // BORROWED EQUIPMENTS
             $this->SetFont('DejaVuSerif', 'B', 9);
             $this->Write(
@@ -996,7 +995,7 @@ class ContractPDF extends AppPDF
                 4,
                 strtr(
                     Settings::getString('core.documents.contracts.handover.texts.uninstallation_final_statements_text'),
-                    ['{contract_number}' => $contract_version->get('number_of_the_contract_to_be_terminated')],
+                    ['{contract_number}' => $data->numberOfContractToBeTerminated],
                 ) . PHP_EOL,
                 align: 'J',
             );
@@ -1013,18 +1012,17 @@ class ContractPDF extends AppPDF
     /**
      * Generate PDF document - contract
      *
-     * @param \App\Model\Entity\Contract $contract Contract with all related data
-     * @param \App\Model\Entity\ContractVersion $contract_version Contract version for dates
-     * @param string $type Type of requested document
-     * @param bool $signed Create signed document?
+     * @param \App\Service\ContractPrint\ContractPrintData $data
      * @return void
      */
-    public function generateContract(
-        Contract $contract,
-        ContractVersion $contract_version,
-        string $type = 'contract-new',
-        bool $signed = false,
-    ): void {
+    public function generateContract(ContractPrintData $data): void {
+        // Load data from print data object
+        $type = $data->type;
+        $contract = $data->contract;
+        $contract_version = $data->contractVersion;
+        $contract_version_to_be_replaced = $data->contractVersionToBeReplaced;
+        $signed = $data->signed;
+
         // Disable default header and footer
         $this->setPrintHeader(false);
         $this->setPrintFooter(false);
@@ -1039,8 +1037,8 @@ class ContractPDF extends AppPDF
 
         // Document title and subtitle
         switch ($type) {
-            case 'contract-new':
-            case 'contract-new-x':
+            case ContractPrintType::ContractNew:
+            case ContractPrintType::ContractNewX:
                 $this->SetFont('DejaVuSerif', 'B', 18);
                 $this->Cell(187, 6, Settings::getString('core.documents.contracts.contract.title_new'), align: 'C');
                 $this->Ln();
@@ -1050,7 +1048,7 @@ class ContractPDF extends AppPDF
                 $this->Ln(3);
                 break;
 
-            case 'contract-amendment':
+            case ContractPrintType::ContractAmendment:
                 $this->SetFont('DejaVuSerif', 'B', 18);
                 $this->Cell(
                     187,
@@ -1070,7 +1068,7 @@ class ContractPDF extends AppPDF
                 $this->Ln(3);
                 break;
 
-            case 'contract-termination':
+            case ContractPrintType::ContractTermination:
                 $this->SetFont('DejaVuSerif', 'B', 18);
                 $this->Cell(
                     187,
@@ -1096,8 +1094,8 @@ class ContractPDF extends AppPDF
 
         // Contract number + date
         switch ($type) {
-            case 'contract-new':
-            case 'contract-new-x':
+            case ContractPrintType::ContractNew:
+            case ContractPrintType::ContractNewX:
                 $this->SetFont('DejaVuSerif', '', 8);
                 $this->Cell(90, 4, Settings::getString('core.documents.common.labels.contract_number'), align: 'C');
                 $this->Cell(90, 4, Settings::getString('core.documents.common.labels.start_date'), align: 'C');
@@ -1114,7 +1112,7 @@ class ContractPDF extends AppPDF
                 $this->Ln();
                 break;
 
-            case 'contract-amendment':
+            case ContractPrintType::ContractAmendment:
                 $this->SetFont('DejaVuSerif', '', 8);
                 $this->Cell(45, 4, Settings::getString('core.documents.common.labels.contract_number'), align: 'C');
                 $this->Cell(45, 4, Settings::getString('core.documents.common.labels.conclusion_date'), align: 'C');
@@ -1125,7 +1123,7 @@ class ContractPDF extends AppPDF
                 $this->Cell(45, 4, $contract->number, align: 'C');
                 $this->Cell(45, 4, (string)$contract_version->conclusion_date, align: 'C');
                 $this->Cell(45, 4, (string)($contract_version->number_of_amendments + 1), align: 'C');
-                $this->Cell(45, 4, (string)$contract_version->valid_from, align: 'C');
+                $this->Cell(45, 4, (string)$data->effectiveDateOfAmendment, align: 'C');
                 $this->Ln();
 
                 $this->drawSeparator(lnAfter: 3.0);
@@ -1135,14 +1133,14 @@ class ContractPDF extends AppPDF
                 $this->Ln();
                 break;
 
-            case 'contract-termination':
+            case ContractPrintType::ContractTermination:
                 $this->SetFont('DejaVuSerif', '', 8);
                 $this->Cell(60, 4, Settings::getString('core.documents.common.labels.contract_number'), align: 'C');
                 $this->Cell(60, 4, Settings::getString('core.documents.common.labels.conclusion_date'), align: 'C');
                 $this->Cell(60, 4, Settings::getString('core.documents.common.labels.end_date'), align: 'C');
                 $this->Ln();
                 $this->SetFont('DejaVuSerif', 'B', 8);
-                $this->Cell(60, 4, $contract_version->get('number_of_the_contract_to_be_terminated'), align: 'C');
+                $this->Cell(60, 4, $data->numberOfContractToBeTerminated, align: 'C');
                 $this->Cell(60, 4, (string)$contract_version->conclusion_date, align: 'C');
                 $this->Cell(60, 4, (string)$contract_version->valid_until, align: 'C');
                 $this->Ln();
@@ -1278,12 +1276,12 @@ class ContractPDF extends AppPDF
         // Separator line
         $this->drawSeparator(AppPDF::SEPARATOR_OFFSET_X, lnAfter: 3.0);
 
-        if ($type === 'contract-termination') {
+        if ($type === ContractPrintType::ContractTermination) {
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Write(
                 4,
                 strtr(Settings::getString('core.documents.contracts.contract.texts.termination_intro'), [
-                    '{contract_number}' => $contract_version->get('number_of_the_contract_to_be_terminated'),
+                    '{contract_number}' => $data->numberOfContractToBeTerminated,
                     '{conclusion_date}' => $contract_version->conclusion_date->__toString(),
                     '{valid_until}' => $contract_version->valid_until->__toString(),
                 ]),
@@ -1295,7 +1293,7 @@ class ContractPDF extends AppPDF
             $this->Ln();
         }
 
-        if ($type === 'contract-new' || $type === 'contract-new-x') {
+        if ($type === ContractPrintType::ContractNew || $type === ContractPrintType::ContractNewX) {
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Write(
                 4,
@@ -1313,12 +1311,12 @@ class ContractPDF extends AppPDF
             $this->Ln();
             $this->Ln();
 
-            if ($type === 'contract-new-x') {
+            if ($type === ContractPrintType::ContractNewX) {
                 $this->Write(
                     4,
                     strtr(Settings::getString('core.documents.contracts.contract.texts.new_x_intro'), [
-                        '{contract_number}' => $contract_version->get('number_of_the_contract_to_be_terminated'),
-                        '{old_conclusion_date}' => $contract_version->get('old')->conclusion_date,
+                        '{contract_number}' => $data->numberOfContractToBeTerminated,
+                        '{old_conclusion_date}' => $contract_version_to_be_replaced->conclusion_date,
                         '{termination_date}' => $contract_version->valid_from->subDays(1)->__toString(),
                     ]),
                 );
@@ -1327,20 +1325,20 @@ class ContractPDF extends AppPDF
             }
         }
 
-        if ($type === 'contract-amendment') {
+        if ($type === ContractPrintType::ContractAmendment) {
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Write(
                 4,
                 strtr(Settings::getString('core.documents.contracts.contract.texts.amendment_intro'), [
-                    '{valid_from}' => $contract_version->valid_from->__toString(),
+                    '{valid_from}' => $data->effectiveDateOfAmendment->__toString(),
                 ]),
             );
             $this->Ln();
             $this->Ln();
         }
 
-        if ($type === 'contract-new' || $type === 'contract-new-x' || $type === 'contract-amendment') {
-            if ($type === 'contract-amendment') {
+        if ($type === ContractPrintType::ContractNew || $type === ContractPrintType::ContractNewX || $type === ContractPrintType::ContractAmendment) {
+            if ($type === ContractPrintType::ContractAmendment) {
                 $format = 'I';
             } else {
                 $format = '';
@@ -1350,7 +1348,7 @@ class ContractPDF extends AppPDF
             $totalCost = Decimal::create(0, 2);
 
             // billing of pricelist items
-            if (count($contract->get('standard_billings')) > 0) {
+            if (count($data->getActiveStandardBillings()) > 0) {
                 $this->SetFont('DejaVuSerif', 'B' . $format, 9);
                 $this->Cell(
                     187,
@@ -1362,13 +1360,13 @@ class ContractPDF extends AppPDF
                 $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
 
                 $totalCost = $totalCost->add(
-                    $this->billingTable($contract->get('standard_billings'), $contract_version, $format),
+                    $this->billingTable($data->getActiveStandardBillings(), $contract_version, $format),
                 );
                 $this->Ln();
             }
 
             // billing of non-pricelist items
-            if (count($contract->get('individual_billings')) > 0) {
+            if (count($data->getActiveIndividualBillings()) > 0) {
                 $this->SetFont('DejaVuSerif', 'B' . $format, 9);
                 $this->Cell(
                     187,
@@ -1380,7 +1378,7 @@ class ContractPDF extends AppPDF
                 $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
 
                 $totalCost = $totalCost->add(
-                    $this->billingTable($contract->get('individual_billings'), $contract_version, $format),
+                    $this->billingTable($data->getActiveIndividualBillings(), $contract_version, $format),
                 );
 
                 $this->SetFont('DejaVuSerif', $format, 7);
@@ -1395,7 +1393,7 @@ class ContractPDF extends AppPDF
             }
 
             // future billing of pricelist items
-            if (count($contract->get('future_standard_billings')) > 0) {
+            if (count($data->getFutureStandardBillings()) > 0) {
                 $this->SetFont('DejaVuSerif', 'B' . $format, 9);
                 $this->Cell(
                     187,
@@ -1406,12 +1404,12 @@ class ContractPDF extends AppPDF
 
                 $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
 
-                $this->billingTable($contract->get('future_standard_billings'), $contract_version, $format);
+                $this->billingTable($data->getFutureStandardBillings(), $contract_version, $format);
                 $this->Ln();
             }
 
             // future billing of non-pricelist items
-            if (count($contract->get('future_individual_billings')) > 0) {
+            if (count($data->getFutureIndividualBillings()) > 0) {
                 $this->SetFont('DejaVuSerif', 'B' . $format, 9);
                 $this->Cell(
                     187,
@@ -1422,7 +1420,7 @@ class ContractPDF extends AppPDF
 
                 $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
 
-                $this->billingTable($contract->get('future_individual_billings'), $contract_version, $format);
+                $this->billingTable($data->getFutureIndividualBillings(), $contract_version, $format);
 
                 $this->SetFont('DejaVuSerif', $format, 7);
                 $this->Cell(4, 4);
@@ -1511,7 +1509,7 @@ class ContractPDF extends AppPDF
             unset($format);
         }
 
-        if ($type === 'contract-amendment') {
+        if ($type === ContractPrintType::ContractAmendment) {
             $this->SetFont('DejaVuSerif', '', 8);
             $this->Ln();
             $this->Write(4, Settings::getString('core.documents.contracts.contract.texts.amendment_final_clause'));
@@ -1521,7 +1519,7 @@ class ContractPDF extends AppPDF
             $this->Ln();
         }
 
-        if ($type === 'contract-new' || $type === 'contract-new-x') {
+        if ($type === ContractPrintType::ContractNew || $type === ContractPrintType::ContractNewX) {
             // CROSS
             $this->drawCross();
 
@@ -1539,7 +1537,7 @@ class ContractPDF extends AppPDF
             if (count($contract->borrowed_equipments) > 0) {
                 // intro text
                 $this->SetFont('DejaVuSerif', '', 8);
-                if ($type === 'contract-new') {
+                if ($type === ContractPrintType::ContractNew) {
                     $this->Write(
                         4,
                         Settings::getString('core.documents.contracts.contract.texts.borrowed_equipment_intro_new'),
@@ -1550,7 +1548,7 @@ class ContractPDF extends AppPDF
                         strtr(
                             Settings::getString('core.documents.contracts.contract.texts.borrowed_equipment_intro_old'),
                             [
-                                '{old_conclusion_date}' => $contract_version->get('old')->conclusion_date,
+                                '{old_conclusion_date}' => $contract_version_to_be_replaced->conclusion_date,
                             ],
                         ),
                     );
@@ -1591,7 +1589,7 @@ class ContractPDF extends AppPDF
                 }
                 $this->Ln();
 
-                if ($type === 'contract-new-x') {
+                if ($type === ContractPrintType::ContractNewX) {
                     $this->MultiCell(
                         180,
                         4,

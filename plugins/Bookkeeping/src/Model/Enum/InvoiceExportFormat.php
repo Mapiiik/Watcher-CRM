@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Model\Enum;
 
-use Bookkeeping\Model\Enum\Trait\EnumOptionsTrait;
+use App\Model\Enum\Trait\EnumOptionsTrait;
 use Cake\Database\Type\EnumLabelInterface;
 use Override;
 
