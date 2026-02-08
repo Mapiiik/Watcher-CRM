@@ -37,6 +37,11 @@
                 ['controller' => 'AccessCredentials', 'action' => 'index'],
                 ['class' => 'side-nav-item'],
             ) ?>
+            <?= $this->AuthLink->link(
+                __('List Service Overrides'),
+                ['controller' => 'ServiceOverrides', 'action' => 'index'],
+                ['class' => 'side-nav-item'],
+            ) ?>
         </div>
         <br>
         <div class="side-labels">

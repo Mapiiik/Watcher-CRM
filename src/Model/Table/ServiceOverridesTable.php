@@ -90,31 +90,6 @@ class ServiceOverridesTable extends AppTable
             ->requirePresence('valid_until', 'create')
             ->notEmptyDate('valid_until');
 
-        // Ensure that valid_until is greater than or equal to valid_from
-        $validator
-            ->add('valid_until', 'afterValidFrom', [
-                'rule' => function ($value, array $context) {
-                    return $value >= ($context['data']['valid_from'] ?? null);
-                },
-                'message' => __('This field must be greater than or equal to "Valid From" field.'),
-            ]);
-
-        // Ensure that the interval between valid_from and valid_until does not exceed the maximum allowed interval
-        $maxInterval = 5; // TODO Make the maximum allowed interval configurable
-        $validator
-            ->add('valid_until', 'maxInterval', [
-                'rule' => function ($value, array $context) use ($maxInterval) {
-                    $from = $context['data']['valid_from'] ?? null;
-
-                    return $from->diffInDays($value) + 1 <= $maxInterval;
-                },
-                'message' => __n(
-                    'Maximum allowed interval is {0} day.',
-                    'Maximum allowed interval is {0} days.',
-                    $maxInterval,
-                ),
-            ]);
-
         $validator
             ->scalar('reason')
             ->allowEmptyString('reason');
@@ -150,6 +125,37 @@ class ServiceOverridesTable extends AppTable
     {
         $rules->add($rules->existsIn(['contract_id'], 'Contracts'), ['errorField' => 'contract_id']);
         $rules->add($rules->existsIn(['service_id'], 'Services'), ['errorField' => 'service_id']);
+
+        // Ensure that valid_until is greater than or equal to valid_from
+        $rules->add(
+            function ($entity, $_options) {
+                return $entity->valid_until >= $entity->valid_from;
+            },
+            'afterValidFrom',
+            [
+                'errorField' => 'valid_until',
+                'message' => __('This field must be greater than or equal to "Valid From" field.'),
+            ],
+        );
+
+        // Ensure that the interval between valid_from and valid_until does not exceed the maximum allowed interval
+        $maxInterval = 5; // TODO Make the maximum allowed interval configurable
+
+        $rules->add(
+            function ($entity, $_options) use ($maxInterval) {
+                return $entity->valid_from->diffInDays($entity->valid_until) + 1 <= $maxInterval;
+            },
+            'maxInterval',
+            [
+                'errorField' => 'valid_until',
+                'message' => __n(
+                    'Maximum allowed interval is {0} day.',
+                    'Maximum allowed interval is {0} days.',
+                    $maxInterval,
+                    $maxInterval,
+                ),
+            ],
+        );
 
         return $rules;
     }
