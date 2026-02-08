@@ -1,0 +1,156 @@
+<?php
+declare(strict_types=1);
+
+namespace App\Model\Table;
+
+use Cake\ORM\RulesChecker;
+use Cake\Validation\Validator;
+use Override;
+
+/**
+ * ServiceOverrides Model
+ *
+ * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
+ * @property \App\Model\Table\ServicesTable&\Cake\ORM\Association\BelongsTo $Services
+ * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Revokers
+ * @method \App\Model\Entity\ServiceOverride newEmptyEntity()
+ * @method \App\Model\Entity\ServiceOverride newEntity(array $data, array $options = [])
+ * @method array<\App\Model\Entity\ServiceOverride> newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\ServiceOverride get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
+ * @method \App\Model\Entity\ServiceOverride findOrCreate($search, ?callable $callback = null, array $options = [])
+ * @method \App\Model\Entity\ServiceOverride patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method array<\App\Model\Entity\ServiceOverride> patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \App\Model\Entity\ServiceOverride|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \App\Model\Entity\ServiceOverride saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method iterable<\App\Model\Entity\ServiceOverride>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\ServiceOverride>|false saveMany(iterable $entities, array $options = [])
+ * @method iterable<\App\Model\Entity\ServiceOverride>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\ServiceOverride> saveManyOrFail(iterable $entities, array $options = [])
+ * @method iterable<\App\Model\Entity\ServiceOverride>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\ServiceOverride>|false deleteMany(iterable $entities, array $options = [])
+ * @method iterable<\App\Model\Entity\ServiceOverride>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\ServiceOverride> deleteManyOrFail(iterable $entities, array $options = [])
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ */
+class ServiceOverridesTable extends AppTable
+{
+    /**
+     * Initialize method
+     *
+     * @param array<string, mixed> $config The configuration for the Table.
+     * @return void
+     */
+    #[Override]
+    public function initialize(array $config): void
+    {
+        parent::initialize($config);
+
+        $this->setTable('service_overrides');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
+
+        $this->addBehavior('Timestamp');
+        $this->addBehavior('Footprint');
+        $this->addBehavior('StringModifications');
+
+        $this->belongsTo('Contracts', [
+            'foreignKey' => 'contract_id',
+            'joinType' => 'INNER',
+        ]);
+        $this->belongsTo('Services', [
+            'foreignKey' => 'service_id',
+            'joinType' => 'INNER',
+        ]);
+        $this->belongsTo('Revokers', [
+            'className' => 'AppUsers',
+            'foreignKey' => 'revoked_by',
+        ]);
+    }
+
+    /**
+     * Default validation rules.
+     *
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
+     */
+    #[Override]
+    public function validationDefault(Validator $validator): Validator
+    {
+        $validator
+            ->uuid('contract_id')
+            ->notEmptyString('contract_id');
+
+        $validator
+            ->uuid('service_id')
+            ->notEmptyString('service_id');
+
+        $validator
+            ->date('valid_from')
+            ->requirePresence('valid_from', 'create')
+            ->notEmptyDate('valid_from');
+
+        $validator
+            ->date('valid_until')
+            ->requirePresence('valid_until', 'create')
+            ->notEmptyDate('valid_until');
+
+        // Ensure that valid_until is greater than or equal to valid_from
+        $validator
+            ->add('valid_until', 'afterValidFrom', [
+                'rule' => function ($value, array $context) {
+                    return $value >= ($context['data']['valid_from'] ?? null);
+                },
+                'message' => __('This field must be greater than or equal to "Valid From" field.'),
+            ]);
+
+        // Ensure that the interval between valid_from and valid_until does not exceed the maximum allowed interval
+        $maxInterval = 5; // TODO Make the maximum allowed interval configurable
+        $validator
+            ->add('valid_until', 'maxInterval', [
+                'rule' => function ($value, array $context) use ($maxInterval) {
+                    $from = $context['data']['valid_from'] ?? null;
+
+                    return $from->diffInDays($value) + 1 <= $maxInterval;
+                },
+                'message' => __n(
+                    'Maximum allowed interval is {0} day.',
+                    'Maximum allowed interval is {0} days.',
+                    $maxInterval,
+                ),
+            ]);
+
+        $validator
+            ->scalar('reason')
+            ->allowEmptyString('reason');
+
+        $validator
+            ->uuid('created_by')
+            ->allowEmptyString('created_by');
+
+        $validator
+            ->uuid('modified_by')
+            ->allowEmptyString('modified_by');
+
+        $validator
+            ->dateTime('revoked')
+            ->allowEmptyDateTime('revoked');
+
+        $validator
+            ->uuid('revoked_by')
+            ->allowEmptyString('revoked_by');
+
+        return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    #[Override]
+    public function buildRules(RulesChecker $rules): RulesChecker
+    {
+        $rules->add($rules->existsIn(['contract_id'], 'Contracts'), ['errorField' => 'contract_id']);
+        $rules->add($rules->existsIn(['service_id'], 'Services'), ['errorField' => 'service_id']);
+
+        return $rules;
+    }
+}
