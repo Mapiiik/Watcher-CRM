@@ -21,12 +21,18 @@ class ServiceOverridesControllerTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.ServiceOverrides',
-        'app.Creators',
-        'app.Modifiers',
-        'app.Contracts',
+        'app.AppUsers',
+        'app.AccountingProfiles',
+        'app.Customers',
+        'app.Countries',
+        'app.Addresses',
+        'app.Commissions',
+        'app.ContractStates',
+        'app.ServiceTypes',
+        'app.Queues',
         'app.Services',
-        'app.Revokers',
+        'app.Contracts',
+        'app.ServiceOverrides',
     ];
 
     /**

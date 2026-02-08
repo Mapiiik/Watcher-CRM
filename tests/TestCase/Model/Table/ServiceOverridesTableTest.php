@@ -33,6 +33,7 @@ class ServiceOverridesTableTest extends TestCase
         'app.Commissions',
         'app.ContractStates',
         'app.ServiceTypes',
+        'app.Queues',
         'app.Services',
         'app.Contracts',
         'app.ServiceOverrides',
