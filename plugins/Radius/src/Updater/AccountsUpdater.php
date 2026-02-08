@@ -4,16 +4,18 @@ declare(strict_types=1);
 namespace Radius\Updater;
 
 use App\Messages\Messages;
+use App\Model\Entity\Service;
 use App\Model\Enum\IpAddressTypeOfUse;
 use App\Model\Enum\IpNetworkTypeOfUse;
+use App\Model\Table\BillingsTable;
 use App\Model\Table\ContractsTable;
+use App\Model\Table\ServiceOverridesTable;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
 use Cake\Log\Log;
 use Cake\Mailer\Mailer;
 use Cake\ORM\Entity;
 use Cake\ORM\Locator\LocatorAwareTrait;
-use Cake\ORM\Query\SelectQuery;
 use Exception;
 use Radius\Model\Entity\Account;
 use Radius\Model\Table\AccountsTable;
@@ -447,6 +449,69 @@ class AccountsUpdater
     }
 
     /**
+     * Loads the active service (with queue) for the account's contract, considering possible overrides.
+     *
+     * @param \Radius\Model\Entity\Account $account RADIUS account entity
+     * @return \App\Model\Entity\Service|null The active service or null if not found.
+     */
+    private function loadActiveService(Account $account): ?Service
+    {
+        // load current date
+        $now = Date::now();
+
+        // load active override (with queue) for contract if exists
+        $override = $this->fetchTable(ServiceOverridesTable::class)
+            ->find()
+            ->innerJoinWith('Services.Queues')
+            ->where([
+                'ServiceOverrides.contract_id' => $account->contract_id,
+                'Queues.name IS NOT NULL',
+                'ServiceOverrides.valid_from <=' => $now,
+                'ServiceOverrides.valid_until >=' => $now,
+                'ServiceOverrides.revoked IS' => null,
+            ])
+            ->contain([
+                'Services' => 'Queues',
+            ])
+            ->orderBy([
+                'ServiceOverrides.created' => 'DESC',
+            ])
+            ->first();
+
+        if ($override) {
+            return $override->service;
+        }
+
+        // load active billing (with queue) for contract if exists
+        $billing = $this->fetchTable(BillingsTable::class)
+            ->find()
+            ->innerJoinWith('Services.Queues')
+            ->where([
+                'Billings.contract_id' => $account->contract_id,
+                'Queues.name IS NOT NULL',
+                'Billings.billing_from <=' => $now->addMonths(1),
+                'OR' => [
+                    'Billings.billing_until IS NULL',
+                    'Billings.billing_until >=' => $now,
+                ],
+            ])
+            ->contain([
+                'Services' => 'Queues',
+            ])
+            ->orderBy([
+                'Billings.billing_from' => 'ASC',
+            ])
+            ->first();
+
+        if ($billing) {
+            return $billing->service;
+        }
+
+        // nothing usable found
+        return null;
+    }
+
+    /**
      * generate data for radusergroup table for customer
      *
      * @param \Radius\Model\Entity\Account $account RADIUS account entity
@@ -454,35 +519,22 @@ class AccountsUpdater
      */
     public function autoRadusergroupData(Account $account): array
     {
-        $contract = $this->fetchTable(ContractsTable::class)->get($account->contract_id, contain: [
-            'Billings' => [
-                'queryBuilder' => function (SelectQuery $q) {
-                    return $q->where([
-                        'Queues.name IS NOT NULL',
-                        'Billings.billing_from <=' => Date::now()->addMonths(1),
-                    ])
-                    ->andWhere([
-                        'OR' => [
-                            'Billings.billing_until IS NULL',
-                            'Billings.billing_until >=' => Date::now(),
-                        ],
-                    ])
-                    ->orderBy([
-                        'Billings.billing_from' => 'ASC',
-                    ]);
-                },
-                'Services' => 'Queues',
-            ],
-        ]);
+        // load active service for account's contract
+        $service = $this->loadActiveService($account);
 
         $radusergroup = [];
 
-        if (isset($contract->billings[0])) {
+        if (
+            isset($service)
+            && isset($service->queue)
+            && isset($service->queue->name)
+            && !empty($service->queue->name)
+        ) {
             // return radusergroup record with current (or the near future) queue name as groupname
             $radusergroup[] = $this->Radusergroup
                 ->findOrNewEntity([
                     'username' => $account->username,
-                    'groupname' => $contract->billings[0]->service->queue->name,
+                    'groupname' => $service->queue->name,
                     'priority' => 0,
                 ]);
         }
