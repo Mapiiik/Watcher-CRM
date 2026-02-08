@@ -97,6 +97,11 @@
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
+                    __('List Service Overrides'),
+                    ['controller' => 'ServiceOverrides', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->link(
                     __('List Borrowed Equipments'),
                     ['controller' => 'BorrowedEquipments', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item'],
