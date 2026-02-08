@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use Cake\I18n\Date;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 use Override;
+use Settings\Utility\Settings;
 
 /**
  * ServiceOverrides Model
@@ -138,9 +140,28 @@ class ServiceOverridesTable extends AppTable
             ],
         );
 
-        // Ensure that the interval between valid_from and valid_until does not exceed the maximum allowed interval
-        $maxInterval = 5; // TODO Make the maximum allowed interval configurable
+        // Ensure that the start of the override does not exceed the maximum allowed offset from the current date
+        $maxStartOffset = (int)Settings::get('core.contracts.service_overrides.max_start_offset_days', 5);
+        $rules->add(
+            function ($entity, $_options) use ($maxStartOffset) {
+                $now = Date::now();
 
+                return $entity->valid_from >= $now && $entity->valid_from <= $now->addDays($maxStartOffset);
+            },
+            'maxStartOffset',
+            [
+                'errorField' => 'valid_from',
+                'message' => __n(
+                    'The start date must be today or within the next {0} day.',
+                    'The start date must be today or within the next {0} days.',
+                    $maxStartOffset,
+                    $maxStartOffset,
+                ),
+            ],
+        );
+
+        // Ensure that the interval between valid_from and valid_until does not exceed the maximum allowed interval
+        $maxInterval = (int)Settings::get('core.contracts.service_overrides.max_duration_days', 5);
         $rules->add(
             function ($entity, $_options) use ($maxInterval) {
                 return $entity->valid_from->diffInDays($entity->valid_until) + 1 <= $maxInterval;
@@ -149,8 +170,8 @@ class ServiceOverridesTable extends AppTable
             [
                 'errorField' => 'valid_until',
                 'message' => __n(
-                    'Maximum allowed interval is {0} day.',
-                    'Maximum allowed interval is {0} days.',
+                    'The override duration must not exceed {0} day.',
+                    'The override duration must not exceed {0} days.',
                     $maxInterval,
                     $maxInterval,
                 ),

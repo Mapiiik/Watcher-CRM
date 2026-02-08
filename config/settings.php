@@ -99,6 +99,10 @@ return [
                 'žebřík 8m',
                 'žebřík 11m',
             ],
+            'service_overrides' => [
+                'max_duration_days' => 5,
+                'max_start_offset_days' => 5,
+            ],
         ],
 
         'documents' => [
