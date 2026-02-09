@@ -178,6 +178,33 @@ class ServiceOverridesTable extends AppTable
             ],
         );
 
+        // Ensure that there is no overlapping active override for the same contract
+        $rules->add(
+            function ($entity, $_options) {
+                $query = $this->find()
+                    ->where([
+                        'contract_id' => $entity->contract_id,
+                        'revoked IS' => null,
+                        'valid_from <=' => $entity->valid_until,
+                        'valid_until >=' => $entity->valid_from,
+                    ]);
+
+                // Exclude current entity when editing
+                if (!$entity->isNew()) {
+                    $query->where(['id !=' => $entity->id]);
+                }
+
+                return $query->count() === 0;
+            },
+            'noOverlappingOverride',
+            [
+                'errorField' => 'valid_from',
+                'message' => __(
+                    'An active service override already exists for this contract in the selected date range.',
+                ),
+            ],
+        );
+
         return $rules;
     }
 }
