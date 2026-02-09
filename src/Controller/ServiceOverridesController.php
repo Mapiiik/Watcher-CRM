@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\I18n\DateTime;
+
 /**
  * ServiceOverrides Controller
  *
@@ -114,7 +116,7 @@ class ServiceOverridesController extends AppController
                 if ($this->ServiceOverrides->save($serviceOverride)) {
                     $this->Flash->success(__('The service override has been saved.'));
 
-                    return $this->redirect(['action' => 'index']);
+                    return $this->afterAddRedirect(['action' => 'view', $serviceOverride->id]);
                 }
                 $this->Flash->error(__('The service override could not be saved. Please, try again.'));
             }
@@ -168,7 +170,7 @@ class ServiceOverridesController extends AppController
                 if ($this->ServiceOverrides->save($serviceOverride)) {
                     $this->Flash->success(__('The service override has been saved.'));
 
-                    return $this->redirect(['action' => 'index']);
+                    return $this->afterEditRedirect(['action' => 'view', $serviceOverride->id]);
                 }
                 $this->Flash->error(__('The service override could not be saved. Please, try again.'));
             }
@@ -220,6 +222,38 @@ class ServiceOverridesController extends AppController
             $this->Flash->error(__('The service override could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->afterDeleteRedirect(['action' => 'index']);
+    }
+
+    /**
+     * Revoke a service override.
+     *
+     * Marks the override as revoked and stores revocation metadata.
+     *
+     * @param string|null $id Service Override id.
+     * @return \Cake\Http\Response|null
+     */
+    public function revoke(?string $id = null)
+    {
+        $this->request->allowMethod(['post']);
+
+        $serviceOverride = $this->ServiceOverrides->get($id);
+
+        if ($serviceOverride->revoked !== null) {
+            $this->Flash->warning(__('This service override is already revoked.'));
+
+            return $this->afterDeleteRedirect(['action' => 'index']);
+        }
+
+        $serviceOverride->revoked = DateTime::now();
+        $serviceOverride->revoked_by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
+
+        if ($this->ServiceOverrides->save($serviceOverride)) {
+            $this->Flash->success(__('The service override has been revoked.'));
+        } else {
+            $this->Flash->error(__('The service override could not be revoked. Please try again.'));
+        }
+
+        return $this->afterDeleteRedirect(['action' => 'index']);
     }
 }

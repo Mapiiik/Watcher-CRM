@@ -10,7 +10,19 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Form->postLink(
+            <?= $this->AuthLink
+                ->postLink(
+                    __('Revoke'),
+                    ['action' => 'revoke', $serviceOverride->id],
+                    [
+                        'confirm' => __(
+                            'Are you sure you want to revoke service override {0}?',
+                            $serviceOverride->id,
+                        ),
+                        'class' => 'side-nav-item',
+                    ],
+                ) ?>
+            <?= $this->AuthLink->postLink(
                 __('Delete'),
                 ['action' => 'delete', $serviceOverride->id],
                 [
@@ -18,7 +30,11 @@
                     'class' => 'side-nav-item',
                 ],
             ) ?>
-            <?= $this->Html->link(__('List Service Overrides'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __('List Service Overrides'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item'],
+            ) ?>
         </div>
     </aside>
     <div class="column column-90">

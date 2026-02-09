@@ -13,6 +13,18 @@
                 ['action' => 'edit', $serviceOverride->id],
                 ['class' => 'side-nav-item'],
             ) ?>
+            <?= $this->AuthLink
+                ->postLink(
+                    __('Revoke Service Override'),
+                    ['action' => 'revoke', $serviceOverride->id],
+                    [
+                        'confirm' => __(
+                            'Are you sure you want to revoke service override {0}?',
+                            $serviceOverride->id,
+                        ),
+                        'class' => 'side-nav-item',
+                    ],
+                ) ?>
             <?= $this->AuthLink->postLink(
                 __('Delete Service Override'),
                 ['action' => 'delete', $serviceOverride->id],
@@ -35,12 +47,25 @@
     </aside>
     <div class="column column-90">
         <div class="serviceOverrides view content">
+            <?= $this->AuthLink->postLink(
+                __('Revoke Service Override'),
+                ['action' => 'revoke', $serviceOverride->id],
+                [
+                    'confirm' => __(
+                        'Are you sure you want to revoke service override {0}?',
+                        $serviceOverride->id,
+                    ),
+                    'class' => 'button float-right',
+                ],
+            ) ?>
             <?= __('Contract No.') ?>
             <h3><?= h($serviceOverride->contract->number) ?></h3>
             <?= __('Service') ?>
             <h3><?= h($serviceOverride->service->name) ?></h3>
             <?= __('Validity') ?>
-            <h3><?= h($serviceOverride->valid_from) ?> - <?= h($serviceOverride->valid_until) ?></h3>
+            <h3><?= h($serviceOverride->valid_from) ?> - <?= h($serviceOverride->valid_until) ?>
+            <?= $serviceOverride->revoked ?
+                '(' . __('Revoked on {0}', h($serviceOverride->revoked)) . ')' : '' ?></h3>
             <div class="row">
                 <div class="column">
                     <table>
