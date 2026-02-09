@@ -358,7 +358,10 @@ class ContractsTable extends AppTable
         EntityInterface $entity,
         ArrayObject $options,
     ): void {
-        if ($entity instanceof Contract) {
+        if (
+            $entity instanceof Contract
+            && empty($options['skipContractStateValidation'])
+        ) {
             $errors = (new ContractStateValidator())->validate($entity);
 
             if ($errors) {

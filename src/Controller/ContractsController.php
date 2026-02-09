@@ -512,7 +512,11 @@ class ContractsController extends AppController
             // assign a number for the contract
             $contract->number = $result->first()->number;
 
-            if ($this->Contracts->save($contract)) {
+            if (
+                $this->Contracts->save($contract, [
+                    'skipContractStateValidation' => true,
+                ])
+            ) {
                 if ($flash) {
                     $this->Flash->success(__('The contract number has been updated.'));
                 }
@@ -592,7 +596,11 @@ class ContractsController extends AppController
             // assign subscriber verification code for the contract
             $contract->subscriber_verification_code = $result->first()->subscriber_verification_code;
 
-            if ($this->Contracts->save($contract)) {
+            if (
+                $this->Contracts->save($contract, [
+                    'skipContractStateValidation' => true,
+                ])
+            ) {
                 if ($flash) {
                     $this->Flash->success(__('The subscriber verification code has been updated.'));
                 }
