@@ -26,8 +26,15 @@ class ServiceOverridesController extends AppController
             $conditions += ['ServiceOverrides.contract_id' => $this->contract_id];
         }
 
+        // finder options
+        $request = $this->getRequest();
+
+        $includeRevoked = (bool)$request->getQuery('include_revoked');
+        $includeFuture = (bool)$request->getQuery('include_future');
+        $includePast = (bool)$request->getQuery('include_past');
+
         // search
-        $search = $this->getRequest()->getQuery('search');
+        $search = $request->getQuery('search');
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
@@ -37,7 +44,13 @@ class ServiceOverridesController extends AppController
             ];
         }
 
-        $query = $this->ServiceOverrides->find()
+        $query = $this->ServiceOverrides
+            ->find(
+                'active',
+                includeRevoked: $includeRevoked,
+                includeFuture: $includeFuture,
+                includePast: $includePast,
+            )
             ->contain([
                 'Contracts',
                 'Services',

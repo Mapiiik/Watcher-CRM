@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use Cake\I18n\Date;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 use Override;
@@ -206,5 +207,37 @@ class ServiceOverridesTable extends AppTable
         );
 
         return $rules;
+    }
+
+    /**
+     * Find only active service overrides (for today)
+     *
+     * Options to include future, past or revoked records in addition to those active today.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ServiceOverride> $query Base query.
+     * @param bool $includeRevoked Include revoked records.
+     * @param bool $includeFuture Include future records.
+     * @param bool $includePast Include past records.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ServiceOverride>
+     */
+    public function findActive(
+        SelectQuery $query,
+        bool $includeRevoked = false,
+        bool $includeFuture = false,
+        bool $includePast = false,
+    ): SelectQuery {
+        $today = Date::today();
+
+        if (!$includeRevoked) {
+            $query->where(['revoked IS' => null]);
+        }
+        if (!$includeFuture) {
+            $query->where(['valid_from <=' => $today]);
+        }
+        if (!$includePast) {
+            $query->where(['valid_until >=' => $today]);
+        }
+
+        return $query;
     }
 }

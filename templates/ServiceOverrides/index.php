@@ -14,6 +14,29 @@
         ]) ?>
     </div>
 </div>
+<div class="row">
+    <div class="column">
+        <?= $this->Form->control('include_revoked', [
+            'label' => __('Include Revoked'),
+            'type' => 'checkbox',
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+    </div>
+    <div class="column">
+        <?= $this->Form->control('include_future', [
+            'label' => __('Include Future'),
+            'type' => 'checkbox',
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+    </div>
+    <div class="column">
+        <?= $this->Form->control('include_past', [
+            'label' => __('Include Past'),
+            'type' => 'checkbox',
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+    </div>
+</div>
 <?= $this->Form->end() ?>
 
 <div class="serviceOverrides index content">
