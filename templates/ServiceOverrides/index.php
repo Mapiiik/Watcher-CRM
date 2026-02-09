@@ -55,6 +55,7 @@
                     <th><?= $this->Paginator->sort('valid_from') ?></th>
                     <th><?= $this->Paginator->sort('valid_until') ?></th>
                     <th><?= $this->Paginator->sort('revoked') ?></th>
+                    <th><?= __('Active') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -83,6 +84,7 @@
                     <td><?= h($serviceOverride->valid_from) ?></td>
                     <td><?= h($serviceOverride->valid_until) ?></td>
                     <td><?= h($serviceOverride->revoked) ?></td>
+                    <td><?= $serviceOverride->isActive() ? __('Yes') : __('No'); ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(
                             __('View'),

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use Cake\I18n\Date;
 use Cake\ORM\Entity;
 
 /**
@@ -55,4 +56,33 @@ class ServiceOverride extends Entity
         'service' => true,
         'revoker' => true,
     ];
+
+    /**
+     * Check whether the service override is currently active.
+     *
+     * An override is considered active when:
+     * - it is not revoked,
+     * - the current date is within the valid_from / valid_until range.
+     *
+     * @param \Cake\I18n\Date|null $date Date to evaluate against, defaults to today.
+     * @return bool True if the override is active, false otherwise.
+     */
+    public function isActive(?Date $date = null): bool
+    {
+        $date ??= Date::now();
+
+        if ($this->revoked !== null) {
+            return false;
+        }
+
+        if ($this->valid_from > $date) {
+            return false;
+        }
+
+        if ($this->valid_until < $date) {
+            return false;
+        }
+
+        return true;
+    }
 }

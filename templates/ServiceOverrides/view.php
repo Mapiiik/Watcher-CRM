@@ -80,15 +80,8 @@
                             <td><?= h($serviceOverride->revoked) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Revoker') ?></th>
-                            <td><?= $serviceOverride->hasValue('revoker') ? $this->Html->link(
-                                $serviceOverride->revoker->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $serviceOverride->revoker->id,
-                                ],
-                            ) : '' ?></td>
+                            <th><?= __('Active') ?></th>
+                            <td><?= $serviceOverride->isActive() ? __('Yes') : __('No'); ?></td>
                         </tr>
                     </table>
                 </div>
@@ -127,6 +120,17 @@
                                     $serviceOverride->modifier->id,
                                 ],
                             ) : h($serviceOverride->modified_by) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Revoker') ?></th>
+                            <td><?= $serviceOverride->hasValue('revoker') ? $this->Html->link(
+                                $serviceOverride->revoker->username,
+                                [
+                                    'controller' => 'AppUsers',
+                                    'action' => 'view',
+                                    $serviceOverride->revoker->id,
+                                ],
+                            ) : '' ?></td>
                         </tr>
                     </table>
                 </div>
