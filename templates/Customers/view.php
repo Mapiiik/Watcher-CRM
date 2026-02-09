@@ -611,6 +611,16 @@
                     'billings' => $customer->billings,
                     'contract_column' => true,
                 ]) ?>
+                <?= $this->cell(
+                    'ServiceOverridesStatus',
+                    [
+                        collection($customer->contracts)->extract('id')->toList(),
+                    ],
+                    [
+                        'showContractNumber' => true,
+                        'onlyActiveOverrides' => false,
+                    ],
+                ) ?>
             </div>
             <div class="row">
                 <div class="column">

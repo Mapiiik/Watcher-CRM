@@ -362,6 +362,16 @@
                 <?= $this->element('Contracts/Billings', [
                     'billings' => $contract->billings,
                 ]) ?>
+                <?= $this->cell(
+                    'ServiceOverridesStatus',
+                    [
+                        [$contract->id],
+                    ],
+                    [
+                        'showContractNumber' => false,
+                        'onlyActiveOverrides' => false,
+                    ],
+                ) ?>
             </div>
             <?php if ($contract->__isset('service_type') && $contract->service_type->have_equipments) : ?>
             <div class="row">

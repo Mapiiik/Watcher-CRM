@@ -85,4 +85,29 @@ class ServiceOverride extends Entity
 
         return true;
     }
+
+    /**
+     * Check whether the service override is scheduled for the future.
+     *
+     * An override is considered future when:
+     * - it is not revoked,
+     * - its valid_from date is after the given date.
+     *
+     * @param \Cake\I18n\Date|null $date Date to evaluate against, defaults to today.
+     * @return bool True if the override is scheduled for the future, false otherwise.
+     */
+    public function isFuture(?Date $date = null): bool
+    {
+        $date ??= Date::now();
+
+        if ($this->revoked !== null) {
+            return false;
+        }
+
+        if ($this->valid_from <= $date) {
+            return false;
+        }
+
+        return true;
+    }
 }
