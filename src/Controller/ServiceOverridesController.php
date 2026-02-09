@@ -248,9 +248,10 @@ class ServiceOverridesController extends AppController
         $serviceOverride->revoked = DateTime::now();
         $serviceOverride->revoked_by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
 
-        if ($this->ServiceOverrides->save($serviceOverride)) {
+        if ($this->ServiceOverrides->save($serviceOverride, ['checkRules' => false])) {
             $this->Flash->success(__('The service override has been revoked.'));
         } else {
+            $this->flashValidationErrors($serviceOverride->getErrors());
             $this->Flash->error(__('The service override could not be revoked. Please try again.'));
         }
 
