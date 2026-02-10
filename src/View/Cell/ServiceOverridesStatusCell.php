@@ -27,6 +27,20 @@ class ServiceOverridesStatusCell extends Cell
     ];
 
     /**
+     * Show contract number in output
+     *
+     * @var bool
+     */
+    protected bool $showContractNumber = true;
+
+    /**
+     * Show only active overrides (skip future)
+     *
+     * @var bool
+     */
+    protected bool $onlyActiveOverrides = false;
+
+    /**
      * Initialization logic run at the end of object construction.
      *
      * @return void
@@ -45,14 +59,13 @@ class ServiceOverridesStatusCell extends Cell
      */
     public function display(array $contractIds): void
     {
-        $showContractNumber = $this->showContractNumber ?? true;
-        $onlyActiveOverrides = $this->onlyActiveOverrides ?? false;
+        $this->set('showContractNumber', $this->showContractNumber);
 
         if (empty($contractIds)) {
             $this->set([
-                'activeServiceOverrides' => [],
-                'futureServiceOverrides' => [],
-                'showContractNumber' => $showContractNumber,
+                'activeServiceOverrides' => collection([]),
+                'futureServiceOverrides' => collection([]),
+                'showContractNumber' => $this->showContractNumber,
             ]);
 
             return;
@@ -61,7 +74,7 @@ class ServiceOverridesStatusCell extends Cell
         $serviceOverrides = $this->fetchTable('ServiceOverrides')
             ->find(
                 'active',
-                includeFuture: !$onlyActiveOverrides,
+                includeFuture: !$this->onlyActiveOverrides,
                 includePast: false,
             )
             ->where([
@@ -75,9 +88,9 @@ class ServiceOverridesStatusCell extends Cell
                 'ServiceOverrides.valid_from' => 'ASC',
             ]);
 
-        if ($onlyActiveOverrides) {
+        if ($this->onlyActiveOverrides) {
             $activeServiceOverrides = $serviceOverrides;
-            $futureServiceOverrides = [];
+            $futureServiceOverrides = collection([]);
         } else {
             $collection = collection($serviceOverrides);
 
@@ -93,7 +106,6 @@ class ServiceOverridesStatusCell extends Cell
         $this->set(compact(
             'activeServiceOverrides',
             'futureServiceOverrides',
-            'showContractNumber',
         ));
     }
 }
