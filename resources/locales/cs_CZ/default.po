@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-02-09 22:00+0100\n"
-"PO-Revision-Date: 2026-02-09 22:28+0100\n"
+"POT-Creation-Date: 2026-02-11 13:32+0100\n"
+"PO-Revision-Date: 2026-02-11 13:35+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -794,33 +794,33 @@ msgid "The removed IP network could not be deleted. Please, try again."
 msgstr "Odebranou IP síť nelze odstranit. Zkuste to prosím znovu."
 
 #: src/Controller/ServiceOverridesController.php:117
-#: src/Controller/ServiceOverridesController.php:171
+#: src/Controller/ServiceOverridesController.php:196
 msgid "The service override has been saved."
 msgstr "Dočasná úprava služby byla uložena."
 
 #: src/Controller/ServiceOverridesController.php:121
-#: src/Controller/ServiceOverridesController.php:175
+#: src/Controller/ServiceOverridesController.php:200
 msgid "The service override could not be saved. Please, try again."
 msgstr "Dočasnou úpravu služby se nepodařilo uložit. Zkuste to prosím znovu."
 
-#: src/Controller/ServiceOverridesController.php:219
+#: src/Controller/ServiceOverridesController.php:244
 msgid "The service override has been deleted."
 msgstr "Dočasná úprava služby byla odstraněna."
 
-#: src/Controller/ServiceOverridesController.php:222
+#: src/Controller/ServiceOverridesController.php:247
 msgid "The service override could not be deleted. Please, try again."
 msgstr ""
 "Dočasnou úpravu služby se nepodařilo odstranit. Zkuste to prosím znovu."
 
-#: src/Controller/ServiceOverridesController.php:243
+#: src/Controller/ServiceOverridesController.php:268
 msgid "This service override is already revoked."
 msgstr "Tato dočasná úprava služby je již zrušena."
 
-#: src/Controller/ServiceOverridesController.php:252
+#: src/Controller/ServiceOverridesController.php:277
 msgid "The service override has been revoked."
 msgstr "Dočasná úprava služby byla zrušena."
 
-#: src/Controller/ServiceOverridesController.php:255
+#: src/Controller/ServiceOverridesController.php:280
 msgid "The service override could not be revoked. Please try again."
 msgstr "Dočasnou úpravu služby se nepodařilo zrušit. Zkuste to prosím znovu."
 
@@ -1394,25 +1394,29 @@ msgstr "Tato IP síť se již používá."
 msgid "The phone number is not valid."
 msgstr "Telefonní číslo není platné."
 
-#: src/Model/Table/ServiceOverridesTable.php:140
-msgid "This field must be greater than or equal to \"Valid From\" field."
-msgstr "Toto pole musí být větší nebo rovno poli „Platné od“."
+#: src/Model/Table/ServiceOverridesTable.php:173
+msgid "The end date must be today or in the future."
+msgstr "Datum ukončení musí být dnes nebo v budoucnosti."
 
-#: src/Model/Table/ServiceOverridesTable.php:203
+#: src/Model/Table/ServiceOverridesTable.php:192
+msgid "The end date must be the same as or later than the \"Valid From\" date."
+msgstr "Datum ukončení musí být stejné nebo pozdější než datum „Platnost od“."
+
+#: src/Model/Table/ServiceOverridesTable.php:249
 msgid ""
 "An active service override already exists for this contract in the selected "
 "date range."
 msgstr ""
 "Pro tuto smlouvu již existuje aktivní dočasná úprava služby v zadaném období."
 
-#: src/Model/Table/ServiceOverridesTable.php:155
+#: src/Model/Table/ServiceOverridesTable.php:149
 msgid "The start date must be today or within the next {0} day."
 msgid_plural "The start date must be today or within the next {0} days."
 msgstr[0] "Datum zahájení musí být dnes nebo v příštím {0} dni."
 msgstr[1] "Datum zahájení musí být dnes nebo v příštích {0} dnech."
 msgstr[2] "Datum zahájení musí být dnes nebo v příštích {0} dnech."
 
-#: src/Model/Table/ServiceOverridesTable.php:173
+#: src/Model/Table/ServiceOverridesTable.php:210
 msgid "The override duration must not exceed {0} day."
 msgid_plural "The override duration must not exceed {0} days."
 msgstr[0] "Doba trvání dočasné úpravy nesmí přesáhnout {0} den."
@@ -1671,7 +1675,7 @@ msgstr "Není nainstalováno přes Git"
 #: templates/RemovedIpNetworks/edit.php:12
 #: templates/RemovedIpNetworks/index.php:36
 #: templates/RemovedIpNetworks/view.php:10
-#: templates/ServiceOverrides/add.php:15 templates/ServiceOverrides/edit.php:12
+#: templates/ServiceOverrides/add.php:15 templates/ServiceOverrides/edit.php:14
 #: templates/ServiceOverrides/index.php:59
 #: templates/ServiceOverrides/view.php:10 templates/ServiceTypes/add.php:10
 #: templates/ServiceTypes/edit.php:10 templates/ServiceTypes/index.php:49
@@ -1759,7 +1763,7 @@ msgstr "IP adresa"
 #: templates/RemovedIpAddresses/edit.php:45
 #: templates/RemovedIpNetworks/add.php:37
 #: templates/RemovedIpNetworks/edit.php:45
-#: templates/ServiceOverrides/add.php:52 templates/ServiceOverrides/edit.php:67
+#: templates/ServiceOverrides/add.php:52 templates/ServiceOverrides/edit.php:80
 #: templates/ServiceTypes/add.php:40 templates/ServiceTypes/edit.php:48
 #: templates/Services/add.php:30 templates/Services/edit.php:35
 #: templates/Settings/edit.php:38 templates/SoldEquipments/add.php:38
@@ -1807,7 +1811,7 @@ msgstr "Potvrdit"
 #: templates/RemovedIpAddresses/index.php:71
 #: templates/RemovedIpNetworks/edit.php:14
 #: templates/RemovedIpNetworks/index.php:69
-#: templates/ServiceOverrides/edit.php:26
+#: templates/ServiceOverrides/edit.php:28
 #: templates/ServiceOverrides/index.php:109 templates/ServiceTypes/edit.php:12
 #: templates/ServiceTypes/index.php:79 templates/ServiceTypes/view.php:174
 #: templates/ServiceTypes/view.php:278 templates/Services/edit.php:14
@@ -1880,7 +1884,7 @@ msgstr "Odstranit"
 #: templates/RemovedIpNetworks/edit.php:17
 #: templates/RemovedIpNetworks/index.php:71
 #: templates/RemovedIpNetworks/view.php:20
-#: templates/ServiceOverrides/edit.php:29
+#: templates/ServiceOverrides/edit.php:31
 #: templates/ServiceOverrides/index.php:111
 #: templates/ServiceOverrides/view.php:32 templates/ServiceTypes/edit.php:15
 #: templates/ServiceTypes/index.php:81 templates/ServiceTypes/view.php:20
@@ -3304,7 +3308,7 @@ msgstr "Seznam zpráv pro zákazníky"
 
 #: templates/Contracts/view.php:41 templates/Customers/view.php:41
 #: templates/Overviews/index.php:100 templates/ServiceOverrides/add.php:17
-#: templates/ServiceOverrides/edit.php:34
+#: templates/ServiceOverrides/edit.php:36
 #: templates/ServiceOverrides/view.php:37
 msgid "List Service Overrides"
 msgstr "Seznam dočasných úprav služby"
@@ -4436,22 +4440,27 @@ msgstr "Odstranit odebranou IP síť"
 msgid "Add Service Override"
 msgstr "Přidat dočasnou úpravu služby"
 
-#: templates/ServiceOverrides/edit.php:15
+#: templates/ServiceOverrides/edit.php:17
 #: templates/ServiceOverrides/index.php:99
 msgid "Revoke"
 msgstr "Zrušit"
 
-#: templates/ServiceOverrides/edit.php:18
+#: templates/ServiceOverrides/edit.php:20
 #: templates/ServiceOverrides/index.php:102
 #: templates/ServiceOverrides/view.php:21
 #: templates/ServiceOverrides/view.php:54
 msgid "Are you sure you want to revoke service override {0}?"
 msgstr "Opravdu chcete zrušit dočasnou úpravu služby {0}?"
 
-#: templates/ServiceOverrides/edit.php:44
+#: templates/ServiceOverrides/edit.php:46
 #: templates/ServiceOverrides/view.php:12
 msgid "Edit Service Override"
 msgstr "Upravit dočasnou úpravu služby"
+
+#: templates/ServiceOverrides/edit.php:73
+#: templates/ServiceOverrides/view.php:68
+msgid "Revoked on {0}"
+msgstr "Zrušeno dne {0}"
 
 #: templates/ServiceOverrides/index.php:20
 msgid "Include Future"
@@ -4482,10 +4491,6 @@ msgstr "Zrušit dočasnou úpravu služby"
 #: templates/ServiceOverrides/view.php:29
 msgid "Delete Service Override"
 msgstr "Odstranit dočasnou úpravu služby"
-
-#: templates/ServiceOverrides/view.php:68
-msgid "Revoked on {0}"
-msgstr "Zrušeno dne {0}"
 
 #: templates/ServiceOverrides/view.php:104
 msgid "Revoked"

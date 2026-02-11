@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-02-09 22:00+0100\n"
+"POT-Creation-Date: 2026-02-11 13:32+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -778,32 +778,32 @@ msgid "The removed IP network could not be deleted. Please, try again."
 msgstr ""
 
 #: ./src/Controller/ServiceOverridesController.php:117
-#: ./src/Controller/ServiceOverridesController.php:171
+#: ./src/Controller/ServiceOverridesController.php:196
 msgid "The service override has been saved."
 msgstr ""
 
 #: ./src/Controller/ServiceOverridesController.php:121
-#: ./src/Controller/ServiceOverridesController.php:175
+#: ./src/Controller/ServiceOverridesController.php:200
 msgid "The service override could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ServiceOverridesController.php:219
+#: ./src/Controller/ServiceOverridesController.php:244
 msgid "The service override has been deleted."
 msgstr ""
 
-#: ./src/Controller/ServiceOverridesController.php:222
+#: ./src/Controller/ServiceOverridesController.php:247
 msgid "The service override could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ServiceOverridesController.php:243
+#: ./src/Controller/ServiceOverridesController.php:268
 msgid "This service override is already revoked."
 msgstr ""
 
-#: ./src/Controller/ServiceOverridesController.php:252
+#: ./src/Controller/ServiceOverridesController.php:277
 msgid "The service override has been revoked."
 msgstr ""
 
-#: ./src/Controller/ServiceOverridesController.php:255
+#: ./src/Controller/ServiceOverridesController.php:280
 msgid "The service override could not be revoked. Please try again."
 msgstr ""
 
@@ -1489,21 +1489,25 @@ msgstr ""
 msgid "The phone number is not valid."
 msgstr ""
 
-#: ./src/Model/Table/ServiceOverridesTable.php:140
-msgid "This field must be greater than or equal to \"Valid From\" field."
+#: ./src/Model/Table/ServiceOverridesTable.php:173
+msgid "The end date must be today or in the future."
 msgstr ""
 
-#: ./src/Model/Table/ServiceOverridesTable.php:203
+#: ./src/Model/Table/ServiceOverridesTable.php:192
+msgid "The end date must be the same as or later than the \"Valid From\" date."
+msgstr ""
+
+#: ./src/Model/Table/ServiceOverridesTable.php:249
 msgid "An active service override already exists for this contract in the selected date range."
 msgstr ""
 
-#: ./src/Model/Table/ServiceOverridesTable.php:155
+#: ./src/Model/Table/ServiceOverridesTable.php:149
 msgid "The start date must be today or within the next {0} day."
 msgid_plural "The start date must be today or within the next {0} days."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ./src/Model/Table/ServiceOverridesTable.php:173
+#: ./src/Model/Table/ServiceOverridesTable.php:210
 msgid "The override duration must not exceed {0} day."
 msgid_plural "The override duration must not exceed {0} days."
 msgstr[0] ""
@@ -1766,7 +1770,7 @@ msgstr ""
 #: ./templates/RemovedIpNetworks/index.php:36
 #: ./templates/RemovedIpNetworks/view.php:10
 #: ./templates/ServiceOverrides/add.php:15
-#: ./templates/ServiceOverrides/edit.php:12
+#: ./templates/ServiceOverrides/edit.php:14
 #: ./templates/ServiceOverrides/index.php:59
 #: ./templates/ServiceOverrides/view.php:10
 #: ./templates/ServiceTypes/add.php:10
@@ -1897,7 +1901,7 @@ msgstr ""
 #: ./templates/RemovedIpNetworks/add.php:37
 #: ./templates/RemovedIpNetworks/edit.php:45
 #: ./templates/ServiceOverrides/add.php:52
-#: ./templates/ServiceOverrides/edit.php:67
+#: ./templates/ServiceOverrides/edit.php:80
 #: ./templates/ServiceTypes/add.php:40
 #: ./templates/ServiceTypes/edit.php:48
 #: ./templates/Services/add.php:30
@@ -1978,7 +1982,7 @@ msgstr ""
 #: ./templates/RemovedIpAddresses/index.php:71
 #: ./templates/RemovedIpNetworks/edit.php:14
 #: ./templates/RemovedIpNetworks/index.php:69
-#: ./templates/ServiceOverrides/edit.php:26
+#: ./templates/ServiceOverrides/edit.php:28
 #: ./templates/ServiceOverrides/index.php:109
 #: ./templates/ServiceTypes/edit.php:12
 #: ./templates/ServiceTypes/index.php:79
@@ -2096,7 +2100,7 @@ msgstr ""
 #: ./templates/RemovedIpNetworks/edit.php:17
 #: ./templates/RemovedIpNetworks/index.php:71
 #: ./templates/RemovedIpNetworks/view.php:20
-#: ./templates/ServiceOverrides/edit.php:29
+#: ./templates/ServiceOverrides/edit.php:31
 #: ./templates/ServiceOverrides/index.php:111
 #: ./templates/ServiceOverrides/view.php:32
 #: ./templates/ServiceTypes/edit.php:15
@@ -3956,7 +3960,7 @@ msgstr ""
 #: ./templates/Customers/view.php:41
 #: ./templates/Overviews/index.php:100
 #: ./templates/ServiceOverrides/add.php:17
-#: ./templates/ServiceOverrides/edit.php:34
+#: ./templates/ServiceOverrides/edit.php:36
 #: ./templates/ServiceOverrides/view.php:37
 msgid "List Service Overrides"
 msgstr ""
@@ -5232,21 +5236,26 @@ msgstr ""
 msgid "Add Service Override"
 msgstr ""
 
-#: ./templates/ServiceOverrides/edit.php:15
+#: ./templates/ServiceOverrides/edit.php:17
 #: ./templates/ServiceOverrides/index.php:99
 msgid "Revoke"
 msgstr ""
 
-#: ./templates/ServiceOverrides/edit.php:18
+#: ./templates/ServiceOverrides/edit.php:20
 #: ./templates/ServiceOverrides/index.php:102
 #: ./templates/ServiceOverrides/view.php:21
 #: ./templates/ServiceOverrides/view.php:54
 msgid "Are you sure you want to revoke service override {0}?"
 msgstr ""
 
-#: ./templates/ServiceOverrides/edit.php:44
+#: ./templates/ServiceOverrides/edit.php:46
 #: ./templates/ServiceOverrides/view.php:12
 msgid "Edit Service Override"
+msgstr ""
+
+#: ./templates/ServiceOverrides/edit.php:73
+#: ./templates/ServiceOverrides/view.php:68
+msgid "Revoked on {0}"
 msgstr ""
 
 #: ./templates/ServiceOverrides/index.php:20
@@ -5277,10 +5286,6 @@ msgstr ""
 
 #: ./templates/ServiceOverrides/view.php:29
 msgid "Delete Service Override"
-msgstr ""
-
-#: ./templates/ServiceOverrides/view.php:68
-msgid "Revoked on {0}"
 msgstr ""
 
 #: ./templates/ServiceOverrides/view.php:104
