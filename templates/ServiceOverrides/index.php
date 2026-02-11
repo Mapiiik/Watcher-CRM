@@ -1,6 +1,9 @@
 <?php
 /**
  * @var \App\View\AppView $this
+ * @var bool $includeRevoked
+ * @var bool $includeFuture
+ * @var bool $includePast
  * @var iterable<\App\Model\Entity\ServiceOverride> $serviceOverrides
  */
 ?>
@@ -19,6 +22,7 @@
         <?= $this->Form->control('include_future', [
             'label' => __('Include Future'),
             'type' => 'checkbox',
+            'checked' => $includeFuture,
             'onchange' => 'this.form.submit();',
         ]) ?>
     </div>
@@ -26,6 +30,7 @@
         <?= $this->Form->control('include_past', [
             'label' => __('Include Past'),
             'type' => 'checkbox',
+            'checked' => $includePast,
             'onchange' => 'this.form.submit();',
         ]) ?>
     </div>
@@ -33,6 +38,7 @@
         <?= $this->Form->control('include_revoked', [
             'label' => __('Include Revoked'),
             'type' => 'checkbox',
+            'checked' => $includeRevoked,
             'onchange' => 'this.form.submit();',
         ]) ?>
     </div>

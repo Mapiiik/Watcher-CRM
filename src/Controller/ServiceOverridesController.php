@@ -32,8 +32,14 @@ class ServiceOverridesController extends AppController
         $request = $this->getRequest();
 
         $includeRevoked = (bool)$request->getQuery('include_revoked');
-        $includeFuture = (bool)$request->getQuery('include_future');
+        $includeFuture = (bool)($request->getQuery('include_future') ?? true);
         $includePast = (bool)$request->getQuery('include_past');
+
+        $this->set(compact(
+            'includeRevoked',
+            'includeFuture',
+            'includePast',
+        ));
 
         // search
         $search = $request->getQuery('search');
