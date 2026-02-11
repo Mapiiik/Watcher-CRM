@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\ServiceOverride;
 use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
@@ -131,7 +132,12 @@ class ServiceOverridesTable extends AppTable
 
         // Ensure that valid_until is greater than or equal to valid_from
         $rules->add(
-            function ($entity, $_options) {
+            function (ServiceOverride $entity, $_options) {
+                // skip if no modification in valid_from and valid_until
+                if (!$entity->isDirty('valid_from') && !$entity->isDirty('valid_until')) {
+                    return true;
+                }
+
                 return $entity->valid_until >= $entity->valid_from;
             },
             'afterValidFrom',
@@ -144,7 +150,12 @@ class ServiceOverridesTable extends AppTable
         // Ensure that the start of the override does not exceed the maximum allowed offset from the current date
         $maxStartOffset = (int)Settings::get('core.contracts.service_overrides.max_start_offset_days', 5);
         $rules->add(
-            function ($entity, $_options) use ($maxStartOffset) {
+            function (ServiceOverride $entity, $_options) use ($maxStartOffset) {
+                // Do not check for historical records
+                if (!$entity->isNew() && !$entity->isDirty('valid_from')) {
+                    return true;
+                }
+
                 $now = Date::now();
 
                 return $entity->valid_from >= $now && $entity->valid_from <= $now->addDays($maxStartOffset);
@@ -164,7 +175,12 @@ class ServiceOverridesTable extends AppTable
         // Ensure that the interval between valid_from and valid_until does not exceed the maximum allowed interval
         $maxInterval = (int)Settings::get('core.contracts.service_overrides.max_duration_days', 5);
         $rules->add(
-            function ($entity, $_options) use ($maxInterval) {
+            function (ServiceOverride $entity, $_options) use ($maxInterval) {
+                // skip if no modification in valid_from and valid_until
+                if (!$entity->isDirty('valid_from') && !$entity->isDirty('valid_until')) {
+                    return true;
+                }
+
                 return $entity->valid_from->diffInDays($entity->valid_until) + 1 <= $maxInterval;
             },
             'maxInterval',
@@ -181,7 +197,16 @@ class ServiceOverridesTable extends AppTable
 
         // Ensure that there is no overlapping active override for the same contract
         $rules->add(
-            function ($entity, $_options) {
+            function (ServiceOverride $entity, $_options) {
+                // skip if no modification in contract_id, valid_from and valid_until
+                if (
+                    !$entity->isDirty('contract_id')
+                    && !$entity->isDirty('valid_from')
+                    && !$entity->isDirty('valid_until')
+                ) {
+                    return true;
+                }
+
                 $query = $this->find()
                     ->where([
                         'contract_id' => $entity->contract_id,

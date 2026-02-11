@@ -161,8 +161,33 @@ class ServiceOverridesController extends AppController
     {
         $serviceOverride = $this->ServiceOverrides->get($id, contain: []);
 
+        $isFuture = $serviceOverride->isFuture();
+        $isRevoked = $serviceOverride->revoked !== null;
+
+        $this->set(compact('isFuture', 'isRevoked'));
+
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $serviceOverride = $this->ServiceOverrides->patchEntity($serviceOverride, $this->request->getData());
+            /** @var array $data Request data */
+            $data = $this->request->getData();
+
+            if ($isRevoked) {
+                // disable editing of everything except the reason
+                unset(
+                    $data['contract_id'],
+                    $data['service_id'],
+                    $data['valid_from'],
+                    $data['valid_until'],
+                );
+            } elseif (!$isFuture) {
+                // disable editing of everything except the reason and valid_until
+                unset(
+                    $data['contract_id'],
+                    $data['service_id'],
+                    $data['valid_from'],
+                );
+            }
+
+            $serviceOverride = $this->ServiceOverrides->patchEntity($serviceOverride, $data);
 
             if ($this->getRequest()->getData('refresh') == 'refresh') {
                 // only refresh

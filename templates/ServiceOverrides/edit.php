@@ -1,6 +1,8 @@
 <?php
 /**
  * @var \App\View\AppView $this
+ * @var bool $isFuture
+ * @var bool $isRevoked
  * @var \App\Model\Entity\ServiceOverride $serviceOverride
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $contracts
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $services
@@ -55,12 +57,23 @@
                             this.form.appendChild(refresh);
                             this.form.submit();
                             JS,
+                        'disabled' => $isRevoked || !$isFuture,
                     ]);
                     $this->Form->unlockField('refresh'); //disable form security check
                 }
-                echo $this->Form->control('service_id', ['options' => $services, 'empty' => true]);
-                echo $this->Form->control('valid_from');
-                echo $this->Form->control('valid_until');
+                echo $this->Form->control('service_id', [
+                    'options' => $services,
+                    'empty' => true,
+                    'disabled' => $isRevoked || !$isFuture,
+                ]);
+                echo $this->Form->control('valid_from', ['disabled' => $isRevoked || !$isFuture]);
+                echo $this->Form->control('valid_until', ['disabled' => $isRevoked]);
+                echo $isRevoked ?
+                    '<label><strong style="color: red;">'
+                        . __('Revoked on {0}', h($serviceOverride->revoked))
+                        . '</strong></label><br>'
+                    : '';
+
                 echo $this->Form->control('reason');
                 ?>
             </fieldset>
