@@ -130,23 +130,6 @@ class ServiceOverridesTable extends AppTable
         $rules->add($rules->existsIn(['contract_id'], 'Contracts'), ['errorField' => 'contract_id']);
         $rules->add($rules->existsIn(['service_id'], 'Services'), ['errorField' => 'service_id']);
 
-        // Ensure that valid_until is greater than or equal to valid_from
-        $rules->add(
-            function (ServiceOverride $entity, $_options) {
-                // skip if no modification in valid_from and valid_until
-                if (!$entity->isDirty('valid_from') && !$entity->isDirty('valid_until')) {
-                    return true;
-                }
-
-                return $entity->valid_until >= $entity->valid_from;
-            },
-            'afterValidFrom',
-            [
-                'errorField' => 'valid_until',
-                'message' => __('This field must be greater than or equal to "Valid From" field.'),
-            ],
-        );
-
         // Ensure that the start of the override does not exceed the maximum allowed offset from the current date
         $maxStartOffset = (int)Settings::get('core.contracts.service_overrides.max_start_offset_days', 5);
         $rules->add(
@@ -169,6 +152,44 @@ class ServiceOverridesTable extends AppTable
                     $maxStartOffset,
                     $maxStartOffset,
                 ),
+            ],
+        );
+
+        // Ensure that the end of the override is not before today when changing
+        $rules->add(
+            function (ServiceOverride $entity, $_options) {
+                // Do not check for historical records
+                if (!$entity->isNew() && !$entity->isDirty('valid_until')) {
+                    return true;
+                }
+
+                $now = Date::now();
+
+                return $entity->valid_until >= $now;
+            },
+            'minEndDate',
+            [
+                'errorField' => 'valid_until',
+                'message' => __(
+                    'The end date must be today or in the future.',
+                ),
+            ],
+        );
+
+        // Ensure that valid_until is greater than or equal to valid_from
+        $rules->add(
+            function (ServiceOverride $entity, $_options) {
+                // skip if no modification in valid_from and valid_until
+                if (!$entity->isDirty('valid_from') && !$entity->isDirty('valid_until')) {
+                    return true;
+                }
+
+                return $entity->valid_until >= $entity->valid_from;
+            },
+            'afterValidFrom',
+            [
+                'errorField' => 'valid_until',
+                'message' => __('The end date must be the same as or later than the "Valid From" date.'),
             ],
         );
 
