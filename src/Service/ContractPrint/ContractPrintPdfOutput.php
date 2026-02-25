@@ -97,6 +97,8 @@ final class ContractPrintPdfOutput
     private function buildFilename(ContractPrintData $data): string
     {
         $date = match ($data->type) {
+            ContractPrintType::ContractAmendment,
+                => $data->effectiveDateOfAmendment,
             ContractPrintType::ContractTermination,
             ContractPrintType::HandoverUninstallation
                 => $data->contractVersion->valid_until,
