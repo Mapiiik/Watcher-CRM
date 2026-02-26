@@ -496,6 +496,7 @@ class ContractsController extends AppController
         }
 
         // generate number
+        /** @var \Cake\Datasource\ResultSetInterface<array-key, \App\Model\Entity\Contract> $result */
         $result = $this->Contracts->selectQuery()
             ->select([
                 'number' => '(' . $service_type->contract_number_format . ')',
@@ -543,6 +544,7 @@ class ContractsController extends AppController
     {
         $this->getRequest()->allowMethod(['post']);
 
+        /** @var \Cake\Datasource\ResultSetInterface<array-key, \App\Model\Entity\Contract> $contracts */
         $contracts = $this->Contracts->find()->all();
 
         $count = 0;
@@ -585,6 +587,7 @@ class ContractsController extends AppController
         }
 
         // generate subscriber verification code
+        /** @var \Cake\Datasource\ResultSetInterface<array-key, \App\Model\Entity\Contract> $result */
         $result = $this->Contracts->selectQuery()
             ->select([
                 'subscriber_verification_code' => '(' . $service_type->subscriber_verification_code_format . ')',
@@ -627,6 +630,7 @@ class ContractsController extends AppController
     {
         $this->getRequest()->allowMethod(['post']);
 
+        /** @var \Cake\Datasource\ResultSetInterface<array-key, \App\Model\Entity\Contract> $contracts */
         $contracts = $this->Contracts->find()->all();
 
         $count = 0;

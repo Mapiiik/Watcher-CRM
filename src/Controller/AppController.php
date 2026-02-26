@@ -79,7 +79,6 @@ class AppController extends Controller
     /**
      * @inheritDoc
      */
-    /** @phpstan-ignore missingType.generics */
     #[Override]
     public function paginate(
         RepositoryInterface|QueryInterface|string|null $object = null,

@@ -55,10 +55,10 @@ class Application extends BaseApplication
         parent::bootstrap();
 
         if (PHP_SAPI !== 'cli') {
-            FactoryLocator::add(
-                'Table',
-                (new TableLocator())->allowFallbackClass(false),
-            );
+            /** @var \Cake\Datasource\Locator\LocatorInterface<\Cake\Datasource\RepositoryInterface> $locator */
+            $locator = (new TableLocator())->allowFallbackClass(false);
+
+            FactoryLocator::add('Table', $locator);
         }
 
         // CakeDC/users

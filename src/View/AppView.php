@@ -25,7 +25,6 @@ use Override;
  *
  * @link https://book.cakephp.org/5/en/views.html#the-app-view
  * @property \CakeDC\Users\View\Helper\AuthLinkHelper $AuthLink
- * @extends \Cake\View\View<\App\View\AppView>
  */
 class AppView extends View
 {

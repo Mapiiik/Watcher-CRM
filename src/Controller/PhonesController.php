@@ -172,6 +172,7 @@ class PhonesController extends AppController
     {
         $this->getRequest()->allowMethod(['post']);
 
+        /** @var \Cake\Datasource\ResultSetInterface<array-key, \App\Model\Entity\Phone> $phones */
         $phones = $this->Phones->find()->all();
 
         $phoneUtil = PhoneNumberUtil::getInstance();

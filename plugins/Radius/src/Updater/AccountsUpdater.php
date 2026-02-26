@@ -185,6 +185,7 @@ class AccountsUpdater
 
                     // Send RADIUS disconnect request for modified
                     if ($options['reconnect_modified_accounts'] == true) {
+                        /** @var \Cake\Datasource\ResultSetInterface<array-key, \Radius\Model\Entity\Radacct> $radaccts */
                         $radaccts = $this->Accounts->Radacct
                             ->find()
                             ->where([

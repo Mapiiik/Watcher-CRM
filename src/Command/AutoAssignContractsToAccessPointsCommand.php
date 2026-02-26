@@ -50,6 +50,7 @@ class AutoAssignContractsToAccessPointsCommand extends Command
         $api = new ApiClient();
 
         // load contracts without assigned access point
+        /** @var \Cake\Datasource\ResultSetInterface<array-key, \App\Model\Entity\Contract> $unassignedContracts */
         $unassignedContracts = $contractsTable
             ->find()
             ->contain([

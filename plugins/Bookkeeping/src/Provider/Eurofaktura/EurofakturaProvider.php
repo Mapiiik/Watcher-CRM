@@ -172,6 +172,7 @@ class EurofakturaProvider implements AccountingProviderInterface
     private function syncInvoicesFull(): array
     {
         $customersTable = $this->fetchTable(CustomersTable::class);
+        /** @var \Cake\Datasource\ResultSetInterface<array-key, \App\Model\Entity\Customer> $customers */
         $customers = $customersTable
             ->find()
             ->select(['nid'])
