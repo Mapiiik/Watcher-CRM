@@ -22,7 +22,7 @@ use PhpCollective\DecimalObject\Decimal;
  * @property string $customer_id
  * @property string|null $text
  * @property \PhpCollective\DecimalObject\Decimal|null $price
- * @property \Cake\I18n\Date|null $billing_from
+ * @property \Cake\I18n\Date $billing_from
  * @property string|null $note
  * @property bool $active
  * @property \Cake\I18n\Date|null $billing_until

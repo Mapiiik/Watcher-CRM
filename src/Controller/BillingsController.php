@@ -4,10 +4,16 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\ApiClient;
-use App\Mailer\QueueMailer;
 use App\Model\Entity\Billing;
+use App\Model\Enum\CustomerMessageBodyFormat;
+use App\Model\Enum\CustomerMessageDeliveryStatus;
+use App\Model\Enum\CustomerMessageDirection;
+use App\Model\Enum\CustomerMessageType;
+use App\Model\Table\CustomerMessagesTable;
+use App\Utility\ServiceChangeMessageBuilder;
 use Cake\Utility\Text;
 use Cake\Validation\Validation;
+use Settings\Utility\Settings;
 use SplObjectStorage;
 
 /**
@@ -445,44 +451,49 @@ class BillingsController extends AppController
     /**
      * Process Service Change method
      *
-     * @param \App\Model\Entity\Billing $original_billing Original billing entity
+     * @param \App\Model\Entity\Billing $originalBilling Original billing entity
      * @return \App\Model\Entity\Billing|false New billing entity
      */
-    private function processServiceChange(Billing $original_billing): Billing|false
+    private function processServiceChange(Billing $originalBilling): Billing|false
     {
-        // load send_customer_notification parameter
-        $send_customer_notification = ($this->getRequest()->getData('send_customer_notification') == '1');
-        // load version_without_legislative_information parameter
-        $version_without_legislative_information =
-            ($this->getRequest()->getData('version_without_legislative_information') == '1');
+        $request = $this->getRequest();
 
-        // create new billing entity
-        $original_billing_data = $original_billing->toArray();
+        // Determine if customer notification should be sent
+        $sendCustomerNotification =
+            ($request->getData('send_customer_notification') === '1');
+
+        // Determine if version without legislative information should be used for customer message
+        $versionWithoutLegislativeInformation =
+            ($request->getData('version_without_legislative_information') === '1');
+
+        // Prepare new billing entity
+        $originalBillingData = $originalBilling->toArray();
         unset(
-            $original_billing_data['id'],
-            $original_billing_data['created'],
-            $original_billing_data['created_by'],
-            $original_billing_data['modified'],
-            $original_billing_data['modified_by'],
-            $original_billing_data['contract'],
-            $original_billing_data['customer'],
-            $original_billing_data['service'],
+            $originalBillingData['id'],
+            $originalBillingData['created'],
+            $originalBillingData['created_by'],
+            $originalBillingData['modified'],
+            $originalBillingData['modified_by'],
+            $originalBillingData['contract'],
+            $originalBillingData['customer'],
+            $originalBillingData['service'],
         );
-        $new_billing = $this->Billings->newEntity($original_billing_data);
-        $new_billing = $this->Billings->patchEntity($new_billing, $this->getRequest()->getData());
-        $new_billing->service = $this->Billings->Services->get($new_billing->service_id); // load associated service
 
-        // update original entity
-        $original_billing = $this->Billings->patchEntity($original_billing, [
-            'billing_until' => $new_billing->billing_from->subDays(1),
+        $newBilling = $this->Billings->newEntity($originalBillingData);
+        $newBilling = $this->Billings->patchEntity($newBilling, $request->getData());
+        $newBilling->service = $this->Billings->Services->get($newBilling->service_id); // load associated service
+
+        // Update original billing
+        $originalBilling = $this->Billings->patchEntity($originalBilling, [
+            'billing_until' => $newBilling->billing_from->subDays(1),
         ]);
 
-        // save new and modified entity to database
+        // Persist both entities
         if (
             $this->Billings->saveMany(
                 [
-                    $original_billing,
-                    $new_billing,
+                    $originalBilling,
+                    $newBilling,
                 ],
                 [
                     '_auditQueue' => new SplObjectStorage(),
@@ -492,43 +503,60 @@ class BillingsController extends AppController
         ) {
             $this->Flash->error(
                 __('The billing could not be saved. Please, try again.')
-                . ' (' . __('Contract Number') . ': ' . $original_billing->contract->number . ')',
+                . ' (' . __('Contract Number') . ': ' . $originalBilling->contract->number . ')',
             );
 
             return false;
-        } elseif ($send_customer_notification) {
-            $mailer = new QueueMailer();
-            $mailer->push(
-                'serviceChange',
-                [
-                    array_column($original_billing->customer->billing_emails, 'email'),
-                    [
-                        'customer_name' => $original_billing->customer->name,
-                        'contract_number' => $original_billing->contract->number,
-                        'installation_address' => $original_billing->contract->installation_address->address ?? null,
-                        'original_billing_name' => $original_billing->name,
-                        'original_billing_sum' => $original_billing->sum->toFloat(),
-                        'original_billing_percentage_discount' => $original_billing->percentage_discount,
-                        'original_billing_percentage_discount_sum' =>
-                            $original_billing->percentage_discount_sum->toFloat(),
-                        'original_billing_fixed_discount_sum' => $original_billing->fixed_discount_sum->toFloat(),
-                        'original_billing_total_price' => $original_billing->total_price->toFloat(),
-                        'new_billing_name' => $new_billing->name,
-                        'new_billing_sum' => $new_billing->sum->toFloat(),
-                        'new_billing_percentage_discount' => $new_billing->percentage_discount,
-                        'new_billing_percentage_discount_sum' => $new_billing->percentage_discount_sum->toFloat(),
-                        'new_billing_fixed_discount_sum' => $new_billing->fixed_discount_sum->toFloat(),
-                        'new_billing_total_price' => $new_billing->total_price->toFloat(),
-                        'new_billing_from' => h($new_billing->billing_from),
-                        'version_without_legislative_information' => $version_without_legislative_information,
-                    ],
-                ],
-                options: [
-                    'mailerConfig' => 'contracts',
-                ],
-            );
         }
 
-        return $new_billing;
+        // Create customer message (email) if requested
+        if ($sendCustomerNotification) {
+            /** @var \App\Model\Table\CustomerMessagesTable $customerMessagesTable */
+            $customerMessagesTable = $this->fetchTable(CustomerMessagesTable::class);
+
+            $body = ServiceChangeMessageBuilder::buildEmailBody(
+                // Customer and contract details
+                customerName: $originalBilling->customer->name,
+                contractNumber: $originalBilling->contract->number ?? '',
+                installationAddress: $originalBilling->contract->installation_address->address ?? null,
+                // Original billing details
+                originalBillingName: $originalBilling->name,
+                originalBillingSum: $originalBilling->sum->toFloat(),
+                originalBillingTotalPrice: $originalBilling->total_price->toFloat(),
+                // New billing details
+                newBillingName: $newBilling->name,
+                newBillingSum: $newBilling->sum->toFloat(),
+                newBillingTotalPrice: $newBilling->total_price->toFloat(),
+                // Other details
+                newBillingFrom: (string)$newBilling->billing_from,
+                versionWithoutLegislativeInformation: $versionWithoutLegislativeInformation,
+            );
+
+            $subject = strtr(
+                Settings::getString('core.emails.service_change.subject'),
+                [
+                    '{new_billing_from}' => (string)$newBilling->billing_from,
+                    '{contract_number}' => $originalBilling->contract->number ?? '',
+                ],
+            );
+
+            // Create customer message entity
+            $customerMessage = $customerMessagesTable->newEmptyEntity();
+
+            $customerMessage->type = CustomerMessageType::EmailContracts;
+            $customerMessage->direction = CustomerMessageDirection::Outgoing;
+            $customerMessage->body_format = CustomerMessageBodyFormat::Plaintext;
+            $customerMessage->delivery_status = CustomerMessageDeliveryStatus::Pending;
+
+            $customerMessage->customer_id = $originalBilling->customer_id;
+            $customerMessage->recipients = array_column($originalBilling->customer->billing_emails, 'email');
+            $customerMessage->subject = $subject;
+            $customerMessage->body = $body;
+
+            // Persist customer message entity
+            $customerMessagesTable->saveOrFail($customerMessage);
+        }
+
+        return $newBilling;
     }
 }
