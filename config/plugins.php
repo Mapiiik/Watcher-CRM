@@ -38,9 +38,6 @@ return [
     // Settings
     'Settings' => [],
 
-    // Cake/Queue
-    'Cake/Queue' => [],
-
     // Bookkeeping
     'Bookkeeping' => [],
 
