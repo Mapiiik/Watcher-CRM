@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Command;
 
+use App\Model\Enum\CustomerInvoiceDeliveryType;
 use Bookkeeping\Model\Table\InvoicesTable;
 use Bookkeeping\Service\BookkeepingService;
 use Cake\Command\Command;
@@ -137,6 +138,7 @@ class SendIssuedInvoicesCommand extends Command
             if (
                 $invoice->__isset('customer') &&
                 $invoice->customer->agree_mailing_billing &&
+                $invoice->customer->invoice_delivery_type === CustomerInvoiceDeliveryType::Email &&
                 count($invoice->customer->billing_emails) > 0
             ) {
                 // send email with notification
