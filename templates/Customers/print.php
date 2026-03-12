@@ -198,14 +198,7 @@
                             'options' => $documentTypes,
                             'empty' => true,
                             'required' => true,
-                            'onchange' => <<<JS
-                                var refresh = document.createElement("input");
-                                refresh.type = "hidden";
-                                refresh.name = "refresh";
-                                refresh.value = "refresh";
-                                this.form.appendChild(refresh);
-                                this.form.submit();
-                                JS,
+                            'onchange' => 'this.form.submit();',
                         ]);
                         ?>
                     </div>
@@ -213,6 +206,9 @@
                     </div>
                 </div>
             </fieldset>
+            <?= $this->Form->hidden('submit_action', [
+                'value' => 'refresh',
+            ]) ?>
             <?= $this->Form->button(__('Print to PDF'), [
                 'name' => 'submit_action',
                 'value' => 'pdf',

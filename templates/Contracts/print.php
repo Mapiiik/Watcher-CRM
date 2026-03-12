@@ -228,39 +228,39 @@
                             'options' => $documentTypes,
                             'empty' => true,
                             'required' => true,
-                            'onchange' => <<<JS
-                                var refresh = document.createElement("input");
-                                refresh.type = "hidden";
-                                refresh.name = "refresh";
-                                refresh.value = "refresh";
-                                this.form.appendChild(refresh);
-                                this.form.submit();
-                                JS,
+                            'onchange' => 'this.form.submit();',
                         ]);
-                        $this->Form->unlockField('refresh'); //disable form security check
 
                         echo $this->Form->control('contract_version_id', [
                             'label' => __('Contract Version'),
                             'options' => $contractVersions,
                             'empty' => true,
                             'required' => $printType?->requiresContractVersion() ?? false,
+                            'onchange' => 'this.form.submit();',
                         ]);
 
-                        echo $this->Form->control('signed', ['label' => __('Signed'), 'type' => 'checkbox']);
+                        echo $this->Form->control('signed', [
+                            'label' => __('Signed'),
+                            'type' => 'checkbox',
+                            'onchange' => 'this.form.submit();',
+                        ]);
                         ?>
                         <br>
                         <?php
                         echo $this->Form->control('own_equipment', [
                             'label' => __('The customer has his own equipment'),
                             'type' => 'checkbox',
+                            'onchange' => 'this.form.submit();',
                         ]);
                         echo $this->Form->control('does_not_use_ip_addresses', [
                             'label' => __('The customer does not use IP addresses'),
                             'type' => 'checkbox',
+                            'onchange' => 'this.form.submit();',
                         ]);
                         echo $this->Form->control('does_not_use_radius', [
                             'label' => __('The customer does not use RADIUS accounts'),
                             'type' => 'checkbox',
+                            'onchange' => 'this.form.submit();',
                         ]);
                         ?>
                     </div>
@@ -272,6 +272,7 @@
                                 'type' => 'date',
                                 'empty' => true,
                                 'required' => true,
+                                'onchange' => 'this.form.submit();',
                             ]);
                         }
 
@@ -281,6 +282,7 @@
                                 'options' => $contractVersions,
                                 'empty' => true,
                                 'required' => true,
+                                'onchange' => 'this.form.submit();',
                             ]);
                         }
 
@@ -289,18 +291,31 @@
                                 'label' => __('The number of the contract to be terminated'),
                                 'empty' => true,
                                 'required' => true,
+                                'onchange' => 'this.form.submit();',
                             ]);
                         }
 
                         if ($printType?->isHandoverProtocol()) {
-                            echo $this->Form->control('access_point', ['empty' => true]);
-                            echo $this->Form->control('radius_username', ['empty' => true]);
-                            echo $this->Form->control('radius_password', ['empty' => true]);
+                            echo $this->Form->control('access_point', [
+                                'empty' => true,
+                                'onchange' => 'this.form.submit();',
+                            ]);
+                            echo $this->Form->control('radius_username', [
+                                'empty' => true,
+                                'onchange' => 'this.form.submit();',
+                            ]);
+                            echo $this->Form->control('radius_password', [
+                                'empty' => true,
+                                'onchange' => 'this.form.submit();',
+                            ]);
                         }
                         ?>
                     </div>
                 </div>
             </fieldset>
+            <?= $this->Form->hidden('submit_action', [
+                'value' => 'refresh',
+            ]) ?>
             <?= $this->Form->button(__('Print to PDF'), [
                 'name' => 'submit_action',
                 'value' => 'pdf',

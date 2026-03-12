@@ -533,7 +533,6 @@ class CustomersController extends AppController
         $query = $this->getRequest()->getQuery();
 
         // keep only relevant query parameters for PDF generation in the query string
-        unset($query['refresh']);
         unset($query['submit_action']);
 
         // load the print type from the query string or use the one from the URL parameter
