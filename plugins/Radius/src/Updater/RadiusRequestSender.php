@@ -5,6 +5,7 @@ namespace Radius\Updater;
 
 use App\Messages\Messages;
 use Cake\Http\Client as HttpClient;
+use Cake\Log\Log;
 use Mapik\RadiusClient\Client as RadiusClient;
 use Mapik\RadiusClient\Packet;
 use Mapik\RadiusClient\PacketType;
@@ -62,6 +63,8 @@ class RadiusRequestSender
      */
     public function sendDisconnectRequestLocal(Radacct $session): bool
     {
+        Log::warning('Local RADIUS disconnect backend is deprecated; consider enabling Watcher Agent.');
+
         $disconnected = false;
 
         $client = new RadiusClient('udp://' . $session->nasipaddress . ':1700', /* timeout */ 3);

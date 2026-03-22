@@ -1,6 +1,10 @@
 <?php
 declare(strict_types=1);
 
+use Cake\Log\Log;
+
+Log::warning('Local ping backend is deprecated; consider enabling Watcher Agent.');
+
 // Prevent the script from running indefinitely
 set_time_limit(5);
 
