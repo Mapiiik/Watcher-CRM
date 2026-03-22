@@ -1,11 +1,13 @@
 function initLazyLoad(root = document) {
   const loadContent = (el) => {
+    el.classList.add("loading");
     const url = el.getAttribute("data-url");
     if (!url) return;
     fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
       .then(resp => resp.text())
       .then(html => { el.innerHTML = html; })
-      .catch(err => { el.innerHTML = "⚠️ Error"; console.error(err); });
+      .catch(err => { el.innerHTML = "⚠️ Error"; console.error(err); })
+      .finally(() => el.classList.remove("loading"));
   };
 
   const observer = new IntersectionObserver((entries, obs) => {
@@ -22,6 +24,9 @@ function initLazyLoad(root = document) {
 
     if (trigger === "load") {
       loadContent(el);
+    } else if (trigger === "load-refresh-click") {
+      loadContent(el);
+      el.addEventListener("click", () => loadContent(el));
     } else if (trigger === "click") {
       el.addEventListener("click", () => loadContent(el), { once: true });
     } else if (trigger === "hover") {

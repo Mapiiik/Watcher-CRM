@@ -626,3 +626,9 @@ input[type='color'] {
 .nav-content-right {
     text-align: right;
 }
+
+/* Lazy Load */
+.lazy-load.loading {
+    opacity: 0.6;
+    cursor: wait;
+}

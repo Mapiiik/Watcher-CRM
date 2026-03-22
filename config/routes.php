@@ -223,6 +223,17 @@ return function (RouteBuilder $routes): void {
                 ],
             ],
         ]);
+        $builder->resources('AgentBridge', [
+            'only' => [
+                'ping/{ip_address}',
+            ],
+            'map' => [
+                'ping/{ip_address}' => [
+                    'action' => 'ping',
+                    'method' => 'GET',
+                ],
+            ],
+        ]);
     });
 
     //apply URL filters only if not called from console

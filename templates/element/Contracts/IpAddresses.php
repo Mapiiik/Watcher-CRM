@@ -39,11 +39,20 @@ use Cake\Routing\Router;
             <td><?= h($ipAddress->ip_address) ?></td>
             <td><?= h($ipAddress->type_of_use->label()) ?></td>
             <td><?= h($ipAddress->note) ?></td>
-            <td class="to-center"><?=
-                $this->Html->image('ping/status.png.php?host=' . h($ipAddress->ip_address), [
-                    'class' => 'ping-status',
-                    'onclick' => 'this.src = this.src',
-                ]) ?></td>
+            <td class="to-center">
+                <div
+                    class="lazy-load"
+                    data-url="<?= Router::url([
+                        'prefix' => 'Api',
+                        'controller' => 'AgentBridge',
+                        'action' => 'ping',
+                        'ip_address' => $ipAddress->ip_address,
+                        '_ext' => 'ajax',
+                    ]) ?>"
+                    data-trigger="load-refresh-click">
+                        <?= $this->Html->image('ping/unknown.png', ['class' => 'ping-status']) ?>
+                </div>
+            </td>
             <td>
                 <div
                     class="lazy-load"

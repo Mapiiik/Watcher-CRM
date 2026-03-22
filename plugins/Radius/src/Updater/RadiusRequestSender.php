@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Radius\Updater;
 
+use App\Agent\ApiClient;
 use App\Messages\Messages;
-use Cake\Http\Client as HttpClient;
 use Cake\Log\Log;
 use Mapik\RadiusClient\Client as RadiusClient;
 use Mapik\RadiusClient\Packet;
@@ -148,63 +148,18 @@ class RadiusRequestSender
      */
     private function sendDisconnectRequestViaAgent(Radacct $session): bool
     {
-        $agentUrl = rtrim((string)env('WATCHER_AGENT_URL'), '/');
-        $agentToken = (string)env('WATCHER_AGENT_TOKEN');
-
-        // Create HTTP client
-        $http = new HttpClient([
-            'headers' => [
-                'Authorization' => 'Bearer ' . $agentToken,
-                'Accept' => 'application/json',
-            ],
-            'timeout' => 10,
-        ]);
-
         try {
-            $response = $http->post(
-                $agentUrl . '/api/radius/disconnect',
-                [
-                    'nas_ip' => $session->nasipaddress,
-                    'port' => 1700,
-                    'secret' => env('RADIUS_SECRET'),
-                    'timeout_ms' => 3000, // 3 seconds
-
-                    'username' => $session->username,
-                    'acct_session_id' => $session->acctsessionid,
-                    'framed_ip' => $session->framedipaddress,
-                ],
-                [
-                    'type' => 'json',
-                ],
-            );
+            $data = ApiClient::radiusDisconnect($session);
         } catch (Throwable $e) {
             $this->Messages->error(__d(
                 'radius',
-                'Watcher Agent is unreachable: {0}',
+                'The RADIUS session for {0} started on {1} could not be disconnected ({2}).',
+                $session->username,
+                $session->acctstarttime,
                 $e->getMessage(),
             ));
 
-            return false;
-        }
-
-        if (!$response->isOk()) {
-            $this->Messages->error(__d(
-                'radius',
-                'Watcher Agent returned HTTP {0}',
-                $response->getStatusCode(),
-            ));
-
-            return false;
-        }
-
-        $data = $response->getJson();
-
-        if (!is_array($data) || !isset($data['success'])) {
-            $this->Messages->error(__d(
-                'radius',
-                'Invalid response from Watcher Agent',
-            ));
-
+            // skip further processing and return false
             return false;
         }
 
