@@ -4,11 +4,13 @@ declare(strict_types=1);
 namespace Radius\Updater;
 
 use App\Messages\Messages;
-use Mapik\RadiusClient\Client;
+use Cake\Http\Client as HttpClient;
+use Mapik\RadiusClient\Client as RadiusClient;
 use Mapik\RadiusClient\Packet;
 use Mapik\RadiusClient\PacketType;
 use Radius\Model\Entity\Radacct;
 use Throwable;
+use UnexpectedValueException;
 
 /**
  * Message
@@ -29,17 +31,40 @@ class RadiusRequestSender
     }
 
     /**
-     * Send disconnect request method
+     * Send disconnect request using the configured backend.
+     *
+     * If Watcher Agent support is enabled the request is sent via the agent.
+     * Otherwise, the local RADIUS disconnect mechanism is used.
+     *
+     * @param \Radius\Model\Entity\Radacct $session RADIUS Accounting Record.
+     * @return bool Returns true if the disconnection was successful.
+     */
+    public function sendDisconnectRequest(Radacct $session): bool
+    {
+        $agentEnabled = filter_var(
+            env('WATCHER_AGENT_ENABLED', false),
+            FILTER_VALIDATE_BOOLEAN,
+        );
+
+        if ($agentEnabled) {
+            return $this->sendDisconnectRequestViaAgent($session);
+        } else {
+            return $this->sendDisconnectRequestLocal($session);
+        }
+    }
+
+    /**
+     * Send disconnect request method (Local)
      *
      * @param \Radius\Model\Entity\Radacct $session RADIUS Accounting Record.
      * @return bool Returns true if the disconnection was successful.
      * @psalm-suppress PossiblyUnusedReturnValue
      */
-    public function sendDisconnectRequest(Radacct $session): bool
+    public function sendDisconnectRequestLocal(Radacct $session): bool
     {
         $disconnected = false;
 
-        $client = new Client('udp://' . $session->nasipaddress . ':1700', /* timeout */ 3);
+        $client = new RadiusClient('udp://' . $session->nasipaddress . ':1700', /* timeout */ 3);
         try {
             $response = $client->send(
                 new Packet(PacketType::DISCONNECT_REQUEST(), /* secret */ env('RADIUS_SECRET'), [
@@ -83,7 +108,10 @@ class RadiusRequestSender
         }
 
         // detect error causes
-        $error = $this->handleDisconnectErrors($response->getAttributes());
+        $attributes = $response->getAttributes();
+        $error = $this->formatDisconnectErrors(
+            $attributes['Error-Cause'] ?? [],
+        );
 
         if ($disconnected) {
             $this->Messages->success(__d(
@@ -109,20 +137,119 @@ class RadiusRequestSender
     }
 
     /**
-     * This private function handles disconnect errors and returns a string representation of the errors.
+     * Send disconnect request method (via Watcher Agent)
      *
-     * @param array<string, mixed[]> $attributes The attributes containing the disconnect errors.
+     * @param \Radius\Model\Entity\Radacct $session RADIUS Accounting Record.
+     * @return bool Returns true if the disconnection was successful.
+     * @psalm-suppress PossiblyUnusedReturnValue
+     */
+    private function sendDisconnectRequestViaAgent(Radacct $session): bool
+    {
+        $agentUrl = rtrim((string)env('WATCHER_AGENT_URL'), '/');
+        $agentToken = (string)env('WATCHER_AGENT_TOKEN');
+
+        // Create HTTP client
+        $http = new HttpClient([
+            'headers' => [
+                'Authorization' => 'Bearer ' . $agentToken,
+                'Accept' => 'application/json',
+            ],
+            'timeout' => 10,
+        ]);
+
+        try {
+            $response = $http->post(
+                $agentUrl . '/api/radius/disconnect',
+                [
+                    'nas_ip' => $session->nasipaddress,
+                    'port' => 1700,
+                    'secret' => env('RADIUS_SECRET'),
+                    'timeout_ms' => 3000, // 3 seconds
+
+                    'username' => $session->username,
+                    'acct_session_id' => $session->acctsessionid,
+                    'framed_ip' => $session->framedipaddress,
+                ],
+                [
+                    'type' => 'json',
+                ],
+            );
+        } catch (Throwable $e) {
+            $this->Messages->error(__d(
+                'radius',
+                'Watcher Agent is unreachable: {0}',
+                $e->getMessage(),
+            ));
+
+            return false;
+        }
+
+        if (!$response->isOk()) {
+            $this->Messages->error(__d(
+                'radius',
+                'Watcher Agent returned HTTP {0}',
+                $response->getStatusCode(),
+            ));
+
+            return false;
+        }
+
+        $data = $response->getJson();
+
+        if (!is_array($data) || !isset($data['success'])) {
+            $this->Messages->error(__d(
+                'radius',
+                'Invalid response from Watcher Agent',
+            ));
+
+            return false;
+        }
+
+        $error = $this->formatDisconnectErrors(
+            $data['error_causes'] ?? [],
+        );
+
+        if ($data['success']) {
+            $this->Messages->success(__d(
+                'radius',
+                'The RADIUS session for {0} started on {1} has been disconnected ({2}).',
+                $session->username,
+                $session->acctstarttime,
+                trim(($data['result'] ?? 'OK') . ($error ? ' - ' . $error : '')),
+            ));
+
+            return true;
+        }
+
+        $this->Messages->error(__d(
+            'radius',
+            'The RADIUS session for {0} started on {1} could not be disconnected ({2}).',
+            $session->username,
+            $session->acctstarttime,
+            trim(($data['result'] ?? 'Error') . ($error ? ' - ' . $error : '')),
+        ));
+
+        return false;
+    }
+
+    /**
+     * This private function formats disconnect errors and returns a string representation of the errors.
+     *
+     * @param list<mixed> $error_codes The list containing the disconnect errors.
      * @return string The string representation of the disconnect errors.
      */
-    private function handleDisconnectErrors(array $attributes): string
+    private function formatDisconnectErrors(array $error_codes): string
     {
         $errors = [];
 
-        // Check if the 'Error-Cause' attribute exists and is an array
-        if (isset($attributes['Error-Cause']) && is_array($attributes['Error-Cause'])) {
-            foreach ($attributes['Error-Cause'] as $error_code) {
-                $errors[] = $this->getDisconnectErrorMessage($error_code);
+        // Loop through the error codes and get the corresponding error message for each code
+        foreach ($error_codes as $error_code) {
+            if (!is_int($error_code)) {
+                throw new UnexpectedValueException(
+                    'Disconnect error code must be an integer',
+                );
             }
+            $errors[] = $this->getDisconnectErrorMessage($error_code);
         }
 
         // Return a string representation of the errors array, with each error separated by a comma and space
