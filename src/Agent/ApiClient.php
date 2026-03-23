@@ -57,9 +57,9 @@ class ApiClient
                 data: [
                     'host' => $ipAddress,
                     'count' => 10,
-                    'timeout_ms' => 1000,
+                    'timeout_ms' => 500,
                 ],
-                timeout: 11,
+                timeout: 10,
             );
         } catch (Throwable $e) {
             throw new RuntimeException(__(
