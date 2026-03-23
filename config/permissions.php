@@ -224,6 +224,17 @@ $permissions = [
             'prefix' => 'Api',
             'plugin' => null,
             'controller' => [
+                'AgentBridge',
+            ],
+            'action' => [
+                'ping',
+            ],
+        ],
+        [
+            'role' => '*',
+            'prefix' => 'Api',
+            'plugin' => null,
+            'controller' => [
                 'NetworkManagementSystemBridge',
             ],
             'action' => [
