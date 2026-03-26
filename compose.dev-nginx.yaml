@@ -21,6 +21,11 @@ services:
       DATABASE_URL: postgres://postgres@database-dev/watcher_crm
       DATABASE_RADIUS_URL: postgres://postgres@database-dev/watcher_crm_radius
       DATABASE_RUIAN_URL: postgres://postgres@database-dev/watcher_crm_ruian
+      CACHE_DURATION: "${CACHE_DURATION:-+2 minutes}"
+      CACHE_DEFAULT_URL: "redis://cache-dev:6379/?database=0&password=redis&prefix=${APP_NAME}_default_&duration=${CACHE_DURATION:-+2 minutes}"
+      CACHE_CAKECORE_URL: "redis://cache-dev:6379/?database=0&password=redis&prefix=${APP_NAME}_cake_core_&duration=${CACHE_DURATION:-+2 minutes}"
+      CACHE_CAKEMODEL_URL: "redis://cache-dev:6379/?database=0&password=redis&prefix=${APP_NAME}_cake_model_&duration=${CACHE_DURATION:-+2 minutes}"
+      CACHE_APICLIENT_URL: "redis://cache-dev:6379/?database=0&password=redis&prefix=${APP_NAME}_api_client_&duration=${CACHE_DURATION:-+2 minutes}"
     ports:
       - 80:80/tcp
 
