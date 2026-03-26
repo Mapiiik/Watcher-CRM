@@ -15,9 +15,12 @@ services:
       - app-logs:/app/logs:uid=1000,gid=1000
       - app-acme:/acme
     working_dir: /app/
-    restart: always
+    restart: unless-stopped
     environment:
       DATABASE_URL: postgres://postgres@database/watcher_crm
+      SERVER_NAME: localhost # Set to your domain in production (for ACME certificate issuance)
+    env_file:
+      - config/.env
     ports:
       - 80:80/tcp
       - 443:443/tcp
@@ -26,7 +29,7 @@ services:
     image: postgres:18
     volumes:
       - app-database:/var/lib/postgresql:Z
-    restart: always
+    restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -36,7 +39,7 @@ services:
     image: redis:alpine
     volumes: 
       - app-cache:/data
-    restart: always
+    restart: unless-stopped
     ports:
       - '6379:6379'
     command: redis-server --save 20 1 --loglevel warning --requirepass redis

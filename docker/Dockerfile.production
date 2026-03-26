@@ -13,25 +13,16 @@ ENV WEB_DOCUMENT_ROOT="/app/webroot"
 # Copy app data
 COPY --chown="${APPLICATION_USER}":"${APPLICATION_USER}" ./ /app
 
-# Install acme.sh and create volume for data
-ENV LE_WORKING_DIR="/acme.sh"
-ENV LE_CONFIG_HOME="/acme"
-VOLUME [ "/acme" ]
-RUN curl https://get.acme.sh | sh
-RUN ln -s  /acme.sh/acme.sh  /usr/local/bin/acme.sh && crontab -l | grep acme.sh | sed 's#> /dev/null##' | crontab -
-
 # Install ping command
 RUN set -x \
- && apk add -U --no-cache iputils \
- && docker-image-cleanup
+ && apk add -U --no-cache iputils
 
 # Install PECL-DBASE extension
 RUN set -x \
  && apk add -U --no-cache autoconf gcc libc-dev make \
  && CPPFLAGS="-DHAVE_SYS_FILE_H" pecl install dbase \
  && docker-php-ext-enable dbase \
- && docker-run-bootstrap \
- && docker-image-cleanup
+ && docker-run-bootstrap
 
 # Composer install
 RUN gosu "${APPLICATION_USER}" composer install -d /app --no-interaction --no-dev
@@ -42,3 +33,77 @@ RUN cat <<'EOF' >> /opt/docker/provision/entrypoint.d/99-composer.sh
 gosu "${APPLICATION_USER}" composer run-script migrations -d /app
 gosu "${APPLICATION_USER}" composer run-script schema-cache -d /app
 EOF
+RUN chmod +x /opt/docker/provision/entrypoint.d/99-composer.sh
+
+###################################
+# ACME TLS certificate management #
+###################################
+# Install acme.sh and create volume for data
+ENV LE_WORKING_DIR="/acme.sh"
+ENV LE_CONFIG_HOME="/acme"
+VOLUME [ "/acme" ]
+RUN curl https://get.acme.sh | sh
+RUN ln -s /acme.sh/acme.sh /usr/local/bin/acme.sh
+
+# Set default server name for TLS certificate generation
+# (used in self-signed certs and as default domain for ACME)
+ENV SERVER_NAME="localhost"
+
+RUN cat <<'EOF' > /opt/docker/provision/entrypoint.d/90-acme.sh
+#!/bin/sh
+set -e
+
+CERT_DIR="/acme/certs/${SERVER_NAME}"
+
+mkdir -p /opt/docker/etc/nginx/ssl
+ln -sf "${CERT_DIR}/fullchain.pem" /opt/docker/etc/nginx/ssl/server.crt
+ln -sf "${CERT_DIR}/key.pem"       /opt/docker/etc/nginx/ssl/server.key
+
+if [ ! -f "${CERT_DIR}/fullchain.pem" ]; then
+  echo "No certificate found, generating self-signed cert"
+
+  mkdir -p "${CERT_DIR}"
+
+  openssl req -x509 -nodes -newkey rsa:2048 \
+    -days 365 \
+    -keyout "${CERT_DIR}/key.pem" \
+    -out "${CERT_DIR}/fullchain.pem" \
+    -subj "/CN=${SERVER_NAME}"
+fi
+EOF
+RUN chmod +x /opt/docker/provision/entrypoint.d/90-acme.sh
+
+RUN cat <<'EOF' > /opt/docker/provision/entrypoint.d/91-acme-renew.sh
+#!/bin/sh
+set -e
+
+if [ "${SERVER_NAME}" = "localhost" ]; then
+  echo "ACME disabled: SERVER_NAME is set to 'localhost'. Set a valid domain to enable automatic TLS certificates."
+else
+  CERT_DIR="/acme/certs/${SERVER_NAME}"
+
+  acme.sh --set-default-ca --server letsencrypt
+
+  if ! acme.sh --list | grep -q "${SERVER_NAME}"; then
+    echo "Certificate for ${SERVER_NAME} not found, issuing new certificate"
+    acme.sh --issue \
+      -d "${SERVER_NAME}" \
+      --webroot "${WEB_DOCUMENT_ROOT}" \
+      --key-file "${CERT_DIR}/key.pem" \
+      --fullchain-file "${CERT_DIR}/fullchain.pem" \
+      --reloadcmd "nginx -t && nginx -s reload"
+  else
+    echo "Certificate for ${SERVER_NAME} found, attempting renewal if necessary"
+  fi
+
+  (
+    while true; do
+      echo "ACME renew check for ${SERVER_NAME} at $(date)"
+      acme.sh --renew -d "${SERVER_NAME}" \
+        --reloadcmd "nginx -t && nginx -s reload"
+      sleep 12h
+    done
+  ) &
+fi
+EOF
+RUN chmod +x /opt/docker/provision/entrypoint.d/91-acme-renew.sh
