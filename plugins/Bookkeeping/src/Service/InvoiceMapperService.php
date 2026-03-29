@@ -27,6 +27,7 @@ class InvoiceMapperService
         $invoicesTable = $this->fetchTable(InvoicesTable::class);
 
         // Load customer IDs indexed by VS offset
+        /** @var iterable<int, string> $customerIds */
         $customerIds = $invoicesTable->Customers
             ->find('list', keyField: 'nid', valueField: 'id')
             ->toArray();
