@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use AuditLog\Persister\TablePersister;
+use AuditStash\Persister\TablePersister;
 use CakeDC\Users\Model\Table\UsersTable;
 use Override;
 
@@ -40,10 +40,10 @@ class AppUsersTable extends UsersTable
         parent::initialize($config);
 
         // Persisting audit log
-        $this->addBehavior('AuditLog.AuditLog');
-        /** @var \AuditLog\Model\Behavior\AuditLogBehavior $auditLog */
+        $this->addBehavior('AuditStash.AuditLog');
+        /** @var \AuditStash\Model\Behavior\AuditLogBehavior $auditLog */
         $auditLog = $this->getBehavior('AuditLog');
-        /** @var \AuditLog\Persister\TablePersister $auditLogPersister */
+        /** @var \AuditStash\Persister\TablePersister $auditLogPersister */
         $auditLogPersister = $auditLog->persister();
         $auditLogPersister->setConfig([
             'serializeFields' => false,

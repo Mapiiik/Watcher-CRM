@@ -19,7 +19,7 @@ namespace App\Controller;
 use App\Controller\Traits\AdditionalParametersTrait;
 use App\Controller\Traits\ErrorFormatterTrait;
 use App\Controller\Traits\RedirectionTrait;
-use AuditLog\Meta\RequestMetadata;
+use AuditStash\Meta\RequestMetadata;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Datasource\Paging\PaginatedInterface;
@@ -194,7 +194,11 @@ class AppController extends Controller
         /** @psalm-suppress RedundantCondition */
         if ($identity != null) {
             EventManager::instance()->on(
-                new RequestMetadata($this->getRequest(), $identity['username']),
+                new RequestMetadata(
+                    request: $this->getRequest(),
+                    userId: $identity['id'] ? (string)$identity['id'] : null,
+                    userDisplay: $identity['username'] ? (string)$identity['username'] : null,
+                ),
             );
         }
 

@@ -29,6 +29,7 @@ use Cake\Routing\Router;
 /*
  * Redirect /legacy/ URLs to /admin/ with all parameters if not called from CLI
  */
+/*
 if (PHP_SAPI !== 'cli') {
     $url =
         (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http')
@@ -43,6 +44,7 @@ if (PHP_SAPI !== 'cli') {
         die;
     }
 }
+*/
 
 /*
  * This file is loaded in the context of the `Application` class.
