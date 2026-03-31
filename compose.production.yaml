@@ -19,10 +19,10 @@ services:
     environment:
       DATABASE_URL: postgres://postgres@database/watcher_crm
       CACHE_DURATION: "${CACHE_DURATION:-+10 days}"
-      CACHE_DEFAULT_URL: "redis://cache:6379/?database=0&password=redis&prefix=${APP_NAME}_default_&duration=${CACHE_DURATION:-+10 days}"
-      CACHE_CAKECORE_URL: "redis://cache:6379/?database=0&password=redis&prefix=${APP_NAME}_cake_core_&duration=${CACHE_DURATION:-+10 days}"
-      CACHE_CAKEMODEL_URL: "redis://cache:6379/?database=0&password=redis&prefix=${APP_NAME}_cake_model_&duration=${CACHE_DURATION:-+10 days}"
-      CACHE_APICLIENT_URL: "redis://cache:6379/?database=0&password=redis&prefix=${APP_NAME}_api_client_&duration=${CACHE_DURATION:-+10 days}"
+      CACHE_DEFAULT_URL: "redis://cache:6379/?database=0&password=redis&prefix=${APP_NAME:-localhost}_default_&duration=${CACHE_DURATION:-+10 days}"
+      CACHE_CAKECORE_URL: "redis://cache:6379/?database=0&password=redis&prefix=${APP_NAME:-localhost}_cake_core_&duration=${CACHE_DURATION:-+10 days}"
+      CACHE_CAKEMODEL_URL: "redis://cache:6379/?database=0&password=redis&prefix=${APP_NAME:-localhost}_cake_model_&duration=${CACHE_DURATION:-+10 days}"
+      CACHE_APICLIENT_URL: "redis://cache:6379/?database=0&password=redis&prefix=${APP_NAME:-localhost}_api_client_&duration=${CACHE_DURATION:-+10 days}"
       SERVER_NAME: ${APP_NAME:-localhost} # Set to your domain in production (for ACME certificate issuance)
     env_file:
       - ./config/.env
