@@ -14,13 +14,18 @@ class ApiClient
     /**
      * POST request to Watcher Agent
      *
-     * @param string $function
-     * @return \Cake\Http\Client\Response
+     * @param string $function API function to call (e.g., 'radius/disconnect')
+     * @param array<string, mixed> $data Data to send in the request body
+     * @param int $timeout Timeout in seconds
      */
     private static function postRequest(string $function, array $data = [], int $timeout = 30): Response
     {
         $agentUrl = rtrim((string)env('WATCHER_AGENT_URL'), '/');
         $agentToken = (string)env('WATCHER_AGENT_TOKEN');
+
+        if ($agentUrl === '' || $agentToken === '') {
+            throw new RuntimeException(__('Watcher Agent is not configured.'));
+        }
 
         // Create HTTP client
         $http = new Client([
@@ -62,28 +67,33 @@ class ApiClient
                 timeout: 10,
             );
         } catch (Throwable $e) {
-            throw new RuntimeException(__(
-                'Watcher Agent is unreachable: {0}',
-                $e->getMessage(),
-            ));
-        }
-
-        if (!$response->isOk()) {
-            throw new RuntimeException(__(
-                'Watcher Agent returned HTTP {0}',
-                $response->getStatusCode(),
-            ));
+            throw new RuntimeException(
+                __('Watcher Agent is unreachable: {0}', $e->getMessage()),
+                previous: $e,
+            );
         }
 
         $data = $response->getJson();
+        $message = is_array($data) ? ($data['message'] ?? null) : null;
 
-        if (is_array($data) && array_key_exists('reachable', $data)) {
-            return $data;
-        } else {
+        if (!$response->isOk()) {
+            throw new RuntimeException(
+                __(
+                    'Watcher Agent returned HTTP {0} ({1})',
+                    $response->getStatusCode(),
+                    $message ?? __('Unknown error'),
+                ),
+            );
+        }
+
+        if (!is_array($data) || !isset($data['reachable'])) {
             throw new RuntimeException(__(
-                'Invalid response from Watcher Agent',
+                'Watcher Agent returned an unexpected response: {0}',
+                $message ?? __('Unknown error'),
             ));
         }
+
+        return $data;
     }
 
     /**
@@ -111,24 +121,29 @@ class ApiClient
                 timeout: 10,
             );
         } catch (Throwable $e) {
-            throw new RuntimeException(__(
-                'Watcher Agent is unreachable: {0}',
-                $e->getMessage(),
-            ));
-        }
-
-        if (!$response->isOk()) {
-            throw new RuntimeException(__(
-                'Watcher Agent returned HTTP {0}',
-                $response->getStatusCode(),
-            ));
+            throw new RuntimeException(
+                __('Watcher Agent is unreachable: {0}', $e->getMessage()),
+                previous: $e,
+            );
         }
 
         $data = $response->getJson();
+        $message = is_array($data) ? ($data['message'] ?? null) : null;
+
+        if (!$response->isOk()) {
+            throw new RuntimeException(
+                __(
+                    'Watcher Agent returned HTTP {0} ({1})',
+                    $response->getStatusCode(),
+                    $message ?? __('Unknown error'),
+                ),
+            );
+        }
 
         if (!is_array($data) || !isset($data['success'])) {
             throw new RuntimeException(__(
-                'Invalid response from Watcher Agent',
+                'Watcher Agent returned an unexpected response: {0}',
+                $message ?? __('Unknown error'),
             ));
         }
 
