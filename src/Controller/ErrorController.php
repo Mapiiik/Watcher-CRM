@@ -17,6 +17,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Event\EventInterface;
+use Cake\View\JsonView;
 use Override;
 
 /**
@@ -35,6 +36,9 @@ class ErrorController extends AppController
     public function initialize(): void
     {
         // Only add parent::initialize() if you are confident your appcontroller is safe.
+
+        // Add JsonView to supported view classes for error responses
+        $this->addViewClasses([JsonView::class]);
     }
 
     /**
