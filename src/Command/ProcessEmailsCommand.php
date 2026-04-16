@@ -18,6 +18,7 @@ use Cake\Mailer\Mailer;
 use Cake\Mailer\Message;
 use InvalidArgumentException;
 use Override;
+use RuntimeException;
 use Throwable;
 
 /**
@@ -153,15 +154,23 @@ class ProcessEmailsCommand extends Command
                     // send message
                     $mailer->deliver($emailMessage->body);
 
+                    $messageId = $mailer->getMessageId();
+                    if (!is_string($messageId) || empty($messageId)) {
+                        throw new RuntimeException(
+                            'Mailer did not return a valid message ID after sending email message with ID '
+                                . $emailMessage->id,
+                        );
+                    }
+
                     // info to console
                     $io->info(__(
                         'Message with ID {0} was sent with identifier: {1}',
                         $emailMessage->id,
-                        $mailer->getMessageId(),
+                        $messageId,
                     ));
                     // patch entity data
                     $emailMessage->processed = DateTime::now();
-                    $emailMessage->identifier = $mailer->getMessageId();
+                    $emailMessage->identifier = $messageId;
                     $emailMessage->delivery_status = CustomerMessageDeliveryStatus::Sent;
                     $customerMessagesTable->saveOrFail($emailMessage);
                 } catch (Throwable $e) {

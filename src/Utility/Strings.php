@@ -34,7 +34,7 @@ class Strings
      * Generate password with unique characters.
      *
      * @param int $length Length of new password
-     * @param string $possible Available chars for password
+     * @param non-empty-string $possible Available chars for password
      * @return string
      */
     public static function generatePassword(

@@ -25,6 +25,7 @@ use Cake\ORM\Query\SelectQuery;
 use Cake\Validation\Validation;
 use Exception;
 use Ruian\Model\Table\AddressesTable;
+use RuntimeException;
 use stdClass;
 
 /**
@@ -459,6 +460,7 @@ class OverviewsController extends AppController
     {
         $month_to_display = new Date($this->getRequest()->getQuery('month_to_display', 'now'));
 
+        /** @var \Cake\Collection\CollectionInterface<string, \Cake\Collection\CollectionInterface<string, \stdClass>> $cto_categories */
         $cto_categories = $this->fetchTable(BillingsTable::class)->find()
             ->contain('Customers')
             ->contain([
@@ -653,8 +655,13 @@ class OverviewsController extends AppController
                 $csv_data .= implode(';', $row) . PHP_EOL;
             }
 
+            $csv_data_cp1250 = iconv('UTF-8', 'CP1250', $csv_data);
+            if ($csv_data_cp1250 === false) {
+                throw new RuntimeException('Unable to convert CSV data from UTF-8 encoding to CP1250 encoding.');
+            }
+
             return $this->response
-                ->withStringBody(iconv('UTF-8', 'CP1250', $csv_data))
+                ->withStringBody($csv_data_cp1250)
                 ->withType('csv')
                 ->withDownload(
                     $category . '.csv',

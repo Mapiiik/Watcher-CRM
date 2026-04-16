@@ -94,13 +94,17 @@ class CustomerMessage extends Entity
                         $recipientsOutput[] = str_replace(' ', '', $item);
                     }
                 } else {
-                    throw new InvalidArgumentException("Invalid recipients data: $recipientsInput");
+                    throw new InvalidArgumentException(
+                        'Invalid recipients data: ' . json_encode($recipientsInput),
+                    );
                 }
             }
 
             return $recipientsOutput;
         }
 
-        throw new InvalidArgumentException("Invalid recipients data: $recipientsInput");
+        throw new InvalidArgumentException(
+            'Invalid recipients data: ' . json_encode($recipientsInput),
+        );
     }
 }

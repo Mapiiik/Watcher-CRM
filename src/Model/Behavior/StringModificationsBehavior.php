@@ -38,19 +38,24 @@ class StringModificationsBehavior extends Behavior
             if (is_string($value)) {
                 // replace bad chars
                 if ($this->_config['replaceBadCharacters']) {
-                    $value = mb_ereg_replace('–', '-', $value);
-                    $data[$key] = $value;
+                    $replaced = mb_ereg_replace('–', '-', $value);
+
+                    if (is_string($replaced)) {
+                        $value = $replaced;
+                    }
                 }
                 // trim
                 if ($this->_config['trim']) {
-                    $data[$key] = trim($value);
+                    $value = trim($value);
                 }
                 // empty as null
                 if ($this->_config['emptyAsNull']) {
                     if ($value === '') {
-                        $data[$key] = null;
+                        $value = null;
                     }
                 }
+                // update value in data
+                $data[$key] = $value;
             }
         }
     }

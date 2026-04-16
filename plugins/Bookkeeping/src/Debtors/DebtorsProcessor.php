@@ -465,14 +465,17 @@ class DebtorsProcessor
         /** @var \App\Model\Table\CustomerLabelsTable $customerLabelsTable */
         $customerLabelsTable = $this->fetchTable(CustomerLabelsTable::class);
 
+        /** @var array<\App\Model\Entity\CustomerLabel> $customerLabelsToDelete */
+        $customerLabelsToDelete = $customerLabelsTable
+            ->find()
+            ->where([
+                'label_id' => $labelId,
+                'customer_id' => $id,
+            ])
+            ->all();
+
         return $customerLabelsTable->deleteMany(
-            $customerLabelsTable
-                ->find()
-                ->where([
-                    'label_id' => $labelId,
-                    'customer_id' => $id,
-                ])
-                ->all(),
+            $customerLabelsToDelete,
         );
     }
 
@@ -496,14 +499,17 @@ class DebtorsProcessor
         /** @var \App\Model\Table\CustomerLabelsTable $customerLabelsTable */
         $customerLabelsTable = $this->fetchTable(CustomerLabelsTable::class);
 
+        /** @var array<\App\Model\Entity\CustomerLabel> $customerLabelsToDelete */
+        $customerLabelsToDelete = $customerLabelsTable
+            ->find()
+            ->where([
+                'label_id' => $labelId,
+                'modified <' => $older_than,
+            ])
+            ->all();
+
         return $customerLabelsTable->deleteMany(
-            $customerLabelsTable
-                ->find()
-                ->where([
-                    'label_id' => $labelId,
-                    'modified <' => $older_than,
-                ])
-                ->all(),
+            $customerLabelsToDelete,
         );
     }
 
@@ -596,7 +602,21 @@ class DebtorsProcessor
         }
         $result = '';
 
-        $routers = explode(' ', env('DEBTORS_ROUTERS_IP_ADDRESSES', ''));
+        $routersIpAddresses = env('DEBTORS_ROUTERS_IP_ADDRESSES');
+        if (!is_string($routersIpAddresses) || empty($routersIpAddresses)) {
+            throw new InvalidArgumentException(
+                'DEBTORS_ROUTERS_IP_ADDRESSES environment variable is not set or is not a string.',
+            );
+        }
+
+        $addressList = env('DEBTORS_ADDRESS_LIST');
+        if (!is_string($addressList) || empty($addressList)) {
+            throw new InvalidArgumentException(
+                'DEBTORS_ADDRESS_LIST environment variable is not set or is not a string.',
+            );
+        }
+
+        $routers = explode(' ', $routersIpAddresses);
         foreach ($routers as $router) {
             $client = new Client([
                 'host' => $router,
@@ -608,7 +628,7 @@ class DebtorsProcessor
             if ($clear) {
                 $query = new Query('/ip/firewall/address-list/print');
                 $query
-                    ->where('list', env('DEBTORS_ADDRESS_LIST', ''))
+                    ->where('list', $addressList)
                     ->equal('.proplist', '.id,address');
 
                 $response = $client->query($query)->read();
@@ -636,7 +656,7 @@ class DebtorsProcessor
                     $query = new Query('/ip/firewall/address-list/print');
                     $query
                         ->where('address', $ipv4)
-                        ->where('list', env('DEBTORS_ADDRESS_LIST', ''))
+                        ->where('list', $addressList)
                         ->equal('.proplist', '.id');
 
                     $response = $client->query($query)->read();
@@ -663,7 +683,7 @@ class DebtorsProcessor
                     $query = new Query('/ip/firewall/address-list/add');
                     $query
                         ->equal('address', $ipv4)
-                        ->equal('list', env('DEBTORS_ADDRESS_LIST', ''))
+                        ->equal('list', $addressList)
                         ->equal('comment', addslashes(Strings::removeAccents($comment)));
 
                     $response = $client->query($query)->read();
@@ -685,7 +705,7 @@ class DebtorsProcessor
             if ($clear) {
                 $query = new Query('/ipv6/firewall/address-list/print');
                 $query
-                    ->where('list', env('DEBTORS_ADDRESS_LIST', ''))
+                    ->where('list', $addressList)
                     ->equal('.proplist', '.id,address');
 
                 $response = $client->query($query)->read();
@@ -713,7 +733,7 @@ class DebtorsProcessor
                     $query = new Query('/ipv6/firewall/address-list/print');
                     $query
                         ->where('address', $ipv6)
-                        ->where('list', env('DEBTORS_ADDRESS_LIST', ''))
+                        ->where('list', $addressList)
                         ->equal('.proplist', '.id');
 
                     $response = $client->query($query)->read();
@@ -740,7 +760,7 @@ class DebtorsProcessor
                     $query = new Query('/ipv6/firewall/address-list/add');
                     $query
                         ->equal('address', $ipv6)
-                        ->equal('list', env('DEBTORS_ADDRESS_LIST', ''))
+                        ->equal('list', $addressList)
                         ->equal('comment', addslashes(Strings::removeAccents($comment)));
 
                     $response = $client->query($query)->read();

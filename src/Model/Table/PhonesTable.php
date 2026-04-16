@@ -109,8 +109,12 @@ class PhonesTable extends AppTable
         $rules->add(
             function ($entity, $_options) {
                 $phoneUtil = PhoneNumberUtil::getInstance();
+
+                $phoneRegion = env('APP_DEFAULT_PHONE_REGION');
+                $phoneRegion = is_string($phoneRegion) && !empty($phoneRegion) ? $phoneRegion : null;
+
                 try {
-                    $phoneNumber = $phoneUtil->parse($entity->phone, env('APP_DEFAULT_PHONE_REGION'));
+                    $phoneNumber = $phoneUtil->parse($entity->phone, $phoneRegion);
 
                     return $phoneUtil->isValidNumber($phoneNumber);
                 } catch (NumberParseException $e) {
@@ -140,8 +144,12 @@ class PhonesTable extends AppTable
     {
         if (isset($data['phone']) && is_string($data['phone']) && (strlen($data['phone']) > 0)) {
             $phoneUtil = PhoneNumberUtil::getInstance();
+
+            $phoneRegion = env('APP_DEFAULT_PHONE_REGION');
+            $phoneRegion = is_string($phoneRegion) && !empty($phoneRegion) ? $phoneRegion : null;
+
             try {
-                $phoneNumber = $phoneUtil->parse($data['phone'], env('APP_DEFAULT_PHONE_REGION'));
+                $phoneNumber = $phoneUtil->parse($data['phone'], $phoneRegion);
 
                 if ($phoneUtil->isValidNumber($phoneNumber)) {
                     // The phone number is fine, formatting...

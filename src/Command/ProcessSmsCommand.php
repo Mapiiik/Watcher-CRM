@@ -129,9 +129,18 @@ class ProcessSmsCommand extends Command
         $io->info(__('Processing SMS messages:'));
 
         $login = env('ANDROID_SMS_GATEWAY_LOGIN');
+        $login = is_string($login) ? $login : null;
+
         $password = env('ANDROID_SMS_GATEWAY_PASSWORD');
+        if (!is_string($password) || empty($password)) {
+            $io->abort(__('ANDROID_SMS_GATEWAY_PASSWORD is not set in environment variables.'));
+        }
+
         $passphrase = env('ANDROID_SMS_GATEWAY_PASSPHRASE');
-        $serverUrl = env('ANDROID_SMS_GATEWAY_URL', Client::DEFAULT_URL);
+        $passphrase = is_string($passphrase) ? $passphrase : null;
+
+        $serverUrl = env('ANDROID_SMS_GATEWAY_URL');
+        $serverUrl = is_string($serverUrl) ? $serverUrl : Client::DEFAULT_URL;
 
         // Prepare encryption if passphrase is set
         if (!empty($passphrase)) {

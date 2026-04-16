@@ -18,6 +18,13 @@ class AddContractStateIdToContracts extends BaseMigration
         // fetch a default contract state
         $contract_state = $this->fetchRow('SELECT id FROM contract_states WHERE name = \'Default\'');
 
+        if ($contract_state === false) {
+            throw new RuntimeException(
+                'Default contract state not found.'
+                    . ' Please create a contract state with the name "Default" before running this migration.',
+            );
+        }
+
         $table = $this->table('contracts');
         $table->addColumn('contract_state_id', 'uuid', [
             'default' => $contract_state['id'],

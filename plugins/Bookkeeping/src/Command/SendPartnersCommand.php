@@ -183,7 +183,7 @@ class SendPartnersCommand extends Command
 
             // Delegate sending to provider
             $bookkeeping = new BookkeepingService();
-            $bookkeeping->sendPartners($customers);
+            $bookkeeping->sendPartners(array_values($customers));
 
             $io->success(__d(
                 'bookkeeping',

@@ -8,6 +8,9 @@ use App\Model\Table\CustomersTable;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use InvalidArgumentException;
 use Radius\Model\Entity\Account;
+use Radius\Model\Entity\Radcheck;
+use Radius\Model\Entity\Radreply;
+use Radius\Model\Entity\Radusergroup;
 
 /**
  * RADIUS Updater Changelog
@@ -58,8 +61,9 @@ class ChangeLog
     /**
      * Add change for related data
      *
-     * @param array<\Radius\Model\Entity\Radcheck>|array<\Radius\Model\Entity\Radreply>|array<\Radius\Model\Entity\Radusergroup> $original
-     * @param array<\Radius\Model\Entity\Radcheck>|array<\Radius\Model\Entity\Radreply>|array<\Radius\Model\Entity\Radusergroup> $changed
+     * @template T of \Radius\Model\Entity\Radcheck|\Radius\Model\Entity\Radreply|\Radius\Model\Entity\Radusergroup
+     * @param array<T> $original
+     * @param array<T> $changed
      * @throws \InvalidArgumentException When unsupported related data.
      */
     public function addChangeForRelatedData(
@@ -80,19 +84,79 @@ class ChangeLog
 
         switch ($relatedData) {
             case 'radcheck':
-                /** @psalm-suppress InvalidArgument */
-                $change->setRadcheckChange(new RadcheckChange($original, $changed));
+                $change->setRadcheckChange(
+                    new RadcheckChange(
+                        $this->assertRadcheckArray($original),
+                        $this->assertRadcheckArray($changed),
+                    ),
+                );
                 break;
+
             case 'radreply':
-                /** @psalm-suppress InvalidArgument */
-                $change->setRadreplyChange(new RadreplyChange($original, $changed));
+                $change->setRadreplyChange(
+                    new RadreplyChange(
+                        $this->assertRadreplyArray($original),
+                        $this->assertRadreplyArray($changed),
+                    ),
+                );
                 break;
+
             case 'radusergroup':
-                /** @psalm-suppress InvalidArgument */
-                $change->setRadusergroupChange(new RadusergroupChange($original, $changed));
+                $change->setRadusergroupChange(
+                    new RadusergroupChange(
+                        $this->assertRadusergroupArray($original),
+                        $this->assertRadusergroupArray($changed),
+                    ),
+                );
                 break;
+
             default:
                 throw new InvalidArgumentException("Invalid related data: $relatedData");
         }
+    }
+
+    /**
+     * @param array<mixed> $data
+     * @return array<\Radius\Model\Entity\Radcheck>
+     */
+    private function assertRadcheckArray(array $data): array
+    {
+        foreach ($data as $item) {
+            if (!$item instanceof Radcheck) {
+                throw new InvalidArgumentException('Expected Radcheck[]');
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param array<mixed> $data
+     * @return array<\Radius\Model\Entity\Radreply>
+     */
+    private function assertRadreplyArray(array $data): array
+    {
+        foreach ($data as $item) {
+            if (!$item instanceof Radreply) {
+                throw new InvalidArgumentException('Expected Radreply[]');
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param array<mixed> $data
+     * @return array<\Radius\Model\Entity\Radusergroup>
+     */
+    private function assertRadusergroupArray(array $data): array
+    {
+        foreach ($data as $item) {
+            if (!$item instanceof Radusergroup) {
+                throw new InvalidArgumentException('Expected Radusergroup[]');
+            }
+        }
+
+        return $data;
     }
 }

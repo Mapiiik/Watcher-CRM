@@ -177,10 +177,13 @@ class PhonesController extends AppController
 
         $phoneUtil = PhoneNumberUtil::getInstance();
 
+        $phoneRegion = env('APP_DEFAULT_PHONE_REGION');
+        $phoneRegion = is_string($phoneRegion) && !empty($phoneRegion) ? $phoneRegion : null;
+
         // check the formatting of the phone number and update it if necessary
         foreach ($phones as $phone) {
             try {
-                $phoneNumber = $phoneUtil->parse($phone->phone, env('APP_DEFAULT_PHONE_REGION'));
+                $phoneNumber = $phoneUtil->parse($phone->phone, $phoneRegion);
 
                 if ($phoneUtil->isValidNumber($phoneNumber)) {
                     // The phone number is fine, formatting...

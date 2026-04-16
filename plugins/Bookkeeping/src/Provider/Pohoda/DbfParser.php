@@ -96,8 +96,10 @@ final class DbfParser
     {
         foreach ($record as $key => $value) {
             if (is_string($value)) {
+                $utf8Value = iconv('CP852', 'UTF-8', $value);
+
                 $record[$key] = trim(
-                    iconv('CP852', 'UTF-8', $value),
+                    $utf8Value !== false ? $utf8Value : $value,
                 );
             }
         }

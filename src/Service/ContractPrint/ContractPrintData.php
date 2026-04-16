@@ -8,6 +8,7 @@ use App\Model\Entity\Contract;
 use App\Model\Entity\ContractVersion;
 use App\Model\Enum\ContractPrintType;
 use Cake\Collection\Collection;
+use Cake\Collection\CollectionInterface;
 use Cake\I18n\Date;
 
 /**
@@ -98,16 +99,16 @@ final class ContractPrintData
      *  - individual billings
      *  - standard billings
      *
-     * @var \Cake\Collection\Collection<array-key, \App\Model\Entity\Billing>
+     * @var \Cake\Collection\CollectionInterface<array-key, \App\Model\Entity\Billing>
      */
-    public Collection $activeBillings;
+    public CollectionInterface $activeBillings;
 
     /**
      * Future billings starting after the contract version validity.
      *
-     * @var \Cake\Collection\Collection<array-key, \App\Model\Entity\Billing>
+     * @var \Cake\Collection\CollectionInterface<array-key, \App\Model\Entity\Billing>
      */
-    public Collection $futureBillings;
+    public CollectionInterface $futureBillings;
 
     /**
      * Constructor.
@@ -133,9 +134,9 @@ final class ContractPrintData
     }
 
     /**
-     * @return \Cake\Collection\Collection<array-key, \App\Model\Entity\Billing>
+     * @return \Cake\Collection\CollectionInterface<array-key, \App\Model\Entity\Billing>
      */
-    public function getActiveStandardBillings(): Collection
+    public function getActiveStandardBillings(): CollectionInterface
     {
         return $this->activeBillings->filter(
             fn(Billing $billing) => !$billing->__isset('price'),
@@ -143,9 +144,9 @@ final class ContractPrintData
     }
 
     /**
-     * @return \Cake\Collection\Collection<array-key, \App\Model\Entity\Billing>
+     * @return \Cake\Collection\CollectionInterface<array-key, \App\Model\Entity\Billing>
      */
-    public function getActiveIndividualBillings(): Collection
+    public function getActiveIndividualBillings(): CollectionInterface
     {
         return $this->activeBillings->filter(
             fn(Billing $billing) => $billing->__isset('price'),
@@ -153,9 +154,9 @@ final class ContractPrintData
     }
 
     /**
-     * @return \Cake\Collection\Collection<array-key, \App\Model\Entity\Billing>
+     * @return \Cake\Collection\CollectionInterface<array-key, \App\Model\Entity\Billing>
      */
-    public function getFutureStandardBillings(): Collection
+    public function getFutureStandardBillings(): CollectionInterface
     {
         return $this->futureBillings->filter(
             fn(Billing $billing) => !$billing->__isset('price'),
@@ -163,9 +164,9 @@ final class ContractPrintData
     }
 
     /**
-     * @return \Cake\Collection\Collection<array-key, \App\Model\Entity\Billing>
+     * @return \Cake\Collection\CollectionInterface<array-key, \App\Model\Entity\Billing>
      */
-    public function getFutureIndividualBillings(): Collection
+    public function getFutureIndividualBillings(): CollectionInterface
     {
         return $this->futureBillings->filter(
             fn(Billing $billing) => $billing->__isset('price'),

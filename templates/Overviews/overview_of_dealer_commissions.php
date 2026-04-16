@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface<string, mixed> $dealers
+ * @var \Cake\Collection\CollectionInterface<string, iterable<\App\Model\Entity\DealerCommission>> $dealers
  * @var \Cake\I18n\Date $month_to_display
  */
 ?>
@@ -46,8 +46,12 @@
                         <br>
 
                         <?php if (!empty($dealerCommission->commission->contracts)) : ?>
+                            <?php
+                            $totalPrice = $dealerCommission->commission->get('total_price') ?? null;
+                            $totalPrice = is_numeric($totalPrice) ? (float)$totalPrice : null;
+                            ?>
                         <div><?= __('Total Price') . ': '
-                            . $this->Number->currency($dealerCommission->commission['total_price']) ?></div>
+                            . $this->Number->currency($totalPrice) ?></div>
                         <div class="table-responsive">
                             <table>
                                 <tr>
@@ -81,7 +85,7 @@
                                             ? h($contract->customer->number) : '' ?></td>
                                         <td><?=
                                             $this->Html->link(
-                                                $contract->number,
+                                                $contract->number ?? __('Unknown'),
                                                 [
                                                     'controller' => 'Contracts',
                                                     'action' => 'view',

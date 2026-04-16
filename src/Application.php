@@ -65,15 +65,15 @@ class Application extends BaseApplication
         Configure::write('Users.config', ['users']);
 
         // Set time and date format if specified in environment
-        if (!empty(env('APP_TIME_FORMAT'))) {
+        if (is_string(env('APP_TIME_FORMAT'))) {
             DateTime::setToStringFormat(env('APP_TIME_FORMAT'));
         }
-        if (!empty(env('APP_DATE_FORMAT'))) {
+        if (is_string(env('APP_DATE_FORMAT'))) {
             Date::setToStringFormat(env('APP_DATE_FORMAT'));
         }
 
         // Set default currency if specified in environment
-        if (!empty(env('APP_DEFAULT_CURRENCY'))) {
+        if (is_string(env('APP_DEFAULT_CURRENCY'))) {
             Number::setDefaultCurrency(env('APP_DEFAULT_CURRENCY'));
         }
     }

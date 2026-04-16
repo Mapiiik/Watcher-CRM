@@ -31,6 +31,7 @@ $checkConnection = function (string $name) {
     $error = null;
     $connected = false;
     try {
+        /** @phpstan-ignore-next-line */
         ConnectionManager::get($name)->getDriver()->connect();
         // No exception means success
         $connected = true;

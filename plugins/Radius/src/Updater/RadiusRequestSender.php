@@ -67,10 +67,24 @@ class RadiusRequestSender
 
         $disconnected = false;
 
+        $radiusSecret = env('RADIUS_SECRET');
+        if (!is_string($radiusSecret) || empty($radiusSecret)) {
+            $this->Messages->error(__d(
+                'radius',
+                'The RADIUS session for {0} started on {1} could not be disconnected'
+                    . ' because RADIUS_SECRET is not set in environment variables.',
+                $session->username,
+                $session->acctstarttime,
+            ));
+
+            // skip further processing and return false
+            return false;
+        }
+
         $client = new RadiusClient('udp://' . $session->nasipaddress . ':1700', /* timeout */ 3);
         try {
             $response = $client->send(
-                new Packet(PacketType::DISCONNECT_REQUEST(), /* secret */ env('RADIUS_SECRET'), [
+                new Packet(PacketType::DISCONNECT_REQUEST(), /* secret */ $radiusSecret, [
                     'User-Name' => $session->username,
                     'Acct-Session-Id' => $session->acctsessionid,
                     'Framed-IP-Address' => $session->framedipaddress,
@@ -193,7 +207,7 @@ class RadiusRequestSender
     /**
      * This private function formats disconnect errors and returns a string representation of the errors.
      *
-     * @param list<mixed> $error_codes The list containing the disconnect errors.
+     * @param array<array-key, int> $error_codes The list containing the disconnect errors.
      * @return string The string representation of the disconnect errors.
      */
     private function formatDisconnectErrors(array $error_codes): string

@@ -6,6 +6,7 @@ namespace App\Model\Entity;
 use Cake\I18n\Date;
 use Cake\ORM\Entity;
 use Exception;
+use InvalidArgumentException;
 use PhpCollective\DecimalObject\Decimal;
 
 /**
@@ -215,12 +216,18 @@ class Billing extends Entity
     ): Decimal {
         $exponent = $scale + 6;
 
+        $numberString = (string)$number;
+
+        if (!is_numeric($numberString)) {
+            throw new InvalidArgumentException('Decimal value is not numeric: ' . $numberString);
+        }
+
         $e = bcpow('10', (string)$exponent);
         switch ($roundMode) {
             case Decimal::ROUND_FLOOR:
                 $result = bcdiv(
                     bcadd(
-                        bcmul((string)$number, $e, 0),
+                        bcmul($numberString, $e, 0),
                         $number->isNegative() ? '-999999' : '0',
                     ),
                     $e,
@@ -231,7 +238,7 @@ class Billing extends Entity
             case Decimal::ROUND_CEIL:
                 $result = bcdiv(
                     bcadd(
-                        bcmul((string)$number, $e, 0),
+                        bcmul($numberString, $e, 0),
                         $number->isNegative() ? '0' : '999999',
                     ),
                     $e,
@@ -243,7 +250,7 @@ class Billing extends Entity
             default:
                 $result = bcdiv(
                     bcadd(
-                        bcmul((string)$number, $e, 0),
+                        bcmul($numberString, $e, 0),
                         $number->isNegative() ? '-500000' : '500000',
                     ),
                     $e,

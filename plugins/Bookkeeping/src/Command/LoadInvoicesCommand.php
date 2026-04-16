@@ -183,7 +183,7 @@ class LoadInvoicesCommand extends Command
     {
         $value = $args->getOption('last_changes');
 
-        if ($value !== null) {
+        if ($value !== null && is_string($value)) {
             try {
                 return DateTime::createFromFormat('Y-m-d H:i:s', $value);
             } catch (Throwable) {
