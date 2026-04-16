@@ -7,6 +7,6 @@ return [
     'Users.Superuser.allowedToChangeSettings' => true,
     'Users.Social.login' => false,
     'Auth.AuthenticationComponent.loginRedirect' => '/users/profile',
-    'OAuth.providers.google.options.clientId' => env('GOOLE_OAUTH_CLIENT_ID', null),
-    'OAuth.providers.google.options.clientSecret' => env('GOOLE_OAUTH_CLIENT_SECRET', null),
+    'OAuth.providers.google.options.clientId' => env('GOOGLE_OAUTH_CLIENT_ID', null),
+    'OAuth.providers.google.options.clientSecret' => env('GOOGLE_OAUTH_CLIENT_SECRET', null),
 ];
