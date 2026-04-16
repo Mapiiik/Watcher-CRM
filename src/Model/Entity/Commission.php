@@ -3,17 +3,9 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
-
 /**
  * Commission Entity
  *
- * @property \Cake\I18n\DateTime|null $created
- * @property string|null $created_by
- * @property \App\Model\Entity\AppUser|null $creator
- * @property \Cake\I18n\DateTime|null $modified
- * @property string|null $modified_by
- * @property \App\Model\Entity\AppUser|null $modifier
  * @property string $id
  * @property int $nid
  * @property string|null $name
@@ -21,7 +13,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\DealerCommission[] $dealer_commissions
  * @property \App\Model\Entity\Contract[] $contracts
  */
-class Commission extends Entity
+class Commission extends AppEntity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

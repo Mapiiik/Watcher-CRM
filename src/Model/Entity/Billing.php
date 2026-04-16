@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use Cake\I18n\Date;
-use Cake\ORM\Entity;
 use Exception;
 use InvalidArgumentException;
 use PhpCollective\DecimalObject\Decimal;
@@ -12,12 +11,6 @@ use PhpCollective\DecimalObject\Decimal;
 /**
  * Billing Entity
  *
- * @property \Cake\I18n\DateTime|null $created
- * @property string|null $created_by
- * @property \App\Model\Entity\AppUser|null $creator
- * @property \Cake\I18n\DateTime|null $modified
- * @property string|null $modified_by
- * @property \App\Model\Entity\AppUser|null $modifier
  * @property string $id
  * @property int $nid
  * @property string $customer_id
@@ -48,7 +41,7 @@ use PhpCollective\DecimalObject\Decimal;
  * @property \App\Model\Entity\Service|null $service
  * @property \App\Model\Entity\Contract $contract
  */
-class Billing extends Entity
+class Billing extends AppEntity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

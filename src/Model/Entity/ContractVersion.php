@@ -3,17 +3,9 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
-
 /**
  * ContractVersion Entity
  *
- * @property \Cake\I18n\DateTime|null $created
- * @property string|null $created_by
- * @property \App\Model\Entity\AppUser|null $creator
- * @property \Cake\I18n\DateTime|null $modified
- * @property string|null $modified_by
- * @property \App\Model\Entity\AppUser|null $modifier
  * @property string $id
  * @property string $contract_id
  * @property \Cake\I18n\Date $valid_from
@@ -27,7 +19,7 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\Contract $contract
  */
-class ContractVersion extends Entity
+class ContractVersion extends AppEntity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

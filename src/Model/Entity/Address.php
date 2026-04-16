@@ -4,17 +4,10 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use App\Model\Enum\AddressNumberType;
-use Cake\ORM\Entity;
 
 /**
  * Address Entity
  *
- * @property \Cake\I18n\DateTime|null $created
- * @property string|null $created_by
- * @property \App\Model\Entity\AppUser|null $creator
- * @property \Cake\I18n\DateTime|null $modified
- * @property string|null $modified_by
- * @property \App\Model\Entity\AppUser|null $modifier
  * @property string $id
  * @property int $nid
  * @property \App\Model\Enum\AddressType $type
@@ -46,7 +39,7 @@ use Cake\ORM\Entity;
  * @property string $zip_and_city
  * @property string $full_address
  */
-class Address extends Entity
+class Address extends AppEntity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

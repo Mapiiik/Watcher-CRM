@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use Cake\I18n\Date;
-use Cake\ORM\Entity;
 
 /**
  * ServiceOverride Entity
@@ -15,19 +14,13 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\Date $valid_from
  * @property \Cake\I18n\Date $valid_until
  * @property string|null $reason
- * @property \Cake\I18n\DateTime|null $created
- * @property string|null $created_by
- * @property \Cake\I18n\DateTime|null $modified
- * @property string|null $modified_by
  * @property \Cake\I18n\DateTime|null $revoked
  * @property string|null $revoked_by
  * @property \App\Model\Entity\Contract $contract
  * @property \App\Model\Entity\Service $service
- * @property \App\Model\Entity\AppUser $creator
- * @property \App\Model\Entity\AppUser $modifier
  * @property \App\Model\Entity\AppUser $revoker
  */
-class ServiceOverride extends Entity
+class ServiceOverride extends AppEntity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

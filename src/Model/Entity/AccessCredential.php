@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
-
 /**
  * AccessCredential Entity
  *
@@ -17,17 +15,11 @@ use Cake\ORM\Entity;
  * @property string|null $ip_address
  * @property int|null $port
  * @property string|null $note
- * @property \Cake\I18n\DateTime|null $created
- * @property string|null $created_by
- * @property \Cake\I18n\DateTime|null $modified
- * @property string|null $modified_by
  *
- * @property \App\Model\Entity\AppUser $creator
- * @property \App\Model\Entity\AppUser $modifier
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Contract $contract
  */
-class AccessCredential extends Entity
+class AccessCredential extends AppEntity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

@@ -4,18 +4,11 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use App\Model\Enum\AddressType;
-use Cake\ORM\Entity;
 use RuntimeException;
 
 /**
  * Customer Entity
  *
- * @property \Cake\I18n\DateTime|null $created
- * @property string|null $created_by
- * @property \App\Model\Entity\AppUser|null $creator
- * @property \Cake\I18n\DateTime|null $modified
- * @property string|null $modified_by
- * @property \App\Model\Entity\AppUser|null $modifier
  * @property string $id
  * @property int $nid
  * @property \App\Model\Enum\CustomerDealer $dealer
@@ -75,7 +68,7 @@ use RuntimeException;
  * @property string $name
  * @property string $name_for_lists
  */
-class Customer extends Entity
+class Customer extends AppEntity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

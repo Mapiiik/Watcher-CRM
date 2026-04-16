@@ -4,17 +4,10 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use Cake\I18n\Date;
-use Cake\ORM\Entity;
 
 /**
  * BorrowedEquipment Entity
  *
- * @property \Cake\I18n\DateTime|null $created
- * @property string|null $created_by
- * @property \App\Model\Entity\AppUser|null $creator
- * @property \Cake\I18n\DateTime|null $modified
- * @property string|null $modified_by
- * @property \App\Model\Entity\AppUser|null $modifier
  * @property string $id
  * @property int $nid
  * @property string $customer_id
@@ -29,7 +22,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Contract $contract
  * @property \App\Model\Entity\EquipmentType $equipment_type
  */
-class BorrowedEquipment extends Entity
+class BorrowedEquipment extends AppEntity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

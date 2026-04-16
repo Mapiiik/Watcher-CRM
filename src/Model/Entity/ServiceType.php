@@ -3,17 +3,9 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
-
 /**
  * ServiceType Entity
  *
- * @property \Cake\I18n\DateTime|null $created
- * @property string|null $created_by
- * @property \App\Model\Entity\AppUser|null $creator
- * @property \Cake\I18n\DateTime|null $modified
- * @property string|null $modified_by
- * @property \App\Model\Entity\AppUser|null $modifier
  * @property string $id
  * @property int $nid
  * @property string|null $name
@@ -36,7 +28,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Contract[] $contracts
  * @property \App\Model\Entity\Service[] $services
  */
-class ServiceType extends Entity
+class ServiceType extends AppEntity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

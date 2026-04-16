@@ -3,18 +3,12 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Model\Entity;
 
+use App\Model\Entity\AppEntity;
 use Cake\I18n\Date;
-use Cake\ORM\Entity;
 
 /**
  * Invoice Entity
  *
- * @property \Cake\I18n\DateTime|null $created
- * @property string|null $created_by
- * @property \App\Model\Entity\AppUser|null $creator
- * @property \Cake\I18n\DateTime|null $modified
- * @property string|null $modified_by
- * @property \App\Model\Entity\AppUser|null $modifier
  * @property string $id
  * @property string|null $customer_id
  * @property string $number
@@ -32,7 +26,7 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\Customer $customer
  */
-class Invoice extends Entity
+class Invoice extends AppEntity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

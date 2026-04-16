@@ -5,17 +5,10 @@ namespace App\Model\Entity;
 
 use App\ApiClient;
 use ArrayObject;
-use Cake\ORM\Entity;
 
 /**
  * Task Entity
  *
- * @property \Cake\I18n\DateTime|null $created
- * @property string|null $created_by
- * @property \App\Model\Entity\AppUser|null $creator
- * @property \Cake\I18n\DateTime|null $modified
- * @property string|null $modified_by
- * @property \App\Model\Entity\AppUser|null $modifier
  * @property string $id
  * @property int $nid
  * @property int $task_type_id
@@ -45,7 +38,7 @@ use Cake\ORM\Entity;
  * @property \ArrayObject<string, mixed>|null $access_point
  * @property string|null $access_point_name
  */
-class Task extends Entity
+class Task extends AppEntity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

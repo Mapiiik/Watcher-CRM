@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
 use InvalidArgumentException;
 
 /**
@@ -20,17 +19,11 @@ use InvalidArgumentException;
  * @property \App\Model\Enum\CustomerMessageDeliveryStatus $delivery_status
  * @property \Cake\I18n\DateTime|null $processed
  * @property string|null $identifier
- * @property \Cake\I18n\DateTime $created
- * @property string $created_by
- * @property \Cake\I18n\DateTime $modified
- * @property string $modified_by
  * @property ?array $attachments
  *
  * @property \App\Model\Entity\Customer $customer
- * @property \App\Model\Entity\AppUser $creator
- * @property \App\Model\Entity\AppUser $modifier
  */
-class CustomerMessage extends Entity
+class CustomerMessage extends AppEntity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

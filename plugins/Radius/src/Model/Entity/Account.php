@@ -3,17 +3,11 @@ declare(strict_types=1);
 
 namespace Radius\Model\Entity;
 
-use Cake\ORM\Entity;
+use App\Model\Entity\AppEntity;
 
 /**
  * Account Entity
  *
- * @property \Cake\I18n\DateTime|null $created
- * @property string|null $created_by
- * @property \App\Model\Entity\AppUser|null $creator
- * @property \Cake\I18n\DateTime|null $modified
- * @property string|null $modified_by
- * @property \App\Model\Entity\AppUser|null $modifier
  * @property string $id
  * @property string $username
  * @property string $password
@@ -31,7 +25,7 @@ use Cake\ORM\Entity;
  * @property \Radius\Model\Entity\Radpostauth[] $radpostauth
  * @property \Radius\Model\Entity\Radacct[] $radacct
  */
-class Account extends Entity
+class Account extends AppEntity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

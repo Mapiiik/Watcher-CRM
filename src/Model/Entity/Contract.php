@@ -5,19 +5,12 @@ namespace App\Model\Entity;
 
 use App\ApiClient;
 use ArrayObject;
-use Cake\ORM\Entity;
 use PhpCollective\DecimalObject\Decimal;
 use RuntimeException;
 
 /**
  * Contract Entity
  *
- * @property \Cake\I18n\DateTime|null $created
- * @property string|null $created_by
- * @property \App\Model\Entity\AppUser|null $creator
- * @property \Cake\I18n\DateTime|null $modified
- * @property string|null $modified_by
- * @property \App\Model\Entity\AppUser|null $modifier
  * @property string $id
  * @property int $nid
  * @property string $customer_id
@@ -69,7 +62,7 @@ use RuntimeException;
  * @property \ArrayObject<string, mixed>|null $access_point
  * @property string|null $access_point_name
  */
-class Contract extends Entity
+class Contract extends AppEntity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

@@ -5,17 +5,10 @@ namespace App\Model\Entity;
 
 use App\ApiClient;
 use Cake\Collection\CollectionInterface;
-use Cake\ORM\Entity;
 
 /**
  * RemovedIpNetwork Entity
  *
- * @property \Cake\I18n\DateTime|null $created
- * @property string|null $created_by
- * @property \App\Model\Entity\AppUser|null $creator
- * @property \Cake\I18n\DateTime|null $modified
- * @property string|null $modified_by
- * @property \App\Model\Entity\AppUser|null $modifier
  * @property \Cake\I18n\DateTime|null $removed
  * @property \App\Model\Entity\AppUser|null $remover
  * @property int|null $removed_by
@@ -32,7 +25,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Contract $contract
  * @property \Cake\Collection\CollectionInterface<int, mixed>|null $ip_address_ranges
  */
-class RemovedIpNetwork extends Entity
+class RemovedIpNetwork extends AppEntity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

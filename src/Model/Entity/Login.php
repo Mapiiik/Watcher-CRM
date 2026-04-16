@@ -3,18 +3,11 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
 use Cake\Utility\Security;
 
 /**
  * Login Entity
  *
- * @property \Cake\I18n\DateTime|null $created
- * @property string|null $created_by
- * @property \App\Model\Entity\AppUser|null $creator
- * @property \Cake\I18n\DateTime|null $modified
- * @property string|null $modified_by
- * @property \App\Model\Entity\AppUser|null $modifier
  * @property string $id
  * @property int $nid
  * @property string $customer_id
@@ -29,7 +22,7 @@ use Cake\Utility\Security;
  *
  * @property \App\Model\Entity\Customer $customer
  */
-class Login extends Entity
+class Login extends AppEntity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

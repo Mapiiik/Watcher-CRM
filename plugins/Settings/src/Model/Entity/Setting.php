@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Settings\Model\Entity;
 
-use Cake\ORM\Entity;
+use App\Model\Entity\AppEntity;
 
 /**
  * Setting Entity
@@ -12,15 +12,8 @@ use Cake\ORM\Entity;
  * @property string $plugin
  * @property string $key
  * @property array $value
- * @property \Cake\I18n\DateTime|null $created
- * @property string|null $created_by
- * @property \Cake\I18n\DateTime|null $modified
- * @property string|null $modified_by
- *
- * @property \App\Model\Entity\AppUser $creator
- * @property \App\Model\Entity\AppUser $modifier
  */
-class Setting extends Entity
+class Setting extends AppEntity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
