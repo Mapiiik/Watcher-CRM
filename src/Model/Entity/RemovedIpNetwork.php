@@ -9,9 +9,6 @@ use Cake\Collection\CollectionInterface;
 /**
  * RemovedIpNetwork Entity
  *
- * @property \Cake\I18n\DateTime|null $removed
- * @property \App\Model\Entity\AppUser|null $remover
- * @property int|null $removed_by
  * @property string $id
  * @property int $nid
  * @property string $customer_id

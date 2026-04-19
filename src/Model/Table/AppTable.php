@@ -58,6 +58,12 @@ class AppTable extends Table
                 'foreignKey' => 'removed_by',
             ]);
         }
+        if ($this->hasField('revoked_by')) {
+            $this->belongsTo('Revokers', [
+                'className' => 'AppUsers',
+                'foreignKey' => 'revoked_by',
+            ]);
+        }
     }
 
     /**

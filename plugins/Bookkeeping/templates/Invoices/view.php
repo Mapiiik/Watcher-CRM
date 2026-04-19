@@ -103,44 +103,7 @@
                     </table>
                 </div>
                 <div class="column">
-                    <table>
-                        <tr>
-                            <th><?= __d('bookkeeping', 'Id') ?></th>
-                            <td><?= h($invoice->id) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __d('bookkeeping', 'Created') ?></th>
-                            <td><?= h($invoice->created) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __d('bookkeeping', 'Created By') ?></th>
-                            <td><?= $invoice->__isset('creator') ? $this->Html->link(
-                                $invoice->creator->username,
-                                [
-                                    'plugin' => null,
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $invoice->creator->id,
-                                ],
-                            ) : h($invoice->created_by) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __d('bookkeeping', 'Modified') ?></th>
-                            <td><?= h($invoice->modified) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __d('bookkeeping', 'Modified By') ?></th>
-                            <td><?= $invoice->__isset('modifier') ? $this->Html->link(
-                                $invoice->modifier->username,
-                                [
-                                    'plugin' => null,
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $invoice->modifier->id,
-                                ],
-                            ) : h($invoice->modified_by) ?></td>
-                        </tr>
-                    </table>
+                    <?= $this->element('common/audit', ['entity' => $invoice]) ?>
                 </div>
             </div>
             <div class="text">

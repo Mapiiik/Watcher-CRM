@@ -14,11 +14,8 @@ use Cake\I18n\Date;
  * @property \Cake\I18n\Date $valid_from
  * @property \Cake\I18n\Date $valid_until
  * @property string|null $reason
- * @property \Cake\I18n\DateTime|null $revoked
- * @property string|null $revoked_by
  * @property \App\Model\Entity\Contract $contract
  * @property \App\Model\Entity\Service $service
- * @property \App\Model\Entity\AppUser $revoker
  */
 class ServiceOverride extends AppEntity
 {

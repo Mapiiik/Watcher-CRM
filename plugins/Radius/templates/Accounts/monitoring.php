@@ -119,44 +119,7 @@ use Cake\Routing\Router;
                     </table>
                 </div>
                 <div class="column">
-                    <table>
-                        <tr>
-                            <th><?= __d('radius', 'Id') ?></th>
-                            <td><?= $this->Number->format($account->id) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __d('radius', 'Created') ?></th>
-                            <td><?= h($account->created) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __d('radius', 'Created By') ?></th>
-                            <td><?= $account->__isset('creator') ? $this->Html->link(
-                                $account->creator->username,
-                                [
-                                    'plugin' => null,
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $account->creator->id,
-                                ],
-                            ) : h($account->created_by) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __d('radius', 'Modified') ?></th>
-                            <td><?= h($account->modified) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __d('radius', 'Modified By') ?></th>
-                            <td><?= $account->__isset('modifier') ? $this->Html->link(
-                                $account->modifier->username,
-                                [
-                                    'plugin' => null,
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $account->modifier->id,
-                                ],
-                            ) : h($account->modified_by) ?></td>
-                        </tr>
-                    </table>
+                    <?= $this->element('common/audit', ['entity' => $account]) ?>
                 </div>
             </div>
             <div class="related">

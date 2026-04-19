@@ -61,10 +61,6 @@ class ServiceOverridesTable extends AppTable
             'foreignKey' => 'service_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsTo('Revokers', [
-            'className' => 'AppUsers',
-            'foreignKey' => 'revoked_by',
-        ]);
     }
 
     /**

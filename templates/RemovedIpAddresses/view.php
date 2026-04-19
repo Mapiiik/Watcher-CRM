@@ -96,57 +96,7 @@
                     </table>
                 </div>
                 <div class="column">
-                    <table>
-                        <tr>
-                            <th><?= __('Id') ?></th>
-                            <td><?= h($removedIpAddress->id) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created') ?></th>
-                            <td><?= h($removedIpAddress->created) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created By') ?></th>
-                            <td><?= $removedIpAddress->__isset('creator') ? $this->Html->link(
-                                $removedIpAddress->creator->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $removedIpAddress->creator->id,
-                                ],
-                            ) : h($removedIpAddress->created_by) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified') ?></th>
-                            <td><?= h($removedIpAddress->modified) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified By') ?></th>
-                            <td><?= $removedIpAddress->__isset('modifier') ? $this->Html->link(
-                                $removedIpAddress->modifier->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $removedIpAddress->modifier->id,
-                                ],
-                            ) : h($removedIpAddress->modified_by) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Removed') ?></th>
-                            <td><?= h($removedIpAddress->removed) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Removed By') ?></th>
-                            <td><?= $removedIpAddress->__isset('remover') ? $this->Html->link(
-                                $removedIpAddress->remover->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $removedIpAddress->remover->id,
-                                ],
-                            ) : h($removedIpAddress->removed_by) ?></td>
-                        </tr>
-                    </table>
+                    <?= $this->element('common/audit', ['entity' => $removedIpAddress]) ?>
                 </div>
             </div>
             <div class="text">

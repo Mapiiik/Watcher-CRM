@@ -111,53 +111,7 @@
                     </table>
                 </div>
                 <div class="column">
-                    <table>
-                        <tr>
-                            <th><?= __('Id') ?></th>
-                            <td><?= h($serviceOverride->id) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created') ?></th>
-                            <td><?= h($serviceOverride->created) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created By') ?></th>
-                            <td><?= $serviceOverride->__isset('creator') ? $this->Html->link(
-                                $serviceOverride->creator->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $serviceOverride->creator->id,
-                                ],
-                            ) : h($serviceOverride->created_by) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified') ?></th>
-                            <td><?= h($serviceOverride->modified) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified By') ?></th>
-                            <td><?= $serviceOverride->__isset('modifier') ? $this->Html->link(
-                                $serviceOverride->modifier->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $serviceOverride->modifier->id,
-                                ],
-                            ) : h($serviceOverride->modified_by) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Revoker') ?></th>
-                            <td><?= $serviceOverride->hasValue('revoker') ? $this->Html->link(
-                                $serviceOverride->revoker->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $serviceOverride->revoker->id,
-                                ],
-                            ) : '' ?></td>
-                        </tr>
-                    </table>
+                    <?= $this->element('common/audit', ['entity' => $serviceOverride]) ?>
                 </div>
             </div>
             <div class="text">

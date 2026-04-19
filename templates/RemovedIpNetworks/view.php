@@ -99,57 +99,7 @@
                     </table>
                 </div>
                 <div class="column">
-                    <table>
-                        <tr>
-                            <th><?= __('Id') ?></th>
-                            <td><?= h($removedIpNetwork->id) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created') ?></th>
-                            <td><?= h($removedIpNetwork->created) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created By') ?></th>
-                            <td><?= $removedIpNetwork->__isset('creator') ? $this->Html->link(
-                                $removedIpNetwork->creator->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $removedIpNetwork->creator->id,
-                                ],
-                            ) : h($removedIpNetwork->created_by) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified') ?></th>
-                            <td><?= h($removedIpNetwork->modified) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified By') ?></th>
-                            <td><?= $removedIpNetwork->__isset('modifier') ? $this->Html->link(
-                                $removedIpNetwork->modifier->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $removedIpNetwork->modifier->id,
-                                ],
-                            ) : h($removedIpNetwork->modified_by) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Removed') ?></th>
-                            <td><?= h($removedIpNetwork->removed) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Removed By') ?></th>
-                            <td><?= $removedIpNetwork->__isset('remover') ? $this->Html->link(
-                                $removedIpNetwork->remover->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $removedIpNetwork->remover->id,
-                                ],
-                            ) : h($removedIpNetwork->removed_by) ?></td>
-                        </tr>
-                    </table>
+                    <?= $this->element('common/audit', ['entity' => $removedIpNetwork]) ?>
                 </div>
             </div>
             <div class="text">
