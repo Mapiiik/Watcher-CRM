@@ -85,42 +85,7 @@
                     </table>
                 </div>
                 <div class="column">
-                    <table>
-                        <tr>
-                            <th><?= __('Id') ?></th>
-                            <td><?= h($soldEquipment->id) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created') ?></th>
-                            <td><?= h($soldEquipment->created) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created By') ?></th>
-                            <td><?= $soldEquipment->__isset('creator') ? $this->Html->link(
-                                $soldEquipment->creator->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $soldEquipment->creator->id,
-                                ],
-                            ) : h($soldEquipment->created_by) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified') ?></th>
-                            <td><?= h($soldEquipment->modified) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified By') ?></th>
-                            <td><?= $soldEquipment->__isset('modifier') ? $this->Html->link(
-                                $soldEquipment->modifier->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $soldEquipment->modifier->id,
-                                ],
-                            ) : h($soldEquipment->modified_by) ?></td>
-                        </tr>
-                    </table>
+                    <?= $this->element('common/audit', ['entity' => $soldEquipment]) ?>
                 </div>
             </div>
         </div>

@@ -66,42 +66,7 @@
                     </table>
                 </div>
                 <div class="column">
-                    <table>
-                        <tr>
-                            <th><?= __('Id') ?></th>
-                            <td><?= h($dealerCommission->id) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created') ?></th>
-                            <td><?= h($dealerCommission->created) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created By') ?></th>
-                            <td><?= $dealerCommission->__isset('creator') ? $this->Html->link(
-                                $dealerCommission->creator->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $dealerCommission->creator->id,
-                                ],
-                            ) : h($dealerCommission->created_by) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified') ?></th>
-                            <td><?= h($dealerCommission->modified) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified By') ?></th>
-                            <td><?= $dealerCommission->__isset('modifier') ? $this->Html->link(
-                                $dealerCommission->modifier->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $dealerCommission->modifier->id,
-                                ],
-                            ) : h($dealerCommission->modified_by) ?></td>
-                        </tr>
-                    </table>
+                    <?= $this->element('common/audit', ['entity' => $dealerCommission]) ?>
                 </div>
             </div>
         </div>

@@ -94,42 +94,7 @@
                     </table>
                 </div>
                 <div class="column">
-                    <table>
-                        <tr>
-                            <th><?= __('Id') ?></th>
-                            <td><?= h($ipNetwork->id) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created') ?></th>
-                            <td><?= h($ipNetwork->created) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created By') ?></th>
-                            <td><?= $ipNetwork->__isset('creator') ? $this->Html->link(
-                                $ipNetwork->creator->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $ipNetwork->creator->id,
-                                ],
-                            ) : h($ipNetwork->created_by) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified') ?></th>
-                            <td><?= h($ipNetwork->modified) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified By') ?></th>
-                            <td><?= $ipNetwork->__isset('modifier') ? $this->Html->link(
-                                $ipNetwork->modifier->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $ipNetwork->modifier->id,
-                                ],
-                            ) : h($ipNetwork->modified_by) ?></td>
-                        </tr>
-                    </table>
+                    <?= $this->element('common/audit', ['entity' => $ipNetwork]) ?>
                 </div>
             </div>
             <div class="text">

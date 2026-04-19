@@ -90,42 +90,7 @@
                     </table>
                 </div>
                 <div class="column">
-                    <table>
-                        <tr>
-                            <th><?= __('Id') ?></th>
-                            <td><?= h($borrowedEquipment->id) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created') ?></th>
-                            <td><?= h($borrowedEquipment->created) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created By') ?></th>
-                            <td><?= $borrowedEquipment->__isset('creator') ? $this->Html->link(
-                                $borrowedEquipment->creator->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $borrowedEquipment->creator->id,
-                                ],
-                            ) : h($borrowedEquipment->created_by) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified') ?></th>
-                            <td><?= h($borrowedEquipment->modified) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified By') ?></th>
-                            <td><?= $borrowedEquipment->__isset('modifier') ? $this->Html->link(
-                                $borrowedEquipment->modifier->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $borrowedEquipment->modifier->id,
-                                ],
-                            ) : h($borrowedEquipment->modified_by) ?></td>
-                        </tr>
-                    </table>
+                    <?= $this->element('common/audit', ['entity' => $borrowedEquipment]) ?>
                 </div>
             </div>
         </div>
