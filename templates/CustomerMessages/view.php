@@ -87,42 +87,7 @@
                     </table>
                 </div>
                 <div class="column">
-                    <table>
-                        <tr>
-                            <th><?= __('Id') ?></th>
-                            <td><?= h($customerMessage->id) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created') ?></th>
-                            <td><?= h($customerMessage->created) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created By') ?></th>
-                            <td><?= $customerMessage->__isset('creator') ? $this->Html->link(
-                                $customerMessage->creator->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $customerMessage->creator->id,
-                                ],
-                            ) : h($customerMessage->created_by) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified') ?></th>
-                            <td><?= h($customerMessage->modified) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified By') ?></th>
-                            <td><?= $customerMessage->__isset('modifier') ? $this->Html->link(
-                                $customerMessage->modifier->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $customerMessage->modifier->id,
-                                ],
-                            ) : h($customerMessage->modified_by) ?></td>
-                        </tr>
-                    </table>
+                    <?= $this->element('common/audit', ['entity' => $customerMessage]) ?>
                 </div>
             </div>
             <div class="text">

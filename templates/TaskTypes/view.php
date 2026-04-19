@@ -43,42 +43,7 @@
                     </table>
                 </div>
                 <div class="column">
-                    <table>
-                        <tr>
-                            <th><?= __('Id') ?></th>
-                            <td><?= h($taskType->id) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created') ?></th>
-                            <td><?= h($taskType->created) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created By') ?></th>
-                            <td><?= $taskType->__isset('creator') ? $this->Html->link(
-                                $taskType->creator->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $taskType->creator->id,
-                                ],
-                            ) : h($taskType->created_by) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified') ?></th>
-                            <td><?= h($taskType->modified) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified By') ?></th>
-                            <td><?= $taskType->__isset('modifier') ? $this->Html->link(
-                                $taskType->modifier->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $taskType->modifier->id,
-                                ],
-                            ) : h($taskType->modified_by) ?></td>
-                        </tr>
-                    </table>
+                    <?= $this->element('common/audit', ['entity' => $taskType]) ?>
                 </div>
             </div>
             <div class="related">

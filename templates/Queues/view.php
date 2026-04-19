@@ -69,42 +69,7 @@
                     </table>
                 </div>
                 <div class="column">
-                    <table>
-                        <tr>
-                            <th><?= __('Id') ?></th>
-                            <td><?= h($queue->id) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created') ?></th>
-                            <td><?= h($queue->created) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created By') ?></th>
-                            <td><?= $queue->__isset('creator') ? $this->Html->link(
-                                $queue->creator->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $queue->creator->id,
-                                ],
-                            ) : h($queue->created_by) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified') ?></th>
-                            <td><?= h($queue->modified) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified By') ?></th>
-                            <td><?= $queue->__isset('modifier') ? $this->Html->link(
-                                $queue->modifier->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $queue->modifier->id,
-                                ],
-                            ) : h($queue->modified_by) ?></td>
-                        </tr>
-                    </table>
+                    <?= $this->element('common/audit', ['entity' => $queue]) ?>
                 </div>
             </div>
             <div class="related">

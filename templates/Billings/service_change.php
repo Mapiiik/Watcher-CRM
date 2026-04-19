@@ -109,42 +109,7 @@
                             <td><?= $this->Number->currency($billing->total_price->toString()) ?></td>
                         </tr>
                     </table>
-                    <table>
-                        <tr>
-                            <th><?= __('Id') ?></th>
-                            <td><?= h($billing->id) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created') ?></th>
-                            <td><?= h($billing->created) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created By') ?></th>
-                            <td><?= $billing->__isset('creator') ? $this->Html->link(
-                                $billing->creator->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $billing->creator->id,
-                                ],
-                            ) : h($billing->created_by) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified') ?></th>
-                            <td><?= h($billing->modified) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified By') ?></th>
-                            <td><?= $billing->__isset('modifier') ? $this->Html->link(
-                                $billing->modifier->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $billing->modifier->id,
-                                ],
-                            ) : h($billing->modified_by) ?></td>
-                        </tr>
-                    </table>
+                    <?= $this->element('common/audit', ['entity' => $billing]) ?>
                 </div>
             </div>
             <div class="text">

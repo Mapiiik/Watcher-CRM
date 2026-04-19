@@ -73,42 +73,7 @@
                     </table>
                 </div>
                 <div class="column">
-                    <table>
-                        <tr>
-                            <th><?= __('Id') ?></th>
-                            <td><?= h($customerLabel->id) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created') ?></th>
-                            <td><?= h($customerLabel->created) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created By') ?></th>
-                            <td><?= $customerLabel->__isset('creator') ? $this->Html->link(
-                                $customerLabel->creator->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $customerLabel->creator->id,
-                                ],
-                            ) : h($customerLabel->created_by) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified') ?></th>
-                            <td><?= h($customerLabel->modified) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified By') ?></th>
-                            <td><?= $customerLabel->__isset('modifier') ? $this->Html->link(
-                                $customerLabel->modifier->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $customerLabel->modifier->id,
-                                ],
-                            ) : h($customerLabel->modified_by) ?></td>
-                        </tr>
-                    </table>
+                    <?= $this->element('common/audit', ['entity' => $customerLabel]) ?>
                 </div>
             </div>
             <div class="text">

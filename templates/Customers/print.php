@@ -140,43 +140,7 @@
                             <td><?= $customer->agree_mailing_commercial ? __('Yes') : __('No'); ?></td>
                         </tr>
                     </table>
-                    <table>
-                        <tr>
-                            <th><?= __('Id') ?></th>
-                            <td><?= h($customer->id) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created') ?></th>
-                            <td><?= h($customer->created) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created By') ?></th>
-                            <td><?= $customer->__isset('creator') ? $this->Html->link(
-                                $customer->creator->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $customer->creator->id,
-                                ],
-                            ) : h($customer->created_by) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified') ?></th>
-                            <td><?= h($customer->modified) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified By') ?></th>
-                            <td><?= $customer->__isset('modifier') ? $this->Html->link(
-                                $customer->modifier->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $customer->modifier->id,
-                                ],
-                            ) : h($customer->modified_by) ?></td>
-                        </tr>
-
-                    </table>
+                    <?= $this->element('common/audit', ['entity' => $customer]) ?>
                 </div>
             </div>
             <br>

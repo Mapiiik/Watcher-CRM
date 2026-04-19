@@ -70,42 +70,7 @@
                     </table>
                 </div>
                 <div class="column">
-                    <table>
-                        <tr>
-                            <th><?= __('Id') ?></th>
-                            <td><?= h($accountingProfile->id) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created') ?></th>
-                            <td><?= h($accountingProfile->created) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Created By') ?></th>
-                            <td><?= $accountingProfile->__isset('creator') ? $this->Html->link(
-                                $accountingProfile->creator->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $accountingProfile->creator->id,
-                                ],
-                            ) : h($accountingProfile->created_by) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified') ?></th>
-                            <td><?= h($accountingProfile->modified) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Modified By') ?></th>
-                            <td><?= $accountingProfile->__isset('modifier') ? $this->Html->link(
-                                $accountingProfile->modifier->username,
-                                [
-                                    'controller' => 'AppUsers',
-                                    'action' => 'view',
-                                    $accountingProfile->modifier->id,
-                                ],
-                            ) : h($accountingProfile->modified_by) ?></td>
-                        </tr>
-                    </table>
+                    <?= $this->element('common/audit', ['entity' => $accountingProfile]) ?>
                 </div>
             </div>
             <div class="related">
