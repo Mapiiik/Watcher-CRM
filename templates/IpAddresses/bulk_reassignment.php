@@ -81,7 +81,7 @@
                             <tr style="<?= $ipAddress->style ?>">
                                 <td>
                                     <?= $ipAddress->customer !== null ? $this->Html->link(
-                                        $ipAddress->customer->name,
+                                        $ipAddress->customer->name ?? '(' . $ipAddress->customer->id . ')',
                                         ['controller' => 'Customers', 'action' => 'view', $ipAddress->customer->id],
                                     ) : '' ?>
                                 </td>

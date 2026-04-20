@@ -45,7 +45,7 @@
                 <tr style="<?= $billing->style ?>">
                     <td>
                         <?= $billing->customer !== null ? $this->Html->link(
-                            $billing->customer->name,
+                            $billing->customer->name ?? '(' . $billing->customer->id . ')',
                             ['controller' => 'Customers', 'action' => 'view', $billing->customer->id],
                         ) : '' ?>
                     </td>
@@ -63,7 +63,7 @@
                     </td>
                     <td>
                         <?= $billing->service !== null ? $this->Html->link(
-                            $billing->service->name,
+                            $billing->service->name ?? '(' . $billing->service->id . ')',
                             ['controller' => 'Services', 'action' => 'view', $billing->service->id],
                         ) : '' ?>
                     </td>

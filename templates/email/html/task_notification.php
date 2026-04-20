@@ -12,7 +12,9 @@ $this->assign('title', $title);
 
 // temporarily remove query parameters in Router
 $request = Router::getRequest();
-Router::setRequest($request->withQueryParams([]));
+if ($request !== null) {
+    Router::setRequest($request->withQueryParams([]));
+}
 ?>
 
 <style>
@@ -61,7 +63,7 @@ table {
                 <tr>
                     <th><?= __('Customer') ?></th>
                     <td><?= $task->customer !== null ? $this->Html->link(
-                        $task->customer->name,
+                        $task->customer->name ?? '(' . $task->customer->id . ')',
                         [
                             'controller' => 'Customers',
                             'action' => 'view',
@@ -73,7 +75,7 @@ table {
                 <tr>
                     <th><?= __('Contract') ?></th>
                     <td><?= $task->contract !== null ? $this->Html->link(
-                        $task->contract->name,
+                        $task->contract->name ?? '(' . $task->contract->id . ')',
                         [
                             'controller' => 'Contracts',
                             'action' => 'view',
@@ -149,5 +151,7 @@ table {
 </div>
 <?php
 // put query parameters back to Router
-Router::setRequest($request);
+if ($request !== null) {
+    Router::setRequest($request);
+}
 ?>

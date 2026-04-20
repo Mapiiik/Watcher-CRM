@@ -31,7 +31,7 @@
                         <tr>
                             <th><?= __('Customer') ?></th>
                             <td><?= $address->customer !== null ? $this->Html->link(
-                                $address->customer->name,
+                                $address->customer->name ?? '(' . $address->customer->id . ')',
                                 ['controller' => 'Customers', 'action' => 'view', $address->customer->id],
                             ) : '' ?></td>
                         </tr>
@@ -90,7 +90,7 @@
                         <tr>
                             <th><?= __('Country') ?></th>
                             <td><?= $address->country !== null ? $this->Html->link(
-                                $address->country->name,
+                                $address->country->name ?? '(' . $address->country->id . ')',
                                 ['controller' => 'Countries', 'action' => 'view', $address->country->id],
                             ) : '' ?></td>
                         </tr>

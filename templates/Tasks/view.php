@@ -27,7 +27,7 @@
                         <tr>
                             <th><?= __('Task Type') ?></th>
                             <td><?= $task->task_type !== null ? $this->Html->link(
-                                $task->task_type->name,
+                                $task->task_type->name ?? '(' . $task->task_type->id . ')',
                                 ['controller' => 'TaskTypes', 'action' => 'view', $task->task_type->id],
                             ) : '' ?></td>
                         </tr>
@@ -38,14 +38,14 @@
                         <tr>
                             <th><?= __('Task State') ?></th>
                             <td><?= $task->task_state !== null ? $this->Html->link(
-                                $task->task_state->name,
+                                $task->task_state->name ?? '(' . $task->task_state->id . ')',
                                 ['controller' => 'TaskStates', 'action' => 'view', $task->task_state->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Dealer') ?></th>
                             <td><?= $task->dealer !== null ? $this->Html->link(
-                                $task->dealer->name,
+                                $task->dealer->name ?? '(' . $task->dealer->id . ')',
                                 ['controller' => 'Customers', 'action' => 'view', $task->dealer->id],
                             ) : '' ?></td>
                         </tr>
@@ -66,7 +66,7 @@
                         <tr>
                             <th><?= __('Customer') ?></th>
                             <td><?= $task->customer !== null ? $this->Html->link(
-                                $task->customer->name,
+                                $task->customer->name ?? '(' . $task->customer->id . ')',
                                 [
                                     'controller' => 'Customers',
                                     'action' => 'view',
@@ -81,7 +81,7 @@
                         <tr>
                             <th><?= __('Contract') ?></th>
                             <td><?= $task->contract !== null ? $this->Html->link(
-                                $task->contract->name,
+                                $task->contract->name ?? '(' . $task->contract->id . ')',
                                 [
                                     'controller' => 'Contracts',
                                     'action' => 'view',
@@ -131,7 +131,7 @@
                 </blockquote>
             </div>
 
-            <?php if ($task->customer_id !== null && !$task->contract_id !== null) : ?>
+            <?php if ($task->customer_id !== null && $task->contract_id === null) : ?>
                 <br>
                 <div>
                     <iframe width="100%" height="500"  src="<?= $this->Url->build([

@@ -103,7 +103,7 @@
                         <?php foreach ($customer->customer_labels as $customer_label) : ?>
                         <span>
                             <?= $this->Html->link(
-                                $customer_label->label->name,
+                                $customer_label->label->name ?? '(' . $customer_label->label->id . ')',
                                 ['controller' => 'CustomerLabels', 'action' => 'view', $customer_label->id],
                                 [
                                     'class' => 'win-link',

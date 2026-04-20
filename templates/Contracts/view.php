@@ -48,7 +48,7 @@
             <h4 class="heading"><?= __('Labels') ?></h4>
             <?php foreach ($contract->customer->customer_labels as $customer_label) : ?>
                 <?= $this->Html->link(
-                    $customer_label->label->name,
+                    $customer_label->label->name ?? '(' . $customer_label->label->id . ')',
                     ['controller' => 'CustomerLabels', 'action' => 'view', $customer_label->id],
                     [
                         'class' => 'app-label win-link',
@@ -132,7 +132,7 @@
                         <tr>
                             <th><?= __('Customer') ?></th>
                             <td><?= $contract->customer !== null ? $this->Html->link(
-                                $contract->customer->name,
+                                $contract->customer->name ?? '(' . $contract->customer->id . ')',
                                 ['controller' => 'Customers', 'action' => 'view', $contract->customer->id],
                             ) : '' ?></td>
                         </tr>
@@ -143,14 +143,14 @@
                         <tr>
                             <th><?= __('Contract State') ?></th>
                             <td><?= $contract->contract_state !== null ? $this->Html->link(
-                                $contract->contract_state->name,
+                                $contract->contract_state->name ?? '(' . $contract->contract_state->id . ')',
                                 ['controller' => 'ContractStates', 'action' => 'view', $contract->contract_state->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Service Type') ?></th>
                             <td><?= $contract->service_type !== null ? $this->Html->link(
-                                $contract->service_type->name,
+                                $contract->service_type->name ?? '(' . $contract->service_type->id . ')',
                                 ['controller' => 'ServiceTypes', 'action' => 'view', $contract->service_type->id],
                             ) : '' ?></td>
                         </tr>
@@ -205,7 +205,7 @@
                         <tr>
                             <th><?= __('Commission') ?></th>
                             <td><?= $contract->commission !== null ? $this->Html->link(
-                                $contract->commission->name,
+                                $contract->commission->name ?? '(' . $contract->commission->id . ')',
                                 ['controller' => 'Commissions', 'action' => 'view', $contract->commission->id],
                             ) : '' ?></td>
                         </tr>
@@ -240,7 +240,8 @@
                         <tr>
                             <th><?= __('Installation Technician') ?></th>
                             <td><?= $contract->installation_technician !== null ? $this->Html->link(
-                                $contract->installation_technician->name,
+                                $contract->installation_technician->name
+                                ?? '(' . $contract->installation_technician->id . ')',
                                 [
                                     'controller' => 'Customers',
                                     'action' => 'view',
@@ -255,7 +256,8 @@
                         <tr>
                             <th><?= __('Uninstallation Technician') ?></th>
                             <td><?= $contract->uninstallation_technician !== null ? $this->Html->link(
-                                $contract->uninstallation_technician->name,
+                                $contract->uninstallation_technician->name
+                                ?? '(' . $contract->uninstallation_technician->id . ')',
                                 [
                                     'controller' => 'Customers',
                                     'action' => 'view',
@@ -576,7 +578,7 @@
                             </td>
                             <td><?=
                                 $task->contract !== null ? $this->Html->link(
-                                    $task->contract->name,
+                                    $task->contract->name ?? '(' . $task->contract->id . ')',
                                     [
                                         'controller' => 'Contracts',
                                         'action' => 'view',

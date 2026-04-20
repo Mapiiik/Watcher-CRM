@@ -68,7 +68,7 @@
                         <tr>
                             <td>
                                 <?= $address->customer !== null ? $this->Html->link(
-                                    $address->customer->name,
+                                    $address->customer->name ?? '(' . $address->customer->id . ')',
                                     ['controller' => 'Customers', 'action' => 'view', $address->customer->id],
                                 ) : '' ?>
                             </td>

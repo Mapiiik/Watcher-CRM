@@ -61,19 +61,19 @@
                 <tr style="<?= $contract->style ?>">
                     <td><?=
                         $contract->customer !== null ? $this->Html->link(
-                            $contract->customer->name,
+                            $contract->customer->name ?? '(' . $contract->customer->id . ')',
                             ['controller' => 'Customers', 'action' => 'view', $contract->customer->id],
                         ) : '' ?></td>
                     <td><?= $contract->customer !== null ? h($contract->customer->number) : '' ?></td>
                     <td><?= h($contract->number) ?></td>
                     <td><?=
                         $contract->contract_state !== null ? $this->Html->link(
-                            $contract->contract_state->name,
+                            $contract->contract_state->name ?? '(' . $contract->contract_state->id . ')',
                             ['controller' => 'ContractStates', 'action' => 'view', $contract->contract_state->id],
                         ) : '' ?></td>
                     <td><?=
                         $contract->service_type !== null ? $this->Html->link(
-                            $contract->service_type->name,
+                            $contract->service_type->name ?? '(' . $contract->service_type->id . ')',
                             ['controller' => 'ServiceTypes', 'action' => 'view', $contract->service_type->id],
                         ) : '' ?></td>
                     <td><?=
@@ -86,13 +86,15 @@
                     <td><?= h($contract->installation_date) ?></td>
                     <td><?=
                         $contract->installation_technician !== null ? $this->Html->link(
-                            $contract->installation_technician->name,
+                            $contract->installation_technician->name
+                            ?? '(' . $contract->installation_technician->id . ')',
                             ['controller' => 'Customers', 'action' => 'view', $contract->installation_technician->id],
                         ) : '' ?></td>
                     <td><?= h($contract->uninstallation_date) ?></td>
                     <td><?=
                         $contract->uninstallation_technician !== null ? $this->Html->link(
-                            $contract->uninstallation_technician->name,
+                            $contract->uninstallation_technician->name
+                            ?? '(' . $contract->uninstallation_technician->id . ')',
                             [
                                 'controller' => 'Customers',
                                 'action' => 'view',
@@ -102,7 +104,7 @@
                     <td><?= h($contract->termination_date) ?></td>
                     <td><?=
                         $contract->commission !== null ? $this->Html->link(
-                            $contract->commission->name,
+                            $contract->commission->name ?? '(' . $contract->commission->id . ')',
                             ['controller' => 'Commissions', 'action' => 'view', $contract->commission->id],
                         ) : '' ?></td>
                     <td><?= h($contract->subscriber_verification_code) ?></td>

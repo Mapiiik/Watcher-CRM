@@ -33,7 +33,7 @@
             <?php endif; ?>
             <td><?= $soldEquipment->equipment_type !== null ?
                 $this->Html->link(
-                    $soldEquipment->equipment_type->name,
+                    $soldEquipment->equipment_type->name ?? '(' . $soldEquipment->equipment_type->id . ')',
                     [
                         'controller' => 'EquipmentTypes',
                         'action' => 'view',

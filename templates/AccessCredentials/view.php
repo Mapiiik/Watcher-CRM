@@ -51,7 +51,7 @@
                             <th><?= __('Contract') ?></th>
                             <td><?= $accessCredential->hasValue('contract') ?
                                 $this->Html->link(
-                                    $accessCredential->contract->name,
+                                    $accessCredential->contract->name ?? '(' . $accessCredential->contract->id . ')',
                                     [
                                         'controller' => 'Contracts',
                                         'action' => 'view',

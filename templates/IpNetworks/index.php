@@ -40,7 +40,7 @@
                 <tr>
                     <td><?= $ipNetwork->customer !== null ?
                         $this->Html->link(
-                            $ipNetwork->customer->name,
+                            $ipNetwork->customer->name ?? '(' . $ipNetwork->customer->id . ')',
                             ['controller' => 'Customers', 'action' => 'view', $ipNetwork->customer->id],
                         ) : '' ?></td>
                     <td><?= $ipNetwork->customer !== null ? h($ipNetwork->customer->number) : '' ?></td>

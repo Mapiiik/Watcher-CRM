@@ -72,7 +72,7 @@
                         <tr>
                             <th><?= __('Contract') ?></th>
                             <td><?= $serviceOverride->hasValue('contract') ? $this->Html->link(
-                                $serviceOverride->contract->name,
+                                $serviceOverride->contract->name ?? '(' . $serviceOverride->contract->id . ')',
                                 [
                                     'controller' => 'Contracts',
                                     'action' => 'view',
@@ -84,7 +84,7 @@
                         <tr>
                             <th><?= __('Service') ?></th>
                             <td><?= $serviceOverride->hasValue('service') ? $this->Html->link(
-                                $serviceOverride->service->name,
+                                $serviceOverride->service->name ?? '(' . $serviceOverride->service->id . ')',
                                 [
                                     'controller' => 'Services',
                                     'action' => 'view',

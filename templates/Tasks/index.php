@@ -77,20 +77,20 @@
                     <td><?= h($task->number) ?></td>
                     <td>
                         <?= $task->task_type !== null ? $this->Html->link(
-                            $task->task_type->name,
+                            $task->task_type->name ?? '(' . $task->task_type->id . ')',
                             ['controller' => 'TaskTypes', 'action' => 'view', $task->task_type->id],
                         ) : '' ?>
                     </td>
                     <td><?= h($task->getPriorityName()) ?></td>
                     <td>
                         <?= $task->task_state !== null ? $this->Html->link(
-                            $task->task_state->name,
+                            $task->task_state->name ?? '(' . $task->task_state->id . ')',
                             ['controller' => 'TaskStates', 'action' => 'view', $task->task_state->id],
                         ) : '' ?>
                     </td>
                     <td>
                         <?= $task->dealer !== null ? $this->Html->link(
-                            $task->dealer->name,
+                            $task->dealer->name ?? '(' . $task->dealer->id . ')',
                             ['controller' => 'Customers', 'action' => 'view', $task->dealer->id],
                         ) : '' ?>
                     </td>
@@ -101,14 +101,14 @@
                     <td style="overflow-wrap: break-word; max-width: 600px;"><?= nl2br($task->text ?? '') ?></td>
                     <td>
                         <?= $task->customer !== null ? $this->Html->link(
-                            $task->customer->name,
+                            $task->customer->name ?? '(' . $task->customer->id . ')',
                             ['controller' => 'Customers', 'action' => 'view', $task->customer->id],
                         ) : '' ?>
                     </td>
                     <td><?= $task->customer !== null ? h($task->customer->number) : '' ?></td>
                     <td><?=
                         $task->contract !== null ? $this->Html->link(
-                            $task->contract->name,
+                            $task->contract->name ?? '(' . $task->contract->id . ')',
                             [
                                 'controller' => 'Contracts',
                                 'action' => 'view',

@@ -109,11 +109,11 @@ class CustomerPDF extends AppPDF
                 [
                     [
                         'label' => Settings::getString('core.documents.common.labels.name'),
-                        'value' => $customer->billing_address->full_name,
+                        'value' => $customer->billing_address->full_name ?? '',
                     ],
                     [
                         'label' => Settings::getString('core.documents.common.labels.company'),
-                        'value' => $this->strOrX($customer->billing_address->company),
+                        'value' => $this->strOrX($customer->billing_address?->company),
                     ],
                 ],
                 [

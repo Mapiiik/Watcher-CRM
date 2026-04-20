@@ -75,13 +75,13 @@
                             <td><?= h($task->getPriorityName()) ?></td>
                             <td><?= $task->task_state !== null ?
                                 $this->Html->link(
-                                    $task->task_state->name,
+                                    $task->task_state->name ?? '(' . $task->task_state->id . ')',
                                     ['controller' => 'TaskStates', 'action' => 'view', $task->task_state->id],
                                 ) : '' ?>
                             </td>
                             <td><?= $task->dealer !== null ?
                                 $this->Html->link(
-                                    $task->dealer->name,
+                                    $task->dealer->name ?? '(' . $task->dealer->id . ')',
                                     ['controller' => 'Customers', 'action' => 'view', $task->dealer->id],
                                 ) : '' ?>
                             </td>
@@ -93,7 +93,7 @@
                             <td><?= h($task->phone) ?></td>
                             <td><?= $task->customer !== null ?
                                 $this->Html->link(
-                                    $task->customer->name,
+                                    $task->customer->name ?? '(' . $task->customer->id . ')',
                                     ['controller' => 'Customers', 'action' => 'view', $task->customer->id],
                                 ) : '' ?>
                             </td>

@@ -47,7 +47,7 @@
                     <?php if (!isset($customer_id)) : ?>
                     <td><?= $accessCredential->hasValue('customer') ?
                         $this->Html->link(
-                            $accessCredential->customer->name,
+                            $accessCredential->customer->name ?? '(' . $accessCredential->customer->id . ')',
                             ['controller' => 'Customers', 'action' => 'view', $accessCredential->customer->id],
                         ) : '' ?></td>
                     <td><?= $accessCredential->hasValue('customer') ?
@@ -56,7 +56,7 @@
                     <?php if (!isset($contract_id)) : ?>
                     <td><?= $accessCredential->hasValue('contract') ?
                         $this->Html->link(
-                            $accessCredential->contract->name,
+                            $accessCredential->contract->name ?? '(' . $accessCredential->contract->id . ')',
                             [
                                 'controller' => 'Contracts',
                                 'action' => 'view',

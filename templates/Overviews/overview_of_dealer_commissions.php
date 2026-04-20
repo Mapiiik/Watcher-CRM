@@ -74,7 +74,7 @@
                                     <tr>
                                         <td><?= $contract->customer !== null ?
                                             $this->Html->link(
-                                                $contract->customer->name,
+                                                $contract->customer->name ?? '(' . $contract->customer->id . ')',
                                                 [
                                                     'controller' => 'Customers',
                                                     'action' => 'view',

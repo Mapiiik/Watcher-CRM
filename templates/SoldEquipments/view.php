@@ -42,7 +42,7 @@
                         <tr>
                             <th><?= __('Customer') ?></th>
                             <td><?= $soldEquipment->customer !== null ? $this->Html->link(
-                                $soldEquipment->customer->name,
+                                $soldEquipment->customer->name ?? '(' . $soldEquipment->customer->id . ')',
                                 ['controller' => 'Customers', 'action' => 'view', $soldEquipment->customer->id],
                             ) : '' ?></td>
                         </tr>
@@ -66,7 +66,7 @@
                         <tr>
                             <th><?= __('Equipment Type') ?></th>
                             <td><?= $soldEquipment->equipment_type !== null ? $this->Html->link(
-                                $soldEquipment->equipment_type->name,
+                                $soldEquipment->equipment_type->name ?? '(' . $soldEquipment->equipment_type->id . ')',
                                 [
                                     'controller' => 'EquipmentTypes',
                                     'action' => 'view',

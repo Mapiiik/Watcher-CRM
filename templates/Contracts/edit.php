@@ -99,7 +99,7 @@ use Settings\Utility\Settings;
                         echo $this->Form->control('uninstallation_date', [
                             'label' => __('Uninstallation/Cancellation Date'),
                             'empty' => true,
-                            'disabled' => !$contract->uninstallation_date !== null,
+                            'disabled' => $contract->uninstallation_date === null,
                         ]);
                         $this->Form->unlockField('uninstallation_date'); //disable form security check
 
@@ -107,7 +107,7 @@ use Settings\Utility\Settings;
                         echo $this->Form->control('uninstallation_technician_id', [
                             'options' => $uninstallationTechnicians,
                             'empty' => true,
-                            'disabled' => !$contract->uninstallation_date !== null,
+                            'disabled' => $contract->uninstallation_date === null,
                         ]);
                         $this->Form->unlockField('uninstallation_technician_id'); //disable form security check
 
@@ -125,7 +125,7 @@ use Settings\Utility\Settings;
                         echo $this->Form->control('termination_date', [
                             'label' => __('Date of Termination of Services'),
                             'empty' => true,
-                            'disabled' => !$contract->termination_date !== null,
+                            'disabled' => $contract->termination_date === null,
                         ]);
                         $this->Form->unlockField('termination_date'); //disable form security check
                         ?>

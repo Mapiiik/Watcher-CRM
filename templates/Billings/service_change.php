@@ -32,7 +32,7 @@
                         <tr>
                             <th><?= __('Customer') ?></th>
                             <td><?= $billing->customer !== null ? $this->Html->link(
-                                $billing->customer->name,
+                                $billing->customer->name ?? '(' . $billing->customer->id . ')',
                                 ['controller' => 'Customers', 'action' => 'view', $billing->customer->id],
                             ) : '' ?></td>
                         </tr>
@@ -55,7 +55,7 @@
                         <tr>
                             <th><?= __('Service') ?></th>
                             <td><?= $billing->service !== null ? $this->Html->link(
-                                $billing->service->name,
+                                $billing->service->name ?? '(' . $billing->service->id . ')',
                                 ['controller' => 'Services', 'action' => 'view', $billing->service->id],
                             ) : '' ?></td>
                         </tr>

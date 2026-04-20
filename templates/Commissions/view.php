@@ -56,7 +56,7 @@
                         <tr>
                             <td>
                                 <?= $dealerCommission->dealer !== null ? $this->Html->link(
-                                    $dealerCommission->dealer->name,
+                                    $dealerCommission->dealer->name ?? '(' . $dealerCommission->dealer->id . ')',
                                     ['controller' => 'Customers', 'action' => 'view', $dealerCommission->dealer->id],
                                 ) : '' ?>
                             </td>
@@ -111,7 +111,7 @@
                         <tr style="<?= $contract->style ?>">
                             <td>
                                 <?= $contract->customer !== null ? $this->Html->link(
-                                    $contract->customer->name,
+                                    $contract->customer->name ?? '(' . $contract->customer->id . ')',
                                     ['controller' => 'Customers', 'action' => 'view', $contract->customer->id],
                                 ) : '' ?>
                             </td>
@@ -119,7 +119,7 @@
                             <td><?= h($contract->number) ?></td>
                             <td><?=
                                 $contract->contract_state !== null ? $this->Html->link(
-                                    $contract->contract_state->name,
+                                    $contract->contract_state->name ?? '(' . $contract->contract_state->id . ')',
                                     [
                                         'controller' => 'ContractStates',
                                         'action' => 'view',
@@ -128,7 +128,7 @@
                                 ) : '' ?></td>
                             <td>
                                 <?= $contract->service_type !== null ? $this->Html->link(
-                                    $contract->service_type->name,
+                                    $contract->service_type->name ?? '(' . $contract->service_type->id . ')',
                                     ['controller' => 'ServiceTypes', 'action' => 'view', $contract->service_type->id],
                                 ) : '' ?>
                             </td>
@@ -148,7 +148,8 @@
                             <td><?= h($contract->installation_date) ?></td>
                             <td>
                                 <?= $contract->installation_technician !== null ? $this->Html->link(
-                                    $contract->installation_technician->name,
+                                    $contract->installation_technician->name
+                                    ?? '(' . $contract->installation_technician->id . ')',
                                     [
                                         'controller' => 'Customers',
                                         'action' => 'view',
@@ -159,7 +160,8 @@
                             <td><?= h($contract->uninstallation_date) ?></td>
                             <td><?=
                                 $contract->uninstallation_technician !== null ? $this->Html->link(
-                                    $contract->uninstallation_technician->name,
+                                    $contract->uninstallation_technician->name
+                                    ?? '(' . $contract->uninstallation_technician->id . ')',
                                     [
                                         'controller' => 'Customers',
                                         'action' => 'view',

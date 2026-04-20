@@ -42,7 +42,7 @@
                         <tr>
                             <th><?= __('Customer') ?></th>
                             <td><?= $borrowedEquipment->customer !== null ? $this->Html->link(
-                                $borrowedEquipment->customer->name,
+                                $borrowedEquipment->customer->name ?? '(' . $borrowedEquipment->customer->id . ')',
                                 ['controller' => 'Customers', 'action' => 'view', $borrowedEquipment->customer->id],
                             ) : '' ?></td>
                         </tr>
@@ -67,7 +67,8 @@
                         <tr>
                             <th><?= __('Equipment Type') ?></th>
                             <td><?= $borrowedEquipment->equipment_type !== null ? $this->Html->link(
-                                $borrowedEquipment->equipment_type->name,
+                                $borrowedEquipment->equipment_type->name
+                                ?? '(' . $borrowedEquipment->equipment_type->id . ')',
                                 [
                                     'controller' => 'EquipmentTypes',
                                     'action' => 'view',

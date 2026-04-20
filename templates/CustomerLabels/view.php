@@ -42,7 +42,7 @@
                         <tr>
                             <th><?= __('Customer') ?></th>
                             <td><?= $customerLabel->customer !== null ? $this->Html->link(
-                                $customerLabel->customer->name,
+                                $customerLabel->customer->name ?? '(' . $customerLabel->customer->id . ')',
                                 ['controller' => 'Customers', 'action' => 'view', $customerLabel->customer->id],
                             ) : '' ?></td>
                         </tr>
@@ -66,7 +66,7 @@
                         <tr>
                             <th><?= __('Label') ?></th>
                             <td><?= $customerLabel->label !== null ? $this->Html->link(
-                                $customerLabel->label->name,
+                                $customerLabel->label->name ?? '(' . $customerLabel->label->id . ')',
                                 ['controller' => 'Labels', 'action' => 'view', $customerLabel->label->id],
                             ) : '' ?></td>
                         </tr>

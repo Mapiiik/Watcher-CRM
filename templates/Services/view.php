@@ -39,14 +39,14 @@ use Cake\Collection\Collection;
                         <tr>
                             <th><?= __('Service Type') ?></th>
                             <td><?= $service->service_type !== null ? $this->Html->link(
-                                $service->service_type->name,
+                                $service->service_type->name ?? '(' . $service->service_type->id . ')',
                                 ['controller' => 'ServiceTypes', 'action' => 'view', $service->service_type->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Queue') ?></th>
                             <td><?= $service->queue !== null ? $this->Html->link(
-                                $service->queue->name,
+                                $service->queue->name ?? '(' . $service->queue->id . ')',
                                 ['controller' => 'Queues', 'action' => 'view', $service->queue->id],
                             ) : '' ?></td>
                         </tr>
@@ -95,7 +95,7 @@ use Cake\Collection\Collection;
                         <tr style="<?= $billing->style ?>">
                             <td><?= $billing->customer !== null ?
                                 $this->Html->link(
-                                    $billing->customer->name,
+                                    $billing->customer->name ?? '(' . $billing->customer->id . ')',
                                     ['controller' => 'Customers', 'action' => 'view', $billing->customer->id],
                                 ) : '' ?></td>
                             <td><?= $billing->customer !== null ? h($billing->customer->number) : '' ?></td>

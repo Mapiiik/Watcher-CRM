@@ -100,14 +100,14 @@
                         <tr style="<?= $contract->style ?>">
                             <td><?=
                                 $contract->customer !== null ? $this->Html->link(
-                                    $contract->customer->name,
+                                    $contract->customer->name ?? '(' . $contract->customer->id . ')',
                                     ['controller' => 'Customers', 'action' => 'view', $contract->customer->id],
                                 ) : '' ?></td>
                             <td><?= $contract->customer !== null ? h($contract->customer->number) : '' ?></td>
                             <td><?= h($contract->number) ?></td>
                             <td><?=
                                 $contract->contract_state !== null ? $this->Html->link(
-                                    $contract->contract_state->name,
+                                    $contract->contract_state->name ?? '(' . $contract->contract_state->id . ')',
                                     [
                                         'controller' => 'ContractStates',
                                         'action' => 'view',
@@ -116,7 +116,7 @@
                                 ) : '' ?></td>
                             <td><?=
                                 $contract->service_type !== null ? $this->Html->link(
-                                    $contract->service_type->name,
+                                    $contract->service_type->name ?? '(' . $contract->service_type->id . ')',
                                     ['controller' => 'ServiceTypes', 'action' => 'view', $contract->service_type->id],
                                 ) : '' ?></td>
                             <td><?=

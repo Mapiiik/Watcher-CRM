@@ -1300,10 +1300,12 @@ class InitialCRM extends BaseMigration
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->save();
 
-        (new UsersSeed())
-            ->setAdapter($this->getAdapter())
-            ->setIo($this->getIo())
-            ->run();
+        $seed = (new UsersSeed())->setAdapter($this->getAdapter());
+        $io = $this->getIo();
+        if ($io !== null) {
+            $seed->setIo($io);
+        }
+        $seed->run();
     }
 
     /**

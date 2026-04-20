@@ -58,7 +58,7 @@
                         <tr>
                             <th><?= __('Contract') ?></th>
                             <td><?= $contractVersion->contract !== null ? $this->Html->link(
-                                $contractVersion->contract->name,
+                                $contractVersion->contract->name ?? '(' . $contractVersion->contract->id . ')',
                                 [
                                     'controller' => 'Contracts',
                                     'action' => 'view',

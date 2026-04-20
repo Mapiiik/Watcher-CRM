@@ -41,7 +41,7 @@
                 <tr style="<?= $removedIpAddress->style ?>">
                     <td>
                         <?= $removedIpAddress->customer !== null ? $this->Html->link(
-                            $removedIpAddress->customer->name,
+                            $removedIpAddress->customer->name ?? '(' . $removedIpAddress->customer->id . ')',
                             ['controller' => 'Customers', 'action' => 'view', $removedIpAddress->customer->id],
                         ) : '' ?>
                     </td>

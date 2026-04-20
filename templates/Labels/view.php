@@ -96,7 +96,7 @@ use Doctrine\SqlFormatter\SqlFormatter;
                         <tr>
                             <td><?= $customerLabel->customer !== null ?
                                 $this->Html->link(
-                                    $customerLabel->customer->name,
+                                    $customerLabel->customer->name ?? '(' . $customerLabel->customer->id . ')',
                                     ['controller' => 'Customers', 'action' => 'view', $customerLabel->customer->id],
                                 ) : '' ?></td>
                             <td><?= $customerLabel->customer !== null ?

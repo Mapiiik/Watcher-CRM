@@ -48,7 +48,7 @@
             <h4 class="heading"><?= __('Labels') ?></h4>
             <?php foreach ($customer->customer_labels as $customer_label) : ?>
                 <?= $this->Html->link(
-                    $customer_label->label->name,
+                    $customer_label->label->name ?? '(' . $customer_label->label->id . ')',
                     ['controller' => 'CustomerLabels', 'action' => 'view', $customer_label->id],
                     [
                         'class' => 'app-label win-link',
@@ -202,7 +202,7 @@
                         <tr>
                             <th><?= __('Accounting Profile') ?></th>
                             <td><?= $customer->accounting_profile !== null ? $this->Html->link(
-                                $customer->accounting_profile->name,
+                                $customer->accounting_profile->name ?? '(' . $customer->accounting_profile->id . ')',
                                 [
                                     'controller' => 'AccountingProfiles',
                                     'action' => 'view',
@@ -759,7 +759,7 @@
                             </td>
                             <td><?=
                                 $task->contract !== null ? $this->Html->link(
-                                    $task->contract->name,
+                                    $task->contract->name ?? '(' . $task->contract->id . ')',
                                     [
                                         'controller' => 'Contracts',
                                         'action' => 'view',

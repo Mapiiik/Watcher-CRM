@@ -91,7 +91,7 @@
                                 '' : $this->Number->currency($service->price->toString()) ?></td>
                             <td>
                                 <?= $service->service_type !== null ? $this->Html->link(
-                                    $service->service_type->name,
+                                    $service->service_type->name ?? '(' . $service->service_type->id . ')',
                                     ['controller' => 'ServiceTypes', 'action' => 'view', $service->service_type->id],
                                 ) : '' ?>
                             </td>

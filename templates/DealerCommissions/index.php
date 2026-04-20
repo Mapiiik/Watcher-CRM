@@ -39,13 +39,13 @@
                 <tr>
                     <td>
                         <?= $dealerCommission->dealer !== null ? $this->Html->link(
-                            $dealerCommission->dealer->name,
+                            $dealerCommission->dealer->name ?? '(' . $dealerCommission->dealer->id . ')',
                             ['controller' => 'Customers', 'action' => 'view', $dealerCommission->dealer->id],
                         ) : '' ?>
                     </td>
                     <td>
                         <?= $dealerCommission->commission !== null ? $this->Html->link(
-                            $dealerCommission->commission->name,
+                            $dealerCommission->commission->name ?? '(' . $dealerCommission->commission->id . ')',
                             ['controller' => 'Commissions', 'action' => 'view', $dealerCommission->commission->id],
                         ) : '' ?>
                     </td>

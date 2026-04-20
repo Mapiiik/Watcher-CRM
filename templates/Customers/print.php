@@ -96,7 +96,7 @@
                         <tr>
                             <th><?= __('Accounting Profile') ?></th>
                             <td><?= $customer->accounting_profile !== null ? $this->Html->link(
-                                $customer->accounting_profile->name,
+                                $customer->accounting_profile->name ?? '(' . $customer->accounting_profile->id . ')',
                                 [
                                     'controller' => 'AccountingProfiles',
                                     'action' => 'view',

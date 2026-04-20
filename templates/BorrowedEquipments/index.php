@@ -42,7 +42,7 @@
                 <tr style="<?= $borrowedEquipment->style ?>">
                     <td>
                         <?= $borrowedEquipment->customer !== null ? $this->Html->link(
-                            $borrowedEquipment->customer->name,
+                            $borrowedEquipment->customer->name ?? '(' . $borrowedEquipment->customer->id . ')',
                             ['controller' => 'Customers', 'action' => 'view', $borrowedEquipment->customer->id],
                         ) : '' ?>
                     </td>
@@ -61,7 +61,8 @@
                     </td>
                     <td>
                         <?= $borrowedEquipment->equipment_type !== null ? $this->Html->link(
-                            $borrowedEquipment->equipment_type->name,
+                            $borrowedEquipment->equipment_type->name
+                            ?? '(' . $borrowedEquipment->equipment_type->id . ')',
                             [
                                 'controller' => 'EquipmentTypes',
                                 'action' => 'view',

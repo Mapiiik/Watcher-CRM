@@ -31,7 +31,7 @@
                         <tr>
                             <th><?= __('Customer') ?></th>
                             <td><?= $login->customer !== null ? $this->Html->link(
-                                $login->customer->name,
+                                $login->customer->name ?? '(' . $login->customer->id . ')',
                                 ['controller' => 'Customers', 'action' => 'view', $login->customer->id],
                             ) : '' ?></td>
                         </tr>

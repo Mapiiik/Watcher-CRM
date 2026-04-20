@@ -77,7 +77,7 @@
                         <tr style="<?= $borrowedEquipment->style ?>">
                             <td><?= $borrowedEquipment->customer !== null ?
                                 $this->Html->link(
-                                    $borrowedEquipment->customer->name,
+                                    $borrowedEquipment->customer->name ?? '(' . $borrowedEquipment->customer->id . ')',
                                     ['controller' => 'Customers', 'action' => 'view', $borrowedEquipment->customer->id],
                                 ) : '' ?></td>
                             <td><?= $borrowedEquipment->customer !== null ?
@@ -139,7 +139,7 @@
                         <tr style="<?= $soldEquipment->style ?>">
                             <td><?= $soldEquipment->customer !== null ?
                                 $this->Html->link(
-                                    $soldEquipment->customer->name,
+                                    $soldEquipment->customer->name ?? '(' . $soldEquipment->customer->id . ')',
                                     ['controller' => 'Customers', 'action' => 'view', $soldEquipment->customer->id],
                                 ) : '' ?></td>
                             <td><?= $soldEquipment->customer !== null ?

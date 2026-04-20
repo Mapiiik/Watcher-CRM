@@ -39,7 +39,7 @@
             <?php if (!empty($customer_column)) : ?>
             <td><?= $billing->customer !== null ?
                 $this->Html->link(
-                    $billing->customer->name,
+                    $billing->customer->name ?? '(' . $billing->customer->id . ')',
                     ['controller' => 'Customers', 'action' => 'view', $billing->customer->id],
                 ) : '' ?>
             </td>

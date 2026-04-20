@@ -37,7 +37,7 @@
                 <tr>
                     <td>
                         <?= $email->customer !== null ? $this->Html->link(
-                            $email->customer->name,
+                            $email->customer->name ?? '(' . $email->customer->id . ')',
                             ['controller' => 'Customers', 'action' => 'view', $email->customer->id],
                         ) : '' ?>
                     </td>
