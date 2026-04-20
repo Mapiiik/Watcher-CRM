@@ -133,6 +133,15 @@ final class InvoiceDraft
      *
      * Ensures all required fields are present and syntactically valid.
      * Business rules (e.g. VS range, customer existence) are handled elsewhere.
+     *
+     * @phpstan-assert-if-true non-empty-string $this->number
+     * @phpstan-assert-if-true non-empty-string $this->text
+     * @phpstan-assert-if-true !null $this->variableSymbol
+     * @phpstan-assert-if-true !null $this->customerNumber
+     * @phpstan-assert-if-true !null $this->creationDate
+     * @phpstan-assert-if-true !null $this->dueDate
+     * @phpstan-assert-if-true !null $this->total
+     * @phpstan-assert-if-true !null $this->debt
      */
     public function isValid(): bool
     {

@@ -126,6 +126,23 @@ class DbfExporter
      */
     private function addRecord($dbf, InvoiceDraft $invoice, AccountingProfile $accountingProfile): void
     {
+        if (!$invoice->isValid()) {
+            throw new RuntimeException(__d(
+                'bookkeeping',
+                'Invalid invoice data for invoice number {0}.',
+                [$invoice->number],
+            ));
+        }
+
+        // Ensure customer data is valid before adding the record
+        if ($invoice->customer === null || $invoice->customer->billing_address === null) {
+            throw new RuntimeException(__d(
+                'bookkeeping',
+                'Missing customer information or billing address for invoice number {0}.',
+                [$invoice->number],
+            ));
+        }
+
         $totalCost = $invoice->total->toFloat();
 
         $vat = Billing::calcVatFromTotal(
@@ -140,9 +157,9 @@ class DbfExporter
         $data[] = $invoice->variableSymbol; // VarSym
         $data[] = $invoice->text; // SText
         $data[] = $invoice->creationDate->i18nFormat('yyyyMMdd'); // Datum
-        $data[] = $invoice->creationDate->i18nFormat('yyyyMMdd'); // DatUcP (legacy behavior)
+        $data[] = $invoice->creationDate->i18nFormat('yyyyMMdd'); // DatUcP
         $data[] = $invoice->dueDate->i18nFormat('yyyyMMdd'); // DatSplat
-        $data[] = $invoice->creationDate->i18nFormat('yyyyMMdd'); // DatZdPln (legacy behavior)
+        $data[] = $invoice->creationDate->i18nFormat('yyyyMMdd'); // DatZdPln
 
         // VAT / pricing section
         if ($accountingProfile->reverse_charge) {

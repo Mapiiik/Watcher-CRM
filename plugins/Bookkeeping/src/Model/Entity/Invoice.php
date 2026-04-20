@@ -13,11 +13,11 @@ use Cake\I18n\Date;
  * @property string|null $customer_id
  * @property string $number
  * @property string|null $variable_symbol
- * @property \Cake\I18n\Date|null $creation_date
- * @property \Cake\I18n\Date|null $due_date
+ * @property \Cake\I18n\Date $creation_date
+ * @property \Cake\I18n\Date $due_date
  * @property string|null $text
- * @property \PhpCollective\DecimalObject\Decimal|null $total
- * @property \PhpCollective\DecimalObject\Decimal|null $debt
+ * @property \PhpCollective\DecimalObject\Decimal $total
+ * @property \PhpCollective\DecimalObject\Decimal $debt
  * @property \Cake\I18n\Date|null $payment_date
  * @property bool $send_by_email
  * @property \Cake\I18n\DateTime|null $email_sent

@@ -65,6 +65,9 @@ final class SettingsPath
      * Determine whether the path contains the minimum required parts.
      *
      * A valid settings path must define both a plugin and a primary key.
+     *
+     * @phpstan-assert-if-true !null $this->plugin
+     * @phpstan-assert-if-true !null $this->key
      */
     public function isValid(): bool
     {

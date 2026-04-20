@@ -198,6 +198,13 @@ class DebtorsProcessor
             );
         }
 
+        if ($id === null) {
+            throw new InvalidArgumentException(__d(
+                'bookkeeping',
+                'Customer ID of the debtor must be provided.',
+            ));
+        }
+
         $customerIps = $this->getCustomerIps($id, 'MANUAL ENTRY - ', false);
 
         $this->addLabel($id);
@@ -237,6 +244,13 @@ class DebtorsProcessor
                 'bookkeeping',
                 'Debtor blocking is globally disabled by settings. No external systems were modified.',
             );
+        }
+
+        if ($id === null) {
+            throw new InvalidArgumentException(__d(
+                'bookkeeping',
+                'Customer ID of the debtor must be provided.',
+            ));
         }
 
         $customerIps = $this->getCustomerIps($id, 'MANUAL ENTRY - ', false);

@@ -61,7 +61,7 @@ class XmlParser
         $xml->registerXPathNamespace('typ', 'http://www.stormware.cz/schema/version_2/type.xsd');
 
         $invoices = $xml->xpath('//lst:invoice');
-        if ($invoices === false) {
+        if ($invoices === false || $invoices === null) {
             throw new RuntimeException(__d(
                 'bookkeeping',
                 'Failed to parse XML: No invoices found.',

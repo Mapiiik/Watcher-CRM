@@ -1029,8 +1029,9 @@ class ContractPDF extends AppPDF
      * otherwise throw an exception with clear message indicating missing data
      *
      * @param ContractPrintData $data
-     * @phpstan-assert !null $data->effectiveDateOfAmendment
      * @return void
+     * 
+     * @phpstan-assert !null $data->effectiveDateOfAmendment
      */
     private function assertAmendmentData(ContractPrintData $data): void
     {
@@ -1060,7 +1061,7 @@ class ContractPDF extends AppPDF
             throw new InvalidArgumentException('Contract number must be provided for contract generation');
         }
 
-        if (is_null($contract_version)) {
+        if ($contract_version === null) {
             throw new InvalidArgumentException(
                 'Contract version must be provided for contract generation',
             );
@@ -1068,7 +1069,7 @@ class ContractPDF extends AppPDF
 
             if (
             $type === ContractPrintType::ContractNewX
-            && (is_null($contract_version_to_be_replaced) || $contract_version_to_be_replaced->conclusion_date === null)
+            && ($contract_version_to_be_replaced === null || $contract_version_to_be_replaced->conclusion_date === null)
         ) {
             throw new InvalidArgumentException(
                 'Contract version to be replaced with valid conclusion date must be provided for new replacement contract generation',

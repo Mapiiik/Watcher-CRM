@@ -9,6 +9,7 @@ use App\Model\Entity\Customer;
 use Bookkeeping\Model\ValueObject\InvoiceDraft;
 use Cake\I18n\Date;
 use PhpCollective\DecimalObject\Decimal;
+use RuntimeException;
 use Settings\Utility\Settings;
 
 /**
@@ -32,6 +33,23 @@ class JsonRequestBuilder
         Date $invoicedMonth,
         AccountingProfile $accountingProfile,
     ): array {
+        if (!$invoice->isValid()) {
+            throw new RuntimeException(__d(
+                'bookkeeping',
+                'Invalid invoice data for invoice number {0}.',
+                [$invoice->number],
+            ));
+        }
+
+        // Ensure customer data is valid before building the request
+        if ($invoice->customer === null || $invoice->customer->billing_address === null) {
+            throw new RuntimeException(__d(
+                'bookkeeping',
+                'Missing customer information or billing address for invoice number {0}.',
+                [$invoice->number],
+            ));
+        }
+
         // Load provider config
         $city = Settings::getString(EurofakturaProvider::SETTINGS_ROOT . '.issuer.city', 'Makarska');
         $businessUnit = Settings::getString(EurofakturaProvider::SETTINGS_ROOT . '.issuer.business_unit', 'POSL1');

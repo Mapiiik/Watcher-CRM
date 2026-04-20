@@ -106,6 +106,7 @@ final class ContractPrintValidator
      * Checks that a contract version is selected.
      *
      * @return bool Whether the contract version requirement is fulfilled.
+     *
      * @phpstan-assert-if-true !null $data->contractVersion
      */
     private function requireContractVersion(ContractPrintData $data): bool

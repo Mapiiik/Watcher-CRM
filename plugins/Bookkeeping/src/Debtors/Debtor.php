@@ -7,6 +7,7 @@ use App\Model\Entity\Customer;
 use Bookkeeping\Model\Entity\Invoice;
 use Cake\Collection\Collection;
 use Cake\I18n\Date;
+use RuntimeException;
 
 class Debtor
 {
@@ -31,7 +32,12 @@ class Debtor
 
         $invoicesCollection = new Collection($this->invoices);
 
-        $this->customer = $invoicesCollection->first()->customer;
+        $first = $invoicesCollection->first();
+        if ($first === null || $first->customer === null) {
+            throw new RuntimeException('Debtor must contain at least one invoice with valid customer data.');
+        }
+
+        $this->customer = $first->customer;
         $this->due_date = $invoicesCollection->min('due_date')->due_date;
         $this->total_debt = $invoicesCollection->sumOf(
             function (Invoice $invoice) {

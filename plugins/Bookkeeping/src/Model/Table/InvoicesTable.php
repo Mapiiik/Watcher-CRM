@@ -87,11 +87,11 @@ class InvoicesTable extends Table
 
         $validator
             ->date('creation_date')
-            ->allowEmptyDate('creation_date');
+            ->notEmptyDate('creation_date');
 
         $validator
             ->date('due_date')
-            ->allowEmptyDate('due_date');
+            ->notEmptyDate('due_date');
 
         $validator
             ->scalar('text')
@@ -99,11 +99,11 @@ class InvoicesTable extends Table
 
         $validator
             ->decimal('total')
-            ->allowEmptyString('total');
+            ->notEmptyString('total');
 
         $validator
             ->decimal('debt')
-            ->allowEmptyString('debt');
+            ->notEmptyString('debt');
 
         $validator
             ->date('payment_date')

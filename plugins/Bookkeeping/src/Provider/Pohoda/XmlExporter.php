@@ -53,6 +53,23 @@ class XmlExporter
         );
 
         foreach ($invoices as $invoice) {
+            if (!$invoice->isValid()) {
+                throw new RuntimeException(__d(
+                    'bookkeeping',
+                    'Invalid invoice data for invoice number {0}.',
+                    [$invoice->number],
+                ));
+            }
+
+            // Ensure customer data is valid before adding the record
+            if ($invoice->customer === null || $invoice->customer->billing_address === null) {
+                throw new RuntimeException(__d(
+                    'bookkeeping',
+                    'Missing customer information or billing address for invoice number {0}.',
+                    [$invoice->number],
+                ));
+            }
+
             $invoiceRecord = $pohoda->createInvoice([
                 'invoiceType' => 'issuedInvoice',
                 'number' => [
