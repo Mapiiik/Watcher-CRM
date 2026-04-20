@@ -145,7 +145,7 @@ class CustomerMessagesController extends AppController
         $customersFilter = [];
 
         $labelId = $this->getRequest()->getQuery('label_id');
-        if (Validation::uuid($labelId)) {
+        if (is_string($labelId) && Validation::uuid($labelId)) {
             $filterQuery = $labelsTable->CustomerLabels->find()
                 ->select([
                     'customer_id',
@@ -162,7 +162,7 @@ class CustomerMessagesController extends AppController
         }
 
         $accessPointId = $this->getRequest()->getQuery('access_point_id');
-        if (Validation::uuid($accessPointId)) {
+        if (is_string($accessPointId) && Validation::uuid($accessPointId)) {
             $filterQuery = $this->CustomerMessages->Customers->Contracts->find()
                 ->select([
                     'customer_id',
@@ -179,7 +179,7 @@ class CustomerMessagesController extends AppController
         }
 
         $ruianAddressId = $this->getRequest()->getQuery('ruian_address_id');
-        if (Validation::numeric($ruianAddressId)) {
+        if (is_string($ruianAddressId) && Validation::numeric($ruianAddressId)) {
             $filterQuery = $this->CustomerMessages->Customers->Contracts->find()
                 ->select([
                     'customer_id',

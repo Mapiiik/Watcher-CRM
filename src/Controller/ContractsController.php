@@ -63,7 +63,7 @@ class ContractsController extends AppController
 
         // filter by contract state
         $contract_state_id = $this->getRequest()->getQuery('contract_state_id');
-        if (Validation::uuid($contract_state_id)) {
+        if (is_string($contract_state_id) && Validation::uuid($contract_state_id)) {
             $conditions[] = [
                 'Contracts.contract_state_id' => $contract_state_id,
             ];
@@ -71,7 +71,7 @@ class ContractsController extends AppController
 
         // filter by service type
         $service_type_id = $this->getRequest()->getQuery('service_type_id');
-        if (Validation::uuid($service_type_id)) {
+        if (is_string($service_type_id) && Validation::uuid($service_type_id)) {
             $conditions[] = [
                 'Contracts.service_type_id' => $service_type_id,
             ];
@@ -510,8 +510,20 @@ class ContractsController extends AppController
             ->all();
 
         if ($result->count() == 1) {
+            $firstResult = $result->first();
+            if ($firstResult === null || $firstResult->number === null) {
+                if ($flash) {
+                    $this->Flash->error(__(
+                        'The contract number could not be generated.'
+                        . ' Please, check the format defined for the service type and try again.',
+                    ));
+                }
+
+                return false;
+            }
+
             // assign a number for the contract
-            $contract->number = $result->first()->number;
+            $contract->number = $firstResult->number;
 
             if (
                 $this->Contracts->save($contract, [
@@ -596,8 +608,20 @@ class ContractsController extends AppController
             ->all();
 
         if ($result->count() == 1) {
+            $firstResult = $result->first();
+            // check if subscriber verification code could be generated
+            if ($firstResult === null || $firstResult->subscriber_verification_code === null) {
+                if ($flash) {
+                    $this->Flash->error(__(
+                        'The subscriber verification code could not be generated.'
+                        . ' Please, check the format defined for the service type and try again.',
+                    ));
+                }
+
+                return false;
+            }
             // assign subscriber verification code for the contract
-            $contract->subscriber_verification_code = $result->first()->subscriber_verification_code;
+            $contract->subscriber_verification_code = $firstResult->subscriber_verification_code;
 
             if (
                 $this->Contracts->save($contract, [

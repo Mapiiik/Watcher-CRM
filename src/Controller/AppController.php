@@ -101,6 +101,9 @@ class AppController extends Controller
                 ['?' => ['page' => '1'] + $this->getRequest()->getQueryParams()]
                 + $this->getRequest()->getParam('pass'),
             );
+            if ($response === null) {
+                throw new NotFoundException('Unable to prepare redirection response.');
+            }
 
             // Redirect if not called from CLI
             if (PHP_SAPI === 'cli') {

@@ -101,7 +101,7 @@ class OverviewsController extends AppController
             $uuidLabels = [];
             if (is_array($this->getRequest()->getQuery('label_ids'))) {
                 foreach ($this->getRequest()->getQuery('label_ids') as $labelId) {
-                    if (Validation::uuid($labelId)) {
+                    if (is_string($labelId) && Validation::uuid($labelId)) {
                         $uuidLabels[] = "'{$labelId}'::uuid";
                     }
                 }
@@ -123,7 +123,7 @@ class OverviewsController extends AppController
             $uuidLabels = [];
             if (is_array($this->getRequest()->getQuery('not_label_ids'))) {
                 foreach ($this->getRequest()->getQuery('not_label_ids') as $labelId) {
-                    if (Validation::uuid($labelId)) {
+                    if (is_string($labelId) && Validation::uuid($labelId)) {
                         $uuidLabels[] = "'{$labelId}'::uuid";
                     }
                 }
@@ -180,28 +180,28 @@ class OverviewsController extends AppController
 
         // filter by contract state
         $contractStateId = $this->getRequest()->getQuery('contract_state_id');
-        if (Validation::uuid($contractStateId)) {
+        if (is_string($contractStateId) && Validation::uuid($contractStateId)) {
             $contractsQuery->where(['Contracts.contract_state_id' => $contractStateId]);
         }
         unset($contractStateId);
 
         // filter by service type
         $serviceTypeId = $this->getRequest()->getQuery('service_type_id');
-        if (Validation::uuid($serviceTypeId)) {
+        if (is_string($serviceTypeId) && Validation::uuid($serviceTypeId)) {
             $contractsQuery->where(['Contracts.service_type_id' => $serviceTypeId]);
         }
         unset($serviceTypeId);
 
         // filter by access point
         $accessPointId = $this->getRequest()->getQuery('access_point_id');
-        if (Validation::uuid($accessPointId)) {
+        if (is_string($accessPointId) && Validation::uuid($accessPointId)) {
             $contractsQuery->where(['Contracts.access_point_id' => $accessPointId]);
         }
         unset($accessPointId);
 
         // filter by RUIAN address
         $ruianAddressId = $this->getRequest()->getQuery('ruian_address_id');
-        if (Validation::numeric($ruianAddressId)) {
+        if (is_string($ruianAddressId) && Validation::numeric($ruianAddressId)) {
             $contractsQuery->where(['InstallationAddresses.ruian_gid' => $ruianAddressId]);
         }
         unset($ruianAddressId);
@@ -302,7 +302,7 @@ class OverviewsController extends AppController
                     ->contain('Contracts', function (SelectQuery $q) use ($access_point_id) {
                         $q->contain('ContractStates');
                         // filter by access point
-                        return Validation::uuid($access_point_id) ?
+                        return is_string($access_point_id) && Validation::uuid($access_point_id) ?
                             $q->where(['Contracts.access_point_id' => $access_point_id]) :
                             $q;
                     })
@@ -394,7 +394,7 @@ class OverviewsController extends AppController
             );
 
         // filter by service type
-        if (Validation::uuid($service_type_id)) {
+        if (is_string($service_type_id) && Validation::uuid($service_type_id)) {
             $servicesQuery->where(['Services.service_type_id' => $service_type_id]);
         }
 
@@ -543,7 +543,8 @@ class OverviewsController extends AppController
                                         $billings_collection
                                             ->countBy(function (Billing $billing) {
                                                 $commonly_available_download_speed =
-                                                    $billing->service->queue->speed_down * 0.6;
+                                                    $billing->service?->queue->speed_down ?
+                                                        $billing->service->queue->speed_down * 0.6 : null;
 
                                                 if ($commonly_available_download_speed < 30720) {
                                                     return 'speed_0_30';

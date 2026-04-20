@@ -9,7 +9,7 @@ namespace App\Model\Entity;
  * @property string $id
  * @property int $nid
  * @property string $customer_id
- * @property string|null $phone
+ * @property string $phone
  * @property bool $use_for_billing
  * @property bool $use_for_outages
  * @property bool $use_for_commercial

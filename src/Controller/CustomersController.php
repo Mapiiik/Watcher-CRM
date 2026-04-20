@@ -175,7 +175,7 @@ class CustomersController extends AppController
             $labels = [];
             if (is_array($this->getRequest()->getQuery('labels'))) {
                 foreach ($this->getRequest()->getQuery('labels') as $label) {
-                    if (Validation::uuid($label)) {
+                    if (is_string($label) && Validation::uuid($label)) {
                         $labels[] = $label;
                     }
                 }
@@ -235,7 +235,7 @@ class CustomersController extends AppController
         }
 
         // filter by contract state
-        if ($allow_advanced_search && Validation::uuid($contract_state_id)) {
+        if ($allow_advanced_search && is_string($contract_state_id) && Validation::uuid($contract_state_id)) {
             $subquery = $this->Customers->Contracts->find()
                 ->select(['id'])
                 ->where(function (QueryExpression $exp) {
@@ -254,7 +254,7 @@ class CustomersController extends AppController
         }
 
         // filter by service type
-        if ($allow_advanced_search && Validation::uuid($service_type_id)) {
+        if ($allow_advanced_search && is_string($service_type_id) && Validation::uuid($service_type_id)) {
             $subquery = $this->Customers->Contracts->find()
                 ->select(['id'])
                 ->where(function (QueryExpression $exp) {

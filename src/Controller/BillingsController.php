@@ -347,14 +347,14 @@ class BillingsController extends AppController
 
         // filter
         $original_service_id = $this->getRequest()->getQuery('original_service_id');
-        if (Validation::uuid($original_service_id)) {
+        if (is_string($original_service_id) && Validation::uuid($original_service_id)) {
             $billingsQuery->where(['Billings.service_id' => $original_service_id]);
         } else {
             $billingsQuery->where(['FALSE']);
         }
 
         $active_on_date = $this->getRequest()->getQuery('active_on_date');
-        if (Validation::date($active_on_date)) {
+        if (is_string($active_on_date) && Validation::date($active_on_date)) {
             $billingsQuery->where([
                 'Billings.billing_from <=' => $active_on_date,
                 'OR' => [
@@ -413,7 +413,7 @@ class BillingsController extends AppController
         }
 
         $access_point_id = $this->getRequest()->getQuery('access_point_id');
-        if (Validation::uuid($access_point_id)) {
+        if (is_string($access_point_id) && Validation::uuid($access_point_id)) {
             $billingsQuery->where(['Contracts.access_point_id' => $access_point_id]);
         }
 
