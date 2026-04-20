@@ -222,6 +222,10 @@ class ProcessSmsCommand extends Command
 
             // Find out the status of individual messages
             try {
+                // if we do not have an identifier, we cannot get the status, so we skip this message
+                if ($smsMessage->identifier === null) {
+                    continue;
+                }
                 // get message status from Android SMS gateway
                 $messageState = $client->GetMessageState($smsMessage->identifier);
                 // info to console

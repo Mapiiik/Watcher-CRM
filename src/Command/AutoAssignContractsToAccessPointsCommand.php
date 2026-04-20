@@ -87,6 +87,19 @@ class AutoAssignContractsToAccessPointsCommand extends Command
                 if (isset($radiusAccount->radacct[0]->nasipaddress)) {
                     $routerosDevices = $api->getRouterosDevicesForIp($radiusAccount->radacct[0]->nasipaddress);
 
+                    if ($routerosDevices === null) {
+                        Log::write(
+                            'error',
+                            'Error when fetching RouterOS devices for NAS IP: ' . $radiusAccount->radacct[0]->nasipaddress
+                            . ' for contract ' . $contract->number,
+                        );
+                        $io->error(
+                            'Error when fetching RouterOS devices for NAS IP: ' . $radiusAccount->radacct[0]->nasipaddress
+                            . ' for contract ' . $contract->number,
+                        );
+                        continue;
+                    }
+
                     // if some RouterOS device has assigned access point assign same to contract
                     foreach ($routerosDevices as $routerosDevice) {
                         if (isset($routerosDevice['access_point_id'])) {

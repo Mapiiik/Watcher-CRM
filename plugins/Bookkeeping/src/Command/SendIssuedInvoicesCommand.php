@@ -165,8 +165,8 @@ class SendIssuedInvoicesCommand extends Command
                 );
 
                 $message = strtr(Settings::getString('bookkeeping.invoices.emails.body_text'), [
-                    '{creation_date}' => $invoice->creation_date->__toString(),
-                    '{due_date}' => $invoice->due_date->__toString(),
+                    '{creation_date}' => (string)$invoice->creation_date,
+                    '{due_date}' => (string)$invoice->due_date,
                     '{invoice_number}' => (string)$invoice->number,
                     '{variable_symbol}' => (string)$invoice->variable_symbol,
                     '{bank_account_number}' => Settings::getString('core.company.bank_account_number'),

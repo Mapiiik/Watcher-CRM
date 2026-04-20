@@ -460,6 +460,9 @@ class Customer extends AppEntity
     {
         // normalize input – remove whitespace
         $oib = preg_replace('/\s+/', '', $oib);
+        if (!is_string($oib)) {
+            return false;
+        }
 
         // must be exactly 11 digits
         if (!preg_match('/^\d{11}$/', $oib)) {

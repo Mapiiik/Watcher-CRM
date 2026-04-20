@@ -22,6 +22,10 @@ class CustomerPDF extends AppPDF
         $type = $data->type;
         $customer = $data->customer;
 
+        if ($customer->billing_address === null) {
+            throw new InvalidArgumentException('Customer billing address is required to generate GDPR agreement.');
+        }
+
         // Disable default header and footer
         $this->setPrintHeader(false);
         $this->setPrintFooter(false);

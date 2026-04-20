@@ -106,7 +106,7 @@ final class ContractPrintDataEnricher
 
         if (!empty($query['access_point'])) {
             $technicalData->accessPoint = (string)$query['access_point'];
-        } elseif ($data->contract->__isset('access_point')) {
+        } elseif ($data->contract->access_point !== null && $data->contract->access_point['name'] !== null) {
             $technicalData->accessPoint = (string)$data->contract->access_point['name'];
         }
 

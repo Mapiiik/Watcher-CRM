@@ -17,6 +17,9 @@ use Settings\Utility\Settings;
 
 class ContractPDF extends AppPDF
 {
+    // constant for empty (null) serial numbers in the borrowed/sold equipment tables
+    const EMPTY_SERIAL = '';
+
     /**
      * Getter for contract duration text - short.
      *
@@ -91,12 +94,12 @@ class ContractPDF extends AppPDF
                 $billing->name
                 . ($billing->billing_from > $billingReferenceDate
                     ? ' ' . strtr(Settings::getString('core.documents.contracts.billing.from'), [
-                        '{date}' => $billing->billing_from->__toString(),
+                        '{date}' => (string)$billing->billing_from,
                     ])
                     : '')
                 . ($billing->billing_until
                     ? ' ' . strtr(Settings::getString('core.documents.contracts.billing.until'), [
-                        '{date}' => $billing->billing_until->__toString(),
+                        '{date}' => (string)$billing->billing_until,
                     ])
                     : ''),
                 align: 'L',
@@ -242,6 +245,16 @@ class ContractPDF extends AppPDF
         $technical_details = $data->technicalDetails;
         $signed = $data->signed;
 
+        if ($contract_version === null) {
+            throw new InvalidArgumentException(
+                'Contract version must be provided for handover protocol generation',
+            );
+        }
+
+        if ($contract->number === null) {
+            throw new InvalidArgumentException('Contract number must be provided for handover protocol generation');
+        }
+
         // Disable default header and footer
         $this->setPrintHeader(false);
         $this->setPrintFooter(false);
@@ -293,7 +306,7 @@ class ContractPDF extends AppPDF
             $this->Cell(90, 4, Settings::getString('core.documents.common.labels.end_date'), align: 'C');
             $this->Ln();
             $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Cell(90, 4, $data->numberOfContractToBeTerminated, align: 'C');
+            $this->Cell(90, 4, (string)$data->numberOfContractToBeTerminated, align: 'C');
             $this->Cell(90, 4, (string)$contract_version->valid_until, align: 'C');
         }
         $this->Ln();
@@ -601,7 +614,7 @@ class ContractPDF extends AppPDF
                 foreach ($contract->borrowed_equipments as $borrowed_equipment) {
                     $this->Cell(4, 5);
                     $this->Cell(130, 5, $borrowed_equipment->equipment_type->name, 1);
-                    $this->Cell(25, 5, $borrowed_equipment->serial_number, border: 1, align: 'C');
+                    $this->Cell(25, 5, $borrowed_equipment->serial_number ?? self::EMPTY_SERIAL, border: 1, align: 'C');
                     $this->Cell(
                         25,
                         5,
@@ -712,6 +725,7 @@ class ContractPDF extends AppPDF
                 // conditional discount sum
                 if (
                     $contract_version->minimum_duration > 0
+                    && isset($sold_equipment->equipment_type->price)
                     && isset($sold_equipment->equipment_type->price_with_obligation)
                 ) {
                     /** @psalm-suppress ImplicitToStringCast */
@@ -734,7 +748,7 @@ class ContractPDF extends AppPDF
                 $subtotal = $subtotal->add($sold_equipment_price ?? Decimal::create(0, 2));
                 $this->Cell(4, 5);
                 $this->Cell(130, 5, $sold_equipment->equipment_type->name, 1);
-                $this->Cell(25, 5, $sold_equipment->serial_number, border: 1, align: 'C');
+                $this->Cell(25, 5, $sold_equipment->serial_number ?? self::EMPTY_SERIAL, border: 1, align: 'C');
                 $this->Cell(25, 5, Number::currency($sold_equipment_price?->toFloat() ?? ''), border: 1, align: 'R');
                 $this->Ln();
 
@@ -905,7 +919,7 @@ class ContractPDF extends AppPDF
             foreach ($contract->borrowed_equipments as $borrowed_equipment) {
                 $this->Cell(4, 5);
                 $this->Cell(130, 5, $borrowed_equipment->equipment_type->name, 1);
-                $this->Cell(25, 5, $borrowed_equipment->serial_number, border: 1, align: 'C');
+                $this->Cell(25, 5, $borrowed_equipment->serial_number ?? self::EMPTY_SERIAL, border: 1, align: 'C');
                 $this->Cell(
                     25,
                     5,
@@ -996,7 +1010,7 @@ class ContractPDF extends AppPDF
                 4,
                 strtr(
                     Settings::getString('core.documents.contracts.handover.texts.uninstallation_final_statements_text'),
-                    ['{contract_number}' => $data->numberOfContractToBeTerminated],
+                    ['{contract_number}' => (string)$data->numberOfContractToBeTerminated],
                 ) . PHP_EOL,
                 align: 'J',
             );
@@ -1008,6 +1022,23 @@ class ContractPDF extends AppPDF
         $this->printSignatureSection('double', $signed);
 
         $this->Close();
+    }
+
+    /**
+     * Assert that all required data for contract amendment generation is present in the print data object,
+     * otherwise throw an exception with clear message indicating missing data
+     *
+     * @param ContractPrintData $data
+     * @phpstan-assert !null $data->effectiveDateOfAmendment
+     * @return void
+     */
+    private function assertAmendmentData(ContractPrintData $data): void
+    {
+        if ($data->effectiveDateOfAmendment === null) {
+            throw new InvalidArgumentException(
+                'Effective date of amendment must be provided for contract amendment generation',
+            );
+        }
     }
 
     /**
@@ -1024,6 +1055,25 @@ class ContractPDF extends AppPDF
         $contract_version = $data->contractVersion;
         $contract_version_to_be_replaced = $data->contractVersionToBeReplaced;
         $signed = $data->signed;
+
+        if ($contract->number === null) {
+            throw new InvalidArgumentException('Contract number must be provided for contract generation');
+        }
+
+        if (is_null($contract_version)) {
+            throw new InvalidArgumentException(
+                'Contract version must be provided for contract generation',
+            );
+        }
+
+            if (
+            $type === ContractPrintType::ContractNewX
+            && (is_null($contract_version_to_be_replaced) || $contract_version_to_be_replaced->conclusion_date === null)
+        ) {
+            throw new InvalidArgumentException(
+                'Contract version to be replaced with valid conclusion date must be provided for new replacement contract generation',
+            );
+        }
 
         // Disable default header and footer
         $this->setPrintHeader(false);
@@ -1145,7 +1195,7 @@ class ContractPDF extends AppPDF
                 $this->Cell(60, 4, Settings::getString('core.documents.common.labels.end_date'), align: 'C');
                 $this->Ln();
                 $this->SetFont('DejaVuSerif', 'B', 8);
-                $this->Cell(60, 4, $data->numberOfContractToBeTerminated, align: 'C');
+                $this->Cell(60, 4, (string)$data->numberOfContractToBeTerminated, align: 'C');
                 $this->Cell(60, 4, (string)$contract_version->conclusion_date, align: 'C');
                 $this->Cell(60, 4, (string)$contract_version->valid_until, align: 'C');
                 $this->Ln();
@@ -1289,9 +1339,9 @@ class ContractPDF extends AppPDF
             $this->Write(
                 4,
                 strtr(Settings::getString('core.documents.contracts.contract.texts.termination_intro'), [
-                    '{contract_number}' => $data->numberOfContractToBeTerminated,
-                    '{conclusion_date}' => $contract_version->conclusion_date->__toString(),
-                    '{valid_until}' => $contract_version->valid_until->__toString(),
+                    '{contract_number}' => (string)$data->numberOfContractToBeTerminated,
+                    '{conclusion_date}' => (string)$contract_version->conclusion_date,
+                    '{valid_until}' => (string)$contract_version->valid_until,
                 ]),
             );
             $this->Ln();
@@ -1313,7 +1363,7 @@ class ContractPDF extends AppPDF
             $this->Write(
                 4,
                 strtr(Settings::getString('core.documents.contracts.contract.texts.new_start_date'), [
-                    '{valid_from}' => $contract_version->valid_from->__toString(),
+                    '{valid_from}' => (string)$contract_version->valid_from,
                 ]),
             );
             $this->Ln();
@@ -1323,9 +1373,9 @@ class ContractPDF extends AppPDF
                 $this->Write(
                     4,
                     strtr(Settings::getString('core.documents.contracts.contract.texts.new_x_intro'), [
-                        '{contract_number}' => $data->numberOfContractToBeTerminated,
-                        '{old_conclusion_date}' => $contract_version_to_be_replaced->conclusion_date,
-                        '{termination_date}' => $contract_version->valid_from->subDays(1)->__toString(),
+                        '{contract_number}' => (string)$data->numberOfContractToBeTerminated,
+                        '{old_conclusion_date}' => (string)$contract_version_to_be_replaced->conclusion_date,
+                        '{termination_date}' => (string)$contract_version->valid_from->subDays(1),
                     ]),
                 );
                 $this->Ln();
@@ -1338,7 +1388,7 @@ class ContractPDF extends AppPDF
             $this->Write(
                 4,
                 strtr(Settings::getString('core.documents.contracts.contract.texts.amendment_intro'), [
-                    '{valid_from}' => $data->effectiveDateOfAmendment->__toString(),
+                    '{valid_from}' => $data->effectiveDateOfAmendment,
                 ]),
             );
             $this->Ln();
@@ -1352,6 +1402,7 @@ class ContractPDF extends AppPDF
         ) {
             if ($type === ContractPrintType::ContractAmendment) {
                 // For amendments use the effective date of amendment as reference date for billing relevance
+                $this->assertAmendmentData($data);
                 $billingReferenceDate = $data->effectiveDateOfAmendment;
                 // For amendments use italic font for billing positions to emphasize changes compared to the original contract version
                 $format = 'I';
@@ -1469,7 +1520,7 @@ class ContractPDF extends AppPDF
             $this->Cell(
                 45,
                 4,
-                'do ' . $billingReferenceDate->day(1)->addMonths(1)->addDays(9)->__toString(),
+                'do ' . (string)$billingReferenceDate->day(1)->addMonths(1)->addDays(9),
                 align: 'C',
             );
 

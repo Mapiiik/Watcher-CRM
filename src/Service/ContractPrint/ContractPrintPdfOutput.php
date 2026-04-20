@@ -101,16 +101,16 @@ final class ContractPrintPdfOutput
                 => $data->effectiveDateOfAmendment,
             ContractPrintType::ContractTermination,
             ContractPrintType::HandoverUninstallation
-                => $data->contractVersion->valid_until,
+                => $data->contractVersion?->valid_until,
             default
-                => $data->contractVersion->valid_from,
+                => $data->contractVersion?->valid_from,
         };
 
         return sprintf(
             '%s_%s_%s%s.pdf',
             $data->contract->number,
             $data->type->value,
-            $date->i18nFormat('yyyy-MM-dd'),
+            $date ? $date->i18nFormat('yyyy-MM-dd') : Date::now()->i18nFormat('yyyy-MM-dd'),
             $data->signed ? '-signed' : '',
         );
     }
