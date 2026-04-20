@@ -165,6 +165,10 @@ class LabelsController extends AppController
      */
     public function isBadSQL(?string $sql): bool
     {
+        if ($sql === null || $sql === '') {
+            return false;
+        }
+
         $not_modifications = (
             stripos($sql, 'insert') === false
             && stripos($sql, 'update') === false

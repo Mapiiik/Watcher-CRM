@@ -423,6 +423,9 @@ class Customer extends AppEntity
     {
         // normalize input – remove any whitespace
         $ic = preg_replace('/\s+/', '', $ic);
+        if (!is_string($ic)) {
+            return false;
+        }
 
         // must be exactly 8 digits
         if (!preg_match('/^\d{8}$/', $ic)) {

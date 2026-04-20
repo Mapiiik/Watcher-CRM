@@ -207,9 +207,11 @@ class IpAddressesController extends AppController
                 $ipAddressRangesFilter['access_point_id'] = $contract->access_point_id;
             }
         }
+
+        $default = (int)($this->IpAddresses->getSchema()->getColumn('type_of_use')['default'] ?? 0);
         switch (
             $ipAddress->type_of_use
-            ?? IpAddressTypeOfUse::tryFrom((int)$this->IpAddresses->getSchema()->getColumn('type_of_use')['default'])
+            ?? IpAddressTypeOfUse::tryFrom($default)
             ?? null
         ) {
             case IpAddressTypeOfUse::CustomerRADIUS:
@@ -225,7 +227,7 @@ class IpAddressesController extends AppController
         $ipAddressRanges = ApiClient::searchIpAddressRanges($ipAddressRangesFilter);
         unset($ipAddressRangesFilter);
 
-        if ($ipAddressRanges) {
+        if ($ipAddressRanges != null) {
             $this->set(
                 'ipAddressRanges',
                 $ipAddressRanges->sortBy('name', SORT_ASC, SORT_NATURAL)->combine(
@@ -242,7 +244,10 @@ class IpAddressesController extends AppController
 
         // load available IP addresses if IP address range is selected
         $ipAddresses = [];
-        if ($this->getRequest()->getData('ip_address_range') !== null) {
+        if (
+            $ipAddressRanges != null
+            && $this->getRequest()->getData('ip_address_range') !== null
+        ) {
             $ipAddressRange = $ipAddressRanges->firstMatch([
                 'id' => $this->getRequest()->getData('ip_address_range'),
             ]);
@@ -380,7 +385,7 @@ class IpAddressesController extends AppController
 
         // load IP addresses
         $accessPointId = $this->getRequest()->getData('access_point_id');
-        if (Validation::uuid($accessPointId) && isset($ipAddress->type_of_use)) {
+        if (is_string($accessPointId) && Validation::uuid($accessPointId) && isset($ipAddress->type_of_use)) {
             /** @var iterable<\App\Model\Entity\IpAddress> $ipAddresses */
             $ipAddresses = $this->IpAddresses
                 ->find()
@@ -404,12 +409,14 @@ class IpAddressesController extends AppController
 
         // load IP address ranges from NMS
         $ipAddressRangesFilter = [];
-        if (Validation::uuid($accessPointId)) {
+        if (is_string($accessPointId) && Validation::uuid($accessPointId)) {
             $ipAddressRangesFilter['access_point_id'] = $accessPointId;
         }
+
+        $default = (int)($this->IpAddresses->getSchema()->getColumn('type_of_use')['default'] ?? 0);
         switch (
             $ipAddress->type_of_use
-            ?? IpAddressTypeOfUse::tryFrom((int)$this->IpAddresses->getSchema()->getColumn('type_of_use')['default'])
+            ?? IpAddressTypeOfUse::tryFrom($default)
             ?? null
         ) {
             case IpAddressTypeOfUse::CustomerRADIUS:
@@ -425,7 +432,7 @@ class IpAddressesController extends AppController
         $ipAddressRanges = ApiClient::searchIpAddressRanges($ipAddressRangesFilter);
         unset($ipAddressRangesFilter);
 
-        if ($ipAddressRanges) {
+        if ($ipAddressRanges != null) {
             $this->set(
                 'ipAddressRanges',
                 $ipAddressRanges->sortBy('name', SORT_ASC, SORT_NATURAL)->combine(
@@ -446,12 +453,16 @@ class IpAddressesController extends AppController
                 // only refresh
             } else {
                 // load available IP addresses if IP address range is selected
-                if ($this->getRequest()->getData('ip_address_range') !== null) {
+                if (
+                    $ipAddressRanges != null
+                    && $this->getRequest()->getData('ip_address_range') !== null
+                ) {
                     $ipAddressRange = $ipAddressRanges->firstMatch([
                         'id' => $this->getRequest()->getData('ip_address_range'),
                     ]);
 
                     if ($ipAddressRange) {
+                        /** @var array<int, string> $availableIpAddresses */
                         $availableIpAddresses = array_keys($this->loadAvailableIpAddresses(
                             $ipAddressRange,
                             (int)env('MINIMUM_NUMBER_OF_DAYS_SINCE_LAST_USE_FOR_AVAILABLE_IP_ADDRESSES', '365'),
@@ -464,23 +475,29 @@ class IpAddressesController extends AppController
                                     'reassing_ip_address.' . $ipAddressToProcess->id,
                                 ) == $ipAddressToProcess->id
                             ) {
+                                // take available IP address (reverse order of IP addresses, if required by service type)
+                                if (
+                                    !empty(
+                                        $ipAddressToProcess
+                                            ->contract
+                                            ->service_type
+                                            ->assign_ip_addresses_from_behind
+                                    )
+                                ) {
+                                    $availableIpAddress = array_pop($availableIpAddresses);
+                                } else {
+                                    $availableIpAddress = array_shift($availableIpAddresses);
+                                }
+
+                                if ($availableIpAddress === null) {
+                                    $this->Flash->error(__('No available IP addresses for reassignment.'));
+
+                                    break 1;
+                                }
+
                                 if ($this->addToRemovedIpAddresses($ipAddressToProcess)) {
                                     if ($this->IpAddresses->delete($ipAddressToProcess)) {
                                         $this->Flash->success(__('The IP address has been deleted.'));
-
-                                        // take available IP address (reverse order of IP addresses, if required by service type)
-                                        if (
-                                            !empty(
-                                                $ipAddressToProcess
-                                                    ->contract
-                                                    ->service_type
-                                                    ->assign_ip_addresses_from_behind
-                                            )
-                                        ) {
-                                            $availableIpAddress = array_pop($availableIpAddresses);
-                                        } else {
-                                            $availableIpAddress = array_shift($availableIpAddresses);
-                                        }
 
                                         // create a new entity (with data from the original entity)
                                         $newIpAddress = $this->IpAddresses->newEntity($ipAddressToProcess->toArray());
@@ -543,6 +560,12 @@ class IpAddressesController extends AppController
 
         // parse range CIDR
         $range = Subnet::parseString($ipAddressRange['ip_network']);
+        if ($range === null) {
+            $this->Flash->error(__('Invalid IP address range CIDR: {0}', $ipAddressRange['ip_network']));
+
+            return [];
+        }
+
         $rangeSize = $range->getSize();
 
         // load already used IP addresses
@@ -556,6 +579,10 @@ class IpAddressesController extends AppController
         // test all IP addresses in range for availability
         for ($i = (int)env('OFFSET_OF_FIRST_AVAILABLE_IP_ADDRESS', '1'); $i < (int)$rangeSize - 1; $i++) {
             $ipFromRange = $range->getAddressAtOffset($i);
+            // skip invalid IP addresses
+            if ($ipFromRange === null) {
+                continue;
+            }
 
             // skip IP gateway
             if ($ipAddressRange['ip_gateway'] === $ipFromRange->toString()) {
@@ -583,7 +610,7 @@ class IpAddressesController extends AppController
                 ])
                 ->first();
 
-            if ($previousIpAddressUsage) {
+            if ($previousIpAddressUsage !== null && $previousIpAddressUsage->removed !== null) {
                 // check minimum number of days since last use
                 if ($previousIpAddressUsage->removed->diffInDays() < $daysUnused) {
                     continue 1;
