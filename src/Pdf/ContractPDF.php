@@ -18,7 +18,7 @@ use Settings\Utility\Settings;
 class ContractPDF extends AppPDF
 {
     // constant for empty (null) serial numbers in the borrowed/sold equipment tables
-    const EMPTY_SERIAL = '';
+    private const EMPTY_SERIAL = '';
 
     /**
      * Getter for contract duration text - short.
@@ -1028,9 +1028,8 @@ class ContractPDF extends AppPDF
      * Assert that all required data for contract amendment generation is present in the print data object,
      * otherwise throw an exception with clear message indicating missing data
      *
-     * @param ContractPrintData $data
+     * @param \App\Service\ContractPrint\ContractPrintData $data
      * @return void
-     * 
      * @phpstan-assert !null $data->effectiveDateOfAmendment
      */
     private function assertAmendmentData(ContractPrintData $data): void
@@ -1067,12 +1066,16 @@ class ContractPDF extends AppPDF
             );
         }
 
-            if (
-            $type === ContractPrintType::ContractNewX
-            && ($contract_version_to_be_replaced === null || $contract_version_to_be_replaced->conclusion_date === null)
+        if (
+                $type === ContractPrintType::ContractNewX
+                && (
+                    $contract_version_to_be_replaced === null
+                    || $contract_version_to_be_replaced->conclusion_date === null
+                )
         ) {
             throw new InvalidArgumentException(
-                'Contract version to be replaced with valid conclusion date must be provided for new replacement contract generation',
+                'Contract version to be replaced with valid conclusion date must be provided'
+                . ' for new replacement contract generation',
             );
         }
 

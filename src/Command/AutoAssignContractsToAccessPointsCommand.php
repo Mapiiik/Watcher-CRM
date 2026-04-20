@@ -90,11 +90,13 @@ class AutoAssignContractsToAccessPointsCommand extends Command
                     if ($routerosDevices === null) {
                         Log::write(
                             'error',
-                            'Error when fetching RouterOS devices for NAS IP: ' . $radiusAccount->radacct[0]->nasipaddress
+                            'Error when fetching RouterOS devices for NAS IP: '
+                            . $radiusAccount->radacct[0]->nasipaddress
                             . ' for contract ' . $contract->number,
                         );
                         $io->error(
-                            'Error when fetching RouterOS devices for NAS IP: ' . $radiusAccount->radacct[0]->nasipaddress
+                            'Error when fetching RouterOS devices for NAS IP: '
+                            . $radiusAccount->radacct[0]->nasipaddress
                             . ' for contract ' . $contract->number,
                         );
                         continue;
