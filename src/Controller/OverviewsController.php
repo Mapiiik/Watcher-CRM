@@ -521,7 +521,15 @@ class OverviewsController extends AppController
                                         $address->ruian_address = null;
                                     } catch (RecordNotFoundException $recordNotFoundError) {
                                         $address->ruian_address = null;
-                                        $this->Flash->warning(__('Invalid RUIAN GID: {0}', $ruian_gid));
+                                        /** @var array<int, string> $contractsWithInvalidRuianGid */
+                                        $contractsWithInvalidRuianGid = $billings_collection
+                                            ->extract('contract.number')
+                                            ->toList();
+                                        $this->Flash->warning(__(
+                                            'Invalid RUIAN GID: {0} for addresses associated with contracts: {1}',
+                                            $ruian_gid,
+                                            implode(', ', $contractsWithInvalidRuianGid),
+                                        ));
                                     }
 
                                     $address->cto_category = $cto_category;
