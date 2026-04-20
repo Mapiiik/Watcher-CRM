@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-02-01 09:17+0100\n"
+"POT-Creation-Date: 2026-04-20 11:20+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -214,7 +214,7 @@ msgid "Notification SMS has been generated for inactive services for customer {c
 msgstr ""
 
 #: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:318
-#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:245
+#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:247
 msgid "Done"
 msgstr ""
 
@@ -230,28 +230,28 @@ msgstr ""
 msgid "Debtor processing failed."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:100
+#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:101
 msgid "Number of emails to process."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:134
+#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:135
 msgid "Sending invoices:"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:144
+#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:146
 msgid "Invoice - {0} - {1}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:196
+#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:198
 msgid "Email was successfully sent."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:204
-#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:224
+#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:206
+#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:226
 msgid "Error sending email message with issued invoice ID {0}: {1}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:218
+#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:220
 msgid "Error sending email message with issued invoice ID {0}"
 msgstr ""
 
@@ -348,30 +348,30 @@ msgstr ""
 msgid "debtor"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:624
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:652
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:644
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:672
 msgid "Removed IPv4 record {0} from router {1}."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:673
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:693
 msgid "Added IPv4 record {0} ({1}) to router {2}."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:701
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:729
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:721
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:749
 msgid "Removed IPv6 record {0} from router {1}."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:750
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:770
 msgid "Added IPv6 record {0} ({1}) to router {2}."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:795
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:815
 msgid "SledovaniTV - Suspended user with ID: {0} (partner ID: {1})."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:807
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:819
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:827
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:839
 msgid "SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1})."
 msgstr ""
 
@@ -402,17 +402,17 @@ msgstr ""
 msgid "Eurofaktura API error: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:344
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:366
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:388
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:345
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:367
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:389
 msgid "Not implemented in Eurofaktura Provider."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:443
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:444
 msgid "Invalid PDF data received from Eurofaktura API."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:458
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:459
 msgid "Invoice PDF not found or could not be downloaded: {0}"
 msgstr ""
 
@@ -485,6 +485,10 @@ msgstr ""
 
 #: ./plugins/Bookkeeping/src/Provider/Pohoda/XmlParser.php:42
 msgid "Unknown XML error"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/XmlParser.php:65
+msgid "Failed to parse XML: No invoices found."
 msgstr ""
 
 #: ./plugins/Bookkeeping/src/Service/BookkeepingService.php:58
@@ -627,7 +631,7 @@ msgstr ""
 #: ./plugins/Bookkeeping/templates/Debtors/index.php:91
 #: ./plugins/Bookkeeping/templates/Invoices/add.php:45
 #: ./plugins/Bookkeeping/templates/Invoices/edit.php:53
-#: ./plugins/Bookkeeping/templates/Invoices/view.php:147
+#: ./plugins/Bookkeeping/templates/Invoices/view.php:110
 #: ./plugins/Bookkeeping/templates/cell/Invoices/display.php:25
 msgid "Text"
 msgstr ""
@@ -800,12 +804,10 @@ msgid "List Debtors"
 msgstr ""
 
 #: ./plugins/Bookkeeping/templates/Invoices/index.php:66
-#: ./plugins/Bookkeeping/templates/Invoices/view.php:112
 msgid "Created"
 msgstr ""
 
 #: ./plugins/Bookkeeping/templates/Invoices/index.php:67
-#: ./plugins/Bookkeeping/templates/Invoices/view.php:128
 msgid "Modified"
 msgstr ""
 
@@ -847,18 +849,6 @@ msgstr ""
 
 #: ./plugins/Bookkeeping/templates/Invoices/view.php:36
 msgid "Download Invoice"
-msgstr ""
-
-#: ./plugins/Bookkeeping/templates/Invoices/view.php:108
-msgid "Id"
-msgstr ""
-
-#: ./plugins/Bookkeeping/templates/Invoices/view.php:116
-msgid "Created By"
-msgstr ""
-
-#: ./plugins/Bookkeeping/templates/Invoices/view.php:132
-msgid "Modified By"
 msgstr ""
 
 #: ./plugins/Bookkeeping/templates/cell/Invoices/display.php:71

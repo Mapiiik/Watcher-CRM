@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-02-01 09:17+0100\n"
-"PO-Revision-Date: 2026-02-01 09:25+0100\n"
+"POT-Creation-Date: 2026-04-20 11:20+0200\n"
+"PO-Revision-Date: 2026-04-20 11:31+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 
 #: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:85
 msgid "Invoiced month (YYYY-MM). Overrides schedule and runs immediately."
@@ -275,7 +275,7 @@ msgstr ""
 "{customer_number}, příjemci: {recipients}"
 
 #: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:318
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:245
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:247
 msgid "Done"
 msgstr "Hotovo"
 
@@ -291,28 +291,28 @@ msgstr "Zpracování dlužníků se nezdařilo"
 msgid "Debtor processing failed."
 msgstr "Zpracování dlužníků se nezdařilo."
 
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:100
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:101
 msgid "Number of emails to process."
 msgstr "Počet e-mailů ke zpracování."
 
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:134
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:135
 msgid "Sending invoices:"
 msgstr "Odesílání faktur:"
 
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:144
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:146
 msgid "Invoice - {0} - {1}"
 msgstr "Faktura - {0} - {1}"
 
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:196
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:198
 msgid "Email was successfully sent."
 msgstr "E-mail byl úspěšně odeslán."
 
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:204
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:224
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:206
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:226
 msgid "Error sending email message with issued invoice ID {0}: {1}"
 msgstr "Chyba při odesílání e-mailové zprávy s ID vydané faktury {0}: {1}"
 
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:218
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:220
 msgid "Error sending email message with issued invoice ID {0}"
 msgstr "Chyba při odesílání e-mailové zprávy s ID vydané faktury {0}"
 
@@ -419,30 +419,30 @@ msgstr ""
 msgid "debtor"
 msgstr "dlužník"
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:624
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:652
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:644
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:672
 msgid "Removed IPv4 record {0} from router {1}."
 msgstr "Odstraněn záznam IPv4 {0} ze směrovače {1}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:673
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:693
 msgid "Added IPv4 record {0} ({1}) to router {2}."
 msgstr "Přidán záznam IPv4 {0} ({1}) do směrovače {2}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:701
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:729
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:721
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:749
 msgid "Removed IPv6 record {0} from router {1}."
 msgstr "Odstraněn záznam IPv6 {0} ze směrovače {1}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:750
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:770
 msgid "Added IPv6 record {0} ({1}) to router {2}."
 msgstr "Přidán záznam IPv6 {0} ({1}) do směrovače {2}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:795
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:815
 msgid "SledovaniTV - Suspended user with ID: {0} (partner ID: {1})."
 msgstr "SledovaniTV - Pozastavený uživatel s ID: {0} (ID partnera: {1})."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:807
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:819
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:827
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:839
 msgid "SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1})."
 msgstr "SledovaniTV - Aktivovaný uživatel s ID: {0} (ID partnera: {1})."
 
@@ -473,17 +473,17 @@ msgstr "Chyba API Eurofaktura ({0}, {1})"
 msgid "Eurofaktura API error: {0}"
 msgstr "Chyba API Eurofaktura: {0}"
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:344
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:366
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:388
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:345
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:367
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:389
 msgid "Not implemented in Eurofaktura Provider."
 msgstr "Není implementováno v Eurofaktura Provider."
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:443
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:444
 msgid "Invalid PDF data received from Eurofaktura API."
 msgstr "Neplatná data PDF přijatá z rozhraní API Eurofaktura."
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:458
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:459
 msgid "Invoice PDF not found or could not be downloaded: {0}"
 msgstr "Faktura ve formátu PDF nebyla nalezena nebo ji nelze stáhnout: {0}"
 
@@ -557,6 +557,10 @@ msgstr "Neplatný soubor XML: {0}"
 #: plugins/Bookkeeping/src/Provider/Pohoda/XmlParser.php:42
 msgid "Unknown XML error"
 msgstr "Neznámá chyba XML"
+
+#: plugins/Bookkeeping/src/Provider/Pohoda/XmlParser.php:65
+msgid "Failed to parse XML: No invoices found."
+msgstr "Nepodařilo se analyzovat XML: Nebyly nalezeny žádné faktury."
 
 #: plugins/Bookkeeping/src/Service/BookkeepingService.php:58
 msgid "Provider class not defined for provider \"{0}\"."
@@ -698,7 +702,7 @@ msgstr "Datum platby"
 #: plugins/Bookkeeping/templates/Debtors/index.php:91
 #: plugins/Bookkeeping/templates/Invoices/add.php:45
 #: plugins/Bookkeeping/templates/Invoices/edit.php:53
-#: plugins/Bookkeeping/templates/Invoices/view.php:147
+#: plugins/Bookkeeping/templates/Invoices/view.php:110
 #: plugins/Bookkeeping/templates/cell/Invoices/display.php:25
 msgid "Text"
 msgstr "Text"
@@ -871,12 +875,10 @@ msgid "List Debtors"
 msgstr "Seznam dlužníků"
 
 #: plugins/Bookkeeping/templates/Invoices/index.php:66
-#: plugins/Bookkeeping/templates/Invoices/view.php:112
 msgid "Created"
 msgstr "Vytvořeno"
 
 #: plugins/Bookkeeping/templates/Invoices/index.php:67
-#: plugins/Bookkeeping/templates/Invoices/view.php:128
 msgid "Modified"
 msgstr "Upraveno"
 
@@ -924,21 +926,18 @@ msgstr "Odstranit fakturu"
 msgid "Download Invoice"
 msgstr "Stáhnout fakturu"
 
-#: plugins/Bookkeeping/templates/Invoices/view.php:108
-msgid "Id"
-msgstr "ID"
-
-#: plugins/Bookkeeping/templates/Invoices/view.php:116
-msgid "Created By"
-msgstr "Vytvořil"
-
-#: plugins/Bookkeeping/templates/Invoices/view.php:132
-msgid "Modified By"
-msgstr "Upravil"
-
 #: plugins/Bookkeeping/templates/cell/Invoices/display.php:71
 msgid "Show also paid invoices"
 msgstr "Zobrazit také zaplacené faktury"
+
+#~ msgid "Id"
+#~ msgstr "ID"
+
+#~ msgid "Created By"
+#~ msgstr "Vytvořil"
+
+#~ msgid "Modified By"
+#~ msgstr "Upravil"
 
 #~ msgid "Tax Rate"
 #~ msgstr "Sazba daně"

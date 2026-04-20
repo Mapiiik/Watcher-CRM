@@ -4,8 +4,8 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: CakePHP 5.3.0\n"
-"POT-Creation-Date: 2026-01-11 17:13+0100\n"
+"Project-Id-Version: CakePHP 5.3.3\n"
+"POT-Creation-Date: 2026-04-20 11:20+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -249,7 +249,7 @@ msgstr ""
 msgid "The count does not match {0}{1}"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Utility/Text.php:920
+#: ./vendor/cakephp/cakephp/src/Utility/Text.php:927
 msgid "and"
 msgstr ""
 
@@ -507,15 +507,15 @@ msgstr ""
 msgid "The provided value is invalid"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1026
+#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1027
 msgid "Edit {0}"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1028
+#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1029
 msgid "New {0}"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:2052
+#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:2053
 msgid "Submit"
 msgstr ""
 
