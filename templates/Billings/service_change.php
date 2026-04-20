@@ -31,18 +31,18 @@
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $billing->__isset('customer') ? $this->Html->link(
+                            <td><?= $billing->customer !== null ? $this->Html->link(
                                 $billing->customer->name,
                                 ['controller' => 'Customers', 'action' => 'view', $billing->customer->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $billing->__isset('customer') ? h($billing->customer->number) : '' ?></td>
+                            <td><?= $billing->customer !== null ? h($billing->customer->number) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Contract') ?></th>
-                            <td><?= $billing->__isset('contract') ? $this->Html->link(
+                            <td><?= $billing->contract !== null ? $this->Html->link(
                                 $billing->contract->number ?? '--',
                                 [
                                     'controller' => 'Contracts',
@@ -54,7 +54,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Service') ?></th>
-                            <td><?= $billing->__isset('service') ? $this->Html->link(
+                            <td><?= $billing->service !== null ? $this->Html->link(
                                 $billing->service->name,
                                 ['controller' => 'Services', 'action' => 'view', $billing->service->id],
                             ) : '' ?></td>
@@ -93,7 +93,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Price') ?></th>
-                            <td><?= h($billing->price) ?><?= $billing->__isset('service') ?
+                            <td><?= h($billing->price) ?><?= $billing->service !== null ?
                                 ' (' . h($billing->service->price) . ')' : '' ?></td>
                         </tr>
                         <tr>

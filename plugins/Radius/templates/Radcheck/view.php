@@ -39,7 +39,7 @@
             <table>
                 <tr>
                     <th><?= __d('radius', 'Username') ?></th>
-                    <td><?= $radcheck->__isset('account') ? $this->Html->link(
+                    <td><?= $radcheck->account !== null ? $this->Html->link(
                         $radcheck->account->username,
                         ['controller' => 'Accounts', 'action' => 'view', $radcheck->account->id],
                     ) : $radcheck->username ?></td>

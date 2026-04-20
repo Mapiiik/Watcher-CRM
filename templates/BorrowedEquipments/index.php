@@ -41,15 +41,15 @@
                 <?php foreach ($borrowedEquipments as $borrowedEquipment) : ?>
                 <tr style="<?= $borrowedEquipment->style ?>">
                     <td>
-                        <?= $borrowedEquipment->__isset('customer') ? $this->Html->link(
+                        <?= $borrowedEquipment->customer !== null ? $this->Html->link(
                             $borrowedEquipment->customer->name,
                             ['controller' => 'Customers', 'action' => 'view', $borrowedEquipment->customer->id],
                         ) : '' ?>
                     </td>
-                    <td><?= $borrowedEquipment->__isset('customer') ?
+                    <td><?= $borrowedEquipment->customer !== null ?
                         h($borrowedEquipment->customer->number) : '' ?></td>
                     <td>
-                        <?= $borrowedEquipment->__isset('contract') ? $this->Html->link(
+                        <?= $borrowedEquipment->contract !== null ? $this->Html->link(
                             $borrowedEquipment->contract->number ?? '--',
                             [
                                 'controller' => 'Contracts',
@@ -60,7 +60,7 @@
                         ) : '' ?>
                     </td>
                     <td>
-                        <?= $borrowedEquipment->__isset('equipment_type') ? $this->Html->link(
+                        <?= $borrowedEquipment->equipment_type !== null ? $this->Html->link(
                             $borrowedEquipment->equipment_type->name,
                             [
                                 'controller' => 'EquipmentTypes',

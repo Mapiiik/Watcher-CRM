@@ -76,20 +76,20 @@
                 <tr style="<?= $task->style ?>">
                     <td><?= h($task->number) ?></td>
                     <td>
-                        <?= $task->__isset('task_type') ? $this->Html->link(
+                        <?= $task->task_type !== null ? $this->Html->link(
                             $task->task_type->name,
                             ['controller' => 'TaskTypes', 'action' => 'view', $task->task_type->id],
                         ) : '' ?>
                     </td>
                     <td><?= h($task->getPriorityName()) ?></td>
                     <td>
-                        <?= $task->__isset('task_state') ? $this->Html->link(
+                        <?= $task->task_state !== null ? $this->Html->link(
                             $task->task_state->name,
                             ['controller' => 'TaskStates', 'action' => 'view', $task->task_state->id],
                         ) : '' ?>
                     </td>
                     <td>
-                        <?= $task->__isset('dealer') ? $this->Html->link(
+                        <?= $task->dealer !== null ? $this->Html->link(
                             $task->dealer->name,
                             ['controller' => 'Customers', 'action' => 'view', $task->dealer->id],
                         ) : '' ?>
@@ -100,14 +100,14 @@
                     </td>
                     <td style="overflow-wrap: break-word; max-width: 600px;"><?= nl2br($task->text ?? '') ?></td>
                     <td>
-                        <?= $task->__isset('customer') ? $this->Html->link(
+                        <?= $task->customer !== null ? $this->Html->link(
                             $task->customer->name,
                             ['controller' => 'Customers', 'action' => 'view', $task->customer->id],
                         ) : '' ?>
                     </td>
-                    <td><?= $task->__isset('customer') ? h($task->customer->number) : '' ?></td>
+                    <td><?= $task->customer !== null ? h($task->customer->number) : '' ?></td>
                     <td><?=
-                        $task->__isset('contract') ? $this->Html->link(
+                        $task->contract !== null ? $this->Html->link(
                             $task->contract->name,
                             [
                                 'controller' => 'Contracts',
@@ -117,7 +117,7 @@
                             ],
                         ) : '' ?>
                     </td>
-                    <td><?= $task->__isset('access_point_name') ? h($task->access_point_name) : '' ?></td>
+                    <td><?= $task->access_point_name !== null ? h($task->access_point_name) : '' ?></td>
                     <td><?= h($task->start_date) ?></td>
                     <td><?= h($task->estimated_date) ?></td>
                     <td><?= h($task->critical_date) ?></td>

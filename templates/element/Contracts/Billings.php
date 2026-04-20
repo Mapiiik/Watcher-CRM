@@ -37,16 +37,16 @@
         <?php foreach ($billings as $billing) : ?>
         <tr style="<?= $billing->style ?>">
             <?php if (!empty($customer_column)) : ?>
-            <td><?= $billing->__isset('customer') ?
+            <td><?= $billing->customer !== null ?
                 $this->Html->link(
                     $billing->customer->name,
                     ['controller' => 'Customers', 'action' => 'view', $billing->customer->id],
                 ) : '' ?>
             </td>
-            <td><?= $billing->__isset('customer') ? h($billing->customer->number) : '' ?></td>
+            <td><?= $billing->customer !== null ? h($billing->customer->number) : '' ?></td>
             <?php endif; ?>
             <?php if (!empty($contract_column)) : ?>
-            <td><?= $billing->__isset('contract') ?
+            <td><?= $billing->contract !== null ?
                 $this->Html->link(
                     $billing->contract->number ?? '--',
                     [
@@ -57,10 +57,10 @@
                     ],
                 ) : '' ?></td>
             <?php endif; ?>
-            <td><?= $billing->__isset('service') ? h($billing->service->name) : '' ?></td>
+            <td><?= $billing->service !== null ? h($billing->service->name) : '' ?></td>
             <td><?= h($billing->text) ?></td>
             <td><?= h($billing->quantity) ?></td>
-            <td><?= h($billing->price) ?><?= $billing->__isset('service') ?
+            <td><?= h($billing->price) ?><?= $billing->service !== null ?
                 ' (' . h($billing->service->price) . ')' : '' ?></td>
             <td><?= h($billing->fixed_discount) ?></td>
             <td><?= h($billing->percentage_discount) ?></td>

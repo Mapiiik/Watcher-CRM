@@ -190,8 +190,8 @@ class Contract extends AppEntity
     protected function _getName(): string
     {
         return $this->number .
-            ($this->__isset('service_type') ? ' - ' . $this->service_type->name : '') .
-            ($this->__isset('installation_address') ? ' - ' . $this->installation_address->address : '');
+            ($this->service_type !== null ? ' - ' . $this->service_type->name : '') .
+            ($this->installation_address !== null ? ' - ' . $this->installation_address->address : '');
     }
 
     /**

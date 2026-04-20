@@ -38,14 +38,14 @@ use Cake\Collection\Collection;
                         </tr>
                         <tr>
                             <th><?= __('Service Type') ?></th>
-                            <td><?= $service->__isset('service_type') ? $this->Html->link(
+                            <td><?= $service->service_type !== null ? $this->Html->link(
                                 $service->service_type->name,
                                 ['controller' => 'ServiceTypes', 'action' => 'view', $service->service_type->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Queue') ?></th>
-                            <td><?= $service->__isset('queue') ? $this->Html->link(
+                            <td><?= $service->queue !== null ? $this->Html->link(
                                 $service->queue->name,
                                 ['controller' => 'Queues', 'action' => 'view', $service->queue->id],
                             ) : '' ?></td>
@@ -93,13 +93,13 @@ use Cake\Collection\Collection;
                         </tr>
                         <?php foreach ($service->billings as $billing) : ?>
                         <tr style="<?= $billing->style ?>">
-                            <td><?= $billing->__isset('customer') ?
+                            <td><?= $billing->customer !== null ?
                                 $this->Html->link(
                                     $billing->customer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $billing->customer->id],
                                 ) : '' ?></td>
-                            <td><?= $billing->__isset('customer') ? h($billing->customer->number) : '' ?></td>
-                            <td><?= $billing->__isset('contract') ?
+                            <td><?= $billing->customer !== null ? h($billing->customer->number) : '' ?></td>
+                            <td><?= $billing->contract !== null ?
                                 $this->Html->link(
                                     $billing->contract->number ?? '--',
                                     [
@@ -111,7 +111,7 @@ use Cake\Collection\Collection;
                                 ) : '' ?></td>
                             <td><?= h($billing->text) ?></td>
                             <td><?= h($billing->quantity) ?></td>
-                            <td><?= h($billing->price) ?><?= $billing->__isset('service') ?
+                            <td><?= h($billing->price) ?><?= $billing->service !== null ?
                                 ' (' . h($billing->service->price) . ')' : '' ?></td>
                             <td><?= h($billing->fixed_discount) ?></td>
                             <td><?= h($billing->percentage_discount) ?></td>

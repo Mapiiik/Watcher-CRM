@@ -701,7 +701,7 @@ class ContractsController extends AppController
         $borrowed_equipments_to_install = $borrowed_equipments->match(['borrowed_from' => null]);
         $borrowed_equipments_to_uninstall = $borrowed_equipments->match(['borrowed_until' => null]);
 
-        if ($contract->__isset('installation_date')) {
+        if ($contract->installation_date !== null) {
             if ($borrowed_equipments_to_install->isEmpty()) {
                 $this->Flash->warning(__('No related borrowed equipments to install.'));
             } else {
@@ -727,7 +727,7 @@ class ContractsController extends AppController
             }
         }
 
-        if ($contract->__isset('uninstallation_date')) {
+        if ($contract->uninstallation_date !== null) {
             if ($borrowed_equipments_to_uninstall->isEmpty()) {
                 $this->Flash->warning(__('No related borrowed equipments to uninstall.'));
             } else {
@@ -777,7 +777,7 @@ class ContractsController extends AppController
 
         $billings_to_update = $billings->match(['billing_until' => null]);
 
-        if ($contract->__isset('termination_date')) {
+        if ($contract->termination_date !== null) {
             if ($billings_to_update->isEmpty()) {
                 $this->Flash->warning(__('No related billings to terminate.'));
             } else {

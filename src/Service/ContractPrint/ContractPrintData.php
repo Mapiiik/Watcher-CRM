@@ -139,7 +139,7 @@ final class ContractPrintData
     public function getActiveStandardBillings(): CollectionInterface
     {
         return $this->activeBillings->filter(
-            fn(Billing $billing) => !$billing->__isset('price'),
+            fn(Billing $billing) => $billing->price === null,
         );
     }
 
@@ -149,7 +149,7 @@ final class ContractPrintData
     public function getActiveIndividualBillings(): CollectionInterface
     {
         return $this->activeBillings->filter(
-            fn(Billing $billing) => $billing->__isset('price'),
+            fn(Billing $billing) => $billing->price !== null,
         );
     }
 
@@ -159,7 +159,7 @@ final class ContractPrintData
     public function getFutureStandardBillings(): CollectionInterface
     {
         return $this->futureBillings->filter(
-            fn(Billing $billing) => !$billing->__isset('price'),
+            fn(Billing $billing) => $billing->price === null,
         );
     }
 
@@ -169,7 +169,7 @@ final class ContractPrintData
     public function getFutureIndividualBillings(): CollectionInterface
     {
         return $this->futureBillings->filter(
-            fn(Billing $billing) => $billing->__isset('price'),
+            fn(Billing $billing) => $billing->price !== null,
         );
     }
 }

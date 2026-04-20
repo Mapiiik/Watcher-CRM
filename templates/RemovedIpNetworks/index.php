@@ -39,13 +39,13 @@
             <tbody>
                 <?php foreach ($removedIpNetworks as $removedIpNetwork) : ?>
                 <tr>
-                    <td><?= $removedIpNetwork->__isset('customer') ?
+                    <td><?= $removedIpNetwork->customer !== null ?
                         $this->Html->link(
                             $removedIpNetwork->customer->name,
                             ['controller' => 'Customers', 'action' => 'view', $removedIpNetwork->customer->id],
                         ) : '' ?></td>
-                    <td><?= $removedIpNetwork->__isset('customer') ? h($removedIpNetwork->customer->number) : '' ?></td>
-                    <td><?= $removedIpNetwork->__isset('contract') ?
+                    <td><?= $removedIpNetwork->customer !== null ? h($removedIpNetwork->customer->number) : '' ?></td>
+                    <td><?= $removedIpNetwork->contract !== null ?
                         $this->Html->link(
                             $removedIpNetwork->contract->number ?? '--',
                             [

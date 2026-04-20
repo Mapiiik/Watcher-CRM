@@ -32,7 +32,7 @@ table {
             <table>
                 <tr>
                     <th><?= __('Task Type') ?></th>
-                    <td><?= $task->__isset('task_type') ? h($task->task_type->name) : '' ?></td>
+                    <td><?= $task->task_type !== null ? h($task->task_type->name) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Priority') ?></th>
@@ -40,11 +40,11 @@ table {
                 </tr>
                 <tr>
                     <th><?= __('Task State') ?></th>
-                    <td><?= $task->__isset('task_state') ? h($task->task_state->name) : '' ?></td>
+                    <td><?= $task->task_state !== null ? h($task->task_state->name) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Dealer') ?></th>
-                    <td><?= $task->__isset('dealer') ? h($task->dealer->name) : '' ?></td>
+                    <td><?= $task->dealer !== null ? h($task->dealer->name) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Email') ?></th>
@@ -56,11 +56,11 @@ table {
                 </tr>
                 <tr>
                     <th><?= __('Access Point') ?></th>
-                    <td><?= $task->__isset('access_point_name') ? h($task->access_point_name) : '' ?></td>
+                    <td><?= $task->access_point_name !== null ? h($task->access_point_name) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Customer') ?></th>
-                    <td><?= $task->__isset('customer') ? $this->Html->link(
+                    <td><?= $task->customer !== null ? $this->Html->link(
                         $task->customer->name,
                         [
                             'controller' => 'Customers',
@@ -72,7 +72,7 @@ table {
                 </tr>
                 <tr>
                     <th><?= __('Contract') ?></th>
-                    <td><?= $task->__isset('contract') ? $this->Html->link(
+                    <td><?= $task->contract !== null ? $this->Html->link(
                         $task->contract->name,
                         [
                             'controller' => 'Contracts',
@@ -113,7 +113,7 @@ table {
                 </tr>
                 <tr>
                     <th><?= __('Created By') ?></th>
-                    <td><?= $task->__isset('creator') ? h($task->creator->username) : h($task->created_by) ?></td>
+                    <td><?= $task->creator !== null ? h($task->creator->username) : h($task->created_by) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
@@ -121,7 +121,7 @@ table {
                 </tr>
                 <tr>
                     <th><?= __('Modified By') ?></th>
-                    <td><?= $task->__isset('modifier') ? h($task->modifier->username) : h($task->modified_by) ?></td>
+                    <td><?= $task->modifier !== null ? h($task->modifier->username) : h($task->modified_by) ?></td>
                 </tr>
             </table>
         </td>

@@ -94,14 +94,14 @@ use Doctrine\SqlFormatter\SqlFormatter;
                         </tr>
                         <?php foreach ($label->customer_labels as $customerLabel) : ?>
                         <tr>
-                            <td><?= $customerLabel->__isset('customer') ?
+                            <td><?= $customerLabel->customer !== null ?
                                 $this->Html->link(
                                     $customerLabel->customer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $customerLabel->customer->id],
                                 ) : '' ?></td>
-                            <td><?= $customerLabel->__isset('customer') ?
+                            <td><?= $customerLabel->customer !== null ?
                                 h($customerLabel->customer->number) : '' ?></td>
-                            <td><?= $customerLabel->__isset('contract') ?
+                            <td><?= $customerLabel->contract !== null ?
                                 $this->Html->link(
                                     $customerLabel->contract->number ?? '--',
                                     [

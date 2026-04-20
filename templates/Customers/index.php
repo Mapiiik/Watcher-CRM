@@ -86,7 +86,7 @@
                                     'customer_id' => $customer->id,
                                 ],
                             ) ?>
-                            <?= $contract->__isset('contract_state') ?
+                            <?= $contract->contract_state !== null ?
                                 '(' . h($contract->contract_state->name) . ')' : '' ?>
                         </span><br>
                         <?php endforeach; ?>
@@ -116,7 +116,7 @@
                         </span><br>
                         <?php endforeach; ?>
                     </td>
-                    <td><?= $customer->__isset('accounting_profile') ?
+                    <td><?= $customer->accounting_profile !== null ?
                         h($customer->accounting_profile->name) : '' ?></td>
                     <td><?= h($customer->dealer->label()) ?></td>
                     <td class="actions">

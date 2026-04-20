@@ -21,7 +21,7 @@
         <?php foreach ($borrowed_equipments as $borrowedEquipment) : ?>
         <tr style="<?= $borrowedEquipment->style ?>">
             <?php if (!empty($contract_column)) : ?>
-            <td><?= $borrowedEquipment->__isset('contract') ?
+            <td><?= $borrowedEquipment->contract !== null ?
                 $this->Html->link(
                     $borrowedEquipment->contract->number ?? '--',
                     [
@@ -32,7 +32,7 @@
                     ],
                 ) : '' ?></td>
             <?php endif; ?>
-            <td><?= $borrowedEquipment->__isset('equipment_type') ?
+            <td><?= $borrowedEquipment->equipment_type !== null ?
                 h($borrowedEquipment->equipment_type->name) : ''
             ?></td>
             <td><?= h($borrowedEquipment->serial_number) ?></td>

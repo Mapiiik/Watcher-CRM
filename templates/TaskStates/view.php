@@ -76,14 +76,14 @@
                         <?php foreach ($taskState->tasks as $task) : ?>
                         <tr style="<?= $task->style ?>">
                             <td><?= h($task->number) ?></td>
-                            <td><?= $task->__isset('task_type') ?
+                            <td><?= $task->task_type !== null ?
                                 $this->Html->link(
                                     $task->task_type->name,
                                     ['controller' => 'TaskTypes', 'action' => 'view', $task->task_type->id],
                                 ) : '' ?>
                             </td>
                             <td><?= h($task->getPriorityName()) ?></td>
-                            <td><?= $task->__isset('dealer') ?
+                            <td><?= $task->dealer !== null ?
                                 $this->Html->link(
                                     $task->dealer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $task->dealer->id],
@@ -95,14 +95,14 @@
                             </td>
                             <td><?= h($task->email) ?></td>
                             <td><?= h($task->phone) ?></td>
-                            <td><?= $task->__isset('customer') ?
+                            <td><?= $task->customer !== null ?
                                 $this->Html->link(
                                     $task->customer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $task->customer->id],
                                 ) : '' ?>
                             </td>
-                            <td><?= $task->__isset('customer') ? h($task->customer->number) : '' ?></td>
-                            <td><?= $task->__isset('access_point_name') ? h($task->access_point_name) : '' ?></td>
+                            <td><?= $task->customer !== null ? h($task->customer->number) : '' ?></td>
+                            <td><?= $task->access_point_name !== null ? h($task->access_point_name) : '' ?></td>
                             <td><?= h($task->start_date) ?></td>
                             <td><?= h($task->estimated_date) ?></td>
                             <td><?= h($task->critical_date) ?></td>

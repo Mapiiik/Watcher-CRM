@@ -40,7 +40,7 @@ use Cake\I18n\Date;
                 echo $this->Form->hidden('valid_until', ['value' => '']); //return null if not enabled
                 echo $this->Form->control('valid_until', [
                     'empty' => true,
-                    'disabled' => !$contractVersion->__isset('valid_until'),
+                    'disabled' => !$contractVersion->valid_until !== null,
                 ]);
                 $this->Form->unlockField('valid_until'); //disable form security check
 
@@ -59,13 +59,13 @@ use Cake\I18n\Date;
                 echo $this->Form->hidden('obligation_until', ['value' => '']); //return null if not enabled
                 echo $this->Form->control('obligation_until', [
                     'empty' => true,
-                    'disabled' => !$contractVersion->__isset('obligation_until'),
+                    'disabled' => !$contractVersion->obligation_until !== null,
                     'default' => Date::now()->addMonths(24)->lastOfMonth(),
                 ]);
                 $this->Form->unlockField('obligation_until'); //disable form security check
 
                 echo $this->Form->control('obligations_settled', [
-                    'disabled' => !$contractVersion->__isset('obligation_until'),
+                    'disabled' => !$contractVersion->obligation_until !== null,
                 ]);
                 $this->Form->unlockField('obligations_settled'); //disable form security check
 

@@ -168,10 +168,10 @@ final class ContractPrintDataEnricher
         $data->activeBillings = $billings->reject(
             function (Billing $billing) use ($referenceDate) {
                 return (
-                        $billing->__isset('billing_from')
+                        $billing->billing_from !== null
                         && $billing->billing_from > $referenceDate
                     ) || (
-                        $billing->__isset('billing_until')
+                        $billing->billing_until !== null
                         && $billing->billing_until < $referenceDate
                     );
             },
@@ -181,10 +181,10 @@ final class ContractPrintDataEnricher
         $data->futureBillings = $billings->reject(
             function (Billing $billing) use ($referenceDate) {
                 return (
-                        $billing->__isset('billing_from')
+                        $billing->billing_from !== null
                         && $billing->billing_from <= $referenceDate
                     ) || (
-                        $billing->__isset('billing_until')
+                        $billing->billing_until !== null
                         && $billing->billing_until < $referenceDate
                     );
             },

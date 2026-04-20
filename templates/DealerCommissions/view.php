@@ -41,14 +41,14 @@
                     <table>
                         <tr>
                             <th><?= __('Dealer') ?></th>
-                            <td><?= $dealerCommission->__isset('dealer') ? $this->Html->link(
+                            <td><?= $dealerCommission->dealer !== null ? $this->Html->link(
                                 $dealerCommission->dealer->name,
                                 ['controller' => 'Customers', 'action' => 'view', $dealerCommission->dealer->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Commission') ?></th>
-                            <td><?= $dealerCommission->__isset('commission') ? $this->Html->link(
+                            <td><?= $dealerCommission->commission !== null ? $this->Html->link(
                                 $dealerCommission->commission->name,
                                 ['controller' => 'Commissions', 'action' => 'view', $dealerCommission->commission->id],
                             ) : '' ?></td>

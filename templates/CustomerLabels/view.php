@@ -41,19 +41,19 @@
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $customerLabel->__isset('customer') ? $this->Html->link(
+                            <td><?= $customerLabel->customer !== null ? $this->Html->link(
                                 $customerLabel->customer->name,
                                 ['controller' => 'Customers', 'action' => 'view', $customerLabel->customer->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $customerLabel->__isset('customer') ?
+                            <td><?= $customerLabel->customer !== null ?
                                 h($customerLabel->customer->number) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Contract') ?></th>
-                            <td><?= $customerLabel->__isset('contract') ? $this->Html->link(
+                            <td><?= $customerLabel->contract !== null ? $this->Html->link(
                                 $customerLabel->contract->number ?? '--',
                                 [
                                     'controller' => 'Contracts',
@@ -65,7 +65,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Label') ?></th>
-                            <td><?= $customerLabel->__isset('label') ? $this->Html->link(
+                            <td><?= $customerLabel->label !== null ? $this->Html->link(
                                 $customerLabel->label->name,
                                 ['controller' => 'Labels', 'action' => 'view', $customerLabel->label->id],
                             ) : '' ?></td>

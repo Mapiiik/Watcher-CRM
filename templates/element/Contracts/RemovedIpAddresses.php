@@ -21,7 +21,7 @@
         <?php foreach ($removed_ip_addresses as $removedIpAddress) : ?>
         <tr style="<?= $removedIpAddress->style ?>">
             <?php if (!empty($contract_column)) : ?>
-            <td><?= $removedIpAddress->__isset('contract') ?
+            <td><?= $removedIpAddress->contract !== null ?
                 $this->Html->link(
                     $removedIpAddress->contract->number ?? '--',
                     [

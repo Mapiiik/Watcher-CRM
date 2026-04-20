@@ -41,7 +41,7 @@
                 <?php foreach ($contractVersions as $contractVersion) : ?>
                 <tr>
                     <td><?=
-                        $contractVersion->__isset('contract') ? $this->Html->link(
+                        $contractVersion->contract !== null ? $this->Html->link(
                             $contractVersion->contract->name,
                             [
                                 'controller' => 'Contracts',

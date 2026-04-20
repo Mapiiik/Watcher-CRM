@@ -62,7 +62,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Identity Number') ?></th>
-                            <td><?= $customer->__isset('identity_number') ? (
+                            <td><?= $customer->identity_number !== null ? (
                                 h($customer->identity_number)
                                     . ' (' . ($customer->verifyIdentityNumber() ? __('OK') : __('Invalid')) . ')'
                             ) : '' ?></td>
@@ -95,7 +95,7 @@
                     <table>
                         <tr>
                             <th><?= __('Accounting Profile') ?></th>
-                            <td><?= $customer->__isset('accounting_profile') ? $this->Html->link(
+                            <td><?= $customer->accounting_profile !== null ? $this->Html->link(
                                 $customer->accounting_profile->name,
                                 [
                                     'controller' => 'AccountingProfiles',

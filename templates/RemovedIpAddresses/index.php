@@ -40,14 +40,14 @@
                 <?php foreach ($removedIpAddresses as $removedIpAddress) : ?>
                 <tr style="<?= $removedIpAddress->style ?>">
                     <td>
-                        <?= $removedIpAddress->__isset('customer') ? $this->Html->link(
+                        <?= $removedIpAddress->customer !== null ? $this->Html->link(
                             $removedIpAddress->customer->name,
                             ['controller' => 'Customers', 'action' => 'view', $removedIpAddress->customer->id],
                         ) : '' ?>
                     </td>
-                    <td><?= $removedIpAddress->__isset('customer') ? h($removedIpAddress->customer->number) : '' ?></td>
+                    <td><?= $removedIpAddress->customer !== null ? h($removedIpAddress->customer->number) : '' ?></td>
                     <td>
-                        <?= $removedIpAddress->__isset('contract') ? $this->Html->link(
+                        <?= $removedIpAddress->contract !== null ? $this->Html->link(
                             $removedIpAddress->contract->number ?? '--',
                             [
                                 'controller' => 'Contracts',

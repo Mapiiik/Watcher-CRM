@@ -38,15 +38,15 @@
             <?= __('Contract No.') ?><h3><?= h($contractVersion->contract->number) ?></h3>
             <?= __('Validity') ?><h3><?= h($contractVersion->valid_from) ?> - <?= $contractVersion->valid_until ?
                 h($contractVersion->valid_until) : __('indefinitely') ?></h3>
-            <?php if ($contractVersion->__isset('contract')) : ?>
+            <?php if ($contractVersion->contract !== null) : ?>
             <h5><?=
                 (
-                    $contractVersion->contract->__isset('service_type') ?
+                    $contractVersion->contract->service_type !== null ?
                         $contractVersion->contract->service_type->name :
                         ''
                 )
                 . (
-                    $contractVersion->contract->__isset('installation_address') ?
+                    $contractVersion->contract->installation_address !== null ?
                         ' - ' . $contractVersion->contract->installation_address->address :
                         ''
                 )
@@ -57,7 +57,7 @@
                     <table>
                         <tr>
                             <th><?= __('Contract') ?></th>
-                            <td><?= $contractVersion->__isset('contract') ? $this->Html->link(
+                            <td><?= $contractVersion->contract !== null ? $this->Html->link(
                                 $contractVersion->contract->name,
                                 [
                                     'controller' => 'Contracts',

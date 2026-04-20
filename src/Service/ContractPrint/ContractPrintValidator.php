@@ -247,7 +247,7 @@ final class ContractPrintValidator
             return;
         }
 
-        if (!$data->contractVersionToBeReplaced->__isset('conclusion_date')) {
+        if ($data->contractVersionToBeReplaced->conclusion_date === null) {
             $this->setError(
                 'Flash',
                 __('Please set the date of conclusion of the original contract version.'),
@@ -286,7 +286,7 @@ final class ContractPrintValidator
                 new Date($query['effective_date_of_the_amendment']);
         }
 
-        if (!$data->contractVersion->__isset('conclusion_date')) {
+        if (!$data->contractVersion->conclusion_date !== null) {
             $this->setError(
                 'Flash',
                 __('Please set the date of conclusion of the contract version.'),
@@ -305,14 +305,14 @@ final class ContractPrintValidator
             return;
         }
 
-        if (!$data->contractVersion->__isset('valid_until')) {
+        if (!$data->contractVersion->valid_until !== null) {
             $this->setError(
                 'Flash',
                 __('Please set the date until which the contract version is valid.'),
             );
         }
 
-        if (!$data->contractVersion->__isset('conclusion_date')) {
+        if (!$data->contractVersion->conclusion_date !== null) {
             $this->setError(
                 'Flash',
                 __('Please set the date of conclusion of the contract version.'),
@@ -353,7 +353,7 @@ final class ContractPrintValidator
             return;
         }
 
-        if (!$data->contractVersion->__isset('valid_until')) {
+        if (!$data->contractVersion->valid_until !== null) {
             $this->setError(
                 'Flash',
                 __('Please set the date until which the contract version is valid.'),

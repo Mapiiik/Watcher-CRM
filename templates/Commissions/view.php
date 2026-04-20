@@ -55,7 +55,7 @@
                         <?php foreach ($commission->dealer_commissions as $dealerCommission) : ?>
                         <tr>
                             <td>
-                                <?= $dealerCommission->__isset('dealer') ? $this->Html->link(
+                                <?= $dealerCommission->dealer !== null ? $this->Html->link(
                                     $dealerCommission->dealer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $dealerCommission->dealer->id],
                                 ) : '' ?>
@@ -110,15 +110,15 @@
                         <?php foreach ($commission->contracts as $contract) : ?>
                         <tr style="<?= $contract->style ?>">
                             <td>
-                                <?= $contract->__isset('customer') ? $this->Html->link(
+                                <?= $contract->customer !== null ? $this->Html->link(
                                     $contract->customer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $contract->customer->id],
                                 ) : '' ?>
                             </td>
-                            <td><?= $contract->__isset('customer') ? h($contract->customer->number) : '' ?></td>
+                            <td><?= $contract->customer !== null ? h($contract->customer->number) : '' ?></td>
                             <td><?= h($contract->number) ?></td>
                             <td><?=
-                                $contract->__isset('contract_state') ? $this->Html->link(
+                                $contract->contract_state !== null ? $this->Html->link(
                                     $contract->contract_state->name,
                                     [
                                         'controller' => 'ContractStates',
@@ -127,13 +127,13 @@
                                     ],
                                 ) : '' ?></td>
                             <td>
-                                <?= $contract->__isset('service_type') ? $this->Html->link(
+                                <?= $contract->service_type !== null ? $this->Html->link(
                                     $contract->service_type->name,
                                     ['controller' => 'ServiceTypes', 'action' => 'view', $contract->service_type->id],
                                 ) : '' ?>
                             </td>
                             <td>
-                                <?= $contract->__isset('installation_address') ? $this->Html->link(
+                                <?= $contract->installation_address !== null ? $this->Html->link(
                                     $contract->installation_address->full_address,
                                     [
                                         'controller' => 'Addresses',
@@ -143,11 +143,11 @@
                                 ) : '' ?>
                             </td>
                             <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
-                            <td><?= $contract->__isset('access_point_name') ?
+                            <td><?= $contract->access_point_name !== null ?
                                 h($contract->access_point_name) : '' ?></td>
                             <td><?= h($contract->installation_date) ?></td>
                             <td>
-                                <?= $contract->__isset('installation_technician') ? $this->Html->link(
+                                <?= $contract->installation_technician !== null ? $this->Html->link(
                                     $contract->installation_technician->name,
                                     [
                                         'controller' => 'Customers',
@@ -158,7 +158,7 @@
                             </td>
                             <td><?= h($contract->uninstallation_date) ?></td>
                             <td><?=
-                                $contract->__isset('uninstallation_technician') ? $this->Html->link(
+                                $contract->uninstallation_technician !== null ? $this->Html->link(
                                     $contract->uninstallation_technician->name,
                                     [
                                         'controller' => 'Customers',

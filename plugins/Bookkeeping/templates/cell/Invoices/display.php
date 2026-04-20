@@ -36,12 +36,12 @@ use Cake\I18n\Date;
         <tr style="<?= $invoice->style ?>">
             <?php if ($show_customers) : ?>
             <td>
-                <?= $invoice->__isset('customer') ? $this->Html->link(
+                <?= $invoice->customer !== null ? $this->Html->link(
                     $invoice->customer->name,
                     ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $invoice->customer->id],
                 ) : '' ?>
             </td>
-            <td><?= $invoice->__isset('customer') ? h($invoice->customer->number) : '' ?></td>
+            <td><?= $invoice->customer !== null ? h($invoice->customer->number) : '' ?></td>
             <?php endif; ?>
             <td><?= h($invoice->number) ?></td>
             <td><?= h($invoice->variable_symbol) ?></td>

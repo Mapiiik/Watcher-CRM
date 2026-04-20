@@ -26,7 +26,7 @@
                 <?php foreach ($radreplies as $radreply) : ?>
                 <tr>
                     <td>
-                        <?= $radreply->__isset('account') ? $this->Html->link(
+                        <?= $radreply->account !== null ? $this->Html->link(
                             $radreply->account->username,
                             ['controller' => 'Accounts', 'action' => 'view', $radreply->account->id],
                         ) : $radreply->username ?>

@@ -20,7 +20,7 @@
         <?php foreach ($sold_equipments as $soldEquipment) : ?>
         <tr style="<?= $soldEquipment->style ?>">
             <?php if (!empty($contract_column)) : ?>
-            <td><?= $soldEquipment->__isset('contract') ?
+            <td><?= $soldEquipment->contract !== null ?
                 $this->Html->link(
                     $soldEquipment->contract->number ?? '--',
                     [
@@ -31,7 +31,7 @@
                     ],
                 ) : '' ?></td>
             <?php endif; ?>
-            <td><?= $soldEquipment->__isset('equipment_type') ?
+            <td><?= $soldEquipment->equipment_type !== null ?
                 $this->Html->link(
                     $soldEquipment->equipment_type->name,
                     [

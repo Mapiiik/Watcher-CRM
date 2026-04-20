@@ -72,7 +72,7 @@
                                 <?php foreach ($dealerCommission->commission->contracts as $contract) : ?>
                                     <?php foreach ($contract->billings as $billing) : ?>
                                     <tr>
-                                        <td><?= $contract->__isset('customer') ?
+                                        <td><?= $contract->customer !== null ?
                                             $this->Html->link(
                                                 $contract->customer->name,
                                                 [
@@ -81,7 +81,7 @@
                                                     $contract->customer->id,
                                                 ],
                                             ) : '' ?></td>
-                                        <td><?= $contract->__isset('customer')
+                                        <td><?= $contract->customer !== null
                                             ? h($contract->customer->number) : '' ?></td>
                                         <td><?=
                                             $this->Html->link(
@@ -93,11 +93,11 @@
                                                     'customer_id' => $contract->customer_id,
                                                 ],
                                             ) ?></td>
-                                        <td><?= $contract->__isset('contract_state') ?
+                                        <td><?= $contract->contract_state !== null ?
                                             h($contract->contract_state->name) : '' ?></td>
                                         <td><?= h($billing->name) ?></td>
                                         <td><?= h($billing->quantity) ?></td>
-                                        <td><?= h($billing->price) ?><?= $billing->__isset('service') ?
+                                        <td><?= h($billing->price) ?><?= $billing->service !== null ?
                                             ' (' . h($billing->service->price) . ')' : '' ?></td>
                                         <td><?= h($billing->fixed_discount) ?></td>
                                         <td><?= h($billing->percentage_discount) ?></td>

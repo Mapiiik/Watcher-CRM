@@ -30,7 +30,7 @@ use Cake\Routing\Router;
             ?>
         <tr style="<?= $account->style ?>">
             <?php if ($show_contracts) : ?>
-            <td><?= $account->__isset('contract') ?
+            <td><?= $account->contract !== null ?
                 $this->Html->link(
                     $account->contract->number ?? '--',
                     [

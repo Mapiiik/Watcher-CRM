@@ -39,13 +39,13 @@
             <tbody>
                 <?php foreach ($customerLabels as $customerLabel) : ?>
                 <tr>
-                    <td><?= $customerLabel->__isset('customer') ?
+                    <td><?= $customerLabel->customer !== null ?
                         $this->Html->link(
                             $customerLabel->customer->name,
                             ['controller' => 'Customers', 'action' => 'view', $customerLabel->customer->id],
                         ) : '' ?></td>
-                    <td><?= $customerLabel->__isset('customer') ? h($customerLabel->customer->number) : '' ?></td>
-                    <td><?= $customerLabel->__isset('contract') ?
+                    <td><?= $customerLabel->customer !== null ? h($customerLabel->customer->number) : '' ?></td>
+                    <td><?= $customerLabel->contract !== null ?
                         $this->Html->link(
                             $customerLabel->contract->number ?? '--',
                             [
@@ -55,7 +55,7 @@
                                 'customer_id' => $customerLabel->contract->customer_id,
                             ],
                         ) : '' ?></td>
-                    <td><?= $customerLabel->__isset('label') ?
+                    <td><?= $customerLabel->label !== null ?
                         $this->Html->link(
                             $customerLabel->label->name,
                             ['controller' => 'Labels', 'action' => 'view', $customerLabel->label->id],

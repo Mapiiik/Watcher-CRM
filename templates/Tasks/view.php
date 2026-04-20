@@ -26,7 +26,7 @@
                     <table>
                         <tr>
                             <th><?= __('Task Type') ?></th>
-                            <td><?= $task->__isset('task_type') ? $this->Html->link(
+                            <td><?= $task->task_type !== null ? $this->Html->link(
                                 $task->task_type->name,
                                 ['controller' => 'TaskTypes', 'action' => 'view', $task->task_type->id],
                             ) : '' ?></td>
@@ -37,14 +37,14 @@
                         </tr>
                         <tr>
                             <th><?= __('Task State') ?></th>
-                            <td><?= $task->__isset('task_state') ? $this->Html->link(
+                            <td><?= $task->task_state !== null ? $this->Html->link(
                                 $task->task_state->name,
                                 ['controller' => 'TaskStates', 'action' => 'view', $task->task_state->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Dealer') ?></th>
-                            <td><?= $task->__isset('dealer') ? $this->Html->link(
+                            <td><?= $task->dealer !== null ? $this->Html->link(
                                 $task->dealer->name,
                                 ['controller' => 'Customers', 'action' => 'view', $task->dealer->id],
                             ) : '' ?></td>
@@ -61,11 +61,11 @@
                         </tr>
                         <tr>
                             <th><?= __('Access Point') ?></th>
-                            <td><?= $task->__isset('access_point_name') ? h($task->access_point_name) : '' ?></td>
+                            <td><?= $task->access_point_name !== null ? h($task->access_point_name) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $task->__isset('customer') ? $this->Html->link(
+                            <td><?= $task->customer !== null ? $this->Html->link(
                                 $task->customer->name,
                                 [
                                     'controller' => 'Customers',
@@ -76,11 +76,11 @@
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $task->__isset('customer') ? h($task->customer->number) : '' ?></td>
+                            <td><?= $task->customer !== null ? h($task->customer->number) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Contract') ?></th>
-                            <td><?= $task->__isset('contract') ? $this->Html->link(
+                            <td><?= $task->contract !== null ? $this->Html->link(
                                 $task->contract->name,
                                 [
                                     'controller' => 'Contracts',
@@ -131,7 +131,7 @@
                 </blockquote>
             </div>
 
-            <?php if ($task->__isset('customer_id') && !$task->__isset('contract_id')) : ?>
+            <?php if ($task->customer_id !== null && !$task->contract_id !== null) : ?>
                 <br>
                 <div>
                     <iframe width="100%" height="500"  src="<?= $this->Url->build([
@@ -143,7 +143,7 @@
                 </div>
             <?php endif ?>
 
-            <?php if ($task->__isset('customer_id') && $task->__isset('contract_id')) : ?>
+            <?php if ($task->customer_id !== null && $task->contract_id !== null) : ?>
                 <br>
                 <div>
                     <iframe width="100%" height="500"  src="<?= $this->Url->build([

@@ -41,19 +41,19 @@
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $soldEquipment->__isset('customer') ? $this->Html->link(
+                            <td><?= $soldEquipment->customer !== null ? $this->Html->link(
                                 $soldEquipment->customer->name,
                                 ['controller' => 'Customers', 'action' => 'view', $soldEquipment->customer->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $soldEquipment->__isset('customer') ?
+                            <td><?= $soldEquipment->customer !== null ?
                                 h($soldEquipment->customer->number) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Contract') ?></th>
-                            <td><?= $soldEquipment->__isset('contract') ? $this->Html->link(
+                            <td><?= $soldEquipment->contract !== null ? $this->Html->link(
                                 $soldEquipment->contract->number ?? '--',
                                 [
                                     'controller' => 'Contracts',
@@ -65,7 +65,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Equipment Type') ?></th>
-                            <td><?= $soldEquipment->__isset('equipment_type') ? $this->Html->link(
+                            <td><?= $soldEquipment->equipment_type !== null ? $this->Html->link(
                                 $soldEquipment->equipment_type->name,
                                 [
                                     'controller' => 'EquipmentTypes',

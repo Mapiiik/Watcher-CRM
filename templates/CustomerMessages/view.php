@@ -96,7 +96,7 @@
             </div>
             <div class="text">
                 <strong><?= __('Attachments') ?></strong>
-                <pre><?= $customerMessage->__isset('attachments') ?
+                <pre><?= $customerMessage->attachments !== null ?
                     h(json_encode(
                         $customerMessage->attachments,
                         JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES,

@@ -41,20 +41,20 @@
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $borrowedEquipment->__isset('customer') ? $this->Html->link(
+                            <td><?= $borrowedEquipment->customer !== null ? $this->Html->link(
                                 $borrowedEquipment->customer->name,
                                 ['controller' => 'Customers', 'action' => 'view', $borrowedEquipment->customer->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $borrowedEquipment->__isset('customer') ?
+                            <td><?= $borrowedEquipment->customer !== null ?
                                 h($borrowedEquipment->customer->number) : ''
                             ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Contract') ?></th>
-                            <td><?= $borrowedEquipment->__isset('contract') ? $this->Html->link(
+                            <td><?= $borrowedEquipment->contract !== null ? $this->Html->link(
                                 $borrowedEquipment->contract->number ?? '--',
                                 [
                                     'controller' => 'Contracts',
@@ -66,7 +66,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Equipment Type') ?></th>
-                            <td><?= $borrowedEquipment->__isset('equipment_type') ? $this->Html->link(
+                            <td><?= $borrowedEquipment->equipment_type !== null ? $this->Html->link(
                                 $borrowedEquipment->equipment_type->name,
                                 [
                                     'controller' => 'EquipmentTypes',

@@ -47,7 +47,7 @@
                     <table>
                         <tr>
                             <th><?= __d('bookkeeping', 'Customer') ?></th>
-                            <td><?= $invoice->__isset('customer') ? $this->Html->link(
+                            <td><?= $invoice->customer !== null ? $this->Html->link(
                                 $invoice->customer->name,
                                 [
                                     'plugin' => null,
@@ -59,7 +59,7 @@
                         </tr>
                         <tr>
                             <th><?= __d('bookkeeping', 'Customer Number') ?></th>
-                            <td><?= $invoice->__isset('customer') ? h($invoice->customer->number) : '' ?></td>
+                            <td><?= $invoice->customer !== null ? h($invoice->customer->number) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __d('bookkeeping', 'Number') ?></th>

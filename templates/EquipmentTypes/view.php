@@ -75,15 +75,15 @@
                         </tr>
                         <?php foreach ($equipmentType->borrowed_equipments as $borrowedEquipment) : ?>
                         <tr style="<?= $borrowedEquipment->style ?>">
-                            <td><?= $borrowedEquipment->__isset('customer') ?
+                            <td><?= $borrowedEquipment->customer !== null ?
                                 $this->Html->link(
                                     $borrowedEquipment->customer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $borrowedEquipment->customer->id],
                                 ) : '' ?></td>
-                            <td><?= $borrowedEquipment->__isset('customer') ?
+                            <td><?= $borrowedEquipment->customer !== null ?
                                 h($borrowedEquipment->customer->number) : ''
                             ?></td>
-                            <td><?= $borrowedEquipment->__isset('contract') ?
+                            <td><?= $borrowedEquipment->contract !== null ?
                                 $this->Html->link(
                                     $borrowedEquipment->contract->number ?? '--',
                                     [
@@ -137,14 +137,14 @@
                         </tr>
                         <?php foreach ($equipmentType->sold_equipments as $soldEquipment) : ?>
                         <tr style="<?= $soldEquipment->style ?>">
-                            <td><?= $soldEquipment->__isset('customer') ?
+                            <td><?= $soldEquipment->customer !== null ?
                                 $this->Html->link(
                                     $soldEquipment->customer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $soldEquipment->customer->id],
                                 ) : '' ?></td>
-                            <td><?= $soldEquipment->__isset('customer') ?
+                            <td><?= $soldEquipment->customer !== null ?
                                 h($soldEquipment->customer->number) : '' ?></td>
-                            <td><?= $soldEquipment->__isset('contract') ?
+                            <td><?= $soldEquipment->contract !== null ?
                                 $this->Html->link(
                                     $soldEquipment->contract->number ?? '--',
                                     [

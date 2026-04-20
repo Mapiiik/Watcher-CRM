@@ -30,18 +30,18 @@
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $ipAddress->__isset('customer') ? $this->Html->link(
+                            <td><?= $ipAddress->customer !== null ? $this->Html->link(
                                 $ipAddress->customer->name,
                                 ['controller' => 'Customers', 'action' => 'view', $ipAddress->customer->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $ipAddress->__isset('customer') ? h($ipAddress->customer->number) : '' ?></td>
+                            <td><?= $ipAddress->customer !== null ? h($ipAddress->customer->number) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Contract') ?></th>
-                            <td><?= $ipAddress->__isset('contract') ? $this->Html->link(
+                            <td><?= $ipAddress->contract !== null ? $this->Html->link(
                                 $ipAddress->contract->number ?? '--',
                                 [
                                     'controller' => 'Contracts',

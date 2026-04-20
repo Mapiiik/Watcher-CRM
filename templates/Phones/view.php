@@ -30,14 +30,14 @@
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $phone->__isset('customer') ? $this->Html->link(
+                            <td><?= $phone->customer !== null ? $this->Html->link(
                                 $phone->customer->name,
                                 ['controller' => 'Customers', 'action' => 'view', $phone->customer->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $phone->__isset('customer') ? h($phone->customer->number) : '' ?></td>
+                            <td><?= $phone->customer !== null ? h($phone->customer->number) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Phone') ?></th>

@@ -54,7 +54,7 @@
                     <table>
                         <tr>
                             <th><?= __d('radius', 'Customer') ?></th>
-                            <td><?= $account->__isset('customer') ? $this->Html->link(
+                            <td><?= $account->customer !== null ? $this->Html->link(
                                 $account->customer->name,
                                 [
                                     'plugin' => null,
@@ -66,11 +66,11 @@
                         </tr>
                         <tr>
                             <th><?= __d('radius', 'Customer Number') ?></th>
-                            <td><?= $account->__isset('customer') ? h($account->customer->number) : '' ?></td>
+                            <td><?= $account->customer !== null ? h($account->customer->number) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __d('radius', 'Contract') ?></th>
-                            <td><?= $account->__isset('contract') ? $this->Html->link(
+                            <td><?= $account->contract !== null ? $this->Html->link(
                                 $account->contract->number ?? '--',
                                 [
                                     'plugin' => null,

@@ -84,7 +84,7 @@ use Settings\Utility\Settings;
                         <?php
                         echo $this->Form->control('enable_uninstallation', [
                             'label' => false,
-                            'checked' => $contract->__isset('uninstallation_date'),
+                            'checked' => $contract->uninstallation_date !== null,
                             'type' => 'checkbox',
                             'templates' => [
                                 'inputContainer' => '<div class="float-left">{{content}}&nbsp;</div>',
@@ -99,7 +99,7 @@ use Settings\Utility\Settings;
                         echo $this->Form->control('uninstallation_date', [
                             'label' => __('Uninstallation/Cancellation Date'),
                             'empty' => true,
-                            'disabled' => !$contract->__isset('uninstallation_date'),
+                            'disabled' => !$contract->uninstallation_date !== null,
                         ]);
                         $this->Form->unlockField('uninstallation_date'); //disable form security check
 
@@ -107,13 +107,13 @@ use Settings\Utility\Settings;
                         echo $this->Form->control('uninstallation_technician_id', [
                             'options' => $uninstallationTechnicians,
                             'empty' => true,
-                            'disabled' => !$contract->__isset('uninstallation_date'),
+                            'disabled' => !$contract->uninstallation_date !== null,
                         ]);
                         $this->Form->unlockField('uninstallation_technician_id'); //disable form security check
 
                         echo $this->Form->control('enable_termination', [
                             'label' => false,
-                            'checked' => $contract->__isset('termination_date'),
+                            'checked' => $contract->termination_date !== null,
                             'type' => 'checkbox',
                             'templates' => [
                                 'inputContainer' => '<div class="float-left">{{content}}&nbsp;</div>',
@@ -125,7 +125,7 @@ use Settings\Utility\Settings;
                         echo $this->Form->control('termination_date', [
                             'label' => __('Date of Termination of Services'),
                             'empty' => true,
-                            'disabled' => !$contract->__isset('termination_date'),
+                            'disabled' => !$contract->termination_date !== null,
                         ]);
                         $this->Form->unlockField('termination_date'); //disable form security check
                         ?>

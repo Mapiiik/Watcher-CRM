@@ -336,7 +336,7 @@ class TasksController extends AppController
                 if ($this->Tasks->save($task)) {
                     // send email notification
                     if (
-                        $task->__isset('dealer_id')
+                        $task->dealer_id !== null
                         && $task->dealer_id != ($this->getRequest()->getAttribute('identity')['customer_id'] ?? null)
                     ) {
                         $this->sendNotificationEmail($task->id, true);
@@ -496,7 +496,7 @@ class TasksController extends AppController
                 if ($this->Tasks->save($task)) {
                     // send email notification
                     if (
-                        $task->__isset('dealer_id')
+                        $task->dealer_id !== null
                         && $task->dealer_id != ($this->getRequest()->getAttribute('identity')['customer_id'] ?? null)
                     ) {
                         $this->sendNotificationEmail($task->id, false);

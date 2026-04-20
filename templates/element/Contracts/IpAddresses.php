@@ -25,7 +25,7 @@ use Cake\Routing\Router;
         <?php foreach ($ip_addresses as $ipAddress) : ?>
         <tr style="<?= $ipAddress->style ?>">
             <?php if (!empty($contract_column)) : ?>
-            <td><?= $ipAddress->__isset('contract') ?
+            <td><?= $ipAddress->contract !== null ?
                 $this->Html->link(
                     $ipAddress->contract->number ?? '--',
                     [

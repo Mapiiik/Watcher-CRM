@@ -72,12 +72,12 @@
                 <?php foreach ($invoices as $invoice) : ?>
                 <tr style="<?= $invoice->style ?>">
                     <td>
-                        <?= $invoice->__isset('customer') ? $this->Html->link(
+                        <?= $invoice->customer !== null ? $this->Html->link(
                             $invoice->customer->name,
                             ['plugin' => null, 'controller' => 'Customers', 'action' => 'view', $invoice->customer->id],
                         ) : '' ?>
                     </td>
-                    <td><?= $invoice->__isset('customer') ? h($invoice->customer->number) : '' ?></td>
+                    <td><?= $invoice->customer !== null ? h($invoice->customer->number) : '' ?></td>
                     <td><?= h($invoice->number) ?></td>
                     <td><?= h($invoice->variable_symbol) ?></td>
                     <td><?= h($invoice->creation_date) ?></td>

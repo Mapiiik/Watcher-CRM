@@ -39,7 +39,7 @@
             <table>
                 <tr>
                     <th><?= __d('radius', 'Username') ?></th>
-                    <td><?= $radpostauth->__isset('account') ? $this->Html->link(
+                    <td><?= $radpostauth->account !== null ? $this->Html->link(
                         $radpostauth->account->username,
                         ['controller' => 'Accounts', 'action' => 'view', $radpostauth->account->id],
                     ) : $radpostauth->username ?></td>

@@ -44,14 +44,14 @@
                 <?php foreach ($billings as $billing) : ?>
                 <tr style="<?= $billing->style ?>">
                     <td>
-                        <?= $billing->__isset('customer') ? $this->Html->link(
+                        <?= $billing->customer !== null ? $this->Html->link(
                             $billing->customer->name,
                             ['controller' => 'Customers', 'action' => 'view', $billing->customer->id],
                         ) : '' ?>
                     </td>
-                    <td><?= $billing->__isset('customer') ? h($billing->customer->number) : '' ?></td>
+                    <td><?= $billing->customer !== null ? h($billing->customer->number) : '' ?></td>
                     <td>
-                        <?= $billing->__isset('contract') ? $this->Html->link(
+                        <?= $billing->contract !== null ? $this->Html->link(
                             $billing->contract->number ?? '--',
                             [
                                 'controller' => 'Contracts',
@@ -62,7 +62,7 @@
                         ) : '' ?>
                     </td>
                     <td>
-                        <?= $billing->__isset('service') ? $this->Html->link(
+                        <?= $billing->service !== null ? $this->Html->link(
                             $billing->service->name,
                             ['controller' => 'Services', 'action' => 'view', $billing->service->id],
                         ) : '' ?>
@@ -71,7 +71,7 @@
                     <td><?= $this->Number->format($billing->quantity) ?></td>
                     <td>
                         <?= h($billing->price) ?>
-                        <?= $billing->__isset('service') ? '(' . h($billing->service->price) . ')' : '' ?>
+                        <?= $billing->service !== null ? '(' . h($billing->service->price) . ')' : '' ?>
                     </td>
                     <td><?= h($billing->fixed_discount) ?></td>
                     <td><?= h($billing->percentage_discount) ?></td>

@@ -41,7 +41,7 @@
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $removedIpNetwork->__isset('customer') ?
+                            <td><?= $removedIpNetwork->customer !== null ?
                                 $this->Html->link(
                                     $removedIpNetwork->customer->name,
                                     ['controller' => 'Customers', 'action' => 'view', $removedIpNetwork->customer->id],
@@ -49,13 +49,13 @@
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $removedIpNetwork->__isset('customer') ?
+                            <td><?= $removedIpNetwork->customer !== null ?
                                 h($removedIpNetwork->customer->number) : ''
                             ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Contract') ?></th>
-                            <td><?= $removedIpNetwork->__isset('contract') ?
+                            <td><?= $removedIpNetwork->contract !== null ?
                                 $this->Html->link(
                                     $removedIpNetwork->contract->number ?? '--',
                                     [

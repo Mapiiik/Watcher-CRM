@@ -35,14 +35,14 @@
                 <?php foreach ($ipAddresses as $ipAddress) : ?>
                 <tr style="<?= $ipAddress->style ?>">
                     <td>
-                        <?= $ipAddress->__isset('customer') ? $this->Html->link(
+                        <?= $ipAddress->customer !== null ? $this->Html->link(
                             $ipAddress->customer->name,
                             ['controller' => 'Customers', 'action' => 'view', $ipAddress->customer->id],
                         ) : '' ?>
                     </td>
-                    <td><?= $ipAddress->__isset('customer') ? h($ipAddress->customer->number) : '' ?></td>
+                    <td><?= $ipAddress->customer !== null ? h($ipAddress->customer->number) : '' ?></td>
                     <td>
-                        <?= $ipAddress->__isset('contract') ? $this->Html->link(
+                        <?= $ipAddress->contract !== null ? $this->Html->link(
                             $ipAddress->contract->number ?? '--',
                             [
                                 'controller' => 'Contracts',

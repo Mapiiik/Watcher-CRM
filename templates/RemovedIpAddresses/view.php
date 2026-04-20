@@ -41,19 +41,19 @@
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $removedIpAddress->__isset('customer') ? $this->Html->link(
+                            <td><?= $removedIpAddress->customer !== null ? $this->Html->link(
                                 $removedIpAddress->customer->name,
                                 ['controller' => 'Customers', 'action' => 'view', $removedIpAddress->customer->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Customer Number') ?></th>
-                            <td><?= $removedIpAddress->__isset('customer') ?
+                            <td><?= $removedIpAddress->customer !== null ?
                                 h($removedIpAddress->customer->number) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Contract') ?></th>
-                            <td><?= $removedIpAddress->__isset('contract') ? $this->Html->link(
+                            <td><?= $removedIpAddress->contract !== null ? $this->Html->link(
                                 $removedIpAddress->contract->number ?? '--',
                                 [
                                     'controller' => 'Contracts',

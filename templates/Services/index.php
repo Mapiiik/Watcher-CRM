@@ -38,13 +38,13 @@
                     <td><?= h($service->name) ?></td>
                     <td><?= $service->price === null ? '' : $this->Number->currency($service->price->toString()) ?></td>
                     <td>
-                        <?= $service->__isset('service_type') ? $this->Html->link(
+                        <?= $service->service_type !== null ? $this->Html->link(
                             $service->service_type->name,
                             ['controller' => 'ServiceTypes', 'action' => 'view', $service->service_type->id],
                         ) : '' ?>
                     </td>
                     <td>
-                        <?= $service->__isset('queue') ? $this->Html->link(
+                        <?= $service->queue !== null ? $this->Html->link(
                             $service->queue->name,
                             ['controller' => 'Queues', 'action' => 'view', $service->queue->id],
                         ) : '' ?>

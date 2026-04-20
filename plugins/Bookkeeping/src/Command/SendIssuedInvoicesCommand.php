@@ -136,7 +136,7 @@ class SendIssuedInvoicesCommand extends Command
 
         foreach ($invoices as $invoice) {
             if (
-                $invoice->__isset('customer') &&
+                $invoice->customer !== null &&
                 $invoice->customer->agree_mailing_billing &&
                 $invoice->customer->invoice_delivery_type === CustomerInvoiceDeliveryType::Email &&
                 count($invoice->customer->billing_emails) > 0

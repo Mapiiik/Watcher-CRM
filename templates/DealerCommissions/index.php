@@ -38,13 +38,13 @@
                 <?php foreach ($dealerCommissions as $dealerCommission) : ?>
                 <tr>
                     <td>
-                        <?= $dealerCommission->__isset('dealer') ? $this->Html->link(
+                        <?= $dealerCommission->dealer !== null ? $this->Html->link(
                             $dealerCommission->dealer->name,
                             ['controller' => 'Customers', 'action' => 'view', $dealerCommission->dealer->id],
                         ) : '' ?>
                     </td>
                     <td>
-                        <?= $dealerCommission->__isset('commission') ? $this->Html->link(
+                        <?= $dealerCommission->commission !== null ? $this->Html->link(
                             $dealerCommission->commission->name,
                             ['controller' => 'Commissions', 'action' => 'view', $dealerCommission->commission->id],
                         ) : '' ?>
