@@ -101,9 +101,9 @@ final class ContractPrintPdfOutput
                 => $data->effectiveDateOfAmendment,
             ContractPrintType::ContractTermination,
             ContractPrintType::HandoverUninstallation
-                => $data->contractVersion?->valid_until,
+                => $data->contractVersionToBeTerminated?->valid_until,
             default
-                => $data->contractVersion?->valid_from,
+                => $data->contractVersionToBeExecuted?->valid_from,
         };
 
         return sprintf(

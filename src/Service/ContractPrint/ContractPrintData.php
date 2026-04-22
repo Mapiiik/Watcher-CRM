@@ -43,18 +43,18 @@ final class ContractPrintData
     public Contract $contract;
 
     /**
-     * Contract version used for printing.
+     * Contract version to be executed used for printing.
      *
      * @var \App\Model\Entity\ContractVersion|null
      */
-    public ?ContractVersion $contractVersion = null;
+    public ?ContractVersion $contractVersionToBeExecuted = null;
 
     /**
-     * Contract version to be replaced used for printing.
+     * Contract version to be terminated used for printing.
      *
      * @var \App\Model\Entity\ContractVersion|null
      */
-    public ?ContractVersion $contractVersionToBeReplaced = null;
+    public ?ContractVersion $contractVersionToBeTerminated = null;
 
     /**
      * Effective date of the amendment.
@@ -83,7 +83,7 @@ final class ContractPrintData
      *
      * @var string|null
      */
-    public ?string $numberOfContractToBeTerminated = null;
+    public ?string $contractNumberToBeTerminated = null;
 
     /**
      * Indicates whether the document should be generated as signed.
@@ -115,19 +115,19 @@ final class ContractPrintData
      *
      * @param \App\Model\Enum\ContractPrintType $type
      * @param \App\Model\Entity\Contract $contract
-     * @param \App\Model\Entity\ContractVersion|null $contractVersion
-     * @param \App\Model\Entity\ContractVersion|null $contractVersionToBeReplaced
+     * @param \App\Model\Entity\ContractVersion|null $contractVersionToBeExecuted
+     * @param \App\Model\Entity\ContractVersion|null $contractVersionToBeTerminated
      */
     public function __construct(
         ContractPrintType $type,
         Contract $contract,
-        ?ContractVersion $contractVersion,
-        ?ContractVersion $contractVersionToBeReplaced,
+        ?ContractVersion $contractVersionToBeExecuted,
+        ?ContractVersion $contractVersionToBeTerminated,
     ) {
         $this->type = $type;
         $this->contract = $contract;
-        $this->contractVersion = $contractVersion;
-        $this->contractVersionToBeReplaced = $contractVersionToBeReplaced;
+        $this->contractVersionToBeExecuted = $contractVersionToBeExecuted;
+        $this->contractVersionToBeTerminated = $contractVersionToBeTerminated;
 
         $this->activeBillings = new Collection([]);
         $this->futureBillings = new Collection([]);

@@ -895,34 +895,34 @@ class ContractsController extends AppController
         ) {
             // if the print type is invalid or missing, show an error and redirect back to the print view
             if ($printType === null) {
-                $this->Flash->error(__('Invalid type of document requested.'));
+                $this->Flash->error(__('Invalid type of document.'));
 
                 return $this->redirect(['action' => 'print', $id, '?' => $query]);
             }
 
             // load the contract version to be printed from the query string
-            $contractVersion = null;
-            if (!empty($query['contract_version_id'])) {
-                $contractVersion = (new Collection($contract->contract_versions))->firstMatch([
-                    'id' => $query['contract_version_id'],
+            $contractVersionToBeExecuted = null;
+            if (!empty($query['contract_version_to_be_executed_id'])) {
+                $contractVersionToBeExecuted = (new Collection($contract->contract_versions))->firstMatch([
+                    'id' => $query['contract_version_to_be_executed_id'],
                 ]);
 
-                if ($contractVersion === null) {
-                    $this->Flash->error(__('Invalid contract version requested.'));
+                if ($contractVersionToBeExecuted === null) {
+                    $this->Flash->error(__('Invalid contract version to be executed.'));
 
                     return $this->redirect(['action' => 'print', $id, '?' => $query]);
                 }
             }
 
-            // load the contract version to be replaced from the query string
-            $contractVersionToBeReplaced = null;
-            if (!empty($query['contract_version_to_be_replaced_id'])) {
-                $contractVersionToBeReplaced = (new Collection($contract->contract_versions))->firstMatch([
-                    'id' => $query['contract_version_to_be_replaced_id'],
+            // load the contract version to be terminated from the query string
+            $contractVersionToBeTerminated = null;
+            if (!empty($query['contract_version_to_be_terminated_id'])) {
+                $contractVersionToBeTerminated = (new Collection($contract->contract_versions))->firstMatch([
+                    'id' => $query['contract_version_to_be_terminated_id'],
                 ]);
 
-                if ($contractVersionToBeReplaced === null) {
-                    $this->Flash->error(__('Invalid contract version to be replaced requested.'));
+                if ($contractVersionToBeTerminated === null) {
+                    $this->Flash->error(__('Invalid contract version to be terminated.'));
 
                     return $this->redirect(['action' => 'print', $id, '?' => $query]);
                 }
@@ -932,8 +932,8 @@ class ContractsController extends AppController
             $data = new ContractPrintData(
                 type: $printType,
                 contract: $contract,
-                contractVersion: $contractVersion,
-                contractVersionToBeReplaced: $contractVersionToBeReplaced,
+                contractVersionToBeExecuted: $contractVersionToBeExecuted,
+                contractVersionToBeTerminated: $contractVersionToBeTerminated,
             );
 
             // validate the data for the requested document type

@@ -49,32 +49,41 @@ enum ContractPrintType: string implements EnumLabelInterface
     }
 
     /**
-     * Indicates whether this document type requires a contract version
-     * to be explicitly selected by the user.
+     * Indicates whether this document type requires selecting
+     * a contract version to be executed.
      *
-     * This corresponds to the common validation that checks
-     * for the presence of ContractPrintData::$contractVersion.
+     * This corresponds to validation of:
+     *  - ContractPrintData::$contractVersionToBeExecuted
      *
      * @return bool
      */
-    public function requiresContractVersion(): bool
+    public function requiresContractVersionToBeExecuted(): bool
     {
-        return true;
+        return in_array($this, [
+            self::ContractNew,
+            self::ContractNewX,
+            self::ContractAmendment,
+            self::HandoverInstallation,
+        ], true);
     }
 
     /**
      * Indicates whether this document type requires selecting
-     * an existing contract version to be replaced.
+     * an existing contract version to be terminated.
      *
      * This corresponds to validation of:
-     *  - ContractPrintData::$contractVersionToBeReplaced
-     *  - number_of_the_contract_to_be_terminated
+     *  - ContractPrintData::$contractVersionToBeTerminated
+     *  - contract_number_to_be_terminated
      *
      * @return bool
      */
-    public function requiresContractVersionToBeReplaced(): bool
+    public function requiresContractVersionToBeTerminated(): bool
     {
-        return $this === self::ContractNewX;
+        return in_array($this, [
+            self::ContractNewX,
+            self::ContractTermination,
+            self::HandoverUninstallation,
+        ], true);
     }
 
     /**
@@ -94,14 +103,14 @@ enum ContractPrintType: string implements EnumLabelInterface
 
     /**
      * Indicates whether this document type requires
-     * the number of the contract to be terminated.
+     * the contract number to be terminated.
      *
      * This corresponds to validation of:
-     *  - number_of_the_contract_to_be_terminated
+     *  - contract_number_to_be_terminated
      *
      * @return bool
      */
-    public function requiresNumberOfTheContractToBeTerminated(): bool
+    public function requiresContractNumberToBeTerminated(): bool
     {
         return in_array($this, [
             self::ContractNewX,

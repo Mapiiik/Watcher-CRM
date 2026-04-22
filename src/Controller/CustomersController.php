@@ -550,7 +550,7 @@ class CustomersController extends AppController
         ) {
             // if the print type is invalid or missing, show an error and redirect back to the print view
             if ($printType === null) {
-                $this->Flash->error(__('Invalid type of document requested.'));
+                $this->Flash->error(__('Invalid type of document.'));
 
                 return $this->redirect(['action' => 'print', $id, '?' => $query]);
             }

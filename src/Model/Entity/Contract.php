@@ -31,7 +31,6 @@ use RuntimeException;
  * @property \PhpCollective\DecimalObject\Decimal|null $activation_fee_with_obligation
  * @property \PhpCollective\DecimalObject\Decimal $activation_fee_sum
  * @property \PhpCollective\DecimalObject\Decimal $activation_fee_with_obligation_sum
- * @property string|null $number_of_the_contract_to_be_terminated
  * @property string|null $access_point_id
  * @property string $contract_state_id
  * @property string $name

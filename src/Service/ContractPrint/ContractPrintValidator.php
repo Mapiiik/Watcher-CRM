@@ -103,17 +103,38 @@ final class ContractPrintValidator
 
     /**
      * Common validation used by many document types.
-     * Checks that a contract version is selected.
+     * Checks that a contract version to be executed is selected.
      *
      * @return bool Whether the contract version requirement is fulfilled.
-     * @phpstan-assert-if-true !null $data->contractVersion
+     * @phpstan-assert-if-true !null $data->contractVersionToBeExecuted
      */
-    private function requireContractVersion(ContractPrintData $data): bool
+    private function requireContractVersionToBeExecuted(ContractPrintData $data): bool
     {
-        if ($data->contractVersion === null) {
+        if ($data->contractVersionToBeExecuted === null) {
             $this->setError(
-                'contract_version_id',
-                __('Please select the contract version.'),
+                'contract_version_to_be_executed_id',
+                __('Please select the contract version to be executed.'),
+            );
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Common validation used by termination document types.
+     * Checks that a contract version to be terminated is selected.
+     *
+     * @return bool Whether the contract version requirement is fulfilled.
+     * @phpstan-assert-if-true !null $data->contractVersionToBeTerminated
+     */
+    private function requireContractVersionToBeTerminated(ContractPrintData $data): bool
+    {
+        if ($data->contractVersionToBeTerminated === null) {
+            $this->setError(
+                'contract_version_to_be_terminated_id',
+                __('Please select the contract version to be terminated.'),
             );
 
             return false;
@@ -213,7 +234,7 @@ final class ContractPrintValidator
         ContractPrintData $data,
         array $query,
     ): void {
-        if (!$this->requireContractVersion($data)) {
+        if (!$this->requireContractVersionToBeExecuted($data)) {
             return;
         }
     }
@@ -225,43 +246,40 @@ final class ContractPrintValidator
         ContractPrintData $data,
         array $query,
     ): void {
-        if (!$this->requireContractVersion($data)) {
+        if (!$this->requireContractVersionToBeExecuted($data)) {
             return;
         }
 
-        if ($data->contractVersionToBeReplaced === null) {
+        if (!$this->requireContractVersionToBeTerminated($data)) {
+            return;
+        }
+
+        if ($data->contractVersionToBeTerminated->id === $data->contractVersionToBeExecuted->id) {
             $this->setError(
-                'contract_version_to_be_replaced_id',
-                __('Please select the contract version to be replaced.'),
+                'contract_version_to_be_terminated_id',
+                __(
+                    'The contract version to be terminated must differ from the contract version to be executed.',
+                ),
             );
 
             return;
         }
 
-        if ($data->contractVersionToBeReplaced->id === $data->contractVersion->id) {
-            $this->setError(
-                'contract_version_to_be_replaced_id',
-                __('The contract version to be replaced must not be the same as the new contract version.'),
-            );
-
-            return;
-        }
-
-        if ($data->contractVersionToBeReplaced->conclusion_date === null) {
+        if ($data->contractVersionToBeTerminated->conclusion_date === null) {
             $this->setError(
                 'Flash',
-                __('Please set the date of conclusion of the original contract version.'),
+                __('Please set the date of conclusion of the contract version to be terminated.'),
             );
         }
 
-        if (empty($query['number_of_the_contract_to_be_terminated'])) {
+        if (empty($query['contract_number_to_be_terminated'])) {
             $this->setError(
-                'number_of_the_contract_to_be_terminated',
-                __('Please enter the number of the contract to be terminated.'),
+                'contract_number_to_be_terminated',
+                __('Please enter the contract number to be terminated.'),
             );
         } else {
-            $data->numberOfContractToBeTerminated =
-                (string)$query['number_of_the_contract_to_be_terminated'];
+            $data->contractNumberToBeTerminated =
+                (string)$query['contract_number_to_be_terminated'];
         }
     }
 
@@ -272,7 +290,7 @@ final class ContractPrintValidator
         ContractPrintData $data,
         array $query,
     ): void {
-        if (!$this->requireContractVersion($data)) {
+        if (!$this->requireContractVersionToBeExecuted($data)) {
             return;
         }
 
@@ -286,10 +304,10 @@ final class ContractPrintValidator
                 new Date($query['effective_date_of_the_amendment']);
         }
 
-        if ($data->contractVersion->conclusion_date === null) {
+        if ($data->contractVersionToBeExecuted->conclusion_date === null) {
             $this->setError(
                 'Flash',
-                __('Please set the date of conclusion of the contract version.'),
+                __('Please set the date of conclusion of the contract version to be executed.'),
             );
         }
     }
@@ -301,32 +319,32 @@ final class ContractPrintValidator
         ContractPrintData $data,
         array $query,
     ): void {
-        if (!$this->requireContractVersion($data)) {
+        if (!$this->requireContractVersionToBeTerminated($data)) {
             return;
         }
 
-        if ($data->contractVersion->valid_until === null) {
+        if ($data->contractVersionToBeTerminated->valid_until === null) {
             $this->setError(
                 'Flash',
-                __('Please set the date until which the contract version is valid.'),
+                __('Please set the date until which the contract version to be terminated is valid.'),
             );
         }
 
-        if ($data->contractVersion->conclusion_date === null) {
+        if ($data->contractVersionToBeTerminated->conclusion_date === null) {
             $this->setError(
                 'Flash',
-                __('Please set the date of conclusion of the contract version.'),
+                __('Please set the date of conclusion of the contract version to be terminated.'),
             );
         }
 
-        if (empty($query['number_of_the_contract_to_be_terminated'])) {
+        if (empty($query['contract_number_to_be_terminated'])) {
             $this->setError(
-                'number_of_the_contract_to_be_terminated',
-                __('Please enter the number of the contract to be terminated.'),
+                'contract_number_to_be_terminated',
+                __('Please enter the contract number to be terminated.'),
             );
         } else {
-            $data->numberOfContractToBeTerminated =
-                (string)$query['number_of_the_contract_to_be_terminated'];
+            $data->contractNumberToBeTerminated =
+                (string)$query['contract_number_to_be_terminated'];
         }
     }
 
@@ -337,7 +355,7 @@ final class ContractPrintValidator
         ContractPrintData $data,
         array $query,
     ): void {
-        if (!$this->requireContractVersion($data)) {
+        if (!$this->requireContractVersionToBeExecuted($data)) {
             return;
         }
     }
@@ -349,25 +367,25 @@ final class ContractPrintValidator
         ContractPrintData $data,
         array $query,
     ): void {
-        if (!$this->requireContractVersion($data)) {
+        if (!$this->requireContractVersionToBeTerminated($data)) {
             return;
         }
 
-        if ($data->contractVersion->valid_until === null) {
+        if ($data->contractVersionToBeTerminated->valid_until === null) {
             $this->setError(
                 'Flash',
-                __('Please set the date until which the contract version is valid.'),
+                __('Please set the date until which the contract version to be terminated is valid.'),
             );
         }
 
-        if (empty($query['number_of_the_contract_to_be_terminated'])) {
+        if (empty($query['contract_number_to_be_terminated'])) {
             $this->setError(
-                'number_of_the_contract_to_be_terminated',
-                __('Please enter the number of the contract to be terminated.'),
+                'contract_number_to_be_terminated',
+                __('Please enter the contract number to be terminated.'),
             );
         } else {
-            $data->numberOfContractToBeTerminated =
-                (string)$query['number_of_the_contract_to_be_terminated'];
+            $data->contractNumberToBeTerminated =
+                (string)$query['contract_number_to_be_terminated'];
         }
     }
 }

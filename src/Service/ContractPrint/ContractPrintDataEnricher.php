@@ -148,12 +148,12 @@ final class ContractPrintDataEnricher
         ContractPrintData $data,
     ): void {
         // Billing enrichment only makes sense if we have a specific contract version context
-        if ($data->contractVersion === null) {
+        if ($data->contractVersionToBeExecuted === null) {
             return;
         }
 
         // Determine the reference date for billing relevance based on document type
-        $referenceDate = $data->contractVersion->valid_from;
+        $referenceDate = $data->contractVersionToBeExecuted->valid_from;
         if (
             $data->type === ContractPrintType::ContractAmendment
             && $data->effectiveDateOfAmendment !== null

@@ -241,18 +241,35 @@ class ContractPDF extends AppPDF
         // Load data from print data object
         $type = $data->type;
         $contract = $data->contract;
-        $contract_version = $data->contractVersion;
+        $contract_version_to_be_executed = $data->contractVersionToBeExecuted;
+        $contract_version_to_be_terminated = $data->contractVersionToBeTerminated;
         $technical_details = $data->technicalDetails;
         $signed = $data->signed;
 
-        if ($contract_version === null) {
+        if ($contract->number === null) {
             throw new InvalidArgumentException(
-                'Contract version must be provided for handover protocol generation',
+                'Contract number must be provided in order to generate a handover protocol',
             );
         }
 
-        if ($contract->number === null) {
-            throw new InvalidArgumentException('Contract number must be provided for handover protocol generation');
+        if ($contract_version_to_be_executed === null && $type === ContractPrintType::HandoverInstallation) {
+            throw new InvalidArgumentException(
+                'The contract version to be executed must be provided in order to generate'
+                    . ' a handover protocol for installation',
+            );
+        }
+
+        if ($contract_version_to_be_terminated === null && $type === ContractPrintType::HandoverUninstallation) {
+            throw new InvalidArgumentException(
+                'The contract version to be terminated must be provided in order to generate'
+                    . ' a handover protocol for uninstallation',
+            );
+        }
+
+        if ($technical_details === null) {
+            throw new InvalidArgumentException(
+                'Technical details must be provided in order to generate a handover protocol',
+            );
         }
 
         // Disable default header and footer
@@ -300,14 +317,15 @@ class ContractPDF extends AppPDF
             $this->Ln();
             $this->SetFont('DejaVuSerif', 'B', 8);
             $this->Cell(90, 4, $contract->number, align: 'C');
-            $this->Cell(90, 4, (string)$contract_version->valid_from, align: 'C');
-        } else {
+            $this->Cell(90, 4, (string)$contract_version_to_be_executed->valid_from, align: 'C');
+        }
+        if ($type === ContractPrintType::HandoverUninstallation) {
             $this->Cell(90, 4, Settings::getString('core.documents.common.labels.contract_number'), align: 'C');
             $this->Cell(90, 4, Settings::getString('core.documents.common.labels.end_date'), align: 'C');
             $this->Ln();
             $this->SetFont('DejaVuSerif', 'B', 8);
-            $this->Cell(90, 4, (string)$data->numberOfContractToBeTerminated, align: 'C');
-            $this->Cell(90, 4, (string)$contract_version->valid_until, align: 'C');
+            $this->Cell(90, 4, (string)$data->contractNumberToBeTerminated, align: 'C');
+            $this->Cell(90, 4, (string)$contract_version_to_be_terminated->valid_until, align: 'C');
         }
         $this->Ln();
 
@@ -668,7 +686,7 @@ class ContractPDF extends AppPDF
             }
             $this->Ln(1);
 
-            $subtotal = $contract_version->minimum_duration <= 0
+            $subtotal = $contract_version_to_be_executed->minimum_duration <= 0
                 ? $contract->activation_fee_sum
                 : $contract->activation_fee_with_obligation_sum;
 
@@ -724,7 +742,7 @@ class ContractPDF extends AppPDF
             foreach ($contract->sold_equipments as $sold_equipment) {
                 // conditional discount sum
                 if (
-                    $contract_version->minimum_duration > 0
+                    $contract_version_to_be_executed->minimum_duration > 0
                     && isset($sold_equipment->equipment_type->price)
                     && isset($sold_equipment->equipment_type->price_with_obligation)
                 ) {
@@ -841,7 +859,9 @@ class ContractPDF extends AppPDF
                         Settings::getString('core.documents.contracts.handover.texts.early_termination_clause'),
                         [
                             '{full_price}' => Number::currency($sold_equipments_value->toFloat()),
-                            '{duration}' => $this->contractDurationBefore($contract_version->minimum_duration),
+                            '{duration}' => $this->contractDurationBefore(
+                                $contract_version_to_be_executed->minimum_duration,
+                            ),
                             '{discounted_price}' => Number::currency(
                                 $sold_equipments_value->subtract($sold_equipments_discount)->toFloat(),
                             ),
@@ -1010,7 +1030,7 @@ class ContractPDF extends AppPDF
                 4,
                 strtr(
                     Settings::getString('core.documents.contracts.handover.texts.uninstallation_final_statements_text'),
-                    ['{contract_number}' => (string)$data->numberOfContractToBeTerminated],
+                    ['{contract_number}' => (string)$data->contractNumberToBeTerminated],
                 ) . PHP_EOL,
                 align: 'J',
             );
@@ -1036,7 +1056,7 @@ class ContractPDF extends AppPDF
     {
         if ($data->effectiveDateOfAmendment === null) {
             throw new InvalidArgumentException(
-                'Effective date of amendment must be provided for contract amendment generation',
+                'Effective date of amendment must be provided in order to generate a contract amendment',
             );
         }
     }
@@ -1052,30 +1072,51 @@ class ContractPDF extends AppPDF
         // Load data from print data object
         $type = $data->type;
         $contract = $data->contract;
-        $contract_version = $data->contractVersion;
-        $contract_version_to_be_replaced = $data->contractVersionToBeReplaced;
+        $contract_version_to_be_executed = $data->contractVersionToBeExecuted;
+        $contract_version_to_be_terminated = $data->contractVersionToBeTerminated;
         $signed = $data->signed;
 
         if ($contract->number === null) {
-            throw new InvalidArgumentException('Contract number must be provided for contract generation');
+            throw new InvalidArgumentException('Contract number must be provided in order to generate a contract');
         }
 
-        if ($contract_version === null) {
+        if (
+            (
+                $type === ContractPrintType::ContractNew
+                || $type === ContractPrintType::ContractNewX
+                || $type === ContractPrintType::ContractAmendment
+            )
+            && $contract_version_to_be_executed === null
+        ) {
             throw new InvalidArgumentException(
-                'Contract version must be provided for contract generation',
+                'The contract version to be executed must be provided'
+                    . ' in order to generate a contract amendment or a new contract',
             );
         }
 
         if (
+            (
                 $type === ContractPrintType::ContractNewX
-                && (
-                    $contract_version_to_be_replaced === null
-                    || $contract_version_to_be_replaced->conclusion_date === null
-                )
+                || $type === ContractPrintType::ContractTermination
+            )
+            && $contract_version_to_be_terminated === null
         ) {
             throw new InvalidArgumentException(
-                'Contract version to be replaced with valid conclusion date must be provided'
-                . ' for new replacement contract generation',
+                'The contract version to be terminated must be provided'
+                    . ' in order to generate a contract termination or a new replacement contract',
+            );
+        }
+
+        if (
+            (
+                $type === ContractPrintType::ContractNewX
+                || $type === ContractPrintType::ContractTermination
+            )
+            && $contract_version_to_be_terminated->conclusion_date === null
+        ) {
+            throw new InvalidArgumentException(
+                'The contract version to be terminated with valid conclusion date must be provided'
+                    . ' in order to generate a contract termination or a new replacement contract',
             );
         }
 
@@ -1161,7 +1202,7 @@ class ContractPDF extends AppPDF
                 $this->Ln();
                 $this->SetFont('DejaVuSerif', 'B', 8);
                 $this->Cell(90, 4, $contract->number, align: 'C');
-                $this->Cell(90, 4, (string)$contract_version->valid_from, align: 'C');
+                $this->Cell(90, 4, (string)$contract_version_to_be_executed->valid_from, align: 'C');
                 $this->Ln();
 
                 $this->drawSeparator(AppPDF::SEPARATOR_OFFSET_X, lnAfter: 3.0);
@@ -1180,8 +1221,8 @@ class ContractPDF extends AppPDF
                 $this->Ln();
                 $this->SetFont('DejaVuSerif', 'B', 8);
                 $this->Cell(45, 4, $contract->number, align: 'C');
-                $this->Cell(45, 4, (string)$contract_version->conclusion_date, align: 'C');
-                $this->Cell(45, 4, (string)($contract_version->number_of_amendments + 1), align: 'C');
+                $this->Cell(45, 4, (string)$contract_version_to_be_executed->conclusion_date, align: 'C');
+                $this->Cell(45, 4, (string)($contract_version_to_be_executed->number_of_amendments + 1), align: 'C');
                 $this->Cell(45, 4, (string)$data->effectiveDateOfAmendment, align: 'C');
                 $this->Ln();
 
@@ -1199,9 +1240,9 @@ class ContractPDF extends AppPDF
                 $this->Cell(60, 4, Settings::getString('core.documents.common.labels.end_date'), align: 'C');
                 $this->Ln();
                 $this->SetFont('DejaVuSerif', 'B', 8);
-                $this->Cell(60, 4, (string)$data->numberOfContractToBeTerminated, align: 'C');
-                $this->Cell(60, 4, (string)$contract_version->conclusion_date, align: 'C');
-                $this->Cell(60, 4, (string)$contract_version->valid_until, align: 'C');
+                $this->Cell(60, 4, (string)$data->contractNumberToBeTerminated, align: 'C');
+                $this->Cell(60, 4, (string)$contract_version_to_be_terminated->conclusion_date, align: 'C');
+                $this->Cell(60, 4, (string)$contract_version_to_be_terminated->valid_until, align: 'C');
                 $this->Ln();
 
                 $this->drawSeparator(lnAfter: 3.0);
@@ -1343,9 +1384,9 @@ class ContractPDF extends AppPDF
             $this->Write(
                 4,
                 strtr(Settings::getString('core.documents.contracts.contract.texts.termination_intro'), [
-                    '{contract_number}' => (string)$data->numberOfContractToBeTerminated,
-                    '{conclusion_date}' => (string)$contract_version->conclusion_date,
-                    '{valid_until}' => (string)$contract_version->valid_until,
+                    '{contract_number}' => (string)$data->contractNumberToBeTerminated,
+                    '{conclusion_date}' => (string)$contract_version_to_be_terminated->conclusion_date,
+                    '{valid_until}' => (string)$contract_version_to_be_terminated->valid_until,
                 ]),
             );
             $this->Ln();
@@ -1360,14 +1401,14 @@ class ContractPDF extends AppPDF
             $this->Write(
                 4,
                 strtr(Settings::getString('core.documents.contracts.contract.texts.new_intro'), [
-                    '{minimum_duration}' => $this->contractDuration($contract_version->minimum_duration),
+                    '{minimum_duration}' => $this->contractDuration($contract_version_to_be_executed->minimum_duration),
                 ]),
             );
             $this->Ln();
             $this->Write(
                 4,
                 strtr(Settings::getString('core.documents.contracts.contract.texts.new_start_date'), [
-                    '{valid_from}' => (string)$contract_version->valid_from,
+                    '{valid_from}' => (string)$contract_version_to_be_executed->valid_from,
                 ]),
             );
             $this->Ln();
@@ -1377,9 +1418,9 @@ class ContractPDF extends AppPDF
                 $this->Write(
                     4,
                     strtr(Settings::getString('core.documents.contracts.contract.texts.new_x_intro'), [
-                        '{contract_number}' => (string)$data->numberOfContractToBeTerminated,
-                        '{old_conclusion_date}' => (string)$contract_version_to_be_replaced->conclusion_date,
-                        '{termination_date}' => (string)$contract_version->valid_from->subDays(1),
+                        '{contract_number}' => (string)$data->contractNumberToBeTerminated,
+                        '{old_conclusion_date}' => (string)$contract_version_to_be_terminated->conclusion_date,
+                        '{termination_date}' => (string)$contract_version_to_be_executed->valid_from->subDays(1),
                     ]),
                 );
                 $this->Ln();
@@ -1412,7 +1453,7 @@ class ContractPDF extends AppPDF
                 $format = 'I';
             } else {
                 // For new contracts use the contract start date as reference date for billing relevance
-                $billingReferenceDate = $contract_version->valid_from;
+                $billingReferenceDate = $contract_version_to_be_executed->valid_from;
                 // For new contracts use normal font for billing positions
                 $format = '';
             }
@@ -1621,7 +1662,7 @@ class ContractPDF extends AppPDF
                         strtr(
                             Settings::getString('core.documents.contracts.contract.texts.borrowed_equipment_intro_old'),
                             [
-                                '{old_conclusion_date}' => $contract_version_to_be_replaced->conclusion_date,
+                                '{old_conclusion_date}' => $contract_version_to_be_terminated->conclusion_date,
                             ],
                         ),
                     );
@@ -1692,7 +1733,7 @@ class ContractPDF extends AppPDF
                 $this->Ln(3);
 
                 // activation fee with installation
-                $this->printActivationFee($contract, $contract_version, $type, true);
+                $this->printActivationFee($contract, $contract_version_to_be_executed, $type, true);
             } else {
                 $this->SetFont('DejaVuSerif', '', 8);
                 $this->MultiCell(
@@ -1705,7 +1746,7 @@ class ContractPDF extends AppPDF
                 $this->Ln(3);
 
                 // activation fee without installation
-                $this->printActivationFee($contract, $contract_version, $type, false);
+                $this->printActivationFee($contract, $contract_version_to_be_executed, $type, false);
             }
 
             $this->SetFont('DejaVuSerif', 'B', 9);

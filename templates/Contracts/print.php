@@ -198,14 +198,6 @@
                             'onchange' => 'this.form.submit();',
                         ]);
 
-                        echo $this->Form->control('contract_version_id', [
-                            'label' => __('Contract Version'),
-                            'options' => $contractVersions,
-                            'empty' => true,
-                            'required' => $printType?->requiresContractVersion() ?? false,
-                            'onchange' => 'this.form.submit();',
-                        ]);
-
                         echo $this->Form->control('signed', [
                             'label' => __('Signed'),
                             'type' => 'checkbox',
@@ -233,19 +225,9 @@
                     </div>
                     <div class="column">
                         <?php
-                        if ($printType?->requiresEffectiveDateOfTheAmendment()) {
-                            echo $this->Form->control('effective_date_of_the_amendment', [
-                                'label' => __('Effective date of the amendment'),
-                                'type' => 'date',
-                                'empty' => true,
-                                'required' => true,
-                                'onchange' => 'this.form.submit();',
-                            ]);
-                        }
-
-                        if ($printType?->requiresContractVersionToBeReplaced()) {
-                            echo $this->Form->control('contract_version_to_be_replaced_id', [
-                                'label' => __('Contract Version To Be Replaced'),
+                        if ($printType?->requiresContractVersionToBeExecuted()) {
+                            echo $this->Form->control('contract_version_to_be_executed_id', [
+                                'label' => __('Contract version to be executed'),
                                 'options' => $contractVersions,
                                 'empty' => true,
                                 'required' => true,
@@ -253,9 +235,29 @@
                             ]);
                         }
 
-                        if ($printType?->requiresNumberOfTheContractToBeTerminated()) {
-                            echo $this->Form->control('number_of_the_contract_to_be_terminated', [
-                                'label' => __('The number of the contract to be terminated'),
+                        if ($printType?->requiresContractVersionToBeTerminated()) {
+                            echo $this->Form->control('contract_version_to_be_terminated_id', [
+                                'label' => __('Contract version to be terminated'),
+                                'options' => $contractVersions,
+                                'empty' => true,
+                                'required' => true,
+                                'onchange' => 'this.form.submit();',
+                            ]);
+                        }
+
+                        if ($printType?->requiresContractNumberToBeTerminated()) {
+                            echo $this->Form->control('contract_number_to_be_terminated', [
+                                'label' => __('Contract number to be terminated'),
+                                'empty' => true,
+                                'required' => true,
+                                'onchange' => 'this.form.submit();',
+                            ]);
+                        }
+
+                        if ($printType?->requiresEffectiveDateOfTheAmendment()) {
+                            echo $this->Form->control('effective_date_of_the_amendment', [
+                                'label' => __('Effective date of the amendment'),
+                                'type' => 'date',
                                 'empty' => true,
                                 'required' => true,
                                 'onchange' => 'this.form.submit();',
