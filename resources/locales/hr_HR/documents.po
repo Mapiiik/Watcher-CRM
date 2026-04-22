@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-12-19 22:04+0100\n"
-"PO-Revision-Date: 2025-12-19 22:11+0100\n"
+"POT-Creation-Date: 2026-04-22 22:58+0200\n"
+"PO-Revision-Date: 2026-04-22 23:57+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: hr_HR\n"
@@ -14,61 +14,61 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 
-#: src/Pdf/ContractPDF.php:328 src/Pdf/ContractPDF.php:1195
+#: src/Pdf/ContractPDF.php:359 src/Pdf/ContractPDF.php:1296
 msgid "Billing Address"
 msgstr "Adresa za naplatu"
 
-#: src/Pdf/ContractPDF.php:399 src/Pdf/ContractPDF.php:1266
+#: src/Pdf/ContractPDF.php:430 src/Pdf/ContractPDF.php:1367
 msgid "Installation Address"
 msgstr "Adresa instalacije"
 
-#: src/Pdf/ContractPDF.php:403 src/Pdf/ContractPDF.php:1270
+#: src/Pdf/ContractPDF.php:434 src/Pdf/ContractPDF.php:1371
 msgid "Delivery Address"
 msgstr "Adresa za dostavu"
 
-#: src/Pdf/ContractPDF.php:407 src/Pdf/ContractPDF.php:1274
+#: src/Pdf/ContractPDF.php:438 src/Pdf/ContractPDF.php:1375
 msgid "Permanent Address"
 msgstr "Adresa prebivališta"
 
-#: src/Pdf/ContractPDF.php:429
+#: src/Pdf/ContractPDF.php:460
 msgid "Username"
 msgstr "Korisničko ime"
 
-#: src/Pdf/ContractPDF.php:430
+#: src/Pdf/ContractPDF.php:461
 msgid "Password"
 msgstr "Lozinka"
 
-#: src/Pdf/ContractPDF.php:444
+#: src/Pdf/ContractPDF.php:475
 msgid "Assigned IP Addresses"
 msgstr "Dodijeljene IP adrese"
 
-#: src/Pdf/ContractPDF.php:449
+#: src/Pdf/ContractPDF.php:480
 msgid "IP Address"
 msgstr "IP adresa"
 
-#: src/Pdf/ContractPDF.php:450 src/Pdf/ContractPDF.php:504
+#: src/Pdf/ContractPDF.php:481 src/Pdf/ContractPDF.php:535
 msgid "IP Network"
 msgstr "IP mreža"
 
-#: src/Pdf/ContractPDF.php:451 src/Pdf/ContractPDF.php:505
+#: src/Pdf/ContractPDF.php:482 src/Pdf/ContractPDF.php:536
 msgid "IP Gateway"
 msgstr "IP pristupnik"
 
-#: src/Pdf/ContractPDF.php:481
+#: src/Pdf/ContractPDF.php:512
 msgid "Assigned IP Networks"
 msgstr "Dodijeljene IP mreže"
 
-#: src/Pdf/ContractPDF.php:506
+#: src/Pdf/ContractPDF.php:537
 msgid "DNS Servers"
 msgstr "DNS poslužitelji"
 
-#: src/Pdf/ContractPDF.php:538
+#: src/Pdf/ContractPDF.php:569
 msgid "WiFi - SSID"
 msgstr "WiFi - SSID"
 
-#: src/Pdf/ContractPDF.php:539
+#: src/Pdf/ContractPDF.php:570
 msgid "WiFi - Password"
 msgstr "WiFi - Lozinka"
 

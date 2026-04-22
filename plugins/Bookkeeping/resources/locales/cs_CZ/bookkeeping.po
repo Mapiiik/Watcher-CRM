@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-04-20 11:20+0200\n"
-"PO-Revision-Date: 2026-04-20 11:31+0200\n"
+"POT-Creation-Date: 2026-04-22 20:17+0200\n"
+"PO-Revision-Date: 2026-04-22 23:41+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -404,10 +404,10 @@ msgid "Debtors data is not available."
 msgstr "Údaje o dlužnících nejsou k dispozici."
 
 #: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:195
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:236
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:278
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:326
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:372
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:243
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:292
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:340
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:386
 msgid ""
 "Debtor blocking is globally disabled by settings. No external systems were "
 "modified."
@@ -415,34 +415,39 @@ msgstr ""
 "Blokování dlužníků je globálně deaktivováno v nastavení. Žádné externí "
 "systémy nebyly upraveny."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:439
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:202
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:250
+msgid "Customer ID of the debtor must be provided."
+msgstr "Je nutné uvést identifikační číslo dlužníka."
+
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:453
 msgid "debtor"
 msgstr "dlužník"
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:644
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:672
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:658
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:686
 msgid "Removed IPv4 record {0} from router {1}."
 msgstr "Odstraněn záznam IPv4 {0} ze směrovače {1}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:693
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:707
 msgid "Added IPv4 record {0} ({1}) to router {2}."
 msgstr "Přidán záznam IPv4 {0} ({1}) do směrovače {2}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:721
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:749
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:735
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:763
 msgid "Removed IPv6 record {0} from router {1}."
 msgstr "Odstraněn záznam IPv6 {0} ze směrovače {1}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:770
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:784
 msgid "Added IPv6 record {0} ({1}) to router {2}."
 msgstr "Přidán záznam IPv6 {0} ({1}) do směrovače {2}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:815
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:829
 msgid "SledovaniTV - Suspended user with ID: {0} (partner ID: {1})."
 msgstr "SledovaniTV - Pozastavený uživatel s ID: {0} (ID partnera: {1})."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:827
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:839
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:841
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:853
 msgid "SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1})."
 msgstr "SledovaniTV - Aktivovaný uživatel s ID: {0} (ID partnera: {1})."
 
@@ -503,6 +508,18 @@ msgstr "Neznámá chyba"
 msgid "Invalid invoice list received from Eurofaktura API."
 msgstr "Neplatný seznam faktur přijatý z API Eurofaktura."
 
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/JsonRequestBuilder.php:37
+#: plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:130
+#: plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:57
+msgid "Invalid invoice data for invoice number {0}."
+msgstr "Neplatné údaje pro fakturu číslo {0}."
+
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/JsonRequestBuilder.php:46
+#: plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:139
+#: plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:66
+msgid "Missing customer information or billing address for invoice number {0}."
+msgstr "Chybí údaje o zákazníkovi nebo fakturační adresa pro fakturu č. {0}."
+
 #: plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:51
 msgid "Error while creating DBF file."
 msgstr "Chyba při vytváření souboru DBF."
@@ -511,7 +528,7 @@ msgstr "Chyba při vytváření souboru DBF."
 msgid "Failed to generate Pohoda DBF export."
 msgstr "Nepodařilo se vygenerovat export Pohoda DBF."
 
-#: plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:201
+#: plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:218
 msgid "Failed to write DBF record for invoice {0}."
 msgstr "Nepodařilo se zapsat záznam DBF pro fakturu {0}."
 
@@ -546,7 +563,7 @@ msgstr "Nepodařilo se načíst vygenerovaný soubor XML."
 msgid "Partner synchronization is not implemented in Pohoda Provider."
 msgstr "Synchronizace partnerů není v Pohoda Provider implementována."
 
-#: plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:155
+#: plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:172
 msgid "Failed to generate Pohoda XML export."
 msgstr "Nepodařilo se vygenerovat export Pohoda XML."
 

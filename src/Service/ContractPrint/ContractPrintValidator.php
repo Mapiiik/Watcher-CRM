@@ -268,7 +268,7 @@ final class ContractPrintValidator
         if ($data->contractVersionToBeTerminated->conclusion_date === null) {
             $this->setError(
                 'Flash',
-                __('Please set the date of conclusion of the contract version to be terminated.'),
+                __('Please set the conclusion date of the contract version to be terminated.'),
             );
         }
 
@@ -307,7 +307,7 @@ final class ContractPrintValidator
         if ($data->contractVersionToBeExecuted->conclusion_date === null) {
             $this->setError(
                 'Flash',
-                __('Please set the date of conclusion of the contract version to be executed.'),
+                __('Please set the conclusion date of the contract version to be executed.'),
             );
         }
     }
@@ -333,7 +333,7 @@ final class ContractPrintValidator
         if ($data->contractVersionToBeTerminated->conclusion_date === null) {
             $this->setError(
                 'Flash',
-                __('Please set the date of conclusion of the contract version to be terminated.'),
+                __('Please set the conclusion date of the contract version to be terminated.'),
             );
         }
 
