@@ -106,10 +106,17 @@ final class ContractPrintPdfOutput
                 => $data->contractVersionToBeExecuted?->valid_from,
         };
 
+        $typeSuffix = match ($data->type) {
+            ContractPrintType::ContractAmendment
+                => '-' . (string)(($data->contractVersionToBeExecuted->number_of_amendments ?? 0) + 1),
+            default => '',
+        };
+
         return sprintf(
-            '%s_%s_%s%s.pdf',
+            '%s_%s%s_%s%s.pdf',
             $data->contract->number,
             $data->type->value,
+            $typeSuffix,
             $date ? $date->i18nFormat('yyyy-MM-dd') : Date::now()->i18nFormat('yyyy-MM-dd'),
             $data->signed ? '-signed' : '',
         );
