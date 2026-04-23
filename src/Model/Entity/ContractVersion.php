@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use Cake\I18n\Date;
+
 /**
  * ContractVersion Entity
  *
@@ -16,6 +18,7 @@ namespace App\Model\Entity;
  * @property int $number_of_amendments
  * @property string|null $note
  * @property int|null $minimum_duration
+ * @property string $style
  *
  * @property \App\Model\Entity\Contract $contract
  */
@@ -60,5 +63,30 @@ class ContractVersion extends AppEntity
         }
 
         return $minimum_duration;
+    }
+
+    /**
+     * getter for style
+     *
+     * @return string
+     */
+    protected function _getStyle(): string
+    {
+        $style = '';
+        $now = Date::now();
+
+        if (isset($this->valid_from) && $this->valid_from > $now) {
+            $style = 'color: darkorange;';
+        }
+
+        if (isset($this->valid_until) && $this->valid_until < $now) {
+            if ($this->valid_until < $now->firstOfMonth()) {
+                $style = 'color: darkgray; text-decoration: line-through;';
+            } else {
+                $style = 'color: darkgray;';
+            }
+        }
+
+        return $style;
     }
 }

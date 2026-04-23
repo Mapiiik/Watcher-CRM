@@ -39,7 +39,7 @@
             </thead>
             <tbody>
                 <?php foreach ($contractVersions as $contractVersion) : ?>
-                <tr>
+                <tr style="<?= $contractVersion->style ?>">
                     <td><?=
                         $contractVersion->contract !== null ? $this->Html->link(
                             $contractVersion->contract->name ?? '(' . $contractVersion->contract->id . ')',

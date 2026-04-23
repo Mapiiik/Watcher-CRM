@@ -21,7 +21,7 @@
     </thead>
     <tbody>
         <?php foreach ($contract_versions as $contractVersion) : ?>
-        <tr>
+        <tr style="<?= $contractVersion->style ?>">
             <td><?= h($contractVersion->valid_from) ?></td>
             <td><?= h($contractVersion->valid_until) ?></td>
             <td style="<?=
