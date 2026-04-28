@@ -60,7 +60,7 @@
 <div class="float-right">
     <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query']]) ?>
     <?= $this->Form->control('show_historical_records', [
-        'label' => __d('bookkeeping', 'Show historical records'),
+        'label' => __('Show historical records'),
         'type' => 'checkbox',
         'onchange' => 'this.form.submit();',
     ]) ?>
