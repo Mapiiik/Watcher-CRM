@@ -184,8 +184,6 @@ class ContractsController extends AppController
             'InstallationTechnicians',
             'IpAddresses',
             'IpNetworks',
-            'RemovedIpAddresses',
-            'RemovedIpNetworks',
             'ServiceTypes',
             'Tasks' => [
                 'TaskTypes',
@@ -198,7 +196,12 @@ class ContractsController extends AppController
             'UninstallationTechnicians',
             'Creators',
             'Modifiers',
-        ]);
+        ] + (
+            $this->request->getQuery('show_historical_records') === '1' ? [
+                'RemovedIpAddresses',
+                'RemovedIpNetworks',
+            ] : []
+        ));
 
         $this->set(compact('contract'));
     }

@@ -419,24 +419,27 @@ class CustomersController extends AppController
                     'ContractStates',
                 ],
             ],
-            'RemovedIpAddresses' => [
-                'Contracts' => [
-                    'ContractStates',
-                ],
-            ],
             'IpNetworks' => [
-                'Contracts' => [
-                    'ContractStates',
-                ],
-            ],
-            'RemovedIpNetworks' => [
                 'Contracts' => [
                     'ContractStates',
                 ],
             ],
             'Creators',
             'Modifiers',
-        ]);
+        ] + (
+            $this->request->getQuery('show_historical_records') === '1' ? [
+                'RemovedIpAddresses' => [
+                    'Contracts' => [
+                        'ContractStates',
+                    ],
+                ],
+                'RemovedIpNetworks' => [
+                    'Contracts' => [
+                        'ContractStates',
+                    ],
+                ],
+            ] : []
+        ));
 
         $this->set(compact(
             'customer',

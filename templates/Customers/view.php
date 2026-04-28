@@ -636,6 +636,15 @@
                             'ip_addresses' => $customer->ip_addresses,
                             'contract_column' => true,
                         ]) ?>
+                        <div class="float-right">
+                            <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query']]) ?>
+                            <?= $this->Form->control('show_historical_records', [
+                                'label' => __('Show historical records'),
+                                'type' => 'checkbox',
+                                'onchange' => 'this.form.submit();',
+                            ]) ?>
+                            <?= $this->Form->end() ?>
+                        </div>
                     </div>
                 </div>
                 <div class="column">
@@ -651,8 +660,18 @@
                             'contract_column' => true,
                         ]) ?>
                     </div>
+                        <div class="float-right">
+                            <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query']]) ?>
+                            <?= $this->Form->control('show_historical_records', [
+                                'label' => __('Show historical records'),
+                                'type' => 'checkbox',
+                                'onchange' => 'this.form.submit();',
+                            ]) ?>
+                            <?= $this->Form->end() ?>
+                        </div>
                 </div>
             </div>
+            <?php if ($this->getRequest()->getQuery('show_historical_records') === '1') : ?>
             <div class="row">
                 <div class="column">
                     <div class="related">
@@ -683,6 +702,7 @@
                     </div>
                 </div>
             </div>
+            <?php endif; ?>
             <div class="related">
                 <?= $this->AuthLink->link(
                     __('New RADIUS Account'),

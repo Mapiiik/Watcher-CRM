@@ -410,6 +410,15 @@
                         <?= $this->element('Contracts/IpAddresses', [
                             'ip_addresses' => $contract->ip_addresses,
                         ]) ?>
+                        <div class="float-right">
+                            <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query']]) ?>
+                            <?= $this->Form->control('show_historical_records', [
+                                'label' => __('Show historical records'),
+                                'type' => 'checkbox',
+                                'onchange' => 'this.form.submit();',
+                            ]) ?>
+                            <?= $this->Form->end() ?>
+                        </div>
                     </div>
                 </div>
                 <div class="column">
@@ -423,9 +432,19 @@
                         <?= $this->element('Contracts/IpNetworks', [
                             'ip_networks' => $contract->ip_networks,
                         ]) ?>
+                        <div class="float-right">
+                            <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query']]) ?>
+                            <?= $this->Form->control('show_historical_records', [
+                                'label' => __('Show historical records'),
+                                'type' => 'checkbox',
+                                'onchange' => 'this.form.submit();',
+                            ]) ?>
+                            <?= $this->Form->end() ?>
+                        </div>
                     </div>
                 </div>
             </div>
+                <?php if ($this->getRequest()->getQuery('show_historical_records') === '1') : ?>
             <div class="row">
                 <div class="column">
                     <div class="related">
@@ -454,6 +473,7 @@
                     </div>
                 </div>
             </div>
+                <?php endif; ?>
             <?php endif; ?>
             <?php if ($contract->service_type !== null && $contract->service_type->have_radius_accounts) : ?>
             <div class="related">
