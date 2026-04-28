@@ -13,10 +13,10 @@ use Cake\Collection\CollectionInterface;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\ORM\Locator\LocatorAwareTrait;
-use Exception;
 use InvalidArgumentException;
 use RouterOS\Client;
 use RouterOS\Query;
+use RuntimeException;
 use Settings\Utility\Settings;
 
 class DebtorsProcessor
@@ -102,7 +102,7 @@ class DebtorsProcessor
         if (isset(self::$debtors)) {
             return self::$debtors;
         } else {
-            throw new Exception(__d('bookkeeping', 'Debtors data is not available.'));
+            throw new RuntimeException(__d('bookkeeping', 'Debtors data is not available.'));
         }
     }
 

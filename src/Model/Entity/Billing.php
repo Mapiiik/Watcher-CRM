@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use Cake\I18n\Date;
-use Exception;
 use InvalidArgumentException;
 use PhpCollective\DecimalObject\Decimal;
+use RuntimeException;
 
 /**
  * Billing Entity
@@ -270,7 +270,7 @@ class Billing extends AppEntity
                 'HALF_UP' => Decimal::ROUND_HALF_UP,
                 'CEIL' => Decimal::ROUND_CEIL,
                 'FLOOR' => Decimal::ROUND_FLOOR,
-                default => throw new Exception('BILLING_PERIOD_ROUNDING_TYPE has an invalid value.'),
+                default => throw new RuntimeException('BILLING_PERIOD_ROUNDING_TYPE has an invalid value.'),
             }
         );
         */
@@ -282,7 +282,7 @@ class Billing extends AppEntity
                 'HALF_UP' => Decimal::ROUND_HALF_UP,
                 'CEIL' => Decimal::ROUND_CEIL,
                 'FLOOR' => Decimal::ROUND_FLOOR,
-                default => throw new Exception('BILLING_PERIOD_ROUNDING_TYPE has an invalid value.'),
+                default => throw new RuntimeException('BILLING_PERIOD_ROUNDING_TYPE has an invalid value.'),
             },
         );
     }
@@ -367,7 +367,7 @@ class Billing extends AppEntity
         }
 
         // This should never happen :-)
-        throw new Exception('This should never happen :-)');
+        throw new RuntimeException('This should never happen :-)');
     }
 
     /**
@@ -421,7 +421,7 @@ class Billing extends AppEntity
             return $this->contract->billed;
         }
 
-        throw new Exception(__('Contract data not available.'));
+        throw new RuntimeException(__('Contract data not available.'));
     }
 
     /**
