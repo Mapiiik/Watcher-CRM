@@ -3,6 +3,7 @@
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\BorrowedEquipment> $borrowed_equipments
  * @var bool $contract_column
+ * @var bool $historical_checkbox
  */
 ?>
 <?php if (!empty($borrowed_equipments)) : ?>
@@ -74,5 +75,16 @@
         </tr>
         <?php endforeach; ?>
     </table>
+</div>
+<?php endif; ?>
+<?php if (!empty($historical_checkbox)) : ?>
+<div class="float-right">
+    <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query']]) ?>
+    <?= $this->Form->control('show_historical_records', [
+        'label' => __d('bookkeeping', 'Show historical records'),
+        'type' => 'checkbox',
+        'onchange' => 'this.form.submit();',
+    ]) ?>
+    <?= $this->Form->end() ?>
 </div>
 <?php endif; ?>

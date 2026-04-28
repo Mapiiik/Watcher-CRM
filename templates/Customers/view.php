@@ -574,6 +574,7 @@
                 <?= $this->element('Contracts/Billings', [
                     'billings' => $customer->billings,
                     'contract_column' => true,
+                    'historical_checkbox' => true,
                 ]) ?>
                 <?= $this->cell(
                     'ServiceOverridesStatus',
@@ -598,6 +599,7 @@
                         <?= $this->element('Contracts/BorrowedEquipments', [
                             'borrowed_equipments' => $customer->borrowed_equipments,
                             'contract_column' => true,
+                            'historical_checkbox' => true,
                         ]) ?>
                     </div>
                 </div>

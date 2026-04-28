@@ -13,6 +13,7 @@ use App\Service\ContractPrint\ContractPrintValidator;
 use App\View\PdfView;
 use Cake\Collection\Collection;
 use Cake\Form\Form;
+use Cake\I18n\Date;
 use Cake\I18n\Number;
 use Cake\ORM\Query\SelectQuery;
 use Cake\Validation\Validation;
@@ -124,13 +125,35 @@ class ContractsController extends AppController
                     'ContractStates',
                 ],
                 'Services',
+                'conditions' => $this->request->getQuery('show_historical_records') === '1' ?
+                    [] : [
+                        'OR' => [
+                            'Billings.billing_until >=' => Date::now()->firstOfMonth(),
+                            'Billings.billing_until IS' => null,
+                        ],
+                    ],
             ],
             'BorrowedEquipments' => [
                 'EquipmentTypes',
+                'conditions' => $this->request->getQuery('show_historical_records') === '1' ?
+                    [] : [
+                        'OR' => [
+                            'BorrowedEquipments.borrowed_until >=' => Date::now()->firstOfMonth(),
+                            'BorrowedEquipments.borrowed_until IS' => null,
+                        ],
+                    ],
             ],
             'Commissions',
             'ContractStates',
-            'ContractVersions',
+            'ContractVersions' => [
+                'conditions' => $this->request->getQuery('show_historical_records') === '1' ?
+                    [] : [
+                        'OR' => [
+                            'ContractVersions.valid_until >=' => Date::now()->firstOfMonth(),
+                            'ContractVersions.valid_until IS' => null,
+                        ],
+                    ],
+            ],
             'Customers' => [
                 'CustomerLabels' => [
                     'Labels',

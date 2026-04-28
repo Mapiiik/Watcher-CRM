@@ -303,8 +303,10 @@
                 <h4 id="contract-versions"><?= __('Contract Versions') ?></h4>
                 <?= $this->element('Contracts/ContractVersions', [
                     'contract_versions' => $contract->contract_versions,
+                    'historical_checkbox' => true,
                 ]) ?>
             </div>
+            <div style="clear: both;"></div>
             <?php endif; ?>
             <div class="related">
                 <?= $this->AuthLink->link(
@@ -328,6 +330,7 @@
                 <h4 id="billings"><?= __('Billings') ?></h4>
                 <?= $this->element('Contracts/Billings', [
                     'billings' => $contract->billings,
+                    'historical_checkbox' => true,
                 ]) ?>
                 <?= $this->cell(
                     'ServiceOverridesStatus',
@@ -370,6 +373,7 @@
                         <h4 id="borrowed-equipments"><?= __('Borrowed Equipments') ?></h4>
                         <?= $this->element('Contracts/BorrowedEquipments', [
                             'borrowed_equipments' => $contract->borrowed_equipments,
+                            'historical_checkbox' => true,
                         ]) ?>
                     </div>
                 </div>

@@ -11,6 +11,7 @@ use App\Service\CustomerPrint\CustomerPrintValidator;
 use App\View\PdfView;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Form\Form;
+use Cake\I18n\Date;
 use Cake\Utility\Hash;
 use Cake\Validation\Validation;
 use Override;
@@ -362,12 +363,26 @@ class CustomersController extends AppController
                     'ContractStates',
                 ],
                 'Services',
+                'conditions' => $this->request->getQuery('show_historical_records') === '1' ?
+                    [] : [
+                        'OR' => [
+                            'Billings.billing_until >=' => Date::now()->firstOfMonth(),
+                            'Billings.billing_until IS' => null,
+                        ],
+                    ],
             ],
             'BorrowedEquipments' => [
                 'Contracts' => [
                     'ContractStates',
                 ],
                 'EquipmentTypes',
+                'conditions' => $this->request->getQuery('show_historical_records') === '1' ?
+                    [] : [
+                        'OR' => [
+                            'BorrowedEquipments.borrowed_until >=' => Date::now()->firstOfMonth(),
+                            'BorrowedEquipments.borrowed_until IS' => null,
+                        ],
+                    ],
             ],
             'Contracts' => [
                 'ContractStates',
