@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-04-22 20:17+0200\n"
-"PO-Revision-Date: 2026-04-22 23:41+0200\n"
+"POT-Creation-Date: 2026-04-28 11:26+0200\n"
+"PO-Revision-Date: 2026-04-28 11:31+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -175,7 +175,7 @@ msgstr "Chyba při interpretaci času poslední synchronizace ze souboru: {0}"
 msgid "Error saving last synchronization time to file: {0}"
 msgstr "Chyba při ukládání času poslední synchronizace do souboru: {0}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:102
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:105
 msgid ""
 "Send only a notification of an overdue claims (within the allowed payment "
 "delay)."
@@ -183,7 +183,7 @@ msgstr ""
 "Odeslat pouze oznámení o pohledávce po splatnosti (v rámci povoleného "
 "zpoždění platby)."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:110
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:113
 msgid ""
 "Send only a notification of blocking (or continuing debt for services no "
 "longer active) for overdue claims (after an allowed delay in payment)."
@@ -192,7 +192,7 @@ msgstr ""
 "již nejsou aktivní) u pohledávek po splatnosti (po povoleném zpoždění "
 "platby)."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:119
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:122
 msgid ""
 "Automatically update the blocking of debtors in systems (routers, firewalls, "
 "IPTV, ...)."
@@ -200,31 +200,17 @@ msgstr ""
 "Automatická aktualizace blokování dlužníků v systémech (routery, firewally, "
 "IPTV, ...)."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:127
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:130
 msgid "Do not send emails, the operation will be skipped."
 msgstr "Neodesílat e-maily, operace bude přeskočena."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:132
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:135
 msgid "Do not send SMS, the operation will be skipped."
 msgstr "Neodesílat SMS, operace bude přeskočena."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:152
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:155
 msgid "Debtor notifications are globally disabled by settings."
 msgstr "Oznámení dlužníkům jsou globálně deaktivována v nastavení."
-
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:178
-#: plugins/Bookkeeping/src/Controller/DebtorsController.php:67
-#: plugins/Bookkeeping/src/Controller/DebtorsController.php:94
-#: plugins/Bookkeeping/src/Controller/DebtorsController.php:122
-msgid "Systems updated."
-msgstr "Systémy byly aktualizovány."
-
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:179
-#: plugins/Bookkeeping/src/Controller/DebtorsController.php:68
-#: plugins/Bookkeeping/src/Controller/DebtorsController.php:95
-#: plugins/Bookkeeping/src/Controller/DebtorsController.php:123
-msgid "Nothing has changed."
-msgstr "Nic se nezměnilo."
 
 #: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:215
 msgid ""
@@ -399,15 +385,27 @@ msgstr[0] "Faktura k odeslání ve frontě, zbývá {0} e-mail."
 msgstr[1] "Faktury k odeslání ve frontě, zbývají {0} e-maily."
 msgstr[2] "Faktury k odeslání ve frontě, zbývá {0} e-mailů."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:105
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:75
+msgid "Nothing has changed."
+msgstr "Nic se nezměnilo."
+
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:87
+msgid "{0} failed"
+msgstr "{0} selhala"
+
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:96
+msgid "Unknown error."
+msgstr "Neznámá chyba."
+
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:162
 msgid "Debtors data is not available."
 msgstr "Údaje o dlužnících nejsou k dispozici."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:195
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:243
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:292
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:340
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:386
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:252
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:306
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:361
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:413
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:463
 msgid ""
 "Debtor blocking is globally disabled by settings. No external systems were "
 "modified."
@@ -415,39 +413,55 @@ msgstr ""
 "Blokování dlužníků je globálně deaktivováno v nastavení. Žádné externí "
 "systémy nebyly upraveny."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:202
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:250
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:261
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:315
 msgid "Customer ID of the debtor must be provided."
 msgstr "Je nutné uvést identifikační číslo dlužníka."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:453
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:280
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:334
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:386
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:438
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:496
+msgid "SledovaniTV blocking update"
+msgstr "Aktualizace blokace SledovaniTV"
+
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:291
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:345
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:397
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:449
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:507
+msgid "Routers blocking update"
+msgstr "Aktualizace blokace routerů"
+
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:534
 msgid "debtor"
 msgstr "dlužník"
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:658
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:686
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:739
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:767
 msgid "Removed IPv4 record {0} from router {1}."
 msgstr "Odstraněn záznam IPv4 {0} ze směrovače {1}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:707
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:788
 msgid "Added IPv4 record {0} ({1}) to router {2}."
 msgstr "Přidán záznam IPv4 {0} ({1}) do směrovače {2}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:735
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:763
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:816
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:844
 msgid "Removed IPv6 record {0} from router {1}."
 msgstr "Odstraněn záznam IPv6 {0} ze směrovače {1}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:784
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:865
 msgid "Added IPv6 record {0} ({1}) to router {2}."
 msgstr "Přidán záznam IPv6 {0} ({1}) do směrovače {2}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:829
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:910
 msgid "SledovaniTV - Suspended user with ID: {0} (partner ID: {1})."
 msgstr "SledovaniTV - Pozastavený uživatel s ID: {0} (ID partnera: {1})."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:841
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:853
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:922
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:934
 msgid "SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1})."
 msgstr "SledovaniTV - Aktivovaný uživatel s ID: {0} (ID partnera: {1})."
 
@@ -946,6 +960,9 @@ msgstr "Stáhnout fakturu"
 #: plugins/Bookkeeping/templates/cell/Invoices/display.php:71
 msgid "Show also paid invoices"
 msgstr "Zobrazit také zaplacené faktury"
+
+#~ msgid "Systems updated."
+#~ msgstr "Systémy byly aktualizovány."
 
 #~ msgid "Id"
 #~ msgstr "ID"
