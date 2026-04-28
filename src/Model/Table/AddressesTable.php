@@ -109,11 +109,19 @@ class AddressesTable extends AppTable
 
         $validator
             ->scalar('first_name')
-            ->allowEmptyString('first_name');
+            ->notEmptyString(
+                'first_name',
+                __('First name and last name are required when company is not filled in.'),
+                fn ($context) => empty($context['data']['company'] ?? null),
+            );
 
         $validator
             ->scalar('last_name')
-            ->allowEmptyString('last_name');
+            ->notEmptyString(
+                'last_name',
+                __('First name and last name are required when company is not filled in.'),
+                fn ($context) => empty($context['data']['company'] ?? null),
+            );
 
         $validator
             ->scalar('suffix')
@@ -121,7 +129,13 @@ class AddressesTable extends AppTable
 
         $validator
             ->scalar('company')
-            ->allowEmptyString('company');
+            ->notEmptyString(
+                'company',
+                __('Company is required when first and last name are not filled in.'),
+                fn ($context) =>
+                    empty($context['data']['first_name'] ?? null)
+                    || empty($context['data']['last_name'] ?? null),
+            );
 
         $validator
             ->scalar('street')
