@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Controller;
 
+use App\Controller\Traits\MessageHandlerTrait;
 use Bookkeeping\Debtors\DebtorsProcessor;
 use Cake\Form\Form;
 
@@ -13,6 +14,8 @@ use Cake\Form\Form;
  */
 class DebtorsController extends AppController
 {
+    use MessageHandlerTrait;
+
     /**
      * Index method
      *
@@ -61,13 +64,9 @@ class DebtorsController extends AppController
             allowed_total_overdue_debt: (float)env('DEBTORS_ALLOWED_TOTAL_OVERDUE_DEBT', '0'),
         );
 
-        $result = $debtorsProcessor->blockingUpdate();
+        $debtorsProcessor->blockingUpdate();
 
-        $this->Flash->success(
-            '<strong>' . __d('bookkeeping', 'Systems updated.') . '</strong><br>'
-                . ($result ? nl2br($result) : __d('bookkeeping', 'Nothing has changed.')),
-            ['escape' => false],
-        );
+        $this->handleMessages($debtorsProcessor->getMessages());
 
         return $this->redirect($this->referer([
             'plugin' => 'Bookkeeping',
@@ -88,13 +87,9 @@ class DebtorsController extends AppController
         $this->getRequest()->allowMethod(['post']);
 
         $debtorsProcessor = new DebtorsProcessor();
-        $result = $debtorsProcessor->block($id);
+        $debtorsProcessor->block($id);
 
-        $this->Flash->success(
-            '<strong>' . __d('bookkeeping', 'Systems updated.') . '</strong><br>'
-                . ($result ? nl2br($result) : __d('bookkeeping', 'Nothing has changed.')),
-            ['escape' => false],
-        );
+        $this->handleMessages($debtorsProcessor->getMessages());
 
         return $this->redirect($this->referer([
             'plugin' => null,
@@ -116,13 +111,9 @@ class DebtorsController extends AppController
         $this->getRequest()->allowMethod(['post']);
 
         $debtorsProcessor = new DebtorsProcessor();
-        $result = $debtorsProcessor->unblock($id);
+        $debtorsProcessor->unblock($id);
 
-        $this->Flash->success(
-            '<strong>' . __d('bookkeeping', 'Systems updated.') . '</strong><br>'
-                . ($result ? nl2br($result) : __d('bookkeeping', 'Nothing has changed.')),
-            ['escape' => false],
-        );
+        $this->handleMessages($debtorsProcessor->getMessages());
 
         return $this->redirect($this->referer([
             'plugin' => null,

@@ -33,10 +33,10 @@ trait MessageHandlerTrait
     {
         try {
             // Call the specific method for this message type
-            $this->Flash->{$message->type}($message->text);
+            $this->Flash->{$message->type}($message->text, $message->options);
         } catch (MissingElementException $e) {
             // If the method doesn't exist, use a default method
-            $this->Flash->info($message->text);
+            $this->Flash->info($message->text, $message->options);
 
             // Log a warning about the unknown message type
             Log::warning("Unknown message type: {$message->type}");

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Command;
 
+use App\Command\Traits\MessageHandlerTrait;
 use App\Model\Entity\CustomerMessage;
 use App\Model\Enum\CustomerMessageBodyFormat;
 use App\Model\Enum\CustomerMessageDeliveryStatus;
@@ -49,6 +50,8 @@ use Throwable;
  */
 class ProcessDebtorsCommand extends Command
 {
+    use MessageHandlerTrait;
+
     private BookkeepingService $bookkeeping;
 
     /**
@@ -172,12 +175,9 @@ class ProcessDebtorsCommand extends Command
 
             // automatically update the blocking of debtors in systems, if requested
             if ($args->getOption('blocking_update')) {
-                $result = $debtorsProcessor->blockingUpdate();
+                $debtorsProcessor->blockingUpdate();
 
-                $io->info(
-                    __d('bookkeeping', 'Systems updated.') . PHP_EOL
-                        . ($result ?: __d('bookkeeping', 'Nothing has changed.')),
-                );
+                $this->handleMessages($debtorsProcessor->getMessages(), $io);
             }
 
             // get debtors to notify

@@ -30,15 +30,15 @@ class Messages
      */
     public function __call(string $name, array $args): void
     {
-        $this->set($name, $args[0]);
+        $this->set($name, $args[0], $args[1] ?? []);
     }
 
     /**
      * Add new message to message buffer
      */
-    public function set(string $type, string $message): void
+    public function set(string $type, string $message, array $options = []): void
     {
-            self::$messages[] = new Message($type, $message);
+            self::$messages[] = new Message($type, $message, $options);
     }
 
     /**
