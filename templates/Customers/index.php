@@ -2,6 +2,9 @@
 /**
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Customer> $customers
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $labels
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $serviceTypes
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $contractStates
  * @var bool $allow_advanced_search
  * @var \Cake\Form\Form $filterForm
  */
@@ -34,7 +37,18 @@
         ]) ?>
     </div>
     <div class="column">
-        <?= $this->Form->control('labels', [
+        <?= $this->Form->control('label_ids', [
+            'label' => __('Require Labels'),
+            'options' => $labels,
+            'multiple' => 'multiple',
+            'style' => 'height: 100px;',
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+    </div>
+    <div class="column">
+        <?= $this->Form->control('not_label_ids', [
+            'label' => __('Exclude Labels'),
+            'options' => $labels,
             'multiple' => 'multiple',
             'style' => 'height: 100px;',
             'onchange' => 'this.form.submit();',

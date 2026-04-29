@@ -147,42 +147,65 @@ class CustomersController extends AppController
      */
     public function index()
     {
-        // persistent filter data
+        /**
+         * Handle filters persistency in session
+         */
+        // advanced search enabled/disabled
         if (!is_null($this->getRequest()->getQuery('advanced_search'))) {
             $this->getRequest()->getSession()->write(
                 'Config.Customers.filter.advanced_search',
                 $this->getRequest()->getQuery('advanced_search') == '1',
             );
         }
+        // filter by search term
         if (!is_null($this->getRequest()->getQuery('search'))) {
             $this->getRequest()->getSession()->write(
                 'Config.Customers.filter.search',
                 trim($this->getRequest()->getQuery('search')),
             );
         }
+        // filter by contract state
         if (!is_null($this->getRequest()->getQuery('contract_state_id'))) {
             $this->getRequest()->getSession()->write(
                 'Config.Customers.filter.contract_state_id',
                 $this->getRequest()->getQuery('contract_state_id'),
             );
         }
+        // filter by service type
         if (!is_null($this->getRequest()->getQuery('service_type_id'))) {
             $this->getRequest()->getSession()->write(
                 'Config.Customers.filter.service_type_id',
                 $this->getRequest()->getQuery('service_type_id'),
             );
         }
-        if (!is_null($this->getRequest()->getQuery('labels'))) {
+        // filter by labels
+        if (!is_null($this->getRequest()->getQuery('label_ids'))) {
             $labels = [];
-            if (is_array($this->getRequest()->getQuery('labels'))) {
-                foreach ($this->getRequest()->getQuery('labels') as $label) {
-                    if (is_string($label) && Validation::uuid($label)) {
-                        $labels[] = $label;
+            if (is_array($this->getRequest()->getQuery('label_ids'))) {
+                foreach ($this->getRequest()->getQuery('label_ids') as $labelId) {
+                    if (is_string($labelId) && Validation::uuid($labelId)) {
+                        $labels[] = $labelId;
                     }
                 }
             }
             $this->getRequest()->getSession()->write(
-                'Config.Customers.filter.labels',
+                'Config.Customers.filter.label_ids',
+                $labels,
+            );
+            unset($labels);
+        }
+        // filter by not labels
+        if (!is_null($this->getRequest()->getQuery('not_label_ids'))) {
+            $labels = [];
+            if (is_array($this->getRequest()->getQuery('not_label_ids'))) {
+                foreach ($this->getRequest()->getQuery('not_label_ids') as $labelId) {
+                    if (is_string($labelId) && Validation::uuid($labelId)) {
+                        $labels[] = $labelId;
+                    }
+                }
+            }
+            $this->getRequest()->getSession()->write(
+                'Config.Customers.filter.not_label_ids',
                 $labels,
             );
             unset($labels);
@@ -195,7 +218,8 @@ class CustomersController extends AppController
         $search = (string)($filter['search'] ?? '');
         $contract_state_id = $filter['contract_state_id'] ?? null;
         $service_type_id = $filter['service_type_id'] ?? null;
-        $labels = $filter['labels'] ?? [];
+        $label_ids = $filter['label_ids'] ?? [];
+        $not_label_ids = $filter['not_label_ids'] ?? [];
         $allow_advanced_search = in_array($this->getRequest()->getAttribute('identity')['role'] ?? null, [
             'network-manager',
             'sales-representative',
@@ -273,17 +297,28 @@ class CustomersController extends AppController
             });
         }
 
-        // filter labels
-        if ($allow_advanced_search && !empty($labels)) {
-            $uuidLabels = array_map(function ($label) {
-                return "'{$label}'::uuid";
-            }, $labels);
+        // filter by labels
+        if ($allow_advanced_search && is_array($label_ids) && !empty($label_ids)) {
             $customersQuery->where([
                 'Customers.id IN ('
                 . ' SELECT customer_id FROM customer_labels '
                 . 'GROUP BY customer_id '
-                . 'HAVING array_agg(label_id) @> ARRAY[' . implode(',', $uuidLabels) . ']'
+                . 'HAVING array_agg(label_id) @> ARRAY['
+                    . implode(',', array_map(fn($label) => "'{$label}'::uuid", $label_ids))
+                . ']'
                 . ')',
+            ]);
+        }
+
+        // filter by not labels
+        if ($allow_advanced_search && is_array($not_label_ids) && !empty($not_label_ids)) {
+            $customersQuery->where([
+                'Customers.id NOT IN (
+                    SELECT customer_id FROM customer_labels
+                    WHERE label_id = ANY(ARRAY['
+                        . implode(',', array_map(fn($label) => "'{$label}'::uuid", $not_label_ids))
+                    . '])
+                )',
             ]);
         }
 
@@ -294,7 +329,8 @@ class CustomersController extends AppController
             'search' => $search,
             'contract_state_id' => $contract_state_id,
             'service_type_id' => $service_type_id,
-            'labels' => $labels,
+            'label_ids' => $label_ids,
+            'not_label_ids' => $not_label_ids,
         ]);
         $this->set('filterForm', $filterForm);
 

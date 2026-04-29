@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-04-28 15:31+0200\n"
+"POT-Creation-Date: 2026-04-29 14:10+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -440,7 +440,7 @@ msgstr ""
 #: ./src/Controller/ContractsController.php:845
 #: ./templates/AccountingProfiles/view.php:88
 #: ./templates/Contracts/index.php:33
-#: ./templates/Customers/index.php:60
+#: ./templates/Customers/index.php:74
 #: ./templates/Customers/view.php:89
 #: ./templates/Customers/view.php:510
 msgid "Contracts"
@@ -456,7 +456,7 @@ msgid "indefinitely"
 msgstr ""
 
 #: ./src/Controller/ContractsController.php:924
-#: ./src/Controller/CustomersController.php:571
+#: ./src/Controller/CustomersController.php:607
 msgid "Invalid type of document."
 msgstr ""
 
@@ -538,25 +538,25 @@ msgstr ""
 msgid "The customer message could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:232
+#: ./src/Controller/CustomersController.php:256
 msgid "Please use the customer number or company identification number in the search."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:460
-#: ./src/Controller/CustomersController.php:486
+#: ./src/Controller/CustomersController.php:496
+#: ./src/Controller/CustomersController.php:522
 msgid "The customer has been saved."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:464
-#: ./src/Controller/CustomersController.php:490
+#: ./src/Controller/CustomersController.php:500
+#: ./src/Controller/CustomersController.php:526
 msgid "The customer could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:511
+#: ./src/Controller/CustomersController.php:547
 msgid "The customer has been deleted."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:514
+#: ./src/Controller/CustomersController.php:550
 msgid "The customer could not be deleted. Please, try again."
 msgstr ""
 
@@ -1759,7 +1759,7 @@ msgstr ""
 #: ./templates/Customers/add.php:11
 #: ./templates/Customers/edit.php:11
 #: ./templates/Customers/identity_number_check.php:20
-#: ./templates/Customers/index.php:65
+#: ./templates/Customers/index.php:79
 #: ./templates/Customers/print.php:13
 #: ./templates/Customers/view.php:10
 #: ./templates/Customers/view.php:288
@@ -2212,7 +2212,7 @@ msgstr ""
 #: ./templates/Countries/index.php:11
 #: ./templates/CustomerLabels/index.php:11
 #: ./templates/CustomerMessages/index.php:11
-#: ./templates/Customers/index.php:13
+#: ./templates/Customers/index.php:16
 #: ./templates/DealerCommissions/index.php:11
 #: ./templates/Emails/index.php:11
 #: ./templates/EquipmentTypes/index.php:11
@@ -2312,7 +2312,7 @@ msgstr ""
 #: ./templates/CustomerLabels/index.php:66
 #: ./templates/CustomerMessages/index.php:71
 #: ./templates/Customers/identity_number_check.php:35
-#: ./templates/Customers/index.php:124
+#: ./templates/Customers/index.php:138
 #: ./templates/Customers/view.php:299
 #: ./templates/Customers/view.php:348
 #: ./templates/Customers/view.php:401
@@ -2383,7 +2383,7 @@ msgstr ""
 #: ./templates/CustomerLabels/index.php:68
 #: ./templates/CustomerMessages/index.php:75
 #: ./templates/Customers/identity_number_check.php:39
-#: ./templates/Customers/index.php:128
+#: ./templates/Customers/index.php:142
 #: ./templates/Customers/view.php:303
 #: ./templates/Customers/view.php:352
 #: ./templates/Customers/view.php:405
@@ -2441,7 +2441,7 @@ msgstr ""
 #: ./templates/Countries/index.php:56
 #: ./templates/CustomerLabels/index.php:85
 #: ./templates/CustomerMessages/index.php:92
-#: ./templates/Customers/index.php:140
+#: ./templates/Customers/index.php:154
 #: ./templates/DealerCommissions/index.php:76
 #: ./templates/Emails/index.php:69
 #: ./templates/EquipmentTypes/index.php:64
@@ -2476,7 +2476,7 @@ msgstr ""
 #: ./templates/Countries/index.php:57
 #: ./templates/CustomerLabels/index.php:86
 #: ./templates/CustomerMessages/index.php:93
-#: ./templates/Customers/index.php:141
+#: ./templates/Customers/index.php:155
 #: ./templates/DealerCommissions/index.php:77
 #: ./templates/Emails/index.php:70
 #: ./templates/EquipmentTypes/index.php:65
@@ -2511,7 +2511,7 @@ msgstr ""
 #: ./templates/Countries/index.php:59
 #: ./templates/CustomerLabels/index.php:88
 #: ./templates/CustomerMessages/index.php:95
-#: ./templates/Customers/index.php:143
+#: ./templates/Customers/index.php:157
 #: ./templates/DealerCommissions/index.php:79
 #: ./templates/Emails/index.php:72
 #: ./templates/EquipmentTypes/index.php:67
@@ -2546,7 +2546,7 @@ msgstr ""
 #: ./templates/Countries/index.php:60
 #: ./templates/CustomerLabels/index.php:89
 #: ./templates/CustomerMessages/index.php:96
-#: ./templates/Customers/index.php:144
+#: ./templates/Customers/index.php:158
 #: ./templates/DealerCommissions/index.php:80
 #: ./templates/Emails/index.php:73
 #: ./templates/EquipmentTypes/index.php:68
@@ -2581,7 +2581,7 @@ msgstr ""
 #: ./templates/Countries/index.php:63
 #: ./templates/CustomerLabels/index.php:92
 #: ./templates/CustomerMessages/index.php:99
-#: ./templates/Customers/index.php:147
+#: ./templates/Customers/index.php:161
 #: ./templates/DealerCommissions/index.php:83
 #: ./templates/Emails/index.php:76
 #: ./templates/EquipmentTypes/index.php:71
@@ -2810,7 +2810,7 @@ msgstr ""
 #: ./templates/Contracts/view.php:585
 #: ./templates/Countries/view.php:60
 #: ./templates/Customers/identity_number_check.php:13
-#: ./templates/Customers/index.php:54
+#: ./templates/Customers/index.php:68
 #: ./templates/Customers/view.php:439
 #: ./templates/Customers/view.php:515
 #: ./templates/Customers/view.php:764
@@ -2874,7 +2874,7 @@ msgstr ""
 #: ./templates/AccountingProfiles/view.php:89
 #: ./templates/Contracts/view.php:94
 #: ./templates/Contracts/view.php:409
-#: ./templates/Customers/index.php:61
+#: ./templates/Customers/index.php:75
 #: ./templates/Customers/view.php:104
 #: ./templates/IpAddresses/bulk_reassignment.php:65
 #: ./templates/IpAddresses/index.php:21
@@ -3836,7 +3836,6 @@ msgstr ""
 #: ./templates/Contracts/view.php:48
 #: ./templates/Customers/view.php:48
 #: ./templates/Labels/index.php:33
-#: ./templates/Overviews/overview_of_contracts.php:32
 msgid "Labels"
 msgstr ""
 
@@ -4089,7 +4088,7 @@ msgid "Edit Customer Label"
 msgstr ""
 
 #: ./templates/CustomerLabels/index.php:25
-#: ./templates/Customers/index.php:62
+#: ./templates/Customers/index.php:76
 msgid "Customer Labels"
 msgstr ""
 
@@ -4246,7 +4245,7 @@ msgid "Edit Customer"
 msgstr ""
 
 #: ./templates/Customers/identity_number_check.php:8
-#: ./templates/Customers/index.php:49
+#: ./templates/Customers/index.php:63
 #: ./templates/layout/default.php:123
 msgid "Customers"
 msgstr ""
@@ -4261,11 +4260,21 @@ msgstr ""
 msgid "Identity Number"
 msgstr ""
 
-#: ./templates/Customers/index.php:18
+#: ./templates/Customers/index.php:21
 msgid "Advanced Search"
 msgstr ""
 
-#: ./templates/Customers/index.php:48
+#: ./templates/Customers/index.php:41
+#: ./templates/Overviews/overview_of_contracts.php:32
+msgid "Require Labels"
+msgstr ""
+
+#: ./templates/Customers/index.php:50
+#: ./templates/Overviews/overview_of_contracts.php:39
+msgid "Exclude Labels"
+msgstr ""
+
+#: ./templates/Customers/index.php:62
 #: ./templates/Customers/view.php:22
 msgid "New Customer"
 msgstr ""
@@ -4886,10 +4895,6 @@ msgstr ""
 
 #: ./templates/Overviews/overview_of_active_services.php:141
 msgid "Total Number of Uses"
-msgstr ""
-
-#: ./templates/Overviews/overview_of_contracts.php:39
-msgid "Not Labels"
 msgstr ""
 
 #: ./templates/Overviews/overview_of_contracts.php:64

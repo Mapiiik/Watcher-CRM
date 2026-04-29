@@ -29,14 +29,14 @@
                     'onchange' => 'this.form.submit();',
                 ]) ?>
                 <?= $this->Form->control('label_ids', [
-                    'label' => __('Labels'),
+                    'label' => __('Require Labels'),
                     'options' => $labels,
                     'multiple' => 'multiple',
                     'style' => 'height: 100px;',
                     'onchange' => 'this.form.submit();',
                 ]) ?>
                 <?= $this->Form->control('not_label_ids', [
-                    'label' => __('Not Labels'),
+                    'label' => __('Exclude Labels'),
                     'options' => $labels,
                     'multiple' => 'multiple',
                     'style' => 'height: 100px;',
