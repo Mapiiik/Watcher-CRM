@@ -235,39 +235,53 @@ class EurofakturaProvider implements AccountingProviderInterface
         AccountingProfile $accountingProfile,
     ): void {
         foreach ($invoices as $invoice) {
-            $useBuyerCode = (bool)Settings::get(
-                EurofakturaProvider::SETTINGS_ROOT . '.customers.use_buyer_code',
-                false,
-            );
-            $sendIssuedInvoiceByEmail = (bool)Settings::get(
-                EurofakturaProvider::SETTINGS_ROOT . '.invoice.send_issued_invoice_by_email',
-                false,
-            );
+            try {
+                $useBuyerCode = (bool)Settings::get(
+                    EurofakturaProvider::SETTINGS_ROOT . '.customers.use_buyer_code',
+                    false,
+                );
+                $sendIssuedInvoiceByEmail = (bool)Settings::get(
+                    EurofakturaProvider::SETTINGS_ROOT . '.invoice.send_issued_invoice_by_email',
+                    false,
+                );
 
-            // 1) Send partner to API (if use_buyer_code is set)
-            if ($useBuyerCode && isset($invoice->customer)) {
-                $this->sendPartners([$invoice->customer]);
+                // 1) Send partner to API (if use_buyer_code is set)
+                if ($useBuyerCode && isset($invoice->customer)) {
+                    $this->sendPartners([$invoice->customer]);
+                }
+
+                // 2) Build SalesInvoice payload
+                $salesInvoice = $this->jsonRequestBuilder->buildSalesInvoice(
+                    $invoice,
+                    $invoicedMonth,
+                    $accountingProfile,
+                );
+
+                // 3) Send to API
+                $response = $this->httpClient->send(
+                    $this->credentialsProvider->getForInvoiceIssuing(),
+                    'SalesInvoiceCreate',
+                    [
+                        'SalesInvoice' => $salesInvoice,
+                        'sendIssuedInvoiceByEmail' => $sendIssuedInvoiceByEmail,
+                    ],
+                );
+
+                // 4) Validate response
+                $this->assertValidApiResponse($response);
+            } catch (RuntimeException $e) {
+                throw new RuntimeException(
+                    __d(
+                        'bookkeeping',
+                        'Failed to send invoice for customer {0}: {1}',
+                        [
+                            $invoice->customer->number ?? __d('bookkeeping', 'Unknown'),
+                            $e->getMessage(),
+                        ],
+                    ),
+                    previous: $e,
+                );
             }
-
-            // 2) Build SalesInvoice payload
-            $salesInvoice = $this->jsonRequestBuilder->buildSalesInvoice(
-                $invoice,
-                $invoicedMonth,
-                $accountingProfile,
-            );
-
-            // 3) Send to API
-            $response = $this->httpClient->send(
-                $this->credentialsProvider->getForInvoiceIssuing(),
-                'SalesInvoiceCreate',
-                [
-                    'SalesInvoice' => $salesInvoice,
-                    'sendIssuedInvoiceByEmail' => $sendIssuedInvoiceByEmail,
-                ],
-            );
-
-            // 4) Validate response
-            $this->assertValidApiResponse($response);
 
             // 5) (Optional) store documentId / external reference
             // $data = $response->getJson();
@@ -297,24 +311,38 @@ class EurofakturaProvider implements AccountingProviderInterface
     public function sendPartners(array $customers): void
     {
         foreach ($customers as $customer) {
-            // 1) Build Partner payload
-            $partner = $this->jsonRequestBuilder->buildPartner($customer);
+            try {
+                // 1) Build Partner payload
+                $partner = $this->jsonRequestBuilder->buildPartner($customer);
 
-            // 2) Send to API
-            $response = $this->httpClient->send(
-                $this->credentialsProvider->getForInvoiceIssuing(),
-                'PartnerImport',
-                [
-                    'partner' => $partner,
-                ],
-            );
+                // 2) Send to API
+                $response = $this->httpClient->send(
+                    $this->credentialsProvider->getForInvoiceIssuing(),
+                    'PartnerImport',
+                    [
+                        'partner' => $partner,
+                    ],
+                );
 
-            // 3) Validate response
-            $this->assertValidApiResponse($response);
+                // 3) Validate response
+                $this->assertValidApiResponse($response);
 
-            // 4) (Optional) store documentId / external reference
-            // $data = $response->getJson();
-            // $partnerId = $data['result']['id'] ?? null;
+                // 4) (Optional) store documentId / external reference
+                // $data = $response->getJson();
+                // $partnerId = $data['result']['id'] ?? null;
+            } catch (RuntimeException $e) {
+                throw new RuntimeException(
+                    __d(
+                        'bookkeeping',
+                        'Failed to send partner for customer {0}: {1}',
+                        [
+                            $customer->number ?? __d('bookkeeping', 'Unknown'),
+                            $e->getMessage(),
+                        ],
+                    ),
+                    previous: $e,
+                );
+            }
 
             // sleep one second because of rate limit
             sleep(1);
