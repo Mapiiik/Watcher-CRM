@@ -82,13 +82,16 @@ class EurofakturaProvider implements AccountingProviderInterface
     {
         // Transport-level validation
         if (!$response->isOk()) {
+            $description = $response->getJson()['response']['description'] ?? __d('bookkeeping', 'Unknown error');
+            $description = str_replace(["\r", "\n"], ' ', $description);
+
             throw new RuntimeException(
                 __d(
                     'bookkeeping',
                     'Eurofaktura API error ({0}, {1})',
                     [
                         $response->getStatusCode(),
-                        $response->getJson()['response']['description'] ?? 'Unknown error',
+                        $description,
                     ],
                 ),
             );
@@ -102,7 +105,7 @@ class EurofakturaProvider implements AccountingProviderInterface
                 __d(
                     'bookkeeping',
                     'Eurofaktura API error: {0}',
-                    [$data['error']['message'] ?? 'Unknown error'],
+                    [$data['error']['message'] ?? __d('bookkeeping', 'Unknown error')],
                 ),
             );
         }
