@@ -17,14 +17,18 @@ class Resolver
 {
     /**
      * Resolve a set of CRM address entities to full registry match objects,
-     * keyed by registry_ref. Useful when the caller needs more than just
-     * the formatted label (e.g. authoritative GPS coordinates).
+     * keyed by "source|registry_ref". Suitable when the caller needs the
+     * complete authoritative data (GPS, city, street, number, raw fields),
+     * not just the formatted label.
      *
-     * Same selection / dedup / failure semantics as dropdownMap().
+     * Entities without both `address_registry_source` and
+     * `address_registry_reference` are skipped. Duplicate references are
+     * de‑duplicated before the API call. Items unknown to the registry are
+     * silently absent from the result.
      *
      * @param iterable<\App\Model\Entity\Address> $addresses
-     * @return array<string, array<string, mixed>>
-     * @throws \RuntimeException
+     * @return array<string, array<string, mixed>>  Map: "source|registry_ref" => match object
+     * @throws \RuntimeException  On transport/API errors (bubbled from ApiClient)
      */
     public static function matchMap(iterable $addresses): array
     {
@@ -47,22 +51,21 @@ class Resolver
     }
 
     /**
-     * Build a [registry_ref => formatted_address] map from a set of CRM
-     * address entities, suitable as a select-dropdown options list.
+     * Build a ["source|registry_ref" => formatted_address] map from a set of CRM
+     * address entities, suitable for select-dropdowns and filter lists.
      *
      * Entities without both `address_registry_source` and
-     * `address_registry_reference` are skipped. Duplicates (multiple
-     * entities pointing to the same registry entry) are de-duped before
-     * the API call. Items the registry doesn't know about are silently
-     * absent from the result.
+     * `address_registry_reference` are skipped. Duplicate references (multiple
+     * CRM entities pointing to the same registry entry) are de‑duplicated
+     * before the API call. Items unknown to the registry are silently omitted
+     * from the result.
      *
-     * Sort order: city → street → house number, with natural numeric
-     * ordering ("Karlova 2" before "Karlova 10").
+     * Sort order: city → street → house number (natural numeric ordering),
+     * producing a stable, human-friendly dropdown list.
      *
      * @param iterable<\App\Model\Entity\Address> $addresses
-     * @return array<string, string>
-     * @throws \RuntimeException Bubbled from ApiClient on transport / API
-     *     errors; callers typically catch + Flash warning + fall back to [].
+     * @return array<string, string>  Map: "source|registry_ref" => formatted_address
+     * @throws \RuntimeException  On transport/API errors (bubbled from ApiClient)
      */
     public static function dropdownMap(iterable $addresses): array
     {
@@ -89,7 +92,15 @@ class Resolver
     }
 
     /**
-     * Pull (source, registry_id) pairs from entities and dedupe.
+     * Extract (source, registry_id) pairs from a set of CRM address entities
+     * and de‑duplicate them. Only entities that have both
+     * `address_registry_source` and `address_registry_reference` defined are
+     * included.
+     *
+     * The returned list is suitable as input for ApiClient::byIdBatch() or
+     * byIdBatchFromCache(). Duplicate references (multiple CRM entities
+     * pointing to the same registry entry) are collapsed into a single item
+     * to avoid redundant API calls.
      *
      * @param iterable<\App\Model\Entity\Address> $addresses
      * @return list<array{source: string, registry_id: string}>
