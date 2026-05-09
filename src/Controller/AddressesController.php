@@ -501,7 +501,7 @@ class AddressesController extends AppController
         }
 
         $this->Flash->success(__(
-            'National address registry refresh: {0} updated, {1} unchanged, {2} skipped, {3} failed.',
+            'Addresses updated from national address registries: {0} updated, {1} unchanged, {2} skipped, {3} failed.',
             $updated,
             $unchanged,
             $skipped,
