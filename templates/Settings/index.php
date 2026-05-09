@@ -103,6 +103,21 @@
                         'class' => 'side-nav-item',
                     ],
                 ) ?>
+                <?= $this->AuthLink->postLink(
+                    __('Update All Addresses from National Address Registries'),
+                    [
+                        'controller' => 'Addresses',
+                        'action' => 'updateAllFromNationalAddressRegistries',
+                        'plugin' => null,
+                        false,
+                    ],
+                    [
+                        'confirm' => __(
+                            'Do you really want to update all addresses from the national address registries?',
+                        ),
+                        'class' => 'side-nav-item',
+                    ],
+                ) ?>
             </div>
         </div>
 
