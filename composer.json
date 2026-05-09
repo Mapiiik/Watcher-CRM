@@ -56,7 +56,7 @@
             "App\\": "src/",
             "Bookkeeping\\": "plugins/Bookkeeping/src/",
             "Radius\\": "plugins/Radius/src/",
-            "Ruian\\": "plugins/Ruian/src/"
+            "Settings\\": "plugins/Settings/src/"
         }
     },
     "autoload-dev": {
@@ -65,7 +65,7 @@
             "Bookkeeping\\Test\\": "plugins/Bookkeeping/tests/",
             "Cake\\Test\\": "vendor/cakephp/cakephp/tests/",
             "Radius\\Test\\": "plugins/Radius/tests/",
-            "Ruian\\Test\\": "plugins/Ruian/tests/"
+            "Settings\\Test\\": "plugins/Settings/tests/"
         }
     },
     "config": {
@@ -106,7 +106,6 @@
         "translations-update": [
             "bin/cake i18n extract --extract-core no --overwrite -p Bookkeeping",
             "bin/cake i18n extract --extract-core no --overwrite -p Radius",
-            "bin/cake i18n extract --extract-core no --overwrite -p Ruian",
             "bin/cake i18n extract --extract-core no --overwrite -p Settings",
             "bin/cake i18n extract --extract-core yes --overwrite --paths src/,templates/ --output resources/locales/"
         ]

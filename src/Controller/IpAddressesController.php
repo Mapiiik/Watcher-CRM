@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\ApiClient;
 use App\Model\Entity\IpAddress;
 use App\Model\Enum\IpAddressTypeOfUse;
 use App\Model\Table\RemovedIpAddressesTable;
+use App\NMS\ApiClient as NMSApiClient;
 use Cake\I18n\DateTime;
 use Cake\Validation\Validation;
 use IPLib\Range\Subnet;
@@ -224,7 +224,7 @@ class IpAddressesController extends AppController
                 $ipAddressRangesFilter['for_technology_addresses_set_manually'] = '1';
                 break;
         }
-        $ipAddressRanges = ApiClient::searchIpAddressRanges($ipAddressRangesFilter);
+        $ipAddressRanges = NMSApiClient::searchIpAddressRanges($ipAddressRangesFilter);
         unset($ipAddressRangesFilter);
 
         if ($ipAddressRanges != null) {
@@ -429,7 +429,7 @@ class IpAddressesController extends AppController
                 $ipAddressRangesFilter['for_technology_addresses_set_manually'] = '1';
                 break;
         }
-        $ipAddressRanges = ApiClient::searchIpAddressRanges($ipAddressRangesFilter);
+        $ipAddressRanges = NMSApiClient::searchIpAddressRanges($ipAddressRangesFilter);
         unset($ipAddressRangesFilter);
 
         if ($ipAddressRanges != null) {
@@ -538,7 +538,7 @@ class IpAddressesController extends AppController
         $this->set(compact('ipAddress', 'ipAddresses'));
 
         // load access points from NMS if possible
-        $accessPoints = ApiClient::getAccessPoints();
+        $accessPoints = NMSApiClient::getAccessPoints();
         if ($accessPoints) {
             $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
         } else {

@@ -3,14 +3,15 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\ApiClient;
+use App\Addresses\Resolver as AddressesResolver;
 use App\Model\Enum\CustomerMessageDeliveryStatus;
 use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessageType;
 use App\Model\Table\LabelsTable;
+use App\NMS\ApiClient as NMSApiClient;
 use Cake\Utility\Text;
 use Cake\Validation\Validation;
-use Ruian\Model\Table\AddressesTable;
+use RuntimeException;
 use SplObjectStorage;
 
 /**
@@ -114,33 +115,25 @@ class CustomerMessagesController extends AppController
             'name',
         ])->all();
 
-        // load RUIAN addresses
-        // TODO: Refactor to use \App\Addresses\ApiClient
-        $ruianAddressesTable = $this->fetchTable(AddressesTable::class);
-        $ruianAddresses = $ruianAddressesTable->find(
-            'list',
-            valueField: 'address',
-            where: [
-                'Addresses.kod_adm IN' =>
-                    $this->CustomerMessages->Customers->Contracts->InstallationAddresses
-                        ->find(
-                            'list',
-                            valueField: 'address_registry_reference',
-                        )
-                        ->all()
-                        ->toArray()
-                ,
-            ],
-            order: [
-                'obec_nazev',
-                'cast_obce_nazev',
-                'ulice_nazev',
-                'typ_so',
-                'cislo_domovni',
-                'cislo_orientacni',
-                'cislo_orientacni_znak',
-            ],
-        )->all();
+        // Load addresses from national address registry for existing installation addresses
+        /** @var \Cake\Datasource\ResultSetInterface<int, \App\Model\Entity\Address> $installationAddresses */
+        $installationAddresses = $this->CustomerMessages->Customers->Contracts->InstallationAddresses
+            ->find()
+            ->where([
+                'address_registry_source IS NOT' => null,
+                'address_registry_reference IS NOT' => null,
+            ])
+            ->all();
+
+        $registryAddresses = [];
+        try {
+            $registryAddresses = AddressesResolver::dropdownMap($installationAddresses);
+        } catch (RuntimeException $e) {
+            $this->Flash->warning(__(
+                'Could not load addresses from national address registry: {0}',
+                $e->getMessage(),
+            ));
+        }
 
         // customers filter
         $customersFilter = [];
@@ -179,8 +172,14 @@ class CustomerMessagesController extends AppController
             unset($filterQuery);
         }
 
-        $ruianAddressId = $this->getRequest()->getQuery('ruian_address_id');
-        if (is_string($ruianAddressId) && Validation::numeric($ruianAddressId)) {
+        $registryAddressId = $this->getRequest()->getQuery('registry_address_id');
+        if (is_string($registryAddressId)) {
+            // expect format "source|reference", e.g. "cz|12345678"
+            [
+                $address_registry_source,
+                $address_registry_reference,
+            ] = explode('|', $registryAddressId, limit: 2) + [null, null];
+
             $filterQuery = $this->CustomerMessages->Customers->Contracts->find()
                 ->select([
                     'customer_id',
@@ -190,7 +189,8 @@ class CustomerMessagesController extends AppController
                 ])
                 ->distinct()
                 ->where([
-                    'InstallationAddresses.address_registry_reference IS' => $ruianAddressId,
+                    'InstallationAddresses.address_registry_reference IS' => $address_registry_reference,
+                    'InstallationAddresses.address_registry_source IS' => $address_registry_source,
                 ]);
 
             $customersFilter[] = [
@@ -270,12 +270,12 @@ class CustomerMessagesController extends AppController
         $this->set(compact(
             'customerMessage',
             'labels',
-            'ruianAddresses',
+            'registryAddresses',
             'customers',
         ));
 
         // load access points from NMS if possible
-        $accessPoints = ApiClient::getAccessPoints();
+        $accessPoints = NMSApiClient::getAccessPoints();
         if ($accessPoints) {
             $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
         } else {

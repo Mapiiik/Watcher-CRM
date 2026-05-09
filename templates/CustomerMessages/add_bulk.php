@@ -5,7 +5,7 @@
  * @var iterable<\App\Model\Entity\Customer> $customers
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $labels
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $accessPoints
- * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $ruianAddresses
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $registryAddresses
  */
 ?>
 <div class="row">
@@ -34,8 +34,8 @@
                     'empty' => true,
                     'onchange' => 'this.form.submit();',
                 ]) ?>
-                <?= $this->Form->control('ruian_address_id', [
-                    'options' => $ruianAddresses,
+                <?= $this->Form->control('registry_address_id', [
+                    'options' => $registryAddresses,
                     'empty' => true,
                     'onchange' => 'this.form.submit();',
                 ]) ?>

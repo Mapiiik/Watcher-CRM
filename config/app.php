@@ -150,7 +150,7 @@ return [
         ],
         'addresses_api' => [
             'className' => FileEngine::class,
-            'prefix' => 'addresses_api_',
+            'prefix' => 'api_addresses_',
             'path' => CACHE . 'addresses' . DS,
             'serialize' => true,
             'duration' => '+1 day',

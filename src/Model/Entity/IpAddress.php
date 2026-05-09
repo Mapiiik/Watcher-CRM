@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use App\ApiClient;
+use App\NMS\ApiClient as NMSApiClient;
 use Cake\Collection\CollectionInterface;
 
 /**
@@ -71,7 +71,7 @@ class IpAddress extends AppEntity
      */
     protected function _getRouterosDevices(): ?CollectionInterface
     {
-        $routerosDevices = ApiClient::getRouterosDevicesForIp($this->ip_address);
+        $routerosDevices = NMSApiClient::getRouterosDevicesForIp($this->ip_address);
 
         if ($routerosDevices) {
             return $routerosDevices;
@@ -87,7 +87,7 @@ class IpAddress extends AppEntity
      */
     protected function _getIpAddressRanges(): ?CollectionInterface
     {
-        $ipAddressRanges = ApiClient::getIpAddressRangesForIp($this->ip_address);
+        $ipAddressRanges = NMSApiClient::getIpAddressRangesForIp($this->ip_address);
 
         if ($ipAddressRanges) {
             return $ipAddressRanges;

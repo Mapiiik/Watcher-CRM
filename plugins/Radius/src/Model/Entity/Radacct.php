@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Radius\Model\Entity;
 
-use App\ApiClient;
+use App\NMS\ApiClient as NMSApiClient;
 use Cake\Collection\CollectionInterface;
 use Cake\ORM\Entity;
 
@@ -92,7 +92,7 @@ class Radacct extends Entity
     protected function _getRouterosDevicesForNas(): ?CollectionInterface
     {
         if (!empty($this->nasipaddress)) {
-            $routerosDevices = ApiClient::getRouterosDevicesForIp($this->nasipaddress);
+            $routerosDevices = NMSApiClient::getRouterosDevicesForIp($this->nasipaddress);
 
             if ($routerosDevices) {
                 return $routerosDevices;

@@ -14,7 +14,7 @@ declare(strict_types=1);
  * @since     3.3.0
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
-namespace App;
+namespace App\NMS;
 
 use ArrayObject;
 use Cake\Cache\Cache;
@@ -61,7 +61,7 @@ class ApiClient
         return Cache::remember(
             'access_points',
             function () {
-                return ApiClient::fetchAccessPoints();
+                return self::fetchAccessPoints();
             },
             'api_client',
         );
@@ -77,7 +77,7 @@ class ApiClient
         return Cache::remember(
             'access_points_list',
             function () {
-                $accessPoints = ApiClient::getAccessPoints();
+                $accessPoints = self::getAccessPoints();
                 if ($accessPoints) {
                     return $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name')->toArray();
                 } else {
@@ -124,7 +124,7 @@ class ApiClient
         return Cache::remember(
             'access_point_' . $id,
             function () use ($id) {
-                return ApiClient::fetchAccessPoint($id);
+                return self::fetchAccessPoint($id);
             },
             'api_client',
         );
@@ -167,7 +167,7 @@ class ApiClient
         return Cache::remember(
             'access_points_for_ip_' . strtr($ipAddress, ['.' => '-', ':' => '-', '/' => '-mask-']),
             function () use ($ipAddress) {
-                return ApiClient::searchAccessPoints(['ip_address' => $ipAddress]);
+                return self::searchAccessPoints(['ip_address' => $ipAddress]);
             },
             'api_client',
         );
@@ -208,7 +208,7 @@ class ApiClient
         return Cache::remember(
             'ip_address_ranges',
             function () {
-                return ApiClient::fetchIpAddressRanges();
+                return self::fetchIpAddressRanges();
             },
             'api_client',
         );
@@ -251,7 +251,7 @@ class ApiClient
         return Cache::remember(
             'ip_address_range_' . $id,
             function () use ($id) {
-                return ApiClient::fetchIpAddressRange($id);
+                return self::fetchIpAddressRange($id);
             },
             'api_client',
         );
@@ -293,7 +293,7 @@ class ApiClient
         return Cache::remember(
             'ip_address_ranges_for_ip_' . strtr($ipAddress, ['.' => '-', ':' => '-', '/' => '-mask-']),
             function () use ($ipAddress) {
-                return ApiClient::searchIpAddressRanges(['ip_address' => $ipAddress]);
+                return self::searchIpAddressRanges(['ip_address' => $ipAddress]);
             },
             'api_client',
         );
@@ -335,7 +335,7 @@ class ApiClient
         return Cache::remember(
             'routeros_devices_for_ip_' . strtr($ipAddress, ['.' => '-', ':' => '-', '/' => '-mask-']),
             function () use ($ipAddress) {
-                return ApiClient::searchRouterosDevices(['ip_address' => $ipAddress]);
+                return self::searchRouterosDevices(['ip_address' => $ipAddress]);
             },
             'api_client',
         );

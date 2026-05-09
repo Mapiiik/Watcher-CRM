@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Radius\Updater;
 
-use App\Agent\ApiClient;
+use App\Agent\ApiClient as AgentApiClient;
 use App\Messages\Messages;
 use Cake\Log\Log;
 use Mapik\RadiusClient\Client as RadiusClient;
@@ -163,7 +163,7 @@ class RadiusRequestSender
     private function sendDisconnectRequestViaAgent(Radacct $session): bool
     {
         try {
-            $data = ApiClient::radiusDisconnect($session);
+            $data = AgentApiClient::radiusDisconnect($session);
         } catch (Throwable $e) {
             $this->Messages->error(__d(
                 'radius',

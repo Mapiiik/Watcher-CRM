@@ -7,7 +7,7 @@ use App\Messages\Messages;
 use App\Model\Entity\CustomerLabel;
 use App\Model\Table\CustomerLabelsTable;
 use App\Model\Table\CustomersTable;
-use App\SledovaniTV\ApiClient;
+use App\SledovaniTV\ApiClient as SledovaniTVApiClient;
 use App\Utility\Strings;
 use Bookkeeping\Model\Table\InvoicesTable;
 use Cake\Collection\CollectionInterface;
@@ -889,7 +889,7 @@ class DebtorsProcessor
      */
     private function updateSledovaniTV(array $ids, bool $block = false, bool $clear = false): string
     {
-        $tvUsers = ApiClient::getUsers();
+        $tvUsers = SledovaniTVApiClient::getUsers();
 
         $customers = $this->fetchTable(CustomersTable::class)
             ->find(
@@ -906,7 +906,7 @@ class DebtorsProcessor
             if (in_array($tvUser['partnerid'], $customers)) {
                 // block = true and not suspended => block
                 if ($block && $tvUser['active'] == 1 && $tvUser['suspended'] == 0) {
-                    if (ApiClient::suspendUser($tvUser['id'])) {
+                    if (SledovaniTVApiClient::suspendUser($tvUser['id'])) {
                         $result .= __d(
                             'bookkeeping',
                             'SledovaniTV - Suspended user with ID: {0} (partner ID: {1}).',
@@ -918,7 +918,7 @@ class DebtorsProcessor
 
                 // block = false and suspended => unblock
                 if (!$block && $tvUser['suspended'] == 1) {
-                    if (ApiClient::unsuspendUser($tvUser['id'])) {
+                    if (SledovaniTVApiClient::unsuspendUser($tvUser['id'])) {
                         $result .= __d(
                             'bookkeeping',
                             'SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1}).',
@@ -930,7 +930,7 @@ class DebtorsProcessor
             } elseif ($clear) {
                 // suspended and not on the list + clear called => unblock
                 if ($tvUser['suspended'] == 1) {
-                    if (ApiClient::unsuspendUser($tvUser['id'])) {
+                    if (SledovaniTVApiClient::unsuspendUser($tvUser['id'])) {
                         $result .= __d(
                             'bookkeeping',
                             'SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1}).',

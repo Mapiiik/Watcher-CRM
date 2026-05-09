@@ -36,7 +36,10 @@
                     <th><?= $this->Paginator->sort('city') ?></th>
                     <th><?= $this->Paginator->sort('zip') ?></th>
                     <th><?= $this->Paginator->sort('country_id') ?></th>
-                    <th><?= $this->Paginator->sort('address_registry_reference', __('Address Registry Reference')) ?></th>
+                    <th><?= $this->Paginator->sort(
+                        'address_registry_reference',
+                        __('Address Registry Reference'),
+                    ) ?></th>
                     <th class="actions"><?= __('Map location') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
@@ -67,11 +70,13 @@
                             ['controller' => 'Countries', 'action' => 'view', $address->country->id],
                         ) : '' ?>
                     </td>
-                    <td><?= $address->address_registry_reference === null || $address->address_registry_source === null ?
-                        '<span style="color: red;">' . __('unknown') . '</span>'
-                        :
-                        h($address->address_registry_reference)
-                            . ' (' . h(strtoupper($address->address_registry_source)) . ')'
+                    <td><?=
+                        $address->address_registry_reference === null
+                        || $address->address_registry_source === null ?
+                            '<span style="color: red;">' . __('unknown') . '</span>'
+                            :
+                            h($address->address_registry_reference)
+                                . ' (' . h(strtoupper($address->address_registry_source)) . ')'
                     ?></td>
                     <td class="actions">
                         <?= $address->gps_x !== null && $address->gps_y !== null ?

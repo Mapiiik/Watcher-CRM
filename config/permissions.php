@@ -393,8 +393,8 @@ $permissions = [
             'action' => [
                 'index',
                 'overviewOfActiveServices',
-                'overviewOfCustomerConnectionPoints',
-                'overviewOfCustomerConnectionPointsObsolete',
+                'overviewOfCzechCustomerConnectionPoints',
+                'overviewOfCzechCustomerConnectionSpeeds',
             ],
         ],
         //allow all in overviews for sales-managers

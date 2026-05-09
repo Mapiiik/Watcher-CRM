@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\ApiClient;
 use App\Model\Table\ContractsTable;
+use App\NMS\ApiClient as NMSApiClient;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -47,7 +47,7 @@ class AutoAssignContractsToAccessPointsCommand extends Command
         $contractsTable = $this->fetchTable(ContractsTable::class);
         $radiusAccountsTable = $this->fetchTable(AccountsTable::class);
 
-        $api = new ApiClient();
+        $api = new NMSApiClient();
 
         // load contracts without assigned access point
         /** @var \Cake\Datasource\ResultSetInterface<array-key, \App\Model\Entity\Contract> $unassignedContracts */

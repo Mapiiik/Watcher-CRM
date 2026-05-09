@@ -459,11 +459,13 @@
                             <td><?= h($address->zip) ?></td>
                             <td><?= $address->country !== null ? h($address->country->name) : '' ?></td>
                             <td><?= h($address->note) ?></td>
-                            <td><?= $address->address_registry_reference === null || $address->address_registry_source === null ?
-                                '<span style="color: red;">' . __('unknown') . '</span>'
-                                :
-                                h($address->address_registry_reference)
-                                    . ' (' . h(strtoupper($address->address_registry_source)) . ')'
+                            <td><?=
+                                $address->address_registry_reference === null
+                                || $address->address_registry_source === null ?
+                                    '<span style="color: red;">' . __('unknown') . '</span>'
+                                    :
+                                    h($address->address_registry_reference)
+                                        . ' (' . h(strtoupper($address->address_registry_source)) . ')'
                             ?></td>
                             <td class="actions">
                                 <?= $address->gps_x !== null && $address->gps_y !== null ?

@@ -122,11 +122,13 @@
                         </tr>
                         <tr>
                             <th><?= __('Address Registry Reference') ?></th>
-                            <td><?= $address->address_registry_reference === null || $address->address_registry_source === null ?
-                                '<span style="color: red;">' . __('unknown') . '</span>'
-                                :
-                                h($address->address_registry_reference)
-                                    . ' (' . h(strtoupper($address->address_registry_source)) . ')'
+                            <td><?=
+                                $address->address_registry_reference === null
+                                || $address->address_registry_source === null ?
+                                    '<span style="color: red;">' . __('unknown') . '</span>'
+                                    :
+                                    h($address->address_registry_reference)
+                                        . ' (' . h(strtoupper($address->address_registry_source)) . ')'
                             ?></td>
                         </tr>
                         <tr>

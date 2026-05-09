@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\ApiClient;
 use App\Model\Entity\Billing;
 use App\Model\Enum\CustomerMessageBodyFormat;
 use App\Model\Enum\CustomerMessageDeliveryStatus;
 use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessageType;
 use App\Model\Table\CustomerMessagesTable;
+use App\NMS\ApiClient as NMSApiClient;
 use App\Utility\ServiceChangeMessageBuilder;
 use Cake\Utility\Text;
 use Cake\Validation\Validation;
@@ -422,7 +422,7 @@ class BillingsController extends AppController
         $services = $this->Billings->Services->find('list', order: ['name'])->all();
 
         // load access points from NMS if possible
-        $accessPoints = ApiClient::getAccessPoints();
+        $accessPoints = NMSApiClient::getAccessPoints();
         if ($accessPoints) {
             $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
         } else {

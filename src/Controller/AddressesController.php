@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Addresses\ApiClient;
+use App\Addresses\ApiClient as AddressesApiClient;
 use App\Model\Entity\Address;
 use App\Model\Enum\AddressNumberType;
 use RuntimeException;
@@ -211,7 +211,7 @@ class AddressesController extends AppController
     /**
      * Find National Address Registry Data (CZ RUIAN, HR DGU, etc.)
      *
-     * @param \App\Model\Entity\Address $address Address to be find in RUIAN
+     * @param \App\Model\Entity\Address $address Address to be find in national address registry
      * @return array<string, mixed> array (address_registry_reference, address_registry_source, gps_y, gps_x)
      */
     private function findNationalAddressRegistryData(Address $address): array
@@ -242,7 +242,7 @@ class AddressesController extends AppController
 
         // check if the country is supported by the national address registry API
         try {
-            $addressesMeta = ApiClient::metaFromCache();
+            $addressesMeta = AddressesApiClient::metaFromCache();
         } catch (RuntimeException $e) {
             $this->Flash->error(__(
                 'Could not retrieve national address registry metadata: {0}',
@@ -272,7 +272,7 @@ class AddressesController extends AppController
 
         // do the lookup
         try {
-            $response = ApiClient::lookup([
+            $response = AddressesApiClient::lookup([
                 'country' => strtolower($countryCode),
                 'street' => $address->street,
                 'number' => $address->number,

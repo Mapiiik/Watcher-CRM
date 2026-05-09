@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
-use App\Agent\ApiClient;
+use App\Agent\ApiClient as AgentApiClient;
 use App\Controller\AppController;
 use App\View\AjaxView;
 use Cake\Http\Exception\BadRequestException;
@@ -46,7 +46,7 @@ class AgentBridgeController extends AppController
 
         if ($agentEnabled) {
             try {
-                $pingResults = ApiClient::ping($ip_address);
+                $pingResults = AgentApiClient::ping($ip_address);
                 $pingImage = $this->AgentPingImage($pingResults);
             } catch (Throwable $e) {
                 Log::error('Error pinging host via Watcher Agent: ' . $e->getMessage());

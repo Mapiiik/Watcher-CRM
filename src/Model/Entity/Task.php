@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use App\ApiClient;
+use App\NMS\ApiClient as NMSApiClient;
 use ArrayObject;
 
 /**
@@ -97,7 +97,7 @@ class Task extends AppEntity
     protected function _getAccessPoint(): ?ArrayObject
     {
         if ($this->access_point_id) {
-            return ApiClient::getAccessPoint($this->access_point_id);
+            return NMSApiClient::getAccessPoint($this->access_point_id);
         }
 
         return null;
@@ -111,7 +111,7 @@ class Task extends AppEntity
     protected function _getAccessPointName(): ?string
     {
         // load access points from NMS if possible
-        $accessPoints = ApiClient::getAccessPointsList();
+        $accessPoints = NMSApiClient::getAccessPointsList();
 
         if ($accessPoints && $this->access_point_id) {
             return $accessPoints[$this->access_point_id] ?? null;

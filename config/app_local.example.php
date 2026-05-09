@@ -64,32 +64,6 @@ return [
              */
             'url' => env('DATABASE_URL', null),
         ],
-        'ruian' => [
-            'className' => 'Cake\Database\Connection',
-            'driver' => 'Cake\Database\Driver\Postgres',
-            'host' => 'localhost',
-            /*
-             * CakePHP will use the default DB port based on the driver selected
-             * MySQL on MAMP uses port 8889, MAMP users will want to uncomment
-             * the following line and set the port accordingly
-             */
-            //'port' => 'non_standard_port_number',
-
-            'username' => 'postgres',
-            'password' => 'postgres',
-
-            'database' => 'watcher_crm',
-            /*
-             * If not using the default 'public' schema with the PostgreSQL driver
-             * set it here.
-             */
-            //'schema' => 'myapp',
-
-            /*
-             * You can use a DSN string to set the entire configuration
-             */
-            'url' => env('DATABASE_RUIAN_URL', null),
-        ],
         'radius' => [
             'className' => 'Cake\Database\Connection',
             'driver' => 'Cake\Database\Driver\Postgres',
@@ -121,17 +95,6 @@ return [
          * The test connection is used during the test suite.
          */
         'test' => [
-            'className' => 'Cake\Database\Connection',
-            'driver' => 'Cake\Database\Driver\Postgres',
-            'host' => 'localhost',
-            //'port' => 'non_standard_port_number',
-            'username' => 'postgres',
-            'password' => 'postgres',
-            'database' => 'watcher_crm_test',
-            //'schema' => 'public',
-            'url' => env('DATABASE_TEST_URL', null),
-        ],
-        'test_ruian' => [
             'className' => 'Cake\Database\Connection',
             'driver' => 'Cake\Database\Driver\Postgres',
             'host' => 'localhost',

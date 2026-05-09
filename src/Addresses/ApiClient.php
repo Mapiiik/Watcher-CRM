@@ -276,6 +276,7 @@ class ApiClient
      * @param array<int, array{source: string, registry_id: string}> $items
      * @param array<string> $include Optional ?include= values, e.g. ['raw']
      * @return array<string, mixed> { matches: [...], not_found: [...] }
+     * @throws \RuntimeException if the request fails or returns an error response
      */
     public static function byIdBatchFromCache(array $items, array $include = []): array
     {

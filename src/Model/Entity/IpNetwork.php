@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use App\ApiClient;
+use App\NMS\ApiClient as NMSApiClient;
 use Cake\Collection\CollectionInterface;
 
 /**
@@ -70,7 +70,7 @@ class IpNetwork extends AppEntity
      */
     protected function _getIpAddressRanges(): ?CollectionInterface
     {
-        $ipAddressRanges = ApiClient::getIpAddressRangesForIp($this->ip_network);
+        $ipAddressRanges = NMSApiClient::getIpAddressRangesForIp($this->ip_network);
 
         if ($ipAddressRanges) {
             return $ipAddressRanges;

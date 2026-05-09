@@ -3,18 +3,17 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
+use App\Addresses\Resolver as AddressesResolver;
 use App\Controller\AppController;
 use App\Model\Entity\Contract;
 use App\Model\Entity\IpAddress;
 use App\Model\Table\ContractsTable;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
-use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Routing\Router;
 use Cake\View\JsonView;
 use Override;
-use Ruian\Model\Entity\Address;
-use Ruian\Model\Table\AddressesTable;
+use RuntimeException;
 
 /**
  * Customers Controller
@@ -184,108 +183,118 @@ class CustomersController extends AppController
             ->contain('InstallationAddresses')
             ->contain('Customers')
             ->contain('IpAddresses')
-            ->formatResults(
-                function (CollectionInterface $customerPoints) {
-                    return $customerPoints
-                        ->groupBy(function ($contract) {
-                            // TODO: Refactor to use \App\Addresses\ApiClient
-                            if (isset($contract->installation_address->address_registry_reference)) {
-                                // return address registry reference as key if set
-                                return $contract->installation_address->address_registry_reference;
-                            } elseif (
-                                isset($contract->installation_address->gps_x)
-                                && isset($contract->installation_address->gps_y)
-                            ) {
-                                // return GPS coordinates as key if set
-                                return 'GPS: '
-                                    . $contract->installation_address->gps_y
-                                    . 'N, '
-                                    . $contract->installation_address->gps_x
-                                    . 'E';
-                            } else {
-                                // return 'unknown location' as key for others
-                                return 'unknown location';
-                            }
-                        })
-                        ->map(
-                            function ($contracts, $key) {
-                                if (is_numeric($key)) {
-                                    // Try to load RUIAN record if RUIAN GID is set
-                                    // TODO: Refactor to use \App\Addresses\ApiClient
-                                    try {
-                                        $address = $this->fetchTable(AddressesTable::class)->get(
-                                            $key,
-                                            fields: [
-                                                'ulice_nazev',
-                                                'typ_so',
-                                                'cislo_domovni',
-                                                'psc',
-                                                'obec_nazev',
-                                                'cast_obce_nazev',
-                                                'gps_y' => 'ST_Y(geometry)',
-                                                'gps_x' => 'ST_X(geometry)',
-                                            ],
-                                        );
-                                    } catch (RecordNotFoundException $recordNotFoundError) {
-                                        $address = new Address([
-                                            'gps_y' => $contracts[0]->installation_address->gps_y ?? null,
-                                            'gps_x' => $contracts[0]->installation_address->gps_x ?? null,
-                                        ]);
-                                    }
-                                } else {
-                                    $address = new Address([
-                                        'gps_y' => $contracts[0]->installation_address->gps_y ?? null,
-                                        'gps_x' => $contracts[0]->installation_address->gps_x ?? null,
-                                    ]);
-                                }
+            ->formatResults(function (CollectionInterface $customerPoints) {
+                // Materialize once so we can iterate twice (matchMap + groupBy).
+                $contracts = $customerPoints->toList();
 
-                                return [
-                                    'name' => is_numeric($key) ? $address->address : $key,
-                                    'gps_y' => $address->gps_y,
-                                    'gps_x' => $address->gps_x,
-                                    'note' => is_numeric($key) ? 'RUIAN: ' . (string)$key : (string)$key,
-                                    'CustomerConnections' => (new Collection($contracts))->map(
-                                        function (Contract $contract) {
-                                            return [
-                                                'name' => $contract->installation_address->name ??
-                                                    $contract->customer->name,
-                                                'customer_number' => $contract->customer->number,
-                                                'customer_url' => Router::url([
-                                                    'prefix' => false,
-                                                    'controller' => 'Customers',
-                                                    'action' => 'view',
-                                                    $contract->customer->id,
-                                                ]),
-                                                'contract_number' => $contract->number,
-                                                'contract_url' => Router::url([
-                                                    'prefix' => false,
-                                                    'controller' => 'Contracts',
-                                                    'action' => 'view',
-                                                    $contract->id,
-                                                    'customer_id' => $contract->customer_id,
-                                                ]),
-                                                'access_point_id' => $contract->access_point_id,
-                                                'note' => $contract->note,
-                                                'CustomerConnectionIps' => (new Collection($contract->ip_addresses))
-                                                    ->map(
-                                                        function (IpAddress $ipAddress) {
-                                                            return [
-                                                                'ip_address' => $ipAddress->ip_address,
-                                                                'name' => $ipAddress->note,
-                                                                'note' => $ipAddress->note,
-                                                            ];
-                                                        },
-                                                    ),
-                                            ];
-                                        },
-                                    ),
-                                ];
-                            },
-                        );
-                },
-            );
+                // Resolve all installation addresses with registry refs in one batch.
+                // Failure → empty map; groups will fall back to GPS / unknown branches.
+                try {
+                    $addressRegistryMatches = AddressesResolver::matchMap(
+                        (new Collection($contracts))
+                            ->extract('installation_address')
+                            ->filter()
+                            ->toList(),
+                    );
+                } catch (RuntimeException $e) {
+                    throw new RuntimeException(
+                        __(
+                            'Could not load addresses from national address registry: {0}',
+                            $e->getMessage(),
+                        ),
+                        previous: $e,
+                    );
+                }
+
+                return (new Collection($contracts))
+                    ->groupBy(function (Contract $contract) {
+                        $address = $contract->installation_address;
+
+                        if (
+                            !empty($address->address_registry_reference)
+                                && !empty($address->address_registry_source)
+                        ) {
+                            return $address->address_registry_source
+                                . '|' . $address->address_registry_reference;
+                        }
+                        if (!empty($address->gps_x) && !empty($address->gps_y)) {
+                            return 'GPS: ' . $address->gps_y . 'N, ' . $address->gps_x . 'E';
+                        }
+
+                        return 'unknown location';
+                    })
+                    ->map(function ($contracts, $key) use ($addressRegistryMatches) {
+                        $addressRegistryMatch = $addressRegistryMatches[$key] ?? null;
+
+                        if ($addressRegistryMatch !== null) {
+                            // Authoritative data from the national address registry.
+                            return [
+                                'name' => $addressRegistryMatch['formatted_address'],
+                                'gps_y' => $addressRegistryMatch['geometry']['coordinates'][1],
+                                'gps_x' => $addressRegistryMatch['geometry']['coordinates'][0],
+                                'note' => sprintf(
+                                    '%s: %s',
+                                    strtoupper($addressRegistryMatch['source']),
+                                    $addressRegistryMatch['registry_ref'],
+                                ),
+                                'CustomerConnections' => $this->buildCustomerConnections($contracts),
+                            ];
+                        }
+
+                        // GPS-only group, or unknown — use whatever the first contract carries.
+                        $first = $contracts[0]->installation_address ?? null;
+
+                        return [
+                            'name' => (string)$key,
+                            'gps_y' => $first->gps_y ?? null,
+                            'gps_x' => $first->gps_x ?? null,
+                            'note' => (string)$key,
+                            'CustomerConnections' => $this->buildCustomerConnections($contracts),
+                        ];
+                    });
+            });
 
         $this->set('customerPoints', $customerPoints);
         $this->viewBuilder()->setOption('serialize', 'customerPoints');
+    }
+
+    /**
+     * Builds customer connections data for given contracts.
+     *
+     * @param array<int, \App\Model\Entity\Contract> $contracts
+     * @return \Cake\Collection\CollectionInterface<int, array<string, mixed>>
+     */
+    private function buildCustomerConnections(array $contracts): CollectionInterface
+    {
+        /** @var \Cake\Collection\CollectionInterface<int, array<string, mixed>> */
+        return (new Collection($contracts))->map(
+            fn(Contract $contract) => [
+                'name' => $contract->installation_address->name ?? $contract->customer->name,
+                'customer_number' => $contract->customer->number,
+                'customer_url' => Router::url([
+                    'prefix' => false,
+                    'controller' => 'Customers',
+                    'action' => 'view',
+                    $contract->customer->id,
+                ]),
+                'contract_number' => $contract->number,
+                'contract_url' => Router::url([
+                    'prefix' => false,
+                    'controller' => 'Contracts',
+                    'action' => 'view',
+                    $contract->id,
+                    'customer_id' => $contract->customer_id,
+                ]),
+                'access_point_id' => $contract->access_point_id,
+                'note' => $contract->note,
+                'CustomerConnectionIps' => (new Collection($contract->ip_addresses))->map(
+                    fn(IpAddress $ipAddress) => [
+                        'ip_address' => $ipAddress->ip_address,
+                        'name' => $ipAddress->note,
+                        'note' => $ipAddress->note,
+                    ],
+                ),
+            ],
+        );
     }
 }

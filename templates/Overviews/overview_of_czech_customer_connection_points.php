@@ -61,13 +61,12 @@
                             <th><?= __('Available Maximal Upload Speed Category') ?></th>
                             <th><?= __('VHCN Network Category') ?></th>
                             <th><?= __('Address') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($connection_points as $connection_point) : ?>
                         <tr>
-                            <td><?= $this->Number->format($connection_point->address_registry_reference) ?></td>
+                            <td><?= h($connection_point->ruian_gid) ?></td>
                             <td><?= isset($connection_point->active_connections) ?
                                 $this->Number->format($connection_point->active_connections) : '' ?></td>
                             <td><?= isset($connection_point->active_connections_nonbusiness) ?
@@ -86,14 +85,6 @@
                             <td><?= h($connection_point->available_speeds->maximal_upload_category) ?></td>
                             <td><?= $this->Number->format($connection_point->vhcn_category) ?></td>
                             <td><?= h($connection_point->ruian_address) ?></td>
-                            <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), [
-                                    'plugin' => 'Ruian',
-                                    'controller' => 'Addresses',
-                                    'action' => 'view',
-                                    $connection_point->address_registry_reference,
-                                ]) ?>
-                            </td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>

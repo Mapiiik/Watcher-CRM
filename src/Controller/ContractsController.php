@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\ApiClient;
 use App\Model\Enum\ContractPrintType;
 use App\Model\Enum\CustomerDealer;
+use App\NMS\ApiClient as NMSApiClient;
 use App\Service\ContractPrint\ContractPrintData;
 use App\Service\ContractPrint\ContractPrintDataEnricher;
 use App\Service\ContractPrint\ContractPrintPdfOutput;
@@ -316,8 +316,8 @@ class ContractsController extends AppController
         ));
 
         // load access points from NMS if possible
-        $accessPoints = ApiClient::getAccessPoints();
-        $ipAddressRanges = ApiClient::searchIpAddressRanges([]);
+        $accessPoints = NMSApiClient::getAccessPoints();
+        $ipAddressRanges = NMSApiClient::searchIpAddressRanges([]);
         if ($accessPoints && $ipAddressRanges) {
             $this->set(
                 'accessPoints',
@@ -450,8 +450,8 @@ class ContractsController extends AppController
         ));
 
         // load access points from NMS if possible
-        $accessPoints = ApiClient::getAccessPoints();
-        $ipAddressRanges = ApiClient::searchIpAddressRanges([]);
+        $accessPoints = NMSApiClient::getAccessPoints();
+        $ipAddressRanges = NMSApiClient::searchIpAddressRanges([]);
         if ($accessPoints && $ipAddressRanges) {
             $this->set(
                 'accessPoints',

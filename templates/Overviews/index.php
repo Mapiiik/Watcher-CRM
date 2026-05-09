@@ -15,13 +15,13 @@
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __('Overview of Customer Connection Speeds') . ' (' . __('Reports for CTO') . ')',
-                    ['action' => 'overviewOfCustomerConnectionSpeeds'],
+                    __('Overview of Czech Customer Connection Points') . ' (' . __('Reports for CTO') . ')',
+                    ['action' => 'overviewOfCzechCustomerConnectionPoints'],
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __('Overview of Customer Connection Points') . ' (' . __('Reports for CTO') . ')',
-                    ['action' => 'overviewOfCustomerConnectionPoints'],
+                    __('Overview of Czech Customer Connection Speeds') . ' (' . __('Reports for CTO') . ')',
+                    ['action' => 'overviewOfCzechCustomerConnectionSpeeds'],
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(

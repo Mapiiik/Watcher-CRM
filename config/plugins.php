@@ -43,7 +43,4 @@ return [
 
     // RADIUS
     'Radius' => [],
-
-    // RUIAN
-    'Ruian' => [],
 ];

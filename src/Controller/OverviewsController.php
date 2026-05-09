@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\ApiClient;
+use App\Addresses\Resolver as AddressesResolver;
 use App\Model\Entity\Billing;
 use App\Model\Entity\Commission;
 use App\Model\Entity\Contract;
@@ -15,16 +15,13 @@ use App\Model\Table\LabelsTable;
 use App\Model\Table\QueuesTable;
 use App\Model\Table\ServicesTable;
 use App\Model\Table\ServiceTypesTable;
+use App\NMS\ApiClient as NMSApiClient;
 use ArrayObject;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
-use Cake\Database\Exception\MissingConnectionException;
-use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
 use Cake\Validation\Validation;
-use Exception;
-use Ruian\Model\Table\AddressesTable;
 use RuntimeException;
 use stdClass;
 
@@ -60,38 +57,24 @@ class OverviewsController extends AppController
             'name',
         ])->all();
 
-        // load RUIAN addresses
-        // TODO: Refactor to use \App\Addresses\ApiClient
-        $ruianAddressesTable = $this->fetchTable(AddressesTable::class);
-        $ruianAddresses = [];
+        // Load addresses from national address registry for existing installation addresses
+        /** @var \Cake\Datasource\ResultSetInterface<int, \App\Model\Entity\Address> $installationAddresses */
+        $installationAddresses = $contractsTable->InstallationAddresses
+            ->find()
+            ->where([
+                'address_registry_source IS NOT' => null,
+                'address_registry_reference IS NOT' => null,
+            ])
+            ->all();
 
+        $registryAddresses = [];
         try {
-            $ruianAddresses = $ruianAddressesTable->find(
-                'list',
-                valueField: 'address',
-                where: [
-                    'Addresses.kod_adm IN' =>
-                        $contractsTable->InstallationAddresses
-                            ->find(
-                                'list',
-                                valueField: 'address_registry_reference',
-                            )
-                            ->all()
-                            ->toArray()
-                    ,
-                ],
-                order: [
-                    'obec_nazev',
-                    'cast_obce_nazev',
-                    'ulice_nazev',
-                    'typ_so',
-                    'cislo_domovni',
-                    'cislo_orientacni',
-                    'cislo_orientacni_znak',
-                ],
-            )->all();
-        } catch (Exception $exception) {
-            // TODO
+            $registryAddresses = AddressesResolver::dropdownMap($installationAddresses);
+        } catch (RuntimeException $e) {
+            $this->Flash->warning(__(
+                'Could not load addresses from national address registry: {0}',
+                $e->getMessage(),
+            ));
         }
 
         // contracts filter
@@ -200,13 +183,21 @@ class OverviewsController extends AppController
         }
         unset($accessPointId);
 
-        // filter by RUIAN address
-        // TODO: Refactor to use \App\Addresses\ApiClient
-        $ruianAddressId = $this->getRequest()->getQuery('ruian_address_id');
-        if (is_string($ruianAddressId) && Validation::numeric($ruianAddressId)) {
-            $contractsQuery->where(['InstallationAddresses.address_registry_reference' => $ruianAddressId]);
+        // filter by registry address
+        $registryAddressId = $this->getRequest()->getQuery('registry_address_id');
+        if (is_string($registryAddressId)) {
+            // expect format "source|reference", e.g. "cz|12345678"
+            [
+                $address_registry_source,
+                $address_registry_reference,
+            ] = explode('|', $registryAddressId, limit: 2) + [null, null];
+
+            $contractsQuery->where([
+                'InstallationAddresses.address_registry_reference' => $address_registry_reference,
+                'InstallationAddresses.address_registry_source' => $address_registry_source,
+            ]);
         }
-        unset($ruianAddressId);
+        unset($registryAddressId);
 
         // load contracts with paginator
         /** @var iterable<\App\Model\Entity\Contract> $contracts */
@@ -236,7 +227,7 @@ class OverviewsController extends AppController
 
         $this->set(compact(
             'labels',
-            'ruianAddresses',
+            'registryAddresses',
             'contracts',
         ));
 
@@ -248,36 +239,9 @@ class OverviewsController extends AppController
             ]),
         );
 
-        // load service types
-        $this->set(
-            'serviceTypes',
-            $this->fetchTable(ServiceTypesTable::class)->find('list', order: [
-                'name',
-            ]),
-        );
-
-        // load CTO categories
-        $this->set(
-            'ctoCategories',
-            $this->fetchTable(QueuesTable::class)
-                ->find(
-                    'list',
-                    order: 'cto_category',
-                    group: 'cto_category',
-                    keyField: 'cto_category',
-                    valueField: 'cto_category',
-                )
-                ->whereNotNull('cto_category'),
-        );
-
-        // load access points from NMS if possible
-        $accessPoints = ApiClient::getAccessPoints();
-        if ($accessPoints) {
-            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
-        } else {
-            $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
-            $this->set('accessPoints', []);
-        }
+        $this->setServiceTypesViewVar();
+        $this->setCtoCategoriesViewVar();
+        $this->setAccessPointsViewVar();
     }
 
     /**
@@ -298,7 +262,7 @@ class OverviewsController extends AppController
         $servicesQuery = $this->fetchTable(ServicesTable::class)
             ->find()
             ->contain('Billings', function (SelectQuery $q) use ($month_to_display, $access_point_id) {
-                return $q
+                $q
                     ->contain('Services')
                     ->contain('Customers')
                     ->contain('Contracts', function (SelectQuery $q) use ($access_point_id) {
@@ -307,16 +271,9 @@ class OverviewsController extends AppController
                         return is_string($access_point_id) && Validation::uuid($access_point_id) ?
                             $q->where(['Contracts.access_point_id' => $access_point_id]) :
                             $q;
-                    })
-                    ->where([
-                        'Billings.billing_from <=' => $month_to_display->lastOfMonth(), //last day of month
-                    ])
-                    ->andWhere([
-                        'OR' => [
-                            'Billings.billing_until IS NULL',
-                            'Billings.billing_until >=' => $month_to_display->firstOfMonth(), //first day of month
-                        ],
-                    ]);
+                    });
+
+                return self::applyActiveInMonthScope($q, $month_to_display);
             })
             ->contain('Queues')
             ->contain('ServiceTypes')
@@ -419,74 +376,39 @@ class OverviewsController extends AppController
 
         $this->set(compact('services', 'month_to_display'));
 
-        // load service types
-        $this->set(
-            'serviceTypes',
-            $this->fetchTable(ServiceTypesTable::class)->find('list', order: [
-                'name',
-            ]),
-        );
-
-        // load CTO categories
-        $this->set(
-            'ctoCategories',
-            $this->fetchTable(QueuesTable::class)
-                ->find(
-                    'list',
-                    order: 'cto_category',
-                    group: 'cto_category',
-                    keyField: 'cto_category',
-                    valueField: 'cto_category',
-                )
-                ->whereNotNull('cto_category'),
-        );
-
-        // load access points from NMS if possible
-        $accessPoints = ApiClient::getAccessPoints();
-        if ($accessPoints) {
-            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
-        } else {
-            $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
-            $this->set('accessPoints', []);
-        }
+        $this->setServiceTypesViewVar();
+        $this->setCtoCategoriesViewVar();
+        $this->setAccessPointsViewVar();
     }
 
     /**
-     * Overview of connection points method
+     * Overview of Czech customer connection points method
      *
      * @param string|null $category Optional parameter, CTO category.
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function overviewOfCustomerConnectionPoints(?string $category = null)
+    public function overviewOfCzechCustomerConnectionPoints(?string $category = null)
     {
         $month_to_display = new Date($this->getRequest()->getQuery('month_to_display', 'now'));
 
         /** @var \Cake\Collection\CollectionInterface<string, \Cake\Collection\CollectionInterface<string, \stdClass>> $cto_categories */
-        $cto_categories = $this->fetchTable(BillingsTable::class)->find()
-            ->contain('Customers')
-            ->contain([
-                'Contracts' => [
-                    'InstallationAddresses',
-                ],
-            ])
-            ->contain([
-                'Services' => [
-                    'ServiceTypes',
-                    'Queues',
-                ],
-            ])
-
-            ->where([
-                'Billings.billing_from <=' => $month_to_display->lastOfMonth(), //last day of month
-            ])
-            ->andWhere([
-                'OR' => [
-                    'Billings.billing_until IS NULL',
-                    'Billings.billing_until >=' => $month_to_display->firstOfMonth(), //first day of month
-                ],
-            ])
-
+        $cto_categories = self::applyActiveInMonthScope(
+            $this->fetchTable(BillingsTable::class)->find()
+                ->contain('Customers')
+                ->contain([
+                    'Contracts' => [
+                        'InstallationAddresses',
+                    ],
+                ])
+                ->contain([
+                    'Services' => [
+                        'ServiceTypes',
+                        'Queues',
+                    ],
+                ]),
+            $month_to_display,
+        )
             ->where(['Queues.speed_down IS NOT NULL'])
             ->where(['Queues.speed_up IS NOT NULL'])
             ->where(['Queues.cto_category IS NOT NULL'])
@@ -500,41 +422,72 @@ class OverviewsController extends AppController
 
             ->formatResults(
                 function (CollectionInterface $billings) {
+                    // Resolve all installation addresses with registry refs in one batch.
+                    // Failure → empty map; groups will fall back to GPS / unknown branches.
+                    try {
+                        $addressRegistryMatches = AddressesResolver::matchMap(
+                            (new Collection($billings))
+                                ->extract('contract.installation_address')
+                                ->filter()
+                                ->toList(),
+                        );
+                    } catch (RuntimeException $e) {
+                        $addressRegistryMatches = [];
+
+                        $this->Flash->error(__(
+                            'Could not load addresses from national address registry: {0}',
+                            $e->getMessage(),
+                        ));
+                    }
+
                     return $billings
                         ->groupBy('service.queue.cto_category')
-                        ->map(function ($category_billings, $cto_category) {
+                        ->map(function ($category_billings, $cto_category) use ($addressRegistryMatches) {
                             return (new Collection($category_billings))
-                                // TODO: Refactor to use \App\Addresses\ApiClient
-                                ->groupBy('contract.installation_address.address_registry_reference')
-                                ->map(function ($billings, $address_registry_reference) use ($cto_category) {
+                                ->groupBy(function (Billing $billing) {
+                                    $address = $billing->contract->installation_address;
+
+                                    if (
+                                        !empty($address->address_registry_reference)
+                                            && !empty($address->address_registry_source)
+                                    ) {
+                                        return $address->address_registry_source
+                                            . '|' . $address->address_registry_reference;
+                                    }
+
+                                    // This should not happen due to the query conditions, but just in case.
+                                    return null;
+                                })
+                                ->map(function ($billings, $key) use ($cto_category, $addressRegistryMatches) {
                                     $billings_collection = new Collection($billings);
 
                                     $address = new stdClass();
 
                                     $address->billings = $billings_collection;
 
-                                    $address->address_registry_reference = $address_registry_reference;
+                                    // Attempt to find a match in the address registry results for this address.
+                                    $addressRegistryMatch = $addressRegistryMatches[$key] ?? null;
 
-                                    // retrieve full address if RUIAN is connected
-                                    // TODO: Refactor to use \App\Addresses\ApiClient
-                                    try {
-                                        $ruianAddressesTable = $this->fetchTable(AddressesTable::class);
-                                        $address->ruian_address = $ruianAddressesTable
-                                            ->get($address_registry_reference)
-                                            ->address;
-                                    } catch (MissingConnectionException $missingConnectionError) {
+                                    if ($addressRegistryMatch !== null) {
+                                        // Authoritative data from the national address registry.
+                                        $address->ruian_gid = $addressRegistryMatch['registry_ref'];
+                                        $address->ruian_address = $addressRegistryMatch['formatted_address'];
+                                    } elseif (!empty($addressRegistryMatches)) {
+                                        $address->ruian_gid = null;
                                         $address->ruian_address = null;
-                                    } catch (RecordNotFoundException $recordNotFoundError) {
-                                        $address->ruian_address = null;
+
                                         /** @var array<int, string> $contractsWithInvalidRuianGid */
                                         $contractsWithInvalidRuianGid = $billings_collection
                                             ->extract('contract.number')
                                             ->toList();
+
                                         $this->Flash->warning(__(
                                             'Invalid RUIAN GID: {0} for addresses associated with contracts: {1}',
-                                            $address_registry_reference,
+                                            explode('|', $key, limit: 2)[1] ?? __('unknown'),
                                             implode(', ', $contractsWithInvalidRuianGid),
                                         ));
+                                    } else {
+                                        $address->ruian_gid = explode('|', $key, limit: 2)[1] ?? null;
                                     }
 
                                     $address->cto_category = $cto_category;
@@ -563,24 +516,6 @@ class OverviewsController extends AppController
                                         ArrayObject::ARRAY_AS_PROPS,
                                     );
 
-                                    $categoryFinder = function ($speed, $cto_category) {
-                                        if (in_array($cto_category, ['s2_wifi'])) {
-                                            if ($speed >= 1024000) {
-                                                return '1000';
-                                            } elseif ($speed >= 307200) {
-                                                return '300_1000';
-                                            } elseif ($speed >= 102400) {
-                                                return '100_300';
-                                            } else {
-                                                return '30_100';
-                                            }
-                                        } elseif (in_array($cto_category, ['s2_fttb', 's2_ftth'])) {
-                                            return '1000';
-                                        } else {
-                                            return 'unknown';
-                                        }
-                                    };
-
                                     $address->available_connections = $billings_collection->count();
 
                                     $maximal_download = $billings_collection
@@ -595,19 +530,19 @@ class OverviewsController extends AppController
 
                                     $address->available_speeds = new ArrayObject(
                                         [
-                                            'maximal_download_category' => $categoryFinder(
+                                            'maximal_download_category' => self::categorizeAvailableSpeed(
                                                 $maximal_download,
                                                 $cto_category,
                                             ),
-                                            'effective_download_category' => $categoryFinder(
+                                            'effective_download_category' => self::categorizeAvailableSpeed(
                                                 $effective_download,
                                                 $cto_category,
                                             ),
-                                            'maximal_upload_category' => $categoryFinder(
+                                            'maximal_upload_category' => self::categorizeAvailableSpeed(
                                                 $maximal_upload,
                                                 $cto_category,
                                             ),
-                                            'effective_upload_category' => $categoryFinder(
+                                            'effective_upload_category' => self::categorizeAvailableSpeed(
                                                 $effective_upload,
                                                 $cto_category,
                                             ),
@@ -648,7 +583,7 @@ class OverviewsController extends AppController
 
             foreach ($cto_categories->toArray()[$category] as $connection_point) {
                 $row = [
-                    h($connection_point->address_registry_reference),
+                    h($connection_point->ruian_gid),
                     h($connection_point->cto_category),
                     (int)$connection_point->active_connections,
                     (int)$connection_point->active_connections_nonbusiness,
@@ -691,34 +626,26 @@ class OverviewsController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function overviewOfCustomerConnectionSpeeds()
+    public function overviewOfCzechCustomerConnectionSpeeds()
     {
         $month_to_display = new Date($this->getRequest()->getQuery('month_to_display', 'now'));
 
-        $cto_categories = $this->fetchTable(BillingsTable::class)->find()
-            ->contain('Customers')
-            ->contain([
-                'Contracts' => [
-                    'InstallationAddresses',
-                ],
-            ])
-            ->contain([
-                'Services' => [
-                    'ServiceTypes',
-                    'Queues',
-                ],
-            ])
-
-            ->where([
-                'Billings.billing_from <=' => $month_to_display->lastOfMonth(), //last day of month
-            ])
-            ->andWhere([
-                'OR' => [
-                    'Billings.billing_until IS NULL',
-                    'Billings.billing_until >=' => $month_to_display->firstOfMonth(), //first day of month
-                ],
-            ])
-
+        $cto_categories = self::applyActiveInMonthScope(
+            $this->fetchTable(BillingsTable::class)->find()
+                ->contain('Customers')
+                ->contain([
+                    'Contracts' => [
+                        'InstallationAddresses',
+                    ],
+                ])
+                ->contain([
+                    'Services' => [
+                        'ServiceTypes',
+                        'Queues',
+                    ],
+                ]),
+            $month_to_display,
+        )
             ->where(['Queues.speed_down IS NOT NULL'])
             ->where(['Queues.speed_up IS NOT NULL'])
             ->where(['Queues.cto_category IS NOT NULL'])
@@ -755,54 +682,26 @@ class OverviewsController extends AppController
 
                                     $address->advertised_speeds = new ArrayObject(
                                         $billings_collection
-                                            ->countBy(function ($billing) {
-                                                $advertised_download_speed
-                                                    = $billing->service->queue->speed_down;
-
-                                                if ($advertised_download_speed < 2048) {
-                                                    return 'speed_0_2';
-                                                } elseif ($advertised_download_speed < 10240) {
-                                                    return 'speed_2_10';
-                                                } elseif ($advertised_download_speed < 30720) {
-                                                    return 'speed_10_30';
-                                                } elseif ($advertised_download_speed < 102400) {
-                                                    return 'speed_30_100';
-                                                } elseif ($advertised_download_speed < 1024000) {
-                                                    return 'speed_100_1000';
-                                                } else {
-                                                    return 'speed_1000_plus';
-                                                }
-                                            })
+                                            ->countBy(fn(Billing $billing) => self::bucketAdvertisedSpeed(
+                                                $billing->service?->queue?->speed_down,
+                                            ))
                                             ->toArray(),
                                         ArrayObject::ARRAY_AS_PROPS,
                                     );
 
                                     $address->advertised_speeds_nonbusiness = new ArrayObject(
                                         $billings_collection
-                                        ->countBy(function ($billing) {
-                                            // skip business customers
-                                            if ($billing->customer->identity_number !== null) {
-                                                return 'business';
-                                            }
+                                            ->countBy(function (Billing $billing) {
+                                                // skip business customers
+                                                if ($billing->customer->identity_number !== null) {
+                                                    return 'business';
+                                                }
 
-                                            $advertised_download_speed
-                                                = $billing->service->queue->speed_down;
-
-                                            if ($advertised_download_speed < 2048) {
-                                                return 'speed_0_2';
-                                            } elseif ($advertised_download_speed < 10240) {
-                                                return 'speed_2_10';
-                                            } elseif ($advertised_download_speed < 30720) {
-                                                return 'speed_10_30';
-                                            } elseif ($advertised_download_speed < 102400) {
-                                                return 'speed_30_100';
-                                            } elseif ($advertised_download_speed < 1024000) {
-                                                return 'speed_100_1000';
-                                            } else {
-                                                return 'speed_1000_plus';
-                                            }
-                                        })
-                                        ->toArray(),
+                                                return self::bucketAdvertisedSpeed(
+                                                    $billing->service?->queue?->speed_down,
+                                                );
+                                            })
+                                            ->toArray(),
                                     );
 
                                     return $address;
@@ -832,17 +731,10 @@ class OverviewsController extends AppController
                         ->contain('ContractStates')
                         ->contain('Customers')
                         ->contain('Billings', function (SelectQuery $q) use ($month_to_display) {
-                            return $q
-                                ->contain('Services')
-                                ->where([
-                                    'Billings.billing_from <=' => $month_to_display->lastOfMonth(), //last day of month
-                                ])
-                                ->andWhere([
-                                    'OR' => [
-                                        'Billings.billing_until IS NULL',
-                                        'Billings.billing_until >=' => $month_to_display->firstOfMonth(), //first day of month
-                                    ],
-                                ]);
+                            return self::applyActiveInMonthScope(
+                                $q->contain('Services'),
+                                $month_to_display,
+                            );
                         })
                         // format results
                         ->formatResults(function (CollectionInterface $contracts) {
@@ -881,5 +773,119 @@ class OverviewsController extends AppController
             });
 
         $this->set(compact('dealers', 'month_to_display'));
+    }
+
+    /**
+     * Restrict a billings query to billings active during the given month.
+     *
+     * Equivalent to: billing_from <= last day of month AND
+     * (billing_until IS NULL OR billing_until >= first day of month).
+     *
+     * @template TSubject of array|\Cake\Datasource\EntityInterface
+     * @param \Cake\ORM\Query\SelectQuery<TSubject> $query Query on a (root or contained) Billings.
+     * @param \Cake\I18n\Date $monthToDisplay Any date within the target month.
+     * @return \Cake\ORM\Query\SelectQuery<TSubject> The same query (returned for chaining).
+     */
+    private static function applyActiveInMonthScope(SelectQuery $query, Date $monthToDisplay): SelectQuery
+    {
+        return $query
+            ->where(['Billings.billing_from <=' => $monthToDisplay->lastOfMonth()])
+            ->andWhere([
+                'OR' => [
+                    'Billings.billing_until IS NULL',
+                    'Billings.billing_until >=' => $monthToDisplay->firstOfMonth(),
+                ],
+            ]);
+    }
+
+    /**
+     * Set the `serviceTypes` view var (alphabetical list).
+     */
+    private function setServiceTypesViewVar(): void
+    {
+        $this->set(
+            'serviceTypes',
+            $this->fetchTable(ServiceTypesTable::class)->find('list', order: ['name']),
+        );
+    }
+
+    /**
+     * Set the `ctoCategories` view var (distinct, non-null, alphabetical).
+     */
+    private function setCtoCategoriesViewVar(): void
+    {
+        $this->set(
+            'ctoCategories',
+            $this->fetchTable(QueuesTable::class)
+                ->find(
+                    'list',
+                    order: 'cto_category',
+                    group: 'cto_category',
+                    keyField: 'cto_category',
+                    valueField: 'cto_category',
+                )
+                ->whereNotNull('cto_category'),
+        );
+    }
+
+    /**
+     * Set the `accessPoints` view var from the NMS API.
+     *
+     * Falls back to an empty list + Flash warning when NMS is unreachable.
+     */
+    private function setAccessPointsViewVar(): void
+    {
+        $accessPoints = NMSApiClient::getAccessPoints();
+        if ($accessPoints) {
+            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
+        } else {
+            $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
+            $this->set('accessPoints', []);
+        }
+    }
+
+    /**
+     * Bucket a download/upload speed (kbps) into the CTO availability category code,
+     * given the technology family of the access.
+     *
+     * Used by the connection-points report's available_speeds output.
+     */
+    private static function categorizeAvailableSpeed(int|float|null $speed, string $ctoCategory): string
+    {
+        if (in_array($ctoCategory, ['s2_fttb', 's2_ftth'], true)) {
+            return '1000';
+        }
+
+        if ($ctoCategory !== 's2_wifi') {
+            return 'unknown';
+        }
+
+        return match (true) {
+            $speed >= 1024000 => '1000',
+            $speed >= 307200 => '300_1000',
+            $speed >= 102400 => '100_300',
+            default => '30_100',
+        };
+    }
+
+    /**
+     * Bucket an advertised download speed (kbps) into the report band code.
+     *
+     * Used by the connection-speeds report's advertised_speeds output.
+     * Null is treated as the lowest band — preserves the original PHP 8
+     * `null < 2048` comparison semantics. The query upstream already filters
+     * out null speeds via `Queues.speed_down IS NOT NULL`, so this branch
+     * is defensive only.
+     */
+    private static function bucketAdvertisedSpeed(?int $speedKbps): string
+    {
+        return match (true) {
+            $speedKbps === null, $speedKbps < 2048 => 'speed_0_2',
+            $speedKbps < 10240 => 'speed_2_10',
+            $speedKbps < 30720 => 'speed_10_30',
+            $speedKbps < 102400 => 'speed_30_100',
+            $speedKbps < 1024000 => 'speed_100_1000',
+            default => 'speed_1000_plus',
+        };
     }
 }
