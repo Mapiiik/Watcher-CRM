@@ -354,6 +354,7 @@ class AddressesController extends AppController
         $this->getRequest()->allowMethod(['post']);
         set_time_limit(0); // batched external API calls may take a while
 
+        /** @var \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Address> $query */
         $query = $this->Addresses->find()->contain('Countries');
         if (isset($this->customer_id)) {
             $query->where(['Addresses.customer_id' => $this->customer_id]);
@@ -429,7 +430,7 @@ class AddressesController extends AppController
         $batchItems = [];
 
         foreach ($query->all() as $address) {
-            $countryCode = $address->country?->code;
+            $countryCode = $address->country->code;
             if ($countryCode === null) {
                 // can't look up without a country
                 $skipped++;
