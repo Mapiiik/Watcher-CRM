@@ -253,7 +253,7 @@ class CustomersController extends AppController
             ]);
         } elseif (!empty($search) || !$allow_advanced_search) {
             // notify the required use of the customer number
-            $this->Flash->set(__('Please use the customer number or company identification number in the search.'));
+            $this->Flash->info(__('Please use the customer number or company identification number in the search.'));
             $customersQuery->where([
                 'false',
             ]);
