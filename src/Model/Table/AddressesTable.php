@@ -155,8 +155,12 @@ class AddressesTable extends AppTable
             ->allowEmptyString('zip');
 
         $validator
-            ->integer('ruian_gid')
-            ->allowEmptyString('ruian_gid');
+            ->scalar('address_registry_reference')
+            ->allowEmptyString('address_registry_reference');
+
+        $validator
+            ->scalar('address_registry_source')
+            ->allowEmptyString('address_registry_source');
 
         $validator
             ->numeric('gps_x')

@@ -3,9 +3,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Addresses\ApiClient;
 use App\Model\Entity\Address;
 use App\Model\Enum\AddressNumberType;
-use Ruian\Model\Table\AddressesTable;
+use RuntimeException;
 
 /**
  * Addresses Controller
@@ -29,7 +30,7 @@ class AddressesController extends AppController
 
         // search
         $search = $this->getRequest()->getQuery('search');
-        if (!empty($search)) {
+        if (!empty($search) && is_string($search)) {
             $conditions[] = [
                 'OR' => [
                     'Addresses.company ILIKE' => '%' . trim($search) . '%',
@@ -41,7 +42,7 @@ class AddressesController extends AppController
                     'Addresses.number ILIKE' => '%' . trim($search) . '%',
                     'Addresses.city ILIKE' => '%' . trim($search) . '%',
                     'Addresses.zip ILIKE' => '%' . trim($search) . '%',
-                    'Addresses.ruian_gid' => (int)trim($search),
+                    'Addresses.address_registry_reference' => trim($search),
                 ],
             ];
         }
@@ -104,8 +105,8 @@ class AddressesController extends AppController
             if ($this->getRequest()->getData('refresh') == 'refresh' || $address->hasErrors()) {
                 // only refresh
             } else {
-                // update RUIAN data
-                $address->patch($this->findRuianData($address));
+                // update national address registry data
+                $address->patch($this->findNationalAddressRegistryData($address));
 
                 // set manual coordinate if defined
                 if ($address->manual_coordinate_setting) {
@@ -153,8 +154,8 @@ class AddressesController extends AppController
             if ($this->getRequest()->getData('refresh') == 'refresh' || $address->hasErrors()) {
                 // only refresh
             } else {
-                // update RUIAN data
-                $address->patch($this->findRuianData($address));
+                // update national address registry data
+                $address->patch($this->findNationalAddressRegistryData($address));
 
                 // set manual coordinate if defined
                 if ($address->manual_coordinate_setting) {
@@ -208,128 +209,117 @@ class AddressesController extends AppController
     }
 
     /**
-     * Find RUIAN data for address
+     * Find National Address Registry Data (CZ RUIAN, HR DGU, etc.)
      *
      * @param \App\Model\Entity\Address $address Address to be find in RUIAN
-     * @return array<string, mixed> array (ruian_gid, gps_y, gps_x)
+     * @return array<string, mixed> array (address_registry_reference, address_registry_source, gps_y, gps_x)
      */
-    private function findRuianData(Address $address): array
+    private function findNationalAddressRegistryData(Address $address): array
     {
-        // get number type
-        $typ_so = $address->number_type == AddressNumberType::Registration ? 'č.ev.' : 'č.p.';
-
-        // parse number (house_number/orientation_number with optional letter)
-        $cislo_domovni = null;
-        $cislo_orientacni = null;
-        $cislo_orientacni_znak = '';
-
-        $rawNumber = trim($address->number ?? '');
-
-        if (str_contains($rawNumber, '/')) {
-            // Format: house_number/orientation_number with optional letter (e.g. "2186/1b")
-            if (
-                preg_match(
-                    '/^(?P<cislo_domovni>\d+)\/(?P<cislo_orientacni>\d+)(?P<cislo_orientacni_znak>[a-zA-Z]*)/',
-                    $rawNumber,
-                    $matches,
-                )
-            ) {
-                $cislo_domovni = (int)$matches['cislo_domovni'];
-                $cislo_orientacni = (int)$matches['cislo_orientacni'];
-                $cislo_orientacni_znak = $matches['cislo_orientacni_znak'];
-            }
-        } else {
-            // Format without slash: only house number present (e.g. "76" or "76 next to the mill")
-            if (preg_match('/^(?P<cislo_domovni>\d+)/', $rawNumber, $matches)) {
-                $cislo_domovni = (int)$matches['cislo_domovni'];
-            }
-        }
-
-        unset($rawNumber);
-
-        $conditionsForSearches = [
-            // search in RUIAN
-            [
-                'ulice_nazev IS' => $address->street,
-                'typ_so' => $typ_so,
-                'cislo_domovni IS' => $cislo_domovni,
-                'cislo_orientacni IS' => $cislo_orientacni,
-                'cislo_orientacni_znak IS' => $cislo_orientacni_znak,
-                'obec_nazev IS' => $address->city,
-                'psc IS' => $address->zip,
-            ],
-            // search in RUIAN with city as MOP
-            [
-                'ulice_nazev IS' => $address->street,
-                'typ_so' => $typ_so,
-                'cislo_domovni IS' => $cislo_domovni,
-                'cislo_orientacni IS' => $cislo_orientacni,
-                'cislo_orientacni_znak IS' => $cislo_orientacni_znak,
-                'mop_nazev IS' => $address->city,
-                'psc IS' => $address->zip,
-            ],
-            // search in RUIAN with city as MOMC
-            [
-                'ulice_nazev IS' => $address->street,
-                'typ_so' => $typ_so,
-                'cislo_domovni IS' => $cislo_domovni,
-                'cislo_orientacni IS' => $cislo_orientacni,
-                'cislo_orientacni_znak IS' => $cislo_orientacni_znak,
-                'momc_nazev IS' => $address->city,
-                'psc IS' => $address->zip,
-            ],
-            // search in RUIAN with city as city part
-            [
-                'ulice_nazev IS' => $address->street,
-                'typ_so' => $typ_so,
-                'cislo_domovni IS' => $cislo_domovni,
-                'cislo_orientacni IS' => $cislo_orientacni,
-                'cislo_orientacni_znak IS' => $cislo_orientacni_znak,
-                'cast_obce_nazev IS' => $address->city,
-                'psc IS' => $address->zip,
-            ],
-            // search in RUIAN with street as city part
-            [
-                'ulice_nazev' => '',
-                'cast_obce_nazev IS' => $address->street,
-                'typ_so' => $typ_so,
-                'cislo_domovni IS' => $cislo_domovni,
-                'cislo_orientacni IS' => $cislo_orientacni,
-                'cislo_orientacni_znak IS' => $cislo_orientacni_znak,
-                'obec_nazev IS' => $address->city,
-                'psc IS' => $address->zip,
-            ],
-        ];
-
-        // search for all options
-        foreach ($conditionsForSearches as $conditions) {
-            $ruianAddresses = $this->fetchTable(AddressesTable::class)->find('all', conditions: $conditions);
-
-            $ruianAddresses->select([
-                'ruian_gid' => 'kod_adm',
-                'gps_y' => 'ST_Y(geometry)',
-                'gps_x' => 'ST_X(geometry)',
-            ]);
-
-            if ($ruianAddresses->count() > 1) {
-                $this->Flash->set(__('Multiple ({0}) RUIAN addresses found.', $ruianAddresses->count()));
-            }
-
-            if ($ruianAddresses->count() == 1) {
-                $this->Flash->set(__('Address found in RUIAN.'));
-
-                return $ruianAddresses->first()->toArray();
-            }
-
-            unset($ruianAddresses);
-        }
-
-        $this->Flash->error(__('Address could not be found in RUIAN.'));
-
-        return [
-            'ruian_gid' => null,
+        $notFoundResult = [
+            'address_registry_reference' => null,
+            'address_registry_source' => null,
             'gps_y' => null,
             'gps_x' => null,
         ];
+
+        // determine country code
+        if ($address->country === null) {
+            $countryCode = $this->Addresses->Countries->get($address->country_id)->code;
+        } else {
+            $countryCode = $address->country->code;
+        }
+
+        // if country code is not defined, we cannot do the lookup
+        if ($countryCode === null) {
+            $this->Flash->warning(__('Country code is not defined for the address country.'));
+
+            return $notFoundResult;
+        }
+
+        // use uppercase country code for consistency (e.g. 'CZ', 'HR')
+        $countryCode = strtoupper($countryCode);
+
+        // check if the country is supported by the national address registry API
+        try {
+            $addressesMeta = ApiClient::metaFromCache();
+        } catch (RuntimeException $e) {
+            $this->Flash->error(__(
+                'Could not retrieve national address registry metadata: {0}',
+                $e->getMessage(),
+            ));
+
+            return $notFoundResult;
+        }
+
+        if (!isset($addressesMeta['supported_countries']) || !is_array($addressesMeta['supported_countries'])) {
+            $this->Flash->error(__(
+                'National address registry lookup is not available. Could not retrieve supported countries list.',
+            ));
+
+            return $notFoundResult;
+        }
+        $supportedCountries = array_map('strtoupper', $addressesMeta['supported_countries']); // → ['CZ', 'HR']
+
+        if (!in_array($countryCode, $supportedCountries, true)) {
+            $this->Flash->info(__(
+                'National address registry lookup is not supported for country code: {0}.',
+                $countryCode,
+            ));
+
+            return $notFoundResult;
+        }
+
+        // do the lookup
+        try {
+            $response = ApiClient::lookup([
+                'country' => strtolower($countryCode),
+                'street' => $address->street,
+                'number' => $address->number,
+                'number_type' => $address->number_type === AddressNumberType::Registration
+                    ? 'registration' : 'house',
+                'city' => $address->city,
+                'postal_code' => $address->zip,
+            ]);
+
+            if ($response['ambiguous']) {
+                $this->Flash->info(__(
+                    'Multiple ({0}) addresses found in national ({1}) address registry.',
+                    count($response['matches']),
+                    $countryCode,
+                ));
+            }
+
+            if (count($response['matches']) === 1) {
+                $match = $response['matches'][0];
+                $this->Flash->info(__(
+                    'Address found in national ({0}) address registry.',
+                    $countryCode,
+                ));
+
+                return [
+                    'address_registry_reference' => $match['registry_ref'],
+                    'address_registry_source' => $match['source'],
+                    'gps_y' => $match['geometry']['coordinates'][1], // lat
+                    'gps_x' => $match['geometry']['coordinates'][0], // lon
+                ];
+            }
+        } catch (RuntimeException $e) {
+            $this->Flash->error(__(
+                'Error during national ({0}) address registry lookup: {1}',
+                $countryCode,
+                $e->getMessage(),
+            ));
+
+            return $notFoundResult;
+        }
+
+        // no match found
+        $this->Flash->error(__(
+            'Address could not be found in national ({0}) address registry.',
+            $countryCode,
+        ));
+
+        return $notFoundResult;
     }
 }

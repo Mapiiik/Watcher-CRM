@@ -188,9 +188,10 @@ class CustomersController extends AppController
                 function (CollectionInterface $customerPoints) {
                     return $customerPoints
                         ->groupBy(function ($contract) {
-                            if (isset($contract->installation_address->ruian_gid)) {
-                                // return RUIAN GID as key if set
-                                return $contract->installation_address->ruian_gid;
+                            // TODO: Refactor to use \App\Addresses\ApiClient
+                            if (isset($contract->installation_address->address_registry_reference)) {
+                                // return address registry reference as key if set
+                                return $contract->installation_address->address_registry_reference;
                             } elseif (
                                 isset($contract->installation_address->gps_x)
                                 && isset($contract->installation_address->gps_y)
@@ -210,6 +211,7 @@ class CustomersController extends AppController
                             function ($contracts, $key) {
                                 if (is_numeric($key)) {
                                     // Try to load RUIAN record if RUIAN GID is set
+                                    // TODO: Refactor to use \App\Addresses\ApiClient
                                     try {
                                         $address = $this->fetchTable(AddressesTable::class)->get(
                                             $key,

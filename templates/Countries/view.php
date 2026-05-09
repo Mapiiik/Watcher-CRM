@@ -60,7 +60,7 @@
                             <th><?= __('Number') ?></th>
                             <th><?= __('City') ?></th>
                             <th><?= __('Zip') ?></th>
-                            <th><?= __('RÚIAN') ?></th>
+                            <th><?= __('Address Registry Reference') ?></th>
                             <th class="actions"><?= __('Map location') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
@@ -83,9 +83,11 @@
                             <td><?= h($address->number) ?></td>
                             <td><?= h($address->city) ?></td>
                             <td><?= h($address->zip) ?></td>
-                            <td><?= $address->ruian_gid === null ?
-                                '<span style="color: red;">' . __('unknown') . '</span>' :
-                                $this->Number->format($address->ruian_gid)
+                            <td><?= $address->address_registry_reference === null || $address->address_registry_source === null ?
+                                '<span style="color: red;">' . __('unknown') . '</span>'
+                                :
+                                h($address->address_registry_reference)
+                                    . ' (' . h(strtoupper($address->address_registry_source)) . ')'
                             ?></td>
                             <td class="actions">
                                 <?= $address->gps_x !== null && $address->gps_y !== null ?

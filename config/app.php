@@ -148,6 +148,14 @@ return [
             'duration' => '+5 minutes',
             'url' => env('CACHE_APICLIENT_URL', null),
         ],
+        'addresses_api' => [
+            'className' => FileEngine::class,
+            'prefix' => 'addresses_api_',
+            'path' => CACHE . 'addresses' . DS,
+            'serialize' => true,
+            'duration' => '+1 day',
+            'url' => env('CACHE_ADDRESSES_URL', null),
+        ],
     ],
 
     /*

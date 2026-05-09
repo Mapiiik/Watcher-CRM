@@ -121,10 +121,12 @@
                             </td>
                         </tr>
                         <tr>
-                            <th><?= __('RÚIAN') ?></th>
-                            <td><?= $address->ruian_gid === null ?
-                                '<span style="color: red;">' . __('unknown') . '</span>' :
-                                $this->Number->format($address->ruian_gid)
+                            <th><?= __('Address Registry Reference') ?></th>
+                            <td><?= $address->address_registry_reference === null || $address->address_registry_source === null ?
+                                '<span style="color: red;">' . __('unknown') . '</span>'
+                                :
+                                h($address->address_registry_reference)
+                                    . ' (' . h(strtoupper($address->address_registry_source)) . ')'
                             ?></td>
                         </tr>
                         <tr>

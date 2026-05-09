@@ -61,6 +61,7 @@ class OverviewsController extends AppController
         ])->all();
 
         // load RUIAN addresses
+        // TODO: Refactor to use \App\Addresses\ApiClient
         $ruianAddressesTable = $this->fetchTable(AddressesTable::class);
         $ruianAddresses = [];
 
@@ -73,7 +74,7 @@ class OverviewsController extends AppController
                         $contractsTable->InstallationAddresses
                             ->find(
                                 'list',
-                                valueField: 'ruian_gid',
+                                valueField: 'address_registry_reference',
                             )
                             ->all()
                             ->toArray()
@@ -200,9 +201,10 @@ class OverviewsController extends AppController
         unset($accessPointId);
 
         // filter by RUIAN address
+        // TODO: Refactor to use \App\Addresses\ApiClient
         $ruianAddressId = $this->getRequest()->getQuery('ruian_address_id');
         if (is_string($ruianAddressId) && Validation::numeric($ruianAddressId)) {
-            $contractsQuery->where(['InstallationAddresses.ruian_gid' => $ruianAddressId]);
+            $contractsQuery->where(['InstallationAddresses.address_registry_reference' => $ruianAddressId]);
         }
         unset($ruianAddressId);
 
@@ -488,11 +490,12 @@ class OverviewsController extends AppController
             ->where(['Queues.speed_down IS NOT NULL'])
             ->where(['Queues.speed_up IS NOT NULL'])
             ->where(['Queues.cto_category IS NOT NULL'])
-            ->where(['InstallationAddresses.ruian_gid IS NOT NULL'])
+            ->where(['InstallationAddresses.address_registry_reference IS NOT NULL'])
+            ->where(['InstallationAddresses.address_registry_source' => 'cz'])
 
             ->orderBy([
                 'Queues.cto_category',
-                'InstallationAddresses.ruian_gid',
+                'InstallationAddresses.address_registry_reference',
             ])
 
             ->formatResults(
@@ -501,21 +504,23 @@ class OverviewsController extends AppController
                         ->groupBy('service.queue.cto_category')
                         ->map(function ($category_billings, $cto_category) {
                             return (new Collection($category_billings))
-                                ->groupBy('contract.installation_address.ruian_gid')
-                                ->map(function ($billings, $ruian_gid) use ($cto_category) {
+                                // TODO: Refactor to use \App\Addresses\ApiClient
+                                ->groupBy('contract.installation_address.address_registry_reference')
+                                ->map(function ($billings, $address_registry_reference) use ($cto_category) {
                                     $billings_collection = new Collection($billings);
 
                                     $address = new stdClass();
 
                                     $address->billings = $billings_collection;
 
-                                    $address->ruian_gid = $ruian_gid;
+                                    $address->address_registry_reference = $address_registry_reference;
 
                                     // retrieve full address if RUIAN is connected
+                                    // TODO: Refactor to use \App\Addresses\ApiClient
                                     try {
                                         $ruianAddressesTable = $this->fetchTable(AddressesTable::class);
                                         $address->ruian_address = $ruianAddressesTable
-                                            ->get($ruian_gid)
+                                            ->get($address_registry_reference)
                                             ->address;
                                     } catch (MissingConnectionException $missingConnectionError) {
                                         $address->ruian_address = null;
@@ -527,7 +532,7 @@ class OverviewsController extends AppController
                                             ->toList();
                                         $this->Flash->warning(__(
                                             'Invalid RUIAN GID: {0} for addresses associated with contracts: {1}',
-                                            $ruian_gid,
+                                            $address_registry_reference,
                                             implode(', ', $contractsWithInvalidRuianGid),
                                         ));
                                     }
@@ -643,7 +648,7 @@ class OverviewsController extends AppController
 
             foreach ($cto_categories->toArray()[$category] as $connection_point) {
                 $row = [
-                    h($connection_point->ruian_gid),
+                    h($connection_point->address_registry_reference),
                     h($connection_point->cto_category),
                     (int)$connection_point->active_connections,
                     (int)$connection_point->active_connections_nonbusiness,
@@ -717,7 +722,8 @@ class OverviewsController extends AppController
             ->where(['Queues.speed_down IS NOT NULL'])
             ->where(['Queues.speed_up IS NOT NULL'])
             ->where(['Queues.cto_category IS NOT NULL'])
-            ->where(['InstallationAddresses.ruian_gid IS NOT NULL'])
+            ->where(['InstallationAddresses.address_registry_reference IS NOT NULL'])
+            ->where(['InstallationAddresses.address_registry_source' => 'cz'])
 
             ->orderBy([
                 'Queues.cto_category',

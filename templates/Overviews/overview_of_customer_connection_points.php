@@ -67,7 +67,7 @@
                     <tbody>
                         <?php foreach ($connection_points as $connection_point) : ?>
                         <tr>
-                            <td><?= $this->Number->format($connection_point->ruian_gid) ?></td>
+                            <td><?= $this->Number->format($connection_point->address_registry_reference) ?></td>
                             <td><?= isset($connection_point->active_connections) ?
                                 $this->Number->format($connection_point->active_connections) : '' ?></td>
                             <td><?= isset($connection_point->active_connections_nonbusiness) ?
@@ -91,7 +91,7 @@
                                     'plugin' => 'Ruian',
                                     'controller' => 'Addresses',
                                     'action' => 'view',
-                                    $connection_point->ruian_gid,
+                                    $connection_point->address_registry_reference,
                                 ]) ?>
                             </td>
                         </tr>

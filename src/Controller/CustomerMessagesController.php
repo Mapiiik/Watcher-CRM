@@ -115,6 +115,7 @@ class CustomerMessagesController extends AppController
         ])->all();
 
         // load RUIAN addresses
+        // TODO: Refactor to use \App\Addresses\ApiClient
         $ruianAddressesTable = $this->fetchTable(AddressesTable::class);
         $ruianAddresses = $ruianAddressesTable->find(
             'list',
@@ -124,7 +125,7 @@ class CustomerMessagesController extends AppController
                     $this->CustomerMessages->Customers->Contracts->InstallationAddresses
                         ->find(
                             'list',
-                            valueField: 'ruian_gid',
+                            valueField: 'address_registry_reference',
                         )
                         ->all()
                         ->toArray()
@@ -189,7 +190,7 @@ class CustomerMessagesController extends AppController
                 ])
                 ->distinct()
                 ->where([
-                    'InstallationAddresses.ruian_gid IS' => $ruianAddressId,
+                    'InstallationAddresses.address_registry_reference IS' => $ruianAddressId,
                 ]);
 
             $customersFilter[] = [

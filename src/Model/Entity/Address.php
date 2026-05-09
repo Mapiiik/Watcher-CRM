@@ -23,7 +23,8 @@ use App\Model\Enum\AddressNumberType;
  * @property string|null $city
  * @property string|null $zip
  * @property int $country_id
- * @property int|null $ruian_gid
+ * @property string|null $address_registry_reference
+ * @property string|null $address_registry_source
  * @property float|null $gps_x
  * @property float|null $gps_y
  * @property string|null $note
@@ -68,7 +69,8 @@ class Address extends AppEntity
         'city' => true,
         'zip' => true,
         'country_id' => true,
-        'ruian_gid' => true,
+        'address_registry_reference' => true,
+        'address_registry_source' => true,
         'gps_x' => true,
         'gps_y' => true,
         'note' => true,
