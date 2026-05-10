@@ -196,10 +196,35 @@ return function (RouteBuilder $routes): void {
     $routes->prefix('Api', function (RouteBuilder $builder): void {
         $builder->setExtensions(['json', 'ajax']);
 
+        // Standart RESTful controller API routes
         $builder->resources('Customers', [
             'map' => [
                 'customer-points' => [
                     'action' => 'customerPoints',
+                    'method' => 'GET',
+                ],
+            ],
+        ]);
+
+        // Bridge controllers for external API integrations
+        $builder->resources('AddressesBridge', [
+            'only' => [
+                'search',
+            ],
+            'map' => [
+                'search' => [
+                    'action' => 'search',
+                    'method' => 'GET',
+                ],
+            ],
+        ]);
+        $builder->resources('AgentBridge', [
+            'only' => [
+                'ping/{ip_address}',
+            ],
+            'map' => [
+                'ping/{ip_address}' => [
+                    'action' => 'ping',
                     'method' => 'GET',
                 ],
             ],
@@ -221,17 +246,6 @@ return function (RouteBuilder $routes): void {
                 ],
                 'ip-address-ranges/{ip_network}' => [
                     'action' => 'ipAddressRanges',
-                    'method' => 'GET',
-                ],
-            ],
-        ]);
-        $builder->resources('AgentBridge', [
-            'only' => [
-                'ping/{ip_address}',
-            ],
-            'map' => [
-                'ping/{ip_address}' => [
-                    'action' => 'ping',
                     'method' => 'GET',
                 ],
             ],

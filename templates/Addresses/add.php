@@ -4,7 +4,10 @@
  * @var \App\Model\Entity\Address $address
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $customers
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $countries
+ * @var string $countryCode
  */
+
+$this->Html->script('addresses.js', ['block' => true]);
 ?>
 <div class="row">
     <aside class="column">
@@ -15,7 +18,9 @@
     </aside>
     <div class="column column-90">
         <div class="addresses form content">
-            <?= $this->Form->create($address) ?>
+            <?= $this->Form->create($address, [
+                'valueSources' => ['context'],
+            ]) ?>
             <fieldset>
                 <legend><?= __('Add Address') ?></legend>
                 <div class="row">
@@ -36,6 +41,11 @@
                     </div>
                     <div class="column">
                         <?php
+                        echo $this->Form->control('address_registry_search', [
+                            'type' => 'select',
+                            'id' => 'address-registry-search',
+                            'label' => __('Search Address'),
+                        ]);
                         echo $this->Form->control('street');
                         echo $this->Form->control('number');
                         echo $this->Form->control('number_type');
@@ -44,6 +54,11 @@
                         echo $this->Form->control('country_id', [
                             'options' => $countries,
                             'empty' => true,
+                        ]);
+                        echo $this->Form->control('country_code', [
+                            'type' => 'hidden',
+                            'id' => 'country-code',
+                            'value' => $countryCode,
                         ]);
                         ?>
                     </div>

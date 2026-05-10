@@ -104,6 +104,23 @@ class AddressesController extends AppController
 
             if ($this->getRequest()->getData('refresh') == 'refresh' || $address->hasErrors()) {
                 // only refresh
+
+                // perform a lookup to pre-fill the address fields based on the selected address registry entry
+                $addressRegistryKey = $this->getRequest()->getData('address_registry_search');
+                if (!empty($addressRegistryKey) && is_string($addressRegistryKey)) {
+                    try {
+                        $address = $this->Addresses->patchEntity(
+                            $address,
+                            $this->loadPatchDataFromAddressesRegistry($addressRegistryKey),
+                            ['validate' => false],
+                        );
+                    } catch (RuntimeException $e) {
+                        $this->Flash->error(__(
+                            'Could not retrieve address data from the national registry: {0}',
+                            $e->getMessage(),
+                        ));
+                    }
+                }
             } else {
                 // update national address registry data
                 $address->patch($this->findNationalAddressRegistryData($address));
@@ -131,11 +148,18 @@ class AddressesController extends AppController
             'name',
         ]);
 
+        // pre-fill country code for address search widget (Select2)
+        if ($address->country_id !== null) {
+            $countryCode = $this->Addresses->Countries->get($address->country_id)->code;
+        } else {
+            $countryCode = null;
+        }
+
         if (isset($this->customer_id)) {
             $customers->where(['Customers.id' => $this->customer_id]);
         }
 
-        $this->set(compact('address', 'customers', 'countries'));
+        $this->set(compact('address', 'customers', 'countries', 'countryCode'));
     }
 
     /**
@@ -153,6 +177,23 @@ class AddressesController extends AppController
 
             if ($this->getRequest()->getData('refresh') == 'refresh' || $address->hasErrors()) {
                 // only refresh
+
+                // perform a lookup to pre-fill the address fields based on the selected address registry entry
+                $addressRegistryKey = $this->getRequest()->getData('address_registry_search');
+                if (!empty($addressRegistryKey) && is_string($addressRegistryKey)) {
+                    try {
+                        $address = $this->Addresses->patchEntity(
+                            $address,
+                            $this->loadPatchDataFromAddressesRegistry($addressRegistryKey),
+                            ['validate' => false],
+                        );
+                    } catch (RuntimeException $e) {
+                        $this->Flash->error(__(
+                            'Could not retrieve address data from the national registry: {0}',
+                            $e->getMessage(),
+                        ));
+                    }
+                }
             } else {
                 // update national address registry data
                 $address->patch($this->findNationalAddressRegistryData($address));
@@ -180,11 +221,18 @@ class AddressesController extends AppController
             'name',
         ]);
 
+        // pre-fill country code for address search widget (Select2)
+        if ($address->country_id !== null) {
+            $countryCode = $this->Addresses->Countries->get($address->country_id)->code;
+        } else {
+            $countryCode = null;
+        }
+
         if (isset($this->customer_id)) {
             $customers->where(['Customers.id' => $this->customer_id]);
         }
 
-        $this->set(compact('address', 'customers', 'countries'));
+        $this->set(compact('address', 'customers', 'countries', 'countryCode'));
     }
 
     /**
@@ -206,6 +254,45 @@ class AddressesController extends AppController
         }
 
         return $this->afterDeleteRedirect(['action' => 'index']);
+    }
+
+    /**
+     * Loads patch data from the national address registry based on the provided ID.
+     *
+     * @param string $addressRegistryKey Ecpected format: "source|reference" (e.g., "cz|12345678").
+     * @return array The patch data for the address.
+     * @throws \RuntimeException If the address is not found in the national registry.
+     */
+    private function loadPatchDataFromAddressesRegistry(string $addressRegistryKey): array
+    {
+        // expect format "source|reference", e.g. "cz|12345678"
+        [
+            $addressRegistrySource,
+            $addressRegistryReference,
+        ] = explode('|', $addressRegistryKey, limit: 2) + [null, null];
+
+        if (empty($addressRegistrySource) || empty($addressRegistryReference)) {
+            throw new RuntimeException('Invalid address registry key format: ' . $addressRegistryKey);
+        }
+
+        $addressRegistryData = AddressesApiClient::byIdFromCache(
+            source: $addressRegistrySource,
+            registryId: $addressRegistryReference,
+        );
+
+        if ($addressRegistryData == null) {
+            throw new RuntimeException('Empty response from address registry API for ID: ' . $addressRegistryKey);
+        }
+
+        return [
+            'street' => $addressRegistryData['street'] ?? null,
+            'number' => $addressRegistryData['house_number'] ?? null,
+            'number_type' => $addressRegistryData['number_type'] === 'registration'
+                ? AddressNumberType::Registration->value
+                : AddressNumberType::House->value,
+            'city' => $addressRegistryData['city'] ?? null,
+            'zip' => $addressRegistryData['postal_code'] ?? null,
+        ];
     }
 
     /**

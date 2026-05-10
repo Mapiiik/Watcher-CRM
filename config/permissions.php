@@ -224,6 +224,17 @@ $permissions = [
             'prefix' => 'Api',
             'plugin' => null,
             'controller' => [
+                'AddressesBridge',
+            ],
+            'action' => [
+                'search',
+            ],
+        ],
+        [
+            'role' => '*',
+            'prefix' => 'Api',
+            'plugin' => null,
+            'controller' => [
                 'AgentBridge',
             ],
             'action' => [
