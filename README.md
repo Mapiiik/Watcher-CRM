@@ -1,55 +1,119 @@
 # Watcher CRM
 
-[![Total Downloads](https://img.shields.io/packagist/dt/mapik/watcher-crm.svg?style=flat-square)](https://packagist.org/packages/mapik/watcher-crm)
-[![PHPStan](https://img.shields.io/badge/PHPStan-level%206-brightgreen.svg?style=flat-square)](https://github.com/phpstan/phpstan)
+[![PHPStan](https://img.shields.io/badge/PHPStan-level%208-brightgreen.svg?style=flat-square)](https://github.com/phpstan/phpstan)
 
-The framework source code can be found here: [cakephp/cakephp](https://github.com/cakephp/cakephp).
+CRM for Internet Service Providers, built on [CakePHP](https://github.com/cakephp/cakephp).
 
 ## Description
-- Customer Relationship Management System for evidence of customers for ISP
-- it can generate invoices in dBase format for POHODA Stormware bookkeeping software
+
+- Customer Relationship Management system aimed at small and mid-size ISPs
+  (customer / contract / billing / IP address management).
+- Generates invoices in dBase format for the POHODA Stormware bookkeeping software.
+- Integrates with optional services for RADIUS accounting, RouterOS device
+  inventory, the geo-addresses-postgis registry lookup API (CZ RUIAN / HR DGU),
+  and a few SaaS providers (Eurofaktura, SledovaniTV, Android SMS Gateway, …).
+
+## Requirements
+
+- PHP 8.2 or newer
+- PostgreSQL
+- Redis
+- PECL `dbase` extension (only when using the POHODA invoice export)
+
+The Docker Compose stack below provides PostgreSQL and Redis out of the box,
+so on a fresh host you only need Docker.
 
 ## Installation
 
-1. Download [Composer](https://getcomposer.org/doc/00-intro.md) or update `composer self-update`.
-2. Run `php composer.phar create-project --prefer-dist mapik/watcher-crm [app_name]`.
+Two install paths are supported. Docker Compose is recommended.
 
-If Composer is installed globally, run
-
-```bash
-composer create-project --prefer-dist mapik/watcher-crm
-```
-
-In case you want to use a custom app dir name (e.g. `/myapp/`):
+### Option A — Docker Compose (recommended)
 
 ```bash
-composer create-project --prefer-dist mapik/watcher-crm myapp
+git clone https://github.com/Mapiiik/Watcher-CRM.git
+cd Watcher-CRM
+cp config/.env.example config/.env
+# edit config/.env — set APP_NAME and any integration URLs / API keys
+docker compose -f compose.production.yaml up -d
 ```
 
-You can now either use your machine's webserver to view the default home page, or start
-up the built-in webserver with:
+The production image runs `composer run-script migrations` and rebuilds the
+schema cache automatically on container start, so the app is reachable at
+`http://localhost` (and `https://localhost` with a self-signed cert) once the
+container is healthy. Set `SERVER_NAME` in the compose environment to a real
+domain to enable Let's Encrypt issuance via the bundled `acme.sh`.
+
+### Option B — Bare-metal (host nginx + PHP-FPM, FrankenPHP, …)
+
+For hosts already running their own PHP webserver:
 
 ```bash
-bin/cake server -p 8765
+git clone https://github.com/Mapiiik/Watcher-CRM.git
+cd Watcher-CRM
+composer install --no-dev
+cp config/.env.example config/.env
+# edit config/.env — at minimum DATABASE_URL and CACHE_*_URL
+
+composer run-script migrations
+composer run-script schema-cache
 ```
 
-Then visit `http://localhost:8765` to see the welcome page.
+Point your webserver's document root at the `webroot/` directory. Install the
+PECL `dbase` extension if you plan to use the POHODA invoice export in dBASE format.
 
 ## Configuration
 
-Create and edit the `config/.env` or set system environment variables (eg. for Docker).
+Runtime settings live in `config/.env` (or are passed in as environment
+variables — see the `environment:` blocks in the compose files for the keys
+read at boot). `config/.env.example` is the canonical list; common groups are:
 
-## Layout
+- **Database / cache:** `DATABASE_URL`, `CACHE_*_URL`
+- **Integrations:** `WATCHER_NMS_URL/_KEY`, `WATCHER_AGENT_URL/_KEY`,
+  `ADDRESSES_API_URL/_KEY`, `EUROFAKTURA_API_URL`, `ANDROID_SMS_GATEWAY_URL`, …
 
-The app uses [Milligram](https://milligram.io/) (v1.3) minimalist CSS
-framework.
+### Customizing the compose stack
+
+If `compose.production.yaml` doesn't fit your environment, copy it to
+`compose.yaml` and customize there — `compose.yaml` is git-ignored, so
+`git pull` won't overwrite your changes.
+
+```bash
+cp compose.production.yaml compose.yaml
+# edit compose.yaml as needed
+docker compose up -d
+```
+
+Typical reasons to override: pointing services at infrastructure already
+running on the host (e.g. an existing PostgreSQL instance, external Redis,
+reverse proxy), removing bundled containers you don't need, or tweaking
+volumes / networks.
+
+## Development
+
+Two compose files target local development:
+
+- `compose.dev-frankenphp.yaml` — FrankenPHP (HTTP/1.1, HTTP/2, HTTP/3)
+- `compose.dev-nginx.yaml` — classic nginx + PHP-FPM
+
+Both bind-mount the working tree into the container and place `vendor/`,
+`tmp/`, `logs/`, `node_modules/`, plus the PostgreSQL data directory and
+Redis data on tmpfs — fast iteration and disposable state, but everything in
+those paths is lost when the stack is torn down.
+
+```bash
+docker compose -f compose.dev-frankenphp.yaml up
+```
+
+The Postgres and Redis ports are exposed to the host (`5432`, `6379`) so you
+can connect with local clients while the stack is running.
 
 ## License
 
-Watcher CRM is licensed under the GNU Affero General Public License v3.0. Copyright (c) 2026 Martin Patočka
+Watcher CRM is licensed under the GNU Affero General Public License v3.0.
+Copyright (c) 2026 Martin Patočka.
 
 ### What this means
 
-You are free to use, modify and run this software.
-If you modify it and make it available to others (including as a network service),
-you must also make your modifications available under the same license.
+You are free to use, modify and run this software. If you modify it and make
+it available to others (including as a network service), you must also make
+your modifications available under the same license.
