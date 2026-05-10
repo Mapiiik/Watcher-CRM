@@ -149,18 +149,14 @@ class AddressesController extends AppController
             'name',
         ]);
 
-        // pre-fill country code for address search widget (Select2)
-        if ($address->country_id !== null) {
-            $countryCode = $this->Addresses->Countries->get($address->country_id)->code;
-        } else {
-            $countryCode = null;
-        }
+        // set country code for address search widget (Select2)
+        $searchCountryCode = $this->getSearchCountryCodeForAddress($address);
 
         if (isset($this->customer_id)) {
             $customers->where(['Customers.id' => $this->customer_id]);
         }
 
-        $this->set(compact('address', 'customers', 'countries', 'countryCode'));
+        $this->set(compact('address', 'customers', 'countries', 'searchCountryCode'));
     }
 
     /**
@@ -223,18 +219,14 @@ class AddressesController extends AppController
             'name',
         ]);
 
-        // pre-fill country code for address search widget (Select2)
-        if ($address->country_id !== null) {
-            $countryCode = $this->Addresses->Countries->get($address->country_id)->code;
-        } else {
-            $countryCode = null;
-        }
+        // set country code for address search widget (Select2)
+        $searchCountryCode = $this->getSearchCountryCodeForAddress($address);
 
         if (isset($this->customer_id)) {
             $customers->where(['Customers.id' => $this->customer_id]);
         }
 
-        $this->set(compact('address', 'customers', 'countries', 'countryCode'));
+        $this->set(compact('address', 'customers', 'countries', 'searchCountryCode'));
     }
 
     /**
@@ -256,6 +248,63 @@ class AddressesController extends AppController
         }
 
         return $this->afterDeleteRedirect(['action' => 'index']);
+    }
+
+    /**
+     * Returns the country code for the address search widget, if the address's country is supported by the national address registry API.
+     *
+     * @param \App\Model\Entity\Address $address The address for which to get the search country code.
+     * @return string|null The search country code or null if not applicable (lowercase).
+     */
+    private function getSearchCountryCodeForAddress(Address $address): ?string
+    {
+        if ($address->country_id === null) {
+            return null;
+        }
+
+        $countryCode = $this->Addresses->Countries->get($address->country_id)->code;
+        if ($countryCode === null) {
+            return null;
+        }
+
+        // check if the country is supported by the national address registry API
+        $supportedCountries = $this->loadSupportedCountriesForAddressRegistry();
+        if (in_array(strtoupper($countryCode), $supportedCountries, true)) {
+            return strtolower($countryCode); // use lowercase country code for the search widget as expected by the API
+        }
+
+        return null;
+    }
+
+    /**
+     * Loads the list of supported countries for the national address registry from the API metadata.
+     *
+     * @return array List of supported country codes (e.g., ['CZ', 'HR']).
+     *      Returns an empty array if the metadata could not be retrieved or is invalid.
+     */
+    private function loadSupportedCountriesForAddressRegistry(): array
+    {
+        try {
+            $addressesMeta = AddressesApiClient::metaFromCache();
+        } catch (RuntimeException $e) {
+            $this->Flash->error(__(
+                'Could not retrieve national address registry metadata: {0}',
+                $e->getMessage(),
+            ));
+
+            return [];
+        }
+
+        if (!isset($addressesMeta['supported_countries']) || !is_array($addressesMeta['supported_countries'])) {
+            $this->Flash->error(__(
+                'National address registry lookup is not available.'
+                . ' Could not retrieve supported countries list.',
+            ));
+
+            return [];
+        }
+
+        return array_map('strtoupper', $addressesMeta['supported_countries']);
     }
 
     /**
@@ -336,26 +385,7 @@ class AddressesController extends AppController
         $countryCode = strtoupper($countryCode);
 
         // check if the country is supported by the national address registry API
-        try {
-            $addressesMeta = AddressesApiClient::metaFromCache();
-        } catch (RuntimeException $e) {
-            $this->Flash->error(__(
-                'Could not retrieve national address registry metadata: {0}',
-                $e->getMessage(),
-            ));
-
-            return [];
-        }
-
-        if (!isset($addressesMeta['supported_countries']) || !is_array($addressesMeta['supported_countries'])) {
-            $this->Flash->error(__(
-                'National address registry lookup is not available.'
-                . ' Could not retrieve supported countries list.',
-            ));
-
-            return [];
-        }
-        $supportedCountries = array_map('strtoupper', $addressesMeta['supported_countries']); // → ['CZ', 'HR']
+        $supportedCountries = $this->loadSupportedCountriesForAddressRegistry();
 
         if (!in_array($countryCode, $supportedCountries, true)) {
             $this->Flash->info(__(
@@ -450,25 +480,10 @@ class AddressesController extends AppController
         }
 
         // Fetch supported-countries metadata once; bail out on transient failure.
-        try {
-            $addressesMeta = AddressesApiClient::metaFromCache();
-        } catch (RuntimeException $e) {
-            $this->Flash->error(__(
-                'Could not retrieve national address registry metadata: {0}',
-                $e->getMessage(),
-            ));
-
+        $supportedCountries = $this->loadSupportedCountriesForAddressRegistry();
+        if (empty($supportedCountries)) {
             return $this->redirect(['action' => 'index']);
         }
-        if (!isset($addressesMeta['supported_countries']) || !is_array($addressesMeta['supported_countries'])) {
-            $this->Flash->error(__(
-                'National address registry lookup is not available.'
-                . ' Could not retrieve supported countries list.',
-            ));
-
-            return $this->redirect(['action' => 'index']);
-        }
-        $supportedCountries = array_map('strtoupper', $addressesMeta['supported_countries']);
 
         $updated = 0;
         $unchanged = 0;

@@ -7,7 +7,7 @@ $(function () {
             delay: 250,
             data: function (params) {
                 return {
-                    country_code: $('#country-code').val(),
+                    country_code: $('#address-registry-search').data('country-code'),
                     query: params.term,
                     page: params.page || 1
                 };

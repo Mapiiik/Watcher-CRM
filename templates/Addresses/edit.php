@@ -4,7 +4,7 @@
  * @var \App\Model\Entity\Address $address
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $customers
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $countries
- * @var string|null $countryCode
+ * @var string|null $searchCountryCode
  */
 
 $this->Html->script('addresses.js', ['block' => true]);
@@ -50,7 +50,8 @@ $this->Html->script('addresses.js', ['block' => true]);
                             'type' => 'select',
                             'id' => 'address-registry-search',
                             'label' => __('Search Address'),
-                            'disabled' => $countryCode === null, // disable search if no country code is available
+                            'disabled' => $searchCountryCode === null, // disable search if no country code is available
+                            'data-country-code' => $searchCountryCode,
                         ]);
                         echo $this->Form->control('street');
                         echo $this->Form->control('number');
@@ -59,11 +60,6 @@ $this->Html->script('addresses.js', ['block' => true]);
                         echo $this->Form->control('zip', ['pattern' => '[0-9]*']);
                         echo $this->Form->control('country_id', [
                             'options' => $countries,
-                        ]);
-                        echo $this->Form->control('country_code', [
-                            'type' => 'hidden',
-                            'id' => 'country-code',
-                            'value' => $countryCode,
                         ]);
                         ?>
                     </div>
