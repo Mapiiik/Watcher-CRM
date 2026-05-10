@@ -91,6 +91,7 @@ class AddressesController extends AppController
     public function add()
     {
         $address = $this->Addresses->newEmptyEntity();
+        $address->country_id = $this->Addresses->getSchema()->getColumn('country_id')['default'] ?? null;
 
         if (isset($this->customer_id)) {
             $customer = $this->Addresses->Customers->get($this->customer_id);
@@ -172,6 +173,7 @@ class AddressesController extends AppController
     public function edit(?string $id = null)
     {
         $address = $this->Addresses->get($id);
+
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $address = $this->Addresses->patchEntity($address, $this->getRequest()->getData());
 
