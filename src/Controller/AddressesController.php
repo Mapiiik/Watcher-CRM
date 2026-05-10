@@ -116,7 +116,7 @@ class AddressesController extends AppController
                         );
                     } catch (RuntimeException $e) {
                         $this->Flash->error(__(
-                            'Could not retrieve address data from the national registry: {0}',
+                            'Could not retrieve address from national address registry: {0}',
                             $e->getMessage(),
                         ));
                     }
@@ -189,7 +189,7 @@ class AddressesController extends AppController
                         );
                     } catch (RuntimeException $e) {
                         $this->Flash->error(__(
-                            'Could not retrieve address data from the national registry: {0}',
+                            'Could not retrieve address from national address registry: {0}',
                             $e->getMessage(),
                         ));
                     }
@@ -261,7 +261,7 @@ class AddressesController extends AppController
      *
      * @param string $addressRegistryKey Ecpected format: "source|reference" (e.g., "cz|12345678").
      * @return array The patch data for the address.
-     * @throws \RuntimeException If the address is not found in the national registry.
+     * @throws \RuntimeException If the address is not found in the national address registry.
      */
     private function loadPatchDataFromAddressesRegistry(string $addressRegistryKey): array
     {

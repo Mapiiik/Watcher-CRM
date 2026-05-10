@@ -199,7 +199,7 @@ class CustomersController extends AppController
                 } catch (RuntimeException $e) {
                     throw new RuntimeException(
                         __(
-                            'Could not load addresses from national address registry: {0}',
+                            'Could not retrieve addresses from national address registry: {0}',
                             $e->getMessage(),
                         ),
                         previous: $e,

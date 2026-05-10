@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-05-10 00:11+0200\n"
+"POT-Creation-Date: 2026-05-10 21:05+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -214,59 +214,68 @@ msgid "The accounting profile could not be deleted. Please, try again."
 msgstr ""
 
 #: ./src/Controller/AddressesController.php:118
-#: ./src/Controller/AddressesController.php:167
+#: ./src/Controller/AddressesController.php:191
+msgid "Could not retrieve address from national address registry: {0}"
+msgstr ""
+
+#: ./src/Controller/AddressesController.php:135
+#: ./src/Controller/AddressesController.php:208
 msgid "The address has been saved."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:122
-#: ./src/Controller/AddressesController.php:171
+#: ./src/Controller/AddressesController.php:139
+#: ./src/Controller/AddressesController.php:212
 msgid "The address could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:202
+#: ./src/Controller/AddressesController.php:250
 msgid "The address has been deleted."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:205
+#: ./src/Controller/AddressesController.php:253
 msgid "The address could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:241
+#: ./src/Controller/AddressesController.php:328
 msgid "Country code is not defined for the address country."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:253
-#: ./src/Controller/AddressesController.php:367
+#: ./src/Controller/AddressesController.php:340
+#: ./src/Controller/AddressesController.php:454
 msgid "Could not retrieve national address registry metadata: {0}"
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:262
-#: ./src/Controller/AddressesController.php:375
+#: ./src/Controller/AddressesController.php:349
+#: ./src/Controller/AddressesController.php:462
 msgid "National address registry lookup is not available. Could not retrieve supported countries list."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:272
+#: ./src/Controller/AddressesController.php:359
 msgid "National address registry lookup is not supported for country code: {0}."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:293
+#: ./src/Controller/AddressesController.php:380
 msgid "Multiple ({0}) addresses found in national ({1}) address registry."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:302
+#: ./src/Controller/AddressesController.php:389
 msgid "Address found in national ({0}) address registry."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:315
+#: ./src/Controller/AddressesController.php:402
 msgid "Error during national ({0}) address registry lookup: {1}"
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:325
+#: ./src/Controller/AddressesController.php:412
 msgid "Address could not be found in national ({0}) address registry."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:503
+#: ./src/Controller/AddressesController.php:590
 msgid "Addresses updated from national address registries: {0} updated, {1} unchanged, {2} skipped, {3} failed."
+msgstr ""
+
+#: ./src/Controller/Api/AddressesBridgeController.php:52
+msgid "Invalid request parameters"
 msgstr ""
 
 #: ./src/Controller/Api/AgentBridgeController.php:39
@@ -277,7 +286,7 @@ msgstr ""
 #: ./src/Controller/CustomerMessagesController.php:132
 #: ./src/Controller/OverviewsController.php:74
 #: ./src/Controller/OverviewsController.php:437
-msgid "Could not load addresses from national address registry: {0}"
+msgid "Could not retrieve addresses from national address registry: {0}"
 msgstr ""
 
 #: ./src/Controller/AppController.php:96
@@ -1775,8 +1784,8 @@ msgstr ""
 #: ./templates/AccountingProfiles/index.php:37
 #: ./templates/AccountingProfiles/view.php:10
 #: ./templates/AccountingProfiles/view.php:90
-#: ./templates/Addresses/add.php:12
-#: ./templates/Addresses/edit.php:12
+#: ./templates/Addresses/add.php:15
+#: ./templates/Addresses/edit.php:15
 #: ./templates/Addresses/index.php:44
 #: ./templates/Addresses/view.php:10
 #: ./templates/Billings/add.php:13
@@ -1978,8 +1987,8 @@ msgstr ""
 #: ./templates/AccessCredentials/edit.php:72
 #: ./templates/AccountingProfiles/add.php:33
 #: ./templates/AccountingProfiles/edit.php:41
-#: ./templates/Addresses/add.php:71
-#: ./templates/Addresses/edit.php:76
+#: ./templates/Addresses/add.php:86
+#: ./templates/Addresses/edit.php:91
 #: ./templates/Billings/add.php:63
 #: ./templates/Billings/bulk_service_change.php:136
 #: ./templates/Billings/edit.php:68
@@ -2050,7 +2059,7 @@ msgstr ""
 #: ./templates/AccountingProfiles/edit.php:12
 #: ./templates/AccountingProfiles/index.php:58
 #: ./templates/AccountingProfiles/view.php:121
-#: ./templates/Addresses/edit.php:14
+#: ./templates/Addresses/edit.php:17
 #: ./templates/Addresses/index.php:105
 #: ./templates/Billings/edit.php:15
 #: ./templates/Billings/index.php:91
@@ -2145,7 +2154,7 @@ msgstr ""
 #: ./templates/AccountingProfiles/index.php:60
 #: ./templates/AccountingProfiles/view.php:20
 #: ./templates/AccountingProfiles/view.php:123
-#: ./templates/Addresses/edit.php:16
+#: ./templates/Addresses/edit.php:19
 #: ./templates/Addresses/index.php:107
 #: ./templates/Addresses/view.php:19
 #: ./templates/Billings/edit.php:17
@@ -2948,18 +2957,23 @@ msgstr ""
 msgid "IP Addresses"
 msgstr ""
 
-#: ./templates/Addresses/add.php:13
-#: ./templates/Addresses/edit.php:18
+#: ./templates/Addresses/add.php:16
+#: ./templates/Addresses/edit.php:21
 #: ./templates/Addresses/view.php:21
 #: ./templates/Overviews/index.php:59
 msgid "List Addresses"
 msgstr ""
 
-#: ./templates/Addresses/add.php:20
+#: ./templates/Addresses/add.php:25
 msgid "Add Address"
 msgstr ""
 
-#: ./templates/Addresses/edit.php:25
+#: ./templates/Addresses/add.php:47
+#: ./templates/Addresses/edit.php:52
+msgid "Search Address"
+msgstr ""
+
+#: ./templates/Addresses/edit.php:30
 #: ./templates/Addresses/view.php:12
 msgid "Edit Address"
 msgstr ""

@@ -72,7 +72,7 @@ class OverviewsController extends AppController
             $registryAddresses = AddressesResolver::dropdownMap($installationAddresses);
         } catch (RuntimeException $e) {
             $this->Flash->warning(__(
-                'Could not load addresses from national address registry: {0}',
+                'Could not retrieve addresses from national address registry: {0}',
                 $e->getMessage(),
             ));
         }
@@ -435,7 +435,7 @@ class OverviewsController extends AppController
                         $addressRegistryMatches = [];
 
                         $this->Flash->error(__(
-                            'Could not load addresses from national address registry: {0}',
+                            'Could not retrieve addresses from national address registry: {0}',
                             $e->getMessage(),
                         ));
                     }
