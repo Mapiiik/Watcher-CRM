@@ -24,8 +24,10 @@ jobs:
         dependencies: ['locked', 'highest']
         include:
           - php-version: '8.2'
+            db-type: pgsql
             dependencies: 'highest'
           - php-version: '8.3'
+            db-type: pgsql
             dependencies: 'highest'
 
     name: PHP ${{ matrix.php-version }} (${{ matrix.dependencies }})
