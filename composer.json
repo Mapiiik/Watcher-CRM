@@ -41,7 +41,7 @@
         "josegonzalez/dotenv": "^4.0",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^2.1",
-        "phpunit/phpunit": "^13.1",
+        "phpunit/phpunit": "^11.5 || ^12.5 || ^13.1",
         "psalm/phar": "^6.16"
     },
     "suggest": {
