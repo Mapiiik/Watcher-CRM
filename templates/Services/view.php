@@ -56,6 +56,11 @@ use Cake\Collection\Collection;
                                 '' : $this->Number->currency($service->price->toString()) ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Criticality Level') ?></th>
+                            <td><?= $service->criticality_level === null ?
+                                '' : h($service->criticality_level->label()) ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Accounting Product Code') ?></th>
                             <td><?= h($service->accounting_product_code) ?></td>
                         </tr>

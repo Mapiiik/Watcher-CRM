@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Enum\ServiceCriticalityLevel;
+use Cake\Database\Type\EnumType;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 use Override;
@@ -44,6 +46,11 @@ class ServicesTable extends AppTable
         $this->setTable('services');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
+
+        $this->getSchema()->setColumnType(
+            'criticality_level',
+            EnumType::from(ServiceCriticalityLevel::class),
+        );
 
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
@@ -88,6 +95,10 @@ class ServicesTable extends AppTable
         $validator
             ->boolean('not_for_new_customers')
             ->notEmptyString('not_for_new_customers');
+
+        $validator
+            ->requirePresence('criticality_level', 'create')
+            ->notEmptyString('criticality_level');
 
         return $validator;
     }

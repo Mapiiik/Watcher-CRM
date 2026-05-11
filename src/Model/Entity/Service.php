@@ -14,6 +14,7 @@ namespace App\Model\Entity;
  * @property int|null $queue_id
  * @property string|null $accounting_product_code
  * @property bool $not_for_new_customers
+ * @property \App\Model\Enum\ServiceCriticalityLevel $criticality_level
  *
  * @property \App\Model\Entity\ServiceType $service_type
  * @property \App\Model\Entity\Queue $queue
@@ -39,10 +40,11 @@ class Service extends AppEntity
         'price' => true,
         'service_type_id' => true,
         'queue_id' => true,
+        'accounting_product_code' => true,
+        'not_for_new_customers' => true,
+        'criticality_level' => true,
         'service_type' => true,
         'queue' => true,
         'billings' => true,
-        'accounting_product_code' => true,
-        'not_for_new_customers' => true,
     ];
 }

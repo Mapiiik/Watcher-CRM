@@ -27,6 +27,7 @@
                     <th><?= $this->Paginator->sort('price') ?></th>
                     <th><?= $this->Paginator->sort('service_type_id') ?></th>
                     <th><?= $this->Paginator->sort('queue_id') ?></th>
+                    <th><?= $this->Paginator->sort('criticality_level') ?></th>
                     <th><?= $this->Paginator->sort('accounting_product_code') ?></th>
                     <th><?= $this->Paginator->sort('not_for_new_customers') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
@@ -49,6 +50,8 @@
                             ['controller' => 'Queues', 'action' => 'view', $service->queue->id],
                         ) : '' ?>
                     </td>
+                    <td><?= $service->criticality_level === null ?
+                        '' : h($service->criticality_level->label()) ?></td>
                     <td><?= h($service->accounting_product_code) ?></td>
                     <td><?= $service->not_for_new_customers ? __('Yes') : __('No'); ?></td>
                     <td class="actions">
