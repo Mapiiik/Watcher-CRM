@@ -32,6 +32,8 @@ class AddressesFixture extends TestFixture
                 'company' => 'Lorem ipsum dolor sit amet',
                 'street' => 'Lorem ipsum dolor sit amet',
                 'number' => 'Lorem ipsum dolor sit amet',
+                'entrance' => 'Lorem ipsum dolor sit amet',
+                'unit' => 'Lorem ipsum dolor sit amet',
                 'city' => 'Lorem ipsum dolor sit amet',
                 'zip' => 'Lorem ipsum dolor sit amet',
                 'country_id' => 'b490f1c9-ff7e-430a-bfb0-f400878e1617',

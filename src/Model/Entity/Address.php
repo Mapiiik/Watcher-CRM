@@ -20,6 +20,8 @@ use App\Model\Enum\AddressNumberType;
  * @property string|null $company
  * @property string|null $street
  * @property string|null $number
+ * @property string|null $entrance
+ * @property string|null $unit
  * @property string|null $city
  * @property string|null $zip
  * @property int $country_id
@@ -36,9 +38,11 @@ use App\Model\Enum\AddressNumberType;
  * @property string $full_name
  * @property string $name
  * @property string $address
+ * @property string $address_extra
  * @property string $street_and_number
  * @property string $zip_and_city
  * @property string $full_address
+ * @property string $full_address_extra
  */
 class Address extends AppEntity
 {
@@ -66,6 +70,8 @@ class Address extends AppEntity
         'company' => true,
         'street' => true,
         'number' => true,
+        'entrance' => true,
+        'unit' => true,
         'city' => true,
         'zip' => true,
         'country_id' => true,
@@ -151,6 +157,21 @@ class Address extends AppEntity
     }
 
     /**
+     * getter for address without company/name (including entrance and unit)
+     *
+     * @return string
+     */
+    protected function _getAddressExtra(): string
+    {
+        $address = '';
+
+        $address .= $this->street_and_number . $this->getEntranceAndUnit();
+        $address .= ', ' . $this->zip_and_city;
+
+        return $address;
+    }
+
+    /**
      * getter for street and object number line
      *
      * @return string
@@ -205,5 +226,55 @@ class Address extends AppEntity
         $address .= $this->address;
 
         return $address;
+    }
+
+    /**
+     * getter for address with company/name (including entrance and unit)
+     *
+     * @return string
+     */
+    protected function _getFullAddressExtra(): string
+    {
+        $address = '';
+
+        $address .= $this->name;
+        $address .= ', ';
+        $address .= $this->address_extra;
+
+        return $address;
+    }
+
+    /**
+     * Getter for entrance and unit.
+     *
+     * @param bool $addParentheses Add parentheses around result.
+     * @param bool $addLeadingSpace Add leading space before result.
+     * @return string
+     */
+    public function getEntranceAndUnit(
+        bool $addParentheses = true,
+        bool $addLeadingSpace = true,
+    ): string {
+        $parts = [];
+
+        if (!empty($this->entrance)) {
+            $parts[] = __('entrance') . ': ' . $this->entrance;
+        }
+
+        if (!empty($this->unit)) {
+            $parts[] = __('unit') . ': ' . $this->unit;
+        }
+
+        if (empty($parts)) {
+            return '';
+        }
+
+        $result = implode(', ', $parts);
+
+        if ($addParentheses) {
+            $result = '(' . $result . ')';
+        }
+
+        return $addLeadingSpace ? ' ' . $result : $result;
     }
 }

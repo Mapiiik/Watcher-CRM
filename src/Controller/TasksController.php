@@ -428,7 +428,7 @@ class TasksController extends AppController
                     if (isset($contract->installation_address)) {
                         // add the installation address from the contract to the text
                         $task->text .= __('Installation Address') . ': ';
-                        $task->text .= $contract->installation_address->full_address . PHP_EOL;
+                        $task->text .= $contract->installation_address->full_address_extra . PHP_EOL;
                     }
                 } else {
                     // contract unknown
@@ -436,7 +436,7 @@ class TasksController extends AppController
                         // add all customer installation addresses to the text
                         if ($address->type == AddressType::Installation) {
                             $task->text .= $address->type->label() . ': ';
-                            $task->text .= $address->full_address . PHP_EOL;
+                            $task->text .= $address->full_address_extra . PHP_EOL;
                         }
                     }
                 }

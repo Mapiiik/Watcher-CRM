@@ -24,7 +24,7 @@
     </aside>
     <div class="column column-90">
         <div class="addresses view content">
-            <h3><?= h($address->address) ?></h3>
+            <h3><?= h($address->address_extra) ?></h3>
             <div class="row">
                 <div class="column">
                     <table>
@@ -78,6 +78,14 @@
                         <tr>
                             <th><?= __('Number Type') ?></th>
                             <td><?= h($address->number_type->label()) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Entrance') ?></th>
+                            <td><?= h($address->entrance) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Unit') ?></th>
+                            <td><?= h($address->unit) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('City') ?></th>

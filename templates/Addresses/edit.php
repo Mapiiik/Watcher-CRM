@@ -54,7 +54,19 @@ $this->Html->script('addresses.js', ['block' => true]);
                             'data-country-code' => $searchCountryCode,
                         ]);
                         echo $this->Form->control('street');
-                        echo $this->Form->control('number');
+                        ?>
+                        <div class="row">
+                            <div class="column">
+                                <?= $this->Form->control('number'); ?>
+                            </div>
+                            <div class="column">
+                                <?= $this->Form->control('entrance'); ?>
+                            </div>
+                            <div class="column">
+                                <?= $this->Form->control('unit'); ?>
+                            </div>
+                        </div>
+                        <?php
                         echo $this->Form->control('number_type');
                         echo $this->Form->control('city');
                         echo $this->Form->control('zip', ['pattern' => '[0-9]*']);

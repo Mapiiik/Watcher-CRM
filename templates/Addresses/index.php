@@ -33,6 +33,8 @@
                     <th><?= $this->Paginator->sort('suffix') ?></th>
                     <th><?= $this->Paginator->sort('street') ?></th>
                     <th><?= $this->Paginator->sort('number') ?></th>
+                    <th><?= $this->Paginator->sort('entrance') ?></th>
+                    <th><?= $this->Paginator->sort('unit') ?></th>
                     <th><?= $this->Paginator->sort('city') ?></th>
                     <th><?= $this->Paginator->sort('zip') ?></th>
                     <th><?= $this->Paginator->sort('country_id') ?></th>
@@ -62,6 +64,8 @@
                     <td><?= h($address->suffix) ?></td>
                     <td><?= h($address->street) ?></td>
                     <td><?= h($address->number) ?></td>
+                    <td><?= h($address->entrance) ?></td>
+                    <td><?= h($address->unit) ?></td>
                     <td><?= h($address->city) ?></td>
                     <td><?= h($address->zip) ?></td>
                     <td>

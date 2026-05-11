@@ -147,6 +147,14 @@ class AddressesTable extends AppTable
             ->allowEmptyString('number');
 
         $validator
+            ->scalar('entrance')
+            ->allowEmptyString('entrance');
+
+        $validator
+            ->scalar('unit')
+            ->allowEmptyString('unit');
+
+        $validator
             ->scalar('city')
             ->allowEmptyString('city');
 

@@ -58,6 +58,8 @@
                             <th><?= __('Suffix') ?></th>
                             <th><?= __('Street') ?></th>
                             <th><?= __('Number') ?></th>
+                            <th><?= __('Entrance') ?></th>
+                            <th><?= __('Unit') ?></th>
                             <th><?= __('City') ?></th>
                             <th><?= __('Zip') ?></th>
                             <th><?= __('Address Registry Reference') ?></th>
@@ -81,6 +83,8 @@
                             <td><?= h($address->suffix) ?></td>
                             <td><?= h($address->street) ?></td>
                             <td><?= h($address->number) ?></td>
+                            <td><?= h($address->entrance) ?></td>
+                            <td><?= h($address->unit) ?></td>
                             <td><?= h($address->city) ?></td>
                             <td><?= h($address->zip) ?></td>
                             <td><?=
