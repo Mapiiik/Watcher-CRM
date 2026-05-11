@@ -1,6 +1,7 @@
 $(function () {
     // Select2 search for addresses
     $('#address-registry-search').select2({
+        width: '100%',
         ajax: {
             url: '/api/addresses-bridge/search.json',
             dataType: 'json',
