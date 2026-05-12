@@ -30,6 +30,23 @@ class TasksController extends AppController
      */
     public function index()
     {
+        // persistent options
+        if (!is_null($this->getRequest()->getQuery('expandable_text'))) {
+            $this->getRequest()->getSession()->write(
+                'Config.Tasks.options.expandable_text',
+                $this->getRequest()->getQuery('expandable_text'),
+            );
+        }
+
+        $options = $this->getRequest()->getSession()->read('Config.Tasks.options') ?? [];
+
+        // expandable text
+        $expandable_text = toBool(
+            $options['expandable_text']
+                ?? Hash::get($this->user_settings, 'tasks.expandable_text', false),
+        );
+        $this->set('expandableText', $expandable_text);
+
         // persistent filter data
         if (!is_null($this->getRequest()->getQuery('show_completed'))) {
             $this->getRequest()->getSession()->write(
@@ -67,7 +84,7 @@ class TasksController extends AppController
                 $this->getRequest()->getQuery('search'),
             );
         }
-        $filter = $this->getRequest()->getSession()->read('Config.Tasks.filter');
+        $filter = $this->getRequest()->getSession()->read('Config.Tasks.filter') ?? [];
 
         // filter
         $conditions = [];
@@ -156,6 +173,7 @@ class TasksController extends AppController
         // filter form
         $filterForm = new Form();
         $filterForm->setData([
+            'expandable_text' => $expandable_text,
             'show_completed' => $show_completed,
             'dealer_id' => $dealer_id,
             'task_type_id' => $task_type_id,

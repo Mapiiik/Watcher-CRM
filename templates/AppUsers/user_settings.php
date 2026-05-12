@@ -68,6 +68,14 @@
                     ,
                     'type' => 'checkbox',
                 ]);
+                echo $this->Form->control('user_settings.tasks.expandable_text', [
+                    'label' =>
+                        __d('app_users', 'Tasks')
+                        . ' - '
+                        . __d('app_users', 'Use Expandable Text by Default')
+                    ,
+                    'type' => 'checkbox',
+                ]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__d('app_users', 'Submit')) ?>

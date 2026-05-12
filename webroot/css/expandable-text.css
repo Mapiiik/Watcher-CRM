@@ -1,0 +1,38 @@
+/* Expandable Text */
+.expandable-text {
+    --lines: 3;
+}
+
+.expandable-text .toggle {
+    float: right;
+}
+
+.expandable-text-viewport {
+    overflow: hidden;
+    max-height: calc(var(--line-height) * var(--lines));
+    position: relative;
+}
+
+/* START MODE */
+.expandable-text.mode-start .expandable-text-content {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--lines);
+}
+
+.expandable-text.mode-start.expanded .expandable-text-viewport {
+    max-height: none;
+}
+
+.expandable-text.mode-start.expanded .expandable-text-content {
+    -webkit-line-clamp: unset;
+}
+
+/* END MODE */
+.expandable-text.mode-end .expandable-text-content {
+    display: block;
+}
+
+.expandable-text.mode-end.expanded .expandable-text-viewport {
+    max-height: none;
+}

@@ -3,7 +3,11 @@
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Task> $tasks
  * @var \Cake\Form\Form $filterForm
+ * @var bool $expandableText
  */
+
+$this->Html->css('expandable-text', ['block' => true]);
+$this->Html->script('expandable-text.js', ['block' => true]);
 ?>
 <?= $this->Form->create($filterForm, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
 <div class="row">
@@ -40,6 +44,11 @@
         <?= $this->Form->control('search', [
             'label' => __('Search'),
             'type' => 'search',
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+        <?= $this->Form->control('expandable_text', [
+            'label' => __('Expandable Text'),
+            'type' => 'checkbox',
             'onchange' => 'this.form.submit();',
         ]) ?>
     </div>
@@ -98,7 +107,14 @@
                         <?= h($task->subject) ?? '&nbsp;' ?>
                         <blockquote><i><?= h($task->summary_text) ?></i></blockquote>
                     </td>
-                    <td style="overflow-wrap: break-word; max-width: 600px;"><?= nl2br($task->text ?? '') ?></td>
+                    <td style="overflow-wrap: break-word; max-width: 600px;">
+                        <?= $this->element('common/expandable_text', [
+                            'text' => $task->text,
+                            'lines' => 20,
+                            'enabled' => $expandableText,
+                            'mode' => 'end',
+                        ]) ?>
+                    </td>
                     <td>
                         <?= $task->customer !== null ? $this->Html->link(
                             $task->customer->name ?? '(' . $task->customer->id . ')',
