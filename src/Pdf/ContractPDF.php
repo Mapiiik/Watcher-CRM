@@ -401,7 +401,7 @@ class ContractPDF extends AppPDF
                 [
                     [
                         'label' => Settings::getString('core.documents.common.labels.street'),
-                        'value' => $contract->billing_address->street_and_number,
+                        'value' => $contract->billing_address->street_and_number_extra,
                     ],
                     [
                         'label' => Settings::getString('core.documents.common.labels.phone'),
@@ -1338,7 +1338,7 @@ class ContractPDF extends AppPDF
                 [
                     [
                         'label' => Settings::getString('core.documents.common.labels.street'),
-                        'value' => $contract->billing_address->street_and_number,
+                        'value' => $contract->billing_address->street_and_number_extra,
                     ],
                     [
                         'label' => Settings::getString('core.documents.common.labels.phone'),

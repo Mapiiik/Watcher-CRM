@@ -38,11 +38,10 @@ use App\Model\Enum\AddressNumberType;
  * @property string $full_name
  * @property string $name
  * @property string $address
- * @property string $address_extra
- * @property string $street_and_number
+ * @property string $street_and_number getter for street and object number line
+ * @property string $street_and_number_extra getter for street and object number line (including entrance and unit)
  * @property string $zip_and_city
  * @property string $full_address
- * @property string $full_address_extra
  */
 class Address extends AppEntity
 {
@@ -142,7 +141,7 @@ class Address extends AppEntity
     }
 
     /**
-     * getter for address without company/name
+     * getter for address without company/name (including entrance and unit)
      *
      * @return string
      */
@@ -150,22 +149,7 @@ class Address extends AppEntity
     {
         $address = '';
 
-        $address .= $this->street_and_number;
-        $address .= ', ' . $this->zip_and_city;
-
-        return $address;
-    }
-
-    /**
-     * getter for address without company/name (including entrance and unit)
-     *
-     * @return string
-     */
-    protected function _getAddressExtra(): string
-    {
-        $address = '';
-
-        $address .= $this->street_and_number . $this->getEntranceAndUnit();
+        $address .= $this->street_and_number_extra;
         $address .= ', ' . $this->zip_and_city;
 
         return $address;
@@ -193,6 +177,27 @@ class Address extends AppEntity
     }
 
     /**
+     * getter for street and object number line (including entrance and unit)
+     *
+     * @return string
+     */
+    protected function _getStreetAndNumberExtra(): string
+    {
+        $street_and_number = '';
+
+        if (isset($this->street)) {
+            $street_and_number .= $this->street . ' ' . $this->number;
+        } elseif (isset($this->number)) {
+            $street_and_number .=
+                $this->number_type == AddressNumberType::Registration
+                    ? __('Reg. No.') . ' ' . $this->number
+                    : __('No.') . ' ' . $this->number;
+        }
+
+        return $street_and_number . $this->getEntranceAndUnit();
+    }
+
+    /**
      * getter for zip and city line
      *
      * @return string
@@ -213,7 +218,7 @@ class Address extends AppEntity
     }
 
     /**
-     * getter for address with company/name
+     * getter for address with company/name (including entrance and unit)
      *
      * @return string
      */
@@ -229,52 +234,50 @@ class Address extends AppEntity
     }
 
     /**
-     * getter for address with company/name (including entrance and unit)
-     *
-     * @return string
-     */
-    protected function _getFullAddressExtra(): string
-    {
-        $address = '';
-
-        $address .= $this->name;
-        $address .= ', ';
-        $address .= $this->address_extra;
-
-        return $address;
-    }
-
-    /**
      * Getter for entrance and unit.
      *
-     * @param bool $addParentheses Add parentheses around result.
+     * @param bool $addLeadingComma Add leading comma before result.
      * @param bool $addLeadingSpace Add leading space before result.
+     * @param bool $addParentheses Add parentheses around result.
+     * @param string $partsSeparator Default ', '.
+     * @param string $valueSeparator Default ' '.
      * @return string
      */
     public function getEntranceAndUnit(
-        bool $addParentheses = true,
+        bool $addLeadingComma = true,
         bool $addLeadingSpace = true,
+        bool $addParentheses = false,
+        string $partsSeparator = ', ',
+        string $valueSeparator = ' ',
     ): string {
         $parts = [];
 
         if (!empty($this->entrance)) {
-            $parts[] = __('entrance') . ': ' . $this->entrance;
+            $parts[] = __('entrance') . $valueSeparator . $this->entrance;
         }
 
         if (!empty($this->unit)) {
-            $parts[] = __('unit') . ': ' . $this->unit;
+            $parts[] = __('unit') . $valueSeparator . $this->unit;
         }
 
         if (empty($parts)) {
             return '';
         }
 
-        $result = implode(', ', $parts);
+        $result = implode($partsSeparator, $parts);
 
         if ($addParentheses) {
             $result = '(' . $result . ')';
         }
 
-        return $addLeadingSpace ? ' ' . $result : $result;
+        if ($addLeadingSpace) {
+            $result = ' ' . $result;
+        }
+
+        if ($addLeadingComma) {
+            $result = ',' . $result;
+        }
+
+        return $result;
     }
 }

@@ -24,7 +24,7 @@
     </aside>
     <div class="column column-90">
         <div class="addresses view content">
-            <h3><?= h($address->address_extra) ?></h3>
+            <h3><?= h($address->address) ?></h3>
             <div class="row">
                 <div class="column">
                     <table>
