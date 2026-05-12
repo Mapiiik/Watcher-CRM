@@ -5,18 +5,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const toggle = wrapper.querySelector('.toggle');
         const more = wrapper.dataset.more;
         const less = wrapper.dataset.less;
-        const lines = wrapper.dataset.lines;
+        const lines = parseInt(wrapper.dataset.lines, 10);
         const mode = wrapper.classList.contains('mode-end') ? 'end' : 'start';
 
         // set max lines dynamicly in CSS
         wrapper.style.setProperty('--lines', lines);
 
-        // get actual line height (in px)
-        const lineHeight = parseFloat(getComputedStyle(content).lineHeight);
-        wrapper.style.setProperty('--line-height', lineHeight + 'px');
-
-        // move content up (overflow hidden)
-        function applyEndMode() {
+        function applyEndMode(lineHeight) {
             const visibleHeight = lineHeight * lines;
             const fullHeight = content.scrollHeight;
 
@@ -26,9 +21,28 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        if (mode === 'end') {
-            applyEndMode();
+        function update() {
+            // recompute line height
+            const lineHeight = parseFloat(getComputedStyle(content).lineHeight);
+            wrapper.style.setProperty('--line-height', lineHeight + 'px');
+
+            // check if toggle is needed
+            if (content.scrollHeight <= lineHeight * lines) {
+                toggle.style.display = 'none';
+                content.style.transform = 'none';
+                return;
+            } else {
+                toggle.style.display = '';
+            }
+
+            // apply end mode only when collapsed
+            if (mode === 'end' && !wrapper.classList.contains('expanded')) {
+                applyEndMode(lineHeight);
+            }
         }
+
+        // initial calculation
+        update();
 
         toggle.addEventListener('click', () => {
             wrapper.classList.toggle('expanded');
@@ -37,9 +51,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 content.style.transform = 'none';
                 toggle.textContent = less;
             } else {
-                if (mode === 'end') applyEndMode();
                 toggle.textContent = more;
+                update(); // recalc after collapse
             }
+        });
+
+        // debounce resize
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(update, 150);
         });
     });
 });

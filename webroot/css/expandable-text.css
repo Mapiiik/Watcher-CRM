@@ -1,14 +1,17 @@
 /* Expandable Text */
 .expandable-text {
-    --lines: 3;
+    --lines: 5; /* default */
 }
 
 .expandable-text .toggle {
-    float: right;
+    display: block;
+    clear: both;
+    text-align: right;
     cursor: pointer;
 }
 
 .expandable-text-viewport {
+    clear: both;
     overflow: hidden;
     max-height: calc(var(--line-height) * var(--lines));
     position: relative;

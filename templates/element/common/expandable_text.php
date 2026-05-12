@@ -25,7 +25,7 @@ if ($enabled) :
         data-less="<?= h($less) ?>"
         data-lines="<?= $lines ?>">
         <?php if ($mode === 'end') : ?>
-        <a class="toggle"><?= $more ?></a><br>
+        <a class="toggle"><?= $more ?></a>
         <?php endif; ?>
         <div class="expandable-text-viewport">
             <div class="expandable-text-content">
@@ -33,7 +33,7 @@ if ($enabled) :
             </div>
         </div>
         <?php if ($mode !== 'end') : ?>
-        <br><a class="toggle"><?= $more ?></a>
+        <a class="toggle"><?= $more ?></a>
         <?php endif; ?>
     </div>
     <?php
