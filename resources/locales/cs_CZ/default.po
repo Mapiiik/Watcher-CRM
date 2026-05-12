@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-05-12 12:54+0200\n"
-"PO-Revision-Date: 2026-05-12 13:02+0200\n"
+"POT-Creation-Date: 2026-05-12 18:17+0200\n"
+"PO-Revision-Date: 2026-05-12 18:21+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -337,9 +337,9 @@ msgstr "Fakturace nelze odstranit. Opakujte akci."
 #: src/Controller/CustomerMessagesController.php:282
 #: src/Controller/IpAddressesController.php:545
 #: src/Controller/OverviewsController.php:842
-#: src/Controller/TasksController.php:282
-#: src/Controller/TasksController.php:475
-#: src/Controller/TasksController.php:574
+#: src/Controller/TasksController.php:300
+#: src/Controller/TasksController.php:493
+#: src/Controller/TasksController.php:592
 msgid "The access points list could not be loaded. Please, try again."
 msgstr "Seznam přístupových bodů nelze načíst. Zkuste to prosím znovu."
 
@@ -1045,28 +1045,28 @@ msgstr "Typ úkolu byl odstraněn."
 msgid "The task type could not be deleted. Please, try again."
 msgstr "Typ úkolu nelze odstranit. Prosím, zkuste to znovu."
 
-#: src/Controller/TasksController.php:228
+#: src/Controller/TasksController.php:246
 msgid "none"
 msgstr "žádný"
 
-#: src/Controller/TasksController.php:345
-#: src/Controller/TasksController.php:505
+#: src/Controller/TasksController.php:363
+#: src/Controller/TasksController.php:523
 msgid "The task has been saved."
 msgstr "Úkol byl uložen."
 
-#: src/Controller/TasksController.php:349
-#: src/Controller/TasksController.php:509
+#: src/Controller/TasksController.php:367
+#: src/Controller/TasksController.php:527
 msgid "The task could not be saved. Please, try again."
 msgstr "Úkol nelze uložit. Prosím, zkuste to znovu."
 
-#: src/Controller/TasksController.php:430 src/Model/Enum/AddressType.php:26
+#: src/Controller/TasksController.php:448 src/Model/Enum/AddressType.php:26
 #: templates/Commissions/view.php:100 templates/ContractStates/view.php:183
 #: templates/Contracts/print.php:76 templates/Contracts/view.php:166
 #: templates/Customers/view.php:526 templates/ServiceTypes/view.php:165
 msgid "Installation Address"
 msgstr "Adresa instalace"
 
-#: src/Controller/TasksController.php:443
+#: src/Controller/TasksController.php:461
 #: src/Model/Enum/CustomerMessageType.php:27
 #: src/Utility/ServiceChangeMessageBuilder.php:163
 #: templates/Customers/view.php:283 templates/Emails/view.php:43
@@ -1075,7 +1075,7 @@ msgstr "Adresa instalace"
 msgid "Email"
 msgstr "E-mail"
 
-#: src/Controller/TasksController.php:444
+#: src/Controller/TasksController.php:462
 #: src/Utility/ServiceChangeMessageBuilder.php:164
 #: templates/Customers/view.php:332 templates/Phones/view.php:43
 #: templates/TaskStates/view.php:66 templates/TaskTypes/view.php:62
@@ -1083,31 +1083,31 @@ msgstr "E-mail"
 msgid "Phone"
 msgstr "Telefon"
 
-#: src/Controller/TasksController.php:591
+#: src/Controller/TasksController.php:609
 msgid "The task has been deleted."
 msgstr "Úkol byl odstraněn."
 
-#: src/Controller/TasksController.php:594
+#: src/Controller/TasksController.php:612
 msgid "The task could not be deleted. Please, try again."
 msgstr "Úkol nelze odstranit. Prosím, zkuste to znovu."
 
-#: src/Controller/TasksController.php:650
+#: src/Controller/TasksController.php:668
 msgid "You have a new task # {0}"
 msgstr "Máte nový úkol č. {0}"
 
-#: src/Controller/TasksController.php:652
+#: src/Controller/TasksController.php:670
 msgid "You have changes in task # {0}"
 msgstr "Máte změny v úkolu č. {0}"
 
-#: src/Controller/TasksController.php:666
+#: src/Controller/TasksController.php:684
 msgid "Notification email sent."
 msgstr "E-mail s oznámením odeslán."
 
-#: src/Controller/TasksController.php:670
+#: src/Controller/TasksController.php:688
 msgid "The notification email could not be sent."
 msgstr "E-mail s oznámením se nepodařilo odeslat."
 
-#: src/Controller/TasksController.php:248
+#: src/Controller/TasksController.php:266
 msgid ""
 "There was {0} unfinished task found that does not have a dealer assigned."
 msgid_plural ""
@@ -1838,7 +1838,7 @@ msgstr "Není nainstalováno přes Git"
 #: templates/TaskTypes/index.php:29 templates/TaskTypes/view.php:10
 #: templates/TaskTypes/view.php:70 templates/TaskTypes/view.php:140
 #: templates/Tasks/add.php:16 templates/Tasks/edit.php:16
-#: templates/Tasks/index.php:71 templates/Tasks/view.php:10
+#: templates/Tasks/index.php:80 templates/Tasks/view.php:10
 #: templates/element/Contracts/Billings.php:35
 #: templates/element/Contracts/BorrowedEquipments.php:20
 #: templates/element/Contracts/ContractVersions.php:20
@@ -2075,7 +2075,7 @@ msgstr "Upravit přístupové oprávnění"
 #: templates/ServiceOverrides/index.php:14 templates/ServiceTypes/index.php:11
 #: templates/Services/index.php:11 templates/SoldEquipments/index.php:11
 #: templates/TaskStates/index.php:11 templates/TaskTypes/index.php:11
-#: templates/Tasks/index.php:41
+#: templates/Tasks/index.php:45
 msgid "Search"
 msgstr "Hledat"
 
@@ -2114,7 +2114,7 @@ msgstr "Přístupová oprávnění"
 #: templates/RemovedIpNetworks/view.php:51 templates/ServiceTypes/view.php:162
 #: templates/Services/view.php:84 templates/SoldEquipments/index.php:31
 #: templates/SoldEquipments/view.php:50 templates/TaskStates/view.php:68
-#: templates/TaskTypes/view.php:64 templates/Tasks/index.php:64
+#: templates/TaskTypes/view.php:64 templates/Tasks/index.php:73
 #: templates/Tasks/view.php:78 templates/element/Contracts/Billings.php:17
 msgid "Customer Number"
 msgstr "Číslo zákazníka"
@@ -2153,7 +2153,7 @@ msgstr "Číslo zákazníka"
 #: templates/SoldEquipments/index.php:69 templates/TaskStates/index.php:41
 #: templates/TaskStates/view.php:112 templates/TaskTypes/index.php:39
 #: templates/TaskTypes/view.php:108 templates/TaskTypes/view.php:152
-#: templates/Tasks/index.php:127 templates/element/Contracts/Billings.php:77
+#: templates/Tasks/index.php:143 templates/element/Contracts/Billings.php:77
 #: templates/element/Contracts/BorrowedEquipments.php:44
 #: templates/element/Contracts/ContractVersions.php:40
 #: templates/element/Contracts/IpAddresses.php:82
@@ -2196,7 +2196,7 @@ msgstr "Zobrazit"
 #: templates/SoldEquipments/index.php:71 templates/TaskStates/index.php:43
 #: templates/TaskStates/view.php:116 templates/TaskTypes/index.php:41
 #: templates/TaskTypes/view.php:112 templates/TaskTypes/view.php:156
-#: templates/Tasks/index.php:131 templates/element/Contracts/Billings.php:81
+#: templates/Tasks/index.php:147 templates/element/Contracts/Billings.php:81
 #: templates/element/Contracts/BorrowedEquipments.php:52
 #: templates/element/Contracts/ContractVersions.php:44
 #: templates/element/Contracts/IpAddresses.php:86
@@ -2225,7 +2225,7 @@ msgstr "Upravit"
 #: templates/ServiceOverrides/index.php:127 templates/ServiceTypes/index.php:91
 #: templates/Services/index.php:77 templates/SoldEquipments/index.php:88
 #: templates/TaskStates/index.php:60 templates/TaskTypes/index.php:58
-#: templates/Tasks/index.php:143
+#: templates/Tasks/index.php:159
 msgid "first"
 msgstr "první"
 
@@ -2247,7 +2247,7 @@ msgstr "první"
 #: templates/ServiceOverrides/index.php:128 templates/ServiceTypes/index.php:92
 #: templates/Services/index.php:78 templates/SoldEquipments/index.php:89
 #: templates/TaskStates/index.php:61 templates/TaskTypes/index.php:59
-#: templates/Tasks/index.php:144
+#: templates/Tasks/index.php:160
 msgid "previous"
 msgstr "předchozí"
 
@@ -2269,7 +2269,7 @@ msgstr "předchozí"
 #: templates/ServiceOverrides/index.php:130 templates/ServiceTypes/index.php:94
 #: templates/Services/index.php:80 templates/SoldEquipments/index.php:91
 #: templates/TaskStates/index.php:63 templates/TaskTypes/index.php:61
-#: templates/Tasks/index.php:146
+#: templates/Tasks/index.php:162
 msgid "next"
 msgstr "další"
 
@@ -2291,7 +2291,7 @@ msgstr "další"
 #: templates/ServiceOverrides/index.php:131 templates/ServiceTypes/index.php:95
 #: templates/Services/index.php:81 templates/SoldEquipments/index.php:92
 #: templates/TaskStates/index.php:64 templates/TaskTypes/index.php:62
-#: templates/Tasks/index.php:147
+#: templates/Tasks/index.php:163
 msgid "last"
 msgstr "poslední"
 
@@ -2313,7 +2313,7 @@ msgstr "poslední"
 #: templates/ServiceOverrides/index.php:134 templates/ServiceTypes/index.php:98
 #: templates/Services/index.php:84 templates/SoldEquipments/index.php:95
 #: templates/TaskStates/index.php:67 templates/TaskTypes/index.php:65
-#: templates/Tasks/index.php:150
+#: templates/Tasks/index.php:166
 msgid ""
 "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} "
 "total"
@@ -2486,7 +2486,7 @@ msgstr "Související zákazníci"
 #: templates/Customers/index.php:68 templates/Customers/view.php:439
 #: templates/Customers/view.php:523 templates/Customers/view.php:772
 #: templates/ServiceTypes/view.php:163 templates/TaskStates/view.php:59
-#: templates/TaskTypes/view.php:55 templates/Tasks/index.php:56
+#: templates/TaskTypes/view.php:55 templates/Tasks/index.php:65
 msgid "Number"
 msgstr "Číslo"
 
@@ -3381,7 +3381,7 @@ msgstr "Faktury"
 
 #: templates/Contracts/view.php:109 templates/Contracts/view.php:534
 #: templates/Customers/view.php:119 templates/Customers/view.php:767
-#: templates/Tasks/index.php:51 templates/layout/default.php:128
+#: templates/Tasks/index.php:60 templates/layout/default.php:128
 msgid "Tasks"
 msgstr "Úkoly"
 
@@ -3485,7 +3485,7 @@ msgid "Are you sure you want to block # {0}?"
 msgstr "Opravdu chcete blokovat # {0}?"
 
 #: templates/Contracts/view.php:530 templates/Customers/view.php:763
-#: templates/Tasks/index.php:50 templates/Tasks/view.php:18
+#: templates/Tasks/index.php:59 templates/Tasks/view.php:18
 msgid "New Task"
 msgstr "Nový úkol"
 
@@ -3497,7 +3497,7 @@ msgstr "Typ úkolu"
 
 #: templates/Contracts/view.php:541 templates/Contracts/view.php:587
 #: templates/Customers/view.php:774 templates/TaskTypes/view.php:57
-#: templates/Tasks/index.php:59 templates/Tasks/view.php:39
+#: templates/Tasks/index.php:68 templates/Tasks/view.php:39
 #: templates/email/html/task_notification.php:44
 msgid "Task State"
 msgstr "Stav úkolu"
@@ -4928,11 +4928,15 @@ msgstr "Přidat úkol"
 msgid "Edit Task"
 msgstr "Upravit úkol"
 
-#: templates/Tasks/index.php:16
+#: templates/Tasks/index.php:20
 msgid "Show Completed"
 msgstr "Zobrazit dokončené"
 
-#: templates/Tasks/index.php:61 templates/Tasks/view.php:122
+#: templates/Tasks/index.php:50
+msgid "Expandable Text"
+msgstr "Rozbalitelný text"
+
+#: templates/Tasks/index.php:70 templates/Tasks/view.php:122
 #: templates/email/html/task_notification.php:141
 msgid "Summary Text"
 msgstr "Souhrnný text"
@@ -5008,6 +5012,16 @@ msgstr "Odstranil"
 #: templates/element/common/audit.php:79
 msgid "Revoked By"
 msgstr "Zrušil"
+
+#: templates/element/common/expandable_text.php:16
+#: templates/element/common/expandable_text.php:19
+msgid "more"
+msgstr "více"
+
+#: templates/element/common/expandable_text.php:17
+#: templates/element/common/expandable_text.php:20
+msgid "less"
+msgstr "méně"
 
 #: templates/email/html/task_notification.php:133
 msgid "View Task"
