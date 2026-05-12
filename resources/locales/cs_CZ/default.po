@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-05-11 23:13+0200\n"
-"PO-Revision-Date: 2026-05-11 23:20+0200\n"
+"POT-Creation-Date: 2026-05-12 12:54+0200\n"
+"PO-Revision-Date: 2026-05-12 13:02+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -1121,22 +1121,6 @@ msgstr[2] ""
 #: src/Controller/Traits/ErrorFormatterTrait.php:35
 msgid "Errors"
 msgstr "Chyby"
-
-#: src/Model/Entity/Address.php:188
-msgid "Reg. No."
-msgstr "č.ev."
-
-#: src/Model/Entity/Address.php:189
-msgid "No."
-msgstr "č.p."
-
-#: src/Model/Entity/Address.php:261
-msgid "entrance"
-msgstr "vchod"
-
-#: src/Model/Entity/Address.php:265
-msgid "unit"
-msgstr "byt"
 
 #: src/Model/Entity/AppUser.php:47 src/Model/Enum/LoginRights.php:28
 msgid "User"
@@ -5069,6 +5053,18 @@ msgstr "Verze"
 #: templates/layout/error.php:36
 msgid "Back"
 msgstr "Zpět"
+
+#~ msgid "Reg. No."
+#~ msgstr "č.ev."
+
+#~ msgid "No."
+#~ msgstr "č.p."
+
+#~ msgid "entrance"
+#~ msgstr "vchod"
+
+#~ msgid "unit"
+#~ msgstr "byt"
 
 #, fuzzy
 #~| msgid "Could not load addresses from national address registry: {0}"

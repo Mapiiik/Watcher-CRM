@@ -169,8 +169,8 @@ class Address extends AppEntity
         } elseif (isset($this->number)) {
             $street_and_number .=
                 $this->number_type == AddressNumberType::Registration
-                    ? __('Reg. No.') . ' ' . $this->number
-                    : __('No.') . ' ' . $this->number;
+                    ? __d('addresses', 'Reg. No.') . ' ' . $this->number
+                    : __d('addresses', 'No.') . ' ' . $this->number;
         }
 
         return $street_and_number;
@@ -190,8 +190,8 @@ class Address extends AppEntity
         } elseif (isset($this->number)) {
             $street_and_number .=
                 $this->number_type == AddressNumberType::Registration
-                    ? __('Reg. No.') . ' ' . $this->number
-                    : __('No.') . ' ' . $this->number;
+                    ? __d('addresses', 'Reg. No.') . ' ' . $this->number
+                    : __d('addresses', 'No.') . ' ' . $this->number;
         }
 
         return $street_and_number . $this->getEntranceAndUnit();
@@ -253,11 +253,11 @@ class Address extends AppEntity
         $parts = [];
 
         if (!empty($this->entrance)) {
-            $parts[] = __('entrance') . $valueSeparator . $this->entrance;
+            $parts[] = __d('addresses', 'entrance') . $valueSeparator . $this->entrance;
         }
 
         if (!empty($this->unit)) {
-            $parts[] = __('unit') . $valueSeparator . $this->unit;
+            $parts[] = __d('addresses', 'unit') . $valueSeparator . $this->unit;
         }
 
         if (empty($parts)) {

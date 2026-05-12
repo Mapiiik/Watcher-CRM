@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-05-11 23:13+0200\n"
+"POT-Creation-Date: 2026-05-12 12:54+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1103,22 +1103,6 @@ msgstr[1] ""
 
 #: ./src/Controller/Traits/ErrorFormatterTrait.php:35
 msgid "Errors"
-msgstr ""
-
-#: ./src/Model/Entity/Address.php:188
-msgid "Reg. No."
-msgstr ""
-
-#: ./src/Model/Entity/Address.php:189
-msgid "No."
-msgstr ""
-
-#: ./src/Model/Entity/Address.php:261
-msgid "entrance"
-msgstr ""
-
-#: ./src/Model/Entity/Address.php:265
-msgid "unit"
 msgstr ""
 
 #: ./src/Model/Entity/AppUser.php:47
