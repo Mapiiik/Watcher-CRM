@@ -5,6 +5,7 @@
 
 .expandable-text .toggle {
     float: right;
+    cursor: pointer;
 }
 
 .expandable-text-viewport {
