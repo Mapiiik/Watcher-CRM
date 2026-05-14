@@ -168,6 +168,49 @@ final class ColorTransformer
     }
 
     /**
+     * Inverts the lightness component of a HEX color using the HSL model,
+     * with optional adjustment factor for fine‑tuning the result.
+     *
+     * Base transformation:
+     *   L' = 1 - L
+     *
+     * This preserves hue and saturation while producing a perceptually
+     * consistent dark‑mode variant:
+     *   - Light colors become dark
+     *   - Dark colors become light
+     *   - Mid‑tones remain balanced
+     *
+     * The optional $factor allows controlled brightening or darkening
+     * of the inverted result:
+     *
+     *   L'' = clamp(L' * $factor, 0.0, 1.0)
+     *
+     * Examples:
+     *   - factor 1.00 → pure inversion (recommended default)
+     *   - factor 0.85 → slightly darker dark‑mode
+     *   - factor 1.15 → slightly brighter dark‑mode
+     *
+     * @param string $hex Original HEX color (#rrggbb or #rgb).
+     * @param float  $factor Multiplier applied after inversion (default 1.0).
+     * @return string HEX color with inverted and adjusted lightness.
+     */
+    public static function invertLightness(string $hex, float $factor = 1.0): string
+    {
+        $hsl = self::hexToHsl($hex);
+
+        $h = $hsl['h'];
+        $s = $hsl['s'];
+
+        // Base inversion
+        $l = 1.0 - $hsl['l'];
+
+        // Optional adjustment
+        $l = max(0.0, min(1.0, $l * $factor));
+
+        return self::hslToHex($h, $s, $l);
+    }
+
+    /**
      * Returns a readable text color (black or white) based on background brightness.
      *
      * @param string $hex Background color.

@@ -60,7 +60,7 @@ class Label extends AppEntity
         $backgroundColor = ColorThemeSelector::forTheme(
             $this->color,
             $theme,
-            factor: 0.6,
+            factor: 1.0,
         );
 
         return 'background-color: ' . $backgroundColor . ';'
