@@ -39,3 +39,20 @@
     --color-message-info-text: #2779bd;
     --color-message-info-border: #6cb2eb;
 }
+
+table {
+    box-shadow:
+        0 3px 6px rgba(0, 0, 0, 0.35),
+        0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+.content {
+    /* elevated dark UI */
+    box-shadow:
+        0 7px 14px rgba(0, 0, 0, 0.45),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+nav.top-nav {
+    box-shadow:
+        0 7px 14px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
+}
