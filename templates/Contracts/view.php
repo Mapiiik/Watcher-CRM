@@ -55,7 +55,7 @@
                         'title' => h($customer_label->label->caption) . PHP_EOL
                             . h($customer_label->created) . PHP_EOL
                             . h($customer_label->note),
-                        'style' => 'background-color: ' . $customer_label->label->color . ';',
+                        'style' => $customer_label->label->style,
                     ],
                 ) ?>
             <?php endforeach ?>

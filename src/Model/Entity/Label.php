@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\Colors\ColorThemeSelector;
+use App\Colors\ColorTransformer;
+use Cake\Core\Configure;
+
 /**
  * Label Entity
  *
@@ -10,10 +14,11 @@ namespace App\Model\Entity;
  * @property int $nid
  * @property string|null $name
  * @property string|null $caption
- * @property string|null $color
+ * @property string $color
  * @property int|null $validity
  * @property bool $dynamic
  * @property string|null $dynamic_sql
+ * @property string $style
  *
  * @property \App\Model\Entity\CustomerLabel[] $customer_labels
  */
@@ -41,4 +46,24 @@ class Label extends AppEntity
         'dynamic_sql' => true,
         'customer_labels' => true,
     ];
+
+    /**
+     * getter for style
+     *
+     * @return string
+     */
+    protected function _getStyle(): string
+    {
+        $theme = Configure::read('UI.theme');
+        $theme = is_string($theme) ? $theme : null;
+
+        $backgroundColor = ColorThemeSelector::forTheme(
+            $this->color,
+            $theme,
+            factor: 0.6,
+        );
+
+        return 'background-color: ' . $backgroundColor . ';'
+            . ' color: ' . ColorTransformer::getContrastColor($backgroundColor) . ';';
+    }
 }

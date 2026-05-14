@@ -17,9 +17,9 @@ final class ColorThemeSelector
      * @param string|null $theme Current UI theme (may be null before initialization)
      * @return string HEX color adjusted for the theme
      */
-    public static function forTheme(string $hex, ?string $theme): string
+    public static function forTheme(string $hex, ?string $theme, float $factor = 0.20): string
     {
-        $key = $hex . '|' . ($theme ?? 'default');
+        $key = $hex . '|' . ($theme ?? 'default') . '|' . toString($factor);
 
         if (isset(self::$cache[$key])) {
             return self::$cache[$key];
@@ -28,7 +28,7 @@ final class ColorThemeSelector
         switch ($theme) {
             case 'dark':
             case 'tailwind':
-                $result = ColorTransformer::darken($hex, 0.20);
+                $result = ColorTransformer::darken($hex, $factor);
                 break;
 
             default:
