@@ -10,7 +10,7 @@
     --color-white: #ffffff;
 
     --color-main: #ffffff;
-    --color-main-bg: #1b252d;
+    --color-main-bg: #12181d;
     --color-links: #66d0ff;
     --color-links-active: #a8f3fa;
     --color-links-active-bg: transparent;
@@ -19,9 +19,9 @@
     --color-nav-links-active-bg: transparent;
     --color-headings: #dddddd;
     --color-content-bg: #000000;
-    --color-table-bg: #24323c;
+    --color-table-bg: #1b252d;
     --color-table-borders: #aaaaaa;
-    --color-table-headings-bg: #395167;
+    --color-table-headings-bg: #283a4a;
 
     --color-message-success-bg: #e3fcec;
     --color-message-success-text: #1f9d55;
