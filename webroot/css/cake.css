@@ -274,7 +274,7 @@ tr:hover td {
 th, td {
     border: 0.1rem solid var(--color-table-borders);
     vertical-align: baseline;
-    padding: 0.3rem 0.3rem;
+    padding: 0.2rem 0.2rem;
 }
 
 iframe {
@@ -311,7 +311,7 @@ fieldset.settings-group {
 /* Main */
 body {
     font-size: 1.3em;
-    line-height: 1.0;
+    line-height: 1.2em;
 }
 
 .content {
