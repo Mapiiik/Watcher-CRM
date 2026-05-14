@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\Colors\ColorThemeSelector;
 use App\NMS\ApiClient as NMSApiClient;
 use ArrayObject;
+use Cake\Core\Configure;
 use PhpCollective\DecimalObject\Decimal;
 use RuntimeException;
 
@@ -231,13 +233,20 @@ class Contract extends AppEntity
      */
     protected function _getStyle(): string
     {
-        $style = '';
-
-        if (isset($this->contract_state)) {
-            $style = 'background-color: ' . $this->contract_state->color . ';';
+        if (!isset($this->contract_state->color)) {
+            // no dynamic style
+            return '';
         }
 
-        return $style;
+        $theme = Configure::read('UI.theme');
+        $theme = is_string($theme) ? $theme : null;
+
+        $backgroundColor = ColorThemeSelector::forTheme(
+            $this->contract_state->color,
+            $theme,
+        );
+
+        return 'background-color: ' . $backgroundColor . ';';
     }
 
     /**

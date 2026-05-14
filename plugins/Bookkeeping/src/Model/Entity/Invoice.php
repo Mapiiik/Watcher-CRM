@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Model\Entity;
 
+use App\Colors\ColorThemeSelector;
 use App\Model\Entity\AppEntity;
+use Cake\Core\Configure;
 use Cake\I18n\Date;
 
 /**
@@ -72,7 +74,14 @@ class Invoice extends AppEntity
         }
 
         if (isset($this->debt) && $this->debt->isPositive() && $this->due_date < $now) {
-            $style = 'background-color: #ffc0c0; color: red;';
+            $theme = Configure::read('UI.theme');
+            $theme = is_string($theme) ? $theme : null;
+
+            $backgroundColor = ColorThemeSelector::forTheme(
+                '#ffc0c0',
+                $theme,
+            );
+            $style = 'background-color: ' . $backgroundColor . '; color: red;';
         }
 
         return $style;
