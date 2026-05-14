@@ -27,7 +27,6 @@ final class ColorThemeSelector
 
         switch ($theme) {
             case 'dark':
-            case 'tailwind':
                 $result = ColorTransformer::darken($hex, $factor);
                 break;
 
