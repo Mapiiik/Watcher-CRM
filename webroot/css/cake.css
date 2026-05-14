@@ -342,7 +342,7 @@ nav.top-nav {
     z-index: 100;
     margin-bottom: 1.5rem;
     box-shadow: 0 7px 14px 0 rgb(60 66 87 / 10%), 0 3px 6px 0 rgb(0 0 0 / 7%);
-    background-color: var(--color-main-bg);
+    background-color: var(--color-content-bg);
 }
 .top-nav {
     display: flex;
