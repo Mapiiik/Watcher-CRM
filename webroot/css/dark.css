@@ -11,15 +11,15 @@
 
     --color-main: #ffffff;
     --color-main-bg: #1b252d;
-    --color-links: var(--color-cakephp-blue);
-    --color-links-active: #2a6496;
+    --color-links: #66d0ff;
+    --color-links-active: #a8f3fa;
     --color-links-active-bg: transparent;
     --color-nav-links: #dddddd;
     --color-nav-links-active: var(--color-links-active);
     --color-nav-links-active-bg: transparent;
     --color-headings: #dddddd;
     --color-content-bg: #000000;
-    --color-table-bg: var(--color-main-bg);
+    --color-table-bg: #24323c;
     --color-table-borders: #aaaaaa;
     --color-table-headings-bg: #395167;
 
