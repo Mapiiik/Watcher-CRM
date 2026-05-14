@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-05-12 18:17+0200\n"
-"PO-Revision-Date: 2026-05-12 18:21+0200\n"
+"POT-Creation-Date: 2026-05-14 19:57+0200\n"
+"PO-Revision-Date: 2026-05-14 19:58+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -1162,13 +1162,13 @@ msgstr "API"
 msgid "Contract data not available."
 msgstr "Údaje o smlouvě nejsou k dispozici."
 
-#: src/Model/Entity/Contract.php:255 src/Model/Entity/Contract.php:270
-#: src/Model/Entity/Contract.php:285
+#: src/Model/Entity/Contract.php:264 src/Model/Entity/Contract.php:279
+#: src/Model/Entity/Contract.php:294
 msgid "Contract state data not available."
 msgstr "Údaje o stavu smlouvy nejsou k dispozici."
 
-#: src/Model/Entity/Contract.php:300 src/Model/Entity/Contract.php:315
-#: src/Model/Entity/Contract.php:330
+#: src/Model/Entity/Contract.php:309 src/Model/Entity/Contract.php:324
+#: src/Model/Entity/Contract.php:339
 msgid "Service type data not available."
 msgstr "Údaje o typu služby nejsou k dispozici."
 
@@ -1180,19 +1180,19 @@ msgstr "Údaje o smlouvách nejsou k dispozici."
 msgid "Accounting profile data not available."
 msgstr "Údaje o účetním profilu nejsou k dispozici."
 
-#: src/Model/Entity/Task.php:199
+#: src/Model/Entity/Task.php:208
 msgid "Low"
 msgstr "Nízká"
 
-#: src/Model/Entity/Task.php:200 src/Model/Enum/ServiceCriticalityLevel.php:25
+#: src/Model/Entity/Task.php:209 src/Model/Enum/ServiceCriticalityLevel.php:25
 msgid "Normal"
 msgstr "Normální"
 
-#: src/Model/Entity/Task.php:201
+#: src/Model/Entity/Task.php:210
 msgid "High"
 msgstr "Vysoká"
 
-#: src/Model/Entity/Task.php:202
+#: src/Model/Entity/Task.php:211
 msgid "Urgent"
 msgstr "Naléhavé"
 
@@ -2663,19 +2663,19 @@ msgstr "Přístupový bod"
 msgid "Range"
 msgstr "Rozsah"
 
-#: templates/AppUsers/user_settings.php:53 templates/layout/default.php:213
+#: templates/AppUsers/user_settings.php:53 templates/layout/default.php:210
 msgid "Default"
 msgstr "Výchozí"
 
-#: templates/AppUsers/user_settings.php:54 templates/layout/default.php:214
+#: templates/AppUsers/user_settings.php:54 templates/layout/default.php:211
 msgid "Contrast"
 msgstr "Kontrast"
 
-#: templates/AppUsers/user_settings.php:55 templates/layout/default.php:215
+#: templates/AppUsers/user_settings.php:55 templates/layout/default.php:212
 msgid "Legacy"
 msgstr "Starší"
 
-#: templates/AppUsers/user_settings.php:56 templates/layout/default.php:216
+#: templates/AppUsers/user_settings.php:56 templates/layout/default.php:213
 msgid "Dark"
 msgstr "Tmavý"
 
@@ -2690,7 +2690,7 @@ msgid "Add Billing"
 msgstr "Přidat fakturaci"
 
 #: templates/Billings/bulk_service_change.php:17 templates/Settings/index.php:7
-#: templates/layout/default.php:158
+#: templates/layout/default.php:155
 msgid "Settings"
 msgstr "Nastavení"
 
@@ -3381,7 +3381,7 @@ msgstr "Faktury"
 
 #: templates/Contracts/view.php:109 templates/Contracts/view.php:534
 #: templates/Customers/view.php:119 templates/Customers/view.php:767
-#: templates/Tasks/index.php:60 templates/layout/default.php:128
+#: templates/Tasks/index.php:60 templates/layout/default.php:125
 msgid "Tasks"
 msgstr "Úkoly"
 
@@ -3699,7 +3699,7 @@ msgid "Edit Customer"
 msgstr "Upravit zákazníka"
 
 #: templates/Customers/identity_number_check.php:8
-#: templates/Customers/index.php:63 templates/layout/default.php:123
+#: templates/Customers/index.php:63 templates/layout/default.php:120
 msgid "Customers"
 msgstr "Zákazníci"
 
@@ -4142,7 +4142,7 @@ msgstr "Nové heslo"
 msgid "Delete Login"
 msgstr "Smazat přihlášení"
 
-#: templates/Overviews/index.php:7 templates/layout/default.php:153
+#: templates/Overviews/index.php:7 templates/layout/default.php:150
 msgid "Overviews"
 msgstr "Přehledy"
 
@@ -5027,46 +5027,45 @@ msgstr "méně"
 msgid "View Task"
 msgstr "Zobrazit úkol"
 
-#: templates/layout/default.php:133
+#: templates/layout/default.php:130
 msgid "Bookkeeping"
 msgstr "Účetnictví"
 
-#: templates/layout/default.php:138
+#: templates/layout/default.php:135
 msgid "RADIUS"
 msgstr "RADIUS"
 
-#: templates/layout/default.php:169 templates/layout/default.php:175
-#: templates/layout/default.php:180
+#: templates/layout/default.php:166 templates/layout/default.php:172
+#: templates/layout/default.php:177
 msgid "Old NMS"
 msgstr "Starý NMS"
 
-#: templates/layout/default.php:186
+#: templates/layout/default.php:183
 msgid "Network Management System"
 msgstr "Systém správy sítě"
 
-#: templates/layout/default.php:217
-msgid "Tailwind"
-msgstr "Tailwind"
-
-#: templates/layout/default.php:243
+#: templates/layout/default.php:239
 msgid "Logout"
 msgstr "Odhlášení"
 
-#: templates/layout/default.php:266
+#: templates/layout/default.php:262
 msgid "Changelog"
 msgstr "Seznam změn"
 
-#: templates/layout/default.php:267
+#: templates/layout/default.php:263
 msgid "Source Code"
 msgstr "Zdrojový kód"
 
-#: templates/layout/default.php:269
+#: templates/layout/default.php:265
 msgid "Version"
 msgstr "Verze"
 
 #: templates/layout/error.php:36
 msgid "Back"
 msgstr "Zpět"
+
+#~ msgid "Tailwind"
+#~ msgstr "Tailwind"
 
 #~ msgid "Reg. No."
 #~ msgstr "č.ev."
