@@ -17,7 +17,7 @@ final class ColorThemeSelector
      * @param string|null $theme Current UI theme (may be null before initialization)
      * @return string HEX color adjusted for the theme
      */
-    public static function forTheme(string $hex, ?string $theme, float $factor = 0.5): string
+    public static function forTheme(string $hex, ?string $theme, float $factor = 0.75): string
     {
         $key = $hex . '|' . ($theme ?? 'default') . '|' . toString($factor);
 
