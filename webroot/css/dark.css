@@ -19,7 +19,7 @@
     --color-nav-links-active-bg: transparent;
     --color-headings: #dddddd;
     --color-content-bg: #000000;
-    --color-table-bg: #1b252d;
+    --color-table-bg: #171f26;
     --color-table-borders: #aaaaaa;
     --color-table-headings-bg: #283a4a;
 
@@ -53,6 +53,6 @@ table {
 }
 nav.top-nav {
     box-shadow:
-        0 7px 14px rgba(0, 0, 0, 0.6),
+        0 7px 14px rgba(0, 0, 0, 0.2),
         0 0 0 1px rgba(255, 255, 255, 0.2);
 }
