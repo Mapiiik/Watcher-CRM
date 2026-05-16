@@ -89,4 +89,25 @@
         </td>
     </tr>
     <?php endif; ?>
+
+    <?php if ($entity->has('archived')) : ?>
+    <tr>
+        <th><?= __('Archived') ?></th>
+        <td><?= h($entity->archived) ?></td>
+    </tr>
+
+    <tr>
+        <th><?= __('Archived By') ?></th>
+        <td>
+            <?php if ($entity->archiver !== null) : ?>
+                <?= $this->Html->link(
+                    $entity->archiver->username ?? '(' . $entity->archiver->id . ')',
+                    ['plugin' => null, 'controller' => 'AppUsers', 'action' => 'view', $entity->archiver->id],
+                ) ?>
+            <?php else : ?>
+                <?= h($entity->archived_by) ?>
+            <?php endif; ?>
+        </td>
+    </tr>
+    <?php endif; ?>
 </table>
