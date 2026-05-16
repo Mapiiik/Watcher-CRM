@@ -23,21 +23,21 @@
     --color-table-borders: #aaaaaa;
     --color-table-headings-bg: #283a4a;
 
-    --color-message-success-bg: #e3fcec;
-    --color-message-success-text: #1f9d55;
-    --color-message-success-border: #51d88a;
+    --color-message-success-bg: #13261b;
+    --color-message-success-text: #08b453;
+    --color-message-success-border: #318454;
 
-    --color-message-warning-bg: #fffabc;
-    --color-message-warning-text: #8d7b00;
-    --color-message-warning-border: #d3b800;
+    --color-message-warning-bg: #242200;
+    --color-message-warning-text: #dcc116;
+    --color-message-warning-border: #7f6f00;
 
-    --color-message-error-bg: #fcebea;
-    --color-message-error-text: #cc1f1a;
-    --color-message-error-border: #ef5753;
+    --color-message-error-bg: #291e1e;
+    --color-message-error-text: #ff2727;
+    --color-message-error-border: #d84242;
 
-    --color-message-info-bg: #eff8ff;
-    --color-message-info-text: #2779bd;
-    --color-message-info-border: #6cb2eb;
+    --color-message-info-bg: #1c2228;
+    --color-message-info-text: #569ce1;
+    --color-message-info-border: #457296;
 }
 
 table {
