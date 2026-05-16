@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-05-14 19:57+0200\n"
+"POT-Creation-Date: 2026-05-16 15:43+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -3112,23 +3112,23 @@ msgid "Range"
 msgstr ""
 
 #: ./templates/AppUsers/user_settings.php:53
-#: ./templates/layout/default.php:210
-msgid "Default"
+#: ./templates/layout/default.php:221
+msgid "Light"
 msgstr ""
 
 #: ./templates/AppUsers/user_settings.php:54
-#: ./templates/layout/default.php:211
-msgid "Contrast"
+#: ./templates/layout/default.php:222
+msgid "Dark"
 msgstr ""
 
 #: ./templates/AppUsers/user_settings.php:55
-#: ./templates/layout/default.php:212
-msgid "Legacy"
+#: ./templates/layout/default.php:223
+msgid "Contrast"
 msgstr ""
 
 #: ./templates/AppUsers/user_settings.php:56
-#: ./templates/layout/default.php:213
-msgid "Dark"
+#: ./templates/layout/default.php:224
+msgid "Legacy"
 msgstr ""
 
 #: ./templates/Billings/add.php:14
@@ -3146,7 +3146,7 @@ msgstr ""
 
 #: ./templates/Billings/bulk_service_change.php:17
 #: ./templates/Settings/index.php:7
-#: ./templates/layout/default.php:155
+#: ./templates/layout/default.php:163
 msgid "Settings"
 msgstr ""
 
@@ -3953,7 +3953,7 @@ msgstr ""
 #: ./templates/Customers/view.php:119
 #: ./templates/Customers/view.php:767
 #: ./templates/Tasks/index.php:60
-#: ./templates/layout/default.php:125
+#: ./templates/layout/default.php:133
 msgid "Tasks"
 msgstr ""
 
@@ -4325,7 +4325,7 @@ msgstr ""
 
 #: ./templates/Customers/identity_number_check.php:8
 #: ./templates/Customers/index.php:63
-#: ./templates/layout/default.php:120
+#: ./templates/layout/default.php:128
 msgid "Customers"
 msgstr ""
 
@@ -4831,7 +4831,7 @@ msgid "Delete Login"
 msgstr ""
 
 #: ./templates/Overviews/index.php:7
-#: ./templates/layout/default.php:150
+#: ./templates/layout/default.php:158
 msgid "Overviews"
 msgstr ""
 
@@ -5766,37 +5766,41 @@ msgstr ""
 msgid "View Task"
 msgstr ""
 
-#: ./templates/layout/default.php:130
+#: ./templates/layout/default.php:138
 msgid "Bookkeeping"
 msgstr ""
 
-#: ./templates/layout/default.php:135
+#: ./templates/layout/default.php:143
 msgid "RADIUS"
 msgstr ""
 
-#: ./templates/layout/default.php:166
-#: ./templates/layout/default.php:172
-#: ./templates/layout/default.php:177
+#: ./templates/layout/default.php:174
+#: ./templates/layout/default.php:180
+#: ./templates/layout/default.php:185
 msgid "Old NMS"
 msgstr ""
 
-#: ./templates/layout/default.php:183
+#: ./templates/layout/default.php:191
 msgid "Network Management System"
 msgstr ""
 
-#: ./templates/layout/default.php:239
+#: ./templates/layout/default.php:219
+msgid "Default"
+msgstr ""
+
+#: ./templates/layout/default.php:250
 msgid "Logout"
 msgstr ""
 
-#: ./templates/layout/default.php:262
+#: ./templates/layout/default.php:273
 msgid "Changelog"
 msgstr ""
 
-#: ./templates/layout/default.php:263
+#: ./templates/layout/default.php:274
 msgid "Source Code"
 msgstr ""
 
-#: ./templates/layout/default.php:265
+#: ./templates/layout/default.php:276
 msgid "Version"
 msgstr ""
 
