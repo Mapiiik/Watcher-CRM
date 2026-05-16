@@ -75,6 +75,9 @@ $urlWithQuery = function ($query = []) use ($request) {
         case 'legacy':
             echo $this->Html->css(['normalize.min', 'legacy']);
             break;
+        case 'light':
+            echo $this->Html->css(['normalize.min', 'milligram.min', 'cake']);
+            break;
         case 'dark':
             echo $this->Html->css(['normalize.min', 'milligram.min', 'cake', 'dark']);
             break;
@@ -83,6 +86,11 @@ $urlWithQuery = function ($query = []) use ($request) {
             break;
         default:
             echo $this->Html->css(['normalize.min', 'milligram.min', 'cake']);
+            if ($request->getAttribute('identity') === null) {
+                echo $this->Html->css(
+                    ['dark'],
+                    ['media' => 'screen and (prefers-color-scheme: dark)']);
+            }
     }
     ?>
 
@@ -206,11 +214,14 @@ $urlWithQuery = function ($query = []) use ($request) {
 
             <?= $this->Form->select(
                 'theme',
-                [
-                    $urlWithQuery(['theme' => 'default']) => __('Default'),
+                (
+                    $request->getAttribute('identity') === null ?
+                        [$urlWithQuery(['theme' => 'default']) => __('Default')] : []
+                ) + [
+                    $urlWithQuery(['theme' => 'light']) => __('Light'),
+                    $urlWithQuery(['theme' => 'dark']) => __('Dark'),
                     $urlWithQuery(['theme' => 'contrast']) => __('Contrast'),
                     $urlWithQuery(['theme' => 'legacy']) => __('Legacy'),
-                    $urlWithQuery(['theme' => 'dark']) => __('Dark') . ' (dev)',
                 ],
                 [
                     'value' => $urlWithQuery(['theme' => Configure::read('UI.theme')]),
