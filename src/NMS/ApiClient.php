@@ -72,14 +72,20 @@ class ApiClient
      *
      * @return array<string>|null Return result from API or from cache if valid
      */
-    public static function getAccessPointsList(): ?array
+    public static function getAccessPointsList(bool $onlyActive = false): ?array
     {
         return Cache::remember(
-            'access_points_list',
-            function () {
+            'access_points_list|' . ($onlyActive ? 'active' : 'all'),
+            function () use ($onlyActive) {
                 $accessPoints = self::getAccessPoints();
                 if ($accessPoints) {
-                    return $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name')->toArray();
+                    $list = $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL);
+
+                    if ($onlyActive) {
+                        return $list->match(['archived' => null])->combine('id', 'name')->toArray();
+                    }
+
+                    return $list->combine('id', 'name')->toArray();
                 } else {
                     return null;
                 }

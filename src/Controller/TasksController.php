@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Model\Enum\AddressType;
 use App\Model\Enum\CustomerDealer;
-use App\NMS\ApiClient as NMSApiClient;
 use Cake\Form\Form;
 use Cake\I18n\DateTime;
 use Cake\Mailer\Mailer;
@@ -23,6 +23,8 @@ use Exception;
  */
 class TasksController extends AppController
 {
+    use CommonViewVarListsTrait;
+
     /**
      * Index method
      *
@@ -293,13 +295,7 @@ class TasksController extends AppController
         $this->set(compact('tasks', 'taskTypes', 'taskStates', 'dealers'));
 
         // load access points from NMS if possible
-        $accessPoints = NMSApiClient::getAccessPoints();
-        if ($accessPoints) {
-            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
-        } else {
-            $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
-            $this->set('accessPoints', []);
-        }
+        $this->setAccessPointsViewVarList(onlyActive: false);
     }
 
     /**
@@ -485,14 +481,8 @@ class TasksController extends AppController
 
         $this->set(compact('task', 'taskTypes', 'customers', 'contracts', 'dealers', 'taskStates'));
 
-        // load access points from NMS if possible
-        $accessPoints = NMSApiClient::getAccessPoints();
-        if ($accessPoints) {
-            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
-        } else {
-            $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
-            $this->set('accessPoints', []);
-        }
+        // load access points from NMS if possible (only active)
+        $this->setAccessPointsViewVarList(onlyActive: true);
     }
 
     /**
@@ -585,13 +575,7 @@ class TasksController extends AppController
         $this->set(compact('task', 'taskTypes', 'customers', 'contracts', 'dealers', 'taskStates'));
 
         // load access points from NMS if possible
-        $accessPoints = NMSApiClient::getAccessPoints();
-        if ($accessPoints) {
-            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
-        } else {
-            $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
-            $this->set('accessPoints', []);
-        }
+        $this->setAccessPointsViewVarList(onlyActive: false);
     }
 
     /**

@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Addresses\Resolver as AddressesResolver;
+use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Model\Enum\CustomerMessageDeliveryStatus;
 use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessageType;
 use App\Model\Table\LabelsTable;
-use App\NMS\ApiClient as NMSApiClient;
 use Cake\Utility\Text;
 use Cake\Validation\Validation;
 use RuntimeException;
@@ -21,6 +21,8 @@ use SplObjectStorage;
  */
 class CustomerMessagesController extends AppController
 {
+    use CommonViewVarListsTrait;
+
     /**
      * Index method
      *
@@ -274,14 +276,8 @@ class CustomerMessagesController extends AppController
             'customers',
         ));
 
-        // load access points from NMS if possible
-        $accessPoints = NMSApiClient::getAccessPoints();
-        if ($accessPoints) {
-            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
-        } else {
-            $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
-            $this->set('accessPoints', []);
-        }
+        // load access points from NMS if possible (only active)
+        $this->setAccessPointsViewVarList(onlyActive: true);
     }
 
     /**

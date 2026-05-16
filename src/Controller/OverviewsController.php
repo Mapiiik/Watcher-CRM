@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Addresses\Resolver as AddressesResolver;
+use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Model\Entity\Billing;
 use App\Model\Entity\Commission;
 use App\Model\Entity\Contract;
@@ -12,10 +13,7 @@ use App\Model\Table\ContractsTable;
 use App\Model\Table\ContractStatesTable;
 use App\Model\Table\DealerCommissionsTable;
 use App\Model\Table\LabelsTable;
-use App\Model\Table\QueuesTable;
 use App\Model\Table\ServicesTable;
-use App\Model\Table\ServiceTypesTable;
-use App\NMS\ApiClient as NMSApiClient;
 use ArrayObject;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
@@ -30,6 +28,8 @@ use stdClass;
  */
 class OverviewsController extends AppController
 {
+    use CommonViewVarListsTrait;
+
     /**
      * Index method
      *
@@ -239,9 +239,9 @@ class OverviewsController extends AppController
             ]),
         );
 
-        $this->setServiceTypesViewVar();
-        $this->setCtoCategoriesViewVar();
-        $this->setAccessPointsViewVar();
+        $this->setServiceTypesViewVarList();
+        $this->setCtoCategoriesViewVarList();
+        $this->setAccessPointsViewVarList();
     }
 
     /**
@@ -376,9 +376,9 @@ class OverviewsController extends AppController
 
         $this->set(compact('services', 'month_to_display'));
 
-        $this->setServiceTypesViewVar();
-        $this->setCtoCategoriesViewVar();
-        $this->setAccessPointsViewVar();
+        $this->setServiceTypesViewVarList();
+        $this->setCtoCategoriesViewVarList();
+        $this->setAccessPointsViewVarList();
     }
 
     /**
@@ -796,52 +796,6 @@ class OverviewsController extends AppController
                     'Billings.billing_until >=' => $monthToDisplay->firstOfMonth(),
                 ],
             ]);
-    }
-
-    /**
-     * Set the `serviceTypes` view var (alphabetical list).
-     */
-    private function setServiceTypesViewVar(): void
-    {
-        $this->set(
-            'serviceTypes',
-            $this->fetchTable(ServiceTypesTable::class)->find('list', order: ['name']),
-        );
-    }
-
-    /**
-     * Set the `ctoCategories` view var (distinct, non-null, alphabetical).
-     */
-    private function setCtoCategoriesViewVar(): void
-    {
-        $this->set(
-            'ctoCategories',
-            $this->fetchTable(QueuesTable::class)
-                ->find(
-                    'list',
-                    order: 'cto_category',
-                    group: 'cto_category',
-                    keyField: 'cto_category',
-                    valueField: 'cto_category',
-                )
-                ->whereNotNull('cto_category'),
-        );
-    }
-
-    /**
-     * Set the `accessPoints` view var from the NMS API.
-     *
-     * Falls back to an empty list + Flash warning when NMS is unreachable.
-     */
-    private function setAccessPointsViewVar(): void
-    {
-        $accessPoints = NMSApiClient::getAccessPoints();
-        if ($accessPoints) {
-            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
-        } else {
-            $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
-            $this->set('accessPoints', []);
-        }
     }
 
     /**

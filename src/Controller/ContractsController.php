@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Model\Enum\ContractPrintType;
 use App\Model\Enum\CustomerDealer;
-use App\NMS\ApiClient as NMSApiClient;
 use App\Service\ContractPrint\ContractPrintData;
 use App\Service\ContractPrint\ContractPrintDataEnricher;
 use App\Service\ContractPrint\ContractPrintPdfOutput;
@@ -27,6 +27,8 @@ use ValueError;
  */
 class ContractsController extends AppController
 {
+    use CommonViewVarListsTrait;
+
     /**
      * Returns supported output types
      */
@@ -315,38 +317,8 @@ class ContractsController extends AppController
             'commissions',
         ));
 
-        // load access points from NMS if possible
-        $accessPoints = NMSApiClient::getAccessPoints();
-        $ipAddressRanges = NMSApiClient::searchIpAddressRanges([]);
-        if ($accessPoints && $ipAddressRanges) {
-            $this->set(
-                'accessPoints',
-                $accessPoints = $accessPoints
-                    ->sortBy('name', SORT_ASC, SORT_NATURAL)
-                    ->map(
-                        function ($accessPoint) use ($ipAddressRanges) {
-                            $text = $accessPoint['name'];
-
-                            $ranges = $ipAddressRanges
-                                ->match(['access_point_id' => $accessPoint['id']])
-                                ->sortBy('name', SORT_ASC, SORT_NATURAL);
-
-                            if (!$ranges->isEmpty()) {
-                                $rangeNames = $ranges->extract('name');
-                                $text .= '     ' . '[' . implode(', ', $rangeNames->toArray()) . ']';
-                            }
-
-                            return [
-                                'value' => $accessPoint['id'],
-                                'text' => $text,
-                            ];
-                        },
-                    ),
-            );
-        } else {
-            $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
-            $this->set('accessPoints', []);
-        }
+        // load access points with ranges from NMS if possible (only active)
+        $this->setAccessPointsViewVarListWithRanges(onlyActive: true);
     }
 
     /**
@@ -449,38 +421,8 @@ class ContractsController extends AppController
             'commissions',
         ));
 
-        // load access points from NMS if possible
-        $accessPoints = NMSApiClient::getAccessPoints();
-        $ipAddressRanges = NMSApiClient::searchIpAddressRanges([]);
-        if ($accessPoints && $ipAddressRanges) {
-            $this->set(
-                'accessPoints',
-                $accessPoints = $accessPoints
-                    ->sortBy('name', SORT_ASC, SORT_NATURAL)
-                    ->map(
-                        function ($accessPoint) use ($ipAddressRanges) {
-                            $text = $accessPoint['name'];
-
-                            $ranges = $ipAddressRanges
-                                ->match(['access_point_id' => $accessPoint['id']])
-                                ->sortBy('name', SORT_ASC, SORT_NATURAL);
-
-                            if (!$ranges->isEmpty()) {
-                                $rangeNames = $ranges->extract('name');
-                                $text .= '     ' . '[' . implode(', ', $rangeNames->toArray()) . ']';
-                            }
-
-                            return [
-                                'value' => $accessPoint['id'],
-                                'text' => $text,
-                            ];
-                        },
-                    ),
-            );
-        } else {
-            $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
-            $this->set('accessPoints', []);
-        }
+        // load access points with ranges from NMS if possible
+        $this->setAccessPointsViewVarListWithRanges(onlyActive: false);
     }
 
     /**

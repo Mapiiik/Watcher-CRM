@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Model\Entity\Billing;
 use App\Model\Enum\CustomerMessageBodyFormat;
 use App\Model\Enum\CustomerMessageDeliveryStatus;
 use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessageType;
 use App\Model\Table\CustomerMessagesTable;
-use App\NMS\ApiClient as NMSApiClient;
 use App\Utility\ServiceChangeMessageBuilder;
 use Cake\Utility\Text;
 use Cake\Validation\Validation;
@@ -23,6 +23,8 @@ use SplObjectStorage;
  */
 class BillingsController extends AppController
 {
+    use CommonViewVarListsTrait;
+
     /**
      * Index method
      *
@@ -32,6 +34,7 @@ class BillingsController extends AppController
     {
         // filter
         $conditions = [];
+
         if (isset($this->customer_id)) {
             $conditions += ['Billings.customer_id' => $this->customer_id];
         }
@@ -421,14 +424,8 @@ class BillingsController extends AppController
         $billings = $billingsQuery->all();
         $services = $this->Billings->Services->find('list', order: ['name'])->all();
 
-        // load access points from NMS if possible
-        $accessPoints = NMSApiClient::getAccessPoints();
-        if ($accessPoints) {
-            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
-        } else {
-            $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
-            $this->set('accessPoints', []);
-        }
+        // load access points from NMS if possible (only active)
+        $this->setAccessPointsViewVarList(onlyActive: true);
 
         // process change request
         if ($this->getRequest()->is('post')) {

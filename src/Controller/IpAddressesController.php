@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Model\Entity\IpAddress;
 use App\Model\Enum\IpAddressTypeOfUse;
 use App\Model\Table\RemovedIpAddressesTable;
@@ -18,6 +19,8 @@ use IPLib\Range\Subnet;
  */
 class IpAddressesController extends AppController
 {
+    use CommonViewVarListsTrait;
+
     /**
      * Index method
      *
@@ -537,14 +540,8 @@ class IpAddressesController extends AppController
 
         $this->set(compact('ipAddress', 'ipAddresses'));
 
-        // load access points from NMS if possible
-        $accessPoints = NMSApiClient::getAccessPoints();
-        if ($accessPoints) {
-            $this->set('accessPoints', $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL)->combine('id', 'name'));
-        } else {
-            $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
-            $this->set('accessPoints', []);
-        }
+        // load access points from NMS if possible (only active)
+        $this->setAccessPointsViewVarList(onlyActive: true);
     }
 
     /**
