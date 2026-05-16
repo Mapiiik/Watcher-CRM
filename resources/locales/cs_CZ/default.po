@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-05-16 15:43+0200\n"
-"PO-Revision-Date: 2026-05-16 15:47+0200\n"
+"POT-Creation-Date: 2026-05-16 18:02+0200\n"
+"PO-Revision-Date: 2026-05-16 18:15+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -2663,19 +2663,19 @@ msgstr "Přístupový bod"
 msgid "Range"
 msgstr "Rozsah"
 
-#: templates/AppUsers/user_settings.php:53 templates/layout/default.php:221
+#: templates/AppUsers/user_settings.php:53 templates/layout/default.php:222
 msgid "Light"
 msgstr "Světlý"
 
-#: templates/AppUsers/user_settings.php:54 templates/layout/default.php:222
+#: templates/AppUsers/user_settings.php:54 templates/layout/default.php:223
 msgid "Dark"
 msgstr "Tmavý"
 
-#: templates/AppUsers/user_settings.php:55 templates/layout/default.php:223
+#: templates/AppUsers/user_settings.php:55 templates/layout/default.php:224
 msgid "Contrast"
 msgstr "Kontrast"
 
-#: templates/AppUsers/user_settings.php:56 templates/layout/default.php:224
+#: templates/AppUsers/user_settings.php:56 templates/layout/default.php:225
 msgid "Legacy"
 msgstr "Starší"
 
@@ -2690,7 +2690,7 @@ msgid "Add Billing"
 msgstr "Přidat fakturaci"
 
 #: templates/Billings/bulk_service_change.php:17 templates/Settings/index.php:7
-#: templates/layout/default.php:163
+#: templates/layout/default.php:164
 msgid "Settings"
 msgstr "Nastavení"
 
@@ -3381,7 +3381,7 @@ msgstr "Faktury"
 
 #: templates/Contracts/view.php:109 templates/Contracts/view.php:534
 #: templates/Customers/view.php:119 templates/Customers/view.php:767
-#: templates/Tasks/index.php:60 templates/layout/default.php:133
+#: templates/Tasks/index.php:60 templates/layout/default.php:134
 msgid "Tasks"
 msgstr "Úkoly"
 
@@ -3699,7 +3699,7 @@ msgid "Edit Customer"
 msgstr "Upravit zákazníka"
 
 #: templates/Customers/identity_number_check.php:8
-#: templates/Customers/index.php:63 templates/layout/default.php:128
+#: templates/Customers/index.php:63 templates/layout/default.php:129
 msgid "Customers"
 msgstr "Zákazníci"
 
@@ -4142,7 +4142,7 @@ msgstr "Nové heslo"
 msgid "Delete Login"
 msgstr "Smazat přihlášení"
 
-#: templates/Overviews/index.php:7 templates/layout/default.php:158
+#: templates/Overviews/index.php:7 templates/layout/default.php:159
 msgid "Overviews"
 msgstr "Přehledy"
 
@@ -5027,40 +5027,40 @@ msgstr "méně"
 msgid "View Task"
 msgstr "Zobrazit úkol"
 
-#: templates/layout/default.php:138
+#: templates/layout/default.php:139
 msgid "Bookkeeping"
 msgstr "Účetnictví"
 
-#: templates/layout/default.php:143
+#: templates/layout/default.php:144
 msgid "RADIUS"
 msgstr "RADIUS"
 
-#: templates/layout/default.php:174 templates/layout/default.php:180
-#: templates/layout/default.php:185
+#: templates/layout/default.php:175 templates/layout/default.php:181
+#: templates/layout/default.php:186
 msgid "Old NMS"
 msgstr "Starý NMS"
 
-#: templates/layout/default.php:191
+#: templates/layout/default.php:192
 msgid "Network Management System"
 msgstr "Systém správy sítě"
 
-#: templates/layout/default.php:219
+#: templates/layout/default.php:220
 msgid "Default"
 msgstr "Výchozí"
 
-#: templates/layout/default.php:250
+#: templates/layout/default.php:251
 msgid "Logout"
 msgstr "Odhlášení"
 
-#: templates/layout/default.php:273
+#: templates/layout/default.php:274
 msgid "Changelog"
 msgstr "Seznam změn"
 
-#: templates/layout/default.php:274
+#: templates/layout/default.php:275
 msgid "Source Code"
 msgstr "Zdrojový kód"
 
-#: templates/layout/default.php:276
+#: templates/layout/default.php:277
 msgid "Version"
 msgstr "Verze"
 
