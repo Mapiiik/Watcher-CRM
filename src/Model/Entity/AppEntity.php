@@ -25,7 +25,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\DateTime|null $revoked Timestamp of when the entity was revoked, if applicable (for entities that can be revoked)
  * @property string|null $revoked_by Identifier of the user who revoked the entity, if applicable (for entities that can be revoked)
  * @property \App\Model\Entity\AppUser|null $revoker The user entity who revoked the record, if applicable (for entities that can be revoked)
- * 
+ *
  * @property \Cake\I18n\DateTime|null $archived Timestamp of when the entity was archived, if applicable (for entities that can be archived)
  * @property string|null $archived_by Identifier of the user who archived the entity, if applicable (for entities that can be archived)
  * @property \App\Model\Entity\AppUser|null $archiver The user entity who archived the record, if applicable (for entities that can be archived)
