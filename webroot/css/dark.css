@@ -56,3 +56,7 @@ nav.top-nav {
         0 7px 14px rgba(0, 0, 0, 0.2),
         0 0 0 1px rgba(255, 255, 255, 0.2);
 }
+
+pre {
+    background: var(--color-table-bg);
+}

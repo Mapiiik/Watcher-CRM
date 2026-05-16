@@ -89,7 +89,8 @@ $urlWithQuery = function ($query = []) use ($request) {
             if ($request->getAttribute('identity') === null) {
                 echo $this->Html->css(
                     ['dark'],
-                    ['media' => 'screen and (prefers-color-scheme: dark)']);
+                    ['media' => 'screen and (prefers-color-scheme: dark)'],
+                );
             }
     }
     ?>
