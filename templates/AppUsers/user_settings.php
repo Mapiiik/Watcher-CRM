@@ -50,10 +50,10 @@
                 echo $this->Form->control('user_settings.theme', [
                     'label' => __d('app_users', 'Theme'),
                     'options' => [
-                        'default' => __('Default'),
+                        'light' => __('Light'),
+                        'dark' => __('Dark'),
                         'contrast' => __('Contrast'),
                         'legacy' => __('Legacy'),
-                        'dark' => __('Dark') . ' (dev)',
                     ],
                 ]);
                 echo $this->Form->control('user_settings.customers.advanced_search', [
