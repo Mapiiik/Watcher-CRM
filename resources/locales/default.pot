@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-05-16 18:02+0200\n"
+"POT-Creation-Date: 2026-05-16 23:03+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -5750,6 +5750,14 @@ msgstr ""
 
 #: ./templates/element/common/audit.php:79
 msgid "Revoked By"
+msgstr ""
+
+#: ./templates/element/common/audit.php:95
+msgid "Archived"
+msgstr ""
+
+#: ./templates/element/common/audit.php:100
+msgid "Archived By"
 msgstr ""
 
 #: ./templates/element/common/expandable_text.php:16

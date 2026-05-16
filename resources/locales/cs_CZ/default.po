@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-05-16 18:02+0200\n"
-"PO-Revision-Date: 2026-05-16 18:15+0200\n"
+"POT-Creation-Date: 2026-05-16 23:03+0200\n"
+"PO-Revision-Date: 2026-05-16 23:11+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -5012,6 +5012,14 @@ msgstr "Odstranil"
 #: templates/element/common/audit.php:79
 msgid "Revoked By"
 msgstr "Zrušil"
+
+#: templates/element/common/audit.php:95
+msgid "Archived"
+msgstr "Archivováno"
+
+#: templates/element/common/audit.php:100
+msgid "Archived By"
+msgstr "Archivoval"
 
 #: templates/element/common/expandable_text.php:16
 #: templates/element/common/expandable_text.php:19
