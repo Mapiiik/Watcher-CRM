@@ -16,7 +16,6 @@ use Settings\Utility\Settings;
  *
  * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
  * @property \App\Model\Table\ServicesTable&\Cake\ORM\Association\BelongsTo $Services
- * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Revokers
  * @method \App\Model\Entity\ServiceOverride newEmptyEntity()
  * @method \App\Model\Entity\ServiceOverride newEntity(array $data, array $options = [])
  * @method array<\App\Model\Entity\ServiceOverride> newEntities(array $data, array $options = [])
