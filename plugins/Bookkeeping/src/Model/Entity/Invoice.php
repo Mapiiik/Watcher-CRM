@@ -16,6 +16,7 @@ use Cake\I18n\Date;
  * @property string $number
  * @property string|null $variable_symbol
  * @property \Cake\I18n\Date $creation_date
+ * @property int $creation_year
  * @property \Cake\I18n\Date $due_date
  * @property string|null $text
  * @property \PhpCollective\DecimalObject\Decimal $total
@@ -48,6 +49,7 @@ class Invoice extends AppEntity
         'number' => true,
         'variable_symbol' => true,
         'creation_date' => true,
+        'creation_year' => false, // generated column
         'due_date' => true,
         'text' => true,
         'total' => true,

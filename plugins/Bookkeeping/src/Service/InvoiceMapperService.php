@@ -57,7 +57,12 @@ class InvoiceMapperService
             // Find or create invoice
             /** @var \Bookkeeping\Model\Entity\Invoice $invoice */
             $invoice =
-                $invoicesTable->find()->where(['number' => $draft->number])->first()
+                $invoicesTable->find()
+                    ->where([
+                        'number' => $draft->number,
+                        'creation_year' => $draft->creationDate->year,
+                    ])
+                    ->first()
                 ?? $invoicesTable->newEntity(['number' => $draft->number]);
 
             // Map fields
