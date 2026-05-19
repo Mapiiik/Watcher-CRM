@@ -341,7 +341,7 @@ class ApiClient
         return Cache::remember(
             'routeros_devices_for_ip_' . strtr($ipAddress, ['.' => '-', ':' => '-', '/' => '-mask-']),
             function () use ($ipAddress) {
-                return self::searchRouterosDevices(['ip_address' => $ipAddress]);
+                return self::searchRouterosDevices(['some_ip_address' => $ipAddress]);
             },
             'api_client',
         );
