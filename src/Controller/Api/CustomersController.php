@@ -10,6 +10,7 @@ use App\Model\Entity\IpAddress;
 use App\Model\Table\ContractsTable;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
+use Cake\ORM\Query\SelectQuery;
 use Cake\Routing\Router;
 use Cake\View\JsonView;
 use Override;
@@ -183,6 +184,9 @@ class CustomersController extends AppController
             ->contain('InstallationAddresses')
             ->contain('Customers')
             ->contain('IpAddresses')
+            ->innerJoinWith('ContractStates', function (SelectQuery $q) {
+                return $q->where(['ContractStates.active_services' => true]);
+            })
             ->formatResults(function (CollectionInterface $customerPoints) {
                 // Materialize once so we can iterate twice (matchMap + groupBy).
                 $contracts = $customerPoints->toList();
