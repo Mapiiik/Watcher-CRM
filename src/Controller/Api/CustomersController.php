@@ -251,7 +251,8 @@ class CustomersController extends AppController
                             'note' => (string)$key,
                             'CustomerConnections' => $this->buildCustomerConnections($contracts),
                         ];
-                    });
+                    })
+                    ->toList();
             });
 
         $this->set('customerPoints', $customerPoints);
