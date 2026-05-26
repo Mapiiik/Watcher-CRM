@@ -461,6 +461,7 @@ class AccountsUpdater
         $now = Date::now();
 
         // load active override (with queue) for contract if exists
+        /** @var \App\Model\Entity\ServiceOverride|null $override */
         $override = $this->fetchTable(ServiceOverridesTable::class)
             ->find()
             ->innerJoinWith('Services.Queues')
@@ -484,6 +485,7 @@ class AccountsUpdater
         }
 
         // load active billing (with queue) for contract if exists
+        /** @var \App\Model\Entity\Billing|null $billing */
         $billing = $this->fetchTable(BillingsTable::class)
             ->find()
             ->innerJoinWith('Services.Queues')
