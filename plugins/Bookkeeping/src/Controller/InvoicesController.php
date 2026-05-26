@@ -102,7 +102,7 @@ class InvoicesController extends AppController
         // get debts
         /** @var \Cake\ORM\Query\SelectQuery<\Bookkeeping\Model\Entity\Invoice> $query */
         $query = $this->Invoices->find();
-        
+
         // define sum of debts
         $query->select([
             'debt_sum' => $query->func()->sum('Invoices.debt'),
