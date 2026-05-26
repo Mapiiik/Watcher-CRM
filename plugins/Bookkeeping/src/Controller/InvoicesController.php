@@ -100,18 +100,27 @@ class InvoicesController extends AppController
         }
 
         // get debts
+        /** @var \Cake\ORM\Query\SelectQuery<\Bookkeeping\Model\Entity\Invoice> $query */
         $query = $this->Invoices->find();
-        $query = $query
-            ->select([
-                'debt' => $query->func()->sum('Invoices.debt'),
-            ]);
+        
+        // define sum of debts
+        $query->select([
+            'debt_sum' => $query->func()->sum('Invoices.debt'),
+        ]);
 
-        $this->set('total_debt', $query->first()['debt'] ?? 0);
+        // set total debt
+        $this->set(
+            'total_debt',
+            $query->first()?->get('debt_sum') ?? 0,
+        );
+
+        // set total overdue debt
         $this->set(
             'total_overdue_debt',
             $query
+                ->cleanCopy() // clone the query to avoid modifying the original one
                 ->where(['Invoices.due_date < NOW()'])
-                ->first()['debt'] ?? 0,
+                ->first()?->get('debt_sum') ?? 0,
         );
 
         $this->set(compact('invoices'));
