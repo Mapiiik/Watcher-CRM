@@ -1,0 +1,62 @@
+-- =============================================================================
+-- AuditStash <= 2.0.0 produced N^2 duplicate audit records for bulk
+-- deleteMany()/saveMany() when an audit queue was present (afterCommit
+-- flushed the shared queue once per entity without clearing it). In
+-- CRM/NMS the queue is passed explicitly via save options, so both
+-- deleteMany() and saveMany() were affected. Fixed in 2.0.1 (issue #75).
+--
+-- IMPORTANT: upgrade to audit-stash >= 2.0.1 FIRST, otherwise bulk operations
+-- will keep generating new duplicates after the cleanup.
+--
+-- Duplicates are rows identical in transaction_key + primary_key + source +
+-- type + original + changed + created — i.e. the exact same audit event written
+-- multiple times by one operation. Legitimate re-saves differ in created or
+-- payload and are NOT touched.
+-- =============================================================================
+
+-- Overview before cleanup:
+SELECT count(*) AS total_rows,
+       count(*) - count(DISTINCT (
+           transaction_key, primary_key, source, type, original, changed, created
+       )) AS removable_duplicates
+FROM audit_logs;
+
+-- 0) BACK UP FIRST — this deletes audit history irreversibly.
+--    CREATE TABLE audit_logs_backup AS SELECT * FROM audit_logs;
+--    Run on a test/staging DB before production. Run in a quiet window
+--    (no bulk jobs writing to audit_logs concurrently).
+
+-- 1) Inspect what would be removed, grouped by source:
+SELECT source, count(*) AS rows,
+       count(*) - count(DISTINCT (
+           transaction_key, primary_key, source, type, original, changed, created
+       )) AS removable
+FROM audit_logs
+GROUP BY source
+ORDER BY removable DESC;
+
+-- 2) Delete duplicates, keeping the lowest id of each identical group.
+--    Wrapped in a transaction — verify the counts BEFORE committing.
+BEGIN;
+
+WITH ranked AS (
+    SELECT id,
+           row_number() OVER (
+               PARTITION BY transaction_key, primary_key, source, type, original, changed, created
+               ORDER BY id
+           ) AS rn
+    FROM audit_logs
+)
+DELETE FROM audit_logs
+WHERE id IN (SELECT id FROM ranked WHERE rn > 1);
+
+-- Postgres reports "DELETE <n>" — must equal the total 'removable' from step 1.
+SELECT count(*) FROM audit_logs;   -- should equal (rows before) - (removable)
+
+-- Numbers match  -> COMMIT;
+-- Anything off   -> ROLLBACK;
+
+-- 3) After COMMIT, reclaim space / refresh stats:
+--    VACUUM (ANALYZE) audit_logs;
+--    -- or, in a maintenance window (exclusive lock, frees disk to OS):
+--    -- VACUUM FULL audit_logs;
