@@ -21,7 +21,7 @@
         "cakephp/migrations": "^5.1",
         "cakephp/plugin-installer": "^2.0",
         "capcom6/android-sms-gateway": "^2.2",
-        "dereuromark/cakephp-audit-stash": "^2.0",
+        "dereuromark/cakephp-audit-stash": "^2.0.1",
         "dereuromark/cakephp-decimal": "^2.4",
         "doctrine/sql-formatter": "^1.5",
         "evilfreelancer/routeros-api-php": "^1.6",
