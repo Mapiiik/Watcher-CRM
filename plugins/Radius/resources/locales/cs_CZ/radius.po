@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-04-20 11:20+0200\n"
-"PO-Revision-Date: 2026-04-20 11:30+0200\n"
+"POT-Creation-Date: 2026-05-29 10:59+0200\n"
+"PO-Revision-Date: 2026-05-29 11:15+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -354,7 +354,7 @@ msgstr ""
 msgid "The IP addresses for the contract are probably not set correctly."
 msgstr "IP adresy pro smlouvu pravděpodobně nejsou správně nastaveny."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:545
+#: plugins/Radius/src/Updater/AccountsUpdater.php:547
 msgid ""
 "The RADIUS user groups for {0} could not be found automatically. Please, set "
 "it manually."
@@ -362,7 +362,7 @@ msgstr ""
 "Skupiny uživatelů RADIUS pro {0} nebyly nalezeny automaticky. Nastavte je "
 "prosím ručně."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:551
+#: plugins/Radius/src/Updater/AccountsUpdater.php:553
 msgid ""
 "The billings for the contract for the current or upcoming period are "
 "probably not set correctly."

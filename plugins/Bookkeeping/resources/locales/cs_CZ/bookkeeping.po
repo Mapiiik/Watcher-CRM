@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-04-30 10:43+0200\n"
-"PO-Revision-Date: 2026-04-30 10:44+0200\n"
+"POT-Creation-Date: 2026-05-29 10:59+0200\n"
+"PO-Revision-Date: 2026-05-29 11:15+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -331,42 +331,42 @@ msgstr "Chyba při odesílání partnerů: {0}"
 msgid "Error when sending partners"
 msgstr "Chyba při odesílání partnerů"
 
-#: plugins/Bookkeeping/src/Controller/InvoicesController.php:172
-#: plugins/Bookkeeping/src/Controller/InvoicesController.php:199
+#: plugins/Bookkeeping/src/Controller/InvoicesController.php:181
+#: plugins/Bookkeeping/src/Controller/InvoicesController.php:208
 msgid "The invoice has been saved."
 msgstr "Faktura byla uložena."
 
-#: plugins/Bookkeeping/src/Controller/InvoicesController.php:176
-#: plugins/Bookkeeping/src/Controller/InvoicesController.php:203
+#: plugins/Bookkeeping/src/Controller/InvoicesController.php:185
+#: plugins/Bookkeeping/src/Controller/InvoicesController.php:212
 msgid "The invoice could not be saved. Please, try again."
 msgstr "Fakturu nelze uložit. Zkuste to prosím znovu."
 
-#: plugins/Bookkeeping/src/Controller/InvoicesController.php:225
+#: plugins/Bookkeeping/src/Controller/InvoicesController.php:234
 msgid "The invoice has been deleted."
 msgstr "Faktura byla odstraněna."
 
-#: plugins/Bookkeeping/src/Controller/InvoicesController.php:228
+#: plugins/Bookkeeping/src/Controller/InvoicesController.php:237
 msgid "The invoice could not be deleted. Please, try again."
 msgstr "Fakturu nelze odstranit. Zkuste to prosím znovu."
 
-#: plugins/Bookkeeping/src/Controller/InvoicesController.php:253
+#: plugins/Bookkeeping/src/Controller/InvoicesController.php:262
 msgid "The invoices has been marked to be sent by email ({0})."
 msgstr "Faktury byly označeny k odeslání e-mailem ({0})."
 
-#: plugins/Bookkeeping/src/Controller/InvoicesController.php:261
+#: plugins/Bookkeeping/src/Controller/InvoicesController.php:270
 msgid "No invoices could be marked to be sent by email. Please, try again."
 msgstr ""
 "Žádné faktury nelze označit k odeslání e-mailem. Zkuste to prosím znovu."
 
-#: plugins/Bookkeeping/src/Controller/InvoicesController.php:304
+#: plugins/Bookkeeping/src/Controller/InvoicesController.php:313
 msgid "CSV line {0}: {1} ({2})"
 msgstr "Řádek CSV {0}: {1} ({2})"
 
-#: plugins/Bookkeeping/src/Controller/InvoicesController.php:403
+#: plugins/Bookkeeping/src/Controller/InvoicesController.php:412
 msgid "No file was uploaded."
 msgstr "Nebyl nahrán žádný soubor."
 
-#: plugins/Bookkeeping/src/Controller/InvoicesController.php:416
+#: plugins/Bookkeeping/src/Controller/InvoicesController.php:425
 msgid ""
 "Successfully imported {0} invoices. Created {1}, modified {2} and skipped "
 "{3} records."
@@ -374,7 +374,7 @@ msgstr ""
 "Počet úspěšně importovaných faktur: {0}. Vytvořeno {1}, upraveno {2} a "
 "přeskočeno {3} záznamů."
 
-#: plugins/Bookkeeping/src/Controller/InvoicesController.php:427
+#: plugins/Bookkeeping/src/Controller/InvoicesController.php:436
 msgid "An error occurred while importing the file: {0}"
 msgstr "Při importu souboru došlo k chybě: {0}"
 

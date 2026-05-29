@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CakeDC Users\n"
-"POT-Creation-Date: 2026-05-12 18:17+0200\n"
-"PO-Revision-Date: 2026-05-12 18:20+0200\n"
+"POT-Creation-Date: 2026-05-29 10:59+0200\n"
+"PO-Revision-Date: 2026-05-29 11:14+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: Martin Patočka <mapik@mapik.net>\n"
 "Language: cs_CZ\n"
@@ -49,7 +49,7 @@ msgstr "Přidat uživatele"
 #: templates/AppUsers/request_reset_password.php:15
 #: templates/AppUsers/resend_token_validation.php:16
 #: templates/AppUsers/social_email.php:14
-#: templates/AppUsers/user_settings.php:81
+#: templates/AppUsers/user_settings.php:89
 msgid "Submit"
 msgstr "Odeslat"
 
@@ -304,24 +304,29 @@ msgstr "Počet řádků na stránku"
 msgid "Theme"
 msgstr "Motiv"
 
-#: templates/AppUsers/user_settings.php:60
+#: templates/AppUsers/user_settings.php:61
+#: templates/AppUsers/user_settings.php:67
 msgid "Customers"
 msgstr "Zákazníci"
 
-#: templates/AppUsers/user_settings.php:60
+#: templates/AppUsers/user_settings.php:62
 msgid "Advanced Search by Default"
 msgstr "Pokročilé vyhledávání ve výchozím nastavení"
 
-#: templates/AppUsers/user_settings.php:65
+#: templates/AppUsers/user_settings.php:68
+msgid "Show Historical Records by Default"
+msgstr "Zobrazit historické záznamy ve výchozím nastavení"
+
 #: templates/AppUsers/user_settings.php:73
+#: templates/AppUsers/user_settings.php:81
 msgid "Tasks"
 msgstr "Úkoly"
 
-#: templates/AppUsers/user_settings.php:67
+#: templates/AppUsers/user_settings.php:75
 msgid "Show Tasks for All Users by Default"
 msgstr "Zobrazení úloh pro všechny uživatele ve výchozím nastavení"
 
-#: templates/AppUsers/user_settings.php:75
+#: templates/AppUsers/user_settings.php:83
 msgid "Use Expandable Text by Default"
 msgstr "Použít rozbalitelný text ve výchozím nastavení"
 

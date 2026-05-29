@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-04-30 10:43+0200\n"
+"POT-Creation-Date: 2026-05-29 10:59+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -270,45 +270,45 @@ msgstr ""
 msgid "Error when sending partners"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:172
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:199
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:181
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:208
 msgid "The invoice has been saved."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:176
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:203
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:185
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:212
 msgid "The invoice could not be saved. Please, try again."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:225
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:234
 msgid "The invoice has been deleted."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:228
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:237
 msgid "The invoice could not be deleted. Please, try again."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:253
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:262
 msgid "The invoices has been marked to be sent by email ({0})."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:261
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:270
 msgid "No invoices could be marked to be sent by email. Please, try again."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:304
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:313
 msgid "CSV line {0}: {1} ({2})"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:403
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:412
 msgid "No file was uploaded."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:416
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:425
 msgid "Successfully imported {0} invoices. Created {1}, modified {2} and skipped {3} records."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:427
+#: ./plugins/Bookkeeping/src/Controller/InvoicesController.php:436
 msgid "An error occurred while importing the file: {0}"
 msgstr ""
 
