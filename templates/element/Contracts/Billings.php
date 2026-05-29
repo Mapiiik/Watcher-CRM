@@ -2,10 +2,11 @@
 /**
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Billing> $billings
- * @var bool $customer_column
- * @var bool $contract_column
- * @var bool $disable_actions
- * @var bool $historical_checkbox
+ * @var bool|null $customer_column
+ * @var bool|null $contract_column
+ * @var bool|null $disable_actions
+ * @var bool|null $historical_checkbox
+ * @var bool|null $show_historical_records
  */
 ?>
 <?php if (!empty($billings)) : ?>
@@ -96,10 +97,11 @@
 <?php endif; ?>
 <?php if (!empty($historical_checkbox)) : ?>
 <div class="float-right">
-    <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query']]) ?>
+    <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => []]) ?>
     <?= $this->Form->control('show_historical_records', [
         'label' => __('Show historical records'),
         'type' => 'checkbox',
+        'checked' => $show_historical_records,
         'onchange' => 'this.form.submit();',
     ]) ?>
     <?= $this->Form->end() ?>

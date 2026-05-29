@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Customer $customer
+ * @var bool $show_historical_records
  */
 ?>
 <div class="row">
@@ -583,6 +584,7 @@
                     'billings' => $customer->billings,
                     'contract_column' => true,
                     'historical_checkbox' => true,
+                    'show_historical_records' => $show_historical_records,
                 ]) ?>
                 <?= $this->cell(
                     'ServiceOverridesStatus',
@@ -608,6 +610,7 @@
                             'borrowed_equipments' => $customer->borrowed_equipments,
                             'contract_column' => true,
                             'historical_checkbox' => true,
+                            'show_historical_records' => $show_historical_records,
                         ]) ?>
                     </div>
                 </div>
@@ -645,10 +648,11 @@
                             'contract_column' => true,
                         ]) ?>
                         <div class="float-right">
-                            <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query']]) ?>
+                            <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => []]) ?>
                             <?= $this->Form->control('show_historical_records', [
                                 'label' => __('Show historical records'),
                                 'type' => 'checkbox',
+                                'checked' => $show_historical_records,
                                 'onchange' => 'this.form.submit();',
                             ]) ?>
                             <?= $this->Form->end() ?>
@@ -669,17 +673,18 @@
                         ]) ?>
                     </div>
                         <div class="float-right">
-                            <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query']]) ?>
+                            <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => []]) ?>
                             <?= $this->Form->control('show_historical_records', [
                                 'label' => __('Show historical records'),
                                 'type' => 'checkbox',
+                                'checked' => $show_historical_records,
                                 'onchange' => 'this.form.submit();',
                             ]) ?>
                             <?= $this->Form->end() ?>
                         </div>
                 </div>
             </div>
-            <?php if ($this->getRequest()->getQuery('show_historical_records') === '1') : ?>
+            <?php if ($show_historical_records) : ?>
             <div class="row">
                 <div class="column">
                     <div class="related">

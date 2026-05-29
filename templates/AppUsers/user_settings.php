@@ -57,7 +57,15 @@
                     ],
                 ]);
                 echo $this->Form->control('user_settings.customers.advanced_search', [
-                    'label' => __d('app_users', 'Customers') . ' - ' . __d('app_users', 'Advanced Search by Default'),
+                    'label' =>
+                        __d('app_users', 'Customers') . ' - '
+                        . __d('app_users', 'Advanced Search by Default'),
+                    'type' => 'checkbox',
+                ]);
+                echo $this->Form->control('user_settings.customers.show_historical_records', [
+                    'label' =>
+                        __d('app_users', 'Customers') . ' - '
+                        . __d('app_users', 'Show Historical Records by Default'),
                     'type' => 'checkbox',
                 ]);
                 echo $this->Form->control('user_settings.tasks.all_by_default', [

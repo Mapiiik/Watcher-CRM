@@ -390,6 +390,13 @@ class CustomersController extends AppController
      */
     public function view(?string $id = null)
     {
+        // determine whether to show historical records based on the user settings and query parameter
+        $show_historical_records = $this->request->getQuery('show_historical_records');
+        $show_historical_records ??= Hash::get($this->user_settings, 'customers.show_historical_records', false);
+        $show_historical_records = (bool)$show_historical_records;
+        // pass the value to the view
+        $this->set('show_historical_records', $show_historical_records);
+
         $customer = $this->Customers->get($id, contain: [
             'Addresses' => [
                 'Countries',
@@ -399,7 +406,7 @@ class CustomersController extends AppController
                     'ContractStates',
                 ],
                 'Services',
-                'conditions' => $this->request->getQuery('show_historical_records') === '1' ?
+                'conditions' => $show_historical_records ?
                     [] : [
                         'OR' => [
                             'Billings.billing_until >=' => Date::now()->firstOfMonth(),
@@ -412,7 +419,7 @@ class CustomersController extends AppController
                     'ContractStates',
                 ],
                 'EquipmentTypes',
-                'conditions' => $this->request->getQuery('show_historical_records') === '1' ?
+                'conditions' => $show_historical_records ?
                     [] : [
                         'OR' => [
                             'BorrowedEquipments.borrowed_until >=' => Date::now()->firstOfMonth(),
@@ -463,7 +470,7 @@ class CustomersController extends AppController
             'Creators',
             'Modifiers',
         ] + (
-            $this->request->getQuery('show_historical_records') === '1' ? [
+            $show_historical_records ? [
                 'RemovedIpAddresses' => [
                     'Contracts' => [
                         'ContractStates',

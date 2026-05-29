@@ -16,6 +16,7 @@ use Cake\Form\Form;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
 use Cake\ORM\Query\SelectQuery;
+use Cake\Utility\Hash;
 use Cake\Validation\Validation;
 use Override;
 use ValueError;
@@ -121,13 +122,20 @@ class ContractsController extends AppController
      */
     public function view(?string $id = null)
     {
+        // determine whether to show historical records based on the user settings and query parameter
+        $show_historical_records = $this->request->getQuery('show_historical_records');
+        $show_historical_records ??= Hash::get($this->user_settings, 'customers.show_historical_records', false);
+        $show_historical_records = (bool)$show_historical_records;
+        // pass the value to the view
+        $this->set('show_historical_records', $show_historical_records);
+
         $contract = $this->Contracts->get($id, contain: [
             'Billings' => [
                 'Contracts' => [
                     'ContractStates',
                 ],
                 'Services',
-                'conditions' => $this->request->getQuery('show_historical_records') === '1' ?
+                'conditions' => $show_historical_records ?
                     [] : [
                         'OR' => [
                             'Billings.billing_until >=' => Date::now()->firstOfMonth(),
@@ -137,7 +145,7 @@ class ContractsController extends AppController
             ],
             'BorrowedEquipments' => [
                 'EquipmentTypes',
-                'conditions' => $this->request->getQuery('show_historical_records') === '1' ?
+                'conditions' => $show_historical_records ?
                     [] : [
                         'OR' => [
                             'BorrowedEquipments.borrowed_until >=' => Date::now()->firstOfMonth(),
@@ -148,7 +156,7 @@ class ContractsController extends AppController
             'Commissions',
             'ContractStates',
             'ContractVersions' => [
-                'conditions' => $this->request->getQuery('show_historical_records') === '1' ?
+                'conditions' => $show_historical_records ?
                     [] : [
                         'OR' => [
                             'ContractVersions.valid_until >=' => Date::now()->firstOfMonth(),
@@ -199,7 +207,7 @@ class ContractsController extends AppController
             'Creators',
             'Modifiers',
         ] + (
-            $this->request->getQuery('show_historical_records') === '1' ? [
+            $show_historical_records ? [
                 'RemovedIpAddresses',
                 'RemovedIpNetworks',
             ] : []
