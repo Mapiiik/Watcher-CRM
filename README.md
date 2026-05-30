@@ -10,8 +10,9 @@ CRM for Internet Service Providers, built on [CakePHP](https://github.com/cakeph
   (customer / contract / billing / IP address management).
 - Generates invoices in dBase format for the POHODA Stormware bookkeeping software.
 - Integrates with optional services for RADIUS accounting, RouterOS device
-  inventory, the geo-addresses-postgis registry lookup API (CZ RUIAN / HR DGU),
-  and a few SaaS providers (Eurofaktura, SledovaniTV, Android SMS Gateway, …).
+  inventory, the [geo-addresses-postgis](https://github.com/Mapiiik/geo-addresses-postgis)
+  registry lookup API (CZ RUIAN / HR DGU), and a few SaaS providers
+  (Eurofaktura, SledovaniTV, Android SMS Gateway, …).
 
 ## Requirements
 
@@ -24,6 +25,10 @@ CRM for Internet Service Providers, built on [CakePHP](https://github.com/cakeph
   separate service (run it in Docker, even on the same host; it supports the
   PROXY protocol). These actions no longer run locally, so the app container
   needs no `ping` binary.
+- [geo-addresses-postgis](https://github.com/Mapiiik/geo-addresses-postgis) —
+  required only for address validation and registry lookups (CZ RUIAN / HR DGU).
+  It is a separate service exposing a REST API; point the app at it via
+  `ADDRESSES_API_URL` / `ADDRESSES_API_KEY`.
 
 The Docker Compose stack below provides PostgreSQL and Redis out of the box,
 so on a fresh host you only need Docker.
