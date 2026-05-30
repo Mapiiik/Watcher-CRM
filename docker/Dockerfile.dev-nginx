@@ -11,10 +11,6 @@ RUN echo "Based on commit: $gitcommithash"
 ENV DEBUG="true"
 ENV WEB_DOCUMENT_ROOT="/app/webroot"
 
-# Install ping command
-RUN set -x \
- && apk add -U --no-cache iputils
-
 # Install PECL-DBASE extension
 RUN set -x \
  && apk add -U --no-cache autoconf gcc libc-dev make \

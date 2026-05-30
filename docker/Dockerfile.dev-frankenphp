@@ -27,11 +27,10 @@ RUN install-php-extensions \
     bcmath \
 	dbase
 
-# Install git and ping
+# Install git
 RUN set -x \
  && apk add -U --no-cache \
-    git \
-    iputils
+    git
 
 # Production:
 #RUN cp $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
