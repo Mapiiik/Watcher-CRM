@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-05-29 10:59+0200\n"
+"POT-Creation-Date: 2026-05-30 22:24+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -353,19 +353,12 @@ msgstr ""
 msgid "The billings for the contract for the current or upcoming period are probably not set correctly."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/RadiusRequestSender.php:72
-msgid "The RADIUS session for {0} started on {1} could not be disconnected because RADIUS_SECRET is not set in environment variables."
-msgstr ""
-
-#: ./plugins/Radius/src/Updater/RadiusRequestSender.php:95
-#: ./plugins/Radius/src/Updater/RadiusRequestSender.php:144
-#: ./plugins/Radius/src/Updater/RadiusRequestSender.php:168
-#: ./plugins/Radius/src/Updater/RadiusRequestSender.php:196
+#: ./plugins/Radius/src/Updater/RadiusRequestSender.php:53
+#: ./plugins/Radius/src/Updater/RadiusRequestSender.php:81
 msgid "The RADIUS session for {0} started on {1} could not be disconnected ({2})."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/RadiusRequestSender.php:134
-#: ./plugins/Radius/src/Updater/RadiusRequestSender.php:185
+#: ./plugins/Radius/src/Updater/RadiusRequestSender.php:70
 msgid "The RADIUS session for {0} started on {1} has been disconnected ({2})."
 msgstr ""
 

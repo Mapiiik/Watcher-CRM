@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-05-29 10:59+0200\n"
-"PO-Revision-Date: 2026-05-29 11:15+0200\n"
+"POT-Creation-Date: 2026-05-30 22:24+0200\n"
+"PO-Revision-Date: 2026-05-30 22:27+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -370,24 +370,13 @@ msgstr ""
 "Fakturace pro smlouvu pro aktuální nebo nadcházející období pravděpodobně "
 "nejsou správně nastaveny."
 
-#: plugins/Radius/src/Updater/RadiusRequestSender.php:72
-msgid ""
-"The RADIUS session for {0} started on {1} could not be disconnected because "
-"RADIUS_SECRET is not set in environment variables."
-msgstr ""
-"Relace RADIUS pro {0}, která byla zahájena dne {1}, nemohla být ukončena, "
-"protože v proměnných prostředí není nastavena hodnota RADIUS_SECRET."
-
-#: plugins/Radius/src/Updater/RadiusRequestSender.php:95
-#: plugins/Radius/src/Updater/RadiusRequestSender.php:144
-#: plugins/Radius/src/Updater/RadiusRequestSender.php:168
-#: plugins/Radius/src/Updater/RadiusRequestSender.php:196
+#: plugins/Radius/src/Updater/RadiusRequestSender.php:53
+#: plugins/Radius/src/Updater/RadiusRequestSender.php:81
 msgid ""
 "The RADIUS session for {0} started on {1} could not be disconnected ({2})."
 msgstr "Relace RADIUS pro {0} zahájená {1} nemohla být odpojena ({2})."
 
-#: plugins/Radius/src/Updater/RadiusRequestSender.php:134
-#: plugins/Radius/src/Updater/RadiusRequestSender.php:185
+#: plugins/Radius/src/Updater/RadiusRequestSender.php:70
 msgid "The RADIUS session for {0} started on {1} has been disconnected ({2})."
 msgstr "Relace RADIUS pro {0} zahájená {1} byla odpojena ({2})."
 
@@ -1397,6 +1386,13 @@ msgstr "Původní"
 #: plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:20
 msgid "Changed"
 msgstr "Změněno"
+
+#~ msgid ""
+#~ "The RADIUS session for {0} started on {1} could not be disconnected "
+#~ "because RADIUS_SECRET is not set in environment variables."
+#~ msgstr ""
+#~ "Relace RADIUS pro {0}, která byla zahájena dne {1}, nemohla být ukončena, "
+#~ "protože v proměnných prostředí není nastavena hodnota RADIUS_SECRET."
 
 #~ msgid "Created By"
 #~ msgstr "Vytvořil"
