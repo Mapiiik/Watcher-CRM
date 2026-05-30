@@ -19,6 +19,11 @@ CRM for Internet Service Providers, built on [CakePHP](https://github.com/cakeph
 - PostgreSQL
 - Redis
 - PECL `dbase` extension (only when using the POHODA invoice export)
+- [Watcher Agent](https://github.com/Mapiiik/Watcher-Agent) — required only for
+  host reachability checks (ping) and RADIUS session disconnect. It is a
+  separate service (run it in Docker, even on the same host; it supports the
+  PROXY protocol). These actions no longer run locally, so the app container
+  needs no `ping` binary.
 
 The Docker Compose stack below provides PostgreSQL and Redis out of the box,
 so on a fresh host you only need Docker.

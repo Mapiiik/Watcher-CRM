@@ -5,10 +5,6 @@ namespace Radius\Updater;
 
 use App\Agent\ApiClient as AgentApiClient;
 use App\Messages\Messages;
-use Cake\Log\Log;
-use Mapik\RadiusClient\Client as RadiusClient;
-use Mapik\RadiusClient\Packet;
-use Mapik\RadiusClient\PacketType;
 use Radius\Model\Entity\Radacct;
 use Throwable;
 use UnexpectedValueException;
@@ -32,125 +28,14 @@ class RadiusRequestSender
     }
 
     /**
-     * Send disconnect request using the configured backend.
-     *
-     * If Watcher Agent support is enabled the request is sent via the agent.
-     * Otherwise, the local RADIUS disconnect mechanism is used.
+     * Send a RADIUS disconnect request via the Watcher Agent.
      *
      * @param \Radius\Model\Entity\Radacct $session RADIUS Accounting Record.
      * @return bool Returns true if the disconnection was successful.
      */
     public function sendDisconnectRequest(Radacct $session): bool
     {
-        $agentEnabled = filter_var(
-            env('WATCHER_AGENT_ENABLED', false),
-            FILTER_VALIDATE_BOOLEAN,
-        );
-
-        if ($agentEnabled) {
-            return $this->sendDisconnectRequestViaAgent($session);
-        } else {
-            return $this->sendDisconnectRequestLocal($session);
-        }
-    }
-
-    /**
-     * Send disconnect request method (Local)
-     *
-     * @param \Radius\Model\Entity\Radacct $session RADIUS Accounting Record.
-     * @return bool Returns true if the disconnection was successful.
-     * @psalm-suppress PossiblyUnusedReturnValue
-     */
-    public function sendDisconnectRequestLocal(Radacct $session): bool
-    {
-        Log::warning('Local RADIUS disconnect backend is deprecated; consider enabling Watcher Agent.');
-
-        $disconnected = false;
-
-        $radiusSecret = env('RADIUS_SECRET');
-        if (!is_string($radiusSecret) || empty($radiusSecret)) {
-            $this->Messages->error(__d(
-                'radius',
-                'The RADIUS session for {0} started on {1} could not be disconnected'
-                    . ' because RADIUS_SECRET is not set in environment variables.',
-                $session->username,
-                $session->acctstarttime,
-            ));
-
-            // skip further processing and return false
-            return false;
-        }
-
-        $client = new RadiusClient('udp://' . $session->nasipaddress . ':1700', /* timeout */ 3);
-        try {
-            $response = $client->send(
-                new Packet(PacketType::DISCONNECT_REQUEST(), /* secret */ $radiusSecret, [
-                    'User-Name' => $session->username,
-                    'Acct-Session-Id' => $session->acctsessionid,
-                    'Framed-IP-Address' => $session->framedipaddress,
-                    'NAS-IP-Address' => $session->nasipaddress,
-                ]),
-            );
-        } catch (Throwable $e) {
-            $this->Messages->error(__d(
-                'radius',
-                'The RADIUS session for {0} started on {1} could not be disconnected ({2}).',
-                $session->username,
-                $session->acctstarttime,
-                $e->getMessage(),
-            ));
-
-            // skip further processing and return false
-            return false;
-        }
-
-        // detect response type
-        switch ($response->getType()) {
-            case PacketType::COA_ACK():
-                $result = 'CoA-ACK';
-                $disconnected = true;
-                break;
-            case PacketType::DISCONNECT_ACK():
-                $result = 'Disconnect-ACK';
-                $disconnected = true;
-                break;
-            case PacketType::COA_NAK():
-                $result = 'CoA-NAK';
-                break;
-            case PacketType::DISCONNECT_NAK():
-                $result = 'Disconnect-NAK';
-                break;
-            default:
-                $result = 'Unsupported reply';
-        }
-
-        // detect error causes
-        $attributes = $response->getAttributes();
-        $error = $this->formatDisconnectErrors(
-            $attributes['Error-Cause'] ?? [],
-        );
-
-        if ($disconnected) {
-            $this->Messages->success(__d(
-                'radius',
-                'The RADIUS session for {0} started on {1} has been disconnected ({2}).',
-                $session->username,
-                $session->acctstarttime,
-                $error ? $result . ' - ' . $error : $result,
-            ));
-
-            return true;
-        } else {
-            $this->Messages->error(__d(
-                'radius',
-                'The RADIUS session for {0} started on {1} could not be disconnected ({2}).',
-                $session->username,
-                $session->acctstarttime,
-                $error ? $result . ' - ' . $error : $result,
-            ));
-
-            return false;
-        }
+        return $this->sendDisconnectRequestViaAgent($session);
     }
 
     /**

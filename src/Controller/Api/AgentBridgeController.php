@@ -39,28 +39,13 @@ class AgentBridgeController extends AppController
             throw new BadRequestException(__('Invalid IP address'));
         }
 
-        $agentEnabled = filter_var(
-            env('WATCHER_AGENT_ENABLED', false),
-            FILTER_VALIDATE_BOOLEAN,
-        );
-
-        if ($agentEnabled) {
-            try {
-                $pingResults = AgentApiClient::ping($ip_address);
-                $pingImage = $this->AgentPingImage($pingResults);
-            } catch (Throwable $e) {
-                Log::error('Error pinging host via Watcher Agent: ' . $e->getMessage());
-                $pingResults = [];
-                $pingImage = 'unknown.png';
-            }
-        } else {
+        try {
+            $pingResults = AgentApiClient::ping($ip_address);
+            $pingImage = $this->AgentPingImage($pingResults);
+        } catch (Throwable $e) {
+            Log::error('Error pinging host via Watcher Agent: ' . $e->getMessage());
             $pingResults = [];
-            try {
-                $pingImage = $this->LocalPingImage($ip_address);
-            } catch (Throwable $e) {
-                Log::error('Error pinging host locally: ' . $e->getMessage());
-                $pingImage = 'unknown.png';
-            }
+            $pingImage = 'unknown.png';
         }
 
         $this->set('pingResults', $pingResults);
@@ -85,33 +70,5 @@ class AgentBridgeController extends AppController
         }
 
         return 'down.png';
-    }
-
-    /**
-     * Executes a local ping command and returns the appropriate image based on the results
-     *
-     * @param string $ipAddress The IP address to ping
-     * @return string The path to the ping image
-     */
-    private function LocalPingImage(string $ipAddress): string
-    {
-        Log::warning('Local ping backend is deprecated; consider enabling Watcher Agent.');
-
-        $cmd = sprintf(
-            'ping -c 10 -W 1 -f -i 0.2 %s 2>&1',
-            escapeshellarg($ipAddress),
-        );
-
-        $pingOutput = shell_exec($cmd) ?: '';
-
-        if (strpos($pingOutput, ' 0% packet loss') !== false) {
-            return 'up.png';
-        }
-
-        if (strpos($pingOutput, ' 100% packet loss') !== false) {
-            return 'down.png';
-        }
-
-        return 'bad.png';
     }
 }
