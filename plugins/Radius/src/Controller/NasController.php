@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Radius\Controller;
 
+use Cake\Http\Response;
+
 /**
  * Nas Controller
  *
@@ -13,9 +15,9 @@ class NasController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function index()
+    public function index(): void
     {
         $nases = $this->paginate($this->Nas->find(
             'all',
@@ -30,10 +32,10 @@ class NasController extends AppController
      * View method
      *
      * @param string|null $id Nas id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): void
     {
         $nas = $this->Nas->get($id, contain: []);
 
@@ -43,9 +45,9 @@ class NasController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): ?Response
     {
         $nas = $this->Nas->newEmptyEntity();
         if ($this->getRequest()->is('post')) {
@@ -58,16 +60,18 @@ class NasController extends AppController
             $this->Flash->error(__d('radius', 'The RADIUS NAS could not be saved. Please, try again.'));
         }
         $this->set(compact('nas'));
+
+        return null;
     }
 
     /**
      * Edit method
      *
      * @param string|null $id Nas id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): ?Response
     {
         $nas = $this->Nas->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
@@ -80,16 +84,18 @@ class NasController extends AppController
             $this->Flash->error(__d('radius', 'The RADIUS NAS could not be saved. Please, try again.'));
         }
         $this->set(compact('nas'));
+
+        return null;
     }
 
     /**
      * Delete method
      *
      * @param string|null $id Nas id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
         $nas = $this->Nas->get($id);

@@ -94,7 +94,7 @@ class Radacct extends Entity
         if (!empty($this->nasipaddress)) {
             $routerosDevices = NMSApiClient::getRouterosDevicesForIp($this->nasipaddress);
 
-            if ($routerosDevices) {
+            if ($routerosDevices instanceof CollectionInterface) {
                 return $routerosDevices;
             }
         }

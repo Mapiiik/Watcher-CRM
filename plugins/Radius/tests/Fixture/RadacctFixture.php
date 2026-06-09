@@ -13,8 +13,6 @@ class RadacctFixture extends TestFixture
 {
     /**
      * Table name
-     *
-     * @var string
      */
     public string $table = 'radacct';
 

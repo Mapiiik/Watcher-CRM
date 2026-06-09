@@ -158,7 +158,6 @@ class XmlParser
     /**
      * Parse date string into Cake Date object.
      *
-     * @param string|null $value
      * @return \Cake\I18n\Date|null
      */
     private function parseDate(?string $value): ?Date
@@ -173,9 +172,6 @@ class XmlParser
     /**
      * Helper method to extract a single value via XPath.
      *
-     * @param \SimpleXMLElement $xml
-     * @param string $path
-     * @param mixed $default
      * @return string|null
      */
     private function extract(SimpleXMLElement $xml, string $path, mixed $default = null): ?string

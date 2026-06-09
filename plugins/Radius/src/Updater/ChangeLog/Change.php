@@ -12,13 +12,17 @@ use Radius\Model\Entity\Account;
  */
 class Change
 {
-    private Account $account;
-    private Customer $customer;
-    private Contract $contract;
+    private readonly Account $account;
 
-    private ?RadcheckChange $radcheck;
-    private ?RadreplyChange $radreply;
-    private ?RadusergroupChange $radusergroup;
+    private readonly Customer $customer;
+
+    private readonly Contract $contract;
+
+    private ?RadcheckChange $radcheck = null;
+
+    private ?RadreplyChange $radreply = null;
+
+    private ?RadusergroupChange $radusergroup = null;
 
     /**
      * Constructor
@@ -28,10 +32,6 @@ class Change
         $this->account = $account;
         $this->customer = $customer;
         $this->contract = $contract;
-
-        $this->radcheck = null;
-        $this->radreply = null;
-        $this->radusergroup = null;
     }
 
     /**

@@ -56,8 +56,6 @@ class ProcessDebtorsCommand extends Command
 
     /**
      * The name of this command.
-     *
-     * @var string
      */
     protected string $name = 'process_debtors';
 
@@ -97,7 +95,7 @@ class ProcessDebtorsCommand extends Command
      * @return \Cake\Console\ConsoleOptionParser The built parser.
      */
     #[Override]
-    public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
+    protected function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
         $parser = parent::buildOptionParser($parser);
 
@@ -162,7 +160,7 @@ class ProcessDebtorsCommand extends Command
             $today = Date::now();
 
             $notifyDays = array_map(
-                'intval',
+                intval(...),
                 array_filter(
                     explode(',', (string)env('DEBTORS_NOTIFY_DAYS', '5,10')),
                 ),
@@ -181,24 +179,24 @@ class ProcessDebtorsCommand extends Command
             }
 
             // get debtors to notify
-            $debtorsToNotify = !$args->getOption('only_block') ?
+            $debtorsToNotify = $args->getOption('only_block') ?
+                []
+                :
                 $debtorsProcessor
                     ->getOverdueDebtors()
                     ->filter(
-                        fn(Debtor $debtor) => $this->shouldNotifyDebtor(
+                        fn(Debtor $debtor): bool => $this->shouldNotifyDebtor(
                             debtor: $debtor,
                             notifyDays: $notifyDays,
                             today: $today,
                         ),
-                    )
-                :
-                [];
+                    );
 
             // get debtors to block (or continuing debt for services no longer active)
-            $debtorsToBlock = !$args->getOption('only_notify') ?
-                $debtorsProcessor->getFilteredOverdueDebtors()
+            $debtorsToBlock = $args->getOption('only_notify') ?
+                []
                 :
-                [];
+                $debtorsProcessor->getFilteredOverdueDebtors();
 
             /** @var \Bookkeeping\Debtors\Debtor $debtor */
             foreach ($debtorsToNotify as $debtor) {
@@ -209,7 +207,7 @@ class ProcessDebtorsCommand extends Command
                 if (
                     $emails_available
                     && !$args->getOption('skip_emails')
-                    && $this->isDebtorNotificationEnabled('notify', 'email')
+                    && static::isDebtorNotificationEnabled('notify', 'email')
                 ) {
                     $customerMessage = $this->generateNotifyEmail($debtor);
                     $io->info(__d(
@@ -229,7 +227,7 @@ class ProcessDebtorsCommand extends Command
                     !$emails_available
                     && $phones_available
                     && !$args->getOption('skip_sms')
-                    && $this->isDebtorNotificationEnabled('notify', 'sms')
+                    && static::isDebtorNotificationEnabled('notify', 'sms')
                 ) {
                     $customerMessage = $this->generateNotifySms($debtor);
                     $io->info(__d(
@@ -255,9 +253,9 @@ class ProcessDebtorsCommand extends Command
                 if (
                     $emails_available
                     && !$args->getOption('skip_emails')
-                    && $this->isDebtorNotificationEnabled($messageType, 'email')
+                    && static::isDebtorNotificationEnabled($messageType, 'email')
                 ) {
-                    if ($messageType == 'block') {
+                    if ($messageType === 'block') {
                         $customerMessage = $this->generateBlockEmail($debtor);
                         $io->info(__d(
                             'bookkeeping',
@@ -287,9 +285,9 @@ class ProcessDebtorsCommand extends Command
                 if (
                     $phones_available
                     && !$args->getOption('skip_sms')
-                    && $this->isDebtorNotificationEnabled($messageType, 'sms')
+                    && static::isDebtorNotificationEnabled($messageType, 'sms')
                 ) {
-                    if ($messageType == 'block') {
+                    if ($messageType === 'block') {
                         $customerMessage = $this->generateBlockSms($debtor);
                         $io->info(__d(
                             'bookkeeping',
@@ -384,11 +382,11 @@ class ProcessDebtorsCommand extends Command
             return false;
         }
 
-        if (!(bool)Settings::get("bookkeeping.debtors.notifications.channels.$channel.enabled", false)) {
+        if (!(bool)Settings::get(sprintf('bookkeeping.debtors.notifications.channels.%s.enabled', $channel), false)) {
             return false;
         }
 
-        return (bool)Settings::get("bookkeeping.debtors.notifications.types.$type.enabled", false);
+        return (bool)Settings::get(sprintf('bookkeeping.debtors.notifications.types.%s.enabled', $type), false);
     }
 
     /**
@@ -435,9 +433,7 @@ class ProcessDebtorsCommand extends Command
             . sprintf('%-12s', Number::currency($debtor->getTotalDebt()))
             . PHP_EOL;
 
-        $text .= $footer . PHP_EOL;
-
-        return $text;
+        return $text . $footer . PHP_EOL;
     }
 
     /**
@@ -471,9 +467,7 @@ class ProcessDebtorsCommand extends Command
     /**
      * Determine if debtor should be notified today
      *
-     * @param \Bookkeeping\Debtors\Debtor $debtor
      * @param array<int> $notifyDays
-     * @param \Cake\I18n\Date $today
      */
     private function shouldNotifyDebtor(
         Debtor $debtor,

@@ -32,8 +32,6 @@ class SendPartnersCommand extends Command
 {
     /**
      * The name of this command.
-     *
-     * @var string
      */
     protected string $name = 'send_partners';
 
@@ -63,10 +61,9 @@ class SendPartnersCommand extends Command
      * Supported options:
      * - --customer-id (-c): Send only a single customer by ID
      *
-     * @param \Cake\Console\ConsoleOptionParser $parser
      * @return \Cake\Console\ConsoleOptionParser
      */
-    public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
+    protected function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
         return parent::buildOptionParser($parser)
             ->setDescription(static::getDescription())
@@ -98,8 +95,6 @@ class SendPartnersCommand extends Command
      * 1. Load customers
      * 2. Delegate sending to provider
      *
-     * @param \Cake\Console\Arguments $args
-     * @param \Cake\Console\ConsoleIo $io
      * @return int
      */
     public function execute(Arguments $args, ConsoleIo $io): int
@@ -152,7 +147,7 @@ class SendPartnersCommand extends Command
                         $customerMinNumber,
                     ));
 
-                    $customers = $customers->filter(function (Customer $customer) use ($customerMinNumber) {
+                    $customers = $customers->filter(function (Customer $customer) use ($customerMinNumber): bool {
                         return (int)$customer->number >= (int)$customerMinNumber;
                     });
                 }
@@ -164,7 +159,7 @@ class SendPartnersCommand extends Command
                         $customerMaxNumber,
                     ));
 
-                    $customers = $customers->filter(function (Customer $customer) use ($customerMaxNumber) {
+                    $customers = $customers->filter(function (Customer $customer) use ($customerMaxNumber): bool {
                         return (int)$customer->number <= (int)$customerMaxNumber;
                     });
                 }

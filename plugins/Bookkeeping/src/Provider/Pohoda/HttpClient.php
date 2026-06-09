@@ -49,14 +49,11 @@ class HttpClient
 
             return $http->post($url . '/xml', $xml);
         } catch (Throwable $e) {
-            throw new RuntimeException(
-                __d(
-                    'bookkeeping',
-                    'Error connecting to Pohoda mServer: {0}',
-                    [$e->getMessage()],
-                ),
-                previous: $e,
-            );
+            throw new RuntimeException(__d(
+                'bookkeeping',
+                'Error connecting to Pohoda mServer: {0}',
+                [$e->getMessage()],
+            ), $e->getCode(), previous: $e);
         }
     }
 }

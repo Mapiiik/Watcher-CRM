@@ -21,7 +21,7 @@ class Settings
      */
     public static function get(string $path, mixed $default = null): mixed
     {
-        if (self::$instance === null) {
+        if (!self::$instance instanceof SettingsService) {
             self::$instance = new SettingsService();
         }
 
@@ -34,8 +34,6 @@ class Settings
      * Path format: "plugin.key" or "plugin.key.subkey".
      * Example: "company.profile.phone"
      *
-     * @param string $path
-     * @param string|null $default
      * @return string
      */
     public static function getString(string $path, ?string $default = null): string
@@ -66,7 +64,7 @@ class Settings
      */
     public static function set(string $path, mixed $value): bool
     {
-        if (self::$instance === null) {
+        if (!self::$instance instanceof SettingsService) {
             self::$instance = new SettingsService();
         }
 

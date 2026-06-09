@@ -23,7 +23,7 @@ namespace Bookkeeping\Provider\Eurofaktura;
  * This class contains no behavior and serves purely as a
  * strongly-typed data carrier.
  */
-final class EurofakturaCredentials
+final readonly class EurofakturaCredentials
 {
     /**
      * Create a new credentials value object.
@@ -33,9 +33,9 @@ final class EurofakturaCredentials
      * @param string $token API access token.
      */
     public function __construct(
-        public readonly string $username,
-        public readonly string $secretKey,
-        public readonly string $token,
+        public string $username,
+        public string $secretKey,
+        public string $token,
     ) {
     }
 }

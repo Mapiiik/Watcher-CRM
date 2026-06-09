@@ -5,12 +5,13 @@ namespace Radius\Test\TestCase\Controller;
 
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\UsesClass;
+use Radius\Controller\RadreplyController;
 
 /**
  * Radius\Controller\RadreplyController Test Case
- *
- * @uses \Radius\Controller\RadreplyController
  */
+#[UsesClass(RadreplyController::class)]
 class RadreplyControllerTest extends TestCase
 {
     use IntegrationTestTrait;

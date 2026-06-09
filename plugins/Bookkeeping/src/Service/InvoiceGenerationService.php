@@ -30,7 +30,7 @@ use Settings\Utility\Settings;
  * - export invoices
  * - perform UI logic
  */
-final class InvoiceGenerationService
+final readonly class InvoiceGenerationService
 {
     /**
      * Constructor
@@ -63,14 +63,14 @@ final class InvoiceGenerationService
         )->all();
 
         if ($customerMinNumber !== null) {
-            $customers = $customers->filter(function (Customer $customer) use ($customerMinNumber) {
-                return (int)$customer->number >= (int)$customerMinNumber;
+            $customers = $customers->filter(function (Customer $customer) use ($customerMinNumber): bool {
+                return (int)$customer->number >= $customerMinNumber;
             });
         }
 
         if ($customerMaxNumber !== null) {
-            $customers = $customers->filter(function (Customer $customer) use ($customerMaxNumber) {
-                return (int)$customer->number <= (int)$customerMaxNumber;
+            $customers = $customers->filter(function (Customer $customer) use ($customerMaxNumber): bool {
+                return (int)$customer->number <= $customerMaxNumber;
             });
         }
 

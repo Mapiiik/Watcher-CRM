@@ -124,11 +124,7 @@ class Contract extends AppEntity
      */
     protected function _getActivationFeeSum(): Decimal
     {
-        if (isset($this->activation_fee)) {
-            return $this->activation_fee;
-        }
-
-        return $this->service_type->activation_fee ?? Decimal::create(0, 2);
+        return $this->activation_fee ?? $this->service_type->activation_fee ?? Decimal::create(0, 2);
     }
 
     /**
@@ -138,11 +134,9 @@ class Contract extends AppEntity
      */
     protected function _getActivationFeeWithObligationSum(): Decimal
     {
-        if (isset($this->activation_fee_with_obligation)) {
-            return $this->activation_fee_with_obligation;
-        }
-
-        return $this->service_type->activation_fee_with_obligation ?? Decimal::create(0, 2);
+        return $this->activation_fee_with_obligation
+            ?? $this->service_type->activation_fee_with_obligation
+            ?? Decimal::create(0, 2);
     }
 
     /**

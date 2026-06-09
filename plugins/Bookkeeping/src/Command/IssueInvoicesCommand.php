@@ -36,12 +36,11 @@ use Throwable;
 class IssueInvoicesCommand extends Command
 {
     public const SCHEDULE_PREV_MONTH_ON_FIRST = 'prev-month-on-first';
+
     public const SCHEDULE_CURRENT_MONTH_ON_LAST = 'current-month-on-last';
 
     /**
      * The name of this command.
-     *
-     * @var string
      */
     protected string $name = 'issue_invoices';
 
@@ -75,7 +74,7 @@ class IssueInvoicesCommand extends Command
      * @param \Cake\Console\ConsoleOptionParser $parser The parser to be defined
      * @return \Cake\Console\ConsoleOptionParser The built parser.
      */
-    public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
+    protected function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
         return parent::buildOptionParser($parser)
             ->setDescription(static::getDescription())

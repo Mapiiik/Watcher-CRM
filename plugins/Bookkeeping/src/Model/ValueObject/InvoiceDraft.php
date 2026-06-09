@@ -162,12 +162,12 @@ final class InvoiceDraft
             $valid = false;
         }
 
-        if ($this->creationDate === null) {
+        if (!$this->creationDate instanceof Date) {
             $this->addWarning('Missing creation date');
             $valid = false;
         }
 
-        if ($this->dueDate === null) {
+        if (!$this->dueDate instanceof Date) {
             $this->addWarning('Missing due date');
             $valid = false;
         }
@@ -177,12 +177,12 @@ final class InvoiceDraft
             $valid = false;
         }
 
-        if ($this->total === null) {
+        if (!$this->total instanceof Decimal) {
             $this->addWarning('Missing total amount');
             $valid = false;
         }
 
-        if ($this->debt === null) {
+        if (!$this->debt instanceof Decimal) {
             $this->addWarning('Missing remaining debt');
             $valid = false;
         }

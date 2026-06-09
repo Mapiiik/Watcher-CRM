@@ -5,12 +5,13 @@ namespace Radius\Test\TestCase\Command;
 
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\UsesClass;
+use Radius\Command\UpdateRelatedRecordsForAccountsCommand;
 
 /**
  * Radius\Command\UpdateRelatedRecordsForAllAccountsCommand Test Case
- *
- * @uses \Radius\Command\UpdateRelatedRecordsForAllAccountsCommand
  */
+#[UsesClass(UpdateRelatedRecordsForAccountsCommand::class)]
 class UpdateRelatedRecordsForAccountsCommandTest extends TestCase
 {
     use ConsoleIntegrationTestTrait;

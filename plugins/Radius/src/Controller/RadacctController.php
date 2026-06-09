@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Radius\Controller;
 
+use Cake\Http\Response;
+
 /**
  * Radacct Controller
  *
@@ -13,9 +15,9 @@ class RadacctController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function index()
+    public function index(): void
     {
         $radaccts = $this->paginate($this->Radacct->find(
             'all',
@@ -32,10 +34,10 @@ class RadacctController extends AppController
      * View method
      *
      * @param string|null $id Radacct id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): void
     {
         $radacct = $this->Radacct->get($id, contain: ['Accounts']);
 
@@ -45,9 +47,9 @@ class RadacctController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): ?Response
     {
         $radacct = $this->Radacct->newEmptyEntity();
         if ($this->getRequest()->is('post')) {
@@ -63,16 +65,18 @@ class RadacctController extends AppController
             'username',
         ]);
         $this->set(compact('radacct', 'accounts'));
+
+        return null;
     }
 
     /**
      * Edit method
      *
      * @param string|null $id Radacct id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): ?Response
     {
         $radacct = $this->Radacct->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
@@ -88,16 +92,18 @@ class RadacctController extends AppController
             'username',
         ]);
         $this->set(compact('radacct', 'accounts'));
+
+        return null;
     }
 
     /**
      * Delete method
      *
      * @param string|null $id Radacct id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
         $radacct = $this->Radacct->get($id);

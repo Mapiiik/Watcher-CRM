@@ -137,6 +137,7 @@ class CustomersController extends AppController
         $this->getRequest()->allowMethod(['patch', 'post', 'put']);
         $customer = $this->Customers->get($id);
         $customer = $this->Customers->patchEntity($customer, $this->getRequest()->getData());
+
         $message = $this->Customers->save($customer) ? 'Saved' : 'Error';
         $this->set([
             'message' => $message,

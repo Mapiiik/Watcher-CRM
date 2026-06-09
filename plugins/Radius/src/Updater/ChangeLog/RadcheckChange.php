@@ -11,12 +11,12 @@ class RadcheckChange
     /**
      * @var array<\Radius\Model\Entity\Radcheck> $original
      */
-    private array $original;
+    private readonly array $original;
 
     /**
      * @var array<\Radius\Model\Entity\Radcheck> $changed
      */
-    private array $changed;
+    private readonly array $changed;
 
     /**
      * Constructor

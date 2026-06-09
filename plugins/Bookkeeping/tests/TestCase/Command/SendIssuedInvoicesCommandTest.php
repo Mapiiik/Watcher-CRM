@@ -3,16 +3,17 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Test\TestCase\Command;
 
+use Bookkeeping\Command\SendIssuedInvoicesCommand;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
+use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
  * Bookkeeping\Command\SendInvoicesCommand Test Case
- *
- * @uses \Bookkeeping\Command\SendInvoicesCommand
  */
-class SendInvoicesCommandTest extends TestCase
+#[UsesClass(SendIssuedInvoicesCommand::class)]
+class SendIssuedInvoicesCommandTest extends TestCase
 {
     use ConsoleIntegrationTestTrait;
 

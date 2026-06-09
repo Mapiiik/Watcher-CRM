@@ -3,14 +3,15 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Test\TestCase\Command;
 
+use Bookkeeping\Command\LoadInvoicesCommand;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
  * Bookkeeping\Command\LoadInvoicesCommand Test Case
- *
- * @uses \Bookkeeping\Command\LoadInvoicesCommand
  */
+#[UsesClass(LoadInvoicesCommand::class)]
 class LoadInvoicesCommandTest extends TestCase
 {
     use ConsoleIntegrationTestTrait;

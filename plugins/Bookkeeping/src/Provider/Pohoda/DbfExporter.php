@@ -5,6 +5,7 @@ namespace Bookkeeping\Provider\Pohoda;
 
 use App\Model\Entity\AccountingProfile;
 use App\Model\Entity\Billing;
+use App\Model\Entity\Customer;
 use Bookkeeping\Model\ValueObject\InvoiceDraft;
 use Cake\I18n\Date;
 use RuntimeException;
@@ -135,7 +136,7 @@ class DbfExporter
         }
 
         // Ensure customer data is valid before adding the record
-        if ($invoice->customer === null || $invoice->customer->billing_address === null) {
+        if (!$invoice->customer instanceof Customer || $invoice->customer->billing_address === null) {
             throw new RuntimeException(__d(
                 'bookkeeping',
                 'Missing customer information or billing address for invoice number {0}.',
@@ -215,7 +216,7 @@ class DbfExporter
 
         if ($ok === false) {
             throw new RuntimeException(
-                __d('bookkeeping', 'Failed to write DBF record for invoice {0}.', (string)$invoice->number),
+                __d('bookkeeping', 'Failed to write DBF record for invoice {0}.', $invoice->number),
             );
         }
     }

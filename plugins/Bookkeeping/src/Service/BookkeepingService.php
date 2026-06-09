@@ -29,7 +29,8 @@ use Settings\Utility\Settings;
 class BookkeepingService
 {
     private AccountingProviderInterface $provider;
-    private InvoiceMapperService $invoiceMapper;
+
+    private readonly InvoiceMapperService $invoiceMapper;
 
     /**
      * Constructor
@@ -39,7 +40,7 @@ class BookkeepingService
      */
     public function __construct(?AccountingProviderInterface $provider = null)
     {
-        if ($provider !== null) {
+        if ($provider instanceof AccountingProviderInterface) {
             $this->provider = $provider;
         } else {
             // Load default provider key (e.g. "pohoda" or "eurofaktura")
@@ -145,7 +146,6 @@ class BookkeepingService
     /**
      * Import invoices from the accounting system (DBF).
      *
-     * @param string $filePath
      * @param \Bookkeeping\Model\Enum\InvoiceImportFormat $format Import format.
      * @return array{imported:int, created:int, modified:int, skipped:int} Import results.
      */
@@ -161,8 +161,6 @@ class BookkeepingService
     /**
      * Generate invoice number according to provider rules.
      *
-     * @param \Cake\I18n\DateTime $date
-     * @param bool $reverseCharge
      * @return string
      */
     public function generateInvoiceNumber(DateTime $date, bool $reverseCharge): string

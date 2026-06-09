@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Bookkeeping\Test\TestCase\View\Cell;
 
 use Bookkeeping\View\Cell\InvoicesCell;
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use Override;
 
@@ -42,8 +44,8 @@ class InvoicesCellTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->request = $this->getMockBuilder('Cake\Http\ServerRequest')->getMock();
-        $this->response = $this->getMockBuilder('Cake\Http\Response')->getMock();
+        $this->request = $this->getMockBuilder(ServerRequest::class)->getMock();
+        $this->response = $this->getMockBuilder(Response::class)->getMock();
         $this->Invoices = new InvoicesCell($this->request, $this->response);
     }
 

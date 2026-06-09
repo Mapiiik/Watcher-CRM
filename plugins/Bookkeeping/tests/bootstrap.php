@@ -10,10 +10,10 @@ use Migrations\TestSuite\Migrator;
  * has been installed as a dependency of the plugin, or the plugin is itself
  * installed as a dependency of an application.
  */
-$findRoot = function ($root) {
+$findRoot = function ($root): string {
     do {
         $lastRoot = $root;
-        $root = dirname($root);
+        $root = dirname((string)$root);
         if (is_dir($root . '/vendor/cakephp/cakephp')) {
             return $root;
         }

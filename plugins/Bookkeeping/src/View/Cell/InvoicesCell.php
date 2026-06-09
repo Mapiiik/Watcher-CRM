@@ -24,8 +24,6 @@ class InvoicesCell extends Cell
 
     /**
      * Show customers
-     *
-     * @var bool
      */
     protected bool $show_customers = true;
 

@@ -57,14 +57,11 @@ class HttpClient
 
             return $http->post($url, json_encode($payload, JSON_THROW_ON_ERROR));
         } catch (Throwable $e) {
-            throw new RuntimeException(
-                __d(
-                    'bookkeeping',
-                    'Error connecting to Eurofaktura / E-racuni API: {0}',
-                    [$e->getMessage()],
-                ),
-                previous: $e,
-            );
+            throw new RuntimeException(__d(
+                'bookkeeping',
+                'Error connecting to Eurofaktura / E-racuni API: {0}',
+                [$e->getMessage()],
+            ), $e->getCode(), previous: $e);
         }
     }
 }

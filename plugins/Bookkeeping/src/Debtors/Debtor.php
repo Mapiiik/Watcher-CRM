@@ -14,12 +14,15 @@ class Debtor
     /**
      * @var list<\Bookkeeping\Model\Entity\Invoice>
      */
-    private array $invoices;
+    private readonly array $invoices;
 
-    private Customer $customer;
-    private Date $due_date;
-    private float $total_debt;
-    private float $total_overdue_debt;
+    private readonly Customer $customer;
+
+    private readonly Date $due_date;
+
+    private readonly float $total_debt;
+
+    private readonly float $total_overdue_debt;
 
     /**
      * Constructor
@@ -46,7 +49,7 @@ class Debtor
         );
         $this->total_overdue_debt = $invoicesCollection
             ->filter(
-                function (Invoice $invoice) {
+                function (Invoice $invoice): bool {
                     return $invoice->due_date < Date::now();
                 },
             )
@@ -118,7 +121,7 @@ class Debtor
 
         return $invoicesCollection
         ->filter(
-            function (Invoice $invoice) use ($date) {
+            function (Invoice $invoice) use ($date): bool {
                 return $invoice->due_date < $date;
             },
         )

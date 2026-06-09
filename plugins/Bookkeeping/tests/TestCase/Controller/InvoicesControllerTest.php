@@ -3,14 +3,15 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Test\TestCase\Controller;
 
+use Bookkeeping\Controller\InvoicesController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
  * Bookkeeping\Controller\InvoicesController Test Case
- *
- * @uses \Bookkeeping\Controller\InvoicesController
  */
+#[UsesClass(InvoicesController::class)]
 class InvoicesControllerTest extends TestCase
 {
     use IntegrationTestTrait;

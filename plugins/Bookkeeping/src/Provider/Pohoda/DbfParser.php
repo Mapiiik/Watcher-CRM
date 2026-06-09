@@ -110,7 +110,6 @@ final class DbfParser
     /**
      * Parse date string into Cake Date object.
      *
-     * @param string|null $value
      * @return \Cake\I18n\Date|null
      */
     private function parseDate(?string $value): ?Date

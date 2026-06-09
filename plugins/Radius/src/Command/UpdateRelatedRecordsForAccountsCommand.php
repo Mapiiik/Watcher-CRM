@@ -29,7 +29,7 @@ class UpdateRelatedRecordsForAccountsCommand extends Command
      * @return \Cake\Console\ConsoleOptionParser The built parser.
      */
     #[Override]
-    public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
+    protected function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
         $parser = parent::buildOptionParser($parser);
 

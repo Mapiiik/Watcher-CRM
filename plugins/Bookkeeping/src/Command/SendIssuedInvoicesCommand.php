@@ -48,12 +48,10 @@ use Throwable;
  */
 class SendIssuedInvoicesCommand extends Command
 {
-    private BookkeepingService $bookkeeping;
+    private readonly BookkeepingService $bookkeeping;
 
     /**
      * The name of this command.
-     *
-     * @var string
      */
     protected string $name = 'send_issued_invoices';
 
@@ -93,7 +91,7 @@ class SendIssuedInvoicesCommand extends Command
      * @return \Cake\Console\ConsoleOptionParser The built parser.
      */
     #[Override]
-    public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
+    protected function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
         $parser = parent::buildOptionParser($parser);
 
@@ -111,10 +109,10 @@ class SendIssuedInvoicesCommand extends Command
      *
      * @param \Cake\Console\Arguments $args The command arguments.
      * @param \Cake\Console\ConsoleIo $io The console io
-     * @return int|null|void The exit code or null for success
+     * @return void The exit code or null for success
      */
     #[Override]
-    public function execute(Arguments $args, ConsoleIo $io)
+    public function execute(Arguments $args, ConsoleIo $io): void
     {
         $invoicesTable = $this->fetchTable(InvoicesTable::class);
         /** @var iterable<\Bookkeeping\Model\Entity\Invoice> $invoices */
@@ -237,7 +235,7 @@ class SendIssuedInvoicesCommand extends Command
                 unset($mailer);
             } else {
                 Log::warning('Skipping invoice because no valid contact found.'
-                    . ' (' . $invoice->number . ' - ' . (string)$invoice->variable_symbol . ')');
+                    . ' (' . $invoice->number . ' - ' . $invoice->variable_symbol . ')');
 
                 // do not attempt to re-deliver this invoice by email
                 $invoice->send_by_email = false;

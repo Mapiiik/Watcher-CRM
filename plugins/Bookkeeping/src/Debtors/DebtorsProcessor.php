@@ -32,6 +32,7 @@ class DebtorsProcessor
     private static ?CollectionInterface $debtors = null;
 
     private int $allowed_payment_delay;
+
     private float $allowed_total_overdue_debt;
 
     private Messages $messages;
@@ -62,8 +63,6 @@ class DebtorsProcessor
     /**
      * Safely call a function and handle any exceptions
      *
-     * @param callable $fn
-     * @param string $label
      * @return void
      */
     private function safeCall(callable $fn, string $label): void
@@ -72,7 +71,7 @@ class DebtorsProcessor
             $result = $fn();
             $this->messages->success(
                 '<strong>' . $label . '</strong><br>'
-                    . ($result ? nl2br($result) : __d('bookkeeping', 'Nothing has changed.')),
+                    . ($result ? nl2br((string)$result) : __d('bookkeeping', 'Nothing has changed.')),
                 ['escape' => false],
             );
         } catch (Throwable $e) {
@@ -130,12 +129,12 @@ class DebtorsProcessor
             ->all()
             ->groupBy('customer.id')
             ->map(
-                function ($invoices, $_customer_id) {
+                function ($invoices, $_customer_id): Debtor {
                     return new Debtor($invoices);
                 },
             )
             ->sortBy(
-                function (Debtor $debtor) {
+                function (Debtor $debtor): float {
                     return $debtor->getTotalDebt();
                 },
             );
@@ -158,9 +157,8 @@ class DebtorsProcessor
         // Return debtors
         if (isset(self::$debtors)) {
             return self::$debtors;
-        } else {
-            throw new RuntimeException(__d('bookkeeping', 'Debtors data is not available.'));
         }
+        throw new RuntimeException(__d('bookkeeping', 'Debtors data is not available.'));
     }
 
     /**
@@ -176,7 +174,7 @@ class DebtorsProcessor
         return $this
             ->getDebtors()
             ->filter(
-                function (Debtor $debtor) {
+                function (Debtor $debtor): bool {
                     return $debtor->getDueDate() < Date::now()
                         && $debtor->getTotalOverdueDebt() > 0;
                 },
@@ -196,7 +194,7 @@ class DebtorsProcessor
         return $this
             ->getDebtors()
             ->filter(
-                function (Debtor $debtor) {
+                function (Debtor $debtor): bool {
                     // virtual day in the past to allow for payment delays
                     $date = Date::now()->subDays($this->allowed_payment_delay);
 
@@ -236,7 +234,7 @@ class DebtorsProcessor
             return true;
         }
 
-        return (bool)Settings::get("bookkeeping.debtors.blocking.services.$service.enabled", false);
+        return (bool)Settings::get(sprintf('bookkeeping.debtors.blocking.services.%s.enabled', $service), false);
     }
 
     /**
@@ -272,7 +270,7 @@ class DebtorsProcessor
 
         if ($this->isDebtorBlockingEnabled('sledovani_tv')) {
             $this->safeCall(
-                fn() => $this->updateSledovaniTV(
+                fn(): string => $this->updateSledovaniTV(
                     ids: [$id],
                     block: true,
                     clear: false,
@@ -283,7 +281,7 @@ class DebtorsProcessor
 
         if ($this->isDebtorBlockingEnabled('routers')) {
             $this->safeCall(
-                fn() => $this->updateRouters(
+                fn(): string => $this->updateRouters(
                     ips: $customerIps,
                     block: true,
                     clear: false,
@@ -326,7 +324,7 @@ class DebtorsProcessor
 
         if ($this->isDebtorBlockingEnabled('sledovani_tv')) {
             $this->safeCall(
-                fn() => $this->updateSledovaniTV(
+                fn(): string => $this->updateSledovaniTV(
                     ids: [$id],
                     block: false,
                     clear: false,
@@ -337,7 +335,7 @@ class DebtorsProcessor
 
         if ($this->isDebtorBlockingEnabled('routers')) {
             $this->safeCall(
-                fn() => $this->updateRouters(
+                fn(): string => $this->updateRouters(
                     ips: $customerIps,
                     block: false,
                     clear: false,
@@ -378,7 +376,7 @@ class DebtorsProcessor
 
         if ($this->isDebtorBlockingEnabled('sledovani_tv')) {
             $this->safeCall(
-                fn() => $this->updateSledovaniTV(
+                fn(): string => $this->updateSledovaniTV(
                     ids: $ids,
                     block: true,
                     clear: false,
@@ -389,7 +387,7 @@ class DebtorsProcessor
 
         if ($this->isDebtorBlockingEnabled('routers')) {
             $this->safeCall(
-                fn() => $this->updateRouters(
+                fn(): string => $this->updateRouters(
                     ips: $customerIps,
                     block: true,
                     clear: false,
@@ -430,7 +428,7 @@ class DebtorsProcessor
 
         if ($this->isDebtorBlockingEnabled('sledovani_tv')) {
             $this->safeCall(
-                fn() => $this->updateSledovaniTV(
+                fn(): string => $this->updateSledovaniTV(
                     ids: $ids,
                     block: false,
                     clear: false,
@@ -441,7 +439,7 @@ class DebtorsProcessor
 
         if ($this->isDebtorBlockingEnabled('routers')) {
             $this->safeCall(
-                fn() => $this->updateRouters(
+                fn(): string => $this->updateRouters(
                     ips: $customerIps,
                     block: false,
                     clear: false,
@@ -488,7 +486,7 @@ class DebtorsProcessor
 
         if ($this->isDebtorBlockingEnabled('sledovani_tv')) {
             $this->safeCall(
-                fn() => $this->updateSledovaniTV(
+                fn(): string => $this->updateSledovaniTV(
                     ids: $customerIds,
                     block: true,
                     clear: true,
@@ -499,7 +497,7 @@ class DebtorsProcessor
 
         if ($this->isDebtorBlockingEnabled('routers')) {
             $this->safeCall(
-                fn() => $this->updateRouters(
+                fn(): string => $this->updateRouters(
                     ips: $customerIps,
                     block: true,
                     clear: true,
@@ -698,14 +696,14 @@ class DebtorsProcessor
         $result = '';
 
         $routersIpAddresses = env('DEBTORS_ROUTERS_IP_ADDRESSES');
-        if (!is_string($routersIpAddresses) || empty($routersIpAddresses)) {
+        if (!is_string($routersIpAddresses) || ($routersIpAddresses === '' || $routersIpAddresses === '0')) {
             throw new InvalidArgumentException(
                 'DEBTORS_ROUTERS_IP_ADDRESSES environment variable is not set or is not a string.',
             );
         }
 
         $addressList = env('DEBTORS_ADDRESS_LIST');
-        if (!is_string($addressList) || empty($addressList)) {
+        if (!is_string($addressList) || ($addressList === '' || $addressList === '0')) {
             throw new InvalidArgumentException(
                 'DEBTORS_ADDRESS_LIST environment variable is not set or is not a string.',
             );
@@ -905,39 +903,37 @@ class DebtorsProcessor
         foreach ($tvUsers as $tvUser) {
             if (in_array($tvUser['partnerid'], $customers)) {
                 // block = true and not suspended => block
-                if ($block && $tvUser['active'] == 1 && $tvUser['suspended'] == 0) {
-                    if (SledovaniTVApiClient::suspendUser($tvUser['id'])) {
-                        $result .= __d(
-                            'bookkeeping',
-                            'SledovaniTV - Suspended user with ID: {0} (partner ID: {1}).',
-                            $tvUser['id'],
-                            $tvUser['partnerid'],
-                        ) . PHP_EOL;
-                    }
+                if (
+                    $block && $tvUser['active'] == 1
+                    && $tvUser['suspended'] == 0
+                    && SledovaniTVApiClient::suspendUser($tvUser['id'])
+                ) {
+                    $result .= __d(
+                        'bookkeeping',
+                        'SledovaniTV - Suspended user with ID: {0} (partner ID: {1}).',
+                        $tvUser['id'],
+                        $tvUser['partnerid'],
+                    ) . PHP_EOL;
                 }
 
                 // block = false and suspended => unblock
-                if (!$block && $tvUser['suspended'] == 1) {
-                    if (SledovaniTVApiClient::unsuspendUser($tvUser['id'])) {
-                        $result .= __d(
-                            'bookkeeping',
-                            'SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1}).',
-                            $tvUser['id'],
-                            $tvUser['partnerid'],
-                        ) . PHP_EOL;
-                    }
+                if (!$block && $tvUser['suspended'] == 1 && SledovaniTVApiClient::unsuspendUser($tvUser['id'])) {
+                    $result .= __d(
+                        'bookkeeping',
+                        'SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1}).',
+                        $tvUser['id'],
+                        $tvUser['partnerid'],
+                    ) . PHP_EOL;
                 }
             } elseif ($clear) {
                 // suspended and not on the list + clear called => unblock
-                if ($tvUser['suspended'] == 1) {
-                    if (SledovaniTVApiClient::unsuspendUser($tvUser['id'])) {
-                        $result .= __d(
-                            'bookkeeping',
-                            'SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1}).',
-                            $tvUser['id'],
-                            $tvUser['partnerid'],
-                        ) . PHP_EOL;
-                    }
+                if ($tvUser['suspended'] == 1 && SledovaniTVApiClient::unsuspendUser($tvUser['id'])) {
+                    $result .= __d(
+                        'bookkeeping',
+                        'SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1}).',
+                        $tvUser['id'],
+                        $tvUser['partnerid'],
+                    ) . PHP_EOL;
                 }
             }
         }

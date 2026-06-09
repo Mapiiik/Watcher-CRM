@@ -5,6 +5,7 @@ namespace Radius\Controller;
 
 use App\Controller\Traits\MessageHandlerTrait;
 use App\Utility\Strings;
+use Cake\Http\Response;
 use Radius\Model\Entity\Radacct;
 use Radius\Updater\AccountsUpdater;
 use Radius\Updater\RadiusRequestSender;
@@ -24,16 +25,16 @@ class AccountsController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function index()
+    public function index(): void
     {
         // filter
         $conditions = [];
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $conditions += ['Accounts.customer_id' => $this->customer_id];
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $conditions += ['Accounts.contract_id' => $this->contract_id];
         }
 
@@ -42,7 +43,7 @@ class AccountsController extends AppController
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
-                    'Accounts.username ILIKE' => '%' . trim($search) . '%',
+                    'Accounts.username ILIKE' => '%' . trim((string)$search) . '%',
                 ],
             ];
         }
@@ -68,10 +69,10 @@ class AccountsController extends AppController
      * View method
      *
      * @param string|null $id Account id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): void
     {
         $account = $this->Accounts->get($id, contain: [
             'Contracts',
@@ -90,10 +91,10 @@ class AccountsController extends AppController
      * Monitoring method
      *
      * @param string|null $id Account id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function monitoring(?string $id = null)
+    public function monitoring(?string $id = null): void
     {
         $account = $this->Accounts->get($id, contain: [
             'Contracts',
@@ -138,16 +139,16 @@ class AccountsController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): ?Response
     {
         $account = $this->Accounts->newEmptyEntity();
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $account->customer_id = $this->customer_id;
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $account->contract_id = $this->contract_id;
         }
 
@@ -194,14 +195,14 @@ class AccountsController extends AppController
             ],
         );
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);
             $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
         if (isset($account->customer_id)) {
             $contracts->where(['Contracts.customer_id' => $account->customer_id]);
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
@@ -248,16 +249,18 @@ class AccountsController extends AppController
 
         // generate new password
         $this->set('new_password', Strings::generatePassword(10));
+
+        return null;
     }
 
     /**
      * Edit method
      *
      * @param string|null $id Account id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): ?Response
     {
         $account = $this->Accounts->get($id, contain: [
             'Radcheck',
@@ -303,28 +306,30 @@ class AccountsController extends AppController
             ],
         );
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);
             $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
         if (isset($account->customer_id)) {
             $contracts->where(['Contracts.customer_id' => $account->customer_id]);
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
         $this->set(compact('account', 'customers', 'contracts'));
+
+        return null;
     }
 
     /**
      * Delete method
      *
      * @param string|null $id Account id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
         $account = $this->Accounts->get($id);
@@ -342,10 +347,10 @@ class AccountsController extends AppController
      * Remove MAC address method
      *
      * @param string|null $id Account id.
-     * @return \Cake\Http\Response|null|void Redirects always to monitoring.
+     * @return \Cake\Http\Response|null Redirects always to monitoring.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function removeMacAddress(?string $id = null)
+    public function removeMacAddress(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post']);
         $account = $this->Accounts->get($id, contain: [
@@ -434,10 +439,10 @@ class AccountsController extends AppController
      * Disconnect request method
      *
      * @param string|null $id Account id.
-     * @return \Cake\Http\Response|null|void Redirects always to monitoring.
+     * @return \Cake\Http\Response|null Redirects always to monitoring.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function disconnectRequest(?string $id = null)
+    public function disconnectRequest(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post']);
         $account = $this->Accounts->get($id, contain: [
@@ -478,10 +483,10 @@ class AccountsController extends AppController
      * Update related records method
      *
      * @param string|null $id Account id.
-     * @return \Cake\Http\Response|null|void Redirects always to view.
+     * @return \Cake\Http\Response|null Redirects always to view.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function updateRelatedRecords(?string $id = null)
+    public function updateRelatedRecords(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post']);
 
@@ -500,9 +505,9 @@ class AccountsController extends AppController
     /**
      * Update related records for all accounts method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function updateRelatedRecordsForAllAccounts()
+    public function updateRelatedRecordsForAllAccounts(): void
     {
         if ($this->getRequest()->is(['post'])) {
             // load accounts updater

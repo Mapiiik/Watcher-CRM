@@ -12,6 +12,7 @@ use Bookkeeping\Service\CsvVerificationService;
 use Bookkeeping\Service\InvoiceGenerationService;
 use Bookkeeping\View\DbfView;
 use Bookkeeping\View\XmlView;
+use Cake\Http\Response;
 use Cake\I18n\Date;
 use Cake\Validation\Validation;
 use Override;
@@ -43,9 +44,9 @@ class InvoicesController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function index()
+    public function index(): void
     {
         // filter
         $conditions = [];
@@ -55,13 +56,13 @@ class InvoicesController extends AppController
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
-                    'Customers.company ILIKE' => '%' . trim($search) . '%',
-                    'Customers.title ILIKE' => '%' . trim($search) . '%',
-                    'Customers.first_name ILIKE' => '%' . trim($search) . '%',
-                    'Customers.last_name ILIKE' => '%' . trim($search) . '%',
-                    'Customers.suffix ILIKE' => '%' . trim($search) . '%',
-                    'Invoices.number ILIKE' => '%' . trim($search) . '%',
-                    'Invoices.variable_symbol ILIKE' => '%' . trim($search) . '%',
+                    'Customers.company ILIKE' => '%' . trim((string)$search) . '%',
+                    'Customers.title ILIKE' => '%' . trim((string)$search) . '%',
+                    'Customers.first_name ILIKE' => '%' . trim((string)$search) . '%',
+                    'Customers.last_name ILIKE' => '%' . trim((string)$search) . '%',
+                    'Customers.suffix ILIKE' => '%' . trim((string)$search) . '%',
+                    'Invoices.number ILIKE' => '%' . trim((string)$search) . '%',
+                    'Invoices.variable_symbol ILIKE' => '%' . trim((string)$search) . '%',
                 ],
             ];
         }
@@ -130,10 +131,10 @@ class InvoicesController extends AppController
      * View method
      *
      * @param string|null $id Invoice id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): void
     {
         $invoice = $this->Invoices->get($id, contain: [
             'Customers',
@@ -148,10 +149,10 @@ class InvoicesController extends AppController
      * Download method
      *
      * @param string|null $id Invoice id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return \Cake\Http\Response Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function download(?string $id = null)
+    public function download(?string $id = null): Response
     {
         $invoice = $this->Invoices->get($id, contain: [
             'Customers',
@@ -159,20 +160,18 @@ class InvoicesController extends AppController
 
         $filePath = (new BookkeepingService())->getInvoicePdfPath($invoice);
 
-        $response = $this->response->withFile($filePath, [
+        return $this->response->withFile($filePath, [
             'download' => true,
             'name' => basename($filePath),
         ]);
-
-        return $response;
     }
 
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): ?Response
     {
         $invoice = $this->Invoices->newEmptyEntity();
         if ($this->getRequest()->is('post')) {
@@ -190,16 +189,18 @@ class InvoicesController extends AppController
             'first_name',
         ]);
         $this->set(compact('invoice', 'customers'));
+
+        return null;
     }
 
     /**
      * Edit method
      *
      * @param string|null $id Invoice id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): ?Response
     {
         $invoice = $this->Invoices->get($id);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
@@ -217,16 +218,18 @@ class InvoicesController extends AppController
             'first_name',
         ]);
         $this->set(compact('invoice', 'customers'));
+
+        return null;
     }
 
     /**
      * Delete method
      *
      * @param string|null $id Invoice id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
         $invoice = $this->Invoices->get($id);
@@ -243,9 +246,9 @@ class InvoicesController extends AppController
     /**
      * Send by email method
      *
-     * @return \Cake\Http\Response|null|void Redirects successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects successful edit, renders view otherwise.
      */
-    public function sendByEmail()
+    public function sendByEmail(): ?Response
     {
         if ($this->getRequest()->is(['post']) && Validation::date($this->getRequest()->getData('creation_date'))) {
             $count = $this->Invoices->updateAll(
@@ -272,15 +275,17 @@ class InvoicesController extends AppController
                 'No invoices could be marked to be sent by email. Please, try again.',
             ));
         }
+
+        return null;
     }
 
     /**
      * Generate method
      *
-     * @return \Cake\Http\Response|null|void Renders generateInvoices
+     * @return \Cake\Http\Response|null Renders generateInvoices
      * @psalm-suppress ImplicitToStringCast
      */
-    public function generate()
+    public function generate(): ?Response
     {
         $accountingProfiles = $this->fetchTable(AccountingProfilesTable::class)
             ->find('list', order: [
@@ -322,7 +327,7 @@ class InvoicesController extends AppController
                 if (!$result->isOk()) {
                     $this->set('verificationData', $result->getDifferences());
 
-                    return;
+                    return null;
                 }
             }
 
@@ -361,9 +366,9 @@ class InvoicesController extends AppController
             $bookkeeping = new BookkeepingService();
             $filePath = $bookkeeping->exportInvoices(
                 invoices: $drafts,
-                format: $exportFormat,
                 invoicedMonth: $invoicedMonth,
                 accountingProfile: $accountingProfile,
+                format: $exportFormat,
             );
 
             // set for download with specified filename
@@ -388,14 +393,16 @@ class InvoicesController extends AppController
 
             return $response;
         }
+
+        return null;
     }
 
     /**
      * Import invoices from file.
      *
-     * @return \Cake\Http\Response|null|void
+     * @return null
      */
-    public function importFromFile()
+    public function importFromFile(): null
     {
         if (!$this->getRequest()->is(['post'])) {
             return null;

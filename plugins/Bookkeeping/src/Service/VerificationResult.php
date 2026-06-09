@@ -8,7 +8,7 @@ namespace Bookkeeping\Service;
  *
  * Immutable value object representing the result of CSV vs CRM verification.
  */
-final class VerificationResult
+final readonly class VerificationResult
 {
     /**
      * Constructor
@@ -24,7 +24,7 @@ final class VerificationResult
      */
     public function isOk(): bool
     {
-        return empty($this->differences) && empty($this->errors);
+        return $this->differences === [] && $this->errors === [];
     }
 
     /**
@@ -56,6 +56,6 @@ final class VerificationResult
      */
     public function hasErrors(): bool
     {
-        return !empty($this->errors);
+        return $this->errors !== [];
     }
 }

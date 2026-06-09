@@ -10,15 +10,11 @@ class DbfView extends AppView
 {
     /**
      * DBF layouts are located in the 'dbf' subdirectory of `Layouts/`
-     *
-     * @var string
      */
     protected string $layoutPath = 'dbf';
 
     /**
      * DBF views are located in the 'dbf' subdirectory for controllers' views.
-     *
-     * @var string
      */
     protected string $subDir = 'dbf';
 

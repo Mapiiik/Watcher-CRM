@@ -6,6 +6,7 @@ namespace Bookkeeping\Controller;
 use App\Controller\Traits\MessageHandlerTrait;
 use Bookkeeping\Debtors\DebtorsProcessor;
 use Cake\Form\Form;
+use Cake\Http\Response;
 
 /**
  * Invoices Controller
@@ -19,9 +20,9 @@ class DebtorsController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function index()
+    public function index(): void
     {
         $allowed_payment_delay = is_numeric($this->getRequest()->getQuery('allowed_payment_delay')) ?
             (int)$this->getRequest()->getQuery('allowed_payment_delay') :
@@ -52,10 +53,10 @@ class DebtorsController extends AppController
     /**
      * Blocking Update method
      *
-     * @return \Cake\Http\Response|null|void Redirects to referer or debtors index.
+     * @return \Cake\Http\Response|null Redirects to referer or debtors index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function blockingUpdate()
+    public function blockingUpdate(): ?Response
     {
         $this->getRequest()->allowMethod(['post']);
 
@@ -79,10 +80,10 @@ class DebtorsController extends AppController
      * Block method
      *
      * @param string|null $id Customer id.
-     * @return \Cake\Http\Response|null|void Redirects to referer or customer view.
+     * @return \Cake\Http\Response|null Redirects to referer or customer view.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function block(?string $id = null)
+    public function block(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post']);
 
@@ -103,10 +104,10 @@ class DebtorsController extends AppController
      * Unblock method
      *
      * @param string|null $id Customer id.
-     * @return \Cake\Http\Response|null|void Redirects to referer or customer view.
+     * @return \Cake\Http\Response|null Redirects to referer or customer view.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function unblock(?string $id = null)
+    public function unblock(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post']);
 

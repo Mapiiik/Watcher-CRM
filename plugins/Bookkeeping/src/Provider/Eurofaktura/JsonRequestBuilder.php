@@ -23,9 +23,6 @@ class JsonRequestBuilder
     /**
      * Build SalesInvoice object.
      *
-     * @param \Bookkeeping\Model\ValueObject\InvoiceDraft $invoice
-     * @param \Cake\I18n\Date $invoicedMonth
-     * @param \App\Model\Entity\AccountingProfile $accountingProfile
      * @return array
      */
     public function buildSalesInvoice(
@@ -42,7 +39,7 @@ class JsonRequestBuilder
         }
 
         // Ensure customer data is valid before building the request
-        if ($invoice->customer === null || $invoice->customer->billing_address === null) {
+        if (!$invoice->customer instanceof Customer || $invoice->customer->billing_address === null) {
             throw new RuntimeException(__d(
                 'bookkeeping',
                 'Missing customer information or billing address for invoice number {0}.',
@@ -138,15 +135,15 @@ class JsonRequestBuilder
             // Payment
             'methodOfPayment' => $paymentMethod,
             'bankAccountNumber' => $accountingProfile->bank_account_code,
-            'reference' => $referencePrefix . (string)$invoice->variableSymbol,
+            'reference' => $referencePrefix . $invoice->variableSymbol,
 
             // Contract / subscription context
             'type' => $accountingProfile->reverse_charge ? $invoiceTypeRC : $invoiceTypeStandard,
-            'contractNumber' => (string)$invoice->customerNumber,
-            'ourContractNumber' => (string)$invoice->customerNumber,
+            'contractNumber' => $invoice->customerNumber,
+            'ourContractNumber' => $invoice->customerNumber,
 
             // Items
-            'Items' => $this->buildSalesInvoiceItems($invoice, $invoicedMonth, $accountingProfile),
+            'Items' => $this->buildSalesInvoiceItems($invoice, $accountingProfile),
         ];
 
         // Buyer code
@@ -170,12 +167,10 @@ class JsonRequestBuilder
     /**
      * Build invoice items.
      *
-     * @param \Bookkeeping\Model\ValueObject\InvoiceDraft $invoice
      * @return array
      */
     private function buildSalesInvoiceItems(
         InvoiceDraft $invoice,
-        Date $invoicedMonth,
         AccountingProfile $accountingProfile,
     ): array {
         $defaultClassificationCode = Settings::getString(
@@ -186,7 +181,7 @@ class JsonRequestBuilder
         $items = [];
 
         // No itemized breakdown → single-line invoice
-        if (empty($invoice->items)) {
+        if ($invoice->items === []) {
             $items[] = [
                 'quantity' => 1,
                 'description' => $invoice->text,
@@ -232,7 +227,6 @@ class JsonRequestBuilder
      * Eurofaktura supports only a single phone/email per partner/address.
      * We intentionally select the first valid phone/email and ignore the rest
      *
-     * @param \App\Model\Entity\Customer $customer
      * @return array
      */
     public function buildPartner(Customer $customer): array

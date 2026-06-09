@@ -24,7 +24,7 @@ use Throwable;
  */
 class LoadInvoicesCommand extends Command
 {
-    private BookkeepingService $bookkeeping;
+    private readonly BookkeepingService $bookkeeping;
 
     /**
      * Initializes bookkeeping service used for invoice-related operations.
@@ -53,7 +53,7 @@ class LoadInvoicesCommand extends Command
      * @return \Cake\Console\ConsoleOptionParser The built parser.
      */
     #[Override]
-    public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
+    protected function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
         return parent::buildOptionParser($parser)
             ->setDescription(static::getDescription())
@@ -99,7 +99,7 @@ class LoadInvoicesCommand extends Command
 
         try {
             $lastChanges = $this->resolveLastChanges($args, $io);
-            if ($lastChanges === null) {
+            if (!$lastChanges instanceof DateTime) {
                 throw new RuntimeException(__d(
                     'bookkeeping',
                     'Unable to resolve last synchronization timestamp.',
@@ -175,8 +175,6 @@ class LoadInvoicesCommand extends Command
     /**
      * Resolve the timestamp used for synchronization.
      *
-     * @param \Cake\Console\Arguments $args
-     * @param \Cake\Console\ConsoleIo $io
      * @return \Cake\I18n\DateTime|null
      */
     private function resolveLastChanges(Arguments $args, ConsoleIo $io): ?DateTime
@@ -197,7 +195,7 @@ class LoadInvoicesCommand extends Command
         }
 
         $last = $this->loadLastSynchronizationTime();
-        if ($last === null) {
+        if (!$last instanceof DateTime) {
             $io->warning(__d(
                 'bookkeeping',
                 'No previous synchronization found. Using default value.',
@@ -214,7 +212,7 @@ class LoadInvoicesCommand extends Command
      */
     private function loadLastSynchronizationTime(): ?DateTime
     {
-        $file = (string)env('DATA_ROOT', ROOT . DS . 'data')
+        $file = env('DATA_ROOT', ROOT . DS . 'data')
             . DS . 'invoices' . DS . 'last_sync.txt';
 
         if (!file_exists($file)) {
@@ -250,7 +248,7 @@ class LoadInvoicesCommand extends Command
      */
     private function saveLastSynchronizationTime(DateTime $dateTime): void
     {
-        $file = (string)env('DATA_ROOT', ROOT . DS . 'data')
+        $file = env('DATA_ROOT', ROOT . DS . 'data')
             . DS . 'invoices' . DS . 'last_sync.txt';
 
         $result = file_put_contents($file, $dateTime->format('Y-m-d H:i:s'));

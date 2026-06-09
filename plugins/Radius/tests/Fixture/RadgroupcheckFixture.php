@@ -13,8 +13,6 @@ class RadgroupcheckFixture extends TestFixture
 {
     /**
      * Table name
-     *
-     * @var string
      */
     public string $table = 'radgroupcheck';
 

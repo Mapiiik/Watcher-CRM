@@ -161,7 +161,7 @@ class XmlExporter
             ]);
 
             // add invoice to import (identified by $invoice->number)
-            $pohoda->addItem((string)$invoice->number, $invoiceRecord);
+            $pohoda->addItem($invoice->number, $invoiceRecord);
         }
 
         // finish import file

@@ -13,8 +13,6 @@ class NasFixture extends TestFixture
 {
     /**
      * Table name
-     *
-     * @var string
      */
     public string $table = 'nas';
 

@@ -11,12 +11,12 @@ class RadreplyChange
     /**
      * @var array<\Radius\Model\Entity\Radreply> $original
      */
-    private array $original;
+    private readonly array $original;
 
     /**
      * @var array<\Radius\Model\Entity\Radreply> $changed
      */
-    private array $changed;
+    private readonly array $changed;
 
     /**
      * Constructor

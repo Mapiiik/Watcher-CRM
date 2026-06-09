@@ -94,11 +94,10 @@ class AccountsUpdater
             $this->Messages->success(__d('radius', 'The RADIUS account has been updated.'));
 
             return true;
-        } else {
-            $this->Messages->error(__d('radius', 'The RADIUS account could not be updated. Please, try again.'));
-
-            return false;
         }
+        $this->Messages->error(__d('radius', 'The RADIUS account could not be updated. Please, try again.'));
+
+        return false;
     }
 
     /**
@@ -291,11 +290,11 @@ class AccountsUpdater
         $newData = $this->$autoDataMethod($account);
 
         $originalDataArray = array_map(
-            fn(Entity $e) => $e->toArray(),
+            fn(Entity $e): array => $e->toArray(),
             $originalData,
         );
         $newDataArray = array_map(
-            fn(Entity $e) => $e->toArray(),
+            fn(Entity $e): array => $e->toArray(),
             $newData,
         );
 
@@ -362,7 +361,7 @@ class AccountsUpdater
 
         foreach ($contract->ip_addresses as $ipAddress) {
             // Skip IP addresses without RADIUS usage type
-            if (!($ipAddress->type_of_use == IpAddressTypeOfUse::CustomerRADIUS)) {
+            if ($ipAddress->type_of_use != IpAddressTypeOfUse::CustomerRADIUS) {
                 continue;
             }
 
@@ -390,7 +389,7 @@ class AccountsUpdater
 
         foreach ($contract->ip_networks as $ipNetwork) {
             // Skip IP networks without RADIUS usage type
-            if (!($ipNetwork->type_of_use == IpNetworkTypeOfUse::CustomerRADIUS)) {
+            if ($ipNetwork->type_of_use != IpNetworkTypeOfUse::CustomerRADIUS) {
                 continue;
             }
 
@@ -423,7 +422,7 @@ class AccountsUpdater
             }
         }
 
-        if (empty($radreply)) {
+        if ($radreply === []) {
             $this->Messages->warning(
                 __d(
                     'radius',
@@ -435,9 +434,6 @@ class AccountsUpdater
                 . ')',
             );
             Log::warning('The RADIUS replies for ' . $account->username . ' could not be found automatically.');
-        }
-
-        if (empty($radreply)) {
             // return current radusergroup records
             if (is_array($account->radreply)) {
                 foreach ($account->radreply as $current_radreply) {
@@ -569,12 +565,10 @@ class AccountsUpdater
                 ]);
         }
 
-        if (empty($radusergroup)) {
-            // return current radusergroup records if exists
-            if (is_array($account->radusergroup)) {
-                foreach ($account->radusergroup as $current_radusergroup) {
-                    $radusergroup[] = $current_radusergroup;
-                }
+        // return current radusergroup records if exists
+        if (empty($radusergroup) && is_array($account->radusergroup)) {
+            foreach ($account->radusergroup as $current_radusergroup) {
+                $radusergroup[] = $current_radusergroup;
             }
         }
 

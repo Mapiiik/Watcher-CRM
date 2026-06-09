@@ -10,15 +10,11 @@ class XmlView extends AppView
 {
     /**
      * XML layouts are located in the 'xml' subdirectory of `Layouts/`
-     *
-     * @var string
      */
     protected string $layoutPath = 'xml';
 
     /**
      * XML views are located in the 'xml' subdirectory for controllers' views.
-     *
-     * @var string
      */
     protected string $subDir = 'xml';
 

@@ -42,8 +42,11 @@ class EurofakturaProvider implements AccountingProviderInterface
     public const SETTINGS_ROOT = 'bookkeeping.accounting.providers.eurofaktura';
 
     private EurofakturaCredentialsProvider $credentialsProvider;
+
     private HttpClient $httpClient;
+
     private JsonParser $jsonParser;
+
     private JsonRequestBuilder $jsonRequestBuilder;
 
     /**
@@ -159,12 +162,10 @@ class EurofakturaProvider implements AccountingProviderInterface
             ],
         );
 
-        $drafts = array_merge(
+        return array_merge(
             $drafts,
             $this->jsonParser->parseSalesInvoiceList($response->getJson()),
         );
-
-        return $drafts;
     }
 
     /**
@@ -249,7 +250,7 @@ class EurofakturaProvider implements AccountingProviderInterface
                 );
 
                 // 1) Send partner to API (if use_buyer_code is set)
-                if ($useBuyerCode && isset($invoice->customer)) {
+                if ($useBuyerCode && $invoice->customer !== null) {
                     $this->sendPartners([$invoice->customer]);
                 }
 
@@ -273,17 +274,14 @@ class EurofakturaProvider implements AccountingProviderInterface
                 // 4) Validate response
                 $this->assertValidApiResponse($response);
             } catch (RuntimeException $e) {
-                throw new RuntimeException(
-                    __d(
-                        'bookkeeping',
-                        'Failed to send invoice for customer {0}: {1}',
-                        [
-                            $invoice->customer->number ?? __d('bookkeeping', 'Unknown'),
-                            $e->getMessage(),
-                        ],
-                    ),
-                    previous: $e,
-                );
+                throw new RuntimeException(__d(
+                    'bookkeeping',
+                    'Failed to send invoice for customer {0}: {1}',
+                    [
+                        $invoice->customer->number ?? __d('bookkeeping', 'Unknown'),
+                        $e->getMessage(),
+                    ],
+                ), $e->getCode(), previous: $e);
             }
 
             // 5) (Optional) store documentId / external reference
@@ -334,17 +332,14 @@ class EurofakturaProvider implements AccountingProviderInterface
                 // $data = $response->getJson();
                 // $partnerId = $data['result']['id'] ?? null;
             } catch (RuntimeException $e) {
-                throw new RuntimeException(
-                    __d(
-                        'bookkeeping',
-                        'Failed to send partner for customer {0}: {1}',
-                        [
-                            $customer->number ?? __d('bookkeeping', 'Unknown'),
-                            $e->getMessage(),
-                        ],
-                    ),
-                    previous: $e,
-                );
+                throw new RuntimeException(__d(
+                    'bookkeeping',
+                    'Failed to send partner for customer {0}: {1}',
+                    [
+                        $customer->number ?? __d('bookkeeping', 'Unknown'),
+                        $e->getMessage(),
+                    ],
+                ), $e->getCode(), previous: $e);
             }
 
             // sleep one second because of rate limit
@@ -436,7 +431,7 @@ class EurofakturaProvider implements AccountingProviderInterface
      */
     public function getInvoicePdfPath(Invoice $invoice): string
     {
-        $filepath = (string)env('DATA_ROOT', ROOT . DS . 'data')
+        $filepath = env('DATA_ROOT', ROOT . DS . 'data')
             . DS . 'invoices'
             . DS . 'Invoice_' . strtr($invoice->number, '/', '-')
             . '_' . $invoice->creation_date->format('Y-m-d') . '.pdf';
@@ -468,7 +463,7 @@ class EurofakturaProvider implements AccountingProviderInterface
 
             if (isset($data['response']['result']['pdfFile'])) {
                 // Decode base64 PDF content
-                $pdfContent = base64_decode($data['response']['result']['pdfFile'], true);
+                $pdfContent = base64_decode((string)$data['response']['result']['pdfFile'], true);
 
                 if ($pdfContent === false) {
                     throw new RuntimeException(

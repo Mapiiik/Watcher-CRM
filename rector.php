@@ -23,6 +23,8 @@ return RectorConfig::configure()
     ->withPaths([
         __DIR__ . '/src',
         __DIR__ . '/tests',
+        __DIR__ . '/plugins/*/src',
+        __DIR__ . '/plugins/*/tests',
     ])
 
     // Use file-based cache for faster runs

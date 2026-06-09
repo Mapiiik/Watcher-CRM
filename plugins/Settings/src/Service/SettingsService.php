@@ -69,13 +69,9 @@ class SettingsService
      *
      * These defaults act as a baseline configuration and are later
      * overlaid by values stored in the database.
-     *
-     * @return void
      */
     public function __construct()
     {
-        $this->defaults = [];
-
         // Load app defaults
         $appDefaultsFile = CONFIG . 'settings.php';
         if (file_exists($appDefaultsFile)) {
@@ -132,16 +128,12 @@ class SettingsService
      */
     protected function getOverlayTable(): SettingsTable
     {
-        $settingsTable = $this->fetchTable(SettingsTable::class);
-
-        return $settingsTable;
+        return $this->fetchTable(SettingsTable::class);
     }
 
     /**
      * Load settings overlay entity for given plugin and key.
      *
-     * @param string $plugin
-     * @param string $key
      * @return \Settings\Model\Entity\Setting
      */
     protected function loadOverlayEntity(string $plugin, string $key): Setting
@@ -378,7 +370,7 @@ class SettingsService
                 unset($this->localCache[$plugin]);
             }
 
-            Cache::delete("settings.$plugin.$key", 'default');
+            Cache::delete(sprintf('settings.%s.%s', $plugin, $key), 'default');
 
             return;
         }
@@ -386,7 +378,7 @@ class SettingsService
         // Clear whole plugin
         if ($plugin !== null) {
             unset($this->localCache[$plugin]);
-            Cache::delete("settings.$plugin", 'default');
+            Cache::delete('settings.' . $plugin, 'default');
 
             return;
         }

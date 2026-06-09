@@ -12,6 +12,7 @@ use Bookkeeping\Provider\AccountingProviderInterface;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use RuntimeException;
+use SimpleXMLElement;
 
 /**
  * Class PohodaProvider
@@ -31,12 +32,17 @@ class PohodaProvider implements AccountingProviderInterface
 {
     public const SETTINGS_ROOT = 'bookkeeping.accounting.providers.pohoda';
 
-    private XmlRequestBuilder $xmlRequestBuilder;
-    private HttpClient $httpClient;
-    private DbfParser $dbfParser;
-    private XmlParser $xmlParser;
-    private DbfExporter $dbfExporter;
-    private XmlExporter $xmlExporter;
+    private readonly XmlRequestBuilder $xmlRequestBuilder;
+
+    private readonly HttpClient $httpClient;
+
+    private readonly DbfParser $dbfParser;
+
+    private readonly XmlParser $xmlParser;
+
+    private readonly DbfExporter $dbfExporter;
+
+    private readonly XmlExporter $xmlExporter;
 
     /**
      * Constructor
@@ -77,7 +83,7 @@ class PohodaProvider implements AccountingProviderInterface
 
         // 4) Parse XML
         $xml = $response->getXml();
-        if ($xml === null) {
+        if (!$xml instanceof SimpleXMLElement) {
             throw new RuntimeException(
                 __d('bookkeeping', 'Invalid XML response from Pohoda mServer.'),
             );
@@ -86,8 +92,10 @@ class PohodaProvider implements AccountingProviderInterface
         // 5) Validate Pohoda XML response state
         $attributes = $xml->attributes();
 
-        $state = isset($attributes->state) ? (string)$attributes->state : 'N/A';
-        $note = isset($attributes->note) ? (string)$attributes->note : 'N/A';
+        $state = property_exists($attributes, 'state') && $attributes->state !== null ?
+            (string)$attributes->state : 'N/A';
+        $note = property_exists($attributes, 'note') && $attributes->note !== null ?
+            (string)$attributes->note : 'N/A';
 
         if ($state !== 'ok') {
             throw new RuntimeException(__d(
@@ -163,7 +171,7 @@ class PohodaProvider implements AccountingProviderInterface
 
             // 5) Validate XML response body
             $responseXml = $response->getXml();
-            if ($responseXml === null) {
+            if (!$responseXml instanceof SimpleXMLElement) {
                 throw new RuntimeException(
                     __d('bookkeeping', 'Invalid XML response from Pohoda mServer.'),
                 );
@@ -172,8 +180,10 @@ class PohodaProvider implements AccountingProviderInterface
             // 6) Validate Pohoda response state
             $attributes = $responseXml->attributes();
 
-            $state = isset($attributes->state) ? (string)$attributes->state : 'N/A';
-            $note = isset($attributes->note) ? (string)$attributes->note : '';
+            $state = property_exists($attributes, 'state') && $attributes->state !== null ?
+                (string)$attributes->state : 'N/A';
+            $note = property_exists($attributes, 'note') && $attributes->note !== null ?
+                (string)$attributes->note : '';
 
             if ($state !== 'ok') {
                 throw new RuntimeException(__d(
@@ -286,7 +296,7 @@ class PohodaProvider implements AccountingProviderInterface
      */
     public function getInvoicePdfPath(Invoice $invoice): string
     {
-        return (string)env('DATA_ROOT', ROOT . DS . 'data')
+        return env('DATA_ROOT', ROOT . DS . 'data')
             . DS . 'invoices'
             . DS . 'Faktura_' . $invoice->number . '.pdf';
     }

@@ -50,12 +50,16 @@ class XmlRequestBuilder
         ]);
         */
         $request->addQueryFilter([
-            'textName' => "(Uloženo >= {$lastChanges->toDateTimeString()}; Likv. >= {$lastChanges->toDateString()})",
+            'textName' => sprintf(
+                '(Uloženo >= %s; Likv. >= %s)',
+                $lastChanges->toDateTimeString(),
+                $lastChanges->toDateString(),
+            ),
             'filter' =>
                 '('
-                . "FA.DatSave>=CONVERT(DATETIME, '{$lastChanges->format('m/d/Y H:i:s')}', 101)"
+                . sprintf("FA.DatSave>=CONVERT(DATETIME, '%s', 101)", $lastChanges->format('m/d/Y H:i:s'))
                 . ' OR '
-                . "FA.DatLikv>=CONVERT(DATETIME, '{$lastChanges->format('m/d/Y')}', 101)"
+                . sprintf("FA.DatLikv>=CONVERT(DATETIME, '%s', 101)", $lastChanges->format('m/d/Y'))
                 . ')',
         ]);
 

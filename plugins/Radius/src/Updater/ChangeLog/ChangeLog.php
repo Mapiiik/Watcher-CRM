@@ -82,37 +82,27 @@ class ChangeLog
 
         $change = $this->getChange($account->username);
 
-        switch ($relatedData) {
-            case 'radcheck':
-                $change->setRadcheckChange(
-                    new RadcheckChange(
-                        $this->assertRadcheckArray($original),
-                        $this->assertRadcheckArray($changed),
-                    ),
-                );
-                break;
-
-            case 'radreply':
-                $change->setRadreplyChange(
-                    new RadreplyChange(
-                        $this->assertRadreplyArray($original),
-                        $this->assertRadreplyArray($changed),
-                    ),
-                );
-                break;
-
-            case 'radusergroup':
-                $change->setRadusergroupChange(
-                    new RadusergroupChange(
-                        $this->assertRadusergroupArray($original),
-                        $this->assertRadusergroupArray($changed),
-                    ),
-                );
-                break;
-
-            default:
-                throw new InvalidArgumentException("Invalid related data: $relatedData");
-        }
+        match ($relatedData) {
+            'radcheck' => $change->setRadcheckChange(
+                new RadcheckChange(
+                    $this->assertRadcheckArray($original),
+                    $this->assertRadcheckArray($changed),
+                ),
+            ),
+            'radreply' => $change->setRadreplyChange(
+                new RadreplyChange(
+                    $this->assertRadreplyArray($original),
+                    $this->assertRadreplyArray($changed),
+                ),
+            ),
+            'radusergroup' => $change->setRadusergroupChange(
+                new RadusergroupChange(
+                    $this->assertRadusergroupArray($original),
+                    $this->assertRadusergroupArray($changed),
+                ),
+            ),
+            default => throw new InvalidArgumentException('Invalid related data: ' . $relatedData),
+        };
     }
 
     /**

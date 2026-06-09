@@ -34,7 +34,7 @@ final class CsvVerificationService
      * Constructor
      */
     public function __construct(
-        private CustomersTable $customers,
+        private readonly CustomersTable $customers,
     ) {
     }
 
@@ -68,13 +68,13 @@ final class CsvVerificationService
     /**
      * Parse and aggregate CSV verification data.
      *
-     * @param \Laminas\Diactoros\UploadedFile $csvFile
      * @return array<string, array>
      */
     private function parseCsv(UploadedFile $csvFile): array
     {
         $stream = $csvFile->getStream();
         $stream->rewind();
+
         $resource = $stream->detach();
 
         if ($resource === null) {
@@ -89,7 +89,7 @@ final class CsvVerificationService
                 $lineNumber++;
 
                 // Skip empty lines
-                if (empty(array_filter($parsedLine))) {
+                if (array_filter($parsedLine) === []) {
                     continue;
                 }
 
@@ -170,7 +170,6 @@ final class CsvVerificationService
      * Compare CSV billing data with CRM billing data.
      *
      * @param iterable<\App\Model\Entity\Customer> $customers
-     * @param array $csvData
      * @return array<string, array{
      *   csv?: array{total: \PhpCollective\DecimalObject\Decimal, items: array},
      *   crm?: array{total: \PhpCollective\DecimalObject\Decimal, items: array},

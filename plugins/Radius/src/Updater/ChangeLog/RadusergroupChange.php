@@ -11,12 +11,12 @@ class RadusergroupChange
     /**
      * @var array<\Radius\Model\Entity\Radusergroup> $original
      */
-    private array $original;
+    private readonly array $original;
 
     /**
      * @var array<\Radius\Model\Entity\Radusergroup> $changed
      */
-    private array $changed;
+    private readonly array $changed;
 
     /**
      * Constructor

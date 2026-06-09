@@ -26,7 +26,7 @@ use InvalidArgumentException;
  * clear, typed representation of the path for use across services,
  * controllers and commands.
  */
-final class SettingsPath
+final readonly class SettingsPath
 {
     /**
      * Create a new SettingsPath value object.
@@ -37,9 +37,9 @@ final class SettingsPath
      *                            (e.g. "invoices.phone")
      */
     public function __construct(
-        public readonly ?string $plugin,
-        public readonly ?string $key,
-        public readonly ?string $subKey,
+        public ?string $plugin,
+        public ?string $key,
+        public ?string $subKey,
     ) {
         // nothing
     }

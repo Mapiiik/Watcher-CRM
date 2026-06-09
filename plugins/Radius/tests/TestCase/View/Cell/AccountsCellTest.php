@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Radius\Test\TestCase\View\Cell;
 
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use Override;
 use Radius\View\Cell\AccountsCell;
@@ -42,8 +44,8 @@ class AccountsCellTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->request = $this->getMockBuilder('Cake\Http\ServerRequest')->getMock();
-        $this->response = $this->getMockBuilder('Cake\Http\Response')->getMock();
+        $this->request = $this->getMockBuilder(ServerRequest::class)->getMock();
+        $this->response = $this->getMockBuilder(Response::class)->getMock();
         $this->Accounts = new AccountsCell($this->request, $this->response);
     }
 

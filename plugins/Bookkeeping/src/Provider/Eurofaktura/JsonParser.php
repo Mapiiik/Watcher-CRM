@@ -126,7 +126,7 @@ final class JsonParser
         ];
 
         // Warnings
-        if ($draft->paymentDate === null && ($draft->debt?->isZero() ?? false)) {
+        if (!$draft->paymentDate instanceof Date && ($draft->debt?->isZero() ?? false)) {
             $draft->addWarning('Invoice marked as paid but payment date is missing');
         }
 
@@ -136,7 +136,6 @@ final class JsonParser
     /**
      * Parse date string into Cake Date object.
      *
-     * @param string|null $value
      * @return \Cake\I18n\Date|null
      */
     private function parseDate(?string $value): ?Date
@@ -166,14 +165,14 @@ final class JsonParser
         if (!empty($data['Items'])) {
             foreach ($data['Items'] as $item) {
                 $texts[] =
-                    ((int)$item['quantity'] <> 1 ? $item['quantity'] . 'x ' : '')
+                    ((int)$item['quantity'] !== 1 ? $item['quantity'] . 'x ' : '')
                     . ($item['productName'] ?? $item['description']);
             }
         }
 
         $text = implode(', ', $texts);
 
-        return $text == '' ? null : $text;
+        return $text === '' ? null : $text;
     }
 
     /**
@@ -202,11 +201,11 @@ final class JsonParser
 
             $date = $this->parseDate($record['paymentDate']);
 
-            if ($date === null) {
+            if (!$date instanceof Date) {
                 continue;
             }
 
-            if ($latest === null || $date > $latest) {
+            if (!$latest instanceof Date || $date > $latest) {
                 $latest = $date;
             }
         }

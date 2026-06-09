@@ -27,8 +27,6 @@ class AccountsCell extends Cell
 
     /**
      * Show contracts
-     *
-     * @var bool
      */
     protected bool $show_contracts = true;
 
@@ -96,7 +94,7 @@ class AccountsCell extends Cell
                     ],
                 )
                 ->all();
-        } catch (MissingConnectionException $connectionError) {
+        } catch (MissingConnectionException) {
             //Couldn't connect
             $accounts = null;
         }
