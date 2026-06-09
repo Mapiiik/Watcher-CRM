@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace App\Model\Enum\Trait;
 
-use Cake\Database\Type\EnumLabelInterface;
-use LogicException;
-
+/**
+ * Provides an options() helper for backed enums that implement
+ * {@see \Cake\Database\Type\EnumLabelInterface}.
+ *
+ * @phpstan-require-implements \Cake\Database\Type\EnumLabelInterface
+ */
 trait EnumOptionsTrait
 {
     /**
@@ -18,13 +21,6 @@ trait EnumOptionsTrait
         $options = [];
 
         foreach (static::cases() as $case) {
-            /** @phpstan-ignore-next-line instanceof.alwaysTrue */
-            if (!$case instanceof EnumLabelInterface) {
-                throw new LogicException(
-                    sprintf('%s must implement EnumLabelInterface.', static::class),
-                );
-            }
-
             $options[(string)$case->value] = $case->label();
         }
 
